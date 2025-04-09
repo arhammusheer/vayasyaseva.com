@@ -84,7 +84,7 @@ export const content: WebsiteContent = {
         title: "Flexible or Seasonal Workforce",
         description:
           "Deploy manpower on-demand for peak seasons, special projects, or urgent requirements—without long-term commitments.",
-        image: "/assets/services/flexible-workforce.jpg",
+        image: "/assets/services/flexible-workforce.png",
       },
       {
         title: "Horticulture & Gardening (Factory Premises)",

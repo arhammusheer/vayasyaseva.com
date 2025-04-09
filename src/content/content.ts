@@ -208,7 +208,7 @@ export const content: WebsiteContent = {
     ],
   },
   footer: {
-    copyright: `© ${new Date().getFullYear()} Vayasya Seva Private Limited. All rights reserved.`,
+    copyright: `© ${new Date().getFullYear()} Vayasya Seva Private Limited.`,
     GSTIN: "05AAJCV4562E1ZB",
     MSME: "UDYAM-UK-06-0029670",
   },

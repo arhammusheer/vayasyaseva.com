@@ -25,7 +25,7 @@ export const ClientsSection = ({ id }: { id: string }) => {
         <Grid
           templateColumns={{
             base: "repeat(2, 1fr)",
-            lg: "repeat(4, 1fr)",
+            lg: "repeat(3, 1fr)",
           }}
           gap={8}
           justifyContent="space-evenly"

@@ -208,6 +208,8 @@ export const content: WebsiteContent = {
     ],
   },
   footer: {
-    copyright: `© ${new Date().getFullYear()} First Source Waste Solutions. All Rights Reserved.`,
+    copyright: `© ${new Date().getFullYear()} Vayasya Seva Private Limited. All rights reserved.`,
+    GSTIN: "05AAJCV4562E1ZB",
+    MSME: "UDYAM-UK-06-0029670",
   },
 };

@@ -114,6 +114,8 @@ export interface ContactMethod {
 
 export interface Footer {
   copyright: string;
+  GSTIN?: string;
+  MSME?: string;
 }
 
 export interface WebsiteContent {

@@ -20,6 +20,12 @@ export const Footer = () => {
       >
         <BrandedDivider />
         <Text>{content.footer.copyright}</Text>
+        {content.footer.GSTIN || content.footer.MSME ? (
+          <Text fontSize={"xs"} color={"gray.500"}>
+            {content.footer.GSTIN && `GSTIN: ${content.footer.GSTIN}`}
+            {content.footer.MSME && ` | MSME: ${content.footer.MSME}`}
+          </Text>
+        ) : null}
       </Stack>
     </Container>
   );
@@ -37,11 +43,7 @@ const BrandedDivider = () => {
       py={4}
     >
       <Box w={"full"} h={"1px"} bg={borderColor} />
-      <Image
-        src={"/assets/VSPL-logo.png"}
-        alt={"FSWS logo"}
-        boxSize={8}
-      />
+      <Image src={"/assets/VSPL-logo.png"} alt={"FSWS logo"} boxSize={8} />
       <Box w={"full"} h={"1px"} bg={borderColor} />
     </Stack>
   );

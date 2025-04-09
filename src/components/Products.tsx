@@ -12,13 +12,18 @@ import { ProductCard } from "../content/types";
 export default function ProductSection({ id }: { id: string }) {
   const productSection = content.productSection;
   const headingColor = useColorModeValue("brand.600", "brand.100");
+  const descriptionColor = useColorModeValue("gray.600", "gray.400");
+
+  if (!productSection) {
+    return null; // Return null if productSection is not defined
+  }
 
   return (
     <Box as="section" py={16} px={8} id={id} w="full" maxW="container.xl">
       <Heading as="h2" size="xl" mb={8} color={headingColor}>
         {productSection.title}
       </Heading>
-      <Box fontSize="lg" color={useColorModeValue("gray.600", "gray.400")}>
+      <Box fontSize="lg" color={descriptionColor}>
         {productSection.description}
       </Box>
 

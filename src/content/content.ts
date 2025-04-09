@@ -18,7 +18,7 @@ export const content: WebsiteContent = {
   },
   heroSection: {
     id: "home",
-    headline: "Reliable Seamless Operations.",
+    headline: "Reliable Seamless Operations",
     subheading: "Your trusted partner for warehouse and logistics staffing.",
     ctaButton: {
       label: "Get in touch",

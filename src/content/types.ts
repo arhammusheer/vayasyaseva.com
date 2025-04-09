@@ -121,7 +121,7 @@ export interface WebsiteContent {
   clientsSection: ClientsSection;
   aboutSection: AboutSection;
   heroSection: HeroSection;
-  productSection: ProductSection;
+  productSection?: ProductSection;
   servicesSection: ServicesSection;
   impactSection: ImpactSection;
   faqSection: FAQSection;

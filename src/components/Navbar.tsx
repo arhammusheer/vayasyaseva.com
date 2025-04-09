@@ -54,10 +54,11 @@ export const Navbar = () => {
           align={"center"}
           border={"1px"}
           borderColor={borderColor}
+          p={2}
         >
           <Image
-            src={"/assets/fsws-logo.png"}
-            boxSize={16}
+            src={"/assets/VSPL-logo.png"}
+            boxSize={12}
             onContextMenu={preventRightClick}
           />
           {isMobile ? (
@@ -169,7 +170,7 @@ const BottomSheet = ({
       <DrawerContent bg={useColorModeValue("brand.50", "brand.950")} py={4}>
         <DrawerHeader>
           <Stack direction={"row"} justify={"space-between"} align={"center"}>
-            <Image src={"/assets/fsws-logo.png"} boxSize={16} />
+            <Image src={"/assets/VSPL-logo.png"} boxSize={16} />
             <IconButton
               aria-label="Close menu"
               icon={<FaTimes />}

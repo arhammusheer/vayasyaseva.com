@@ -25,7 +25,9 @@ export default function App() {
       <Hero id={content.heroSection.id} />
       <ClientsSection id={content.clientsSection.id} />
       <AboutSection id={content.aboutSection.id} />
-      <ProductSection id={content.productSection.id} />
+      {content.productSection && (
+        <ProductSection id={content.productSection.id} />
+      )}
       <ServicesSection id={content.servicesSection.id} />
       <ImpactSection id={content.impactSection.id} />
       <FAQSection id={content.faqSection.id} />

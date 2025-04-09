@@ -51,7 +51,7 @@ const setup = extendTheme({
 
 const theme = extendTheme(setup, {
   colors: {
-    brand: setup.colors["green"],
+    brand: setup.colors["yellow"],
   },
 });
 

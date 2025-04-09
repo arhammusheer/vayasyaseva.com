@@ -20,7 +20,7 @@ export default function ServicesSection({ id }: { id: string }) {
       </Heading>
 
       {/* Cards Grid */}
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={4}>
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 2 }} spacing={4}>
         {servicesSection.cards.map((card, index) => (
           <SingleService
             key={index}

@@ -38,7 +38,7 @@ const BrandedDivider = () => {
     >
       <Box w={"full"} h={"1px"} bg={borderColor} />
       <Image
-        src={"/assets/fsws-logo.png"}
+        src={"/assets/VSPL-logo.png"}
         alt={"FSWS logo"}
         boxSize={8}
       />

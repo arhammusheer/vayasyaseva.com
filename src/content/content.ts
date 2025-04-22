@@ -195,15 +195,15 @@ export const content: WebsiteContent = {
     contactMethods: [
       {
         name: "Email",
-        value: "seva.vayasya888@gmail.com",
+        value: "	help@vayasyaseva.com",
         icon: IoMail,
-        href: "mailto:seva.vayasya888@gmail.com",
+        href: "mailto:help@vayasyaseva.com",
       },
       {
         name: "Phone",
-        value: "+91 90688 55443",
+        value: "+91 85328 44699",
         icon: FaPhone,
-        href: "tel:+919068855443",
+        href: "tel:+918532844699",
       },
     ],
   },

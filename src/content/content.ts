@@ -201,9 +201,9 @@ export const content: WebsiteContent = {
       },
       {
         name: "Phone",
-        value: "+91 85328 44699",
+        value: "+91 72920 14101",
         icon: FaPhone,
-        href: "tel:+918532844699",
+        href: "tel:+917292014101",
       },
     ],
   },

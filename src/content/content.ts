@@ -2,32 +2,36 @@ import { BsQuestion } from "react-icons/bs";
 import { FaMailBulk, FaPhone, FaSchool, FaUsers } from "react-icons/fa";
 import { IoMail } from "react-icons/io5";
 import { RiBuilding2Fill } from "react-icons/ri";
-import { WebsiteContent } from "./types";
+import type { WebsiteContent } from "./types";
 
 export const content: WebsiteContent = {
   header: {
     logo: "VAYASYA SEVA",
     navigation: [
-      { name: "About Us", href: "about", icon: RiBuilding2Fill },
+      { name: "About", href: "about", icon: RiBuilding2Fill },
       { name: "Services", href: "services", icon: FaUsers },
-      { name: "Why Us?", href: "why-us", icon: FaSchool },
+      { name: "How We Operate", href: "ops", icon: FaSchool },
+      { name: "Why Vayasya", href: "why-us", icon: FaSchool },
       { name: "FAQs", href: "faq", icon: BsQuestion },
       { name: "Contact", href: "contact", icon: FaMailBulk },
     ],
-    contactButton: "Contact Us",
+    contactButton: "Talk to our team",
   },
+
   heroSection: {
     id: "home",
     headline: "Reliable Seamless Operations",
-    subheading: "Your trusted partner for warehouse and logistics staffing.",
+    subheading:
+      "Vayasya Seva provides disciplined, compliant manpower for warehouses, factories, and facilities.",
     ctaButton: {
-      label: "Get in touch",
+      label: "Share your requirement",
       href: "contact",
     },
   },
+
   clientsSection: {
     id: "clients",
-    title: "Our Clients",
+    title: "Trusted by Enterprise Clients",
     clients: [
       {
         name: "ITC Limited",
@@ -46,119 +50,126 @@ export const content: WebsiteContent = {
       },
     ],
   },
+
   aboutSection: {
     id: "about",
     title: "Who We Are",
     description:
-      "Vayasya Seva Private Limited is a manpower solutions company committed to powering your logistics and warehousing needs. From skilled labor for loading and unloading to full-service warehouse management, we provide dependable staffing tailored to your operations. We are fully compliant with Uttarakhand labor laws and registered under ESIC, PF, GST, and as an MSME.",
+      "Vayasya Seva Private Limited is a manpower and on-ground operations partner for enterprises that depend on disciplined, reliable, and compliance-focused workforce support. We specialise in warehouse operations, logistics support, manufacturing assistance, facility services, and hospitality-linked deployments. To deliver consistency and clarity, our internal operations system Vayasya Setu helps us maintain accurate attendance, structured documentation, and audit-ready compliance. We operate as a fully compliant Private Limited company registered under ESIC, EPF, GST, and MSME.",
   },
+
   servicesSection: {
     id: "services",
-    title: "Our Services",
+    title: "Manpower & Site Operations",
     cards: [
       {
-        title: "Warehouse Management",
+        title: "Warehouse & Logistics Manpower",
         description:
-          "From inventory tracking to overall supervision, we provide experienced manpower to streamline your warehouse operations.",
+          "Teams for loading, unloading, stacking, picking, dispatch, staging, and general warehouse operations. Supervisors ensure SLA discipline and safe handling.",
         image: "/assets/services/warehouse-management.png",
       },
       {
-        title: "Loading & Unloading",
+        title: "Manufacturing & Shopfloor Support",
         description:
-          "Trained labor for fast, safe, and efficient loading and unloading of goods and materials at your site.",
-        image: "/assets/services/loading-unloading.png",
+          "Helpers, packers, line feeders, material handling teams, and general support staff aligned to your production requirements and quality processes.",
+        image: "/assets/services/manufacturing-support.png",
       },
       {
-        title: "Shifting & Warehousing",
+        title: "Housekeeping, Facility & Hospitality Support",
         description:
-          "Reliable shifting and warehousing services for seamless transitions and stock adjustments, whether it's a single pallet or an entire warehouse.",
-        image: "/assets/services/shifting-warehousing.png",
-      },
-      {
-        title: "Housekeeping & Facility Support",
-        description:
-          "Maintain clean, safe, and efficient work environments with our skilled housekeeping staff and general support workers.",
+          "Housekeeping, pantry, back-of-house, and guest-area staff for plants, offices, institutional facilities, and hospitality-linked sites.",
         image: "/assets/services/housekeeping.png",
       },
       {
-        title: "Flexible or Seasonal Workforce",
+        title: "On-Ground Workforce Operations",
         description:
-          "Deploy manpower on-demand for peak seasons, special projects, or urgent requirements—without long-term commitments.",
-        image: "/assets/services/flexible-workforce.png",
+          "Recruitment, onboarding, shift planning, discipline management, and continuous supervision to ensure consistent performance across all active sites.",
+        image: "/assets/services/workforce-operations.png",
       },
       {
-        title: "Horticulture & Gardening (Factory Premises)",
+        title: "Horticulture & Grounds Maintenance",
         description:
-          "Beautify and maintain your factory’s outdoor spaces with our trained horticulture staff. We handle garden upkeep, plant care, and landscaping support.",
+          "Garden and outdoor area maintenance teams for factories and institutional campuses, supporting both appearance and environmental goals.",
         image: "/assets/services/horticulture.png",
+      },
+      {
+        title: "Seasonal & Project-Based Workforce",
+        description:
+          "Rapid ramp-up manpower support for seasonal peaks, new launches, expansions, promotional campaigns, or specialised projects.",
+        image: "/assets/services/flexible-workforce.png",
       },
     ],
   },
 
   impactSection: {
     id: "why-us",
-    title: "Why Choose Us?",
+    title: "Why Vayasya Seva",
     statistics: [
       {
-        stat: "150+ Workers",
-        description: "Deployed across Haridwar",
+        stat: "10+ Years",
+        description:
+          "On-ground manpower and operations experience in the Haridwar-SIDCUL region.",
         isRollingNumber: true,
       },
       {
-        stat: "10 Years",
-        description: "Experience in the industry",
+        stat: "150+ Personnel",
+        description: "Workers and supervisors deployed across active sites.",
         isRollingNumber: true,
       },
       {
-        stat: "24/7 Support",
-        description: "Available for all active clients",
+        stat: "Structured Ops",
+        description:
+          "Every deployment backed by our internal system Vayasya Setu for accuracy and clarity.",
+        isRollingNumber: false,
+      },
+      {
+        stat: "Compliance-Ready",
+        description:
+          "Registered under ESIC, EPF, GST, and MSME with strong documentation and audit discipline.",
         isRollingNumber: false,
       },
     ],
   },
+
   faqSection: {
     id: "faq",
     title: "Frequently Asked Questions",
     questions: [
       {
-        question: "What manpower services do you provide?",
+        question: "What manpower services does Vayasya Seva provide?",
         answer:
-          "We offer skilled and unskilled labor for warehouse management, loading, unloading, and shifting needs. All staff are trained and monitored for performance and compliance.",
+          "We provide manpower and on-ground workforce operations for warehouses, logistics hubs, manufacturing units, corporate and industrial facilities, and hospitality sites. This includes workers, supervisors, and shift coordination.",
+      },
+      {
+        question:
+          "Can you align attendance or payroll data with our internal formats?",
+        answer:
+          "Yes. We can share data in Excel, CSV, or PDF formats that align with your existing processes. For larger clients, we can also structure data specifically for your HR or attendance systems without requiring new tools through our internal compliance engine Vayasya Setu.",
+      },
+      {
+        question: "Are your operations legally compliant?",
+        answer:
+          "Yes. We are registered under ESIC, EPF, GST, and MSME, and operate under all applicable labour rules. Documentation and registers are maintained to support statutory inspections and your internal audits.",
       },
       {
         question: "Where are your services available?",
         answer:
-          "Our services are currently available across Haridwar. For requirements outside the region, please contact us directly.",
+          "Our primary operations are in the Haridwar–SIDCUL region. For other locations, we evaluate requests based on scale and project requirements.",
       },
       {
-        question: "Are your services legally compliant?",
+        question: "Do you provide manpower for multiple shifts?",
         answer:
-          "Yes. We are fully compliant Private Limited Company with all applicable Uttarakhand labor laws, and registered under ESIC, PF, GST, and MSME.",
+          "Yes. We manage manpower across multiple shifts and rotation patterns, ensuring consistent coverage and timely replacements when required.",
       },
       {
-        question: "Do you provide custom manpower plans?",
+        question: "Can we get daily or monthly attendance summaries?",
         answer:
-          "Absolutely. We assess your business needs and provide staffing solutions that align with your operations and timelines.",
+          "Absolutely. We can share daily, weekly, or monthly attendance summaries processed through our internal system. These reports are aligned to your internal review cycles.",
       },
       {
-        question: "Do you provide transport services as well?",
+        question: "Do you manage worker onboarding and verification?",
         answer:
-          "While we don’t operate transport services directly, we work closely with trusted logistics partners. We can either coordinate transportation on your behalf or connect you with our verified vendors.",
-      },
-      {
-        question: "Do you offer manpower based on shifts?",
-        answer:
-          "Yes, we manage manpower rotation across multiple shifts to ensure seamless round-the-clock operations. Our team takes care of shift planning and workforce scheduling based on your requirements.",
-      },
-      {
-        question: "Can I track worker attendance and performance?",
-        answer:
-          "Attendance is usually tracked by our clients, but we do offer digital tools to share daily attendance reports and workforce summaries for better visibility and transparency.",
-      },
-      {
-        question: "What manpower plans do you offer—per person or per tonnage?",
-        answer:
-          "We offer flexible plans based on your needs—either by number of workers or workload (such as tonnage). Reach out to us for a tailored quote.",
+          "Yes. We handle identity verification and, where necessary, police verification based on client policy or site requirements.",
       },
       {
         question: "Is your workforce insured?",
@@ -166,36 +177,57 @@ export const content: WebsiteContent = {
           "Yes, all our employees are covered under the Employees’ State Insurance (ESIC) scheme, ensuring medical and accident protection as per statutory requirements.",
       },
       {
-        question: "How do you verify the background of your workers?",
+        question: "Do you operate transport fleets?",
         answer:
-          "All deployed personnel undergo police verification to ensure complete reliability and safety at your worksite.",
+          "No. We do not operate transport fleets but have strong partnerships with transporters which we can extend to you as per your requirement.",
+      },
+      {
+        question: "How do we start with Vayasya Seva?",
+        answer:
+          "Share your requirement, location, and tentative manpower numbers. We will study your operations and propose an appropriate manpower model along with reporting and compliance support.",
+      },
+      {
+        question: "What is Vayasya Setu?",
+        answer:
+          "Vayasya Setu is our internal operations engine that ensures accurate attendance tracking, structured documentation, payroll, and audit-ready compliance. It helps us deliver consistent, error-free data to our clients without requiring them to manage new systems.",
+      },
+      {
+        question: "Can Vayasya Setu integrate with our HR systems?",
+        answer:
+          "Yes. Vayasya Setu is has built in bridges which link directly to commonly used HR and attendance systems. This allows us to provide you real-time data straight into your existing workflows without additional effort on your part.",
+      },
+      {
+        question: "Do we need to use Vayasya Setu as a software?",
+        answer:
+          "It's not necessary but we can provide you access to Vayasya Setu as a software platform if required. This allows you to view real-time attendance, worker details, and compliance reports directly through a web portal. It can also be integrated with your internal systems for seamless data flow.",
       },
     ],
   },
+
   contactSection: {
     id: "contact",
-    contactMethodsTitle: "Contact Us Directly",
+    title: "Share Your Requirement",
+    contactMethodsTitle: "Contact us directly",
     enableForm: false,
-
-    title: "Or send us a message",
     fields: [
       {
         id: "email",
-        label: "Email",
+        label: "Work Email",
         type: "email",
-        placeholder: "Enter your email",
+        placeholder: "name@company.com",
       },
       {
         id: "message",
-        label: "Message",
+        label: "Requirement / Message",
         type: "textarea",
-        placeholder: "Enter your message",
+        placeholder:
+          "Tell us about your site, manpower requirement, and timelines.",
       },
     ],
     contactMethods: [
       {
         name: "Email",
-        value: "	help@vayasyaseva.com",
+        value: "help@vayasyaseva.com",
         icon: IoMail,
         href: "mailto:help@vayasyaseva.com",
       },
@@ -207,6 +239,7 @@ export const content: WebsiteContent = {
       },
     ],
   },
+
   footer: {
     copyright: `© ${new Date().getFullYear()} Vayasya Seva Private Limited.`,
     GSTIN: "05AAJCV4562E1ZB",

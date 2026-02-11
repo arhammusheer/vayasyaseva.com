@@ -5,8 +5,13 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: "/",
-        disallow: "/api/",
+        allow: ["/", "/llms.txt", "/llms-full.txt"],
+        disallow: ["/api/"],
+      },
+      {
+        userAgent: ["GPTBot", "OAI-SearchBot", "ChatGPT-User", "ClaudeBot", "PerplexityBot"],
+        allow: ["/", "/llms.txt", "/llms-full.txt"],
+        disallow: ["/api/"],
       },
     ],
     sitemap: "https://www.vayasyaseva.com/sitemap.xml",

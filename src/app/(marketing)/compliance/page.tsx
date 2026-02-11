@@ -7,6 +7,7 @@ import {
   Users,
   ClipboardCheck,
   Building,
+  Mail,
 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -20,6 +21,7 @@ import {
 } from "@/components/ui/table";
 import { Section, SectionHeader } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
+import { siteConfig } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Compliance",
@@ -77,7 +79,7 @@ export default function CompliancePage() {
       <Section variant="subtle">
         <SectionHeader
           title="Statutory Registrations"
-          subtitle="Active registrations under key labour and business regulations."
+          subtitle="Registrations include ESIC, EPF, GST, and MSME. Current status details are shared during due diligence."
         />
 
         <div className="grid gap-6 md:grid-cols-2">
@@ -100,6 +102,11 @@ export default function CompliancePage() {
             );
           })}
         </div>
+
+        <p className="mt-6 text-center text-xs text-muted-foreground">
+          Last reviewed: February 2026. Registration validity is subject to
+          regulatory requirements and renewal cycles.
+        </p>
       </Section>
 
       {/* Documentation Matrix */}
@@ -152,7 +159,7 @@ export default function CompliancePage() {
                 <h3 className="font-semibold">Inspection Readiness</h3>
                 <p className="mt-1 leading-relaxed text-muted-foreground">
                   Statutory records are maintained in structured formats,
-                  organized for inspection readiness by labour authorities or
+                  organised for inspection readiness by labour authorities or
                   client audit teams.
                 </p>
               </div>
@@ -192,6 +199,27 @@ export default function CompliancePage() {
               </div>
             </div>
           </div>
+        </div>
+      </Section>
+
+      {/* Request compliance documentation */}
+      <Section>
+        <div className="mx-auto max-w-2xl rounded-xl border border-border bg-subtle p-6 text-center">
+          <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-success/10">
+            <Mail className="h-5 w-5 text-success" />
+          </div>
+          <h3 className="font-semibold">Request Compliance Documentation</h3>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+            For due diligence reviews, audit preparation, or registration
+            verification, contact our operations team directly.
+          </p>
+          <a
+            href={`mailto:${siteConfig.email}?subject=Compliance%20Documentation%20Request`}
+            className="mt-4 inline-flex items-center gap-2 rounded-md bg-seva px-4 py-2.5 text-sm font-medium text-seva-foreground transition-colors hover:bg-seva/90"
+          >
+            <Mail className="h-4 w-4" />
+            {siteConfig.email}
+          </a>
         </div>
       </Section>
 

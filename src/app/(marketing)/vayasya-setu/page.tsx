@@ -38,7 +38,7 @@ const capabilities = [
   {
     title: "Compliance Documentation",
     description:
-      "ESIC, EPF, and statutory documentation maintained with defined verification workflows — organized for inspection readiness.",
+      "ESIC, EPF, and statutory documentation maintained with defined verification workflows — organised for inspection readiness.",
     icon: FileCheck,
   },
   {
@@ -112,11 +112,11 @@ export default function VayasyaSetuPage() {
         </div>
       </section>
 
-      {/* Controls vs Work layer */}
+      {/* Dual-plane operating model */}
       <Section className="bg-setu/5">
         <SectionHeader
-          title="Controls Layer vs Work Layer"
-          subtitle="Setu operates the controls layer. Your site operations remain the work layer."
+          title="Two Coordinated Layers"
+          subtitle="VSPL operates through a Setu Control Plane and an Execution Plane — keeping governance consistent while allowing rapid on-ground delivery."
         />
 
         <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
@@ -124,13 +124,18 @@ export default function VayasyaSetuPage() {
             <div className="mb-3 flex items-center gap-2">
               <Layers className="h-5 w-5 text-setu" />
               <h3 className="font-semibold text-setu">
-                Setu Controls (VSPL Managed)
+                Setu Control Plane
               </h3>
             </div>
+            <p className="mb-3 text-sm text-muted-foreground">
+              Policies, attendance controls, compliance workflows, reporting
+              standards, payroll workflows, and scheduling logic — managed
+              centrally through Vayasya Setu.
+            </p>
             <ul className="space-y-2">
               {[
                 "Attendance capture, verification, and reconciliation",
-                "ESIC/EPF enrollment and contribution tracking",
+                "ESIC/EPF enrolment and contribution tracking",
                 "Payroll input generation and delivery",
                 "Compliance documentation and filing",
                 "Deployment reporting and shift tracking",
@@ -150,16 +155,20 @@ export default function VayasyaSetuPage() {
           <div className="rounded-xl border border-border bg-background p-6">
             <div className="mb-3 flex items-center gap-2">
               <ArrowRight className="h-5 w-5 text-muted-foreground" />
-              <h3 className="font-semibold">Work Layer (Client Operations)</h3>
+              <h3 className="font-semibold">Execution Plane</h3>
             </div>
+            <p className="mb-3 text-sm text-muted-foreground">
+              On-ground staffing operations, supervisor-led issue handling,
+              client communication, and time-bound operational delivery.
+            </p>
             <ul className="space-y-2">
               {[
-                "Task assignment and production targets",
-                "Site-specific operational decisions",
-                "Quality and output standards",
-                "Client-side HR policies and performance metrics",
-                "Infrastructure, equipment, and materials",
-                "Product-specific process requirements",
+                "Day-to-day deployment and task coordination",
+                "Supervisor-led exception handling",
+                "Direct communication with client site teams",
+                "Shift handovers and operational continuity",
+                "Replacement pipeline activation on attrition",
+                "On-ground escalation and resolution",
               ].map((item) => (
                 <li
                   key={item}
@@ -228,7 +237,7 @@ export default function VayasyaSetuPage() {
                 {
                   trigger: "Documentation Delay",
                   description:
-                    "ESIC/EPF enrollment or filing behind defined timeline.",
+                    "ESIC/EPF enrolment or filing behind defined timeline.",
                   response:
                     "Escalation to compliance coordinator + tracked resolution",
                 },
@@ -306,11 +315,10 @@ export default function VayasyaSetuPage() {
             <span className="font-semibold text-setu">
               Integration note:
             </span>{" "}
-            VSPL formats output data for import into client systems. Column
-            mapping and format alignment are handled during engagement setup.
-            Direct API-level integration is not currently offered. Clients who
-            need real-time data feeds should discuss requirements during
-            scoping.
+            VSPL follows a managed integration model. While a public self-serve
+            API is not currently exposed, secure API access and ERP adapters can
+            be enabled for qualified enterprise engagements through executive
+            approval, scoped implementation, and governance review.
           </p>
         </div>
       </Section>

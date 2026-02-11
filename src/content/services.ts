@@ -26,7 +26,7 @@ export const services: ServiceDetail[] = [
     shiftPatterns: ["Single shift", "Double shift", "Rotational", "Seasonal ramp-up"],
     included: [
       "Workforce sourcing and screening",
-      "ESIC/EPF enrollment",
+      "ESIC/EPF enrolment",
       "On-site supervision",
       "Attendance and shift management",
       "Payroll-aligned reporting",
@@ -56,7 +56,7 @@ export const services: ServiceDetail[] = [
     shiftPatterns: ["Single shift", "Double shift", "Three-shift rotation", "Project-based"],
     included: [
       "Workforce sourcing and screening",
-      "ESIC/EPF enrollment",
+      "ESIC/EPF enrolment",
       "Safety orientation and site induction",
       "On-site supervision",
       "Attendance and output tracking",
@@ -86,7 +86,7 @@ export const services: ServiceDetail[] = [
     shiftPatterns: ["Day shift", "Split shift", "Round-the-clock", "Event-based"],
     included: [
       "Staff sourcing and grooming standards",
-      "ESIC/EPF enrollment",
+      "ESIC/EPF enrolment",
       "On-site supervision",
       "Attendance management",
       "Replacement coverage",
@@ -173,7 +173,7 @@ export const services: ServiceDetail[] = [
       "Exit documentation and closure",
     ],
     notIncluded: [
-      "Long-term retention guarantees for seasonal staff",
+      "Long-term retention commitments for seasonal staff",
       "Specialized skilled labour for short-duration needs",
     ],
     icon: "TrendingUp",

@@ -8,7 +8,7 @@ import { siteConfig } from "@/content/site";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "About Vayasya Seva Private Limited — operating philosophy, governance mindset, and regional footprint in the Haridwar–SIDCUL industrial corridor.",
+    "About Vayasya Seva Private Limited — a compliance-first workforce operations partner for industrial and enterprise sites in the Haridwar–SIDCUL corridor.",
 };
 
 const values = [
@@ -43,17 +43,18 @@ export default function AboutPage() {
           </h1>
           <div className="mt-6 space-y-4 text-lg leading-relaxed text-muted-foreground">
             <p>
-              Vayasya Seva Private Limited is a workforce operations company
-              serving enterprise and industrial clients in the Haridwar–SIDCUL
-              region. We deploy disciplined workforce teams for warehouses, factories,
-              facilities, and logistics operations — supported by on-ground
-              supervision, compliance coverage, and structured reporting.
+              Vayasya Seva Private Limited (VSPL) is a compliance-first
+              workforce operations partner for industrial and enterprise sites.
+              We combine disciplined on-ground execution with Setu-led control
+              workflows to deliver reliable staffing operations, attendance
+              integrity, and audit-ready reporting.
             </p>
             <p>
-              Our operating model centres on process discipline: defined
-              onboarding, attendance verification, shift management, and
-              compliance documentation — delivered consistently across every
-              engagement.
+              Our clients are enterprise and industrial operations in the
+              Haridwar–SIDCUL region — including manufacturing plants,
+              warehouses, logistics hubs, and institutional facilities. VSPL
+              deploys structured workforce teams with on-ground supervision,
+              compliance coverage, and defined reporting cadences.
             </p>
           </div>
         </div>
@@ -86,8 +87,38 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      {/* Governance Mindset */}
+      {/* What Sets VSPL Apart */}
       <Section>
+        <div className="mx-auto max-w-3xl">
+          <SectionHeader
+            title="What Sets VSPL Apart"
+            align="left"
+          />
+          <div className="space-y-4 text-lg leading-relaxed text-muted-foreground">
+            <p>
+              VSPL is not a generic staffing marketplace. Our differentiation
+              lies in systems and operations discipline — delivered through a
+              dual-layer operating model.
+            </p>
+            <p>
+              The <strong className="text-foreground">Setu Control Plane</strong>{" "}
+              manages policy logic, attendance controls, compliance workflows,
+              reporting standards, and payroll processing. The{" "}
+              <strong className="text-foreground">Execution Plane</strong>{" "}
+              handles on-ground staffing operations, supervisor-led issue
+              handling, and time-bound delivery.
+            </p>
+            <p>
+              This model keeps governance consistent while allowing adaptable
+              field execution — an approach that matters when compliance
+              discipline and operational reliability are non-negotiable.
+            </p>
+          </div>
+        </div>
+      </Section>
+
+      {/* Governance Mindset */}
+      <Section variant="subtle">
         <div className="mx-auto max-w-3xl">
           <SectionHeader
             title="Governance Mindset"
@@ -111,7 +142,7 @@ export default function AboutPage() {
       </Section>
 
       {/* Regional Footprint */}
-      <Section variant="subtle">
+      <Section>
         <SectionHeader
           title="Regional Footprint"
         />

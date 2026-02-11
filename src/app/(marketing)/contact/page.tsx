@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import { Section } from "@/components/layout/section";
 import { siteConfig } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Vayasya Seva Private Limited. Share your workforce requirements or request a compliance pack.",
+    "Get in touch with Vayasya Seva Private Limited. Share your workforce requirements or request compliance documentation.",
 };
 
 export default function ContactPage() {
@@ -21,7 +21,7 @@ export default function ContactPage() {
             </h1>
             <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
               Share your workforce requirements and we&apos;ll respond with an
-              initial assessment — our target response time is 2 business days (IST, Mon–Sat).
+              initial assessment.
             </p>
 
             <div className="mt-8 space-y-4">
@@ -66,18 +66,31 @@ export default function ContactPage() {
                   <p className="font-medium text-foreground">{siteConfig.address}</p>
                 </div>
               </div>
+
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-seva/10">
+                  <Clock className="h-5 w-5 text-seva" />
+                </div>
+                <div>
+                  <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    Response Window
+                  </p>
+                  <p className="font-medium text-foreground">
+                    2 business days (IST, Mon–Sat)
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Contact Form — temporarily disabled */}
+          {/* Contact channels */}
           <div className="lg:col-span-3">
             <div className="rounded-2xl border border-border bg-subtle p-6 sm:p-8">
               <h2 className="text-xl font-bold">Share Your Requirement</h2>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                Our online inquiry form is currently being set up. In the
-                meantime, please reach out directly via email or phone — our
-                operations team will respond within 2 business days (IST,
-                Mon–Sat).
+                Our online inquiry form is temporarily unavailable. Please
+                reach out directly via email or phone — our operations team
+                targets a response within 2 business days (IST, Mon–Sat).
               </p>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                 <a
@@ -95,6 +108,24 @@ export default function ContactPage() {
                   {siteConfig.phone}
                 </a>
               </div>
+            </div>
+
+            {/* Compliance documentation request */}
+            <div className="mt-6 rounded-2xl border border-border bg-background p-6 sm:p-8">
+              <h3 className="text-lg font-semibold">
+                Request Compliance Documentation
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                For due diligence reviews, audit preparation, or registration
+                verification, contact our operations team directly via email.
+              </p>
+              <a
+                href={`mailto:${siteConfig.email}?subject=Compliance%20Documentation%20Request`}
+                className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-seva transition-colors hover:text-seva/80"
+              >
+                <Mail className="h-4 w-4" />
+                Request via email
+              </a>
             </div>
           </div>
         </div>

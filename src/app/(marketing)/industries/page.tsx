@@ -17,7 +17,7 @@ import { industries } from "@/content/industries";
 export const metadata: Metadata = {
   title: "Industries",
   description:
-    "Workforce operations for manufacturing, warehousing, FMCG, institutional facilities, and hospitality-linked operations.",
+    "Workforce operations for manufacturing, warehousing, FMCG, institutional facilities, and hospitality-linked operations in the Haridwar–SIDCUL region.",
 };
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -34,7 +34,7 @@ export default function IndustriesPage() {
       <Section>
         <SectionHeader
           title="Industries We Serve"
-          subtitle="Tailored workforce deployment models for each industrial environment — aligned to sector-specific staffing patterns, risk controls, and reporting needs."
+          subtitle="Workforce deployment models tailored to each industrial environment — aligned to sector-specific staffing patterns, risk controls, and reporting needs."
         />
       </Section>
 

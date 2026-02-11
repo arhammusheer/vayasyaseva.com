@@ -20,7 +20,7 @@ export const hero: HeroContent = {
   subheadline:
     "Structured workforce deployment for warehouses, factories, and facilities — with supervision, attendance integrity, and audit-ready documentation built into every engagement.",
   primaryCta: { label: "Share Your Requirement", href: "/contact" },
-  secondaryCta: { label: "Book Site Assessment", href: "/contact?type=assessment" },
+  secondaryCta: { label: "Request a Site Assessment", href: "/contact?type=assessment" },
 };
 
 /* ── Proof rail (compact evidence strip below hero) ── */
@@ -125,7 +125,7 @@ export const operationsTimeline: OperationStep[] = [
     step: 3,
     title: "Onboarding & Verification",
     description:
-      "Document verification, ESIC/EPF enrollment, safety orientation, and site-specific induction — completed before first deployment day.",
+      "Document verification, ESIC/EPF enrolment, safety orientation, and site-specific induction — completed before first deployment day.",
     icon: "ShieldCheck",
   },
   {
@@ -150,14 +150,14 @@ export const complianceItems: ComplianceItem[] = [
   {
     title: "Statutory Registrations",
     description:
-      "VSPL maintains active registrations under ESIC, EPF, GST, and MSME. Deployed workers are enrolled under applicable statutory schemes as part of the onboarding process.",
+      "Registrations include ESIC, EPF, GST, and MSME. Current status details are shared during due diligence. Deployed workers are enrolled under applicable statutory schemes as part of the onboarding process.",
     claim: "contractual",
     registrations: ["ESIC", "EPF", "GST", "MSME"],
   },
   {
     title: "Documentation Discipline",
     description:
-      "Attendance records, wage registers, and compliance filings are maintained in structured formats. Documentation is organized for inspection readiness as a standard operating practice.",
+      "Attendance records, wage registers, and compliance filings are maintained in structured formats. Documentation is organised for inspection readiness as a standard operating practice.",
     claim: "directional",
   },
   {
@@ -211,7 +211,7 @@ export const personaBlocks: PersonaBlock[] = [
     ],
     whatYouDontManage: [
       "Recruitment sourcing and screening",
-      "ESIC/EPF enrollment and compliance filings",
+      "ESIC/EPF enrolment and compliance filings",
       "Worker replacement on attrition",
       "Attendance verification and payroll inputs",
     ],
@@ -220,7 +220,7 @@ export const personaBlocks: PersonaBlock[] = [
     role: "HR / Compliance Manager",
     headline: "Inspection-ready documentation, statutory coverage",
     whatYouGet: [
-      "ESIC and EPF enrollment for deployed workers",
+      "ESIC and EPF enrolment for deployed workers",
       "Monthly compliance packs with contribution challans",
       "Structured attendance and wage records",
       "Compliance summary on request for audit preparation",
@@ -283,7 +283,7 @@ export const scopeBoundaries: ScopeBoundary[] = [
     category: "Workforce Deployment",
     included: [
       "Sourcing, screening, and onboarding",
-      "ESIC/EPF enrollment",
+      "ESIC/EPF enrolment",
       "On-site supervision and shift management",
       "Attendance verification and reporting",
       "Replacement deployment for attrition",
@@ -294,7 +294,7 @@ export const scopeBoundaries: ScopeBoundary[] = [
       "Client-side HR policy definition",
     ],
     onRequest: [
-      "Extended shift patterns beyond standard 2-shift model",
+      "Extended shift patterns beyond standard two-shift model",
       "Multi-location deployment coordination",
       "Custom reporting formats or integration alignment",
     ],
@@ -356,7 +356,7 @@ export const faqs: FaqItem[] = [
   {
     question: "What happens if a deployed worker leaves or is absent?",
     answer:
-      "VSPL maintains a replacement pipeline for attrition. Replacement deployment timelines depend on role type and availability — typically within 3–5 working days for standard roles.",
+      "VSPL maintains a replacement pipeline for attrition. Replacement deployment timelines depend on role type and availability — typically within 3–5 working days for standard roles. Workforce operations can reduce absenteeism through planning, supervision, and escalation workflows; however, zero absenteeism cannot be guaranteed by any deployment partner.",
     category: "operations",
   },
   {
@@ -369,19 +369,19 @@ export const faqs: FaqItem[] = [
   {
     question: "What compliance documentation does VSPL maintain?",
     answer:
-      "VSPL maintains ESIC and EPF enrollments for deployed workers, along with attendance registers, wage records, and monthly contribution challans. Documentation is structured for inspection readiness.",
+      "VSPL maintains ESIC and EPF enrolments for deployed workers, along with attendance registers, wage records, and monthly contribution challans. Documentation is structured for inspection readiness.",
     category: "compliance",
   },
   {
     question: "Are deployed workers covered under ESIC and EPF?",
     answer:
-      "Yes. ESIC and EPF enrollment is completed as part of the onboarding process for all eligible deployed workers, with monthly contributions maintained and documented.",
+      "Yes. ESIC and EPF enrolment is completed as part of the onboarding process for all eligible deployed workers, with monthly contributions maintained and documented.",
     category: "compliance",
   },
   {
     question: "Can VSPL provide a compliance pack for audit preparation?",
     answer:
-      "Yes, on request. A consolidated compliance pack — including registration certificates, contribution challans, and workforce documentation summaries — can be prepared for client audit requirements.",
+      "Yes, on request. A consolidated compliance pack — including registration certificates, contribution challans, and workforce documentation summaries — can be prepared for client audit requirements. To request compliance documentation, contact us at help@vayasyaseva.com.",
     category: "compliance",
   },
   // Integration / Setu
@@ -398,9 +398,9 @@ export const faqs: FaqItem[] = [
     category: "integration",
   },
   {
-    question: "Can Setu data integrate with our existing payroll system?",
+    question: "Can Setu data integrate with our existing systems?",
     answer:
-      "VSPL can format output data for import into your existing HR or payroll systems — column mapping and format alignment are handled as part of the engagement setup. Direct API integration is not currently offered.",
+      "VSPL follows a managed integration model. Output data can be formatted for import into your existing HR or payroll systems — column mapping and format alignment are handled as part of the engagement setup. While a public self-serve API is not currently exposed, secure API access and ERP adapters can be enabled for qualified enterprise engagements through executive approval, scoped implementation, and governance review.",
     category: "integration",
   },
   // Commercial

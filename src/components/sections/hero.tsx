@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Calendar } from "lucide-react";
+import { ArrowRight, ClipboardList } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/motion/reveal";
 import { hero } from "@/content/home";
@@ -37,7 +37,7 @@ export function Hero() {
               className="border-background/30 text-primary hover:bg-background/10 hover:text-background text-base"
             >
               <Link href={hero.secondaryCta.href}>
-                <Calendar className="mr-2 h-4 w-4" />
+                <ClipboardList className="mr-2 h-4 w-4" />
                 {hero.secondaryCta.label}
               </Link>
             </Button>

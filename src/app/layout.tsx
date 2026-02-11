@@ -22,15 +22,18 @@ export const metadata: Metadata = {
     template: "%s | Vayasya Seva Private Limited",
   },
   description:
-    "Structured workforce operations for warehouses, factories, and facilities. Supervision, attendance integrity, and audit-ready documentation.",
+    "Compliance-first workforce operations partner for industrial and enterprise sites. Structured deployment with supervision, attendance integrity, and audit-ready reporting.",
   keywords: [
     "workforce operations",
     "industrial workforce",
     "compliance workforce",
-    "warehouse operations",
+    "warehouse staffing",
+    "factory workforce",
     "Haridwar",
     "SIDCUL",
     "ESIC EPF compliance",
+    "workforce deployment",
+    "contract staffing",
   ],
   metadataBase: new URL("https://vayasyaseva.com"),
   icons: {
@@ -44,13 +47,13 @@ export const metadata: Metadata = {
     siteName: "Vayasya Seva Private Limited",
     title: "Vayasya Seva Private Limited | Compliance-First Workforce Operations",
     description:
-      "Structured workforce operations for warehouses, factories, and facilities.",
+      "Compliance-first workforce operations partner for industrial and enterprise sites. Structured deployment with supervision, attendance integrity, and audit-ready reporting.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Vayasya Seva Private Limited | Compliance-First Workforce Operations",
     description:
-      "Structured workforce operations for warehouses, factories, and facilities.",
+      "Compliance-first workforce operations partner for industrial and enterprise sites. Structured deployment with supervision, attendance integrity, and audit-ready reporting.",
   },
 };
 

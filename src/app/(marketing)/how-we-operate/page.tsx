@@ -4,6 +4,9 @@ import {
   ArrowUp,
   Phone,
   UserCheck,
+  Layers,
+  Shield,
+  ArrowRight,
 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Section, SectionHeader } from "@/components/layout/section";
@@ -13,7 +16,7 @@ import { operationsTimeline } from "@/content/home";
 export const metadata: Metadata = {
   title: "How We Operate",
   description:
-    "VSPL's five-step operating model from requirement intake to compliance closure, with defined escalation frameworks.",
+    "VSPL's five-step operating model from requirement intake to compliance closure, with defined escalation frameworks and a dual-plane governance approach.",
 };
 
 const escalationLevels = [
@@ -53,8 +56,83 @@ export default function HowWeOperatePage() {
         />
       </Section>
 
-      {/* Five-step process */}
+      {/* Dual-plane model */}
       <Section variant="subtle">
+        <SectionHeader
+          title="Two Coordinated Layers"
+          subtitle="VSPL operates through a Setu Control Plane and an Execution Plane — keeping governance consistent while allowing rapid on-ground delivery."
+        />
+
+        <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
+          <div className="rounded-xl border border-setu/20 bg-setu/5 p-6">
+            <div className="mb-3 flex items-center gap-2">
+              <Layers className="h-5 w-5 text-setu" />
+              <h3 className="font-semibold text-setu">
+                Setu Control Plane
+              </h3>
+            </div>
+            <p className="mb-3 text-sm text-muted-foreground">
+              Policies, attendance controls, compliance workflows, reporting
+              standards, payroll workflows, and scheduling logic — managed
+              centrally through Vayasya Setu.
+            </p>
+            <ul className="space-y-2">
+              {[
+                "Policy logic and compliance rules",
+                "Attendance capture and verification",
+                "Payroll input generation",
+                "Compliance documentation and filing",
+                "Reporting standards and delivery",
+                "Scheduling intelligence (where deployed)",
+              ].map((item) => (
+                <li
+                  key={item}
+                  className="flex items-start gap-2 text-sm leading-relaxed"
+                >
+                  <Shield className="mt-0.5 h-3.5 w-3.5 shrink-0 text-setu" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="rounded-xl border border-border bg-background p-6">
+            <div className="mb-3 flex items-center gap-2">
+              <ArrowRight className="h-5 w-5 text-muted-foreground" />
+              <h3 className="font-semibold">Execution Plane</h3>
+            </div>
+            <p className="mb-3 text-sm text-muted-foreground">
+              On-ground staffing operations, supervisor-led issue handling,
+              client communication, and time-bound operational delivery.
+            </p>
+            <ul className="space-y-2">
+              {[
+                "Day-to-day deployment coordination",
+                "Supervisor-led exception handling",
+                "Direct communication with client teams",
+                "Shift handovers and operational continuity",
+                "Replacement pipeline activation",
+                "On-ground escalation and resolution",
+              ].map((item) => (
+                <li
+                  key={item}
+                  className="flex items-start gap-2 text-sm leading-relaxed text-muted-foreground"
+                >
+                  <ArrowRight className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <p className="mt-6 text-center text-sm text-muted-foreground">
+          This model keeps governance consistent while allowing adaptable field execution.
+        </p>
+      </Section>
+
+      {/* Five-step process */}
+      <Section>
         <SectionHeader
           title="The Five-Step Process"
           subtitle="Every engagement follows this structured deployment cycle."
@@ -85,7 +163,7 @@ export default function HowWeOperatePage() {
       </Section>
 
       {/* Escalation Framework */}
-      <Section>
+      <Section variant="subtle">
         <SectionHeader
           title="Escalation Framework"
           subtitle="Defined escalation tiers ensure issues are resolved at the appropriate level — with accountability at each stage."

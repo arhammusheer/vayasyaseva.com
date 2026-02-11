@@ -51,6 +51,12 @@ export function ComplianceBlock() {
           );
         })}
       </Stagger>
+
+      <Reveal delay={0.2}>
+        <p className="mt-6 text-center text-xs text-muted-foreground">
+          Last reviewed: February 2026
+        </p>
+      </Reveal>
     </Section>
   );
 }

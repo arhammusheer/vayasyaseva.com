@@ -21,7 +21,7 @@ export default function TermsPage() {
           This website is operated by {siteConfig.legalName} (&quot;VSPL&quot;,
           &quot;we&quot;, &quot;our&quot;). It provides information about our
           workforce operations services and enables prospective clients to
-          submit requirement inquiries.
+          contact us regarding requirement inquiries.
         </p>
 
         <h2>2. Use of This Website</h2>
@@ -46,7 +46,9 @@ export default function TermsPage() {
           We make reasonable efforts to ensure the accuracy of information on
           this website. However, we do not warrant that all content is
           complete, current, or error-free. Statutory registration details and
-          compliance references are subject to regulatory changes.
+          compliance references are subject to regulatory changes and renewal
+          cycles. Current status details are available upon request during
+          due diligence.
         </p>
 
         <h2>5. Intellectual Property</h2>

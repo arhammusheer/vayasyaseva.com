@@ -16,7 +16,7 @@ export function CtaBlock() {
         <Reveal delay={0.08}>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-background/70">
             Share your operational needs and we&apos;ll respond with a deployment
-            assessment — our target response time is 2 business days (IST, Mon–Sat).
+            assessment. Target response: 2 business days (IST, Mon–Sat).
           </p>
         </Reveal>
 

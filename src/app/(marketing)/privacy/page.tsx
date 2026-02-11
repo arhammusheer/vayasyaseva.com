@@ -18,11 +18,11 @@ export default function PrivacyPage() {
 
         <h2>1. Information We Collect</h2>
         <p>
-          When you submit a requirement through our contact form, we collect
-          the following information: your name, company name, role, phone
-          number, email address, site location, industry, headcount
-          requirement, shift requirement, target start date, and requirement
-          details.
+          When you contact us via email, phone, or through our website inquiry
+          form (when available), we may collect the following information: your
+          name, company name, role, phone number, email address, site location,
+          industry, headcount requirement, shift requirement, target start date,
+          and requirement details.
         </p>
 
         <h2>2. How We Use Your Information</h2>

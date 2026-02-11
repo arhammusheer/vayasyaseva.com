@@ -18,7 +18,7 @@ import { services } from "@/content/services";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Workforce deployment services for warehouses, factories, facilities, and industrial operations. Structured teams with compliance and supervision.",
+    "Workforce deployment services for warehouses, factories, facilities, and industrial operations — with defined scope, supervision, and compliance coverage.",
 };
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {

@@ -9,8 +9,8 @@ export function PersonaBlocks() {
     <Section id="personas">
       <Reveal>
         <SectionHeader
-          title="What You Get, What You Don't Have to Manage"
-          subtitle="Role-specific outcomes for the stakeholders evaluating workforce operations partners."
+          title="What You Get. What We Handle."
+          subtitle="Who does what, at a glance."
         />
       </Reveal>
 
@@ -44,7 +44,7 @@ export function PersonaBlocks() {
 
               <div className="mt-4">
                 <p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  What you don&apos;t manage
+                  What we handle
                 </p>
                 <ul className="space-y-1.5">
                   {persona.whatYouDontManage.map((item) => (

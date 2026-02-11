@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <Section className="section-glow-seva glow-left">
+    <Section className="section-glow-contained section-glow-seva glow-left">
       <Prose content={privacyContent} />
     </Section>
   );

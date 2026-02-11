@@ -20,7 +20,7 @@ export default function ContactPage() {
           { name: "Contact", href: "/contact" },
         ])}
       />
-      <Section className="section-glow-seva glow-left">
+      <Section className="section-glow-contained section-glow-seva glow-left">
         <div className="grid gap-12 lg:grid-cols-5">
           {/* Contact Info */}
           <div className="lg:col-span-2">

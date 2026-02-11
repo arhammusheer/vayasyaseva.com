@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { Section } from "@/components/layout/section";
 import { siteConfig } from "@/content/site";
-import { ContactForm } from "./contact-form";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -71,17 +69,32 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* Contact Form */}
+          {/* Contact Form — temporarily disabled */}
           <div className="lg:col-span-3">
-            <div className="rounded-2xl border border-border bg-background p-6 sm:p-8">
+            <div className="rounded-2xl border border-border bg-subtle p-6 sm:p-8">
               <h2 className="text-xl font-bold">Share Your Requirement</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Fill in the details below and our operations team will get back
-                to you.
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                Our online inquiry form is currently being set up. In the
+                meantime, please reach out directly via email or phone — our
+                operations team will respond within 2 business days (IST,
+                Mon–Sat).
               </p>
-              <Suspense>
-                <ContactForm />
-              </Suspense>
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                <a
+                  href={`mailto:${siteConfig.email}`}
+                  className="inline-flex items-center justify-center gap-2 rounded-md bg-seva px-4 py-2.5 text-sm font-medium text-seva-foreground transition-colors hover:bg-seva/90"
+                >
+                  <Mail className="h-4 w-4" />
+                  {siteConfig.email}
+                </a>
+                <a
+                  href={`tel:${siteConfig.phone}`}
+                  className="inline-flex items-center justify-center gap-2 rounded-md border border-border bg-background px-4 py-2.5 text-sm font-medium transition-colors hover:bg-subtle"
+                >
+                  <Phone className="h-4 w-4" />
+                  {siteConfig.phone}
+                </a>
+              </div>
             </div>
           </div>
         </div>

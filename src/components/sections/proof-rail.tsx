@@ -1,5 +1,4 @@
 import { proofRail } from "@/content/home";
-import { siteConfig } from "@/content/site";
 
 export function ProofRail() {
   return (

@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "type-check": "tsc --noEmit",
+    "openapi:generate": "node scripts/generate-openapi.mjs",
+    "openapi:check": "node scripts/check-openapi.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

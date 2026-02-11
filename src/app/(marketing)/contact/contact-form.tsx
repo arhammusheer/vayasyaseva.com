@@ -4,11 +4,11 @@ import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod/v4";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { contactSchema, type ContactFormData } from "@/lib/contact-contract";
 import {
   Select,
   SelectContent,
@@ -17,22 +17,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { CheckCircle2, Loader2 } from "lucide-react";
-
-const contactSchema = z.object({
-  name: z.string().min(2, "Name is required"),
-  company: z.string().min(1, "Company name is required"),
-  role: z.string().min(1, "Your role is required"),
-  phone: z.string().min(10, "Valid phone number is required"),
-  email: z.email("Valid email is required"),
-  location: z.string().min(1, "Location is required"),
-  industry: z.string().min(1, "Please select an industry"),
-  headcount: z.string().min(1, "Approximate headcount is required"),
-  shiftRequirement: z.string().optional(),
-  targetStartDate: z.string().optional(),
-  details: z.string().optional(),
-});
-
-type ContactFormData = z.infer<typeof contactSchema>;
 
 const industryOptions = [
   "Manufacturing",

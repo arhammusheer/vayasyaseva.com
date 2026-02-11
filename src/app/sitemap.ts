@@ -16,6 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/contact`, lastModified, changeFrequency: "yearly", priority: 0.9 },
     { url: `${baseUrl}/privacy`, lastModified, changeFrequency: "yearly", priority: 0.3 },
     { url: `${baseUrl}/terms`, lastModified, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${baseUrl}/openapi/v1.json`, lastModified, changeFrequency: "weekly", priority: 0.4 },
     { url: `${baseUrl}/llms.txt`, lastModified, changeFrequency: "weekly", priority: 0.6 },
     { url: `${baseUrl}/llms-full.txt`, lastModified, changeFrequency: "weekly", priority: 0.5 },
   ];

@@ -1,0 +1,95 @@
+{
+  "version": "1.0.0",
+  "request": {
+    "fields": {
+      "name": {
+        "type": "string",
+        "required": true,
+        "minLength": 2,
+        "description": "Full name of the requester",
+        "requiredMessage": "Name is required",
+        "example": "Arham Musheer"
+      },
+      "company": {
+        "type": "string",
+        "required": true,
+        "minLength": 1,
+        "description": "Company name",
+        "requiredMessage": "Company name is required",
+        "example": "Vayasya Seva Private Limited"
+      },
+      "role": {
+        "type": "string",
+        "required": true,
+        "minLength": 1,
+        "description": "Role or designation of the requester",
+        "requiredMessage": "Your role is required",
+        "example": "Warehouse Manager"
+      },
+      "phone": {
+        "type": "string",
+        "required": true,
+        "minLength": 10,
+        "description": "Phone number with country/area code",
+        "requiredMessage": "Valid phone number is required",
+        "example": "+91 72920 14101"
+      },
+      "email": {
+        "type": "string",
+        "required": true,
+        "format": "email",
+        "description": "Business email address",
+        "formatMessage": "Valid email is required",
+        "example": "ops@example.com"
+      },
+      "location": {
+        "type": "string",
+        "required": true,
+        "minLength": 1,
+        "description": "Site location for deployment",
+        "requiredMessage": "Location is required",
+        "example": "Haridwar SIDCUL"
+      },
+      "industry": {
+        "type": "string",
+        "required": true,
+        "minLength": 1,
+        "description": "Industry classification",
+        "requiredMessage": "Please select an industry",
+        "example": "Manufacturing"
+      },
+      "headcount": {
+        "type": "string",
+        "required": true,
+        "minLength": 1,
+        "description": "Approximate headcount required",
+        "requiredMessage": "Approximate headcount is required",
+        "example": "50"
+      },
+      "shiftRequirement": {
+        "type": "string",
+        "required": false,
+        "description": "Shift structure requirement",
+        "example": "2 shifts, 8 hours each"
+      },
+      "targetStartDate": {
+        "type": "string",
+        "required": false,
+        "description": "Preferred start date",
+        "example": "2026-03-01"
+      },
+      "details": {
+        "type": "string",
+        "required": false,
+        "description": "Additional requirement details",
+        "example": "Need packers and loaders for FMCG dispatch."
+      }
+    }
+  },
+  "responses": {
+    "successMessage": "Requirement received. Our operations team will review and respond — target response time is 2 business days (IST, Mon–Sat).",
+    "validationError": "Invalid form data.",
+    "rateLimitError": "Too many submissions. Please try again shortly.",
+    "unknownError": "Something went wrong. Please try again or contact us directly."
+  }
+}

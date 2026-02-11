@@ -114,6 +114,7 @@ ${buildScopeBoundarySection()}
 
 ## Contact API
 Endpoint: POST ${baseUrl}/api/contact
+Specification: GET ${baseUrl}/openapi/v1.json
 Purpose: Capture requirement inquiries from the contact page.
 Required fields: name, company, role, phone, email, location, industry, headcount
 Optional fields: shiftRequirement, targetStartDate, details
@@ -125,6 +126,7 @@ Terms of service: ${baseUrl}/terms
 Robots policy: ${baseUrl}/robots.txt
 Sitemap: ${baseUrl}/sitemap.xml
 Index file: ${baseUrl}/llms.txt
+OpenAPI contract: ${baseUrl}/openapi/v1.json
 `;
 }
 

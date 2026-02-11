@@ -1,0 +1,201 @@
+{
+  "openapi": "3.1.1",
+  "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
+  "info": {
+    "title": "Vayasya Seva API",
+    "summary": "Public API contract for vayasyaseva.com",
+    "description": "Contract for inquiry submission from the public contact form. Write access is rate limited and validated server-side.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://www.vayasyaseva.com"
+    }
+  ],
+  "paths": {
+    "/api/contact": {
+      "post": {
+        "tags": [
+          "Contact"
+        ],
+        "summary": "Submit contact inquiry",
+        "operationId": "submitContactInquiry",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactInquiryRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Inquiry accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactInquirySuccess"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ContactInquiryRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "company",
+          "role",
+          "phone",
+          "email",
+          "location",
+          "industry",
+          "headcount"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Full name of the requester",
+            "minLength": 2,
+            "example": "Arham Musheer"
+          },
+          "company": {
+            "type": "string",
+            "description": "Company name",
+            "minLength": 1,
+            "example": "Vayasya Seva Private Limited"
+          },
+          "role": {
+            "type": "string",
+            "description": "Role or designation of the requester",
+            "minLength": 1,
+            "example": "Warehouse Manager"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Phone number with country/area code",
+            "minLength": 10,
+            "example": "+91 72920 14101"
+          },
+          "email": {
+            "type": "string",
+            "description": "Business email address",
+            "format": "email",
+            "example": "ops@example.com"
+          },
+          "location": {
+            "type": "string",
+            "description": "Site location for deployment",
+            "minLength": 1,
+            "example": "Haridwar SIDCUL"
+          },
+          "industry": {
+            "type": "string",
+            "description": "Industry classification",
+            "minLength": 1,
+            "example": "Manufacturing"
+          },
+          "headcount": {
+            "type": "string",
+            "description": "Approximate headcount required",
+            "minLength": 1,
+            "example": "50"
+          },
+          "shiftRequirement": {
+            "type": "string",
+            "description": "Shift structure requirement",
+            "example": "2 shifts, 8 hours each"
+          },
+          "targetStartDate": {
+            "type": "string",
+            "description": "Preferred start date",
+            "example": "2026-03-01"
+          },
+          "details": {
+            "type": "string",
+            "description": "Additional requirement details",
+            "example": "Need packers and loaders for FMCG dispatch."
+          }
+        }
+      },
+      "ContactInquirySuccess": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "success",
+          "message"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "const": true,
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "Requirement received. Our operations team will review and respond — target response time is 2 business days (IST, Mon–Sat)."
+          }
+        }
+      },
+      "ApiError": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Invalid form data."
+          },
+          "details": {
+            "type": "array",
+            "description": "Validation issue details (present on 400 responses)",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        }
+      }
+    }
+  }
+}

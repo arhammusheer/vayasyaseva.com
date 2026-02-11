@@ -1,19 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod/v4";
-
-const contactSchema = z.object({
-  name: z.string().min(2),
-  company: z.string().min(1),
-  role: z.string().min(1),
-  phone: z.string().min(10),
-  email: z.email(),
-  location: z.string().min(1),
-  industry: z.string().min(1),
-  headcount: z.string().min(1),
-  shiftRequirement: z.string().optional(),
-  targetStartDate: z.string().optional(),
-  details: z.string().optional(),
-});
+import { contactContract, contactSchema } from "@/lib/contact-contract";
 
 // Simple in-memory rate limiting
 const submissions = new Map<string, number>();
@@ -41,7 +27,7 @@ export async function POST(request: NextRequest) {
     const ip = request.headers.get("x-forwarded-for") ?? "unknown";
     if (isRateLimited(ip)) {
       return NextResponse.json(
-        { error: "Too many submissions. Please try again shortly." },
+        { error: contactContract.responses.rateLimitError },
         { status: 429 }
       );
     }
@@ -52,7 +38,7 @@ export async function POST(request: NextRequest) {
     const result = contactSchema.safeParse(body);
     if (!result.success) {
       return NextResponse.json(
-        { error: "Invalid form data.", details: result.error.issues },
+        { error: contactContract.responses.validationError, details: result.error.issues },
         { status: 400 }
       );
     }
@@ -75,12 +61,11 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message:
-        "Requirement received. Our operations team will review and respond — target response time is 2 business days (IST, Mon–Sat).",
+      message: contactContract.responses.successMessage,
     });
   } catch {
     return NextResponse.json(
-      { error: "Something went wrong. Please try again or contact us directly." },
+      { error: contactContract.responses.unknownError },
       { status: 500 }
     );
   }

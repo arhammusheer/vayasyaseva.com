@@ -25,11 +25,13 @@ const llmsIndex = `# Vayasya Seva Private Limited
 
 ## Machine-readable endpoints
 - ${baseUrl}/llms-full.txt
+- ${baseUrl}/openapi/v1.json
 - ${baseUrl}/sitemap.xml
 - ${baseUrl}/robots.txt
 
 ## API endpoints
 - POST ${baseUrl}/api/contact
+- GET ${baseUrl}/openapi/v1.json
 
 ## Access notes
 - Public website content is available for indexing and retrieval.

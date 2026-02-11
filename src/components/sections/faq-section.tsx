@@ -12,6 +12,7 @@ import { Reveal } from "@/components/motion/reveal";
 import { faqs } from "@/content/home";
 
 const categories = [
+  { id: "all", label: "All" },
   { id: "operations", label: "Operations" },
   { id: "compliance", label: "Compliance" },
   { id: "integration", label: "Integration / Setu" },
@@ -30,7 +31,7 @@ export function FaqSection() {
 
       <Reveal delay={0.1}>
         <div className="mx-auto max-w-3xl">
-          <Tabs defaultValue="operations" className="w-full">
+          <Tabs defaultValue="all" className="w-full">
             <TabsList className="mb-6 flex w-full flex-wrap justify-start gap-1 bg-transparent p-0">
               {categories.map((cat) => (
                 <TabsTrigger
@@ -44,7 +45,10 @@ export function FaqSection() {
             </TabsList>
 
             {categories.map((cat) => {
-              const categoryFaqs = faqs.filter((f) => f.category === cat.id);
+              const categoryFaqs =
+                cat.id === "all"
+                  ? faqs
+                  : faqs.filter((f) => f.category === cat.id);
               return (
                 <TabsContent key={cat.id} value={cat.id}>
                   <Accordion type="single" collapsible className="w-full">

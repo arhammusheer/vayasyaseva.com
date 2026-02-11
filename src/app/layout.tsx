@@ -36,18 +36,18 @@ export const metadata: Metadata = {
     "workforce deployment",
     "contract staffing",
   ],
-  metadataBase: new URL("https://vayasyaseva.com"),
+  metadataBase: new URL("https://www.vayasyaseva.com"),
   icons: {
     icon: "/brand/logos/vspl.svg",
     apple: "/brand/logos/vspl.svg",
   },
   alternates: {
-    canonical: "https://vayasyaseva.com",
+    canonical: "https://www.vayasyaseva.com",
   },
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://vayasyaseva.com",
+    url: "https://www.vayasyaseva.com",
     siteName: "Vayasya Seva Private Limited",
     title: "Vayasya Seva Private Limited | Compliance-First Workforce Operations",
     description:

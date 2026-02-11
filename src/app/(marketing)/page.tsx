@@ -17,7 +17,10 @@ export default function HomePage() {
   return (
     <>
       {/* Hero zone: video covers both hero content and trust strip */}
-      <section className="relative overflow-hidden bg-foreground">
+      <section
+        id="hero-zone"
+        className="relative -mt-[65px] overflow-hidden bg-foreground pt-[65px]"
+      >
         <HeroVideo />
         <div className="absolute inset-0 bg-foreground/75" />
         <div className="relative">

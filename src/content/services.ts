@@ -12,9 +12,9 @@ export interface ServiceDetail {
 export const services: ServiceDetail[] = [
   {
     id: "warehouse-logistics",
-    title: "Warehouse & Logistics Manpower",
+    title: "Warehouse & Logistics Operations",
     description:
-      "End-to-end manpower for warehouse and logistics operations — from goods receipt to dispatch. VSPL deploys trained workers with on-ground supervision to maintain throughput discipline and operational continuity.",
+      "End-to-end workforce deployment for warehouse and logistics operations — from goods receipt to dispatch. VSPL deploys trained associates with on-ground supervision to maintain throughput discipline and operational continuity.",
     roles: [
       "Loading & Unloading Operators",
       "Stacking & Racking Staff",
@@ -44,7 +44,7 @@ export const services: ServiceDetail[] = [
     id: "manufacturing-shopfloor",
     title: "Manufacturing & Shopfloor Support",
     description:
-      "Production support manpower for manufacturing environments — helpers, packers, line feeders, and material handlers deployed with shift discipline and supervisory oversight.",
+      "Production support workforce for manufacturing environments — helpers, packers, line feeders, and material handlers deployed with shift discipline and supervisory oversight.",
     roles: [
       "Production Helpers",
       "Packers & Labellers",

@@ -45,7 +45,7 @@ export default function AboutPage() {
             <p>
               Vayasya Seva Private Limited is a workforce operations company
               serving enterprise and industrial clients in the Haridwar–SIDCUL
-              region. We deploy disciplined manpower for warehouses, factories,
+              region. We deploy disciplined workforce teams for warehouses, factories,
               facilities, and logistics operations — supported by on-ground
               supervision, compliance coverage, and structured reporting.
             </p>

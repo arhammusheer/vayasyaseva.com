@@ -5,7 +5,7 @@ export const industries: IndustrySector[] = [
     id: "manufacturing",
     title: "Manufacturing",
     description:
-      "Production support manpower for shopfloors, assembly lines, and packaging operations — deployed with shift discipline and supervisory controls.",
+      "Production support workforce for shopfloors, assembly lines, and packaging operations — deployed with shift discipline and supervisory controls.",
     staffingPattern:
       "Shift-based deployment of helpers, packers, line feeders, and material handlers. Headcount aligned to production schedules.",
     riskControlNeeds:
@@ -18,7 +18,7 @@ export const industries: IndustrySector[] = [
     id: "warehousing-logistics",
     title: "Warehousing & Logistics",
     description:
-      "Loading, unloading, picking, stacking, and dispatch manpower for warehouses, distribution centres, and logistics hubs.",
+      "Loading, unloading, picking, stacking, and dispatch workforce for warehouses, distribution centres, and logistics hubs.",
     staffingPattern:
       "Volume-driven deployment — scales with throughput requirements. Single or multi-shift operations.",
     riskControlNeeds:

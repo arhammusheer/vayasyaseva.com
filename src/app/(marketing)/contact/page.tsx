@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { Section } from "@/components/layout/section";
 import { siteConfig } from "@/content/site";
@@ -22,7 +23,7 @@ export default function ContactPage() {
             </h1>
             <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
               Share your workforce requirements and we&apos;ll respond with an
-              initial assessment — typically within 2 working days.
+              initial assessment — our target response time is 2 business days (IST, Mon–Sat).
             </p>
 
             <div className="mt-8 space-y-4">
@@ -78,7 +79,9 @@ export default function ContactPage() {
                 Fill in the details below and our operations team will get back
                 to you.
               </p>
-              <ContactForm />
+              <Suspense>
+                <ContactForm />
+              </Suspense>
             </div>
           </div>
         </div>

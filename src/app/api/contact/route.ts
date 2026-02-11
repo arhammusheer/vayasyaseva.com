@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       message:
-        "Requirement received. Our operations team will review and respond within 2 working days.",
+        "Requirement received. Our operations team will review and respond — target response time is 2 business days (IST, Mon–Sat).",
     });
   } catch {
     return NextResponse.json(

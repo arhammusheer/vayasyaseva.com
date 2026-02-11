@@ -26,7 +26,7 @@ const escalationLevels = [
   {
     level: "Level 2 — Operations Coordinator",
     description:
-      "Persistent issues, manpower shortfalls, or process deviations — escalated to the VSPL operations coordinator for resolution within 24 hours.",
+      "Persistent issues, staffing shortfalls, or process deviations — escalated to the VSPL operations coordinator for tracked resolution.",
     icon: ArrowUp,
   },
   {

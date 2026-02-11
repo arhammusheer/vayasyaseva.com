@@ -46,6 +46,12 @@ export const metadata: Metadata = {
     description:
       "Structured workforce operations for warehouses, factories, and facilities.",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Vayasya Seva Private Limited | Compliance-First Workforce Operations",
+    description:
+      "Structured workforce operations for warehouses, factories, and facilities.",
+  },
 };
 
 export default function RootLayout({

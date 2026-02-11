@@ -30,7 +30,7 @@ export const proofRail: ProofRailItem[] = [
   { label: "EPF", value: "Registered", type: "registration" },
   { label: "GST", value: "Registered", type: "registration" },
   { label: "MSME", value: "UDYAM Certified", type: "registration" },
-  { label: "Response", value: "Within 2 working days", type: "cadence" },
+  { label: "Response", value: "Target: 2 business days", type: "cadence" },
   { label: "Region", value: "Haridwar–SIDCUL", type: "region" },
 ];
 
@@ -345,7 +345,7 @@ export const faqs: FaqItem[] = [
   {
     question: "How quickly can VSPL deploy a workforce?",
     answer:
-      "Deployment timelines depend on headcount, role complexity, and compliance requirements. For standard warehouse and shopfloor roles in the Haridwar–SIDCUL region, initial deployment typically begins within 7–14 working days of requirement confirmation.",
+      "Deployment timelines depend on headcount, role complexity, and compliance requirements. For standard warehouse and shopfloor roles in the Haridwar–SIDCUL region, initial deployment typically begins within 7–14 business days of requirement confirmation. Actual timelines are confirmed during the scoping process.",
     category: "operations",
   },
   {

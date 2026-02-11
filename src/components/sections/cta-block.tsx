@@ -12,7 +12,7 @@ export function CtaBlock() {
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-background/70">
           Share your operational needs and we&apos;ll respond with a deployment
-          assessment — typically within 2 working days.
+          assessment — our target response time is 2 business days (IST, Mon–Sat).
         </p>
 
         <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">

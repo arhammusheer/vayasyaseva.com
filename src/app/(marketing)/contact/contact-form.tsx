@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod/v4";
@@ -43,6 +44,8 @@ const industryOptions = [
 ];
 
 export function ContactForm() {
+  const searchParams = useSearchParams();
+  const isAssessment = searchParams.get("type") === "assessment";
   const [submitted, setSubmitted] = useState(false);
 
   const {
@@ -52,6 +55,11 @@ export function ContactForm() {
     formState: { errors, isSubmitting },
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
+    defaultValues: {
+      details: isAssessment
+        ? "Requesting a site assessment for workforce deployment."
+        : "",
+    },
   });
 
   const [error, setError] = useState<string | null>(null);
@@ -84,7 +92,7 @@ export function ContactForm() {
         <h3 className="mt-4 text-xl font-semibold">Requirement Received</h3>
         <p className="mt-2 max-w-sm text-muted-foreground">
           Thank you for reaching out. Our operations team will review your
-          requirement and respond within 2 working days.
+          requirement and respond — our target is 2 business days (IST, Mon–Sat).
         </p>
       </div>
     );

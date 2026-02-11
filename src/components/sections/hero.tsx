@@ -18,7 +18,7 @@ export function Hero() {
             {hero.subheadline}
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
-            <Button asChild size="lg" className="text-base">
+            <Button asChild size="lg" className="text-base align-middle">
               <Link href={hero.primaryCta.href}>
                 {hero.primaryCta.label}
                 <ArrowRight className="ml-2 h-4 w-4" />

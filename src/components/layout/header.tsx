@@ -1,0 +1,91 @@
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
+import { Menu, X, Phone } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import { navigation, siteConfig } from "@/content/site";
+
+export function Header() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2">
+          <span className="text-lg font-bold text-foreground">
+            {siteConfig.companyName}
+          </span>
+        </Link>
+
+        {/* Desktop Navigation */}
+        <nav className="hidden items-center gap-1 lg:flex">
+          {navigation.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        {/* Desktop CTA */}
+        <div className="hidden items-center gap-3 lg:flex">
+          <a
+            href={`tel:${siteConfig.phone}`}
+            className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <Phone className="h-4 w-4" />
+            {siteConfig.phone}
+          </a>
+          <Button asChild size="sm">
+            <Link href="/contact">Get in Touch</Link>
+          </Button>
+        </div>
+
+        {/* Mobile Menu */}
+        <Sheet open={open} onOpenChange={setOpen}>
+          <SheetTrigger asChild className="lg:hidden">
+            <Button variant="ghost" size="icon">
+              {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              <span className="sr-only">Toggle menu</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-[300px] sm:w-[350px]">
+            <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+            <nav className="flex flex-col gap-1 pt-8">
+              {navigation.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className="rounded-md px-3 py-2.5 text-base font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                >
+                  {item.label}
+                </Link>
+              ))}
+              <div className="mt-4 border-t pt-4">
+                <a
+                  href={`tel:${siteConfig.phone}`}
+                  className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground"
+                >
+                  <Phone className="h-4 w-4" />
+                  {siteConfig.phone}
+                </a>
+                <Button asChild className="mt-2 w-full">
+                  <Link href="/contact" onClick={() => setOpen(false)}>
+                    Get in Touch
+                  </Link>
+                </Button>
+              </div>
+            </nav>
+          </SheetContent>
+        </Sheet>
+      </div>
+    </header>
+  );
+}

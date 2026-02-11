@@ -1,132 +1,107 @@
-export interface NavigationItem {
-  name: string;
+/** Claim discipline categories per brand policy */
+export type ClaimType = "directional" | "measured" | "contractual";
+
+export interface Claim {
+  text: string;
+  type: ClaimType;
+}
+
+/** Navigation item */
+export interface NavItem {
+  label: string;
   href: string;
-  icon: React.ElementType;
+  children?: NavItem[];
 }
 
-export interface Header {
-  logo: string;
-  navigation: NavigationItem[];
-  contactButton: string;
-}
-
-export interface HeroSection {
-  id: string;
+/** Hero section content */
+export interface HeroContent {
   headline: string;
-  subheading: string;
-  ctaButton: {
-    label: string;
-    href: string;
-  };
+  subheadline: string;
+  primaryCta: { label: string; href: string };
+  secondaryCta: { label: string; href: string };
 }
 
-export interface ClientsSection {
-  id: string;
-  title: string;
-  clients: Clients[];
-}
-
-export interface Clients {
+/** Trust strip */
+export interface TrustClient {
   name: string;
-  image: string;
-  darkImage?: string;
+  logoLight: string;
+  logoDark: string;
+  visible: boolean;
 }
 
-export interface AboutSection {
+export interface Registration {
+  label: string;
+  value: string;
+}
+
+/** Service cluster */
+export interface ServiceCluster {
   id: string;
   title: string;
   description: string;
+  roles: string[];
+  icon: string;
+  href: string;
 }
 
-export interface ProductCard {
+/** Operations timeline step */
+export interface OperationStep {
+  step: number;
   title: string;
   description: string;
-  images: string[];
-  pills?: string[];
+  icon: string;
 }
 
-export interface ProductSection {
-  id: string;
+/** Compliance item */
+export interface ComplianceItem {
   title: string;
   description: string;
-  cards: ProductCard[];
+  registrations?: string[];
 }
 
-export interface ServiceCard {
-  title: string;
-  description: string;
-  image: string;
-}
-
-export interface ServicesSection {
-  id: string;
-  title: string;
-  cards: ServiceCard[];
-}
-
-export interface Statistic {
-  stat: string;
-  description: string;
-  isRollingNumber?: boolean;
-  image?: string;
-}
-
-export interface ImpactSection {
-  id: string;
-  title: string;
-  statistics: Statistic[];
-}
-
-export interface FAQSection {
-  id: string;
-  title: string;
-  questions: FAQQuestion[];
-}
-
-export interface FAQQuestion {
+/** FAQ item */
+export interface FaqItem {
   question: string;
   answer: string;
 }
 
-export interface ContactSection {
+/** Industry sector */
+export interface IndustrySector {
   id: string;
   title: string;
-  contactMethodsTitle: string;
-  fields: ContactField[];
-  // Directly contact without form
-  contactMethods: ContactMethod[];
-  enableForm: boolean;
+  description: string;
+  staffingPattern: string;
+  riskControlNeeds: string;
+  reportingCadence: string;
+  icon: string;
 }
 
+/** Setu feature */
+export interface SetuFeature {
+  title: string;
+  description: string;
+  icon: string;
+}
+
+/** Contact form field */
 export interface ContactField {
-  id: string;
-  label: string;
-  type: string;
-  placeholder: string;
-}
-
-export interface ContactMethod {
   name: string;
-  value: string;
-  icon: React.ElementType;
-  href: string;
+  label: string;
+  type: "text" | "email" | "tel" | "select" | "textarea" | "date" | "number";
+  required: boolean;
+  placeholder?: string;
+  options?: string[];
 }
 
-export interface Footer {
-  copyright: string;
-  GSTIN?: string;
-  MSME?: string;
-}
-
-export interface WebsiteContent {
-  header: Header;
-  clientsSection: ClientsSection;
-  aboutSection: AboutSection;
-  heroSection: HeroSection;
-  productSection?: ProductSection;
-  servicesSection: ServicesSection;
-  impactSection: ImpactSection;
-  faqSection: FAQSection;
-  contactSection: ContactSection;
-  footer: Footer;
+/** Site-wide configuration */
+export interface SiteConfig {
+  companyName: string;
+  legalName: string;
+  tagline: string;
+  email: string;
+  phone: string;
+  gstin: string;
+  msme: string;
+  address: string;
+  region: string;
 }

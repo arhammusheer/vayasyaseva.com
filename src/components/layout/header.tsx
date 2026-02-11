@@ -17,7 +17,33 @@ export function Header() {
   const isHomePage = pathname === "/";
 
   const [open, setOpen] = useState(false);
+  const [isAtTop, setIsAtTop] = useState(true);
   const [onHeroVideo, setOnHeroVideo] = useState(isHomePage);
+
+  useEffect(() => {
+    let frame = 0;
+
+    const updateTopState = () => {
+      const nextIsAtTop = window.scrollY <= 4;
+      setIsAtTop((current) => (current === nextIsAtTop ? current : nextIsAtTop));
+    };
+
+    const requestUpdate = () => {
+      cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(updateTopState);
+    };
+
+    requestUpdate();
+
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+    };
+  }, []);
 
   useEffect(() => {
     if (!isHomePage) return;
@@ -53,17 +79,36 @@ export function Header() {
   }, [isHomePage]);
 
   const shouldOverlayVideo = isHomePage && onHeroVideo;
+  const shouldBlendAtTop = !isHomePage && isAtTop;
 
   return (
     <header
-      className={cn(
-        "sticky top-0 z-50 w-full border-b transition-[background-color,border-color,backdrop-filter] duration-300",
-        shouldOverlayVideo
-          ? "border-transparent bg-transparent supports-[backdrop-filter]:bg-transparent"
-          : "border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
-      )}
+      className="sticky top-0 z-50 w-full overflow-hidden transition-colors duration-300"
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div
+        aria-hidden="true"
+        className={cn(
+          "pointer-events-none absolute inset-0 transition-all duration-300",
+          shouldOverlayVideo
+            ? "bg-gradient-to-b from-white/12 via-white/4 to-transparent backdrop-blur-[6px] backdrop-saturate-150 [mask-image:linear-gradient(to_bottom,black_0%,black_68%,transparent_100%)]"
+            : shouldBlendAtTop
+              ? "bg-gradient-to-b from-background/96 via-background/86 to-transparent backdrop-blur-[8px] [mask-image:linear-gradient(to_bottom,black_0%,black_72%,transparent_100%)]"
+              : "bg-gradient-to-b from-background/95 via-background/90 to-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+        )}
+      />
+      <div
+        aria-hidden="true"
+        className={cn(
+          "pointer-events-none absolute inset-0 transition-all duration-300",
+          shouldOverlayVideo
+            ? "bg-[linear-gradient(112deg,rgba(201,122,43,0.18)_0%,rgba(255,255,255,0.05)_40%,rgba(47,62,92,0.16)_100%)] [mask-image:linear-gradient(to_bottom,black_0%,black_56%,transparent_100%)]"
+            : shouldBlendAtTop
+              ? "bg-[linear-gradient(112deg,rgba(201,122,43,0.1)_0%,rgba(255,255,255,0)_40%,rgba(47,62,92,0.08)_100%)] [mask-image:linear-gradient(to_bottom,black_0%,black_62%,transparent_100%)]"
+              : "bg-[linear-gradient(112deg,rgba(201,122,43,0.08)_0%,rgba(255,255,255,0)_42%,rgba(47,62,92,0.07)_100%)]"
+        )}
+      />
+
+      <div className="relative z-10 mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <Image

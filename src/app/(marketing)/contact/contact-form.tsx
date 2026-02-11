@@ -54,18 +54,33 @@ export function ContactForm() {
     resolver: zodResolver(contactSchema),
   });
 
+  const [error, setError] = useState<string | null>(null);
+
   async function onSubmit(data: ContactFormData) {
-    // TODO: Connect to API route / webhook
-    console.log("Form submitted:", data);
-    // Simulate submission delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setSubmitted(true);
+    setError(null);
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        setError(result.error ?? "Submission failed. Please try again.");
+        return;
+      }
+      setSubmitted(true);
+    } catch {
+      setError(
+        "Unable to submit. Please try again or contact us directly at help@vayasyaseva.com."
+      );
+    }
   }
 
   if (submitted) {
     return (
-      <div className="flex flex-col items-center justify-center py-12 text-center">
-        <CheckCircle2 className="h-12 w-12 text-green-600" />
+      <div role="status" className="flex flex-col items-center justify-center py-12 text-center">
+        <CheckCircle2 className="h-12 w-12 text-success" />
         <h3 className="mt-4 text-xl font-semibold">Requirement Received</h3>
         <p className="mt-2 max-w-sm text-muted-foreground">
           Thank you for reaching out. Our operations team will review your
@@ -246,6 +261,12 @@ export function ContactForm() {
           className="mt-1.5"
         />
       </div>
+
+      {error && (
+        <div role="alert" className="rounded-lg border border-destructive/20 bg-destructive/5 p-3 text-sm text-destructive">
+          {error}
+        </div>
+      )}
 
       <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
         {isSubmitting ? (

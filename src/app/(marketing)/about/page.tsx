@@ -72,8 +72,8 @@ export default function AboutPage() {
             return (
               <Card key={value.title} className="h-full">
                 <CardHeader>
-                  <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-brand/10">
-                    <Icon className="h-5 w-5 text-brand" />
+                  <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-seva/10">
+                    <Icon className="h-5 w-5 text-seva" />
                   </div>
                   <CardTitle className="text-lg">{value.title}</CardTitle>
                   <CardDescription className="text-base leading-relaxed">
@@ -118,7 +118,7 @@ export default function AboutPage() {
 
         <div className="mx-auto max-w-2xl text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-5 py-2.5">
-            <MapPin className="h-5 w-5 text-brand" />
+            <MapPin className="h-5 w-5 text-seva" />
             <span className="text-lg font-semibold">
               {siteConfig.region}
             </span>

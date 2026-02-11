@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Hind, Inter } from "next/font/google";
+import { Hind, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 const hind = Hind({
@@ -9,9 +9,10 @@ const hind = Hind({
   display: "swap",
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-data",
   subsets: ["latin"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
@@ -21,15 +22,15 @@ export const metadata: Metadata = {
     template: "%s | Vayasya Seva Private Limited",
   },
   description:
-    "Disciplined manpower deployment for warehouses, factories, and facilities. Structured supervision, attendance integrity, and audit-ready documentation.",
+    "Structured workforce operations for warehouses, factories, and facilities. Supervision, attendance integrity, and audit-ready documentation.",
   keywords: [
     "workforce operations",
-    "manpower deployment",
-    "warehouse staffing",
     "industrial workforce",
     "compliance workforce",
+    "warehouse operations",
     "Haridwar",
     "SIDCUL",
+    "ESIC EPF compliance",
   ],
   metadataBase: new URL("https://vayasyaseva.com"),
   openGraph: {
@@ -39,7 +40,7 @@ export const metadata: Metadata = {
     siteName: "Vayasya Seva Private Limited",
     title: "Vayasya Seva Private Limited | Compliance-First Workforce Operations",
     description:
-      "Disciplined manpower deployment for warehouses, factories, and facilities.",
+      "Structured workforce operations for warehouses, factories, and facilities.",
   },
 };
 
@@ -50,7 +51,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${hind.variable} ${inter.variable} font-sans antialiased`}>
+      <body
+        className={`${hind.variable} ${jetbrainsMono.variable} font-sans antialiased`}
+      >
         {children}
       </body>
     </html>

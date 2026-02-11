@@ -31,13 +31,13 @@ const registrations = [
   {
     name: "ESIC",
     description:
-      "All deployed workers enrolled under the Employees' State Insurance scheme, ensuring medical and social security coverage.",
+      "Deployed workers are enrolled under the Employees' State Insurance scheme as part of the onboarding process, supporting medical and social security coverage.",
     icon: ShieldCheck,
   },
   {
     name: "EPF",
     description:
-      "Provident fund contributions maintained for all eligible workers in compliance with the EPF Act.",
+      "Provident fund contributions maintained for eligible deployed workers in compliance with the EPF Act.",
     icon: Users,
   },
   {
@@ -69,7 +69,7 @@ export default function CompliancePage() {
       <Section>
         <SectionHeader
           title="Compliance Framework"
-          subtitle="VSPL operates under a structured compliance framework — ensuring statutory coverage, documentation discipline, and inspection readiness for every deployed worker."
+          subtitle="VSPL operates under a structured compliance framework — statutory coverage, documentation discipline, and inspection readiness are built into the operating model."
         />
       </Section>
 
@@ -87,8 +87,8 @@ export default function CompliancePage() {
               <Card key={reg.name}>
                 <CardHeader>
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-50">
-                      <Icon className="h-5 w-5 text-green-700" />
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-success/10">
+                      <Icon className="h-5 w-5 text-success" />
                     </div>
                     <CardTitle className="text-xl">{reg.name}</CardTitle>
                   </div>
@@ -106,7 +106,7 @@ export default function CompliancePage() {
       <Section>
         <SectionHeader
           title="Documentation Matrix"
-          subtitle="Standard documentation maintained and delivered as part of every workforce engagement."
+          subtitle="Standard documentation maintained and delivered as part of workforce engagements."
         />
 
         <div className="mx-auto max-w-3xl overflow-hidden rounded-lg border border-border">
@@ -145,15 +145,15 @@ export default function CompliancePage() {
         <div className="mx-auto max-w-3xl space-y-6">
           <div className="rounded-xl border border-border bg-background p-6">
             <div className="flex items-start gap-4">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand/10">
-                <FileCheck className="h-5 w-5 text-brand" />
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-success/10">
+                <FileCheck className="h-5 w-5 text-success" />
               </div>
               <div>
                 <h3 className="font-semibold">Inspection Readiness</h3>
                 <p className="mt-1 leading-relaxed text-muted-foreground">
-                  All statutory records are maintained in structured formats —
-                  ready for inspection by labour authorities or client audit
-                  teams at any point during the engagement.
+                  Statutory records are maintained in structured formats,
+                  organized for inspection readiness by labour authorities or
+                  client audit teams.
                 </p>
               </div>
             </div>
@@ -161,8 +161,8 @@ export default function CompliancePage() {
 
           <div className="rounded-xl border border-border bg-background p-6">
             <div className="flex items-start gap-4">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand/10">
-                <Scale className="h-5 w-5 text-brand" />
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-success/10">
+                <Scale className="h-5 w-5 text-success" />
               </div>
               <div>
                 <h3 className="font-semibold">Records Handling</h3>
@@ -178,8 +178,8 @@ export default function CompliancePage() {
 
           <div className="rounded-xl border border-border bg-background p-6">
             <div className="flex items-start gap-4">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand/10">
-                <FileText className="h-5 w-5 text-brand" />
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-success/10">
+                <FileText className="h-5 w-5 text-success" />
               </div>
               <div>
                 <h3 className="font-semibold">Compliance Pack</h3>

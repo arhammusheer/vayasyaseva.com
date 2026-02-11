@@ -4,12 +4,25 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@theme inline {
-  /* Fonts */
-  --font-sans: var(--font-hind);
-  --font-mono: var(--font-geist-mono);
+/*
+ * VSPL Brand Token System
+ * Source: brand.vayasyaseva.com
+ *
+ * Vertical accents:
+ *   Seva:     #C97A2B (workforce/labour services)
+ *   Setu:     #2F3E5C (HRMS/workforce systems)
+ *   Kaushal:  #2E6B4F (training/upskilling)
+ *   Prabandh: #3A3A3A (administration/governance)
+ *
+ * Rule: Accent coverage must stay below 20% of visible surface.
+ */
 
-  /* Colors - mapped from CSS variables */
+@theme inline {
+  /* Fonts — Hind primary, JetBrains Mono for data/IDs/tables */
+  --font-sans: var(--font-hind);
+  --font-mono: var(--font-data);
+
+  /* Shadcn color mappings */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -29,11 +42,20 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* Brand colors */
-  --color-brand: var(--brand);
-  --color-brand-foreground: var(--brand-foreground);
-  --color-brand-muted: var(--brand-muted);
+  /* VSPL vertical accent tokens */
+  --color-seva: var(--seva);
+  --color-seva-foreground: var(--seva-foreground);
+  --color-seva-muted: var(--seva-muted);
+  --color-setu: var(--setu);
+  --color-setu-foreground: var(--setu-foreground);
+  --color-setu-muted: var(--setu-muted);
   --color-subtle: var(--subtle);
+
+  /* Semantic state tokens */
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --color-danger: var(--danger);
 
   /* Radius */
   --radius-sm: calc(var(--radius) - 4px);
@@ -46,49 +68,62 @@
 }
 
 :root {
-  --radius: 0.5rem;
+  --radius: 0.375rem;
 
-  /* Background */
+  /* ── Base surfaces (brand.vayasyaseva.com) ── */
   --background: #FFFFFF;
-  --foreground: #0F172A;
-  --subtle: #F8FAFC;
+  --foreground: #111111;
+  --subtle: #F6F7F8;
 
   /* Card */
   --card: #FFFFFF;
-  --card-foreground: #0F172A;
+  --card-foreground: #111111;
 
   /* Popover */
   --popover: #FFFFFF;
-  --popover-foreground: #0F172A;
+  --popover-foreground: #111111;
 
-  /* Primary - Brand gold */
+  /* Primary — maps to Seva accent for this vertical */
   --primary: #C97A2B;
   --primary-foreground: #FFFFFF;
 
   /* Secondary */
-  --secondary: #F8FAFC;
-  --secondary-foreground: #0F172A;
+  --secondary: #F6F7F8;
+  --secondary-foreground: #111111;
 
   /* Muted */
-  --muted: #F1F5F9;
-  --muted-foreground: #334155;
+  --muted: #F6F7F8;
+  --muted-foreground: #4B5563;
 
   /* Accent */
-  --accent: #F8FAFC;
-  --accent-foreground: #0F172A;
+  --accent: #F6F7F8;
+  --accent-foreground: #111111;
 
   /* Destructive */
-  --destructive: #B91C1C;
+  --destructive: #B42318;
 
   /* Border */
-  --border: #E2E8F0;
-  --input: #E2E8F0;
+  --border: #E5E7EB;
+  --input: #E5E7EB;
   --ring: #C97A2B;
 
-  /* Brand */
-  --brand: #C97A2B;
-  --brand-foreground: #FFFFFF;
-  --brand-muted: #FEF3E2;
+  /* ── Vertical accents ── */
+
+  /* Seva — workforce/labour services */
+  --seva: #C97A2B;
+  --seva-foreground: #FFFFFF;
+  --seva-muted: #FDF3E7;
+
+  /* Setu — HRMS/workforce systems */
+  --setu: #2F3E5C;
+  --setu-foreground: #FFFFFF;
+  --setu-muted: #EEF0F4;
+
+  /* ── Semantic states ── */
+  --success: #2E6B4F;
+  --warning: #C97A2B;
+  --info: #2F3E5C;
+  --danger: #B42318;
 }
 
 @layer base {
@@ -104,5 +139,8 @@
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  .font-data {
+    font-family: var(--font-data), ui-monospace, monospace;
   }
 }

@@ -11,7 +11,7 @@ export function ComplianceBlock() {
     <Section variant="subtle" id="compliance">
       <SectionHeader
         title="Compliance Posture"
-        subtitle="Every deployed worker operates under a compliance framework — statutory registrations, structured documentation, and governance controls."
+        subtitle="Statutory registrations, structured documentation, and governance controls — built into the operating model for deployed teams."
       />
 
       <div className="grid gap-6 md:grid-cols-3">
@@ -20,8 +20,8 @@ export function ComplianceBlock() {
           return (
             <Card key={item.title} className="h-full">
               <CardHeader>
-                <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-green-50">
-                  <Icon className="h-5 w-5 text-green-700" />
+                <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-success/10">
+                  <Icon className="h-5 w-5 text-success" />
                 </div>
                 <CardTitle className="text-lg">{item.title}</CardTitle>
                 <CardDescription className="text-base leading-relaxed">

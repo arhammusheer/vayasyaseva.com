@@ -54,8 +54,8 @@ export default function ServicesPage() {
               {/* Service Info */}
               <div className="lg:col-span-2">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand/10">
-                    {Icon && <Icon className="h-5 w-5 text-brand" />}
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-seva/10">
+                    {Icon && <Icon className="h-5 w-5 text-seva" />}
                   </div>
                   <h2 className="text-2xl font-bold">{service.title}</h2>
                 </div>
@@ -96,7 +96,7 @@ export default function ServicesPage() {
               <div className="space-y-4">
                 <Card>
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-base text-green-700">
+                    <CardTitle className="text-base text-success">
                       Included in Scope
                     </CardTitle>
                   </CardHeader>
@@ -107,7 +107,7 @@ export default function ServicesPage() {
                           key={item}
                           className="flex items-start gap-2 text-sm"
                         >
-                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-green-600" />
+                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-success" />
                           {item}
                         </li>
                       ))}

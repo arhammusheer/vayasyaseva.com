@@ -32,10 +32,10 @@ export function ServiceClusters() {
             <Link key={service.id} href={service.href} className="group">
               <Card className="h-full transition-shadow hover:shadow-md">
                 <CardHeader>
-                  <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-brand/10">
-                    {Icon && <Icon className="h-5 w-5 text-brand" />}
+                  <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-seva/10">
+                    {Icon && <Icon className="h-5 w-5 text-seva" />}
                   </div>
-                  <CardTitle className="text-xl group-hover:text-brand transition-colors">
+                  <CardTitle className="text-xl group-hover:text-seva transition-colors">
                     {service.title}
                   </CardTitle>
                   <CardDescription className="text-base leading-relaxed">

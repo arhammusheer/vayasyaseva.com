@@ -30,8 +30,8 @@ export default function ContactPage() {
                 href={`mailto:${siteConfig.email}`}
                 className="flex items-center gap-3 text-muted-foreground transition-colors hover:text-foreground"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand/10">
-                  <Mail className="h-5 w-5 text-brand" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-seva/10">
+                  <Mail className="h-5 w-5 text-seva" />
                 </div>
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
@@ -45,8 +45,8 @@ export default function ContactPage() {
                 href={`tel:${siteConfig.phone}`}
                 className="flex items-center gap-3 text-muted-foreground transition-colors hover:text-foreground"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand/10">
-                  <Phone className="h-5 w-5 text-brand" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-seva/10">
+                  <Phone className="h-5 w-5 text-seva" />
                 </div>
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
@@ -57,8 +57,8 @@ export default function ContactPage() {
               </a>
 
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand/10">
-                  <MapPin className="h-5 w-5 text-brand" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-seva/10">
+                  <MapPin className="h-5 w-5 text-seva" />
                 </div>
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">

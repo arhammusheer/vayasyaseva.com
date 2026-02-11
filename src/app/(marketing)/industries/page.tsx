@@ -50,8 +50,8 @@ export default function IndustriesPage() {
           >
             <div className="mx-auto max-w-4xl">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand/10">
-                  {Icon && <Icon className="h-5 w-5 text-brand" />}
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-seva/10">
+                  {Icon && <Icon className="h-5 w-5 text-seva" />}
                 </div>
                 <h2 className="text-2xl font-bold">{industry.title}</h2>
               </div>
@@ -63,7 +63,7 @@ export default function IndustriesPage() {
                 <Card>
                   <CardHeader>
                     <div className="mb-1 flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-brand" />
+                      <Clock className="h-4 w-4 text-seva" />
                       <CardTitle className="text-sm uppercase tracking-wider">
                         Staffing Pattern
                       </CardTitle>
@@ -77,7 +77,7 @@ export default function IndustriesPage() {
                 <Card>
                   <CardHeader>
                     <div className="mb-1 flex items-center gap-2">
-                      <ShieldAlert className="h-4 w-4 text-brand" />
+                      <ShieldAlert className="h-4 w-4 text-seva" />
                       <CardTitle className="text-sm uppercase tracking-wider">
                         Risk & Controls
                       </CardTitle>
@@ -91,7 +91,7 @@ export default function IndustriesPage() {
                 <Card>
                   <CardHeader>
                     <div className="mb-1 flex items-center gap-2">
-                      <FileText className="h-4 w-4 text-brand" />
+                      <FileText className="h-4 w-4 text-seva" />
                       <CardTitle className="text-sm uppercase tracking-wider">
                         Reporting Cadence
                       </CardTitle>

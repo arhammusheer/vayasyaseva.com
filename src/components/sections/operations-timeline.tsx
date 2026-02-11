@@ -54,8 +54,8 @@ export function OperationsTimeline() {
                   </div>
 
                   {/* Center icon */}
-                  <div className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-brand bg-background">
-                    {Icon && <Icon className="h-5 w-5 text-brand" />}
+                  <div className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-seva bg-background">
+                    {Icon && <Icon className="h-5 w-5 text-seva" />}
                   </div>
 
                   <div className="flex-1" />
@@ -63,12 +63,12 @@ export function OperationsTimeline() {
 
                 {/* Mobile layout */}
                 <div className="flex items-start gap-4 lg:hidden">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-brand bg-background">
-                    {Icon && <Icon className="h-4 w-4 text-brand" />}
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-seva bg-background">
+                    {Icon && <Icon className="h-4 w-4 text-seva" />}
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold uppercase tracking-wider text-brand">
+                      <span className="text-xs font-bold uppercase tracking-wider text-seva">
                         Step {step.step}
                       </span>
                     </div>

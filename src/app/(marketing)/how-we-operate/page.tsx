@@ -67,8 +67,8 @@ export default function HowWeOperatePage() {
                 key={step.step}
                 className="flex items-start gap-5 rounded-xl border border-border bg-background p-6"
               >
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-brand bg-brand/10">
-                  <span className="text-lg font-bold text-brand">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-seva bg-seva/10">
+                  <span className="text-lg font-bold text-seva">
                     {step.step}
                   </span>
                 </div>
@@ -97,8 +97,8 @@ export default function HowWeOperatePage() {
             return (
               <Card key={level.level}>
                 <CardHeader>
-                  <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-brand/10">
-                    <Icon className="h-5 w-5 text-brand" />
+                  <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-seva/10">
+                    <Icon className="h-5 w-5 text-seva" />
                   </div>
                   <CardTitle className="text-lg">{level.level}</CardTitle>
                   <CardDescription className="text-base leading-relaxed">

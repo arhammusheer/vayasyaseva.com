@@ -16,16 +16,16 @@ export function SetuBlock() {
     <Section id="vayasya-setu">
       <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-wider text-brand">
+          <p className="text-sm font-semibold uppercase tracking-wider text-setu">
             Operational Control Layer
           </p>
           <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
             Vayasya Setu
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-            The internal operating engine that powers VSPL&apos;s workforce
-            deployment — ensuring attendance integrity, structured documentation,
-            payroll-aligned outputs, and audit-ready compliance workflows.
+            The internal operating engine that manages the controls layer of
+            VSPL&apos;s workforce deployment — attendance integrity, structured
+            documentation, payroll-aligned outputs, and compliance workflows.
           </p>
           <Button asChild variant="outline" className="mt-6">
             <Link href="/vayasya-setu">
@@ -43,8 +43,8 @@ export function SetuBlock() {
                 key={feature.title}
                 className="rounded-xl border border-border bg-background p-5"
               >
-                <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-brand/10">
-                  {Icon && <Icon className="h-4 w-4 text-brand" />}
+                <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-setu/10">
+                  {Icon && <Icon className="h-4 w-4 text-setu" />}
                 </div>
                 <h3 className="font-semibold">{feature.title}</h3>
                 <p className="mt-1 text-sm leading-relaxed text-muted-foreground">

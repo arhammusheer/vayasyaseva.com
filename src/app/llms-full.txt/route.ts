@@ -124,13 +124,17 @@ Validation: Server-side schema validation with 400 for invalid payloads and 429 
 Endpoint: POST ${baseUrl}/mcp
 Transport: Streamable HTTP (JSON response mode)
 Mode: Stateless, read-only tools and resources
-Core tools: list_services, get_service, list_industries, get_industry, get_compliance_posture, get_legal_document
-Core resources: vayasya://site/profile, vayasya://services/catalog, vayasya://industries/catalog, vayasya://compliance/posture, vayasya://legal/privacy, vayasya://legal/terms, vayasya://api/contact/contract
+Core tools: list_services, get_service, list_industries, get_industry, get_compliance_posture, get_legal_document, get_ai_access_policy
+Core resources: vayasya://site/profile, vayasya://services/catalog, vayasya://industries/catalog, vayasya://compliance/posture, vayasya://legal/privacy, vayasya://legal/terms, vayasya://api/contact/contract, vayasya://policy/ai-access
+Governance: per-IP rate limiting; optional bearer-token enforcement when MCP_BEARER_TOKEN is configured
 
 ## Agent card
 Canonical discovery card: ${baseUrl}/.well-known/agent-card.json
 Compatibility alias: ${baseUrl}/.well-known/agent.json
 Declared protocol binding: MCP
+
+## AI access policy
+Policy endpoint: ${baseUrl}/ai-access-policy.txt
 
 ## Policy and legal
 Privacy policy: ${baseUrl}/privacy
@@ -141,6 +145,7 @@ Index file: ${baseUrl}/llms.txt
 OpenAPI contract: ${baseUrl}/openapi/v1.json
 MCP endpoint: ${baseUrl}/mcp
 Agent card: ${baseUrl}/.well-known/agent-card.json
+AI access policy: ${baseUrl}/ai-access-policy.txt
 `;
 }
 

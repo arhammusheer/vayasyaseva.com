@@ -29,6 +29,7 @@ const llmsIndex = `# Vayasya Seva Private Limited
 - ${baseUrl}/mcp
 - ${baseUrl}/.well-known/agent-card.json
 - ${baseUrl}/.well-known/agent.json
+- ${baseUrl}/ai-access-policy.txt
 - ${baseUrl}/sitemap.xml
 - ${baseUrl}/robots.txt
 
@@ -43,6 +44,7 @@ const llmsIndex = `# Vayasya Seva Private Limited
 - /api/* is not intended for crawler indexing.
 - Use source attribution for factual claims about registrations, compliance, and legal terms.
 - MCP endpoint is read-only and intended for agent tool/resource discovery.
+- MCP endpoint is rate-limited and can be configured to require bearer-token auth.
 `;
 
 export function GET() {

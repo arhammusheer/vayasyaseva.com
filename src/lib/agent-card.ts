@@ -85,10 +85,21 @@ export const agentCard = {
       inputModes: ["application/json", "text/plain"],
       outputModes: ["application/json", "text/markdown", "text/plain"],
     },
+    {
+      id: "ai-access-policy",
+      name: "Get AI Access Policy",
+      description: "Returns governance policy for agent access and MCP controls.",
+      tags: ["policy", "governance", "security"],
+      examples: ["Get AI access policy."],
+      inputModes: ["application/json", "text/plain"],
+      outputModes: ["application/json", "text/markdown", "text/plain"],
+    },
   ],
   metadata: {
     openapiUrl: "https://www.vayasyaseva.com/openapi/v1.json",
     llmsUrl: "https://www.vayasyaseva.com/llms.txt",
     llmsFullUrl: "https://www.vayasyaseva.com/llms-full.txt",
+    aiAccessPolicyUrl: "https://www.vayasyaseva.com/ai-access-policy.txt",
+    mcpAccessModes: ["public-readonly", "bearer-token-readonly"],
   },
 } as const;

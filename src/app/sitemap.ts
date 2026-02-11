@@ -28,6 +28,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.3,
     },
+    {
+      url: `${baseUrl}/ai-access-policy.txt`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.4,
+    },
     { url: `${baseUrl}/openapi/v1.json`, lastModified, changeFrequency: "weekly", priority: 0.4 },
     { url: `${baseUrl}/llms.txt`, lastModified, changeFrequency: "weekly", priority: 0.6 },
     { url: `${baseUrl}/llms-full.txt`, lastModified, changeFrequency: "weekly", priority: 0.5 },

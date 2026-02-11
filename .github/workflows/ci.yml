@@ -25,6 +25,9 @@ jobs:
       - name: Verify OpenAPI contract
         run: npm run openapi:check
 
+      - name: Verify AI discovery consistency
+        run: npm run ai:check
+
       - name: Lint
         run: npm run lint
 

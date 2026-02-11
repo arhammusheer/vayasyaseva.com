@@ -7,6 +7,7 @@ import { services } from "@/content/services";
 import { siteConfig } from "@/content/site";
 import { termsContent } from "@/content/terms";
 import { contactContract } from "@/lib/contact-contract";
+import { aiAccessPolicy } from "@/content/ai-access-policy";
 
 const baseUrl = "https://www.vayasyaseva.com";
 
@@ -180,6 +181,17 @@ export function createVayasyaMcpServer() {
       })
   );
 
+  server.registerResource(
+    "ai-access-policy",
+    "vayasya://policy/ai-access",
+    {
+      title: "AI Access Policy",
+      description: "Governance policy for AI and agent access endpoints.",
+      mimeType: "text/markdown",
+    },
+    async () => resourceMarkdown("vayasya://policy/ai-access", aiAccessPolicy.trim())
+  );
+
   server.registerTool(
     "list_services",
     {
@@ -309,6 +321,23 @@ export function createVayasyaMcpServer() {
         source: `${baseUrl}/terms`,
       });
     }
+  );
+
+  server.registerTool(
+    "get_ai_access_policy",
+    {
+      title: "Get AI Access Policy",
+      description: "Return the AI access policy markdown and canonical source URL.",
+      inputSchema: {},
+      annotations: {
+        readOnlyHint: true,
+      },
+    },
+    async () =>
+      successToolResult("Returned AI access policy markdown.", {
+        content: aiAccessPolicy.trim(),
+        source: `${baseUrl}/ai-access-policy.txt`,
+      })
   );
 
   return server;

@@ -164,7 +164,7 @@ export function Header() {
           !isHomePage && "transition-all duration-300",
           !isHomePage &&
             (shouldBlendAtTop
-              ? "bg-gradient-to-b from-background/96 via-background/86 to-transparent backdrop-blur-[8px] [mask-image:linear-gradient(to_bottom,black_0%,black_72%,transparent_100%)]"
+              ? "bg-gradient-to-b from-background/35 via-background/15 to-transparent backdrop-blur-[5px] [mask-image:linear-gradient(to_bottom,black_0%,black_60%,transparent_100%)]"
               : "bg-gradient-to-b from-background/95 via-background/90 to-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60")
         )}
       />
@@ -176,7 +176,7 @@ export function Header() {
           !isHomePage && "transition-all duration-300",
           !isHomePage &&
             (shouldBlendAtTop
-              ? "bg-[linear-gradient(112deg,rgba(201,122,43,0.1)_0%,rgba(255,255,255,0)_40%,rgba(47,62,92,0.08)_100%)] [mask-image:linear-gradient(to_bottom,black_0%,black_62%,transparent_100%)]"
+              ? "bg-[linear-gradient(112deg,rgba(201,122,43,0.05)_0%,rgba(255,255,255,0)_40%,rgba(47,62,92,0.04)_100%)] [mask-image:linear-gradient(to_bottom,black_0%,black_50%,transparent_100%)]"
               : "bg-[linear-gradient(112deg,rgba(201,122,43,0.08)_0%,rgba(255,255,255,0)_42%,rgba(47,62,92,0.07)_100%)]")
         )}
       />

@@ -26,17 +26,20 @@ const llmsIndex = `# Vayasya Seva Private Limited
 ## Machine-readable endpoints
 - ${baseUrl}/llms-full.txt
 - ${baseUrl}/openapi/v1.json
+- ${baseUrl}/mcp
 - ${baseUrl}/sitemap.xml
 - ${baseUrl}/robots.txt
 
 ## API endpoints
 - POST ${baseUrl}/api/contact
 - GET ${baseUrl}/openapi/v1.json
+- POST ${baseUrl}/mcp
 
 ## Access notes
 - Public website content is available for indexing and retrieval.
 - /api/* is not intended for crawler indexing.
 - Use source attribution for factual claims about registrations, compliance, and legal terms.
+- MCP endpoint is read-only and intended for agent tool/resource discovery.
 `;
 
 export function GET() {

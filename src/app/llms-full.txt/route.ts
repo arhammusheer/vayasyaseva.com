@@ -120,6 +120,13 @@ Required fields: name, company, role, phone, email, location, industry, headcoun
 Optional fields: shiftRequirement, targetStartDate, details
 Validation: Server-side schema validation with 400 for invalid payloads and 429 for rate limiting.
 
+## MCP endpoint
+Endpoint: POST ${baseUrl}/mcp
+Transport: Streamable HTTP (JSON response mode)
+Mode: Stateless, read-only tools and resources
+Core tools: list_services, get_service, list_industries, get_industry, get_compliance_posture, get_legal_document
+Core resources: vayasya://site/profile, vayasya://services/catalog, vayasya://industries/catalog, vayasya://compliance/posture, vayasya://legal/privacy, vayasya://legal/terms, vayasya://api/contact/contract
+
 ## Policy and legal
 Privacy policy: ${baseUrl}/privacy
 Terms of service: ${baseUrl}/terms
@@ -127,6 +134,7 @@ Robots policy: ${baseUrl}/robots.txt
 Sitemap: ${baseUrl}/sitemap.xml
 Index file: ${baseUrl}/llms.txt
 OpenAPI contract: ${baseUrl}/openapi/v1.json
+MCP endpoint: ${baseUrl}/mcp
 `;
 }
 

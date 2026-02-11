@@ -4,6 +4,8 @@ import {
   FileCheck,
   BarChart3,
   Eye,
+  UserCheck,
+  CalendarClock,
   Database,
   Shield,
   Plug,
@@ -11,6 +13,7 @@ import {
   Layers,
   AlertTriangle,
   ArrowRight,
+  CheckCircle2,
 } from "lucide-react";
 import {
   Card,
@@ -52,6 +55,18 @@ const capabilities = [
     description:
       "Supervisory tracking and shift-level deployment data — providing structured visibility into workforce operations.",
     icon: Eye,
+  },
+  {
+    title: "Workforce-to-Shift Alignment",
+    description:
+      "Deployment suitability evaluated per shift — factoring in attendance patterns, role familiarity, and site conditions. Designed to reduce deployment mismatches and improve roster stability. Progressively enabled across engagements.",
+    icon: UserCheck,
+  },
+  {
+    title: "Scheduling & Roster Discipline",
+    description:
+      "Shift allocation follows a structured evaluation of workforce readiness — not just headcount availability. Roster composition considers operational context, attendance history, and role requirements.",
+    icon: CalendarClock,
   },
 ];
 
@@ -129,8 +144,8 @@ export default function VayasyaSetuPage() {
             </div>
             <p className="mb-3 text-sm text-muted-foreground">
               Policies, attendance controls, compliance workflows, reporting
-              standards, payroll workflows, and scheduling logic — managed
-              centrally through Vayasya Setu.
+              standards, payroll workflows, and workforce-to-shift alignment
+              logic — managed centrally through Vayasya Setu.
             </p>
             <ul className="space-y-2">
               {[
@@ -190,7 +205,7 @@ export default function VayasyaSetuPage() {
           subtitle="Core operational capabilities that support workforce deployment discipline."
         />
 
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {capabilities.map((cap) => {
             const Icon = cap.icon;
             return (
@@ -207,6 +222,83 @@ export default function VayasyaSetuPage() {
               </Card>
             );
           })}
+        </div>
+      </Section>
+
+      {/* How Shift Allocation Works */}
+      <Section>
+        <SectionHeader
+          title="How Shift Allocation Works"
+          subtitle="Beyond headcount availability — VSPL evaluates workforce readiness factors to support structured roster composition."
+        />
+
+        <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-2">
+          <div className="space-y-4">
+            <p className="text-base leading-relaxed text-muted-foreground">
+              For engagements where workforce-to-shift alignment is deployed,
+              VSPL goes beyond simply filling headcount. Roster composition is
+              informed by a structured evaluation of readiness factors —
+              attendance patterns, role familiarity, site experience, and
+              prevailing conditions — considered for each shift.
+            </p>
+            <p className="text-base leading-relaxed text-muted-foreground">
+              This approach is designed to reduce deployment mismatches, support
+              operational continuity, and improve roster stability over time. The
+              scope of this capability is defined during engagement setup and
+              progressively enabled as operational data matures.
+            </p>
+            <p className="text-sm text-muted-foreground/80 italic">
+              Availability and scope vary by engagement. Capability enablement is
+              confirmed during the scoping process.
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            <div className="rounded-xl border border-setu/20 bg-setu/5 p-5">
+              <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-setu">
+                Readiness Factors Considered
+              </h3>
+              <ul className="space-y-2.5">
+                {[
+                  "Attendance history and pattern consistency",
+                  "Role familiarity and prior deployment experience",
+                  "Site-specific orientation and conditions awareness",
+                  "Shift-pattern compatibility and schedule continuity",
+                  "Supervisory feedback and operational readiness",
+                ].map((item) => (
+                  <li
+                    key={item}
+                    className="flex items-start gap-2 text-sm leading-relaxed"
+                  >
+                    <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-setu" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-5">
+              <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                Designed to Support
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  "Reduced deployment mismatches",
+                  "Improved roster stability",
+                  "Operational continuity",
+                  "Shift-level accountability",
+                ].map((outcome) => (
+                  <Badge
+                    key={outcome}
+                    variant="secondary"
+                    className="bg-setu/10 text-setu"
+                  >
+                    {outcome}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </Section>
 

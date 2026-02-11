@@ -195,6 +195,18 @@ export const setuFeatures: SetuFeature[] = [
       "Shift-level deployment tracking and supervisory reporting — providing structured visibility into workforce operations.",
     icon: "Eye",
   },
+  {
+    title: "Workforce-to-Shift Alignment",
+    description:
+      "Deployment suitability evaluated per shift — factoring in attendance patterns, role familiarity, and site conditions to support structured roster allocation. Progressively enabled across engagements.",
+    icon: "UserCheck",
+  },
+  {
+    title: "Exception & Escalation Protocols",
+    description:
+      "Attendance gaps, shift shortfalls, and documentation delays flagged through defined protocols — with tiered escalation and tracked resolution.",
+    icon: "AlertTriangle",
+  },
 ];
 
 /* ── Persona blocks ── */
@@ -363,6 +375,12 @@ export const faqs: FaqItem[] = [
     question: "Does VSPL handle multi-shift operations?",
     answer:
       "Yes. VSPL deploys two-shift and three-shift rotational models with shift-level attendance tracking and handover protocols. Shift patterns are defined during requirement intake.",
+    category: "operations",
+  },
+  {
+    question: "How does VSPL decide which workers are deployed to each shift?",
+    answer:
+      "Where this capability is deployed, VSPL evaluates workforce readiness factors — including attendance history, role familiarity, site experience, and prevailing conditions — to support structured shift allocation. This process is designed to reduce deployment mismatches and improve roster stability. The scope and enablement of this capability are defined during engagement setup and vary by engagement.",
     category: "operations",
   },
   // Compliance

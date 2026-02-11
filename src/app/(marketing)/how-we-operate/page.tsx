@@ -73,8 +73,8 @@ export default function HowWeOperatePage() {
             </div>
             <p className="mb-3 text-sm text-muted-foreground">
               Policies, attendance controls, compliance workflows, reporting
-              standards, payroll workflows, and scheduling logic — managed
-              centrally through Vayasya Setu.
+              standards, payroll workflows, and workforce-to-shift alignment
+              logic — managed centrally through Vayasya Setu.
             </p>
             <ul className="space-y-2">
               {[
@@ -83,7 +83,7 @@ export default function HowWeOperatePage() {
                 "Payroll input generation",
                 "Compliance documentation and filing",
                 "Reporting standards and delivery",
-                "Scheduling intelligence (where deployed)",
+                "Workforce-to-shift alignment (where deployed)",
               ].map((item) => (
                 <li
                   key={item}

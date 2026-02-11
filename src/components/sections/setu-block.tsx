@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Clock, FileCheck, BarChart3, Eye, ArrowRight } from "lucide-react";
+import { Clock, FileCheck, BarChart3, Eye, UserCheck, AlertTriangle, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Section } from "@/components/layout/section";
 import { Reveal } from "@/components/motion/reveal";
@@ -11,6 +11,8 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   FileCheck,
   BarChart3,
   Eye,
+  UserCheck,
+  AlertTriangle,
 };
 
 export function SetuBlock() {

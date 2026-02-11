@@ -69,7 +69,7 @@ const governanceBullets = [
   "ESIC/EPF enrolment and contribution tracking",
   "Payroll input generation and delivery schedules",
   "Reporting standards and output formatting",
-  "Scheduling intelligence and roster readiness",
+  "Workforce-to-shift alignment and roster readiness (where deployed)",
   "Role and skill mapping across deployments",
 ];
 
@@ -362,6 +362,12 @@ const governanceFaqs = [
     question: "What does 'governance without operational drag' mean?",
     answer:
       "It means compliance rules, attendance verification, and reporting standards are enforced centrally — without slowing down on-ground execution. The Setu Governance Plane handles the controls layer in the background, so supervisors and field teams can focus on deployment and delivery rather than paperwork and process compliance.",
+  },
+  {
+    question:
+      "How are shift rosters determined — is it just based on who is available?",
+    answer:
+      "For engagements where this capability is deployed, roster composition evaluates readiness factors beyond simple availability — including attendance patterns, role familiarity, site experience, and prevailing conditions. This is designed to reduce deployment mismatches and support shift-level accountability. Scope and enablement vary by engagement and are confirmed during setup.",
   },
 ];
 

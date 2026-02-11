@@ -3,7 +3,7 @@ import type { MetadataRoute } from "next";
 const lastModified = new Date("2026-02-11");
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://vayasyaseva.com";
+  const baseUrl = "https://www.vayasyaseva.com";
 
   return [
     { url: baseUrl, lastModified, changeFrequency: "monthly", priority: 1 },

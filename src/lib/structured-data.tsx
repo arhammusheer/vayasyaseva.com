@@ -2,7 +2,7 @@ import type { FaqItem } from "@/content/types";
 import type { ServiceDetail } from "@/content/services";
 import { siteConfig } from "@/content/site";
 
-const BASE_URL = "https://vayasyaseva.com";
+const BASE_URL = "https://www.vayasyaseva.com";
 
 export function JsonLd({ data }: { data: Record<string, unknown> }) {
   return (

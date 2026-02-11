@@ -95,15 +95,6 @@ export function HeroVideo() {
 
   return (
     <div className="absolute inset-0">
-      {/* Poster fallback — visible until first video starts playing */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={POSTER_SRC}
-        alt=""
-        className="absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-[var(--motion-ease)]"
-        style={{ opacity: videoReady ? 0 : 1 }}
-        fetchPriority="high"
-      />
       {/* Back video (incoming) */}
       <video
         ref={backRef}
@@ -127,6 +118,15 @@ export function HeroVideo() {
         onTransitionEnd={handleTransitionEnd}
         onPlaying={handlePlaying}
         src={videos[currentIndex]}
+      />
+      {/* Poster fallback — on top of everything, fades out once video plays */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={POSTER_SRC}
+        alt=""
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-[var(--motion-ease)]"
+        style={{ opacity: videoReady ? 0 : 1 }}
+        fetchPriority="high"
       />
     </div>
   );

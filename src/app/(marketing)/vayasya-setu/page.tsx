@@ -116,7 +116,7 @@ export default function VayasyaSetuPage() {
       <Section className="bg-setu/5">
         <SectionHeader
           title="Two Coordinated Layers"
-          subtitle="VSPL operates through a Setu Control Plane and an Execution Plane — keeping governance consistent while allowing rapid on-ground delivery."
+          subtitle="VSPL operates through a Setu Governance Plane and an Execution Plane — keeping governance consistent while allowing rapid on-ground delivery."
         />
 
         <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
@@ -124,7 +124,7 @@ export default function VayasyaSetuPage() {
             <div className="mb-3 flex items-center gap-2">
               <Layers className="h-5 w-5 text-setu" />
               <h3 className="font-semibold text-setu">
-                Setu Control Plane
+                Setu Governance Plane
               </h3>
             </div>
             <p className="mb-3 text-sm text-muted-foreground">

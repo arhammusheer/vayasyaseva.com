@@ -3,6 +3,14 @@ import { MapPin, Target, Eye, Shield } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Section, SectionHeader } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
+import {
+  OperatingModelIntro,
+  TwoPlanes,
+  DailyFlowTimeline,
+  ClientOutcomes,
+  OwnershipMatrix,
+  GovernanceFaq,
+} from "@/components/sections/operating-model";
 import { siteConfig } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -45,9 +53,9 @@ export default function AboutPage() {
             <p>
               Vayasya Seva Private Limited (VSPL) is a compliance-first
               workforce operations partner for industrial and enterprise sites.
-              We combine disciplined on-ground execution with Setu-led control
-              workflows to deliver reliable staffing operations, attendance
-              integrity, and audit-ready reporting.
+              We combine disciplined on-ground execution with Setu-led
+              governance workflows to deliver reliable staffing operations,
+              attendance integrity, and audit-ready reporting.
             </p>
             <p>
               Our clients are enterprise and industrial operations in the
@@ -87,35 +95,23 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      {/* What Sets VSPL Apart */}
-      <Section>
-        <div className="mx-auto max-w-3xl">
-          <SectionHeader
-            title="What Sets VSPL Apart"
-            align="left"
-          />
-          <div className="space-y-4 text-lg leading-relaxed text-muted-foreground">
-            <p>
-              VSPL is not a generic staffing marketplace. Our differentiation
-              lies in systems and operations discipline — delivered through a
-              dual-layer operating model.
-            </p>
-            <p>
-              The <strong className="text-foreground">Setu Control Plane</strong>{" "}
-              manages policy logic, attendance controls, compliance workflows,
-              reporting standards, and payroll processing. The{" "}
-              <strong className="text-foreground">Execution Plane</strong>{" "}
-              handles on-ground staffing operations, supervisor-led issue
-              handling, and time-bound delivery.
-            </p>
-            <p>
-              This model keeps governance consistent while allowing adaptable
-              field execution — an approach that matters when compliance
-              discipline and operational reliability are non-negotiable.
-            </p>
-          </div>
-        </div>
-      </Section>
+      {/* A) Enterprise Scale Intro */}
+      <OperatingModelIntro />
+
+      {/* B) Two Coordinated Planes */}
+      <TwoPlanes />
+
+      {/* Ownership Matrix */}
+      <OwnershipMatrix />
+
+      {/* C) How Work Flows Daily */}
+      <DailyFlowTimeline />
+
+      {/* D) What Clients Experience */}
+      <ClientOutcomes />
+
+      {/* E) Governance FAQ */}
+      <GovernanceFaq />
 
       {/* Governance Mindset */}
       <Section variant="subtle">

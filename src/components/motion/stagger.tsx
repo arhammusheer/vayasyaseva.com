@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
+import { useHydrated } from "./use-hydrated";
 
 interface StaggerProps {
   children: React.ReactNode;
@@ -40,6 +41,11 @@ export function Stagger({
   amount = 0.15,
 }: StaggerProps) {
   const reduced = useReducedMotion();
+  const hydrated = useHydrated();
+
+  if (!hydrated) {
+    return <div className={cn(className)}>{children}</div>;
+  }
 
   return (
     <motion.div
@@ -62,6 +68,11 @@ export function StaggerItem({
   className?: string;
 }) {
   const reduced = useReducedMotion();
+  const hydrated = useHydrated();
+
+  if (!hydrated) {
+    return <div className={cn(className)}>{children}</div>;
+  }
 
   return (
     <motion.div variants={itemVariants(!!reduced)} className={cn(className)}>

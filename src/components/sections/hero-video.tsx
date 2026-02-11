@@ -3,6 +3,8 @@
 import { useRef, useEffect, useCallback, useState } from "react";
 import { useReducedMotion } from "motion/react";
 
+const POSTER_SRC = "/assets/video/hero/poster.png";
+
 const videos = [
   "/assets/video/hero/video.mp4",
   "/assets/video/hero/video-1.mp4",
@@ -17,6 +19,7 @@ export function HeroVideo() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [nextIndex, setNextIndex] = useState(1);
   const [fading, setFading] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
 
   // When the front video nears its end, start the crossfade
   const handleTimeUpdate = useCallback(() => {
@@ -86,8 +89,21 @@ export function HeroVideo() {
     }
   }, [reduced]);
 
+  const handlePlaying = useCallback(() => {
+    setVideoReady(true);
+  }, []);
+
   return (
     <div className="absolute inset-0">
+      {/* Poster fallback — visible until first video starts playing */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={POSTER_SRC}
+        alt=""
+        className="absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-[var(--motion-ease)]"
+        style={{ opacity: videoReady ? 0 : 1 }}
+        fetchPriority="high"
+      />
       {/* Back video (incoming) */}
       <video
         ref={backRef}
@@ -109,6 +125,7 @@ export function HeroVideo() {
         onTimeUpdate={handleTimeUpdate}
         onEnded={handleEnded}
         onTransitionEnd={handleTransitionEnd}
+        onPlaying={handlePlaying}
         src={videos[currentIndex]}
       />
     </div>

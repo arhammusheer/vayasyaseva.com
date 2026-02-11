@@ -1,3 +1,4 @@
+import { HeroVideo } from "@/components/sections/hero-video";
 import { Hero } from "@/components/sections/hero";
 import { ProofRail } from "@/components/sections/proof-rail";
 import { TrustStrip } from "@/components/sections/trust-strip";
@@ -15,8 +16,16 @@ import { CtaBlock } from "@/components/sections/cta-block";
 export default function HomePage() {
   return (
     <>
-      <Hero />
-      <TrustStrip />
+      {/* Hero zone: video covers both hero content and trust strip */}
+      <section className="relative overflow-hidden bg-foreground">
+        <HeroVideo />
+        <div className="absolute inset-0 bg-foreground/75" />
+        <div className="relative">
+          <Hero />
+          <TrustStrip />
+        </div>
+      </section>
+
       <ProofRail />
       <ServiceClusters />
       <PersonaBlocks />

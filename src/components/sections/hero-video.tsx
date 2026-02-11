@@ -1,64 +1,116 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useCallback, useState } from "react";
 import { useReducedMotion } from "motion/react";
 
+const videos = [
+  "/assets/video/hero/video.mp4",
+  "/assets/video/hero/video-1.mp4",
+  "/assets/video/hero/video-2.mp4",
+  "/assets/video/hero/video-3.mp4",
+];
+
 export function HeroVideo() {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const frontRef = useRef<HTMLVideoElement>(null);
+  const backRef = useRef<HTMLVideoElement>(null);
   const reduced = useReducedMotion();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [nextIndex, setNextIndex] = useState(1);
+  const [fading, setFading] = useState(false);
+
+  // When the front video nears its end, start the crossfade
+  const handleTimeUpdate = useCallback(() => {
+    const video = frontRef.current;
+    if (!video || fading) return;
+
+    const remaining = video.duration - video.currentTime;
+    if (remaining <= 0.8 && remaining > 0) {
+      setFading(true);
+    }
+  }, [fading]);
+
+  // When crossfade transition ends, swap: back becomes front
+  const handleTransitionEnd = useCallback(() => {
+    if (!fading) return;
+
+    setCurrentIndex(nextIndex);
+    setNextIndex((nextIndex + 1) % videos.length);
+    setFading(false);
+  }, [fading, nextIndex]);
+
+  // Preload the next video in the back element
+  useEffect(() => {
+    const back = backRef.current;
+    if (!back || reduced) return;
+
+    back.load();
+  }, [nextIndex, reduced]);
+
+  // Play the front video when its source changes
+  useEffect(() => {
+    const front = frontRef.current;
+    if (!front || reduced) return;
+
+    front.load();
+    front.play().catch(() => {});
+  }, [currentIndex, reduced]);
+
+  // Start back video playback when fade begins
+  useEffect(() => {
+    if (!fading) return;
+
+    const back = backRef.current;
+    if (back) {
+      back.currentTime = 0;
+      back.play().catch(() => {});
+    }
+  }, [fading]);
+
+  // Fallback: if front video ends before the transition fires, force swap
+  const handleEnded = useCallback(() => {
+    if (!fading) {
+      setFading(true);
+      // Immediate swap after a brief fade
+      setTimeout(() => {
+        setCurrentIndex((prev) => (prev + 1) % videos.length);
+        setNextIndex((prev) => (prev + 1) % videos.length);
+        setFading(false);
+      }, 600);
+    }
+  }, [fading]);
 
   useEffect(() => {
-    if (reduced && videoRef.current) {
-      videoRef.current.pause();
+    if (reduced) {
+      frontRef.current?.pause();
+      backRef.current?.pause();
     }
   }, [reduced]);
 
   return (
-    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-border bg-subtle">
+    <div className="absolute inset-0">
+      {/* Back video (incoming) */}
       <video
-        ref={videoRef}
+        ref={backRef}
         muted
-        autoPlay={!reduced}
-        loop
         playsInline
         preload="metadata"
-        // TODO: Replace with actual poster image
-        // poster="/assets/video/hero/vspl-operations-poster.jpg"
-        className="h-full w-full object-cover"
-      >
-        {/* TODO: Add actual video files
-        <source src="/assets/video/hero/vspl-operations.webm" type="video/webm" />
-        <source src="/assets/video/hero/vspl-operations.mp4" type="video/mp4" />
-        */}
-      </video>
-      {/* Fallback state when no video files are available */}
-      <div className="absolute inset-0 flex items-center justify-center bg-subtle">
-        <div className="text-center px-6">
-          <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-xl bg-seva/10">
-            <svg
-              className="h-6 w-6 text-seva"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"
-              />
-            </svg>
-          </div>
-          <p className="text-sm font-medium text-muted-foreground">
-            Operations on the ground
-          </p>
-          <p className="mt-1 text-xs text-muted-foreground/70">
-            Warehouse &middot; Shopfloor &middot; Facility
-          </p>
-        </div>
-      </div>
-      {/* Subtle overlay for readability harmony */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/10 to-transparent" />
+        className="absolute inset-0 h-full w-full object-cover"
+        src={videos[nextIndex]}
+      />
+      {/* Front video (current) — fades out to reveal back */}
+      <video
+        ref={frontRef}
+        muted
+        autoPlay={!reduced}
+        playsInline
+        preload="metadata"
+        className="absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-[var(--motion-ease)]"
+        style={{ opacity: fading ? 0 : 1 }}
+        onTimeUpdate={handleTimeUpdate}
+        onEnded={handleEnded}
+        onTransitionEnd={handleTransitionEnd}
+        src={videos[currentIndex]}
+      />
     </div>
   );
 }

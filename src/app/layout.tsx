@@ -33,6 +33,10 @@ export const metadata: Metadata = {
     "ESIC EPF compliance",
   ],
   metadataBase: new URL("https://vayasyaseva.com"),
+  icons: {
+    icon: "/brand/logos/vspl.svg",
+    apple: "/brand/logos/vspl.svg",
+  },
   openGraph: {
     type: "website",
     locale: "en_IN",

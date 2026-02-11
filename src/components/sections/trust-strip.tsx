@@ -15,7 +15,7 @@ export function TrustStrip() {
       <div className="flex flex-wrap items-center justify-center gap-10 lg:gap-16">
         {visibleClients.map((client) => (
           <div key={client.name} className="flex flex-col items-center gap-2">
-            <div className="relative h-10 w-32 opacity-70 transition-opacity hover:opacity-100">
+            <div className="relative h-18 w-36 opacity-90 transition-opacity hover:opacity-100">
               <Image
                 src={client.logoLight}
                 alt={client.name}

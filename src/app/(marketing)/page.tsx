@@ -16,8 +16,8 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <ProofRail />
       <TrustStrip />
+      <ProofRail />
       <ServiceClusters />
       <PersonaBlocks />
       <OperationsTimeline />

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Clock, FileCheck, BarChart3, Eye, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -16,6 +17,13 @@ export function SetuBlock() {
     <Section id="vayasya-setu">
       <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
         <div>
+          <Image
+            src="/brand/logos/vertical-setu.svg"
+            alt="Vayasya Setu"
+            width={120}
+            height={40}
+            className="mb-3 h-10 w-auto"
+          />
           <p className="text-sm font-semibold uppercase tracking-wider text-setu">
             Operational Control Layer
           </p>

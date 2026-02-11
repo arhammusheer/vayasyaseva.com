@@ -6,7 +6,7 @@ export function PersonaBlocks() {
   return (
     <Section id="personas">
       <SectionHeader
-        title="What You Get, What You Don\u2019t Have to Manage"
+        title="What You Get, What You Don't Have to Manage"
         subtitle="Role-specific outcomes for the stakeholders evaluating workforce operations partners."
       />
 

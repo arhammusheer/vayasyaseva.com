@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, X, Phone } from "lucide-react";
@@ -15,9 +16,14 @@ export function Header() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-lg font-bold text-foreground">
-            {siteConfig.companyName}
-          </span>
+          <Image
+            src="/brand/logos/master-logo-light.svg"
+            alt={siteConfig.legalName}
+            width={140}
+            height={36}
+            className="h-9 w-auto"
+            priority
+          />
         </Link>
 
         {/* Desktop Navigation */}

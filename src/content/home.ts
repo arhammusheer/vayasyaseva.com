@@ -42,21 +42,18 @@ export const trustClients: TrustClient[] = [
     logoLight: "/assets/clients/ITC-light.png",
     logoDark: "/assets/clients/ITC-dark.png",
     visible: true,
-    context: "Industrial operations",
   },
   {
     name: "Wipro",
     logoLight: "/assets/clients/Wipro-light.png",
     logoDark: "/assets/clients/Wipro-dark.png",
     visible: true,
-    context: "Facility operations",
   },
   {
     name: "Unilever",
     logoLight: "/assets/clients/Unilever-light.png",
     logoDark: "/assets/clients/Unilever-dark.png",
     visible: true,
-    context: "Warehouse operations",
   },
 ];
 

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import {
   Clock,
   FileCheck,
@@ -85,6 +86,13 @@ export default function VayasyaSetuPage() {
     <>
       <Section>
         <div className="mx-auto max-w-3xl text-center">
+          <Image
+            src="/brand/logos/vertical-setu.svg"
+            alt="Vayasya Setu"
+            width={120}
+            height={40}
+            className="mx-auto mb-4 h-10 w-auto"
+          />
           <Badge variant="secondary" className="mb-4">
             Operational Control Layer
           </Badge>

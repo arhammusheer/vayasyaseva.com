@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
@@ -10,7 +11,16 @@ export function Footer() {
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {/* Company Info */}
           <div className="lg:col-span-2">
-            <h3 className="text-lg font-bold">{siteConfig.companyName}</h3>
+            <div className="flex items-center gap-3">
+              <Image
+                src="/brand/logos/master-logo-dark.svg"
+                alt={siteConfig.legalName}
+                width={140}
+                height={36}
+                className="h-9 w-auto"
+              />
+              <span className="text-lg font-bold">Vayasya Seva</span>
+            </div>
             <p className="mt-2 max-w-md text-sm text-background/70">
               {siteConfig.tagline}
             </p>

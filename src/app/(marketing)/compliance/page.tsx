@@ -77,6 +77,7 @@ export default function CompliancePage() {
       />
       <Section className="section-glow-seva">
         <SectionHeader
+          as="h1"
           title="Compliance Framework"
           subtitle="VSPL operates under a structured compliance framework — statutory coverage, documentation discipline, and inspection readiness are built into the operating model."
         />

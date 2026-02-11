@@ -58,6 +58,7 @@ export default function HowWeOperatePage() {
       />
       <Section className="section-glow-seva">
         <SectionHeader
+          as="h1"
           title="How We Operate"
           subtitle="A disciplined operating model designed for accountability, compliance, and operational continuity — from the first requirement discussion to ongoing reporting."
         />

@@ -43,6 +43,7 @@ export default function ServicesPage() {
       />
       <Section className="section-glow-seva">
         <SectionHeader
+          as="h1"
           title="Our Services"
           subtitle="Structured workforce deployment across six operational domains — each with defined scope, roles, and compliance coverage."
         />

@@ -40,6 +40,7 @@ export default function IndustriesPage() {
       />
       <Section className="section-glow-seva">
         <SectionHeader
+          as="h1"
           title="Industries We Serve"
           subtitle="Workforce deployment models tailored to each industrial environment — aligned to sector-specific staffing patterns, risk controls, and reporting needs."
         />

@@ -38,46 +38,35 @@ export function OperationsTimeline() {
 
             return (
               <Reveal key={step.step} delay={index * 0.06}>
-                <div className="relative flex items-start gap-6 lg:items-center">
-                  {/* Desktop: alternating layout */}
+                <div className="relative grid grid-cols-[2.5rem_1fr] items-start gap-4 lg:grid-cols-[1fr_3rem_1fr] lg:items-center lg:gap-8">
+                  {/* Icon — first on mobile, center on desktop */}
                   <div
-                    className={`hidden w-full items-center gap-8 lg:flex ${
-                      isEven ? "flex-row" : "flex-row-reverse"
+                    className={`relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-seva bg-background lg:col-start-2 lg:h-12 lg:w-12 ${
+                      isEven ? "lg:col-start-2" : "lg:col-start-2"
                     }`}
                   >
-                    <div
-                      className={`flex-1 ${isEven ? "text-right" : "text-left"}`}
-                    >
-                      <h3 className="text-lg font-semibold">{step.title}</h3>
-                      <p className="mt-2 text-muted-foreground leading-relaxed">
-                        {step.description}
-                      </p>
-                    </div>
-
-                    {/* Center icon */}
-                    <div className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-seva bg-background">
-                      {Icon && <Icon className="h-5 w-5 text-seva" />}
-                    </div>
-
-                    <div className="flex-1" />
+                    {Icon && (
+                      <Icon className="h-4 w-4 text-seva lg:h-5 lg:w-5" />
+                    )}
                   </div>
 
-                  {/* Mobile layout */}
-                  <div className="flex items-start gap-4 lg:hidden">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-seva bg-background">
-                      {Icon && <Icon className="h-4 w-4 text-seva" />}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold uppercase tracking-wider text-seva">
-                          Step {step.step}
-                        </span>
-                      </div>
-                      <h3 className="mt-1 text-lg font-semibold">{step.title}</h3>
-                      <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
-                        {step.description}
-                      </p>
-                    </div>
+                  {/* Text content — appears once */}
+                  <div
+                    className={`lg:row-start-1 ${
+                      isEven
+                        ? "lg:col-start-1 lg:text-right"
+                        : "lg:col-start-3 lg:text-left"
+                    }`}
+                  >
+                    <span className="text-xs font-bold uppercase tracking-wider text-seva lg:hidden">
+                      Step {step.step}
+                    </span>
+                    <h3 className="mt-1 text-lg font-semibold lg:mt-0">
+                      {step.title}
+                    </h3>
+                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground lg:mt-2 lg:text-base">
+                      {step.description}
+                    </p>
                   </div>
                 </div>
               </Reveal>

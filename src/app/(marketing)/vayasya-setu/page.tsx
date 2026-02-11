@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import {
   Clock,
   FileCheck,
@@ -13,7 +12,12 @@ import {
   AlertTriangle,
   ArrowRight,
 } from "lucide-react";
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Section, SectionHeader } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
@@ -84,33 +88,32 @@ const integrationOptions = [
 export default function VayasyaSetuPage() {
   return (
     <>
-      <Section>
-        <div className="mx-auto max-w-3xl text-center">
-          <Image
-            src="/brand/logos/vertical-setu.svg"
-            alt="Vayasya Setu"
-            width={120}
-            height={40}
-            className="mx-auto mb-4 h-10 w-auto"
-          />
-          <Badge variant="secondary" className="mb-4">
-            Operational Control Layer
-          </Badge>
-          <h1 className="text-balance text-4xl font-bold tracking-tight sm:text-5xl">
-            Vayasya Setu
-          </h1>
-          <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-            The internal operating engine that powers VSPL&apos;s workforce
-            deployment discipline. Setu manages the control layer — attendance,
-            compliance, documentation, and reporting — so that your site
-            operations receive structured outputs without managing the
-            underlying process.
-          </p>
+      {/* Setu hero — dark branded header */}
+      <section className="bg-setu py-16 sm:py-20 lg:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <Badge
+              variant={"secondary"}
+              className="mb-4 border-setu-foreground/20 bg-setu-foreground/10 text-setu-foreground/80"
+            >
+              Operational Control Layer
+            </Badge>
+            <h1 className="text-balance text-4xl font-bold tracking-tight text-setu-foreground sm:text-5xl">
+              Vayasya Setu
+            </h1>
+            <p className="mt-6 text-lg leading-relaxed text-setu-foreground/70">
+              The internal operating engine that powers VSPL&apos;s workforce
+              deployment discipline. Setu manages the control layer — attendance,
+              compliance, documentation, and reporting — so that your site
+              operations receive structured outputs without managing the
+              underlying process.
+            </p>
+          </div>
         </div>
-      </Section>
+      </section>
 
       {/* Controls vs Work layer */}
-      <Section variant="subtle">
+      <Section className="bg-setu/5">
         <SectionHeader
           title="Controls Layer vs Work Layer"
           subtitle="Setu operates the controls layer. Your site operations remain the work layer."
@@ -147,9 +150,7 @@ export default function VayasyaSetuPage() {
           <div className="rounded-xl border border-border bg-background p-6">
             <div className="mb-3 flex items-center gap-2">
               <ArrowRight className="h-5 w-5 text-muted-foreground" />
-              <h3 className="font-semibold">
-                Work Layer (Client Operations)
-              </h3>
+              <h3 className="font-semibold">Work Layer (Client Operations)</h3>
             </div>
             <ul className="space-y-2">
               {[
@@ -184,7 +185,7 @@ export default function VayasyaSetuPage() {
           {capabilities.map((cap) => {
             const Icon = cap.icon;
             return (
-              <Card key={cap.title} className="h-full">
+              <Card key={cap.title} className="h-full border-setu/20">
                 <CardHeader>
                   <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-setu/10">
                     <Icon className="h-5 w-5 text-setu" />
@@ -201,15 +202,15 @@ export default function VayasyaSetuPage() {
       </Section>
 
       {/* Exception handling */}
-      <Section variant="subtle">
+      <Section className="bg-setu/5">
         <SectionHeader
           title="Exception Handling"
           subtitle="Setu flags deviations from expected patterns — attendance gaps, shift shortfalls, documentation delays — triggering defined escalation protocols."
         />
 
         <div className="mx-auto max-w-3xl">
-          <div className="rounded-xl border border-border bg-background overflow-hidden">
-            <div className="grid gap-px bg-border md:grid-cols-3">
+          <div className="rounded-xl border border-setu/20 bg-background overflow-hidden">
+            <div className="grid gap-px bg-setu/10 md:grid-cols-3">
               {[
                 {
                   trigger: "Attendance Gap",
@@ -221,13 +222,15 @@ export default function VayasyaSetuPage() {
                   trigger: "Shift Shortfall",
                   description:
                     "Deployed headcount below confirmed requirement for a given shift.",
-                  response: "Replacement pipeline activation + client notification",
+                  response:
+                    "Replacement pipeline activation + client notification",
                 },
                 {
                   trigger: "Documentation Delay",
                   description:
                     "ESIC/EPF enrollment or filing behind defined timeline.",
-                  response: "Escalation to compliance coordinator + tracked resolution",
+                  response:
+                    "Escalation to compliance coordinator + tracked resolution",
                 },
               ].map((exc) => (
                 <div key={exc.trigger} className="bg-background p-5">
@@ -256,14 +259,14 @@ export default function VayasyaSetuPage() {
         />
 
         <div className="mx-auto max-w-2xl">
-          <div className="divide-y divide-border rounded-xl border border-border">
+          <div className="divide-y divide-setu/10 rounded-xl border border-setu/20">
             {outputs.map((output) => (
               <div
                 key={output.label}
                 className="flex items-center justify-between px-5 py-3.5"
               >
                 <span className="font-medium">{output.label}</span>
-                <Badge variant="secondary" className="font-data text-xs">
+                <Badge variant="secondary" className="font-data text-xs bg-setu/10 text-setu">
                   {output.format}
                 </Badge>
               </div>
@@ -273,7 +276,7 @@ export default function VayasyaSetuPage() {
       </Section>
 
       {/* Integration */}
-      <Section variant="subtle">
+      <Section className="bg-setu/5">
         <SectionHeader
           title="Integration & Access Options"
           subtitle="Flexible delivery methods — from standard reports to system-aligned data feeds."
@@ -283,7 +286,7 @@ export default function VayasyaSetuPage() {
           {integrationOptions.map((option) => {
             const Icon = option.icon;
             return (
-              <Card key={option.title} className="h-full">
+              <Card key={option.title} className="h-full border-setu/20">
                 <CardHeader>
                   <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-setu/10">
                     <Icon className="h-5 w-5 text-setu" />
@@ -298,42 +301,44 @@ export default function VayasyaSetuPage() {
           })}
         </div>
 
-        <div className="mt-8 mx-auto max-w-2xl rounded-xl border border-border bg-background p-5">
+        <div className="mt-8 mx-auto max-w-2xl rounded-xl border border-setu/20 bg-background p-5">
           <p className="text-sm text-muted-foreground">
-            <span className="font-semibold text-foreground">
+            <span className="font-semibold text-setu">
               Integration note:
             </span>{" "}
             VSPL formats output data for import into client systems. Column
             mapping and format alignment are handled during engagement setup.
-            Direct API-level integration is not currently offered. Clients
-            who need real-time data feeds should discuss requirements during
+            Direct API-level integration is not currently offered. Clients who
+            need real-time data feeds should discuss requirements during
             scoping.
           </p>
         </div>
       </Section>
 
-      {/* Data Governance */}
-      <Section>
-        <div className="mx-auto max-w-3xl text-center">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-setu/10">
-            <Shield className="h-6 w-6 text-setu" />
+      {/* Data Governance — dark setu closer */}
+      <section className="bg-setu py-16 sm:py-20 lg:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <div className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-setu-foreground/10">
+              <Shield className="h-6 w-6 text-setu-foreground" />
+            </div>
+            <h2 className="mt-4 text-2xl font-bold text-setu-foreground">
+              Data Accuracy & Governance
+            </h2>
+            <p className="mt-4 text-lg leading-relaxed text-setu-foreground/70">
+              Attendance data, compliance records, and payroll inputs processed
+              through Vayasya Setu follow defined verification and audit-trail
+              protocols. Data integrity is maintained through structured workflows
+              — not ad-hoc processes.
+            </p>
+            <p className="mt-4 text-sm text-setu-foreground/60">
+              Setu is an internal VSPL system. Clients receive outputs, not
+              software access — unless optional visibility is agreed during
+              engagement scoping.
+            </p>
           </div>
-          <h2 className="mt-4 text-2xl font-bold">
-            Data Accuracy & Governance
-          </h2>
-          <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-            Attendance data, compliance records, and payroll inputs processed
-            through Vayasya Setu follow defined verification and audit-trail
-            protocols. Data integrity is maintained through structured
-            workflows — not ad-hoc processes.
-          </p>
-          <p className="mt-4 text-sm text-muted-foreground">
-            Setu is an internal VSPL system. Clients receive outputs, not
-            software access — unless optional visibility is agreed during
-            engagement scoping.
-          </p>
         </div>
-      </Section>
+      </section>
 
       <CtaBlock />
     </>

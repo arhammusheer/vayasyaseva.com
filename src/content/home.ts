@@ -30,7 +30,6 @@ export const proofRail: ProofRailItem[] = [
   { label: "EPF", value: "Registered", type: "registration" },
   { label: "GST", value: "Registered", type: "registration" },
   { label: "MSME", value: "UDYAM Certified", type: "registration" },
-  { label: "Response", value: "Target: 2 business days", type: "cadence" },
   { label: "Region", value: "Haridwar–SIDCUL", type: "region" },
 ];
 

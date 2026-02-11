@@ -12,6 +12,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/ca
 import { Section, SectionHeader } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
 import { operationsTimeline } from "@/content/home";
+import { JsonLd, breadcrumbSchema } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
   title: "How We Operate",
@@ -49,6 +50,12 @@ const escalationLevels = [
 export default function HowWeOperatePage() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", href: "/" },
+          { name: "How We Operate", href: "/how-we-operate" },
+        ])}
+      />
       <Section className="section-glow-seva">
         <SectionHeader
           title="How We Operate"

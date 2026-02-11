@@ -13,6 +13,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/ca
 import { Section, SectionHeader } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
 import { industries } from "@/content/industries";
+import { JsonLd, breadcrumbSchema } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
   title: "Industries",
@@ -31,6 +32,12 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 export default function IndustriesPage() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", href: "/" },
+          { name: "Industries", href: "/industries" },
+        ])}
+      />
       <Section className="section-glow-seva">
         <SectionHeader
           title="Industries We Serve"

@@ -24,6 +24,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Section, SectionHeader } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
+import { JsonLd, breadcrumbSchema } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
   title: "Vayasya Setu",
@@ -103,6 +104,12 @@ const integrationOptions = [
 export default function VayasyaSetuPage() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", href: "/" },
+          { name: "Vayasya Setu", href: "/vayasya-setu" },
+        ])}
+      />
       {/* Setu hero — themed glow header */}
       <section className="section-glow-setu py-16 sm:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

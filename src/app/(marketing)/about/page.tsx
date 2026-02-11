@@ -12,6 +12,7 @@ import {
   GovernanceFaq,
 } from "@/components/sections/operating-model";
 import { siteConfig } from "@/content/site";
+import { JsonLd, breadcrumbSchema, webPageSchema } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
   title: "About",
@@ -43,6 +44,20 @@ const values = [
 export default function AboutPage() {
   return (
     <>
+      <JsonLd
+        data={webPageSchema({
+          name: "About Vayasya Seva Private Limited",
+          description:
+            "A compliance-first workforce operations partner for industrial and enterprise sites in the Haridwar–SIDCUL corridor.",
+          url: "/about",
+        })}
+      />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", href: "/" },
+          { name: "About", href: "/about" },
+        ])}
+      />
       {/* Company Overview */}
       <Section className="section-glow-seva glow-left">
         <div className="mx-auto max-w-3xl">

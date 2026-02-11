@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Hind, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { JsonLd, organizationSchema } from "@/lib/structured-data";
 
 const hind = Hind({
   variable: "--font-hind",
@@ -40,6 +41,9 @@ export const metadata: Metadata = {
     icon: "/brand/logos/vspl.svg",
     apple: "/brand/logos/vspl.svg",
   },
+  alternates: {
+    canonical: "https://vayasyaseva.com",
+  },
   openGraph: {
     type: "website",
     locale: "en_IN",
@@ -48,13 +52,23 @@ export const metadata: Metadata = {
     title: "Vayasya Seva Private Limited | Compliance-First Workforce Operations",
     description:
       "Compliance-first workforce operations partner for industrial and enterprise sites. Structured deployment with supervision, attendance integrity, and audit-ready reporting.",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Vayasya Seva Private Limited — Compliance-First Workforce Operations",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Vayasya Seva Private Limited | Compliance-First Workforce Operations",
     description:
       "Compliance-first workforce operations partner for industrial and enterprise sites. Structured deployment with supervision, attendance integrity, and audit-ready reporting.",
+    images: ["/opengraph-image"],
   },
+  // verification: { google: "YOUR_GOOGLE_VERIFICATION_CODE" },
 };
 
 export default function RootLayout({
@@ -67,6 +81,7 @@ export default function RootLayout({
       <body
         className={`${hind.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
+        <JsonLd data={organizationSchema()} />
         {children}
       </body>
     </html>

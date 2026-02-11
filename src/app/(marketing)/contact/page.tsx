@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import { Section } from "@/components/layout/section";
 import { siteConfig } from "@/content/site";
+import { JsonLd, localBusinessSchema, breadcrumbSchema } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -12,6 +13,13 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <>
+      <JsonLd data={localBusinessSchema()} />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", href: "/" },
+          { name: "Contact", href: "/contact" },
+        ])}
+      />
       <Section className="section-glow-seva glow-left">
         <div className="grid gap-12 lg:grid-cols-5">
           {/* Contact Info */}

@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Section, SectionHeader } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
 import { services } from "@/content/services";
+import { JsonLd, servicePageSchema, breadcrumbSchema } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
   title: "Services",
@@ -33,6 +34,13 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 export default function ServicesPage() {
   return (
     <>
+      <JsonLd data={servicePageSchema(services)} />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", href: "/" },
+          { name: "Services", href: "/services" },
+        ])}
+      />
       <Section className="section-glow-seva">
         <SectionHeader
           title="Our Services"

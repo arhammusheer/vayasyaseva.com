@@ -22,6 +22,7 @@ import {
 import { Section, SectionHeader } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
 import { siteConfig } from "@/content/site";
+import { JsonLd, breadcrumbSchema } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
   title: "Compliance",
@@ -68,6 +69,12 @@ const documentationMatrix = [
 export default function CompliancePage() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", href: "/" },
+          { name: "Compliance", href: "/compliance" },
+        ])}
+      />
       <Section className="section-glow-seva">
         <SectionHeader
           title="Compliance Framework"

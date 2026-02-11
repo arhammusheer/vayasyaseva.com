@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { HeroVideo } from "@/components/sections/hero-video";
 import { Hero } from "@/components/sections/hero";
 import { ProofRail } from "@/components/sections/proof-rail";
@@ -12,10 +13,30 @@ import { ScopeBoundaries } from "@/components/sections/scope-boundaries";
 import { GeographyBlock } from "@/components/sections/geography-block";
 import { FaqSection } from "@/components/sections/faq-section";
 import { CtaBlock } from "@/components/sections/cta-block";
+import { JsonLd, faqSchema, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
+import { faqs } from "@/content/home";
+
+export const metadata: Metadata = {
+  title: "Compliance-First Workforce Operations for Industrial Sites",
+  description:
+    "Structured workforce deployment for warehouses, factories, and facilities — with supervision, attendance integrity, and audit-ready documentation. ESIC, EPF registered. Haridwar–SIDCUL region.",
+};
 
 export default function HomePage() {
   return (
     <>
+      <JsonLd
+        data={webPageSchema({
+          name: "Vayasya Seva Private Limited — Compliance-First Workforce Operations",
+          description:
+            "Structured workforce deployment for warehouses, factories, and facilities — with supervision, attendance integrity, and audit-ready documentation.",
+          url: "/",
+        })}
+      />
+      <JsonLd data={faqSchema(faqs)} />
+      <JsonLd
+        data={breadcrumbSchema([{ name: "Home", href: "/" }])}
+      />
       {/* Hero zone: video covers both hero content and trust strip */}
       <section
         id="hero-zone"

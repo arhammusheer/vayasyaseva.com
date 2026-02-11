@@ -6,7 +6,7 @@ import { siteConfig, navigation, footerLinks } from "@/content/site";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-foreground text-background">
+    <footer className="border-t border-background/10 bg-foreground text-background">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-5">
           {/* Company Info */}

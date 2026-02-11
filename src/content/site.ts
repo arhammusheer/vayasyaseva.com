@@ -28,6 +28,11 @@ export const footerLinks = {
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Terms of Service", href: "/terms" },
   ],
+  company: [
+    { label: "Setu Login", href: "https://hr.vayasyaseva.com" },
+    { label: "Brand Handbook", href: "https://brand.vayasyaseva.com" },
+    { label: "Mail", href: "https://mail.vayasyaseva.com" },
+  ],
   legal: {
     gstin: siteConfig.gstin,
     msme: siteConfig.msme,

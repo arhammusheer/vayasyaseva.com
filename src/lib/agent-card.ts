@@ -1,0 +1,94 @@
+export const agentCard = {
+  name: "Vayasya Seva Discovery Agent",
+  description:
+    "Read-only discovery agent for Vayasya Seva website content, exposing MCP tools/resources and OpenAPI contracts for AI clients.",
+  supportedInterfaces: [
+    {
+      url: "https://www.vayasyaseva.com/mcp",
+      protocolBinding: "MCP",
+      protocolVersion: "2025-11-25",
+    },
+  ],
+  provider: {
+    organization: "Vayasya Seva Private Limited",
+    url: "https://www.vayasyaseva.com",
+  },
+  version: "1.0.0",
+  documentationUrl: "https://www.vayasyaseva.com/llms-full.txt",
+  iconUrl: "https://www.vayasyaseva.com/brand/logos/vspl.svg",
+  capabilities: {
+    streaming: false,
+    pushNotifications: false,
+    extensions: [
+      {
+        uri: "https://www.vayasyaseva.com/spec/extensions/mcp-readonly/v1",
+        description:
+          "Read-only MCP tool/resource surface for public marketing content and compliance summaries.",
+        required: false,
+      },
+    ],
+  },
+  defaultInputModes: ["application/json", "text/plain"],
+  defaultOutputModes: ["application/json", "text/plain", "text/markdown"],
+  skills: [
+    {
+      id: "list-services",
+      name: "List Services",
+      description: "Lists all public service offerings with concise summaries.",
+      tags: ["services", "catalog", "workforce"],
+      examples: ["List all service offerings."],
+      inputModes: ["application/json", "text/plain"],
+      outputModes: ["application/json", "text/plain"],
+    },
+    {
+      id: "service-details",
+      name: "Get Service Details",
+      description: "Returns full details for a specific service ID.",
+      tags: ["services", "scope", "operations"],
+      examples: ["Get details for warehouse-logistics."],
+      inputModes: ["application/json", "text/plain"],
+      outputModes: ["application/json", "text/plain"],
+    },
+    {
+      id: "list-industries",
+      name: "List Industries",
+      description: "Lists all industry verticals served with descriptions.",
+      tags: ["industries", "verticals"],
+      examples: ["List industries supported by Vayasya Seva."],
+      inputModes: ["application/json", "text/plain"],
+      outputModes: ["application/json", "text/plain"],
+    },
+    {
+      id: "industry-details",
+      name: "Get Industry Details",
+      description: "Returns detailed operating context for an industry ID.",
+      tags: ["industries", "operations", "risk-control"],
+      examples: ["Get industry details for manufacturing."],
+      inputModes: ["application/json", "text/plain"],
+      outputModes: ["application/json", "text/plain"],
+    },
+    {
+      id: "compliance-posture",
+      name: "Get Compliance Posture",
+      description: "Returns compliance claims, boundaries, and legal posture context.",
+      tags: ["compliance", "legal", "claims"],
+      examples: ["Show compliance posture and documentation boundaries."],
+      inputModes: ["application/json", "text/plain"],
+      outputModes: ["application/json", "text/plain"],
+    },
+    {
+      id: "legal-documents",
+      name: "Get Legal Document",
+      description: "Returns the full privacy policy or terms of service markdown.",
+      tags: ["legal", "privacy", "terms"],
+      examples: ["Get the privacy policy text."],
+      inputModes: ["application/json", "text/plain"],
+      outputModes: ["application/json", "text/markdown", "text/plain"],
+    },
+  ],
+  metadata: {
+    openapiUrl: "https://www.vayasyaseva.com/openapi/v1.json",
+    llmsUrl: "https://www.vayasyaseva.com/llms.txt",
+    llmsFullUrl: "https://www.vayasyaseva.com/llms-full.txt",
+  },
+} as const;

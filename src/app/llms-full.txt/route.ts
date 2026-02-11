@@ -127,6 +127,11 @@ Mode: Stateless, read-only tools and resources
 Core tools: list_services, get_service, list_industries, get_industry, get_compliance_posture, get_legal_document
 Core resources: vayasya://site/profile, vayasya://services/catalog, vayasya://industries/catalog, vayasya://compliance/posture, vayasya://legal/privacy, vayasya://legal/terms, vayasya://api/contact/contract
 
+## Agent card
+Canonical discovery card: ${baseUrl}/.well-known/agent-card.json
+Compatibility alias: ${baseUrl}/.well-known/agent.json
+Declared protocol binding: MCP
+
 ## Policy and legal
 Privacy policy: ${baseUrl}/privacy
 Terms of service: ${baseUrl}/terms
@@ -135,6 +140,7 @@ Sitemap: ${baseUrl}/sitemap.xml
 Index file: ${baseUrl}/llms.txt
 OpenAPI contract: ${baseUrl}/openapi/v1.json
 MCP endpoint: ${baseUrl}/mcp
+Agent card: ${baseUrl}/.well-known/agent-card.json
 `;
 }
 

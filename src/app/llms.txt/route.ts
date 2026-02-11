@@ -27,6 +27,8 @@ const llmsIndex = `# Vayasya Seva Private Limited
 - ${baseUrl}/llms-full.txt
 - ${baseUrl}/openapi/v1.json
 - ${baseUrl}/mcp
+- ${baseUrl}/.well-known/agent-card.json
+- ${baseUrl}/.well-known/agent.json
 - ${baseUrl}/sitemap.xml
 - ${baseUrl}/robots.txt
 
@@ -34,6 +36,7 @@ const llmsIndex = `# Vayasya Seva Private Limited
 - POST ${baseUrl}/api/contact
 - GET ${baseUrl}/openapi/v1.json
 - POST ${baseUrl}/mcp
+- GET ${baseUrl}/.well-known/agent-card.json
 
 ## Access notes
 - Public website content is available for indexing and retrieval.

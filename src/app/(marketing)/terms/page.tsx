@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <Section>
+    <Section className="section-glow-seva glow-left">
       <div className="prose prose-neutral mx-auto max-w-3xl">
         <h1>Terms of Service</h1>
         <p className="text-muted-foreground">

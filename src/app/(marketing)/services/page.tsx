@@ -33,7 +33,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 export default function ServicesPage() {
   return (
     <>
-      <Section>
+      <Section className="section-glow-seva">
         <SectionHeader
           title="Our Services"
           subtitle="Structured workforce deployment across six operational domains — each with defined scope, roles, and compliance coverage."

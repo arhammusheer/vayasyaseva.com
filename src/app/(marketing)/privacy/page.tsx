@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <Section>
+    <Section className="section-glow-seva glow-left">
       <div className="prose prose-neutral mx-auto max-w-3xl">
         <h1>Privacy Policy</h1>
         <p className="text-muted-foreground">

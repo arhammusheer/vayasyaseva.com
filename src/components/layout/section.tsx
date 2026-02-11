@@ -18,7 +18,7 @@ export function Section({
       id={id}
       className={cn(
         "py-16 sm:py-20 lg:py-24",
-        variant === "subtle" && "bg-subtle",
+        variant === "subtle" && "section-subtle",
         variant === "dark" && "bg-foreground text-background",
         className
       )}

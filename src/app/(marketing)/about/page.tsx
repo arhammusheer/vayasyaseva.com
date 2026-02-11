@@ -44,7 +44,7 @@ export default function AboutPage() {
   return (
     <>
       {/* Company Overview */}
-      <Section>
+      <Section className="section-glow-seva glow-left">
         <div className="mx-auto max-w-3xl">
           <h1 className="text-balance text-4xl font-bold tracking-tight sm:text-5xl">
             About {siteConfig.companyName}

@@ -103,20 +103,20 @@ const integrationOptions = [
 export default function VayasyaSetuPage() {
   return (
     <>
-      {/* Setu hero — dark branded header */}
-      <section className="bg-setu py-16 sm:py-20 lg:py-24">
+      {/* Setu hero — themed glow header */}
+      <section className="section-glow-setu py-16 sm:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <Badge
               variant={"secondary"}
-              className="mb-4 border-setu-foreground/20 bg-setu-foreground/10 text-setu-foreground/80"
+              className="mb-4 border-setu/20 bg-setu/10 text-setu/80"
             >
               Operational Control Layer
             </Badge>
-            <h1 className="text-balance text-4xl font-bold tracking-tight text-setu-foreground sm:text-5xl">
+            <h1 className="text-balance text-4xl font-bold tracking-tight text-setu sm:text-5xl">
               Vayasya Setu
             </h1>
-            <p className="mt-6 text-lg leading-relaxed text-setu-foreground/70">
+            <p className="mt-6 text-lg leading-relaxed text-setu/80">
               The internal operating engine that powers VSPL&apos;s workforce
               deployment discipline. Setu manages the control layer — attendance,
               compliance, documentation, and reporting — so that your site

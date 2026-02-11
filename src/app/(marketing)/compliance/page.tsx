@@ -68,7 +68,7 @@ const documentationMatrix = [
 export default function CompliancePage() {
   return (
     <>
-      <Section>
+      <Section className="section-glow-seva">
         <SectionHeader
           title="Compliance Framework"
           subtitle="VSPL operates under a structured compliance framework — statutory coverage, documentation discipline, and inspection readiness are built into the operating model."

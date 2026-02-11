@@ -149,6 +149,63 @@
   .font-data {
     font-family: var(--font-data), ui-monospace, monospace;
   }
+
+  /* ── Ambient section glow ──
+   * Uses a ::before pseudo that extends well beyond section bounds.
+   * z-index: -1 places it between the body background and all content,
+   * so the glow bleeds naturally through transparent sections and is
+   * covered by sections with opaque backgrounds (subtle, dark). */
+  .section-glow-seva,
+  .section-glow-setu {
+    position: relative;
+  }
+
+  .section-glow-seva::before,
+  .section-glow-setu::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: max(200%, 1000px);
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .section-glow-seva::before {
+    background: radial-gradient(
+      ellipse 80% 55% at var(--glow-x, 50%) 12%,
+      rgba(201, 122, 43, 0.06) 0%,
+      rgba(201, 122, 43, 0.02) 50%,
+      transparent 80%
+    );
+  }
+
+  .section-glow-setu::before {
+    background: radial-gradient(
+      ellipse 80% 55% at var(--glow-x, 50%) 12%,
+      rgba(47, 62, 92, 0.075) 0%,
+      rgba(47, 62, 92, 0.025) 50%,
+      transparent 80%
+    );
+  }
+
+  .glow-left {
+    --glow-x: 28%;
+  }
+
+  /* ── Soft-edged subtle sections ──
+   * Gradient fades in/out within the section padding zone,
+   * eliminating hard horizontal edges between sections. */
+  .section-subtle {
+    background: linear-gradient(
+      to bottom,
+      rgba(246, 247, 248, 0) 0%,
+      rgba(246, 247, 248, 1) 10%,
+      rgba(246, 247, 248, 1) 90%,
+      rgba(246, 247, 248, 0) 100%
+    );
+  }
 }
 
 /* Reduced motion policy */

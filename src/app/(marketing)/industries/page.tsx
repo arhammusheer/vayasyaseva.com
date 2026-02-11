@@ -31,7 +31,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 export default function IndustriesPage() {
   return (
     <>
-      <Section>
+      <Section className="section-glow-seva">
         <SectionHeader
           title="Industries We Serve"
           subtitle="Workforce deployment models tailored to each industrial environment — aligned to sector-specific staffing patterns, risk controls, and reporting needs."

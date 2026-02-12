@@ -190,7 +190,7 @@ export function Header() {
             width={140}
             height={36}
             className={cn(
-              "h-9 w-auto origin-top transition-transform duration-300 ease-in-out",
+              "h-12 w-auto origin-top transition-transform duration-300 ease-in-out",
               isHomePage && isAtTop ? "scale-[1.33]" : "scale-100"
             )}
             priority

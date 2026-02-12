@@ -25,7 +25,7 @@ export function CtaBlock() {
             <Button
               asChild
               size="lg"
-              className="bg-seva text-seva-foreground hover:bg-seva/90 text-base"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 text-base"
             >
               <Link href="/contact">
                 Share Your Requirement

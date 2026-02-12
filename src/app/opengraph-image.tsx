@@ -18,7 +18,7 @@ export default function OgImage() {
           alignItems: "center",
           width: "100%",
           height: "100%",
-          backgroundColor: "#111111",
+          backgroundColor: "#0F172A",
           padding: "60px",
         }}
       >
@@ -34,7 +34,7 @@ export default function OgImage() {
             style={{
               width: "64px",
               height: "4px",
-              backgroundColor: "#C97A2B",
+              backgroundColor: "#DAA236",
               borderRadius: "2px",
             }}
           />
@@ -53,7 +53,7 @@ export default function OgImage() {
             style={{
               fontSize: "24px",
               fontWeight: 400,
-              color: "#C97A2B",
+              color: "#EBB74A",
               textAlign: "center",
               lineHeight: 1.4,
             }}
@@ -64,7 +64,7 @@ export default function OgImage() {
             style={{
               fontSize: "18px",
               fontWeight: 400,
-              color: "#9CA3AF",
+              color: "#CBD5E1",
               textAlign: "center",
               lineHeight: 1.5,
               maxWidth: "800px",
@@ -88,8 +88,8 @@ export default function OgImage() {
                 style={{
                   fontSize: "14px",
                   fontWeight: 500,
-                  color: "#C97A2B",
-                  border: "1px solid #C97A2B40",
+                  color: "#EBB74A",
+                  border: "1px solid #DAA23666",
                   borderRadius: "6px",
                   padding: "6px 14px",
                 }}

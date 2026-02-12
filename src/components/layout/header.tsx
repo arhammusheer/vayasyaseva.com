@@ -58,7 +58,7 @@ export function Header() {
     const whiteA = lerp(0.05, 0, p);
     const setuA = lerp(0.16, 0.07, p);
     const whiteStop = lerp(40, 42, p);
-    el2.style.background = `linear-gradient(112deg, rgba(201,122,43,${sevaA}) 0%, rgba(255,255,255,${whiteA}) ${whiteStop}%, rgba(47,62,92,${setuA}) 100%)`;
+    el2.style.background = `linear-gradient(112deg, rgba(186,81,26,${sevaA}) 0%, rgba(255,255,255,${whiteA}) ${whiteStop}%, rgba(45,62,108,${setuA}) 100%)`;
 
     if (p < 0.95) {
       const maskStop2 = lerp(56, 100, p);
@@ -176,8 +176,8 @@ export function Header() {
           !isHomePage && "transition-all duration-300",
           !isHomePage &&
             (shouldBlendAtTop
-              ? "bg-[linear-gradient(112deg,rgba(201,122,43,0.05)_0%,rgba(255,255,255,0)_40%,rgba(47,62,92,0.04)_100%)] [mask-image:linear-gradient(to_bottom,black_0%,black_50%,transparent_100%)]"
-              : "bg-[linear-gradient(112deg,rgba(201,122,43,0.08)_0%,rgba(255,255,255,0)_42%,rgba(47,62,92,0.07)_100%)]")
+              ? "bg-[linear-gradient(112deg,rgba(186,81,26,0.05)_0%,rgba(255,255,255,0)_40%,rgba(45,62,108,0.04)_100%)] [mask-image:linear-gradient(to_bottom,black_0%,black_50%,transparent_100%)]"
+              : "bg-[linear-gradient(112deg,rgba(186,81,26,0.08)_0%,rgba(255,255,255,0)_42%,rgba(45,62,108,0.07)_100%)]")
         )}
       />
 

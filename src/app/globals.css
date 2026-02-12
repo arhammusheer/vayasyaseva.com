@@ -9,13 +9,8 @@
  * VSPL Brand Token System
  * Source: brand.vayasyaseva.com
  *
- * Vertical accents:
- *   Seva:     #C97A2B (workforce/labour services)
- *   Setu:     #2F3E5C (HRMS/workforce systems)
- *   Kaushal:  #2E6B4F (training/upskilling)
- *   Prabandh: #3A3A3A (administration/governance)
- *
- * Rule: Accent coverage must stay below 20% of visible surface.
+ * Usage ratio:
+ *   70% neutrals, 20% vertical/master brand, 10% semantic/data highlights.
  */
 
 @theme inline {
@@ -31,6 +26,7 @@
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -42,14 +38,94 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-brand-text: var(--brand-text);
+
+  /* Core neutral scale */
+  --color-neutral-0: var(--neutral-0);
+  --color-neutral-25: var(--neutral-25);
+  --color-neutral-50: var(--neutral-50);
+  --color-neutral-100: var(--neutral-100);
+  --color-neutral-200: var(--neutral-200);
+  --color-neutral-300: var(--neutral-300);
+  --color-neutral-400: var(--neutral-400);
+  --color-neutral-500: var(--neutral-500);
+  --color-neutral-600: var(--neutral-600);
+  --color-neutral-700: var(--neutral-700);
+  --color-neutral-800: var(--neutral-800);
+  --color-neutral-900: var(--neutral-900);
+  --color-neutral-950: var(--neutral-950);
+
+  /* Master brand gold */
+  --color-gold: var(--gold-500);
+  --color-gold-50: var(--gold-50);
+  --color-gold-100: var(--gold-100);
+  --color-gold-200: var(--gold-200);
+  --color-gold-300: var(--gold-300);
+  --color-gold-400: var(--gold-400);
+  --color-gold-500: var(--gold-500);
+  --color-gold-600: var(--gold-600);
+  --color-gold-700: var(--gold-700);
+  --color-gold-800: var(--gold-800);
+  --color-gold-900: var(--gold-900);
+  --color-gold-950: var(--gold-950);
 
   /* VSPL vertical accent tokens */
   --color-seva: var(--seva);
   --color-seva-foreground: var(--seva-foreground);
   --color-seva-muted: var(--seva-muted);
+  --color-seva-50: var(--seva-50);
+  --color-seva-100: var(--seva-100);
+  --color-seva-200: var(--seva-200);
+  --color-seva-300: var(--seva-300);
+  --color-seva-400: var(--seva-400);
+  --color-seva-500: var(--seva-500);
+  --color-seva-600: var(--seva-600);
+  --color-seva-700: var(--seva-700);
+  --color-seva-800: var(--seva-800);
+  --color-seva-900: var(--seva-900);
+
   --color-setu: var(--setu);
   --color-setu-foreground: var(--setu-foreground);
   --color-setu-muted: var(--setu-muted);
+  --color-setu-50: var(--setu-50);
+  --color-setu-100: var(--setu-100);
+  --color-setu-200: var(--setu-200);
+  --color-setu-300: var(--setu-300);
+  --color-setu-400: var(--setu-400);
+  --color-setu-500: var(--setu-500);
+  --color-setu-600: var(--setu-600);
+  --color-setu-700: var(--setu-700);
+  --color-setu-800: var(--setu-800);
+  --color-setu-900: var(--setu-900);
+
+  --color-kaushal: var(--kaushal);
+  --color-kaushal-foreground: var(--kaushal-foreground);
+  --color-kaushal-muted: var(--kaushal-muted);
+  --color-kaushal-50: var(--kaushal-50);
+  --color-kaushal-100: var(--kaushal-100);
+  --color-kaushal-200: var(--kaushal-200);
+  --color-kaushal-300: var(--kaushal-300);
+  --color-kaushal-400: var(--kaushal-400);
+  --color-kaushal-500: var(--kaushal-500);
+  --color-kaushal-600: var(--kaushal-600);
+  --color-kaushal-700: var(--kaushal-700);
+  --color-kaushal-800: var(--kaushal-800);
+  --color-kaushal-900: var(--kaushal-900);
+
+  --color-prabandh: var(--prabandh);
+  --color-prabandh-foreground: var(--prabandh-foreground);
+  --color-prabandh-muted: var(--prabandh-muted);
+  --color-prabandh-50: var(--prabandh-50);
+  --color-prabandh-100: var(--prabandh-100);
+  --color-prabandh-200: var(--prabandh-200);
+  --color-prabandh-300: var(--prabandh-300);
+  --color-prabandh-400: var(--prabandh-400);
+  --color-prabandh-500: var(--prabandh-500);
+  --color-prabandh-600: var(--prabandh-600);
+  --color-prabandh-700: var(--prabandh-700);
+  --color-prabandh-800: var(--prabandh-800);
+  --color-prabandh-900: var(--prabandh-900);
+
   --color-subtle: var(--subtle);
 
   /* Semantic state tokens */
@@ -57,6 +133,7 @@
   --color-warning: var(--warning);
   --color-info: var(--info);
   --color-danger: var(--danger);
+  --color-pending: var(--pending);
 
   /* Radius */
   --radius-sm: calc(var(--radius) - 4px);
@@ -77,60 +154,156 @@
 
   --radius: 0.375rem;
 
-  /* ── Base surfaces (brand.vayasyaseva.com) ── */
-  --background: #FFFFFF;
-  --foreground: #111111;
-  --subtle: #F6F7F8;
+  /* ── Core neutrals ── */
+  --neutral-0: #FFFFFF;
+  --neutral-25: #FCFCFD;
+  --neutral-50: #F8FAFC;
+  --neutral-100: #F1F5F9;
+  --neutral-200: #E2E8F0;
+  --neutral-300: #CBD5E1;
+  --neutral-400: #94A3B8;
+  --neutral-500: #64748B;
+  --neutral-600: #475569;
+  --neutral-700: #334155;
+  --neutral-800: #1E293B;
+  --neutral-900: #0F172A;
+  --neutral-950: #020617;
+
+  /* ── Master brand gold ── */
+  --gold-50: #FFF9E8;
+  --gold-100: #FDF1CF;
+  --gold-200: #FAE19E;
+  --gold-300: #F4CD6D;
+  --gold-400: #EBB74A;
+  --gold-500: #DAA236;
+  --gold-600: #B98621;
+  --gold-700: #8F6818;
+  --gold-800: #6A4C12;
+  --gold-900: #48330B;
+  --gold-950: #2C1F06;
+
+  /* ── Vertical families ── */
+  --seva-50: #FFF6ED;
+  --seva-100: #FFE9D3;
+  --seva-200: #FDCFA8;
+  --seva-300: #F9B379;
+  --seva-400: #F38E46;
+  --seva-500: #E06C24;
+  --seva-600: #BA511A;
+  --seva-700: #8F3F17;
+  --seva-800: #6E3215;
+  --seva-900: #552811;
+
+  --setu-50: #F4F7FD;
+  --setu-100: #E7EDF8;
+  --setu-200: #CEDAF0;
+  --setu-300: #A8BDE4;
+  --setu-400: #7D98D5;
+  --setu-500: #5B77C4;
+  --setu-600: #445FA8;
+  --setu-700: #374B85;
+  --setu-800: #2D3E6C;
+  --setu-900: #273558;
+
+  --kaushal-50: #F1FAF6;
+  --kaushal-100: #DBF2E8;
+  --kaushal-200: #B9E4D1;
+  --kaushal-300: #8CCFB1;
+  --kaushal-400: #5FB58F;
+  --kaushal-500: #3D966F;
+  --kaushal-600: #2E7A58;
+  --kaushal-700: #256146;
+  --kaushal-800: #204D38;
+  --kaushal-900: #1B402F;
+
+  --prabandh-50: #F7F8FA;
+  --prabandh-100: #EDEFF3;
+  --prabandh-200: #D8DCE4;
+  --prabandh-300: #B8BFCC;
+  --prabandh-400: #919BAB;
+  --prabandh-500: #6F7A8D;
+  --prabandh-600: #556073;
+  --prabandh-700: #434C5D;
+  --prabandh-800: #353C4A;
+  --prabandh-900: #2A303C;
+
+  /* ── Semantic state colors ── */
+  --success: #1F7A4D;
+  --info: #215EA6;
+  --warning: #A45E0C;
+  --danger: #B42318;
+  --pending: #556073;
+
+  /* ── Data visualization palette ── */
+  --viz-1: #445FA8;
+  --viz-2: #2E7A58;
+  --viz-3: #BA511A;
+  --viz-4: #6F7A8D;
+  --viz-5: #A45E0C;
+  --viz-6: #8F6818;
+  --viz-7: #7D98D5;
+  --viz-8: #B9E4D1;
+
+  /* ── Role mappings ── */
+  --background: var(--neutral-0);
+  --foreground: var(--neutral-900);
+  --subtle: var(--neutral-50);
+  --brand-text: var(--gold-700);
 
   /* Card */
-  --card: #FFFFFF;
-  --card-foreground: #111111;
+  --card: var(--neutral-0);
+  --card-foreground: var(--neutral-900);
 
   /* Popover */
-  --popover: #FFFFFF;
-  --popover-foreground: #111111;
+  --popover: var(--neutral-0);
+  --popover-foreground: var(--neutral-900);
 
-  /* Primary — maps to Seva accent for this vertical */
-  --primary: #C97A2B;
-  --primary-foreground: #FFFFFF;
+  /* Primary brand surface */
+  --primary: var(--gold-500);
+  --primary-hover: var(--gold-600);
+  --primary-foreground: var(--neutral-900);
 
   /* Secondary */
-  --secondary: #F6F7F8;
-  --secondary-foreground: #111111;
+  --secondary: var(--neutral-50);
+  --secondary-foreground: var(--neutral-900);
 
   /* Muted */
-  --muted: #F6F7F8;
-  --muted-foreground: #4B5563;
+  --muted: var(--neutral-100);
+  --muted-foreground: var(--neutral-600);
 
   /* Accent */
-  --accent: #F6F7F8;
-  --accent-foreground: #111111;
+  --accent: var(--neutral-100);
+  --accent-foreground: var(--neutral-900);
 
   /* Destructive */
-  --destructive: #B42318;
+  --destructive: var(--danger);
 
   /* Border */
-  --border: #E5E7EB;
-  --input: #E5E7EB;
-  --ring: #C97A2B;
+  --border: var(--neutral-200);
+  --input: var(--neutral-200);
+  --ring: var(--setu-500);
 
   /* ── Vertical accents ── */
 
   /* Seva — workforce/labour services */
-  --seva: #C97A2B;
-  --seva-foreground: #FFFFFF;
-  --seva-muted: #FDF3E7;
+  --seva: var(--seva-600);
+  --seva-foreground: var(--neutral-0);
+  --seva-muted: var(--seva-50);
 
   /* Setu — HRMS/workforce systems */
-  --setu: #2F3E5C;
-  --setu-foreground: #FFFFFF;
-  --setu-muted: #EEF0F4;
+  --setu: var(--setu-800);
+  --setu-foreground: var(--neutral-0);
+  --setu-muted: var(--setu-100);
 
-  /* ── Semantic states ── */
-  --success: #2E6B4F;
-  --warning: #C97A2B;
-  --info: #2F3E5C;
-  --danger: #B42318;
+  /* Kaushal — structured training */
+  --kaushal: var(--kaushal-600);
+  --kaushal-foreground: var(--neutral-0);
+  --kaushal-muted: var(--kaushal-100);
+
+  /* Prabandh — cool graphite governance */
+  --prabandh: var(--prabandh-700);
+  --prabandh-foreground: var(--neutral-0);
+  --prabandh-muted: var(--prabandh-100);
 }
 
 @layer base {
@@ -183,8 +356,8 @@
   .section-glow-seva::before {
     background: radial-gradient(
       ellipse 80% 55% at var(--glow-x, 50%) 12%,
-      rgba(201, 122, 43, 0.06) 0%,
-      rgba(201, 122, 43, 0.02) 50%,
+      rgba(186, 81, 26, 0.07) 0%,
+      rgba(186, 81, 26, 0.025) 50%,
       transparent 80%
     );
   }
@@ -192,8 +365,8 @@
   .section-glow-setu::before {
     background: radial-gradient(
       ellipse 80% 55% at var(--glow-x, 50%) 12%,
-      rgba(47, 62, 92, 0.075) 0%,
-      rgba(47, 62, 92, 0.025) 50%,
+      rgba(45, 62, 108, 0.085) 0%,
+      rgba(45, 62, 108, 0.03) 50%,
       transparent 80%
     );
   }
@@ -208,10 +381,10 @@
   .section-subtle {
     background: linear-gradient(
       to bottom,
-      rgba(246, 247, 248, 0) 0%,
-      rgba(246, 247, 248, 1) 10%,
-      rgba(246, 247, 248, 1) 90%,
-      rgba(246, 247, 248, 0) 100%
+      rgba(248, 250, 252, 0) 0%,
+      rgba(248, 250, 252, 1) 10%,
+      rgba(248, 250, 252, 1) 90%,
+      rgba(248, 250, 252, 0) 100%
     );
   }
 }

@@ -11,7 +11,7 @@ export default function Error({
   reset: () => void;
 }) {
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-2xl flex-col items-start justify-center bg-white px-6 sm:px-12">
+    <div className="mx-auto flex min-h-screen w-full max-w-2xl flex-col items-start justify-center bg-background px-6 sm:px-12">
       <Link href="/">
         <Image
           src="/brand/logos/master-logo-dark.svg"
@@ -24,7 +24,7 @@ export default function Error({
       </Link>
 
       <div className="mt-12">
-        <p className="font-data text-6xl font-medium text-[#B42318]">500</p>
+        <p className="font-data text-6xl font-medium text-danger">500</p>
         <h1 className="mt-4 text-2xl font-semibold text-foreground">
           Something went wrong
         </h1>

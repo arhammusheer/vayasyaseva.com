@@ -23,7 +23,7 @@ export function Hero() {
             <Button
               asChild
               size="lg"
-              className="bg-seva text-seva-foreground hover:bg-seva/90 text-base"
+              className="bg-primary text-primary-foreground hover:bg-primary-hover text-base"
             >
               <Link href={hero.primaryCta.href}>
                 {hero.primaryCta.label}
@@ -34,7 +34,7 @@ export function Hero() {
               asChild
               variant="outline"
               size="lg"
-              className="border-background/30 text-primary hover:bg-background/10 hover:text-background text-base"
+              className="border-background/30 text-gold-600 bg-subtle hover:text-gold-300 hover:bg-gold/10 text-base"
             >
               <Link href={hero.secondaryCta.href}>
                 <ClipboardList className="mr-2 h-4 w-4" />

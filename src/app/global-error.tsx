@@ -13,7 +13,7 @@ export default function GlobalError({
   return (
     <html lang="en">
       <body className="font-sans antialiased">
-        <div className="mx-auto flex min-h-screen w-full max-w-2xl flex-col items-start justify-center bg-white px-6 sm:px-12">
+        <div className="mx-auto flex min-h-screen w-full max-w-2xl flex-col items-start justify-center bg-background px-6 sm:px-12">
           <Link href="/">
             <Image
               src="/brand/logos/master-logo-dark.svg"
@@ -26,13 +26,13 @@ export default function GlobalError({
           </Link>
 
           <div className="mt-12">
-            <p className="font-data text-6xl font-medium text-[#B42318]">
+            <p className="font-data text-6xl font-medium text-danger">
               500
             </p>
-            <h1 className="mt-4 text-2xl font-semibold text-[#111111]">
+            <h1 className="mt-4 text-2xl font-semibold text-foreground">
               Something went wrong
             </h1>
-            <p className="mt-2 max-w-sm text-sm text-[#4B5563]">
+            <p className="mt-2 max-w-sm text-sm text-muted-foreground">
               An unexpected error occurred. Please try again or contact us if
               the problem persists.
             </p>
@@ -45,7 +45,7 @@ export default function GlobalError({
             </Button>
           </div>
 
-          <p className="mt-16 text-xs text-[#4B5563]">
+          <p className="mt-16 text-xs text-muted-foreground">
             &copy; {new Date().getFullYear()} Vayasya Seva Private Limited
           </p>
         </div>

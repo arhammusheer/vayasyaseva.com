@@ -26,7 +26,7 @@ export function PersonaBlocks() {
               </h3>
 
               <div className="mt-5">
-                <p className="mb-2 text-xs font-medium uppercase tracking-wider text-success">
+                <p className="mb-2 text-xs font-medium uppercase tracking-wider text-seva">
                   What you get
                 </p>
                 <ul className="space-y-1.5">
@@ -35,7 +35,7 @@ export function PersonaBlocks() {
                       key={item}
                       className="flex items-start gap-2 text-sm leading-relaxed"
                     >
-                      <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-success" />
+                      <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-seva" />
                       {item}
                     </li>
                   ))}

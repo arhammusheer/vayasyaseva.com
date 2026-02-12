@@ -206,8 +206,8 @@ export function Header() {
               className={cn(
                 "rounded-md px-3 py-2 text-sm font-medium transition-colors",
                 showVideoText
-                  ? "text-white/85 hover:text-white"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "text-white/85 hover:text-gold"
+                  : "text-muted-foreground hover:text-gold-900"
               )}
             >
               {item.label}

@@ -6,15 +6,15 @@ import { siteConfig } from "@/content/site";
 
 export function CtaBlock() {
   return (
-    <section className="bg-foreground py-16 sm:py-20">
+    <section className="bg-gradient-to-b from-gold-950 to-black py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
         <Reveal>
-          <h2 className="text-balance text-3xl font-bold tracking-tight text-background sm:text-4xl">
+          <h2 className="text-balance text-3xl font-bold tracking-tight text-gold-100 sm:text-4xl">
             Ready to discuss your workforce requirements?
           </h2>
         </Reveal>
         <Reveal delay={0.08}>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-background/70">
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-gold-200/80">
             Share your operational needs and we&apos;ll respond with a deployment
             assessment. Target response: 2 business days (IST, Mon–Sat).
           </p>
@@ -25,7 +25,7 @@ export function CtaBlock() {
             <Button
               asChild
               size="lg"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 text-base"
+              className="border border-gold-300/40 bg-gold-500 text-neutral-900 hover:bg-gold-400 text-base"
             >
               <Link href="/contact">
                 Share Your Requirement
@@ -36,17 +36,17 @@ export function CtaBlock() {
         </Reveal>
 
         <Reveal delay={0.2}>
-          <div className="mt-8 flex flex-col items-center justify-center gap-4 text-sm text-background/60 sm:flex-row sm:gap-6">
+          <div className="mt-8 flex flex-col items-center justify-center gap-4 text-sm text-gold-200/80 sm:flex-row sm:gap-6">
             <a
               href={`mailto:${siteConfig.email}`}
-              className="flex items-center gap-2 transition-colors hover:text-background/80"
+              className="flex items-center gap-2 transition-colors hover:text-gold-100"
             >
               <Mail className="h-4 w-4" />
               {siteConfig.email}
             </a>
             <a
               href={`tel:${siteConfig.phone}`}
-              className="flex items-center gap-2 transition-colors hover:text-background/80"
+              className="flex items-center gap-2 transition-colors hover:text-gold-100"
             >
               <Phone className="h-4 w-4" />
               {siteConfig.phone}

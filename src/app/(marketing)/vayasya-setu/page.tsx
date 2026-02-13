@@ -120,8 +120,13 @@ export default function VayasyaSetuPage() {
             >
               Operational Control Layer
             </Badge>
-            <h1 className="text-balance text-4xl font-bold tracking-tight text-setu sm:text-5xl">
-              Vayasya Setu
+            <h1 className="text-balance tracking-tight">
+              <span className="text-4xl font-semibold text-primary sm:text-6xl">
+                Vayasya
+              </span>{" "}
+              <span className="text-3xl font-medium text-setu sm:text-5xl">
+                Setu
+              </span>
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-setu/80">
               The internal operating engine that powers VSPL&apos;s workforce

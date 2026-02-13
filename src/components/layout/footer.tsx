@@ -6,7 +6,10 @@ import { siteConfig, navigation, footerLinks } from "@/content/site";
 
 export function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-black py-10 text-gold-100 sm:py-12">
+    <footer
+      data-header-theme="dark"
+      className="relative overflow-hidden bg-black py-10 text-gold-100 sm:py-12"
+    >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-gold/[0.02] to-transparent" />
         <div className="absolute -left-24 top-1/3 h-64 w-64 rounded-full bg-setu-500/20 blur-3xl" />

@@ -6,7 +6,10 @@ import { siteConfig } from "@/content/site";
 
 export function CtaBlock() {
   return (
-    <section className="bg-gradient-to-b from-gold-950 to-black py-16 sm:py-20">
+    <section
+      data-header-theme="dark"
+      className="bg-gradient-to-b from-gold-950 to-black py-16 sm:py-20"
+    >
       <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
         <Reveal>
           <h2 className="text-balance text-3xl font-bold tracking-tight text-gold-100 sm:text-4xl">

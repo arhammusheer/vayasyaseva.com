@@ -30,6 +30,7 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [isAtTop, setIsAtTop] = useState(true);
   const [shouldOverlayVideo, setShouldOverlayVideo] = useState(isHomePage);
+  const [darkSectionProgress, setDarkSectionProgress] = useState(0);
 
   const overlay1Ref = useRef<HTMLDivElement>(null);
   const overlay2Ref = useRef<HTMLDivElement>(null);
@@ -51,6 +52,25 @@ export function Header() {
       el2.style.removeProperty("mask-image");
       el2.style.removeProperty("-webkit-mask-image");
     }
+  }, []);
+
+  const getDarkSectionProgress = useCallback(() => {
+    const darkSections = document.querySelectorAll<HTMLElement>("[data-header-theme='dark']");
+    const headerTop = 0;
+    const headerBottom = HEADER_HEIGHT;
+    let maxProgress = 0;
+
+    for (const section of darkSections) {
+      const rect = section.getBoundingClientRect();
+      const overlap = Math.max(
+        0,
+        Math.min(headerBottom, rect.bottom) - Math.max(headerTop, rect.top)
+      );
+      const progress = Math.min(1, overlap / HEADER_HEIGHT);
+      if (progress > maxProgress) maxProgress = progress;
+    }
+
+    return maxProgress;
   }, []);
 
   const applyHeroProgress = useCallback((p: number) => {
@@ -129,11 +149,44 @@ export function Header() {
   }, [isHomePage, clearHeroOverlayStyles]);
 
   useEffect(() => {
+    let frame = 0;
+
+    const updateDarkSectionState = () => {
+      const nextProgress = getDarkSectionProgress();
+      setDarkSectionProgress((current) =>
+        current === nextProgress ? current : nextProgress
+      );
+    };
+
+    const requestUpdate = () => {
+      cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(updateDarkSectionState);
+    };
+
+    requestUpdate();
+
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+    };
+  }, [pathname, getDarkSectionProgress]);
+
+  useEffect(() => {
     if (!isHomePage) return;
 
     let frame = 0;
 
     const updateHeaderMode = () => {
+      if (darkSectionProgress > 0) {
+        setShouldOverlayVideo(darkSectionProgress >= 0.5);
+        applyHeroProgress(1 - darkSectionProgress);
+        return;
+      }
+
       const heroZone = document.getElementById("hero-zone");
       if (!heroZone) {
         setShouldOverlayVideo(false);
@@ -179,10 +232,21 @@ export function Header() {
       window.removeEventListener("scroll", requestUpdate);
       window.removeEventListener("resize", requestUpdate);
     };
-  }, [isHomePage, applyHeroProgress]);
+  }, [isHomePage, darkSectionProgress, applyHeroProgress]);
 
-  const showVideoText = isHomePage && shouldOverlayVideo;
-  const shouldBlendAtTop = !isHomePage && isAtTop;
+  useEffect(() => {
+    if (isHomePage) return;
+
+    if (darkSectionProgress > 0) {
+      applyHeroProgress(1 - darkSectionProgress);
+      return;
+    }
+
+    clearHeroOverlayStyles();
+  }, [isHomePage, darkSectionProgress, applyHeroProgress, clearHeroOverlayStyles]);
+
+  const showVideoText = (isHomePage && shouldOverlayVideo) || darkSectionProgress >= 0.5;
+  const shouldBlendAtTop = (!isHomePage && isAtTop) || darkSectionProgress > 0;
 
   const handleNavigationClick = (
     event: MouseEvent<HTMLAnchorElement>,

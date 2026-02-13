@@ -301,11 +301,11 @@ export const scopeBoundaries: ScopeBoundary[] = [
       "Replacement deployment for attrition",
     ],
     notIncluded: [
-      "Skilled machine operators or technicians",
       "Permanent placement or recruitment services",
       "Client-side HR policy definition",
     ],
     onRequest: [
+      "Skilled machine operators or technicians",
       "Extended shift patterns beyond standard two-shift model",
       "Multi-location deployment coordination",
       "Custom reporting formats or integration alignment",

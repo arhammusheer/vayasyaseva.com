@@ -63,7 +63,6 @@ export const services: ServiceDetail[] = [
       "Compliance documentation",
     ],
     notIncluded: [
-      "Skilled machine operators or technicians",
       "PPE or safety equipment provisioning",
       "Product-specific technical training",
       "QC/QA certification responsibilities",

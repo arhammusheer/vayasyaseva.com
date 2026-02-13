@@ -17,9 +17,10 @@ import { JsonLd, faqSchema, webPageSchema, breadcrumbSchema } from "@/lib/struct
 import { faqs } from "@/content/home";
 
 export const metadata: Metadata = {
-  title: "Compliance-First Workforce Operations for Industrial Sites",
+  title:
+    "Compliance-First Industrial Services for Workforce, Civil, Fabrication & Maintenance",
   description:
-    "Structured workforce deployment for warehouses, factories, and facilities — with supervision, attendance integrity, and audit-ready documentation. ESIC, EPF registered. Haridwar–SIDCUL region.",
+    "Integrated industrial services across workforce deployment, civil and fabrication works, housekeeping, equipment provisioning, and machinery maintenance. ESIC, EPF registered. Haridwar–SIDCUL region.",
 };
 
 export default function HomePage() {
@@ -27,9 +28,9 @@ export default function HomePage() {
     <>
       <JsonLd
         data={webPageSchema({
-          name: "Vayasya Seva Private Limited — Compliance-First Workforce Operations",
+          name: "Vayasya Seva Private Limited — Compliance-First Industrial Services",
           description:
-            "Structured workforce deployment for warehouses, factories, and facilities — with supervision, attendance integrity, and audit-ready documentation.",
+            "Integrated industrial services across workforce deployment, civil and fabrication works, housekeeping, equipment provisioning, and machinery maintenance.",
           url: "/",
         })}
       />

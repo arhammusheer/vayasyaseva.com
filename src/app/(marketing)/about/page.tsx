@@ -17,14 +17,14 @@ import { JsonLd, breadcrumbSchema, webPageSchema } from "@/lib/structured-data";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "About Vayasya Seva Private Limited — a compliance-first workforce operations partner for industrial and enterprise sites in the Haridwar–SIDCUL corridor.",
+    "About Vayasya Seva Private Limited — a compliance-first industrial services partner for workforce, civil, fabrication, housekeeping, equipment, and maintenance requirements.",
 };
 
 const values = [
   {
     title: "Operational Discipline",
     description:
-      "Every deployment follows a defined process — from sourcing to supervision to reporting. Consistency in execution is the foundation of reliable workforce operations.",
+      "Every engagement follows a defined process — from scoping and mobilization to supervision and reporting. Consistency in execution is the foundation of reliable industrial service delivery.",
     icon: Target,
   },
   {
@@ -36,7 +36,7 @@ const values = [
   {
     title: "Accountability & Transparency",
     description:
-      "Structured reporting, defined escalation frameworks, and supervisory accountability ensure clients have visibility into how their deployed workforce operates.",
+      "Structured reporting, defined escalation frameworks, and supervisory accountability ensure clients have visibility into how each service scope is executed.",
     icon: Eye,
   },
 ];
@@ -48,7 +48,7 @@ export default function AboutPage() {
         data={webPageSchema({
           name: "About Vayasya Seva Private Limited",
           description:
-            "A compliance-first workforce operations partner for industrial and enterprise sites in the Haridwar–SIDCUL corridor.",
+            "A compliance-first industrial services partner for workforce, civil, fabrication, housekeeping, equipment, and maintenance requirements.",
           url: "/about",
         })}
       />
@@ -67,17 +67,18 @@ export default function AboutPage() {
           <div className="mt-6 space-y-4 text-lg leading-relaxed text-muted-foreground">
             <p>
               Vayasya Seva Private Limited (VSPL) is a compliance-first
-              workforce operations partner for industrial and enterprise sites.
-              We combine disciplined on-ground execution with Setu-led
-              governance workflows to deliver reliable staffing operations,
-              attendance integrity, and audit-ready reporting.
+              industrial services partner for factory and enterprise sites. We
+              combine disciplined on-ground execution with Setu-led governance
+              workflows to deliver reliable workforce services, civil and
+              fabrication works, housekeeping operations, equipment support, and
+              machinery maintenance reporting.
             </p>
             <p>
               Our clients are enterprise and industrial operations in the
               Haridwar–SIDCUL region — including manufacturing plants,
               warehouses, logistics hubs, and institutional facilities. VSPL
-              deploys structured workforce teams with on-ground supervision,
-              compliance coverage, and defined reporting cadences.
+              executes integrated scopes with trained teams, on-ground
+              supervision, compliance coverage, and defined reporting cadences.
             </p>
           </div>
         </div>
@@ -87,7 +88,7 @@ export default function AboutPage() {
       <Section variant="subtle">
         <SectionHeader
           title="Operating Philosophy"
-          subtitle="Three principles that define how VSPL approaches every workforce engagement."
+          subtitle="Three principles that define how VSPL approaches every industrial service engagement."
         />
 
         <div className="grid gap-6 md:grid-cols-3">

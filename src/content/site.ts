@@ -3,7 +3,8 @@ import type { NavItem, SiteConfig } from "./types";
 export const siteConfig: SiteConfig = {
   companyName: "Vayasya Seva",
   legalName: "Vayasya Seva Private Limited",
-  tagline: "Compliance-First Workforce Operations for Industrial Sites",
+  tagline:
+    "Compliance-First Industrial Services for Workforce, Civil, Fabrication & Maintenance",
   email: "help@vayasyaseva.com",
   phone: "+91 72920 14101",
   gstin: "05AAJCV4562E1ZB",

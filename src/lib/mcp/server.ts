@@ -121,7 +121,7 @@ export function createVayasyaMcpServer() {
     "vayasya://industries/catalog",
     {
       title: "Industries Catalog",
-      description: "Industry-specific workforce patterns, risk controls, and reporting cadence.",
+      description: "Industry-specific service patterns, risk controls, and reporting cadence.",
       mimeType: "application/json",
     },
     async () => resourceJson("vayasya://industries/catalog", industries)

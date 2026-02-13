@@ -46,7 +46,7 @@
         "type": "string",
         "required": true,
         "minLength": 1,
-        "description": "Site location for deployment",
+        "description": "Site location for service delivery",
         "requiredMessage": "Location is required",
         "example": "Haridwar SIDCUL"
       },
@@ -62,7 +62,7 @@
         "type": "string",
         "required": true,
         "minLength": 1,
-        "description": "Approximate headcount required",
+        "description": "Approximate workforce or crew size required",
         "requiredMessage": "Approximate headcount is required",
         "example": "50"
       },
@@ -82,7 +82,7 @@
         "type": "string",
         "required": false,
         "description": "Additional requirement details",
-        "example": "Need packers and loaders for FMCG dispatch."
+        "example": "Need housekeeping teams, fabrication fitters, and preventive maintenance support for a new line."
       }
     }
   },

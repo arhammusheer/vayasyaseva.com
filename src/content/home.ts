@@ -16,9 +16,10 @@ import type {
 /* ── Hero ── */
 
 export const hero: HeroContent = {
-  headline: "Compliance-First Workforce Operations for Industrial Sites",
+  headline:
+    "Compliance-First Industrial Services for Factories and Business Premises",
   subheadline:
-    "Structured workforce deployment for warehouses, factories, and facilities — with supervision, attendance integrity, and audit-ready documentation built into every engagement.",
+    "Workforce deployment, civil and fabrication works, housekeeping support, equipment provisioning, and machinery maintenance — delivered with supervision, compliance discipline, and audit-ready documentation.",
   primaryCta: { label: "Share Your Requirement", href: "/contact" },
   secondaryCta: { label: "Request a Site Assessment", href: "/contact?type=assessment" },
 };
@@ -70,7 +71,7 @@ export const servicesClusters: ServiceCluster[] = [
     id: "warehouse-logistics",
     title: "Warehouse & Logistics Operations",
     description:
-      "Loading, unloading, stacking, picking, dispatch, and staging — deployed with shift discipline, supervision, and structured reporting.",
+      "Loading, unloading, stacking, picking, dispatch, and staging — executed with supervision, shift discipline, and structured reporting.",
     roles: ["Loaders", "Pickers", "Stackers", "Dispatch Operators", "Staging Crew"],
     icon: "Warehouse",
     href: "/services#warehouse-logistics",
@@ -79,25 +80,52 @@ export const servicesClusters: ServiceCluster[] = [
     id: "manufacturing-shopfloor",
     title: "Manufacturing & Shopfloor Support",
     description:
-      "Helpers, packers, line feeders, and material handlers — deployed with safety orientation, attendance tracking, and output accountability.",
+      "Helpers, packers, line feeders, and material handlers — deployed with safety alignment, attendance tracking, and output accountability.",
     roles: ["Helpers", "Packers", "Line Feeders", "Material Handlers"],
     icon: "Factory",
     href: "/services#manufacturing-shopfloor",
   },
   {
     id: "housekeeping-facility",
-    title: "Facility & Hospitality Support",
+    title: "Housekeeping for Business & Factory Premises",
     description:
-      "Housekeeping, pantry, back-of-house, and guest-area staffing — with grooming standards, scheduling, and supervisory oversight.",
-    roles: ["Housekeepers", "Pantry Staff", "BOH Staff", "Guest-Area Staff"],
+      "Trained housekeeping, pantry, and facility support teams for offices, plants, and institutional premises.",
+    roles: ["Housekeepers", "Pantry Staff", "Facility Attendants", "BOH Staff"],
     icon: "Building2",
     href: "/services#housekeeping-facility",
+  },
+  {
+    id: "civil-works",
+    title: "Civil Works",
+    description:
+      "Civil repair, upkeep, and site modification works for industrial and commercial operations — planned and supervised for schedule adherence.",
+    roles: ["Civil Supervisors", "Masons", "Carpenters", "Civil Helpers"],
+    icon: "Hammer",
+    href: "/services#civil-works",
+  },
+  {
+    id: "fabrication-works",
+    title: "Fabrication & Installation",
+    description:
+      "MS/SS fabrication, fitting, and installation support for plant modifications and project execution.",
+    roles: ["Fitters", "Welders", "Fabrication Supervisors", "Rigging Helpers"],
+    icon: "Cog",
+    href: "/services#fabrication-works",
+  },
+  {
+    id: "machinery-maintenance",
+    title: "Machinery Maintenance & Equipment Support",
+    description:
+      "Preventive maintenance support, breakdown response coordination, and scoped equipment provisioning for ongoing operations.",
+    roles: ["Maintenance Technicians", "Equipment Coordinators", "Maintenance Helpers"],
+    icon: "Wrench",
+    href: "/services#machinery-maintenance",
   },
   {
     id: "workforce-operations",
     title: "Workforce Operations Management",
     description:
-      "Recruitment, onboarding, shift planning, discipline management, and supervision — the operating layer between your site and the deployed team.",
+      "Recruitment, onboarding, shift planning, discipline management, and supervision — the operating layer between your site and deployed teams.",
     roles: ["Supervisors", "Shift Coordinators", "Onboarding Leads"],
     icon: "Users",
     href: "/services#workforce-operations",
@@ -111,35 +139,35 @@ export const operationsTimeline: OperationStep[] = [
     step: 1,
     title: "Requirement Intake",
     description:
-      "Roles, headcount, shift patterns, compliance requirements, and site-specific conditions — documented and confirmed before any sourcing begins.",
+      "Scope, roles, crew size, shift patterns, compliance requirements, and site conditions — documented and confirmed before mobilization begins.",
     icon: "ClipboardList",
   },
   {
     step: 2,
-    title: "Workforce Planning",
+    title: "Resource & Work Planning",
     description:
-      "Sourcing, screening, and matching against your operational requirements. Selection criteria defined jointly with your operations team.",
+      "Workforce, technician crews, tools, and equipment planning aligned to your operational requirement. Selection and deployment criteria are confirmed jointly.",
     icon: "Search",
   },
   {
     step: 3,
-    title: "Onboarding & Verification",
+    title: "Onboarding, Safety & Mobilization",
     description:
-      "Document verification, ESIC/EPF enrolment, safety orientation, and site-specific induction — completed before first deployment day.",
+      "Document verification, ESIC/EPF enrolment where applicable, safety orientation, and site-specific induction — completed before start of work.",
     icon: "ShieldCheck",
   },
   {
     step: 4,
-    title: "Deployment & Supervision",
+    title: "Execution & Supervision",
     description:
-      "On-ground supervisors manage attendance, shift discipline, task allocation, and daily operational rhythm. Escalation protocols are active from day one.",
+      "On-ground supervisors manage attendance, task allocation, quality checkpoints, and daily operational rhythm across workforce and project works.",
     icon: "UserCheck",
   },
   {
     step: 5,
     title: "Reporting & Compliance Closure",
     description:
-      "Attendance records, payroll inputs, and compliance documentation delivered in Excel, CSV, or PDF — aligned to your internal workflow and calendar.",
+      "Attendance records, work completion logs, maintenance updates, and compliance documentation delivered in Excel, CSV, or PDF formats.",
     icon: "FileText",
   },
 ];
@@ -150,7 +178,7 @@ export const complianceItems: ComplianceItem[] = [
   {
     title: "Statutory Registrations",
     description:
-      "Registrations include ESIC, EPF, GST, and MSME. Current status details are shared during due diligence. Deployed workers are enrolled under applicable statutory schemes as part of the onboarding process.",
+      "Registrations include ESIC, EPF, GST, and MSME. Current status details are shared during due diligence. Deployed workers and service teams are onboarded under applicable statutory processes.",
     claim: "contractual",
     registrations: ["ESIC", "EPF", "GST", "MSME"],
   },
@@ -192,7 +220,7 @@ export const setuFeatures: SetuFeature[] = [
   {
     title: "Operational Visibility",
     description:
-      "Shift-level deployment tracking and supervisory reporting — providing structured visibility into workforce operations.",
+      "Shift-level deployment tracking and supervisory reporting — providing structured visibility across workforce and service operations.",
     icon: "Eye",
   },
   {
@@ -292,13 +320,14 @@ export const engagementModels: EngagementModel[] = [
 
 export const scopeBoundaries: ScopeBoundary[] = [
   {
-    category: "Workforce Deployment",
+    category: "Workforce & Housekeeping Services",
     included: [
       "Sourcing, screening, and onboarding",
       "ESIC/EPF enrolment",
       "On-site supervision and shift management",
       "Attendance verification and reporting",
       "Replacement deployment for attrition",
+      "Housekeeping teams for business and factory premises",
     ],
     notIncluded: [
       "Permanent placement or recruitment services",
@@ -312,38 +341,41 @@ export const scopeBoundaries: ScopeBoundary[] = [
     ],
   },
   {
-    category: "Compliance & Documentation",
+    category: "Civil, Fabrication & Maintenance Works",
     included: [
-      "Statutory filings (ESIC/EPF contributions)",
-      "Attendance registers and wage records",
-      "Monthly compliance packs",
+      "Civil repair and site-upkeep works",
+      "Fabrication and installation support",
+      "Routine machinery maintenance support",
+      "Supervisor-led execution tracking and reporting",
     ],
     notIncluded: [
-      "Client-side statutory obligations",
-      "Insurance beyond statutory requirements",
-      "Legal representation in disputes",
+      "Licensed structural design certification and authority approvals",
+      "OEM warranty adjudication or claim ownership",
+      "Major redesign engineering consultancy",
     ],
     onRequest: [
-      "Consolidated compliance pack for audit preparation",
-      "Custom documentation formats",
-      "Historical records retrieval beyond standard retention",
+      "Shutdown-window maintenance execution",
+      "Custom fabrication for plant modifications",
+      "Preventive maintenance calendars and tracking",
     ],
   },
   {
-    category: "Operations & Logistics",
+    category: "Equipment & Materials Support",
     included: [
-      "On-ground supervision",
-      "Escalation management",
-      "Shift planning and allocation",
+      "Operational equipment provisioning for scoped engagements",
+      "Cleaning tools, consumables, and usage support",
+      "Issue tracking, replacement planning, and stock visibility",
     ],
     notIncluded: [
       "Transport fleet operations (coordinated through partners when needed)",
-      "Infrastructure, equipment, or PPE supply",
-      "Product-specific technical training",
+      "Client capex approval and asset capitalization decisions",
+      "Statutory operator licenses mandated for specific equipment",
     ],
     onRequest: [
+      "Category-wise procurement planning",
+      "Rental equipment coordination for peak loads",
+      "Site-level equipment audit and optimization support",
       "Transport coordination through partner network",
-      "Site assessment and deployment planning",
       "Scoping for new locations outside primary region",
     ],
   },
@@ -381,6 +413,13 @@ export const faqs: FaqItem[] = [
     question: "How does VSPL decide which workers are deployed to each shift?",
     answer:
       "Where this capability is deployed, VSPL evaluates workforce readiness factors — including attendance history, role familiarity, site experience, and prevailing conditions — to support structured shift allocation. This process is designed to reduce deployment mismatches and improve roster stability. The scope and enablement of this capability are defined during engagement setup and vary by engagement.",
+    category: "operations",
+  },
+  {
+    question:
+      "Does VSPL also support civil works, fabrication, housekeeping, equipment provisioning, and machinery maintenance?",
+    answer:
+      "Yes. VSPL delivers these services as part of integrated industrial engagements. Scope can be workforce-only, project-only, or mixed, and is documented during requirement assessment with clear included/not-included boundaries.",
     category: "operations",
   },
   // Compliance
@@ -425,7 +464,7 @@ export const faqs: FaqItem[] = [
   {
     question: "What is the typical engagement model?",
     answer:
-      "VSPL operates on contractual engagement models — structured around headcount, shift patterns, and service scope. Terms are defined during the requirement assessment phase, with included/not-included boundaries documented.",
+      "VSPL operates on contractual engagement models structured around service scope, crew size, shift patterns, and execution windows. Engagements can combine workforce deployment, civil/fabrication work, housekeeping, equipment support, and machinery maintenance under a single operating framework.",
     category: "commercial",
   },
   {

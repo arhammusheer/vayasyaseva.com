@@ -17,7 +17,7 @@ import { JsonLd, breadcrumbSchema } from "@/lib/structured-data";
 export const metadata: Metadata = {
   title: "How We Operate",
   description:
-    "VSPL's five-step operating model from requirement intake to compliance closure, with defined escalation frameworks and a dual-plane governance approach.",
+    "VSPL's five-step operating model for workforce, civil/fabrication, housekeeping, equipment, and maintenance scopes with defined escalation and governance controls.",
 };
 
 const escalationLevels = [
@@ -60,7 +60,7 @@ export default function HowWeOperatePage() {
         <SectionHeader
           as="h1"
           title="How We Operate"
-          subtitle="A disciplined operating model designed for accountability, compliance, and operational continuity — from the first requirement discussion to ongoing reporting."
+          subtitle="A disciplined operating model designed for accountability, compliance, and operational continuity across integrated industrial service scopes."
         />
       </Section>
 
@@ -110,12 +110,13 @@ export default function HowWeOperatePage() {
               <h3 className="font-semibold">Execution Plane</h3>
             </div>
             <p className="mb-3 text-sm text-muted-foreground">
-              On-ground staffing operations, supervisor-led issue handling,
+              On-ground service operations, supervisor-led issue handling,
               client communication, and time-bound operational delivery.
             </p>
             <ul className="space-y-2">
               {[
                 "Day-to-day deployment coordination",
+                "Civil/fabrication and maintenance execution tracking",
                 "Supervisor-led exception handling",
                 "Direct communication with client teams",
                 "Shift handovers and operational continuity",
@@ -143,7 +144,7 @@ export default function HowWeOperatePage() {
       <Section>
         <SectionHeader
           title="The Five-Step Process"
-          subtitle="Every engagement follows this structured deployment cycle."
+          subtitle="Every engagement follows this structured execution cycle."
         />
 
         <div className="mx-auto max-w-3xl space-y-6">

@@ -18,7 +18,7 @@ import { JsonLd, breadcrumbSchema } from "@/lib/structured-data";
 export const metadata: Metadata = {
   title: "Industries",
   description:
-    "Workforce operations for manufacturing, warehousing, FMCG, institutional facilities, and hospitality-linked operations in the Haridwar–SIDCUL region.",
+    "Integrated industrial services for manufacturing, warehousing, FMCG, institutional facilities, and hospitality-linked operations in the Haridwar–SIDCUL region.",
 };
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -42,7 +42,7 @@ export default function IndustriesPage() {
         <SectionHeader
           as="h1"
           title="Industries We Serve"
-          subtitle="Workforce deployment models tailored to each industrial environment — aligned to sector-specific staffing patterns, risk controls, and reporting needs."
+          subtitle="Service delivery models tailored to each industrial environment — aligned to staffing patterns, execution risks, and reporting needs."
         />
       </Section>
 

@@ -5,7 +5,7 @@ export const termsContent = `
 
 ## 1. About This Website
 
-This website is operated by Vayasya Seva Private Limited ("VSPL", "we", "our"). It provides information about our workforce operations services and enables prospective clients to contact us regarding requirement inquiries.
+This website is operated by Vayasya Seva Private Limited ("VSPL", "we", "our"). It provides information about our industrial services, including workforce, civil, fabrication, housekeeping, equipment support, and maintenance offerings, and enables prospective clients to contact us regarding requirement inquiries.
 
 ## 2. Use of This Website
 

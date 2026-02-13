@@ -6,6 +6,10 @@ import {
   Users,
   TreePine,
   TrendingUp,
+  Hammer,
+  Cog,
+  Package,
+  Wrench,
   Check,
   X,
 } from "lucide-react";
@@ -20,7 +24,7 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Workforce deployment services for warehouses, factories, facilities, and industrial operations — with defined scope, supervision, and compliance coverage.",
+    "Integrated industrial services across workforce deployment, civil and fabrication works, housekeeping, equipment provisioning, and machinery maintenance.",
 };
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -30,6 +34,10 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Users,
   TreePine,
   TrendingUp,
+  Hammer,
+  Cog,
+  Package,
+  Wrench,
 };
 
 export default function ServicesPage() {
@@ -46,7 +54,7 @@ export default function ServicesPage() {
         <SectionHeader
           as="h1"
           title="Our Services"
-          subtitle="Structured workforce deployment across six operational domains — each with defined scope, roles, and compliance coverage."
+          subtitle="Integrated industrial services across ten operational domains — each with defined scope, roles, supervision, and compliance coverage."
         />
       </Section>
 

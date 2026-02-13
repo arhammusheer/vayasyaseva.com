@@ -22,7 +22,11 @@ const industryOptions = [
   "Manufacturing",
   "Warehousing & Logistics",
   "FMCG / Consumer Operations",
-  "Institutional Facilities",
+  "Housekeeping & Facility Operations",
+  "Civil Works",
+  "Fabrication Works",
+  "Machinery Maintenance",
+  "Equipment Provisioning",
   "Hospitality",
   "Other",
 ];
@@ -41,7 +45,7 @@ export function ContactForm() {
     resolver: zodResolver(contactSchema),
     defaultValues: {
       details: isAssessment
-        ? "Requesting a site assessment for workforce deployment."
+        ? "Requesting a site assessment for workforce, civil/fabrication, housekeeping, equipment, or machinery maintenance services."
         : "",
     },
   });
@@ -247,7 +251,7 @@ export function ContactForm() {
         <Label htmlFor="details">Requirement Details</Label>
         <Textarea
           id="details"
-          placeholder="Describe your workforce requirements, specific roles needed, or any other details..."
+          placeholder="Describe your requirement scope, site context, preferred start window, and any role/equipment/maintenance details..."
           rows={4}
           {...register("details")}
           className="mt-1.5"

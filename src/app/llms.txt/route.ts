@@ -6,7 +6,7 @@ export const revalidate = 3600;
 
 const llmsIndex = `# Vayasya Seva Private Limited
 
-> Compliance-first workforce operations partner for industrial and enterprise sites in Haridwar-SIDCUL, Uttarakhand, India.
+> Compliance-first industrial services partner for workforce, civil, fabrication, housekeeping, equipment, and maintenance scopes in Haridwar-SIDCUL, Uttarakhand, India.
 
 ## Canonical
 - ${baseUrl}

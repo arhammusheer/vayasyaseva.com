@@ -43,7 +43,7 @@ export function OperatingModelIntro() {
         />
         <div className="space-y-4 text-lg leading-relaxed text-muted-foreground">
           <p>
-            VSPL runs workforce operations through two coordinated planes:
+            VSPL runs industrial service operations through two coordinated planes:
             a <strong className="text-foreground">Setu Governance Plane</strong>{" "}
             that manages rules, compliance, and reporting centrally, and
             an <strong className="text-foreground">Execution Plane</strong>{" "}
@@ -74,7 +74,7 @@ const governanceBullets = [
 ];
 
 const executionBullets = [
-  "On-ground workforce deployment and coordination",
+  "On-ground workforce, housekeeping, civil, fabrication, and maintenance execution",
   "Supervisor-led exception handling and resolution",
   "Daily client communication and alignment",
   "Shift-level operational delivery and handovers",
@@ -310,7 +310,7 @@ export function ClientOutcomes() {
     <Section variant="subtle" id="client-outcomes">
       <SectionHeader
         title="What Clients Experience"
-        subtitle="Measurable operating outcomes that result from a governance-led workforce model."
+        subtitle="Measurable operating outcomes that result from a governance-led industrial services model."
       />
 
       <div className="grid gap-6 sm:grid-cols-2">
@@ -339,9 +339,9 @@ export function ClientOutcomes() {
 
 const governanceFaqs = [
   {
-    question: "Why not a generic staffing model?",
+    question: "Why not a generic staffing-only model?",
     answer:
-      "Generic staffing providers typically treat workforce deployment as a placement exercise — sourcing and billing, with limited operational accountability. VSPL's two-plane model embeds governance, compliance, and reporting into the operating structure. This reduces the compliance burden on client teams and provides structured visibility into workforce operations that ad-hoc staffing arrangements cannot support.",
+      "Generic staffing providers typically treat deployment as a placement exercise — sourcing and billing with limited operational accountability. VSPL's two-plane model embeds governance, compliance, and reporting into a broader industrial services structure that includes workforce, housekeeping, civil/fabrication works, and maintenance support. This reduces operational burden on client teams and provides structured visibility that ad-hoc arrangements cannot support.",
   },
   {
     question: "How are decisions handled during exceptions?",
@@ -416,8 +416,9 @@ const ownershipRows = [
   { area: "Shift discipline and task allocation", governance: false, execution: true, client: false },
   { area: "Exception escalation and resolution", governance: true, execution: true, client: false },
   { area: "Reporting and data delivery", governance: true, execution: false, client: false },
+  { area: "Civil/fabrication work execution", governance: false, execution: true, client: true },
   { area: "Production targets and output standards", governance: false, execution: false, client: true },
-  { area: "Site infrastructure and equipment", governance: false, execution: false, client: true },
+  { area: "Site infrastructure and equipment provisioning", governance: false, execution: true, client: true },
   { area: "Client-side HR policies", governance: false, execution: false, client: true },
 ];
 

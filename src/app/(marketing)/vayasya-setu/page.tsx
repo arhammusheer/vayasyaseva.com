@@ -129,10 +129,10 @@ export default function VayasyaSetuPage() {
               </span>
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-setu/80">
-              The internal operating engine that powers VSPL&apos;s workforce
-              deployment discipline. Setu manages the control layer — attendance,
-              compliance, documentation, and reporting — so that your site
-              operations receive structured outputs without managing the
+              The internal operating engine that powers VSPL&apos;s workforce and
+              service deployment discipline. Setu manages the control layer —
+              attendance, compliance, documentation, and reporting — so that your
+              site operations receive structured outputs without managing the
               underlying process.
             </p>
           </div>
@@ -185,7 +185,7 @@ export default function VayasyaSetuPage() {
               <h3 className="font-semibold">Execution Plane</h3>
             </div>
             <p className="mb-3 text-sm text-muted-foreground">
-              On-ground staffing operations, supervisor-led issue handling,
+              On-ground service operations, supervisor-led issue handling,
               client communication, and time-bound operational delivery.
             </p>
             <ul className="space-y-2">
@@ -214,7 +214,7 @@ export default function VayasyaSetuPage() {
       <Section>
         <SectionHeader
           title="What Setu Delivers"
-          subtitle="Core operational capabilities that support workforce deployment discipline."
+          subtitle="Core operational capabilities that support disciplined workforce and service execution."
         />
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

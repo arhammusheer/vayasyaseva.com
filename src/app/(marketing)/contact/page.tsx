@@ -7,7 +7,7 @@ import { JsonLd, localBusinessSchema, breadcrumbSchema } from "@/lib/structured-
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Vayasya Seva Private Limited. Share your workforce requirements or request compliance documentation.",
+    "Get in touch with Vayasya Seva Private Limited. Share workforce, civil, fabrication, housekeeping, equipment, or machinery maintenance requirements.",
 };
 
 export default function ContactPage() {
@@ -28,8 +28,9 @@ export default function ContactPage() {
               Get in Touch
             </h1>
             <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-              Share your workforce requirements and we&apos;ll respond with an
-              initial assessment.
+              Share your requirement and we&apos;ll respond with an initial
+              assessment for workforce, civil/fabrication, housekeeping,
+              equipment, or machinery maintenance scope.
             </p>
 
             <div className="mt-8 space-y-4">

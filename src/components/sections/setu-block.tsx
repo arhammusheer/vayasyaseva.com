@@ -28,8 +28,9 @@ export function SetuBlock() {
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
             The internal operating engine that manages the controls layer of
-            VSPL&apos;s workforce deployment — attendance integrity, structured
-            documentation, payroll-aligned outputs, and compliance workflows.
+            VSPL&apos;s industrial service delivery — attendance integrity,
+            structured documentation, payroll-aligned outputs, and compliance
+            workflows.
           </p>
           <Button asChild variant="outline" className="mt-6">
             <Link href="/vayasya-setu">

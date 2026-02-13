@@ -4,6 +4,9 @@ import {
   Factory,
   Building2,
   Users,
+  Hammer,
+  Cog,
+  Wrench,
 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -17,6 +20,9 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Factory,
   Building2,
   Users,
+  Hammer,
+  Cog,
+  Wrench,
 };
 
 export function ServiceClusters() {
@@ -25,7 +31,7 @@ export function ServiceClusters() {
       <Reveal>
         <SectionHeader
           title="What We Deliver"
-          subtitle="Structured workforce deployment across four core operational domains — each backed by supervision, compliance, and reporting discipline."
+          subtitle="Integrated industrial services across seven core operational domains — each backed by supervision, compliance, and reporting discipline."
         />
       </Reveal>
 

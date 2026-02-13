@@ -9,7 +9,7 @@ export function ScopeBoundaries() {
       <Reveal>
         <SectionHeader
           title="Scope Boundaries"
-          subtitle="Transparency on what VSPL delivers by default, what is not included, and what is available on request."
+          subtitle="Transparency on what VSPL delivers by default, what remains out of scope, and what can be added on request."
         />
       </Reveal>
 

@@ -5,26 +5,26 @@ export const industries: IndustrySector[] = [
     id: "manufacturing",
     title: "Manufacturing",
     description:
-      "Production support workforce for shopfloors, assembly lines, and packaging operations — deployed with shift discipline and supervisory controls.",
+      "Integrated manufacturing support covering shopfloor workforce deployment, fabrication requirements, civil upkeep, and machinery maintenance support.",
     staffingPattern:
-      "Shift-based deployment of helpers, packers, line feeders, and material handlers. Headcount aligned to production schedules.",
+      "Shift-based deployment of helpers, packers, line feeders, technicians, and maintenance support crews aligned to production schedules.",
     riskControlNeeds:
-      "Safety induction, PPE discipline, attendance integrity, shift handover protocols, and incident reporting structures.",
+      "Safety induction, permit discipline, attendance integrity, shutdown coordination, and incident reporting structures.",
     reportingCadence:
-      "Daily attendance, weekly output summaries, monthly compliance filings.",
+      "Daily attendance and work logs, weekly execution summaries, monthly compliance filings.",
     icon: "Factory",
   },
   {
     id: "warehousing-logistics",
     title: "Warehousing & Logistics",
     description:
-      "Loading, unloading, picking, stacking, and dispatch workforce for warehouses, distribution centres, and logistics hubs.",
+      "Loading, unloading, picking, stacking, dispatch, and warehouse support services for logistics hubs and distribution centres.",
     staffingPattern:
       "Volume-driven deployment — scales with throughput requirements. Single or multi-shift operations.",
     riskControlNeeds:
       "Material handling safety, inventory accuracy discipline, staging protocols, and dispatch verification.",
     reportingCadence:
-      "Daily attendance and deployment reports, shift-wise output logs, monthly compliance packs.",
+      "Daily attendance and deployment reports, shift-wise output logs, and monthly compliance packs.",
     icon: "Warehouse",
   },
   {
@@ -35,7 +35,7 @@ export const industries: IndustrySector[] = [
     staffingPattern:
       "Seasonal and demand-responsive deployment. Rapid ramp-up capability for peak periods.",
     riskControlNeeds:
-      "Quality handling standards, hygiene protocols, batch tracking discipline, and line-speed compliance.",
+      "Quality handling standards, hygiene protocols, batch tracking discipline, and line-speed compliance requirements.",
     reportingCadence:
       "Daily deployment and output reports, weekly quality compliance, monthly statutory filings.",
     icon: "Package",
@@ -44,9 +44,9 @@ export const industries: IndustrySector[] = [
     id: "institutional-facilities",
     title: "Institutional Facilities",
     description:
-      "Housekeeping, pantry, grounds maintenance, and facility support for corporate offices, campuses, and institutional sites.",
+      "Housekeeping for business and factory premises, pantry support, grounds maintenance, and facility operations support.",
     staffingPattern:
-      "Stable deployment with defined schedules. Role-specific teams for housekeeping, pantry, and grounds.",
+      "Stable deployment with defined schedules and trained labour teams for housekeeping, pantry, and grounds.",
     riskControlNeeds:
       "Grooming standards, visitor-area protocols, facility access controls, and hygiene compliance.",
     reportingCadence:
@@ -57,7 +57,7 @@ export const industries: IndustrySector[] = [
     id: "hospitality-linked",
     title: "Hospitality-Linked Operations",
     description:
-      "Back-of-house, pantry, housekeeping, and guest-area support for hospitality and hospitality-adjacent operations.",
+      "Back-of-house, pantry, housekeeping, and guest-area support with trained labour for hospitality and hospitality-adjacent operations.",
     staffingPattern:
       "Split-shift and round-the-clock deployment. Role separation between guest-facing and back-of-house.",
     riskControlNeeds:

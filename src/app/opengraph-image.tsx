@@ -3,7 +3,7 @@ import { ImageResponse } from "next/og";
 export const runtime = "edge";
 
 export const alt =
-  "Vayasya Seva Private Limited — Compliance-First Workforce Operations";
+  "Vayasya Seva Private Limited — Compliance-First Industrial Services";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -58,7 +58,7 @@ export default function OgImage() {
               lineHeight: 1.4,
             }}
           >
-            Compliance-First Workforce Operations
+            Compliance-First Industrial Services
           </div>
           <div
             style={{
@@ -71,9 +71,9 @@ export default function OgImage() {
               marginTop: "8px",
             }}
           >
-            Structured workforce deployment for warehouses, factories, and
-            facilities — with supervision, attendance integrity, and audit-ready
-            documentation.
+            Workforce deployment, civil and fabrication works, housekeeping,
+            equipment provisioning, and machinery maintenance with compliance
+            discipline.
           </div>
           <div
             style={{

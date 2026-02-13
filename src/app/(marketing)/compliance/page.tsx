@@ -27,7 +27,7 @@ import { JsonLd, breadcrumbSchema } from "@/lib/structured-data";
 export const metadata: Metadata = {
   title: "Compliance",
   description:
-    "VSPL's compliance framework — ESIC, EPF, GST, MSME registrations, audit-ready documentation, and governance controls.",
+    "VSPL's compliance framework across workforce and industrial service engagements — ESIC, EPF, GST, MSME registrations, audit-ready documentation, and governance controls.",
 };
 
 const registrations = [
@@ -121,7 +121,7 @@ export default function CompliancePage() {
       <Section>
         <SectionHeader
           title="Documentation Matrix"
-          subtitle="Standard documentation maintained and delivered as part of workforce engagements."
+          subtitle="Standard documentation maintained and delivered as part of service engagements."
         />
 
         <div className="mx-auto max-w-3xl overflow-hidden rounded-lg border border-border">

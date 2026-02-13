@@ -423,22 +423,22 @@ export default function VayasyaSetuPage() {
       </Section>
 
       {/* Data Governance — dark setu closer */}
-      <section className="bg-setu py-16 sm:py-20 lg:py-24">
+      <section className="bg-setu-100 py-16 sm:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <div className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-setu-foreground/10">
-              <Shield className="h-6 w-6 text-setu-foreground" />
+              <Shield className="h-6 w-6 text-setu" />
             </div>
-            <h2 className="mt-4 text-2xl font-bold text-setu-foreground">
+            <h2 className="mt-4 text-2xl font-bold text-setu">
               Data Accuracy & Governance
             </h2>
-            <p className="mt-4 text-lg leading-relaxed text-setu-foreground/70">
+            <p className="mt-4 text-lg leading-relaxed text-setu/70">
               Attendance data, compliance records, and payroll inputs processed
               through Vayasya Setu follow defined verification and audit-trail
               protocols. Data integrity is maintained through structured workflows
               — not ad-hoc processes.
             </p>
-            <p className="mt-4 text-sm text-setu-foreground/60">
+            <p className="mt-4 text-sm text-setu/60">
               Setu is an internal VSPL system. Clients receive outputs, not
               software access — unless optional visibility is agreed during
               engagement scoping.

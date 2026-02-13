@@ -15,6 +15,7 @@ import { Section, SectionHeader } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
 import { services } from "@/content/services";
 import { JsonLd, servicePageSchema, breadcrumbSchema } from "@/lib/structured-data";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Services",
@@ -51,13 +52,18 @@ export default function ServicesPage() {
 
       {services.map((service, index) => {
         const Icon = iconMap[service.icon];
-        const isSubtle = index % 2 !== 0;
+        const isBanded = index % 2 !== 0;
+        const isLast = index === services.length - 1;
 
         return (
           <Section
             key={service.id}
             id={service.id}
-            variant={isSubtle ? "subtle" : "default"}
+            className={cn(
+              "border-t border-gold/20 py-16 sm:py-20 lg:py-24",
+              isBanded ? "bg-gold/5" : "bg-background",
+              isLast && "border-b border-gold/20"
+            )}
           >
             <div className="grid gap-8 lg:grid-cols-3">
               {/* Service Info */}
@@ -104,7 +110,7 @@ export default function ServicesPage() {
               {/* Included / Not Included */}
               <div className="space-y-4">
                 <Card>
-                  <CardHeader className="pb-3">
+                  <CardHeader className="pb-1">
                     <CardTitle className="text-base text-success">
                       Included in Scope
                     </CardTitle>

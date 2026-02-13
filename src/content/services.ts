@@ -23,7 +23,12 @@ export const services: ServiceDetail[] = [
       "Warehouse General Helpers",
       "Inventory Support Staff",
     ],
-    shiftPatterns: ["Single shift", "Double shift", "Rotational", "Seasonal ramp-up"],
+    shiftPatterns: [
+      "Single shift",
+      "Double shift",
+      "Rotational",
+      "Seasonal ramp-up",
+    ],
     included: [
       "Workforce sourcing and screening",
       "ESIC/EPF enrolment",
@@ -31,11 +36,11 @@ export const services: ServiceDetail[] = [
       "Attendance and shift management",
       "Payroll-aligned reporting",
       "Replacement deployment for attrition",
+      "Specialized forklift or MHE operators (if required)",
     ],
     notIncluded: [
       "Warehouse infrastructure or equipment",
       "Transport/fleet operations",
-      "Specialized forklift or MHE certification",
       "Client-side ERP or WMS access provisioning",
     ],
     icon: "Warehouse",
@@ -53,7 +58,12 @@ export const services: ServiceDetail[] = [
       "Quality Check Assistants",
       "Housekeeping (Shopfloor)",
     ],
-    shiftPatterns: ["Single shift", "Double shift", "Three-shift rotation", "Project-based"],
+    shiftPatterns: [
+      "Single shift",
+      "Double shift",
+      "Three-shift rotation",
+      "Project-based",
+    ],
     included: [
       "Workforce sourcing and screening",
       "ESIC/EPF enrolment",
@@ -82,7 +92,12 @@ export const services: ServiceDetail[] = [
       "Back-of-House Staff",
       "Facility Maintenance Helpers",
     ],
-    shiftPatterns: ["Day shift", "Split shift", "Round-the-clock", "Event-based"],
+    shiftPatterns: [
+      "Day shift",
+      "Split shift",
+      "Round-the-clock",
+      "Event-based",
+    ],
     included: [
       "Staff sourcing and grooming standards",
       "ESIC/EPF enrolment",

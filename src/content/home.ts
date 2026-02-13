@@ -95,22 +95,13 @@ export const servicesClusters: ServiceCluster[] = [
     href: "/services#housekeeping-facility",
   },
   {
-    id: "civil-works",
-    title: "Civil Works",
+    id: "civil-fabrication-works",
+    title: "Civil & Fabrication Works",
     description:
-      "Civil repair, upkeep, and site modification works for industrial and commercial operations — planned and supervised for schedule adherence.",
-    roles: ["Civil Supervisors", "Masons", "Carpenters", "Civil Helpers"],
+      "Civil repair, fabrication, fitting, and installation support for plant modifications and industrial project execution.",
+    roles: ["Civil Supervisors", "Masons", "Carpenters", "Fitters", "Welders"],
     icon: "Hammer",
     href: "/services#civil-works",
-  },
-  {
-    id: "fabrication-works",
-    title: "Fabrication & Installation",
-    description:
-      "MS/SS fabrication, fitting, and installation support for plant modifications and project execution.",
-    roles: ["Fitters", "Welders", "Fabrication Supervisors", "Rigging Helpers"],
-    icon: "Cog",
-    href: "/services#fabrication-works",
   },
   {
     id: "machinery-maintenance",

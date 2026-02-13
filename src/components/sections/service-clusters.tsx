@@ -5,7 +5,6 @@ import {
   Building2,
   Users,
   Hammer,
-  Cog,
   Wrench,
 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
@@ -21,7 +20,6 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Building2,
   Users,
   Hammer,
-  Cog,
   Wrench,
 };
 
@@ -31,7 +29,7 @@ export function ServiceClusters() {
       <Reveal>
         <SectionHeader
           title="What We Deliver"
-          subtitle="Integrated industrial services across seven core operational domains — each backed by supervision, compliance, and reporting discipline."
+          subtitle="Integrated industrial services across six core operational domains — each backed by supervision, compliance, and reporting discipline."
         />
       </Reveal>
 

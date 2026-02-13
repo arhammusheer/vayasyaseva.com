@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type MouseEvent } from "react";
 import { usePathname } from "next/navigation";
 import { Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,13 @@ function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
 }
 
+function normalizePath(path: string) {
+  if (path.length > 1 && path.endsWith("/")) {
+    return path.slice(0, -1);
+  }
+  return path;
+}
+
 export function Header() {
   const pathname = usePathname();
   const isHomePage = pathname === "/";
@@ -26,6 +33,25 @@ export function Header() {
 
   const overlay1Ref = useRef<HTMLDivElement>(null);
   const overlay2Ref = useRef<HTMLDivElement>(null);
+
+  const clearHeroOverlayStyles = useCallback(() => {
+    const el1 = overlay1Ref.current;
+    const el2 = overlay2Ref.current;
+
+    if (el1) {
+      el1.style.removeProperty("backdrop-filter");
+      el1.style.removeProperty("-webkit-backdrop-filter");
+      el1.style.removeProperty("background");
+      el1.style.removeProperty("mask-image");
+      el1.style.removeProperty("-webkit-mask-image");
+    }
+
+    if (el2) {
+      el2.style.removeProperty("background");
+      el2.style.removeProperty("mask-image");
+      el2.style.removeProperty("-webkit-mask-image");
+    }
+  }, []);
 
   const applyHeroProgress = useCallback((p: number) => {
     const el1 = overlay1Ref.current;
@@ -97,6 +123,12 @@ export function Header() {
   }, []);
 
   useEffect(() => {
+    if (isHomePage) return;
+
+    clearHeroOverlayStyles();
+  }, [isHomePage, clearHeroOverlayStyles]);
+
+  useEffect(() => {
     if (!isHomePage) return;
 
     let frame = 0;
@@ -152,12 +184,29 @@ export function Header() {
   const showVideoText = isHomePage && shouldOverlayVideo;
   const shouldBlendAtTop = !isHomePage && isAtTop;
 
+  const handleNavigationClick = (
+    event: MouseEvent<HTMLAnchorElement>,
+    href: string,
+    closeMenu = false
+  ) => {
+    if (closeMenu) {
+      setOpen(false);
+    }
+
+    if (normalizePath(href) !== normalizePath(pathname)) {
+      return;
+    }
+
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <header
       className="sticky top-0 z-50 w-full overflow-hidden transition-colors duration-300"
     >
       <div
-        ref={isHomePage ? overlay1Ref : undefined}
+        ref={overlay1Ref}
         aria-hidden="true"
         className={cn(
           "pointer-events-none absolute inset-0",
@@ -169,7 +218,7 @@ export function Header() {
         )}
       />
       <div
-        ref={isHomePage ? overlay2Ref : undefined}
+        ref={overlay2Ref}
         aria-hidden="true"
         className={cn(
           "pointer-events-none absolute inset-0",
@@ -203,6 +252,7 @@ export function Header() {
             <Link
               key={item.href}
               href={item.href}
+              onClick={(event) => handleNavigationClick(event, item.href)}
               className={cn(
                 "font-display rounded-md px-3 py-2 text-sm font-medium transition-colors",
                 showVideoText
@@ -255,7 +305,7 @@ export function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  onClick={() => setOpen(false)}
+                  onClick={(event) => handleNavigationClick(event, item.href, true)}
                   className="font-display rounded-md px-3 py-2.5 text-base font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                 >
                   {item.label}

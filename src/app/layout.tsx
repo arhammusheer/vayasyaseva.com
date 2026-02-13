@@ -3,13 +3,15 @@ import "./globals.css";
 import { JsonLd, organizationSchema } from "@/lib/structured-data";
 import { brandDisplay, brandMono, brandSerif } from "@/lib/fonts";
 
+const appDescription =
+  "Vayasya Seva Private Limited delivers compliance-first workforce operations for factories and industrial sites, covering supervised deployment, attendance integrity, ESIC/EPF documentation, and audit-ready reporting.";
+
 export const metadata: Metadata = {
   title: {
     default: "Vayasya Seva Private Limited | Compliance-First Workforce Operations",
     template: "%s | Vayasya Seva Private Limited",
   },
-  description:
-    "Compliance-first workforce operations partner for industrial and enterprise sites. Structured deployment with supervision, attendance integrity, and audit-ready reporting.",
+  description: appDescription,
   keywords: [
     "workforce operations",
     "industrial workforce",
@@ -36,8 +38,7 @@ export const metadata: Metadata = {
     url: "https://www.vayasyaseva.com",
     siteName: "Vayasya Seva Private Limited",
     title: "Vayasya Seva Private Limited | Compliance-First Workforce Operations",
-    description:
-      "Compliance-first workforce operations partner for industrial and enterprise sites. Structured deployment with supervision, attendance integrity, and audit-ready reporting.",
+    description: appDescription,
     images: [
       {
         url: "/opengraph-image",
@@ -50,8 +51,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Vayasya Seva Private Limited | Compliance-First Workforce Operations",
-    description:
-      "Compliance-first workforce operations partner for industrial and enterprise sites. Structured deployment with supervision, attendance integrity, and audit-ready reporting.",
+    description: appDescription,
     images: ["/opengraph-image"],
   },
   // verification: { google: "YOUR_GOOGLE_VERIFICATION_CODE" },

@@ -204,7 +204,7 @@ export function Header() {
               key={item.href}
               href={item.href}
               className={cn(
-                "rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                "font-display rounded-md px-3 py-2 text-sm font-medium transition-colors",
                 showVideoText
                   ? "text-white/85 hover:text-gold"
                   : "text-muted-foreground hover:text-gold-900"
@@ -220,7 +220,7 @@ export function Header() {
           <a
             href={`tel:${siteConfig.phone}`}
             className={cn(
-              "flex items-center gap-1.5 text-sm font-medium transition-colors",
+              "font-data flex items-center gap-1.5 text-sm font-medium transition-colors",
               showVideoText
                 ? "text-white/85 hover:text-white"
                 : "text-muted-foreground hover:text-foreground"
@@ -256,7 +256,7 @@ export function Header() {
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="rounded-md px-3 py-2.5 text-base font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                  className="font-display rounded-md px-3 py-2.5 text-base font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                 >
                   {item.label}
                 </Link>
@@ -264,7 +264,7 @@ export function Header() {
               <div className="mt-4 border-t pt-4">
                 <a
                   href={`tel:${siteConfig.phone}`}
-                  className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground"
+                  className="font-data flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground"
                 >
                   <Phone className="h-4 w-4" />
                   {siteConfig.phone}

@@ -14,9 +14,12 @@
  */
 
 @theme inline {
-  /* Fonts — Hind primary, JetBrains Mono for data/IDs/tables */
+  /* Fonts — Anek Devanagari display, Hind body, JetBrains Mono data */
+  --font-display: var(--font-anek);
+  --font-serif: var(--font-hind);
   --font-sans: var(--font-hind);
-  --font-mono: var(--font-data);
+  --font-mono: var(--font-jetbrains);
+  --font-data: var(--font-jetbrains);
 
   /* Shadcn color mappings */
   --color-background: var(--background);
@@ -311,7 +314,21 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-serif;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display;
+  }
+  code,
+  kbd,
+  pre,
+  samp {
+    @apply font-mono;
   }
 }
 

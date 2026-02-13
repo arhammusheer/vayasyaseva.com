@@ -90,8 +90,9 @@ VSPL is not a staffing agency. The messaging must position the company as an **o
 
 | Role | Font | Fallback | Weight range |
 |------|------|----------|--------------|
-| Primary (headings + body) | **Hind** | system-ui, sans-serif | 400, 500, 600, 700 |
-| Fallback / UI elements | **Inter** | system-ui, sans-serif | 400, 500, 600 |
+| Display (headlines, nav, section titles) | **Anek Devanagari** | system-ui, sans-serif | 500, 600, 700 |
+| Serif (body, paragraphs, long-form copy) | **Hind** | system-ui, sans-serif | 300, 400, 500, 600, 700 |
+| Mono (IDs, metrics, labels, code/data) | **JetBrains Mono** | ui-monospace, monospace | 400, 500 |
 
 ### Type Scale
 
@@ -108,6 +109,9 @@ VSPL is not a staffing agency. The messaging must position the company as an **o
 - Never use more than two heading levels on a single viewport without body text between them.
 - Body text minimum 16px. Never smaller for paragraph content.
 - Line length capped at ~72 characters for readability on wide screens.
+- Use `Display` on semantic headings (`h1`-`h6`) and title primitives (cards, dialogs, sheets, accordions).
+- Use `Serif` as the default page/body family.
+- Use `Mono` for numeric or machine-like content (status codes, phone, GSTIN/MSME, data badges, inline code).
 
 ---
 

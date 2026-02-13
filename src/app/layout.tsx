@@ -1,21 +1,7 @@
 import type { Metadata } from "next";
-import { Hind, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { JsonLd, organizationSchema } from "@/lib/structured-data";
-
-const hind = Hind({
-  variable: "--font-hind",
-  subsets: ["latin", "devanagari"],
-  weight: ["300", "400", "500", "600", "700"],
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-data",
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  display: "swap",
-});
+import { brandDisplay, brandMono, brandSerif } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   title: {
@@ -79,7 +65,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${hind.variable} ${jetbrainsMono.variable} font-sans antialiased`}
+        className={`${brandDisplay.variable} ${brandSerif.variable} ${brandMono.variable} font-serif antialiased`}
       >
         <JsonLd data={organizationSchema()} />
         {children}

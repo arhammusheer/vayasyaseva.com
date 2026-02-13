@@ -13,7 +13,7 @@
 | Pre-Phase 0 | Project bootstrap (Next.js + shadcn) | DONE | All deps installed, build passes |
 | Phase 0 | Project charter & docs | DONE | 4 docs in `/docs/` |
 | Phase 1 | Technical setup & folder architecture | DONE | Folder structure, fonts, tokens |
-| Phase 2 | Design system & tokens | DONE | Brand colors, Hind font, Section/SectionHeader primitives |
+| Phase 2 | Design system & tokens | DONE | Brand colors, Anek Devanagari/Hind/JetBrains Mono font system, Section/SectionHeader primitives |
 | Phase 3 | Content modeling | DONE | Typed content in `src/content/` — no stubs or placeholders |
 | Phase 4 | Global layout & navigation | DONE | Header (sticky + mobile sheet), footer, marketing layout |
 | Phase 5 | Homepage | DONE | 9 sections: hero, trust, services, timeline, compliance, setu, geography, FAQ, CTA |
@@ -215,7 +215,7 @@ The hero secondary CTA links to `/contact?type=assessment` but the contact form 
 
 ### Brand system
 - Color tokens: VSPL gold (#C97A2B), slate text, white backgrounds
-- Typography: Hind (with Devanagari) primary, Inter fallback
+- Typography: Anek Devanagari (display), Hind (body with Devanagari), JetBrains Mono (data/mono)
 - Consistent section padding, max-width, spacing
 - Reusable `Section`, `SectionHeader`, `CtaBlock` components
 

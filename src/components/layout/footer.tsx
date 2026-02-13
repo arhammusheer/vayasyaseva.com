@@ -43,7 +43,7 @@ export function Footer() {
                 </li>
                 <li className="flex items-center gap-2 text-sm text-gold-200/80">
                   <Phone className="h-4 w-4 shrink-0" />
-                  {siteConfig.phone}
+                  <span className="font-data">{siteConfig.phone}</span>
                 </li>
                 <li className="flex items-center gap-2 text-sm text-gold-200/80">
                   <MapPin className="h-4 w-4 shrink-0" />
@@ -123,7 +123,7 @@ export function Footer() {
               height={120}
               className="h-16 w-auto sm:h-24 lg:h-30"
             />
-            <span className="text-[clamp(2.4rem,13vw,7rem)] font-bold leading-none tracking-[-0.03em] text-white">
+            <span className="font-display text-[clamp(2.4rem,13vw,7rem)] font-bold leading-none tracking-[-0.03em] text-white/50">
               Vayasya
             </span>
           </div>
@@ -137,8 +137,8 @@ export function Footer() {
             reserved.
           </p>
           <div className="flex flex-wrap gap-4">
-            <span>GSTIN: {footerLinks.legal.gstin}</span>
-            <span>MSME: {footerLinks.legal.msme}</span>
+            <span className="font-data">GSTIN: {footerLinks.legal.gstin}</span>
+            <span className="font-data">MSME: {footerLinks.legal.msme}</span>
           </div>
         </div>
       </div>

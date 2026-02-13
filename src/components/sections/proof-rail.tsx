@@ -2,7 +2,7 @@ import { proofRail } from "@/content/home";
 
 export function ProofRail() {
   return (
-    <section className="bg-foreground/95">
+    <section className="bg-neutral-950">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-6 gap-y-2 px-4 py-3 sm:px-6 lg:px-8">
         {proofRail.map((item) => (
           <div key={item.label} className="flex items-center gap-1.5 text-sm">

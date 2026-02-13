@@ -17,7 +17,7 @@ import type {
 
 export const hero: HeroContent = {
   headline:
-    "Compliance-First Industrial Services for Factories and Business Premises",
+    "Compliance-First Services for Industrial Sites",
   subheadline:
     "Workforce deployment, civil and fabrication works, housekeeping support, equipment provisioning, and machinery maintenance — delivered with supervision, compliance discipline, and audit-ready documentation.",
   primaryCta: { label: "Share Your Requirement", href: "/contact" },

@@ -7,7 +7,7 @@ import { hero } from "@/content/home";
 export function Hero() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:py-40">
-      <div className="max-w-3xl">
+      <div className="max-w-4xl">
         <Reveal>
           <h1 className="text-balance text-4xl font-bold tracking-tight text-background sm:text-5xl lg:text-6xl">
             {hero.headline}

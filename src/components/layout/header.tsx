@@ -11,6 +11,10 @@ import { cn } from "@/lib/utils";
 import { navigation, siteConfig } from "@/content/site";
 
 const HEADER_HEIGHT = 65;
+const DARK_SECTION_EDGE_BLEED = 1;
+const DARK_SECTION_SELECTOR = "[data-header-theme='dark']";
+const CTA_SECTION_SELECTOR = "[data-header-theme='dark'][data-header-theme-role='cta']";
+const FOOTER_SECTION_SELECTOR = "[data-header-theme='dark'][data-header-theme-role='footer']";
 
 function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
@@ -55,9 +59,28 @@ export function Header() {
   }, []);
 
   const getDarkSectionProgress = useCallback(() => {
-    const darkSections = document.querySelectorAll<HTMLElement>("[data-header-theme='dark']");
-    const headerTop = 0;
-    const headerBottom = HEADER_HEIGHT;
+    const headerTop = -DARK_SECTION_EDGE_BLEED;
+    const headerBottom = HEADER_HEIGHT + DARK_SECTION_EDGE_BLEED;
+
+    // If CTA exists on the page, treat CTA -> footer as a single dark zone.
+    // This prevents a second transition from triggering at the CTA/footer seam.
+    const ctaSection = document.querySelector<HTMLElement>(CTA_SECTION_SELECTOR);
+    if (ctaSection) {
+      const ctaRect = ctaSection.getBoundingClientRect();
+      const footerSection = document.querySelector<HTMLElement>(FOOTER_SECTION_SELECTOR);
+      const footerRect = footerSection?.getBoundingClientRect();
+
+      const zoneTop = ctaRect.top;
+      const zoneBottom = footerRect ? Math.max(ctaRect.bottom, footerRect.bottom) : ctaRect.bottom;
+
+      const overlap = Math.max(
+        0,
+        Math.min(headerBottom, zoneBottom) - Math.max(headerTop, zoneTop)
+      );
+      return Math.min(1, overlap / HEADER_HEIGHT);
+    }
+
+    const darkSections = document.querySelectorAll<HTMLElement>(DARK_SECTION_SELECTOR);
     let maxProgress = 0;
 
     for (const section of darkSections) {
@@ -156,6 +179,15 @@ export function Header() {
       setDarkSectionProgress((current) =>
         current === nextProgress ? current : nextProgress
       );
+
+      if (isHomePage) return;
+
+      if (nextProgress > 0) {
+        applyHeroProgress(1 - nextProgress);
+        return;
+      }
+
+      clearHeroOverlayStyles();
     };
 
     const requestUpdate = () => {
@@ -173,7 +205,13 @@ export function Header() {
       window.removeEventListener("scroll", requestUpdate);
       window.removeEventListener("resize", requestUpdate);
     };
-  }, [pathname, getDarkSectionProgress]);
+  }, [
+    pathname,
+    isHomePage,
+    getDarkSectionProgress,
+    applyHeroProgress,
+    clearHeroOverlayStyles,
+  ]);
 
   useEffect(() => {
     if (!isHomePage) return;
@@ -181,9 +219,17 @@ export function Header() {
     let frame = 0;
 
     const updateHeaderMode = () => {
-      if (darkSectionProgress > 0) {
-        setShouldOverlayVideo(darkSectionProgress >= 0.5);
-        applyHeroProgress(1 - darkSectionProgress);
+      const activeDarkProgress = getDarkSectionProgress();
+      setDarkSectionProgress((current) =>
+        current === activeDarkProgress ? current : activeDarkProgress
+      );
+
+      if (activeDarkProgress > 0) {
+        const darkTextMode = activeDarkProgress >= 0.5;
+        setShouldOverlayVideo((current) =>
+          current === darkTextMode ? current : darkTextMode
+        );
+        applyHeroProgress(1 - activeDarkProgress);
         return;
       }
 
@@ -232,18 +278,7 @@ export function Header() {
       window.removeEventListener("scroll", requestUpdate);
       window.removeEventListener("resize", requestUpdate);
     };
-  }, [isHomePage, darkSectionProgress, applyHeroProgress]);
-
-  useEffect(() => {
-    if (isHomePage) return;
-
-    if (darkSectionProgress > 0) {
-      applyHeroProgress(1 - darkSectionProgress);
-      return;
-    }
-
-    clearHeroOverlayStyles();
-  }, [isHomePage, darkSectionProgress, applyHeroProgress, clearHeroOverlayStyles]);
+  }, [isHomePage, getDarkSectionProgress, applyHeroProgress]);
 
   const showVideoText = (isHomePage && shouldOverlayVideo) || darkSectionProgress >= 0.5;
   const shouldBlendAtTop = (!isHomePage && isAtTop) || darkSectionProgress > 0;

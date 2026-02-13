@@ -8,6 +8,7 @@ export function CtaBlock() {
   return (
     <section
       data-header-theme="dark"
+      data-header-theme-role="cta"
       className="bg-gradient-to-b from-gold-950 to-black py-16 sm:py-20"
     >
       <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">

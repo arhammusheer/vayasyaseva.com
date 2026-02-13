@@ -8,6 +8,7 @@ export function Footer() {
   return (
     <footer
       data-header-theme="dark"
+      data-header-theme-role="footer"
       className="relative overflow-hidden bg-black py-10 text-gold-100 sm:py-12"
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">

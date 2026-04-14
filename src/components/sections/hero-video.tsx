@@ -1,25 +1,14 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { usePrefersReducedMotion } from "@/components/motion/use-reduced-motion";
+import { HeroVideoPlayer } from "./hero-video-player";
 
 const POSTER_SRC = "/assets/video/hero/poster.png";
-const LOAD_DELAY_MS = 1500;
-const MIN_VIDEO_WIDTH = 1024;
-const SLOW_CONNECTION_TYPES = new Set(["slow-2g", "2g", "3g"]);
-
-const HeroVideoPlayer = dynamic(
-  () =>
-    import("./hero-video-player").then((mod) => ({
-      default: mod.HeroVideoPlayer,
-    })),
-  { ssr: false }
-);
+const LOAD_DELAY_MS = 300;
 
 interface NetworkInformationLike {
-  effectiveType?: string;
   saveData?: boolean;
 }
 
@@ -32,26 +21,18 @@ type NavigatorWithConnection = Navigator & {
 export function HeroVideo() {
   const prefersReducedMotion = usePrefersReducedMotion();
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const navigatorWithConnection =
+    typeof navigator === "undefined"
+      ? null
+      : (navigator as NavigatorWithConnection);
+  const connection =
+    navigatorWithConnection?.connection ??
+    navigatorWithConnection?.mozConnection ??
+    navigatorWithConnection?.webkitConnection;
+  const canLoadVideo = !prefersReducedMotion && !connection?.saveData;
 
   useEffect(() => {
-    if (prefersReducedMotion || window.innerWidth < MIN_VIDEO_WIDTH) {
-      return;
-    }
-
-    const navigatorWithConnection = navigator as NavigatorWithConnection;
-    const connection =
-      navigatorWithConnection.connection ??
-      navigatorWithConnection.mozConnection ??
-      navigatorWithConnection.webkitConnection;
-
-    if (connection?.saveData) {
-      return;
-    }
-
-    if (
-      connection?.effectiveType &&
-      SLOW_CONNECTION_TYPES.has(connection.effectiveType)
-    ) {
+    if (!canLoadVideo) {
       return;
     }
 
@@ -62,7 +43,7 @@ export function HeroVideo() {
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [prefersReducedMotion]);
+  }, [canLoadVideo]);
 
   return (
     <div className="absolute inset-0 isolate">
@@ -75,7 +56,7 @@ export function HeroVideo() {
         className="absolute inset-0 h-full w-full object-cover"
         aria-hidden="true"
       />
-      {shouldLoadVideo ? (
+      {canLoadVideo && shouldLoadVideo ? (
         <HeroVideoPlayer />
       ) : null}
       <div

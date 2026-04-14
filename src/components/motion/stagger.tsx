@@ -1,8 +1,6 @@
-"use client";
-
-import { motion, useReducedMotion } from "motion/react";
+import { Children } from "react";
 import { cn } from "@/lib/utils";
-import { useHydrated } from "./use-hydrated";
+import { Reveal } from "./reveal";
 
 interface StaggerProps {
   children: React.ReactNode;
@@ -12,27 +10,6 @@ interface StaggerProps {
   amount?: number;
 }
 
-const containerVariants = (stagger: number, reduced: boolean) => ({
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: reduced ? 0 : stagger,
-    },
-  },
-});
-
-const itemVariants = (reduced: boolean) => ({
-  hidden: { opacity: 0, y: reduced ? 0 : 12 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: reduced ? 0.2 : 0.45,
-      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-    },
-  },
-});
-
 export function Stagger({
   children,
   className,
@@ -40,23 +17,14 @@ export function Stagger({
   once = true,
   amount = 0.15,
 }: StaggerProps) {
-  const reduced = useReducedMotion();
-  const hydrated = useHydrated();
-
-  if (!hydrated) {
-    return <div className={cn(className)}>{children}</div>;
-  }
-
   return (
-    <motion.div
-      variants={containerVariants(staggerDelay, !!reduced)}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once, amount }}
-      className={cn(className)}
-    >
-      {children}
-    </motion.div>
+    <div className={cn(className)}>
+      {Children.map(children, (child, index) => (
+        <Reveal delay={index * staggerDelay} once={once} amount={amount}>
+          {child}
+        </Reveal>
+      ))}
+    </div>
   );
 }
 
@@ -67,16 +35,5 @@ export function StaggerItem({
   children: React.ReactNode;
   className?: string;
 }) {
-  const reduced = useReducedMotion();
-  const hydrated = useHydrated();
-
-  if (!hydrated) {
-    return <div className={cn(className)}>{children}</div>;
-  }
-
-  return (
-    <motion.div variants={itemVariants(!!reduced)} className={cn(className)}>
-      {children}
-    </motion.div>
-  );
+  return <div className={cn(className)}>{children}</div>;
 }

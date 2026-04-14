@@ -1,8 +1,9 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
+import { useInView } from "./use-in-view";
 import { useHydrated } from "./use-hydrated";
+import { usePrefersReducedMotion } from "./use-reduced-motion";
 
 interface RevealProps {
   children: React.ReactNode;
@@ -19,27 +20,30 @@ export function Reveal({
   once = true,
   amount = 0.2,
 }: RevealProps) {
-  const reduced = useReducedMotion();
+  const prefersReducedMotion = usePrefersReducedMotion();
   const hydrated = useHydrated();
+  const { ref, inView } = useInView<HTMLDivElement>({ once, amount });
+  const transitionDelay = `${Math.round(delay * 1000)}ms`;
 
-  // SSR / pre-hydration: render plain div with full visibility
-  if (!hydrated) {
+  if (!hydrated || prefersReducedMotion) {
     return <div className={cn(className)}>{children}</div>;
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: reduced ? 0 : 12 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once, amount }}
-      transition={{
-        duration: reduced ? 0.2 : 0.45,
-        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-        delay,
-      }}
+    <div
+      ref={ref}
       className={cn(className)}
+      data-visible={inView ? "true" : "false"}
     >
-      {children}
-    </motion.div>
+      <div
+        style={{ transitionDelay }}
+        className={cn(
+          "translate-y-3 transform-gpu opacity-0 transition-all duration-[450ms] ease-[var(--motion-ease)] will-change-[opacity,transform]",
+          inView && "translate-y-0 opacity-100"
+        )}
+      >
+        {children}
+      </div>
+    </div>
   );
 }

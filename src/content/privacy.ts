@@ -5,14 +5,12 @@ export const privacyContent = `
 
 ## 1. Information We Collect
 
-When you contact us via email, phone, or through our website inquiry form (when available), we may collect the following information:
+When you contact us via email, phone, or through our website inquiry form, we may collect the information you choose to share, including:
 
-- Your name and company name
-- Your role or designation
-- Phone number and email address
-- Site location and industry
-- Headcount and shift requirements
-- Target start date and requirement details
+- Your name and phone number
+- A brief description of your requirement
+- Company name and email address, if you provide them
+- Additional operational details such as location, industry, headcount, shift needs, role, or target start date
 
 ## 2. How We Use Your Information
 

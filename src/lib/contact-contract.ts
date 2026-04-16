@@ -30,7 +30,7 @@ interface ContactContract {
 export const contactContract = rawContactContract as ContactContract;
 
 function buildStringFieldSchema(definition: ContactFieldDefinition) {
-  let schema = z.string();
+  let schema = z.string().trim();
 
   if (typeof definition.minLength === "number") {
     schema = schema.min(definition.minLength, definition.requiredMessage);
@@ -40,7 +40,18 @@ function buildStringFieldSchema(definition: ContactFieldDefinition) {
     schema = schema.email(definition.formatMessage);
   }
 
-  return definition.required ? schema : schema.optional();
+  if (definition.required) {
+    return schema;
+  }
+
+  return z.preprocess((value) => {
+    if (typeof value !== "string") {
+      return value;
+    }
+
+    const trimmed = value.trim();
+    return trimmed.length > 0 ? trimmed : undefined;
+  }, schema.optional());
 }
 
 function buildContactSchemaShape() {
@@ -53,7 +64,8 @@ function buildContactSchemaShape() {
 }
 
 export const contactSchema = z.object(buildContactSchemaShape()).strict();
-export type ContactFormData = z.infer<typeof contactSchema>;
+export type ContactFormInput = z.input<typeof contactSchema>;
+export type ContactFormData = z.output<typeof contactSchema>;
 
 export const contactRequiredFields = Object.entries(contactContract.request.fields)
   .filter(([, definition]) => definition.required)

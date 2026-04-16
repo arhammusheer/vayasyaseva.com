@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "type-check": "tsc --noEmit",
+    "msg91:setup-contact-templates": "node scripts/setup-msg91-contact-templates.mjs",
     "openapi:generate": "node scripts/generate-openapi.mjs",
     "openapi:check": "node scripts/check-openapi.mjs",
     "ai:check": "node scripts/check-ai-discovery.mjs"

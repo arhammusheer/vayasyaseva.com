@@ -17,7 +17,7 @@ import { JsonLd, breadcrumbSchema } from "@/lib/structured-data";
 export const metadata: Metadata = {
   title: "How We Operate",
   description:
-    "VSPL's five-step operating model for workforce, civil/fabrication, housekeeping, equipment, and maintenance scopes with defined escalation and governance controls.",
+    "VSPL's five-step operating model for workforce deployment, civil and fabrication works, housekeeping, equipment support, and machinery maintenance scopes with defined escalation and governance controls.",
 };
 
 const escalationLevels = [

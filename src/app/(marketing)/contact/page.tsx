@@ -1,14 +1,33 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import { Section } from "@/components/layout/section";
 import { siteConfig } from "@/content/site";
 import { JsonLd, localBusinessSchema, breadcrumbSchema } from "@/lib/structured-data";
+import { ContactForm } from "./contact-form";
 
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Vayasya Seva Private Limited. Share workforce, civil, fabrication, housekeeping, equipment, or machinery maintenance requirements.",
+    "Contact Vayasya Seva Private Limited regarding workforce deployment, housekeeping, warehouses and logistics, civil and fabrication works, machinery maintenance, or equipment and material support.",
 };
+
+function ContactFormFallback() {
+  return (
+    <div aria-hidden="true" className="mt-6 space-y-4">
+      <div className="h-12 rounded-xl border border-border bg-background/70" />
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="h-12 rounded-lg border border-border bg-background/70" />
+        <div className="h-12 rounded-lg border border-border bg-background/70" />
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="h-12 rounded-lg border border-border bg-background/70" />
+        <div className="h-12 rounded-lg border border-border bg-background/70" />
+      </div>
+      <div className="h-32 rounded-lg border border-border bg-background/70" />
+    </div>
+  );
+}
 
 export default function ContactPage() {
   return (
@@ -23,14 +42,14 @@ export default function ContactPage() {
       <Section className="section-glow-contained section-glow-seva glow-left">
         <div className="grid gap-12 lg:grid-cols-5">
           {/* Contact Info */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 lg:sticky lg:top-28 lg:self-start">
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
               Get in Touch
             </h1>
             <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-              Share your requirement and we&apos;ll respond with an initial
-              assessment for workforce, civil/fabrication, housekeeping,
-              equipment, or machinery maintenance scope.
+              Share requirement scope for workforce deployment, housekeeping,
+              warehouses and logistics, civil and fabrication works, machinery
+              maintenance, or equipment and material support.
             </p>
 
             <div className="mt-8 space-y-4">
@@ -94,13 +113,16 @@ export default function ContactPage() {
 
           {/* Contact channels */}
           <div className="lg:col-span-3">
-            <div className="rounded-2xl border border-border bg-subtle p-6 sm:p-8">
-              <h2 className="text-xl font-bold">Share Your Requirement</h2>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                Our online inquiry form is temporarily unavailable. Please
-                reach out directly via email or phone — our operations team
-                targets a response within 2 business days (IST, Mon–Sat).
+            <div className="rounded-2xl border border-neutral-300 bg-background p-6 sm:p-8">
+              <h2 className="text-xl font-bold text-neutral-900">Requirement Scope</h2>
+              <p className="mt-2 text-sm leading-relaxed text-neutral-700">
+                Submitted requirement scope is reviewed by Vayasya Seva
+                operations. Target response window: 2 business days (IST,
+                Mon-Sat).
               </p>
+              <Suspense fallback={<ContactFormFallback />}>
+                <ContactForm />
+              </Suspense>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                 <a
                   href={`mailto:${siteConfig.email}`}
@@ -120,11 +142,11 @@ export default function ContactPage() {
             </div>
 
             {/* Compliance documentation request */}
-            <div className="mt-6 rounded-2xl border border-border bg-background p-6 sm:p-8">
-              <h3 className="text-lg font-semibold">
+            <div className="mt-6 rounded-2xl border border-neutral-300 bg-neutral-25 p-6 sm:p-8">
+              <h3 className="text-lg font-semibold text-neutral-900">
                 Request Compliance Documentation
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              <p className="mt-2 text-sm leading-relaxed text-neutral-700">
                 For due diligence reviews, audit preparation, or registration
                 verification, contact our operations team directly via email.
               </p>

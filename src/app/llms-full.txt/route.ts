@@ -116,8 +116,8 @@ ${buildScopeBoundarySection()}
 Endpoint: POST ${baseUrl}/api/contact
 Specification: GET ${baseUrl}/openapi/v1.json
 Purpose: Capture requirement inquiries from the contact page.
-Required fields: name, company, role, phone, email, location, industry, headcount
-Optional fields: shiftRequirement, targetStartDate, details
+Required fields: name, phone, details
+Optional fields: company, email, role, location, industry, headcount, shiftRequirement, targetStartDate
 Validation: Server-side schema validation with 400 for invalid payloads and 429 for rate limiting.
 
 ## MCP endpoint

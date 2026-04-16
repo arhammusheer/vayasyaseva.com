@@ -12,7 +12,7 @@
       },
       "company": {
         "type": "string",
-        "required": true,
+        "required": false,
         "minLength": 1,
         "description": "Company name",
         "requiredMessage": "Company name is required",
@@ -20,7 +20,7 @@
       },
       "role": {
         "type": "string",
-        "required": true,
+        "required": false,
         "minLength": 1,
         "description": "Role or designation of the requester",
         "requiredMessage": "Your role is required",
@@ -36,7 +36,7 @@
       },
       "email": {
         "type": "string",
-        "required": true,
+        "required": false,
         "format": "email",
         "description": "Business email address",
         "formatMessage": "Valid email is required",
@@ -44,7 +44,7 @@
       },
       "location": {
         "type": "string",
-        "required": true,
+        "required": false,
         "minLength": 1,
         "description": "Site location for service delivery",
         "requiredMessage": "Location is required",
@@ -52,7 +52,7 @@
       },
       "industry": {
         "type": "string",
-        "required": true,
+        "required": false,
         "minLength": 1,
         "description": "Industry classification",
         "requiredMessage": "Please select an industry",
@@ -60,7 +60,7 @@
       },
       "headcount": {
         "type": "string",
-        "required": true,
+        "required": false,
         "minLength": 1,
         "description": "Approximate workforce or crew size required",
         "requiredMessage": "Approximate headcount is required",
@@ -80,8 +80,10 @@
       },
       "details": {
         "type": "string",
-        "required": false,
+        "required": true,
+        "minLength": 8,
         "description": "Additional requirement details",
+        "requiredMessage": "Brief requirement details are required",
         "example": "Need housekeeping teams, fabrication fitters, and preventive maintenance support for a new line."
       }
     }

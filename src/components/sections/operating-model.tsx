@@ -341,7 +341,7 @@ const governanceFaqs = [
   {
     question: "Why not a generic staffing-only model?",
     answer:
-      "Generic staffing providers typically treat deployment as a placement exercise — sourcing and billing with limited operational accountability. VSPL's two-plane model embeds governance, compliance, and reporting into a broader industrial services structure that includes workforce, housekeeping, civil/fabrication works, and maintenance support. This reduces operational burden on client teams and provides structured visibility that ad-hoc arrangements cannot support.",
+      "Generic staffing providers typically treat deployment as a placement exercise — sourcing and billing with limited operational accountability. VSPL's two-plane model embeds governance, compliance, and reporting into a broader industrial services structure that includes workforce deployment, housekeeping, civil and fabrication works, and machinery maintenance support. This reduces operational burden on client teams and provides structured visibility that ad-hoc arrangements cannot support.",
   },
   {
     question: "How are decisions handled during exceptions?",

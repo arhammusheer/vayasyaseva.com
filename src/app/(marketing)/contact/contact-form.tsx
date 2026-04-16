@@ -4,11 +4,10 @@ import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { CheckCircle2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { contactSchema, type ContactFormData } from "@/lib/contact-contract";
 import {
   Select,
   SelectContent,
@@ -16,7 +15,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CheckCircle2, Loader2 } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  contactSchema,
+  type ContactFormData,
+  type ContactFormInput,
+} from "@/lib/contact-contract";
 
 const industryOptions = [
   "Manufacturing",
@@ -31,56 +35,82 @@ const industryOptions = [
   "Other",
 ];
 
+const fieldClassName =
+  "mt-1.5 h-11 border-neutral-300 bg-background text-foreground placeholder:text-neutral-500 shadow-none focus-visible:border-seva-500 focus-visible:ring-seva/15";
+
+const textAreaClassName =
+  "mt-1.5 border-neutral-300 bg-background text-foreground placeholder:text-neutral-500 shadow-none focus-visible:border-seva-500 focus-visible:ring-seva/15";
+
+const selectTriggerClassName =
+  "mt-1.5 h-11 w-full border-neutral-300 bg-background text-foreground shadow-none data-[placeholder]:text-neutral-500 focus-visible:border-seva-500 focus-visible:ring-seva/15";
+
 export function ContactForm() {
   const searchParams = useSearchParams();
   const isAssessment = searchParams.get("type") === "assessment";
   const [submitted, setSubmitted] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
+  const [formStartedAt] = useState(() => Date.now());
+  const [selectedIndustry, setSelectedIndustry] = useState<string | undefined>();
+  const [error, setError] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors, isSubmitting },
-  } = useForm<ContactFormData>({
+  } = useForm<ContactFormInput, undefined, ContactFormData>({
     resolver: zodResolver(contactSchema),
     defaultValues: {
       details: isAssessment
-        ? "Requesting a site assessment for workforce, civil/fabrication, housekeeping, equipment, or machinery maintenance services."
+        ? "Requirement review requested for workforce deployment, housekeeping, warehouses and logistics, civil and fabrication works, machinery maintenance, or equipment and material support."
         : "",
     },
   });
 
-  const [error, setError] = useState<string | null>(null);
-
   async function onSubmit(data: ContactFormData) {
     setError(null);
+
     try {
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+        "x-contact-form-started-at": String(formStartedAt),
+      };
+
+      if (honeypot.trim().length > 0) {
+        headers["x-contact-form-honeypot"] = honeypot;
+      }
+
       const response = await fetch("/api/contact", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify(data),
       });
       const result = await response.json();
+
       if (!response.ok) {
         setError(result.error ?? "Submission failed. Please try again.");
         return;
       }
+
       setSubmitted(true);
     } catch {
       setError(
-        "Unable to submit. Please try again or contact us directly at help@vayasyaseva.com."
+        "Submission could not be completed. Please try again or contact Vayasya Seva operations at help@vayasyaseva.com."
       );
     }
   }
 
   if (submitted) {
     return (
-      <div role="status" className="flex flex-col items-center justify-center py-12 text-center">
+      <div
+        role="status"
+        className="flex flex-col items-center justify-center py-12 text-center"
+      >
         <CheckCircle2 className="h-12 w-12 text-success" />
         <h3 className="mt-4 text-xl font-semibold">Requirement Received</h3>
         <p className="mt-2 max-w-sm text-muted-foreground">
-          Thank you for reaching out. Our operations team will review your
-          requirement and respond — our target is 2 business days (IST, Mon–Sat).
+          Current status: received. Owner: Vayasya Seva operations. Target next
+          update: within 2 business days (IST, Mon-Sat).
         </p>
       </div>
     );
@@ -88,7 +118,20 @@ export function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-5">
-      {/* Row: Name + Company */}
+      <div
+        aria-hidden="true"
+        className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden"
+      >
+        <Label htmlFor="website">Website</Label>
+        <Input
+          id="website"
+          autoComplete="new-password"
+          tabIndex={-1}
+          value={honeypot}
+          onChange={(event) => setHoneypot(event.target.value)}
+        />
+      </div>
+
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <Label htmlFor="name">
@@ -98,42 +141,10 @@ export function ContactForm() {
             id="name"
             placeholder="Your name"
             {...register("name")}
-            className="mt-1.5"
+            className={fieldClassName}
           />
           {errors.name && (
             <p className="mt-1 text-xs text-destructive">{errors.name.message}</p>
-          )}
-        </div>
-        <div>
-          <Label htmlFor="company">
-            Company <span className="text-destructive">*</span>
-          </Label>
-          <Input
-            id="company"
-            placeholder="Company name"
-            {...register("company")}
-            className="mt-1.5"
-          />
-          {errors.company && (
-            <p className="mt-1 text-xs text-destructive">{errors.company.message}</p>
-          )}
-        </div>
-      </div>
-
-      {/* Row: Role + Phone */}
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <Label htmlFor="role">
-            Your Role <span className="text-destructive">*</span>
-          </Label>
-          <Input
-            id="role"
-            placeholder="e.g. Warehouse Manager"
-            {...register("role")}
-            className="mt-1.5"
-          />
-          {errors.role && (
-            <p className="mt-1 text-xs text-destructive">{errors.role.message}</p>
           )}
         </div>
         <div>
@@ -145,7 +156,7 @@ export function ContactForm() {
             type="tel"
             placeholder="+91 XXXXX XXXXX"
             {...register("phone")}
-            className="mt-1.5"
+            className={fieldClassName}
           />
           {errors.phone && (
             <p className="mt-1 text-xs text-destructive">{errors.phone.message}</p>
@@ -153,113 +164,161 @@ export function ContactForm() {
         </div>
       </div>
 
-      {/* Row: Email + Location */}
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <Label htmlFor="email">
-            Email <span className="text-destructive">*</span>
-          </Label>
+          <Label htmlFor="company">Company</Label>
+          <Input
+            id="company"
+            placeholder="Company name"
+            {...register("company")}
+            className={fieldClassName}
+          />
+          {errors.company && (
+            <p className="mt-1 text-xs text-destructive">{errors.company.message}</p>
+          )}
+        </div>
+        <div>
+          <Label htmlFor="email">Email</Label>
           <Input
             id="email"
             type="email"
             placeholder="you@company.com"
             {...register("email")}
-            className="mt-1.5"
+            className={fieldClassName}
           />
           {errors.email && (
             <p className="mt-1 text-xs text-destructive">{errors.email.message}</p>
           )}
         </div>
-        <div>
-          <Label htmlFor="location">
-            Site Location <span className="text-destructive">*</span>
-          </Label>
-          <Input
-            id="location"
-            placeholder="City / Industrial area"
-            {...register("location")}
-            className="mt-1.5"
-          />
-          {errors.location && (
-            <p className="mt-1 text-xs text-destructive">{errors.location.message}</p>
-          )}
-        </div>
       </div>
 
-      {/* Row: Industry + Headcount */}
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <Label htmlFor="industry">
-            Industry <span className="text-destructive">*</span>
-          </Label>
-          <Select onValueChange={(value) => setValue("industry", value)}>
-            <SelectTrigger className="mt-1.5">
-              <SelectValue placeholder="Select industry" />
-            </SelectTrigger>
-            <SelectContent>
-              {industryOptions.map((option) => (
-                <SelectItem key={option} value={option}>
-                  {option}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          {errors.industry && (
-            <p className="mt-1 text-xs text-destructive">{errors.industry.message}</p>
-          )}
-        </div>
-        <div>
-          <Label htmlFor="headcount">
-            Approx. Headcount <span className="text-destructive">*</span>
-          </Label>
-          <Input
-            id="headcount"
-            placeholder="e.g. 50"
-            {...register("headcount")}
-            className="mt-1.5"
-          />
-          {errors.headcount && (
-            <p className="mt-1 text-xs text-destructive">{errors.headcount.message}</p>
-          )}
-        </div>
-      </div>
-
-      {/* Row: Shift + Start Date */}
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <Label htmlFor="shiftRequirement">Shift Requirement</Label>
-          <Input
-            id="shiftRequirement"
-            placeholder="e.g. 2 shifts, 8 hours each"
-            {...register("shiftRequirement")}
-            className="mt-1.5"
-          />
-        </div>
-        <div>
-          <Label htmlFor="targetStartDate">Target Start Date</Label>
-          <Input
-            id="targetStartDate"
-            type="date"
-            {...register("targetStartDate")}
-            className="mt-1.5"
-          />
-        </div>
-      </div>
-
-      {/* Details */}
       <div>
-        <Label htmlFor="details">Requirement Details</Label>
+        <Label htmlFor="details">
+          Requirement Details <span className="text-destructive">*</span>
+        </Label>
         <Textarea
           id="details"
-          placeholder="Describe your requirement scope, site context, preferred start window, and any role/equipment/maintenance details..."
-          rows={4}
+          placeholder="State service area, site location, headcount, and target timing if known."
+          rows={5}
           {...register("details")}
-          className="mt-1.5"
+          className={textAreaClassName}
         />
+        {errors.details && (
+          <p className="mt-1 text-xs text-destructive">{errors.details.message}</p>
+        )}
       </div>
 
+      <details className="rounded-xl border border-neutral-300 bg-neutral-25 p-4">
+        <summary className="cursor-pointer list-none text-sm font-medium text-neutral-900">
+          Add Site and Scope Details
+        </summary>
+        <p className="mt-2 text-sm text-neutral-700">
+          Use this section for service area, site context, timing, and
+          operating details.
+        </p>
+
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <div>
+            <Label htmlFor="role">Your Role</Label>
+            <Input
+              id="role"
+              placeholder="e.g. Warehouse Manager"
+              {...register("role")}
+              className={fieldClassName}
+            />
+            {errors.role && (
+              <p className="mt-1 text-xs text-destructive">{errors.role.message}</p>
+            )}
+          </div>
+          <div>
+            <Label htmlFor="location">Site Location</Label>
+            <Input
+              id="location"
+              placeholder="City / industrial area"
+              {...register("location")}
+              className={fieldClassName}
+            />
+            {errors.location && (
+              <p className="mt-1 text-xs text-destructive">{errors.location.message}</p>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <div>
+            <Label htmlFor="industry">Industry</Label>
+            <input type="hidden" {...register("industry")} />
+            <Select
+              value={
+                selectedIndustry && selectedIndustry.length > 0
+                  ? selectedIndustry
+                  : undefined
+              }
+              onValueChange={(value) => {
+                setSelectedIndustry(value);
+                setValue("industry", value, {
+                  shouldDirty: true,
+                  shouldTouch: true,
+                  shouldValidate: true,
+                });
+              }}
+            >
+              <SelectTrigger className={selectTriggerClassName}>
+                <SelectValue placeholder="Select industry" />
+              </SelectTrigger>
+              <SelectContent>
+                {industryOptions.map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {errors.industry && (
+              <p className="mt-1 text-xs text-destructive">{errors.industry.message}</p>
+            )}
+          </div>
+          <div>
+            <Label htmlFor="headcount">Approx. Headcount</Label>
+            <Input
+              id="headcount"
+              placeholder="e.g. 50"
+              {...register("headcount")}
+              className={fieldClassName}
+            />
+            {errors.headcount && (
+              <p className="mt-1 text-xs text-destructive">{errors.headcount.message}</p>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <div>
+            <Label htmlFor="shiftRequirement">Shift Requirement</Label>
+            <Input
+              id="shiftRequirement"
+              placeholder="e.g. 2 shifts, 8 hours each"
+              {...register("shiftRequirement")}
+              className={fieldClassName}
+            />
+          </div>
+          <div>
+            <Label htmlFor="targetStartDate">Target Start Date</Label>
+            <Input
+              id="targetStartDate"
+              type="date"
+              {...register("targetStartDate")}
+              className={fieldClassName}
+            />
+          </div>
+        </div>
+      </details>
+
       {error && (
-        <div role="alert" className="rounded-lg border border-destructive/20 bg-destructive/5 p-3 text-sm text-destructive">
+        <div
+          role="alert"
+          className="rounded-lg border border-destructive/20 bg-destructive/5 p-3 text-sm text-destructive"
+        >
           {error}
         </div>
       )}

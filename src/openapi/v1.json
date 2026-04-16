@@ -82,13 +82,8 @@
         "additionalProperties": false,
         "required": [
           "name",
-          "company",
-          "role",
           "phone",
-          "email",
-          "location",
-          "industry",
-          "headcount"
+          "details"
         ],
         "properties": {
           "name": {
@@ -152,6 +147,7 @@
           "details": {
             "type": "string",
             "description": "Additional requirement details",
+            "minLength": 8,
             "example": "Need housekeeping teams, fabrication fitters, and preventive maintenance support for a new line."
           }
         }

@@ -1,6 +1,6 @@
 # VSPL Website Rebuild — Project Status Report
 
-**Date:** 2026-02-11
+**Date:** 2026-04-17
 **Stack:** Next.js 16.1.6, React 19, TypeScript, Tailwind CSS 4, shadcn/ui 3
 **Build status:** Clean (0 errors, 0 warnings)
 
@@ -20,7 +20,7 @@
 | Phase 6 | Services + Industries pages | DONE | 6 services with included/not-included, 5 industries with staffing/risk/reporting |
 | Phase 7 | How We Operate + Compliance | DONE | 5-step process, escalation framework, documentation matrix, governance blocks |
 | Phase 8 | Vayasya Setu page | DONE | Capabilities, outputs, integration options, data governance |
-| Phase 9 | Lead capture & contact | PARTIAL | Form UI + Zod validation done; **backend not implemented** |
+| Phase 9 | Lead capture & contact | DONE | Live form + API route + MSG91 delivery + asynchronous acknowledgement |
 | Phase 10 | SEO, analytics, performance | PARTIAL | Metadata + sitemap done; **analytics not set up** |
 | Phase 11 | Legal/policy & QA hardening | NOT STARTED | Privacy, terms, accessibility, error pages all missing |
 | Phase 12 | Launch & iteration | NOT STARTED | CI/CD, monitoring, A/B testing |
@@ -46,25 +46,16 @@ The `public/` directory contains only `robots.txt` and `favicon.ico` (default Ne
 
 **Action needed:** Supply all logo/image files, or set `visible: false` on trust clients until logos are available.
 
-### 2. Contact form has no backend
+### 2. Contact form submission is live via MSG91
 
-**File:** `src/app/(marketing)/contact/contact-form.tsx:57-63`
+**Files:** `src/app/(marketing)/contact/contact-form.tsx`, `src/app/api/contact/route.ts`
 
-```typescript
-async function onSubmit(data: ContactFormData) {
-  // TODO: Connect to API route / webhook
-  console.log("Form submitted:", data);
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  setSubmitted(true);
-}
-```
+- Valid inquiries are posted to `POST /api/contact`
+- Server-side validation and lightweight abuse protection are enabled
+- Internal notification is delivered through MSG91
+- Submitter acknowledgement is scheduled asynchronously after successful internal delivery
 
-- Form data is logged to console and discarded
-- No API route exists (`src/app/api/` is empty)
-- No email delivery, no webhook, no database
-- User sees a fake "success" message
-
-**Action needed:** Create `src/app/api/contact/route.ts` with email sending or webhook integration.
+**Action needed:** Configure the MSG91 environment variables and run `npm run msg91:setup-contact-templates` before deployment.
 
 ### 3. Privacy Policy and Terms pages don't exist
 
@@ -129,18 +120,16 @@ console.log("Form submitted:", data);
 
 **Action needed:** Either implement fully or remove dark mode CSS to reduce confusion.
 
-### 9. No `.env.example`
+### 9. `.env.example` now documents runtime configuration
 
-- `.gitignore` correctly excludes `.env*`
-- But no `.env.example` to guide developers
-- Contact info is hardcoded in `src/content/site.ts` (acceptable for now)
-- Future API keys, webhook URLs, analytics IDs will need env vars
+- `.env.example` includes MSG91 and MCP variables
+- Contact form delivery can be configured consistently across local and Vercel environments
 
 ### 10. Package.json scripts are minimal
 
 Current:
 ```json
-"dev", "build", "start", "lint"
+"dev", "build", "start", "lint", "type-check", "msg91:setup-contact-templates"
 ```
 
 Missing:
@@ -161,7 +150,7 @@ Missing:
 |---|---|
 | `src/hooks/` | Empty — no custom hooks written |
 | `src/styles/` | Empty — all styles in globals.css |
-| `src/app/api/` | Empty — no API routes |
+| `src/app/api/` | In use — includes `/api/contact` and AI/machine-readable routes |
 
 Not harmful, but adds clutter. Can remove unused ones.
 
@@ -183,9 +172,9 @@ Not harmful, but adds clutter. Can remove unused ones.
 - No heading hierarchy audit done
 - No keyboard navigation testing performed
 
-### 14. Contact form query param not wired
+### 14. Contact form query param is wired
 
-The hero secondary CTA links to `/contact?type=assessment` but the contact form doesn't read or use the `type` query parameter. The form is identical regardless.
+The hero secondary CTA to `/contact?type=assessment` now pre-fills the requirement details field for assessment inquiries.
 
 ### 15. Unused dependencies in `package.json`
 
@@ -212,6 +201,7 @@ The hero secondary CTA links to `/contact?type=assessment` but the contact form 
 - `/vayasya-setu` — Capabilities, outputs, integration, data governance
 - `/about` — Overview, philosophy, governance, footprint
 - `/contact` — Lead form (11 fields) + direct contact info
+- `/api/contact` — Public inquiry endpoint with validation, abuse protection, and MSG91 delivery
 
 ### Brand system
 - Color tokens: VSPL gold (#C97A2B), slate text, white backgrounds

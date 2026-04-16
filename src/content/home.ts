@@ -455,7 +455,7 @@ export const faqs: FaqItem[] = [
   {
     question: "What is the typical engagement model?",
     answer:
-      "VSPL operates on contractual engagement models structured around service scope, crew size, shift patterns, and execution windows. Engagements can combine workforce deployment, civil/fabrication work, housekeeping, equipment support, and machinery maintenance under a single operating framework.",
+      "VSPL operates on contractual engagement models structured around service scope, crew size, shift patterns, and execution windows. Engagements can combine workforce deployment, civil and fabrication works, housekeeping, equipment support, and machinery maintenance under a single operating framework.",
     category: "commercial",
   },
   {

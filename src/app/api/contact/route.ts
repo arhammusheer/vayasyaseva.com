@@ -1,40 +1,132 @@
-import { NextRequest, NextResponse } from "next/server";
+import { after, NextRequest, NextResponse } from "next/server";
 import { contactContract, contactSchema } from "@/lib/contact-contract";
+import {
+  canSendContactAutoReply,
+  sendContactAutoReply,
+  sendInternalContactEmail,
+} from "@/lib/msg91";
 
-// Simple in-memory rate limiting
-const submissions = new Map<string, number>();
-const RATE_LIMIT_WINDOW = 60_000; // 1 minute
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const DUPLICATE_WINDOW_MS = 5 * 60_000;
+const MIN_FORM_COMPLETION_MS = 1_500;
 
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const lastSubmission = submissions.get(ip);
-  if (lastSubmission && now - lastSubmission < RATE_LIMIT_WINDOW) {
-    return true;
-  }
-  // Clean old entries
-  for (const [key, time] of submissions) {
-    if (now - time > RATE_LIMIT_WINDOW) {
-      submissions.delete(key);
+const ipSubmissions = new Map<string, number>();
+const duplicateSubmissions = new Map<string, number>();
+
+export const runtime = "nodejs";
+
+function cleanExpiredEntries(now: number) {
+  for (const [key, timestamp] of ipSubmissions) {
+    if (now - timestamp >= RATE_LIMIT_WINDOW_MS) {
+      ipSubmissions.delete(key);
     }
   }
-  submissions.set(ip, now);
+
+  for (const [key, timestamp] of duplicateSubmissions) {
+    if (now - timestamp >= DUPLICATE_WINDOW_MS) {
+      duplicateSubmissions.delete(key);
+    }
+  }
+}
+
+function getClientIp(request: NextRequest) {
+  const forwardedFor = request.headers.get("x-forwarded-for");
+  const forwardedIp = forwardedFor?.split(",")[0]?.trim();
+
+  if (forwardedIp) {
+    return forwardedIp;
+  }
+
+  return request.headers.get("x-real-ip")?.trim() ?? "unknown";
+}
+
+function normalizeDuplicateKey(ip: string, email: string, phone: string) {
+  const normalizedEmail = email.trim().toLowerCase();
+  const normalizedPhone = phone.replace(/\D/g, "");
+  return `${ip}:${normalizedEmail}:${normalizedPhone}`;
+}
+
+function getAbuseReason(request: NextRequest, now: number) {
+  const honeypot = request.headers.get("x-contact-form-honeypot");
+
+  if (honeypot && honeypot.trim().length > 0) {
+    return "honeypot";
+  }
+
+  const startedAt = request.headers.get("x-contact-form-started-at");
+
+  if (!startedAt) {
+    return null;
+  }
+
+  const parsedStartedAt = Number.parseInt(startedAt, 10);
+
+  if (!Number.isFinite(parsedStartedAt)) {
+    return "invalid-started-at";
+  }
+
+  if (parsedStartedAt > now + 5_000) {
+    return "future-started-at";
+  }
+
+  if (now - parsedStartedAt < MIN_FORM_COMPLETION_MS) {
+    return "completed-too-fast";
+  }
+
+  return null;
+}
+
+function reserveSubmission(ip: string, duplicateKey: string, now: number) {
+  cleanExpiredEntries(now);
+
+  const lastIpSubmission = ipSubmissions.get(ip);
+  if (lastIpSubmission && now - lastIpSubmission < RATE_LIMIT_WINDOW_MS) {
+    return true;
+  }
+
+  const lastDuplicateSubmission = duplicateSubmissions.get(duplicateKey);
+  if (
+    lastDuplicateSubmission &&
+    now - lastDuplicateSubmission < DUPLICATE_WINDOW_MS
+  ) {
+    return true;
+  }
+
+  ipSubmissions.set(ip, now);
+  duplicateSubmissions.set(duplicateKey, now);
+
   return false;
 }
 
+function rollbackReservation(ip: string, duplicateKey: string, now: number) {
+  const ipTimestamp = ipSubmissions.get(ip);
+  if (ipTimestamp === now) {
+    ipSubmissions.delete(ip);
+  }
+
+  const duplicateTimestamp = duplicateSubmissions.get(duplicateKey);
+  if (duplicateTimestamp === now) {
+    duplicateSubmissions.delete(duplicateKey);
+  }
+}
+
 export async function POST(request: NextRequest) {
+  let duplicateKey: string | null = null;
+  let ip = "unknown";
+  let now = Date.now();
+
   try {
-    // Rate limiting
-    const ip = request.headers.get("x-forwarded-for") ?? "unknown";
-    if (isRateLimited(ip)) {
+    let body: unknown;
+
+    try {
+      body = await request.json();
+    } catch {
       return NextResponse.json(
-        { error: contactContract.responses.rateLimitError },
-        { status: 429 }
+        { error: contactContract.responses.validationError },
+        { status: 400 }
       );
     }
 
-    const body = await request.json();
-
-    // Validate
     const result = contactSchema.safeParse(body);
     if (!result.success) {
       return NextResponse.json(
@@ -44,26 +136,84 @@ export async function POST(request: NextRequest) {
     }
 
     const data = result.data;
+    ip = getClientIp(request);
+    now = Date.now();
+    duplicateKey = normalizeDuplicateKey(ip, data.email ?? "", data.phone ?? "");
 
-    // Log structured submission (replace with email/webhook in production)
-    // In production, connect to:
-    //   - Email service (Resend, SendGrid, AWS SES)
-    //   - CRM webhook (HubSpot, Zoho)
-    //   - Database (Supabase, PlanetScale)
-    console.info("[CONTACT SUBMISSION]", {
+    const abuseReason = getAbuseReason(request, now);
+    if (abuseReason) {
+      console.warn("[CONTACT SUBMISSION BLOCKED]", {
+        ip,
+        reason: abuseReason,
+      });
+      return NextResponse.json(
+        { error: contactContract.responses.rateLimitError },
+        { status: 429 }
+      );
+    }
+
+    if (reserveSubmission(ip, duplicateKey, now)) {
+      console.warn("[CONTACT SUBMISSION BLOCKED]", {
+        duplicateKey,
+        ip,
+        reason: "rate-limit-or-duplicate",
+      });
+      return NextResponse.json(
+        { error: contactContract.responses.rateLimitError },
+        { status: 429 }
+      );
+    }
+
+    const internalDelivery = await sendInternalContactEmail(data);
+
+    console.info("[CONTACT SUBMISSION DELIVERED]", {
       timestamp: new Date().toISOString(),
+      duplicateKey,
+      ip,
       name: data.name,
       company: data.company,
       email: data.email,
       industry: data.industry,
       headcount: data.headcount,
+      messageId: internalDelivery.messageId,
+      threadId: internalDelivery.threadId,
+      uniqueId: internalDelivery.uniqueId,
     });
+
+    if (canSendContactAutoReply(data)) {
+      after(async () => {
+        try {
+          const autoReply = await sendContactAutoReply(data);
+          console.info("[CONTACT AUTOREPLY DELIVERED]", {
+            email: data.email,
+            messageId: autoReply.messageId,
+            threadId: autoReply.threadId,
+            uniqueId: autoReply.uniqueId,
+          });
+        } catch (error) {
+          console.error("[CONTACT AUTOREPLY FAILED]", {
+            email: data.email,
+            error: error instanceof Error ? error.message : "Unknown error",
+          });
+        }
+      });
+    }
 
     return NextResponse.json({
       success: true,
       message: contactContract.responses.successMessage,
     });
-  } catch {
+  } catch (error) {
+    if (duplicateKey) {
+      rollbackReservation(ip, duplicateKey, now);
+    }
+
+    console.error("[CONTACT SUBMISSION FAILED]", {
+      ip,
+      duplicateKey,
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
+
     return NextResponse.json(
       { error: contactContract.responses.unknownError },
       { status: 500 }

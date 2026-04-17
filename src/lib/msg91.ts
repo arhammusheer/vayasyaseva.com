@@ -328,6 +328,7 @@ function buildCommonVariables(
     location: withFallback(data.location, "Not provided"),
     name,
     phone,
+    response_window: DEFAULT_RESPONSE_WINDOW,
     role: withFallback(data.role, "Not provided"),
     shift_requirement: withFallback(data.shiftRequirement, "Not specified"),
     submitted_at: new Date().toISOString(),

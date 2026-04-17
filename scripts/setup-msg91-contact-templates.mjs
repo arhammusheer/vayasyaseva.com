@@ -25,6 +25,18 @@ const BRAND = {
 };
 const FONT_FAMILY_BODY = "'Hind', Arial, Helvetica, sans-serif";
 const FONT_FAMILY_DISPLAY = "'Anek Devanagari', 'Hind', Arial, Helvetica, sans-serif";
+const EMAIL_COLORS = {
+  accent: "#8F6818",
+  accentSurface: "#FBF6E7",
+  background: "#F4F4F2",
+  border: "#DED9CC",
+  muted: "#4B5563",
+  panel: "#F6F6F3",
+  subtle: "#6B7280",
+  text: "#18181B",
+  white: "#FFFFFF",
+};
+const BRAND_DESCRIPTOR = "Compliance-first industrial services";
 const EMAIL_FONT_HEAD = `
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -47,245 +59,255 @@ const EMAIL_FONT_HEAD = `
     </style>
   </head>`;
 
+function renderMatrix(items, options = {}) {
+  const tone = options.tone === "warm" ? EMAIL_COLORS.accentSurface : EMAIL_COLORS.panel;
+  const labelColor = options.tone === "warm" ? EMAIL_COLORS.accent : EMAIL_COLORS.subtle;
+  const rows = [];
+
+  for (let index = 0; index < items.length; index += 2) {
+    rows.push(items.slice(index, index + 2));
+  }
+
+  return `
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; margin-bottom: 20px; border: 1px solid ${EMAIL_COLORS.border}; background-color: ${tone};">
+      ${rows
+        .map(
+          (row, rowIndex) => `
+            <tr>
+              ${row
+                .map(
+                  (item, columnIndex) => `
+                    <td valign="top" width="50%" style="padding: 14px 16px; ${rowIndex > 0 ? `border-top: 1px solid ${EMAIL_COLORS.border};` : ""} ${
+                      columnIndex === 1 ? `border-left: 1px solid ${EMAIL_COLORS.border};` : ""
+                    }">
+                      <p style="margin: 0 0 4px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: ${labelColor};">
+                        ${item.label}
+                      </p>
+                      <p style="margin: 0; font-size: 15px; line-height: 1.55; color: ${EMAIL_COLORS.text};">
+                        ${item.value}
+                      </p>
+                    </td>`
+                )
+                .join("")}
+              ${
+                row.length === 1
+                  ? `<td width="50%" style="padding: 14px 16px; ${rowIndex > 0 ? `border-top: 1px solid ${EMAIL_COLORS.border};` : ""} border-left: 1px solid ${EMAIL_COLORS.border};">&nbsp;</td>`
+                  : ""
+              }
+            </tr>`
+        )
+        .join("")}
+    </table>`;
+}
+
+function renderDefinitionTable(rows, options = {}) {
+  return `
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; margin-bottom: ${options.marginBottom ?? 20}px; border-top: 1px solid ${EMAIL_COLORS.border};">
+      ${rows
+        .map(
+          (row) => `
+            <tr>
+              <td valign="top" width="38%" style="padding: 12px 0; font-size: 13px; color: ${EMAIL_COLORS.subtle}; border-top: 1px solid ${EMAIL_COLORS.border};">
+                ${row.label}
+              </td>
+              <td valign="top" style="padding: 12px 0; font-size: 14px; line-height: 1.55; color: ${EMAIL_COLORS.text}; border-top: 1px solid ${EMAIL_COLORS.border};">
+                ${row.value}
+              </td>
+            </tr>`
+        )
+        .join("")}
+    </table>`;
+}
+
+function renderSection(label, content, options = {}) {
+  return `
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; margin-bottom: ${options.marginBottom ?? 20}px;">
+      <tr>
+        <td style="padding: 0 0 8px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: ${EMAIL_COLORS.accent};">
+          ${label}
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 18px; border: 1px solid ${EMAIL_COLORS.border}; background-color: ${options.tone === "warm" ? EMAIL_COLORS.accentSurface : EMAIL_COLORS.white}; font-size: 15px; line-height: 1.65; color: ${EMAIL_COLORS.text}; ${options.preserveWhitespace ? "white-space: pre-wrap;" : ""}">
+          ${content}
+        </td>
+      </tr>
+    </table>`;
+}
+
+function renderEmailShell({ title, lead, referenceBlock, summaryBlock, sections, closingNote }) {
+  return `<!doctype html>
+<html>
+${EMAIL_FONT_HEAD}
+  <body class="vayasya-body" style="margin: 0; padding: 24px; background-color: ${EMAIL_COLORS.background}; font-family: ${FONT_FAMILY_BODY}; color: ${EMAIL_COLORS.text}; line-height: 1.6;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 680px; border: 1px solid ${EMAIL_COLORS.border}; background-color: ${EMAIL_COLORS.white}; border-collapse: collapse;">
+            <tr>
+              <td>
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
+                  <tr>
+                    <td style="width: 18px; background-color: ${EMAIL_COLORS.accent}; font-size: 0; line-height: 0;">&nbsp;</td>
+                    <td style="padding: 24px 28px 22px; border-bottom: 1px solid ${EMAIL_COLORS.border};">
+                      <p style="margin: 0 0 6px; font-size: 12px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: ${EMAIL_COLORS.accent};">
+                        ${BRAND.companyName}
+                      </p>
+                      <p style="margin: 0 0 14px; font-size: 13px; color: ${EMAIL_COLORS.subtle};">
+                        ${BRAND_DESCRIPTOR}
+                      </p>
+                      <h1 class="vayasya-heading" style="margin: 0 0 10px; font-size: 28px; line-height: 1.28; color: ${EMAIL_COLORS.text}; font-family: ${FONT_FAMILY_DISPLAY};">
+                        ${title}
+                      </h1>
+                      <p style="margin: 0; max-width: 520px; font-size: 15px; line-height: 1.65; color: ${EMAIL_COLORS.muted};">
+                        ${lead}
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 24px 28px 12px;">
+                ${referenceBlock}
+                ${summaryBlock}
+                ${sections.join("")}
+                <p style="margin: 0; font-size: 15px; line-height: 1.65; color: ${EMAIL_COLORS.muted};">
+                  ${closingNote}
+                </p>
+              </td>
+            </tr>
+          </table>
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 680px; border-collapse: collapse;">
+            <tr>
+              <td style="padding: 16px 8px 0; font-size: 12px; line-height: 1.7; color: ${EMAIL_COLORS.subtle}; text-align: center;">
+                ${BRAND.legalName} &nbsp;&middot;&nbsp; ${BRAND.supportAddress}<br />
+                <a href="${BRAND.websiteUrl}" style="color: ${EMAIL_COLORS.accent}; text-decoration: none;">${BRAND.websiteUrl}</a>
+                &nbsp;&middot;&nbsp;
+                <a href="mailto:${BRAND.supportEmail}" style="color: ${EMAIL_COLORS.accent}; text-decoration: none;">${BRAND.supportEmail}</a>
+                &nbsp;&middot;&nbsp;
+                <a href="tel:${BRAND.supportPhone}" style="color: ${EMAIL_COLORS.accent}; text-decoration: none;">${BRAND.supportPhone}</a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`;
+}
+
 const templateDefinitions = [
   {
     key: "MSG91_INTERNAL_TEMPLATE_ID",
     name: "Vayasya Contact Internal Notification",
     slug: "vayasya-contact-internal",
     subject: "Vayasya Seva | Requirement intake [{{case_id}}] | {{name}}",
-    body: `<!doctype html>
-<html>
-${EMAIL_FONT_HEAD}
-  <body class="vayasya-body" style="margin: 0; padding: 24px; background-color: #F8FAFC; font-family: ${FONT_FAMILY_BODY}; color: #1E293B; line-height: 1.6;">
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
-      <tr>
-        <td align="center">
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 680px; border: 1px solid #E2E8F0; background-color: #FFFFFF; border-collapse: collapse;">
-            <tr>
-              <td style="height: 6px; background-color: #8F6818; font-size: 0; line-height: 0;">&nbsp;</td>
-            </tr>
-            <tr>
-              <td style="padding: 24px 28px 20px; border-bottom: 1px solid #E2E8F0;">
-                <p style="margin: 0 0 8px; font-size: 12px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: #8F6818;">
-                  ${BRAND.companyName}
-                </p>
-                <h1 class="vayasya-heading" style="margin: 0; font-size: 24px; line-height: 1.3; color: #0F172A; font-family: ${FONT_FAMILY_DISPLAY};">
-                  Requirement intake received
-                </h1>
-                <p style="margin: 10px 0 0; font-size: 14px; color: #475569;">
-                  Submitted from <a href="${BRAND.websiteUrl}" style="color: #8F6818; text-decoration: none;">${BRAND.websiteUrl}</a>
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding: 24px 28px;">
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; margin-bottom: 20px;">
-                  <tr>
-                    <td style="padding: 16px 18px; background-color: #F8FAFC; border: 1px solid #E2E8F0;">
-                      <p style="margin: 0 0 4px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #64748B;">
-                        Case ID
-                      </p>
-                      <p style="margin: 0; font-size: 18px; font-weight: 700; color: #0F172A;">{{case_id}}</p>
-                    </td>
-                  </tr>
-                </table>
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; margin-bottom: 20px;">
-                  <tr>
-                    <td style="padding: 16px 18px; background-color: #FFF9E8; border: 1px solid #FDF1CF;">
-                      <p style="margin: 0 0 4px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #8F6818;">
-                        Primary contact
-                      </p>
-                      <p style="margin: 0; font-size: 18px; font-weight: 700; color: #0F172A;">{{name}}</p>
-                      <p style="margin: 4px 0 0; font-size: 14px; color: #475569;">
-                        {{phone}} &nbsp;&middot;&nbsp; {{email}}
-                      </p>
-                    </td>
-                  </tr>
-                </table>
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; margin-bottom: 20px;">
-                  <tr>
-                    <td style="padding: 0 0 8px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #8F6818;">
-                      Requirement details
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 18px; border: 1px solid #E2E8F0; background-color: #FFFFFF; font-size: 15px; color: #1E293B; white-space: pre-wrap;">
-                      {{details}}
-                    </td>
-                  </tr>
-                </table>
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; border-top: 1px solid #E2E8F0;">
-                  <tr>
-                    <td style="padding: 12px 0; width: 38%; font-size: 13px; color: #64748B;">Company</td>
-                    <td style="padding: 12px 0; font-size: 14px; color: #1E293B;">{{company}}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 12px 0; width: 38%; font-size: 13px; color: #64748B; border-top: 1px solid #E2E8F0;">Role</td>
-                    <td style="padding: 12px 0; font-size: 14px; color: #1E293B; border-top: 1px solid #E2E8F0;">{{role}}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 12px 0; width: 38%; font-size: 13px; color: #64748B; border-top: 1px solid #E2E8F0;">Location</td>
-                    <td style="padding: 12px 0; font-size: 14px; color: #1E293B; border-top: 1px solid #E2E8F0;">{{location}}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 12px 0; width: 38%; font-size: 13px; color: #64748B; border-top: 1px solid #E2E8F0;">Industry</td>
-                    <td style="padding: 12px 0; font-size: 14px; color: #1E293B; border-top: 1px solid #E2E8F0;">{{industry}}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 12px 0; width: 38%; font-size: 13px; color: #64748B; border-top: 1px solid #E2E8F0;">Approx. headcount</td>
-                    <td style="padding: 12px 0; font-size: 14px; color: #1E293B; border-top: 1px solid #E2E8F0;">{{headcount}}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 12px 0; width: 38%; font-size: 13px; color: #64748B; border-top: 1px solid #E2E8F0;">Shift requirement</td>
-                    <td style="padding: 12px 0; font-size: 14px; color: #1E293B; border-top: 1px solid #E2E8F0;">{{shift_requirement}}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 12px 0; width: 38%; font-size: 13px; color: #64748B; border-top: 1px solid #E2E8F0;">Target start date</td>
-                    <td style="padding: 12px 0; font-size: 14px; color: #1E293B; border-top: 1px solid #E2E8F0;">{{target_start_date}}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 12px 0; width: 38%; font-size: 13px; color: #64748B; border-top: 1px solid #E2E8F0;">Submitted at</td>
-                    <td style="padding: 12px 0; font-size: 14px; color: #1E293B; border-top: 1px solid #E2E8F0;">{{submitted_at}}</td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 680px; border-collapse: collapse;">
-            <tr>
-              <td style="padding: 16px 8px 0; font-size: 12px; line-height: 1.7; color: #64748B; text-align: center;">
-                ${BRAND.legalName} &nbsp;&middot;&nbsp; ${BRAND.supportAddress}<br />
-                <a href="mailto:${BRAND.supportEmail}" style="color: #8F6818; text-decoration: none;">${BRAND.supportEmail}</a>
-                &nbsp;&middot;&nbsp;
-                <a href="tel:${BRAND.supportPhone}" style="color: #8F6818; text-decoration: none;">${BRAND.supportPhone}</a>
-                &nbsp;&middot;&nbsp;
-                <a href="${BRAND.websiteUrl}" style="color: #8F6818; text-decoration: none;">${BRAND.websiteUrl}</a>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-  </body>
-</html>`,
+    body: renderEmailShell({
+      title: "Requirement intake recorded",
+      lead:
+        "A new requirement was submitted through the Vayasya Seva contact channel and now needs review in the shared inbox.",
+      referenceBlock: renderMatrix(
+        [
+          { label: "Case ID", value: "{{case_id}}" },
+          { label: "Submitted from", value: `<a href="${BRAND.websiteUrl}" style="color: ${EMAIL_COLORS.accent}; text-decoration: none;">${BRAND.websiteUrl}</a>` },
+        ],
+        { tone: "neutral" }
+      ),
+      summaryBlock: renderMatrix(
+        [
+          { label: "Current status", value: "New intake recorded" },
+          { label: "Required action", value: `Review scope and continue client communication from ${BRAND.supportEmail}` },
+          { label: "Owner", value: BRAND.supportEmail },
+          { label: "Next checkpoint", value: "{{response_window}}" },
+        ],
+        { tone: "warm" }
+      ),
+      sections: [
+        renderSection(
+          "Primary contact",
+          renderDefinitionTable(
+            [
+              { label: "Name", value: "{{name}}" },
+              { label: "Phone", value: "{{phone}}" },
+              { label: "Email", value: "{{email}}" },
+            ],
+            { marginBottom: 0 }
+          ),
+          { tone: "warm" }
+        ),
+        renderSection("Requirement details", "{{details}}", {
+          preserveWhitespace: true,
+        }),
+        renderSection(
+          "Scope and site context",
+          renderDefinitionTable(
+            [
+              { label: "Company", value: "{{company}}" },
+              { label: "Role", value: "{{role}}" },
+              { label: "Location", value: "{{location}}" },
+              { label: "Industry", value: "{{industry}}" },
+              { label: "Approx. headcount", value: "{{headcount}}" },
+              { label: "Shift requirement", value: "{{shift_requirement}}" },
+              { label: "Target start date", value: "{{target_start_date}}" },
+              { label: "Submitted at", value: "{{submitted_at}}" },
+            ],
+            { marginBottom: 0 }
+          ),
+          { marginBottom: 24 }
+        ),
+      ],
+      closingNote:
+        "Use the case ID in the subject line for follow-up. Keep scope, owner, and timing explicit in the first reply.",
+    }),
   },
   {
     key: "MSG91_AUTOREPLY_TEMPLATE_ID",
     name: "Vayasya Contact Acknowledgement",
     slug: "vayasya-contact-autoreply",
     subject: "Vayasya Seva | Requirement received [{{case_id}}]",
-    body: `<!doctype html>
-<html>
-${EMAIL_FONT_HEAD}
-  <body class="vayasya-body" style="margin: 0; padding: 24px; background-color: #F8FAFC; font-family: ${FONT_FAMILY_BODY}; color: #1E293B; line-height: 1.6;">
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
-      <tr>
-        <td align="center">
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 680px; border: 1px solid #E2E8F0; background-color: #FFFFFF; border-collapse: collapse;">
-            <tr>
-              <td style="height: 6px; background-color: #8F6818; font-size: 0; line-height: 0;">&nbsp;</td>
-            </tr>
-            <tr>
-              <td style="padding: 24px 28px 20px; border-bottom: 1px solid #E2E8F0;">
-                <p style="margin: 0 0 8px; font-size: 12px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: #8F6818;">
-                  ${BRAND.companyName}
-                </p>
-                <h1 class="vayasya-heading" style="margin: 0; font-size: 24px; line-height: 1.3; color: #0F172A; font-family: ${FONT_FAMILY_DISPLAY};">
-                  Thank you, {{name}}
-                </h1>
-                <p style="margin: 10px 0 0; font-size: 14px; color: #475569;">
-                  Your requirement inquiry has been received by Vayasya Seva Operations.
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding: 24px 28px;">
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; margin-bottom: 20px;">
-                  <tr>
-                    <td style="padding: 16px 18px; background-color: #F8FAFC; border: 1px solid #E2E8F0;">
-                      <p style="margin: 0 0 4px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #64748B;">
-                        Case ID
-                      </p>
-                      <p style="margin: 0; font-size: 18px; font-weight: 700; color: #0F172A;">{{case_id}}</p>
-                    </td>
-                  </tr>
-                </table>
-                <p style="margin: 0 0 16px; font-size: 15px; color: #1E293B;">
-                  Our team will review the request and respond through the details you shared.
-                </p>
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; margin-bottom: 20px;">
-                  <tr>
-                    <td style="padding: 0 0 8px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #8F6818;">
-                      Submission summary
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 18px; border: 1px solid #E2E8F0; background-color: #FFFFFF; font-size: 15px; color: #1E293B; white-space: pre-wrap;">
-                      {{details}}
-                    </td>
-                  </tr>
-                </table>
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; border-top: 1px solid #E2E8F0; margin-bottom: 20px;">
-                  <tr>
-                    <td style="padding: 12px 0; width: 38%; font-size: 13px; color: #64748B;">Phone</td>
-                    <td style="padding: 12px 0; font-size: 14px; color: #1E293B;">{{phone}}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 12px 0; width: 38%; font-size: 13px; color: #64748B; border-top: 1px solid #E2E8F0;">Email</td>
-                    <td style="padding: 12px 0; font-size: 14px; color: #1E293B; border-top: 1px solid #E2E8F0;">{{email}}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 12px 0; width: 38%; font-size: 13px; color: #64748B; border-top: 1px solid #E2E8F0;">Company</td>
-                    <td style="padding: 12px 0; font-size: 14px; color: #1E293B; border-top: 1px solid #E2E8F0;">{{company}}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 12px 0; width: 38%; font-size: 13px; color: #64748B; border-top: 1px solid #E2E8F0;">Location</td>
-                    <td style="padding: 12px 0; font-size: 14px; color: #1E293B; border-top: 1px solid #E2E8F0;">{{location}}</td>
-                  </tr>
-                </table>
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; margin-bottom: 20px;">
-                  <tr>
-                    <td style="padding: 16px 18px; background-color: #FFF9E8; border: 1px solid #FDF1CF;">
-                      <p style="margin: 0 0 4px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #8F6818;">
-                        Response window
-                      </p>
-                      <p style="margin: 0; font-size: 18px; font-weight: 700; color: #0F172A;">{{response_window}}</p>
-                    </td>
-                  </tr>
-                </table>
-                <p style="margin: 0 0 16px; font-size: 15px; color: #1E293B;">
-                  If you need to add context before we respond, reply to
-                  <a href="mailto:${BRAND.supportEmail}" style="color: #8F6818; text-decoration: none;">${BRAND.supportEmail}</a>
-                  or call
-                  <a href="tel:${BRAND.supportPhone}" style="color: #8F6818; text-decoration: none;">${BRAND.supportPhone}</a>.
-                </p>
-                <p style="margin: 0 0 16px; font-size: 15px; color: #1E293B;">
-                  Please keep the case ID in the subject line when replying so the conversation stays grouped correctly.
-                </p>
-                <p style="margin: 0; font-size: 15px; color: #1E293B;">
-                  Regards,<br />
-                  <strong>Vayasya Seva Operations</strong>
-                </p>
-              </td>
-            </tr>
-          </table>
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 680px; border-collapse: collapse;">
-            <tr>
-              <td style="padding: 16px 8px 0; font-size: 12px; line-height: 1.7; color: #64748B; text-align: center;">
-                ${BRAND.legalName} &nbsp;&middot;&nbsp; ${BRAND.supportAddress}<br />
-                <a href="${BRAND.websiteUrl}" style="color: #8F6818; text-decoration: none;">${BRAND.websiteUrl}</a>
-                &nbsp;&middot;&nbsp;
-                <a href="mailto:${BRAND.supportEmail}" style="color: #8F6818; text-decoration: none;">${BRAND.supportEmail}</a>
-                &nbsp;&middot;&nbsp;
-                <a href="tel:${BRAND.supportPhone}" style="color: #8F6818; text-decoration: none;">${BRAND.supportPhone}</a>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-  </body>
-</html>`,
+    body: renderEmailShell({
+      title: "Requirement received",
+      lead:
+        "This requirement has been recorded and this thread is the right place to add or correct site, scope, or timing details before the next update.",
+      referenceBlock: renderMatrix(
+        [
+          { label: "Case ID", value: "{{case_id}}" },
+          { label: "Reply route", value: `Reply to ${BRAND.supportEmail}` },
+        ],
+        { tone: "neutral" }
+      ),
+      summaryBlock: renderMatrix(
+        [
+          { label: "Current status", value: "Received and logged" },
+          { label: "Required action", value: "None unless you need to correct or add requirement details" },
+          { label: "Owner", value: "Vayasya Seva operations" },
+          { label: "Next checkpoint", value: "{{response_window}}" },
+        ],
+        { tone: "warm" }
+      ),
+      sections: [
+        renderSection("Submission summary", "{{details}}", {
+          preserveWhitespace: true,
+        }),
+        renderSection(
+          "Recorded details",
+          renderDefinitionTable(
+            [
+              { label: "Name", value: "{{name}}" },
+              { label: "Phone", value: "{{phone}}" },
+              { label: "Email", value: "{{email}}" },
+              { label: "Company", value: "{{company}}" },
+              { label: "Location", value: "{{location}}" },
+            ],
+            { marginBottom: 0 }
+          ),
+          { marginBottom: 24 }
+        ),
+      ],
+      closingNote:
+        `For updates, reply on this email thread and keep the case ID in the subject line. Vayasya Seva operations will respond from ${BRAND.supportEmail}.`,
+    }),
   },
 ];
 

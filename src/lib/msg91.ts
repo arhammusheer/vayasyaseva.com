@@ -20,11 +20,15 @@ type EmailDeliveryType =
   | "contact_internal_notification"
   | "contact_autoreply";
 
+interface Msg91Address {
+  email: string;
+  name?: string;
+}
+
 interface Msg91Recipient {
-  to: Array<{
-    email: string;
-    name?: string;
-  }>;
+  to: Msg91Address[];
+  cc?: Msg91Address[];
+  bcc?: Msg91Address[];
   variables: Msg91TemplateVariables;
 }
 
@@ -67,6 +71,10 @@ export interface Msg91SendResult {
   messageId?: string;
 }
 
+export interface ContactEmailOptions {
+  caseId: string;
+}
+
 interface Msg91Config {
   authKey: string;
   domain: string;
@@ -76,6 +84,7 @@ interface Msg91Config {
 }
 
 interface SendTemplateContext {
+  caseId: string;
   deliveryType: EmailDeliveryType;
   registeredTemplateIdentifier: string;
   templateIdentifier: string;
@@ -123,10 +132,26 @@ function getEmailDomain(value: string) {
   return domain?.toLowerCase() ?? "unknown";
 }
 
+function getRecipientAddresses(recipient: Msg91Recipient) {
+  return [...recipient.to, ...(recipient.cc ?? []), ...(recipient.bcc ?? [])];
+}
+
 function getRecipientEmails(payload: Msg91SendPayload) {
   return payload.recipients.flatMap((recipient) =>
-    recipient.to.map((contact) => contact.email)
+    getRecipientAddresses(recipient).map((contact) => contact.email)
   );
+}
+
+function getRecipientEmailsByType(
+  payload: Msg91SendPayload,
+  key: "to" | "cc" | "bcc"
+) {
+  return payload.recipients.flatMap((recipient) => {
+    const contacts = recipient[key];
+    return Array.isArray(contacts)
+      ? contacts.map((contact) => contact.email)
+      : [];
+  });
 }
 
 function getTemplateVariableCount(payload: Msg91SendPayload) {
@@ -176,6 +201,9 @@ function logEmailEvent(
   }
 ) {
   const recipientEmails = getRecipientEmails(options.payload);
+  const toEmails = getRecipientEmailsByType(options.payload, "to");
+  const ccEmails = getRecipientEmailsByType(options.payload, "cc");
+  const bccEmails = getRecipientEmailsByType(options.payload, "bcc");
   const record = {
     "@timestamp": new Date().toISOString(),
     message: options.message,
@@ -196,6 +224,7 @@ function logEmailEvent(
       id: options.operationId,
     },
     labels: {
+      case_id: options.context.caseId,
       provider: "msg91",
       delivery_type: options.context.deliveryType,
       template_resolution_source:
@@ -207,6 +236,9 @@ function logEmailEvent(
       recipient_count: recipientEmails.length,
       recipient_domains: [...new Set(recipientEmails.map(getEmailDomain))],
       recipients_masked: recipientEmails.map(maskEmailAddress),
+      to_masked: toEmails.map(maskEmailAddress),
+      cc_masked: ccEmails.map(maskEmailAddress),
+      bcc_masked: bccEmails.map(maskEmailAddress),
     },
     msg91: {
       domain: options.payload.domain,
@@ -235,7 +267,10 @@ function getRequiredMsg91Config() {
     domain: getEnv("MSG91_DOMAIN"),
     fromEmail: getEnv("MSG91_FROM_EMAIL"),
     fromName: getEnv("MSG91_FROM_NAME"),
-    replyToEmail: getEnv("MSG91_REPLY_TO_EMAIL") ?? siteConfig.email,
+    replyToEmail:
+      getEnv("MSG91_REPLY_TO_EMAIL") ??
+      getEnv("CONTACT_INTERNAL_RECIPIENT_EMAIL") ??
+      siteConfig.email,
   };
 
   const missing = Object.entries(config)
@@ -249,6 +284,10 @@ function getRequiredMsg91Config() {
   }
 
   return config as Msg91Config;
+}
+
+function getSharedInboxEmail(fallbackEmail = siteConfig.email) {
+  return getEnv("CONTACT_INTERNAL_RECIPIENT_EMAIL") ?? fallbackEmail;
 }
 
 function withFallback(value: string | undefined, fallback: string) {
@@ -266,11 +305,21 @@ function requireField(value: string | undefined, fieldName: string) {
   return trimmed;
 }
 
-function buildCommonVariables(data: ContactFormData): Msg91TemplateVariables {
+export function createContactCaseId(date = new Date()) {
+  const stamp = date.toISOString().slice(0, 10).replace(/-/g, "");
+  const token = crypto.randomUUID().split("-")[0].toUpperCase();
+  return `REQ-${stamp}-${token}`;
+}
+
+function buildCommonVariables(
+  data: ContactFormData,
+  caseId: string
+): Msg91TemplateVariables {
   const name = requireField(data.name, "name");
   const phone = requireField(data.phone, "phone");
 
   return {
+    case_id: caseId,
     company: withFallback(data.company, "Not provided"),
     details: requireField(data.details, "details"),
     email: withFallback(data.email, "Not provided"),
@@ -496,7 +545,8 @@ async function sendTemplateEmail(
 }
 
 export async function sendInternalContactEmail(
-  data: ContactFormData
+  data: ContactFormData,
+  options: ContactEmailOptions
 ): Promise<Msg91SendResult> {
   const config = getRequiredMsg91Config();
   const templateId = getEnv("MSG91_INTERNAL_TEMPLATE_ID");
@@ -505,8 +555,8 @@ export async function sendInternalContactEmail(
     throw new Error("Missing required MSG91 configuration: MSG91_INTERNAL_TEMPLATE_ID");
   }
 
-  const recipientEmail = getEnv("CONTACT_INTERNAL_RECIPIENT_EMAIL") ?? siteConfig.email;
-  const variables = buildCommonVariables(data);
+  const sharedInboxEmail = getSharedInboxEmail(config.replyToEmail);
+  const variables = buildCommonVariables(data, options.caseId);
   const resolvedTemplate = await resolveRegisteredTemplateIdentifier(
     config,
     templateId
@@ -522,16 +572,17 @@ export async function sendInternalContactEmail(
       {
         to: [
           {
-            email: recipientEmail,
-            name: `${siteConfig.companyName} Operations`,
+            email: sharedInboxEmail,
+            name: `${siteConfig.companyName} Shared Inbox`,
           },
         ],
         variables,
       },
     ],
-    reply_to: [{ email: config.replyToEmail }],
+    reply_to: [{ email: sharedInboxEmail }],
     template_id: resolvedTemplate.registeredTemplateIdentifier,
   }, {
+    caseId: options.caseId,
     deliveryType: "contact_internal_notification",
     registeredTemplateIdentifier: resolvedTemplate.registeredTemplateIdentifier,
     templateIdentifier: templateId,
@@ -539,7 +590,8 @@ export async function sendInternalContactEmail(
 }
 
 export async function sendContactAutoReply(
-  data: ContactFormData
+  data: ContactFormData,
+  options: ContactEmailOptions
 ): Promise<Msg91SendResult> {
   const config = getRequiredMsg91Config();
   const templateId = getEnv("MSG91_AUTOREPLY_TEMPLATE_ID");
@@ -550,8 +602,9 @@ export async function sendContactAutoReply(
     throw new Error("Missing required MSG91 configuration: MSG91_AUTOREPLY_TEMPLATE_ID");
   }
 
+  const sharedInboxEmail = getSharedInboxEmail(config.replyToEmail);
   const variables = {
-    name,
+    ...buildCommonVariables(data, options.caseId),
     response_window: DEFAULT_RESPONSE_WINDOW,
   };
   const resolvedTemplate = await resolveRegisteredTemplateIdentifier(
@@ -573,12 +626,19 @@ export async function sendContactAutoReply(
             name,
           },
         ],
+        bcc: [
+          {
+            email: sharedInboxEmail,
+            name: `${siteConfig.companyName} Shared Inbox`,
+          },
+        ],
         variables,
       },
     ],
-    reply_to: [{ email: config.replyToEmail }],
+    reply_to: [{ email: sharedInboxEmail }],
     template_id: resolvedTemplate.registeredTemplateIdentifier,
   }, {
+    caseId: options.caseId,
     deliveryType: "contact_autoreply",
     registeredTemplateIdentifier: resolvedTemplate.registeredTemplateIdentifier,
     templateIdentifier: templateId,

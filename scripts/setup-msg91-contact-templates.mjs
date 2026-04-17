@@ -52,7 +52,7 @@ const templateDefinitions = [
     key: "MSG91_INTERNAL_TEMPLATE_ID",
     name: "Vayasya Contact Internal Notification",
     slug: "vayasya-contact-internal",
-    subject: "Vayasya Seva | New requirement inquiry from {{name}}",
+    subject: "Vayasya Seva | Requirement intake [{{case_id}}] | {{name}}",
     body: `<!doctype html>
 <html>
 ${EMAIL_FONT_HEAD}
@@ -70,7 +70,7 @@ ${EMAIL_FONT_HEAD}
                   ${BRAND.companyName}
                 </p>
                 <h1 class="vayasya-heading" style="margin: 0; font-size: 24px; line-height: 1.3; color: #0F172A; font-family: ${FONT_FAMILY_DISPLAY};">
-                  New requirement inquiry received
+                  Requirement intake received
                 </h1>
                 <p style="margin: 10px 0 0; font-size: 14px; color: #475569;">
                   Submitted from <a href="${BRAND.websiteUrl}" style="color: #8F6818; text-decoration: none;">${BRAND.websiteUrl}</a>
@@ -79,6 +79,16 @@ ${EMAIL_FONT_HEAD}
             </tr>
             <tr>
               <td style="padding: 24px 28px;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; margin-bottom: 20px;">
+                  <tr>
+                    <td style="padding: 16px 18px; background-color: #F8FAFC; border: 1px solid #E2E8F0;">
+                      <p style="margin: 0 0 4px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #64748B;">
+                        Case ID
+                      </p>
+                      <p style="margin: 0; font-size: 18px; font-weight: 700; color: #0F172A;">{{case_id}}</p>
+                    </td>
+                  </tr>
+                </table>
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; margin-bottom: 20px;">
                   <tr>
                     <td style="padding: 16px 18px; background-color: #FFF9E8; border: 1px solid #FDF1CF;">
@@ -163,7 +173,7 @@ ${EMAIL_FONT_HEAD}
     key: "MSG91_AUTOREPLY_TEMPLATE_ID",
     name: "Vayasya Contact Acknowledgement",
     slug: "vayasya-contact-autoreply",
-    subject: "Vayasya Seva | Requirement inquiry received",
+    subject: "Vayasya Seva | Requirement received [{{case_id}}]",
     body: `<!doctype html>
 <html>
 ${EMAIL_FONT_HEAD}
@@ -190,9 +200,49 @@ ${EMAIL_FONT_HEAD}
             </tr>
             <tr>
               <td style="padding: 24px 28px;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; margin-bottom: 20px;">
+                  <tr>
+                    <td style="padding: 16px 18px; background-color: #F8FAFC; border: 1px solid #E2E8F0;">
+                      <p style="margin: 0 0 4px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #64748B;">
+                        Case ID
+                      </p>
+                      <p style="margin: 0; font-size: 18px; font-weight: 700; color: #0F172A;">{{case_id}}</p>
+                    </td>
+                  </tr>
+                </table>
                 <p style="margin: 0 0 16px; font-size: 15px; color: #1E293B;">
                   Our team will review the request and respond through the details you shared.
                 </p>
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; margin-bottom: 20px;">
+                  <tr>
+                    <td style="padding: 0 0 8px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #8F6818;">
+                      Submission summary
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 18px; border: 1px solid #E2E8F0; background-color: #FFFFFF; font-size: 15px; color: #1E293B; white-space: pre-wrap;">
+                      {{details}}
+                    </td>
+                  </tr>
+                </table>
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; border-top: 1px solid #E2E8F0; margin-bottom: 20px;">
+                  <tr>
+                    <td style="padding: 12px 0; width: 38%; font-size: 13px; color: #64748B;">Phone</td>
+                    <td style="padding: 12px 0; font-size: 14px; color: #1E293B;">{{phone}}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 12px 0; width: 38%; font-size: 13px; color: #64748B; border-top: 1px solid #E2E8F0;">Email</td>
+                    <td style="padding: 12px 0; font-size: 14px; color: #1E293B; border-top: 1px solid #E2E8F0;">{{email}}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 12px 0; width: 38%; font-size: 13px; color: #64748B; border-top: 1px solid #E2E8F0;">Company</td>
+                    <td style="padding: 12px 0; font-size: 14px; color: #1E293B; border-top: 1px solid #E2E8F0;">{{company}}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 12px 0; width: 38%; font-size: 13px; color: #64748B; border-top: 1px solid #E2E8F0;">Location</td>
+                    <td style="padding: 12px 0; font-size: 14px; color: #1E293B; border-top: 1px solid #E2E8F0;">{{location}}</td>
+                  </tr>
+                </table>
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; margin-bottom: 20px;">
                   <tr>
                     <td style="padding: 16px 18px; background-color: #FFF9E8; border: 1px solid #FDF1CF;">
@@ -208,6 +258,9 @@ ${EMAIL_FONT_HEAD}
                   <a href="mailto:${BRAND.supportEmail}" style="color: #8F6818; text-decoration: none;">${BRAND.supportEmail}</a>
                   or call
                   <a href="tel:${BRAND.supportPhone}" style="color: #8F6818; text-decoration: none;">${BRAND.supportPhone}</a>.
+                </p>
+                <p style="margin: 0 0 16px; font-size: 15px; color: #1E293B;">
+                  Please keep the case ID in the subject line when replying so the conversation stays grouped correctly.
                 </p>
                 <p style="margin: 0; font-size: 15px; color: #1E293B;">
                   Regards,<br />

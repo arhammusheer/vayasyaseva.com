@@ -1,7 +1,8 @@
-import { after, NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { contactContract, contactSchema } from "@/lib/contact-contract";
 import {
   canSendContactAutoReply,
+  createContactCaseId,
   sendContactAutoReply,
   sendInternalContactEmail,
 } from "@/lib/msg91";
@@ -111,6 +112,7 @@ function rollbackReservation(ip: string, duplicateKey: string, now: number) {
 }
 
 export async function POST(request: NextRequest) {
+  let caseId: string | null = null;
   let duplicateKey: string | null = null;
   let ip = "unknown";
   let now = Date.now();
@@ -138,6 +140,7 @@ export async function POST(request: NextRequest) {
     const data = result.data;
     ip = getClientIp(request);
     now = Date.now();
+    caseId = createContactCaseId(new Date(now));
     duplicateKey = normalizeDuplicateKey(ip, data.email ?? "", data.phone ?? "");
 
     const abuseReason = getAbuseReason(request, now);
@@ -164,38 +167,41 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const internalDelivery = await sendInternalContactEmail(data);
-
-    console.info("[CONTACT SUBMISSION DELIVERED]", {
-      timestamp: new Date().toISOString(),
-      duplicateKey,
-      ip,
-      name: data.name,
-      company: data.company,
-      email: data.email,
-      industry: data.industry,
-      headcount: data.headcount,
-      messageId: internalDelivery.messageId,
-      threadId: internalDelivery.threadId,
-      uniqueId: internalDelivery.uniqueId,
-    });
-
     if (canSendContactAutoReply(data)) {
-      after(async () => {
-        try {
-          const autoReply = await sendContactAutoReply(data);
-          console.info("[CONTACT AUTOREPLY DELIVERED]", {
-            email: data.email,
-            messageId: autoReply.messageId,
-            threadId: autoReply.threadId,
-            uniqueId: autoReply.uniqueId,
-          });
-        } catch (error) {
-          console.error("[CONTACT AUTOREPLY FAILED]", {
-            email: data.email,
-            error: error instanceof Error ? error.message : "Unknown error",
-          });
-        }
+      const sharedInboxDelivery = await sendContactAutoReply(data, { caseId });
+
+      console.info("[CONTACT SUBMISSION DELIVERED]", {
+        timestamp: new Date().toISOString(),
+        caseId,
+        deliveryPath: "shared-inbox-acknowledgement",
+        duplicateKey,
+        ip,
+        name: data.name,
+        company: data.company,
+        email: data.email,
+        industry: data.industry,
+        headcount: data.headcount,
+        messageId: sharedInboxDelivery.messageId,
+        threadId: sharedInboxDelivery.threadId,
+        uniqueId: sharedInboxDelivery.uniqueId,
+      });
+    } else {
+      const sharedInboxDelivery = await sendInternalContactEmail(data, { caseId });
+
+      console.info("[CONTACT SUBMISSION DELIVERED]", {
+        timestamp: new Date().toISOString(),
+        caseId,
+        deliveryPath: "shared-inbox-intake",
+        duplicateKey,
+        ip,
+        name: data.name,
+        company: data.company,
+        email: data.email,
+        industry: data.industry,
+        headcount: data.headcount,
+        messageId: sharedInboxDelivery.messageId,
+        threadId: sharedInboxDelivery.threadId,
+        uniqueId: sharedInboxDelivery.uniqueId,
       });
     }
 
@@ -209,6 +215,7 @@ export async function POST(request: NextRequest) {
     }
 
     console.error("[CONTACT SUBMISSION FAILED]", {
+      caseId,
       ip,
       duplicateKey,
       error: error instanceof Error ? error.message : "Unknown error",

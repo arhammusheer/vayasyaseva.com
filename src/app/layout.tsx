@@ -30,10 +30,6 @@ export const metadata: Metadata = {
     "contract staffing",
   ],
   metadataBase: new URL("https://www.vayasyaseva.com"),
-  icons: {
-    icon: "/brand/logos/vspl.svg",
-    apple: "/brand/logos/vspl.svg",
-  },
   alternates: {
     canonical: "https://www.vayasyaseva.com",
   },

@@ -26,6 +26,7 @@ export function TrustStrip() {
                     src={client.logoLight}
                     alt={client.name}
                     fill
+                    sizes="144px"
                     className="object-contain brightness-0 invert"
                   />
                 </div>

@@ -21,15 +21,13 @@ const llmsIndex = `# Vayasya Seva Private Limited
 - ${baseUrl}/vayasya-setu
 - ${baseUrl}/about
 - ${baseUrl}/contact
+- ${baseUrl}/brand
 - ${baseUrl}/privacy
 - ${baseUrl}/terms
 
 ## Machine-readable endpoints
 - ${baseUrl}/llms-full.txt
 - ${baseUrl}/openapi/v1.json
-- ${baseUrl}/mcp
-- ${baseUrl}/.well-known/agent-card.json
-- ${baseUrl}/.well-known/agent.json
 - ${baseUrl}/ai-access-policy.txt
 - ${baseUrl}/sitemap.xml
 - ${baseUrl}/robots.txt
@@ -37,15 +35,12 @@ const llmsIndex = `# Vayasya Seva Private Limited
 ## API endpoints
 - POST ${baseUrl}/api/contact
 - GET ${baseUrl}/openapi/v1.json
-- POST ${baseUrl}/mcp
-- GET ${baseUrl}/.well-known/agent-card.json
 
 ## Access notes
-- Public website content is available for indexing and retrieval.
-- /api/* is not intended for crawler indexing.
-- Use source attribution for factual claims about registrations, compliance, and legal terms.
-- MCP endpoint is read-only and intended for agent tool/resource discovery.
-- MCP endpoint is rate-limited and can be configured to require bearer-token auth.
+- The public pages above are the source of truth. Crawl them directly; they carry JSON-LD structured data (Organization, LocalBusiness, Service, FAQ, Breadcrumb) and full text.
+- All public content may be indexed, cached, summarised, quoted and used for training and retrieval under the Terms of Use, section 3.2.
+- /api/* is the form-submission endpoint and is not for crawling or automated use.
+- Attribute factual claims about registrations, compliance and legal terms to the page they came from.
 `;
 
 export function GET() {

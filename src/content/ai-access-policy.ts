@@ -1,60 +1,41 @@
 export const aiAccessPolicy = `
 # AI Access Policy
 
-*Last updated: 2026-02-11*
+*Last updated: 2026-09-13*
 
 ## 1. Scope
 
-This policy governs AI and agent access to machine-readable endpoints on \`https://www.vayasyaseva.com\`, including:
+This policy governs access by search engines, automated agents and AI systems to \`https://www.vayasyaseva.com\` and its subdomains.
+
+The public HTML pages are the primary interface. Every page carries full text and JSON-LD structured data, and the sitemap at \`/sitemap.xml\` lists them. The following files exist as an index to the same content, not as a substitute for it:
 
 - \`/llms.txt\`
 - \`/llms-full.txt\`
-- \`/openapi/v1.json\`
-- \`/mcp\`
-- \`/.well-known/agent-card.json\`
+- \`/openapi/v1.json\` (contact form contract only)
 
-## 2. Access model
+## 2. Permission
 
-- Public marketing content endpoints are read-only.
-- MCP tools and resources are read-only.
-- Contact submission remains available only through \`POST /api/contact\`.
-- Agents should not attempt write operations over MCP.
+Under the Terms of Use (section 3.2), the Company permits the crawling, indexing, caching, retrieval, summarisation, quotation, analysis and use, including for training and retrieval-augmented generation, of all publicly accessible content on \`vayasyaseva.com\` and its subdomains by search engines, automated agents, large language models and other AI systems, subject to:
 
-## 3. Authentication
+- compliance with \`robots.txt\` and any published rate limits;
+- attribution to Vayasya Seva where content is reproduced;
+- exclusion of \`/api/\`, authenticated areas, form submissions and any personal data;
+- the Company's right to restrict or revoke the permission.
 
-- If \`MCP_BEARER_TOKEN\` is configured by the operator, \`/mcp\` requires a Bearer token.
-- If \`MCP_BEARER_TOKEN\` is not configured, \`/mcp\` runs in public read-only mode.
+\`robots.txt\` allows every user agent on every public path and disallows only \`/api/\`.
 
-## 4. Rate limiting
+## 3. Access model
 
-- MCP requests are rate-limited per client IP.
-- Default limits:
-  - Window: 60 seconds
-  - Max requests: 60 requests per window
-- Limits can be tuned using:
-  - \`MCP_RATE_LIMIT_WINDOW_MS\`
-  - \`MCP_RATE_LIMIT_MAX_REQUESTS\`
+- Public content endpoints are read-only.
+- Contact submission remains available only through \`POST /api/contact\`, which is not for automated use.
 
-## 5. Audit logging
-
-MCP access events are logged for abuse detection and operational monitoring. Logs include:
-
-- Timestamp
-- Method and path
-- Response status
-- Request duration
-- Hashed client IP
-- Auth mode used (public or bearer)
-
-Raw request payloads and secret tokens are not logged by governance handlers.
-
-## 6. Attribution and usage
+## 4. Attribution and usage
 
 - Factual compliance and legal statements should cite source endpoints.
 - Agents should prefer canonical endpoints and avoid stale mirrors.
-- Automated access must respect \`robots.txt\` directives.
+- Automated access must respect \`robots.txt\` directives and the Privacy Policy (section 10).
 
-## 7. Contact
+## 5. Contact
 
-For API and AI access questions: **help@vayasyaseva.com**
+For AI access questions: **help@vayasyaseva.com**
 `;

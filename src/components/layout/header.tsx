@@ -30,13 +30,15 @@ export function Header() {
         const rgb = getComputedStyle(el)
           .backgroundColor.match(/[\d.]+/g)
           ?.map(Number);
-        return {
-          el,
-          color:
-            rgb && rgb.length >= 3 && rgb[3] !== 0
-              ? rgb.slice(0, 3)
-              : [255, 255, 255],
-        };
+        const color =
+          rgb && rgb.length >= 3 && rgb[3] !== 0
+            ? rgb.slice(0, 3)
+            : [255, 255, 255];
+        // Gold surfaces read as dark navy so the header never turns gold
+        // behind the gold logo and pill.
+        const gold =
+          color[0] > 190 && color[1] > 120 && color[1] < 200 && color[2] < 100;
+        return { el, color: gold ? [15, 23, 42] : color };
       });
     let frame = 0;
     const update = () => {
@@ -66,7 +68,6 @@ export function Header() {
       );
       header.dataset.theme = dark ? "dark" : "light";
       header.dataset.top = String(window.scrollY <= 4);
-      header.dataset.gold = String(rgb[0] > 190 && rgb[1] > 120 && rgb[1] < 200 && rgb[2] < 100);
     };
     const schedule = () => {
       if (!frame) frame = requestAnimationFrame(update);

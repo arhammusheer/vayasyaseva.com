@@ -858,12 +858,15 @@ a:hover > svg {
 .rise-3 {
   animation-delay: 150ms;
 }
-.detail-list {
+/* Rules separate items only; the section edge above does the framing. */
+.detail-list > details {
+  scroll-margin-top: 24px;
+}
+.detail-list > details + details {
   border-top: 1px solid var(--border);
 }
-.detail-list > details {
-  border-bottom: 1px solid var(--border);
-  scroll-margin-top: 24px;
+.detail-list > details:first-child > summary {
+  padding-top: 0;
 }
 .detail-list summary {
   list-style: none;

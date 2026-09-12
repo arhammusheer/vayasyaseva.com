@@ -1,59 +1,9 @@
 import type {
-  HeroContent,
-  ProofRailItem,
   TrustClient,
   Registration,
-  ServiceCluster,
-  OperationStep,
   ComplianceItem,
-  SetuFeature,
   FaqItem,
-  PersonaBlock,
-  EngagementModel,
-  ScopeBoundary,
 } from "./types";
-
-export const hero: HeroContent = {
-  headline: "Vayasya Seva. Workforce. With care.",
-  subheadline:
-    "Contract labour and industrial services. A considered approach to people, work and compliance.",
-  primaryCta: {
-    label: "Let’s talk",
-    href: "/contact",
-  },
-  secondaryCta: {
-    label: "Our capabilities",
-    href: "/services",
-  },
-};
-
-export const proofRail: ProofRailItem[] = [
-  {
-    label: "ESIC",
-    value: "Registered",
-    type: "registration",
-  },
-  {
-    label: "EPF",
-    value: "Registered",
-    type: "registration",
-  },
-  {
-    label: "GST",
-    value: "Registered",
-    type: "registration",
-  },
-  {
-    label: "MSME",
-    value: "UDYAM certified",
-    type: "registration",
-  },
-  {
-    label: "Region",
-    value: "Haridwar–SIDCUL",
-    type: "region",
-  },
-];
 
 export const trustClients: TrustClient[] = [
   {
@@ -95,10 +45,6 @@ export const registrations: Registration[] = [
   },
 ];
 
-export const servicesClusters: ServiceCluster[] = [];
-
-export const operationsTimeline: OperationStep[] = [];
-
 export const complianceItems: ComplianceItem[] = [
   {
     title: "Registrations",
@@ -120,14 +66,6 @@ export const complianceItems: ComplianceItem[] = [
     claim: "directional",
   },
 ];
-
-export const setuFeatures: SetuFeature[] = [];
-
-export const personaBlocks: PersonaBlock[] = [];
-
-export const engagementModels: EngagementModel[] = [];
-
-export const scopeBoundaries: ScopeBoundary[] = [];
 
 export const faqs: FaqItem[] = [
   {

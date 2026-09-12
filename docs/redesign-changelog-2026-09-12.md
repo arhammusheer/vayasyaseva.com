@@ -63,7 +63,7 @@ New order, composed inline:
 
 - **Deleted**: `motion/reveal.tsx`, `motion/stagger.tsx`, `motion/use-hydrated.ts`, `motion/use-in-view.ts`, `sections/operating-model.tsx`, `sections/proof-rail.tsx`.
 - **Added**: `layout/page-hero.tsx`, `sections/roles-band.tsx` (marquee of roles from the services register; currently unused).
-- **Modified but now unused by any page**: `compliance-block`, `engagement-models`, `faq-section`, `geography-block`, `hero`, `hero-video`, `hero-video-player`, `operations-timeline`, `persona-blocks`, `scope-boundaries`, `service-clusters`, `setu-block`, `trust-strip`. Only `cta-block` is still imported. These are dead code pending a decision to delete or reintroduce.
+- **Deleted the following day (13 Sept)** as dead code: `compliance-block`, `engagement-models`, `faq-section`, `geography-block`, `hero`, `hero-video`, `hero-video-player`, `operations-timeline`, `persona-blocks`, `roles-band`, `scope-boundaries`, `service-clusters`, `setu-block`, `trust-strip`, plus `public/assets/video/hero/` (17 MB), the emptied arrays and their types in `content/`, and `scopeBoundaries` from the MCP compliance resource. Only `cta-block` remains in `sections/`.
 - `Section` gained `size` and `tone` props.
 
 ## SEO / metadata
@@ -87,7 +87,10 @@ New order, composed inline:
 
 ## Follow-ups
 
-- Delete or wire up the 13 unused section components and the emptied content arrays.
 - `globals.css` has duplicated selectors from the two passes; fold the override block into the base block.
 - Services list is 10 identical rows; consider grouping (people / premises / works) so the page has a rhythm.
 - Replace the stock hero photo with company photography when available.
+
+## 13 September follow-up
+
+- Header: wordmark text removed (logo only, `aria-label` on the link); gold hairline under the header removed; `.header-inner` now inherits `.site-shell` width so the logo aligns with page content; homepage-at-top logo enlargement (scale 1.33, 300 ms) restored via `data-home`/`data-top` attributes set in the existing rAF update.

@@ -1,6 +1,6 @@
 import * as z from "zod/v4";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { complianceItems, faqs, scopeBoundaries } from "@/content/home";
+import { complianceItems, faqs } from "@/content/home";
 import { industries } from "@/content/industries";
 import { privacyContent } from "@/content/privacy";
 import { services } from "@/content/services";
@@ -132,13 +132,12 @@ export function createVayasyaMcpServer() {
     "vayasya://compliance/posture",
     {
       title: "Compliance Posture",
-      description: "Compliance claims, scope boundaries, and operational FAQ coverage.",
+      description: "Compliance claims and operational FAQ coverage.",
       mimeType: "application/json",
     },
     async () =>
       resourceJson("vayasya://compliance/posture", {
         complianceItems,
-        scopeBoundaries,
         faq: faqs.filter((item) => item.category === "compliance"),
       })
   );
@@ -281,7 +280,7 @@ export function createVayasyaMcpServer() {
     {
       title: "Get Compliance Posture",
       description:
-        "Return compliance claims, scope boundaries, and compliance-related FAQ entries.",
+        "Return compliance claims and compliance-related FAQ entries.",
       inputSchema: {},
       annotations: {
         readOnlyHint: true,
@@ -290,7 +289,6 @@ export function createVayasyaMcpServer() {
     async () =>
       successToolResult("Returned compliance posture.", {
         complianceItems,
-        scopeBoundaries,
         faq: faqs.filter((item) => item.category === "compliance"),
       })
   );

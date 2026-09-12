@@ -22,21 +22,6 @@ export interface NavItem {
   children?: NavItem[];
 }
 
-/** Hero section content */
-export interface HeroContent {
-  headline: string;
-  subheadline: string;
-  primaryCta: { label: string; href: string };
-  secondaryCta: { label: string; href: string };
-}
-
-/** Proof rail item (compact evidence badges below hero) */
-export interface ProofRailItem {
-  label: string;
-  value: string;
-  type: "registration" | "coverage" | "cadence" | "region";
-}
-
 /** Trust strip */
 export interface TrustClient {
   name: string;
@@ -49,24 +34,6 @@ export interface TrustClient {
 export interface Registration {
   label: string;
   value: string;
-}
-
-/** Service cluster */
-export interface ServiceCluster {
-  id: string;
-  title: string;
-  description: string;
-  roles: string[];
-  icon: string;
-  href: string;
-}
-
-/** Operations timeline step */
-export interface OperationStep {
-  step: number;
-  title: string;
-  description: string;
-  icon: string;
 }
 
 /** Compliance item */
@@ -93,37 +60,6 @@ export interface IndustrySector {
   riskControlNeeds: string;
   reportingCadence: string;
   icon: string;
-}
-
-/** Setu feature */
-export interface SetuFeature {
-  title: string;
-  description: string;
-  icon: string;
-}
-
-/** Persona block */
-export interface PersonaBlock {
-  role: string;
-  headline: string;
-  whatYouGet: string[];
-  whatYouDontManage: string[];
-}
-
-/** Engagement model */
-export interface EngagementModel {
-  type: string;
-  description: string;
-  typicalDuration: string;
-  icon: string;
-}
-
-/** Scope boundary */
-export interface ScopeBoundary {
-  category: string;
-  included: string[];
-  notIncluded: string[];
-  onRequest: string[];
 }
 
 /** Contact form field */

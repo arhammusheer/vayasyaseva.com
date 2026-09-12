@@ -421,25 +421,12 @@ body {
 }
 .brand-lockup {
   display: flex;
-  gap: 10px;
   align-items: center;
   margin-right: auto;
-  font-family: var(--font-anek);
-  font-size: 25px;
-  font-weight: 600;
-  line-height: 1;
 }
 .brand-lockup img {
   width: 48px;
   height: 48px;
-}
-.brand-caption {
-  display: block;
-  font-family: var(--font-hind);
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.21em;
-  margin-top: 7px;
 }
 .desktop-nav {
   display: flex;
@@ -854,10 +841,6 @@ a:hover > svg {
 .section-subtle {
   background: var(--subtle);
 }
-.corrugated::before,
-.corrugated-setu::before {
-  display: none;
-}
 @keyframes rise {
   from {
     opacity: 0;
@@ -960,16 +943,9 @@ a:hover > svg {
     height: 72px;
     gap: 18px;
   }
-  .brand-lockup {
-    font-size: 20px;
-    gap: 5px;
-  }
   .brand-lockup img {
     width: 38px;
     height: 38px;
-  }
-  .brand-caption {
-    font-size: 7px;
   }
   .desktop-nav {
     display: none;
@@ -1152,8 +1128,6 @@ a:hover > svg {
   background: var(--header-surface);
   color: var(--neutral-900);
   border-bottom: 0;
-  box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--gold-500) 30%, transparent);
-  border-bottom-color: color-mix(in srgb, var(--gold-500) 30%, transparent);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   transition: color 180ms ease;
@@ -1165,24 +1139,16 @@ a:hover > svg {
 .header-inner {
   height: 64px;
   gap: 24px;
-  width: min(100% - 64px, 1400px);
-}
-.brand-lockup {
-  gap: 7px;
-  font-size: 23px;
-  font-weight: 700;
-  letter-spacing: -0.025em;
 }
 .brand-lockup img {
   width: 43px;
   height: 43px;
+  transform-origin: left top;
+  transition: transform 300ms ease-in-out;
 }
-.brand-caption {
-  margin-top: 1px;
-  font-size: 11px;
-  line-height: 1;
-  letter-spacing: 0.045em;
-  font-weight: 500;
+/* At the top of the homepage the logo sits larger, then settles on scroll. */
+.site-header[data-home="true"][data-top="true"] .brand-lockup img {
+  transform: scale(1.33);
 }
 .desktop-nav {
   gap: 22px;
@@ -1399,21 +1365,12 @@ a:hover > svg {
 }
 @media (max-width: 700px) {
   .header-inner {
-    width: calc(100% - 28px);
     height: 58px;
     gap: 12px;
-  }
-  .brand-lockup {
-    font-size: 21px;
-    gap: 5px;
   }
   .brand-lockup img {
     width: 39px;
     height: 39px;
-  }
-  .brand-caption {
-    font-size: 10px;
-    margin-top: 0;
   }
   .header-contact {
     display: flex;

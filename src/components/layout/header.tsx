@@ -65,6 +65,7 @@ export function Header() {
         `rgba(${rgb.join(",")},${heroOverlap > 0.95 ? 0.36 : 0.94})`,
       );
       header.dataset.theme = dark ? "dark" : "light";
+      header.dataset.top = String(window.scrollY <= 4);
       header.dataset.gold = String(rgb[0] > 190 && rgb[1] > 120 && rgb[1] < 200 && rgb[2] < 100);
     };
     const schedule = () => {
@@ -93,6 +94,8 @@ export function Header() {
       ref={headerRef}
       className="site-header"
       data-theme={pathname === "/" ? "dark" : "light"}
+      data-home={pathname === "/" ? "true" : undefined}
+      data-top="true"
     >
       <a href="#main-content" className="skip-link">
         Skip to content
@@ -106,9 +109,6 @@ export function Header() {
             height={48}
             priority
           />
-          <span>
-            Vayasya Seva<span className="brand-caption">Private Limited</span>
-          </span>
         </Link>
         <nav aria-label="Main navigation" className="desktop-nav">
           {primary.map((item) => (

@@ -4,7 +4,7 @@ import { siteConfig } from "@/content/site";
 import { termsContent } from "@/content/terms";
 
 export const metadata: Metadata = {
-  title: "Terms of Service",
+  title: "Terms of Use",
   description: `Terms of service for ${siteConfig.legalName}.`,
 };
 

@@ -28,7 +28,7 @@ export const footerLinks = {
   utility: [
     { label: "Haridwar–SIDCUL", href: "/haridwar-sidcul" },
     { label: "Privacy Policy", href: "/privacy" },
-    { label: "Terms of Service", href: "/terms" },
+    { label: "Terms of Use", href: "/terms" },
   ],
   company: [
     { label: "Setu Login", href: "https://setu.vayasyaseva.com" },

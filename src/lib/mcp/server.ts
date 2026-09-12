@@ -157,7 +157,7 @@ export function createVayasyaMcpServer() {
     "legal-terms",
     "vayasya://legal/terms",
     {
-      title: "Terms of Service",
+      title: "Terms of Use",
       description: "Terms of service in markdown format.",
       mimeType: "text/markdown",
     },

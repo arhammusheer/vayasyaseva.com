@@ -18,9 +18,7 @@ export function Footer() {
                 width={72}
                 height={72}
               />
-              <span>
-                Vayasya Seva<small>Private Limited</small>
-              </span>
+              <span>Vayasya Seva</span>
             </Link>
             <p>
               Contract labour. Industrial services.

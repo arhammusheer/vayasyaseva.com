@@ -1271,13 +1271,8 @@ a:hover > svg {
   width: 65px;
   height: 65px;
 }
-.footer-brand small {
-  display: block;
-  font-family: var(--font-hind);
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  margin-top: 4px;
+.footer-brand span {
+  padding-top: 0.12em;
 }
 .footer-main > div > p {
   color: var(--neutral-300);
@@ -1391,9 +1386,6 @@ a:hover > svg {
   .footer-brand img {
     width: 57px;
     height: 57px;
-  }
-  .footer-brand small {
-    font-size: 12px;
   }
   .footer-registration {
     gap: 12px 24px;

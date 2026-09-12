@@ -49,6 +49,7 @@ export function Footer() {
             <Link href="/haridwar-sidcul">Haridwar &amp; SIDCUL</Link>
             <Link href="/vayasya-setu">Vayasya Setu</Link>
             <a href="https://setu.vayasyaseva.com">Setu login ↗</a>
+            <Link href="/brand">Brand guidelines</Link>
           </nav>
         </div>
         <div className="footer-registration">
@@ -63,7 +64,6 @@ export function Footer() {
           </span>
           <span>GSTIN {siteConfig.gstin}</span>
           <div>
-            <Link href="/brand">Brand</Link>
             <Link href="/privacy">Privacy</Link>
             <Link href="/terms">Terms</Link>
           </div>

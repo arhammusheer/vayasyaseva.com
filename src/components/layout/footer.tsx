@@ -1,68 +1,83 @@
 import Image from "next/image";
 import Link from "next/link";
 import { siteConfig } from "@/content/site";
+
+const columns = [
+  {
+    label: "Company",
+    links: [
+      ["/about", "About"],
+      ["/services", "Services"],
+      ["/industries", "Industries"],
+      ["/how-we-operate", "Our approach"],
+      ["/compliance", "Compliance"],
+    ],
+  },
+  {
+    label: "More",
+    links: [
+      ["/haridwar-sidcul", "Haridwar & SIDCUL"],
+      ["/vayasya-setu", "Vayasya Setu"],
+      ["https://setu.vayasyaseva.com", "Setu login ↗"],
+      ["/brand", "Brand guidelines"],
+      ["/contact", "Contact"],
+    ],
+  },
+];
+
 export function Footer() {
   return (
     <footer className="site-footer">
       <div className="site-shell">
         <div className="footer-main">
-          <div>
-            <Link
-              href="/"
-              className="footer-brand"
-              aria-label="Vayasya Seva home"
-            >
+          <div className="footer-about">
+            <Link href="/" className="footer-brand" aria-label="Vayasya Seva home">
               <Image
                 src="/brand/logos/master-logo-light.svg"
                 alt=""
-                width={72}
-                height={72}
+                width={48}
+                height={48}
               />
               <span>Vayasya Seva</span>
             </Link>
-            <p>
-              Contract labour. Industrial services.
-              <br />
-              Care in every engagement.
-            </p>
+            <p>Contract labour and industrial services. Haridwar, Uttarakhand.</p>
             <address>
-              {siteConfig.address}
-              <br />
               <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
-              <br />
-              <a href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}>
+              <a
+                className="font-data"
+                href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
+              >
                 {siteConfig.phone}
               </a>
             </address>
           </div>
-          <nav aria-label="Company">
-            <p className="footer-label">COMPANY</p>
-            <Link href="/about">About us</Link>
-            <Link href="/services">What we do</Link>
-            <Link href="/industries">Industries</Link>
-            <Link href="/how-we-operate">Our approach</Link>
-            <Link href="/contact">Contact</Link>
-          </nav>
-          <nav aria-label="Further information">
-            <p className="footer-label">A CLOSER LOOK</p>
-            <Link href="/compliance">Labour compliance</Link>
-            <Link href="/haridwar-sidcul">Haridwar &amp; SIDCUL</Link>
-            <Link href="/vayasya-setu">Vayasya Setu</Link>
-            <a href="https://setu.vayasyaseva.com">Setu login ↗</a>
-            <Link href="/brand">Brand guidelines</Link>
-          </nav>
-        </div>
-        <div className="footer-registration">
-          <span>EPF &amp; ESIC registered</span>
-          <span>GST registered</span>
-          <span>MSME / UDYAM registered</span>
-          <Link href="/compliance">Our compliance approach ↗</Link>
+          {columns.map((c) => (
+            <nav key={c.label} aria-label={c.label}>
+              <p className="footer-label">{c.label}</p>
+              {c.links.map(([href, label]) =>
+                href.startsWith("http") ? (
+                  <a key={href} href={href}>
+                    {label}
+                  </a>
+                ) : (
+                  <Link key={href} href={href}>
+                    {label}
+                  </Link>
+                ),
+              )}
+            </nav>
+          ))}
         </div>
         <div className="footer-bottom">
-          <span>
-            © {new Date().getFullYear()} {siteConfig.legalName}
-          </span>
-          <span>GSTIN {siteConfig.gstin}</span>
+          <div className="footer-legal">
+            <span>
+              © {new Date().getFullYear()} {siteConfig.legalName}
+            </span>
+            <span>EPF, ESIC, GST and MSME registered</span>
+            <span>
+              GSTIN <span className="font-data">{siteConfig.gstin}</span>
+            </span>
+          </div>
           <div>
             <Link href="/privacy">Privacy</Link>
             <Link href="/terms">Terms</Link>

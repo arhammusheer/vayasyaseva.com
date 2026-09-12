@@ -47,7 +47,7 @@ export default function IndustriesPage() {
               <article
                 key={i.id}
                 id={i.id}
-                className="border-t py-7 scroll-mt-28"
+                className="scroll-mt-28 border-t py-7 first:border-0 first:pt-0"
               >
                 <h2 className="text-3xl font-medium">{i.title}</h2>
                 <p className="mt-3 text-muted-foreground leading-relaxed">

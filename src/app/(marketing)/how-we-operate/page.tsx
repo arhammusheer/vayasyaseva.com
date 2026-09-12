@@ -49,21 +49,32 @@ export default function ApproachPage() {
         lede="Every site has its own demands. We work with your team to put the people, supervision and supporting processes in place."
       />
       <Section>
-        <div className="max-w-4xl mx-auto">
-          {approach.map((a, i) => (
-            <div
-              key={a.title}
-              className="grid grid-cols-[40px_1fr] sm:grid-cols-[90px_1fr] gap-6 border-t py-9"
-            >
-              <span className="text-sm text-seva pt-2">0{i + 1}</span>
-              <div>
-                <h2 className="text-3xl font-medium">{a.title}</h2>
-                <p className="mt-3 text-muted-foreground leading-relaxed max-w-2xl">
-                  {a.text}
-                </p>
+        <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
+          <div>
+            <p className="eyebrow text-seva">HOW AN ENGAGEMENT RUNS</p>
+            <p className="mt-5 max-w-sm text-lg text-muted-foreground leading-relaxed">
+              Four stages, from the first conversation to the everyday
+              coordination of the team on your site.
+            </p>
+          </div>
+          <div>
+            {approach.map((a, i) => (
+              <div
+                key={a.title}
+                className="grid grid-cols-[40px_1fr] gap-6 border-t py-8 first:border-0 first:pt-0 sm:grid-cols-[72px_1fr]"
+              >
+                <span className="pt-2 font-data text-sm text-seva">
+                  0{i + 1}
+                </span>
+                <div>
+                  <h2 className="text-3xl font-medium">{a.title}</h2>
+                  <p className="mt-3 max-w-2xl text-muted-foreground leading-relaxed">
+                    {a.text}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </Section>
       <Section variant="subtle">

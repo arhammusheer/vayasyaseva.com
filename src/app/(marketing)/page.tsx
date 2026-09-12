@@ -54,7 +54,9 @@ export default function HomePage() {
             PEOPLE AT THE HEART OF WORK
           </p>
           <h1 className="rise rise-1">
-            Vayasya Seva<span>Workforce. With care.</span>
+            Workforce.
+            <br />
+            With care.
           </h1>
           <p className="hero-description rise rise-2">
             Contract labour and industrial services.

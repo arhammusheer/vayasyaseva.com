@@ -626,7 +626,7 @@ a:hover > svg {
 }
 .capability-section {
   padding-block: 105px 85px;
-  background: var(--neutral-100) fe8;
+  background: var(--neutral-100);
 }
 .section-intro {
   display: grid;

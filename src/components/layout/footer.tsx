@@ -63,6 +63,7 @@ export function Footer() {
           </span>
           <span>GSTIN {siteConfig.gstin}</span>
           <div>
+            <Link href="/brand">Brand</Link>
             <Link href="/privacy">Privacy</Link>
             <Link href="/terms">Terms</Link>
           </div>

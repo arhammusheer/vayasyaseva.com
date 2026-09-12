@@ -14,7 +14,7 @@
  */
 
 @theme inline {
-  /* Fonts — Anek Devanagari display, Hind body, JetBrains Mono data */
+  /* Fonts — Anek Latin display, Hind body, JetBrains Mono data */
   --font-display: var(--font-anek);
   --font-serif: var(--font-hind);
   --font-sans: var(--font-hind);
@@ -1295,10 +1295,10 @@ a:hover > svg {
   display: inline-flex;
   align-items: center;
   gap: 13px;
-  font-weight: 700;
-  font-size: 35px;
+  font-weight: 500;
+  font-size: 34px;
   line-height: 1;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
 }
 .footer-brand img {
   width: 65px;

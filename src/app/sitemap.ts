@@ -15,6 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/vayasya-setu`, lastModified, changeFrequency: "monthly", priority: 0.7 },
     { url: `${baseUrl}/about`, lastModified, changeFrequency: "monthly", priority: 0.7 },
     { url: `${baseUrl}/contact`, lastModified, changeFrequency: "yearly", priority: 0.9 },
+    { url: `${baseUrl}/brand`, lastModified, changeFrequency: "yearly", priority: 0.3 },
     { url: `${baseUrl}/privacy`, lastModified, changeFrequency: "yearly", priority: 0.3 },
     { url: `${baseUrl}/terms`, lastModified, changeFrequency: "yearly", priority: 0.3 },
   ];

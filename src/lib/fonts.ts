@@ -1,6 +1,6 @@
-import { Anek_Devanagari, Hind, JetBrains_Mono } from "next/font/google";
+import { Anek_Latin, Hind, JetBrains_Mono } from "next/font/google";
 
-export const brandDisplay = Anek_Devanagari({
+export const brandDisplay = Anek_Latin({
   variable: "--font-anek",
   subsets: ["latin"],
   weight: ["500", "600", "700"],

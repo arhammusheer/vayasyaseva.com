@@ -90,7 +90,7 @@ VSPL is not a staffing agency. The messaging must position the company as an **o
 
 | Role | Font | Fallback | Weight range |
 |------|------|----------|--------------|
-| Display (headlines, nav, section titles) | **Anek Devanagari** | system-ui, sans-serif | 500, 600, 700 |
+| Display (headlines, nav, section titles) | **Anek Latin** | system-ui, sans-serif | 500, 600, 700 |
 | Serif (body, paragraphs, long-form copy) | **Hind** | system-ui, sans-serif | 300, 400, 500, 600, 700 |
 | Mono (IDs, metrics, labels, code/data) | **JetBrains Mono** | ui-monospace, monospace | 400, 500 |
 

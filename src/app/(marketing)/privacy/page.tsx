@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { Section } from "@/components/layout/section";
-import { Prose } from "@/components/layout/prose";
+import { LegalPage } from "@/components/layout/legal-page";
 import { siteConfig } from "@/content/site";
 import { privacyContent } from "@/content/privacy";
 
@@ -10,9 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPage() {
-  return (
-    <Section>
-      <Prose content={privacyContent} />
-    </Section>
-  );
+  return <LegalPage content={privacyContent} />;
 }

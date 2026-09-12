@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -1389,4 +1388,53 @@ a:hover > svg {
   .header-inner {
     gap: 8px;
   }
+}
+
+/* Legal documents: numbered clauses, no rules between headings. */
+.legal-body {
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--foreground);
+}
+.legal-body h2 {
+  margin-top: 44px;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.2;
+  scroll-margin-top: 88px;
+}
+.legal-body h2:first-child {
+  margin-top: 0;
+}
+.legal-body p,
+.legal-body ul,
+.legal-body ol {
+  margin-top: 14px;
+  color: var(--muted-foreground);
+}
+.legal-body ul,
+.legal-body ol {
+  padding-left: 22px;
+}
+.legal-body ul {
+  list-style: disc;
+}
+.legal-body ol {
+  list-style: decimal;
+}
+.legal-body li {
+  margin-top: 6px;
+  padding-left: 4px;
+}
+.legal-body li::marker {
+  color: var(--gold-700);
+}
+.legal-body strong {
+  color: var(--foreground);
+  font-weight: 600;
+}
+.legal-body a {
+  color: var(--gold-700);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { Section } from "@/components/layout/section";
-import { Prose } from "@/components/layout/prose";
+import { LegalPage } from "@/components/layout/legal-page";
 import { siteConfig } from "@/content/site";
 import { termsContent } from "@/content/terms";
 
@@ -10,9 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function TermsPage() {
-  return (
-    <Section>
-      <Prose content={termsContent} />
-    </Section>
-  );
+  return <LegalPage content={termsContent} />;
 }

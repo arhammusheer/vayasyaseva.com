@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { LegalPage } from "@/components/layout/legal-page";
-import { siteConfig } from "@/content/site";
 import { termsContent } from "@/content/terms";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Terms of Use",
-  description: `Terms of service for ${siteConfig.legalName}.`,
-};
+  description:
+    "Terms of Use for vayasyaseva.com and its subdomains: licence and permitted automated access, prohibited conduct, intellectual property, disclaimers, limitation of liability and governing law.",
+  alternates: { canonical: "/terms" },
+});
 
 export default function TermsPage() {
   return <LegalPage content={termsContent} />;

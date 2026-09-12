@@ -9,7 +9,7 @@ const appDescription =
 export const metadata: Metadata = {
   title: {
     default: "Vayasya Seva | Contract Labour & Workforce Services",
-    template: "%s | Vayasya Seva Private Limited",
+    template: "%s | Vayasya Seva",
   },
   description: appDescription,
   keywords: [
@@ -31,14 +31,11 @@ export const metadata: Metadata = {
     "Vayasya Seva",
   ],
   metadataBase: new URL("https://www.vayasyaseva.com"),
-  alternates: {
-    canonical: "./",
-  },
   openGraph: {
     type: "website",
     locale: "en_IN",
     url: "https://www.vayasyaseva.com",
-    siteName: "Vayasya Seva Private Limited",
+    siteName: "Vayasya Seva",
     title: "Vayasya Seva | Contract Labour & Workforce Services",
     description: appDescription,
     images: [
@@ -46,7 +43,7 @@ export const metadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "Vayasya Seva Private Limited",
+        alt: "Vayasya Seva",
       },
     ],
   },

@@ -79,7 +79,7 @@ export const agentCard = {
     {
       id: "legal-documents",
       name: "Get Legal Document",
-      description: "Returns the full privacy policy or terms of service markdown.",
+      description: "Returns the full privacy policy or terms of use markdown.",
       tags: ["legal", "privacy", "terms"],
       examples: ["Get the privacy policy text."],
       inputModes: ["application/json", "text/plain"],

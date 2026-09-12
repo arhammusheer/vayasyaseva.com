@@ -121,7 +121,7 @@ Policy endpoint: ${baseUrl}/ai-access-policy.txt
 
 ## Policy and legal
 Privacy policy: ${baseUrl}/privacy
-Terms of service: ${baseUrl}/terms
+terms of use: ${baseUrl}/terms
 Robots policy: ${baseUrl}/robots.txt
 Sitemap: ${baseUrl}/sitemap.xml
 Index file: ${baseUrl}/llms.txt

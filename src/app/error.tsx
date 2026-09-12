@@ -11,38 +11,31 @@ export default function Error({
   reset: () => void;
 }) {
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-2xl flex-col items-start justify-center bg-background px-6 sm:px-12">
-      <Link href="/">
+    <div className="site-shell flex min-h-screen flex-col justify-center py-24">
+      <Link href="/" aria-label="Vayasya Seva home" className="inline-block">
         <Image
-          src="/brand/logos/master-logo-dark.svg"
-          alt="Vayasya Seva Private Limited"
-          width={180}
-          height={46}
-          className="h-10 w-auto"
+          src="/brand/logos/master-logo-light.svg"
+          alt=""
+          width={44}
+          height={44}
           priority
         />
       </Link>
-
-      <div className="mt-12">
-        <p className="font-data text-6xl font-medium text-danger">500</p>
-        <h1 className="mt-4 text-2xl font-semibold text-foreground">
-          Something went wrong
-        </h1>
-        <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-          The page failed to load. Try again, or call us on +91 72920 14101.
-        </p>
-      </div>
-
-      <div className="mt-8 flex items-center gap-3">
-        <Button onClick={reset}>Try again</Button>
-        <Button asChild variant="outline">
+      <p className="eyebrow mt-12 text-gold-700">ERROR</p>
+      <h1 className="mt-5 text-5xl font-medium leading-[1.04] tracking-[-0.03em] sm:text-6xl">
+        Something went wrong.
+      </h1>
+      <p className="mt-5 max-w-sm text-lg leading-relaxed text-muted-foreground">
+        The page failed to load. Try again, or call us on +91 72920 14101.
+      </p>
+      <div className="mt-10 flex flex-wrap gap-3">
+        <Button size="lg" onClick={reset}>
+          Try again
+        </Button>
+        <Button asChild size="lg" variant="outline">
           <Link href="/">Home</Link>
         </Button>
       </div>
-
-      <p className="mt-16 text-xs text-muted-foreground">
-        &copy; {new Date().getFullYear()} Vayasya Seva Private Limited
-      </p>
     </div>
   );
 }

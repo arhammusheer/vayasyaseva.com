@@ -158,7 +158,7 @@ export function createVayasyaMcpServer() {
     "vayasya://legal/terms",
     {
       title: "Terms of Use",
-      description: "Terms of service in markdown format.",
+      description: "terms of use in markdown format.",
       mimeType: "text/markdown",
     },
     async () => resourceMarkdown("vayasya://legal/terms", termsContent.trim())
@@ -297,7 +297,7 @@ export function createVayasyaMcpServer() {
     "get_legal_document",
     {
       title: "Get Legal Document",
-      description: "Return the full markdown text for privacy policy or terms of service.",
+      description: "Return the full markdown text for privacy policy or terms of use.",
       inputSchema: {
         document: z.enum(["privacy", "terms"]),
       },
@@ -313,7 +313,7 @@ export function createVayasyaMcpServer() {
           source: `${baseUrl}/privacy`,
         });
       }
-      return successToolResult("Returned terms of service markdown.", {
+      return successToolResult("Returned terms of use markdown.", {
         document: "terms",
         content: termsContent.trim(),
         source: `${baseUrl}/terms`,

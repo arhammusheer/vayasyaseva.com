@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { Section } from "@/components/layout/section";
 import { siteConfig } from "@/content/site";
 import {
@@ -9,11 +9,12 @@ import {
 } from "@/lib/structured-data";
 import { ContactForm } from "./contact-form";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Contact",
   description:
     "Talk to Vayasya Seva about contract labour, workforce services, compliance support or a project. Contact our Haridwar team by phone, email or enquiry form.",
-};
+  alternates: { canonical: "/contact" },
+});
 
 function ContactFormFallback() {
   return (

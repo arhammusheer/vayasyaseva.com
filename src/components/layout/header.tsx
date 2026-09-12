@@ -70,10 +70,16 @@ export function Header() {
         Math.round((channel + Math.max(0, height - covered) * fill[i]) / height),
       );
       const dark = rgb[0] * 0.2126 + rgb[1] * 0.7152 + rgb[2] * 0.0722 < 140;
+      // Fully over the hero photo the header goes clear: no plate, no blur.
+      const overHero = heroOverlap > 0.95;
       header.style.setProperty(
         "--header-surface",
-        `rgba(${rgb.join(",")},${heroOverlap > 0.95 ? 0.36 : covered ? 0.94 : 1})`,
+        `rgba(${rgb.join(",")},${overHero ? 0 : covered ? 0.94 : 1})`,
       );
+      header.dataset.clear = String(overHero);
+      // Inside the hero the bar has no plate, so instead of sliding its
+      // logo and links across the headline it tucks away until the hero ends.
+      header.dataset.hidden = String(overHero && window.scrollY > 24);
       header.dataset.theme = dark ? "dark" : "light";
       header.dataset.top = String(window.scrollY <= 4);
     };
@@ -104,6 +110,7 @@ export function Header() {
       className="site-header"
       data-theme={pathname === "/" ? "dark" : "light"}
       data-home={pathname === "/" ? "true" : undefined}
+      data-clear={pathname === "/" ? "true" : undefined}
       data-top="true"
     >
       <a href="#main-content" className="skip-link">

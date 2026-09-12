@@ -495,7 +495,8 @@ body {
       rgba(15, 23, 42, 0.82) 46%,
       rgba(15, 23, 42, 0.16) 88%
     ),
-    linear-gradient(0deg, rgba(15, 23, 42, 0.55), transparent 25%);
+    linear-gradient(0deg, rgba(15, 23, 42, 0.55), transparent 25%),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.5), transparent 160px);
 }
 .hero-content {
   position: relative;
@@ -1129,8 +1130,24 @@ a:hover > svg {
   transition: color 180ms ease;
 }
 .site-header[data-theme="dark"] {
-  --header-surface: rgba(15, 23, 42, 0.36);
+  --header-surface: rgba(15, 23, 42, 0.94);
   color: var(--neutral-0);
+}
+.site-header[data-clear="true"] {
+  --header-surface: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.site-header {
+  transition:
+    color 180ms ease,
+    transform 240ms ease;
+}
+.site-header[data-hidden="true"] {
+  transform: translateY(-100%);
+}
+.site-header[data-hidden="true"]:focus-within {
+  transform: none;
 }
 .header-inner {
   height: 64px;

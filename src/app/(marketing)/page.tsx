@@ -53,11 +53,7 @@ export default function HomePage() {
           <p className="eyebrow hero-eyebrow rise">
             PEOPLE AT THE HEART OF WORK
           </p>
-          <h1 className="rise rise-1">
-            Workforce.
-            <br />
-            With care.
-          </h1>
+          <h1 className="rise rise-1">Workforce. With care.</h1>
           <p className="hero-description rise rise-2">
             Contract labour and industrial services. A considered approach to
             people, work and compliance.

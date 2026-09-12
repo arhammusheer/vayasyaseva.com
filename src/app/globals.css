@@ -472,8 +472,7 @@ body {
   position: relative;
   isolation: isolate;
   min-height: 600px;
-  height: calc(100svh - 88px);
-  max-height: 880px;
+  height: 100svh;
   color: #fff;
   background: var(--neutral-900);
   display: flex;
@@ -490,8 +489,8 @@ body {
     linear-gradient(
       90deg,
       rgba(15, 23, 42, 0.93) 0%,
-      rgba(15, 23, 42, 0.82) 34%,
-      rgba(15, 23, 42, 0.16) 80%
+      rgba(15, 23, 42, 0.82) 46%,
+      rgba(15, 23, 42, 0.16) 88%
     ),
     linear-gradient(0deg, rgba(15, 23, 42, 0.55), transparent 25%);
 }
@@ -503,7 +502,7 @@ body {
   color: var(--gold-300);
   margin-bottom: 30px;
 }
-/* Display ~3.5x the lede; lede capped near 40ch for a readable measure. */
+/* Display ~3.5x the lede; lede capped near 55ch for a readable measure. */
 .home-hero h1 {
   font-size: clamp(44px, 5.2vw, 76px);
   font-weight: 500;
@@ -513,7 +512,7 @@ body {
 .hero-description {
   font-size: clamp(18px, 1.5vw, 22px);
   line-height: 1.55;
-  max-width: 40ch;
+  max-width: 55ch;
   text-wrap: pretty;
   color: var(--neutral-100);
   margin: 28px 0 36px;

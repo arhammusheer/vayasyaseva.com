@@ -397,7 +397,8 @@
 
 /* Marketing composition uses only the approved brand palette above. */
 html {
-  scroll-padding-top: 110px;
+  scroll-behavior: smooth;
+  scroll-padding-top: 64px;
 }
 body {
   font-size: 17px;
@@ -862,7 +863,7 @@ a:hover > svg {
 }
 .detail-list > details {
   border-bottom: 1px solid var(--border);
-  scroll-margin-top: 110px;
+  scroll-margin-top: 24px;
 }
 .detail-list summary {
   list-style: none;

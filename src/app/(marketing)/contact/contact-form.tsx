@@ -4,45 +4,49 @@ import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowUpRight, CheckCircle2, Loader2 } from "lucide-react";
+import { ArrowUpRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 import {
   contactSchema,
   type ContactFormData,
   type ContactFormInput,
 } from "@/lib/contact-contract";
 
-const industryOptions = [
-  "Manufacturing",
-  "Warehousing & Logistics",
-  "FMCG / Consumer Operations",
-  "Housekeeping & Facility Operations",
-  "Civil Works",
-  "Fabrication Works",
-  "Machinery Maintenance",
-  "Equipment Provisioning",
-  "Hospitality",
-  "Other",
-];
+const field =
+  "mt-2 h-12 rounded-lg border-neutral-300 bg-background px-4 text-base text-foreground shadow-none placeholder:text-neutral-400 focus-visible:border-gold-500 focus-visible:ring-gold-500/25 md:text-base";
 
-const fieldClassName =
-  "mt-1.5 h-11 border-neutral-300 bg-background text-foreground placeholder:text-neutral-500 shadow-none focus-visible:border-gold-500 focus-visible:ring-gold-500/25";
-
-const textAreaClassName =
-  "mt-1.5 border-neutral-300 bg-background text-foreground placeholder:text-neutral-500 shadow-none focus-visible:border-gold-500 focus-visible:ring-gold-500/25";
-
-const selectTriggerClassName =
-  "mt-1.5 h-11 w-full border-neutral-300 bg-background text-foreground shadow-none data-[placeholder]:text-neutral-500 focus-visible:border-gold-500 focus-visible:ring-gold-500/25";
+function Field({
+  id,
+  label,
+  optional,
+  error,
+  children,
+  className,
+}: {
+  id: string;
+  label: string;
+  optional?: boolean;
+  error?: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={className}>
+      <Label htmlFor={id} className="text-sm font-medium">
+        {label}
+        {optional && (
+          <span className="font-normal text-muted-foreground">Optional</span>
+        )}
+      </Label>
+      {children}
+      {error && <p className="mt-1.5 text-xs text-destructive">{error}</p>}
+    </div>
+  );
+}
 
 export function ContactForm() {
   const searchParams = useSearchParams();
@@ -50,13 +54,11 @@ export function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
   const [honeypot, setHoneypot] = useState("");
   const [formStartedAt] = useState(() => Date.now());
-  const [selectedIndustry, setSelectedIndustry] = useState<string | undefined>();
   const [error, setError] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors, isSubmitting },
   } = useForm<ContactFormInput, undefined, ContactFormData>({
     resolver: zodResolver(contactSchema),
@@ -69,55 +71,44 @@ export function ContactForm() {
 
   async function onSubmit(data: ContactFormData) {
     setError(null);
-
     try {
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
         "x-contact-form-started-at": String(formStartedAt),
       };
-
       if (honeypot.trim().length > 0) {
         headers["x-contact-form-honeypot"] = honeypot;
       }
-
       const response = await fetch("/api/contact", {
         method: "POST",
         headers,
         body: JSON.stringify(data),
       });
       const result = await response.json();
-
       if (!response.ok) {
         setError(result.error ?? "Submission failed. Please try again.");
         return;
       }
-
       setSubmitted(true);
     } catch {
-      setError(
-        "Submission could not be completed. Please try again or contact Vayasya Seva operations at help@vayasyaseva.com."
-      );
+      setError("The message could not be sent. Please try again, or call us.");
     }
   }
 
   if (submitted) {
     return (
-      <div
-        role="status"
-        className="flex flex-col items-center justify-center py-12 text-center"
-      >
-        <CheckCircle2 className="h-12 w-12 text-success" />
-        <h3 className="mt-4 text-xl font-semibold">Received</h3>
-        <p className="mt-2 max-w-sm text-muted-foreground">
-          Thank you for getting in touch. Our team will review your message
-          and contact you using the details you shared.
+      <div role="status" className="border-t pt-8">
+        <h2 className="text-3xl font-medium">Received.</h2>
+        <p className="mt-3 max-w-md text-muted-foreground leading-relaxed">
+          Thank you. Our team will review your message and contact you using
+          the details you shared.
         </p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-5">
+    <form onSubmit={handleSubmit(onSubmit)} noValidate>
       <div
         aria-hidden="true"
         className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden"
@@ -132,198 +123,73 @@ export function ContactForm() {
         />
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <Label htmlFor="name">
-            Name <span className="text-destructive">*</span>
-          </Label>
+      <div className="grid gap-x-5 gap-y-6 sm:grid-cols-2">
+        <Field id="name" label="Name" error={errors.name?.message}>
           <Input
             id="name"
+            autoComplete="name"
             placeholder="Your name"
             {...register("name")}
-            className={fieldClassName}
+            className={cn(field, errors.name && "border-destructive")}
           />
-          {errors.name && (
-            <p className="mt-1 text-xs text-destructive">{errors.name.message}</p>
-          )}
-        </div>
-        <div>
-          <Label htmlFor="phone">
-            Phone <span className="text-destructive">*</span>
-          </Label>
+        </Field>
+        <Field id="phone" label="Phone" error={errors.phone?.message}>
           <Input
             id="phone"
             type="tel"
-            placeholder="+91 XXXXX XXXXX"
+            autoComplete="tel"
+            placeholder="+91 98765 43210"
             {...register("phone")}
-            className={fieldClassName}
+            className={cn(field, "font-data", errors.phone && "border-destructive")}
           />
-          {errors.phone && (
-            <p className="mt-1 text-xs text-destructive">{errors.phone.message}</p>
-          )}
-        </div>
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <Label htmlFor="company">Company</Label>
-          <Input
-            id="company"
-            placeholder="Company name"
-            {...register("company")}
-            className={fieldClassName}
-          />
-          {errors.company && (
-            <p className="mt-1 text-xs text-destructive">{errors.company.message}</p>
-          )}
-        </div>
-        <div>
-          <Label htmlFor="email">Email</Label>
+        </Field>
+        <Field id="email" label="Email" optional error={errors.email?.message}>
           <Input
             id="email"
             type="email"
+            autoComplete="email"
             placeholder="you@company.com"
             {...register("email")}
-            className={fieldClassName}
+            className={cn(field, errors.email && "border-destructive")}
           />
-          {errors.email && (
-            <p className="mt-1 text-xs text-destructive">{errors.email.message}</p>
-          )}
-        </div>
-      </div>
-
-      <div>
-        <Label htmlFor="details">
-          Requirement Details <span className="text-destructive">*</span>
-        </Label>
-        <Textarea
+        </Field>
+        <Field id="company" label="Company" optional error={errors.company?.message}>
+          <Input
+            id="company"
+            autoComplete="organization"
+            placeholder="Company name"
+            {...register("company")}
+            className={cn(field, errors.company && "border-destructive")}
+          />
+        </Field>
+        <Field
           id="details"
-          placeholder="e.g. 24 loaders and 2 supervisors, two shifts, SIDCUL Sector 11, from 1 November"
-          rows={5}
-          {...register("details")}
-          className={textAreaClassName}
-        />
-        {errors.details && (
-          <p className="mt-1 text-xs text-destructive">{errors.details.message}</p>
-        )}
+          label="What do you need?"
+          error={errors.details?.message}
+          className="sm:col-span-2"
+        >
+          <Textarea
+            id="details"
+            rows={6}
+            placeholder="Roles, headcount, shifts, site and timing, as far as you know them."
+            {...register("details")}
+            className={cn(
+              field,
+              "h-auto min-h-40 resize-y py-3 leading-relaxed",
+              errors.details && "border-destructive",
+            )}
+          />
+        </Field>
       </div>
-
-      <details className="border-t border-border pt-4">
-        <summary className="cursor-pointer list-none text-sm font-medium">
-          Add more about your site (optional)
-        </summary>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Helps us come back with a number instead of a question.
-        </p>
-
-        <div className="mt-4 grid gap-4 sm:grid-cols-2">
-          <div>
-            <Label htmlFor="role">Your Role</Label>
-            <Input
-              id="role"
-              placeholder="e.g. Warehouse Manager"
-              {...register("role")}
-              className={fieldClassName}
-            />
-            {errors.role && (
-              <p className="mt-1 text-xs text-destructive">{errors.role.message}</p>
-            )}
-          </div>
-          <div>
-            <Label htmlFor="location">Site Location</Label>
-            <Input
-              id="location"
-              placeholder="City / industrial area"
-              {...register("location")}
-              className={fieldClassName}
-            />
-            {errors.location && (
-              <p className="mt-1 text-xs text-destructive">{errors.location.message}</p>
-            )}
-          </div>
-        </div>
-
-        <div className="mt-4 grid gap-4 sm:grid-cols-2">
-          <div>
-            <Label htmlFor="industry">Industry</Label>
-            <input type="hidden" {...register("industry")} />
-            <Select
-              value={
-                selectedIndustry && selectedIndustry.length > 0
-                  ? selectedIndustry
-                  : undefined
-              }
-              onValueChange={(value) => {
-                setSelectedIndustry(value);
-                setValue("industry", value, {
-                  shouldDirty: true,
-                  shouldTouch: true,
-                  shouldValidate: true,
-                });
-              }}
-            >
-              <SelectTrigger className={selectTriggerClassName}>
-                <SelectValue placeholder="Select industry" />
-              </SelectTrigger>
-              <SelectContent>
-                {industryOptions.map((option) => (
-                  <SelectItem key={option} value={option}>
-                    {option}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {errors.industry && (
-              <p className="mt-1 text-xs text-destructive">{errors.industry.message}</p>
-            )}
-          </div>
-          <div>
-            <Label htmlFor="headcount">Approx. Headcount</Label>
-            <Input
-              id="headcount"
-              placeholder="e.g. 50"
-              {...register("headcount")}
-              className={fieldClassName}
-            />
-            {errors.headcount && (
-              <p className="mt-1 text-xs text-destructive">{errors.headcount.message}</p>
-            )}
-          </div>
-        </div>
-
-        <div className="mt-4 grid gap-4 sm:grid-cols-2">
-          <div>
-            <Label htmlFor="shiftRequirement">Shift Requirement</Label>
-            <Input
-              id="shiftRequirement"
-              placeholder="e.g. 2 shifts, 8 hours each"
-              {...register("shiftRequirement")}
-              className={fieldClassName}
-            />
-          </div>
-          <div>
-            <Label htmlFor="targetStartDate">Target Start Date</Label>
-            <Input
-              id="targetStartDate"
-              type="date"
-              {...register("targetStartDate")}
-              className={fieldClassName}
-            />
-          </div>
-        </div>
-      </details>
 
       {error && (
-        <div
-          role="alert"
-          className="rounded-lg border border-destructive/20 bg-destructive/5 p-3 text-sm text-destructive"
-        >
+        <p role="alert" className="mt-6 text-sm text-destructive">
           {error}
-        </div>
+        </p>
       )}
 
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-        <Button type="submit" size="lg" className="sm:min-w-56" disabled={isSubmitting}>
+      <div className="mt-8">
+        <Button type="submit" size="lg" disabled={isSubmitting}>
           {isSubmitting ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -331,13 +197,13 @@ export function ContactForm() {
             </>
           ) : (
             <>
-              Send requirement
+              Send message
               <ArrowUpRight className="h-4 w-4" />
             </>
           )}
         </Button>
-        <p className="text-xs text-muted-foreground">
-          Your information will be used only to respond to this inquiry.
+        <p className="mt-4 text-xs text-muted-foreground">
+          Used only to respond to this enquiry.
         </p>
       </div>
     </form>

@@ -59,8 +59,8 @@ export default function HomePage() {
             With care.
           </h1>
           <p className="hero-description rise rise-2">
-            Contract labour and industrial services.
-            <br />A considered approach to people, work and compliance.
+            Contract labour and industrial services. A considered approach to
+            people, work and compliance.
           </p>
           <Link href="/services" className="light-link rise rise-3">
             Get to know our work <ArrowUpRight size={20} aria-hidden="true" />

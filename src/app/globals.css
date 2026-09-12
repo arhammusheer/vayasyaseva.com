@@ -503,17 +503,20 @@ body {
   color: var(--gold-300);
   margin-bottom: 30px;
 }
+/* Display ~3.5x the lede; lede capped near 40ch for a readable measure. */
 .home-hero h1 {
-  font-size: clamp(64px, 7.7vw, 116px);
+  font-size: clamp(44px, 5.2vw, 76px);
   font-weight: 500;
-  line-height: 1;
-  letter-spacing: -0.055em;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
 }
 .hero-description {
-  font-size: 18px;
-  line-height: 1.6;
+  font-size: clamp(18px, 1.5vw, 22px);
+  line-height: 1.55;
+  max-width: 40ch;
+  text-wrap: pretty;
   color: var(--neutral-100);
-  margin: 24px 0 32px;
+  margin: 28px 0 36px;
 }
 .light-link {
   display: inline-flex;
@@ -966,15 +969,15 @@ a:hover > svg {
       linear-gradient(0deg, rgba(15, 23, 42, 0.5), transparent);
   }
   .home-hero h1 {
-    font-size: clamp(51px, 11vw, 77px);
+    font-size: clamp(40px, 10.5vw, 52px);
   }
   .hero-eyebrow {
     font-size: 9px;
     margin-bottom: 28px;
   }
   .hero-description {
-    font-size: 16px;
-    max-width: 320px;
+    font-size: 17px;
+    margin: 20px 0 28px;
   }
   .hero-foot {
     font-size: 8px;

@@ -962,9 +962,7 @@ a:hover > svg {
     height: 44px;
   }
   .home-hero {
-    height: calc(100svh - 72px);
     min-height: 570px;
-    max-height: 780px;
   }
   .hero-photo {
     object-position: 55% 70%;

@@ -59,7 +59,7 @@ export default function AboutPage() {
       <Section variant="subtle">
         <div className="grid gap-10 md:grid-cols-2">
           <div>
-            <p className="eyebrow text-seva">COMPANY INFORMATION</p>
+            <p className="eyebrow text-gold-700">COMPANY INFORMATION</p>
             <h2 className="mt-5 text-4xl font-medium">
               Vayasya Seva
               <br />

@@ -36,13 +36,13 @@ const industryOptions = [
 ];
 
 const fieldClassName =
-  "mt-1.5 h-11 border-neutral-300 bg-background text-foreground placeholder:text-neutral-500 shadow-none focus-visible:border-seva-500 focus-visible:ring-seva/15";
+  "mt-1.5 h-11 border-neutral-300 bg-background text-foreground placeholder:text-neutral-500 shadow-none focus-visible:border-gold-500 focus-visible:ring-gold-500/25";
 
 const textAreaClassName =
-  "mt-1.5 border-neutral-300 bg-background text-foreground placeholder:text-neutral-500 shadow-none focus-visible:border-seva-500 focus-visible:ring-seva/15";
+  "mt-1.5 border-neutral-300 bg-background text-foreground placeholder:text-neutral-500 shadow-none focus-visible:border-gold-500 focus-visible:ring-gold-500/25";
 
 const selectTriggerClassName =
-  "mt-1.5 h-11 w-full border-neutral-300 bg-background text-foreground shadow-none data-[placeholder]:text-neutral-500 focus-visible:border-seva-500 focus-visible:ring-seva/15";
+  "mt-1.5 h-11 w-full border-neutral-300 bg-background text-foreground shadow-none data-[placeholder]:text-neutral-500 focus-visible:border-gold-500 focus-visible:ring-gold-500/25";
 
 export function ContactForm() {
   const searchParams = useSearchParams();

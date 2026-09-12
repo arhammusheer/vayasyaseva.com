@@ -33,7 +33,7 @@ export default function IndustriesPage() {
       <Section>
         <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
           <div>
-            <p className="eyebrow text-seva">WHERE WE CAN HELP</p>
+            <p className="eyebrow text-gold-700">WHERE WE CAN HELP</p>
             <p className="mt-5 max-w-sm text-lg text-muted-foreground leading-relaxed">
               From factory floors to business campuses, we support a range of
               working environments. We welcome a conversation about yours.

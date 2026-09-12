@@ -134,7 +134,7 @@ export default function ContactPage() {
               </p>
               <a
                 href={`mailto:${siteConfig.email}?subject=Compliance%20Documentation%20Request`}
-                className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-seva transition-colors hover:text-seva/80"
+                className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-gold-700 transition-colors hover:text-gold-700/80"
               >
                 <Mail className="h-4 w-4" />
                 Request via email

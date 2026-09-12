@@ -17,7 +17,7 @@ export default function NotFound() {
       </Link>
 
       <div className="mt-12">
-        <p className="font-data text-6xl font-medium text-seva">404</p>
+        <p className="font-data text-6xl font-medium text-gold-700">404</p>
         <h1 className="mt-4 text-2xl font-semibold text-foreground">
           Page not found
         </h1>

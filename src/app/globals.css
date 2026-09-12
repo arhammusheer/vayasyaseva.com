@@ -10,7 +10,9 @@
  * Source: brand.vayasyaseva.com
  *
  * Usage ratio:
- *   70% neutrals, 20% vertical/master brand, 10% semantic/data highlights.
+ *   70% neutrals, 20% gold (master brand), 10% semantic/data highlights.
+ *   Products (Seva, Setu) carry gold. The extended scales (saffron, indigo,
+ *   forest, slate) are for charts, templates and theme options only.
  */
 
 @theme inline {
@@ -72,62 +74,62 @@
   --color-gold-900: var(--gold-900);
   --color-gold-950: var(--gold-950);
 
-  /* VSPL vertical accent tokens */
-  --color-seva: var(--seva);
-  --color-seva-foreground: var(--seva-foreground);
-  --color-seva-muted: var(--seva-muted);
-  --color-seva-50: var(--seva-50);
-  --color-seva-100: var(--seva-100);
-  --color-seva-200: var(--seva-200);
-  --color-seva-300: var(--seva-300);
-  --color-seva-400: var(--seva-400);
-  --color-seva-500: var(--seva-500);
-  --color-seva-600: var(--seva-600);
-  --color-seva-700: var(--seva-700);
-  --color-seva-800: var(--seva-800);
-  --color-seva-900: var(--seva-900);
+  /* Extended palette (charts, templates, theme options) */
+  --color-saffron: var(--saffron);
+  --color-saffron-foreground: var(--saffron-foreground);
+  --color-saffron-muted: var(--saffron-muted);
+  --color-saffron-50: var(--saffron-50);
+  --color-saffron-100: var(--saffron-100);
+  --color-saffron-200: var(--saffron-200);
+  --color-saffron-300: var(--saffron-300);
+  --color-saffron-400: var(--saffron-400);
+  --color-saffron-500: var(--saffron-500);
+  --color-saffron-600: var(--gold-600);
+  --color-saffron-700: var(--saffron-700);
+  --color-saffron-800: var(--saffron-800);
+  --color-saffron-900: var(--saffron-900);
 
-  --color-setu: var(--setu);
-  --color-setu-foreground: var(--setu-foreground);
-  --color-setu-muted: var(--setu-muted);
-  --color-setu-50: var(--setu-50);
-  --color-setu-100: var(--setu-100);
-  --color-setu-200: var(--setu-200);
-  --color-setu-300: var(--setu-300);
-  --color-setu-400: var(--setu-400);
-  --color-setu-500: var(--setu-500);
-  --color-setu-600: var(--setu-600);
-  --color-setu-700: var(--setu-700);
-  --color-setu-800: var(--setu-800);
-  --color-setu-900: var(--setu-900);
+  --color-indigo: var(--indigo);
+  --color-indigo-foreground: var(--indigo-foreground);
+  --color-indigo-muted: var(--indigo-muted);
+  --color-indigo-50: var(--indigo-50);
+  --color-indigo-100: var(--indigo-100);
+  --color-indigo-200: var(--indigo-200);
+  --color-indigo-300: var(--indigo-300);
+  --color-indigo-400: var(--indigo-400);
+  --color-indigo-500: var(--indigo-500);
+  --color-indigo-600: var(--indigo-600);
+  --color-indigo-700: var(--indigo-700);
+  --color-indigo-800: var(--indigo-800);
+  --color-indigo-900: var(--indigo-900);
 
-  --color-kaushal: var(--kaushal);
-  --color-kaushal-foreground: var(--kaushal-foreground);
-  --color-kaushal-muted: var(--kaushal-muted);
-  --color-kaushal-50: var(--kaushal-50);
-  --color-kaushal-100: var(--kaushal-100);
-  --color-kaushal-200: var(--kaushal-200);
-  --color-kaushal-300: var(--kaushal-300);
-  --color-kaushal-400: var(--kaushal-400);
-  --color-kaushal-500: var(--kaushal-500);
-  --color-kaushal-600: var(--kaushal-600);
-  --color-kaushal-700: var(--kaushal-700);
-  --color-kaushal-800: var(--kaushal-800);
-  --color-kaushal-900: var(--kaushal-900);
+  --color-forest: var(--forest);
+  --color-forest-foreground: var(--forest-foreground);
+  --color-forest-muted: var(--forest-muted);
+  --color-forest-50: var(--forest-50);
+  --color-forest-100: var(--forest-100);
+  --color-forest-200: var(--forest-200);
+  --color-forest-300: var(--forest-300);
+  --color-forest-400: var(--forest-400);
+  --color-forest-500: var(--forest-500);
+  --color-forest-600: var(--forest-600);
+  --color-forest-700: var(--forest-700);
+  --color-forest-800: var(--forest-800);
+  --color-forest-900: var(--forest-900);
 
-  --color-prabandh: var(--prabandh);
-  --color-prabandh-foreground: var(--prabandh-foreground);
-  --color-prabandh-muted: var(--prabandh-muted);
-  --color-prabandh-50: var(--prabandh-50);
-  --color-prabandh-100: var(--prabandh-100);
-  --color-prabandh-200: var(--prabandh-200);
-  --color-prabandh-300: var(--prabandh-300);
-  --color-prabandh-400: var(--prabandh-400);
-  --color-prabandh-500: var(--prabandh-500);
-  --color-prabandh-600: var(--prabandh-600);
-  --color-prabandh-700: var(--prabandh-700);
-  --color-prabandh-800: var(--prabandh-800);
-  --color-prabandh-900: var(--prabandh-900);
+  --color-slate: var(--slate);
+  --color-slate-foreground: var(--slate-foreground);
+  --color-slate-muted: var(--slate-muted);
+  --color-slate-50: var(--slate-50);
+  --color-slate-100: var(--slate-100);
+  --color-slate-200: var(--slate-200);
+  --color-slate-300: var(--slate-300);
+  --color-slate-400: var(--slate-400);
+  --color-slate-500: var(--slate-500);
+  --color-slate-600: var(--slate-600);
+  --color-slate-700: var(--slate-700);
+  --color-slate-800: var(--slate-800);
+  --color-slate-900: var(--slate-900);
 
   --color-subtle: var(--subtle);
 
@@ -185,50 +187,50 @@
   --gold-900: #48330b;
   --gold-950: #2c1f06;
 
-  /* ── Vertical families ── */
-  --seva-50: #fff6ed;
-  --seva-100: #ffe9d3;
-  --seva-200: #fdcfa8;
-  --seva-300: #f9b379;
-  --seva-400: #f38e46;
-  --seva-500: #e06c24;
-  --seva-600: #ba511a;
-  --seva-700: #8f3f17;
-  --seva-800: #6e3215;
-  --seva-900: #552811;
+  /* ── Extended palette ── */
+  --saffron-50: #fff6ed;
+  --saffron-100: #ffe9d3;
+  --saffron-200: #fdcfa8;
+  --saffron-300: #f9b379;
+  --saffron-400: #f38e46;
+  --saffron-500: #e06c24;
+  --saffron-600: #ba511a;
+  --saffron-700: #8f3f17;
+  --saffron-800: #6e3215;
+  --saffron-900: #552811;
 
-  --setu-50: #f4f7fd;
-  --setu-100: #e7edf8;
-  --setu-200: #cedaf0;
-  --setu-300: #a8bde4;
-  --setu-400: #7d98d5;
-  --setu-500: #5b77c4;
-  --setu-600: #445fa8;
-  --setu-700: #374b85;
-  --setu-800: #2d3e6c;
-  --setu-900: #273558;
+  --indigo-50: #f4f7fd;
+  --indigo-100: #e7edf8;
+  --indigo-200: #cedaf0;
+  --indigo-300: #a8bde4;
+  --indigo-400: #7d98d5;
+  --indigo-500: #5b77c4;
+  --indigo-600: #445fa8;
+  --indigo-700: #374b85;
+  --indigo-800: #2d3e6c;
+  --indigo-900: #273558;
 
-  --kaushal-50: #f1faf6;
-  --kaushal-100: #dbf2e8;
-  --kaushal-200: #b9e4d1;
-  --kaushal-300: #8ccfb1;
-  --kaushal-400: #5fb58f;
-  --kaushal-500: #3d966f;
-  --kaushal-600: #2e7a58;
-  --kaushal-700: #256146;
-  --kaushal-800: #204d38;
-  --kaushal-900: #1b402f;
+  --forest-50: #f1faf6;
+  --forest-100: #dbf2e8;
+  --forest-200: #b9e4d1;
+  --forest-300: #8ccfb1;
+  --forest-400: #5fb58f;
+  --forest-500: #3d966f;
+  --forest-600: #2e7a58;
+  --forest-700: #256146;
+  --forest-800: #204d38;
+  --forest-900: #1b402f;
 
-  --prabandh-50: #f7f8fa;
-  --prabandh-100: #edeff3;
-  --prabandh-200: #d8dce4;
-  --prabandh-300: #b8bfcc;
-  --prabandh-400: #919bab;
-  --prabandh-500: #6f7a8d;
-  --prabandh-600: #556073;
-  --prabandh-700: #434c5d;
-  --prabandh-800: #353c4a;
-  --prabandh-900: #2a303c;
+  --slate-50: #f7f8fa;
+  --slate-100: #edeff3;
+  --slate-200: #d8dce4;
+  --slate-300: #b8bfcc;
+  --slate-400: #919bab;
+  --slate-500: #6f7a8d;
+  --slate-600: #556073;
+  --slate-700: #434c5d;
+  --slate-800: #353c4a;
+  --slate-900: #2a303c;
 
   /* ── Semantic state colors ── */
   --success: #1f7a4d;
@@ -284,29 +286,29 @@
   /* Border */
   --border: var(--neutral-200);
   --input: var(--neutral-200);
-  --ring: var(--setu-500);
+  --ring: var(--gold-500);
 
-  /* ── Vertical accents ── */
+  /* ── Extended palette roles ── */
 
-  /* Seva — workforce/labour services */
-  --seva: var(--seva-600);
-  --seva-foreground: var(--neutral-0);
-  --seva-muted: var(--seva-50);
+  /* Saffron */
+  --saffron: var(--gold-600);
+  --saffron-foreground: var(--neutral-0);
+  --saffron-muted: var(--saffron-50);
 
-  /* Setu — HRMS/workforce systems */
-  --setu: var(--setu-800);
-  --setu-foreground: var(--neutral-0);
-  --setu-muted: var(--setu-100);
+  /* Indigo */
+  --indigo: var(--indigo-800);
+  --indigo-foreground: var(--neutral-0);
+  --indigo-muted: var(--indigo-100);
 
-  /* Kaushal — structured training */
-  --kaushal: var(--kaushal-600);
-  --kaushal-foreground: var(--neutral-0);
-  --kaushal-muted: var(--kaushal-100);
+  /* Forest */
+  --forest: var(--forest-600);
+  --forest-foreground: var(--neutral-0);
+  --forest-muted: var(--forest-100);
 
-  /* Prabandh — cool graphite governance */
-  --prabandh: var(--prabandh-700);
-  --prabandh-foreground: var(--neutral-0);
-  --prabandh-muted: var(--prabandh-100);
+  /* Slate */
+  --slate: var(--slate-700);
+  --slate-foreground: var(--neutral-0);
+  --slate-muted: var(--slate-100);
 }
 
 @layer base {
@@ -341,7 +343,7 @@
     color: var(--neutral-900);
   }
   :focus-visible {
-    outline: 2px solid var(--seva-600);
+    outline: 2px solid var(--gold-600);
     outline-offset: 2px;
   }
   html {
@@ -440,7 +442,7 @@ body {
 .desktop-nav a:hover,
 .desktop-nav a[aria-current],
 .text-link:hover {
-  color: var(--seva);
+  color: var(--gold-700);
 }
 .header-contact {
   display: flex;
@@ -559,7 +561,7 @@ a:hover > svg {
 }
 .home-intro > .eyebrow {
   margin-top: 12px;
-  color: var(--seva);
+  color: var(--gold-700);
 }
 .home-intro h2,
 .section-intro h2,
@@ -618,7 +620,7 @@ a:hover > svg {
 }
 .section-intro .eyebrow {
   margin-top: 10px;
-  color: var(--seva);
+  color: var(--gold-700);
 }
 .section-intro p:not(.eyebrow) {
   margin-top: 22px;
@@ -638,7 +640,7 @@ a:hover > svg {
   border-bottom: 1px solid var(--neutral-200);
 }
 .capability-row:hover {
-  color: var(--seva);
+  color: var(--gold-700);
 }
 .capability-row h3 {
   font-size: clamp(25px, 2.3vw, 34px);
@@ -709,7 +711,7 @@ a:hover > svg {
   margin-top: 26px;
 }
 .closer-section .eyebrow {
-  color: var(--seva);
+  color: var(--gold-700);
 }
 .closer-links > a {
   display: flex;
@@ -818,7 +820,7 @@ a:hover > svg {
 }
 .footer-main a:hover,
 .footer-bottom a:hover {
-  color: var(--seva);
+  color: var(--gold-700);
 }
 .footer-bottom {
   border-top: 1px solid var(--border);
@@ -888,7 +890,7 @@ a:hover > svg {
   font-family: var(--font-hind);
   font-size: 25px;
   font-weight: 400;
-  color: var(--seva);
+  color: var(--gold-700);
 }
 .detail-list details[open] summary::after {
   content: "−";
@@ -905,7 +907,7 @@ a:hover > svg {
   margin: 20px 0 5px;
 }
 .detail-body .text-link {
-  color: var(--seva);
+  color: var(--gold-700);
 }
 @media (max-width: 1000px) {
   .site-shell {

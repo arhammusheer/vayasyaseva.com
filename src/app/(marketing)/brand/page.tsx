@@ -122,21 +122,15 @@ export default function BrandPage() {
   return (
     <>
       <PageHero
-        title={
-          <>
-            One mark.
-            <br />
-            Three typefaces. One palette.
-          </>
-        }
-        lede="Everything needed to represent Vayasya Seva consistently, with the files ready to download. This page replaces the earlier brand handbook."
+        title="Brand guidelines"
+        lede="Logo usage, typography and colour palette for Vayasya Seva, with downloadable logo files and fonts."
       />
 
       <Section id="logo">
         <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
           <div>
-            <p className="eyebrow text-seva">01 · LOGO</p>
-            <h2 className="mt-5 text-4xl font-medium">The mark.</h2>
+            <p className="eyebrow text-gold-700">01 · LOGO</p>
+            <h2 className="mt-5 text-4xl font-medium">Logo usage</h2>
             <Rules items={rules.logo} />
           </div>
           <div>
@@ -170,9 +164,9 @@ export default function BrandPage() {
       <Section id="typography" variant="subtle">
         <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
           <div>
-            <p className="eyebrow text-seva">02 · TYPOGRAPHY</p>
+            <p className="eyebrow text-gold-700">02 · TYPOGRAPHY</p>
             <h2 className="mt-5 text-4xl font-medium">
-              Three families, three jobs.
+              Typography
             </h2>
             <Rules items={rules.type} />
           </div>
@@ -243,14 +237,17 @@ export default function BrandPage() {
       <Section id="colour">
         <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
           <div>
-            <p className="eyebrow text-seva">03 · COLOUR</p>
+            <p className="eyebrow text-gold-700">03 · COLOUR</p>
             <h2 className="mt-5 text-4xl font-medium">
-              Gold, navy and the rest.
+              Colour palette
             </h2>
             <p className="mt-5 text-muted-foreground leading-relaxed">
-              Accent colour stays under a fifth of any surface. Neutrals carry
-              the page; gold marks the brand and the one thing to do next. Click
-              a swatch to copy its hex.
+              Gold is the brand colour for Vayasya and for every product under
+              it; Seva and Setu do not have colours of their own. Saffron,
+              Indigo, Forest and Slate are extended scales for chart series,
+              document templates and theme options in Setu. They do not
+              identify a product line. Accent colour stays under 20% of any
+              surface. Click a swatch to copy its hex value.
             </p>
           </div>
           <ColorSwatches />

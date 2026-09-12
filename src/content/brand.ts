@@ -18,7 +18,7 @@ export const palette: Scale[] = [
   {
     id: "gold",
     title: "Gold",
-    role: "Master brand. The mark, primary actions and the invitation to talk. Gold 500 is the brand colour; 700 is the accessible cut for text on light surfaces.",
+    role: "Master brand, and the colour every Vayasya product carries: Seva and Setu alike. Gold 500 is the brand colour; 700 is the accessible cut for text on light surfaces.",
     swatches: scale("Gold", [
       ["50", "#FFF9E8"],
       ["100", "#FDF1CF"],
@@ -36,7 +36,7 @@ export const palette: Scale[] = [
   {
     id: "neutral",
     title: "Neutral",
-    role: "Everything else. White and slate carry text, surfaces and borders; Neutral 900 is the brand navy.",
+    role: "Everything else. White and cool grey carry text, surfaces and borders; Neutral 900 is the brand navy.",
     swatches: scale("Neutral", [
       ["0", "#FFFFFF"],
       ["25", "#FCFCFD"],
@@ -54,10 +54,10 @@ export const palette: Scale[] = [
     ]),
   },
   {
-    id: "seva",
-    title: "Seva",
-    role: "Accent when Seva owns the material.",
-    swatches: scale("Seva", [
+    id: "saffron",
+    title: "Saffron",
+    role: "Extended palette for charts, templates and theme options.",
+    swatches: scale("Saffron", [
       ["50", "#FFF6ED"],
       ["100", "#FFE9D3"],
       ["200", "#FDCFA8"],
@@ -71,10 +71,10 @@ export const palette: Scale[] = [
     ]),
   },
   {
-    id: "setu",
-    title: "Setu",
-    role: "Accent for Setu-led surfaces.",
-    swatches: scale("Setu", [
+    id: "indigo",
+    title: "Indigo",
+    role: "Extended palette for charts, templates and theme options.",
+    swatches: scale("Indigo", [
       ["50", "#F4F7FD"],
       ["100", "#E7EDF8"],
       ["200", "#CEDAF0"],
@@ -88,10 +88,10 @@ export const palette: Scale[] = [
     ]),
   },
   {
-    id: "kaushal",
-    title: "Kaushal",
-    role: "Accent for Kaushal-led materials.",
-    swatches: scale("Kaushal", [
+    id: "forest",
+    title: "Forest",
+    role: "Extended palette for charts, templates and theme options.",
+    swatches: scale("Forest", [
       ["50", "#F1FAF6"],
       ["100", "#DBF2E8"],
       ["200", "#B9E4D1"],
@@ -105,10 +105,10 @@ export const palette: Scale[] = [
     ]),
   },
   {
-    id: "prabandh",
-    title: "Prabandh",
-    role: "Accent for Prabandh-led materials.",
-    swatches: scale("Prabandh", [
+    id: "slate",
+    title: "Slate",
+    role: "Extended palette for charts, templates and theme options.",
+    swatches: scale("Slate", [
       ["50", "#F7F8FA"],
       ["100", "#EDEFF3"],
       ["200", "#D8DCE4"],
@@ -136,8 +136,32 @@ export const palette: Scale[] = [
 ];
 
 export const typeScale = [
-  { level: "Display", family: "Anek Latin", weight: 500, size: "40 / 48", use: "Page titles, hero statements" },
-  { level: "Heading", family: "Anek Latin", weight: 500, size: "30 / 38", use: "Section headings" },
-  { level: "Body", family: "Hind", weight: 400, size: "18 / 30", use: "Reading copy, interface text" },
-  { level: "Data", family: "JetBrains Mono", weight: 500, size: "14 / 22", use: "Tables, identifiers, aligned values" },
+  {
+    level: "Display",
+    family: "Anek Latin",
+    weight: 500,
+    size: "40 / 48",
+    use: "Page titles, hero statements",
+  },
+  {
+    level: "Heading",
+    family: "Anek Latin",
+    weight: 500,
+    size: "30 / 38",
+    use: "Section headings",
+  },
+  {
+    level: "Body",
+    family: "Hind",
+    weight: 400,
+    size: "18 / 30",
+    use: "Reading copy, interface text",
+  },
+  {
+    level: "Data",
+    family: "JetBrains Mono",
+    weight: 500,
+    size: "14 / 22",
+    use: "Tables, identifiers, aligned values",
+  },
 ];

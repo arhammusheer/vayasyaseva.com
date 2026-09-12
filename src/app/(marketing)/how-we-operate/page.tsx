@@ -51,7 +51,7 @@ export default function ApproachPage() {
       <Section>
         <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
           <div>
-            <p className="eyebrow text-seva">HOW AN ENGAGEMENT RUNS</p>
+            <p className="eyebrow text-gold-700">HOW AN ENGAGEMENT RUNS</p>
             <p className="mt-5 max-w-sm text-lg text-muted-foreground leading-relaxed">
               Four stages, from the first conversation to the everyday
               coordination of the team on your site.
@@ -63,7 +63,7 @@ export default function ApproachPage() {
                 key={a.title}
                 className="grid grid-cols-[40px_1fr] gap-6 border-t py-8 first:border-0 first:pt-0 sm:grid-cols-[72px_1fr]"
               >
-                <span className="pt-2 font-data text-sm text-seva">
+                <span className="pt-2 font-data text-sm text-gold-700">
                   0{i + 1}
                 </span>
                 <div>
@@ -80,7 +80,7 @@ export default function ApproachPage() {
       <Section variant="subtle">
         <div className="grid gap-10 md:grid-cols-2">
           <div>
-            <p className="eyebrow text-seva">CONNECTED OPERATIONS</p>
+            <p className="eyebrow text-gold-700">CONNECTED OPERATIONS</p>
             <h2 className="mt-5 text-4xl font-medium">
               The site and the office,
               <br />

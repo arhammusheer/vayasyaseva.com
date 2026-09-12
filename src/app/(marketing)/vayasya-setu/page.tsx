@@ -28,7 +28,7 @@ export default function SetuPage() {
       <Section>
         <div className="grid gap-12 md:grid-cols-2">
           <div>
-            <p className="eyebrow text-seva">SUPPORTING OUR PEOPLE</p>
+            <p className="eyebrow text-gold-700">SUPPORTING OUR PEOPLE</p>
             <h2 className="mt-5 text-4xl font-medium">
               Better information.
               <br />

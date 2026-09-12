@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 interface PageHeroProps {
   title: React.ReactNode;
   lede?: string;
-  tone?: "light" | "dark" | "setu";
+  tone?: "light" | "dark";
   aside?: React.ReactNode;
   className?: string;
 }
@@ -26,7 +26,6 @@ export function PageHero({
       className={cn(
         "pb-14 pt-16 sm:pb-16 sm:pt-24 lg:pb-20 lg:pt-24",
         tone === "dark" && "bg-neutral-900 text-background",
-        tone === "setu" && "bg-setu-900 text-background",
         tone === "light" && "border-b border-border",
         className,
       )}

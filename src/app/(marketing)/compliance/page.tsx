@@ -53,7 +53,7 @@ export default function CompliancePage() {
       <Section>
         <div className="grid gap-12 md:grid-cols-[1fr_1.6fr]">
           <div>
-            <p className="eyebrow text-seva">COMPLIANCE IN PRACTICE</p>
+            <p className="eyebrow text-gold-700">COMPLIANCE IN PRACTICE</p>
             <h2 className="mt-5 text-4xl font-medium">
               The records behind
               <br />

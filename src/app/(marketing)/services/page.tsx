@@ -36,7 +36,7 @@ export default function ServicesPage() {
       <Section>
         <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
           <div className="lg:sticky lg:top-32 lg:self-start">
-            <p className="eyebrow text-seva">OUR CAPABILITIES</p>
+            <p className="eyebrow text-gold-700">OUR CAPABILITIES</p>
             <h2 className="mt-5 text-3xl font-medium">
               Built around
               <br />
@@ -62,7 +62,7 @@ export default function ServicesPage() {
                   {service.description}
                 </p>
                 <details className="mt-4">
-                  <summary className="cursor-pointer py-2 text-sm text-seva">
+                  <summary className="cursor-pointer py-2 text-sm text-gold-700">
                     Typical roles &amp; support
                   </summary>
                   <div className="pt-3 text-sm text-muted-foreground leading-relaxed">

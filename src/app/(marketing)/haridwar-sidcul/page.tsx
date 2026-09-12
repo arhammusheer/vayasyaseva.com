@@ -84,7 +84,7 @@ export default function HaridwarPage() {
         </div>
       </Section>
       <Section variant="subtle">
-        <p className="eyebrow text-seva">SUPPORT FOR YOUR SITE</p>
+        <p className="eyebrow text-gold-700">SUPPORT FOR YOUR SITE</p>
         <div className="grid gap-8 mt-8 md:grid-cols-3">
           {[
             {

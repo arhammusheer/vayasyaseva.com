@@ -22,16 +22,16 @@ export default function NotFound() {
           Page not found
         </h1>
         <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-          The page you are looking for does not exist or has been moved.
+          There is nothing at this address.
         </p>
       </div>
 
       <div className="mt-8 flex items-center gap-3">
         <Button asChild>
-          <Link href="/">Return to Home</Link>
+          <Link href="/">Home</Link>
         </Button>
         <Button asChild variant="outline">
-          <Link href="/contact">Contact Us</Link>
+          <Link href="/contact">Contact</Link>
         </Button>
       </div>
 

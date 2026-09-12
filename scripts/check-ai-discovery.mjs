@@ -75,12 +75,8 @@ if (errors.length === 0) {
     }
   }
 
-  const sitemapChecks = [
-    "/openapi/v1.json",
-    "/.well-known/agent-card.json",
-    "/.well-known/agent.json",
-    "/ai-access-policy.txt",
-  ];
+  // Search sitemap lists marketing pages; machine discovery remains in llms.txt.
+  const sitemapChecks = ["/services", "/compliance", "/haridwar-sidcul", "/contact"];
   for (const endpoint of sitemapChecks) {
     if (!sitemap.includes(endpoint)) {
       errors.push(`sitemap.ts is missing endpoint: ${endpoint}`);

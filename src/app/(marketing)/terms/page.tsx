@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <Section className="section-glow-contained section-glow-seva glow-left">
+    <Section>
       <Prose content={termsContent} />
     </Section>
   );

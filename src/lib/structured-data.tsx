@@ -8,7 +8,7 @@ export function JsonLd({ data }: { data: Record<string, unknown> }) {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }}
     />
   );
 }
@@ -30,6 +30,8 @@ export function organizationSchema() {
     },
     description: siteConfig.tagline,
     taxID: siteConfig.gstin,
+    areaServed: areaServed(),
+    knowsAbout: knowsAbout,
     sameAs: [],
   };
 }
@@ -50,10 +52,30 @@ export function localBusinessSchema() {
       addressCountry: "IN",
     },
     description: siteConfig.tagline,
-    priceRange: "$$",
-    openingHours: "Mo-Sa 09:00-18:00",
+    areaServed: areaServed(),
+    knowsAbout: knowsAbout,
   };
 }
+
+/** Primary region; this is not an exclusive service boundary. */
+export function areaServed() {
+  return [
+    { "@type": "City", name: "Haridwar" },
+    { "@type": "Place", name: "SIDCUL Industrial Estate, Haridwar" },
+  ];
+}
+
+export const knowsAbout = [
+  "Contract labour for factories",
+  "Industrial workforce supply",
+  "Warehouse labour and logistics crews",
+  "Housekeeping and facility services",
+  "Civil works for industrial sites",
+  "Fabrication and installation",
+  "Machinery maintenance",
+  "ESIC and EPF compliance for contract workers",
+  "SIDCUL Haridwar industrial estate",
+];
 
 export function faqSchema(faqs: FaqItem[]) {
   return {

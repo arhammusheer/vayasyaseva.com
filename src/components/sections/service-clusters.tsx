@@ -1,80 +1,41 @@
 import Link from "next/link";
-import {
-  Warehouse,
-  Factory,
-  Building2,
-  Users,
-  Hammer,
-  Wrench,
-} from "lucide-react";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { ArrowUpRight } from "lucide-react";
 import { Section, SectionHeader } from "@/components/layout/section";
-import { Reveal } from "@/components/motion/reveal";
-import { Stagger, StaggerItem } from "@/components/motion/stagger";
 import { servicesClusters } from "@/content/home";
-
-const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  Warehouse,
-  Factory,
-  Building2,
-  Users,
-  Hammer,
-  Wrench,
-};
 
 export function ServiceClusters() {
   return (
-    <Section variant="subtle" id="services">
-      <Reveal>
-        <SectionHeader
-          title="What We Deliver"
-          subtitle="Integrated industrial services across six core operational domains — each backed by supervision, compliance, and reporting discipline."
-        />
-      </Reveal>
+    <Section id="services">
+      <SectionHeader
+        title="Six things we put crews on"
+        subtitle="Each comes with a VSPL supervisor on site, ESIC/EPF enrolment for eligible workers, and a daily attendance report."
+        align="left"
+        size="lg"
+      />
 
-      <Stagger className="grid gap-6 md:grid-cols-2">
-        {servicesClusters.map((service) => {
-          const Icon = iconMap[service.icon];
-          return (
-            <StaggerItem key={service.id}>
-              <Link href={service.href} className="group block h-full">
-                <Card className="h-full transition-[shadow,transform] duration-[var(--motion-base)] ease-[var(--motion-ease)] hover:-translate-y-0.5 hover:shadow-md">
-                  <CardHeader>
-                    <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-seva/10">
-                      {Icon && <Icon className="h-5 w-5 text-seva" />}
-                    </div>
-                    <CardTitle className="text-xl group-hover:text-seva transition-colors">
-                      {service.title}
-                    </CardTitle>
-                    <CardDescription className="text-base leading-relaxed">
-                      {service.description}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap gap-1.5">
-                      {service.roles.slice(0, 4).map((role) => (
-                        <Badge
-                          key={role}
-                          variant="outline"
-                          className="text-xs font-normal"
-                        >
-                          {role}
-                        </Badge>
-                      ))}
-                      {service.roles.length > 4 && (
-                        <Badge variant="outline" className="text-xs font-normal">
-                          +{service.roles.length - 4} more
-                        </Badge>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            </StaggerItem>
-          );
-        })}
-      </Stagger>
+      <ul className="border-t border-foreground/80">
+        {servicesClusters.map((service) => (
+          <li key={service.id} className="border-b border-border">
+            <Link
+              href={service.href}
+              className="group grid gap-x-8 gap-y-3 py-7 transition-colors duration-[var(--motion-fast)] hover:bg-seva-50/70 sm:py-8 lg:grid-cols-12 lg:items-baseline"
+            >
+              <h3 className="flex items-start gap-3 text-2xl font-bold leading-tight sm:text-3xl lg:col-span-5 lg:text-[2.25rem]">
+                <span className="transition-transform duration-[var(--motion-base)] ease-[var(--motion-ease)] group-hover:translate-x-1">
+                  {service.title}
+                </span>
+                <ArrowUpRight className="mt-1.5 h-5 w-5 shrink-0 text-muted-foreground opacity-0 transition-all duration-[var(--motion-base)] ease-[var(--motion-ease)] group-hover:translate-x-0.5 group-hover:text-seva group-hover:opacity-100 sm:h-6 sm:w-6" />
+              </h3>
+              <p className="max-w-xl text-base leading-relaxed text-muted-foreground lg:col-span-4">
+                {service.description}
+              </p>
+              <p className="font-data text-xs leading-relaxed text-muted-foreground lg:col-span-3 lg:text-right">
+                {service.roles.join(" · ")}
+              </p>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </Section>
   );
 }

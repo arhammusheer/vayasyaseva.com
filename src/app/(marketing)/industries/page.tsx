@@ -1,34 +1,17 @@
-import type { Metadata } from "next";
-import {
-  Factory,
-  Warehouse,
-  Package,
-  Building2,
-  UtensilsCrossed,
-  Clock,
-  ShieldAlert,
-  FileText,
-} from "lucide-react";
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Section, SectionHeader } from "@/components/layout/section";
+import { pageMetadata } from "@/lib/metadata";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+import { PageHero } from "@/components/layout/page-hero";
+import { Section } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
-import { industries } from "@/content/industries";
 import { JsonLd, breadcrumbSchema } from "@/lib/structured-data";
-
-export const metadata: Metadata = {
-  title: "Industries",
+import { industries } from "@/content/industries";
+export const metadata = pageMetadata({
+  title: "Workforce Support for Manufacturing, Logistics & Facilities",
   description:
-    "Integrated industrial services for manufacturing, warehousing, FMCG, institutional facilities, and hospitality-linked operations in the Haridwar–SIDCUL region.",
-};
-
-const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  Factory,
-  Warehouse,
-  Package,
-  Building2,
-  UtensilsCrossed,
-};
-
+    "Contract labour and site support for manufacturing, warehousing, FMCG, institutional facilities and hospitality operations. Discuss your sector with Vayasya Seva.",
+  alternates: { canonical: "/industries" },
+});
 export default function IndustriesPage() {
   return (
     <>
@@ -38,83 +21,46 @@ export default function IndustriesPage() {
           { name: "Industries", href: "/industries" },
         ])}
       />
-      <Section className="section-glow-seva">
-        <SectionHeader
-          as="h1"
-          title="Industries We Serve"
-          subtitle="Service delivery models tailored to each industrial environment — aligned to staffing patterns, execution risks, and reporting needs."
-        />
+      <PageHero
+        title={
+          <>
+            Different businesses.
+            <br />A personal understanding.
+          </>
+        }
+        lede="The right workforce arrangement starts with the realities of your industry: production demands, site conditions and the people who do the work."
+      />
+      <Section>
+        <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
+          <div>
+            <p className="eyebrow text-seva">WHERE WE CAN HELP</p>
+            <p className="mt-5 max-w-sm text-lg text-muted-foreground leading-relaxed">
+              From factory floors to business campuses, we support a range of
+              working environments. We welcome a conversation about yours.
+            </p>
+            <Link href="/services" className="text-link">
+              Our services <ArrowUpRight size={18} />
+            </Link>
+          </div>
+          <div>
+            {industries.map((i) => (
+              <article
+                key={i.id}
+                id={i.id}
+                className="border-t py-7 scroll-mt-28"
+              >
+                <h2 className="text-3xl font-medium">{i.title}</h2>
+                <p className="mt-3 text-muted-foreground leading-relaxed">
+                  {i.description}
+                </p>
+                <p className="mt-3 text-sm text-muted-foreground">
+                  {i.staffingPattern}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
       </Section>
-
-      {industries.map((industry, index) => {
-        const Icon = iconMap[industry.icon];
-        const isSubtle = index % 2 !== 0;
-
-        return (
-          <Section
-            key={industry.id}
-            id={industry.id}
-            variant={isSubtle ? "subtle" : "default"}
-          >
-            <div className="mx-auto max-w-4xl">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-seva/10">
-                  {Icon && <Icon className="h-5 w-5 text-seva" />}
-                </div>
-                <h2 className="text-2xl font-bold">{industry.title}</h2>
-              </div>
-              <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-                {industry.description}
-              </p>
-
-              <div className="mt-8 grid gap-4 sm:grid-cols-3">
-                <Card>
-                  <CardHeader>
-                    <div className="mb-1 flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-seva" />
-                      <CardTitle className="text-sm uppercase tracking-wider">
-                        Staffing Pattern
-                      </CardTitle>
-                    </div>
-                    <CardDescription className="text-sm leading-relaxed">
-                      {industry.staffingPattern}
-                    </CardDescription>
-                  </CardHeader>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <div className="mb-1 flex items-center gap-2">
-                      <ShieldAlert className="h-4 w-4 text-seva" />
-                      <CardTitle className="text-sm uppercase tracking-wider">
-                        Risk & Controls
-                      </CardTitle>
-                    </div>
-                    <CardDescription className="text-sm leading-relaxed">
-                      {industry.riskControlNeeds}
-                    </CardDescription>
-                  </CardHeader>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <div className="mb-1 flex items-center gap-2">
-                      <FileText className="h-4 w-4 text-seva" />
-                      <CardTitle className="text-sm uppercase tracking-wider">
-                        Reporting Cadence
-                      </CardTitle>
-                    </div>
-                    <CardDescription className="text-sm leading-relaxed">
-                      {industry.reportingCadence}
-                    </CardDescription>
-                  </CardHeader>
-                </Card>
-              </div>
-            </div>
-          </Section>
-        );
-      })}
-
       <CtaBlock />
     </>
   );

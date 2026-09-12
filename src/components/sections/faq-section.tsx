@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/accordion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Section, SectionHeader } from "@/components/layout/section";
-import { Reveal } from "@/components/motion/reveal";
 import { faqs } from "@/content/home";
 
 const categories = [
@@ -21,54 +20,51 @@ const categories = [
 
 export function FaqSection() {
   return (
-    <Section variant="subtle" id="faq">
-      <Reveal>
-        <SectionHeader
-          title="Frequently Asked Questions"
-          subtitle="Grouped by the concerns most relevant to your role."
-        />
-      </Reveal>
+    <Section id="faq">
+      <SectionHeader
+        title="Questions we get asked"
+        subtitle="Filter by what you are responsible for."
+        align="left"
+      />
 
-      <Reveal delay={0.1}>
-        <div className="mx-auto max-w-3xl">
-          <Tabs defaultValue="all" className="w-full">
-            <TabsList className="mb-6 flex w-full flex-wrap justify-start gap-1 bg-transparent p-0">
-              {categories.map((cat) => (
-                <TabsTrigger
-                  key={cat.id}
-                  value={cat.id}
-                  className="rounded-md border border-border bg-background px-3 py-1.5 text-sm data-[state=active]:border-seva data-[state=active]:bg-seva/10 data-[state=active]:text-seva"
-                >
-                  {cat.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
+      <div className="max-w-3xl">
+        <Tabs defaultValue="all" className="w-full">
+          <TabsList className="mb-8 flex h-auto w-full flex-wrap justify-start gap-6 rounded-none border-b border-border bg-transparent p-0">
+            {categories.map((cat) => (
+              <TabsTrigger
+                key={cat.id}
+                value={cat.id}
+                className="rounded-none border-b-2 border-transparent bg-transparent px-0 py-2 text-sm text-muted-foreground shadow-none data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none"
+              >
+                {cat.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
 
-            {categories.map((cat) => {
-              const categoryFaqs =
-                cat.id === "all"
-                  ? faqs
-                  : faqs.filter((f) => f.category === cat.id);
-              return (
-                <TabsContent key={cat.id} value={cat.id}>
-                  <Accordion type="single" collapsible className="w-full">
-                    {categoryFaqs.map((faq, index) => (
-                      <AccordionItem key={index} value={`${cat.id}-${index}`}>
-                        <AccordionTrigger className="text-left text-base font-medium">
-                          {faq.question}
-                        </AccordionTrigger>
-                        <AccordionContent className="text-base leading-relaxed text-muted-foreground">
-                          {faq.answer}
-                        </AccordionContent>
-                      </AccordionItem>
-                    ))}
-                  </Accordion>
-                </TabsContent>
-              );
-            })}
-          </Tabs>
-        </div>
-      </Reveal>
+          {categories.map((cat) => {
+            const categoryFaqs =
+              cat.id === "all"
+                ? faqs
+                : faqs.filter((f) => f.category === cat.id);
+            return (
+              <TabsContent key={cat.id} value={cat.id}>
+                <Accordion type="single" collapsible className="w-full">
+                  {categoryFaqs.map((faq, index) => (
+                    <AccordionItem key={index} value={`${cat.id}-${index}`}>
+                      <AccordionTrigger className="py-5 text-left text-lg font-semibold hover:no-underline">
+                        {faq.question}
+                      </AccordionTrigger>
+                      <AccordionContent className="text-base leading-relaxed text-muted-foreground">
+                        {faq.answer}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </TabsContent>
+            );
+          })}
+        </Tabs>
+      </div>
     </Section>
   );
 }

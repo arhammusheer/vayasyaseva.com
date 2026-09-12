@@ -1,12 +1,8 @@
 import { ImageResponse } from "next/og";
-
 export const runtime = "edge";
-
-export const alt =
-  "Vayasya Seva Private Limited — Compliance-First Industrial Services";
+export const alt = "Vayasya Seva. Workforce. With care.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-
 export default function OgImage() {
   return new ImageResponse(
     (
@@ -15,92 +11,42 @@ export default function OgImage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          alignItems: "center",
           width: "100%",
           height: "100%",
-          backgroundColor: "#0F172A",
-          padding: "60px",
+          padding: "80px",
+          background: "#0F172A",
+          color: "#FFFFFF",
         }}
       >
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "24px",
+            fontSize: 18,
+            letterSpacing: 4,
+            color: "#EBB74A",
+            marginBottom: 55,
           }}
         >
-          <div
-            style={{
-              width: "64px",
-              height: "4px",
-              backgroundColor: "#DAA236",
-              borderRadius: "2px",
-            }}
-          />
-          <div
-            style={{
-              fontSize: "48px",
-              fontWeight: 700,
-              color: "#FFFFFF",
-              textAlign: "center",
-              lineHeight: 1.2,
-            }}
-          >
-            Vayasya Seva Private Limited
-          </div>
-          <div
-            style={{
-              fontSize: "24px",
-              fontWeight: 400,
-              color: "#EBB74A",
-              textAlign: "center",
-              lineHeight: 1.4,
-            }}
-          >
-            Compliance-First Industrial Services
-          </div>
-          <div
-            style={{
-              fontSize: "18px",
-              fontWeight: 400,
-              color: "#CBD5E1",
-              textAlign: "center",
-              lineHeight: 1.5,
-              maxWidth: "800px",
-              marginTop: "8px",
-            }}
-          >
-            Workforce deployment, civil and fabrication works, housekeeping,
-            equipment provisioning, and machinery maintenance with compliance
-            discipline.
-          </div>
-          <div
-            style={{
-              display: "flex",
-              gap: "16px",
-              marginTop: "16px",
-            }}
-          >
-            {["ESIC", "EPF", "GST", "MSME"].map((reg) => (
-              <div
-                key={reg}
-                style={{
-                  fontSize: "14px",
-                  fontWeight: 500,
-                  color: "#EBB74A",
-                  border: "1px solid #DAA23666",
-                  borderRadius: "6px",
-                  padding: "6px 14px",
-                }}
-              >
-                {reg} Registered
-              </div>
-            ))}
-          </div>
+          PEOPLE AT THE HEART OF WORK
+        </div>
+        <div style={{ fontSize: 90, letterSpacing: -4 }}>Vayasya Seva</div>
+        <div style={{ fontSize: 40, marginTop: 20, color: "#E2E8F0" }}>
+          Workforce. With care.
+        </div>
+        <div
+          style={{
+            display: "flex",
+            fontSize: 21,
+            marginTop: 70,
+            borderTop: "1px solid #475569",
+            paddingTop: 25,
+            justifyContent: "space-between",
+          }}
+        >
+          <span>Contract labour & industrial services</span>
+          <span>vayasyaseva.com</span>
         </div>
       </div>
     ),
-    { ...size }
+    size,
   );
 }

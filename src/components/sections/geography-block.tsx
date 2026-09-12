@@ -1,69 +1,49 @@
-import { MapPin, Clock, TrendingUp } from "lucide-react";
-import { Section, SectionHeader } from "@/components/layout/section";
-import { Reveal } from "@/components/motion/reveal";
-import { Stagger, StaggerItem } from "@/components/motion/stagger";
-import { siteConfig } from "@/content/site";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { Section } from "@/components/layout/section";
+
+const facts = [
+  { value: "2,000+", label: "acres in the SIDCUL Haridwar estate" },
+  { value: "170+", label: "manufacturing units on the estate" },
+  { value: "7–14", label: "working days to first shift, inside the area" },
+];
 
 export function GeographyBlock() {
   return (
-    <Section id="geography">
-      <Reveal>
-        <SectionHeader
-          title="Geographic Presence & Deployment Reach"
-          subtitle="Operationally rooted in one of India's most active industrial corridors."
-        />
-      </Reveal>
-
-      <div className="mx-auto max-w-4xl">
-        <Reveal>
-          <div className="flex justify-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-5 py-2.5">
-              <MapPin className="h-5 w-5 text-seva" />
-              <span className="text-lg font-semibold">{siteConfig.region}</span>
-            </div>
-          </div>
-
-          <p className="mt-6 text-center text-muted-foreground leading-relaxed">
-            VSPL&apos;s primary operations are centred in the Haridwar–SIDCUL
-            industrial region — covering manufacturing units, warehouses, and
-            logistics hubs in and around the SIDCUL industrial estate.
+    <Section variant="subtle" id="geography">
+      <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
+        <div className="lg:col-span-7">
+          <p className="font-data text-xs uppercase tracking-[0.18em] text-muted-foreground">
+            Where we operate
           </p>
-        </Reveal>
+          <h2 className="mt-4 text-balance text-[2.25rem] font-bold leading-[1.02] tracking-[-0.03em] sm:text-5xl lg:text-[4.5rem]">
+            Haridwar–SIDCUL, and the industrial belt around it.
+          </h2>
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
+            Pharma, FMCG, packaging, auto components, engineering, and
+            textiles, all within a short drive of our office. Sites outside
+            the belt are taken case by case, on whether we can put a
+            supervisor there.
+          </p>
+          <Link
+            href="/haridwar-sidcul"
+            className="mt-8 inline-flex items-center gap-2 font-medium underline-offset-4 hover:underline"
+          >
+            Industrial services in Haridwar–SIDCUL
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
 
-        <Stagger className="mt-8 grid gap-4 sm:grid-cols-3">
-          <StaggerItem>
-            <div className="rounded-xl border border-border p-5 text-center transition-[shadow,transform] duration-[var(--motion-base)] ease-[var(--motion-ease)] hover:-translate-y-0.5 hover:shadow-md">
-              <MapPin className="mx-auto h-5 w-5 text-muted-foreground" />
-              <h3 className="mt-2 text-sm font-semibold">Current Operating Radius</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Haridwar, SIDCUL, and surrounding industrial areas within
-                Uttarakhand.
-              </p>
+        <dl className="grid gap-6 border-t border-foreground/80 pt-6 sm:grid-cols-3 lg:col-span-5 lg:grid-cols-1 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0">
+          {facts.map((f) => (
+            <div key={f.label}>
+              <dt className="font-display text-4xl font-bold leading-none tabular sm:text-5xl">
+                {f.value}
+              </dt>
+              <dd className="mt-2 text-sm text-muted-foreground">{f.label}</dd>
             </div>
-          </StaggerItem>
-
-          <StaggerItem>
-            <div className="rounded-xl border border-border p-5 text-center transition-[shadow,transform] duration-[var(--motion-base)] ease-[var(--motion-ease)] hover:-translate-y-0.5 hover:shadow-md">
-              <TrendingUp className="mx-auto h-5 w-5 text-muted-foreground" />
-              <h3 className="mt-2 text-sm font-semibold">Expansion Criteria</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                New locations evaluated based on project scale, headcount
-                requirement, and operational feasibility.
-              </p>
-            </div>
-          </StaggerItem>
-
-          <StaggerItem>
-            <div className="rounded-xl border border-border p-5 text-center transition-[shadow,transform] duration-[var(--motion-base)] ease-[var(--motion-ease)] hover:-translate-y-0.5 hover:shadow-md">
-              <Clock className="mx-auto h-5 w-5 text-muted-foreground" />
-              <h3 className="mt-2 text-sm font-semibold">Mobilization</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Standard deployment within primary region: typically 7–14
-                working days from requirement confirmation.
-              </p>
-            </div>
-          </StaggerItem>
-        </Stagger>
+          ))}
+        </dl>
       </div>
     </Section>
   );

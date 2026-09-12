@@ -14,9 +14,11 @@ export const brandSerif = Hind({
   display: "swap",
 });
 
+
 export const brandMono = JetBrains_Mono({
   variable: "--font-jetbrains",
   subsets: ["latin"],
   weight: ["400", "500"],
   display: "swap",
+  preload: false,
 });

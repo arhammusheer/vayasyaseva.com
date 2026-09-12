@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { industries } from "@/content/industries";
-import { complianceItems, scopeBoundaries } from "@/content/home";
+import { complianceItems } from "@/content/home";
 import { services } from "@/content/services";
 import { siteConfig } from "@/content/site";
 
@@ -22,10 +22,8 @@ function buildServicesSection(): string {
       return [
         `### ${service.title}`,
         service.description,
-        "Included:",
-        toBullets(service.included),
-        "Not included:",
-        toBullets(service.notIncluded),
+        "Typical roles:",
+        toBullets(service.roles),
       ].join("\n");
     })
     .join(sectionBreak());
@@ -51,23 +49,7 @@ function buildComplianceSection(): string {
       const registrations = item.registrations?.length
         ? `\nRegistrations referenced: ${item.registrations.join(", ")}`
         : "";
-      return `### ${item.title}\nClaim class: ${item.claim}\n${item.description}${registrations}`;
-    })
-    .join(sectionBreak());
-}
-
-function buildScopeBoundarySection(): string {
-  return scopeBoundaries
-    .map((boundary) => {
-      return [
-        `### ${boundary.category}`,
-        "Included:",
-        toBullets(boundary.included),
-        "Not included:",
-        toBullets(boundary.notIncluded),
-        "On request:",
-        toBullets(boundary.onRequest),
-      ].join("\n");
+      return `### ${item.title}\n${item.description}${registrations}`;
     })
     .join(sectionBreak());
 }
@@ -75,7 +57,7 @@ function buildScopeBoundarySection(): string {
 function buildDocument(): string {
   return `# Vayasya Seva Private Limited - AI Exploration Corpus
 
-Last updated: 2026-02-11
+Last updated: 2026-09-12
 Canonical website: ${baseUrl}
 
 ## Organization summary
@@ -91,6 +73,7 @@ MSME: ${siteConfig.msme}
 ## Primary routes
 - ${baseUrl}/
 - ${baseUrl}/services
+- ${baseUrl}/haridwar-sidcul
 - ${baseUrl}/industries
 - ${baseUrl}/how-we-operate
 - ${baseUrl}/compliance
@@ -109,8 +92,8 @@ ${buildIndustriesSection()}
 ## Compliance posture
 ${buildComplianceSection()}
 
-## Scope boundaries
-${buildScopeBoundarySection()}
+## Engagements
+Capabilities are examples of our work. The team, services, location and arrangements are discussed around each requirement.
 
 ## Contact API
 Endpoint: POST ${baseUrl}/api/contact

@@ -4,7 +4,7 @@ export const siteConfig: SiteConfig = {
   companyName: "Vayasya Seva",
   legalName: "Vayasya Seva Private Limited",
   tagline:
-    "Compliance-First Industrial Services for Workforce, Civil, Fabrication & Maintenance",
+    "Contract labour, workforce management and industrial services, with a focus on labour compliance",
   email: "help@vayasyaseva.com",
   phone: "+91 72920 14101",
   gstin: "05AAJCV4562E1ZB",
@@ -26,6 +26,7 @@ export const navigation: NavItem[] = [
 
 export const footerLinks = {
   utility: [
+    { label: "Haridwar–SIDCUL", href: "/haridwar-sidcul" },
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Terms of Service", href: "/terms" },
   ],

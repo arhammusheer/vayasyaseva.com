@@ -5,65 +5,60 @@ export const industries: IndustrySector[] = [
     id: "manufacturing",
     title: "Manufacturing",
     description:
-      "Integrated manufacturing support covering shopfloor workforce deployment, fabrication requirements, civil upkeep, and machinery maintenance support.",
+      "Shopfloor crews, fabrication for plant modifications, civil upkeep, and maintenance technicians for production plants.",
     staffingPattern:
-      "Shift-based deployment of helpers, packers, line feeders, technicians, and maintenance support crews aligned to production schedules.",
+      "Helpers, packers, line feeders, technicians, and maintenance crews on the plant's shift pattern.",
     riskControlNeeds:
-      "Safety induction, permit discipline, attendance integrity, shutdown coordination, and incident reporting structures.",
-    reportingCadence:
-      "Daily attendance and work logs, weekly execution summaries, monthly compliance filings.",
+      "Safety induction, permit-to-work, attendance, shutdown coordination, incident reporting.",
+    reportingCadence: "Reporting arrangements discussed with your team.",
     icon: "Factory",
   },
   {
     id: "warehousing-logistics",
-    title: "Warehousing & Logistics",
+    title: "Warehousing and logistics",
     description:
-      "Loading, unloading, picking, stacking, dispatch, and warehouse support services for logistics hubs and distribution centres.",
+      "Loading, unloading, picking, stacking, and dispatch crews for logistics hubs and distribution centres.",
     staffingPattern:
-      "Volume-driven deployment — scales with throughput requirements. Single or multi-shift operations.",
+      "Headcount scales with throughput. Single or multi-shift.",
     riskControlNeeds:
-      "Material handling safety, inventory accuracy discipline, staging protocols, and dispatch verification.",
-    reportingCadence:
-      "Daily attendance and deployment reports, shift-wise output logs, and monthly compliance packs.",
+      "Material handling safety, inventory accuracy, staging, dispatch verification.",
+    reportingCadence: "Reporting arrangements discussed with your team.",
     icon: "Warehouse",
   },
   {
     id: "fmcg-consumer",
-    title: "FMCG & Consumer Operations",
+    title: "FMCG and consumer goods",
     description:
-      "High-throughput packaging, labelling, sorting, and distribution support for fast-moving consumer goods operations.",
+      "Packaging, labelling, sorting, and distribution crews for high-throughput consumer goods lines.",
     staffingPattern:
-      "Seasonal and demand-responsive deployment. Rapid ramp-up capability for peak periods.",
+      "Seasonal and demand-driven. Ramp-up for peak periods.",
     riskControlNeeds:
-      "Quality handling standards, hygiene protocols, batch tracking discipline, and line-speed compliance requirements.",
-    reportingCadence:
-      "Daily deployment and output reports, weekly quality compliance, monthly statutory filings.",
+      "Hygiene, handling standards, batch tracking, line-speed requirements.",
+    reportingCadence: "Reporting arrangements discussed with your team.",
     icon: "Package",
   },
   {
     id: "institutional-facilities",
-    title: "Institutional Facilities",
+    title: "Institutional facilities",
     description:
-      "Housekeeping for business and factory premises, pantry support, grounds maintenance, and facility operations support.",
+      "Housekeeping, pantry, grounds, and facility staff for offices, campuses, and institutional buildings.",
     staffingPattern:
-      "Stable deployment with defined schedules and trained labour teams for housekeeping, pantry, and grounds.",
+      "Fixed schedules and stable teams.",
     riskControlNeeds:
-      "Grooming standards, visitor-area protocols, facility access controls, and hygiene compliance.",
-    reportingCadence:
-      "Daily attendance, monthly compliance and payroll reports.",
+      "Grooming standards, visitor-area conduct, access control, hygiene.",
+    reportingCadence: "Reporting arrangements discussed with your team.",
     icon: "Building2",
   },
   {
     id: "hospitality-linked",
-    title: "Hospitality-Linked Operations",
+    title: "Hospitality-linked operations",
     description:
-      "Back-of-house, pantry, housekeeping, and guest-area support with trained labour for hospitality and hospitality-adjacent operations.",
+      "Back-of-house, pantry, housekeeping, and guest-area staff for hospitality and hospitality-adjacent sites.",
     staffingPattern:
-      "Split-shift and round-the-clock deployment. Role separation between guest-facing and back-of-house.",
+      "Split shifts and round-the-clock cover. Guest-facing and back-of-house roles kept separate.",
     riskControlNeeds:
-      "Guest interaction standards, hygiene compliance, grooming protocols, and incident escalation procedures.",
-    reportingCadence:
-      "Daily attendance and shift logs, monthly compliance and performance reports.",
+      "Guest interaction standards, hygiene, grooming, incident escalation.",
+    reportingCadence: "Reporting arrangements discussed with your team.",
     icon: "UtensilsCrossed",
   },
 ];

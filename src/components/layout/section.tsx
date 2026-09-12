@@ -23,7 +23,7 @@ export function Section({
         className
       )}
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div>
+      <div className="site-shell">{children}</div>
     </section>
   );
 }
@@ -34,6 +34,8 @@ interface SectionHeaderProps {
   className?: string;
   align?: "left" | "center";
   as?: "h1" | "h2" | "h3";
+  size?: "md" | "lg";
+  tone?: "light" | "dark";
 }
 
 export function SectionHeader({
@@ -42,6 +44,8 @@ export function SectionHeader({
   className,
   align = "center",
   as: Heading = "h2",
+  size = "md",
+  tone = "light",
 }: SectionHeaderProps) {
   return (
     <div
@@ -51,11 +55,24 @@ export function SectionHeader({
         className
       )}
     >
-      <Heading className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">
+      <Heading
+        className={cn(
+          "text-balance font-medium tracking-tight",
+          size === "md" && "text-3xl sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]",
+          size === "lg" && "text-4xl sm:text-5xl lg:text-6xl lg:leading-[1.02]",
+          tone === "dark" && "text-background"
+        )}
+      >
         {title}
       </Heading>
       {subtitle && (
-        <p className="mt-4 max-w-3xl text-balance text-lg text-muted-foreground sm:text-xl leading-relaxed mx-auto">
+        <p
+          className={cn(
+            "mt-4 max-w-3xl text-balance text-lg leading-relaxed sm:text-xl",
+            tone === "light" ? "text-muted-foreground" : "text-background/70",
+            align === "center" && "mx-auto"
+          )}
+        >
           {subtitle}
         </p>
       )}

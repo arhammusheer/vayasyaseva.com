@@ -1,62 +1,26 @@
 import Link from "next/link";
-import { ArrowRight, Mail, Phone } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Reveal } from "@/components/motion/reveal";
-import { siteConfig } from "@/content/site";
-
+import { ArrowUpRight } from "lucide-react";
 export function CtaBlock() {
   return (
-    <section
-      data-header-theme="dark"
-      data-header-theme-role="cta"
-      className="bg-gradient-to-b from-gold-950 to-black py-16 sm:py-20"
-    >
-      <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-        <Reveal>
-          <h2 className="text-balance text-3xl font-bold tracking-tight text-gold-100 sm:text-4xl">
-            Ready to discuss your workforce requirements?
+    <section className="contact-invitation">
+      <div className="site-shell invitation-inner">
+        <div>
+          <p className="eyebrow">START A CONVERSATION</p>
+          <h2>
+            What’s next for
+            <br />
+            your business?
           </h2>
-        </Reveal>
-        <Reveal delay={0.08}>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-gold-200/80">
-            Share your operational needs and we&apos;ll respond with a deployment
-            assessment. Target response: 2 business days (IST, Mon–Sat).
-          </p>
-        </Reveal>
-
-        <Reveal delay={0.16}>
-          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Button
-              asChild
-              size="lg"
-              className="border border-gold-300/40 bg-gold-500 text-neutral-900 hover:bg-gold-400 text-base"
-            >
-              <Link href="/contact">
-                Share Your Requirement
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
-        </Reveal>
-
-        <Reveal delay={0.2}>
-          <div className="mt-8 flex flex-col items-center justify-center gap-4 text-sm text-gold-200/80 sm:flex-row sm:gap-6">
-            <a
-              href={`mailto:${siteConfig.email}`}
-              className="flex items-center gap-2 transition-colors hover:text-gold-100"
-            >
-              <Mail className="h-4 w-4" />
-              {siteConfig.email}
-            </a>
-            <a
-              href={`tel:${siteConfig.phone}`}
-              className="flex items-center gap-2 transition-colors hover:text-gold-100"
-            >
-              <Phone className="h-4 w-4" />
-              {siteConfig.phone}
-            </a>
-          </div>
-        </Reveal>
+          <p>Tell us what you have in mind. We’ll take it from there.</p>
+        </div>
+        <Link
+          href="/contact"
+          className="round-link"
+          aria-label="Contact Vayasya Seva"
+        >
+          <ArrowUpRight aria-hidden="true" />
+          <span>Let’s talk</span>
+        </Link>
       </div>
     </section>
   );

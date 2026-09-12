@@ -62,7 +62,7 @@ export function ContactForm() {
     resolver: zodResolver(contactSchema),
     defaultValues: {
       details: isAssessment
-        ? "Requirement review requested for workforce deployment, housekeeping, warehouses and logistics, civil and fabrication works, machinery maintenance, or equipment and material support."
+        ? "Site assessment requested.\nSite: \nRoles: \nHeadcount: \nShift pattern: \nTarget start: "
         : "",
     },
   });
@@ -107,10 +107,10 @@ export function ContactForm() {
         className="flex flex-col items-center justify-center py-12 text-center"
       >
         <CheckCircle2 className="h-12 w-12 text-success" />
-        <h3 className="mt-4 text-xl font-semibold">Requirement Received</h3>
+        <h3 className="mt-4 text-xl font-semibold">Received</h3>
         <p className="mt-2 max-w-sm text-muted-foreground">
-          Current status: received. Owner: Vayasya Seva operations. Target next
-          update: within 2 business days (IST, Mon-Sat).
+          Thank you for getting in touch. Our team will review your message
+          and contact you using the details you shared.
         </p>
       </div>
     );
@@ -135,7 +135,7 @@ export function ContactForm() {
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <Label htmlFor="name">
-            Full Name <span className="text-destructive">*</span>
+            Name <span className="text-destructive">*</span>
           </Label>
           <Input
             id="name"
@@ -198,7 +198,7 @@ export function ContactForm() {
         </Label>
         <Textarea
           id="details"
-          placeholder="State service area, site location, headcount, and target timing if known."
+          placeholder="e.g. 24 loaders and 2 supervisors, two shifts, SIDCUL Sector 11, from 1 November"
           rows={5}
           {...register("details")}
           className={textAreaClassName}
@@ -208,13 +208,12 @@ export function ContactForm() {
         )}
       </div>
 
-      <details className="rounded-xl border border-neutral-300 bg-neutral-25 p-4">
-        <summary className="cursor-pointer list-none text-sm font-medium text-neutral-900">
-          Add Site and Scope Details
+      <details className="border-t border-border pt-4">
+        <summary className="cursor-pointer list-none text-sm font-medium">
+          Add more about your site (optional)
         </summary>
-        <p className="mt-2 text-sm text-neutral-700">
-          Use this section for service area, site context, timing, and
-          operating details.
+        <p className="mt-2 text-sm text-muted-foreground">
+          Helps us come back with a number instead of a question.
         </p>
 
         <div className="mt-4 grid gap-4 sm:grid-cols-2">

@@ -1,203 +1,94 @@
-import type { Metadata } from "next";
-import {
-  AlertTriangle,
-  ArrowUp,
-  Phone,
-  UserCheck,
-  Layers,
-  Shield,
-  ArrowRight,
-} from "lucide-react";
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Section, SectionHeader } from "@/components/layout/section";
+import { pageMetadata } from "@/lib/metadata";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+import { PageHero } from "@/components/layout/page-hero";
+import { Section } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
-import { operationsTimeline } from "@/content/home";
 import { JsonLd, breadcrumbSchema } from "@/lib/structured-data";
-
-export const metadata: Metadata = {
-  title: "How We Operate",
+export const metadata = pageMetadata({
+  title: "Our Approach to Workforce Management",
   description:
-    "VSPL's five-step operating model for workforce deployment, civil and fabrication works, housekeeping, equipment support, and machinery maintenance scopes with defined escalation and governance controls.",
-};
-
-const escalationLevels = [
+    "How Vayasya Seva plans a labour engagement, coordinates mobilisation and supervision, and connects site operations with workforce records and reporting.",
+  alternates: { canonical: "/how-we-operate" },
+});
+const approach = [
   {
-    level: "Level 1 — Site Supervisor",
-    description:
-      "Immediate on-ground issues — attendance, discipline, task allocation — handled by the deployed supervisor within the shift.",
-    icon: UserCheck,
+    title: "Understand the work",
+    text: "We start with your site, the people you need and the priorities behind the requirement. A visit or a detailed conversation helps us understand the working environment.",
   },
   {
-    level: "Level 2 — Operations Coordinator",
-    description:
-      "Persistent issues, staffing shortfalls, or process deviations — escalated to the VSPL operations coordinator for tracked resolution.",
-    icon: ArrowUp,
+    title: "Plan the engagement",
+    text: "Together, we establish the team, supervision, working arrangements and commercial terms. The plan brings operational needs and workforce requirements into the same conversation.",
   },
   {
-    level: "Level 3 — Management Review",
-    description:
-      "Systemic concerns, compliance risks, or contractual matters — escalated to VSPL management with documented review and response.",
-    icon: AlertTriangle,
+    title: "Prepare the team",
+    text: "Recruitment, documentation and site onboarding prepare people for the work. Mobilisation is coordinated with your team and the readiness of the site.",
   },
   {
-    level: "Client Escalation Hotline",
-    description:
-      "Direct access to VSPL operations management for urgent or critical requirements outside standard escalation flow.",
-    icon: Phone,
+    title: "Stay involved",
+    text: "Site coordination, attendance and reporting continue through the engagement. As requirements change, we review the arrangements with you.",
   },
 ];
-
-export default function HowWeOperatePage() {
+export default function ApproachPage() {
   return (
     <>
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", href: "/" },
-          { name: "How We Operate", href: "/how-we-operate" },
+          { name: "Our approach", href: "/how-we-operate" },
         ])}
       />
-      <Section className="section-glow-seva">
-        <SectionHeader
-          as="h1"
-          title="How We Operate"
-          subtitle="A disciplined operating model designed for accountability, compliance, and operational continuity across integrated industrial service scopes."
-        />
-      </Section>
-
-      {/* Dual-plane model */}
-      <Section variant="subtle">
-        <SectionHeader
-          title="Two Coordinated Layers"
-          subtitle="VSPL operates through a Setu Governance Plane and an Execution Plane — keeping governance consistent while allowing rapid on-ground delivery."
-        />
-
-        <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
-          <div className="rounded-xl border border-setu/20 bg-setu/5 p-6">
-            <div className="mb-3 flex items-center gap-2">
-              <Layers className="h-5 w-5 text-setu" />
-              <h3 className="font-semibold text-setu">
-                Setu Governance Plane
-              </h3>
-            </div>
-            <p className="mb-3 text-sm text-muted-foreground">
-              Policies, attendance controls, compliance workflows, reporting
-              standards, payroll workflows, and workforce-to-shift alignment
-              logic — managed centrally through Vayasya Setu.
-            </p>
-            <ul className="space-y-2">
-              {[
-                "Policy logic and compliance rules",
-                "Attendance capture and verification",
-                "Payroll input generation",
-                "Compliance documentation and filing",
-                "Reporting standards and delivery",
-                "Workforce-to-shift alignment (where deployed)",
-              ].map((item) => (
-                <li
-                  key={item}
-                  className="flex items-start gap-2 text-sm leading-relaxed"
-                >
-                  <Shield className="mt-0.5 h-3.5 w-3.5 shrink-0 text-setu" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="rounded-xl border border-border bg-background p-6">
-            <div className="mb-3 flex items-center gap-2">
-              <ArrowRight className="h-5 w-5 text-muted-foreground" />
-              <h3 className="font-semibold">Execution Plane</h3>
-            </div>
-            <p className="mb-3 text-sm text-muted-foreground">
-              On-ground service operations, supervisor-led issue handling,
-              client communication, and time-bound operational delivery.
-            </p>
-            <ul className="space-y-2">
-              {[
-                "Day-to-day deployment coordination",
-                "Civil/fabrication and maintenance execution tracking",
-                "Supervisor-led exception handling",
-                "Direct communication with client teams",
-                "Shift handovers and operational continuity",
-                "Replacement pipeline activation",
-                "On-ground escalation and resolution",
-              ].map((item) => (
-                <li
-                  key={item}
-                  className="flex items-start gap-2 text-sm leading-relaxed text-muted-foreground"
-                >
-                  <ArrowRight className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        <p className="mt-6 text-center text-sm text-muted-foreground">
-          This model keeps governance consistent while allowing adaptable field execution.
-        </p>
-      </Section>
-
-      {/* Five-step process */}
+      <PageHero
+        title={
+          <>
+            First, understand.
+            <br />
+            Then, get to work.
+          </>
+        }
+        lede="Every site has its own demands. We work with your team to put the people, supervision and supporting processes in place."
+      />
       <Section>
-        <SectionHeader
-          title="The Five-Step Process"
-          subtitle="Every engagement follows this structured execution cycle."
-        />
-
-        <div className="mx-auto max-w-3xl space-y-6">
-          {operationsTimeline.map((step) => {
-            return (
-              <div
-                key={step.step}
-                className="flex items-start gap-5 rounded-xl border border-border bg-background p-6"
-              >
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-seva bg-seva/10">
-                  <span className="text-lg font-bold text-seva">
-                    {step.step}
-                  </span>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">{step.title}</h3>
-                  <p className="mt-1 leading-relaxed text-muted-foreground">
-                    {step.description}
-                  </p>
-                </div>
+        <div className="max-w-4xl mx-auto">
+          {approach.map((a, i) => (
+            <div
+              key={a.title}
+              className="grid grid-cols-[40px_1fr] sm:grid-cols-[90px_1fr] gap-6 border-t py-9"
+            >
+              <span className="text-sm text-seva pt-2">0{i + 1}</span>
+              <div>
+                <h2 className="text-3xl font-medium">{a.title}</h2>
+                <p className="mt-3 text-muted-foreground leading-relaxed max-w-2xl">
+                  {a.text}
+                </p>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </Section>
-
-      {/* Escalation Framework */}
       <Section variant="subtle">
-        <SectionHeader
-          title="Escalation Framework"
-          subtitle="Defined escalation tiers ensure issues are resolved at the appropriate level — with accountability at each stage."
-        />
-
-        <div className="grid gap-6 md:grid-cols-2">
-          {escalationLevels.map((level) => {
-            const Icon = level.icon;
-            return (
-              <Card key={level.level}>
-                <CardHeader>
-                  <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-seva/10">
-                    <Icon className="h-5 w-5 text-seva" />
-                  </div>
-                  <CardTitle className="text-lg">{level.level}</CardTitle>
-                  <CardDescription className="text-base leading-relaxed">
-                    {level.description}
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-            );
-          })}
+        <div className="grid gap-10 md:grid-cols-2">
+          <div>
+            <p className="eyebrow text-seva">CONNECTED OPERATIONS</p>
+            <h2 className="mt-5 text-4xl font-medium">
+              The site and the office,
+              <br />
+              working together.
+            </h2>
+          </div>
+          <div>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              Our site coordination is supported by Vayasya Setu, our internal
+              workforce system. It helps bring attendance, deployment
+              information and compliance records together for the team managing
+              your engagement.
+            </p>
+            <Link href="/vayasya-setu" className="text-link">
+              A closer look at Setu <ArrowUpRight size={18} />
+            </Link>
+          </div>
         </div>
       </Section>
-
       <CtaBlock />
     </>
   );

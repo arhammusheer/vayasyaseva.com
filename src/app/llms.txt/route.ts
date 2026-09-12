@@ -6,7 +6,7 @@ export const revalidate = 3600;
 
 const llmsIndex = `# Vayasya Seva Private Limited
 
-> Compliance-first industrial services partner for workforce, civil, fabrication, housekeeping, equipment, and maintenance scopes in Haridwar-SIDCUL, Uttarakhand, India.
+> Contract labour, workforce management and industrial services. Based in Haridwar, Uttarakhand, with a focus on labour compliance. EPF, ESIC, GST and MSME registered.
 
 ## Canonical
 - ${baseUrl}
@@ -14,6 +14,7 @@ const llmsIndex = `# Vayasya Seva Private Limited
 ## Primary pages
 - ${baseUrl}/
 - ${baseUrl}/services
+- ${baseUrl}/haridwar-sidcul
 - ${baseUrl}/industries
 - ${baseUrl}/how-we-operate
 - ${baseUrl}/compliance

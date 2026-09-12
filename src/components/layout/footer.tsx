@@ -48,7 +48,7 @@ export function Footer() {
             <Link href="/compliance">Labour compliance</Link>
             <Link href="/haridwar-sidcul">Haridwar &amp; SIDCUL</Link>
             <Link href="/vayasya-setu">Vayasya Setu</Link>
-            <a href="https://hr.vayasyaseva.com">Setu login ↗</a>
+            <a href="https://setu.vayasyaseva.com">Setu login ↗</a>
           </nav>
         </div>
         <div className="footer-registration">

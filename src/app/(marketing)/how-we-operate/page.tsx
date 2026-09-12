@@ -4,7 +4,7 @@ import { ArrowUpRight } from "lucide-react";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
-import { JsonLd, breadcrumbSchema } from "@/lib/structured-data";
+import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 export const metadata = pageMetadata({
   title: "Our Approach to Workforce Management",
   description:
@@ -32,6 +32,15 @@ const approach = [
 export default function ApproachPage() {
   return (
     <>
+      <JsonLd
+        data={webPageSchema({
+          type: "WebPage",
+          name: "Our Approach to Workforce Management",
+          description:
+            "How Vayasya Seva plans a labour engagement, coordinates mobilisation and supervision, and connects site operations with workforce records and reporting.",
+          url: "/how-we-operate",
+        })}
+      />
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", href: "/" },

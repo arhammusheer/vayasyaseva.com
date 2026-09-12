@@ -11,6 +11,8 @@ export const siteConfig: SiteConfig = {
   msme: "UDYAM-UK-06-0029670",
   address: "Haridwar, Uttarakhand",
   region: "Haridwar–SIDCUL",
+  sameAs: [],
+  geo: { latitude: 29.9457, longitude: 78.1642 },
 };
 
 export const navigation: NavItem[] = [

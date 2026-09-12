@@ -4,9 +4,9 @@ import { ArrowUpRight } from "lucide-react";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
-import { JsonLd, breadcrumbSchema } from "@/lib/structured-data";
+import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 export const metadata = pageMetadata({
-  title: "Vayasya Setu | Workforce Operations",
+  title: "Vayasya Setu, Workforce Management System",
   description:
     "Vayasya Setu supports Vayasya Seva’s workforce operations with attendance, deployment information, payroll inputs and compliance records.",
   alternates: { canonical: "/vayasya-setu" },
@@ -14,6 +14,15 @@ export const metadata = pageMetadata({
 export default function SetuPage() {
   return (
     <>
+      <JsonLd
+        data={webPageSchema({
+          type: "WebPage",
+          name: "Vayasya Setu, Workforce Management System",
+          description:
+            "Vayasya Setu supports Vayasya Seva’s workforce operations with attendance, deployment information, payroll inputs and compliance records.",
+          url: "/vayasya-setu",
+        })}
+      />
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", href: "/" },

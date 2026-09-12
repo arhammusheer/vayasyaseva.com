@@ -4,10 +4,10 @@ import { ArrowUpRight } from "lucide-react";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
-import { JsonLd, breadcrumbSchema } from "@/lib/structured-data";
+import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { siteConfig } from "@/content/site";
 export const metadata = pageMetadata({
-  title: "About Our Company",
+  title: "About Vayasya Seva, Labour Contractor in Haridwar",
   description:
     "Meet Vayasya Seva Private Limited, a Haridwar-based contract labour and industrial services company with a focus on people, site operations and labour compliance.",
   alternates: { canonical: "/about" },
@@ -15,6 +15,15 @@ export const metadata = pageMetadata({
 export default function AboutPage() {
   return (
     <>
+      <JsonLd
+        data={webPageSchema({
+          type: "AboutPage",
+          name: "About Vayasya Seva, Labour Contractor in Haridwar",
+          description:
+            "Meet Vayasya Seva Private Limited, a Haridwar-based contract labour and industrial services company with a focus on people, site operations and labour compliance.",
+          url: "/about",
+        })}
+      />
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", href: "/" },

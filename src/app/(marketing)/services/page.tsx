@@ -4,7 +4,9 @@ import { ArrowUpRight } from "lucide-react";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
-import { JsonLd, breadcrumbSchema } from "@/lib/structured-data";
+import { FaqSection } from "@/components/sections/faq-section";
+import { servicesFaqs } from "@/content/faqs";
+import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { services } from "@/content/services";
 import { servicePageSchema } from "@/lib/structured-data";
 export const metadata = pageMetadata({
@@ -16,6 +18,15 @@ export const metadata = pageMetadata({
 export default function ServicesPage() {
   return (
     <>
+      <JsonLd
+        data={webPageSchema({
+          type: "CollectionPage",
+          name: "Contract Labour, Workforce & Industrial Services",
+          description:
+            "Explore Vayasya Seva’s contract labour, manpower supply, housekeeping, civil works, fabrication and maintenance services in Haridwar and SIDCUL.",
+          url: "/services",
+        })}
+      />
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", href: "/" },
@@ -43,8 +54,19 @@ export default function ServicesPage() {
               your requirement.
             </h2>
             <p className="mt-5 max-w-xs text-muted-foreground">
-              These are some of the ways we support our clients. Tell us about
-              your site, your priorities and the work you need done.
+              These are some of the ways we support our clients across{" "}
+              <Link href="/industries" className="underline underline-offset-4">
+                manufacturing, logistics and facilities
+              </Link>{" "}
+              in{" "}
+              <Link
+                href="/haridwar-sidcul"
+                className="underline underline-offset-4"
+              >
+                Haridwar and SIDCUL
+              </Link>
+              . Tell us about your site, your priorities and the work you need
+              done.
             </p>
             <Link href="/contact" className="text-link">
               Discuss your requirement <ArrowUpRight size={18} />
@@ -98,6 +120,7 @@ export default function ServicesPage() {
           </div>
         </div>
       </Section>
+      <FaqSection eyebrow="QUESTIONS" items={servicesFaqs} />
       <CtaBlock />
     </>
   );

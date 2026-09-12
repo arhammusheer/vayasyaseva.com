@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { JsonLd, organizationSchema } from "@/lib/structured-data";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import { JsonLd, siteGraphSchema } from "@/lib/structured-data";
 import { brandDisplay, brandMono, brandSerif } from "@/lib/fonts";
 
 const appDescription =
@@ -31,6 +32,28 @@ export const metadata: Metadata = {
     "Vayasya Seva",
   ],
   metadataBase: new URL("https://www.vayasyaseva.com"),
+  applicationName: "Vayasya Seva",
+  category: "business",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
+    },
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+  },
+  other: {
+    "geo.region": "IN-UK",
+    "geo.placename": "Haridwar",
+    "geo.position": "29.9457;78.1642",
+    ICBM: "29.9457, 78.1642",
+  },
   openGraph: {
     type: "website",
     locale: "en_IN",
@@ -66,8 +89,11 @@ export default function RootLayout({
       <body
         className={`${brandDisplay.variable} ${brandSerif.variable} ${brandMono.variable} font-serif antialiased`}
       >
-        <JsonLd data={organizationSchema()} />
+        <JsonLd data={siteGraphSchema()} />
         {children}
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+        )}
       </body>
     </html>
   );

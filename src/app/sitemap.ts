@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const lastModified = new Date("2026-09-12");
+const lastModified = new Date("2026-09-13");
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://www.vayasyaseva.com";

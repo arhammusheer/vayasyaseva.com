@@ -4,8 +4,12 @@ import { ArrowUpRight } from "lucide-react";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
-import { JsonLd, breadcrumbSchema } from "@/lib/structured-data";
-import { localBusinessSchema, faqSchema } from "@/lib/structured-data";
+import {
+  JsonLd,
+  breadcrumbSchema,
+  faqSchema,
+  webPageSchema,
+} from "@/lib/structured-data";
 import type { FaqItem } from "@/content/types";
 export const metadata = pageMetadata({
   title: "Labour Contractor in Haridwar & SIDCUL",
@@ -42,7 +46,14 @@ const questions: FaqItem[] = [
 export default function HaridwarPage() {
   return (
     <>
-      <JsonLd data={localBusinessSchema()} />
+      <JsonLd
+        data={webPageSchema({
+          name: "Labour Contractor in Haridwar & SIDCUL",
+          description:
+            "Vayasya Seva provides contract labour, manpower supply, housekeeping and industrial services in Haridwar and SIDCUL, with EPF and ESIC compliance support.",
+          url: "/haridwar-sidcul",
+        })}
+      />
       <JsonLd data={faqSchema(questions)} />
       <JsonLd
         data={breadcrumbSchema([

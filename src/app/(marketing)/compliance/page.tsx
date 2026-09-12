@@ -4,7 +4,9 @@ import { ArrowUpRight } from "lucide-react";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
-import { JsonLd, breadcrumbSchema } from "@/lib/structured-data";
+import { FaqSection } from "@/components/sections/faq-section";
+import { complianceFaqs } from "@/content/faqs";
+import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { siteConfig } from "@/content/site";
 export const metadata = pageMetadata({
   title: "Labour Compliance, EPF & ESIC Support",
@@ -33,6 +35,15 @@ const records = [
 export default function CompliancePage() {
   return (
     <>
+      <JsonLd
+        data={webPageSchema({
+          type: "WebPage",
+          name: "Labour Compliance, EPF & ESIC Support",
+          description:
+            "Vayasya Seva’s approach to contract labour compliance: worker documentation, attendance, wage records, EPF and ESIC contributions, and support for client reviews.",
+          url: "/compliance",
+        })}
+      />
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", href: "/" },
@@ -132,6 +143,7 @@ export default function CompliancePage() {
           </p>
         </div>
       </Section>
+      <FaqSection eyebrow="QUESTIONS" variant="subtle" items={complianceFaqs} />
       <CtaBlock />
     </>
   );

@@ -3,13 +3,14 @@ import path from "node:path";
 import Image from "next/image";
 import { Download } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
+import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
 import { typeScale } from "@/content/brand";
 import { ColorSwatches } from "./color-swatches";
 
 export const metadata = pageMetadata({
-  title: "Brand",
+  title: "Brand Guidelines",
   description:
     "The Vayasya Seva mark, typography and colour palette, with downloadable logo files and fonts.",
   alternates: { canonical: "/brand" },
@@ -121,6 +122,21 @@ function Rules({ items }: { items: string[] }) {
 export default function BrandPage() {
   return (
     <>
+      <JsonLd
+        data={webPageSchema({
+          type: "WebPage",
+          name: "Brand",
+          description:
+            "The Vayasya Seva mark, typography and colour palette, with downloadable logo files and fonts.",
+          url: "/brand",
+        })}
+      />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", href: "/" },
+          { name: "Brand guidelines", href: "/brand" },
+        ])}
+      />
       <PageHero
         title="Brand guidelines"
         lede="Logo usage, typography and colour palette for Vayasya Seva, with downloadable logo files and fonts."
@@ -165,9 +181,7 @@ export default function BrandPage() {
         <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
           <div>
             <p className="eyebrow text-gold-700">02 · TYPOGRAPHY</p>
-            <h2 className="mt-5 text-4xl font-medium">
-              Typography
-            </h2>
+            <h2 className="mt-5 text-4xl font-medium">Typography</h2>
             <Rules items={rules.type} />
           </div>
           <div>
@@ -238,16 +252,14 @@ export default function BrandPage() {
         <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
           <div>
             <p className="eyebrow text-gold-700">03 · COLOUR</p>
-            <h2 className="mt-5 text-4xl font-medium">
-              Colour palette
-            </h2>
+            <h2 className="mt-5 text-4xl font-medium">Colour palette</h2>
             <p className="mt-5 text-muted-foreground leading-relaxed">
               Gold is the brand colour for Vayasya and for every product under
               it; Seva and Setu do not have colours of their own. Saffron,
               Indigo, Forest and Slate are extended scales for chart series,
-              document templates and theme options in Setu. They do not
-              identify a product line. Accent colour stays under 20% of any
-              surface. Click a swatch to copy its hex value.
+              document templates and theme options in Setu. They do not identify
+              a product line. Accent colour stays under 20% of any surface.
+              Click a swatch to copy its hex value.
             </p>
           </div>
           <ColorSwatches />

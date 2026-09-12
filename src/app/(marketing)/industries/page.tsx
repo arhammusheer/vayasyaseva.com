@@ -4,10 +4,12 @@ import { ArrowUpRight } from "lucide-react";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
-import { JsonLd, breadcrumbSchema } from "@/lib/structured-data";
+import { FaqSection } from "@/components/sections/faq-section";
+import { industriesFaqs } from "@/content/faqs";
+import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { industries } from "@/content/industries";
 export const metadata = pageMetadata({
-  title: "Workforce Support for Manufacturing, Logistics & Facilities",
+  title: "Workforce for Manufacturing, Logistics & Facilities",
   description:
     "Contract labour and site support for manufacturing, warehousing, FMCG, institutional facilities and hospitality operations. Discuss your sector with Vayasya Seva.",
   alternates: { canonical: "/industries" },
@@ -15,6 +17,15 @@ export const metadata = pageMetadata({
 export default function IndustriesPage() {
   return (
     <>
+      <JsonLd
+        data={webPageSchema({
+          type: "CollectionPage",
+          name: "Workforce for Manufacturing, Logistics & Facilities",
+          description:
+            "Contract labour and site support for manufacturing, warehousing, FMCG, institutional facilities and hospitality operations. Discuss your sector with Vayasya Seva.",
+          url: "/industries",
+        })}
+      />
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", href: "/" },
@@ -61,6 +72,7 @@ export default function IndustriesPage() {
           </div>
         </div>
       </Section>
+      <FaqSection eyebrow="QUESTIONS" variant="subtle" items={industriesFaqs} />
       <CtaBlock />
     </>
   );

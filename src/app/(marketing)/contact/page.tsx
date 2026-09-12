@@ -2,15 +2,11 @@ import { Suspense } from "react";
 import { pageMetadata } from "@/lib/metadata";
 import { Section } from "@/components/layout/section";
 import { siteConfig } from "@/content/site";
-import {
-  JsonLd,
-  localBusinessSchema,
-  breadcrumbSchema,
-} from "@/lib/structured-data";
+import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { ContactForm } from "./contact-form";
 
 export const metadata = pageMetadata({
-  title: "Contact",
+  title: "Contact Vayasya Seva, Haridwar",
   description:
     "Talk to Vayasya Seva about contract labour, workforce services, compliance support or a project. Contact our Haridwar team by phone, email or enquiry form.",
   alternates: { canonical: "/contact" },
@@ -34,7 +30,11 @@ function ContactFormFallback() {
 }
 
 const lines = [
-  { label: "Email", value: siteConfig.email, href: `mailto:${siteConfig.email}` },
+  {
+    label: "Email",
+    value: siteConfig.email,
+    href: `mailto:${siteConfig.email}`,
+  },
   {
     label: "Phone",
     value: siteConfig.phone,
@@ -47,7 +47,15 @@ const lines = [
 export default function ContactPage() {
   return (
     <>
-      <JsonLd data={localBusinessSchema()} />
+      <JsonLd
+        data={webPageSchema({
+          type: "ContactPage",
+          name: "Contact Vayasya Seva",
+          description:
+            "Contact Vayasya Seva in Haridwar about contract labour, workforce services, compliance support or a project.",
+          url: "/contact",
+        })}
+      />
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", href: "/" },

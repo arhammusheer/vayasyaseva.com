@@ -47,8 +47,16 @@ export function Header() {
       let covered = 0;
       const mixed = [0, 0, 0];
       let heroOverlap = 0;
+      // Inner pages start below the header, so nothing sits under it at the
+      // top; fill the gap with the surface directly beneath instead of white.
+      let fill = [255, 255, 255];
+      let fillTop = Infinity;
       for (const { el, color } of surfaces) {
         const rect = el.getBoundingClientRect();
+        if (rect.top >= 0 && rect.top < fillTop) {
+          fillTop = rect.top;
+          fill = color;
+        }
         const overlap = Math.max(
           0,
           Math.min(height, rect.bottom) - Math.max(0, rect.top),
@@ -58,13 +66,13 @@ export function Header() {
         color.forEach((channel, i) => (mixed[i] += channel * overlap));
         if (el.classList.contains("home-hero")) heroOverlap = overlap / height;
       }
-      const rgb = mixed.map((channel) =>
-        Math.round((channel + Math.max(0, height - covered) * 255) / height),
+      const rgb = mixed.map((channel, i) =>
+        Math.round((channel + Math.max(0, height - covered) * fill[i]) / height),
       );
       const dark = rgb[0] * 0.2126 + rgb[1] * 0.7152 + rgb[2] * 0.0722 < 140;
       header.style.setProperty(
         "--header-surface",
-        `rgba(${rgb.join(",")},${heroOverlap > 0.95 ? 0.36 : 0.94})`,
+        `rgba(${rgb.join(",")},${heroOverlap > 0.95 ? 0.36 : covered ? 0.94 : 1})`,
       );
       header.dataset.theme = dark ? "dark" : "light";
       header.dataset.top = String(window.scrollY <= 4);

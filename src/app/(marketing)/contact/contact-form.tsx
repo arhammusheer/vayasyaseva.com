@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckCircle2, Loader2 } from "lucide-react";
+import { ArrowUpRight, CheckCircle2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -322,20 +322,24 @@ export function ContactForm() {
         </div>
       )}
 
-      <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
-        {isSubmitting ? (
-          <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Submitting...
-          </>
-        ) : (
-          "Submit Requirement"
-        )}
-      </Button>
-
-      <p className="text-center text-xs text-muted-foreground">
-        Your information will be used only to respond to this inquiry.
-      </p>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+        <Button type="submit" size="lg" className="sm:min-w-56" disabled={isSubmitting}>
+          {isSubmitting ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Sending
+            </>
+          ) : (
+            <>
+              Send requirement
+              <ArrowUpRight className="h-4 w-4" />
+            </>
+          )}
+        </Button>
+        <p className="text-xs text-muted-foreground">
+          Your information will be used only to respond to this inquiry.
+        </p>
+      </div>
     </form>
   );
 }

@@ -155,7 +155,7 @@
   --motion-slow: 450ms;
   --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
-  --radius: 0.375rem;
+  --radius: 0.5rem;
 
   /* ── Core neutrals ── */
   --neutral-0: #ffffff;
@@ -1171,19 +1171,35 @@ a:hover > svg {
   white-space: nowrap;
   margin-left: auto;
 }
+/* Buttons: 8px radius, weight 600, hover darkens with a slight lift, press settles. */
 .header-contact {
   background: var(--gold-500);
   color: var(--neutral-900);
   border: 0;
-  border-radius: 3px;
-  padding: 9px 14px;
-  gap: 18px;
-  font-size: 13px;
+  border-radius: 8px;
+  height: 40px;
+  padding: 0 18px 0 20px;
+  gap: 10px;
+  font-size: 14px;
   font-weight: 600;
   white-space: nowrap;
+  transition:
+    background 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
 }
 .header-contact:hover {
   background: var(--gold-400);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px -8px color-mix(in srgb, var(--gold-700) 60%, transparent);
+}
+.header-contact:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+.header-contact svg {
+  width: 16px;
+  height: 16px;
 }
 .home-hero {
   margin-top: -64px;
@@ -1197,12 +1213,25 @@ a:hover > svg {
   color: var(--neutral-900);
   background: var(--gold-500);
   border: 0;
-  border-radius: 3px;
-  padding: 13px 18px;
-  font-weight: 500;
+  border-radius: 8px;
+  height: 52px;
+  padding: 0 24px 0 28px;
+  gap: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  transition:
+    background 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
 }
 .home-hero .light-link:hover {
   background: var(--gold-400);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.5);
+}
+.home-hero .light-link:active {
+  transform: translateY(0);
+  box-shadow: none;
 }
 .home-intro > .eyebrow,
 .section-intro .eyebrow,
@@ -1360,9 +1389,10 @@ a:hover > svg {
   }
   .header-contact {
     display: flex;
+    height: 36px;
     gap: 8px;
-    padding: 9px 11px;
-    font-size: 12px;
+    padding: 0 14px 0 16px;
+    font-size: 13px;
   }
   .mobile-menu {
     width: 36px;

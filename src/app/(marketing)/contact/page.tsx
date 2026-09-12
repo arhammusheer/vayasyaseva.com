@@ -108,14 +108,14 @@ export default function ContactPage() {
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                 <a
                   href={`mailto:${siteConfig.email}`}
-                  className="inline-flex items-center justify-center gap-2 rounded-md bg-seva px-4 py-2.5 text-sm font-medium text-seva-foreground transition-colors hover:bg-seva/90"
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-neutral-900 px-5 text-sm font-semibold text-background transition-all hover:-translate-y-px hover:bg-neutral-800 active:translate-y-0"
                 >
                   <Mail className="h-4 w-4" />
                   {siteConfig.email}
                 </a>
                 <a
                   href={`tel:${siteConfig.phone}`}
-                  className="inline-flex items-center justify-center gap-2 rounded-md border border-border bg-background px-4 py-2.5 font-data text-sm font-medium transition-colors hover:bg-subtle"
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-neutral-300 bg-background px-5 font-data text-sm font-medium transition-all hover:-translate-y-px hover:border-neutral-900 active:translate-y-0"
                 >
                   <Phone className="h-4 w-4" />
                   {siteConfig.phone}

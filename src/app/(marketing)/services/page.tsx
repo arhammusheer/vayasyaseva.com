@@ -10,9 +10,9 @@ import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { services } from "@/content/services";
 import { servicePageSchema } from "@/lib/structured-data";
 export const metadata = pageMetadata({
-  title: "Contract Labour, Workforce & Industrial Services",
+  title: "Contract Labour & Industrial Services in Haridwar",
   description:
-    "Explore Vayasya Seva’s contract labour, manpower supply, housekeeping, civil works, fabrication and maintenance services in Haridwar and SIDCUL.",
+    "Explore contract labour, factory and warehouse manpower, housekeeping, civil works and maintenance services for Haridwar and SIDCUL sites.",
   alternates: { canonical: "/services" },
 });
 export default function ServicesPage() {
@@ -21,9 +21,9 @@ export default function ServicesPage() {
       <JsonLd
         data={webPageSchema({
           type: "CollectionPage",
-          name: "Contract Labour, Workforce & Industrial Services",
+          name: "Contract Labour & Industrial Services in Haridwar",
           description:
-            "Explore Vayasya Seva’s contract labour, manpower supply, housekeeping, civil works, fabrication and maintenance services in Haridwar and SIDCUL.",
+            "Explore contract labour, factory and warehouse manpower, housekeeping, civil works and maintenance services for Haridwar and SIDCUL sites.",
           url: "/services",
         })}
       />
@@ -37,12 +37,12 @@ export default function ServicesPage() {
       <PageHero
         title={
           <>
-            People for your operations.
+            Contract labour and industrial services.
             <br />
-            Support for what comes next.
+            Planned around your site.
           </>
         }
-        lede="Contract labour is at the heart of our work. Alongside it, we support the facilities, projects and everyday operations that keep a business running."
+        lede="Contract workers for factory, warehouse and facility operations in Haridwar and SIDCUL, alongside civil, fabrication and maintenance support."
       />
       <Section>
         <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
@@ -71,6 +71,13 @@ export default function ServicesPage() {
             <Link href="/contact" className="text-link">
               Discuss your requirement <ArrowUpRight size={18} />
             </Link>
+            <p className="mt-6 max-w-xs text-sm text-muted-foreground">
+              Looking for a manpower supplier or labour provider? See how our{" "}
+              <Link href="/services/contract-labour" className="underline underline-offset-4">
+                contract labour service
+              </Link>{" "}
+              handles roles, site coordination and workforce records.
+            </p>
           </div>
           <div>
             {services.map((service) => (

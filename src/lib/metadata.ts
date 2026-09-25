@@ -9,6 +9,8 @@ export function pageMetadata(input: {
   const title =
     typeof input.title === "string"
       ? `${input.title} | Vayasya Seva`
+      : input.title && typeof input.title === "object" && "absolute" in input.title
+        ? input.title.absolute
       : "Vayasya Seva | Contract Labour & Workforce Services";
   return {
     ...input,

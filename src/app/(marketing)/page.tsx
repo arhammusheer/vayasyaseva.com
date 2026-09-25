@@ -6,16 +6,16 @@ import { CtaBlock } from "@/components/sections/cta-block";
 import { JsonLd, webPageSchema } from "@/lib/structured-data";
 import { trustClients } from "@/content/home";
 export const metadata = pageMetadata({
-  title: { absolute: "Vayasya Seva | Contract Labour & Workforce Services" },
+  title: { absolute: "Labour Contractor in Haridwar | Vayasya Seva" },
   description:
-    "Contract labour, workforce management and industrial services from Vayasya Seva. Based in Haridwar, with a strong focus on labour compliance, EPF and ESIC records.",
+    "Vayasya Seva supports Haridwar and SIDCUL businesses with contract labour, industrial manpower, site services and workforce documentation.",
   alternates: { canonical: "/" },
 });
 const capabilities = [
   {
-    title: "Contract labour & workforce",
-    text: "People for production, warehousing and the everyday work of your business.",
-    href: "/services#workforce-operations",
+    title: "Contract labour & manpower",
+    text: "Workers for production, warehousing and the everyday work of your business.",
+    href: "/services/contract-labour",
   },
   {
     title: "Facility & site services",
@@ -53,13 +53,14 @@ export default function HomePage() {
           <p className="eyebrow hero-eyebrow rise">
             PEOPLE AT THE HEART OF WORK
           </p>
-          <h1 className="rise rise-1">Workforce. With care.</h1>
+          <h1 className="rise rise-1">Contract labour for Haridwar industry.</h1>
           <p className="hero-description rise rise-2">
-            Contract labour and industrial services. A considered approach to
-            people, work and compliance.
+            Vayasya Seva coordinates workers for factories, warehouses and
+            facilities in the SIDCUL region, with attention to people, site
+            operations and workforce records.
           </p>
-          <Link href="/services" className="light-link rise rise-3">
-            Get to know our work <ArrowUpRight size={20} aria-hidden="true" />
+          <Link href="/services/contract-labour" className="light-link rise rise-3">
+            Explore contract labour services <ArrowUpRight size={20} aria-hidden="true" />
           </Link>
         </div>
         <div className="hero-foot site-shell">

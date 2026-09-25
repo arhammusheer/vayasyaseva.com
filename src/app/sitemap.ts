@@ -1,14 +1,16 @@
 import type { MetadataRoute } from "next";
 
 const lastModified = new Date("2026-09-13");
+const contentUpdated = new Date("2026-09-26");
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://www.vayasyaseva.com";
 
   return [
-    { url: baseUrl, lastModified, changeFrequency: "monthly", priority: 1 },
-    { url: `${baseUrl}/services`, lastModified, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${baseUrl}/haridwar-sidcul`, lastModified, changeFrequency: "monthly", priority: 0.9 },
+    { url: baseUrl, lastModified: contentUpdated, changeFrequency: "monthly", priority: 1 },
+    { url: `${baseUrl}/services`, lastModified: contentUpdated, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${baseUrl}/services/contract-labour`, lastModified: contentUpdated, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${baseUrl}/haridwar-sidcul`, lastModified: contentUpdated, changeFrequency: "monthly", priority: 0.9 },
     { url: `${baseUrl}/industries`, lastModified, changeFrequency: "monthly", priority: 0.8 },
     { url: `${baseUrl}/how-we-operate`, lastModified, changeFrequency: "monthly", priority: 0.8 },
     { url: `${baseUrl}/compliance`, lastModified, changeFrequency: "monthly", priority: 0.8 },

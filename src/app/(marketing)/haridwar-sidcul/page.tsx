@@ -14,7 +14,7 @@ import type { FaqItem } from "@/content/types";
 export const metadata = pageMetadata({
   title: "Labour Contractor in Haridwar & SIDCUL",
   description:
-    "Vayasya Seva provides contract labour, manpower supply, housekeeping and industrial services in Haridwar and SIDCUL, with EPF and ESIC compliance support.",
+    "Haridwar-based labour contractor for SIDCUL factories and warehouses. Discuss contract manpower, site coordination and EPF/ESIC workforce records.",
   alternates: { canonical: "/haridwar-sidcul" },
 });
 const questions: FaqItem[] = [
@@ -50,7 +50,7 @@ export default function HaridwarPage() {
         data={webPageSchema({
           name: "Labour Contractor in Haridwar & SIDCUL",
           description:
-            "Vayasya Seva provides contract labour, manpower supply, housekeeping and industrial services in Haridwar and SIDCUL, with EPF and ESIC compliance support.",
+            "Haridwar-based labour contractor for SIDCUL factories and warehouses. Discuss contract manpower, site coordination and EPF/ESIC workforce records.",
           url: "/haridwar-sidcul",
         })}
       />
@@ -64,12 +64,12 @@ export default function HaridwarPage() {
       <PageHero
         title={
           <>
-            Rooted in Haridwar.
+            Labour contractor in Haridwar.
             <br />
-            Working alongside industry.
+            Supporting SIDCUL industry.
           </>
         }
-        lede="Contract labour, workforce management and industrial support for businesses in Haridwar and the SIDCUL region."
+        lede="Contract labour and manpower for factories, warehouses and facilities in Haridwar and SIDCUL, with site coordination and applicable workforce documentation."
       />
       <Section>
         <div className="grid gap-10 md:grid-cols-2">
@@ -88,6 +88,15 @@ export default function HaridwarPage() {
               same engagement, helping your operations and HR teams work with a
               common understanding.
             </p>
+            <p>
+              If you are comparing labour suppliers or manpower providers,
+              share the roles, headcount, shift pattern and site location. We
+              can discuss a suitable contract labour arrangement and the
+              records your team will need to review.
+            </p>
+            <Link href="/services/contract-labour" className="text-link text-foreground">
+              How our contract labour service works <ArrowUpRight size={18} />
+            </Link>
             <Link href="/contact" className="text-link text-foreground">
               Tell us about your site <ArrowUpRight size={18} />
             </Link>

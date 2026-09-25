@@ -1,12 +1,12 @@
 # SEO checklist — vayasyaseva.com
 
-Goal: first-page (ideally #1) for labour, manpower, compliance and industrial-services queries in Haridwar, SIDCUL and the surrounding Uttarakhand belt. Status as of 13 September 2026.
+Goal: improve qualified visibility for labour, manpower, compliance and industrial-services queries in Haridwar and SIDCUL. Status as of 26 September 2026. See `docs/seo-growth-plan-2026-09.md` for the current query map and measurement plan. Copy changes in this revision need brand-owner approval before deployment.
 
 ## On-site: done in code
 
 **Crawlability and indexing**
 - `robots.txt`: blanket allow, only `/api/` disallowed; `Host` and `Sitemap` declared. Enforced by `npm run ai:check`.
-- `sitemap.xml`: all 13 public pages, priorities weighted to `/`, `/services`, `/haridwar-sidcul`, `/contact`.
+- `sitemap.xml`: all 13 public pages, including `/services/contract-labour`.
 - One canonical per page via `pageMetadata()`; no root fallback canonical (404 no longer claims a URL).
 - Root `robots` meta: index/follow, `max-snippet:-1`, `max-image-preview:large`, `max-video-preview:-1`.
 - Host redirect `vayasyaseva.com` → `https://www.vayasyaseva.com` (301) in `next.config.ts`; `metadataBase` is the www host.
@@ -14,7 +14,7 @@ Goal: first-page (ideally #1) for labour, manpower, compliance and industrial-se
 - `llms.txt` / `llms-full.txt` / `ai-access-policy.txt` point AI crawlers at the HTML pages.
 
 **Metadata**
-- Unique title (≤ 60 chars, keyword-led, `| Vayasya Seva` suffix) and description (120–160 chars) per page.
+- Unique, descriptive titles and page summaries. Search engines can rewrite snippets and do not enforce a fixed character limit.
 - OG + Twitter cards on every page with a static, prerendered OG image.
 - Geo meta (`geo.region`, `geo.placename`, `geo.position`, `ICBM`) for Haridwar.
 - Search Console verification token slot: `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`.
@@ -28,6 +28,7 @@ Goal: first-page (ideally #1) for labour, manpower, compliance and industrial-se
 **Content and internal linking**
 - Local-intent FAQ sections (`src/content/faqs.ts`) written for the questions plant HR/admin/procurement teams search.
 - Services intro links to `/industries` and `/haridwar-sidcul`; every list page cross-links compliance; homepage "closer look" links the three hub pages; footer carries every primary page.
+- Homepage, services index, local page and footer link to the new contract-labour service page. Visible headings now use the language of relevant local and service searches.
 - Headings: one `h1` per page; `h2` for sections; sentence case.
 - Copy passes the slop lint (no banned claims, no invented metrics).
 

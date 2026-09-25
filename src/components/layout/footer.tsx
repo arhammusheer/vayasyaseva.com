@@ -8,6 +8,7 @@ const columns = [
     links: [
       ["/about", "About"],
       ["/services", "Services"],
+      ["/services/contract-labour", "Contract labour"],
       ["/industries", "Industries"],
       ["/how-we-operate", "Our approach"],
       ["/compliance", "Compliance"],

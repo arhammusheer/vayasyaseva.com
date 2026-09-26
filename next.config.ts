@@ -29,6 +29,15 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async rewrites() {
+    return [
+      {
+        // First-party proxy for our self-hosted Umami (tracker /s.js, collection /e).
+        source: "/_t/:path*",
+        destination: "https://t.vayasyaseva.com/:path*",
+      },
+    ];
+  },
   async redirects() {
     return [
       {

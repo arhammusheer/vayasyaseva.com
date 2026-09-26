@@ -8,7 +8,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics as VercelAnalytics, type BeforeSendEvent } from "@vercel/analytics/next";
 import { analyticsConsentAtKey, analyticsConsentKey, hasAnalyticsConsent, trackAnalyticsEvent } from "@/lib/analytics";
 import { safeAnalyticsPath } from "@/lib/analytics-pages";
-import { clarityId, gaId } from "@/lib/analytics-config";
+import { clarityId, gaId, umamiWebsiteId } from "@/lib/analytics-config";
 import { Button } from "@/components/ui/button";
 
 type Consent = "accepted" | "rejected" | null;
@@ -107,8 +107,18 @@ export function Analytics({ gaId }: { gaId: string }) {
 
   return (
     <>
-      {/* Cookie-free aggregate counts run for every visitor; "Allow All" adds GA4 and Clarity. */}
+      {/* Cookie-free counts (Vercel, Umami) run for every visitor; "Allow All" adds GA4 and Clarity. */}
       <VercelAnalytics beforeSend={sanitizeBasicEvent} />
+      {umamiWebsiteId && (
+        <Script
+          src="/_t/s.js"
+          data-host-url="/_t"
+          data-website-id={umamiWebsiteId}
+          data-exclude-search="true"
+          data-exclude-hash="true"
+          strategy="afterInteractive"
+        />
+      )}
       {consent === "accepted" && <GoogleAnalytics gaId={gaId} />}
       {consent === "accepted" && clarityId && (
         <Script id="clarity" strategy="afterInteractive">

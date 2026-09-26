@@ -1,0 +1,18 @@
+{
+  // The talent workflows' Code-node sources and their generator. Separate
+  // from the website's tsconfig so n8n's globals ($, $input, ...) never leak
+  // into app code. Checked by `pnpm n8n:check` (part of `pnpm type-check`).
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2023"],
+    "types": ["node"],
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "erasableSyntaxOnly": true,
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.ts", "build.mts", "deploy.mts"]
+}

@@ -1,0 +1,932 @@
+{
+  "id": "RO5L6Avbq3fOtIV4",
+  "name": "VSPL talent · transcribe",
+  "active": false,
+  "nodes": [
+    {
+      "id": "7b266900-4194-5893-a0f2-be0358c411f7",
+      "name": "Every minute",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "6c023e99-4f5e-5616-afef-407d57cdae63",
+      "name": "Recover stuck",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        240,
+        0
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE attachments\nSET transcript_status = CASE WHEN transcript_attempts >= 3 THEN 'failed' ELSE 'pending' END,\n    transcript_error = coalesce(transcript_error, 'Timed out waiting for Sarvam'),\n    updated_at = now()\nWHERE transcript_status = 'running' AND updated_at < now() - interval '20 minutes'\nRETURNING id;",
+        "options": {}
+      },
+      "credentials": {
+        "postgres": {
+          "id": "2004d6af-1a6c-52e9-a169-9e91ef0487d2",
+          "name": "talent-pg"
+        }
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "82f1ef0b-0698-5e89-a3b2-cd7a97eee519",
+      "name": "Claim voice notes",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        480,
+        0
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE attachments a\nSET transcript_status = 'running', transcript_attempts = a.transcript_attempts + 1,\n    transcript_error = NULL, updated_at = now()\nFROM submissions s\nWHERE s.id = a.submission_id\n  AND a.id IN (\n    SELECT id FROM attachments WHERE transcript_status = 'pending'\n    ORDER BY created_at LIMIT 3 FOR UPDATE SKIP LOCKED)\nRETURNING a.id, a.r2_key, a.mime, s.locale,\n  a.id || '.' || CASE split_part(a.mime, ';', 1)\n    WHEN 'audio/webm' THEN 'webm' WHEN 'audio/ogg' THEN 'ogg' WHEN 'audio/mpeg' THEN 'mp3'\n    WHEN 'audio/wav' THEN 'wav' WHEN 'audio/aac' THEN 'aac' ELSE 'm4a' END AS file_name;",
+        "options": {}
+      },
+      "credentials": {
+        "postgres": {
+          "id": "2004d6af-1a6c-52e9-a169-9e91ef0487d2",
+          "name": "talent-pg"
+        }
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "78807731-6f12-5cab-a2f2-23aee8075e76",
+      "name": "Claimed any?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "aa3666b3-c014-5d35-aabd-066b3bc3296e",
+              "leftValue": "={{ $json.id !== undefined }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "1ebccf3c-77c3-5897-abb2-a8fb66b38436",
+      "name": "Download voice note",
+      "type": "n8n-nodes-base.s3",
+      "typeVersion": 1,
+      "position": [
+        960,
+        0
+      ],
+      "parameters": {
+        "resource": "file",
+        "operation": "download",
+        "bucketName": "vayasya-talent-intake",
+        "fileKey": "={{ $('Claim voice notes').item.json.r2_key }}",
+        "binaryPropertyName": "file"
+      },
+      "credentials": {
+        "s3": {
+          "id": "21d6b7a9-0afe-5a77-af36-20971038a5b1",
+          "name": "r2-talent-intake"
+        }
+      }
+    },
+    {
+      "id": "8ab8f839-e05b-532a-ad90-99c083fda1a4",
+      "name": "Sarvam: transcribe",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1200,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.sarvam.ai/speech-to-text",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": false,
+        "sendBody": true,
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        },
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "file"
+            },
+            {
+              "parameterType": "formData",
+              "name": "model",
+              "value": "saaras:v4"
+            },
+            {
+              "parameterType": "formData",
+              "name": "language_code",
+              "value": "={{ $('Claim voice notes').item.json.locale === 'en' ? 'unknown' : 'hi-IN' }}"
+            },
+            {
+              "parameterType": "formData",
+              "name": "keyterms",
+              "value": "[\"SIDCUL\"]"
+            }
+          ]
+        }
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "8eaf2805-dadd-5612-a920-97aa5231f67a",
+          "name": "sarvam-vspl"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "id": "d9ca5e26-6677-5fa3-aef6-f9733c92bede",
+      "name": "Transcribed?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1440,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "13e64291-79bb-530a-a38b-13be26e1ec52",
+              "leftValue": "={{ $json.statusCode === 200 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "bb1c9aeb-ff23-5fca-aace-ef545ba1413f",
+      "name": "Transcript result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1680,
+        -180
+      ],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Generated from integrations/n8n/src/nodes/transcript-result.ts by integrations/n8n/build.mts. Edit the source, not this.\n\n// integrations/n8n/src/lib/mask.ts\nconst { maskIds, maskDeep } = (() => {\n  function maskIds(value) {\n      return value\n          .replace(/\\b([2-9]\\d{3})[ -]?(\\d{4})[ -]?(\\d{4})\\b/g, (_m, _a, _b, last) => `XXXX XXXX ${last}`)\n          .replace(/\\b[A-Z]{5}\\d{4}[A-Z]\\b/g, \"[PAN removed]\");\n  }\n  function maskDeep(value) {\n      if (typeof value === \"string\")\n          return maskIds(value);\n      if (Array.isArray(value))\n          return value.map(maskDeep);\n      if (value && typeof value === \"object\") {\n          return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, maskDeep(v)]));\n      }\n      return value;\n  }\n  return { maskIds, maskDeep };\n})();\n\nasync function main() {\n    const input = $json;\n    const result = input.body ?? input;\n    return {\n        json: {\n            attachmentId: $(\"Claim voice notes\").item.json.id,\n            requestId: result.request_id ?? null,\n            transcript: maskIds(String(result.transcript ?? \"\").trim()),\n            language: result.language_code ?? null,\n        },\n    };\n}\n\nreturn main.call(this);"
+      }
+    },
+    {
+      "id": "a0433188-ad0b-5944-a0c6-77167ad070d7",
+      "name": "Save transcript",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1920,
+        -180
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE attachments\nSET transcript = $2, transcript_language = $3, sarvam_job_id = $4,\n    transcript_status = 'done', transcript_error = NULL, updated_at = now()\nWHERE id = $1::uuid\nRETURNING id;",
+        "options": {
+          "queryReplacement": "={{ [$json.attachmentId, $json.transcript, $json.language, $json.requestId] }}"
+        }
+      },
+      "credentials": {
+        "postgres": {
+          "id": "2004d6af-1a6c-52e9-a169-9e91ef0487d2",
+          "name": "talent-pg"
+        }
+      }
+    },
+    {
+      "id": "66dde03a-58ed-58cc-aa4d-700e6ab000fd",
+      "name": "Too long for REST?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1680,
+        180
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "fc9bef19-3e2b-5320-ae10-929c4444b228",
+              "leftValue": "={{ $json.statusCode === 400 && /30 seconds/.test($json.body?.error?.message ?? '') }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "881dcd31-48dd-5e9e-a04d-de96d8caa9d9",
+      "name": "Sarvam: create job",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1920,
+        180
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.sarvam.ai/speech-to-text/job/v1",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": false,
+        "sendBody": true,
+        "options": {},
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ job_parameters: { model: 'saaras:v4', language_code: $('Claim voice notes').item.json.locale === 'en' ? 'unknown' : 'hi-IN', keyterms: [\"SIDCUL\"] } }) }}"
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "8eaf2805-dadd-5612-a920-97aa5231f67a",
+          "name": "sarvam-vspl"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "id": "f85a1503-acc7-53e2-a0d4-505fa98c03f7",
+      "name": "Sarvam: upload URL",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2160,
+        180
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.sarvam.ai/speech-to-text/job/v1/upload-files",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": false,
+        "sendBody": true,
+        "options": {},
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ job_id: $json.job_id, files: [$('Claim voice notes').item.json.file_name] }) }}"
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "8eaf2805-dadd-5612-a920-97aa5231f67a",
+          "name": "sarvam-vspl"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "id": "6ace0a53-a59e-5809-a606-40d2be4f2e39",
+      "name": "Download again",
+      "type": "n8n-nodes-base.s3",
+      "typeVersion": 1,
+      "position": [
+        2400,
+        180
+      ],
+      "parameters": {
+        "resource": "file",
+        "operation": "download",
+        "bucketName": "vayasya-talent-intake",
+        "fileKey": "={{ $('Claim voice notes').item.json.r2_key }}",
+        "binaryPropertyName": "file"
+      },
+      "credentials": {
+        "s3": {
+          "id": "21d6b7a9-0afe-5a77-af36-20971038a5b1",
+          "name": "r2-talent-intake"
+        }
+      }
+    },
+    {
+      "id": "e37c80bf-5d89-5a11-a586-a6ea254c0d73",
+      "name": "Sarvam: upload audio",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2640,
+        180
+      ],
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ $('Sarvam: upload URL').item.json.upload_urls[$('Claim voice notes').item.json.file_name].file_url }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-ms-blob-type",
+              "value": "BlockBlob"
+            },
+            {
+              "name": "Content-Type",
+              "value": "={{ $('Claim voice notes').item.json.mime }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "options": {},
+        "contentType": "binaryData",
+        "inputDataFieldName": "file"
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "id": "1bfdc74c-57e7-58f3-aa45-6c3d49c9fa9f",
+      "name": "Sarvam: start job",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2880,
+        180
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.sarvam.ai/speech-to-text/job/v1/{{ $('Sarvam: create job').item.json.job_id }}/start",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": false,
+        "sendBody": false,
+        "options": {}
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "8eaf2805-dadd-5612-a920-97aa5231f67a",
+          "name": "sarvam-vspl"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "id": "89191dd3-af3f-5cae-a9d4-95e15c889765",
+      "name": "Wait 10s",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3120,
+        180
+      ],
+      "parameters": {
+        "resume": "timeInterval",
+        "amount": 10,
+        "unit": "seconds"
+      }
+    },
+    {
+      "id": "466956ef-cc8b-51c2-a9a5-a6e7e2da5cd6",
+      "name": "Sarvam: job status",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3360,
+        180
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "=https://api.sarvam.ai/speech-to-text/job/v1/{{ $('Sarvam: create job').item.json.job_id }}/status",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": false,
+        "sendBody": false,
+        "options": {}
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "8eaf2805-dadd-5612-a920-97aa5231f67a",
+          "name": "sarvam-vspl"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "id": "47526e82-1b63-58c8-a356-27bb06044e0c",
+      "name": "Completed?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3600,
+        180
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2ac0f670-08e1-52d3-aaf1-afb08636cd4c",
+              "leftValue": "={{ $json.job_state === 'Completed' && $json.job_details?.[0]?.state === 'Success' }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "129f1200-d03c-5956-af16-ac128ce015a4",
+      "name": "Sarvam: result URL",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3840,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.sarvam.ai/speech-to-text/job/v1/download-files",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": false,
+        "sendBody": true,
+        "options": {},
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ job_id: $json.job_id, files: [$json.job_details[0].outputs[0].file_name] }) }}"
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "8eaf2805-dadd-5612-a920-97aa5231f67a",
+          "name": "sarvam-vspl"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "id": "95209aec-7bbd-58cf-a8e5-a7cc2638116d",
+      "name": "Sarvam: fetch transcript",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4080,
+        0
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ Object.values($json.download_urls)[0].file_url }}",
+        "authentication": "none",
+        "sendHeaders": false,
+        "sendBody": false,
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "id": "571aa2f3-6d19-53be-a6df-09a15347acd8",
+      "name": "Job failed?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3840,
+        360
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "55050a3f-9206-5468-a7cf-0cbd41723c75",
+              "leftValue": "={{ $json.job_state === 'Failed' || $json.job_state === 'Completed' }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "8678df30-cff8-57eb-ac09-b9317ac0eeed",
+      "name": "Keep waiting?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        4080,
+        540
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d2735b45-4389-556c-a370-d314ac65d6ea",
+              "leftValue": "={{ $runIndex < 80 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "4b8caecc-53e9-5118-aba6-8b8f1fafdc39",
+      "name": "Mark failed",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        4320,
+        360
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE attachments\nSET transcript_status = CASE WHEN transcript_attempts >= 3 THEN 'failed' ELSE 'pending' END,\n    transcript_error = left($2, 500), updated_at = now()\nWHERE id = $1::uuid\nRETURNING id;",
+        "options": {
+          "queryReplacement": "={{ [$('Claim voice notes').item.json.id, $json.body?.error?.message ?? $json.error_message ?? $json.job_details?.[0]?.error_message ?? ('Sarvam answered ' + ($json.statusCode ?? $json.job_state))] }}"
+        }
+      },
+      "credentials": {
+        "postgres": {
+          "id": "2004d6af-1a6c-52e9-a169-9e91ef0487d2",
+          "name": "talent-pg"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Every minute": {
+      "main": [
+        [
+          {
+            "node": "Recover stuck",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recover stuck": {
+      "main": [
+        [
+          {
+            "node": "Claim voice notes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claim voice notes": {
+      "main": [
+        [
+          {
+            "node": "Claimed any?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claimed any?": {
+      "main": [
+        [
+          {
+            "node": "Download voice note",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download voice note": {
+      "main": [
+        [
+          {
+            "node": "Sarvam: transcribe",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sarvam: transcribe": {
+      "main": [
+        [
+          {
+            "node": "Transcribed?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribed?": {
+      "main": [
+        [
+          {
+            "node": "Transcript result",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Too long for REST?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcript result": {
+      "main": [
+        [
+          {
+            "node": "Save transcript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Too long for REST?": {
+      "main": [
+        [
+          {
+            "node": "Sarvam: create job",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mark failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sarvam: create job": {
+      "main": [
+        [
+          {
+            "node": "Sarvam: upload URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sarvam: upload URL": {
+      "main": [
+        [
+          {
+            "node": "Download again",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download again": {
+      "main": [
+        [
+          {
+            "node": "Sarvam: upload audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sarvam: upload audio": {
+      "main": [
+        [
+          {
+            "node": "Sarvam: start job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sarvam: start job": {
+      "main": [
+        [
+          {
+            "node": "Wait 10s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 10s": {
+      "main": [
+        [
+          {
+            "node": "Sarvam: job status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sarvam: job status": {
+      "main": [
+        [
+          {
+            "node": "Completed?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Completed?": {
+      "main": [
+        [
+          {
+            "node": "Sarvam: result URL",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Job failed?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sarvam: result URL": {
+      "main": [
+        [
+          {
+            "node": "Sarvam: fetch transcript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sarvam: fetch transcript": {
+      "main": [
+        [
+          {
+            "node": "Transcript result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Job failed?": {
+      "main": [
+        [
+          {
+            "node": "Mark failed",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Keep waiting?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Keep waiting?": {
+      "main": [
+        [
+          {
+            "node": "Wait 10s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none"
+  },
+  "pinData": {}
+}

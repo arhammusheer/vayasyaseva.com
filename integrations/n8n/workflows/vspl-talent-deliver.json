@@ -1,0 +1,480 @@
+{
+  "id": "WES5cePK35WDJA20",
+  "name": "VSPL talent · deliver",
+  "active": false,
+  "nodes": [
+    {
+      "id": "b951e5b8-d4be-50f5-a933-81c87dabbc46",
+      "name": "Every minute",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "5ee317ce-04e7-5767-a361-c2006e2440af",
+      "name": "Settings",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        0
+      ],
+      "notes": "chatwootInboxIdentifier: the \"Jobs, website\" API inbox identifier (Settings > Inboxes > Configuration). Treat it as a secret.",
+      "notesInFlow": true,
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3e7e145c-7af4-5df4-a384-a378187e95e0",
+              "name": "chatwootBaseUrl",
+              "value": "http://chatwoot.growth.svc.cluster.local",
+              "type": "string"
+            },
+            {
+              "id": "c9aa16a6-0ffb-583c-a900-e9dc97713837",
+              "name": "chatwootInboxIdentifier",
+              "value": "SET_ME",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "de15167c-ff14-539c-a1b1-586e5cbbc646",
+      "name": "Recover stuck",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        480,
+        0
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE submissions\nSET status = CASE WHEN attempts >= 3 THEN 'failed' ELSE 'received' END,\n    last_error = coalesce(last_error, 'Timed out delivering to Chatwoot'),\n    updated_at = now()\nWHERE status = 'delivering' AND updated_at < now() - interval '15 minutes'\nRETURNING id;",
+        "options": {}
+      },
+      "credentials": {
+        "postgres": {
+          "id": "2004d6af-1a6c-52e9-a169-9e91ef0487d2",
+          "name": "talent-pg"
+        }
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "07b6493e-4f28-5683-a2a7-39b3268c6e79",
+      "name": "Claim submission",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        720,
+        0
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH claimed AS (\n  UPDATE submissions s\n  SET status = 'delivering', attempts = s.attempts + 1, updated_at = now()\n  WHERE s.id = (\n    SELECT c.id FROM submissions c\n    WHERE c.status = 'received'\n      AND NOT EXISTS (\n        SELECT 1 FROM attachments a\n        WHERE a.submission_id = c.id AND a.transcript_status IN ('pending', 'running'))\n    ORDER BY c.created_at LIMIT 1 FOR UPDATE SKIP LOCKED)\n  RETURNING s.id, s.ref, s.source, s.locale, s.phone, s.text\n)\nSELECT c.*, coalesce((\n  SELECT jsonb_agg(jsonb_build_object(\n    'id', a.id, 'position', a.position, 'kind', a.kind, 'key', a.r2_key, 'mime', a.mime,\n    'name', a.original_name, 'transcript', a.transcript, 'transcriptStatus', a.transcript_status\n  ) ORDER BY a.position)\n  FROM attachments a WHERE a.submission_id = c.id), '[]'::jsonb) AS attachments\nFROM claimed c;",
+        "options": {}
+      },
+      "credentials": {
+        "postgres": {
+          "id": "2004d6af-1a6c-52e9-a169-9e91ef0487d2",
+          "name": "talent-pg"
+        }
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "04fe06b8-0dbc-5ee2-a822-fb8c7e900568",
+      "name": "Claimed any?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        960,
+        180
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "aa3666b3-c014-5d35-aabd-066b3bc3296e",
+              "leftValue": "={{ $json.id !== undefined }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "e7571d12-b768-5ccc-aa76-c49d02e62c55",
+      "name": "Compose note",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        960,
+        0
+      ],
+      "parameters": {
+        "jsCode": "// Generated from integrations/n8n/src/nodes/compose-note.ts by integrations/n8n/build.mts. Edit the source, not this.\n\nconst PAGES = {\n    web_en: \"English jobs page\",\n    web_hi: \"Hindi jobs page\",\n    web_hinglish: \"Hinglish jobs page\",\n};\nconst KIND = { audio: \"voice note\", image: \"photo\", document: \"document\" };\nasync function main() {\n    const s = $(\"Claim submission\").first().json;\n    const lines = [`**Job seeker ${s.ref}** · ${PAGES[s.source] ?? s.source} · ${s.phone}`];\n    if (s.text)\n        lines.push(\"\", \"**Their message:**\", s.text);\n    for (const [n, a] of s.attachments.entries()) {\n        if (a.kind !== \"audio\")\n            continue;\n        const transcript = a.transcriptStatus === \"done\" && a.transcript\n            ? a.transcript\n            : \"_Could not be transcribed. Listen to the attachment._\";\n        lines.push(\"\", `**Voice note (file ${n + 1}), automatic transcript:**`, transcript);\n    }\n    if (s.attachments.length) {\n        lines.push(\"\", `**Files (${s.attachments.length}):** ${s.attachments\n            .map((a, n) => `${n + 1}. ${KIND[a.kind] ?? \"file\"}${a.name ? ` (${a.name})` : \"\"}`)\n            .join(\" · \")}`);\n    }\n    return [{ json: { contactName: `Job seeker ${s.ref}`, note: lines.join(\"\\n\") } }];\n}\n\nreturn main.call(this);"
+      }
+    },
+    {
+      "id": "e522ae20-0c5f-57ad-a100-dfba7cc46683",
+      "name": "Chatwoot: contact",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1200,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Settings').first().json.chatwootBaseUrl }}/public/api/v1/inboxes/{{ $('Settings').first().json.chatwootInboxIdentifier }}/contacts",
+        "authentication": "none",
+        "sendHeaders": false,
+        "sendBody": true,
+        "options": {},
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ source_id: 'talent-' + $('Claim submission').first().json.phone.replace('+', ''), name: $json.contactName, phone_number: $('Claim submission').first().json.phone }) }}"
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "id": "e1fbe84b-ce5d-522f-a68e-68704fc0c56f",
+      "name": "Chatwoot: create conversation",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1440,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Settings').first().json.chatwootBaseUrl }}/public/api/v1/inboxes/{{ $('Settings').first().json.chatwootInboxIdentifier }}/contacts/{{ $json.source_id }}/conversations",
+        "authentication": "none",
+        "sendHeaders": false,
+        "sendBody": true,
+        "options": {},
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({}) }}"
+      }
+    },
+    {
+      "id": "7a9ec352-18ba-5c19-a478-4e9fcb0f7b4b",
+      "name": "Record conversation",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1680,
+        0
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE submissions\nSET chatwoot_contact_id = $2, chatwoot_conversation_id = $3, updated_at = now()\nWHERE id = $1::uuid\nRETURNING id;",
+        "options": {
+          "queryReplacement": "={{ [$('Claim submission').first().json.id, $('Chatwoot: contact').first().json.id ?? null, $json.id] }}"
+        }
+      },
+      "credentials": {
+        "postgres": {
+          "id": "2004d6af-1a6c-52e9-a169-9e91ef0487d2",
+          "name": "talent-pg"
+        }
+      }
+    },
+    {
+      "id": "bf7bda77-8944-515b-a433-b329ca91b592",
+      "name": "Chatwoot: post message",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1920,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Settings').first().json.chatwootBaseUrl }}/public/api/v1/inboxes/{{ $('Settings').first().json.chatwootInboxIdentifier }}/contacts/{{ $('Chatwoot: contact').first().json.source_id }}/conversations/{{ $('Chatwoot: create conversation').first().json.id }}/messages",
+        "authentication": "none",
+        "sendHeaders": false,
+        "sendBody": true,
+        "options": {},
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ content: $('Compose note').first().json.note }) }}"
+      }
+    },
+    {
+      "id": "b8f89f2c-8046-585b-a5cc-fbe8a9c4c549",
+      "name": "Mark delivered",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2160,
+        0
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE submissions SET status = 'delivered', last_error = NULL, updated_at = now() WHERE id = $1::uuid RETURNING id;",
+        "options": {
+          "queryReplacement": "={{ [$('Claim submission').first().json.id] }}"
+        }
+      },
+      "credentials": {
+        "postgres": {
+          "id": "2004d6af-1a6c-52e9-a169-9e91ef0487d2",
+          "name": "talent-pg"
+        }
+      }
+    },
+    {
+      "id": "3f402d20-7877-560f-a7af-b39891650c0b",
+      "name": "Files to fetch",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2400,
+        0
+      ],
+      "parameters": {
+        "jsCode": "// Generated from integrations/n8n/src/nodes/files-to-fetch.ts by integrations/n8n/build.mts. Edit the source, not this.\n\nconst KIND = { audio: \"voice note\", image: \"photo\", document: \"document\" };\nasync function main() {\n    const conversationId = $(\"Chatwoot: create conversation\").first().json.id;\n    return $(\"Claim submission\")\n        .first()\n        .json.attachments.map((a, n) => ({\n        json: {\n            key: a.key,\n            conversationId,\n            label: `File ${n + 1}: ${KIND[a.kind] ?? \"file\"}${a.name ? ` (${a.name})` : \"\"}`,\n        },\n    }));\n}\n\nreturn main.call(this);"
+      }
+    },
+    {
+      "id": "cb1de0ab-9f04-5a36-ad7e-0f4cdda93cf2",
+      "name": "Download files",
+      "type": "n8n-nodes-base.s3",
+      "typeVersion": 1,
+      "position": [
+        2640,
+        0
+      ],
+      "parameters": {
+        "resource": "file",
+        "operation": "download",
+        "bucketName": "vayasya-talent-intake",
+        "fileKey": "={{ $json.key }}",
+        "binaryPropertyName": "file"
+      },
+      "credentials": {
+        "s3": {
+          "id": "21d6b7a9-0afe-5a77-af36-20971038a5b1",
+          "name": "r2-talent-intake"
+        }
+      }
+    },
+    {
+      "id": "a0ecb441-6506-5fb2-a724-79a8dd130dcb",
+      "name": "Chatwoot: attach file",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2880,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Settings').first().json.chatwootBaseUrl }}/public/api/v1/inboxes/{{ $('Settings').first().json.chatwootInboxIdentifier }}/contacts/{{ $('Chatwoot: contact').first().json.source_id }}/conversations/{{ $('Files to fetch').item.json.conversationId }}/messages",
+        "authentication": "none",
+        "sendHeaders": false,
+        "sendBody": true,
+        "options": {},
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formData",
+              "name": "content",
+              "value": "={{ $('Files to fetch').item.json.label }}"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "attachments[]",
+              "inputDataFieldName": "file"
+            }
+          ]
+        }
+      },
+      "onError": "continueRegularOutput"
+    }
+  ],
+  "connections": {
+    "Every minute": {
+      "main": [
+        [
+          {
+            "node": "Settings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Settings": {
+      "main": [
+        [
+          {
+            "node": "Recover stuck",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recover stuck": {
+      "main": [
+        [
+          {
+            "node": "Claim submission",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claim submission": {
+      "main": [
+        [
+          {
+            "node": "Claimed any?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claimed any?": {
+      "main": [
+        [
+          {
+            "node": "Compose note",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compose note": {
+      "main": [
+        [
+          {
+            "node": "Chatwoot: contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chatwoot: contact": {
+      "main": [
+        [
+          {
+            "node": "Chatwoot: create conversation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chatwoot: create conversation": {
+      "main": [
+        [
+          {
+            "node": "Record conversation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Record conversation": {
+      "main": [
+        [
+          {
+            "node": "Chatwoot: post message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chatwoot: post message": {
+      "main": [
+        [
+          {
+            "node": "Mark delivered",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark delivered": {
+      "main": [
+        [
+          {
+            "node": "Files to fetch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Files to fetch": {
+      "main": [
+        [
+          {
+            "node": "Download files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download files": {
+      "main": [
+        [
+          {
+            "node": "Chatwoot: attach file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none"
+  },
+  "pinData": {}
+}

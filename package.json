@@ -3,12 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@10.32.1",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "type-check": "tsc --noEmit",
+    "type-check": "tsc --noEmit && pnpm n8n:check",
+    "n8n:check": "tsc -p integrations/n8n",
+    "n8n:build": "node integrations/n8n/build.mts",
+    "n8n:deploy": "node integrations/n8n/deploy.mts",
     "msg91:setup-contact-templates": "node scripts/setup-msg91-contact-templates.mjs",
     "openapi:generate": "node scripts/generate-openapi.mjs",
     "openapi:check": "node scripts/check-openapi.mjs",
@@ -35,7 +41,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^25",
+    "@types/node": "^24.19.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9.39.4",

@@ -78,7 +78,7 @@ The owner prefers **OpenRouter's free models** if parsing is added. Design, not 
 
 ## Data protection (DPDP Act and Rules)
 
-- Put a notice at the point of collection, in the reader's language: what we collect, why, who processes it, how long we keep it, and how to withdraw or ask for deletion. This is why `/privacy` gets a Hindi version.
+- Put a notice at the point of collection: the Privacy Policy's job-seeker section (Section 10), English only and governing (decided 26 September 2026). It covers what we collect, why, who processes it, how long we keep it, and how to withdraw or ask for deletion. 
 - Record consent with a timestamp and notice version. Ask for an **18+ confirmation**, since contract labour work for minors is prohibited.
 - Retention: source files are deleted from R2 after 90 days (bucket lifecycle rule). Chatwoot keeps its copies, so conversations need a matching clean-up. Honour erasure requests in both places.
 - Security: a private R2 bucket, signed links that expire, file type and size limits, malware scanning, a shared-secret check on the n8n webhook, and rate limits in a persistent store. The contact form's in-memory limits don't survive on serverless, so use Vercel's firewall or a check in n8n.
@@ -150,7 +150,7 @@ Submission { id, ref, source, phone, locale, consent{version, at}, adult, text?,
   - a website R2 token, write-only and scoped to `vayasya-talent-intake`;
   - a Turnstile widget (in `vayasya-infra`);
   - Vercel environment variables: R2 key, webhook secret, Turnstile secret;
-  - the Hindi privacy notice.
+  - the job-seeker section of the Privacy Policy (English only; it governs).
 
 
 1. **OpenRouter parsing:** whether to accept free models that may train on inputs (not recommended), use a low-cost model with no data retention, or stay without AI.

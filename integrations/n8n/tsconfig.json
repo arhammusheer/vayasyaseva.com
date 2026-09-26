@@ -14,5 +14,5 @@
     "noEmit": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts", "build.mts", "deploy.mts"]
+  "include": ["src/**/*.ts", "build.mts", "deploy.mts", "sync-vercel-secrets.mts"]
 }

@@ -29,7 +29,10 @@ pnpm n8n:check           # type-check the sources
 pnpm n8n:build           # regenerate workflows/*.json
 pnpm n8n:build --check   # CI: fail if the JSON is stale
 pnpm n8n:deploy          # ship to n8n (needs kubectl access to the cluster, WARP on)
+pnpm talent:sync-secrets # copy the jobs form's secrets into Vercel (production + preview)
 ```
+
+`talent:sync-secrets` sets `TALENT_R2_ACCESS_KEY_ID` / `TALENT_R2_SECRET_ACCESS_KEY` (write-only token, from `vayasya-infra/vercel/vayasyaseva.com.sops.yaml`), `TALENT_INTAKE_WEBHOOK_SECRET` (from `growth/n8n-env`) and `TURNSTILE_SECRET_KEY` (OpenTofu output). They are sensitive Vercel variables, which Vercel doesn't allow for Development, so local development uses Cloudflare's Turnstile test keys. It needs a logged-in, linked Vercel CLI. Re-run it after rotating any of them.
 
 `n8n:deploy` is idempotent: workflows and credentials keep fixed ids. It reads every secret from the cluster and pipes it into the n8n pod; nothing is printed or written locally.
 

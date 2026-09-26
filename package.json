@@ -15,6 +15,7 @@
     "n8n:check": "tsc -p integrations/n8n",
     "n8n:build": "node integrations/n8n/build.mts",
     "n8n:deploy": "node integrations/n8n/deploy.mts",
+    "talent:sync-secrets": "node integrations/n8n/sync-vercel-secrets.mts",
     "msg91:setup-contact-templates": "node scripts/setup-msg91-contact-templates.mjs",
     "openapi:generate": "node scripts/generate-openapi.mjs",
     "openapi:check": "node scripts/check-openapi.mjs",

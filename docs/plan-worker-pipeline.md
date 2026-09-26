@@ -132,7 +132,26 @@ Submission { id, ref, source, phone, locale, consent{version, at}, adult, text?,
 - The workflows are generated from TypeScript in this repo (`integrations/n8n`) and imported into n8n.
 - No AI in the delivery path. Sarvam transcribes voice notes; there are no test voice notes yet, so the first real submissions are the trial. Check their transcripts before relying on them.
 
-## Open
+## Jobs pages (decided 26 September 2026)
+
+- **Name and URLs:** "Jobs" / "नौकरी", at `/jobs`, `/hi/jobs` and `/hinglish/jobs` (translations of one another in `pageLocales`).
+- **Header and footer link** follows the page's language: English pages link to `/jobs`, Hindi pages to `/hi/jobs`, Hinglish pages to `/hinglish/jobs`.
+- **One page with the form**, no separate apply page, in this order:
+  1. The no-fee line.
+  2. Voice recording: 3-minute timer, play back before sending.
+  3. Photos and documents: camera, gallery, PDF, Word, with "don't send Aadhaar or bank documents".
+  4. An optional message.
+  5. Mobile number, 18+ and consent.
+  6. A confirmation with the reference number.
+- **Flow:** `POST /api/jobs/start` (reference and presigned R2 upload URLs) → the browser uploads directly → `POST /api/jobs/submit` (Zod contract, Turnstile check) → the n8n webhook.
+- **Spam protection:** Cloudflare Turnstile.
+- **No openings list yet**, and no `JobPosting` markup until openings are managed properly.
+- **Needed:**
+  - a website R2 token, write-only and scoped to `vayasya-talent-intake`;
+  - a Turnstile widget (in `vayasya-infra`);
+  - Vercel environment variables: R2 key, webhook secret, Turnstile secret;
+  - the Hindi privacy notice.
+
 
 1. **OpenRouter parsing:** whether to accept free models that may train on inputs (not recommended), use a low-cost model with no data retention, or stay without AI.
-2. **The website intake:** the `/jobs` pages (Hindi, Hinglish, English), the `/api/jobs/intake` route with presigned uploads, and the Hindi privacy notice.
+2. **The website intake:** build the jobs pages above. Test WebM/Opus recordings from a real Android phone through Sarvam.

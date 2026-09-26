@@ -6,7 +6,9 @@ export interface JobsFormCopy {
   steps: {
     record: { title: string; lead: string; points: string[] };
     files: { title: string; hint: string; warning: string };
-    text: { title: string; placeholder: string; skip: string; skipped: string; reopen: string };
+    /** The word between the voice note and the text box. */
+    or: string;
+    text: { title: string; placeholder: string };
     phone: { title: string; placeholder: string; adult: string; consent: string; privacyLink: string };
   };
   record: {
@@ -76,16 +78,14 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
           points: ["Your name", "Where you live", "Work you know", "Your experience", "When you can start"],
         },
         files: {
-          title: "Photos or documents, if you have them",
+          title: "Add photos or documents",
           hint: "Certificates, ITI, licence, salary slip or resume.",
           warning: "Please don't send Aadhaar or bank documents.",
         },
+        or: "or",
         text: {
-          title: "Or type it",
+          title: "Type it instead",
           placeholder: "For example: I know packing work and have two years of experience…",
-          skip: "Skip",
-          skipped: "Skipped.",
-          reopen: "Type a message instead",
         },
         phone: {
           title: "Your mobile number",
@@ -186,16 +186,14 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
           points: ["आपका नाम", "कहाँ रहते हैं", "कौन-सा काम आता है", "कितना अनुभव है", "कब से शुरू कर सकते हैं"],
         },
         files: {
-          title: "फ़ोटो या कागज़ (अगर हों)",
+          title: "फ़ोटो या कागज़ जोड़ें",
           hint: "सर्टिफ़िकेट, ITI, लाइसेंस, सैलरी स्लिप या रिज़्यूमे।",
           warning: "आधार या बैंक के कागज़ न भेजें।",
         },
+        or: "या",
         text: {
-          title: "या लिखकर बताइए",
+          title: "लिखकर बताइए",
           placeholder: "जैसे: मैं पैकिंग का काम जानता हूँ, दो साल का अनुभव है…",
-          skip: "छोड़ें",
-          skipped: "छोड़ दिया।",
-          reopen: "लिखकर बताना है?",
         },
         phone: {
           title: "आपका मोबाइल नंबर",
@@ -296,16 +294,14 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
           points: ["Aapka naam", "Kahan rehte hain", "Kaun-sa kaam aata hai", "Kitna experience hai", "Kab se shuru kar sakte hain"],
         },
         files: {
-          title: "Photo ya documents (agar hon)",
+          title: "Photo ya documents jodein",
           hint: "Certificate, ITI, licence, salary slip ya resume.",
           warning: "Aadhaar ya bank ke documents na bhejein.",
         },
+        or: "ya",
         text: {
-          title: "Ya likhkar bataiye",
+          title: "Likhkar bataiye",
           placeholder: "Jaise: main packing ka kaam jaanta hoon, do saal ka experience hai…",
-          skip: "Skip karein",
-          skipped: "Skip kiya.",
-          reopen: "Likhkar bataana hai?",
         },
         phone: {
           title: "Aapka mobile number",

@@ -1480,80 +1480,14 @@ a:hover > svg {
   text-underline-offset: 3px;
 }
 
-/* Jobs page (/jobs, /hi/jobs, /hinglish/jobs): one form, four ruled steps,
-   gold numerals, one round gold record button. No boxes. */
-.jobs-no-fee {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-width: 34ch;
-  font-size: 17px;
-  line-height: 1.5;
-  color: var(--neutral-200);
-}
-.jobs-no-fee span {
-  font-family: var(--font-anek), var(--font-anek-deva);
-  font-size: 64px;
-  line-height: 1;
-  color: var(--gold-500);
-}
-.jobs-steps {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.jobs-steps > li {
-  display: grid;
-  grid-template-columns: 48px minmax(0, 1fr);
-  gap: 14px;
-  padding-block: 24px;
-}
-.jobs-steps > li:first-child {
-  padding-top: 0;
-}
-.jobs-steps > li + li {
-  border-top: 1px solid var(--border);
-}
-.jobs-step-number {
-  font-family: var(--font-anek), var(--font-anek-deva);
-  font-size: 32px;
-  line-height: 1;
-  color: var(--gold-700);
-}
-.jobs-step-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-}
-.jobs-skip {
-  flex-shrink: 0;
-  padding: 4px 2px;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--gold-700);
-}
-.jobs-skip:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-.jobs-step-title {
-  font-family: var(--font-anek), var(--font-anek-deva);
-  font-size: 22px;
-  font-weight: 500;
-  line-height: 1.2;
-}
-.jobs-step-hint {
-  margin-top: 6px;
-  max-width: 55ch;
-  color: var(--muted-foreground);
-  line-height: 1.6;
-}
+/* Jobs page (/jobs, /hi/jobs, /hinglish/jobs): compact top, then one form.
+   Voice leads, typing is the alternative, files come last; weight and order
+   say what matters. One round gold record button. No boxes. */
 /* What to say in the voice note: short bullets, two columns where there's room. */
 .jobs-say {
   margin-top: 6px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(11rem, 100%), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(9.5rem, 100%), 1fr));
   gap: 4px 24px;
   max-width: 36rem;
 }
@@ -1572,21 +1506,16 @@ a:hover > svg {
   flex-shrink: 0;
   transform: translateY(-2px);
 }
-.jobs-step-warning {
-  margin-top: 6px;
-  font-weight: 600;
-  color: var(--foreground);
-}
 .jobs-recorder {
-  margin-top: 16px;
+  margin-top: 14px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 20px 28px;
 }
 .jobs-record-button {
-  width: 112px;
-  height: 112px;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
   display: flex;
   flex-direction: column;
@@ -1602,8 +1531,8 @@ a:hover > svg {
     transform 160ms ease;
 }
 .jobs-record-button svg {
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
 }
 .jobs-record-button:hover {
   background: var(--gold-400);
@@ -1642,29 +1571,6 @@ a:hover > svg {
 }
 .jobs-recorded {
   width: 100%;
-}
-.jobs-file-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  height: 44px;
-  padding: 0 16px;
-  border-radius: 8px;
-  border: 1px solid var(--neutral-300);
-  font-weight: 600;
-  font-size: 15px;
-  cursor: pointer;
-  transition:
-    border-color 160ms ease,
-    transform 160ms ease;
-}
-.jobs-file-button:hover {
-  border-color: var(--gold-500);
-  transform: translateY(-1px);
-}
-.jobs-file-button:focus-within {
-  outline: 3px solid color-mix(in srgb, var(--gold-500) 35%, transparent);
-  outline-offset: 2px;
 }
 .jobs-file-list {
   margin-top: 18px;
@@ -1766,15 +1672,89 @@ a:hover > svg {
   line-height: 1.6;
 }
 @media (max-width: 700px) {
-  .jobs-steps > li {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 8px;
-    padding-block: 20px;
-  }
   .jobs-work li {
     grid-template-columns: minmax(0, 1fr);
   }
-  .jobs-no-fee span {
-    font-size: 48px;
+}
+
+/* Jobs page layout (compact top + form). */
+.jobs-top {
+  padding-block: 28px 56px;
+}
+.jobs-title {
+  margin-top: 12px;
+  font-family: var(--font-anek), var(--font-anek-deva);
+  font-size: clamp(34px, 7vw, 56px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+[lang="hi"] .jobs-title {
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+.jobs-lede {
+  margin-top: 10px;
+  max-width: 44ch;
+  color: var(--muted-foreground);
+  font-size: 17px;
+  line-height: 1.55;
+}
+/* "or" between the voice note and the text box: a hairline with the word. */
+.jobs-or {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-block: 22px 14px;
+  color: var(--muted-foreground);
+  font-size: 14px;
+}
+.jobs-or::before,
+.jobs-or::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.jobs-field + .jobs-field,
+.jobs-field + .jobs-attach {
+  margin-top: 18px;
+}
+.jobs-label {
+  font-size: 15px;
+  font-weight: 600;
+}
+.jobs-attach {
+  margin-top: 20px;
+}
+.jobs-attach-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  color: var(--gold-700);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.jobs-attach-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.jobs-attach-link:focus-within {
+  outline: 3px solid color-mix(in srgb, var(--gold-500) 35%, transparent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.jobs-fine {
+  margin-top: 4px;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 1.5;
+}
+@media (min-width: 1024px) {
+  .jobs-top {
+    padding-block: 56px 80px;
   }
 }

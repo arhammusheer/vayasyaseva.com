@@ -95,12 +95,12 @@ async function upload(url: string, headers: Record<string, string>, body: Blob, 
 
 export function JobsForm({ locale }: { locale: Locale }) {
   const t = jobsCopy[locale].form;
+  const noFee = jobsCopy[locale].noFee;
   const [voice, setVoice] = useState<Voice>({ state: "idle" });
   const [voiceError, setVoiceError] = useState<string | null>(null);
   const [files, setFiles] = useState<PickedFile[]>([]);
   const [fileError, setFileError] = useState<string | null>(null);
   const [text, setText] = useState("");
-  const [textSkipped, setTextSkipped] = useState(false);
   const [phone, setPhone] = useState("");
   const [adult, setAdult] = useState(false);
   const [consent, setConsent] = useState(false);
@@ -275,7 +275,6 @@ export function JobsForm({ locale }: { locale: Locale }) {
     discardVoice();
     setFiles([]);
     setText("");
-    setTextSkipped(false);
     setAdult(false);
     setConsent(false);
     setErrors([]);
@@ -307,162 +306,137 @@ export function JobsForm({ locale }: { locale: Locale }) {
     <form onSubmit={submit} noValidate className="jobs-form" aria-busy={sending}>
       <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" onReady={renderTurnstile} />
 
-      <ol className="jobs-steps">
-        {/* 01 Voice */}
-        <li>
-          <span className="jobs-step-number">01</span>
-          <div>
-            <h2 className="jobs-step-title">{t.steps.record.title}</h2>
-            <p className="jobs-step-hint">{t.steps.record.lead}</p>
-            <ul className="jobs-say">
-              {t.steps.record.points.map((point) => (
-                <li key={point}>{point}</li>
-              ))}
-            </ul>
-            <div className="jobs-recorder">
-              {voice.state === "recording" ? (
-                <button type="button" className="jobs-record-button is-recording" onClick={stopRecording}>
-                  <Square aria-hidden="true" />
-                  <span>{t.record.stop}</span>
-                </button>
-              ) : voice.state === "idle" ? (
-                <button type="button" className="jobs-record-button" onClick={startRecording} disabled={sending}>
-                  <Mic aria-hidden="true" />
-                  <span>{t.record.start}</span>
-                </button>
-              ) : null}
-              {voice.state === "recording" && (
-                <p className="jobs-record-clock" aria-live="polite">
-                  <span className="jobs-record-dot" aria-hidden="true" />
-                  {t.record.recording} · <span className="font-data">{clock(voice.seconds)} / {clock(INTAKE_LIMITS.maxAudioSeconds)}</span>
-                </p>
-              )}
-              {voice.state === "recorded" && (
-                <div className="jobs-recorded">
-                  <p className="text-sm font-medium">
-                    {t.record.recorded} · <span className="font-data">{clock(voice.seconds)}</span>
-                  </p>
-                  <audio controls src={voice.url} className="mt-3 w-full max-w-md" />
-                  <div className="mt-3 flex flex-wrap gap-x-6 gap-y-2">
-                    <button type="button" className="text-link mt-0" onClick={() => { discardVoice(); void startRecording(); }} disabled={sending}>
-                      <RotateCcw size={16} aria-hidden="true" /> {t.record.again}
-                    </button>
-                    <button type="button" className="text-link mt-0" onClick={discardVoice} disabled={sending}>
-                      <X size={16} aria-hidden="true" /> {t.record.remove}
-                    </button>
-                  </div>
-                </div>
-              )}
-              {voiceError && <p className="jobs-error">{voiceError}</p>}
-            </div>
-          </div>
-        </li>
-
-        {/* 02 Files */}
-        <li>
-          <span className="jobs-step-number">02</span>
-          <div>
-            <h2 className="jobs-step-title">{t.steps.files.title}</h2>
-            <p className="jobs-step-hint">{t.steps.files.hint}</p>
-            <p className="jobs-step-warning">{t.steps.files.warning}</p>
-            <div className="mt-4 flex flex-wrap gap-3">
-              <label className="jobs-file-button">
-                <ImageIcon size={18} aria-hidden="true" /> {t.files.camera}
-                <input type="file" accept="image/jpeg,image/png,image/webp" capture="environment" className="sr-only" disabled={sending} onChange={(e) => { addFiles(e.target.files); e.target.value = ""; }} />
-              </label>
-              <label className="jobs-file-button">
-                <FileText size={18} aria-hidden="true" /> {t.files.choose}
-                <input type="file" accept={FILE_ACCEPT} multiple className="sr-only" disabled={sending} onChange={(e) => { addFiles(e.target.files); e.target.value = ""; }} />
-              </label>
-            </div>
-            {files.length > 0 && (
-              <ul className="jobs-file-list">
-                {files.map((f, i) => (
-                  <li key={`${f.file.name}-${i}`}>
-                    <span className="truncate">
-                      {f.kind === "image" ? t.labels.photo : t.labels.document} · {f.file.name}
-                    </span>
-                    <button type="button" aria-label={`${t.files.remove} ${f.file.name}`} onClick={() => setFiles(files.filter((_, j) => j !== i))} disabled={sending}>
-                      <X size={16} aria-hidden="true" />
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-            {fileError && <p className="jobs-error">{fileError}</p>}
-          </div>
-        </li>
-
-        {/* 03 Text: optional, one tap to skip */}
-        <li>
-          <span className="jobs-step-number">03</span>
-          <div>
-            <div className="jobs-step-head">
-              <label htmlFor="jobs-text" className="jobs-step-title">{t.steps.text.title}</label>
-              {!textSkipped && (
-                <button type="button" className="jobs-skip" onClick={() => { setText(""); setTextSkipped(true); }} disabled={sending}>
-                  {t.steps.text.skip}
-                </button>
-              )}
-            </div>
-            {textSkipped ? (
-              <p className="jobs-step-hint">
-                {t.steps.text.skipped}{" "}
-                <button type="button" className="underline underline-offset-4" onClick={() => setTextSkipped(false)} disabled={sending}>
-                  {t.steps.text.reopen}
-                </button>
+      {/* Voice leads; typing is the alternative; files come last. Order and
+          weight carry what matters, so nothing needs an "optional" label. */}
+      <section className="jobs-voice" aria-labelledby="jobs-voice-title">
+        {/* The page headline already says it; keep the title for screen readers only. */}
+        <h2 id="jobs-voice-title" className="sr-only">{t.steps.record.title}</h2>
+        <p className="jobs-label">{t.steps.record.lead}</p>
+        <ul className="jobs-say">
+          {t.steps.record.points.map((point) => (
+            <li key={point}>{point}</li>
+          ))}
+        </ul>
+        <div className="jobs-recorder">
+          {voice.state === "recording" ? (
+            <button type="button" className="jobs-record-button is-recording" onClick={stopRecording}>
+              <Square aria-hidden="true" />
+              <span>{t.record.stop}</span>
+            </button>
+          ) : voice.state === "idle" ? (
+            <button type="button" className="jobs-record-button" onClick={startRecording} disabled={sending}>
+              <Mic aria-hidden="true" />
+              <span>{t.record.start}</span>
+            </button>
+          ) : null}
+          {voice.state === "recording" && (
+            <p className="jobs-record-clock" aria-live="polite">
+              <span className="jobs-record-dot" aria-hidden="true" />
+              {t.record.recording} · <span className="font-data">{clock(voice.seconds)} / {clock(INTAKE_LIMITS.maxAudioSeconds)}</span>
+            </p>
+          )}
+          {voice.state === "recorded" && (
+            <div className="jobs-recorded">
+              <p className="text-sm font-medium">
+                {t.record.recorded} · <span className="font-data">{clock(voice.seconds)}</span>
               </p>
-            ) : (
-            <Textarea
-              id="jobs-text"
-              rows={4}
-              maxLength={INTAKE_LIMITS.maxTextLength}
-              placeholder={t.steps.text.placeholder}
-              value={text}
-              onFocus={markStarted}
-              onChange={(e) => setText(e.target.value)}
-              disabled={sending}
-              className={cn(fieldClass, "mt-3 h-auto min-h-24 resize-y py-3 leading-relaxed")}
-            />
-            )}
-          </div>
-        </li>
+              <audio controls src={voice.url} className="mt-3 w-full max-w-md" />
+              <div className="mt-3 flex flex-wrap gap-x-6 gap-y-2">
+                <button type="button" className="text-link mt-0" onClick={() => { discardVoice(); void startRecording(); }} disabled={sending}>
+                  <RotateCcw size={16} aria-hidden="true" /> {t.record.again}
+                </button>
+                <button type="button" className="text-link mt-0" onClick={discardVoice} disabled={sending}>
+                  <X size={16} aria-hidden="true" /> {t.record.remove}
+                </button>
+              </div>
+            </div>
+          )}
+          {voiceError && <p className="jobs-error">{voiceError}</p>}
+        </div>
+      </section>
 
-        {/* 04 Phone and consent */}
-        <li>
-          <span className="jobs-step-number">04</span>
-          <div>
-            <label htmlFor="jobs-phone" className="jobs-step-title block">{t.steps.phone.title}</label>
-            <Input
-              id="jobs-phone"
-              type="tel"
-              inputMode="tel"
-              autoComplete="tel-national"
-              placeholder={t.steps.phone.placeholder}
-              value={phone}
-              onFocus={markStarted}
-              onChange={(e) => setPhone(e.target.value)}
-              disabled={sending}
-              className={cn(fieldClass, "mt-3 max-w-xs font-data")}
-            />
-            <label className="jobs-check">
-              <input type="checkbox" checked={adult} onChange={(e) => setAdult(e.target.checked)} disabled={sending} />
-              <span>{t.steps.phone.adult}</span>
-            </label>
-            <label className="jobs-check">
-              <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} disabled={sending} />
-              <span>
-                {t.steps.phone.consent}{" "}
-                <a href={localePath("/privacy", "en")} target="_blank" rel="noopener" className="underline underline-offset-4">
-                  {t.steps.phone.privacyLink}
-                </a>
-              </span>
-            </label>
-          </div>
-        </li>
-      </ol>
+      <p className="jobs-or" aria-hidden="true">
+        <span>{t.steps.or}</span>
+      </p>
 
-      <div ref={turnstileBox} className="mt-6" />
+      <div className="jobs-field">
+        <label htmlFor="jobs-text" className="jobs-label">{t.steps.text.title}</label>
+        <Textarea
+          id="jobs-text"
+          rows={3}
+          maxLength={INTAKE_LIMITS.maxTextLength}
+          placeholder={t.steps.text.placeholder}
+          value={text}
+          onFocus={markStarted}
+          onChange={(e) => setText(e.target.value)}
+          disabled={sending}
+          className={cn(fieldClass, "mt-2 h-auto min-h-20 resize-y py-3 leading-relaxed")}
+        />
+      </div>
+
+      <div className="jobs-field">
+        <label htmlFor="jobs-phone" className="jobs-label">{t.steps.phone.title}</label>
+        <Input
+          id="jobs-phone"
+          type="tel"
+          inputMode="tel"
+          autoComplete="tel-national"
+          placeholder={t.steps.phone.placeholder}
+          value={phone}
+          onFocus={markStarted}
+          onChange={(e) => setPhone(e.target.value)}
+          disabled={sending}
+          className={cn(fieldClass, "mt-2 max-w-xs font-data")}
+        />
+      </div>
+
+      <div className="jobs-attach">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+          <span className="jobs-label">{t.steps.files.title}</span>
+          <label className="jobs-attach-link">
+            <ImageIcon size={16} aria-hidden="true" /> {t.files.camera}
+            <input type="file" accept="image/jpeg,image/png,image/webp" capture="environment" className="sr-only" disabled={sending} onChange={(e) => { addFiles(e.target.files); e.target.value = ""; }} />
+          </label>
+          <label className="jobs-attach-link">
+            <FileText size={16} aria-hidden="true" /> {t.files.choose}
+            <input type="file" accept={FILE_ACCEPT} multiple className="sr-only" disabled={sending} onChange={(e) => { addFiles(e.target.files); e.target.value = ""; }} />
+          </label>
+        </div>
+        <p className="jobs-fine">
+          {t.steps.files.hint} {t.steps.files.warning}
+        </p>
+        {files.length > 0 && (
+          <ul className="jobs-file-list">
+            {files.map((f, i) => (
+              <li key={`${f.file.name}-${i}`}>
+                <span className="truncate">
+                  {f.kind === "image" ? t.labels.photo : t.labels.document} · {f.file.name}
+                </span>
+                <button type="button" aria-label={`${t.files.remove} ${f.file.name}`} onClick={() => setFiles(files.filter((_, j) => j !== i))} disabled={sending}>
+                  <X size={16} aria-hidden="true" />
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+        {fileError && <p className="jobs-error">{fileError}</p>}
+      </div>
+
+      <label className="jobs-check">
+        <input type="checkbox" checked={adult} onChange={(e) => setAdult(e.target.checked)} disabled={sending} />
+        <span>{t.steps.phone.adult}</span>
+      </label>
+      <label className="jobs-check">
+        <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} disabled={sending} />
+        <span>
+          {t.steps.phone.consent}{" "}
+          <a href={localePath("/privacy", "en")} target="_blank" rel="noopener" className="underline underline-offset-4">
+            {t.steps.phone.privacyLink}
+          </a>
+        </span>
+      </label>
+
+      <div ref={turnstileBox} className="mt-5" />
 
       {errors.length > 0 && (
         <ul className="jobs-errors" role="alert">
@@ -472,7 +446,7 @@ export function JobsForm({ locale }: { locale: Locale }) {
         </ul>
       )}
 
-      <div className="mt-6 flex flex-wrap items-center gap-5">
+      <div className="mt-5 flex flex-wrap items-center gap-5">
         <button type="submit" className="jobs-submit" disabled={sending || voice.state === "recording"}>
           {sending && <Loader2 className="animate-spin" size={18} aria-hidden="true" />}
           {sending ? t.sending : t.submit}
@@ -483,6 +457,7 @@ export function JobsForm({ locale }: { locale: Locale }) {
           </p>
         )}
       </div>
+      <p className="jobs-fine mt-4">{noFee}</p>
     </form>
   );
 }

@@ -1,5 +1,4 @@
 import { pageMetadata } from "@/lib/metadata";
-import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
 import { FaqSection } from "@/components/sections/faq-section";
 import { JobsForm } from "@/components/jobs/jobs-form";
@@ -38,23 +37,18 @@ export function JobsPage({ locale }: { locale: Locale }) {
           { name: t.breadcrumb.page, href: url },
         ])}
       />
-      <PageHero
-        tone="dark"
-        title={t.heading}
-        lede={t.lede}
-        aside={
-          <p className="jobs-no-fee">
-            <span aria-hidden="true">₹0</span>
-            {t.noFee}
-          </p>
-        }
-      />
-      <Section>
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_2fr]">
-          <p className="eyebrow text-gold-700 lg:sticky lg:top-32 lg:self-start">{t.eyebrow}</p>
+      {/* Compact top: on a phone the headline, one line and the record
+          button all show on the first screen. */}
+      <section className="jobs-top">
+        <div className="site-shell grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
+          <div className="lg:sticky lg:top-28 lg:self-start">
+            <p className="eyebrow text-gold-700">{t.eyebrow}</p>
+            <h1 className="jobs-title">{t.heading}</h1>
+            <p className="jobs-lede">{t.lede}</p>
+          </div>
           <JobsForm locale={locale} />
         </div>
-      </Section>
+      </section>
       <Section variant="subtle">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_2fr]">
           <div>

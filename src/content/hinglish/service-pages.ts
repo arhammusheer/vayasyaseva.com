@@ -22,6 +22,7 @@ export const servicePagesHinglish: ServiceLandingContent[] = [
       "Dispatch aur staging",
       "Inventory support",
       "Forklift aur MHE operation",
+      "Data entry operators (ERP / SAP)",
     ],
     planning:
       "Dock timings, gaadiyon ki movement, shift pattern aur peak days bataiye. Hum usi hisaab se team aur supervision plan karte hain, aur volume badalne par changes par baat karte hain.",
@@ -67,6 +68,7 @@ export const servicePagesHinglish: ServiceLandingContent[] = [
       "Material handlers",
       "Quality check assistants",
       "Shopfloor housekeeping",
+      "Data entry operators (ERP / SAP)",
     ],
     planning:
       "Line, kaam, shift timings aur aapki site induction aur safety requirements bataiye. Hum onboarding aur supervision aapke plant ke kaam karne ke tareeke ke hisaab se plan karte hain.",

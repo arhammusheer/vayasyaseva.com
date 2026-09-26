@@ -78,6 +78,28 @@ export const services: ServiceDetail[] = [
     icon: "Building2",
   },
   {
+    id: "data-entry-erp",
+    title: "Data entry and ERP operators",
+    description:
+      "Data entry operators (DEOs) who can work in ERP systems such as SAP, for stores, dispatch, production, attendance and office records. They work at your site, to your process and access rules.",
+    roles: [
+      "Data Entry Operators (DEO)",
+      "ERP and SAP Entry Operators",
+      "Stores & Inventory Entry",
+      "Dispatch & Gate Entry",
+      "Production & Attendance Records",
+      "Back-Office Assistants",
+    ],
+    shiftPatterns: ["Planned around the engagement"],
+    included: [
+      "Workforce planning",
+      "Site coordination",
+      "Applicable workforce documentation",
+    ],
+    notIncluded: [],
+    icon: "Keyboard",
+  },
+  {
     id: "civil-works",
     title: "Civil works",
     description:

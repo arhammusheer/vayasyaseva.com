@@ -80,7 +80,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
       {
         question: "Can an engagement include work beyond manpower supply?",
         answer:
-          "Yes. Our capabilities include housekeeping, civil work, fabrication, maintenance and other site support. We can discuss a combined requirement with your team.",
+          "Yes. Our capabilities include data entry operators for ERP and SAP, housekeeping, civil work, fabrication, maintenance and other site support. We can discuss a combined requirement with your team.",
         category: "commercial",
       },
       {
@@ -148,7 +148,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
       {
         question: "क्या मैनपावर सप्लाई के अलावा दूसरे काम भी शामिल हो सकते हैं?",
         answer:
-          "हाँ। हाउसकीपिंग, सिविल वर्क, फ़ैब्रिकेशन, मेंटेनेंस और साइट से जुड़ी दूसरी सेवाएँ भी हम देते हैं। मिली-जुली ज़रूरत पर आपकी टीम के साथ बात की जा सकती है।",
+          "हाँ। ERP और SAP पर काम करने वाले डेटा एंट्री ऑपरेटर, हाउसकीपिंग, सिविल वर्क, फ़ैब्रिकेशन, मेंटेनेंस और साइट से जुड़ी दूसरी सेवाएँ भी हम देते हैं। मिली-जुली ज़रूरत पर आपकी टीम के साथ बात की जा सकती है।",
         category: "commercial",
       },
       {
@@ -216,7 +216,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
       {
         question: "Kya manpower supply ke alawa doosre kaam bhi shamil ho sakte hain?",
         answer:
-          "Haan. Housekeeping, civil work, fabrication, maintenance aur site se jude doosre kaam bhi hum karte hain. Combined requirement par aapki team ke saath baat ho sakti hai.",
+          "Haan. ERP aur SAP par kaam karne wale data entry operators, housekeeping, civil work, fabrication, maintenance aur site se jude doosre kaam bhi hum karte hain. Combined requirement par aapki team ke saath baat ho sakti hai.",
         category: "commercial",
       },
       {

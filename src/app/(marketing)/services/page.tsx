@@ -15,7 +15,7 @@ const servicePageFor = new Map(servicePages.map((p) => [p.serviceId, p]));
 export const metadata = pageMetadata({
   title: "Contract Labour & Industrial Services in Haridwar",
   description:
-    "Explore contract labour, factory and warehouse manpower, housekeeping, civil works and maintenance services for sites in SIDCUL and across Haridwar.",
+    "Explore contract labour, factory and warehouse manpower, data entry operators, housekeeping, civil works and maintenance services for sites in SIDCUL and across Haridwar.",
   alternates: { canonical: "/services" },
 });
 export default function ServicesPage() {
@@ -26,7 +26,7 @@ export default function ServicesPage() {
           type: "CollectionPage",
           name: "Contract Labour & Industrial Services in Haridwar",
           description:
-            "Explore contract labour, factory and warehouse manpower, housekeeping, civil works and maintenance services for sites in SIDCUL and across Haridwar.",
+            "Explore contract labour, factory and warehouse manpower, data entry operators, housekeeping, civil works and maintenance services for sites in SIDCUL and across Haridwar.",
           url: "/services",
         })}
       />

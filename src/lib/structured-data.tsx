@@ -62,6 +62,7 @@ export const knowsAbout = [
   "Industrial manpower supply",
   "Warehouse labour and logistics crews",
   "Housekeeping and facility services",
+  "Data entry operators (DEO) for ERP and SAP",
   "Civil works for industrial sites",
   "Fabrication and installation",
   "Machinery maintenance",

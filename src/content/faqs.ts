@@ -9,7 +9,13 @@ export const servicesFaqs: FaqItem[] = [
   {
     question: "What kinds of contract labour does Vayasya Seva supply?",
     answer:
-      "Production helpers, packers, line feeders, loaders, material handlers, housekeeping staff, gardeners, fabrication and civil crews, and maintenance technicians. The mix is planned around your site and shift pattern.",
+      "Production helpers, packers, line feeders, loaders, material handlers, data entry operators for ERP and SAP work, housekeeping staff, gardeners, fabrication and civil crews, and maintenance technicians. The mix is planned around your site and shift pattern.",
+    category: "operations",
+  },
+  {
+    question: "Do you provide data entry operators who can work in SAP or other ERPs?",
+    answer:
+      "Yes. We provide data entry operators (DEOs) who can work in ERP systems such as SAP, for stores, dispatch, production, attendance and office records. Tell us the system, the entries involved and the shift, and we plan the team around your process.",
     category: "operations",
   },
   {

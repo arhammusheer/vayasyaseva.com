@@ -36,6 +36,7 @@ export const servicePages: ServiceLandingContent[] = [
       "Dispatch and staging",
       "Inventory support",
       "Forklift and MHE operation",
+      "Data entry operators (ERP / SAP)",
     ],
     planning:
       "Tell us the dock hours, vehicle movements, shift pattern and peak days. We plan the team and supervision around that activity and discuss changes as volumes move.",
@@ -81,6 +82,7 @@ export const servicePages: ServiceLandingContent[] = [
       "Material handlers",
       "Quality check assistants",
       "Shopfloor housekeeping",
+      "Data entry operators (ERP / SAP)",
     ],
     planning:
       "Share the line, the tasks, shift timings and your site induction and safety requirements. We plan onboarding and supervision to fit the way your plant works.",

@@ -51,8 +51,8 @@ export default function AboutPage() {
             <p>
               As a contract labour provider, we work with businesses to source,
               onboard and manage the people their operations need. Our work
-              extends into housekeeping, site services, civil works, fabrication
-              and maintenance.
+              extends into data entry operators, housekeeping, site services, civil
+              works, fabrication and maintenance.
             </p>
             <p>
               Careful compliance is a core part of that relationship. Our site

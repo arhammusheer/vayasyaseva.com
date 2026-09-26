@@ -71,7 +71,7 @@ export const faqs: FaqItem[] = [
   {
     question: "What does Vayasya Seva do?",
     answer:
-      "We provide contract labour, workforce management and industrial services. Our capabilities include housekeeping, civil works, fabrication, maintenance and other site support.",
+      "We provide contract labour, workforce management and industrial services. Our capabilities include data entry operators, housekeeping, civil works, fabrication, maintenance and other site support.",
     category: "commercial",
   },
   {

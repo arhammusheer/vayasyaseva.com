@@ -36,6 +36,8 @@ export const metadata: Metadata = {
   },
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    // Bing Webmaster Tools (also feeds ChatGPT search and Copilot)
+    other: { "msvalidate.01": "2876603236738BF23E39FA2A9813FFC1" },
   },
   other: {
     "geo.region": "IN-UK",
@@ -65,7 +67,6 @@ export const metadata: Metadata = {
     description: appDescription,
     images: ["/opengraph-image"],
   },
-  // verification: { google: "YOUR_GOOGLE_VERIFICATION_CODE" },
 };
 
 export default function RootLayout({

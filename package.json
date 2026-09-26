@@ -21,7 +21,8 @@
     "openapi:check": "node scripts/check-openapi.mjs",
     "ai:check": "node scripts/check-ai-discovery.mjs",
     "lint:slop": "node scripts/slop-lint.mjs",
-    "brand:assets": "node scripts/build-brand-assets.mjs"
+    "brand:assets": "node scripts/build-brand-assets.mjs",
+    "indexnow": "node scripts/indexnow.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

@@ -12,7 +12,24 @@ website ──POST──► VSPL talent · intake      checks and saves the subm
 
 Live since 26 September 2026 on the growth cluster's n8n (verified end to end, including a 10-second note through REST and a 35-second note through Batch). Infrastructure is in `vayasya-infra`, RUNBOOK section "Talent intake".
 
-## Source and generated files
+## The website side (`/api/jobs/*`)
+
+1. `POST /api/jobs/start` `{ source, turnstileToken, files: [{ kind, mime, size, name }] }`:
+   - checks Turnstile;
+   - issues the reference (`VS-J-` plus 6 characters, with no 0/O or 1/I, since it's read out on the phone);
+   - returns one presigned R2 `PUT` URL per file, valid for 15 minutes, with `Content-Type` signed in;
+   - returns a signed ticket, valid for an hour, that binds the reference, source and declared files.
+2. The browser uploads each file straight to R2 with the given headers.
+3. `POST /api/jobs/submit` `{ ticket, phone, adult: true, consent: true, text }`:
+   - checks the ticket;
+   - `HEAD`s every upload: a missing one gets 409, and one larger than declared is deleted and gets 413;
+   - takes the attachment list from the ticket, never from the browser;
+   - stamps the consent version and time on the server;
+   - validates everything against `talentIntakeSchema` and forwards it to the n8n webhook. n8n answers 202.
+
+Code: `src/lib/talent-intake/{rules,contract,server}.ts` and `src/app/api/jobs/{start,submit}/route.ts`. Tested locally against the real R2, n8n, Sarvam and Chatwoot: the full flow worked. A forged ticket, a submit before upload, a wrong `Content-Type` on the upload, an oversized upload and a disallowed file type were all rejected.
+
+
 
 | Path | What |
 |---|---|

@@ -62,3 +62,49 @@ export const talentIntakeSchema = z
 /** The payload after validation: phone normalised to +91XXXXXXXXXX. */
 export type TalentIntakePayload = z.output<typeof talentIntakeSchema>;
 export type TalentIntakeAttachment = TalentIntakePayload["attachments"][number];
+
+/**
+ * Browser → POST /api/jobs/start. Declares the files about to be uploaded;
+ * the response carries one presigned upload URL per file and a signed
+ * ticket that /api/jobs/submit requires.
+ */
+export const jobsStartRequestSchema = z.object({
+  source: z.enum(Object.keys(INTAKE_SOURCES) as [IntakeSource, ...IntakeSource[]]),
+  turnstileToken: z.string().min(1).max(4096),
+  files: z
+    .array(
+      z
+        .object({
+          kind: z.enum(ATTACHMENT_KINDS),
+          mime: z.string().min(1),
+          size: z.number().int().positive(),
+          name: z.string().max(INTAKE_LIMITS.maxFileNameLength).nullable(),
+        })
+        .refine((f) => ATTACHMENT_MIME[f.kind].test(f.mime), { message: "Unsupported file type", path: ["mime"] })
+        .refine((f) => f.size <= INTAKE_LIMITS.maxBytes[f.kind], { message: "File too large", path: ["size"] }),
+    )
+    .max(INTAKE_LIMITS.maxAttachments),
+});
+export type JobsStartRequest = z.infer<typeof jobsStartRequestSchema>;
+
+export interface JobsStartResponse {
+  ref: string;
+  /** Signed; send back unchanged to /api/jobs/submit. */
+  ticket: string;
+  /** Same order as the request's files. PUT the file with exactly these headers. */
+  uploads: { key: string; url: string; headers: Record<string, string> }[];
+}
+
+/** Browser → POST /api/jobs/submit, after every upload has finished. */
+export const jobsSubmitRequestSchema = z.object({
+  ticket: z.string().min(1).max(8192),
+  phone: z.string().min(1).max(20),
+  adult: z.literal(true),
+  consent: z.literal(true),
+  text: z.string().trim().max(INTAKE_LIMITS.maxTextLength).nullable(),
+});
+export type JobsSubmitRequest = z.infer<typeof jobsSubmitRequestSchema>;
+
+export interface JobsSubmitResponse {
+  ref: string;
+}

@@ -37,8 +37,9 @@ Goal: improve qualified visibility for labour, manpower, compliance and industri
 - No horizontal overflow at 390px; one CSS entrance animation, reduced-motion honoured.
 
 **Measurement hooks**
-- GA4 uses G-80VCZT0V6G in production by default, or `NEXT_PUBLIC_GA_ID` when set, and loads only after the visitor accepts analytics. The preference can be changed from the footer.
-- Enhanced Measurement handles page views, including client-side navigation. A successful contact form sends `generate_lead`; contact-page links send `contact_intent`; phone and email links send `contact_click`. No form contents or contact details are sent as event parameters.
+- Vercel Web Analytics supplies cookie-free aggregate page counts after "Allow All", with page URLs reduced to known paths.
+- GA4 uses G-80VCZT0V6G in production by default, or `NEXT_PUBLIC_GA_ID` when set, and loads only after "Allow All". "Required Only" leaves both layers off. The choice can be changed from the footer and affirmative consent expires after 180 days; changing measurement purposes requires a new choice.
+- Enhanced Measurement handles page views, including client-side navigation. The site sends fixed-label contact intent, form-start, broad error, phone/email click and successful-lead events after Google opt-in. No form contents or contact details are sent as custom event parameters.
 
 ## Off-site and account-level: owner actions
 
@@ -47,7 +48,7 @@ These move rankings more than anything above and cannot be done from the reposit
 1. **Google Business Profile** for Vayasya Seva Private Limited at the real street address in Haridwar. Categories: Labour contractor / Employment agency / Facility services. Add the phone, website, hours, photos of real sites and teams, and start collecting client reviews. For "labour contractor Haridwar" queries this listing outranks the website.
 2. **Street address and hours on the site.** `siteConfig.address` is city-level; NAP consistency (name, address, phone) between GBP, site footer, schema and directories is a core local ranking signal. Supply the address and opening hours and they go into the footer, contact page and `LocalBusiness` schema.
 3. **Search Console**: verify (paste the token into `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`), submit `sitemap.xml`, and review the Performance report monthly to pick the next content targets from real impressions.
-4. **GA4**: enable Enhanced Measurement with browser-history page changes, and mark `generate_lead` as a key event. Use `NEXT_PUBLIC_GA_ID` only to override the production measurement ID. Keep the consent choice and privacy text under legal review for the markets you serve.
+4. **Analytics**: keep Vercel Web Analytics enabled in the project; in GA4 enable Enhanced Measurement with browser-history page changes and mark `generate_lead` as a key event. Use `NEXT_PUBLIC_GA_ID` only to override the production measurement ID. Have counsel review the privacy notice for the markets you serve before adding advertising or other new measurement purposes.
 5. **Citations with identical NAP**: IndiaMART, JustDial, Sulekha, TradeIndia, Uttarakhand MSME/Udyam directory, SIDCUL industrial association listings, LinkedIn company page. Add each public URL to `siteConfig.sameAs`.
 6. **Backlinks that are natural for this business**: client testimonials linking back, SIDCUL/industry association pages, local chamber of commerce, supplier listings on client procurement portals, a LinkedIn company page posting site photos.
 7. **Real photography** to replace the stock hero and to feed GBP and future pages.

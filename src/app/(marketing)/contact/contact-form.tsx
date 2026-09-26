@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -56,6 +56,8 @@ export function ContactForm() {
   const [honeypot, setHoneypot] = useState("");
   const [formStartedAt] = useState(() => Date.now());
   const [error, setError] = useState<string | null>(null);
+  const trackedStart = useRef(false);
+  const formType = isAssessment ? "site_assessment" : "contact";
 
   const {
     register,
@@ -87,14 +89,19 @@ export function ContactForm() {
       });
       const result = await response.json();
       if (!response.ok) {
+        trackAnalyticsEvent("contact_form_error", {
+          form_type: formType,
+          reason: response.status === 429 ? "rate_limit" : "server",
+        });
         setError(result.error ?? "Submission failed. Please try again.");
         return;
       }
       setSubmitted(true);
       trackAnalyticsEvent("generate_lead", {
-        form_type: isAssessment ? "site_assessment" : "contact",
+        form_type: formType,
       });
     } catch {
+      trackAnalyticsEvent("contact_form_error", { form_type: formType, reason: "network" });
       setError("The message could not be sent. Please try again, or call us.");
     }
   }
@@ -112,7 +119,17 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate>
+    <form
+      onSubmit={handleSubmit(onSubmit, () => {
+        trackAnalyticsEvent("contact_form_error", { form_type: formType, reason: "validation" });
+      })}
+      onFocusCapture={(event) => {
+        if (trackedStart.current || !(event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement)) return;
+        trackedStart.current = true;
+        trackAnalyticsEvent("contact_form_start", { form_type: formType });
+      }}
+      noValidate
+    >
       <div
         aria-hidden="true"
         className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden"

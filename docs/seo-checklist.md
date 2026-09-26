@@ -36,10 +36,11 @@ Goal: improve qualified visibility for labour, manpower, compliance and industri
 - Self-hosted fonts via `next/font` (no third-party font requests), hero image `priority` with `sizes`, AVIF/WebP image formats, static prerender for all pages, no client JS on content pages beyond the header and form.
 - No horizontal overflow at 390px; one CSS entrance animation, reduced-motion honoured.
 
-**Measurement hooks**
-- Vercel Web Analytics supplies cookie-free aggregate page counts after "Allow All", with page URLs reduced to known paths.
-- GA4 uses G-80VCZT0V6G in production by default, or `NEXT_PUBLIC_GA_ID` when set, and loads only after "Allow All". "Required Only" leaves both layers off. The choice can be changed from the footer and affirmative consent expires after 180 days; changing measurement purposes requires a new choice.
-- Enhanced Measurement handles page views, including client-side navigation. The site sends fixed-label contact intent, form-start, broad error, phone/email click and successful-lead events after Google opt-in. No form contents or contact details are sent as custom event parameters.
+**Measurement hooks** (decided 27 September 2026)
+- Baseline, for every visitor whatever they choose (including "Required Only"): Vercel Web Analytics (cookie-free, URLs reduced to known paths) and self-hosted Umami (cookie-free, query strings and hashes excluded). Umami loads from `/_t/s.js` and posts to `/_t/e`; `src/proxy.ts` forwards both to `t.vayasyaseva.com` with the visitor IP in `x-vspl-client-ip` and Vercel geo headers (Umami reads them via `CLIENT_IP_HEADER`, vayasya-infra PR #27). Website ID comes from `NEXT_PUBLIC_UMAMI_WEBSITE_ID` (Production only). Privacy policy basis: legitimate interest.
+- After "Allow All" only: GA4 (G-80VCZT0V6G, or `NEXT_PUBLIC_GA_ID`) and Microsoft Clarity (`yogh8zv088`, or `NEXT_PUBLIC_CLARITY_ID`; contact and jobs forms carry `data-clarity-mask`; set masking to Strict in the Clarity dashboard). Consent key is v2 (bumped when Clarity was added); affirmative consent expires after 180 days.
+- GA4 events: fixed-label contact intent, form-start, broad error, phone/email click and successful lead. No form contents or contact details. Create an "AI Assistants" custom channel group in GA4 admin for chatgpt/perplexity/gemini/claude/copilot referrals.
+- Bing Webmaster Tools verified (`msvalidate.01` in `src/app/layout.tsx`). IndexNow key file in `public/`; run `npm run indexnow` (or `-- /path`) after deploys that add or change pages.
 
 ## Off-site and account-level: owner actions
 

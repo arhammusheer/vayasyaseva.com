@@ -10,6 +10,9 @@ const publicPages = new Set([
   "/privacy",
   "/services",
   "/services/contract-labour",
+  "/services/factory-labour",
+  "/services/housekeeping",
+  "/services/warehouse-labour",
   "/terms",
   "/vayasya-setu",
 ]);

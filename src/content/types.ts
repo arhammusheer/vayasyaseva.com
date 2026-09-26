@@ -83,6 +83,7 @@ export interface SiteConfig {
   msme: string;
   address: string;
   region: string;
+  linkedin: string;
   /** Public profiles for Organization.sameAs. Add as they are created. */
   sameAs: string[];
   /** City-level coordinates for LocalBusiness.geo. */

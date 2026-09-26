@@ -9,6 +9,9 @@ import { servicesFaqs } from "@/content/faqs";
 import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { services } from "@/content/services";
 import { servicePageSchema } from "@/lib/structured-data";
+import { servicePages } from "@/content/service-pages";
+
+const servicePageFor = new Map(servicePages.map((p) => [p.serviceId, p]));
 export const metadata = pageMetadata({
   title: "Contract Labour & Industrial Services in Haridwar",
   description:
@@ -102,6 +105,15 @@ export default function ServicesPage() {
                     </p>
                   </div>
                 </details>
+                {servicePageFor.has(service.id) && (
+                  <Link
+                    href={`/services/${servicePageFor.get(service.id)!.slug}`}
+                    className="text-link"
+                  >
+                    {servicePageFor.get(service.id)!.name} in Haridwar &amp; SIDCUL{" "}
+                    <ArrowUpRight size={16} />
+                  </Link>
+                )}
               </article>
             ))}
           </div>

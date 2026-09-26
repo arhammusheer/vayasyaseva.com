@@ -97,6 +97,9 @@ export default function HaridwarPage() {
             <Link href="/services/contract-labour" className="text-link text-foreground">
               How our contract labour service works <ArrowUpRight size={18} />
             </Link>
+            <Link href="/services/warehouse-labour" className="text-link text-foreground">
+              Warehouse labour in SIDCUL <ArrowUpRight size={18} />
+            </Link>
             <Link href="/contact" className="text-link text-foreground">
               Tell us about your site <ArrowUpRight size={18} />
             </Link>
@@ -110,12 +113,12 @@ export default function HaridwarPage() {
             {
               title: "Factory & warehouse labour",
               text: "Production helpers, packers, loaders and material handlers for daily operations and changing workloads.",
-              href: "/services#manufacturing-shopfloor",
+              href: "/services/factory-labour",
             },
             {
               title: "Facilities & contract works",
               text: "Housekeeping, grounds, civil repairs, fabrication and maintenance support for business premises.",
-              href: "/services#housekeeping-facility",
+              href: "/services/housekeeping",
             },
             {
               title: "Labour compliance",

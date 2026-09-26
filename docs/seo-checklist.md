@@ -6,7 +6,7 @@ Goal: improve qualified visibility for labour, manpower, compliance and industri
 
 **Crawlability and indexing**
 - `robots.txt`: blanket allow, only `/api/` disallowed; `Host` and `Sitemap` declared. Enforced by `pnpm ai:check`.
-- `sitemap.xml`: all 13 public pages, including `/services/contract-labour`.
+- `sitemap.xml`: all 16 public pages, including `/services/contract-labour`, `/services/warehouse-labour`, `/services/factory-labour` and `/services/housekeeping`.
 - One canonical per page via `pageMetadata()`; no root fallback canonical (404 no longer claims a URL).
 - Root `robots` meta: index/follow, `max-snippet:-1`, `max-image-preview:large`, `max-video-preview:-1`.
 - Host redirect `vayasyaseva.com` → `https://www.vayasyaseva.com` (301) in `next.config.ts`; `metadataBase` is the www host.
@@ -20,7 +20,7 @@ Goal: improve qualified visibility for labour, manpower, compliance and industri
 - Search Console verification token slot: `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`.
 
 **Structured data (all valid JSON-LD, one `@graph` per site + per-page nodes)**
-- Site graph on every page: `Organization` + `LocalBusiness` (one node, `@id`), with logo, address, `geo`, `areaServed` (Haridwar, SIDCUL, Roorkee, Bahadrabad, Bhagwanpur, Uttarakhand), `contactPoint`, GSTIN/Udyam identifiers, `knowsAbout`, `sameAs` (empty until profiles exist) and a `WebSite` node.
+- Site graph on every page: `Organization` + `LocalBusiness` (one node, `@id`), with logo, address, `geo`, `areaServed` (Haridwar, SIDCUL, Roorkee, Bahadrabad, Bhagwanpur, Uttarakhand), `contactPoint`, GSTIN/Udyam identifiers, `knowsAbout`, `sameAs` (LinkedIn company page) and a `WebSite` node.
 - Every page: typed `WebPage` (`CollectionPage`, `AboutPage`, `ContactPage`) linked to the site and organisation by `@id`, plus `BreadcrumbList`.
 - `/services`: `ItemList` of `Service` nodes with `serviceType`, `provider @id`, `areaServed`.
 - `FAQPage` with visible matching Q&A on `/services`, `/compliance`, `/industries`, `/haridwar-sidcul`.
@@ -43,6 +43,8 @@ Goal: improve qualified visibility for labour, manpower, compliance and industri
 
 ## Off-site and account-level: owner actions
 
+Status 26 September 2026: Google Business Profile created, Search Console and analytics set up, LinkedIn company page linked from the footer and `sameAs`. Remaining: add the Business Profile URL to `siteConfig.sameAs`, confirm the LinkedIn page's website field points to https://www.vayasyaseva.com, and gather reviews from real clients.
+
 These move rankings more than anything above and cannot be done from the repository.
 
 1. **Google Business Profile** for Vayasya Seva Private Limited at the real street address in Haridwar. Categories: Labour contractor / Employment agency / Facility services. Add the phone, website, hours, photos of real sites and teams, and start collecting client reviews. For "labour contractor Haridwar" queries this listing outranks the website.
@@ -55,6 +57,6 @@ These move rankings more than anything above and cannot be done from the reposit
 
 ## Next content build (recommended, not yet done)
 
-- A content hub (`/insights`) of 15–25 substantive pages answering compliance and operations questions for principal employers in Uttarakhand: CLRA registration and licence thresholds, EPF/ESIC obligations when using contractors, minimum wage notifications for Uttarakhand, what a compliant contractor invoice includes, how to audit a labour contractor. These are the "barely relevant" long-tail queries and no local competitor writes them. Each needs a legal/compliance review before publishing.
+- A content hub (`/insights`) of 15–25 substantive pages answering compliance and operations questions for principal employers in Uttarakhand: contractor licensing under the Labour Codes (verify current central and Uttarakhand rules), EPF/ESIC obligations when using contractors, minimum wage notifications for Uttarakhand, what a compliant contractor invoice includes, how to audit a labour contractor. These are the "barely relevant" long-tail queries and no local competitor writes them. Each needs a legal/compliance review before publishing.
 - Location pages only where there is real locality: Roorkee, Bhagwanpur, Bahadrabad. Three, not thirty; doorway pages trip Google's scaled-content policy.
 - Keep Search Console driving the list: write for queries that already show impressions.

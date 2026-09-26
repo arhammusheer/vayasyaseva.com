@@ -1265,6 +1265,14 @@ a:hover > svg {
   font-size: 15px;
   color: var(--neutral-200);
 }
+.footer-social {
+  display: inline-flex;
+  margin-top: 4px;
+  color: var(--neutral-400);
+}
+.footer-social:hover > svg {
+  transform: none;
+}
 .footer-main nav {
   display: flex;
   flex-direction: column;

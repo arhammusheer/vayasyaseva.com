@@ -46,7 +46,6 @@ export const knowsAbout = [
   "Fabrication and installation",
   "Machinery maintenance",
   "EPF and ESIC compliance for contract workers",
-  "Contract Labour (Regulation and Abolition) Act compliance",
   "SIDCUL Haridwar industrial estate",
 ];
 
@@ -185,5 +184,24 @@ export function webPageSchema(page: {
     about: { "@id": ORG_ID },
     publisher: { "@id": ORG_ID },
     inLanguage: "en-IN",
+  };
+}
+
+/** A standalone service page; the /services list keeps its own #anchor nodes. */
+export function serviceLandingSchema(page: {
+  name: string;
+  description: string;
+  url: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${BASE_URL}${page.url}#service`,
+    name: page.name,
+    serviceType: page.name,
+    description: page.description,
+    provider: { "@id": ORG_ID },
+    areaServed: areaServed(),
+    url: `${BASE_URL}${page.url}`,
   };
 }

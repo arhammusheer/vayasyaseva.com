@@ -19,20 +19,20 @@ const workAreas = [
   {
     title: "Factory and production",
     text: "Production helpers, packers, line feeders, material handlers and quality check assistants for shopfloor work.",
-    href: "/services#manufacturing-shopfloor",
-    link: "Explore manufacturing support",
+    href: "/services/factory-labour",
+    link: "Factory labour",
   },
   {
     title: "Warehouse and dispatch",
     text: "Teams for loading, unloading, picking, packing, stacking and dispatch, planned around warehouse activity.",
-    href: "/services#warehouse-logistics",
-    link: "Explore warehouse support",
+    href: "/services/warehouse-labour",
+    link: "Warehouse labour",
   },
   {
     title: "Facilities and site support",
     text: "Housekeeping, pantry, grounds and other site support roles for industrial and business premises.",
-    href: "/services#housekeeping-facility",
-    link: "Explore facility support",
+    href: "/services/housekeeping",
+    link: "Housekeeping services",
   },
 ];
 

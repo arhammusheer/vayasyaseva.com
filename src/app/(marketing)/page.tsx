@@ -20,7 +20,7 @@ const capabilities = [
   {
     title: "Facility & site services",
     text: "Housekeeping, grounds and the upkeep of your working environment.",
-    href: "/services#housekeeping-facility",
+    href: "/services/housekeeping",
   },
   {
     title: "Industrial & contract works",
@@ -51,7 +51,7 @@ export default function HomePage() {
         <div className="hero-shade" />
         <div className="site-shell hero-content">
           <p className="eyebrow hero-eyebrow rise">
-            PEOPLE AT THE HEART OF WORK
+            LABOUR CONTRACTOR IN HARIDWAR &amp; SIDCUL
           </p>
           <h1 className="rise rise-1">Workforce. With care.</h1>
           <p className="hero-description rise rise-2">

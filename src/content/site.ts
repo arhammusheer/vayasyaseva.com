@@ -11,7 +11,12 @@ export const siteConfig: SiteConfig = {
   msme: "UDYAM-UK-06-0029670",
   address: "Haridwar, Uttarakhand",
   region: "Haridwar–SIDCUL",
-  sameAs: [],
+  linkedin: "https://www.linkedin.com/company/vayasya-seva/",
+  sameAs: [
+    "https://www.linkedin.com/company/vayasya-seva/",
+    // Google Business Profile
+    "https://share.google/cKO2sPgN7domdFtVq",
+  ],
   geo: { latitude: 29.9457, longitude: 78.1642 },
 };
 

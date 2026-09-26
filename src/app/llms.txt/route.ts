@@ -14,6 +14,10 @@ const llmsIndex = `# Vayasya Seva Private Limited
 ## Primary pages
 - ${baseUrl}/
 - ${baseUrl}/services
+- ${baseUrl}/services/contract-labour
+- ${baseUrl}/services/warehouse-labour
+- ${baseUrl}/services/factory-labour
+- ${baseUrl}/services/housekeeping
 - ${baseUrl}/haridwar-sidcul
 - ${baseUrl}/industries
 - ${baseUrl}/how-we-operate

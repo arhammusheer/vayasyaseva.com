@@ -17,6 +17,12 @@ const nextConfig: NextConfig = {
     return [
       { source: "/:path*", headers: securityHeaders },
       {
+        // The jobs pages record voice notes: this site (only) may use the
+        // microphone there. Overrides the site-wide Permissions-Policy above.
+        source: "/:locale(hi|hinglish)?/jobs",
+        headers: [{ key: "Permissions-Policy", value: "camera=(), microphone=(self), geolocation=(), payment=()" }],
+      },
+      {
         // Downloadable brand assets are immutable once generated.
         source: "/brand/downloads/:path*",
         headers: [{ key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=604800" }],

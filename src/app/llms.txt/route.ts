@@ -19,6 +19,7 @@ const llmsIndex = `# Vayasya Seva Private Limited
 - ${baseUrl}/services/factory-labour
 - ${baseUrl}/services/housekeeping
 - ${baseUrl}/haridwar-sidcul
+- ${baseUrl}/jobs
 - ${baseUrl}/industries
 - ${baseUrl}/how-we-operate
 - ${baseUrl}/compliance
@@ -32,6 +33,8 @@ const llmsIndex = `# Vayasya Seva Private Limited
 ## Hindi and Hinglish pages
 - ${baseUrl}/hi/haridwar-sidcul
 - ${baseUrl}/hi/services/contract-labour
+- ${baseUrl}/hi/jobs
+- ${baseUrl}/hinglish/jobs
 - ${baseUrl}/hinglish/haridwar-sidcul
 - ${baseUrl}/hinglish/services/contract-labour
 - ${baseUrl}/hinglish/services/warehouse-labour

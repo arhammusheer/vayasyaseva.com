@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { siteConfig } from "@/content/site";
 import { AnalyticsPreferencesButton } from "@/components/analytics";
+import { FooterJobsLink } from "@/components/layout/footer-jobs-link";
 
 const columns = [
   {
@@ -81,6 +82,7 @@ export function Footer() {
                   </Link>
                 ),
               )}
+              {c.label === "More" && <FooterJobsLink />}
             </nav>
           ))}
         </div>

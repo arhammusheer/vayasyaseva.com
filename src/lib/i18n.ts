@@ -27,6 +27,7 @@ export const pageLocales: Record<string, readonly Locale[]> = {
   "/services/warehouse-labour": ["hinglish"],
   "/services/factory-labour": ["hinglish"],
   "/services/housekeeping": ["hinglish"],
+  "/jobs": ["hi", "hinglish"],
 };
 
 export function translationsOf(englishPath: string): readonly Locale[] {

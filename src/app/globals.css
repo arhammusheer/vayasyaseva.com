@@ -1456,3 +1456,261 @@ a:hover > svg {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+
+/* Jobs page (/jobs, /hi/jobs, /hinglish/jobs): one form, four ruled steps,
+   gold numerals, one round gold record button. No boxes. */
+.jobs-no-fee {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 34ch;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--neutral-200);
+}
+.jobs-no-fee span {
+  font-family: var(--font-anek), var(--font-anek-deva);
+  font-size: 64px;
+  line-height: 1;
+  color: var(--gold-500);
+}
+.jobs-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.jobs-steps > li {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 16px;
+  padding-block: 36px;
+}
+.jobs-steps > li:first-child {
+  padding-top: 0;
+}
+.jobs-steps > li + li {
+  border-top: 1px solid var(--border);
+}
+.jobs-step-number {
+  font-family: var(--font-anek), var(--font-anek-deva);
+  font-size: 40px;
+  line-height: 1;
+  color: var(--gold-700);
+}
+.jobs-step-title {
+  font-family: var(--font-anek), var(--font-anek-deva);
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.jobs-step-hint {
+  margin-top: 10px;
+  max-width: 55ch;
+  color: var(--muted-foreground);
+  line-height: 1.6;
+}
+.jobs-step-warning {
+  margin-top: 6px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+.jobs-recorder {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px 28px;
+}
+.jobs-record-button {
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--gold-500);
+  color: var(--neutral-900);
+  font-weight: 600;
+  font-size: 15px;
+  transition:
+    background 160ms ease,
+    transform 160ms ease;
+}
+.jobs-record-button svg {
+  width: 36px;
+  height: 36px;
+}
+.jobs-record-button:hover {
+  background: var(--gold-400);
+  transform: translateY(-1px);
+}
+.jobs-record-button:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--gold-500) 45%, transparent);
+  outline-offset: 4px;
+}
+.jobs-record-button.is-recording {
+  background: var(--neutral-900);
+  color: var(--gold-500);
+}
+.jobs-record-clock {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+}
+.jobs-record-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--danger, #b42318);
+  animation: jobs-pulse 1.2s ease-in-out infinite;
+}
+@keyframes jobs-pulse {
+  50% {
+    opacity: 0.3;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jobs-record-dot {
+    animation: none;
+  }
+}
+.jobs-recorded {
+  width: 100%;
+}
+.jobs-file-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 18px;
+  border-radius: 8px;
+  border: 1px solid var(--neutral-300);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+.jobs-file-button:hover {
+  border-color: var(--gold-500);
+  transform: translateY(-1px);
+}
+.jobs-file-button:focus-within {
+  outline: 3px solid color-mix(in srgb, var(--gold-500) 35%, transparent);
+  outline-offset: 2px;
+}
+.jobs-file-list {
+  margin-top: 18px;
+  max-width: 34rem;
+}
+.jobs-file-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 10px;
+  font-size: 15px;
+}
+.jobs-file-list li + li {
+  border-top: 1px solid var(--border);
+}
+.jobs-file-list button {
+  padding: 6px;
+  color: var(--muted-foreground);
+}
+.jobs-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 18px;
+  max-width: 55ch;
+  line-height: 1.5;
+  cursor: pointer;
+}
+.jobs-check input {
+  margin-top: 4px;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  accent-color: var(--gold-700);
+}
+.jobs-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 52px;
+  padding: 0 28px;
+  border-radius: 8px;
+  background: var(--gold-500);
+  color: var(--neutral-900);
+  font-size: 16px;
+  font-weight: 600;
+  transition:
+    background 160ms ease,
+    transform 160ms ease;
+}
+.jobs-submit:hover:not(:disabled) {
+  background: var(--gold-400);
+  transform: translateY(-1px);
+}
+.jobs-submit:disabled {
+  opacity: 0.6;
+}
+.jobs-error,
+.jobs-errors {
+  margin-top: 14px;
+  color: var(--destructive);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.jobs-errors li + li {
+  margin-top: 4px;
+}
+.jobs-done {
+  padding-block: 12px 24px;
+}
+.jobs-done h2:focus {
+  outline: none;
+}
+.jobs-work {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.jobs-work li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 8px 32px;
+  padding-block: 22px;
+}
+.jobs-work li:first-child {
+  padding-top: 0;
+}
+.jobs-work li + li {
+  border-top: 1px solid var(--border);
+}
+.jobs-work h3 {
+  font-family: var(--font-anek), var(--font-anek-deva);
+  font-size: 24px;
+  font-weight: 500;
+}
+.jobs-work p {
+  color: var(--muted-foreground);
+  line-height: 1.6;
+}
+@media (max-width: 700px) {
+  .jobs-steps > li {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .jobs-work li {
+    grid-template-columns: 1fr;
+  }
+  .jobs-no-fee span {
+    font-size: 48px;
+  }
+}

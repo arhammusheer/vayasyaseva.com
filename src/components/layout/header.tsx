@@ -11,7 +11,10 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { navigation, siteConfig } from "@/content/site";
-import { languageLinks } from "@/lib/i18n";
+import { languageLinks, localeOf, localePath } from "@/lib/i18n";
+
+/** The jobs link follows the page's language (docs/plan-worker-pipeline.md). */
+const JOBS_LABEL = { en: "Jobs", hi: "नौकरी", hinglish: "Jobs" } as const;
 
 export function Header() {
   const pathname = usePathname();
@@ -97,6 +100,8 @@ export function Header() {
     };
   }, [pathname]);
   const languages = languageLinks(pathname);
+  const pageLocale = localeOf(pathname);
+  const jobs = { href: localePath("/jobs", pageLocale), label: JOBS_LABEL[pageLocale], lang: pageLocale === "hi" ? "hi" : undefined };
   const primary = navigation.filter((item) =>
     [
       "/services",
@@ -138,6 +143,9 @@ export function Header() {
               {item.href === "/how-we-operate" ? "Our approach" : item.label}
             </Link>
           ))}
+          <Link href={jobs.href} lang={jobs.lang} aria-current={pathname === jobs.href ? "page" : undefined}>
+            {jobs.label}
+          </Link>
         </nav>
         <a
           className="header-phone"
@@ -175,6 +183,15 @@ export function Header() {
                   {item.label}
                 </Link>
               ))}
+              <Link
+                href={jobs.href}
+                lang={jobs.lang}
+                onClick={() => setOpen(false)}
+                aria-current={pathname === jobs.href ? "page" : undefined}
+                className="border-b py-3 text-lg"
+              >
+                {jobs.label}
+              </Link>
             </nav>
             <a
               href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}

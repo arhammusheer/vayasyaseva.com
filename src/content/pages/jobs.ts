@@ -6,7 +6,7 @@ export interface JobsFormCopy {
   steps: {
     record: { title: string; prompt: string };
     files: { title: string; hint: string; warning: string };
-    text: { title: string; placeholder: string };
+    text: { title: string; placeholder: string; skip: string; skipped: string; reopen: string };
     phone: { title: string; placeholder: string; adult: string; consent: string; privacyLink: string };
   };
   record: {
@@ -79,7 +79,13 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
           hint: "Certificates, ITI, licence, salary slip or resume.",
           warning: "Please don't send Aadhaar or bank documents.",
         },
-        text: { title: "Or type it", placeholder: "For example: I know packing work and have two years of experience…" },
+        text: {
+          title: "Or type it",
+          placeholder: "For example: I know packing work and have two years of experience…",
+          skip: "Skip",
+          skipped: "Skipped.",
+          reopen: "Type a message instead",
+        },
         phone: {
           title: "Your mobile number",
           placeholder: "98765 43210",
@@ -182,7 +188,13 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
           hint: "सर्टिफ़िकेट, ITI, लाइसेंस, सैलरी स्लिप या रिज़्यूमे।",
           warning: "आधार या बैंक के कागज़ न भेजें।",
         },
-        text: { title: "या लिखकर बताइए", placeholder: "जैसे: मैं पैकिंग का काम जानता हूँ, दो साल का अनुभव है…" },
+        text: {
+          title: "या लिखकर बताइए",
+          placeholder: "जैसे: मैं पैकिंग का काम जानता हूँ, दो साल का अनुभव है…",
+          skip: "छोड़ें",
+          skipped: "छोड़ दिया।",
+          reopen: "लिखकर बताना है?",
+        },
         phone: {
           title: "आपका मोबाइल नंबर",
           placeholder: "98765 43210",
@@ -285,7 +297,13 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
           hint: "Certificate, ITI, licence, salary slip ya resume.",
           warning: "Aadhaar ya bank ke documents na bhejein.",
         },
-        text: { title: "Ya likhkar bataiye", placeholder: "Jaise: main packing ka kaam jaanta hoon, do saal ka experience hai…" },
+        text: {
+          title: "Ya likhkar bataiye",
+          placeholder: "Jaise: main packing ka kaam jaanta hoon, do saal ka experience hai…",
+          skip: "Skip karein",
+          skipped: "Skip kiya.",
+          reopen: "Likhkar bataana hai?",
+        },
         phone: {
           title: "Aapka mobile number",
           placeholder: "98765 43210",

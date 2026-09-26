@@ -100,6 +100,7 @@ export function JobsForm({ locale }: { locale: Locale }) {
   const [files, setFiles] = useState<PickedFile[]>([]);
   const [fileError, setFileError] = useState<string | null>(null);
   const [text, setText] = useState("");
+  const [textSkipped, setTextSkipped] = useState(false);
   const [phone, setPhone] = useState("");
   const [adult, setAdult] = useState(false);
   const [consent, setConsent] = useState(false);
@@ -274,6 +275,7 @@ export function JobsForm({ locale }: { locale: Locale }) {
     discardVoice();
     setFiles([]);
     setText("");
+    setTextSkipped(false);
     setAdult(false);
     setConsent(false);
     setErrors([]);
@@ -358,7 +360,7 @@ export function JobsForm({ locale }: { locale: Locale }) {
             <h2 className="jobs-step-title">{t.steps.files.title}</h2>
             <p className="jobs-step-hint">{t.steps.files.hint}</p>
             <p className="jobs-step-warning">{t.steps.files.warning}</p>
-            <div className="mt-5 flex flex-wrap gap-3">
+            <div className="mt-4 flex flex-wrap gap-3">
               <label className="jobs-file-button">
                 <ImageIcon size={18} aria-hidden="true" /> {t.files.camera}
                 <input type="file" accept="image/jpeg,image/png,image/webp" capture="environment" className="sr-only" disabled={sending} onChange={(e) => { addFiles(e.target.files); e.target.value = ""; }} />
@@ -386,11 +388,26 @@ export function JobsForm({ locale }: { locale: Locale }) {
           </div>
         </li>
 
-        {/* 03 Text */}
+        {/* 03 Text: optional, one tap to skip */}
         <li>
           <span className="jobs-step-number">03</span>
           <div>
-            <label htmlFor="jobs-text" className="jobs-step-title block">{t.steps.text.title}</label>
+            <div className="jobs-step-head">
+              <label htmlFor="jobs-text" className="jobs-step-title">{t.steps.text.title}</label>
+              {!textSkipped && (
+                <button type="button" className="jobs-skip" onClick={() => { setText(""); setTextSkipped(true); }} disabled={sending}>
+                  {t.steps.text.skip}
+                </button>
+              )}
+            </div>
+            {textSkipped ? (
+              <p className="jobs-step-hint">
+                {t.steps.text.skipped}{" "}
+                <button type="button" className="underline underline-offset-4" onClick={() => setTextSkipped(false)} disabled={sending}>
+                  {t.steps.text.reopen}
+                </button>
+              </p>
+            ) : (
             <Textarea
               id="jobs-text"
               rows={4}
@@ -400,8 +417,9 @@ export function JobsForm({ locale }: { locale: Locale }) {
               onFocus={markStarted}
               onChange={(e) => setText(e.target.value)}
               disabled={sending}
-              className={cn(fieldClass, "mt-4 h-auto min-h-32 resize-y py-3 leading-relaxed")}
+              className={cn(fieldClass, "mt-3 h-auto min-h-24 resize-y py-3 leading-relaxed")}
             />
+            )}
           </div>
         </li>
 
@@ -420,7 +438,7 @@ export function JobsForm({ locale }: { locale: Locale }) {
               onFocus={markStarted}
               onChange={(e) => setPhone(e.target.value)}
               disabled={sending}
-              className={cn(fieldClass, "mt-4 max-w-xs font-data")}
+              className={cn(fieldClass, "mt-3 max-w-xs font-data")}
             />
             <label className="jobs-check">
               <input type="checkbox" checked={adult} onChange={(e) => setAdult(e.target.checked)} disabled={sending} />
@@ -439,7 +457,7 @@ export function JobsForm({ locale }: { locale: Locale }) {
         </li>
       </ol>
 
-      <div ref={turnstileBox} className="mt-8" />
+      <div ref={turnstileBox} className="mt-6" />
 
       {errors.length > 0 && (
         <ul className="jobs-errors" role="alert">
@@ -449,7 +467,7 @@ export function JobsForm({ locale }: { locale: Locale }) {
         </ul>
       )}
 
-      <div className="mt-8 flex flex-wrap items-center gap-5">
+      <div className="mt-6 flex flex-wrap items-center gap-5">
         <button type="submit" className="jobs-submit" disabled={sending || voice.state === "recording"}>
           {sending && <Loader2 className="animate-spin" size={18} aria-hidden="true" />}
           {sending ? t.sending : t.submit}

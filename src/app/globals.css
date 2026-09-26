@@ -1481,9 +1481,9 @@ a:hover > svg {
 }
 .jobs-steps > li {
   display: grid;
-  grid-template-columns: 56px 1fr;
-  gap: 16px;
-  padding-block: 36px;
+  grid-template-columns: 48px 1fr;
+  gap: 14px;
+  padding-block: 24px;
 }
 .jobs-steps > li:first-child {
   padding-top: 0;
@@ -1493,18 +1493,35 @@ a:hover > svg {
 }
 .jobs-step-number {
   font-family: var(--font-anek), var(--font-anek-deva);
-  font-size: 40px;
+  font-size: 32px;
   line-height: 1;
   color: var(--gold-700);
 }
+.jobs-step-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+.jobs-skip {
+  flex-shrink: 0;
+  padding: 4px 2px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--gold-700);
+}
+.jobs-skip:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
 .jobs-step-title {
   font-family: var(--font-anek), var(--font-anek-deva);
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 500;
   line-height: 1.2;
 }
 .jobs-step-hint {
-  margin-top: 10px;
+  margin-top: 6px;
   max-width: 55ch;
   color: var(--muted-foreground);
   line-height: 1.6;
@@ -1515,15 +1532,15 @@ a:hover > svg {
   color: var(--foreground);
 }
 .jobs-recorder {
-  margin-top: 24px;
+  margin-top: 16px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 20px 28px;
 }
 .jobs-record-button {
-  width: 132px;
-  height: 132px;
+  width: 112px;
+  height: 112px;
   border-radius: 50%;
   display: flex;
   flex-direction: column;
@@ -1539,8 +1556,8 @@ a:hover > svg {
     transform 160ms ease;
 }
 .jobs-record-button svg {
-  width: 36px;
-  height: 36px;
+  width: 30px;
+  height: 30px;
 }
 .jobs-record-button:hover {
   background: var(--gold-400);
@@ -1584,8 +1601,8 @@ a:hover > svg {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  height: 48px;
-  padding: 0 18px;
+  height: 44px;
+  padding: 0 16px;
   border-radius: 8px;
   border: 1px solid var(--neutral-300);
   font-weight: 600;
@@ -1626,7 +1643,7 @@ a:hover > svg {
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  margin-top: 18px;
+  margin-top: 14px;
   max-width: 55ch;
   line-height: 1.5;
   cursor: pointer;
@@ -1705,7 +1722,8 @@ a:hover > svg {
 @media (max-width: 700px) {
   .jobs-steps > li {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 8px;
+    padding-block: 20px;
   }
   .jobs-work li {
     grid-template-columns: 1fr;

@@ -1480,9 +1480,9 @@ a:hover > svg {
   text-underline-offset: 3px;
 }
 
-/* Jobs page (/jobs, /hi/jobs, /hinglish/jobs): compact top, then one form.
-   Voice leads, typing is the alternative, files come last; weight and order
-   say what matters. One round gold record button. No boxes. */
+/* Jobs page (/jobs, /hi/jobs, /hinglish/jobs): compact top, then one form in
+   ruled tiers. Voice leads, typing is the alternative, files come last.
+   One round gold record button. No boxes. */
 /* What to say in the voice note: short bullets, two columns where there's room. */
 .jobs-say {
   margin-top: 6px;
@@ -1513,15 +1513,20 @@ a:hover > svg {
   align-items: center;
   gap: 20px 28px;
 }
+/* Sized for the longest label ("Record karein"); padding keeps any label
+   inside the circle, wrapping to two lines rather than spilling out. */
 .jobs-record-button {
-  width: 96px;
-  height: 96px;
+  width: 112px;
+  height: 112px;
+  padding-inline: 12px;
   border-radius: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
+  text-align: center;
+  line-height: 1.15;
   background: var(--gold-500);
   color: var(--neutral-900);
   font-weight: 600;
@@ -1701,57 +1706,102 @@ a:hover > svg {
   font-size: 17px;
   line-height: 1.55;
 }
-/* "or" between the voice note and the text box: a hairline with the word. */
-.jobs-or {
-  display: flex;
-  align-items: center;
+/* Three ruled tiers with gold numerals: 01 about you (voice, or type),
+   02 number, 03 documents. Typing sits inside tier 01 as the alternative. */
+.jobs-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.jobs-steps > li {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
   gap: 14px;
-  margin-block: 22px 14px;
+  padding-block: 24px;
+}
+.jobs-steps > li:first-child {
+  padding-top: 0;
+}
+.jobs-steps > li + li {
+  border-top: 1px solid var(--border);
+}
+.jobs-step-number {
+  font-family: var(--font-anek), var(--font-anek-deva);
+  font-size: 32px;
+  line-height: 1;
+  color: var(--gold-700);
+}
+.jobs-step-title {
+  font-family: var(--font-anek), var(--font-anek-deva);
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.jobs-step-hint {
+  margin-top: 6px;
+  max-width: 55ch;
   color: var(--muted-foreground);
-  font-size: 14px;
+  line-height: 1.6;
 }
-.jobs-or::before,
-.jobs-or::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-}
-.jobs-field + .jobs-field,
-.jobs-field + .jobs-attach {
-  margin-top: 18px;
-}
-.jobs-label {
-  font-size: 15px;
+.jobs-step-warning {
+  margin-top: 4px;
   font-weight: 600;
+  color: var(--foreground);
 }
-.jobs-attach {
-  margin-top: 20px;
+/* The alternative to the voice note: a quiet word, then the text box. */
+.jobs-or {
+  margin-top: 22px;
+  font-size: 15px;
+  color: var(--muted-foreground);
 }
-.jobs-attach-link {
+.jobs-or strong {
+  margin-right: 6px;
+  font-weight: 600;
+  color: var(--gold-700);
+}
+.jobs-file-button {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  min-height: 32px;
-  color: var(--gold-700);
-  font-size: 15px;
+  gap: 10px;
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 8px;
+  border: 1px solid var(--neutral-300);
   font-weight: 600;
+  font-size: 15px;
   cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    transform 160ms ease;
 }
-.jobs-attach-link:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
+.jobs-file-button:hover {
+  border-color: var(--gold-500);
+  transform: translateY(-1px);
 }
-.jobs-attach-link:focus-within {
+.jobs-file-button:focus-within {
   outline: 3px solid color-mix(in srgb, var(--gold-500) 35%, transparent);
   outline-offset: 2px;
-  border-radius: 4px;
+}
+/* Consent closes the tiers: a rule, then the two checkboxes. */
+.jobs-consent {
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
 }
 .jobs-fine {
   margin-top: 4px;
   color: var(--muted-foreground);
   font-size: 13px;
   line-height: 1.5;
+}
+@media (max-width: 700px) {
+  .jobs-steps > li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+    padding-block: 20px;
+  }
+  .jobs-steps > li:first-child {
+    padding-top: 0;
+  }
 }
 @media (min-width: 1024px) {
   .jobs-top {

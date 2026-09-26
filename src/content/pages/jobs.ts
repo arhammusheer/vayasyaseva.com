@@ -73,7 +73,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     form: {
       steps: {
         record: {
-          title: "Tell us by voice",
+          title: "Tell us about yourself",
           lead: "Just say:",
           points: ["Your name", "Where you live", "Work you know", "Your experience", "When you can start"],
         },
@@ -82,9 +82,9 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
           hint: "Certificates, ITI, licence, salary slip or resume.",
           warning: "Please don't send Aadhaar or bank documents.",
         },
-        or: "or",
+        or: "Or",
         text: {
-          title: "Type it instead",
+          title: "type it instead",
           placeholder: "For example: I know packing work and have two years of experience…",
         },
         phone: {
@@ -181,7 +181,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     form: {
       steps: {
         record: {
-          title: "बोलकर बताइए",
+          title: "अपने बारे में बताइए",
           lead: "बस इतना बताइए:",
           points: ["आपका नाम", "कहाँ रहते हैं", "कौन-सा काम आता है", "कितना अनुभव है", "कब से शुरू कर सकते हैं"],
         },
@@ -289,7 +289,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     form: {
       steps: {
         record: {
-          title: "Bolkar bataiye",
+          title: "Apne baare mein bataiye",
           lead: "Bas itna bataiye:",
           points: ["Aapka naam", "Kahan rehte hain", "Kaun-sa kaam aata hai", "Kitna experience hai", "Kab se shuru kar sakte hain"],
         },
@@ -298,9 +298,9 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
           hint: "Certificate, ITI, licence, salary slip ya resume.",
           warning: "Aadhaar ya bank ke documents na bhejein.",
         },
-        or: "ya",
+        or: "Ya",
         text: {
-          title: "Likhkar bataiye",
+          title: "likhkar bataiye",
           placeholder: "Jaise: main packing ka kaam jaanta hoon, do saal ka experience hai…",
         },
         phone: {

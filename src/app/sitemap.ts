@@ -4,7 +4,7 @@ import {
   localePath,
   locales,
   translatedLocales,
-  translatedPaths,
+  pageLocales,
 } from "@/lib/i18n";
 
 const lastModified = new Date("2026-09-13");
@@ -31,8 +31,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/privacy`, lastModified, changeFrequency: "yearly", priority: 0.3 },
     { url: `${baseUrl}/terms`, lastModified, changeFrequency: "yearly", priority: 0.3 },
   ];
-  const published = translatedLocales.filter((l) => locales[l].published);
-  if (!published.length) return english;
+  if (!translatedLocales.some((l) => locales[l].published)) return english;
 
   // Each translated page lists every published language on every entry.
   const withLanguages = (path: string) => {
@@ -50,14 +49,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const alternates = withLanguages(path);
     return alternates ? { ...entry, alternates } : entry;
   });
-  const translated = published.flatMap((locale) =>
-    translatedPaths.map((path) => ({
-      url: `${baseUrl}${localePath(path, locale)}`,
-      lastModified: contentUpdated,
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-      alternates: withLanguages(path),
-    })),
+  const translated = Object.entries(pageLocales).flatMap(([path, pageLangs]) =>
+    pageLangs
+      .filter((locale) => locales[locale].published)
+      .map((locale) => ({
+        url: `${baseUrl}${localePath(path, locale)}`,
+        lastModified: contentUpdated,
+        changeFrequency: "monthly" as const,
+        priority: 0.7,
+        alternates: withLanguages(path),
+      })),
   );
   return [...paired, ...translated];
 }

@@ -105,7 +105,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
     ],
     links: [
       { href: "/hi/services/contract-labour", label: "हमारी कॉन्ट्रैक्ट लेबर सेवा कैसे काम करती है" },
-      { href: "/hi/services/warehouse-labour", label: "सिडकुल में वेयरहाउस लेबर" },
+      { href: "/services/warehouse-labour", label: "सिडकुल में वेयरहाउस लेबर (अंग्रेज़ी में)" },
       { href: "/contact", label: "अपनी साइट के बारे में बताइए" },
     ],
     supportEyebrow: "आपकी साइट के लिए सहायता",
@@ -113,14 +113,14 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
       {
         title: "फ़ैक्टरी और वेयरहाउस लेबर",
         text: "रोज़ के काम और बदलते वर्कलोड के लिए प्रोडक्शन हेल्पर, पैकर, लोडर और मटीरियल हैंडलर।",
-        href: "/hi/services/factory-labour",
-        link: "फ़ैक्टरी लेबर के बारे में पढ़ें",
+        href: "/services/factory-labour",
+        link: "फ़ैक्टरी लेबर के बारे में पढ़ें (अंग्रेज़ी में)",
       },
       {
         title: "फ़ैसिलिटी और कॉन्ट्रैक्ट वर्क्स",
         text: "बिज़नेस परिसरों के लिए हाउसकीपिंग, ग्राउंड्स, सिविल मरम्मत, फ़ैब्रिकेशन और मेंटेनेंस।",
-        href: "/hi/services/housekeeping",
-        link: "हाउसकीपिंग के बारे में पढ़ें",
+        href: "/services/housekeeping",
+        link: "हाउसकीपिंग के बारे में पढ़ें (अंग्रेज़ी में)",
       },
       {
         title: "लेबर कंप्लायंस",

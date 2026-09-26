@@ -14,6 +14,9 @@ import {
 import type { ServiceLandingContent } from "@/content/service-pages";
 import { locales, type Locale } from "@/lib/i18n";
 
+/** Service pages are translated into Hinglish only (see pageLocales). */
+type ServiceLocale = Exclude<Locale, "hi">;
+
 const labels = {
   en: {
     base: "/services",
@@ -31,22 +34,6 @@ const labels = {
     home: "Home",
     services: "Services",
   },
-  hi: {
-    base: "/hi/services",
-    rolesEyebrow: "आम रोल",
-    rolesHeading: "हम किनके लिए योजना बनाते हैं।",
-    planningHeading: "आपकी साइट के हिसाब से योजना।",
-    records:
-      "हाज़िरी, वेतन रिकॉर्ड और लागू EPF व ESIC योगदान हम रखते हैं, और ये आपकी जाँच के लिए उपलब्ध हैं।",
-    complianceLink: "हमारा लेबर कंप्लायंस तरीका (अंग्रेज़ी में)",
-    related: "संबंधित",
-    relatedAria: "संबंधित सेवाएँ",
-    local: { href: "/hi/haridwar-sidcul", label: "हरिद्वार और सिडकुल में लेबर ठेकेदार" },
-    faqEyebrow: "सवाल",
-    faqTitle: "आम सवाल।",
-    home: "होम",
-    services: "सेवाएँ",
-  },
   hinglish: {
     base: "/hinglish/services",
     rolesEyebrow: "TYPICAL ROLES",
@@ -63,9 +50,9 @@ const labels = {
     home: "Home",
     services: "Services",
   },
-} satisfies Record<Locale, unknown>;
+} satisfies Record<ServiceLocale, unknown>;
 
-export function serviceLandingMetadata(page: ServiceLandingContent, locale: Locale = "en") {
+export function serviceLandingMetadata(page: ServiceLandingContent, locale: ServiceLocale = "en") {
   return pageMetadata({
     title: page.metaTitle,
     description: page.description,
@@ -80,7 +67,7 @@ export function ServiceLanding({
   locale = "en",
 }: {
   page: ServiceLandingContent;
-  locale?: Locale;
+  locale?: ServiceLocale;
 }) {
   const t = labels[locale];
   const url = `${t.base}/${page.slug}`;

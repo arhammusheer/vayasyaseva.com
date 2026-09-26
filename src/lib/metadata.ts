@@ -20,7 +20,7 @@ export function pageMetadata(input: {
   return {
     ...rest,
     alternates: { canonical, ...(languages && { languages }) },
-    ...(!locales[locale].published && { robots: { index: false, follow: true } }),
+    ...(locales[locale].published ? {} : { robots: { index: false, follow: true } }),
     openGraph: {
       type: "website",
       locale: locales[locale].ogLocale,

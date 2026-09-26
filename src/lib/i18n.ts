@@ -6,28 +6,31 @@
  *
  * An unpublished locale's pages are noindex and carry no hreflang, sitemap
  * entry or header link from English pages. Flip `published` once a native
- * speaker has reviewed the copy.
+ * speaker has reviewed the copy. Both enabled 26 September 2026.
  */
 export const locales = {
   en: { prefix: "", lang: "en", hreflang: "en-IN", ogLocale: "en_IN", label: "English", published: true },
-  hi: { prefix: "/hi", lang: "hi", hreflang: "hi-IN", ogLocale: "hi_IN", label: "हिंदी", published: false },
-  hinglish: { prefix: "/hinglish", lang: "hi-Latn", hreflang: "hi-Latn", ogLocale: "hi_IN", label: "Hinglish", published: false },
+  hi: { prefix: "/hi", lang: "hi", hreflang: "hi-IN", ogLocale: "hi_IN", label: "हिंदी", published: true },
+  hinglish: { prefix: "/hinglish", lang: "hi-Latn", hreflang: "hi-Latn", ogLocale: "hi_IN", label: "Hinglish", published: true },
 } as const;
 
 export type Locale = keyof typeof locales;
 export const translatedLocales = ["hi", "hinglish"] as const satisfies Locale[];
 
-/** English paths that have Hindi and Hinglish versions. */
-export const translatedPaths = [
-  "/haridwar-sidcul",
-  "/services/contract-labour",
-  "/services/warehouse-labour",
-  "/services/factory-labour",
-  "/services/housekeeping",
-] as const;
+/**
+ * Which translations each English page has. Business pages (home, services
+ * index, compliance, about…) stay English only. See docs/plan-multilingual.md.
+ */
+export const pageLocales: Record<string, readonly Locale[]> = {
+  "/haridwar-sidcul": ["hi", "hinglish"],
+  "/services/contract-labour": ["hi", "hinglish"],
+  "/services/warehouse-labour": ["hinglish"],
+  "/services/factory-labour": ["hinglish"],
+  "/services/housekeeping": ["hinglish"],
+};
 
-export function hasTranslations(englishPath: string) {
-  return (translatedPaths as readonly string[]).includes(englishPath);
+export function translationsOf(englishPath: string): readonly Locale[] {
+  return pageLocales[englishPath] ?? [];
 }
 
 export function localeOf(path: string): Locale {
@@ -49,8 +52,7 @@ export function localePath(englishPath: string, locale: Locale) {
 
 /** hreflang alternates for a translated page, given its English path. */
 export function languageAlternates(englishPath: string) {
-  if (!hasTranslations(englishPath)) return undefined;
-  const published = translatedLocales.filter((l) => locales[l].published);
+  const published = translationsOf(englishPath).filter((l) => locales[l].published);
   if (!published.length) return undefined;
   return {
     [locales.en.hreflang]: englishPath,
@@ -64,13 +66,15 @@ export function languageAlternates(englishPath: string) {
 /**
  * Other-language versions of the current page for the header switch.
  * From English, only published locales show; from a translation, every
- * locale shows so reviewers can move between drafts.
+ * version shows so reviewers can move between drafts.
  */
 export function languageLinks(path: string) {
   const current = localeOf(path);
   const englishPath = toEnglish(path);
-  if (!hasTranslations(englishPath)) return [];
-  return (Object.keys(locales) as Locale[])
+  const available: Locale[] = ["en", ...translationsOf(englishPath)];
+  // No links on English-only pages or on a translation that doesn't exist.
+  if (available.length < 2 || !available.includes(current)) return [];
+  return available
     .filter((l) => l !== current && (current !== "en" || locales[l].published))
     .map((l) => ({
       href: localePath(englishPath, l),

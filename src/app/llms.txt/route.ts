@@ -29,6 +29,15 @@ const llmsIndex = `# Vayasya Seva Private Limited
 - ${baseUrl}/privacy
 - ${baseUrl}/terms
 
+## Hindi and Hinglish pages
+- ${baseUrl}/hi/haridwar-sidcul
+- ${baseUrl}/hi/services/contract-labour
+- ${baseUrl}/hinglish/haridwar-sidcul
+- ${baseUrl}/hinglish/services/contract-labour
+- ${baseUrl}/hinglish/services/warehouse-labour
+- ${baseUrl}/hinglish/services/factory-labour
+- ${baseUrl}/hinglish/services/housekeeping
+
 ## Machine-readable endpoints
 - ${baseUrl}/llms-full.txt
 - ${baseUrl}/openapi/v1.json

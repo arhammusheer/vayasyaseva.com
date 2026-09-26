@@ -24,14 +24,15 @@ export interface HaridwarCopy {
  */
 export const haridwarCopy: Record<Locale, HaridwarCopy> = {
   en: {
-    title: "Labour Contractor in Haridwar & SIDCUL",
+    title: "Labour Contractor in SIDCUL Haridwar",
     description:
-      "Haridwar-based labour contractor for SIDCUL factories and warehouses. Discuss contract manpower, site coordination and EPF/ESIC workforce records.",
-    breadcrumb: { home: "Home", page: "Haridwar & SIDCUL" },
+      "Haridwar-based labour contractor for factories and warehouses in SIDCUL and across the city. Discuss contract manpower, site coordination and EPF/ESIC workforce records.",
+    breadcrumb: { home: "Home", page: "SIDCUL Haridwar" },
     hero: ["Labour contractor in Haridwar.", "Supporting SIDCUL industry."],
-    lede: "Contract labour and manpower for factories, warehouses and facilities in Haridwar and SIDCUL, with site coordination and applicable workforce documentation.",
+    lede: "Contract labour and manpower for factories, warehouses and facilities in SIDCUL and across Haridwar, with site coordination and applicable workforce documentation.",
     introHeading: ["A local conversation.", "A practical way forward."],
     intro: [
+      "SIDCUL Haridwar is the State's Integrated Industrial Estate in the city's Ranipur and BHEL area. We work with factories and warehouses there, and with businesses across the rest of Haridwar.",
       "Based in Haridwar, Vayasya Seva works with the needs of the surrounding industrial community: factory shifts, warehouse activity, facility upkeep and project work.",
       "We bring workforce coordination and labour compliance into the same engagement, helping your operations and HR teams work with a common understanding.",
       "If you are comparing labour suppliers or manpower providers, share the roles, headcount, shift pattern and site location. We can discuss a suitable contract labour arrangement and the records your team will need to review.",
@@ -91,14 +92,15 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
     ],
   },
   hi: {
-    title: "हरिद्वार और सिडकुल में लेबर ठेकेदार (Labour Contractor)",
+    title: "सिडकुल हरिद्वार में लेबर ठेकेदार (Labour Contractor)",
     description:
-      "हरिद्वार में स्थित लेबर ठेकेदार। सिडकुल की फ़ैक्टरियों और वेयरहाउस के लिए कॉन्ट्रैक्ट लेबर, मैनपावर, साइट कोऑर्डिनेशन और EPF/ESIC रिकॉर्ड।",
-    breadcrumb: { home: "होम", page: "हरिद्वार और सिडकुल" },
+      "हरिद्वार में स्थित लेबर ठेकेदार। सिडकुल और पूरे हरिद्वार की फ़ैक्टरियों और वेयरहाउस के लिए कॉन्ट्रैक्ट लेबर, मैनपावर, साइट कोऑर्डिनेशन और EPF/ESIC रिकॉर्ड।",
+    breadcrumb: { home: "होम", page: "सिडकुल हरिद्वार" },
     hero: ["हरिद्वार में लेबर ठेकेदार।", "सिडकुल उद्योग के साथ।"],
-    lede: "हरिद्वार और सिडकुल की फ़ैक्टरियों, वेयरहाउस और फ़ैसिलिटी के लिए कॉन्ट्रैक्ट लेबर और मैनपावर, साइट कोऑर्डिनेशन और ज़रूरी वर्कफ़ोर्स रिकॉर्ड के साथ।",
+    lede: "सिडकुल और पूरे हरिद्वार की फ़ैक्टरियों, वेयरहाउस और फ़ैसिलिटी के लिए कॉन्ट्रैक्ट लेबर और मैनपावर, साइट कोऑर्डिनेशन और ज़रूरी वर्कफ़ोर्स रिकॉर्ड के साथ।",
     introHeading: ["स्थानीय बातचीत।", "व्यावहारिक रास्ता।"],
     intro: [
+      "सिडकुल हरिद्वार, शहर के रानीपुर और BHEL क्षेत्र में राज्य का एकीकृत औद्योगिक क्षेत्र (Integrated Industrial Estate) है। हम वहाँ की फ़ैक्टरियों और वेयरहाउस के साथ, और बाकी पूरे हरिद्वार के कारोबारों के साथ काम करते हैं।",
       "हरिद्वार में स्थित Vayasya Seva आसपास के औद्योगिक क्षेत्र की ज़रूरतों के साथ काम करती है: फ़ैक्टरी की शिफ्टें, वेयरहाउस का काम, फ़ैसिलिटी की देखरेख और प्रोजेक्ट का काम।",
       "हम वर्कफ़ोर्स कोऑर्डिनेशन और लेबर कंप्लायंस को एक ही व्यवस्था में रखते हैं, ताकि आपकी ऑपरेशंस और HR टीम एक ही समझ के साथ काम कर सकें।",
       "अगर आप लेबर सप्लायर या मैनपावर प्रोवाइडर की तुलना कर रहे हैं, तो ज़रूरी रोल, संख्या, शिफ्ट और साइट की जगह बताइए। हम सही कॉन्ट्रैक्ट लेबर व्यवस्था और उन रिकॉर्ड पर बात करेंगे जो आपकी टीम देखना चाहेगी।",
@@ -158,14 +160,15 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
     ],
   },
   hinglish: {
-    title: "Haridwar aur SIDCUL mein Labour Contractor (Labour Thekedar)",
+    title: "SIDCUL Haridwar mein Labour Contractor (Labour Thekedar)",
     description:
-      "Haridwar based labour contractor. SIDCUL ki factories aur warehouses ke liye contract labour, manpower, site coordination aur EPF/ESIC records.",
-    breadcrumb: { home: "Home", page: "Haridwar aur SIDCUL" },
+      "Haridwar based labour contractor. SIDCUL aur poore Haridwar ki factories aur warehouses ke liye contract labour, manpower, site coordination aur EPF/ESIC records.",
+    breadcrumb: { home: "Home", page: "SIDCUL Haridwar" },
     hero: ["Haridwar mein labour contractor.", "SIDCUL industry ke saath."],
-    lede: "Haridwar aur SIDCUL ki factories, warehouses aur facilities ke liye contract labour aur manpower, site coordination aur zaroori workforce records ke saath.",
+    lede: "SIDCUL aur poore Haridwar ki factories, warehouses aur facilities ke liye contract labour aur manpower, site coordination aur zaroori workforce records ke saath.",
     introHeading: ["Local baatcheet.", "Practical raasta."],
     intro: [
+      "SIDCUL Haridwar, shehar ke Ranipur aur BHEL area mein State ka Integrated Industrial Estate hai. Hum wahan ki factories aur warehouses ke saath, aur baaki poore Haridwar ke businesses ke saath kaam karte hain.",
       "Haridwar mein based Vayasya Seva aas-paas ke industrial area ki zarooraton ke saath kaam karti hai: factory shifts, warehouse ka kaam, facility ki dekhrekh aur project work.",
       "Hum workforce coordination aur labour compliance ko ek hi arrangement mein rakhte hain, taaki aapki operations aur HR team ek hi samajh ke saath kaam kar sake.",
       "Agar aap labour supplier, manpower provider ya labour thekedar compare kar rahe hain, to zaroori roles, headcount, shift aur site location bataiye. Hum sahi contract labour arrangement aur un records par baat karenge jo aapki team dekhna chahegi.",

@@ -78,7 +78,7 @@ export default function AboutPage() {
               Based in Haridwar, Uttarakhand.
             </p>
             <Link href="/haridwar-sidcul" className="text-link">
-              Our work in Haridwar &amp; SIDCUL <ArrowUpRight size={18} />
+              Our work in SIDCUL Haridwar <ArrowUpRight size={18} />
             </Link>
           </div>
           <dl className="divide-y border-y">

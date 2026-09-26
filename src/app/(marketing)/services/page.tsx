@@ -15,7 +15,7 @@ const servicePageFor = new Map(servicePages.map((p) => [p.serviceId, p]));
 export const metadata = pageMetadata({
   title: "Contract Labour & Industrial Services in Haridwar",
   description:
-    "Explore contract labour, factory and warehouse manpower, housekeeping, civil works and maintenance services for Haridwar and SIDCUL sites.",
+    "Explore contract labour, factory and warehouse manpower, housekeeping, civil works and maintenance services for sites in SIDCUL and across Haridwar.",
   alternates: { canonical: "/services" },
 });
 export default function ServicesPage() {
@@ -26,7 +26,7 @@ export default function ServicesPage() {
           type: "CollectionPage",
           name: "Contract Labour & Industrial Services in Haridwar",
           description:
-            "Explore contract labour, factory and warehouse manpower, housekeeping, civil works and maintenance services for Haridwar and SIDCUL sites.",
+            "Explore contract labour, factory and warehouse manpower, housekeeping, civil works and maintenance services for sites in SIDCUL and across Haridwar.",
           url: "/services",
         })}
       />
@@ -45,7 +45,7 @@ export default function ServicesPage() {
             Planned around your site.
           </>
         }
-        lede="Contract workers for factory, warehouse and facility operations in Haridwar and SIDCUL, alongside civil, fabrication and maintenance support."
+        lede="Contract workers for factory, warehouse and facility operations in SIDCUL and across Haridwar, alongside civil, fabrication and maintenance support."
       />
       <Section>
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_2fr]">
@@ -66,9 +66,9 @@ export default function ServicesPage() {
                 href="/haridwar-sidcul"
                 className="underline underline-offset-4"
               >
-                Haridwar and SIDCUL
-              </Link>
-              . Tell us about your site, your priorities and the work you need
+                SIDCUL Haridwar
+              </Link>{" "}
+              and across the city. Tell us about your site, your priorities and the work you need
               done.
             </p>
             <Link href="/contact" className="text-link">
@@ -110,7 +110,7 @@ export default function ServicesPage() {
                     href={`/services/${servicePageFor.get(service.id)!.slug}`}
                     className="text-link"
                   >
-                    {servicePageFor.get(service.id)!.name} in Haridwar &amp; SIDCUL{" "}
+                    {servicePageFor.get(service.id)!.name} in SIDCUL Haridwar{" "}
                     <ArrowUpRight size={16} />
                   </Link>
                 )}

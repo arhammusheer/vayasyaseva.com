@@ -109,7 +109,7 @@ The following words and phrases are **never** to be used in website copy:
 
 | Bad | Problem | Good |
 |-----|---------|------|
-| "VSPL is the best manpower company in Uttarakhand." | Unqualified superlative, no ranking evidence. | "VSPL is a registered workforce operations partner operating in the Haridwar-SIDCUL industrial corridor." |
+| "VSPL is the best manpower company in Uttarakhand." | Unqualified superlative, no ranking evidence. | "VSPL is a registered workforce operations partner operating in SIDCUL and across Haridwar." |
 | "We provide seamless end-to-end HR solutions." | "Seamless" is prohibited; "end-to-end" is vague. | "Our service scope covers recruitment, deployment, statutory compliance (PF/ESI), and attendance management." |
 | "100% client satisfaction guaranteed." | Unverifiable, unqualified guarantee. | "We maintain ongoing client relationships with defined SLAs and periodic performance reviews." |
 | "World-class workforce management." | "World-class" is prohibited and meaningless. | "Process-driven workforce management aligned to client SOPs and statutory requirements." |

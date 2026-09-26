@@ -19,7 +19,7 @@ The production homepage uses static photography, a short CSS entrance, a compact
 
 ## Search
 
-Services, compliance and Haridwar–SIDCUL have distinct search intent, descriptions, canonical URLs and contextual links. Share metadata follows the landing page. Structured data describes visible content; the regional FAQ markup matches its rendered answers. The search sitemap contains public marketing pages; machine discovery endpoints remain linked through llms.txt and agent metadata.
+Services, compliance and SIDCUL Haridwar have distinct search intent, descriptions, canonical URLs and contextual links. Share metadata follows the landing page. Structured data describes visible content; the regional FAQ markup matches its rendered answers. The search sitemap contains public marketing pages; machine discovery endpoints remain linked through llms.txt and agent metadata.
 
 This is an on-site SEO foundation. Search positions are not measured or guaranteed by these changes. Search Console performance, relevant business citations, and authentic project evidence should inform subsequent content work.
 

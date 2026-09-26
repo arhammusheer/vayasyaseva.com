@@ -8,7 +8,7 @@ import { trustClients } from "@/content/home";
 export const metadata = pageMetadata({
   title: { absolute: "Labour Contractor in Haridwar | Vayasya Seva" },
   description:
-    "Vayasya Seva supports Haridwar and SIDCUL businesses with contract labour, industrial manpower, site services and workforce documentation.",
+    "Vayasya Seva supports businesses in SIDCUL and across Haridwar with contract labour, industrial manpower, site services and workforce documentation.",
   alternates: { canonical: "/" },
 });
 const capabilities = [
@@ -51,12 +51,12 @@ export default function HomePage() {
         <div className="hero-shade" />
         <div className="site-shell hero-content">
           <p className="eyebrow hero-eyebrow rise">
-            LABOUR CONTRACTOR IN HARIDWAR &amp; SIDCUL
+            LABOUR CONTRACTOR IN SIDCUL HARIDWAR
           </p>
           <h1 className="rise rise-1">Workforce. With care.</h1>
           <p className="hero-description rise rise-2">
             Vayasya Seva coordinates workers for factories, warehouses and
-            facilities in the SIDCUL region, with attention to people, site
+            facilities in SIDCUL and across Haridwar, with attention to people, site
             operations and workforce records.
           </p>
           <Link href="/services/contract-labour" className="light-link rise rise-3">
@@ -202,7 +202,7 @@ export default function HomePage() {
             <span>
               Our roots in Haridwar
               <small>
-                Contract labour and site services in the SIDCUL region.
+                Contract labour and site services in SIDCUL and across Haridwar.
               </small>
             </span>
             <Plus size={22} aria-hidden="true" />

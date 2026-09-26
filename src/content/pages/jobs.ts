@@ -60,11 +60,11 @@ export interface JobsCopy {
  */
 export const jobsCopy: Record<Locale, JobsCopy> = {
   en: {
-    title: "Jobs in Haridwar & SIDCUL: Factory, Warehouse, Housekeeping",
+    title: "Jobs in SIDCUL Haridwar: Factory, Warehouse, Housekeeping",
     description:
-      "Looking for work in Haridwar or SIDCUL? Send a voice note, a photo of your certificates or a few lines about yourself. Vayasya Seva never charges a fee for a job.",
+      "Looking for work in SIDCUL or anywhere in Haridwar? Send a voice note, a photo of your certificates or a few lines about yourself. Vayasya Seva never charges a fee for a job.",
     breadcrumb: { home: "Home", page: "Jobs" },
-    eyebrow: "JOBS · HARIDWAR & SIDCUL",
+    eyebrow: "JOBS · SIDCUL HARIDWAR",
     heading: "Looking for work? Just tell us.",
     lede: "Factory, warehouse, housekeeping or other work. No long form: say it in your own voice and we'll call you.",
     noFee: "Vayasya Seva never charges a fee for a job. If anyone asks you for money, tell us.",
@@ -164,17 +164,17 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       },
       {
         question: "Where is the work?",
-        answer: "Mostly in Haridwar and the SIDCUL industrial area, with some work around Roorkee, Bhagwanpur and Bahadrabad.",
+        answer: "Mostly in the SIDCUL industrial area and across Haridwar, with some work around Roorkee, Bhagwanpur and Bahadrabad.",
         category: "operations",
       },
     ],
   },
   hi: {
-    title: "हरिद्वार और सिडकुल में नौकरी: फ़ैक्टरी, वेयरहाउस, हाउसकीपिंग",
+    title: "सिडकुल हरिद्वार में नौकरी: फ़ैक्टरी, वेयरहाउस, हाउसकीपिंग",
     description:
-      "हरिद्वार या सिडकुल में काम चाहिए? अपनी आवाज़ में बताइए, सर्टिफ़िकेट की फ़ोटो भेजिए या दो लाइन लिखिए। Vayasya Seva नौकरी के लिए कोई फ़ीस नहीं लेती।",
+      "सिडकुल या हरिद्वार में कहीं भी काम चाहिए? अपनी आवाज़ में बताइए, सर्टिफ़िकेट की फ़ोटो भेजिए या दो लाइन लिखिए। Vayasya Seva नौकरी के लिए कोई फ़ीस नहीं लेती।",
     breadcrumb: { home: "होम", page: "नौकरी" },
-    eyebrow: "नौकरी · हरिद्वार और सिडकुल",
+    eyebrow: "नौकरी · सिडकुल हरिद्वार",
     heading: "काम चाहिए? बोलकर बताइए।",
     lede: "फ़ैक्टरी, वेयरहाउस, हाउसकीपिंग या कोई और काम। फ़ॉर्म भरने की ज़रूरत नहीं: अपनी आवाज़ में बताइए, हम आपको फ़ोन करेंगे।",
     noFee: "Vayasya Seva नौकरी के लिए कभी कोई फ़ीस नहीं लेती। कोई पैसे माँगे तो हमें बताइए।",
@@ -274,17 +274,17 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       },
       {
         question: "काम किन इलाकों में है?",
-        answer: "ज़्यादातर हरिद्वार और सिडकुल औद्योगिक क्षेत्र में, और कुछ काम रुड़की, भगवानपुर और बहादराबाद के आसपास।",
+        answer: "ज़्यादातर सिडकुल औद्योगिक क्षेत्र और पूरे हरिद्वार में, और कुछ काम रुड़की, भगवानपुर और बहादराबाद के आसपास।",
         category: "operations",
       },
     ],
   },
   hinglish: {
-    title: "Haridwar aur SIDCUL mein Naukri: Factory, Warehouse, Housekeeping",
+    title: "SIDCUL Haridwar mein Naukri: Factory, Warehouse, Housekeeping",
     description:
-      "Haridwar ya SIDCUL mein kaam chahiye? Apni awaaz mein bataiye, certificate ki photo bhejiye ya do line likhiye. Vayasya Seva naukri ke liye koi fee nahi leti.",
+      "SIDCUL ya Haridwar mein kahin bhi kaam chahiye? Apni awaaz mein bataiye, certificate ki photo bhejiye ya do line likhiye. Vayasya Seva naukri ke liye koi fee nahi leti.",
     breadcrumb: { home: "Home", page: "Jobs" },
-    eyebrow: "JOBS · HARIDWAR AUR SIDCUL",
+    eyebrow: "JOBS · SIDCUL HARIDWAR",
     heading: "Kaam chahiye? Bolkar bataiye.",
     lede: "Factory, warehouse, housekeeping ya koi aur kaam. Form bharne ki zaroorat nahi: apni awaaz mein bataiye, hum aapko phone karenge.",
     noFee: "Vayasya Seva naukri ke liye kabhi koi fee nahi leti. Koi paise maange to humein bataiye.",
@@ -384,7 +384,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       },
       {
         question: "Kaam kin areas mein hai?",
-        answer: "Zyadatar Haridwar aur SIDCUL industrial area mein, aur kuch kaam Roorkee, Bhagwanpur aur Bahadrabad ke aas-paas.",
+        answer: "Zyadatar SIDCUL industrial area aur poore Haridwar mein, aur kuch kaam Roorkee, Bhagwanpur aur Bahadrabad ke aas-paas.",
         category: "operations",
       },
     ],

@@ -90,4 +90,4 @@ Primary nav items in order: **Home, Services, Industries, How We Operate, Compli
 | MSME | UDYAM-UK-06-0029670 |
 | Email | help@vayasyaseva.com |
 | Phone | +91 72920 14101 |
-| Primary region | Haridwar-SIDCUL, Uttarakhand |
+| Primary region | SIDCUL and across Haridwar, Uttarakhand |

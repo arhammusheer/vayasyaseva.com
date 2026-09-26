@@ -2,7 +2,7 @@ import type { FaqItem } from "./types";
 
 /**
  * Page FAQs. Written for the questions plant HR, admin and procurement teams
- * in Haridwar and SIDCUL actually search. Answers stay within the claims
+ * in SIDCUL and across Haridwar actually search. Answers stay within the claims
  * discipline: no turnaround promises, no invented figures.
  */
 export const servicesFaqs: FaqItem[] = [
@@ -16,7 +16,7 @@ export const servicesFaqs: FaqItem[] = [
     question:
       "Do you provide manpower for warehouses and logistics hubs in Haridwar?",
     answer:
-      "Yes. Loading, unloading, picking, stacking and dispatch crews for warehouses and distribution centres in Haridwar, SIDCUL and the surrounding area. Headcount can scale with throughput and can run single or multi-shift.",
+      "Yes. Loading, unloading, picking, stacking and dispatch crews for warehouses and distribution centres in SIDCUL and across Haridwar. Headcount can scale with throughput and can run single or multi-shift.",
     category: "operations",
   },
   {
@@ -74,7 +74,7 @@ export const complianceFaqs: FaqItem[] = [
 export const industriesFaqs: FaqItem[] = [
   {
     question:
-      "Which industries in Haridwar and SIDCUL does Vayasya Seva work with?",
+      "Which industries does Vayasya Seva work with in SIDCUL and across Haridwar?",
     answer:
       "Manufacturing plants, warehouses and logistics hubs, FMCG and consumer goods operations, institutional campuses and hospitality-linked facilities. Each engagement is planned around the realities of that site.",
     category: "operations",
@@ -95,7 +95,7 @@ export const industriesFaqs: FaqItem[] = [
   {
     question: "Do you work outside Haridwar?",
     answer:
-      "Haridwar and SIDCUL are our base. Enquiries for Roorkee, Bhagwanpur, Bahadrabad and other locations in Uttarakhand are welcome; share the site and we will discuss what is possible.",
+      "Our base is Haridwar: the SIDCUL industrial estate and the city around it. Enquiries for Roorkee, Bhagwanpur, Bahadrabad and other locations in Uttarakhand are welcome; share the site and we will discuss what is possible.",
     category: "commercial",
   },
 ];

@@ -10,10 +10,10 @@ export const servicePagesHinglish: ServiceLandingContent[] = [
     slug: "warehouse-labour",
     serviceId: "warehouse-logistics",
     name: "Warehouse labour",
-    metaTitle: "Haridwar aur SIDCUL mein Warehouse Labour Supplier",
+    metaTitle: "SIDCUL Haridwar mein Warehouse Labour Supplier",
     description:
-      "Haridwar aur SIDCUL ke warehouses ke liye loading, unloading, picking, packing aur dispatch labour, site coordination aur EPF/ESIC records ke saath.",
-    heading: "Haridwar aur SIDCUL ke liye warehouse labour.",
+      "SIDCUL aur poore Haridwar ke warehouses ke liye loading, unloading, picking, packing aur dispatch labour, site coordination aur EPF/ESIC records ke saath.",
+    heading: "SIDCUL aur poore Haridwar ke liye warehouse labour.",
     lede: "Loading, unloading, picking, packing aur dispatch teams, aapke inbound aur outbound kaam ke hisaab se.",
     roles: [
       "Loading aur unloading",
@@ -34,7 +34,7 @@ export const servicePagesHinglish: ServiceLandingContent[] = [
       {
         question: "Kya aap SIDCUL warehouses ke liye loading-unloading labour dete hain?",
         answer:
-          "Haan. Hum Haridwar, SIDCUL aur aas-paas ke warehouses aur distribution sites ke liye loading, unloading, stacking aur dispatch teams plan karte hain.",
+          "Haan. Hum SIDCUL aur poore Haridwar ke warehouses aur distribution sites ke liye loading, unloading, stacking aur dispatch teams plan karte hain.",
         category: "operations",
       },
       {
@@ -57,9 +57,9 @@ export const servicePagesHinglish: ServiceLandingContent[] = [
     name: "Factory labour",
     metaTitle: "Haridwar mein Factory Labour aur Production Helpers",
     description:
-      "Haridwar aur SIDCUL ki factories ke liye production helpers, packers, line feeders aur material handlers, aapki shifts aur site procedures ke hisaab se.",
+      "SIDCUL aur poore Haridwar ki factories ke liye production helpers, packers, line feeders aur material handlers, aapki shifts aur site procedures ke hisaab se.",
     heading: "SIDCUL plants ke liye factory labour.",
-    lede: "Haridwar aur SIDCUL mein shopfloor ke kaam ke liye production helpers, packers, line feeders aur material handlers.",
+    lede: "SIDCUL aur poore Haridwar mein shopfloor ke kaam ke liye production helpers, packers, line feeders aur material handlers.",
     roles: [
       "Production helpers",
       "Packers aur labellers",
@@ -100,11 +100,11 @@ export const servicePagesHinglish: ServiceLandingContent[] = [
     slug: "housekeeping",
     serviceId: "housekeeping-facility",
     name: "Housekeeping",
-    metaTitle: "Haridwar aur SIDCUL mein Housekeeping Services",
+    metaTitle: "SIDCUL Haridwar mein Housekeeping Services",
     description:
-      "Haridwar aur SIDCUL ki factories, offices aur campuses ke liye housekeeping, pantry aur facility support staff, premises ke hisaab se tay routine ke saath.",
+      "SIDCUL aur poore Haridwar ki factories, offices aur campuses ke liye housekeeping, pantry aur facility support staff, premises ke hisaab se tay routine ke saath.",
     heading: "Plants, offices aur campuses ke liye housekeeping.",
-    lede: "Haridwar aur SIDCUL mein housekeeping, pantry, washroom aur facility support teams, aapke premises ke hisaab se tay routine ke saath.",
+    lede: "SIDCUL aur poore Haridwar mein housekeeping, pantry, washroom aur facility support teams, aapke premises ke hisaab se tay routine ke saath.",
     roles: [
       "Housekeeping staff",
       "Pantry aur cafeteria assistants",
@@ -124,7 +124,7 @@ export const servicePagesHinglish: ServiceLandingContent[] = [
       {
         question: "Kya aap SIDCUL factories ke liye housekeeping staff dete hain?",
         answer:
-          "Haan. Haridwar aur SIDCUL ki industrial sites par shopfloor, office, canteen aur common areas ke liye housekeeping, shifts aur production areas ke hisaab se.",
+          "Haan. SIDCUL aur poore Haridwar ki industrial sites par shopfloor, office, canteen aur common areas ke liye housekeeping, shifts aur production areas ke hisaab se.",
         category: "operations",
       },
       {

@@ -24,10 +24,10 @@ export const servicePages: ServiceLandingContent[] = [
     slug: "warehouse-labour",
     serviceId: "warehouse-logistics",
     name: "Warehouse labour",
-    metaTitle: "Warehouse Labour Supplier in Haridwar & SIDCUL",
+    metaTitle: "Warehouse Labour Supplier in SIDCUL Haridwar",
     description:
-      "Loading, unloading, picking, packing and dispatch labour for warehouses in Haridwar and SIDCUL, with site coordination and EPF/ESIC workforce records.",
-    heading: "Warehouse labour for Haridwar and SIDCUL.",
+      "Loading, unloading, picking, packing and dispatch labour for warehouses in SIDCUL and across Haridwar, with site coordination and EPF/ESIC workforce records.",
+    heading: "Warehouse labour in SIDCUL and across Haridwar.",
     lede: "Loading, unloading, picking, packing and dispatch teams, planned around your inbound and outbound activity.",
     roles: [
       "Loading and unloading",
@@ -48,7 +48,7 @@ export const servicePages: ServiceLandingContent[] = [
       {
         question: "Do you supply loading and unloading labour for SIDCUL warehouses?",
         answer:
-          "Yes. We plan loading, unloading, stacking and dispatch teams for warehouses and distribution sites in Haridwar, SIDCUL and the surrounding area.",
+          "Yes. We plan loading, unloading, stacking and dispatch teams for warehouses and distribution sites in SIDCUL and across Haridwar.",
         category: "operations",
       },
       {
@@ -71,9 +71,9 @@ export const servicePages: ServiceLandingContent[] = [
     name: "Factory labour",
     metaTitle: "Factory Labour & Production Helpers in Haridwar",
     description:
-      "Production helpers, packers, line feeders and material handlers for factories in Haridwar and SIDCUL, planned around your shifts and site procedures.",
+      "Production helpers, packers, line feeders and material handlers for factories in SIDCUL and across Haridwar, planned around your shifts and site procedures.",
     heading: "Factory labour for SIDCUL plants.",
-    lede: "Production helpers, packers, line feeders and material handlers for shopfloor work in Haridwar and SIDCUL.",
+    lede: "Production helpers, packers, line feeders and material handlers for shopfloor work in SIDCUL and across Haridwar.",
     roles: [
       "Production helpers",
       "Packers and labellers",
@@ -114,11 +114,11 @@ export const servicePages: ServiceLandingContent[] = [
     slug: "housekeeping",
     serviceId: "housekeeping-facility",
     name: "Housekeeping",
-    metaTitle: "Housekeeping Services in Haridwar & SIDCUL",
+    metaTitle: "Housekeeping Services in SIDCUL Haridwar",
     description:
-      "Housekeeping, pantry and facility support staff for factories, offices and campuses in Haridwar and SIDCUL, with routines planned around the premises.",
+      "Housekeeping, pantry and facility support staff for factories, offices and campuses in SIDCUL and across Haridwar, with routines planned around the premises.",
     heading: "Housekeeping for plants, offices and campuses.",
-    lede: "Housekeeping, pantry, washroom and facility support teams in Haridwar and SIDCUL, with routines planned around your premises.",
+    lede: "Housekeeping, pantry, washroom and facility support teams in SIDCUL and across Haridwar, with routines planned around your premises.",
     roles: [
       "Housekeeping staff",
       "Pantry and cafeteria assistants",
@@ -138,7 +138,7 @@ export const servicePages: ServiceLandingContent[] = [
       {
         question: "Do you provide housekeeping staff for factories in SIDCUL?",
         answer:
-          "Yes. Housekeeping for shopfloors, offices, canteens and common areas at industrial sites in Haridwar and SIDCUL, planned around shifts and production areas.",
+          "Yes. Housekeeping for shopfloors, offices, canteens and common areas at industrial sites in SIDCUL and across Haridwar, planned around shifts and production areas.",
         category: "operations",
       },
       {

@@ -1,4 +1,4 @@
-# Search growth plan: Haridwar and SIDCUL
+# Search growth plan: SIDCUL and across Haridwar
 
 Status: code and copy changes prepared on 26 September 2026. Brand-owner review is required before deployment under `docs/content-approval-workflow.md`.
 

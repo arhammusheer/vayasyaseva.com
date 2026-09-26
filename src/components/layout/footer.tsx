@@ -19,7 +19,7 @@ const columns = [
   {
     label: "More",
     links: [
-      ["/haridwar-sidcul", "Haridwar & SIDCUL"],
+      ["/haridwar-sidcul", "SIDCUL Haridwar"],
       ["/vayasya-setu", "Vayasya Setu"],
       ["https://setu.vayasyaseva.com", "Setu login ↗"],
       ["/brand", "Brand guidelines"],

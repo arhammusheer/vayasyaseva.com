@@ -1,6 +1,6 @@
 # SEO checklist — vayasyaseva.com
 
-Goal: improve qualified visibility for labour, manpower, compliance and industrial-services queries in Haridwar and SIDCUL. Status as of 26 September 2026. See `docs/seo-growth-plan-2026-09.md` for the current query map and measurement plan. Copy changes in this revision need brand-owner approval before deployment.
+Goal: improve qualified visibility for labour, manpower, compliance and industrial-services queries for SIDCUL and across Haridwar. Status as of 26 September 2026. See `docs/seo-growth-plan-2026-09.md` for the current query map and measurement plan. Copy changes in this revision need brand-owner approval before deployment.
 
 ## On-site: done in code
 

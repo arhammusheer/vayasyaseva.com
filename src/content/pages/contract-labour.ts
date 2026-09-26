@@ -33,17 +33,17 @@ export const contractLabourCopy: Record<Locale, ContractLabourCopy> = {
   en: {
     title: "Contract Labour & Manpower Services",
     description:
-      "Contract labour and industrial manpower for factory, warehouse and facility operations in Haridwar and SIDCUL. Review roles, planning and workforce records.",
+      "Contract labour and industrial manpower for factory, warehouse and facility operations in SIDCUL and across Haridwar. Review roles, planning and workforce records.",
     breadcrumb: { home: "Home", services: "Services", page: "Contract labour" },
     hero: ["Contract labour for factory", "and warehouse operations."],
-    lede: "Vayasya Seva brings workforce planning, site coordination and worker documentation together for industrial operations based in and around Haridwar and SIDCUL.",
+    lede: "Vayasya Seva brings workforce planning, site coordination and worker documentation together for industrial operations in SIDCUL and across Haridwar.",
     introEyebrow: "CONTRACT WORKFORCE",
     introHeading: "A service shaped by the work.",
     intro: [
       "Businesses may search for a labour supplier, manpower provider or contract staffing partner. The practical question is the same: which people are needed, where will they work, and how will the engagement be managed?",
       "We discuss those details with your plant, warehouse or facility team before planning the workforce. Ongoing needs, project work and seasonal changes can call for different arrangements.",
     ],
-    localLink: { href: "/haridwar-sidcul", label: "Labour contractor in Haridwar and SIDCUL" },
+    localLink: { href: "/haridwar-sidcul", label: "Labour contractor in SIDCUL Haridwar" },
     areasEyebrow: "WHERE WE SUPPORT OPERATIONS",
     workAreas: [
       {
@@ -97,17 +97,17 @@ export const contractLabourCopy: Record<Locale, ContractLabourCopy> = {
   hi: {
     title: "हरिद्वार में कॉन्ट्रैक्ट लेबर और मैनपावर सप्लाई",
     description:
-      "हरिद्वार और सिडकुल में फ़ैक्टरी, वेयरहाउस और फ़ैसिलिटी के लिए कॉन्ट्रैक्ट लेबर और औद्योगिक मैनपावर। रोल, योजना और वर्कफ़ोर्स रिकॉर्ड पर बात करें।",
+      "सिडकुल और पूरे हरिद्वार में फ़ैक्टरी, वेयरहाउस और फ़ैसिलिटी के लिए कॉन्ट्रैक्ट लेबर और औद्योगिक मैनपावर। रोल, योजना और वर्कफ़ोर्स रिकॉर्ड पर बात करें।",
     breadcrumb: { home: "होम", services: "सेवाएँ", page: "कॉन्ट्रैक्ट लेबर" },
     hero: ["फ़ैक्टरी और वेयरहाउस के लिए", "कॉन्ट्रैक्ट लेबर।"],
-    lede: "Vayasya Seva हरिद्वार और सिडकुल के आसपास के औद्योगिक कामों के लिए वर्कफ़ोर्स प्लानिंग, साइट कोऑर्डिनेशन और कामगारों के दस्तावेज़ एक साथ संभालती है।",
+    lede: "Vayasya Seva सिडकुल और पूरे हरिद्वार के औद्योगिक कामों के लिए वर्कफ़ोर्स प्लानिंग, साइट कोऑर्डिनेशन और कामगारों के दस्तावेज़ एक साथ संभालती है।",
     introEyebrow: "कॉन्ट्रैक्ट वर्कफ़ोर्स",
     introHeading: "काम के हिसाब से बनी सेवा।",
     intro: [
       "कोई लेबर सप्लायर खोजता है, कोई मैनपावर प्रोवाइडर या लेबर ठेकेदार। असल सवाल एक ही है: किन लोगों की ज़रूरत है, वे कहाँ काम करेंगे, और पूरी व्यवस्था कैसे संभाली जाएगी?",
       "वर्कफ़ोर्स की योजना बनाने से पहले हम आपकी प्लांट, वेयरहाउस या फ़ैसिलिटी टीम के साथ ये बातें तय करते हैं। लगातार चलने वाले काम, प्रोजेक्ट और सीज़नल बदलाव के लिए अलग-अलग व्यवस्था की ज़रूरत हो सकती है।",
     ],
-    localLink: { href: "/hi/haridwar-sidcul", label: "हरिद्वार और सिडकुल में लेबर ठेकेदार" },
+    localLink: { href: "/hi/haridwar-sidcul", label: "सिडकुल हरिद्वार में लेबर ठेकेदार" },
     areasEyebrow: "हम किन कामों में साथ देते हैं",
     workAreas: [
       {
@@ -161,17 +161,17 @@ export const contractLabourCopy: Record<Locale, ContractLabourCopy> = {
   hinglish: {
     title: "Haridwar mein Contract Labour aur Manpower Supply",
     description:
-      "Haridwar aur SIDCUL mein factory, warehouse aur facility ke liye contract labour aur industrial manpower. Roles, planning aur workforce records par baat karein.",
+      "SIDCUL aur poore Haridwar mein factory, warehouse aur facility ke liye contract labour aur industrial manpower. Roles, planning aur workforce records par baat karein.",
     breadcrumb: { home: "Home", services: "Services", page: "Contract labour" },
     hero: ["Factory aur warehouse ke liye", "contract labour."],
-    lede: "Vayasya Seva Haridwar aur SIDCUL ke aas-paas ke industrial operations ke liye workforce planning, site coordination aur workers ke documents ek saath sambhalti hai.",
+    lede: "Vayasya Seva SIDCUL aur poore Haridwar ke industrial operations ke liye workforce planning, site coordination aur workers ke documents ek saath sambhalti hai.",
     introEyebrow: "CONTRACT WORKFORCE",
     introHeading: "Kaam ke hisaab se bani service.",
     intro: [
       "Koi labour supplier dhoondhta hai, koi manpower provider ya labour thekedar. Asli sawaal ek hi hai: kin logon ki zaroorat hai, woh kahan kaam karenge, aur poora arrangement kaise manage hoga?",
       "Workforce plan karne se pehle hum aapki plant, warehouse ya facility team ke saath ye baatein tay karte hain. Ongoing kaam, projects aur seasonal badlav ke liye alag arrangements ki zaroorat ho sakti hai.",
     ],
-    localLink: { href: "/hinglish/haridwar-sidcul", label: "Haridwar aur SIDCUL mein labour contractor" },
+    localLink: { href: "/hinglish/haridwar-sidcul", label: "SIDCUL Haridwar mein labour contractor" },
     areasEyebrow: "HUM KIN KAAMON MEIN SAATH DETE HAIN",
     workAreas: [
       {

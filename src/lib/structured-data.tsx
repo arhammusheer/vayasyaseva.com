@@ -25,11 +25,31 @@ const postalAddress = {
   addressCountry: "IN",
 };
 
-/** Primary region and the industrial areas around it; not an exclusive boundary. */
+const HARIDWAR = {
+  "@type": "City",
+  name: "Haridwar",
+  containedInPlace: { "@type": "State", name: "Uttarakhand" },
+};
+
+/**
+ * Primary region and the industrial areas around it; not an exclusive
+ * boundary. SIDCUL Haridwar is the State's Integrated Industrial Estate
+ * inside Haridwar (Ranipur / BHEL area), so it is modelled as part of the
+ * city, not beside it.
+ */
 export function areaServed() {
   return [
-    { "@type": "City", name: "Haridwar" },
-    { "@type": "Place", name: "SIDCUL Industrial Estate, Haridwar" },
+    HARIDWAR,
+    {
+      "@type": "Place",
+      name: "SIDCUL Haridwar",
+      alternateName: [
+        "SIDCUL Industrial Area, Haridwar",
+        "Integrated Industrial Estate (IIE) Haridwar",
+        "SIIDCUL Haridwar",
+      ],
+      containedInPlace: HARIDWAR,
+    },
     { "@type": "City", name: "Roorkee" },
     { "@type": "Place", name: "Bahadrabad" },
     { "@type": "Place", name: "Bhagwanpur" },
@@ -46,7 +66,7 @@ export const knowsAbout = [
   "Fabrication and installation",
   "Machinery maintenance",
   "EPF and ESIC compliance for contract workers",
-  "SIDCUL Haridwar industrial estate",
+  "SIDCUL Haridwar (Integrated Industrial Estate)",
 ];
 
 /** Site-wide graph: one Organization/LocalBusiness node and the WebSite, both addressable by @id. */

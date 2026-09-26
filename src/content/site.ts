@@ -10,7 +10,7 @@ export const siteConfig: SiteConfig = {
   gstin: "05AAJCV4562E1ZB",
   msme: "UDYAM-UK-06-0029670",
   address: "Haridwar, Uttarakhand",
-  region: "Haridwar–SIDCUL",
+  region: "SIDCUL Haridwar",
   linkedin: "https://www.linkedin.com/company/vayasya-seva/",
   sameAs: [
     "https://www.linkedin.com/company/vayasya-seva/",
@@ -33,7 +33,7 @@ export const navigation: NavItem[] = [
 
 export const footerLinks = {
   utility: [
-    { label: "Haridwar–SIDCUL", href: "/haridwar-sidcul" },
+    { label: "SIDCUL Haridwar", href: "/haridwar-sidcul" },
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Terms of Use", href: "/terms" },
   ],

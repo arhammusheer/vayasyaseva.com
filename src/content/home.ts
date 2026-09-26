@@ -77,7 +77,7 @@ export const faqs: FaqItem[] = [
   {
     question: "Where is Vayasya Seva based?",
     answer:
-      "We are based in Haridwar, Uttarakhand, and support businesses in the SIDCUL region. Contact us to discuss your site and location.",
+      "We are based in Haridwar, Uttarakhand, and support businesses in SIDCUL and across Haridwar. Contact us to discuss your site and location.",
     category: "commercial",
   },
   {

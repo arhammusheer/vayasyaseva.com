@@ -80,6 +80,8 @@ export interface SiteConfig {
   email: string;
   phone: string;
   gstin: string;
+  /** Corporate Identity Number (MCA). */
+  cin: string;
   msme: string;
   address: string;
   region: string;

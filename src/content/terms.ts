@@ -1,11 +1,11 @@
 export const termsContent = `
 # Terms of Use
 
-*Last updated: 13 September 2026*
+*Last updated: 27 September 2026*
 
 ## 1. Acceptance of Terms
 
-1.1 These Terms of Use ("Terms") constitute a legally binding agreement between you and Vayasya Seva Private Limited, a company incorporated under the Companies Act, 2013, having its registered office at Haridwar, Uttarakhand, India (the "Company", "we", "us" or "our"), and govern your access to and use of the website located at vayasyaseva.com, all subdomains thereof, any successor or associated domains operated by the Company, and any content, functionality, interface, endpoint, descriptor or service offered thereon (collectively, the "Website").
+1.1 These Terms of Use ("Terms") constitute a legally binding agreement between you and Vayasya Seva Private Limited, a company incorporated under the Companies Act, 2013, with Corporate Identity Number U01619UT2023PTC015814 and its registered office at P-2-230, Deep Ganga Apartments, Sector-5A, SIDCUL, Roshnabad, Haridwar, Uttarakhand 249403, India (the "Company", "we", "us" or "our"), and govern your access to and use of the website located at vayasyaseva.com, all subdomains thereof, any successor or associated domains operated by the Company, and any content, functionality, interface, endpoint, descriptor or service offered thereon (collectively, the "Website").
 
 1.2 By accessing or using the Website, you accept and agree to be bound by these Terms and by our Privacy Policy, which is incorporated herein by reference. If you do not agree to these Terms, you must not access or use the Website.
 
@@ -122,9 +122,10 @@ The Company may, at its sole discretion and without notice or liability, restric
 ## 15. Contact and Company Details
 
 **Vayasya Seva Private Limited**
+CIN: \`U01619UT2023PTC015814\`
 GSTIN: \`05AAJCV4562E1ZB\`
 MSME: \`UDYAM-UK-06-0029670\`
-Haridwar, Uttarakhand, India
+Registered office: P-2-230, Deep Ganga Apartments, Sector-5A, SIDCUL, Roshnabad, Haridwar, Uttarakhand 249403, India
 Electronic mail: help@vayasyaseva.com
 Telephone: +91 72920 14101
 `;

@@ -1,7 +1,7 @@
 export const privacyContent = `
 # Privacy Policy
 
-*Last updated: 26 September 2026*
+*Last updated: 27 September 2026*
 
 ## 1. Who this notice covers
 
@@ -88,9 +88,10 @@ For privacy questions, requests or grievances, contact:
 
 **Vayasya Seva Private Limited**
 
-- Haridwar, Uttarakhand, India
+- Registered office: P-2-230, Deep Ganga Apartments, Sector-5A, SIDCUL, Roshnabad, Haridwar, Uttarakhand 249403, India
 - Email: help@vayasyaseva.com
 - Phone: +91 72920 14101
+- CIN: \`U01619UT2023PTC015814\`
 - GSTIN: \`05AAJCV4562E1ZB\`
 - MSME: \`UDYAM-UK-06-0029670\`
 `;

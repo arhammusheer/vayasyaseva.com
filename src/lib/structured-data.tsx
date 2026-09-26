@@ -98,6 +98,7 @@ export function siteGraphSchema() {
         taxID: siteConfig.gstin,
         identifier: [
           { "@type": "PropertyValue", propertyID: "GSTIN", value: siteConfig.gstin },
+          { "@type": "PropertyValue", propertyID: "CIN", value: siteConfig.cin },
           { "@type": "PropertyValue", propertyID: "Udyam", value: siteConfig.msme },
         ],
         contactPoint: [

@@ -95,6 +95,9 @@ export function Footer() {
             <span>
               GSTIN <span className="font-data">{siteConfig.gstin}</span>
             </span>
+            <span>
+              CIN <span className="font-data">{siteConfig.cin}</span>
+            </span>
           </div>
           <div>
             <AnalyticsPreferencesButton />

@@ -8,6 +8,7 @@ export const siteConfig: SiteConfig = {
   email: "help@vayasyaseva.com",
   phone: "+91 72920 14101",
   gstin: "05AAJCV4562E1ZB",
+  cin: "U01619UT2023PTC015814",
   msme: "UDYAM-UK-06-0029670",
   address: "Haridwar, Uttarakhand",
   region: "SIDCUL Haridwar",

@@ -1,4 +1,11 @@
 import type { MetadataRoute } from "next";
+import {
+  languageAlternates,
+  localePath,
+  locales,
+  translatedLocales,
+  translatedPaths,
+} from "@/lib/i18n";
 
 const lastModified = new Date("2026-09-13");
 const contentUpdated = new Date("2026-09-26");
@@ -6,7 +13,7 @@ const contentUpdated = new Date("2026-09-26");
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://www.vayasyaseva.com";
 
-  return [
+  const english: MetadataRoute.Sitemap = [
     { url: baseUrl, lastModified: contentUpdated, changeFrequency: "monthly", priority: 1 },
     { url: `${baseUrl}/services`, lastModified: contentUpdated, changeFrequency: "monthly", priority: 0.9 },
     { url: `${baseUrl}/services/contract-labour`, lastModified: contentUpdated, changeFrequency: "monthly", priority: 0.9 },
@@ -24,4 +31,33 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/privacy`, lastModified, changeFrequency: "yearly", priority: 0.3 },
     { url: `${baseUrl}/terms`, lastModified, changeFrequency: "yearly", priority: 0.3 },
   ];
+  const published = translatedLocales.filter((l) => locales[l].published);
+  if (!published.length) return english;
+
+  // Each translated page lists every published language on every entry.
+  const withLanguages = (path: string) => {
+    const languages = languageAlternates(path);
+    return languages && {
+      languages: Object.fromEntries(
+        Object.entries(languages)
+          .filter(([key]) => key !== "x-default")
+          .map(([key, href]) => [key, `${baseUrl}${href}`]),
+      ),
+    };
+  };
+  const paired = english.map((entry) => {
+    const path = entry.url.replace(baseUrl, "") || "/";
+    const alternates = withLanguages(path);
+    return alternates ? { ...entry, alternates } : entry;
+  });
+  const translated = published.flatMap((locale) =>
+    translatedPaths.map((path) => ({
+      url: `${baseUrl}${localePath(path, locale)}`,
+      lastModified: contentUpdated,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+      alternates: withLanguages(path),
+    })),
+  );
+  return [...paired, ...translated];
 }

@@ -172,6 +172,8 @@ export function webPageSchema(page: {
   description: string;
   url: string;
   type?: "WebPage" | "AboutPage" | "ContactPage" | "FAQPage" | "CollectionPage";
+  /** BCP 47 tag; defaults to en-IN. */
+  inLanguage?: string;
 }) {
   return {
     "@context": "https://schema.org",
@@ -183,7 +185,7 @@ export function webPageSchema(page: {
     isPartOf: { "@id": SITE_ID },
     about: { "@id": ORG_ID },
     publisher: { "@id": ORG_ID },
-    inLanguage: "en-IN",
+    inLanguage: page.inLanguage ?? "en-IN",
   };
 }
 

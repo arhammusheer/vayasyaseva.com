@@ -3,7 +3,13 @@ import "./globals.css";
 import { Analytics } from "@/components/analytics";
 import { gaId } from "@/lib/analytics-config";
 import { JsonLd, siteGraphSchema } from "@/lib/structured-data";
-import { brandDisplay, brandMono, brandSerif } from "@/lib/fonts";
+import {
+  brandDisplay,
+  brandDisplayDevanagari,
+  brandMono,
+  brandSerif,
+  brandSerifDevanagari,
+} from "@/lib/fonts";
 
 const appDescription =
   "Contract labour, workforce management and industrial services from Vayasya Seva in Haridwar. People and operations supported by careful labour compliance.";
@@ -70,7 +76,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <body
-        className={`${brandDisplay.variable} ${brandSerif.variable} ${brandMono.variable} font-serif antialiased`}
+        className={`${brandDisplay.variable} ${brandSerif.variable} ${brandMono.variable} ${brandDisplayDevanagari.variable} ${brandSerifDevanagari.variable} font-serif antialiased`}
       >
         <JsonLd data={siteGraphSchema()} />
         {children}

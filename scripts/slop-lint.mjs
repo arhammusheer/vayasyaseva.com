@@ -35,6 +35,11 @@ const TIER1 = [
 const PROHIBITED = [
   "world-class", "seamless", "revolutionary", "guaranteed", "100%",
   "leading", "no. 1", "hassle-free", "one-stop", "best",
+  // Hindi equivalents (docs/hindi-glossary.md)
+  "गारंटी", "हमेशा", "कभी नहीं", "सर्वश्रेष्ठ", "सबसे अच्छ", "बेस्ट", "नंबर 1",
+  "नंबर वन",
+  // Hinglish equivalents
+  "guarantee", "hamesha", "kabhi nahi", "sabse best", "number 1", "number one",
 ];
 const TIER2 = [
   "robust", "comprehensive", "cutting-edge", "innovative", "streamline",

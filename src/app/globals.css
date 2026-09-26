@@ -15,10 +15,10 @@
  */
 
 @theme inline {
-  /* Fonts — Anek Latin display, Hind body, JetBrains Mono data */
-  --font-display: var(--font-anek);
-  --font-serif: var(--font-hind);
-  --font-sans: var(--font-hind);
+  /* Fonts — Anek Latin display, Hind body, JetBrains Mono data; Devanagari cuts fill in Hindi text */
+  --font-display: var(--font-anek), var(--font-anek-deva);
+  --font-serif: var(--font-hind), var(--font-hind-deva);
+  --font-sans: var(--font-hind), var(--font-hind-deva);
   --font-mono: var(--font-jetbrains);
   --font-data: var(--font-jetbrains);
 
@@ -814,7 +814,7 @@ a:hover > svg {
   justify-content: space-between;
   gap: 30px;
   padding: 27px 0;
-  font-family: var(--font-anek);
+  font-family: var(--font-anek), var(--font-anek-deva);
   font-size: 28px;
   line-height: 1.2;
 }
@@ -823,7 +823,7 @@ a:hover > svg {
 }
 .detail-list summary::after {
   content: "+";
-  font-family: var(--font-hind);
+  font-family: var(--font-hind), var(--font-hind-deva);
   font-size: 25px;
   font-weight: 400;
   color: var(--gold-700);
@@ -1111,6 +1111,27 @@ a:hover > svg {
   white-space: nowrap;
   margin-left: auto;
 }
+.header-lang {
+  display: flex;
+  gap: 14px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+.header-lang a:hover {
+  color: var(--gold-700);
+}
+.site-header[data-theme="dark"] .header-lang a:hover {
+  color: var(--gold-500);
+}
+/* Devanagari breaks apart under letter-spacing and needs taller lines. */
+[lang="hi"] .eyebrow {
+  font-size: 13px;
+  letter-spacing: 0;
+}
+[lang="hi"] :is(h1, h2, h3, summary) {
+  letter-spacing: 0;
+  line-height: 1.3;
+}
 /* Buttons: 8px radius, weight 600, hover darkens with a slight lift, press settles. */
 .header-contact {
   background: var(--gold-500);
@@ -1235,7 +1256,7 @@ a:hover > svg {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  font-family: var(--font-anek);
+  font-family: var(--font-anek), var(--font-anek-deva);
   font-weight: 500;
   font-size: 26px;
   line-height: 1;

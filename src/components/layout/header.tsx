@@ -11,6 +11,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { navigation, siteConfig } from "@/content/site";
+import { languageLinks } from "@/lib/i18n";
 
 export function Header() {
   const pathname = usePathname();
@@ -95,6 +96,7 @@ export function Header() {
       window.removeEventListener("resize", schedule);
     };
   }, [pathname]);
+  const languages = languageLinks(pathname);
   const primary = navigation.filter((item) =>
     [
       "/services",
@@ -143,6 +145,15 @@ export function Header() {
         >
           {siteConfig.phone}
         </a>
+        {languages.length > 0 && (
+          <nav aria-label="Language" className="header-lang">
+            {languages.map((l) => (
+              <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang}>
+                {l.label}
+              </Link>
+            ))}
+          </nav>
+        )}
         <Link href="/contact" className="header-contact">
           Let’s talk <ArrowUpRight size={17} aria-hidden="true" />
         </Link>

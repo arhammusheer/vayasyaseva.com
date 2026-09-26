@@ -305,7 +305,7 @@ export function JobsForm({ locale, role = null }: { locale: Locale; role?: JobRo
     "h-12 rounded-lg border-neutral-300 bg-background px-4 text-base shadow-none placeholder:text-neutral-400 focus-visible:border-gold-500 focus-visible:ring-gold-500/25 md:text-base";
 
   return (
-    <form onSubmit={submit} noValidate className="jobs-form" aria-busy={sending}>
+    <form data-clarity-mask="true" onSubmit={submit} noValidate className="jobs-form" aria-busy={sending}>
       <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" onReady={renderTurnstile} />
 
       {/* Three tiers. Tier 01 holds the voice note with typing as its

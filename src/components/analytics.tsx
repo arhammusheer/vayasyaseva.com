@@ -2,12 +2,13 @@
 
 import { useEffect, useId, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
+import Script from "next/script";
 import { ChevronDownIcon } from "lucide-react";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics as VercelAnalytics, type BeforeSendEvent } from "@vercel/analytics/next";
 import { analyticsConsentAtKey, analyticsConsentKey, hasAnalyticsConsent, trackAnalyticsEvent } from "@/lib/analytics";
 import { safeAnalyticsPath } from "@/lib/analytics-pages";
-import { gaId } from "@/lib/analytics-config";
+import { clarityId, gaId } from "@/lib/analytics-config";
 import { Button } from "@/components/ui/button";
 
 type Consent = "accepted" | "rejected" | null;
@@ -108,6 +109,11 @@ export function Analytics({ gaId }: { gaId: string }) {
     <>
       {consent === "accepted" && <VercelAnalytics beforeSend={sanitizeBasicEvent} />}
       {consent === "accepted" && <GoogleAnalytics gaId={gaId} />}
+      {consent === "accepted" && clarityId && (
+        <Script id="clarity" strategy="afterInteractive">
+          {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","${clarityId}");`}
+        </Script>
+      )}
       {consent !== "loading" && (consent === null || showPreferences) && (
         <section
           aria-label="Privacy choices"
@@ -127,7 +133,7 @@ export function Analytics({ gaId }: { gaId: string }) {
             </button>
           </div>
           <div id={detailsId} hidden={!showDetails} className="mt-2 text-xs leading-relaxed text-white/80">
-            We measure page views, referrals, approximate location, device details and contact actions using analytics identifiers. No form entries or advertising. See our{" "}
+            We measure page views, referrals, approximate location, device details and contact actions using analytics identifiers, and record how pages are used (clicks, scrolls, cursor movement) with page text and form fields hidden. No form entries or advertising. See our{" "}
             <Link href="/privacy" className="text-white underline underline-offset-2 hover:text-gold-400">privacy policy</Link>.
           </div>
           <div className="mt-2 flex flex-wrap items-center justify-end gap-1">

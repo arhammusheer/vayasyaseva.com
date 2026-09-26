@@ -2,8 +2,9 @@
 
 import { sendGAEvent } from "@next/third-parties/google";
 
-export const analyticsConsentKey = "vayasya-site-measurement-v1";
-export const analyticsConsentAtKey = "vayasya-site-measurement-v1-at";
+export const analyticsConsentKey = "vayasya-site-measurement-v2";
+export const analyticsConsentAtKey = "vayasya-site-measurement-v2-at";
+// v2 (Sept 2026): Clarity session replay added, so v1 choices no longer cover it.
 const consentMaxAge = 180 * 24 * 60 * 60 * 1000;
 
 export function hasAnalyticsConsent() {

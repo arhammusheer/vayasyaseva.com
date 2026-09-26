@@ -21,14 +21,14 @@ Our contact details are in Section 11. The Site is intended for businesses and f
 
 **Additional site measurement.** If you choose "Allow All", Google Analytics also loads and may set analytics cookies or similar identifiers. It can measure pages viewed, sources of traffic, approximate location, device/browser information and interactions such as scrolls and outbound links. Our own events record a contact-page link, phone or email link click, contact-form start, broad error category, and successful enquiry. Those events use fixed labels, not the name, phone number, email address, company or message you enter. Google may receive technical data such as your IP address and page URL when its tag runs. This choice does not authorise advertising personalisation, retargeting, or the transfer of form details to analytics providers.
 
-We do not run session replay or record what you type, cursor movements or keystroke timing for analytics.
+**Usage recordings and heatmaps.** If you choose "Allow All", Microsoft Clarity also loads and may set cookies or similar identifiers. It records how pages are used, including clicks, taps, scrolling, cursor movement and page layout, so we can see where visitors get stuck and improve the Site. These recordings are replayable as a session. The contact form and job application form are masked, so what you type or record in them is not captured, and Clarity masks other sensitive input by default. Clarity receives technical data such as your IP address, page URL and device/browser information. We do not use Clarity for advertising or to identify individual visitors.
 
 ## 3. Your analytics choices
 
 The Site offers two choices for the measurement described above:
 
 - **Required Only:** keeps optional site measurement off. Essential hosting and security processing still occurs.
-- **Allow All:** enables the cookie-free site counts and the additional site measurement described in Section 2.
+- **Allow All:** enables the cookie-free site counts, the additional site measurement, and the usage recordings and heatmaps described in Section 2.
 
 You can reopen these choices at any time using "Privacy choices" in the footer. Your choice is stored in your browser's local storage so the Site can remember it. An affirmative choice expires after 180 days and must be renewed. Changing from "Allow All" to "Required Only" reloads the page to stop scripts that are already running. Withdrawal affects future collection; it does not erase data already received by a provider. You may also block scripts or storage in your browser.
 
@@ -42,13 +42,13 @@ Where a legal basis is required, we rely on your request and the applicable lawf
 
 ## 5. Who receives information
 
-Our authorised team and service providers access information only as needed for the purposes above. Providers include our website host and security services, Vercel Web Analytics and Google Analytics when site measurement is allowed, and the form/email delivery providers used to send your enquiry to our team. We may also disclose information when required by law, to professional advisers under appropriate duties, or as part of a legitimate business transfer.
+Our authorised team and service providers access information only as needed for the purposes above. Providers include our website host and security services, Vercel Web Analytics, Google Analytics and Microsoft Clarity when site measurement is allowed, and the form/email delivery providers used to send your enquiry to our team. We may also disclose information when required by law, to professional advisers under appropriate duties, or as part of a legitimate business transfer.
 
-The providers that handle job applications are listed in Section 10. These providers may process data outside India. Their own privacy documentation describes their infrastructure and practices: [Vercel Web Analytics](https://vercel.com/docs/analytics/privacy-policy) and [Google Analytics](https://support.google.com/analytics/answer/6004245). A link to another website is governed by that site's own notice.
+The providers that handle job applications are listed in Section 10. These providers may process data outside India. Their own privacy documentation describes their infrastructure and practices: [Vercel Web Analytics](https://vercel.com/docs/analytics/privacy-policy), [Google Analytics](https://support.google.com/analytics/answer/6004245) and [Microsoft Clarity](https://learn.microsoft.com/en-us/clarity/setup-and-installation/privacy-disclosure). A link to another website is governed by that site's own notice.
 
 ## 6. How long we keep it
 
-Job applications are kept as described in Section 10. We keep enquiries and business correspondence for as long as needed to respond, maintain relevant business records, resolve disputes and meet legal duties. Operational logs are retained according to our hosting and security configurations. Vercel says the visitor hash used by Web Analytics is discarded after 24 hours; aggregate reports remain subject to the project's retention settings. Google Analytics data is retained according to the property's configured retention settings. We review these settings and delete or anonymise information when it is no longer needed, subject to legal requirements.
+Job applications are kept as described in Section 10. We keep enquiries and business correspondence for as long as needed to respond, maintain relevant business records, resolve disputes and meet legal duties. Operational logs are retained according to our hosting and security configurations. Vercel says the visitor hash used by Web Analytics is discarded after 24 hours; aggregate reports remain subject to the project's retention settings. Google Analytics data is retained according to the property's configured retention settings. Microsoft Clarity data is kept for the periods Microsoft sets: at the time of writing, about 30 days for recordings we have not saved and up to 13 months for heatmaps and saved recordings. We review these settings and delete or anonymise information when it is no longer needed, subject to legal requirements.
 
 Your browser keeps an analytics preference until you change it or clear local storage. An affirmative site-measurement choice stops being valid after 180 days, even if the preference entry remains in storage.
 

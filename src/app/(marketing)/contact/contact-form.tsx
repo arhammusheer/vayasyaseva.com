@@ -120,6 +120,7 @@ export function ContactForm() {
 
   return (
     <form
+      data-clarity-mask="true"
       onSubmit={handleSubmit(onSubmit, () => {
         trackAnalyticsEvent("contact_form_error", { form_type: formType, reason: "validation" });
       })}

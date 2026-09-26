@@ -107,7 +107,8 @@ export function Analytics({ gaId }: { gaId: string }) {
 
   return (
     <>
-      {consent === "accepted" && <VercelAnalytics beforeSend={sanitizeBasicEvent} />}
+      {/* Cookie-free aggregate counts run for every visitor; "Allow All" adds GA4 and Clarity. */}
+      <VercelAnalytics beforeSend={sanitizeBasicEvent} />
       {consent === "accepted" && <GoogleAnalytics gaId={gaId} />}
       {consent === "accepted" && clarityId && (
         <Script id="clarity" strategy="afterInteractive">
@@ -120,7 +121,7 @@ export function Analytics({ gaId }: { gaId: string }) {
           className="fixed bottom-3 right-3 z-[100] max-h-[calc(100dvh-1.5rem)] w-[min(320px,calc(100vw-1.5rem))] overflow-y-auto rounded-md border border-white/10 border-l-[3px] border-l-gold-500/70 bg-neutral-950/55 p-3 text-white shadow-[0_8px_24px_rgba(0,0,0,0.12)] backdrop-blur-md transition-[background-color,border-color,box-shadow] duration-200 hover:border-l-gold-500 hover:bg-neutral-950/95 hover:shadow-[0_12px_32px_rgba(0,0,0,0.22)] focus-within:border-l-gold-500 focus-within:bg-neutral-950/95 sm:right-5"
         >
           <div className="flex items-center justify-between gap-3">
-            <p className="text-sm leading-snug">Allow site analytics?</p>
+            <p className="text-sm leading-snug">Allow additional analytics?</p>
             <button
               type="button"
               aria-expanded={showDetails}
@@ -133,7 +134,7 @@ export function Analytics({ gaId }: { gaId: string }) {
             </button>
           </div>
           <div id={detailsId} hidden={!showDetails} className="mt-2 text-xs leading-relaxed text-white/80">
-            We measure page views, referrals, approximate location, device details and contact actions using analytics identifiers, and record how pages are used (clicks, scrolls, cursor movement) with page text and form fields hidden. No form entries or advertising. See our{" "}
+            Cookie-free page counts always run. Allowing adds Google Analytics (referrals, approximate location, device details, contact actions) and Microsoft Clarity recordings of clicks, scrolls and cursor movement, with page text and form fields hidden. No form entries or advertising. See our{" "}
             <Link href="/privacy" className="text-white underline underline-offset-2 hover:text-gold-400">privacy policy</Link>.
           </div>
           <div className="mt-2 flex flex-wrap items-center justify-end gap-1">

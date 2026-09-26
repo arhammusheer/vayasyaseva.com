@@ -15,6 +15,24 @@ export const INTAKE_SOURCES = {
 } as const;
 export type IntakeSource = keyof typeof INTAKE_SOURCES;
 
+/**
+ * Role pages under /jobs/<slug>. A submission from one carries the slug, so
+ * staff can find people by the work they asked about; the label is for staff.
+ */
+export const JOB_ROLES = {
+  "factory-helper": "Factory helper",
+  warehouse: "Warehouse: loading, picking, packing",
+  "data-entry-operator": "Data entry operator",
+  housekeeping: "Housekeeping",
+  "iti-trades": "ITI trades: welder, fitter, electrician",
+} as const;
+export type JobRole = keyof typeof JOB_ROLES;
+export const JOB_ROLE_SLUGS = Object.keys(JOB_ROLES) as [JobRole, ...JobRole[]];
+
+export function isJobRole(value: unknown): value is JobRole {
+  return typeof value === "string" && Object.hasOwn(JOB_ROLES, value);
+}
+
 export const ATTACHMENT_KINDS = ["audio", "image", "document"] as const;
 export type AttachmentKind = (typeof ATTACHMENT_KINDS)[number];
 

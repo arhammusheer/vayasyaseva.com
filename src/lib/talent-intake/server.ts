@@ -5,7 +5,7 @@
  */
 import { createHmac, randomInt, timingSafeEqual } from "node:crypto";
 import { AwsClient } from "aws4fetch";
-import type { AttachmentKind, IntakeSource } from "./rules";
+import type { AttachmentKind, IntakeSource, JobRole } from "./rules";
 import { attachmentKeyPrefix } from "./rules";
 
 const R2_ENDPOINT = "https://3f03827748ac33418f1176adaa436f26.r2.cloudflarestorage.com";
@@ -86,6 +86,8 @@ export interface TicketFile {
 export interface Ticket {
   ref: string;
   source: IntakeSource;
+  /** Missing on tickets issued before role pages existed. */
+  role?: JobRole | null;
   files: TicketFile[];
   exp: number;
 }

@@ -1,3 +1,4 @@
+import type { JobRole } from "@/lib/talent-intake/rules";
 import type { FaqItem } from "../types";
 import type { Locale } from "@/lib/i18n";
 
@@ -49,7 +50,8 @@ export interface JobsCopy {
   form: JobsFormCopy;
   workEyebrow: string;
   workHeading: string;
-  work: { title: string; text: string }[];
+  /** `role`: links the row to its page under /jobs/<slug>. */
+  work: { title: string; text: string; role?: JobRole }[];
   faqEyebrow: string;
   faqTitle: string;
   faqs: FaqItem[];
@@ -136,13 +138,13 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     workEyebrow: "WHO WE HIRE",
     workHeading: "The work we hire for.",
     work: [
-      { title: "Production helpers", text: "Line work, feeding and assisting on factory shopfloors." },
-      { title: "Packing", text: "Packing, labelling and quality checks." },
-      { title: "Loading and unloading", text: "Warehouse and dispatch work, including stacking." },
-      { title: "Housekeeping", text: "Factories, offices, canteens and campuses." },
+      { title: "Production helpers", text: "Line work, feeding and assisting on factory shopfloors.", role: "factory-helper" },
+      { title: "Packing", text: "Packing, labelling and quality checks.", role: "warehouse" },
+      { title: "Loading and unloading", text: "Warehouse and dispatch work, including stacking.", role: "warehouse" },
+      { title: "Housekeeping", text: "Factories, offices, canteens and campuses.", role: "housekeeping" },
       { title: "Machine operators", text: "For those with experience on a machine or line." },
-      { title: "ITI trades", text: "Welders, fitters and electricians." },
-      { title: "Data entry operators", text: "Computer work in ERP or SAP: stores, dispatch and production entries." },
+      { title: "ITI trades", text: "Welders, fitters and electricians.", role: "iti-trades" },
+      { title: "Data entry operators", text: "Computer work in ERP or SAP: stores, dispatch and production entries.", role: "data-entry-operator" },
       { title: "Supervisors", text: "Shift and site supervision." },
     ],
     faqEyebrow: "QUESTIONS",
@@ -245,13 +247,13 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     workEyebrow: "किन कामों के लिए",
     workHeading: "हम इन कामों के लिए लोग रखते हैं।",
     work: [
-      { title: "प्रोडक्शन हेल्पर", text: "फ़ैक्टरी के शॉपफ़्लोर पर लाइन का काम और मदद।" },
-      { title: "पैकिंग", text: "पैकिंग, लेबलिंग और क्वालिटी चेक।" },
-      { title: "लोडिंग-अनलोडिंग", text: "वेयरहाउस और डिस्पैच का काम, स्टैकिंग समेत।" },
-      { title: "हाउसकीपिंग", text: "फ़ैक्टरी, ऑफ़िस, कैंटीन और कैंपस।" },
+      { title: "प्रोडक्शन हेल्पर", text: "फ़ैक्टरी के शॉपफ़्लोर पर लाइन का काम और मदद।", role: "factory-helper" },
+      { title: "पैकिंग", text: "पैकिंग, लेबलिंग और क्वालिटी चेक।", role: "warehouse" },
+      { title: "लोडिंग-अनलोडिंग", text: "वेयरहाउस और डिस्पैच का काम, स्टैकिंग समेत।", role: "warehouse" },
+      { title: "हाउसकीपिंग", text: "फ़ैक्टरी, ऑफ़िस, कैंटीन और कैंपस।", role: "housekeeping" },
       { title: "मशीन ऑपरेटर", text: "जिन्हें किसी मशीन या लाइन पर काम का अनुभव है।" },
-      { title: "ITI ट्रेड", text: "वेल्डर, फ़िटर और इलेक्ट्रीशियन।" },
-      { title: "डेटा एंट्री ऑपरेटर", text: "कंप्यूटर पर ERP या SAP में एंट्री: स्टोर, डिस्पैच और प्रोडक्शन।" },
+      { title: "ITI ट्रेड", text: "वेल्डर, फ़िटर और इलेक्ट्रीशियन।", role: "iti-trades" },
+      { title: "डेटा एंट्री ऑपरेटर", text: "कंप्यूटर पर ERP या SAP में एंट्री: स्टोर, डिस्पैच और प्रोडक्शन।", role: "data-entry-operator" },
       { title: "सुपरवाइज़र", text: "शिफ्ट और साइट की देखरेख।" },
     ],
     faqEyebrow: "सवाल",
@@ -354,13 +356,13 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     workEyebrow: "KIN KAAMON KE LIYE",
     workHeading: "Hum in kaamon ke liye log rakhte hain.",
     work: [
-      { title: "Production helper", text: "Factory shopfloor par line ka kaam aur madad." },
-      { title: "Packing", text: "Packing, labelling aur quality check." },
-      { title: "Loading-unloading", text: "Warehouse aur dispatch ka kaam, stacking samet." },
-      { title: "Housekeeping", text: "Factory, office, canteen aur campus." },
+      { title: "Production helper", text: "Factory shopfloor par line ka kaam aur madad.", role: "factory-helper" },
+      { title: "Packing", text: "Packing, labelling aur quality check.", role: "warehouse" },
+      { title: "Loading-unloading", text: "Warehouse aur dispatch ka kaam, stacking samet.", role: "warehouse" },
+      { title: "Housekeeping", text: "Factory, office, canteen aur campus.", role: "housekeeping" },
       { title: "Machine operator", text: "Jinhe kisi machine ya line par kaam ka experience hai." },
-      { title: "ITI trade", text: "Welder, fitter aur electrician." },
-      { title: "Data entry operator", text: "Computer par ERP ya SAP mein entry: stores, dispatch aur production." },
+      { title: "ITI trade", text: "Welder, fitter aur electrician.", role: "iti-trades" },
+      { title: "Data entry operator", text: "Computer par ERP ya SAP mein entry: stores, dispatch aur production.", role: "data-entry-operator" },
       { title: "Supervisor", text: "Shift aur site ki dekhrekh." },
     ],
     faqEyebrow: "SAWAAL",

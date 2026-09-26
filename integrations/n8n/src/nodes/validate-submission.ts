@@ -10,6 +10,7 @@ import {
   INTAKE_LIMITS,
   INTAKE_SOURCES,
   REF_PATTERN,
+  isJobRole,
   isAttachmentKeyFor,
   normaliseIndianMobile,
   type AttachmentKind,
@@ -26,6 +27,9 @@ export default async function main(): Promise<N8nItem<ValidatedSubmission>[]> {
 
   const source = body.source && body.source in INTAKE_SOURCES ? body.source : null;
   if (!source) errors.add("source");
+
+  // Unknown role: keep the submission, drop the tag.
+  const role = isJobRole(body.role) ? body.role : null;
 
   const phone = normaliseIndianMobile(String(body.phone ?? ""));
   if (!phone) errors.add("phone");
@@ -63,6 +67,7 @@ export default async function main(): Promise<N8nItem<ValidatedSubmission>[]> {
       json: {
         ref,
         source,
+        role,
         locale: INTAKE_SOURCES[source],
         phone,
         consentVersion: String(body.consent.version).slice(0, 40),

@@ -17,9 +17,9 @@ const nextConfig: NextConfig = {
     return [
       { source: "/:path*", headers: securityHeaders },
       {
-        // The jobs pages record voice notes: this site (only) may use the
+        // The jobs pages (hub and role pages) record voice notes: this site (only) may use the
         // microphone there. Overrides the site-wide Permissions-Policy above.
-        source: "/:locale(hi|hinglish)?/jobs",
+        source: "/:locale(hi|hinglish)?/jobs/:role*",
         headers: [{ key: "Permissions-Policy", value: "camera=(), microphone=(self), geolocation=(), payment=()" }],
       },
       {

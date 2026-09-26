@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
 import { Section } from "@/components/layout/section";
 import { FaqSection } from "@/components/sections/faq-section";
@@ -58,7 +60,15 @@ export function JobsPage({ locale }: { locale: Locale }) {
           <ul className="jobs-work">
             {t.work.map((w) => (
               <li key={w.title}>
-                <h3>{w.title}</h3>
+                <h3>
+                  {w.role ? (
+                    <Link href={localePath(`/jobs/${w.role}`, locale)} className="jobs-work-link">
+                      {w.title} <ArrowUpRight size={20} aria-hidden="true" />
+                    </Link>
+                  ) : (
+                    w.title
+                  )}
+                </h3>
                 <p>{w.text}</p>
               </li>
             ))}

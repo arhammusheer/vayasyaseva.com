@@ -4,6 +4,7 @@ import {
   ATTACHMENT_MIME,
   INTAKE_LIMITS,
   INTAKE_SOURCES,
+  JOB_ROLE_SLUGS,
   REF_PATTERN,
   isAttachmentKeyFor,
   normaliseIndianMobile,
@@ -32,6 +33,8 @@ export const talentIntakeSchema = z
   .object({
     ref: z.string().regex(REF_PATTERN),
     source: z.enum(Object.keys(INTAKE_SOURCES) as [IntakeSource, ...IntakeSource[]]),
+    /** The role page it came from, or null from the general jobs page. */
+    role: z.enum(JOB_ROLE_SLUGS).nullable(),
     phone: z
       .string()
       .transform((value, ctx) => {
@@ -70,6 +73,7 @@ export type TalentIntakeAttachment = TalentIntakePayload["attachments"][number];
  */
 export const jobsStartRequestSchema = z.object({
   source: z.enum(Object.keys(INTAKE_SOURCES) as [IntakeSource, ...IntakeSource[]]),
+  role: z.enum(JOB_ROLE_SLUGS).nullish().transform((r) => r ?? null),
   turnstileToken: z.string().min(1).max(4096),
   files: z
     .array(

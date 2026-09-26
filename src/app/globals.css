@@ -1672,6 +1672,23 @@ a:hover > svg {
   font-size: 24px;
   font-weight: 500;
 }
+.jobs-work-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.jobs-work-link svg {
+  color: var(--gold-700);
+  transition: transform 160ms ease;
+}
+.jobs-work-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-thickness: 1px;
+}
+.jobs-work-link:hover svg {
+  transform: translate(2px, -2px);
+}
 .jobs-work p {
   color: var(--muted-foreground);
   line-height: 1.6;

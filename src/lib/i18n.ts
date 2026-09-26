@@ -28,6 +28,11 @@ export const pageLocales: Record<string, readonly Locale[]> = {
   "/services/factory-labour": ["hinglish"],
   "/services/housekeeping": ["hinglish"],
   "/jobs": ["hi", "hinglish"],
+  "/jobs/factory-helper": ["hi", "hinglish"],
+  "/jobs/warehouse": ["hi", "hinglish"],
+  "/jobs/data-entry-operator": ["hi", "hinglish"],
+  "/jobs/housekeeping": ["hi", "hinglish"],
+  "/jobs/iti-trades": ["hi", "hinglish"],
 };
 
 export function translationsOf(englishPath: string): readonly Locale[] {

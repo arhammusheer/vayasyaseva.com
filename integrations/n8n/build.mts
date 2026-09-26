@@ -377,8 +377,8 @@ function intakeWorkflow() {
       "Save submission",
       `
 WITH s AS (
-  INSERT INTO submissions (ref, source, locale, phone, consent_version, consented_at, adult, text)
-  VALUES ($1, $2, $3, $4, $5, $6::timestamptz, true, $7)
+  INSERT INTO submissions (ref, source, locale, phone, consent_version, consented_at, adult, text, role)
+  VALUES ($1, $2, $3, $4, $5, $6::timestamptz, true, $7, $9)
   ON CONFLICT (ref) DO NOTHING
   RETURNING id
 ), a AS (
@@ -390,7 +390,7 @@ WITH s AS (
 )
 SELECT (SELECT id FROM s) AS submission_id, (SELECT count(*) FROM a) AS attachments;`,
       grid(2),
-      "[$json.ref, $json.source, $json.locale, $json.phone, $json.consentVersion, $json.consentedAt, $json.text, JSON.stringify($json.attachments)]",
+      "[$json.ref, $json.source, $json.locale, $json.phone, $json.consentVersion, $json.consentedAt, $json.text, JSON.stringify($json.attachments), $json.role]",
     ),
   );
   w.add({
@@ -642,7 +642,7 @@ WITH claimed AS (
         SELECT 1 FROM attachments a
         WHERE a.submission_id = c.id AND a.transcript_status IN ('pending', 'running'))
     ORDER BY c.created_at LIMIT 1 FOR UPDATE SKIP LOCKED)
-  RETURNING s.id, s.ref, s.source, s.locale, s.phone, s.text
+  RETURNING s.id, s.ref, s.source, s.role, s.locale, s.phone, s.text
 )
 SELECT c.*, coalesce((
   SELECT jsonb_agg(jsonb_build_object(
@@ -670,7 +670,8 @@ FROM claimed c;`,
     http("Chatwoot: create conversation", grid(6), {
       method: "POST",
       url: `${inbox}/contacts/{{ $json.source_id }}/conversations`,
-      json: "={{ JSON.stringify({}) }}",
+      // job_role: filter conversations by role (a "Job role" conversation attribute in Chatwoot).
+      json: `={{ JSON.stringify({ custom_attributes: ${submission}.role ? { job_role: ${submission}.role } : {} }) }}`,
     }),
   );
   w.add(

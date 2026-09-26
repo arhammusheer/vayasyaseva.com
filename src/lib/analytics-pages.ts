@@ -17,6 +17,9 @@ const publicPages = new Set([
   "/jobs",
   "/hi/jobs",
   "/hinglish/jobs",
+  ...["", "/hi", "/hinglish"].flatMap((prefix) =>
+    ["factory-helper", "warehouse", "data-entry-operator", "housekeeping", "iti-trades"].map((slug) => `${prefix}/jobs/${slug}`),
+  ),
   "/privacy",
   "/services",
   "/services/contract-labour",

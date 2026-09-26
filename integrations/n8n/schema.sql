@@ -22,7 +22,10 @@ BEGIN
     created_at               timestamptz NOT NULL DEFAULT now(),
     updated_at               timestamptz NOT NULL DEFAULT now()
   );
+  -- The role page it came from (JOB_ROLES in src/lib/talent-intake/rules.ts); null from /jobs.
+  ALTER TABLE submissions ADD COLUMN IF NOT EXISTS role text;
   CREATE INDEX IF NOT EXISTS submissions_status_idx ON submissions (status, created_at);
+  CREATE INDEX IF NOT EXISTS submissions_role_idx ON submissions (role, created_at);
   CREATE INDEX IF NOT EXISTS submissions_phone_idx ON submissions (phone);
 
   CREATE TABLE IF NOT EXISTS attachments (

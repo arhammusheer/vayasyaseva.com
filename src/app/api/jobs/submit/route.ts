@@ -47,6 +47,7 @@ export async function POST(request: NextRequest) {
     const payload = talentIntakeSchema.safeParse({
       ref: ticket.ref,
       source: ticket.source,
+      role: ticket.role ?? null,
       phone,
       adult: true,
       consent: { version: TALENT_CONSENT_VERSION, at: new Date().toISOString() },

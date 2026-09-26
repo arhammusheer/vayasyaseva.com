@@ -15,6 +15,7 @@ import {
   normaliseIndianMobile,
   type AttachmentKind,
   type IntakeSource,
+  type JobRole,
 } from "@/lib/talent-intake/rules";
 import type { JobsStartResponse } from "@/lib/talent-intake/contract";
 
@@ -93,7 +94,8 @@ async function upload(url: string, headers: Record<string, string>, body: Blob, 
   }
 }
 
-export function JobsForm({ locale }: { locale: Locale }) {
+/** `role`: set on a role page (/jobs/<slug>) so the submission is tagged with it. */
+export function JobsForm({ locale, role = null }: { locale: Locale; role?: JobRole | null }) {
   const t = jobsCopy[locale].form;
   const noFee = jobsCopy[locale].noFee;
   const [voice, setVoice] = useState<Voice>({ state: "idle" });
@@ -236,7 +238,7 @@ export function JobsForm({ locale }: { locale: Locale }) {
       const start = await fetch("/api/jobs/start", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ source: SOURCE[locale], turnstileToken, files: declared }),
+        body: JSON.stringify({ source: SOURCE[locale], role, turnstileToken, files: declared }),
       });
       resetTurnstile(); // tokens are single-use
       if (start.status === 403) throw new Error("verification");

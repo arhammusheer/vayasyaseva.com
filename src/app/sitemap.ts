@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { jobRoles } from "@/content/pages/job-roles";
 import {
   languageAlternates,
   localePath,
@@ -21,6 +22,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/services/factory-labour`, lastModified: contentUpdated, changeFrequency: "monthly", priority: 0.8 },
     { url: `${baseUrl}/services/housekeeping`, lastModified: contentUpdated, changeFrequency: "monthly", priority: 0.8 },
     { url: `${baseUrl}/jobs`, lastModified: contentUpdated, changeFrequency: "monthly", priority: 0.8 },
+    ...jobRoles.en.map((r) => ({
+      url: `${baseUrl}/jobs/${r.slug}`,
+      lastModified: contentUpdated,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
     { url: `${baseUrl}/haridwar-sidcul`, lastModified: contentUpdated, changeFrequency: "monthly", priority: 0.9 },
     { url: `${baseUrl}/industries`, lastModified, changeFrequency: "monthly", priority: 0.8 },
     { url: `${baseUrl}/how-we-operate`, lastModified, changeFrequency: "monthly", priority: 0.8 },

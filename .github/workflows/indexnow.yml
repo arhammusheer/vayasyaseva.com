@@ -1,0 +1,53 @@
+name: IndexNow
+
+# After each successful production deploy, submit only the pages whose content
+# changed (scripts/indexnow.mjs --changed). Fingerprints from the last run are
+# kept in the Actions cache; with none (first run, or cache evicted) every page
+# is submitted once.
+on: deployment_status
+
+permissions:
+  contents: read
+
+concurrency:
+  group: indexnow
+  cancel-in-progress: false
+
+jobs:
+  submit:
+    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.deployment.sha }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Restore fingerprints
+        uses: actions/cache/restore@v4
+        with:
+          path: .indexnow-state.json
+          key: indexnow-state-${{ github.run_id }}
+          restore-keys: indexnow-state-
+
+      # Deployment URLs are behind Vercel protection, so pages are read from the
+      # public domain; give the production alias a moment to point at this deploy.
+      - name: Wait for the production domain
+        run: sleep 30
+
+      - name: Check production SEO
+        run: node scripts/seo-check.mjs https://www.vayasyaseva.com
+
+      - name: Submit changed pages
+        run: node scripts/indexnow.mjs --changed .indexnow-state.json
+
+      - name: Save fingerprints
+        uses: actions/cache/save@v4
+        with:
+          path: .indexnow-state.json
+          key: indexnow-state-${{ github.run_id }}

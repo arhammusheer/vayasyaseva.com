@@ -41,7 +41,7 @@ export default function AboutPage() {
         lede="Vayasya Seva brings people and practical support to business operations. Our roots are in Haridwar. Our approach starts with understanding what each client needs."
       />
       <Section>
-        <div className="grid gap-10 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
           <h2 className="text-4xl font-medium">
             Close to the people.
             <br />
@@ -66,7 +66,7 @@ export default function AboutPage() {
         </div>
       </Section>
       <Section variant="subtle">
-        <div className="grid gap-10 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
           <div>
             <p className="eyebrow text-gold-700">COMPANY INFORMATION</p>
             <h2 className="mt-5 text-4xl font-medium">

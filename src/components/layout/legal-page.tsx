@@ -41,7 +41,7 @@ export function LegalPage({ content }: { content: string }) {
     <>
       <PageHero title={title} lede={updated} />
       <Section>
-        <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_2fr]">
           <nav
             aria-label="Sections"
             className="hidden lg:sticky lg:top-24 lg:block lg:self-start"

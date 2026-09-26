@@ -1020,13 +1020,6 @@ a:hover > svg {
     width: 30px;
     height: 30px;
   }
-  .footer-main {
-    grid-template-columns: 1fr 1fr;
-    gap: 40px 24px;
-  }
-  .footer-about {
-    grid-column: 1 / -1;
-  }
   .detail-list summary {
     font-size: 24px;
   }
@@ -1116,6 +1109,13 @@ a:hover > svg {
   gap: 14px;
   font-size: 14px;
   white-space: nowrap;
+}
+.header-lang a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  min-width: 28px;
 }
 .header-lang a:hover {
   color: var(--gold-700);
@@ -1288,7 +1288,11 @@ a:hover > svg {
 }
 .footer-social {
   display: inline-flex;
-  margin-top: 4px;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin: 0 0 0 -5px;
   color: var(--neutral-400);
 }
 .footer-social:hover > svg {
@@ -1301,7 +1305,11 @@ a:hover > svg {
   gap: 12px;
   font-size: 15px;
 }
-.footer-main nav a {
+.footer-main nav a,
+.footer-about address a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
   color: var(--neutral-200);
   white-space: nowrap;
 }
@@ -1333,8 +1341,14 @@ a:hover > svg {
   gap: 8px 32px;
   line-height: 1.6;
 }
+.footer-bottom > div:last-child a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
 .footer-bottom > div:last-child {
   display: flex;
+  align-items: center;
   gap: 20px;
   flex-shrink: 0;
 }
@@ -1364,6 +1378,15 @@ a:hover > svg {
   }
 }
 @media (max-width: 700px) {
+  /* Phones: about on its own row, the two link columns below. Kept after
+     the base .footer-main rule, which would otherwise win. */
+  .footer-main {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 40px 24px;
+  }
+  .footer-about {
+    grid-column: 1 / -1;
+  }
   .header-inner {
     height: 58px;
     gap: 12px;
@@ -1481,7 +1504,7 @@ a:hover > svg {
 }
 .jobs-steps > li {
   display: grid;
-  grid-template-columns: 48px 1fr;
+  grid-template-columns: 48px minmax(0, 1fr);
   gap: 14px;
   padding-block: 24px;
 }
@@ -1530,7 +1553,7 @@ a:hover > svg {
 .jobs-say {
   margin-top: 6px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(11rem, 100%), 1fr));
   gap: 4px 24px;
   max-width: 36rem;
 }
@@ -1744,12 +1767,12 @@ a:hover > svg {
 }
 @media (max-width: 700px) {
   .jobs-steps > li {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 8px;
     padding-block: 20px;
   }
   .jobs-work li {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .jobs-no-fee span {
     font-size: 48px;

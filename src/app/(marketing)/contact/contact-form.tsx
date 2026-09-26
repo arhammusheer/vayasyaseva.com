@@ -144,7 +144,7 @@ export function ContactForm() {
         />
       </div>
 
-      <div className="grid gap-x-5 gap-y-6 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-x-5 gap-y-6 sm:grid-cols-2">
         <Field id="name" label="Name" error={errors.name?.message}>
           <Input
             id="name"

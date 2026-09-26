@@ -62,7 +62,7 @@ export default function CompliancePage() {
         lede="Labour compliance is central to how we manage an engagement, from worker onboarding to the records your team needs to review."
       />
       <Section>
-        <div className="grid gap-12 md:grid-cols-[1fr_1.6fr]">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-[1fr_1.6fr]">
           <div>
             <p className="eyebrow text-gold-700">COMPLIANCE IN PRACTICE</p>
             <h2 className="mt-5 text-4xl font-medium">
@@ -89,7 +89,7 @@ export default function CompliancePage() {
         </div>
       </Section>
       <Section variant="subtle">
-        <div className="grid gap-10 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
           <div>
             <h2 className="text-4xl font-medium">
               Registered.

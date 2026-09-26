@@ -50,13 +50,13 @@ export function JobsPage({ locale }: { locale: Locale }) {
         }
       />
       <Section>
-        <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_2fr]">
           <p className="eyebrow text-gold-700 lg:sticky lg:top-32 lg:self-start">{t.eyebrow}</p>
           <JobsForm locale={locale} />
         </div>
       </Section>
       <Section variant="subtle">
-        <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_2fr]">
           <div>
             <p className="eyebrow text-gold-700">{t.workEyebrow}</p>
             <h2 className="mt-5 text-4xl font-medium">{t.workHeading}</h2>

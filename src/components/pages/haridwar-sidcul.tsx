@@ -56,7 +56,7 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
         lede={t.lede}
       />
       <Section>
-        <div className="grid gap-10 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
           <h2 className="text-4xl font-medium">
             {t.introHeading[0]}
             <br />
@@ -76,7 +76,7 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
       </Section>
       <Section variant="subtle">
         <p className="eyebrow text-gold-700">{t.supportEyebrow}</p>
-        <div className="grid gap-8 mt-8 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-8 mt-8 md:grid-cols-3">
           {t.support.map((s) => (
             <div key={s.title}>
               <h2 className="text-2xl font-medium">{s.title}</h2>
@@ -89,7 +89,7 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
         </div>
       </Section>
       <Section>
-        <div className="grid gap-10 md:grid-cols-[1fr_1.6fr]">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.6fr]">
           <h2 className="text-4xl font-medium">{t.faqHeading}</h2>
           <div className="detail-list">
             {t.faqs.map((f) => (

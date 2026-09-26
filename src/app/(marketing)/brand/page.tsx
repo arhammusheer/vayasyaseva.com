@@ -143,7 +143,7 @@ export default function BrandPage() {
       />
 
       <Section id="logo">
-        <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_2fr]">
           <div>
             <p className="eyebrow text-gold-700">01 · LOGO</p>
             <h2 className="mt-5 text-4xl font-medium">Logo usage</h2>
@@ -178,7 +178,7 @@ export default function BrandPage() {
       </Section>
 
       <Section id="typography" variant="subtle">
-        <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_2fr]">
           <div>
             <p className="eyebrow text-gold-700">02 · TYPOGRAPHY</p>
             <h2 className="mt-5 text-4xl font-medium">Typography</h2>
@@ -249,7 +249,7 @@ export default function BrandPage() {
       </Section>
 
       <Section id="colour">
-        <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_2fr]">
           <div>
             <p className="eyebrow text-gold-700">03 · COLOUR</p>
             <h2 className="mt-5 text-4xl font-medium">Colour palette</h2>

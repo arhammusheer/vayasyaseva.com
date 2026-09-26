@@ -35,7 +35,7 @@ export default function SetuPage() {
         lede="Our internal system for connecting the people on site with the information behind the operation."
       />
       <Section>
-        <div className="grid gap-12 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
           <div>
             <p className="eyebrow text-gold-700">SUPPORTING OUR PEOPLE</p>
             <h2 className="mt-5 text-4xl font-medium">

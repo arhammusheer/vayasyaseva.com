@@ -93,7 +93,7 @@ export function ServiceLanding({
       />
       <PageHero title={page.heading} lede={page.lede} />
       <Section>
-        <div className="grid gap-10 md:grid-cols-[1fr_1.6fr]">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.6fr]">
           <div>
             <p className="eyebrow text-gold-700">{t.rolesEyebrow}</p>
             <h2 className="mt-5 text-3xl font-medium">{t.rolesHeading}</h2>
@@ -108,7 +108,7 @@ export function ServiceLanding({
         </div>
       </Section>
       <Section variant="subtle">
-        <div className="grid gap-8 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <h2 className="text-3xl font-medium">{t.planningHeading}</h2>
           <div>
             <p className="leading-relaxed text-muted-foreground">{page.planning}</p>

@@ -42,7 +42,7 @@ export default function IndustriesPage() {
         lede="The right workforce arrangement starts with the realities of your industry: production demands, site conditions and the people who do the work."
       />
       <Section>
-        <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_2fr]">
           <div>
             <p className="eyebrow text-gold-700">WHERE WE CAN HELP</p>
             <p className="mt-5 max-w-sm text-lg text-muted-foreground leading-relaxed">

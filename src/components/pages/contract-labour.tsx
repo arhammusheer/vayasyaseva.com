@@ -51,7 +51,7 @@ export function ContractLabourPage({ locale }: { locale: Locale }) {
         lede={t.lede}
       />
       <Section>
-        <div className="grid gap-10 md:grid-cols-[1fr_1.5fr]">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.5fr]">
           <div>
             <p className="eyebrow text-gold-700">{t.introEyebrow}</p>
             <h2 className="mt-5 text-3xl font-medium">{t.introHeading}</h2>
@@ -68,7 +68,7 @@ export function ContractLabourPage({ locale }: { locale: Locale }) {
       </Section>
       <Section variant="subtle">
         <p className="eyebrow text-gold-700">{t.areasEyebrow}</p>
-        <div className="mt-8 grid gap-8 md:grid-cols-3">
+        <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-3">
           {t.workAreas.map((area) => (
             <article key={area.title}>
               <h2 className="text-2xl font-medium">{area.title}</h2>
@@ -81,12 +81,12 @@ export function ContractLabourPage({ locale }: { locale: Locale }) {
         </div>
       </Section>
       <Section>
-        <div className="grid gap-10 lg:grid-cols-[1fr_2fr]">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_2fr]">
           <div>
             <p className="eyebrow text-gold-700">{t.stepsEyebrow}</p>
             <h2 className="mt-5 text-3xl font-medium">{t.stepsHeading}</h2>
           </div>
-          <ol className="grid gap-7 sm:grid-cols-2">
+          <ol className="grid grid-cols-1 gap-7 sm:grid-cols-2">
             {t.steps.map((step, index) => (
               <li key={step.title} className="border-t pt-5">
                 <span className="font-data text-sm text-gold-700">0{index + 1}</span>
@@ -98,7 +98,7 @@ export function ContractLabourPage({ locale }: { locale: Locale }) {
         </div>
       </Section>
       <Section variant="subtle">
-        <div className="grid gap-8 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <h2 className="text-3xl font-medium">{t.complianceHeading}</h2>
           <div>
             <p className="leading-relaxed text-muted-foreground">{t.complianceText}</p>

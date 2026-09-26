@@ -58,7 +58,7 @@ export default function ApproachPage() {
         lede="Every site has its own demands. We work with your team to put the people, supervision and supporting processes in place."
       />
       <Section>
-        <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_2fr]">
           <div>
             <p className="eyebrow text-gold-700">HOW AN ENGAGEMENT RUNS</p>
             <p className="mt-5 max-w-sm text-lg text-muted-foreground leading-relaxed">
@@ -87,7 +87,7 @@ export default function ApproachPage() {
         </div>
       </Section>
       <Section variant="subtle">
-        <div className="grid gap-10 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
           <div>
             <p className="eyebrow text-gold-700">CONNECTED OPERATIONS</p>
             <h2 className="mt-5 text-4xl font-medium">

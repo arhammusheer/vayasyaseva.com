@@ -17,7 +17,7 @@ export function FaqSection({
   return (
     <Section variant={variant} id="faq">
       <JsonLd data={faqSchema(items)} />
-      <div className="grid gap-10 lg:grid-cols-[1fr_2fr]">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_2fr]">
         <div>
           {eyebrow && <p className="eyebrow text-gold-700">{eyebrow}</p>}
           <h2 className="mt-5 text-4xl font-medium">{title}</h2>

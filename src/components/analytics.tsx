@@ -120,7 +120,7 @@ export function Analytics({ gaId }: { gaId: string }) {
               aria-expanded={showDetails}
               aria-controls={detailsId}
               onClick={() => setShowDetails((open) => !open)}
-              className="inline-flex shrink-0 items-center gap-0.5 text-xs text-white/70 underline underline-offset-2 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-500"
+              className="inline-flex min-h-6 shrink-0 items-center gap-0.5 text-xs text-white/70 underline underline-offset-2 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-500"
             >
               {showDetails ? "Show less" : "Learn more"}
               <ChevronDownIcon aria-hidden="true" className={`size-3.5 transition-transform ${showDetails ? "rotate-180" : ""}`} />
@@ -149,7 +149,7 @@ export function AnalyticsPreferencesButton() {
   return (
     <button
       type="button"
-      className="transition-colors hover:text-gold-500"
+      className="inline-flex min-h-6 items-center transition-colors hover:text-gold-500"
       onClick={() => window.dispatchEvent(new Event(preferencesEvent))}
     >
       Privacy choices

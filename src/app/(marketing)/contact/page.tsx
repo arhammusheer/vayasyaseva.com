@@ -14,7 +14,7 @@ export const metadata = pageMetadata({
 
 function ContactFormFallback() {
   return (
-    <div aria-hidden="true" className="grid gap-x-5 gap-y-6 sm:grid-cols-2">
+    <div aria-hidden="true" className="grid grid-cols-1 gap-x-5 gap-y-6 sm:grid-cols-2">
       {[0, 1, 2, 3].map((i) => (
         <div key={i}>
           <div className="h-3.5 w-16 rounded bg-neutral-100" />
@@ -63,7 +63,7 @@ export default function ContactPage() {
         ])}
       />
       <Section className="pt-10 sm:pt-14 lg:pt-16">
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.6fr] lg:gap-20">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.6fr] lg:gap-20">
           <div className="lg:sticky lg:top-24 lg:self-start">
             <p className="eyebrow text-gold-700">CONTACT</p>
             <h1 className="mt-5 text-5xl font-medium leading-[1.04] tracking-[-0.03em] sm:text-6xl">

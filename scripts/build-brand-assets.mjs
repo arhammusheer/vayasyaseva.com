@@ -1,5 +1,5 @@
 // Pre-generates the downloadable assets served from /brand.
-// Run: npm run brand:assets  (requires network for the font pack)
+// Run: pnpm brand:assets  (requires network for the font pack)
 import { mkdir, readFile, writeFile, rm, stat } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
 import path from "node:path";

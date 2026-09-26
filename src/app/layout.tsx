@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import { Analytics } from "@/components/analytics";
+import { gaId } from "@/lib/analytics-config";
 import { JsonLd, siteGraphSchema } from "@/lib/structured-data";
 import { brandDisplay, brandMono, brandSerif } from "@/lib/fonts";
 
@@ -73,9 +74,7 @@ export default function RootLayout({
       >
         <JsonLd data={siteGraphSchema()} />
         {children}
-        {process.env.NEXT_PUBLIC_GA_ID && (
-          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
-        )}
+        {gaId && <Analytics gaId={gaId} />}
       </body>
     </html>
   );

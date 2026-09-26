@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { siteConfig } from "@/content/site";
+import { AnalyticsPreferencesButton } from "@/components/analytics";
 
 const columns = [
   {
@@ -80,6 +81,7 @@ export function Footer() {
             </span>
           </div>
           <div>
+            <AnalyticsPreferencesButton />
             <Link href="/privacy">Privacy</Link>
             <Link href="/terms">Terms</Link>
           </div>

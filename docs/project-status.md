@@ -55,7 +55,7 @@ The `public/` directory contains only `robots.txt` and `favicon.ico` (default Ne
 - Internal notification is delivered through MSG91
 - Submitter acknowledgement is scheduled asynchronously after successful internal delivery
 
-**Action needed:** Configure the MSG91 environment variables and run `npm run msg91:setup-contact-templates` before deployment.
+**Action needed:** Configure the MSG91 environment variables and run `pnpm msg91:setup-contact-templates` before deployment.
 
 ### 3. Privacy Policy and Terms pages don't exist
 

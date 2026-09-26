@@ -8,7 +8,7 @@ import {
 
 if (!fs.existsSync(openApiOutputPath)) {
   console.error(`Missing ${openApiOutputPath}`);
-  console.error("Run: npm run openapi:generate");
+  console.error("Run: pnpm openapi:generate");
   process.exit(1);
 }
 
@@ -18,7 +18,7 @@ const current = fs.readFileSync(openApiOutputPath, "utf8");
 
 if (current !== expected) {
   console.error("OpenAPI spec is out of date with contact contract.");
-  console.error("Run: npm run openapi:generate");
+  console.error("Run: pnpm openapi:generate");
   process.exit(1);
 }
 

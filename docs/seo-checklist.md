@@ -5,7 +5,7 @@ Goal: improve qualified visibility for labour, manpower, compliance and industri
 ## On-site: done in code
 
 **Crawlability and indexing**
-- `robots.txt`: blanket allow, only `/api/` disallowed; `Host` and `Sitemap` declared. Enforced by `npm run ai:check`.
+- `robots.txt`: blanket allow, only `/api/` disallowed; `Host` and `Sitemap` declared. Enforced by `pnpm ai:check`.
 - `sitemap.xml`: all 13 public pages, including `/services/contract-labour`.
 - One canonical per page via `pageMetadata()`; no root fallback canonical (404 no longer claims a URL).
 - Root `robots` meta: index/follow, `max-snippet:-1`, `max-image-preview:large`, `max-video-preview:-1`.
@@ -37,7 +37,8 @@ Goal: improve qualified visibility for labour, manpower, compliance and industri
 - No horizontal overflow at 390px; one CSS entrance animation, reduced-motion honoured.
 
 **Measurement hooks**
-- GA4 loads only when `NEXT_PUBLIC_GA_ID` is set (`@next/third-parties`), so the same build works with or without analytics.
+- GA4 uses G-80VCZT0V6G in production by default, or `NEXT_PUBLIC_GA_ID` when set, and loads only after the visitor accepts analytics. The preference can be changed from the footer.
+- Enhanced Measurement handles page views, including client-side navigation. A successful contact form sends `generate_lead`; contact-page links send `contact_intent`; phone and email links send `contact_click`. No form contents or contact details are sent as event parameters.
 
 ## Off-site and account-level: owner actions
 
@@ -46,7 +47,7 @@ These move rankings more than anything above and cannot be done from the reposit
 1. **Google Business Profile** for Vayasya Seva Private Limited at the real street address in Haridwar. Categories: Labour contractor / Employment agency / Facility services. Add the phone, website, hours, photos of real sites and teams, and start collecting client reviews. For "labour contractor Haridwar" queries this listing outranks the website.
 2. **Street address and hours on the site.** `siteConfig.address` is city-level; NAP consistency (name, address, phone) between GBP, site footer, schema and directories is a core local ranking signal. Supply the address and opening hours and they go into the footer, contact page and `LocalBusiness` schema.
 3. **Search Console**: verify (paste the token into `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`), submit `sitemap.xml`, and review the Performance report monthly to pick the next content targets from real impressions.
-4. **GA4**: create the property, set `NEXT_PUBLIC_GA_ID`, enable Enhanced Measurement, mark form submission as a conversion. If EU visitors matter, add a consent banner with Consent Mode v2; the privacy policy already permits analytics.
+4. **GA4**: enable Enhanced Measurement with browser-history page changes, and mark `generate_lead` as a key event. Use `NEXT_PUBLIC_GA_ID` only to override the production measurement ID. Keep the consent choice and privacy text under legal review for the markets you serve.
 5. **Citations with identical NAP**: IndiaMART, JustDial, Sulekha, TradeIndia, Uttarakhand MSME/Udyam directory, SIDCUL industrial association listings, LinkedIn company page. Add each public URL to `siteConfig.sameAs`.
 6. **Backlinks that are natural for this business**: client testimonials linking back, SIDCUL/industry association pages, local chamber of commerce, supplier listings on client procurement portals, a LinkedIn company page posting site photos.
 7. **Real photography** to replace the stock hero and to feed GBP and future pages.

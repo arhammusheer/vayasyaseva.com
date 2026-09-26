@@ -2,7 +2,7 @@
 
 Internal reference for reviewing copy and UI on vayasyaseva.com. Compiled September 2026 from public detection guides (Wikipedia's *Signs of AI writing*, SlopDetector, SlopMonster, Developers Digest, TeneX, 925 Studios, GrowthGuys, Spike AI) plus the patterns found in this repo's own history.
 
-**How to use it.** Run `npm run lint:slop` before publishing. Then read the flagged sentences aloud. The registry is descriptive, not a word ban: one "structured" is fine, six in a paragraph is a pattern. Density and clustering are the signal.
+**How to use it.** Run `pnpm lint:slop` before publishing. Then read the flagged sentences aloud. The registry is descriptive, not a word ban: one "structured" is fine, six in a paragraph is a pattern. Density and clustering are the signal.
 
 **The one rule that covers most of this:** write what a plant manager would see on a Monday morning, not what a consultant would put on slide 4.
 
@@ -188,7 +188,7 @@ Rewrite rule for this site: **subject, verb, object, period.** "A VSPL superviso
 `scripts/slop-lint.mjs` scans `src/content` and `src/app/(marketing)` and `src/components/sections` for Tier 1/2/V words, dash density, and the constructions in A2. It prints counts and the offending lines. It is a smoke test, not a judge: read the lines.
 
 ```
-npm run lint:slop
+pnpm lint:slop
 ```
 
 ---

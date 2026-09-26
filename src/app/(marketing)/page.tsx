@@ -53,7 +53,7 @@ export default function HomePage() {
           <p className="eyebrow hero-eyebrow rise">
             PEOPLE AT THE HEART OF WORK
           </p>
-          <h1 className="rise rise-1">Contract labour for Haridwar industry.</h1>
+          <h1 className="rise rise-1">Workforce. With care.</h1>
           <p className="hero-description rise rise-2">
             Vayasya Seva coordinates workers for factories, warehouses and
             facilities in the SIDCUL region, with attention to people, site
@@ -65,9 +65,6 @@ export default function HomePage() {
         </div>
         <div className="hero-foot site-shell">
           <span>BASED IN HARIDWAR, UTTARAKHAND</span>
-          <a href="#introduction">
-            A closer look <span aria-hidden="true">↓</span>
-          </a>
         </div>
       </section>
       <section id="introduction" className="site-shell home-intro">

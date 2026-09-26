@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { trackAnalyticsEvent } from "@/lib/analytics";
 import {
   contactSchema,
   type ContactFormData,
@@ -90,6 +91,9 @@ export function ContactForm() {
         return;
       }
       setSubmitted(true);
+      trackAnalyticsEvent("generate_lead", {
+        form_type: isAssessment ? "site_assessment" : "contact",
+      });
     } catch {
       setError("The message could not be sent. Please try again, or call us.");
     }

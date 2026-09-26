@@ -7,11 +7,13 @@ export const privacyContent = `
 
 This notice explains how Vayasya Seva Private Limited ("we", "us") handles information on the public website at www.vayasyaseva.com (the "Site") and when you contact us through it. Other Vayasya Seva applications and subdomains may have their own notices and different data practices. If a separate notice applies, it takes precedence for that service.
 
-Our contact details are in Section 10. The Site is intended for businesses and adults, not children.
+Our contact details are in Section 11. The Site is intended for businesses and for adults, including adults looking for work; it is not intended for children.
 
 ## 2. Information we handle
 
 **Enquiries you send us.** The contact form asks for your name, phone number and a description of your requirement. Email address and company are optional. We receive the details you enter and the technical information needed to deliver, protect and respond to the enquiry. Please do not put sensitive personal information in the free-text field.
+
+**Job applications.** Details you send through the jobs pages are described in Section 10.
 
 **Site delivery and security.** When your browser requests a page or submits a form, our hosting and security providers may process the request URL, IP address, browser and device information, referring page, date and time, and related logs. This is needed to deliver the Site, prevent abuse, troubleshoot failures and protect the contact form. These operational records are separate from the analytics choices below.
 
@@ -34,7 +36,7 @@ Site measurement stays off until you actively choose "Allow All". This choice co
 
 ## 4. Why we use information
 
-We use enquiries to respond, discuss your requirements, prepare proposals and maintain relevant business records. We use operational request data to deliver and secure the Site, investigate abuse and meet legal obligations. If you allow site measurement, aggregate counts help us understand which pages are useful, while additional reports help us understand traffic sources and whether visitors reach or complete an enquiry.
+Job applications are used as described in Section 10. We use enquiries to respond, discuss your requirements, prepare proposals and maintain relevant business records. We use operational request data to deliver and secure the Site, investigate abuse and meet legal obligations. If you allow site measurement, aggregate counts help us understand which pages are useful, while additional reports help us understand traffic sources and whether visitors reach or complete an enquiry.
 
 Where a legal basis is required, we rely on your request and the applicable lawful basis for responding to it, our legitimate interests in operating and protecting the Site where permitted, or your consent for optional site measurement. We do not treat acceptance of this policy as blanket consent to unrelated processing.
 
@@ -42,17 +44,17 @@ Where a legal basis is required, we rely on your request and the applicable lawf
 
 Our authorised team and service providers access information only as needed for the purposes above. Providers include our website host and security services, Vercel Web Analytics and Google Analytics when site measurement is allowed, and the form/email delivery providers used to send your enquiry to our team. We may also disclose information when required by law, to professional advisers under appropriate duties, or as part of a legitimate business transfer.
 
-These providers may process data outside India. Their own privacy documentation describes their infrastructure and practices: [Vercel Web Analytics](https://vercel.com/docs/analytics/privacy-policy) and [Google Analytics](https://support.google.com/analytics/answer/6004245). A link to another website is governed by that site's own notice.
+The providers that handle job applications are listed in Section 10. These providers may process data outside India. Their own privacy documentation describes their infrastructure and practices: [Vercel Web Analytics](https://vercel.com/docs/analytics/privacy-policy) and [Google Analytics](https://support.google.com/analytics/answer/6004245). A link to another website is governed by that site's own notice.
 
 ## 6. How long we keep it
 
-We keep enquiries and business correspondence for as long as needed to respond, maintain relevant business records, resolve disputes and meet legal duties. Operational logs are retained according to our hosting and security configurations. Vercel says the visitor hash used by Web Analytics is discarded after 24 hours; aggregate reports remain subject to the project's retention settings. Google Analytics data is retained according to the property's configured retention settings. We review these settings and delete or anonymise information when it is no longer needed, subject to legal requirements.
+Job applications are kept as described in Section 10. We keep enquiries and business correspondence for as long as needed to respond, maintain relevant business records, resolve disputes and meet legal duties. Operational logs are retained according to our hosting and security configurations. Vercel says the visitor hash used by Web Analytics is discarded after 24 hours; aggregate reports remain subject to the project's retention settings. Google Analytics data is retained according to the property's configured retention settings. We review these settings and delete or anonymise information when it is no longer needed, subject to legal requirements.
 
 Your browser keeps an analytics preference until you change it or clear local storage. An affirmative site-measurement choice stops being valid after 180 days, even if the preference entry remains in storage.
 
 ## 7. Your rights
 
-Depending on applicable law, you may ask for access, correction or erasure of personal data we hold, withdraw consent, object to processing, or raise a complaint with the relevant authority. Contact us using Section 10. We may need to verify your identity and may have to retain some records where the law requires it. Our aggregate Site reports may not let us identify an individual visitor in order to retrieve or delete a particular page view.
+Depending on applicable law, you may ask for access, correction or erasure of personal data we hold, withdraw consent, object to processing, or raise a complaint with the relevant authority. Contact us using Section 11. We may need to verify your identity and may have to retain some records where the law requires it. Our aggregate Site reports may not let us identify an individual visitor in order to retrieve or delete a particular page view.
 
 ## 8. Security
 
@@ -60,11 +62,27 @@ We use technical and organisational measures intended to protect information, in
 
 ## 9. Children and changes
 
-The Site is intended for adults acting in a business or professional context. We do not knowingly seek children's personal data. If you believe a child has sent us information, please contact us.
+The Site is intended for adults acting in a business or professional context or looking for work, and the jobs pages are for people aged 18 or older. We do not knowingly seek children's personal data. If you believe a child has sent us information, please contact us.
 
 We may update this notice when our services or practices change. The date at the top shows the latest revision. If a change requires a fresh analytics choice, we will request one.
 
-## 10. Contact
+## 10. Job seekers
+
+This section applies when you send us your details through the jobs pages of the Site (www.vayasyaseva.com/jobs and its Hindi and Hinglish versions). The jobs pages are for people aged 18 or older. The English version of this notice governs.
+
+**What we collect.** Your mobile number and anything you choose to send us: a voice recording, photos, PDF or Word documents and a typed message, together with their file names and types. We also record which jobs page you used, and that you confirmed you are 18 or older and agreed to be contacted, with the date and time. We do not ask for identity or bank documents at this stage; please do not send Aadhaar, PAN or bank details. Identity numbers that appear in typed text or transcripts are masked in our records, but files are stored as you send them.
+
+**Why we use it.** To consider you for work with Vayasya Seva and the businesses we serve, to contact you about suitable work, and to keep a record of your application. We rely on the consent you give when you submit your details. Sending details is voluntary, and it does not mean that work will be offered.
+
+**Transcription.** Voice recordings are converted to text by automated speech recognition so that our team can read them. No decision about you is made automatically; a member of our team reviews each submission.
+
+**Who handles it.** Our authorised team, and service providers acting on our instructions: Vercel (website hosting), Cloudflare (file storage, and Turnstile, which checks browser and device signals to keep automated abuse off the form), Sarvam AI (speech recognition for voice recordings), and the systems we operate to store submissions and manage conversations with applicants. Some providers may process data outside India.
+
+**How long we keep it.** Files uploaded through the jobs pages are deleted from our upload storage 90 days after they are received. Your submission, including copies of your files in our applicant and conversation records, is kept for up to 12 months after our last contact with you and then deleted, unless you ask us to delete it sooner. If you are placed in work, the records needed for your engagement are kept for as long as employment and statutory obligations require.
+
+**Your choices.** You may withdraw your consent or ask us to correct or delete your submission at any time. Email help@vayasyaseva.com or call +91 72920 14101, ideally from the mobile number you used, and quote your reference (it begins with VS-J-). Withdrawal does not affect processing that took place before it.
+
+## 11. Contact
 
 For privacy questions, requests or grievances, contact:
 

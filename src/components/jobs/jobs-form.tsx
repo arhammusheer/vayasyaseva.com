@@ -313,7 +313,12 @@ export function JobsForm({ locale }: { locale: Locale }) {
           <span className="jobs-step-number">01</span>
           <div>
             <h2 className="jobs-step-title">{t.steps.record.title}</h2>
-            <p className="jobs-step-hint">{t.steps.record.prompt}</p>
+            <p className="jobs-step-hint">{t.steps.record.lead}</p>
+            <ul className="jobs-say">
+              {t.steps.record.points.map((point) => (
+                <li key={point}>{point}</li>
+              ))}
+            </ul>
             <div className="jobs-recorder">
               {voice.state === "recording" ? (
                 <button type="button" className="jobs-record-button is-recording" onClick={stopRecording}>

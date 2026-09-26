@@ -1526,6 +1526,29 @@ a:hover > svg {
   color: var(--muted-foreground);
   line-height: 1.6;
 }
+/* What to say in the voice note: short bullets, two columns where there's room. */
+.jobs-say {
+  margin-top: 6px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: 4px 24px;
+  max-width: 36rem;
+}
+.jobs-say li {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  line-height: 1.5;
+}
+.jobs-say li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold-500);
+  flex-shrink: 0;
+  transform: translateY(-2px);
+}
 .jobs-step-warning {
   margin-top: 6px;
   font-weight: 600;

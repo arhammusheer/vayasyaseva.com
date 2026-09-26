@@ -4,7 +4,7 @@ import type { Locale } from "@/lib/i18n";
 /** Strings the jobs form shows while it works (client component). */
 export interface JobsFormCopy {
   steps: {
-    record: { title: string; prompt: string };
+    record: { title: string; lead: string; points: string[] };
     files: { title: string; hint: string; warning: string };
     text: { title: string; placeholder: string; skip: string; skipped: string; reopen: string };
     phone: { title: string; placeholder: string; adult: string; consent: string; privacyLink: string };
@@ -72,7 +72,8 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       steps: {
         record: {
           title: "Tell us by voice",
-          prompt: "Your name, where you live, the work you know, how much experience you have and when you can start.",
+          lead: "Just say:",
+          points: ["Your name", "Where you live", "Work you know", "Your experience", "When you can start"],
         },
         files: {
           title: "Photos or documents, if you have them",
@@ -181,7 +182,8 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       steps: {
         record: {
           title: "बोलकर बताइए",
-          prompt: "अपना नाम, आप कहाँ रहते हैं, कौन-सा काम आता है, कितना अनुभव है, और कब से काम शुरू कर सकते हैं।",
+          lead: "बस इतना बताइए:",
+          points: ["आपका नाम", "कहाँ रहते हैं", "कौन-सा काम आता है", "कितना अनुभव है", "कब से शुरू कर सकते हैं"],
         },
         files: {
           title: "फ़ोटो या कागज़ (अगर हों)",
@@ -290,7 +292,8 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       steps: {
         record: {
           title: "Bolkar bataiye",
-          prompt: "Apna naam, aap kahan rehte hain, kaun-sa kaam aata hai, kitna experience hai, aur kab se kaam shuru kar sakte hain.",
+          lead: "Bas itna bataiye:",
+          points: ["Aapka naam", "Kahan rehte hain", "Kaun-sa kaam aata hai", "Kitna experience hai", "Kab se shuru kar sakte hain"],
         },
         files: {
           title: "Photo ya documents (agar hon)",

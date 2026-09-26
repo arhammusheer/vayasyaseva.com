@@ -1,13 +1,14 @@
 name: IndexNow
 
 # After each successful production deploy, submit only the pages whose content
-# changed (scripts/indexnow.mjs --changed). Fingerprints from the last run are
-# kept in the Actions cache; with none (first run, or cache evicted) every page
-# is submitted once.
+# changed (scripts/indexnow.mjs --changed). Fingerprints are an artifact of the
+# last successful run (actions/cache does not work on deployment_status, which
+# has no branch ref); with none (first run, or expired) every page is submitted.
 on: deployment_status
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: indexnow
@@ -29,11 +30,15 @@ jobs:
           node-version-file: .nvmrc
 
       - name: Restore fingerprints
-        uses: actions/cache/restore@v4
-        with:
-          path: .indexnow-state.json
-          key: indexnow-state-${{ github.run_id }}
-          restore-keys: indexnow-state-
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          last=$(gh run list -R "$GITHUB_REPOSITORY" --workflow indexnow.yml --status success -L 1 --json databaseId --jq '.[0].databaseId // empty')
+          if [ -n "$last" ] && gh run download "$last" -R "$GITHUB_REPOSITORY" -n indexnow-state; then
+            echo "Fingerprints from run $last"
+          else
+            echo "No previous fingerprints; submitting every page"
+          fi
 
       # Deployment URLs are behind Vercel protection, so pages are read from the
       # public domain; give the production alias a moment to point at this deploy.
@@ -47,7 +52,9 @@ jobs:
         run: node scripts/indexnow.mjs --changed .indexnow-state.json
 
       - name: Save fingerprints
-        uses: actions/cache/save@v4
+        uses: actions/upload-artifact@v4
         with:
+          name: indexnow-state
           path: .indexnow-state.json
-          key: indexnow-state-${{ github.run_id }}
+          include-hidden-files: true
+          retention-days: 90

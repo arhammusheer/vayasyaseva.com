@@ -87,6 +87,7 @@
   --color-saffron-700: var(--saffron-700);
   --color-saffron-800: var(--saffron-800);
   --color-saffron-900: var(--saffron-900);
+  --color-saffron-950: var(--saffron-950);
 
   --color-indigo: var(--indigo);
   --color-indigo-foreground: var(--indigo-foreground);
@@ -101,6 +102,7 @@
   --color-indigo-700: var(--indigo-700);
   --color-indigo-800: var(--indigo-800);
   --color-indigo-900: var(--indigo-900);
+  --color-indigo-950: var(--indigo-950);
 
   --color-forest: var(--forest);
   --color-forest-foreground: var(--forest-foreground);
@@ -115,6 +117,7 @@
   --color-forest-700: var(--forest-700);
   --color-forest-800: var(--forest-800);
   --color-forest-900: var(--forest-900);
+  --color-forest-950: var(--forest-950);
 
   --color-slate: var(--slate);
   --color-slate-foreground: var(--slate-foreground);
@@ -129,6 +132,7 @@
   --color-slate-700: var(--slate-700);
   --color-slate-800: var(--slate-800);
   --color-slate-900: var(--slate-900);
+  --color-slate-950: var(--slate-950);
 
   --color-subtle: var(--subtle);
 
@@ -197,6 +201,7 @@
   --saffron-700: #8f3f17;
   --saffron-800: #6e3215;
   --saffron-900: #552811;
+  --saffron-950: #301306;
 
   --indigo-50: #f4f7fd;
   --indigo-100: #e7edf8;
@@ -208,6 +213,7 @@
   --indigo-700: #374b85;
   --indigo-800: #2d3e6c;
   --indigo-900: #273558;
+  --indigo-950: #151d33;
 
   --forest-50: #f1faf6;
   --forest-100: #dbf2e8;
@@ -219,6 +225,7 @@
   --forest-700: #256146;
   --forest-800: #204d38;
   --forest-900: #1b402f;
+  --forest-950: #0f261c;
 
   --slate-50: #f7f8fa;
   --slate-100: #edeff3;
@@ -230,6 +237,7 @@
   --slate-700: #434c5d;
   --slate-800: #353c4a;
   --slate-900: #2a303c;
+  --slate-950: #171b22;
 
   /* ── Semantic state colors ── */
   --success: #1f7a4d;

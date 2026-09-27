@@ -68,6 +68,7 @@ export const palette: Scale[] = [
       ["700", "#8F3F17"],
       ["800", "#6E3215"],
       ["900", "#552811"],
+      ["950", "#301306"],
     ]),
   },
   {
@@ -85,6 +86,7 @@ export const palette: Scale[] = [
       ["700", "#374B85"],
       ["800", "#2D3E6C"],
       ["900", "#273558"],
+      ["950", "#151D33"],
     ]),
   },
   {
@@ -102,6 +104,7 @@ export const palette: Scale[] = [
       ["700", "#256146"],
       ["800", "#204D38"],
       ["900", "#1B402F"],
+      ["950", "#0F261C"],
     ]),
   },
   {
@@ -119,6 +122,7 @@ export const palette: Scale[] = [
       ["700", "#434C5D"],
       ["800", "#353C4A"],
       ["900", "#2A303C"],
+      ["950", "#171B22"],
     ]),
   },
   {
@@ -131,9 +135,31 @@ export const palette: Scale[] = [
       { name: "Warning", hex: "#A45E0C" },
       { name: "Danger", hex: "#B42318" },
       { name: "Pending", hex: "#556073" },
+      { name: "Locked", hex: "#4A4458", note: "Frozen or final; waiting on nobody" },
     ],
   },
 ];
+
+/**
+ * Dark surfaces. The brand has no separate dark palette: dark mode is the
+ * neutral and gold ramps turned over, with each pairing checked against WCAG
+ * 2.x contrast. Setu's dark theme is built from exactly these.
+ */
+export const darkSurfaces: Scale = {
+  id: "dark",
+  title: "Dark surfaces",
+  role: "Dark mode uses the same ramps turned over. Text pairings clear 4.5:1 on their surface; gold text uses 300, never 500.",
+  swatches: [
+    { name: "Canvas · Neutral 950", hex: "#020617" },
+    { name: "Surface · Neutral 900", hex: "#0F172A" },
+    { name: "Muted and rules · Neutral 800", hex: "#1E293B" },
+    { name: "Text · Neutral 50", hex: "#F8FAFC", note: "19.3:1 on canvas" },
+    { name: "Secondary text · Neutral 300", hex: "#CBD5E1", note: "12.0:1 on surface" },
+    { name: "Placeholder · Neutral 400", hex: "#94A3B8", note: "7.0:1 on surface" },
+    { name: "Brand text · Gold 300", hex: "#F4CD6D", note: "11.7:1 on surface" },
+    { name: "Focus · Gold 400", hex: "#EBB74A", note: "11.0:1 on canvas" },
+  ],
+};
 
 export const typeScale = [
   {

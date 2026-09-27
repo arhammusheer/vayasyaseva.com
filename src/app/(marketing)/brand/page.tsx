@@ -6,13 +6,13 @@ import { pageMetadata } from "@/lib/metadata";
 import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
-import { typeScale } from "@/content/brand";
+import { darkSurfaces, typeScale } from "@/content/brand";
 import { ColorSwatches } from "./color-swatches";
 
 export const metadata = pageMetadata({
   title: "Brand Guidelines",
   description:
-    "The Vayasya Seva mark, typography and colour palette, with downloadable logo files and fonts.",
+    "The Vayasya mark, product lockups, typography and colour palette, with downloadable logo files and fonts.",
   alternates: { canonical: "/brand" },
 });
 
@@ -33,6 +33,16 @@ const downloads = {
       label: "Logo kit",
       meta: "ZIP · SVG, PNG 256–2048, plated variants, icon set, usage notes",
     },
+    {
+      file: "vayasya-setu-lockup-light.svg",
+      label: "Vayasya Setu lockup, for light surfaces",
+      meta: "SVG · mark and name, text outlined",
+    },
+    {
+      file: "vayasya-setu-lockup-dark.svg",
+      label: "Vayasya Setu lockup, for dark surfaces",
+      meta: "SVG · mark and name, text outlined",
+    },
   ],
   fonts: [
     {
@@ -50,6 +60,7 @@ const rules = {
     "Over imagery, place the mark on a calm solid plate first.",
     "If it is too small to read clearly, use a larger placement rather than forcing it smaller.",
     "Use the supplied files as they are. Do not rebuild the mark.",
+    "A product name sits beside the mark in Anek at weight 500, in one weight. Use the supplied lockup file.",
   ],
   type: [
     "Anek carries headings and high-emphasis lines only; it is not a reading face.",
@@ -66,6 +77,37 @@ function size(file: string) {
   return bytes >= 1024 * 1024
     ? `${(bytes / 1024 / 1024).toFixed(1)} MB`
     : `${Math.round(bytes / 1024)} KB`;
+}
+
+function DarkSurfaces() {
+  return (
+    <div className="mt-12">
+      <div className="mb-3 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+        <h3 className="text-xl font-medium">{darkSurfaces.title}</h3>
+        <p className="max-w-2xl text-sm text-muted-foreground">
+          {darkSurfaces.role}
+        </p>
+      </div>
+      <ul className="divide-y border-y" aria-label="Dark surfaces">
+        {darkSurfaces.swatches.map((s) => (
+          <li key={s.name} className="flex items-center gap-4 py-3">
+            <span
+              aria-hidden="true"
+              className="size-8 shrink-0 rounded-md border"
+              style={{ background: s.hex }}
+            />
+            <span className="grow text-sm">{s.name}</span>
+            <span className="font-data text-xs text-muted-foreground">
+              {s.hex}
+            </span>
+            <span className="hidden w-32 text-right font-data text-xs text-muted-foreground sm:block">
+              {s.note ?? ""}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
 function DownloadList({
@@ -127,7 +169,7 @@ export default function BrandPage() {
           type: "WebPage",
           name: "Brand",
           description:
-            "The Vayasya Seva mark, typography and colour palette, with downloadable logo files and fonts.",
+            "The Vayasya mark, product lockups, typography and colour palette, with downloadable logo files and fonts.",
           url: "/brand",
         })}
       />
@@ -139,7 +181,7 @@ export default function BrandPage() {
       />
       <PageHero
         title="Brand guidelines"
-        lede="Logo usage, typography and colour palette for Vayasya Seva, with downloadable logo files and fonts."
+        lede="Logo usage, typography and colour palette for Vayasya and its products, Seva and Setu, with downloadable logo files and fonts."
       />
 
       <Section id="logo">
@@ -171,6 +213,28 @@ export default function BrandPage() {
             <p className="mt-3 text-sm text-muted-foreground">
               One gold mark, used as-is on light and dark surfaces. Gold #DAA236
               on white or Neutral 900.
+            </p>
+            <div className="mt-8 grid grid-cols-1 gap-px overflow-hidden rounded-lg border bg-border sm:grid-cols-2">
+              <div className="flex items-center justify-center bg-background px-6 py-10">
+                <Image
+                  src="/brand/downloads/vayasya-setu-lockup-light.svg"
+                  alt="Vayasya Setu lockup on white"
+                  width={234}
+                  height={53}
+                />
+              </div>
+              <div className="flex items-center justify-center bg-neutral-900 px-6 py-10">
+                <Image
+                  src="/brand/downloads/vayasya-setu-lockup-dark.svg"
+                  alt="Vayasya Setu lockup on navy"
+                  width={234}
+                  height={53}
+                />
+              </div>
+            </div>
+            <p className="mt-3 text-sm text-muted-foreground">
+              A product lockup is the mark beside the product name. Setu has no
+              colour of its own; the name takes the text colour of its surface.
             </p>
             <DownloadList items={downloads.logo} />
           </div>
@@ -262,7 +326,10 @@ export default function BrandPage() {
               Click a swatch to copy its hex value.
             </p>
           </div>
-          <ColorSwatches />
+          <div>
+            <ColorSwatches />
+            <DarkSurfaces />
+          </div>
         </div>
       </Section>
     </>

@@ -204,7 +204,7 @@ The hero secondary CTA to `/contact?type=assessment` now pre-fills the requireme
 - `/api/contact` — Public inquiry endpoint with validation, abuse protection, and MSG91 delivery
 
 ### Brand system
-- Color tokens: VSPL gold (#C97A2B), slate text, white backgrounds
+- Color tokens: Vayasya Gold 500 (#DAA236), slate neutrals, white backgrounds
 - Typography: Anek Devanagari (display), Hind (body with Devanagari), JetBrains Mono (data/mono)
 - Consistent section padding, max-width, spacing
 - Reusable `Section`, `SectionHeader`, `CtaBlock` components

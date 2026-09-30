@@ -45,7 +45,13 @@ if (errors.length === 0) {
     }
   }
 
-  const llmsFullChecks = ["/openapi/v1.json", "/ai-access-policy.txt"];
+  // llms.txt list items must be Markdown links (llmstxt.org); bare URLs are not parsed as links.
+  const bareUrlItems = llms.match(/^- (?:(?:GET|POST) )?(?:https?:\/\/|\$\{baseUrl\}).*$/gm) ?? [];
+  for (const line of bareUrlItems) {
+    errors.push(`llms.txt list item is not a Markdown link: ${line}`);
+  }
+
+  const llmsFullChecks =["/openapi/v1.json", "/ai-access-policy.txt"];
   for (const endpoint of llmsFullChecks) {
     if (!llmsFull.includes(endpoint)) {
       errors.push(`llms-full.txt is missing endpoint reference: ${endpoint}`);

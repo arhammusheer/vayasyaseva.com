@@ -41,6 +41,7 @@ export const servicePages: ServiceLandingContent[] = [
     planning:
       "Tell us the dock hours, vehicle movements, shift pattern and peak days. We plan the team and supervision around that activity and discuss changes as volumes move.",
     related: [
+      { href: "/services/loading-unloading-labour", label: "Loading and unloading labour" },
       { href: "/services/factory-labour", label: "Factory labour" },
       { href: "/services/housekeeping", label: "Housekeeping" },
       { href: "/services/contract-labour", label: "How contract labour works" },
@@ -62,6 +63,52 @@ export const servicePages: ServiceLandingContent[] = [
         question: "Who handles EPF and ESIC for warehouse workers?",
         answer:
           "We do, as the contractor. Applicable EPF and ESIC contributions, attendance and wage records for the workers deployed are maintained by us and available for your review.",
+        category: "compliance",
+      },
+    ],
+  },
+  {
+    slug: "loading-unloading-labour",
+    serviceId: "warehouse-logistics",
+    name: "Loading and unloading labour",
+    metaTitle: "Loading Unloading Labour Contractor in SIDCUL Haridwar",
+    description:
+      "Loading and unloading labour for factories, warehouses and transporters in SIDCUL and across Haridwar: truck and container handling, stacking and shifting, with EPF/ESIC records.",
+    heading: "Loading and unloading labour in SIDCUL and across Haridwar.",
+    lede: "Crews for trucks, containers and material movement at factories, warehouses and transport yards, sized to how many vehicles you handle.",
+    roles: [
+      "Truck loading and unloading",
+      "Container stuffing and destuffing",
+      "Bag, carton and drum handling",
+      "Stacking, palletising and shrink-wrapping",
+      "Shifting material inside the plant",
+      "Counting and checking loads against the challan",
+      "Helpers alongside forklift and MHE operators",
+    ],
+    planning:
+      "Tell us how many vehicles you load or unload on a normal day and on a peak day, the hours the dock runs, what the goods are and how they are packed. We plan crew size and supervision around that, including night and holiday arrivals where needed, and revisit it as volumes change.",
+    related: [
+      { href: "/services/warehouse-labour", label: "Warehouse labour" },
+      { href: "/services/factory-labour", label: "Factory labour" },
+      { href: "/services/contract-labour", label: "How contract labour works" },
+    ],
+    faqs: [
+      {
+        question: "Do you supply loading and unloading labour for factories as well as warehouses?",
+        answer:
+          "Yes. We plan loading and unloading crews for factory stores and dispatch, warehouses, and transport yards in SIDCUL and across Haridwar.",
+        category: "operations",
+      },
+      {
+        question: "Can you provide extra loaders for peak days or a short period?",
+        answer:
+          "Peak and short-term requirements are discussed case by case. Share the dates, the number of vehicles and the goods, and we confirm what we can plan.",
+        category: "commercial",
+      },
+      {
+        question: "Who handles EPF, ESIC and safety for the loading crew?",
+        answer:
+          "We do, as the contractor, for EPF, ESIC, attendance and wage records. Your site's safety rules, PPE and dock procedures are part of planning, and our supervisor coordinates them with your team.",
         category: "compliance",
       },
     ],

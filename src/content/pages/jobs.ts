@@ -66,7 +66,7 @@ export interface JobsCopy {
  */
 export const jobsCopy: Record<Locale, JobsCopy> = {
   "en-IN": {
-    title: "Jobs in SIDCUL Haridwar: Factory, Warehouse, Housekeeping",
+    title: "SIDCUL Haridwar Vacancy: Factory, Warehouse and ITI Jobs",
     description:
       "Looking for work in SIDCUL or anywhere in Haridwar? Send a voice note, a photo of your certificates or a few lines about yourself. Vayasya Seva never charges a fee for a job.",
     breadcrumb: { home: "Home", page: "Jobs" },
@@ -140,11 +140,15 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     workHeading: "The work we hire for.",
     work: [
       { title: "Production helpers", text: "Line work, feeding and assisting on factory shopfloors.", role: "factory-helper" },
-      { title: "Packing", text: "Packing, labelling and quality checks.", role: "warehouse" },
+      { title: "Packing", text: "Packing, labelling and quality checks.", role: "packing" },
       { title: "Loading and unloading", text: "Warehouse and dispatch work, including stacking.", role: "warehouse" },
+      { title: "Forklift operators", text: "Loading and stacking by forklift, for experienced operators.", role: "forklift-operator" },
       { title: "Housekeeping", text: "Factories, offices, canteens and campuses.", role: "housekeeping" },
-      { title: "Machine operators", text: "For those with experience on a machine or line." },
-      { title: "ITI trades", text: "Welders, fitters and electricians.", role: "iti-trades" },
+      { title: "Machine operators", text: "For those with experience on a machine or line.", role: "machine-operator" },
+      { title: "Electricians", text: "Plant maintenance, wiring, motors and panels.", role: "electrician" },
+      { title: "Welders", text: "Arc, MIG and TIG welding and gas cutting.", role: "welder" },
+      { title: "Fitters", text: "Mechanical maintenance and machine fitting.", role: "fitter" },
+      { title: "Other ITI trades", text: "Other trades, and helper or trainee roles for ITI freshers.", role: "iti-trades" },
       { title: "Data entry operators", text: "Computer work in ERP or SAP: stores, dispatch and production entries.", role: "data-entry-operator" },
       { title: "Supervisors", text: "Shift and site supervision." },
     ],
@@ -174,7 +178,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     ],
   },
   "hi-IN": {
-    title: "सिडकुल हरिद्वार में नौकरी: फ़ैक्टरी, वेयरहाउस, हाउसकीपिंग",
+    title: "सिडकुल हरिद्वार वैकेंसी: फ़ैक्टरी, वेयरहाउस और ITI की नौकरी",
     description:
       "सिडकुल या हरिद्वार में कहीं भी काम चाहिए? अपनी आवाज़ में बताइए, सर्टिफ़िकेट की फ़ोटो भेजिए या दो लाइन लिखिए। Vayasya Seva नौकरी के लिए कोई फ़ीस नहीं लेती।",
     breadcrumb: { home: "होम", page: "नौकरी" },
@@ -248,11 +252,15 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     workHeading: "हम इन कामों के लिए लोग रखते हैं।",
     work: [
       { title: "प्रोडक्शन हेल्पर", text: "फ़ैक्टरी के शॉपफ़्लोर पर लाइन का काम और मदद।", role: "factory-helper" },
-      { title: "पैकिंग", text: "पैकिंग, लेबलिंग और क्वालिटी चेक।", role: "warehouse" },
+      { title: "पैकिंग", text: "पैकिंग, लेबलिंग और क्वालिटी चेक।", role: "packing" },
       { title: "लोडिंग-अनलोडिंग", text: "वेयरहाउस और डिस्पैच का काम, स्टैकिंग समेत।", role: "warehouse" },
+      { title: "फ़ोर्कलिफ़्ट ऑपरेटर", text: "फ़ोर्कलिफ़्ट से लोडिंग और स्टैकिंग, अनुभवी ऑपरेटरों के लिए।", role: "forklift-operator" },
       { title: "हाउसकीपिंग", text: "फ़ैक्टरी, ऑफ़िस, कैंटीन और कैंपस।", role: "housekeeping" },
-      { title: "मशीन ऑपरेटर", text: "जिन्हें किसी मशीन या लाइन पर काम का अनुभव है।" },
-      { title: "ITI ट्रेड", text: "वेल्डर, फ़िटर और इलेक्ट्रीशियन।", role: "iti-trades" },
+      { title: "मशीन ऑपरेटर", text: "जिन्हें किसी मशीन या लाइन पर काम का अनुभव है।", role: "machine-operator" },
+      { title: "इलेक्ट्रीशियन", text: "प्लांट मेंटेनेंस, वायरिंग, मोटर और पैनल।", role: "electrician" },
+      { title: "वेल्डर", text: "आर्क, MIG और TIG वेल्डिंग और गैस कटिंग।", role: "welder" },
+      { title: "फ़िटर", text: "मैकेनिकल मेंटेनेंस और मशीन फ़िटिंग।", role: "fitter" },
+      { title: "दूसरे ITI ट्रेड", text: "दूसरे ट्रेड, और ITI फ़्रेशर के लिए हेल्पर या ट्रेनी का काम।", role: "iti-trades" },
       { title: "डेटा एंट्री ऑपरेटर", text: "कंप्यूटर पर ERP या SAP में एंट्री: स्टोर, डिस्पैच और प्रोडक्शन।", role: "data-entry-operator" },
       { title: "सुपरवाइज़र", text: "शिफ्ट और साइट की देखरेख।" },
     ],
@@ -282,7 +290,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     ],
   },
   "hi-Latn-IN": {
-    title: "SIDCUL Haridwar mein Naukri: Factory, Warehouse, Housekeeping",
+    title: "SIDCUL Haridwar Vacancy: Factory, Warehouse aur ITI Naukri",
     description:
       "SIDCUL ya Haridwar mein kahin bhi kaam chahiye? Apni awaaz mein bataiye, certificate ki photo bhejiye ya do line likhiye. Vayasya Seva naukri ke liye koi fee nahi leti.",
     breadcrumb: { home: "Home", page: "Jobs" },
@@ -356,11 +364,15 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     workHeading: "Hum in kaamon ke liye log rakhte hain.",
     work: [
       { title: "Production helper", text: "Factory shopfloor par line ka kaam aur madad.", role: "factory-helper" },
-      { title: "Packing", text: "Packing, labelling aur quality check.", role: "warehouse" },
+      { title: "Packing", text: "Packing, labelling aur quality check.", role: "packing" },
       { title: "Loading-unloading", text: "Warehouse aur dispatch ka kaam, stacking samet.", role: "warehouse" },
+      { title: "Forklift operator", text: "Forklift se loading aur stacking, experienced operators ke liye.", role: "forklift-operator" },
       { title: "Housekeeping", text: "Factory, office, canteen aur campus.", role: "housekeeping" },
-      { title: "Machine operator", text: "Jinhe kisi machine ya line par kaam ka experience hai." },
-      { title: "ITI trade", text: "Welder, fitter aur electrician.", role: "iti-trades" },
+      { title: "Machine operator", text: "Jinhe kisi machine ya line par kaam ka experience hai.", role: "machine-operator" },
+      { title: "Electrician", text: "Plant maintenance, wiring, motor aur panel.", role: "electrician" },
+      { title: "Welder", text: "Arc, MIG aur TIG welding aur gas cutting.", role: "welder" },
+      { title: "Fitter", text: "Mechanical maintenance aur machine fitting.", role: "fitter" },
+      { title: "Dusre ITI trade", text: "Dusre trade, aur ITI fresher ke liye helper ya trainee ka kaam.", role: "iti-trades" },
       { title: "Data entry operator", text: "Computer par ERP ya SAP mein entry: stores, dispatch aur production.", role: "data-entry-operator" },
       { title: "Supervisor", text: "Shift aur site ki dekhrekh." },
     ],

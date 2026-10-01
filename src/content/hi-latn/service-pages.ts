@@ -27,6 +27,7 @@ export const servicePagesHiLatn: ServiceLandingContent[] = [
     planning:
       "Dock timings, gaadiyon ki movement, shift pattern aur peak days bataiye. Hum usi hisaab se team aur supervision plan karte hain, aur volume badalne par changes par baat karte hain.",
     related: [
+      { href: "/services/loading-unloading-labour", label: "Loading-unloading labour" },
       { href: "/services/factory-labour", label: "Factory labour" },
       { href: "/services/housekeeping", label: "Housekeeping" },
       { href: "/services/contract-labour", label: "Contract labour kaise kaam karta hai" },
@@ -48,6 +49,52 @@ export const servicePagesHiLatn: ServiceLandingContent[] = [
         question: "Warehouse workers ka EPF aur ESIC kaun sambhalta hai?",
         answer:
           "Contractor ke roop mein hum. Deploy kiye gaye workers ke applicable EPF aur ESIC contributions, attendance aur wage records hum rakhte hain, aur ye aapke review ke liye available hain.",
+        category: "compliance",
+      },
+    ],
+  },
+  {
+    slug: "loading-unloading-labour",
+    serviceId: "warehouse-logistics",
+    name: "Loading-unloading labour",
+    metaTitle: "SIDCUL Haridwar mein Loading Unloading Labour Contractor",
+    description:
+      "SIDCUL aur poore Haridwar ki factories, warehouses aur transporters ke liye loading-unloading labour: truck aur container ka kaam, stacking aur shifting, EPF/ESIC records ke saath.",
+    heading: "SIDCUL aur poore Haridwar mein loading-unloading labour.",
+    lede: "Factory, warehouse aur transport yard par truck, container aur maal ki dhulai ke liye teams, aapki gaadiyon ki ginti ke hisaab se.",
+    roles: [
+      "Truck loading aur unloading",
+      "Container stuffing aur destuffing",
+      "Bori, carton aur drum ka kaam",
+      "Stacking, palletising aur shrink-wrapping",
+      "Plant ke andar maal ki shifting",
+      "Challan se maal ki ginti aur checking",
+      "Forklift aur MHE operators ke saath helper",
+    ],
+    planning:
+      "Bataiye aam din aur peak din par kitni gaadiyan load ya unload hoti hain, dock kitne baje tak chalta hai, maal kya hai aur kaise pack hota hai. Hum usi hisaab se team ka size aur supervision plan karte hain, zaroorat ho to raat aur chhutti ke din aane wali gaadiyon samet, aur volume badalne par dobara dekhte hain.",
+    related: [
+      { href: "/services/warehouse-labour", label: "Warehouse labour" },
+      { href: "/services/factory-labour", label: "Factory labour" },
+      { href: "/services/contract-labour", label: "Contract labour kaise kaam karta hai" },
+    ],
+    faqs: [
+      {
+        question: "Kya aap warehouse ke saath factory ke liye bhi loading-unloading labour dete hain?",
+        answer:
+          "Haan. Hum SIDCUL aur poore Haridwar mein factory store aur dispatch, warehouses aur transport yards ke liye loading-unloading teams plan karte hain.",
+        category: "operations",
+      },
+      {
+        question: "Kya peak days ya kuch time ke liye extra loaders mil sakte hain?",
+        answer:
+          "Peak aur short-term zaroorat par case ke hisaab se baat hoti hai. Dates, gaadiyon ki ginti aur maal bataiye, hum confirm karte hain ki kya plan ho sakta hai.",
+        category: "commercial",
+      },
+      {
+        question: "Loading team ke EPF, ESIC aur safety ki zimmedari kiski hai?",
+        answer:
+          "Contractor ke taur par EPF, ESIC, attendance aur wage records hum sambhalte hain. Aapki site ke safety rules, PPE aur dock procedures planning ka hissa hain, aur hamara supervisor unhe aapki team ke saath coordinate karta hai.",
         category: "compliance",
       },
     ],

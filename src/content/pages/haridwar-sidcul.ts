@@ -40,6 +40,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
     links: [
       { href: "/services/contract-labour", label: "How our contract labour service works" },
       { href: "/services/warehouse-labour", label: "Warehouse labour in SIDCUL" },
+      { href: "/services/loading-unloading-labour", label: "Loading and unloading labour in SIDCUL" },
       { href: "/contact", label: "Tell us about your site" },
     ],
     supportEyebrow: "SUPPORT FOR YOUR SITE",
@@ -108,6 +109,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
     links: [
       { href: "/services/contract-labour", label: "हमारी कॉन्ट्रैक्ट लेबर सेवा कैसे काम करती है" },
       { href: "/services/warehouse-labour", label: "सिडकुल में वेयरहाउस लेबर (अंग्रेज़ी में)" },
+      { href: "/services/loading-unloading-labour", label: "सिडकुल में लोडिंग-अनलोडिंग लेबर (अंग्रेज़ी में)" },
       { href: "/contact", label: "अपनी साइट के बारे में बताइए" },
     ],
     supportEyebrow: "आपकी साइट के लिए सहायता",
@@ -176,6 +178,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
     links: [
       { href: "/services/contract-labour", label: "Hamari contract labour service kaise kaam karti hai" },
       { href: "/services/warehouse-labour", label: "SIDCUL mein warehouse labour" },
+      { href: "/services/loading-unloading-labour", label: "SIDCUL mein loading-unloading labour" },
       { href: "/contact", label: "Apni site ke baare mein bataiye" },
     ],
     supportEyebrow: "AAPKI SITE KE LIYE SUPPORT",

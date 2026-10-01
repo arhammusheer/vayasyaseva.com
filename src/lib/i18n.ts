@@ -9,6 +9,9 @@
  * entry or header link from published pages. Flip `published` once a native
  * speaker has reviewed the copy.
  */
+import { JOB_HUB_SLUGS } from "@/lib/job-hubs";
+import { JOB_ROLE_SLUGS } from "@/lib/talent-intake/rules";
+
 export const locales = {
   "en-IN": {
     segment: "en-in",
@@ -58,7 +61,6 @@ type PageLocales = {
 };
 
 const ALL = allLocales;
-const JOB_ROLE_SLUGS = ["factory-helper", "warehouse", "data-entry-operator", "housekeeping", "iti-trades"];
 
 /**
  * Pages with more than English, or with an override. Any page not listed is
@@ -70,11 +72,12 @@ export const pages: Record<string, PageLocales> = {
   "/haridwar-sidcul": { locales: ALL },
   "/services/contract-labour": { locales: ALL },
   "/services/warehouse-labour": { locales: ["en-IN", "hi-Latn-IN"] },
+  "/services/loading-unloading-labour": { locales: ["en-IN", "hi-Latn-IN"] },
   "/services/factory-labour": { locales: ["en-IN", "hi-Latn-IN"] },
   "/services/housekeeping": { locales: ["en-IN", "hi-Latn-IN"] },
   "/jobs": { locales: ALL, override: "prompt" },
   ...Object.fromEntries(
-    JOB_ROLE_SLUGS.map((slug) => [`/jobs/${slug}`, { locales: ALL, override: "prompt" } as const]),
+    [...JOB_ROLE_SLUGS, ...JOB_HUB_SLUGS].map((slug) => [`/jobs/${slug}`, { locales: ALL, override: "prompt" } as const]),
   ),
 };
 

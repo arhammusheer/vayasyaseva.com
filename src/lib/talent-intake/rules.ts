@@ -25,10 +25,16 @@ export type IntakeSource = keyof typeof INTAKE_SOURCES;
  */
 export const JOB_ROLES = {
   "factory-helper": "Factory helper",
+  packing: "Packing",
+  "machine-operator": "Machine operator",
   warehouse: "Warehouse: loading, picking, packing",
+  "forklift-operator": "Forklift operator",
   "data-entry-operator": "Data entry operator",
   housekeeping: "Housekeeping",
   "iti-trades": "ITI trades: welder, fitter, electrician",
+  electrician: "Electrician",
+  welder: "Welder",
+  fitter: "Fitter",
 } as const;
 export type JobRole = keyof typeof JOB_ROLES;
 export const JOB_ROLE_SLUGS = Object.keys(JOB_ROLES) as [JobRole, ...JobRole[]];

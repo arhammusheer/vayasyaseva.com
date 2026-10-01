@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { jobsCopy } from "@/content/pages/jobs";
 import { getJobRole } from "@/content/pages/job-roles";
+import { getJobHub } from "@/content/pages/job-hubs";
 import {
   languageAlternates,
   localePath,
@@ -36,7 +37,7 @@ const toPath = (segments: string[] = []) => `/${segments.join("/")}`;
 function pageSummary(path: string, locale: Locale): { title: string; text?: string } {
   if (path === "/jobs") return { title: jobsCopy[locale].title, text: jobsCopy[locale].lede };
   const slug = /^\/jobs\/([^/]+)$/.exec(path)?.[1];
-  const role = slug ? getJobRole(slug, locale) : undefined;
+  const role = slug ? (getJobRole(slug, locale) ?? getJobHub(slug, locale)) : undefined;
   if (role) return { title: role.metaTitle, text: role.lede };
   return { title: locales[locale].hint };
 }

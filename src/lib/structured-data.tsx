@@ -1,11 +1,15 @@
 import type { FaqItem } from "@/content/types";
 import type { ServiceDetail } from "@/content/services";
 import { siteConfig } from "@/content/site";
+import { localizeHref } from "@/lib/i18n";
 
 const BASE_URL = "https://www.vayasyaseva.com";
 const ORG_ID = `${BASE_URL}/#organization`;
 const SITE_ID = `${BASE_URL}/#website`;
 const LOGO_URL = `${BASE_URL}/brand/downloads/vayasya-seva-mark.png`;
+
+/** Absolute URL of a page; neutral paths resolve to the page's default language. */
+const pageUrl = (href: string) => `${BASE_URL}${localizeHref(href)}`;
 
 export function JsonLd({ data }: { data: Record<string, unknown> }) {
   return (
@@ -154,13 +158,13 @@ export function faqSchema(faqs: FaqItem[]) {
 export function serviceSchema(service: ServiceDetail) {
   return {
     "@type": "Service",
-    "@id": `${BASE_URL}/services#${service.id}`,
+    "@id": pageUrl(`/services#${service.id}`),
     name: service.title,
     serviceType: service.title,
     description: service.description,
     provider: { "@id": ORG_ID },
     areaServed: areaServed(),
-    url: `${BASE_URL}/services#${service.id}`,
+    url: pageUrl(`/services#${service.id}`),
   };
 }
 
@@ -184,7 +188,7 @@ export function breadcrumbSchema(items: { name: string; href: string }[]) {
       "@type": "ListItem",
       position: index + 1,
       name: item.name,
-      item: `${BASE_URL}${item.href}`,
+      item: pageUrl(item.href),
     })),
   };
 }
@@ -200,10 +204,10 @@ export function webPageSchema(page: {
   return {
     "@context": "https://schema.org",
     "@type": page.type ?? "WebPage",
-    "@id": `${BASE_URL}${page.url}#webpage`,
+    "@id": `${pageUrl(page.url)}#webpage`,
     name: page.name,
     description: page.description,
-    url: `${BASE_URL}${page.url}`,
+    url: pageUrl(page.url),
     isPartOf: { "@id": SITE_ID },
     about: { "@id": ORG_ID },
     publisher: { "@id": ORG_ID },
@@ -220,12 +224,12 @@ export function serviceLandingSchema(page: {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
-    "@id": `${BASE_URL}${page.url}#service`,
+    "@id": `${pageUrl(page.url)}#service`,
     name: page.name,
     serviceType: page.name,
     description: page.description,
     provider: { "@id": ORG_ID },
     areaServed: areaServed(),
-    url: `${BASE_URL}${page.url}`,
+    url: pageUrl(page.url),
   };
 }

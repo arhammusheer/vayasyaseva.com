@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/i18n/link";
 import { siteConfig } from "@/content/site";
 import { AnalyticsPreferencesButton } from "@/components/analytics";
 import { FooterJobsLink } from "@/components/layout/footer-jobs-link";
@@ -30,7 +30,7 @@ const columns = [
 
 export function Footer() {
   return (
-    <footer className="site-footer">
+    <footer className="site-footer" lang="en-IN">
       <div className="site-shell">
         <div className="footer-main">
           <div className="footer-about">

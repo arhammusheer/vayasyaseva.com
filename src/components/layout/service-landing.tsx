@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { notFound } from "next/navigation";
+import Link from "@/components/i18n/link";
 import { ArrowUpRight } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
 import { PageHero } from "@/components/layout/page-hero";
@@ -11,15 +12,15 @@ import {
   serviceLandingSchema,
   webPageSchema,
 } from "@/lib/structured-data";
-import type { ServiceLandingContent } from "@/content/service-pages";
-import { locales, type Locale } from "@/lib/i18n";
+import { getServicePage, type ServiceLandingContent } from "@/content/service-pages";
+import { getServicePageHiLatn } from "@/content/hi-latn/service-pages";
+import { localePath, locales, type Locale } from "@/lib/i18n";
 
-/** Service pages are translated into Hinglish only (see pageLocales). */
-type ServiceLocale = Exclude<Locale, "hi">;
+/** Service pages have English and hi-Latn-IN only (see pages in src/lib/i18n.ts). */
+type ServiceLocale = Exclude<Locale, "hi-IN">;
 
 const labels = {
-  en: {
-    base: "/services",
+  "en-IN": {
     rolesEyebrow: "TYPICAL ROLES",
     rolesHeading: "Who we plan for.",
     planningHeading: "Planned around your site.",
@@ -34,8 +35,7 @@ const labels = {
     home: "Home",
     services: "Services",
   },
-  hinglish: {
-    base: "/hinglish/services",
+  "hi-Latn-IN": {
     rolesEyebrow: "TYPICAL ROLES",
     rolesHeading: "Hum kinke liye plan karte hain.",
     planningHeading: "Aapki site ke hisaab se planning.",
@@ -44,7 +44,7 @@ const labels = {
     complianceLink: "Hamara labour compliance approach (English mein)",
     related: "RELATED",
     relatedAria: "Related services",
-    local: { href: "/hinglish/haridwar-sidcul", label: "SIDCUL Haridwar mein labour contractor" },
+    local: { href: "/haridwar-sidcul", label: "SIDCUL Haridwar mein labour contractor" },
     faqEyebrow: "SAWAAL",
     faqTitle: "Aam sawaal.",
     home: "Home",
@@ -52,11 +52,18 @@ const labels = {
   },
 } satisfies Record<ServiceLocale, unknown>;
 
-export function serviceLandingMetadata(page: ServiceLandingContent, locale: ServiceLocale = "en") {
+/** A service page's content in a locale; there are no hi-IN service pages. */
+export function serviceLanding(slug: string, locale: Locale) {
+  if (locale === "hi-IN") notFound();
+  const page = locale === "hi-Latn-IN" ? getServicePageHiLatn(slug) : getServicePage(slug);
+  return { page, locale };
+}
+
+export function serviceLandingMetadata(page: ServiceLandingContent, locale: ServiceLocale = "en-IN") {
   return pageMetadata({
     title: page.metaTitle,
     description: page.description,
-    alternates: { canonical: `${labels[locale].base}/${page.slug}` },
+    alternates: { canonical: localePath(`/services/${page.slug}`, locale) },
     locale,
   });
 }
@@ -64,13 +71,13 @@ export function serviceLandingMetadata(page: ServiceLandingContent, locale: Serv
 /** Short service page: roles, how it is planned, related services, FAQs. */
 export function ServiceLanding({
   page,
-  locale = "en",
+  locale = "en-IN",
 }: {
   page: ServiceLandingContent;
   locale?: ServiceLocale;
 }) {
   const t = labels[locale];
-  const url = `${t.base}/${page.slug}`;
+  const url = localePath(`/services/${page.slug}`, locale);
   return (
     <>
       <JsonLd

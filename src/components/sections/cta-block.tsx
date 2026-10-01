@@ -1,23 +1,23 @@
-import Link from "next/link";
+import Link from "@/components/i18n/link";
 import { ArrowUpRight } from "lucide-react";
 import type { Locale } from "@/lib/i18n";
 
 const copy = {
-  en: {
+  "en-IN": {
     eyebrow: "START A CONVERSATION",
     heading: ["What’s next for", "your business?"],
     text: "Tell us what you have in mind. We’ll take it from there.",
     aria: "Contact Vayasya Seva",
     link: "Let’s talk",
   },
-  hi: {
+  "hi-IN": {
     eyebrow: "बातचीत शुरू करें",
     heading: ["आपके बिज़नेस के लिए", "आगे क्या?"],
     text: "आपके मन में जो है, बताइए। आगे हम संभाल लेंगे।",
     aria: "Vayasya Seva से संपर्क करें",
     link: "बात करें",
   },
-  hinglish: {
+  "hi-Latn-IN": {
     eyebrow: "BAATCHEET SHURU KAREIN",
     heading: ["Aapke business ke liye", "aage kya?"],
     text: "Aapke mann mein jo hai, bataiye. Aage hum sambhal lenge.",
@@ -26,7 +26,7 @@ const copy = {
   },
 } satisfies Record<Locale, unknown>;
 
-export function CtaBlock({ locale = "en" }: { locale?: Locale }) {
+export function CtaBlock({ locale = "en-IN" }: { locale?: Locale }) {
   const t = copy[locale];
   return (
     <section className="contact-invitation">

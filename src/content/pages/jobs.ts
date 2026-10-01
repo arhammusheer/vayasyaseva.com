@@ -58,12 +58,12 @@ export interface JobsCopy {
 }
 
 /**
- * /jobs in every locale. Hindi is the page most job seekers use; English and
- * Hinglish mirror it. Hindi and Hinglish are drafts pending native review.
+ * /jobs in every locale. hi-IN is the page most job seekers use; en-IN and
+ * hi-Latn-IN mirror it. hi-IN and hi-Latn-IN are drafts pending native review.
  * Claims discipline: no promised call-back times, no guarantees of work.
  */
 export const jobsCopy: Record<Locale, JobsCopy> = {
-  en: {
+  "en-IN": {
     title: "Jobs in SIDCUL Haridwar: Factory, Warehouse, Housekeeping",
     description:
       "Looking for work in SIDCUL or anywhere in Haridwar? Send a voice note, a photo of your certificates or a few lines about yourself. Vayasya Seva never charges a fee for a job.",
@@ -172,7 +172,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       },
     ],
   },
-  hi: {
+  "hi-IN": {
     title: "सिडकुल हरिद्वार में नौकरी: फ़ैक्टरी, वेयरहाउस, हाउसकीपिंग",
     description:
       "सिडकुल या हरिद्वार में कहीं भी काम चाहिए? अपनी आवाज़ में बताइए, सर्टिफ़िकेट की फ़ोटो भेजिए या दो लाइन लिखिए। Vayasya Seva नौकरी के लिए कोई फ़ीस नहीं लेती।",
@@ -281,7 +281,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       },
     ],
   },
-  hinglish: {
+  "hi-Latn-IN": {
     title: "SIDCUL Haridwar mein Naukri: Factory, Warehouse, Housekeeping",
     description:
       "SIDCUL ya Haridwar mein kahin bhi kaam chahiye? Apni awaaz mein bataiye, certificate ki photo bhejiye ya do line likhiye. Vayasya Seva naukri ke liye koi fee nahi leti.",

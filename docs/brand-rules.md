@@ -33,7 +33,7 @@ Buyers search for "labour contractor", "labour supplier", "manpower supplier" an
 
 SIDCUL Haridwar is the State's Integrated Industrial Estate, inside Haridwar city (Ranipur / BHEL area). SIDCUL, now SIIDCUL, is also the state corporation that runs seven estates across Uttarakhand, so "SIDCUL" alone is ambiguous. Never write the two as separate places ("Haridwar and SIDCUL", "Haridwar–SIDCUL").
 
-| Use | English | Hindi | Hinglish |
+| Use | English (en-IN) | हिंदी (hi-IN) | Hindi (hi-Latn-IN) |
 |---|---|---|---|
 | Short label: titles, headings, footer, breadcrumbs | SIDCUL Haridwar | सिडकुल हरिद्वार | SIDCUL Haridwar |
 | Coverage in running text | in SIDCUL and across Haridwar | सिडकुल और पूरे हरिद्वार में | SIDCUL aur poore Haridwar mein |

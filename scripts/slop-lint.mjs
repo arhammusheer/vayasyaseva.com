@@ -17,7 +17,8 @@ import { join, relative } from "node:path";
 const ROOT = new URL("..", import.meta.url).pathname;
 const SCAN = [
   "src/content",
-  "src/app/(marketing)",
+  "src/app/[locale]/(marketing)",
+  "src/app/(picker)",
   "src/components/sections",
   "src/components/layout",
   "src/app/opengraph-image.tsx",
@@ -38,7 +39,7 @@ const PROHIBITED = [
   // Hindi equivalents (docs/hindi-glossary.md)
   "गारंटी", "हमेशा", "कभी नहीं", "सर्वश्रेष्ठ", "सबसे अच्छ", "बेस्ट", "नंबर 1",
   "नंबर वन",
-  // Hinglish equivalents
+  // hi-Latn-IN (Hindi in Latin script) equivalents
   "guarantee", "hamesha", "kabhi nahi", "sabse best", "number 1", "number one",
 ];
 const TIER2 = [

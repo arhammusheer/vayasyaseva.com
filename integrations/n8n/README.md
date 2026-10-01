@@ -64,7 +64,7 @@ Chatwoot needs no credential. The deliver workflow uses Chatwoot's public API fo
 
 ## How voice notes are transcribed (checked by hand against Sarvam)
 
-- **Model:** `saaras:v4`. There's no `mode` setting; that exists only on v3. The Hindi and Hinglish pages send `language_code: hi-IN`, and the English page sends `unknown`. Auto-detection identified a Hindi clip (0.997) and an English clip (1.0) correctly.
+- **Model:** `saaras:v4`. There's no `mode` setting; that exists only on v3. The hi-IN and hi-Latn-IN pages send `language_code: hi-IN`, and the English page sends `unknown`. Auto-detection identified a Hindi clip (0.997) and an English clip (1.0) correctly.
 - **REST first:** `POST /speech-to-text`, multipart. It answers in about 0.6 seconds, but audio longer than **30 seconds** gets HTTP 400: "Audio duration exceeds the maximum limit of 30 seconds…"
 - **Batch for longer notes:**
   1. Create the job.

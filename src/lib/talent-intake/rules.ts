@@ -7,7 +7,11 @@
 /** Submission reference shown to the person, e.g. VS-J-7K2M9Q. */
 export const REF_PATTERN = /^VS-J-[A-Z0-9]{6}$/;
 
-/** Which jobs page the submission came from, and the locale it implies. */
+/**
+ * Which jobs page the submission came from, and the locale it implies. These
+ * are stored values (integrations/n8n/schema.sql): web_hinglish is the
+ * hi-Latn-IN page. Renaming one needs a database migration and an n8n deploy.
+ */
 export const INTAKE_SOURCES = {
   web_en: "en",
   web_hi: "hi",

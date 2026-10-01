@@ -1,6 +1,6 @@
-# Hindi and Hinglish glossary
+# Hindi glossary
 
-Terms used on `/hi/` (Devanagari) and `/hinglish/` (Hindi in Latin script) pages. Write spoken, everyday Hindi. Keep the English words buyers and supervisors actually say, in Devanagari. Keep acronyms in Latin script (EPF, ESIC, HR, PPE, MHE). Use the nukta consistently (फ़ैक्टरी, ज़रूरत, स्टाफ़).
+Terms used on `/hi-in/` (हिंदी, Devanagari) and `/hi-latn-in/` (Hindi in Latin script) pages. Write spoken, everyday Hindi. Keep the English words buyers and supervisors actually say, in Devanagari. Keep acronyms in Latin script (EPF, ESIC, HR, PPE, MHE). Use the nukta consistently (फ़ैक्टरी, ज़रूरत, स्टाफ़).
 
 | English | Hindi on the site | Notes |
 |---------|-------------------|-------|
@@ -32,9 +32,9 @@ Terms used on `/hi/` (Devanagari) and `/hinglish/` (Hindi in Latin script) pages
 
 These have the same force as the English banned words in `docs/claim-policy.md`, and `pnpm lint:slop` checks for them: गारंटी, हमेशा, कभी नहीं, सर्वश्रेष्ठ, सबसे अच्छा, बेस्ट, नंबर 1 / नंबर वन.
 
-## Hinglish spelling
+## Latin-script spelling (hi-Latn-IN)
 
-Hinglish pages use Hindi grammar in Latin script. English nouns stay in English: *labour, workers, shift, site, records, supervision*. Use one spelling for each common word:
+hi-Latn-IN pages use Hindi grammar in Latin script. English nouns stay in English: *labour, workers, shift, site, records, supervision*. Use one spelling for each common word:
 
 | Word | Spelling | Not |
 |------|----------|-----|
@@ -48,4 +48,4 @@ Hinglish pages use Hindi grammar in Latin script. English nouns stay in English:
 | ठेकेदार | thekedar | thekedaar |
 | करें | karein | kare, karen |
 
-Eyebrows stay uppercase, as on the English pages. Banned words also apply in Hinglish: *guarantee, hamesha, kabhi nahi, sabse best, number 1*.
+Eyebrows stay uppercase, as on the English pages. Banned words also apply in Latin script: *guarantee, hamesha, kabhi nahi, sabse best, number 1*.

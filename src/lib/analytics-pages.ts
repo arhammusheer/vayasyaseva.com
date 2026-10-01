@@ -1,3 +1,6 @@
+import { splitLocalePath } from "@/lib/i18n";
+
+/** Public pages by neutral path; any locale of them may be reported. */
 const publicPages = new Set([
   "/",
   "/about",
@@ -5,21 +8,10 @@ const publicPages = new Set([
   "/compliance",
   "/contact",
   "/haridwar-sidcul",
-  "/hi/haridwar-sidcul",
-  "/hi/services/contract-labour",
-  "/hinglish/haridwar-sidcul",
-  "/hinglish/services/contract-labour",
-  "/hinglish/services/factory-labour",
-  "/hinglish/services/housekeeping",
-  "/hinglish/services/warehouse-labour",
   "/how-we-operate",
   "/industries",
   "/jobs",
-  "/hi/jobs",
-  "/hinglish/jobs",
-  ...["", "/hi", "/hinglish"].flatMap((prefix) =>
-    ["factory-helper", "warehouse", "data-entry-operator", "housekeeping", "iti-trades"].map((slug) => `${prefix}/jobs/${slug}`),
-  ),
+  ...["factory-helper", "warehouse", "data-entry-operator", "housekeeping", "iti-trades"].map((slug) => `/jobs/${slug}`),
   "/privacy",
   "/services",
   "/services/contract-labour",
@@ -30,6 +22,7 @@ const publicPages = new Set([
   "/vayasya-setu",
 ]);
 
+/** The path as is for a known page (/hi-in/jobs, or neutral /jobs on the language picker), else "/other". */
 export function safeAnalyticsPath(pathname: string) {
-  return publicPages.has(pathname) ? pathname : "/other";
+  return publicPages.has(splitLocalePath(pathname).path) ? pathname : "/other";
 }

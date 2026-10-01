@@ -96,6 +96,14 @@ async function upload(url: string, headers: Record<string, string>, body: Blob, 
 }
 
 /** `role`: set on a role page (/jobs/<slug>) so the submission is tagged with it. */
+/** Voice note length for analytics, in ranges rather than exact seconds. */
+function secondsBucket(seconds: number) {
+  if (seconds < 10) return "under_10s";
+  if (seconds < 30) return "10_30s";
+  if (seconds < 60) return "30_60s";
+  return "60s_plus";
+}
+
 export function JobsForm({ locale, role = null }: { locale: Locale; role?: JobRole | null }) {
   const t = jobsCopy[locale].form;
   const noFee = jobsCopy[locale].noFee;
@@ -150,6 +158,7 @@ export function JobsForm({ locale, role = null }: { locale: Locale; role?: JobRo
     markStarted();
     setVoiceError(null);
     if (typeof MediaRecorder === "undefined" || !navigator.mediaDevices?.getUserMedia) {
+      trackAnalyticsEvent("voice_error", { locale, reason: "unsupported" });
       setVoiceError(t.record.unsupported);
       return;
     }
@@ -157,6 +166,7 @@ export function JobsForm({ locale, role = null }: { locale: Locale; role?: JobRo
     try {
       stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     } catch {
+      trackAnalyticsEvent("voice_error", { locale, reason: "no_mic" });
       setVoiceError(t.record.noMic);
       return;
     }
@@ -170,9 +180,11 @@ export function JobsForm({ locale, role = null }: { locale: Locale; role?: JobRo
       stream.getTracks().forEach((track) => track.stop());
       const blob = new Blob(chunks, { type: rec.mimeType || mimeType || "audio/webm" });
       setVoice({ state: "recorded", blob, url: URL.createObjectURL(blob), seconds });
+      trackAnalyticsEvent("voice_recorded", { locale, length: secondsBucket(seconds) });
     };
     recorder.current = rec;
     rec.start(1000);
+    trackAnalyticsEvent("voice_record_start", { locale });
     setVoice({ state: "recording", seconds: 0 });
     timer.current = setInterval(() => {
       seconds += 1;
@@ -182,7 +194,10 @@ export function JobsForm({ locale, role = null }: { locale: Locale; role?: JobRo
   }
 
   function discardVoice() {
-    if (voice.state === "recorded") URL.revokeObjectURL(voice.url);
+    if (voice.state === "recorded") {
+      URL.revokeObjectURL(voice.url);
+      trackAnalyticsEvent("voice_discard", { locale });
+    }
     setVoice({ state: "idle" });
   }
 
@@ -203,6 +218,9 @@ export function JobsForm({ locale, role = null }: { locale: Locale; role?: JobRo
     const problems: string[] = [];
     for (const file of Array.from(list)) {
       const picked = classify(file);
+      const reject = !picked ? "wrong_type" : file.size > INTAKE_LIMITS.maxBytes[picked.kind] ? "too_large" : next.length >= MAX_FILES ? "too_many" : null;
+      if (reject) trackAnalyticsEvent("file_rejected", { locale, reason: reject });
+      else trackAnalyticsEvent("file_added", { locale, kind: picked!.kind });
       if (!picked) problems.push(`${file.name} ${t.files.wrongType}`);
       else if (file.size > INTAKE_LIMITS.maxBytes[picked.kind]) problems.push(`${file.name} ${t.files.tooLarge}`);
       else if (next.length >= MAX_FILES) problems.push(t.files.tooMany);
@@ -306,7 +324,7 @@ export function JobsForm({ locale, role = null }: { locale: Locale; role?: JobRo
     "h-12 rounded-lg border-neutral-300 bg-background px-4 text-base shadow-none placeholder:text-neutral-400 focus-visible:border-gold-500 focus-visible:ring-gold-500/25 md:text-base";
 
   return (
-    <form data-clarity-mask="true" onSubmit={submit} noValidate className="jobs-form" aria-busy={sending}>
+    <form data-clarity-mask="true" data-analytics-form="jobs" onSubmit={submit} noValidate className="jobs-form" aria-busy={sending}>
       <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" onReady={renderTurnstile} />
 
       {/* Three tiers. Tier 01 holds the voice note with typing as its

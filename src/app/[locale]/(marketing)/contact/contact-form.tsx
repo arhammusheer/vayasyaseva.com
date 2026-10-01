@@ -121,6 +121,7 @@ export function ContactForm() {
   return (
     <form
       data-clarity-mask="true"
+      data-analytics-form="contact"
       onSubmit={handleSubmit(onSubmit, () => {
         trackAnalyticsEvent("contact_form_error", { form_type: formType, reason: "validation" });
       })}

@@ -3,12 +3,21 @@
 import { useEffect, useId, useState, useSyncExternalStore } from "react";
 import Link from "@/components/i18n/link";
 import Script from "next/script";
+import { usePathname } from "next/navigation";
 import { ChevronDownIcon } from "lucide-react";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics as VercelAnalytics, type BeforeSendEvent } from "@vercel/analytics/next";
-import { analyticsConsentAtKey, analyticsConsentKey, hasAnalyticsConsent, trackAnalyticsEvent } from "@/lib/analytics";
+import {
+  analyticsConsentAtKey,
+  analyticsConsentKey,
+  flushUmami,
+  hasAnalyticsConsent,
+  setSessionData,
+  trackAnalyticsEvent,
+} from "@/lib/analytics";
 import { splitLocalePath } from "@/lib/i18n";
 import { safeAnalyticsPath } from "@/lib/analytics-pages";
+import { AnalyticsTracker, pageLocale, pageType } from "@/components/analytics-tracker";
 import { clarityId, gaId, umamiWebsiteId } from "@/lib/analytics-config";
 import { Button } from "@/components/ui/button";
 
@@ -57,36 +66,39 @@ export function Analytics({ gaId }: { gaId: string }) {
     return () => window.removeEventListener(preferencesEvent, openPreferences);
   }, []);
 
+  const pathname = usePathname();
+  const locale = pageLocale(pathname);
+  const consentState = consent === "loading" ? null : (consent ?? "none");
+
+  // Session properties in Umami, and tags on Clarity recordings so they can be
+  // filtered by language, page type and consent.
   useEffect(() => {
-    if (consent !== "accepted") return;
-
-    function trackContactClick(event: MouseEvent) {
-      if (!(event.target instanceof Element)) return;
-      const link = event.target.closest<HTMLAnchorElement>("a[href]");
-      if (!link) return;
-      const href = link.getAttribute("href") ?? "";
-      const source_path = safeAnalyticsPath(window.location.pathname);
-
-      if (href.startsWith("tel:")) {
-        trackAnalyticsEvent("contact_click", { contact_method: "phone", source_path });
-      } else if (href.startsWith("mailto:")) {
-        trackAnalyticsEvent("contact_click", { contact_method: "email", source_path });
-      } else {
-        const destination = new URL(link.href);
-        if (destination.origin === window.location.origin && splitLocalePath(destination.pathname).path === "/contact") {
-          trackAnalyticsEvent("contact_intent", {
-            source_path,
-            intent_type: destination.searchParams.get("type") === "assessment" ? "assessment" : "general",
-          });
-        }
+    if (!consentState) return;
+    setSessionData({ locale, consent: consentState });
+    if (consentState !== "accepted") return;
+    try {
+      const w = window as Window & { clarity?: ((...args: unknown[]) => void) & { q?: unknown[] } };
+      // Same stub as Clarity's snippet: calls queue until the tag loads.
+      if (typeof w.clarity !== "function") {
+        const stub = Object.assign((...args: unknown[]) => void (stub.q ??= []).push(args), { q: undefined as unknown[] | undefined });
+        w.clarity = stub;
       }
+      w.clarity("set", "locale", locale);
+      w.clarity("set", "page_type", pageType(splitLocalePath(pathname).path));
+    } catch {
+      // Analytics must never interrupt the visitor's task.
     }
+  }, [consentState, locale, pathname]);
 
-    document.addEventListener("click", trackContactClick);
-    return () => document.removeEventListener("click", trackContactClick);
+  // How many visitors see the prompt, for the choice rate.
+  useEffect(() => {
+    if (consent === null) trackAnalyticsEvent("consent_prompt", { page: safeAnalyticsPath(pathname) });
+    // Once per page load, not per navigation.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [consent]);
 
   function choose(next: Exclude<Consent, null>) {
+    trackAnalyticsEvent("consent_choice", { choice: next, from: consent === "accepted" ? "allow_all" : consent === "rejected" ? "required_only" : "none" });
     try {
       localStorage.setItem(analyticsConsentKey, next);
       if (next === "accepted") {
@@ -108,21 +120,25 @@ export function Analytics({ gaId }: { gaId: string }) {
 
   return (
     <>
-      {/* Cookie-free counts (Vercel, Umami) run for every visitor; "Allow All" adds GA4 and Clarity. */}
+      {/* Cookie-free counts (Vercel) and events (Umami) run for every visitor; "Allow All" adds GA4 and Clarity. */}
       <VercelAnalytics beforeSend={sanitizeBasicEvent} />
       {umamiWebsiteId && (
         <Script
           src="/_t/s.js"
           data-host-url="/_t"
           data-website-id={umamiWebsiteId}
-          data-exclude-search="true"
-          data-exclude-hash="true"
+          // AnalyticsTracker sends page views itself, with a sanitised URL.
+          data-auto-track="false"
           strategy="afterInteractive"
+          onReady={flushUmami}
         />
       )}
+      <AnalyticsTracker />
       {consent === "accepted" && <GoogleAnalytics gaId={gaId} />}
       {consent === "accepted" && clarityId && (
-        <Script id="clarity" strategy="afterInteractive">
+        // Not id="clarity": an element id becomes a window property, so window.clarity
+        // would be this <script> and Clarity's stub would never install.
+        <Script id="ms-clarity-tag" strategy="afterInteractive">
           {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","${clarityId}");`}
         </Script>
       )}
@@ -145,7 +161,7 @@ export function Analytics({ gaId }: { gaId: string }) {
             </button>
           </div>
           <div id={detailsId} hidden={!showDetails} className="mt-2 text-xs leading-relaxed text-white/80">
-            Cookie-free page counts always run. Allowing adds Google Analytics (referrals, approximate location, device details, contact actions) and Microsoft Clarity recordings of clicks, scrolls and cursor movement, with page text and form fields hidden. No form entries or advertising. See our{" "}
+            Cookie-free page counts and usage events (which links and form steps are used, never what you type) always run. Allowing adds Google Analytics (referrals, approximate location, device details, site actions) and Microsoft Clarity recordings of clicks, scrolls and cursor movement, with page text and form fields hidden. No form entries or advertising. See our{" "}
             <Link href="/privacy" className="text-white underline underline-offset-2 hover:text-gold-400">privacy policy</Link>.
           </div>
           <div className="mt-2 flex flex-wrap items-center justify-end gap-1">

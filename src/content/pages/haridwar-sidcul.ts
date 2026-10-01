@@ -19,11 +19,11 @@ export interface HaridwarCopy {
 }
 
 /**
- * /haridwar-sidcul in every locale. Hindi and Hinglish are drafts pending
+ * /haridwar-sidcul in every locale. hi-IN and hi-Latn-IN are drafts pending
  * native-speaker review; keep all three in step when the English changes.
  */
 export const haridwarCopy: Record<Locale, HaridwarCopy> = {
-  en: {
+  "en-IN": {
     title: "Labour Contractor in SIDCUL Haridwar",
     description:
       "Haridwar-based labour contractor for factories and warehouses in SIDCUL and across the city. Discuss contract manpower, site coordination and EPF/ESIC workforce records.",
@@ -91,7 +91,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
       },
     ],
   },
-  hi: {
+  "hi-IN": {
     title: "सिडकुल हरिद्वार में लेबर ठेकेदार (Labour Contractor)",
     description:
       "हरिद्वार में स्थित लेबर ठेकेदार। सिडकुल और पूरे हरिद्वार की फ़ैक्टरियों और वेयरहाउस के लिए कॉन्ट्रैक्ट लेबर, मैनपावर, साइट कोऑर्डिनेशन और EPF/ESIC रिकॉर्ड।",
@@ -106,7 +106,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
       "अगर आप लेबर सप्लायर या मैनपावर प्रोवाइडर की तुलना कर रहे हैं, तो ज़रूरी रोल, संख्या, शिफ्ट और साइट की जगह बताइए। हम सही कॉन्ट्रैक्ट लेबर व्यवस्था और उन रिकॉर्ड पर बात करेंगे जो आपकी टीम देखना चाहेगी।",
     ],
     links: [
-      { href: "/hi/services/contract-labour", label: "हमारी कॉन्ट्रैक्ट लेबर सेवा कैसे काम करती है" },
+      { href: "/services/contract-labour", label: "हमारी कॉन्ट्रैक्ट लेबर सेवा कैसे काम करती है" },
       { href: "/services/warehouse-labour", label: "सिडकुल में वेयरहाउस लेबर (अंग्रेज़ी में)" },
       { href: "/contact", label: "अपनी साइट के बारे में बताइए" },
     ],
@@ -159,7 +159,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
       },
     ],
   },
-  hinglish: {
+  "hi-Latn-IN": {
     title: "SIDCUL Haridwar mein Labour Contractor (Labour Thekedar)",
     description:
       "Haridwar based labour contractor. SIDCUL aur poore Haridwar ki factories aur warehouses ke liye contract labour, manpower, site coordination aur EPF/ESIC records.",
@@ -174,8 +174,8 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
       "Agar aap labour supplier, manpower provider ya labour thekedar compare kar rahe hain, to zaroori roles, headcount, shift aur site location bataiye. Hum sahi contract labour arrangement aur un records par baat karenge jo aapki team dekhna chahegi.",
     ],
     links: [
-      { href: "/hinglish/services/contract-labour", label: "Hamari contract labour service kaise kaam karti hai" },
-      { href: "/hinglish/services/warehouse-labour", label: "SIDCUL mein warehouse labour" },
+      { href: "/services/contract-labour", label: "Hamari contract labour service kaise kaam karti hai" },
+      { href: "/services/warehouse-labour", label: "SIDCUL mein warehouse labour" },
       { href: "/contact", label: "Apni site ke baare mein bataiye" },
     ],
     supportEyebrow: "AAPKI SITE KE LIYE SUPPORT",
@@ -183,13 +183,13 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
       {
         title: "Factory aur warehouse labour",
         text: "Roz ke kaam aur badalte workload ke liye production helpers, packers, loaders aur material handlers.",
-        href: "/hinglish/services/factory-labour",
+        href: "/services/factory-labour",
         link: "Factory labour ke baare mein padhein",
       },
       {
         title: "Facilities aur contract works",
         text: "Business premises ke liye housekeeping, grounds, civil repairs, fabrication aur maintenance.",
-        href: "/hinglish/services/housekeeping",
+        href: "/services/housekeeping",
         link: "Housekeeping ke baare mein padhein",
       },
       {

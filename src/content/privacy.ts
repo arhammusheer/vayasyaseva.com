@@ -68,7 +68,7 @@ We may update this notice when our services or practices change. The date at the
 
 ## 10. Job seekers
 
-This section applies when you send us your details through the jobs pages of the Site (www.vayasyaseva.com/jobs and its Hindi and Hinglish versions). The jobs pages are for people aged 18 or older. The English version of this notice governs.
+This section applies when you send us your details through the jobs pages of the Site (www.vayasyaseva.com/jobs in English and Hindi). The jobs pages are for people aged 18 or older. The English version of this notice governs.
 
 **What we collect.** Your mobile number and anything you choose to send us: a voice recording, photos, PDF or Word documents and a typed message, together with their file names and types. We also record which jobs page you used, and that you confirmed you are 18 or older and agreed to be contacted, with the date and time. We do not ask for identity or bank documents at this stage; please do not send Aadhaar, PAN or bank details. Identity numbers that appear in typed text or transcripts are masked in our records, but files are stored as you send them.
 

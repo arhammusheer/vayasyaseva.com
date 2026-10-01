@@ -422,7 +422,7 @@ function transcribeWorkflow() {
   const w = new WorkflowBuilder("VSPL talent · transcribe");
   const claimed = `$('Claim voice notes').item.json`;
   const job = `$('Sarvam: create job').item.json.job_id`;
-  // Hindi and Hinglish pages: Hindi. English page: let Sarvam detect it.
+  // hi-IN and hi-Latn-IN pages: Hindi. English page: let Sarvam detect it.
   const language = `${claimed}.locale === 'en' ? 'unknown' : 'hi-IN'`;
 
   w.add(everyMinute("Every minute", grid(0)));

@@ -11,7 +11,7 @@ Nobody fills in a long form. A job seeker **drops whatever they have**: a voice 
 | | Hindi-forward | English-forward |
 |---|---|---|
 | Who | Helpers, loaders, packers, housekeeping, many machine operators | Supervisors, skilled trades (ITI, welders, electricians), office and site admin |
-| URL | `/hi/jobs` (primary), `/hinglish/jobs` | `/jobs` |
+| URL | `/hi-in/jobs` (primary), `/hi-latn-in/jobs` | `/en-in/jobs` |
 | Main action | **"बोलकर बताइए"**: a large record button. Speak for up to 3 minutes about yourself and the work you want | **"Drop your resume or tell us about yourself"**: a file drop plus a free-text box |
 | Also accepts | Photos of certificates, licences, old payslips; typed text | PDFs, Word files, photos, a LinkedIn URL pasted as text |
 | Prompts on screen | Short spoken-style hints: "अपना नाम, गाँव, कौन-सा काम आता है, कब से काम कर सकते हैं" | "Include your role, experience, location and when you can start" |
@@ -86,7 +86,7 @@ The owner prefers **OpenRouter's free models** if parsing is added. Design, not 
 
 ## SEO
 
-- `/jobs`, `/hi/jobs` and `/hinglish/jobs` are the hubs, written for searches like "jobs in Haridwar", "SIDCUL job" and "हरिद्वार में नौकरी".
+- `/en-in/jobs`, `/hi-in/jobs` and `/hi-latn-in/jobs` are the hubs, written for searches like "jobs in Haridwar", "SIDCUL job" and "हरिद्वार में नौकरी".
 - `JobPosting` pages only for real open positions, removed or expired as soon as they are filled.
 - The hub pages carry the no-fee statement and a plain explanation of how hiring works. Both build trust and are useful content.
 
@@ -102,7 +102,7 @@ Setu has no intake or talent module yet. Chatwoot is deployed; WhatsApp and the 
   - n8n credentials for that role, R2, Sarvam and a Chatwoot API token (see `integrations/n8n/README.md`).
   - A Chatwoot API-channel inbox, "Jobs, website", in the Vayasya Seva account.
 - **Website (this repo):**
-  - The `/jobs`, `/hi/jobs` and `/hinglish/jobs` intake pages (voice, photos, files, text, phone, consent, 18+).
+  - The `/en-in/jobs`, `/hi-in/jobs` and `/hi-latn-in/jobs` intake pages (voice, photos, files, text, phone, consent, 18+).
   - `POST /api/jobs/intake`: validation and presigned uploads, then a forward to the n8n webhook.
   - The Hindi `/privacy` notice.
 - **n8n:** the intake workflow (steps 1–6 above).
@@ -120,7 +120,7 @@ Setu reads or imports the `talent` database when it gains a talent module, then 
 
 ### Designed for any channel from day one
 
-Every input becomes a `Submission` with a `source` (`web_en`, `web_hi`, `web_hinglish`, `whatsapp`, `phone`, `sms`), a contact (phone number) and attachments. The transcribe and deliver workflows never care where a submission came from.
+Every input becomes a `Submission` with a `source` (`web_en`, `web_hi`, `web_hinglish` for the hi-Latn-IN page, `whatsapp`, `phone`, `sms`), a contact (phone number) and attachments. The transcribe and deliver workflows never care where a submission came from.
 
 ```
 Submission { id, ref, source, phone, locale, consent{version, at}, adult, text?, attachments[r2Key, type], status, createdAt }
@@ -134,8 +134,8 @@ Submission { id, ref, source, phone, locale, consent{version, at}, adult, text?,
 
 ## Jobs pages (decided 26 September 2026)
 
-- **Name and URLs:** "Jobs" / "नौकरी", at `/jobs`, `/hi/jobs` and `/hinglish/jobs` (translations of one another in `pageLocales`).
-- **Header and footer link** follows the page's language: English pages link to `/jobs`, Hindi pages to `/hi/jobs`, Hinglish pages to `/hinglish/jobs`.
+- **Name and URLs:** "Jobs" / "नौकरी", at `/en-in/jobs`, `/hi-in/jobs` and `/hi-latn-in/jobs` (translations of one another in `pages`, `src/lib/i18n.ts`). The neutral `/jobs` asks the reader to choose a language: share that one when you don't know which they read.
+- **Header and footer link** follows the page's language: en-IN pages link to `/en-in/jobs`, hi-IN pages to `/hi-in/jobs`, hi-Latn-IN pages to `/hi-latn-in/jobs`.
 - **One page with the form**, no separate apply page, in this order:
   1. The no-fee line.
   2. Voice recording: 3-minute timer, play back before sending.

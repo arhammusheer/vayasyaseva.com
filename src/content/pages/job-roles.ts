@@ -3,13 +3,13 @@ import type { Locale } from "@/lib/i18n";
 import type { JobRole } from "@/lib/talent-intake/rules";
 
 /**
- * Role pages under /jobs/<slug> (and /hi, /hinglish): one per kind of work
+ * Role pages under /jobs/<slug> in every locale: one per kind of work
  * people search for, each with the jobs form tagged with its role. They are
  * about the kind of work, not vacancies, so no JobPosting markup (Google
  * allows it only for a real, open position).
  *
  * Claims discipline: no pay figures, no promised call-back times, no
- * guarantee of work. Hindi and Hinglish are drafts pending native review;
+ * guarantee of work. hi-IN and hi-Latn-IN are drafts pending native review;
  * spellings follow docs/hindi-glossary.md.
  */
 export interface JobRoleCopy {
@@ -40,7 +40,7 @@ export interface JobRoleLabels {
 }
 
 export const jobRoleLabels: Record<Locale, JobRoleLabels> = {
-  en: {
+  "en-IN": {
     workHeading: "The work.",
     suitsHeading: "Who it suits",
     sendHeading: "Useful to send",
@@ -50,7 +50,7 @@ export const jobRoleLabels: Record<Locale, JobRoleLabels> = {
     faqEyebrow: "QUESTIONS",
     faqTitle: "About this work.",
   },
-  hi: {
+  "hi-IN": {
     workHeading: "काम क्या है।",
     suitsHeading: "किसके लिए",
     sendHeading: "भेज सकें तो अच्छा",
@@ -60,7 +60,7 @@ export const jobRoleLabels: Record<Locale, JobRoleLabels> = {
     faqEyebrow: "सवाल",
     faqTitle: "इस काम के बारे में।",
   },
-  hinglish: {
+  "hi-Latn-IN": {
     workHeading: "Kaam kya hai.",
     suitsHeading: "Kiske liye",
     sendHeading: "Bhej sakein to achha",
@@ -73,7 +73,7 @@ export const jobRoleLabels: Record<Locale, JobRoleLabels> = {
 };
 
 export const jobRoles: Record<Locale, JobRoleCopy[]> = {
-  en: [
+  "en-IN": [
     {
       slug: "factory-helper",
       name: "Factory helper",
@@ -287,7 +287,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       ],
     },
   ],
-  hi: [
+  "hi-IN": [
     {
       slug: "factory-helper",
       name: "फ़ैक्टरी हेल्पर",
@@ -498,7 +498,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       ],
     },
   ],
-  hinglish: [
+  "hi-Latn-IN": [
     {
       slug: "factory-helper",
       name: "Factory helper",

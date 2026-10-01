@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/i18n/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Menu } from "lucide-react";
@@ -11,10 +11,10 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { navigation, siteConfig } from "@/content/site";
-import { languageLinks, localeOf, localePath } from "@/lib/i18n";
+import { FALLBACK_LOCALE, languageLinks, localePath, splitLocalePath } from "@/lib/i18n";
 
 /** The jobs link follows the page's language (docs/plan-worker-pipeline.md). */
-const JOBS_LABEL = { en: "Jobs", hi: "नौकरी", hinglish: "Jobs" } as const;
+const JOBS_LABEL = { "en-IN": "Jobs", "hi-IN": "नौकरी", "hi-Latn-IN": "Jobs" } as const;
 
 export function Header() {
   const pathname = usePathname();
@@ -100,8 +100,12 @@ export function Header() {
     };
   }, [pathname]);
   const languages = languageLinks(pathname);
-  const pageLocale = localeOf(pathname);
-  const jobs = { href: localePath("/jobs", pageLocale), label: JOBS_LABEL[pageLocale], lang: pageLocale === "hi" ? "hi" : undefined };
+  // The header is English; links follow the page's language where they can.
+  const split = splitLocalePath(pathname);
+  const pageLocale = split.locale ?? FALLBACK_LOCALE;
+  const path = split.path;
+  const isHome = path === "/";
+  const jobs = { href: localePath("/jobs", pageLocale), label: JOBS_LABEL[pageLocale], lang: pageLocale === "hi-IN" ? "hi-IN" : undefined };
   const primary = navigation.filter((item) =>
     [
       "/services",
@@ -115,9 +119,10 @@ export function Header() {
     <header
       ref={headerRef}
       className="site-header"
-      data-theme={pathname === "/" ? "dark" : "light"}
-      data-home={pathname === "/" ? "true" : undefined}
-      data-clear={pathname === "/" ? "true" : undefined}
+      lang="en-IN"
+      data-theme={isHome ? "dark" : "light"}
+      data-home={isHome ? "true" : undefined}
+      data-clear={isHome ? "true" : undefined}
       data-top="true"
     >
       <a href="#main-content" className="skip-link">
@@ -138,7 +143,7 @@ export function Header() {
             <Link
               key={item.href}
               href={item.href}
-              aria-current={pathname === item.href ? "page" : undefined}
+              aria-current={path === item.href ? "page" : undefined}
             >
               {item.href === "/how-we-operate" ? "Our approach" : item.label}
             </Link>
@@ -177,7 +182,7 @@ export function Header() {
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  aria-current={pathname === item.href ? "page" : undefined}
+                  aria-current={path === item.href ? "page" : undefined}
                   className="border-b py-3 text-lg"
                 >
                   {item.label}

@@ -22,7 +22,8 @@ import type { JobsStartResponse } from "@/lib/talent-intake/contract";
 /** Public site key; Cloudflare's always-pass test key outside production. */
 const TURNSTILE_SITE_KEY =
   process.env.NODE_ENV === "production" ? "0x4AAAAAAFEAUg5yU699cqnZ" : "1x00000000000000000000AA";
-const SOURCE: Record<Locale, IntakeSource> = { en: "web_en", hi: "web_hi", hinglish: "web_hinglish" };
+/** Intake source per page. These are stored values shared with n8n and its database; don't rename them here alone. */
+const SOURCE: Record<Locale, IntakeSource> = { "en-IN": "web_en", "hi-IN": "web_hi", "hi-Latn-IN": "web_hinglish" };
 const MAX_FILES = INTAKE_LIMITS.maxAttachments - 1; // one slot is the voice note
 const RECORDER_TYPES = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4", "audio/ogg;codecs=opus"];
 const EXTENSION_TYPES: Record<string, string> = {
@@ -130,7 +131,7 @@ export function JobsForm({ locale, role = null }: { locale: Locale; role?: JobRo
       sitekey: TURNSTILE_SITE_KEY,
       action: "jobs_start",
       appearance: "interaction-only",
-      language: locale === "hi" ? "hi" : "en",
+      language: locale === "hi-IN" ? "hi" : "en",
       callback: (token: string) => setTurnstileToken(token),
       "expired-callback": () => setTurnstileToken(null),
       "error-callback": () => setTurnstileToken(null),
@@ -440,7 +441,7 @@ export function JobsForm({ locale, role = null }: { locale: Locale; role?: JobRo
           <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} disabled={sending} />
           <span>
             {t.steps.phone.consent}{" "}
-            <a href={localePath("/privacy", "en")} target="_blank" rel="noopener" className="underline underline-offset-4">
+            <a href={localePath("/privacy", "en-IN")} target="_blank" rel="noopener" className="underline underline-offset-4">
               {t.steps.phone.privacyLink}
             </a>
           </span>

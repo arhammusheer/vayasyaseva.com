@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { localePath, localesOf, neutralTarget, splitLocalePath } from "@/lib/i18n";
 
 /**
  * First-party proxy for our self-hosted Umami: /_t/s.js (tracker) and /_t/e
@@ -15,7 +16,7 @@ const UMAMI_ORIGIN = "https://t.vayasyaseva.com";
 const CLIENT_IP_HEADER = "x-vspl-client-ip";
 const GEO_HEADERS = ["x-vercel-ip-country", "x-vercel-ip-country-region", "x-vercel-ip-city"];
 
-export function proxy(request: NextRequest) {
+function umami(request: NextRequest) {
   const headers = new Headers(request.headers);
   const ip =
     request.headers.get("x-real-ip") ??
@@ -33,6 +34,57 @@ export function proxy(request: NextRequest) {
   return NextResponse.rewrite(target, { request: { headers } });
 }
 
+/** The language picker (app/(picker)/select-language); reached only by the rewrite below. */
+const PICKER_ROUTE = "/select-language";
+
+/**
+ * Locale routing (src/lib/i18n.ts). Every page lives under a locale segment.
+ * A neutral URL (no segment) opens the page's default language, or shows the
+ * language picker when the page's override is "prompt". The address bar keeps
+ * the neutral URL for the picker, so /jobs stays shareable as is.
+ */
+function routeLocale(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const { locale, path } = splitLocalePath(pathname);
+  const url = request.nextUrl.clone();
+
+  if (locale) {
+    // /hi-IN/jobs -> /hi-in/jobs: one spelling per page.
+    const canonical = localePath(path, locale);
+    if (pathname !== canonical && pathname !== `${canonical}/`) {
+      url.pathname = canonical;
+      return NextResponse.redirect(url, 308);
+    }
+    if (localesOf(path).includes(locale)) return NextResponse.next();
+    // Not in this language (e.g. /hi-in/about): resolve it as a neutral URL.
+    url.pathname = path;
+  }
+
+  // Direct visits to the picker's internal route go to the neutral URL.
+  if (pathname === PICKER_ROUTE || pathname.startsWith(`${PICKER_ROUTE}/`)) {
+    url.pathname = pathname.slice(PICKER_ROUTE.length) || "/";
+    return NextResponse.redirect(url, 308);
+  }
+
+  const target = neutralTarget(path);
+  if (target === "prompt") {
+    if (locale) return NextResponse.redirect(url, 307);
+    url.pathname = `${PICKER_ROUTE}${path === "/" ? "" : path}`;
+    return NextResponse.rewrite(url);
+  }
+  // Permanent for the neutral URL: the target stays a real page even if the
+  // page's default changes later. Temporary for a missing translation
+  // (/hi-in/about), which stops applying once the translation exists.
+  url.pathname = localePath(path, target);
+  return NextResponse.redirect(url, locale ? 307 : 308);
+}
+
+export function proxy(request: NextRequest) {
+  if (request.nextUrl.pathname.startsWith("/_t/")) return umami(request);
+  return routeLocale(request);
+}
+
 export const config = {
-  matcher: "/_t/:path*",
+  // Pages only: not the API, Next internals, metadata images or files with an extension.
+  matcher: ["/_t/:path*", "/((?!api/|_next/|_vercel/|opengraph-image|.*\\.[a-zA-Z0-9]+$).*)"],
 };

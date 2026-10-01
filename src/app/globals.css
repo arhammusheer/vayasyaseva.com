@@ -1131,12 +1131,14 @@ a:hover > svg {
 .site-header[data-theme="dark"] .header-lang a:hover {
   color: var(--gold-500);
 }
-/* Devanagari breaks apart under letter-spacing and needs taller lines. */
-[lang="hi"] .eyebrow {
+/* Devanagari breaks apart under letter-spacing and needs taller lines.
+   :lang() follows the nearest lang attribute: hi-IN pages, not hi-Latn-IN,
+   and not the English header and footer on a hi-IN page. */
+.eyebrow:lang(hi):not(:lang(hi-Latn)) {
   font-size: 13px;
   letter-spacing: 0;
 }
-[lang="hi"] :is(h1, h2, h3, summary) {
+:is(h1, h2, h3, summary):lang(hi):not(:lang(hi-Latn)) {
   letter-spacing: 0;
   line-height: 1.3;
 }
@@ -1488,7 +1490,7 @@ a:hover > svg {
   text-underline-offset: 3px;
 }
 
-/* Jobs page (/jobs, /hi/jobs, /hinglish/jobs): compact top, then one form in
+/* Jobs page (/en-in/jobs, /hi-in/jobs, /hi-latn-in/jobs): compact top, then one form in
    ruled tiers. Voice leads, typing is the alternative, files come last.
    One round gold record button. No boxes. */
 /* What to say in the voice note: short bullets, two columns where there's room. */
@@ -1720,7 +1722,7 @@ a:hover > svg {
   letter-spacing: -0.02em;
   text-wrap: balance;
 }
-[lang="hi"] .jobs-title {
+.jobs-title:lang(hi):not(:lang(hi-Latn)) {
   letter-spacing: 0;
   line-height: 1.25;
 }
@@ -1832,4 +1834,77 @@ a:hover > svg {
   .jobs-top {
     padding-block: 56px 80px;
   }
+}
+
+/* Language picker: the neutral URL of a "prompt" page (e.g. /jobs). One
+   column, big tap targets; each choice names the page in its own language. */
+.language-picker {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 16px;
+  background: var(--neutral-50);
+}
+.language-picker-inner {
+  width: min(100%, 480px);
+}
+.language-picker h1 {
+  margin-top: 32px;
+  font-family: var(--font-display);
+  font-size: clamp(28px, 6vw, 36px);
+  font-weight: 500;
+  line-height: 1.3;
+}
+.language-picker h1 span {
+  display: block;
+}
+.language-picker h1 span + span {
+  font-size: 0.7em;
+  color: var(--muted-foreground);
+}
+.language-choices {
+  margin-top: 32px;
+  display: grid;
+  gap: 12px;
+}
+.language-choices a {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  column-gap: 16px;
+  min-height: 72px;
+  padding: 16px 20px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: border-color 150ms, transform 150ms;
+}
+.language-choices a:hover,
+.language-choices a:focus-visible {
+  border-color: var(--gold-700);
+}
+.language-choices a:active {
+  transform: translateY(1px);
+}
+.language-choices svg {
+  grid-row: 1 / span 3;
+  grid-column: 2;
+  color: var(--gold-700);
+}
+.language-choice-label {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+}
+.language-choice-title {
+  margin-top: 2px;
+  font-size: 15px;
+  font-weight: 600;
+}
+.language-choice-text {
+  margin-top: 4px;
+  color: var(--muted-foreground);
+  font-size: 15px;
+  line-height: 1.45;
 }

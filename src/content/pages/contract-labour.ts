@@ -26,11 +26,11 @@ export interface ContractLabourCopy {
 }
 
 /**
- * /services/contract-labour in every locale. Hindi and Hinglish are drafts
+ * /services/contract-labour in every locale. hi-IN and hi-Latn-IN are drafts
  * pending native-speaker review; keep all three in step when the English changes.
  */
 export const contractLabourCopy: Record<Locale, ContractLabourCopy> = {
-  en: {
+  "en-IN": {
     title: "Contract Labour & Manpower Services",
     description:
       "Contract labour and industrial manpower for factory, warehouse and facility operations in SIDCUL and across Haridwar. Review roles, planning and workforce records.",
@@ -94,7 +94,7 @@ export const contractLabourCopy: Record<Locale, ContractLabourCopy> = {
       "Send the site location, roles, approximate headcount, shift pattern and timing. We can then discuss the scope, supervision and documentation relevant to your operation.",
     contactLink: "Contact Vayasya Seva",
   },
-  hi: {
+  "hi-IN": {
     title: "हरिद्वार में कॉन्ट्रैक्ट लेबर और मैनपावर सप्लाई",
     description:
       "सिडकुल और पूरे हरिद्वार में फ़ैक्टरी, वेयरहाउस और फ़ैसिलिटी के लिए कॉन्ट्रैक्ट लेबर और औद्योगिक मैनपावर। रोल, योजना और वर्कफ़ोर्स रिकॉर्ड पर बात करें।",
@@ -107,7 +107,7 @@ export const contractLabourCopy: Record<Locale, ContractLabourCopy> = {
       "कोई लेबर सप्लायर खोजता है, कोई मैनपावर प्रोवाइडर या लेबर ठेकेदार। असल सवाल एक ही है: किन लोगों की ज़रूरत है, वे कहाँ काम करेंगे, और पूरी व्यवस्था कैसे संभाली जाएगी?",
       "वर्कफ़ोर्स की योजना बनाने से पहले हम आपकी प्लांट, वेयरहाउस या फ़ैसिलिटी टीम के साथ ये बातें तय करते हैं। लगातार चलने वाले काम, प्रोजेक्ट और सीज़नल बदलाव के लिए अलग-अलग व्यवस्था की ज़रूरत हो सकती है।",
     ],
-    localLink: { href: "/hi/haridwar-sidcul", label: "सिडकुल हरिद्वार में लेबर ठेकेदार" },
+    localLink: { href: "/haridwar-sidcul", label: "सिडकुल हरिद्वार में लेबर ठेकेदार" },
     areasEyebrow: "हम किन कामों में साथ देते हैं",
     workAreas: [
       {
@@ -158,7 +158,7 @@ export const contractLabourCopy: Record<Locale, ContractLabourCopy> = {
       "साइट की जगह, रोल, अनुमानित संख्या, शिफ्ट पैटर्न और समय बताइए। फिर हम आपके काम के हिसाब से दायरे, सुपरविज़न और दस्तावेज़ों पर बात कर सकते हैं।",
     contactLink: "Vayasya Seva से संपर्क करें",
   },
-  hinglish: {
+  "hi-Latn-IN": {
     title: "Haridwar mein Contract Labour aur Manpower Supply",
     description:
       "SIDCUL aur poore Haridwar mein factory, warehouse aur facility ke liye contract labour aur industrial manpower. Roles, planning aur workforce records par baat karein.",
@@ -171,25 +171,25 @@ export const contractLabourCopy: Record<Locale, ContractLabourCopy> = {
       "Koi labour supplier dhoondhta hai, koi manpower provider ya labour thekedar. Asli sawaal ek hi hai: kin logon ki zaroorat hai, woh kahan kaam karenge, aur poora arrangement kaise manage hoga?",
       "Workforce plan karne se pehle hum aapki plant, warehouse ya facility team ke saath ye baatein tay karte hain. Ongoing kaam, projects aur seasonal badlav ke liye alag arrangements ki zaroorat ho sakti hai.",
     ],
-    localLink: { href: "/hinglish/haridwar-sidcul", label: "SIDCUL Haridwar mein labour contractor" },
+    localLink: { href: "/haridwar-sidcul", label: "SIDCUL Haridwar mein labour contractor" },
     areasEyebrow: "HUM KIN KAAMON MEIN SAATH DETE HAIN",
     workAreas: [
       {
         title: "Factory aur production",
         text: "Shopfloor ke kaam ke liye production helpers, packers, line feeders, material handlers aur quality check assistants.",
-        href: "/hinglish/services/factory-labour",
+        href: "/services/factory-labour",
         link: "Factory labour",
       },
       {
         title: "Warehouse aur dispatch",
         text: "Loading, unloading, picking, packing, stacking aur dispatch ke liye teams, warehouse activity ke hisaab se.",
-        href: "/hinglish/services/warehouse-labour",
+        href: "/services/warehouse-labour",
         link: "Warehouse labour",
       },
       {
         title: "Facilities aur site support",
         text: "Industrial aur business premises ke liye housekeeping, pantry, grounds aur doosre support roles.",
-        href: "/hinglish/services/housekeeping",
+        href: "/services/housekeeping",
         link: "Housekeeping services",
       },
     ],

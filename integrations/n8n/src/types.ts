@@ -5,6 +5,7 @@
  */
 import type { AttachmentKind, IntakeSource, JobRole } from "../../../src/lib/talent-intake/rules.ts";
 
+/** Stored values (schema.sql). "hinglish" is the website's hi-Latn-IN locale. */
 export type Locale = "en" | "hi" | "hinglish";
 
 /** Output of "Validate submission", the parameters of "Save submission". */

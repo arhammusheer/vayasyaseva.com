@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useId, useState, useSyncExternalStore } from "react";
-import Link from "next/link";
+import Link from "@/components/i18n/link";
 import Script from "next/script";
 import { ChevronDownIcon } from "lucide-react";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics as VercelAnalytics, type BeforeSendEvent } from "@vercel/analytics/next";
 import { analyticsConsentAtKey, analyticsConsentKey, hasAnalyticsConsent, trackAnalyticsEvent } from "@/lib/analytics";
+import { splitLocalePath } from "@/lib/i18n";
 import { safeAnalyticsPath } from "@/lib/analytics-pages";
 import { clarityId, gaId, umamiWebsiteId } from "@/lib/analytics-config";
 import { Button } from "@/components/ui/button";
@@ -72,7 +73,7 @@ export function Analytics({ gaId }: { gaId: string }) {
         trackAnalyticsEvent("contact_click", { contact_method: "email", source_path });
       } else {
         const destination = new URL(link.href);
-        if (destination.origin === window.location.origin && destination.pathname === "/contact") {
+        if (destination.origin === window.location.origin && splitLocalePath(destination.pathname).path === "/contact") {
           trackAnalyticsEvent("contact_intent", {
             source_path,
             intent_type: destination.searchParams.get("type") === "assessment" ? "assessment" : "general",

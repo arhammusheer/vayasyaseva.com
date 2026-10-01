@@ -71,17 +71,17 @@ GSTIN: ${siteConfig.gstin}
 MSME: ${siteConfig.msme}
 
 ## Primary routes
-- ${baseUrl}/
-- ${baseUrl}/services
-- ${baseUrl}/haridwar-sidcul
-- ${baseUrl}/industries
-- ${baseUrl}/how-we-operate
-- ${baseUrl}/compliance
-- ${baseUrl}/vayasya-setu
-- ${baseUrl}/about
-- ${baseUrl}/contact
-- ${baseUrl}/privacy
-- ${baseUrl}/terms
+- ${baseUrl}/en-in
+- ${baseUrl}/en-in/services
+- ${baseUrl}/en-in/haridwar-sidcul
+- ${baseUrl}/en-in/industries
+- ${baseUrl}/en-in/how-we-operate
+- ${baseUrl}/en-in/compliance
+- ${baseUrl}/en-in/vayasya-setu
+- ${baseUrl}/en-in/about
+- ${baseUrl}/en-in/contact
+- ${baseUrl}/en-in/privacy
+- ${baseUrl}/en-in/terms
 
 ## Services
 ${buildServicesSection()}
@@ -107,8 +107,8 @@ Validation: Server-side schema validation with 400 for invalid payloads and 429 
 Policy endpoint: ${baseUrl}/ai-access-policy.txt
 
 ## Policy and legal
-Privacy policy: ${baseUrl}/privacy
-terms of use: ${baseUrl}/terms
+Privacy policy: ${baseUrl}/en-in/privacy
+terms of use: ${baseUrl}/en-in/terms
 Robots policy: ${baseUrl}/robots.txt
 Sitemap: ${baseUrl}/sitemap.xml
 Index file: ${baseUrl}/llms.txt

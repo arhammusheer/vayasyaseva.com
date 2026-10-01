@@ -7,9 +7,9 @@ import { JOB_ROLES } from "../../../../src/lib/talent-intake/rules.ts";
 import type { ComposedNote } from "../types.ts";
 
 const PAGES: Record<string, string> = {
-  web_en: "English jobs page",
-  web_hi: "Hindi jobs page",
-  web_hinglish: "Hinglish jobs page",
+  web_en: "English jobs page (en-IN)",
+  web_hi: "हिंदी jobs page (hi-IN)",
+  web_hinglish: "Hindi jobs page, Latin script (hi-Latn-IN)",
 };
 const KIND: Record<string, string> = { audio: "voice note", image: "photo", document: "document" };
 

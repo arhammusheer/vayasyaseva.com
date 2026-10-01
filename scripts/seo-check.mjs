@@ -7,7 +7,7 @@ const base = (process.argv[2] ?? "http://localhost:3000").replace(/\/$/, "");
 
 // The registered office is a home address: legal pages only (see privacy/terms).
 const HOME_ADDRESS_MARKER = "Deep Ganga";
-const HOME_ADDRESS_PAGES = new Set(["/privacy", "/terms"]);
+const HOME_ADDRESS_PAGES = new Set(["/en-in/privacy", "/en-in/terms"]);
 
 const errors = [];
 const fail = (path, message) => errors.push(`${path || "/"}: ${message}`);

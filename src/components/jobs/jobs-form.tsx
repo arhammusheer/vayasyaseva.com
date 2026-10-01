@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { trackAnalyticsEvent } from "@/lib/analytics";
+import { JOB_PREFILL_FIELDS, labelledLines, readPrefill } from "@/lib/prefill";
 import { jobsCopy } from "@/content/pages/jobs";
 import { localePath, type Locale } from "@/lib/i18n";
 import {
@@ -113,8 +114,8 @@ export function JobsForm({ locale, role = null }: { locale: Locale; role?: JobRo
   const [fileError, setFileError] = useState<string | null>(null);
   const [text, setText] = useState("");
   const [phone, setPhone] = useState("");
-  const [adult, setAdult] = useState(false);
-  const [consent, setConsent] = useState(false);
+  // One checkbox covers both: 18 or older, and consent to be contacted.
+  const [agreed, setAgreed] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const [phase, setPhase] = useState<Phase>({ name: "form" });
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
@@ -131,6 +132,20 @@ export function JobsForm({ locale, role = null }: { locale: Locale; role?: JobRo
     trackedStart.current = true;
     trackAnalyticsEvent("job_form_start", { locale });
   };
+
+  // --- Prefilled link (#phone=…&work=…) --------------------------------------
+  useEffect(() => {
+    const values = readPrefill(JOB_PREFILL_FIELDS);
+    if (!values) return;
+    const lines = labelledLines(values, t.prefill);
+    if (values.about) lines.push(values.about);
+    // Reading the link happens once, after hydration; the fields stay editable.
+    /* eslint-disable react-hooks/set-state-in-effect */
+    if (values.phone) setPhone(values.phone);
+    if (lines.length) setText(lines.join("\n").slice(0, INTAKE_LIMITS.maxTextLength));
+    /* eslint-enable react-hooks/set-state-in-effect */
+    trackAnalyticsEvent("form_prefilled", { form: "jobs", locale, fields: Object.keys(values).length });
+  }, [t, locale]);
 
   // --- Turnstile ---------------------------------------------------------
   const renderTurnstile = useCallback(() => {
@@ -237,8 +252,7 @@ export function JobsForm({ locale, role = null }: { locale: Locale; role?: JobRo
     const hasVoice = voice.state === "recorded";
     if (!hasVoice && files.length === 0 && !text.trim()) problems.push(t.errors.empty);
     if (!normaliseIndianMobile(phone)) problems.push(t.errors.phone);
-    if (!adult) problems.push(t.errors.adult);
-    if (!consent) problems.push(t.errors.consent);
+    if (!agreed) problems.push(t.errors.agree);
     if (!turnstileToken) problems.push(t.errors.verification);
     setErrors(problems);
     if (problems.length) {
@@ -296,8 +310,7 @@ export function JobsForm({ locale, role = null }: { locale: Locale; role?: JobRo
     discardVoice();
     setFiles([]);
     setText("");
-    setAdult(false);
-    setConsent(false);
+    setAgreed(false);
     setErrors([]);
     setPhase({ name: "form" });
   }
@@ -452,13 +465,9 @@ export function JobsForm({ locale, role = null }: { locale: Locale; role?: JobRo
 
       <div className="jobs-consent">
         <label className="jobs-check">
-          <input type="checkbox" checked={adult} onChange={(e) => setAdult(e.target.checked)} disabled={sending} />
-          <span>{t.steps.phone.adult}</span>
-        </label>
-        <label className="jobs-check">
-          <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} disabled={sending} />
+          <input type="checkbox" name="agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} disabled={sending} />
           <span>
-            {t.steps.phone.consent}{" "}
+            {t.steps.phone.agree}{" "}
             <a href={localePath("/privacy", "en-IN")} target="_blank" rel="noopener" className="underline underline-offset-4">
               {t.steps.phone.privacyLink}
             </a>

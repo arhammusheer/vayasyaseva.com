@@ -155,3 +155,11 @@ Submission { id, ref, source, phone, locale, consent{version, at}, adult, text?,
 
 1. **OpenRouter parsing:** whether to accept free models that may train on inputs (not recommended), use a low-cost model with no data retention, or stay without AI.
 2. **The website intake:** build the jobs pages above. Test WebM/Opus recordings from a real Android phone through Sarvam.
+
+## Applications prepared by AI assistants (1 October 2026)
+
+People find us through ChatGPT and other assistants. `/llms.txt` ("For AI assistants") tells an assistant to ask the person for their details in conversation, then give them a prefilled link: `/jobs#name=…&phone=…&work=…&experience=…&location=…&start=…&about=…` (or a role page), and `/en-in/contact#name=…&phone=…&details=…` for businesses. The same templates are in the site JSON-LD as `potentialAction` (`ApplyAction`, `CommunicateAction`).
+
+- The form reads the fragment once (`src/lib/prefill.ts`), fills the fields (job details as labelled lines in the page's language), and clears it from the address bar. The fragment never reaches the server, logs or analytics.
+- The person still checks the form, ticks the one checkbox (18 or older, and consent to be contacted) and sends it, so Turnstile, the honeypot and rate limits all still apply.
+- Direct submission by assistants to `/api/*` is not offered: an endpoint without the browser checks would let anyone file applications with someone else's number. Revisit with a confirmation step (SMS or WhatsApp to the applicant) once DLT or WhatsApp is live.

@@ -20,17 +20,17 @@ Google does not treat Hindi in Latin script as its own search language and may r
 
 Every page is at `/<locale><path>`, for example `/en-in/about`, `/hi-in/jobs`, `/hi-latn-in/services/housekeeping`. The path without a locale (`/about`, `/jobs`) is the page's **neutral URL**. What it does is set per page in `pages` in `src/lib/i18n.ts`:
 
-1. **Default in code:** the neutral URL redirects (307) to English. A page not listed in `pages` is English only.
-2. **Page override set to a locale:** the neutral URL redirects (307) to that locale, e.g. `{ locales: ["en-IN", "hi-IN"], override: "hi-IN" }`.
+1. **Default in code:** the neutral URL redirects (308) to English. A page not listed in `pages` is English only.
+2. **Page override set to a locale:** the neutral URL redirects (308) to that locale, e.g. `{ locales: ["en-IN", "hi-IN"], override: "hi-IN" }`.
 3. **Page override set to `"prompt"`:** the neutral URL shows a language picker. The address bar keeps the neutral URL, and each choice links to that page in one language. Query strings carry over, so `/jobs?utm_source=whatsapp` keeps its tag.
 
 `/jobs` and every `/jobs/<role>` page use `"prompt"`. Share `www.vayasyaseva.com/jobs` when you don't know which language the person reads.
 
-The redirects are temporary on purpose: a page's override can change in code, and browsers cache permanent redirects. The neutral URL is each page's hreflang `x-default`.
+Redirects from a neutral URL are permanent (308), so ranking moves to the locale URL. If a page's default changes later, browsers that cached the old redirect still land on a real page. The one catch: if a page is later switched to `"prompt"`, those browsers skip the picker until their cache clears. hreflang `x-default` never points at a redirect: it is the neutral URL on picker pages (which answer there) and the default language's page on all others.
 
 Other rules, in `src/proxy.ts`:
 
-- A locale the page doesn't have (e.g. `/hi-in/about`) resolves as the neutral URL, so `/hi-in/about` goes to `/en-in/about`.
+- A locale the page doesn't have (e.g. `/hi-in/about`) resolves as the neutral URL, so `/hi-in/about` goes to `/en-in/about`. This redirect is temporary (307), because it stops applying once the translation exists.
 - The old prefixes redirect permanently in `next.config.ts`: `/hi/*` to `/hi-in/*`, and the old Latin-script prefix to `/hi-latn-in/*`.
 - The picker's internal route (`/select-language/...`) is reached only by rewrite; visiting it directly redirects to the neutral URL.
 

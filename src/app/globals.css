@@ -1888,7 +1888,7 @@ a:hover > svg {
   transform: translateY(1px);
 }
 .language-choices svg {
-  grid-row: 1 / span 2;
+  grid-row: 1 / span 3;
   grid-column: 2;
   color: var(--gold-700);
 }
@@ -1898,6 +1898,13 @@ a:hover > svg {
   font-weight: 600;
 }
 .language-choice-title {
+  margin-top: 2px;
+  font-size: 15px;
+  font-weight: 600;
+}
+.language-choice-text {
+  margin-top: 4px;
   color: var(--muted-foreground);
   font-size: 15px;
+  line-height: 1.45;
 }

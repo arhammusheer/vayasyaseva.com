@@ -9,6 +9,7 @@ export type LanguageChoice = {
   locale: string;
   label: string;
   title: string;
+  text?: string;
 };
 
 const subscribe = () => () => {};
@@ -32,6 +33,7 @@ export function LanguageChoices({ choices }: { choices: LanguageChoice[] }) {
           >
             <span className="language-choice-label">{c.label}</span>
             <span className="language-choice-title">{c.title}</span>
+            {c.text && <span className="language-choice-text">{c.text}</span>}
             <ArrowRight aria-hidden="true" />
           </a>
         </li>

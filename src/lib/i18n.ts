@@ -148,15 +148,17 @@ export function localizeHref(href: string, locale?: Locale) {
 }
 
 /**
- * hreflang alternates for a page, given its neutral path. x-default is the
- * neutral URL: it opens the default language or the language picker.
+ * hreflang alternates for a page, given its neutral path. x-default must not
+ * redirect: it is the language picker on "prompt" pages (served at the
+ * neutral URL) and the default language's page everywhere else.
  */
 export function languageAlternates(path: string) {
   const published = localesOf(path).filter((l) => locales[l].published);
   if (published.length < 2) return undefined;
+  const xDefault = neutralTarget(path) === "prompt" ? path : localePath(path, defaultLocaleOf(path));
   return {
     ...Object.fromEntries(published.map((l) => [locales[l].hreflang, localePath(path, l)])),
-    "x-default": path,
+    "x-default": xDefault,
   } as Record<string, string>;
 }
 

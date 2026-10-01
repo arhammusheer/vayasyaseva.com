@@ -29,11 +29,16 @@ type Props = { params: Promise<{ path?: string[] }> };
 
 const toPath = (segments: string[] = []) => `/${segments.join("/")}`;
 
-/** The page's name in a language, so each choice shows what it opens. */
-function pageTitle(path: string, locale: Locale) {
-  if (path === "/jobs") return jobsCopy[locale].heading;
-  const role = /^\/jobs\/([^/]+)$/.exec(path)?.[1];
-  return (role && getJobRole(role, locale)?.name) || locales[locale].hint;
+/**
+ * What each choice opens, in its own language: the page's title and the
+ * opening line of its copy. It also gives the picker real content to index.
+ */
+function pageSummary(path: string, locale: Locale): { title: string; text?: string } {
+  if (path === "/jobs") return { title: jobsCopy[locale].title, text: jobsCopy[locale].lede };
+  const slug = /^\/jobs\/([^/]+)$/.exec(path)?.[1];
+  const role = slug ? getJobRole(slug, locale) : undefined;
+  if (role) return { title: role.metaTitle, text: role.lede };
+  return { title: locales[locale].hint };
 }
 
 const PROMPT = [
@@ -44,11 +49,11 @@ const PROMPT = [
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const path = toPath((await params).path);
-  const english = path === "/jobs" ? jobsCopy["en-IN"].title : pageTitle(path, "en-IN");
+  const english = pageSummary(path, "en-IN");
   const languages = languageAlternates(path);
   return {
-    title: { absolute: `${english} | Vayasya Seva` },
-    description: `Choose your language: ${localesOf(path).map((l) => locales[l].label).join(", ")}.`,
+    title: { absolute: `${english.title} | Vayasya Seva` },
+    description: `${english.text ? `${english.text} ` : ""}Choose your language: ${localesOf(path).map((l) => locales[l].label).join(", ")}.`,
     alternates: { canonical: path, ...(languages && { languages }) },
   };
 }
@@ -59,7 +64,7 @@ export default async function LanguagePickerPage({ params }: Props) {
     href: localePath(path, locale),
     locale,
     label: locales[locale].label,
-    title: pageTitle(path, locale),
+    ...pageSummary(path, locale),
   }));
   return (
     <main id="main-content" className="language-picker">

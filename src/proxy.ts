@@ -72,9 +72,11 @@ function routeLocale(request: NextRequest) {
     url.pathname = `${PICKER_ROUTE}${path === "/" ? "" : path}`;
     return NextResponse.rewrite(url);
   }
-  // Temporary: a page's default language can change in code.
+  // Permanent for the neutral URL: the target stays a real page even if the
+  // page's default changes later. Temporary for a missing translation
+  // (/hi-in/about), which stops applying once the translation exists.
   url.pathname = localePath(path, target);
-  return NextResponse.redirect(url, 307);
+  return NextResponse.redirect(url, locale ? 307 : 308);
 }
 
 export function proxy(request: NextRequest) {

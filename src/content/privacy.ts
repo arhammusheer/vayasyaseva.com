@@ -1,7 +1,7 @@
 export const privacyContent = `
 # Privacy Policy
 
-*Last updated: 1 October 2026*
+*Last updated: 2 October 2026*
 
 ## 1. Who this notice covers
 
@@ -23,16 +23,18 @@ Our contact details are in Section 11. The Site is intended for businesses and f
 
 **Usage recordings and heatmaps.** If you choose "Allow All", Microsoft Clarity also loads and may set cookies or similar identifiers. It records how pages are used, including clicks, taps, scrolling, cursor movement and page layout, so we can see where visitors get stuck and improve the Site. These recordings are replayable as a session. The contact form and job application form are masked, so what you type or record in them is not captured, and Clarity masks other sensitive input by default. Recordings are labelled with the page language, the type of page and the usage events above, so we can find, for example, visits where a form was left unfinished. Clarity receives technical data such as your IP address, page URL and device/browser information. We do not use Clarity for advertising or to identify individual visitors.
 
+If you choose "Allow All", Umami (described above) also records replayable sessions and heatmaps of clicks, taps, scrolling and page layout. All page text and anything typed is masked, and the contact form, the job application form and the confirmation shown after an application are left out of recordings entirely. Umami does not set cookies for this. Recordings stay on our infrastructure and are not shared with a third party.
+
 ## 3. Your analytics choices
 
 The Site offers two choices for the measurement described above:
 
-- **Required Only:** keeps Google Analytics and Microsoft Clarity off. Essential hosting and security processing and the cookie-free site counts and usage events still occur.
+- **Required Only:** keeps Google Analytics, Microsoft Clarity and Umami recordings off. Essential hosting and security processing and the cookie-free site counts and usage events still occur.
 - **Allow All:** also enables the additional site measurement and the usage recordings and heatmaps described in Section 2.
 
 You can reopen these choices at any time using "Privacy choices" in the footer. Your choice is stored in your browser's local storage so the Site can remember it. An affirmative choice expires after 180 days and must be renewed. Changing from "Allow All" to "Required Only" reloads the page to stop scripts that are already running. Withdrawal affects future collection; it does not erase data already received by a provider. You may also block scripts or storage in your browser.
 
-Only the cookie-free site counts and usage events run until you actively choose "Allow All"; Google Analytics and Microsoft Clarity stay off. This choice covers only the purposes and data described here, not future advertising, retargeting or other materially different uses. If we add such uses, we will explain them and request a new, separate choice where required. Consent rules for audience measurement vary by jurisdiction; this notice does not remove any rights you have under local law.
+Only the cookie-free site counts and usage events run until you actively choose "Allow All"; Google Analytics, Microsoft Clarity and Umami recordings stay off. This choice covers only the purposes and data described here, not future advertising, retargeting or other materially different uses. If we add such uses, we will explain them and request a new, separate choice where required. Consent rules for audience measurement vary by jurisdiction; this notice does not remove any rights you have under local law.
 
 ## 4. Why we use information
 
@@ -48,7 +50,7 @@ The providers that handle job applications are listed in Section 10. These provi
 
 ## 6. How long we keep it
 
-Job applications are kept as described in Section 10. We keep enquiries and business correspondence for as long as needed to respond, maintain relevant business records, resolve disputes and meet legal duties. Operational logs are retained according to our hosting and security configurations. Vercel says the visitor hash used by Web Analytics is discarded after 24 hours; aggregate reports remain subject to the project's retention settings. Google Analytics data is retained according to the property's configured retention settings. Microsoft Clarity data is kept for the periods Microsoft sets: at the time of writing, about 30 days for recordings we have not saved and up to 13 months for heatmaps and saved recordings. We review these settings and delete or anonymise information when it is no longer needed, subject to legal requirements.
+Job applications are kept as described in Section 10. We keep enquiries and business correspondence for as long as needed to respond, maintain relevant business records, resolve disputes and meet legal duties. Operational logs are retained according to our hosting and security configurations. Vercel says the visitor hash used by Web Analytics is discarded after 24 hours; aggregate reports remain subject to the project's retention settings. Google Analytics data is retained according to the property's configured retention settings. Microsoft Clarity data is kept for the periods Microsoft sets: at the time of writing, about 30 days for recordings we have not saved and up to 13 months for heatmaps and saved recordings. Umami keeps recordings for 30 days unless we save one to investigate a problem. We review these settings and delete or anonymise information when it is no longer needed, subject to legal requirements.
 
 Your browser keeps an analytics preference until you change it or clear local storage. An affirmative site-measurement choice stops being valid after 180 days, even if the preference entry remains in storage.
 

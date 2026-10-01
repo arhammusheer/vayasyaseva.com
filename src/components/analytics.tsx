@@ -120,7 +120,7 @@ export function Analytics({ gaId }: { gaId: string }) {
 
   return (
     <>
-      {/* Cookie-free counts (Vercel) and events (Umami) run for every visitor; "Allow All" adds GA4 and Clarity. */}
+      {/* Cookie-free counts (Vercel) and events (Umami) run for every visitor; "Allow All" adds GA4, Clarity and Umami recordings. */}
       <VercelAnalytics beforeSend={sanitizeBasicEvent} />
       {umamiWebsiteId && (
         <Script
@@ -134,6 +134,16 @@ export function Analytics({ gaId }: { gaId: string }) {
         />
       )}
       <AnalyticsTracker />
+      {consent === "accepted" && umamiWebsiteId && (
+        // Umami replays and heatmaps. Sampling, strict masking and the blocked
+        // forms are set per website in the Umami dashboard, not here.
+        <Script
+          src="/_t/recorder.js"
+          data-host-url="/_t"
+          data-website-id={umamiWebsiteId}
+          strategy="afterInteractive"
+        />
+      )}
       {consent === "accepted" && <GoogleAnalytics gaId={gaId} />}
       {consent === "accepted" && clarityId && (
         // Not id="clarity": an element id becomes a window property, so window.clarity
@@ -161,7 +171,7 @@ export function Analytics({ gaId }: { gaId: string }) {
             </button>
           </div>
           <div id={detailsId} hidden={!showDetails} className="mt-2 text-xs leading-relaxed text-white/80">
-            Cookie-free page counts and usage events (which links and form steps are used, never what you type) always run. Allowing adds Google Analytics (referrals, approximate location, device details, site actions) and Microsoft Clarity recordings of clicks, scrolls and cursor movement, with page text and form fields hidden. No form entries or advertising. See our{" "}
+            Cookie-free page counts and usage events (which links and form steps are used, never what you type) always run. Allowing adds Google Analytics (referrals, approximate location, device details, site actions) and recordings of clicks, scrolls and cursor movement (Microsoft Clarity, and Umami on our own servers), with page text and form fields hidden. No form entries or advertising. See our{" "}
             <Link href="/privacy" className="text-white underline underline-offset-2 hover:text-gold-400">privacy policy</Link>.
           </div>
           <div className="mt-2 flex flex-wrap items-center justify-end gap-1">

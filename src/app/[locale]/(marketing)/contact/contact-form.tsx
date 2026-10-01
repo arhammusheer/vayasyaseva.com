@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { trackAnalyticsEvent } from "@/lib/analytics";
+import { ENQUIRY_PREFILL_FIELDS, labelledLines, readPrefill } from "@/lib/prefill";
 import {
   contactSchema,
   type ContactFormData,
@@ -62,6 +63,7 @@ export function ContactForm() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<ContactFormInput, undefined, ContactFormData>({
     resolver: zodResolver(contactSchema),
@@ -71,6 +73,27 @@ export function ContactForm() {
         : "",
     },
   });
+
+  // Prefilled link (#name=…&phone=…&details=…): fields the form shows are
+  // filled in; the rest go into the details box so the person sees them.
+  useEffect(() => {
+    const values = readPrefill(ENQUIRY_PREFILL_FIELDS);
+    if (!values) return;
+    for (const key of ["name", "phone", "email", "company"] as const) {
+      if (values[key]) setValue(key, values[key]);
+    }
+    const lines = labelledLines(values, {
+      role: "My role",
+      location: "Site",
+      industry: "Industry",
+      headcount: "Headcount",
+      shifts: "Shifts",
+      start: "Target start",
+    });
+    if (values.details) lines.push(values.details);
+    if (lines.length) setValue("details", lines.join("\n"));
+    trackAnalyticsEvent("form_prefilled", { form: "contact", fields: Object.keys(values).length });
+  }, [setValue]);
 
   async function onSubmit(data: ContactFormData) {
     setError(null);

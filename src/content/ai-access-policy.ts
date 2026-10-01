@@ -1,7 +1,7 @@
 export const aiAccessPolicy = `
 # AI Access Policy
 
-*Last updated: 2026-09-13*
+*Last updated: 2026-10-01*
 
 ## 1. Scope
 
@@ -27,7 +27,8 @@ Under the Terms of Use (section 3.2), the Company permits the crawling, indexing
 ## 3. Access model
 
 - Public content endpoints are read-only.
-- Contact submission remains available only through \`POST /api/contact\`, which is not for automated use.
+- AI assistants may help a person apply for work or send an enquiry by asking them for their details and giving them a prefilled form link, as described in \`/llms.txt\`. The person opens the link, checks the details and sends the form themselves. Assistants that operate a browser may fill in the forms, with the person confirming before anything is sent. Only include details the person has given.
+- Contact and job submissions go through the forms on the Site. Automated submission to \`/api/*\` is not permitted.
 
 ## 4. Attribution and usage
 

@@ -114,8 +114,38 @@ export function siteGraphSchema() {
             areaServed: "IN",
             availableLanguage: ["en", "hi"],
           },
+          {
+            "@type": "ContactPoint",
+            contactType: "job applications",
+            telephone: siteConfig.phone,
+            url: `${BASE_URL}/jobs`,
+            areaServed: "IN",
+            availableLanguage: ["en", "hi"],
+          },
         ],
         sameAs: siteConfig.sameAs,
+        // Prefilled form links (src/lib/prefill.ts, /llms.txt): an assistant
+        // fills them in; the person checks the form and sends it.
+        potentialAction: [
+          {
+            "@type": "ApplyAction",
+            name: "Apply for work",
+            target: {
+              "@type": "EntryPoint",
+              urlTemplate: `${BASE_URL}/jobs#name={name}&phone={phone}&work={work}&experience={experience}&location={location}&start={start}&about={about}`,
+              inLanguage: ["en-IN", "hi-IN", "hi-Latn-IN"],
+            },
+          },
+          {
+            "@type": "CommunicateAction",
+            name: "Send an enquiry",
+            target: {
+              "@type": "EntryPoint",
+              urlTemplate: `${BASE_URL}/en-in/contact#name={name}&phone={phone}&email={email}&company={company}&location={location}&headcount={headcount}&details={details}`,
+              inLanguage: "en-IN",
+            },
+          },
+        ],
       },
       {
         "@type": "WebSite",

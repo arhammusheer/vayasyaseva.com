@@ -10,7 +10,8 @@ export interface JobsFormCopy {
     /** The word between the voice note and the text box. */
     or: string;
     text: { title: string; placeholder: string };
-    phone: { title: string; placeholder: string; adult: string; consent: string; privacyLink: string };
+    /** One checkbox: 18 or older, and consent to be contacted. */
+    phone: { title: string; placeholder: string; agree: string; privacyLink: string };
   };
   record: {
     start: string;
@@ -29,14 +30,15 @@ export interface JobsFormCopy {
   errors: {
     empty: string;
     phone: string;
-    adult: string;
-    consent: string;
+    agree: string;
     verification: string;
     network: string;
     server: string;
   };
   done: { title: string; refLabel: string; body: string; again: string };
   labels: { voice: string; photo: string; document: string };
+  /** Labels for details filled in from a prefilled link (src/lib/prefill.ts). */
+  prefill: { name: string; work: string; experience: string; location: string; start: string };
 }
 
 export interface JobsCopy {
@@ -92,8 +94,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         phone: {
           title: "Your mobile number",
           placeholder: "98765 43210",
-          adult: "I am 18 or older",
-          consent: "I agree that Vayasya Seva may use my details to contact me about work.",
+          agree: "I am 18 or older, and Vayasya Seva may use my details to contact me about work.",
           privacyLink: "Privacy Policy",
         },
       },
@@ -121,8 +122,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       errors: {
         empty: "Record a voice note, add a file or type a few words about yourself.",
         phone: "Enter a 10-digit mobile number.",
-        adult: "Please confirm you are 18 or older.",
-        consent: "Please agree so we can contact you.",
+        agree: "Please tick the box: you are 18 or older and agree that we can contact you.",
         verification: "We couldn't verify this browser. Please try again.",
         network: "The connection dropped. Check your signal and press Send again.",
         server: "Something went wrong on our side. Please try again in a few minutes.",
@@ -134,6 +134,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         again: "Send another",
       },
       labels: { voice: "Voice note", photo: "Photo", document: "Document" },
+      prefill: { name: "Name", work: "Work I want", experience: "Experience", location: "Area", start: "Can start" },
     },
     workEyebrow: "WHO WE HIRE",
     workHeading: "The work we hire for.",
@@ -201,8 +202,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         phone: {
           title: "आपका मोबाइल नंबर",
           placeholder: "98765 43210",
-          adult: "मेरी उम्र 18 साल या उससे ज़्यादा है",
-          consent: "मैं सहमत हूँ कि Vayasya Seva नौकरी के लिए मुझसे संपर्क करने में मेरी जानकारी इस्तेमाल करे।",
+          agree: "मेरी उम्र 18 साल या उससे ज़्यादा है, और मैं सहमत हूँ कि Vayasya Seva नौकरी के लिए मुझसे संपर्क करने में मेरी जानकारी इस्तेमाल करे।",
           privacyLink: "गोपनीयता नीति",
         },
       },
@@ -230,8 +230,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       errors: {
         empty: "आवाज़ रिकॉर्ड करें, फ़ाइल जोड़ें या अपने बारे में कुछ लिखें।",
         phone: "10 अंकों का मोबाइल नंबर लिखें।",
-        adult: "कृपया पुष्टि करें कि आपकी उम्र 18 साल या उससे ज़्यादा है।",
-        consent: "संपर्क के लिए कृपया सहमति दें।",
+        agree: "कृपया बॉक्स पर टिक करें: आपकी उम्र 18 साल या उससे ज़्यादा है और आप संपर्क के लिए सहमत हैं।",
         verification: "ब्राउज़र की जाँच नहीं हो पाई। कृपया फिर से कोशिश करें।",
         network: "नेटवर्क टूट गया। सिग्नल देखकर फिर से भेजें दबाएँ।",
         server: "हमारी तरफ़ से कुछ गड़बड़ हुई। कुछ मिनट बाद फिर से कोशिश करें।",
@@ -243,6 +242,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         again: "एक और भेजें",
       },
       labels: { voice: "आवाज़", photo: "फ़ोटो", document: "कागज़" },
+      prefill: { name: "नाम", work: "कौन-सा काम चाहिए", experience: "अनुभव", location: "इलाका", start: "कब से शुरू कर सकते हैं" },
     },
     workEyebrow: "किन कामों के लिए",
     workHeading: "हम इन कामों के लिए लोग रखते हैं।",
@@ -310,8 +310,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         phone: {
           title: "Aapka mobile number",
           placeholder: "98765 43210",
-          adult: "Meri umar 18 saal ya usse zyada hai",
-          consent: "Main sehmat hoon ki Vayasya Seva naukri ke liye mujhse contact karne mein meri jaankari use kare.",
+          agree: "Meri umar 18 saal ya usse zyada hai, aur main sehmat hoon ki Vayasya Seva naukri ke liye mujhse contact karne mein meri jaankari use kare.",
           privacyLink: "Privacy Policy",
         },
       },
@@ -339,8 +338,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       errors: {
         empty: "Awaaz record karein, file jodein ya apne baare mein kuch likhein.",
         phone: "10 digit ka mobile number likhein.",
-        adult: "Please confirm karein ki aapki umar 18 saal ya usse zyada hai.",
-        consent: "Contact ke liye please sehmati dein.",
+        agree: "Please box par tick karein: aapki umar 18 saal ya usse zyada hai aur aap contact ke liye sehmat hain.",
         verification: "Browser ki jaanch nahi ho paayi. Please phir se try karein.",
         network: "Network toot gaya. Signal dekhkar phir se Bhejein dabayein.",
         server: "Hamari taraf se kuch gadbad hui. Kuch minute baad phir se try karein.",
@@ -352,6 +350,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         again: "Ek aur bhejein",
       },
       labels: { voice: "Awaaz", photo: "Photo", document: "Document" },
+      prefill: { name: "Naam", work: "Kaunsa kaam chahiye", experience: "Anubhav", location: "Ilaaka", start: "Kab se shuru kar sakte hain" },
     },
     workEyebrow: "KIN KAAMON KE LIYE",
     workHeading: "Hum in kaamon ke liye log rakhte hain.",

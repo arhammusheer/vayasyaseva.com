@@ -17,6 +17,8 @@ export const siteConfig: SiteConfig = {
     "https://www.linkedin.com/company/vayasya-seva/",
     // Google Business Profile
     "https://share.google/cKO2sPgN7domdFtVq",
+    // Wikidata item (created 2 October 2026)
+    "https://www.wikidata.org/wiki/Q141622734",
   ],
   geo: { latitude: 29.9457, longitude: 78.1642 },
 };

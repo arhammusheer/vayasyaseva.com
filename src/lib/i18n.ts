@@ -9,8 +9,7 @@
  * entry or header link from published pages. Flip `published` once a native
  * speaker has reviewed the copy.
  */
-import { JOB_HUB_SLUGS } from "@/lib/job-hubs";
-import { JOB_ROLE_SLUGS } from "@/lib/talent-intake/rules";
+import { JOB_HUB_SLUGS, JOB_ROLE_SLUGS } from "@/lib/talent-intake/rules";
 
 export const locales = {
   "en-IN": {

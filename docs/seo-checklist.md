@@ -7,7 +7,7 @@ Goal: improve qualified visibility for labour, manpower, compliance and industri
 **Crawlability and indexing**
 - `robots.txt`: blanket allow, only `/api/` disallowed; `Host` and `Sitemap` declared. Enforced by `pnpm ai:check`.
 - `sitemap.xml`: every public page in each published language (70 URLs as of 2 October 2026), built from `src/app/sitemap.ts`, the role data and `pages` in `src/lib/i18n.ts`.
-- Job hub pages `/jobs/freshers`, `/jobs/10th-pass` and `/jobs/12th-pass` (all three languages) are in the sitemap but deliberately **not linked** from navigation, the jobs page, role pages or `llms.txt` (owner's call, October 2026). They target "SIDCUL Haridwar vacancy for freshers" and "10th/12th pass job" searches. Don't add links to them without asking; see `src/lib/job-hubs.ts`.
+- Job hub pages `/jobs/freshers`, `/jobs/10th-pass` and `/jobs/12th-pass` (all three languages) are in the sitemap but deliberately **not linked** from navigation, the jobs page, role pages or `llms.txt` (owner's call, October 2026). They target "SIDCUL Haridwar vacancy for freshers" and "10th/12th pass job" searches. Don't add links to them without asking; see `JOB_HUBS` in `src/lib/talent-intake/rules.ts`. Applications from them carry a `hub` tag, shown as "Came from" in Chatwoot.
 - Security guard pages are on hold until a PSARA licence or licensed partner is confirmed.
 - One canonical per page via `pageMetadata()`; no root fallback canonical (404 no longer claims a URL).
 - Root `robots` meta: index/follow, `max-snippet:-1`, `max-image-preview:large`, `max-video-preview:-1`.

@@ -3,7 +3,7 @@
  * Chatwoot conversation: where the submission came from, the person's own
  * message and each voice note's transcript. Files follow as attachments.
  */
-import { JOB_ROLES } from "../../../../src/lib/talent-intake/rules.ts";
+import { JOB_HUBS, JOB_ROLES } from "../../../../src/lib/talent-intake/rules.ts";
 import type { ComposedNote } from "../types.ts";
 
 const PAGES: Record<string, string> = {
@@ -18,6 +18,7 @@ export default async function main(): Promise<N8nItem<ComposedNote>[]> {
   const page = PAGES[s.source] ?? s.source;
   const lines = [`**Job seeker ${s.ref}** · ${page} · ${s.phone}`];
   if (s.role) lines.push(`**Asked about:** ${JOB_ROLES[s.role] ?? s.role}`);
+  if (s.hub) lines.push(`**Came from:** ${JOB_HUBS[s.hub] ?? s.hub} (not linked on the site; found through search)`);
 
   if (s.text) lines.push("", "**Their message:**", s.text);
 

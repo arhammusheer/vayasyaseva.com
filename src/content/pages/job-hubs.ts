@@ -1,12 +1,11 @@
 import type { FaqItem } from "../types";
 import type { Locale } from "@/lib/i18n";
-import type { JobHub } from "@/lib/job-hubs";
-import type { JobRole } from "@/lib/talent-intake/rules";
+import type { JobHub, JobRole } from "@/lib/talent-intake/rules";
 
 /**
  * Hub pages under /jobs/<slug> for who is searching (freshers, 10th or 12th
  * pass), each pointing to the role pages that fit. Listed in the sitemap but
- * not linked from the site (see src/lib/job-hubs.ts).
+ * not linked from the site (JOB_HUBS in src/lib/talent-intake/rules.ts).
  *
  * Same claims discipline as job-roles.ts: no pay figures, no promised
  * call-back times, no guarantee of work, no employer names. hi-IN and

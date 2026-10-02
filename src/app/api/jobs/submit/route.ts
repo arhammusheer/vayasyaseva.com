@@ -48,6 +48,7 @@ export async function POST(request: NextRequest) {
       ref: ticket.ref,
       source: ticket.source,
       role: ticket.role ?? null,
+      hub: ticket.hub ?? null,
       phone,
       adult: true,
       consent: { version: TALENT_CONSENT_VERSION, at: new Date().toISOString() },

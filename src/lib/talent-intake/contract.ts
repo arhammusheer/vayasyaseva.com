@@ -4,6 +4,7 @@ import {
   ATTACHMENT_MIME,
   INTAKE_LIMITS,
   INTAKE_SOURCES,
+  JOB_HUB_SLUGS,
   JOB_ROLE_SLUGS,
   REF_PATTERN,
   isAttachmentKeyFor,
@@ -35,6 +36,8 @@ export const talentIntakeSchema = z
     source: z.enum(Object.keys(INTAKE_SOURCES) as [IntakeSource, ...IntakeSource[]]),
     /** The role page it came from, or null from the general jobs page. */
     role: z.enum(JOB_ROLE_SLUGS).nullable(),
+    /** The hub page it came from (/jobs/freshers…), or null. */
+    hub: z.enum(JOB_HUB_SLUGS).nullable(),
     phone: z
       .string()
       .transform((value, ctx) => {
@@ -74,6 +77,7 @@ export type TalentIntakeAttachment = TalentIntakePayload["attachments"][number];
 export const jobsStartRequestSchema = z.object({
   source: z.enum(Object.keys(INTAKE_SOURCES) as [IntakeSource, ...IntakeSource[]]),
   role: z.enum(JOB_ROLE_SLUGS).nullish().transform((r) => r ?? null),
+  hub: z.enum(JOB_HUB_SLUGS).nullish().transform((h) => h ?? null),
   turnstileToken: z.string().min(1).max(4096),
   files: z
     .array(

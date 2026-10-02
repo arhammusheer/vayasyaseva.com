@@ -1,6 +1,5 @@
 import { splitLocalePath } from "@/lib/i18n";
-import { JOB_HUB_SLUGS } from "@/lib/job-hubs";
-import { JOB_ROLE_SLUGS } from "@/lib/talent-intake/rules";
+import { JOB_HUB_SLUGS, JOB_ROLE_SLUGS } from "@/lib/talent-intake/rules";
 
 /** Public pages by neutral path; any locale of them may be reported. */
 const publicPages = new Set([

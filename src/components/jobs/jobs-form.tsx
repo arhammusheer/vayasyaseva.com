@@ -16,6 +16,7 @@ import {
   normaliseIndianMobile,
   type AttachmentKind,
   type IntakeSource,
+  type JobHub,
   type JobRole,
 } from "@/lib/talent-intake/rules";
 import type { JobsStartResponse } from "@/lib/talent-intake/contract";
@@ -96,7 +97,10 @@ async function upload(url: string, headers: Record<string, string>, body: Blob, 
   }
 }
 
-/** `role`: set on a role page (/jobs/<slug>) so the submission is tagged with it. */
+/**
+ * `role`: set on a role page (/jobs/<slug>) so the submission is tagged with it.
+ * `hub`: the same for the unlinked hub pages (/jobs/freshers…).
+ */
 /** Voice note length for analytics, in ranges rather than exact seconds. */
 function secondsBucket(seconds: number) {
   if (seconds < 10) return "under_10s";
@@ -105,7 +109,15 @@ function secondsBucket(seconds: number) {
   return "60s_plus";
 }
 
-export function JobsForm({ locale, role = null }: { locale: Locale; role?: JobRole | null }) {
+export function JobsForm({
+  locale,
+  role = null,
+  hub = null,
+}: {
+  locale: Locale;
+  role?: JobRole | null;
+  hub?: JobHub | null;
+}) {
   const t = jobsCopy[locale].form;
   const noFee = jobsCopy[locale].noFee;
   const [voice, setVoice] = useState<Voice>({ state: "idle" });
@@ -271,7 +283,7 @@ export function JobsForm({ locale, role = null }: { locale: Locale; role?: JobRo
       const start = await fetch("/api/jobs/start", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ source: SOURCE[locale], role, turnstileToken, files: declared }),
+        body: JSON.stringify({ source: SOURCE[locale], role, hub, turnstileToken, files: declared }),
       });
       resetTurnstile(); // tokens are single-use
       if (start.status === 403) throw new Error("verification");

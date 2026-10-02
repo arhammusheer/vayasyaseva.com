@@ -25,6 +25,8 @@ BEGIN
   -- The role page it came from (JOB_ROLES in src/lib/talent-intake/rules.ts); null from /jobs.
   ALTER TABLE submissions ADD COLUMN IF NOT EXISTS role text;
   CREATE INDEX IF NOT EXISTS submissions_status_idx ON submissions (status, created_at);
+  -- The hub page it came from (JOB_HUBS in rules.ts: /jobs/freshers…); null otherwise.
+  ALTER TABLE submissions ADD COLUMN IF NOT EXISTS hub text;
   CREATE INDEX IF NOT EXISTS submissions_role_idx ON submissions (role, created_at);
   CREATE INDEX IF NOT EXISTS submissions_phone_idx ON submissions (phone);
 

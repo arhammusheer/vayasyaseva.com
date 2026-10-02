@@ -1,7 +1,7 @@
 import { JobRolePage, jobRoleMetadata, jobRoleParams } from "@/components/pages/job-role";
 import { JobHubPage, jobHubMetadata, jobHubParams } from "@/components/pages/job-hub";
 import { localeOfParams } from "@/lib/i18n";
-import { isJobHub } from "@/lib/job-hubs";
+import { isJobHub } from "@/lib/talent-intake/rules";
 
 /** Role pages (/jobs/packing) and the unlinked hub pages (/jobs/freshers). */
 export const dynamicParams = false;

@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { jobRoles } from "@/content/pages/job-roles";
 import { languageAlternates, localePath, locales, localesOf } from "@/lib/i18n";
-import { JOB_HUB_SLUGS } from "@/lib/job-hubs";
+import { JOB_HUB_SLUGS } from "@/lib/talent-intake/rules";
 
 const lastModified = new Date("2026-09-13");
 const contentUpdated = new Date("2026-10-01");

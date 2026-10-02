@@ -9,7 +9,7 @@ import { jobsCopy } from "@/content/pages/jobs";
 import { getJobHub, jobHubLabels } from "@/content/pages/job-hubs";
 import { getJobRole, jobRoleLabels } from "@/content/pages/job-roles";
 import { localePath, locales, type Locale } from "@/lib/i18n";
-import { JOB_HUB_SLUGS } from "@/lib/job-hubs";
+import { JOB_HUB_SLUGS } from "@/lib/talent-intake/rules";
 import { jobRolePath } from "@/components/pages/job-role";
 
 export const jobHubParams = () => JOB_HUB_SLUGS.map((slug) => ({ role: slug }));
@@ -63,7 +63,7 @@ export function JobHubPage({ slug, locale }: { slug: string; locale: Locale }) {
             <h1 className="jobs-title">{hub.heading}</h1>
             <p className="jobs-lede">{hub.lede}</p>
           </div>
-          <JobsForm locale={locale} />
+          <JobsForm locale={locale} hub={hub.slug} />
         </div>
       </section>
       <Section variant="subtle">

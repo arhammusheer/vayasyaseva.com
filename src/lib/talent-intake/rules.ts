@@ -43,6 +43,24 @@ export function isJobRole(value: unknown): value is JobRole {
   return typeof value === "string" && Object.hasOwn(JOB_ROLES, value);
 }
 
+/**
+ * Hub pages under /jobs/<slug>: who the search was from, not a kind of work.
+ * They are in the sitemap but not linked from the site. A submission from one
+ * carries the slug, so staff can see which hub brought the person in; the
+ * label is for staff.
+ */
+export const JOB_HUBS = {
+  freshers: "Freshers page",
+  "10th-pass": "10th pass page",
+  "12th-pass": "12th pass page",
+} as const;
+export type JobHub = keyof typeof JOB_HUBS;
+export const JOB_HUB_SLUGS = Object.keys(JOB_HUBS) as [JobHub, ...JobHub[]];
+
+export function isJobHub(value: unknown): value is JobHub {
+  return typeof value === "string" && Object.hasOwn(JOB_HUBS, value);
+}
+
 export const ATTACHMENT_KINDS = ["audio", "image", "document"] as const;
 export type AttachmentKind = (typeof ATTACHMENT_KINDS)[number];
 

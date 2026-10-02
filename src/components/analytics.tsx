@@ -44,6 +44,26 @@ function subscribeToConsent(callback: () => void) {
   };
 }
 
+/**
+ * Campaign tags (utm_*) from the landing URL, as Umami session properties, so
+ * every later event in the visit (form steps, abandonment, submissions) can be
+ * filtered by the ad campaign or keyword that brought the visitor. Kept on the
+ * Umami server with the session; nothing is stored in the browser.
+ */
+function campaignTags() {
+  const tags: Record<string, string> = {};
+  try {
+    const params = new URLSearchParams(window.location.search);
+    for (const key of ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"]) {
+      const value = params.get(key);
+      if (value) tags[key] = value.slice(0, 100);
+    }
+  } catch {
+    // Analytics must never interrupt the visitor's task.
+  }
+  return tags;
+}
+
 function sanitizeBasicEvent(event: BeforeSendEvent): BeforeSendEvent | null {
   try {
     const url = new URL(event.url, window.location.origin);
@@ -74,7 +94,7 @@ export function Analytics({ gaId }: { gaId: string }) {
   // filtered by language, page type and consent.
   useEffect(() => {
     if (!consentState) return;
-    setSessionData({ locale, consent: consentState });
+    setSessionData({ locale, consent: consentState, ...campaignTags() });
     if (consentState !== "accepted") return;
     try {
       const w = window as Window & { clarity?: ((...args: unknown[]) => void) & { q?: unknown[] } };

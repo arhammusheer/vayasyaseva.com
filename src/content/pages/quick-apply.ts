@@ -53,8 +53,6 @@ export interface QuickApplyCopy {
   eyebrow: string;
   heading: string;
   lede: string;
-  step: (n: number, total: number) => string;
-  back: string;
   next: string;
   work: { question: string; options: Record<WorkOption, string> };
   experience: { question: string; options: Record<(typeof EXPERIENCE_OPTIONS)[number], string> };
@@ -80,8 +78,6 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
     eyebrow: "JOBS",
     heading: "Looking for work in SIDCUL Haridwar?",
     lede: "Tap a few answers, then just your name and number. We call you about suitable work.",
-    step: (n, total) => `Step ${n} of ${total}`,
-    back: "Back",
     next: "Next",
     work: {
       question: "What work do you want?",
@@ -122,8 +118,6 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
     eyebrow: "नौकरी",
     heading: "सिडकुल हरिद्वार में काम चाहिए?",
     lede: "कुछ जवाब चुनिए, फिर बस अपना नाम और नंबर। सही काम होने पर हम आपको फ़ोन करेंगे।",
-    step: (n, total) => `कदम ${n} / ${total}`,
-    back: "पीछे",
     next: "आगे",
     work: {
       question: "आपको कौन-सा काम चाहिए?",
@@ -164,8 +158,6 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
     eyebrow: "NAUKRI",
     heading: "SIDCUL Haridwar mein kaam chahiye?",
     lede: "Kuch jawab tap kijiye, phir bas apna naam aur number. Sahi kaam hone par hum aapko phone karenge.",
-    step: (n, total) => `Step ${n} / ${total}`,
-    back: "Peeche",
     next: "Aage",
     work: {
       question: "Aapko kaun-sa kaam chahiye?",

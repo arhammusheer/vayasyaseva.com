@@ -2,7 +2,7 @@
 
 import Script from "next/script";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowLeft, Check, Loader2 } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { trackAdsConversion, trackAnalyticsEvent } from "@/lib/analytics";
@@ -30,15 +30,19 @@ function Pills({
   options,
   selected,
   onPick,
+  labelledBy,
   multi = false,
+  small = false,
 }: {
   options: Record<string, string>;
   selected: (value: string) => boolean;
   onPick: (value: string) => void;
+  labelledBy: string;
   multi?: boolean;
+  small?: boolean;
 }) {
   return (
-    <div className="quick-pills" role={multi ? "group" : "radiogroup"} aria-labelledby="quick-question">
+    <div className={cn("quick-pills", small && "is-small")} role={multi ? "group" : "radiogroup"} aria-labelledby={labelledBy}>
       {Object.entries(options).map(([value, text]) => (
         <button
           key={value}
@@ -83,7 +87,6 @@ export function QuickApply({ locale }: { locale: Locale }) {
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const turnstileBox = useRef<HTMLDivElement>(null);
   const turnstileId = useRef<string | null>(null);
-  const heading = useRef<HTMLHeadingElement>(null);
   const started = useRef(false);
   const entry = useRef<"preset" | "fresh">("fresh");
 
@@ -108,9 +111,15 @@ export function QuickApply({ locale }: { locale: Locale }) {
     /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
-  // Move focus to each new question for keyboard and screen reader users.
+  // Bring each newly unlocked question into view and give it focus, so the
+  // next step is obvious on a phone and announced to screen readers.
   useEffect(() => {
-    if (started.current) heading.current?.focus();
+    if (!started.current) return;
+    const el = document.querySelector<HTMLElement>(`.quick-section[data-step="${STEPS[step]}"]`);
+    if (!el) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    el.querySelector<HTMLElement>(".quick-question")?.focus({ preventScroll: true });
   }, [step]);
 
   const renderTurnstile = useCallback(() => {
@@ -143,7 +152,8 @@ export function QuickApply({ locale }: { locale: Locale }) {
       setRole(WORK_ROLE[value as WorkOption]);
     } else setExperience(value);
     answer(stepName, value);
-    setTimeout(() => setStep((s) => Math.max(s, STEPS.indexOf(stepName) + 1)), 180);
+    // Unlock the next question; changing an earlier answer keeps later ones.
+    setStep((s) => Math.max(s, STEPS.indexOf(stepName) + 1));
   }
 
   function toggleShift(value: string) {
@@ -219,137 +229,123 @@ export function QuickApply({ locale }: { locale: Locale }) {
   }
 
   const sending = phase.name === "sending";
-  const current = STEPS[step];
   const fieldClass =
     "h-12 rounded-lg border-neutral-300 bg-background px-4 text-base shadow-none placeholder:text-neutral-400 focus-visible:border-gold-500 focus-visible:ring-gold-500/25 md:text-base";
 
+  // Questions stay on the page once unlocked, so earlier answers can be changed
+  // in place; each new one appears below the last.
   return (
-    <div className="quick-apply" data-step={current}>
+    <div className="quick-apply">
       <Script src={TURNSTILE_SCRIPT_URL} onReady={renderTurnstile} />
       <div className="quick-progress" aria-hidden="true">
         {STEPS.map((s, i) => (
           <span key={s} className={cn(i <= step && "is-done")} />
         ))}
       </div>
-      <div className="quick-head">
-        <p className="quick-step-count">{t.step(step + 1, STEPS.length)}</p>
-        {step > 0 && (
-          <button type="button" className="quick-back" onClick={() => setStep(step - 1)} disabled={sending}>
-            <ArrowLeft size={16} aria-hidden="true" /> {t.back}
-          </button>
-        )}
-      </div>
 
-      {current === "work" && (
-        <>
-          <h2 id="quick-question" ref={heading} tabIndex={-1} className="quick-question">{t.work.question}</h2>
-          <Pills options={t.work.options} selected={(v) => work === v} onPick={(v) => chooseSingle("work", v)} />
-        </>
+      <section className="quick-section" data-step="work">
+        <h2 id="quick-q-work" tabIndex={-1} className="quick-question">{t.work.question}</h2>
+        <Pills labelledBy="quick-q-work" options={t.work.options} selected={(v) => work === v} onPick={(v) => chooseSingle("work", v)} />
+      </section>
+
+      {step >= 1 && (
+        <section className="quick-section" data-step="experience">
+          <h2 id="quick-q-experience" tabIndex={-1} className="quick-question">{t.experience.question}</h2>
+          <Pills labelledBy="quick-q-experience" options={t.experience.options} selected={(v) => experience === v} onPick={(v) => chooseSingle("experience", v)} />
+        </section>
       )}
 
-      {current === "experience" && (
-        <>
-          <h2 id="quick-question" ref={heading} tabIndex={-1} className="quick-question">{t.experience.question}</h2>
-          <Pills options={t.experience.options} selected={(v) => experience === v} onPick={(v) => chooseSingle("experience", v)} />
-        </>
-      )}
-
-      {current === "shift" && (
-        <>
-          <h2 id="quick-question" ref={heading} tabIndex={-1} className="quick-question">{t.shift.question}</h2>
+      {step >= 2 && (
+        <section className="quick-section" data-step="shift">
+          <h2 id="quick-q-shift" tabIndex={-1} className="quick-question">{t.shift.question}</h2>
           <p className="quick-hint">{t.shift.hint}</p>
-          <Pills options={t.shift.options} selected={(v) => shifts.includes(v)} onPick={toggleShift} multi />
-          <button
-            type="button"
-            className="jobs-submit mt-8"
-            disabled={shifts.length === 0}
-            onClick={() => {
-              answer("shift", shifts.join(","));
-              setStep(3);
-            }}
-          >
-            {t.next}
-          </button>
-        </>
-      )}
-
-      {current === "details" && (
-        <form
-          data-clarity-mask="true"
-          data-analytics-form="quick"
-          data-form-errors={failedChecks?.join(",")}
-          onSubmit={submit}
-          noValidate
-          aria-busy={sending}
-        >
-          <h2 id="quick-question" ref={heading} tabIndex={-1} className="quick-question">{t.details.question}</h2>
-          <label htmlFor="quick-name" className="quick-label">{t.details.name}</label>
-          <Input
-            id="quick-name"
-            autoComplete="name"
-            placeholder={t.details.namePlaceholder}
-            value={name}
-            onFocus={markStarted}
-            onChange={(e) => setName(e.target.value)}
-            disabled={sending}
-            className={cn(fieldClass, "mt-2 max-w-sm")}
-          />
-          <label htmlFor="quick-phone" className="quick-label">{t.details.phone}</label>
-          <Input
-            id="quick-phone"
-            type="tel"
-            inputMode="tel"
-            autoComplete="tel-national"
-            placeholder={t.details.phonePlaceholder}
-            value={phone}
-            onFocus={markStarted}
-            onChange={(e) => setPhone(e.target.value)}
-            disabled={sending}
-            className={cn(fieldClass, "mt-2 max-w-xs font-data")}
-          />
-          <p className="quick-label" id="quick-area">{t.details.area}</p>
-          <div className="quick-pills is-small" role="radiogroup" aria-labelledby="quick-area">
-            {Object.entries(t.details.areaOptions).map(([value, text]) => (
-              <button
-                key={value}
-                type="button"
-                role="radio"
-                aria-checked={area === value}
-                className={cn("quick-pill", area === value && "is-selected")}
-                onClick={() => {
-                  setArea(value);
-                  answer("area", value);
-                }}
-                disabled={sending}
-              >
-                {area === value && <Check size={16} aria-hidden="true" />}
-                {text}
-              </button>
-            ))}
-          </div>
-
-          <label className="jobs-check mt-6">
-            <input type="checkbox" name="agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} disabled={sending} />
-            <span>
-              {form.steps.phone.agree}{" "}
-              <a href={localePath("/privacy", "en-IN")} target="_blank" rel="noopener" className="underline underline-offset-4">
-                {form.steps.phone.privacyLink}
-              </a>
-            </span>
-          </label>
-          {errors.length > 0 && (
-            <ul className="jobs-errors" role="alert">
-              {errors.map((e) => (
-                <li key={e}>{e}</li>
-              ))}
-            </ul>
+          <Pills labelledBy="quick-q-shift" options={t.shift.options} selected={(v) => shifts.includes(v)} onPick={toggleShift} multi />
+          {step === 2 && (
+            <button
+              type="button"
+              className="jobs-submit mt-6"
+              disabled={shifts.length === 0}
+              onClick={() => {
+                answer("shift", shifts.join(","));
+                setStep(3);
+              }}
+            >
+              {t.next}
+            </button>
           )}
-          <button type="submit" className="jobs-submit mt-6" disabled={sending}>
-            {sending && <Loader2 size={18} className="animate-spin" aria-hidden="true" />}
-            {t.details.send}
-          </button>
-        </form>
+        </section>
       )}
+
+      {step >= 3 && (
+        <section className="quick-section" data-step="details">
+          <form
+            data-clarity-mask="true"
+            data-analytics-form="quick"
+            data-form-errors={failedChecks?.join(",")}
+            onSubmit={submit}
+            noValidate
+            aria-busy={sending}
+          >
+            <h2 id="quick-q-details" tabIndex={-1} className="quick-question">{t.details.question}</h2>
+            <label htmlFor="quick-name" className="quick-label">{t.details.name}</label>
+            <Input
+              id="quick-name"
+              autoComplete="name"
+              placeholder={t.details.namePlaceholder}
+              value={name}
+              onFocus={markStarted}
+              onChange={(e) => setName(e.target.value)}
+              disabled={sending}
+              className={cn(fieldClass, "mt-2 max-w-sm")}
+            />
+            <label htmlFor="quick-phone" className="quick-label">{t.details.phone}</label>
+            <Input
+              id="quick-phone"
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel-national"
+              placeholder={t.details.phonePlaceholder}
+              value={phone}
+              onFocus={markStarted}
+              onChange={(e) => setPhone(e.target.value)}
+              disabled={sending}
+              className={cn(fieldClass, "mt-2 max-w-xs font-data")}
+            />
+            <p className="quick-label" id="quick-area">{t.details.area}</p>
+            <Pills
+              labelledBy="quick-area"
+              small
+              options={t.details.areaOptions}
+              selected={(v) => area === v}
+              onPick={(v) => {
+                setArea(v);
+                answer("area", v);
+              }}
+            />
+            <label className="jobs-check mt-6">
+              <input type="checkbox" name="agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} disabled={sending} />
+              <span>
+                {form.steps.phone.agree}{" "}
+                <a href={localePath("/privacy", "en-IN")} target="_blank" rel="noopener" className="underline underline-offset-4">
+                  {form.steps.phone.privacyLink}
+                </a>
+              </span>
+            </label>
+            {errors.length > 0 && (
+              <ul className="jobs-errors" role="alert">
+                {errors.map((e) => (
+                  <li key={e}>{e}</li>
+                ))}
+              </ul>
+            )}
+            <button type="submit" className="jobs-submit mt-6" disabled={sending}>
+              {sending && <Loader2 size={18} className="animate-spin" aria-hidden="true" />}
+              {t.details.send}
+            </button>
+          </form>
+        </section>
+      )}
+
       {/* One Turnstile box for the whole flow: it checks the browser while the
           questions are answered, and only shows if it needs an interaction. */}
       <div ref={turnstileBox} className="mt-5" />

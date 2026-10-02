@@ -1952,29 +1952,25 @@ a:hover > svg {
 .quick-progress span.is-done {
   background: var(--gold-500);
 }
-.quick-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 14px;
-  min-height: 28px;
+.quick-section + .quick-section {
+  margin-top: 40px;
 }
-.quick-step-count {
-  color: var(--muted-foreground);
-  font-size: 14px;
+/* A newly unlocked question slides in below the last answer. */
+.quick-section {
+  scroll-margin-top: 96px;
+  animation: quick-reveal 320ms ease-out;
 }
-.quick-back {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--muted-foreground);
-  font-size: 15px;
+@keyframes quick-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
 }
-.quick-back:hover {
-  color: var(--foreground);
+.quick-progress + .quick-section .quick-question {
+  margin-top: 22px;
 }
 .quick-question {
-  margin-top: 18px;
+  margin-top: 0;
   font-size: clamp(24px, 4.5vw, 32px);
   font-weight: 500;
   line-height: 1.2;
@@ -2054,5 +2050,8 @@ a:hover > svg {
   .quick-pill,
   .quick-progress span {
     transition: none;
+  }
+  .quick-section {
+    animation: none;
   }
 }

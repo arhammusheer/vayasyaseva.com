@@ -126,6 +126,20 @@
       }
     },
     {
+      "id": "faf7dde1-7259-5f54-a350-4503b916d93a",
+      "name": "Clean audio type",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        960,
+        -180
+      ],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Generated from integrations/n8n/src/nodes/clean-audio-type.ts by integrations/n8n/build.mts. Edit the source, not this.\n\nasync function main() {\n    const item = $input.item;\n    const file = item.binary?.file;\n    if (file)\n        file.mimeType = baseMime(file.mimeType);\n    return item;\n}\nfunction baseMime(mime) {\n    return mime.split(\";\")[0].trim().toLowerCase();\n}\n\nreturn main.call(this);"
+      }
+    },
+    {
       "id": "8ab8f839-e05b-532a-ad90-99c083fda1a4",
       "name": "Sarvam: transcribe",
       "type": "n8n-nodes-base.httpRequest",
@@ -395,7 +409,7 @@
             },
             {
               "name": "Content-Type",
-              "value": "={{ $('Claim voice notes').item.json.mime }}"
+              "value": "={{ $('Claim voice notes').item.json.mime.split(';')[0].trim() }}"
             }
           ]
         },
@@ -708,6 +722,17 @@
       ]
     },
     "Download voice note": {
+      "main": [
+        [
+          {
+            "node": "Clean audio type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean audio type": {
       "main": [
         [
           {

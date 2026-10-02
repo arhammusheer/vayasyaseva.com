@@ -42,6 +42,8 @@ declare function $<K extends keyof NodeOutputs>(name: K): N8nNodeRef<NodeOutputs
 declare const $input: {
   first(): N8nItem<unknown>;
   all(): N8nItem<unknown>[];
+  /** The item being processed ("Run once for each item" mode). */
+  item: N8nItem<unknown>;
 };
 
 /** Current item's JSON in "Run once for each item" mode. */

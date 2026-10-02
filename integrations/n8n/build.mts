@@ -466,6 +466,7 @@ RETURNING a.id, a.r2_key, a.mime, s.locale,
   // item; stop here unless a voice note was actually claimed.
   w.add(condition("Claimed any?", "$json.id !== undefined", grid(3)));
   w.add(download("Download voice note", `={{ ${claimed}.r2_key }}`, grid(4)));
+  w.add(code("Clean audio type", "clean-audio-type.ts", grid(4, -1), true));
   w.add(
     http("Sarvam: transcribe", grid(5), {
       method: "POST",
@@ -526,7 +527,8 @@ RETURNING id;`,
       // Sarvam's upload URLs are Azure blob URLs, which need the blob type.
       headers: [
         ["x-ms-blob-type", "BlockBlob"],
-        ["Content-Type", `={{ ${claimed}.mime }}`],
+        // Bare type: Sarvam rejects codec parameters ("audio/webm;codecs=opus").
+        ["Content-Type", `={{ ${claimed}.mime.split(';')[0].trim() }}`],
       ],
       binaryField: "file",
       retry: true,
@@ -565,7 +567,7 @@ RETURNING id;`,
     ),
   );
 
-  w.chain("Every minute", "Recover stuck", "Claim voice notes", "Claimed any?", "Download voice note", "Sarvam: transcribe", "Transcribed?");
+  w.chain("Every minute", "Recover stuck", "Claim voice notes", "Claimed any?", "Download voice note", "Clean audio type", "Sarvam: transcribe", "Transcribed?");
   w.chain("Transcribed?", "Transcript result", "Save transcript");
   w.connect("Transcribed?", "Too long for REST?", { output: 1 });
   w.chain("Too long for REST?", "Sarvam: create job", "Sarvam: upload URL", "Download again", "Sarvam: upload audio", "Sarvam: start job");

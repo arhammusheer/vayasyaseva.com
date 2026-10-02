@@ -3,6 +3,7 @@ import { contactContract, contactSchema } from "@/lib/contact-contract";
 import { createContactCaseId, sendInternalContactEmail } from "@/lib/msg91";
 import { clientIp, createRateLimiter } from "@/lib/rate-limit";
 import { agentInfoSchema } from "@/lib/talent-intake/contract";
+import { normaliseIndianMobile } from "@/lib/talent-intake/rules";
 
 export const runtime = "nodejs";
 
@@ -35,7 +36,9 @@ export async function POST(request: NextRequest) {
   const agent = parsedAgent.data;
 
   const ip = clientIp(request) ?? "unknown";
-  const sender = `${String(data.email ?? "").toLowerCase()}:${String(data.phone ?? "").replace(/\D/g, "")}`;
+  // Normalised, so "+91 98765 43210" and "9876543210" count as one sender.
+  const phone = String(data.phone ?? "");
+  const sender = `${String(data.email ?? "").trim().toLowerCase()}:${normaliseIndianMobile(phone) ?? phone.replace(/\D/g, "")}`;
   if (!perIp.take(ip) || !perSender.take(sender)) {
     console.warn("[AGENT CONTACT RATE LIMITED]", { ip });
     return NextResponse.json(

@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
   }
   const { language, role, agent, phone, text } = parsed.data;
 
-  const limited = limitAgentRequest(request, phone);
+  const { limited, release } = limitAgentRequest(request, phone);
   if (limited) return limited;
 
   try {
@@ -40,6 +40,7 @@ export async function POST(request: NextRequest) {
       text,
     );
   } catch (error) {
+    release();
     return unavailable("agent/jobs", error);
   }
 }

@@ -5,6 +5,7 @@
  */
 import { NextResponse } from "next/server";
 import { talentIntakeSchema, type JobsSubmitResponse } from "./contract";
+import type { IntakeChannel } from "./rules";
 import {
   IntakeNotConfigured,
   TALENT_CONSENT_VERSION,
@@ -42,14 +43,20 @@ export async function forwardSubmission(draft: Draft, phone: string, text: strin
 }
 
 /**
- * Checks the ticket from a start route, confirms each upload exists and
+ * Checks the ticket from the matching start route, confirms each upload exists and
  * matches what was declared, then forwards. The attachment list comes from
  * the ticket, never from the caller.
  */
-export async function submitWithTicket(rawTicket: string, phone: string, text: string | null) {
+export async function submitWithTicket(rawTicket: string, phone: string, text: string | null, channel: IntakeChannel) {
   const ticket = readTicket(rawTicket);
   if (!ticket) {
     return NextResponse.json({ error: "expired" }, { status: 410 });
+  }
+  // A ticket only works on the submit route that matches its start route:
+  // an agent ticket on /api/jobs/submit would skip the agent rate limits, and
+  // a form ticket on the agent route would be filed as a form submission.
+  if ((ticket.channel ?? "web") !== channel) {
+    return NextResponse.json({ error: "invalid_request", fields: ["ticket"] }, { status: 400 });
   }
 
   for (const file of ticket.files) {

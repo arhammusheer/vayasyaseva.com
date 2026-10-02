@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
   const { ticket, phone, text } = parsed.data;
 
   try {
-    return await submitWithTicket(ticket, phone, text);
+    return await submitWithTicket(ticket, phone, text, "web");
   } catch (error) {
     return unavailable("jobs/submit", error);
   }

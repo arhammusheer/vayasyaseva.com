@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
   }
   const { language, role, agent, files } = parsed.data;
 
-  const limited = limitAgentRequest(request);
+  const { limited, release } = limitAgentRequest(request);
   if (limited) return limited;
 
   try {
@@ -45,6 +45,7 @@ export async function POST(request: NextRequest) {
     const body: JobsStartResponse = { ref, ticket, uploads };
     return NextResponse.json(body, { headers: { "cache-control": "no-store" } });
   } catch (error) {
+    release();
     return unavailable("agent/jobs/start", error);
   }
 }

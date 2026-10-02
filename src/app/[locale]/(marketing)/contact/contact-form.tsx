@@ -156,6 +156,8 @@ export function ContactForm() {
         form_type: formType,
       });
     } catch {
+      // The server may have used the token before the connection dropped.
+      resetTurnstile();
       trackAnalyticsEvent("contact_form_error", { form_type: formType, reason: "network" });
       setError("The message could not be sent. Please try again, or call us.");
     }

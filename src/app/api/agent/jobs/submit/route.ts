@@ -19,12 +19,13 @@ export async function POST(request: NextRequest) {
   }
   const { ticket, phone, text } = parsed.data;
 
-  const limited = limitAgentRequest(request, phone);
+  const { limited, release } = limitAgentRequest(request, phone);
   if (limited) return limited;
 
   try {
-    return await submitWithTicket(ticket, phone, text);
+    return await submitWithTicket(ticket, phone, text, "agent");
   } catch (error) {
+    release();
     return unavailable("agent/jobs/submit", error);
   }
 }

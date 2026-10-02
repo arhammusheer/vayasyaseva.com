@@ -57,6 +57,8 @@ export function ContactForm() {
   const isAssessment = searchParams.get("type") === "assessment";
   const [submitted, setSubmitted] = useState(false);
   const [honeypot, setHoneypot] = useState("");
+  // Why the last Send failed after validation passed, for analytics.
+  const [sendFailure, setSendFailure] = useState<string | null>(null);
   const [formStartedAt] = useState(() => Date.now());
   const [error, setError] = useState<string | null>(null);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
@@ -71,7 +73,7 @@ export function ContactForm() {
     register,
     handleSubmit,
     setValue,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, submitCount },
   } = useForm<ContactFormInput, undefined, ContactFormData>({
     resolver: zodResolver(contactSchema),
     defaultValues: {
@@ -122,7 +124,9 @@ export function ContactForm() {
 
   async function onSubmit(data: ContactFormData) {
     setError(null);
+    setSendFailure(null);
     if (!turnstileToken) {
+      setSendFailure("verification");
       trackAnalyticsEvent("contact_form_error", { form_type: formType, reason: "verification" });
       setError("Please wait a moment while we check this browser, then send again.");
       return;
@@ -144,10 +148,9 @@ export function ContactForm() {
       resetTurnstile(); // tokens are single-use
       const result = await response.json();
       if (!response.ok) {
-        trackAnalyticsEvent("contact_form_error", {
-          form_type: formType,
-          reason: response.status === 429 ? "rate_limit" : response.status === 403 ? "verification" : "server",
-        });
+        const reason = response.status === 429 ? "rate_limit" : response.status === 403 ? "verification" : "server";
+        setSendFailure(reason);
+        trackAnalyticsEvent("contact_form_error", { form_type: formType, reason });
         setError(result.error ?? "Submission failed. Please try again.");
         return;
       }
@@ -158,6 +161,7 @@ export function ContactForm() {
     } catch {
       // The server may have used the token before the connection dropped.
       resetTurnstile();
+      setSendFailure("network");
       trackAnalyticsEvent("contact_form_error", { form_type: formType, reason: "network" });
       setError("The message could not be sent. Please try again, or call us.");
     }
@@ -179,8 +183,11 @@ export function ContactForm() {
     <form
       data-clarity-mask="true"
       data-analytics-form="contact"
-      onSubmit={handleSubmit(onSubmit, () => {
-        trackAnalyticsEvent("contact_form_error", { form_type: formType, reason: "validation" });
+      // Failed checks from the last Send ("" if it passed), for the
+      // abandonment event: field names and failure kinds only.
+      data-form-errors={submitCount > 0 ? [...Object.keys(errors), sendFailure].filter(Boolean).join(",") : undefined}
+      onSubmit={handleSubmit(onSubmit, (invalid) => {
+        trackAnalyticsEvent("contact_form_error", { form_type: formType, reason: "validation", checks: Object.keys(invalid).join(",") });
       })}
       onFocusCapture={(event) => {
         if (trackedStart.current || !(event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement)) return;

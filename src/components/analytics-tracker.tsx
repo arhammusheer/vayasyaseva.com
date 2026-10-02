@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useReportWebVitals } from "next/web-vitals";
 import { FORM_DONE_EVENT, trackAbandonedDraft, trackAnalyticsEvent, trackPageView, type AnalyticsParams } from "@/lib/analytics";
 import { safeAnalyticsPath } from "@/lib/analytics-pages";
+import { draftOf, fieldOf, statusOf } from "@/lib/form-analytics";
 import { FALLBACK_LOCALE, splitLocalePath } from "@/lib/i18n";
 
 /**
@@ -76,39 +77,6 @@ function linkEvent(link: HTMLAnchorElement, page: string): [string, AnalyticsPar
   if (path === "/jobs" || path.startsWith("/jobs/")) return ["jobs_intent", { target: safeAnalyticsPath(path), zone, page }];
   if (link.hash && url.pathname === window.location.pathname) return ["anchor_click", { anchor: link.hash.slice(1, 40), zone, page }];
   return ["nav_click", { target: safeAnalyticsPath(path), zone, page }];
-}
-
-/** Forms opt in with data-analytics-form="<name>"; fields report by name, never value. */
-function fieldOf(el: EventTarget | null) {
-  if (!(el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement)) return null;
-  const form = el.closest<HTMLElement>("[data-analytics-form]")?.dataset.analyticsForm;
-  if (!form) return null;
-  const field = (el.name || el.id || el.type || "field").replace(/[^a-z0-9_-]/gi, "").slice(0, 40);
-  return { form, field };
-}
-
-const DRAFT_MAX = 500; // Umami stores event data strings up to 500 characters
-
-/**
- * The typed contents of an unfinished form, by field name. Files and voice
- * notes are never read: the form marks only their count and length
- * (data-draft-* attributes on the form element).
- */
-function draftOf(form: string): AnalyticsParams | null {
-  const el = document.querySelector<HTMLElement>(`[data-analytics-form="${form}"]`);
-  if (!el) return null;
-  const draft: AnalyticsParams = {};
-  for (const input of el.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>("input, textarea, select")) {
-    if (input instanceof HTMLInputElement && ["file", "password", "hidden"].includes(input.type)) continue;
-    const target = fieldOf(input);
-    if (!target) continue;
-    const value = input instanceof HTMLInputElement && input.type === "checkbox" ? (input.checked ? "yes" : "") : input.value.trim();
-    if (value) draft[target.field] = value.slice(0, DRAFT_MAX);
-  }
-  for (const [key, value] of Object.entries(el.dataset)) {
-    if (key.startsWith("draft") && value) draft[key.slice(5).replace(/^./, (c) => c.toLowerCase())] = value;
-  }
-  return draft;
 }
 
 // Stable reference and one report per metric id: useReportWebVitals
@@ -199,7 +167,7 @@ export function AnalyticsTracker() {
     const onLeave = () => {
       for (const [form, last_field] of touched) {
         if (fired.has(`abandon:${form}`)) continue;
-        once(`abandon:${form}`, "form_abandon", { form, last_field, page });
+        once(`abandon:${form}`, "form_abandon", { form, last_field, page, ...statusOf(form) });
         const draft = draftOf(form);
         if (draft && Object.keys(draft).length) trackAbandonedDraft({ form, last_field, page, ...draft });
       }

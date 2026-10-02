@@ -118,6 +118,8 @@ export function JobsForm({
   // One checkbox covers both: 18 or older, and consent to be contacted.
   const [agreed, setAgreed] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
+  // Which checks failed on the last Send (null: not pressed yet), for analytics.
+  const [failedChecks, setFailedChecks] = useState<string[] | null>(null);
   const [phase, setPhase] = useState<Phase>({ name: "form" });
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
@@ -249,15 +251,16 @@ export function JobsForm({
   // --- Submit ----------------------------------------------------------------
   async function submit(event: React.FormEvent) {
     event.preventDefault();
-    const problems: string[] = [];
+    const failed: (keyof typeof t.errors)[] = [];
     const hasVoice = voice.state === "recorded";
-    if (!hasVoice && files.length === 0 && !text.trim()) problems.push(t.errors.empty);
-    if (!normaliseIndianMobile(phone)) problems.push(t.errors.phone);
-    if (!agreed) problems.push(t.errors.agree);
-    if (!turnstileToken) problems.push(t.errors.verification);
-    setErrors(problems);
-    if (problems.length) {
-      trackAnalyticsEvent("job_form_error", { locale, reason: "validation" });
+    if (!hasVoice && files.length === 0 && !text.trim()) failed.push("empty");
+    if (!normaliseIndianMobile(phone)) failed.push("phone");
+    if (!agreed) failed.push("agree");
+    if (!turnstileToken) failed.push("verification");
+    setErrors(failed.map((key) => t.errors[key]));
+    setFailedChecks(failed);
+    if (failed.length) {
+      trackAnalyticsEvent("job_form_error", { locale, reason: "validation", checks: failed.join(",") });
       return;
     }
 
@@ -299,6 +302,7 @@ export function JobsForm({
       const reason = error instanceof Error ? error.message : "server";
       const key = reason === "verification" ? "verification" : reason === "server" ? "server" : "network";
       setErrors([t.errors[key]]);
+      setFailedChecks([key]);
       setPhase({ name: "form" });
       trackAnalyticsEvent("job_form_error", { locale, reason: key });
     }
@@ -314,6 +318,7 @@ export function JobsForm({
     setText("");
     setAgreed(false);
     setErrors([]);
+    setFailedChecks(null);
     setPhase({ name: "form" });
   }
 
@@ -346,6 +351,9 @@ export function JobsForm({
       // whether a voice note or files were added, never their content.
       data-draft-voice-seconds={voice.state === "recorded" ? voice.seconds : undefined}
       data-draft-files={files.length || undefined}
+      // Failed checks from the last Send ("" if it passed), for the
+      // abandonment event: names only, e.g. "phone,agree".
+      data-form-errors={failedChecks?.join(",")}
       onSubmit={submit}
       noValidate
       className="jobs-form"

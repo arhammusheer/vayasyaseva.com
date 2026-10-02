@@ -147,6 +147,14 @@ export function Analytics({ gaId }: { gaId: string }) {
           strategy="afterInteractive"
         />
       )}
+      {consent === "accepted" && (
+        // Google Consent Mode (basic): Google's tags only load after "Allow All",
+        // and say so, so Google Ads can model the conversions it can't see.
+        // Ad personalisation stays denied: measurement only, no remarketing.
+        <Script id="google-consent" strategy="afterInteractive">
+          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{ad_storage:'granted',analytics_storage:'granted',ad_user_data:'granted',ad_personalization:'denied'});`}
+        </Script>
+      )}
       {consent === "accepted" && <GoogleAnalytics gaId={gaId} />}
       {consent === "accepted" && clarityId && (
         // Not id="clarity": an element id becomes a window property, so window.clarity

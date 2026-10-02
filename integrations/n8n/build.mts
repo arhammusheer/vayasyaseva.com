@@ -377,8 +377,8 @@ function intakeWorkflow() {
       "Save submission",
       `
 WITH s AS (
-  INSERT INTO submissions (ref, source, locale, phone, consent_version, consented_at, adult, text, role, hub)
-  VALUES ($1, $2, $3, $4, $5, $6::timestamptz, true, $7, $9, $10)
+  INSERT INTO submissions (ref, source, locale, phone, consent_version, consented_at, adult, text, role, hub, channel, agent_name)
+  VALUES ($1, $2, $3, $4, $5, $6::timestamptz, true, $7, $9, $10, $11, $12)
   ON CONFLICT (ref) DO NOTHING
   RETURNING id
 ), a AS (
@@ -390,7 +390,7 @@ WITH s AS (
 )
 SELECT (SELECT id FROM s) AS submission_id, (SELECT count(*) FROM a) AS attachments;`,
       grid(2),
-      "[$json.ref, $json.source, $json.locale, $json.phone, $json.consentVersion, $json.consentedAt, $json.text, JSON.stringify($json.attachments), $json.role, $json.hub]",
+      "[$json.ref, $json.source, $json.locale, $json.phone, $json.consentVersion, $json.consentedAt, $json.text, JSON.stringify($json.attachments), $json.role, $json.hub, $json.channel, $json.agentName]",
     ),
   );
   w.add({
@@ -644,7 +644,7 @@ WITH claimed AS (
         SELECT 1 FROM attachments a
         WHERE a.submission_id = c.id AND a.transcript_status IN ('pending', 'running'))
     ORDER BY c.created_at LIMIT 1 FOR UPDATE SKIP LOCKED)
-  RETURNING s.id, s.ref, s.source, s.role, s.hub, s.locale, s.phone, s.text
+  RETURNING s.id, s.ref, s.source, s.role, s.hub, s.channel, s.agent_name AS "agentName", s.locale, s.phone, s.text
 )
 SELECT c.*, coalesce((
   SELECT jsonb_agg(jsonb_build_object(
@@ -672,8 +672,9 @@ FROM claimed c;`,
     http("Chatwoot: create conversation", grid(6), {
       method: "POST",
       url: `${inbox}/contacts/{{ $json.source_id }}/conversations`,
-      // job_role / job_hub: filter conversations by role or hub page (conversation attributes in Chatwoot).
-      json: `={{ JSON.stringify({ custom_attributes: { ...(${submission}.role ? { job_role: ${submission}.role } : {}), ...(${submission}.hub ? { job_hub: ${submission}.hub } : {}) } }) }}`,
+      // job_role / job_hub: filter conversations by role or hub page; submitted_via: "agent" for the open agent route
+      // (conversation attributes in Chatwoot).
+      json: `={{ JSON.stringify({ custom_attributes: { ...(${submission}.role ? { job_role: ${submission}.role } : {}), ...(${submission}.hub ? { job_hub: ${submission}.hub } : {}), ...(${submission}.channel === 'agent' ? { submitted_via: 'agent' } : {}) } }) }}`,
     }),
   );
   w.add(

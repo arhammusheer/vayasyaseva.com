@@ -3,7 +3,7 @@
  * mirror integrations/n8n/schema.sql; the claim queries in build.mts select
  * exactly these columns.
  */
-import type { AttachmentKind, IntakeSource, JobHub, JobRole } from "../../../src/lib/talent-intake/rules.ts";
+import type { AttachmentKind, IntakeChannel, IntakeSource, JobHub, JobRole } from "../../../src/lib/talent-intake/rules.ts";
 
 /** Stored values (schema.sql). "hinglish" is the website's hi-Latn-IN locale. */
 export type Locale = "en" | "hi" | "hinglish";
@@ -14,6 +14,9 @@ export interface ValidatedSubmission {
   source: IntakeSource;
   role: JobRole | null;
   hub: JobHub | null;
+  /** "agent" when sent through /api/agent/jobs (submissions.channel). */
+  channel: IntakeChannel;
+  agentName: string | null;
   locale: Locale;
   phone: string;
   consentVersion: string;
@@ -57,6 +60,9 @@ export interface ClaimedSubmission {
   source: IntakeSource;
   role: JobRole | null;
   hub: JobHub | null;
+  /** "agent" when sent through /api/agent/jobs (submissions.channel). */
+  channel: IntakeChannel;
+  agentName: string | null;
   locale: Locale;
   phone: string;
   text: string | null;

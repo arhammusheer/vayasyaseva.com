@@ -124,26 +124,49 @@ export function siteGraphSchema() {
           },
         ],
         sameAs: siteConfig.sameAs,
-        // Prefilled form links (src/lib/prefill.ts, /llms.txt): an assistant
-        // fills them in; the person checks the form and sends it.
+        // Two ways in for an assistant: the open agent routes (/api/agent/*,
+        // contract in /openapi/v1.json), or a prefilled form link
+        // (src/lib/prefill.ts) the person checks and sends. See /llms.txt.
         potentialAction: [
           {
             "@type": "ApplyAction",
             name: "Apply for work",
-            target: {
-              "@type": "EntryPoint",
-              urlTemplate: `${BASE_URL}/jobs#name={name}&phone={phone}&work={work}&experience={experience}&location={location}&start={start}&about={about}`,
-              inLanguage: ["en-IN", "hi-IN", "hi-Latn-IN"],
-            },
+            target: [
+              {
+                "@type": "EntryPoint",
+                name: "Open route for AI agents",
+                url: `${BASE_URL}/api/agent/jobs`,
+                httpMethod: "POST",
+                contentType: "application/json",
+                encodingType: "application/json",
+                actionPlatform: "https://www.vayasyaseva.com/openapi/v1.json",
+              },
+              {
+                "@type": "EntryPoint",
+                urlTemplate: `${BASE_URL}/jobs#name={name}&phone={phone}&work={work}&experience={experience}&location={location}&start={start}&about={about}`,
+                inLanguage: ["en-IN", "hi-IN", "hi-Latn-IN"],
+              },
+            ],
           },
           {
             "@type": "CommunicateAction",
             name: "Send an enquiry",
-            target: {
-              "@type": "EntryPoint",
-              urlTemplate: `${BASE_URL}/en-in/contact#name={name}&phone={phone}&email={email}&company={company}&location={location}&headcount={headcount}&details={details}`,
-              inLanguage: "en-IN",
-            },
+            target: [
+              {
+                "@type": "EntryPoint",
+                name: "Open route for AI agents",
+                url: `${BASE_URL}/api/agent/contact`,
+                httpMethod: "POST",
+                contentType: "application/json",
+                encodingType: "application/json",
+                actionPlatform: "https://www.vayasyaseva.com/openapi/v1.json",
+              },
+              {
+                "@type": "EntryPoint",
+                urlTemplate: `${BASE_URL}/en-in/contact#name={name}&phone={phone}&email={email}&company={company}&location={location}&headcount={headcount}&details={details}`,
+                inLanguage: "en-IN",
+              },
+            ],
           },
         ],
       },

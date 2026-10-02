@@ -28,6 +28,12 @@ BEGIN
   -- The hub page it came from (JOB_HUBS in rules.ts: /jobs/freshers…); null otherwise.
   ALTER TABLE submissions ADD COLUMN IF NOT EXISTS hub text;
   CREATE INDEX IF NOT EXISTS submissions_role_idx ON submissions (role, created_at);
+  -- How it reached us (INTAKE_CHANNELS in rules.ts): the jobs form, or an AI agent through /api/agent/jobs.
+  ALTER TABLE submissions ADD COLUMN IF NOT EXISTS channel text NOT NULL DEFAULT 'web';
+  ALTER TABLE submissions DROP CONSTRAINT IF EXISTS submissions_channel_check;
+  ALTER TABLE submissions ADD CONSTRAINT submissions_channel_check CHECK (channel IN ('web', 'agent'));
+  -- The name an agent gave for itself, if any.
+  ALTER TABLE submissions ADD COLUMN IF NOT EXISTS agent_name text;
   CREATE INDEX IF NOT EXISTS submissions_phone_idx ON submissions (phone);
 
   CREATE TABLE IF NOT EXISTS attachments (

@@ -6,6 +6,8 @@ import {
   sendContactAutoReply,
   sendInternalContactEmail,
 } from "@/lib/msg91";
+import { clientIp } from "@/lib/rate-limit";
+import { TurnstileNotConfigured, verifyTurnstile } from "@/lib/turnstile";
 
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const DUPLICATE_WINDOW_MS = 5 * 60_000;
@@ -134,6 +136,23 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: contactContract.responses.validationError, details: result.error.issues },
         { status: 400 }
+      );
+    }
+
+    // Human form only: AI agents use /api/agent/contact, which has no Turnstile.
+    const turnstileToken = request.headers.get("x-turnstile-token")?.trim();
+    let verified = false;
+    try {
+      verified = Boolean(turnstileToken) && (await verifyTurnstile(turnstileToken!, clientIp(request)));
+    } catch (error) {
+      if (!(error instanceof TurnstileNotConfigured)) throw error;
+      console.error("[CONTACT TURNSTILE NOT CONFIGURED]", error.message);
+      return NextResponse.json({ error: contactContract.responses.unknownError }, { status: 503 });
+    }
+    if (!verified) {
+      return NextResponse.json(
+        { error: contactContract.responses.verificationError, agentRoute: "/api/agent/contact" },
+        { status: 403 }
       );
     }
 

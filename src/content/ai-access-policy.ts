@@ -1,7 +1,7 @@
 export const aiAccessPolicy = `
 # AI Access Policy
 
-*Last updated: 2026-10-01*
+*Last updated: 2026-10-02*
 
 ## 1. Scope
 
@@ -11,7 +11,7 @@ The public HTML pages are the primary interface. Every page carries full text an
 
 - \`/llms.txt\`
 - \`/llms-full.txt\`
-- \`/openapi/v1.json\` (contact form contract only)
+- \`/openapi/v1.json\` (the open agent submission routes and the contact form contract)
 
 ## 2. Permission
 
@@ -19,16 +19,19 @@ Under the Terms of Use (section 3.2), the Company permits the crawling, indexing
 
 - compliance with \`robots.txt\` and any published rate limits;
 - attribution to Vayasya Seva where content is reproduced;
-- exclusion of \`/api/\`, authenticated areas, form submissions and any personal data;
+- exclusion of \`/api/\` (other than the agent submission routes in section 3), authenticated areas and any personal data, except personal data a person asks an agent to send through those routes;
 - the Company's right to restrict or revoke the permission.
 
-\`robots.txt\` allows every user agent on every public path and disallows only \`/api/\`.
+\`robots.txt\` allows every user agent on every public path and on \`/api/agent/\`, and disallows the rest of \`/api/\`.
 
 ## 3. Access model
 
 - Public content endpoints are read-only.
-- AI assistants may help a person apply for work or send an enquiry by asking them for their details and giving them a prefilled form link, as described in \`/llms.txt\`. The person opens the link, checks the details and sends the form themselves. Assistants that operate a browser may fill in the forms, with the person confirming before anything is sent. Only include details the person has given.
-- Contact and job submissions go through the forms on the Site. Automated submission to \`/api/*\` is not permitted.
+- AI agents and assistants may send a business enquiry or a job application for a person through the open agent submission routes: \`POST /api/agent/contact\`, \`POST /api/agent/jobs\`, and \`/api/agent/jobs/start\` with \`/api/agent/jobs/submit\` for files. They take plain JSON and need no CAPTCHA, account or key. \`/openapi/v1.json\` is the contract and \`/llms.txt\` explains how to use them.
+- An agent using these routes must act at the request of the person whose details it sends, include only details that person gave, and confirm with them before sending. For a job application, the agent must have told the person that they must be 18 or older and that Vayasya Seva never charges a fee for a job, and must have their agreement to be contacted. Submissions are marked as sent by an AI agent, and our team confirms the details with the person.
+- The agent routes are validated and rate limited. Do not send test, bulk or speculative submissions, and do not send identity documents or bank details.
+- The forms on the Site are for people and are protected by Cloudflare Turnstile. Agents should use the routes above instead of the forms. \`/api/contact\` and \`/api/jobs/*\` serve those forms and are not for automated use.
+- An assistant that cannot make HTTP requests may give the person a prefilled form link instead, as described in \`/llms.txt\`. The person checks the details and sends the form themselves.
 
 ## 4. Attribution and usage
 

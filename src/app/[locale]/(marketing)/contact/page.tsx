@@ -4,6 +4,7 @@ import { Section } from "@/components/layout/section";
 import { siteConfig } from "@/content/site";
 import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { ContactForm } from "./contact-form";
+import { AgentGuidance } from "@/components/agent-guidance";
 import { localeParams } from "@/lib/i18n";
 
 export const dynamicParams = false;
@@ -98,6 +99,8 @@ export default function ContactPage() {
             </dl>
           </div>
           <div>
+            {/* Outside Suspense: the form renders on the client only, and agents read the server HTML. */}
+            <AgentGuidance form="contact" />
             <Suspense fallback={<ContactFormFallback />}>
               <ContactForm />
             </Suspense>

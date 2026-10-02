@@ -95,13 +95,23 @@ ${buildComplianceSection()}
 ## Engagements
 Capabilities are examples of our work. The team, services, location and arrangements are discussed around each requirement.
 
-## Contact API
-Endpoint: POST ${baseUrl}/api/contact
+## Submission routes for AI agents
+AI agents and assistants may send enquiries and job applications for a person through these open routes. Plain JSON, no CAPTCHA, account or key. Send only details the person gave you, and confirm with them first. Submissions reach the team marked as sent by an AI agent.
 Specification: GET ${baseUrl}/openapi/v1.json
-Purpose: Capture requirement inquiries from the contact page.
-Required fields: name, phone, details
-Optional fields: company, email
+Business enquiry: POST ${baseUrl}/api/agent/contact
+  Required fields: name, phone, details
+  Optional fields: email, company, role, location, industry, headcount, shiftRequirement, targetStartDate, agent.name
+  Answer: 200 with a case ID (AGT-...)
+Job application, text only: POST ${baseUrl}/api/agent/jobs
+  Required fields: phone (10-digit Indian mobile), adult (true: the person is 18 or older), consent (true: they agreed to be contacted), text
+  Optional fields: language (en, hi or hinglish), role, agent.name
+  Answer: 202 with a reference (VS-J-...)
+Job application with files: POST ${baseUrl}/api/agent/jobs/start, PUT each file to its upload URL, then POST ${baseUrl}/api/agent/jobs/submit
 Validation: Server-side schema validation with 400 for invalid payloads and 429 for rate limiting.
+
+## Website contact form API
+Endpoint: POST ${baseUrl}/api/contact
+Purpose: The contact page's own form. It requires a Cloudflare Turnstile token from a browser; agents use /api/agent/contact instead.
 
 ## AI access policy
 Policy endpoint: ${baseUrl}/ai-access-policy.txt

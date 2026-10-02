@@ -23,6 +23,7 @@ interface ContactContract {
     successMessage: string;
     validationError: string;
     rateLimitError: string;
+    verificationError: string;
     unknownError: string;
   };
 }

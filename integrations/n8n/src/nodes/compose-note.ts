@@ -11,12 +11,19 @@ const PAGES: Record<string, string> = {
   web_hi: "हिंदी jobs page (hi-IN)",
   web_hinglish: "Hindi jobs page, Latin script (hi-Latn-IN)",
 };
+/** An agent's submission has no page; its source only says the language. */
+const AGENT_LANGUAGES: Record<string, string> = { web_en: "English", web_hi: "Hindi", web_hinglish: "Hindi, Latin script" };
 const KIND: Record<string, string> = { audio: "voice note", image: "photo", document: "document" };
 
 export default async function main(): Promise<N8nItem<ComposedNote>[]> {
   const s = $("Claim submission").first().json;
-  const page = PAGES[s.source] ?? s.source;
+  const page = s.channel === "agent" ? `AI agent (${AGENT_LANGUAGES[s.source] ?? s.source})` : (PAGES[s.source] ?? s.source);
   const lines = [`**Job seeker ${s.ref}** · ${page} · ${s.phone}`];
+  if (s.channel === "agent") {
+    lines.push(
+      `**Sent by an AI agent${s.agentName ? ` (${s.agentName})` : ""}** on the person's behalf, not through the form. Confirm the details and their consent when you call.`,
+    );
+  }
   if (s.role) lines.push(`**Asked about:** ${JOB_ROLES[s.role] ?? s.role}`);
   if (s.hub) lines.push(`**Came from:** ${JOB_HUBS[s.hub] ?? s.hub} (not linked on the site; found through search)`);
 

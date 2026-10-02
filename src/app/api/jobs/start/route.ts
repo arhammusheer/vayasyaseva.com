@@ -1,23 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { jobsStartRequestSchema, type JobsStartResponse } from "@/lib/talent-intake/contract";
-import {
-  IntakeNotConfigured,
-  attachmentKey,
-  issueTicket,
-  newRef,
-  presignUpload,
-  verifyTurnstile,
-} from "@/lib/talent-intake/server";
+import { attachmentKey, issueTicket, newRef, presignUpload } from "@/lib/talent-intake/server";
+import { unavailable } from "@/lib/talent-intake/submit";
+import { clientIp } from "@/lib/rate-limit";
+import { TurnstileNotConfigured, verifyTurnstile } from "@/lib/turnstile";
 
 export const runtime = "nodejs";
-
-function clientIp(request: NextRequest) {
-  return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || request.headers.get("x-real-ip") || null;
-}
 
 /**
  * Step 1 of a jobs submission: checks Turnstile, issues the reference, and
  * returns one short-lived upload URL per declared file plus a signed ticket.
+ * AI agents use /api/agent/jobs instead, which needs no Turnstile.
  */
 export async function POST(request: NextRequest) {
   const parsed = jobsStartRequestSchema.safeParse(await request.json().catch(() => null));
@@ -28,7 +21,7 @@ export async function POST(request: NextRequest) {
 
   try {
     if (!(await verifyTurnstile(turnstileToken, clientIp(request)))) {
-      return NextResponse.json({ error: "verification_failed" }, { status: 403 });
+      return NextResponse.json({ error: "verification_failed", agentRoute: "/api/agent/jobs" }, { status: 403 });
     }
 
     const ref = newRef();
@@ -41,11 +34,10 @@ export async function POST(request: NextRequest) {
     const body: JobsStartResponse = { ref, ticket: issueTicket({ ref, source, role, hub, files: ticketFiles }), uploads };
     return NextResponse.json(body, { headers: { "cache-control": "no-store" } });
   } catch (error) {
-    if (error instanceof IntakeNotConfigured) {
+    if (error instanceof TurnstileNotConfigured) {
       console.error("jobs/start not configured:", error.message);
       return NextResponse.json({ error: "unavailable" }, { status: 503 });
     }
-    console.error("jobs/start failed:", error);
-    return NextResponse.json({ error: "unavailable" }, { status: 502 });
+    return unavailable("jobs/start", error);
   }
 }

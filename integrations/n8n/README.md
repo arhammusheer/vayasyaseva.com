@@ -27,7 +27,9 @@ Live since 26 September 2026 on the growth cluster's n8n (verified end to end, i
    - stamps the consent version and time on the server;
    - validates everything against `talentIntakeSchema` and forwards it to the n8n webhook. n8n answers 202.
 
-Code: `src/lib/talent-intake/{rules,contract,server}.ts` and `src/app/api/jobs/{start,submit}/route.ts`. Tested locally against the real R2, n8n, Sarvam and Chatwoot: the full flow worked. A forged ticket, a submit before upload, a wrong `Content-Type` on the upload, an oversized upload and a disallowed file type were all rejected.
+AI agents have their own open routes with no Turnstile, documented in `/openapi/v1.json` and `/llms.txt`: `POST /api/agent/jobs` sends a text-only application in one request, and `/api/agent/jobs/start` plus `/api/agent/jobs/submit` work like the two steps above when there are files. Their payloads carry `channel: "agent"` and the agent's name if it gave one; n8n saves them in `submissions.channel` and `agent_name`, the Chatwoot note says an agent sent it, and the conversation gets `submitted_via: agent`. They are rate limited per IP and per phone number (`src/lib/talent-intake/agent.ts`).
+
+Code: `src/lib/talent-intake/{rules,contract,server,submit,agent}.ts`, `src/app/api/jobs/{start,submit}/route.ts` and `src/app/api/agent/jobs/**/route.ts`. Tested locally against the real R2, n8n, Sarvam and Chatwoot: the full flow worked. A forged ticket, a submit before upload, a wrong `Content-Type` on the upload, an oversized upload and a disallowed file type were all rejected.
 
 
 

@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import Script from "next/script";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { trackAnalyticsEvent } from "@/lib/analytics";
 import { ENQUIRY_PREFILL_FIELDS, labelledLines, readPrefill } from "@/lib/prefill";
+import { TURNSTILE_SCRIPT_URL, TURNSTILE_SITE_KEY } from "@/lib/turnstile";
 import {
   contactSchema,
   type ContactFormData,
@@ -57,6 +59,11 @@ export function ContactForm() {
   const [honeypot, setHoneypot] = useState("");
   const [formStartedAt] = useState(() => Date.now());
   const [error, setError] = useState<string | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileBox = useRef<HTMLDivElement>(null);
+  const turnstileId = useRef<string | null>(null);
+  // State as well as the ref: onSubmit runs through handleSubmit, so it must not read refs.
+  const [turnstileWidget, setTurnstileWidget] = useState<string | null>(null);
   const trackedStart = useRef(false);
   const formType = isAssessment ? "site_assessment" : "contact";
 
@@ -95,12 +102,36 @@ export function ContactForm() {
     trackAnalyticsEvent("form_prefilled", { form: "contact", fields: Object.keys(values).length });
   }, [setValue]);
 
+  const renderTurnstile = useCallback(() => {
+    if (!window.turnstile || !turnstileBox.current || turnstileId.current) return;
+    turnstileId.current = window.turnstile.render(turnstileBox.current, {
+      sitekey: TURNSTILE_SITE_KEY,
+      action: "contact",
+      appearance: "interaction-only",
+      callback: (token: string) => setTurnstileToken(token),
+      "expired-callback": () => setTurnstileToken(null),
+      "error-callback": () => setTurnstileToken(null),
+    });
+    setTurnstileWidget(turnstileId.current);
+  }, []);
+  useEffect(() => renderTurnstile(), [renderTurnstile]);
+  const resetTurnstile = () => {
+    setTurnstileToken(null);
+    if (window.turnstile && turnstileWidget) window.turnstile.reset(turnstileWidget);
+  };
+
   async function onSubmit(data: ContactFormData) {
     setError(null);
+    if (!turnstileToken) {
+      trackAnalyticsEvent("contact_form_error", { form_type: formType, reason: "verification" });
+      setError("Please wait a moment while we check this browser, then send again.");
+      return;
+    }
     try {
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
         "x-contact-form-started-at": String(formStartedAt),
+        "x-turnstile-token": turnstileToken,
       };
       if (honeypot.trim().length > 0) {
         headers["x-contact-form-honeypot"] = honeypot;
@@ -110,11 +141,12 @@ export function ContactForm() {
         headers,
         body: JSON.stringify(data),
       });
+      resetTurnstile(); // tokens are single-use
       const result = await response.json();
       if (!response.ok) {
         trackAnalyticsEvent("contact_form_error", {
           form_type: formType,
-          reason: response.status === 429 ? "rate_limit" : "server",
+          reason: response.status === 429 ? "rate_limit" : response.status === 403 ? "verification" : "server",
         });
         setError(result.error ?? "Submission failed. Please try again.");
         return;
@@ -155,6 +187,7 @@ export function ContactForm() {
       }}
       noValidate
     >
+      <Script src={TURNSTILE_SCRIPT_URL} onReady={renderTurnstile} />
       <div
         aria-hidden="true"
         className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden"
@@ -227,6 +260,8 @@ export function ContactForm() {
           />
         </Field>
       </div>
+
+      <div ref={turnstileBox} className="mt-6" />
 
       {error && (
         <p role="alert" className="mt-6 text-sm text-destructive">

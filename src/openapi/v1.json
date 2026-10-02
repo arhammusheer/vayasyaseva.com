@@ -4,8 +4,8 @@
   "info": {
     "title": "Vayasya Seva API",
     "summary": "Public API contract for vayasyaseva.com",
-    "description": "Contract for inquiry submission from the public contact form. Write access is rate limited and validated server-side.",
-    "version": "1.0.0"
+    "description": "Submission routes for vayasyaseva.com. The /api/agent/* routes are open to AI agents and assistants acting for a person: plain JSON, no CAPTCHA, no key, validated and rate limited server-side. /api/contact serves the website's own contact form and needs a Cloudflare Turnstile token from a browser; agents should use /api/agent/contact instead. See https://www.vayasyaseva.com/llms.txt and https://www.vayasyaseva.com/ai-access-policy.txt.",
+    "version": "1.1.0"
   },
   "servers": [
     {
@@ -18,8 +18,20 @@
         "tags": [
           "Contact"
         ],
-        "summary": "Submit contact inquiry",
+        "summary": "Submit contact inquiry (website form)",
+        "description": "Used by the contact form on the website. Requires a Cloudflare Turnstile token in the x-turnstile-token header. AI agents: use /api/agent/contact.",
         "operationId": "submitContactInquiry",
+        "parameters": [
+          {
+            "name": "x-turnstile-token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Cloudflare Turnstile token from the form's widget."
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -51,6 +63,16 @@
               }
             }
           },
+          "403": {
+            "description": "Turnstile verification failed; agents should use /api/agent/contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Rate limit exceeded",
             "content": {
@@ -67,6 +89,318 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/agent/contact": {
+      "post": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Send a business enquiry for a person (AI agents)",
+        "description": "Open route for AI agents and assistants: no CAPTCHA, no key. Send only details the person gave you and confirm with them first. The enquiry goes to our team marked as sent by an agent; no email is sent to the address given. Rate limited per source.",
+        "operationId": "agentSubmitContactInquiry",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentContactRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Enquiry received",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentContactSuccess"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited; wait `retryAfterSeconds` before trying again",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/agent/jobs": {
+      "post": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Apply for work for a job seeker, text only (AI agents)",
+        "description": "Open route for AI agents and assistants: no CAPTCHA, no key. One request sends a text application. Ask the person for their details in conversation, tell them they must be 18 or older and that Vayasya Seva never charges a fee for a job, and get their agreement before sending. To include files, use /api/agent/jobs/start instead.",
+        "operationId": "agentSubmitJobApplication",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentJobsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Application received",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentJobsAccepted"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid payload; `fields` says which",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited; wait `retryAfterSeconds` before trying again",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentError"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Our side failed; try again later",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Temporarily unavailable; try again later",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/agent/jobs/start": {
+      "post": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Start a job application with files (AI agents)",
+        "description": "Step 1 of 3. Declare the files (CV, photos, voice note). Then PUT each file to its upload URL, then call /api/agent/jobs/submit with the ticket.",
+        "operationId": "agentStartJobApplication",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentJobsStartRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Upload URLs and ticket",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentJobsStartResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid payload; `fields` says which",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited; wait `retryAfterSeconds` before trying again",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentError"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Our side failed; try again later",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Temporarily unavailable; try again later",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/agent/jobs/submit": {
+      "post": {
+        "tags": [
+          "Agents"
+        ],
+        "summary": "Finish a job application with files (AI agents)",
+        "description": "Step 3 of 3, after every upload has finished.",
+        "operationId": "agentFinishJobApplication",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentJobsSubmitRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Application received",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentJobsAccepted"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid payload; `fields` says which",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "A declared file was not uploaded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentError"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Ticket expired or invalid; start again",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentError"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "An upload was larger than declared",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited; wait `retryAfterSeconds` before trying again",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentError"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Our side failed; try again later",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Temporarily unavailable; try again later",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentError"
                 }
               }
             }
@@ -149,6 +483,395 @@
             "description": "Additional requirement details",
             "minLength": 8,
             "example": "Need housekeeping teams, fabrication fitters, and preventive maintenance support for a new line."
+          }
+        }
+      },
+      "AgentContactRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "phone",
+          "details"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Full name of the requester",
+            "minLength": 2,
+            "example": "Arham Musheer"
+          },
+          "company": {
+            "type": "string",
+            "description": "Company name",
+            "minLength": 1,
+            "example": "Vayasya Seva Private Limited"
+          },
+          "role": {
+            "type": "string",
+            "description": "Role or designation of the requester",
+            "minLength": 1,
+            "example": "Warehouse Manager"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Phone number with country/area code",
+            "minLength": 10,
+            "example": "+91 72920 14101"
+          },
+          "email": {
+            "type": "string",
+            "description": "Business email address",
+            "format": "email",
+            "example": "ops@example.com"
+          },
+          "location": {
+            "type": "string",
+            "description": "Site location for service delivery",
+            "minLength": 1,
+            "example": "Haridwar SIDCUL"
+          },
+          "industry": {
+            "type": "string",
+            "description": "Industry classification",
+            "minLength": 1,
+            "example": "Manufacturing"
+          },
+          "headcount": {
+            "type": "string",
+            "description": "Approximate workforce or crew size required",
+            "minLength": 1,
+            "example": "50"
+          },
+          "shiftRequirement": {
+            "type": "string",
+            "description": "Shift structure requirement",
+            "example": "2 shifts, 8 hours each"
+          },
+          "targetStartDate": {
+            "type": "string",
+            "description": "Preferred start date",
+            "example": "2026-03-01"
+          },
+          "details": {
+            "type": "string",
+            "description": "Additional requirement details",
+            "minLength": 8,
+            "example": "Need housekeeping teams, fabrication fitters, and preventive maintenance support for a new line."
+          },
+          "agent": {
+            "$ref": "#/components/schemas/AgentInfo"
+          }
+        }
+      },
+      "AgentContactSuccess": {
+        "type": "object",
+        "required": [
+          "success",
+          "caseId",
+          "message"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "const": true
+          },
+          "caseId": {
+            "type": "string",
+            "example": "AGT-20261002-1A2B3C4D",
+            "description": "Give this to the person."
+          },
+          "message": {
+            "type": "string",
+            "example": "Requirement received. Our operations team will review and respond — target response time is 2 business days (IST, Mon–Sat)."
+          }
+        }
+      },
+      "AgentInfo": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ],
+        "description": "Who is sending. Optional, shown to our team with the submission.",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "pattern": "^[\\p{L}\\p{N} .,_+()/:-]+$",
+            "example": "Example Assistant"
+          }
+        }
+      },
+      "AgentJobsRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "phone",
+          "adult",
+          "consent",
+          "text"
+        ],
+        "properties": {
+          "language": {
+            "type": "string",
+            "enum": [
+              "en",
+              "hi",
+              "hinglish"
+            ],
+            "default": "en",
+            "description": "Language the person speaks: en (English), hi (Hindi), hinglish (Hindi written in Latin script)."
+          },
+          "role": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "factory-helper",
+              "packing",
+              "machine-operator",
+              "warehouse",
+              "forklift-operator",
+              "data-entry-operator",
+              "housekeeping",
+              "iti-trades",
+              "electrician",
+              "welder",
+              "fitter",
+              null
+            ],
+            "description": "The kind of work, if the person named one that matches. Leave it out otherwise."
+          },
+          "agent": {
+            "$ref": "#/components/schemas/AgentInfo"
+          },
+          "phone": {
+            "type": "string",
+            "description": "The job seeker's 10-digit Indian mobile number. +91 or a leading 0 is accepted.",
+            "example": "98765 43210"
+          },
+          "adult": {
+            "type": "boolean",
+            "const": true,
+            "description": "The person told you they are 18 or older. Jobs are for adults only."
+          },
+          "consent": {
+            "type": "boolean",
+            "const": true,
+            "description": "The person agreed to be contacted about work and to the job seeker privacy notice (https://www.vayasyaseva.com/en-in/privacy#job-seekers)."
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000,
+            "description": "About the person in their own words: name, work wanted, experience, where they live, when they can start. Never include Aadhaar, PAN or bank details.",
+            "example": "Name: Ravi Kumar. Wants packing or warehouse work. 2 years in a packing unit. Lives in Bahadrabad. Can start next week."
+          }
+        }
+      },
+      "AgentJobsStartRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "files"
+        ],
+        "properties": {
+          "language": {
+            "type": "string",
+            "enum": [
+              "en",
+              "hi",
+              "hinglish"
+            ],
+            "default": "en",
+            "description": "Language the person speaks: en (English), hi (Hindi), hinglish (Hindi written in Latin script)."
+          },
+          "role": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "factory-helper",
+              "packing",
+              "machine-operator",
+              "warehouse",
+              "forklift-operator",
+              "data-entry-operator",
+              "housekeeping",
+              "iti-trades",
+              "electrician",
+              "welder",
+              "fitter",
+              null
+            ],
+            "description": "The kind of work, if the person named one that matches. Leave it out otherwise."
+          },
+          "agent": {
+            "$ref": "#/components/schemas/AgentInfo"
+          },
+          "files": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 8,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "kind",
+                "mime",
+                "size",
+                "name"
+              ],
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "audio",
+                    "image",
+                    "document"
+                  ]
+                },
+                "mime": {
+                  "type": "string",
+                  "description": "audio: audio/webm, ogg, mp4, mpeg, aac, wav or x-m4a. image: image/jpeg, png or webp. document: application/pdf, msword or vnd.openxmlformats-officedocument.wordprocessingml.document.",
+                  "example": "application/pdf"
+                },
+                "size": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "description": "Bytes. At most 10485760 for audio and images, 20971520 for documents."
+                },
+                "name": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "maxLength": 200
+                }
+              }
+            }
+          }
+        }
+      },
+      "AgentJobsStartResponse": {
+        "type": "object",
+        "required": [
+          "ref",
+          "ticket",
+          "uploads"
+        ],
+        "properties": {
+          "ref": {
+            "type": "string",
+            "example": "VS-J-7K2M9Q"
+          },
+          "ticket": {
+            "type": "string",
+            "description": "Signed, valid for an hour. Send it unchanged to /api/agent/jobs/submit."
+          },
+          "uploads": {
+            "type": "array",
+            "description": "Same order as `files`. PUT each file's bytes to `url` with exactly these `headers`, within 15 minutes.",
+            "items": {
+              "type": "object",
+              "required": [
+                "key",
+                "url",
+                "headers"
+              ],
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "headers": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "AgentJobsSubmitRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ticket",
+          "phone",
+          "adult",
+          "consent"
+        ],
+        "properties": {
+          "ticket": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string",
+            "description": "The job seeker's 10-digit Indian mobile number. +91 or a leading 0 is accepted.",
+            "example": "98765 43210"
+          },
+          "adult": {
+            "type": "boolean",
+            "const": true,
+            "description": "The person told you they are 18 or older. Jobs are for adults only."
+          },
+          "consent": {
+            "type": "boolean",
+            "const": true,
+            "description": "The person agreed to be contacted about work and to the job seeker privacy notice (https://www.vayasyaseva.com/en-in/privacy#job-seekers)."
+          },
+          "text": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 4000
+          }
+        }
+      },
+      "AgentJobsAccepted": {
+        "type": "object",
+        "required": [
+          "ref"
+        ],
+        "properties": {
+          "ref": {
+            "type": "string",
+            "example": "VS-J-7K2M9Q",
+            "description": "Give this to the person. They quote it if they call +91 72920 14101."
+          }
+        }
+      },
+      "AgentError": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "invalid_request"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "retryAfterSeconds": {
+            "type": "integer"
           }
         }
       },

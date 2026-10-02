@@ -20,10 +20,9 @@ import {
   type JobRole,
 } from "@/lib/talent-intake/rules";
 import type { JobsStartResponse } from "@/lib/talent-intake/contract";
+import { TURNSTILE_SCRIPT_URL, TURNSTILE_SITE_KEY } from "@/lib/turnstile";
+import { AgentGuidance } from "@/components/agent-guidance";
 
-/** Public site key; Cloudflare's always-pass test key outside production. */
-const TURNSTILE_SITE_KEY =
-  process.env.NODE_ENV === "production" ? "0x4AAAAAAFEAUg5yU699cqnZ" : "1x00000000000000000000AA";
 /** Intake source per page. These are stored values shared with n8n and its database; don't rename them here alone. */
 const SOURCE: Record<Locale, IntakeSource> = { "en-IN": "web_en", "hi-IN": "web_hi", "hi-Latn-IN": "web_hinglish" };
 const MAX_FILES = INTAKE_LIMITS.maxAttachments - 1; // one slot is the voice note
@@ -38,16 +37,6 @@ const EXTENSION_TYPES: Record<string, string> = {
   webp: "image/webp",
 };
 const FILE_ACCEPT = "image/jpeg,image/png,image/webp,application/pdf,.pdf,.doc,.docx,application/msword";
-
-type Turnstile = {
-  render: (el: HTMLElement, options: Record<string, unknown>) => string;
-  reset: (id: string) => void;
-};
-declare global {
-  interface Window {
-    turnstile?: Turnstile;
-  }
-}
 
 interface PickedFile {
   file: File;
@@ -350,7 +339,8 @@ export function JobsForm({
 
   return (
     <form data-clarity-mask="true" data-analytics-form="jobs" onSubmit={submit} noValidate className="jobs-form" aria-busy={sending}>
-      <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" onReady={renderTurnstile} />
+      <Script src={TURNSTILE_SCRIPT_URL} onReady={renderTurnstile} />
+      <AgentGuidance form="jobs" />
 
       {/* Three tiers. Tier 01 holds the voice note with typing as its
           alternative, so one tier is "tell us" however suits; the number and

@@ -76,9 +76,9 @@ We may update this notice when our services or practices change. The date at the
 
 ## 10. Job seekers
 
-This section applies when you send us your details through the jobs pages of the Site (www.vayasyaseva.com/jobs in English and Hindi). The jobs pages are for people aged 18 or older. The English version of this notice governs.
+This section applies when you send us your details through the jobs pages of the Site (www.vayasyaseva.com/jobs and /jobs/apply, in English and Hindi). The jobs pages are for people aged 18 or older. The English version of this notice governs.
 
-**What we collect.** Your mobile number and anything you choose to send us: a voice recording, photos, PDF or Word documents and a typed message, together with their file names and types. We also record which jobs page you used, and that you confirmed you are 18 or older and agreed to be contacted, with the date and time.
+**What we collect.** Your mobile number and anything you choose to send us: a voice recording, photos, PDF or Word documents and a typed message, together with their file names and types. On the short application form (www.vayasyaseva.com/jobs/apply) we also collect your name and your answers about the work you want, your experience, education, ITI trade or skills, the shifts you can do, when you can start and the area you live in. We also record which jobs page you used, and that you confirmed you are 18 or older and agreed to be contacted, with the date and time.
 
 **If an AI agent applies for you.** An AI agent or assistant can send your application through our agent route instead of the jobs page. It sends the same kind of details, plus the language you chose and, if it gives one, its own name. The agent confirms on your behalf that you are 18 or older and agreed to be contacted; we record that it did so, and that the application came from an agent. Our team confirms your details and your agreement when we first contact you. The rest of this section applies in the same way. We do not ask for identity or bank documents at this stage; please do not send Aadhaar, PAN or bank details. Identity numbers that appear in typed text or transcripts are masked in our records, but files are stored as you send them.
 

@@ -1,10 +1,12 @@
 "use client";
 
 import { sendGAEvent } from "@next/third-parties/google";
+import { adsConversions, googleAdsId } from "@/lib/analytics-config";
 
-export const analyticsConsentKey = "vayasya-site-measurement-v2";
-export const analyticsConsentAtKey = "vayasya-site-measurement-v2-at";
+export const analyticsConsentKey = "vayasya-site-measurement-v3";
+export const analyticsConsentAtKey = "vayasya-site-measurement-v3-at";
 // v2 (Sept 2026): Clarity session replay added, so v1 choices no longer cover it.
+// v3 (Oct 2026): Google Ads conversion measurement added; everyone is asked again.
 const consentMaxAge = 180 * 24 * 60 * 60 * 1000;
 
 /** Fixed labels only: never form contents, names, numbers or free text. */
@@ -94,6 +96,26 @@ export function trackPageView(url: string) {
 export function setSessionData(data: AnalyticsParams) {
   try {
     withUmami((umami) => umami.identify?.(data));
+  } catch {
+    // Analytics must never interrupt the visitor's task.
+  }
+}
+
+let adsConfigured = false;
+
+/**
+ * One Google Ads conversion, only with "Allow All". The Ads ID is configured
+ * on first use, through the gtag.js GA4 already loaded, with ad
+ * personalisation off so visitors are not added to remarketing audiences.
+ */
+export function trackAdsConversion(conversion: keyof typeof adsConversions) {
+  try {
+    if (!googleAdsId || !hasAnalyticsConsent() || !window.dataLayer) return;
+    if (!adsConfigured) {
+      sendGAEvent("config", googleAdsId, { allow_ad_personalization_signals: false });
+      adsConfigured = true;
+    }
+    sendGAEvent("event", "conversion", { send_to: `${googleAdsId}/${adsConversions[conversion]}` });
   } catch {
     // Analytics must never interrupt the visitor's task.
   }

@@ -6,7 +6,7 @@ import { FileText, ImageIcon, Loader2, Mic, RotateCcw, Square, X } from "lucide-
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { trackAnalyticsEvent } from "@/lib/analytics";
+import { trackAdsConversion, trackAnalyticsEvent } from "@/lib/analytics";
 import { JOB_PREFILL_FIELDS, labelledLines, readPrefill } from "@/lib/prefill";
 import { jobsCopy } from "@/content/pages/jobs";
 import { localePath, type Locale } from "@/lib/i18n";
@@ -294,6 +294,7 @@ export function JobsForm({
       if (!done.ok) throw new Error("server");
       setPhase({ name: "done", ref: started.ref });
       trackAnalyticsEvent("job_form_submit", { locale, voice: hasVoice ? "yes" : "no" });
+      trackAdsConversion("jobApplication");
     } catch (error) {
       const reason = error instanceof Error ? error.message : "server";
       const key = reason === "verification" ? "verification" : reason === "server" ? "server" : "network";

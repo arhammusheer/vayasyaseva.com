@@ -7,34 +7,31 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { trackAdsConversion, trackAnalyticsEvent } from "@/lib/analytics";
 import { jobsCopy } from "@/content/pages/jobs";
-import {
-  STAFF_LABELS,
-  WORK_OPTIONS,
-  WORK_ROLE,
-  quickApplyCopy,
-  type WorkOption,
-} from "@/content/pages/quick-apply";
+import { AREA_OPTIONS, STAFF_LABELS, STEP_DEFS, quickApplyCopy, roleFor, type Answers, type StepDef } from "@/content/pages/quick-apply";
 import { localePath, type Locale } from "@/lib/i18n";
-import { isJobRole, normaliseIndianMobile, type IntakeSource, type JobRole } from "@/lib/talent-intake/rules";
+import { isJobRole, normaliseIndianMobile, type IntakeSource } from "@/lib/talent-intake/rules";
 import type { JobsStartResponse } from "@/lib/talent-intake/contract";
 import { TURNSTILE_SCRIPT_URL, TURNSTILE_SITE_KEY } from "@/lib/turnstile";
 
 /** Stored values shared with n8n; same as the long form. */
 const SOURCE: Record<Locale, IntakeSource> = { "en-IN": "web_en", "hi-IN": "web_hi", "hi-Latn-IN": "web_hinglish" };
-const STEPS = ["work", "experience", "shift", "details"] as const;
-/** Trade pages that share the ITI answer; the specific role is still sent. */
-const ITI_ROLES: JobRole[] = ["electrician", "welder", "fitter", "iti-trades"];
+/** Trade pages answer the ITI question and its trade follow-up. */
+const WORK_FOR_ROLE: Record<string, string> = { electrician: "iti-trades", welder: "iti-trades", fitter: "iti-trades" };
+
+type Phase = { name: "form" } | { name: "sending" } | { name: "done"; ref: string };
 
 /** Answers as large buttons: a radio group, or toggles when `multi`. */
 function Pills({
   options,
+  labels,
   selected,
   onPick,
   labelledBy,
   multi = false,
   small = false,
 }: {
-  options: Record<string, string>;
+  options: readonly string[];
+  labels: Record<string, string>;
   selected: (value: string) => boolean;
   onPick: (value: string) => void;
   labelledBy: string;
@@ -43,7 +40,7 @@ function Pills({
 }) {
   return (
     <div className={cn("quick-pills", small && "is-small")} role={multi ? "group" : "radiogroup"} aria-labelledby={labelledBy}>
-      {Object.entries(options).map(([value, text]) => (
+      {options.map((value) => (
         <button
           key={value}
           type="button"
@@ -54,17 +51,16 @@ function Pills({
           onClick={() => onPick(value)}
         >
           {selected(value) && <Check size={16} aria-hidden="true" />}
-          {text}
+          {labels[value] ?? value}
         </button>
       ))}
     </div>
   );
 }
 
-type Phase = { name: "form" } | { name: "sending" } | { name: "done"; ref: string };
-
 /**
- * The guided jobs form: three tap-to-answer steps, then name, mobile number
+ * The guided jobs form. Questions unlock one below another and stay editable;
+ * follow-ups depend on the work chosen (STEP_DEFS). Then name, mobile number
  * and area. Same intake as the long form (/api/jobs/start and /submit, with
  * Turnstile); the answers reach staff as a short note. Events carry
  * variant "quick" so the two forms can be compared.
@@ -72,11 +68,9 @@ type Phase = { name: "form" } | { name: "sending" } | { name: "done"; ref: strin
 export function QuickApply({ locale }: { locale: Locale }) {
   const t = quickApplyCopy[locale];
   const form = jobsCopy[locale].form;
-  const [step, setStep] = useState(0);
-  const [work, setWork] = useState<WorkOption | null>(null);
-  const [role, setRole] = useState<JobRole | null>(null);
-  const [experience, setExperience] = useState<string | null>(null);
-  const [shifts, setShifts] = useState<string[]>([]);
+  const [answers, setAnswers] = useState<Answers>({});
+  // Multi-choice questions count as answered once Next is pressed.
+  const [confirmed, setConfirmed] = useState<string[]>([]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [area, setArea] = useState<string | null>(null);
@@ -90,6 +84,15 @@ export function QuickApply({ locale }: { locale: Locale }) {
   const started = useRef(false);
   const entry = useRef<"preset" | "fresh">("fresh");
 
+  // Which questions apply, and how far the visitor has unlocked: every
+  // applicable question up to and including the first unanswered one.
+  const active = STEP_DEFS.filter((s) => !s.when || s.when(answers));
+  const isDone = (s: StepDef) => (answers[s.id]?.length ?? 0) > 0 && (s.kind === "single" || confirmed.includes(s.id));
+  const firstOpen = active.findIndex((s) => !isDone(s));
+  const visible = firstOpen === -1 ? active : active.slice(0, firstOpen + 1);
+  const detailsUnlocked = firstOpen === -1;
+  const newest = detailsUnlocked ? "details" : visible[visible.length - 1]?.id;
+
   const markStarted = () => {
     if (started.current) return;
     started.current = true;
@@ -97,30 +100,29 @@ export function QuickApply({ locale }: { locale: Locale }) {
     trackAnalyticsEvent("quick_apply_start", { locale, entry: entry.current });
   };
 
-  // A role in the link (?role=packing, from an ad group) answers step 1.
+  // A role in the link (?role=packing, from an ad group) answers the first question.
   useEffect(() => {
     const preset = new URLSearchParams(window.location.search).get("role");
     if (!isJobRole(preset)) return;
-    const option: WorkOption = ITI_ROLES.includes(preset) ? "iti-trades" : (WORK_OPTIONS as readonly string[]).includes(preset) ? (preset as WorkOption) : "any";
     entry.current = "preset";
+    const trade = WORK_FOR_ROLE[preset];
     // Reading the link happens once, after hydration.
     /* eslint-disable react-hooks/set-state-in-effect */
-    setWork(option);
-    setRole(preset);
-    setStep(1);
+    setAnswers(trade ? { work: [trade], trade: [preset] } : { work: [preset] });
+    setConfirmed(trade ? ["work", "trade"] : ["work"]);
     /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
   // Bring each newly unlocked question into view and give it focus, so the
   // next step is obvious on a phone and announced to screen readers.
   useEffect(() => {
-    if (!started.current) return;
-    const el = document.querySelector<HTMLElement>(`.quick-section[data-step="${STEPS[step]}"]`);
+    if (!started.current || !newest) return;
+    const el = document.querySelector<HTMLElement>(`.quick-section[data-step="${newest}"]`);
     if (!el) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
     el.querySelector<HTMLElement>(".quick-question")?.focus({ preventScroll: true });
-  }, [step]);
+  }, [newest]);
 
   const renderTurnstile = useCallback(() => {
     if (!window.turnstile || !turnstileBox.current || turnstileId.current) return;
@@ -140,25 +142,25 @@ export function QuickApply({ locale }: { locale: Locale }) {
     if (window.turnstile && turnstileId.current) window.turnstile.reset(turnstileId.current);
   };
 
-  function answer(stepName: string, value: string) {
+  function pick(step: StepDef, value: string) {
     markStarted();
-    trackAnalyticsEvent("quick_step", { locale, step: stepName, answer: value });
+    if (step.kind === "single") {
+      setAnswers((a) => ({ ...a, [step.id]: [value] }));
+      trackAnalyticsEvent("quick_step", { locale, step: step.id, answer: value });
+      return;
+    }
+    setAnswers((a) => {
+      const current = a[step.id] ?? [];
+      let next = current.includes(value) ? current.filter((v) => v !== value) : [...current, value];
+      // "Any work" stands alone: choosing it clears the rest, and the reverse.
+      if (step.id === "work") next = value === "any" ? (next.includes("any") ? ["any"] : []) : next.filter((v) => v !== "any");
+      return { ...a, [step.id]: next };
+    });
   }
 
-  // Single choice: brief tick, then the next question.
-  function chooseSingle(stepName: "work" | "experience", value: string) {
-    if (stepName === "work") {
-      setWork(value as WorkOption);
-      setRole(WORK_ROLE[value as WorkOption]);
-    } else setExperience(value);
-    answer(stepName, value);
-    // Unlock the next question; changing an earlier answer keeps later ones.
-    setStep((s) => Math.max(s, STEPS.indexOf(stepName) + 1));
-  }
-
-  function toggleShift(value: string) {
-    markStarted();
-    setShifts((current) => (current.includes(value) ? current.filter((s) => s !== value) : [...current, value]));
+  function confirm(step: StepDef) {
+    setConfirmed((c) => (c.includes(step.id) ? c : [...c, step.id]));
+    trackAnalyticsEvent("quick_step", { locale, step: step.id, answer: (answers[step.id] ?? []).join(",").slice(0, 200) });
   }
 
   async function submit(event: React.FormEvent) {
@@ -175,14 +177,13 @@ export function QuickApply({ locale }: { locale: Locale }) {
       return;
     }
 
-    const label = (v: string | null) => (v ? STAFF_LABELS[v] ?? v : "Not given");
+    const role = roleFor(answers);
+    const label = (v: string) => STAFF_LABELS[v] ?? v;
     const text = [
       "Quick apply form (guided, /jobs/apply)",
       `Name: ${name.trim()}`,
-      `Work: ${label(work)}${role && ITI_ROLES.includes(role) && role !== "iti-trades" ? ` (${role})` : ""}`,
-      `Experience: ${label(experience)}`,
-      `Shifts: ${shifts.length ? shifts.map(label).join(", ") : "Not given"}`,
-      `Area: ${label(area)}`,
+      ...active.map((s) => `${label(s.id)}: ${(answers[s.id] ?? []).map(label).join(", ") || "Not given"}`),
+      `${label("area")}: ${area ? label(area) : "Not given"}`,
     ].join("\n");
 
     setPhase({ name: "sending" });
@@ -203,7 +204,13 @@ export function QuickApply({ locale }: { locale: Locale }) {
       });
       if (!done.ok) throw new Error("server");
       setPhase({ name: "done", ref: ticket.ref });
-      const summary = { locale, variant: "quick", work: work ?? "none", experience: experience ?? "none" };
+      const summary = {
+        locale,
+        variant: "quick",
+        work: (answers.work ?? []).join(",") || "none",
+        experience: answers.experience?.[0] ?? "none",
+        questions: active.length,
+      };
       trackAnalyticsEvent("job_form_submit", { ...summary, voice: "no" });
       trackAnalyticsEvent("quick_apply_submit", summary);
       trackAdsConversion("jobApplication");
@@ -231,52 +238,45 @@ export function QuickApply({ locale }: { locale: Locale }) {
   const sending = phase.name === "sending";
   const fieldClass =
     "h-12 rounded-lg border-neutral-300 bg-background px-4 text-base shadow-none placeholder:text-neutral-400 focus-visible:border-gold-500 focus-visible:ring-gold-500/25 md:text-base";
+  const total = active.length + 1;
+  const doneCount = active.filter(isDone).length + (detailsUnlocked && name && phone ? 1 : 0);
 
-  // Questions stay on the page once unlocked, so earlier answers can be changed
-  // in place; each new one appears below the last.
+  // Questions stay on the page once unlocked, so earlier answers can be
+  // changed in place; each new one appears below the last.
   return (
     <div className="quick-apply">
       <Script src={TURNSTILE_SCRIPT_URL} onReady={renderTurnstile} />
-      <div className="quick-progress" aria-hidden="true">
-        {STEPS.map((s, i) => (
-          <span key={s} className={cn(i <= step && "is-done")} />
+      <div className="quick-progress" style={{ gridTemplateColumns: `repeat(${total}, 1fr)` }} aria-hidden="true">
+        {Array.from({ length: total }, (_, i) => (
+          <span key={i} className={cn(i < doneCount && "is-done")} />
         ))}
       </div>
 
-      <section className="quick-section" data-step="work">
-        <h2 id="quick-q-work" tabIndex={-1} className="quick-question">{t.work.question}</h2>
-        <Pills labelledBy="quick-q-work" options={t.work.options} selected={(v) => work === v} onPick={(v) => chooseSingle("work", v)} />
-      </section>
+      {visible.map((step) => {
+        const q = t.questions[step.id];
+        const values = answers[step.id] ?? [];
+        return (
+          <section key={step.id} className="quick-section" data-step={step.id}>
+            <h2 id={`quick-q-${step.id}`} tabIndex={-1} className="quick-question">{q.question}</h2>
+            {q.hint && <p className="quick-hint">{q.hint}</p>}
+            <Pills
+              labelledBy={`quick-q-${step.id}`}
+              options={step.options}
+              labels={t.labels}
+              multi={step.kind === "multi"}
+              selected={(v) => values.includes(v)}
+              onPick={(v) => pick(step, v)}
+            />
+            {step.kind === "multi" && !confirmed.includes(step.id) && (
+              <button type="button" className="jobs-submit mt-6" disabled={values.length === 0} onClick={() => confirm(step)}>
+                {t.next}
+              </button>
+            )}
+          </section>
+        );
+      })}
 
-      {step >= 1 && (
-        <section className="quick-section" data-step="experience">
-          <h2 id="quick-q-experience" tabIndex={-1} className="quick-question">{t.experience.question}</h2>
-          <Pills labelledBy="quick-q-experience" options={t.experience.options} selected={(v) => experience === v} onPick={(v) => chooseSingle("experience", v)} />
-        </section>
-      )}
-
-      {step >= 2 && (
-        <section className="quick-section" data-step="shift">
-          <h2 id="quick-q-shift" tabIndex={-1} className="quick-question">{t.shift.question}</h2>
-          <p className="quick-hint">{t.shift.hint}</p>
-          <Pills labelledBy="quick-q-shift" options={t.shift.options} selected={(v) => shifts.includes(v)} onPick={toggleShift} multi />
-          {step === 2 && (
-            <button
-              type="button"
-              className="jobs-submit mt-6"
-              disabled={shifts.length === 0}
-              onClick={() => {
-                answer("shift", shifts.join(","));
-                setStep(3);
-              }}
-            >
-              {t.next}
-            </button>
-          )}
-        </section>
-      )}
-
-      {step >= 3 && (
+      {detailsUnlocked && (
         <section className="quick-section" data-step="details">
           <form
             data-clarity-mask="true"
@@ -315,11 +315,12 @@ export function QuickApply({ locale }: { locale: Locale }) {
             <Pills
               labelledBy="quick-area"
               small
-              options={t.details.areaOptions}
+              options={AREA_OPTIONS}
+              labels={t.labels}
               selected={(v) => area === v}
               onPick={(v) => {
                 setArea(v);
-                answer("area", v);
+                trackAnalyticsEvent("quick_step", { locale, step: "area", answer: v });
               }}
             />
             <label className="jobs-check mt-6">

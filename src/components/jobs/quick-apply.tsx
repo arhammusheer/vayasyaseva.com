@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Check, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { trackAdsConversion, trackAnalyticsEvent } from "@/lib/analytics";
+import { formPage, trackAdsConversion, trackAnalyticsEvent } from "@/lib/analytics";
 import { jobsCopy } from "@/content/pages/jobs";
 import { AREA_OPTIONS, STEP_DEFS, quickApplyCopy, roleFor, type Answers, type StepDef } from "@/content/pages/quick-apply";
 import { readPrefill } from "@/lib/prefill";
@@ -97,7 +97,7 @@ export function QuickApply({ locale }: { locale: Locale }) {
   const markStarted = () => {
     if (started.current) return;
     started.current = true;
-    trackAnalyticsEvent("job_form_start", { locale, variant: "quick" });
+    trackAnalyticsEvent("job_form_start", { locale, variant: "quick", page: formPage() });
     trackAnalyticsEvent("quick_apply_start", { locale, entry: entry.current });
   };
 
@@ -191,7 +191,7 @@ export function QuickApply({ locale }: { locale: Locale }) {
     setFailedChecks(failed);
     setErrors(failed.map((key) => (key === "name" ? t.errors.name : form.errors[key as keyof typeof form.errors])));
     if (failed.length) {
-      trackAnalyticsEvent("job_form_error", { locale, variant: "quick", reason: "validation", checks: failed.join(",") });
+      trackAnalyticsEvent("job_form_error", { locale, variant: "quick", page: formPage(), reason: "validation", checks: failed.join(",") });
       return;
     }
 
@@ -233,7 +233,7 @@ export function QuickApply({ locale }: { locale: Locale }) {
         experience: answers.experience?.[0] ?? "none",
         questions: active.length,
       };
-      trackAnalyticsEvent("job_form_submit", { ...summary, voice: "no" });
+      trackAnalyticsEvent("job_form_submit", { ...summary, page: formPage(), voice: "no" });
       trackAnalyticsEvent("quick_apply_submit", summary);
       trackAdsConversion("jobApplication");
     } catch (error) {
@@ -242,7 +242,7 @@ export function QuickApply({ locale }: { locale: Locale }) {
       setErrors([form.errors[key]]);
       setFailedChecks([key]);
       setPhase({ name: "form" });
-      trackAnalyticsEvent("job_form_error", { locale, variant: "quick", reason: key });
+      trackAnalyticsEvent("job_form_error", { locale, variant: "quick", page: formPage(), reason: key });
     }
   }
 

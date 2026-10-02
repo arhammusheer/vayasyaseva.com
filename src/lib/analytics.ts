@@ -2,6 +2,7 @@
 
 import { sendGAEvent } from "@next/third-parties/google";
 import { adsConversions, googleAdsId } from "@/lib/analytics-config";
+import { safeAnalyticsPath } from "@/lib/analytics-pages";
 
 export const analyticsConsentKey = "vayasya-site-measurement-v4";
 export const analyticsConsentAtKey = "vayasya-site-measurement-v4-at";
@@ -113,7 +114,9 @@ export function trackAdsConversion(conversion: keyof typeof adsConversions) {
   try {
     if (!googleAdsId || !hasAnalyticsConsent() || !window.dataLayer) return;
     if (!adsConfigured) {
-      sendGAEvent("config", googleAdsId, { allow_ad_personalization_signals: false });
+      // No remarketing, and no enhanced conversions: the tag must not read
+      // form fields (phone, name), whatever the account setting.
+      sendGAEvent("config", googleAdsId, { allow_ad_personalization_signals: false, allow_enhanced_conversions: false });
       adsConfigured = true;
     }
     sendGAEvent("event", "conversion", { send_to: `${googleAdsId}/${adsConversions[conversion]}` });
@@ -135,5 +138,14 @@ export function trackAbandonedDraft(parameters: AnalyticsParams) {
     withUmami((umami) => umami.track("form_abandon_draft", parameters));
   } catch {
     // Analytics must never interrupt the visitor's task.
+  }
+}
+
+/** The page a form event happened on, as a known path (e.g. /hi-latn-in/jobs/packing). */
+export function formPage() {
+  try {
+    return safeAnalyticsPath(window.location.pathname);
+  } catch {
+    return "/other";
   }
 }

@@ -6,7 +6,7 @@ import { FileText, ImageIcon, Loader2, Mic, RotateCcw, Square, X } from "lucide-
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { trackAdsConversion, trackAnalyticsEvent } from "@/lib/analytics";
+import { formPage, trackAdsConversion, trackAnalyticsEvent } from "@/lib/analytics";
 import { JOB_PREFILL_FIELDS, labelledLines, readPrefill } from "@/lib/prefill";
 import { jobsCopy } from "@/content/pages/jobs";
 import { localePath, type Locale } from "@/lib/i18n";
@@ -133,7 +133,7 @@ export function JobsForm({
   const markStarted = () => {
     if (trackedStart.current) return;
     trackedStart.current = true;
-    trackAnalyticsEvent("job_form_start", { locale });
+    trackAnalyticsEvent("job_form_start", { locale, variant: "long", page: formPage() });
   };
 
   // --- Prefilled link (#phone=…&work=…) --------------------------------------
@@ -264,7 +264,7 @@ export function JobsForm({
     setErrors(failed.map((key) => t.errors[key]));
     setFailedChecks(failed);
     if (failed.length) {
-      trackAnalyticsEvent("job_form_error", { locale, reason: "validation", checks: failed.join(",") });
+      trackAnalyticsEvent("job_form_error", { locale, variant: "long", page: formPage(), reason: "validation", checks: failed.join(",") });
       return;
     }
 
@@ -306,7 +306,7 @@ export function JobsForm({
       });
       if (!done.ok) throw new Error("server");
       setPhase({ name: "done", ref: started.ref });
-      trackAnalyticsEvent("job_form_submit", { locale, voice: hasVoice ? "yes" : "no" });
+      trackAnalyticsEvent("job_form_submit", { locale, variant: "long", page: formPage(), voice: hasVoice ? "yes" : "no" });
       trackAdsConversion("jobApplication");
     } catch (error) {
       const reason = error instanceof Error ? error.message : "server";
@@ -314,7 +314,7 @@ export function JobsForm({
       setErrors([t.errors[key]]);
       setFailedChecks([key]);
       setPhase({ name: "form" });
-      trackAnalyticsEvent("job_form_error", { locale, reason: key });
+      trackAnalyticsEvent("job_form_error", { locale, variant: "long", page: formPage(), reason: key });
     }
   }
 

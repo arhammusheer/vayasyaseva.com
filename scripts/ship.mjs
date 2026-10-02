@@ -36,7 +36,13 @@ try {
   }
   run("pnpm -s seo:check http://localhost:3123");
 } finally {
-  process.kill(-server.pid);
+  // Killing the process group can be refused (EPERM) inside a sandboxed shell;
+  // fall back to the server process itself rather than aborting the ship.
+  try {
+    process.kill(-server.pid);
+  } catch {
+    server.kill();
+  }
 }
 
 const sha = out("git rev-parse HEAD");

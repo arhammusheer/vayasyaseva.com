@@ -3,15 +3,16 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useReportWebVitals } from "next/web-vitals";
-import { FORM_DONE_EVENT, trackAnalyticsEvent, trackPageView, type AnalyticsParams } from "@/lib/analytics";
+import { FORM_DONE_EVENT, trackAbandonedDraft, trackAnalyticsEvent, trackPageView, type AnalyticsParams } from "@/lib/analytics";
 import { safeAnalyticsPath } from "@/lib/analytics-pages";
 import { FALLBACK_LOCALE, splitLocalePath } from "@/lib/i18n";
 
 /**
  * Automatic interaction events, sent through trackAnalyticsEvent: Umami for
  * every visitor, plus Google Analytics and Clarity with "Allow All". Every
- * value is a fixed label, a known page path or a number. Nothing typed into
- * a form, no link text and no full external URLs.
+ * value is a fixed label, a known page path or a number. No link text and no
+ * full external URLs. The one exception is draftOf: with "Allow All", what an
+ * unfinished form held goes to Umami only (trackAbandonedDraft).
  */
 
 const SCROLL_MARKS = [25, 50, 75, 90];
@@ -84,6 +85,30 @@ function fieldOf(el: EventTarget | null) {
   if (!form) return null;
   const field = (el.name || el.id || el.type || "field").replace(/[^a-z0-9_-]/gi, "").slice(0, 40);
   return { form, field };
+}
+
+const DRAFT_MAX = 500; // Umami stores event data strings up to 500 characters
+
+/**
+ * The typed contents of an unfinished form, by field name. Files and voice
+ * notes are never read: the form marks only their count and length
+ * (data-draft-* attributes on the form element).
+ */
+function draftOf(form: string): AnalyticsParams | null {
+  const el = document.querySelector<HTMLElement>(`[data-analytics-form="${form}"]`);
+  if (!el) return null;
+  const draft: AnalyticsParams = {};
+  for (const input of el.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>("input, textarea, select")) {
+    if (input instanceof HTMLInputElement && ["file", "password", "hidden"].includes(input.type)) continue;
+    const target = fieldOf(input);
+    if (!target) continue;
+    const value = input instanceof HTMLInputElement && input.type === "checkbox" ? (input.checked ? "yes" : "") : input.value.trim();
+    if (value) draft[target.field] = value.slice(0, DRAFT_MAX);
+  }
+  for (const [key, value] of Object.entries(el.dataset)) {
+    if (key.startsWith("draft") && value) draft[key.slice(5).replace(/^./, (c) => c.toLowerCase())] = value;
+  }
+  return draft;
 }
 
 // Stable reference and one report per metric id: useReportWebVitals
@@ -172,7 +197,12 @@ export function AnalyticsTracker() {
     };
     const onDone = (event: Event) => touched.delete((event as CustomEvent<string>).detail);
     const onLeave = () => {
-      for (const [form, last_field] of touched) once(`abandon:${form}`, "form_abandon", { form, last_field, page });
+      for (const [form, last_field] of touched) {
+        if (fired.has(`abandon:${form}`)) continue;
+        once(`abandon:${form}`, "form_abandon", { form, last_field, page });
+        const draft = draftOf(form);
+        if (draft && Object.keys(draft).length) trackAbandonedDraft({ form, last_field, page, ...draft });
+      }
     };
 
     // Copying text (what was copied is not sent).

@@ -171,7 +171,7 @@ export function Analytics({ gaId }: { gaId: string }) {
             </button>
           </div>
           <div id={detailsId} hidden={!showDetails} className="mt-2 text-xs leading-relaxed text-white/80">
-            Cookie-free page counts and usage events (which links and form steps are used, never what you type) always run. Allowing adds Google Analytics (referrals, approximate location, device details, site actions) and recordings of clicks, scrolls and cursor movement (Microsoft Clarity, and Umami on our own servers), with page text and form fields hidden, and Google Ads counting when a visit from one of our ads ends in a job application. No form entries, no ad targeting or remarketing. See our{" "}
+            Cookie-free page counts and usage events (which links and form steps are used, never what you type) always run. Allowing adds Google Analytics (referrals, approximate location, device details, site actions) and recordings of clicks, scrolls and cursor movement (Microsoft Clarity, and Umami on our own servers), with page text and form fields hidden, and Google Ads counting when a visit from one of our ads ends in a job application. If you leave a form unfinished, what you typed is kept on our own servers for 30 days, only to fix the forms; voice notes and files are never kept. No ad targeting or remarketing. See our{" "}
             <Link href="/privacy" className="text-white underline underline-offset-2 hover:text-gold-400">privacy policy</Link>.
           </div>
           <div className="mt-2 flex flex-wrap items-center justify-end gap-1">

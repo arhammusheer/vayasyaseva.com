@@ -3,10 +3,11 @@
 import { sendGAEvent } from "@next/third-parties/google";
 import { adsConversions, googleAdsId } from "@/lib/analytics-config";
 
-export const analyticsConsentKey = "vayasya-site-measurement-v3";
-export const analyticsConsentAtKey = "vayasya-site-measurement-v3-at";
+export const analyticsConsentKey = "vayasya-site-measurement-v4";
+export const analyticsConsentAtKey = "vayasya-site-measurement-v4-at";
 // v2 (Sept 2026): Clarity session replay added, so v1 choices no longer cover it.
 // v3 (Oct 2026): Google Ads conversion measurement added; everyone is asked again.
+// v4 (Oct 2026): unfinished form contents logged in Umami; everyone is asked again.
 const consentMaxAge = 180 * 24 * 60 * 60 * 1000;
 
 /** Fixed labels only: never form contents, names, numbers or free text. */
@@ -116,6 +117,22 @@ export function trackAdsConversion(conversion: keyof typeof adsConversions) {
       adsConfigured = true;
     }
     sendGAEvent("event", "conversion", { send_to: `${googleAdsId}/${adsConversions[conversion]}` });
+  } catch {
+    // Analytics must never interrupt the visitor's task.
+  }
+}
+
+/**
+ * What an unfinished form held, with "Allow All" only. Umami alone (our own
+ * servers), never Google or Clarity, as the separate event
+ * `form_abandon_draft` so a nightly job can delete its data after 30 days
+ * (vayasya-infra apps/umami). Used only to see why forms are left; it never
+ * reaches the enquiry or applicant records.
+ */
+export function trackAbandonedDraft(parameters: AnalyticsParams) {
+  try {
+    if (!hasAnalyticsConsent()) return;
+    withUmami((umami) => umami.track("form_abandon_draft", parameters));
   } catch {
     // Analytics must never interrupt the visitor's task.
   }

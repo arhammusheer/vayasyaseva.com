@@ -339,7 +339,18 @@ export function JobsForm({
     "h-12 rounded-lg border-neutral-300 bg-background px-4 text-base shadow-none placeholder:text-neutral-400 focus-visible:border-gold-500 focus-visible:ring-gold-500/25 md:text-base";
 
   return (
-    <form data-clarity-mask="true" data-analytics-form="jobs" onSubmit={submit} noValidate className="jobs-form" aria-busy={sending}>
+    <form
+      data-clarity-mask="true"
+      data-analytics-form="jobs"
+      // Read by the analytics draft log if the form is left unfinished: only
+      // whether a voice note or files were added, never their content.
+      data-draft-voice-seconds={voice.state === "recorded" ? voice.seconds : undefined}
+      data-draft-files={files.length || undefined}
+      onSubmit={submit}
+      noValidate
+      className="jobs-form"
+      aria-busy={sending}
+    >
       <Script src={TURNSTILE_SCRIPT_URL} onReady={renderTurnstile} />
       <AgentGuidance form="jobs" />
 

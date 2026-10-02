@@ -152,6 +152,8 @@ export function QuickApply({ locale }: { locale: Locale }) {
       callback: (token: string) => setTurnstileToken(token),
       "expired-callback": () => setTurnstileToken(null),
       "error-callback": () => setTurnstileToken(null),
+      // Cloudflare is about to ask for an interaction: friction worth counting.
+      "before-interactive-callback": () => trackAnalyticsEvent("verification_shown", { form: "quick", page: formPage() }),
     });
   }, [locale]);
   useEffect(() => renderTurnstile(), [renderTurnstile]);
@@ -162,11 +164,15 @@ export function QuickApply({ locale }: { locale: Locale }) {
 
   function pick(step: StepDef, value: string) {
     markStarted();
+    // changed = yes when an answer already given is changed: a sign the
+    // question or its choices confused someone.
     if (step.kind === "single") {
+      const before = answers[step.id]?.[0];
       setAnswers((a) => ({ ...a, [step.id]: [value] }));
-      trackAnalyticsEvent("quick_step", { locale, step: step.id, answer: value });
+      trackAnalyticsEvent("quick_step", { locale, step: step.id, answer: value, ...(before && before !== value ? { changed: "yes" } : {}) });
       return;
     }
+    if (confirmed.includes(step.id)) trackAnalyticsEvent("quick_step", { locale, step: step.id, answer: value, changed: "yes" });
     setAnswers((a) => {
       const current = a[step.id] ?? [];
       let next = current.includes(value) ? current.filter((v) => v !== value) : [...current, value];

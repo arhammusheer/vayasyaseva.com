@@ -110,9 +110,17 @@ export function Analytics({ gaId }: { gaId: string }) {
     }
   }, [consentState, locale, pathname]);
 
-  // How many visitors see the prompt, for the choice rate.
+  // How many visitors see the prompt, for the choice rate. Once per visit:
+  // not again when a page of this site loads another (language switch,
+  // picker), judged from the referrer so nothing is stored in the browser.
   useEffect(() => {
-    if (consent === null) trackAnalyticsEvent("consent_prompt", { page: safeAnalyticsPath(pathname) });
+    let internal = false;
+    try {
+      internal = document.referrer !== "" && new URL(document.referrer).origin === window.location.origin;
+    } catch {
+      internal = false;
+    }
+    if (consent === null && !internal) trackAnalyticsEvent("consent_prompt", { page: safeAnalyticsPath(pathname) });
     // Once per page load, not per navigation.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [consent]);
@@ -150,8 +158,14 @@ export function Analytics({ gaId }: { gaId: string }) {
           src="/_t/s.js"
           data-host-url="/_t"
           data-website-id={umamiWebsiteId}
-          // AnalyticsTracker sends page views itself, with a sanitised URL.
-          data-auto-track="false"
+          // AnalyticsTracker sends page views itself, with a sanitised URL, so
+          // Umami's own page views stay off. Its tracker starts only to measure
+          // page speed (Performance report); query strings and the hash, which
+          // can hold a prefilled name or phone, never go into its URLs.
+          data-auto-pageview="false"
+          data-performance="true"
+          data-exclude-search="true"
+          data-exclude-hash="true"
           strategy="afterInteractive"
           onReady={flushUmami}
         />
@@ -202,7 +216,7 @@ export function Analytics({ gaId }: { gaId: string }) {
             </button>
           </div>
           <div id={detailsId} hidden={!showDetails} className="mt-2 text-xs leading-relaxed text-white/80">
-            Cookie-free page counts and usage events (which links and form steps are used, never what you type) always run. Allowing adds Google Analytics (referrals, approximate location, device details, site actions) and recordings of clicks, scrolls and cursor movement (Microsoft Clarity, and Umami on our own servers), with page text and form fields hidden, and Google Ads counting when a visit from one of our ads ends in a job application. If you leave a form unfinished, what you typed is kept on our own servers for 30 days, only to fix the forms; voice notes and files are never kept. No ad targeting or remarketing. See our{" "}
+            Cookie-free page counts and usage events (which links and form steps are used, never what you type) always run. Allowing adds Google Analytics (referrals, approximate location, device details, site actions) and recordings of clicks, scrolls and cursor movement (Microsoft Clarity, and Umami on our own servers), with page text and form fields hidden, and Google Ads counting when a visit from one of our ads ends in a job application or enquiry. If you leave a form unfinished, what you typed is kept on our own servers for 30 days, only to fix the forms; voice notes and files are never kept. No ad targeting or remarketing. See our{" "}
             <Link href="/privacy" className="text-white underline underline-offset-2 hover:text-gold-400">privacy policy</Link>.
           </div>
           <div className="mt-2 flex flex-wrap items-center justify-end gap-1">
@@ -225,7 +239,10 @@ export function AnalyticsPreferencesButton() {
     <button
       type="button"
       className="inline-flex min-h-6 items-center transition-colors hover:text-gold-500"
-      onClick={() => window.dispatchEvent(new Event(preferencesEvent))}
+      onClick={() => {
+        trackAnalyticsEvent("privacy_choices_open", { page: safeAnalyticsPath(window.location.pathname) });
+        window.dispatchEvent(new Event(preferencesEvent));
+      }}
     >
       Privacy choices
     </button>

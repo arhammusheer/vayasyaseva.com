@@ -161,6 +161,8 @@ export function JobsForm({
       callback: (token: string) => setTurnstileToken(token),
       "expired-callback": () => setTurnstileToken(null),
       "error-callback": () => setTurnstileToken(null),
+      // Cloudflare is about to ask for an interaction: friction worth counting.
+      "before-interactive-callback": () => trackAnalyticsEvent("verification_shown", { form: "jobs", page: formPage() }),
     });
   }, [locale]);
   useEffect(() => renderTurnstile(), [renderTurnstile]);

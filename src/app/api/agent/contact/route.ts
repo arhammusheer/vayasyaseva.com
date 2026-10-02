@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { trackServerEvent } from "@/lib/server-events";
 import { contactContract, contactSchema } from "@/lib/contact-contract";
 import { createContactCaseId, sendInternalContactEmail } from "@/lib/msg91";
 import { clientIp, createRateLimiter } from "@/lib/rate-limit";
@@ -58,6 +59,7 @@ export async function POST(request: NextRequest) {
       agent: agent?.name ?? null,
       messageId: delivery.messageId,
     });
+    trackServerEvent("enquiry_received", "/api/agent/contact", { channel: "agent" });
     return NextResponse.json({
       success: true,
       caseId,

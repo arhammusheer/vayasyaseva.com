@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { trackServerEvent } from "@/lib/server-events";
 import { contactContract, contactSchema } from "@/lib/contact-contract";
 import {
   canSendContactAutoReply,
@@ -224,6 +225,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    trackServerEvent("enquiry_received", "/api/contact", { channel: "web" });
     return NextResponse.json({
       success: true,
       message: contactContract.responses.successMessage,

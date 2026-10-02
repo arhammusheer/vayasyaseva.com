@@ -5,6 +5,7 @@
  */
 import { NextResponse } from "next/server";
 import { talentIntakeSchema, type JobsSubmitResponse } from "./contract";
+import { trackServerEvent } from "@/lib/server-events";
 import type { IntakeChannel, IntakeForm, QuickAnswers } from "./rules";
 import {
   IntakeNotConfigured,
@@ -44,6 +45,14 @@ export async function forwardSubmission(draft: Draft, phone: string, text: strin
   }
 
   await forwardToIntake(payload.data);
+  trackServerEvent("application_received", channel === "agent" ? "/api/agent/jobs" : "/api/jobs/submit", {
+    channel,
+    form: payload.data.form ?? "agent",
+    role: payload.data.role ?? "none",
+    hub: payload.data.hub ?? "none",
+    source: payload.data.source,
+    files: payload.data.attachments.length,
+  });
   const body: JobsSubmitResponse = { ref: draft.ref };
   return NextResponse.json(body, { status: 202, headers: { "cache-control": "no-store" } });
 }

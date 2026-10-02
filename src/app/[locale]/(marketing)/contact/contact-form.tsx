@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { trackAnalyticsEvent } from "@/lib/analytics";
+import { formPage, trackAdsConversion, trackAnalyticsEvent } from "@/lib/analytics";
 import { ENQUIRY_PREFILL_FIELDS, labelledLines, readPrefill } from "@/lib/prefill";
 import { TURNSTILE_SCRIPT_URL, TURNSTILE_SITE_KEY } from "@/lib/turnstile";
 import {
@@ -113,6 +113,8 @@ export function ContactForm() {
       callback: (token: string) => setTurnstileToken(token),
       "expired-callback": () => setTurnstileToken(null),
       "error-callback": () => setTurnstileToken(null),
+      // Cloudflare is about to ask for an interaction: friction worth counting.
+      "before-interactive-callback": () => trackAnalyticsEvent("verification_shown", { form: "contact", page: formPage() }),
     });
     setTurnstileWidget(turnstileId.current);
   }, []);
@@ -155,6 +157,7 @@ export function ContactForm() {
         return;
       }
       setSubmitted(true);
+      trackAdsConversion("businessEnquiry");
       trackAnalyticsEvent("generate_lead", {
         form_type: formType,
       });

@@ -15,6 +15,8 @@ export const googleAdsId =
 /** Conversion labels from Google Ads (Goals > Conversions). */
 export const adsConversions = {
   jobApplication: "AzNfCOO8nI4dEO_X_-lE",
+  // Secondary in Google Ads: recorded, not used for bidding on the jobs campaigns.
+  businessEnquiry: "hotZCK2HrY4dEO_X_-lE",
 } as const;
 
 // Umami runs on our own infrastructure; the tag is proxied through /_t (next.config.ts).

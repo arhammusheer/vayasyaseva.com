@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { useReportWebVitals } from "next/web-vitals";
 import { FORM_DONE_EVENT, trackAbandonedDraft, trackAnalyticsEvent, trackPageView, type AnalyticsParams } from "@/lib/analytics";
 import { safeAnalyticsPath } from "@/lib/analytics-pages";
 import { createFormWatch, createRageDetector, describeTarget, draftOf, fieldOf, isDeadClick, statusOf } from "@/lib/form-analytics";
@@ -10,13 +9,15 @@ import { FALLBACK_LOCALE, splitLocalePath } from "@/lib/i18n";
 
 /**
  * Automatic interaction events, sent through trackAnalyticsEvent: Umami for
- * every visitor, plus Google Analytics and Clarity with "Allow All". Every
+ * every visitor, plus Google Analytics and Clarity with "Allow All". Page speed
+ * comes from Umami's own performance tracking (data-performance on the tracker). Every
  * value is a fixed label, a known page path or a number. No link text and no
  * full external URLs. The one exception is draftOf: with "Allow All", what an
  * unfinished form held goes to Umami only (trackAbandonedDraft).
  */
 
-const SCROLL_MARKS = [25, 50, 75, 90];
+// Half-way and the end: enough to see whether the lower page is read.
+const SCROLL_MARKS = [50, 90];
 const TIME_MARKS = [10, 30, 60, 180];
 const MAX_ERRORS = 3;
 const MAX_CLICK_SIGNALS = 5; // rage and dead clicks, each, per page view
@@ -80,23 +81,8 @@ function linkEvent(link: HTMLAnchorElement, page: string): [string, AnalyticsPar
   return ["nav_click", { target: safeAnalyticsPath(path), zone, page }];
 }
 
-// Stable reference and one report per metric id: useReportWebVitals
-// re-subscribes when given a new function, which repeats reports.
-const reportedVitals = new Set<string>();
-function reportWebVital(metric: Parameters<Parameters<typeof useReportWebVitals>[0]>[0]) {
-  if (reportedVitals.has(metric.id)) return;
-  reportedVitals.add(metric.id);
-  trackAnalyticsEvent("web_vital", {
-    metric: metric.name,
-    rating: metric.rating,
-    value: Math.round(metric.name === "CLS" ? metric.value * 1000 : metric.value),
-    page: pageType(splitLocalePath(window.location.pathname).path),
-  });
-}
-
 export function AnalyticsTracker() {
   const pathname = usePathname();
-  useReportWebVitals(reportWebVital);
 
   // Everything below is per page view: thresholds and counters reset on navigation.
   useEffect(() => {

@@ -26,6 +26,7 @@ type Umami = {
 declare global {
   interface Window {
     umami?: Umami;
+    fbq?: (...args: unknown[]) => void;
   }
 }
 
@@ -64,6 +65,13 @@ export function flushUmami() {
   }
 }
 
+/** Site events that map to Meta's standard events (Meta Pixel, Allow All only). */
+const META_EVENTS: Record<string, string> = {
+  job_form_submit: "SubmitApplication",
+  generate_lead: "Lead",
+  contact_click: "Contact",
+};
+
 /** Events that complete a tracked form, so it doesn't count as abandoned. */
 const FORM_DONE: Record<string, string> = { generate_lead: "contact", job_form_submit: "jobs", quick_apply_submit: "quick" };
 export const FORM_DONE_EVENT = "vayasya:form-done";
@@ -78,6 +86,8 @@ export function trackAnalyticsEvent(name: string, parameters?: AnalyticsParams) 
     if (FORM_DONE[name]) window.dispatchEvent(new CustomEvent(FORM_DONE_EVENT, { detail: FORM_DONE[name] }));
     if (!hasAnalyticsConsent()) return;
     if (window.dataLayer) sendGAEvent("event", name, parameters ?? {});
+    // Meta's standard events for the outcomes only, no parameters.
+    if (typeof window.fbq === "function" && META_EVENTS[name]) window.fbq("track", META_EVENTS[name]);
   } catch {
     // Analytics must never interrupt the visitor's task.
   }
@@ -101,22 +111,14 @@ export function setSessionData(data: AnalyticsParams) {
   }
 }
 
-let adsConfigured = false;
-
 /**
- * One Google Ads conversion, only with "Allow All". The Ads ID is configured
- * on first use, through the gtag.js GA4 already loaded, with ad
- * personalisation off so visitors are not added to remarketing audiences.
+ * One Google Ads conversion, only with "Allow All". The Ads destination is
+ * configured when the Google tag loads (components/analytics.tsx), with ad
+ * personalisation and enhanced conversions off.
  */
 export function trackAdsConversion(conversion: keyof typeof adsConversions) {
   try {
     if (!googleAdsId || !hasAnalyticsConsent() || !window.dataLayer) return;
-    if (!adsConfigured) {
-      // No remarketing, and no enhanced conversions: the tag must not read
-      // form fields (phone, name), whatever the account setting.
-      sendGAEvent("config", googleAdsId, { allow_ad_personalization_signals: false, allow_enhanced_conversions: false });
-      adsConfigured = true;
-    }
     sendGAEvent("event", "conversion", { send_to: `${googleAdsId}/${adsConversions[conversion]}` });
   } catch {
     // Analytics must never interrupt the visitor's task.

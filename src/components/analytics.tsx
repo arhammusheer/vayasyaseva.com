@@ -17,7 +17,8 @@ import {
 } from "@/lib/analytics";
 import { safeAnalyticsPath } from "@/lib/analytics-pages";
 import { AnalyticsTracker, pageLocale } from "@/components/analytics-tracker";
-import { gaId, umamiWebsiteId } from "@/lib/analytics-config";
+import { gaId, googleAdsId, metaPixelId, umamiWebsiteId } from "@/lib/analytics-config";
+import { MetaPixel } from "@/components/meta-pixel";
 import { Button } from "@/components/ui/button";
 
 type Consent = "accepted" | "rejected" | null;
@@ -172,10 +173,20 @@ export function Analytics({ gaId }: { gaId: string }) {
         // and say so, so Google Ads can model the conversions it can't see.
         // Ad personalisation stays denied: measurement only, no remarketing.
         <Script id="google-consent" strategy="afterInteractive">
-          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{ad_storage:'granted',analytics_storage:'granted',ad_user_data:'granted',ad_personalization:'denied'});`}
+          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{ad_storage:'granted',analytics_storage:'granted',ad_user_data:'granted',ad_personalization:'denied'});gtag('set',{allow_google_signals:false,allow_ad_personalization_signals:false});`}
         </Script>
       )}
       {consent === "accepted" && <GoogleAnalytics gaId={gaId} />}
+      {consent === "accepted" && googleAdsId && (
+        // One Google tag for GA4 and Ads: the Ads destination is configured on
+        // load, so the ad click id is kept across pages (conversion linker).
+        // No remarketing, and no enhanced conversions: the tag must not read
+        // form fields, whatever the account setting.
+        <Script id="google-ads-config" strategy="afterInteractive">
+          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('config','${googleAdsId}',{allow_ad_personalization_signals:false,allow_enhanced_conversions:false});`}
+        </Script>
+      )}
+      {consent === "accepted" && metaPixelId && <MetaPixel pixelId={metaPixelId} />}
       {consent !== "loading" && (consent === null || showPreferences) && (
         <section
           aria-label="Privacy choices"

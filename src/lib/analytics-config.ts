@@ -16,5 +16,10 @@ export const adsConversions = {
   businessEnquiry: "hotZCK2HrY4dEO_X_-lE",
 } as const;
 
+// Meta Pixel, after "Allow All" only. Dormant until NEXT_PUBLIC_META_PIXEL_ID is
+// set: the privacy notice and the consent version must be updated first
+// (docs/marketing-stack.md, "Turning on the Meta Pixel").
+export const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID || undefined;
+
 // Umami runs on our own infrastructure; the tag is proxied through /_t (next.config.ts).
 export const umamiWebsiteId = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID;

@@ -39,6 +39,18 @@ if (errors.length === 0) {
   const robots = read("src/app/robots.ts");
   const sitemap = read("src/app/sitemap.ts");
 
+  // The open agent routes must be documented wherever agents look.
+  const agentRoutes = ["/api/agent/contact", "/api/agent/jobs"];
+  const policy = read("src/content/ai-access-policy.ts");
+  const openApi = read("src/openapi/v1.json");
+  for (const route of agentRoutes) {
+    for (const [name, text] of [["llms.txt", llms], ["llms-full.txt", llmsFull], ["ai-access-policy", policy], ["openapi/v1.json", openApi]]) {
+      if (!text.includes(route)) {
+        errors.push(`${name} is missing agent route: ${route}`);
+      }
+    }
+  }
+
   for (const endpoint of requiredEndpointPaths) {
     if (!llms.includes(endpoint)) {
       errors.push(`llms.txt is missing endpoint reference: ${endpoint}`);
@@ -58,9 +70,14 @@ if (errors.length === 0) {
     }
   }
 
-  // robots.txt must stay fully open: a blanket allow and only /api/ disallowed.
-  if (!/allow:\s*"\/"/.test(robots)) {
-    errors.push('robots.ts must allow "/" for every user agent');
+  // robots.txt must stay fully open: a blanket allow, the agent routes allowed and only /api/ disallowed.
+  const allowed = [...robots.matchAll(/(?<!dis)allow:\s*(\[[^\]]*\]|"[^"]*")/g)]
+    .flatMap((m) => m[1].match(/"[^"]+"/g) ?? [])
+    .map((v) => v.replace(/"/g, ""));
+  for (const path of ["/", "/api/agent/"]) {
+    if (!allowed.includes(path)) {
+      errors.push(`robots.ts must allow "${path}" for every user agent`);
+    }
   }
   const disallowed = [...robots.matchAll(/disallow:\s*\[([^\]]*)\]/g)]
     .flatMap((m) => m[1].match(/"[^"]+"/g) ?? [])

@@ -1,14 +1,18 @@
 import { z } from "zod/v4";
 import {
+  AGENT_LANGUAGE_SOURCES,
   ATTACHMENT_KINDS,
   ATTACHMENT_MIME,
+  INTAKE_CHANNELS,
   INTAKE_LIMITS,
   INTAKE_SOURCES,
   JOB_HUB_SLUGS,
   JOB_ROLE_SLUGS,
+  MAX_AGENT_NAME_LENGTH,
   REF_PATTERN,
   isAttachmentKeyFor,
   normaliseIndianMobile,
+  type AgentLanguage,
   type IntakeSource,
 } from "./rules";
 
@@ -38,6 +42,10 @@ export const talentIntakeSchema = z
     role: z.enum(JOB_ROLE_SLUGS).nullable(),
     /** The hub page it came from (/jobs/freshers…), or null. */
     hub: z.enum(JOB_HUB_SLUGS).nullable(),
+    /** The jobs form ("web") or the open agent routes ("agent"). */
+    channel: z.enum(INTAKE_CHANNELS),
+    /** The name an agent gave for itself, if any. */
+    agentName: z.string().trim().max(MAX_AGENT_NAME_LENGTH).nullable(),
     phone: z
       .string()
       .transform((value, ctx) => {
@@ -69,6 +77,16 @@ export const talentIntakeSchema = z
 export type TalentIntakePayload = z.output<typeof talentIntakeSchema>;
 export type TalentIntakeAttachment = TalentIntakePayload["attachments"][number];
 
+const fileDeclarationSchema = z
+  .object({
+    kind: z.enum(ATTACHMENT_KINDS),
+    mime: z.string().min(1),
+    size: z.number().int().positive(),
+    name: z.string().max(INTAKE_LIMITS.maxFileNameLength).nullable(),
+  })
+  .refine((f) => ATTACHMENT_MIME[f.kind].test(f.mime), { message: "Unsupported file type", path: ["mime"] })
+  .refine((f) => f.size <= INTAKE_LIMITS.maxBytes[f.kind], { message: "File too large", path: ["size"] });
+
 /**
  * Browser → POST /api/jobs/start. Declares the files about to be uploaded;
  * the response carries one presigned upload URL per file and a signed
@@ -79,19 +97,7 @@ export const jobsStartRequestSchema = z.object({
   role: z.enum(JOB_ROLE_SLUGS).nullish().transform((r) => r ?? null),
   hub: z.enum(JOB_HUB_SLUGS).nullish().transform((h) => h ?? null),
   turnstileToken: z.string().min(1).max(4096),
-  files: z
-    .array(
-      z
-        .object({
-          kind: z.enum(ATTACHMENT_KINDS),
-          mime: z.string().min(1),
-          size: z.number().int().positive(),
-          name: z.string().max(INTAKE_LIMITS.maxFileNameLength).nullable(),
-        })
-        .refine((f) => ATTACHMENT_MIME[f.kind].test(f.mime), { message: "Unsupported file type", path: ["mime"] })
-        .refine((f) => f.size <= INTAKE_LIMITS.maxBytes[f.kind], { message: "File too large", path: ["size"] }),
-    )
-    .max(INTAKE_LIMITS.maxAttachments),
+  files: z.array(fileDeclarationSchema).max(INTAKE_LIMITS.maxAttachments),
 });
 export type JobsStartRequest = z.infer<typeof jobsStartRequestSchema>;
 
@@ -116,3 +122,66 @@ export type JobsSubmitRequest = z.infer<typeof jobsSubmitRequestSchema>;
 export interface JobsSubmitResponse {
   ref: string;
 }
+
+// --- Open agent routes (/api/agent/jobs*) -------------------------------------
+// No Turnstile: an AI agent applies on a person's behalf with plain JSON. The
+// agent confirms the person is 18 or older and agreed to be contacted, the
+// same two things the jobs form asks the person to tick.
+
+const agentLanguageSchema = z.enum(Object.keys(AGENT_LANGUAGE_SOURCES) as [AgentLanguage, ...AgentLanguage[]]);
+
+/** Who is sending. Optional; shown to staff with the submission. */
+export const agentInfoSchema = z
+  .object({
+    name: z
+      .string()
+      .trim()
+      .min(1)
+      .max(MAX_AGENT_NAME_LENGTH)
+      // Plain text: it is shown to staff in email and Chatwoot.
+      .regex(/^[\p{L}\p{N} .,_+()/:-]+$/u, "Letters, numbers, spaces and . , _ + ( ) / : - only"),
+  })
+  .strict()
+  .optional();
+
+const agentPageFields = {
+  /** Language the person speaks; picks the team and transcription language. */
+  language: agentLanguageSchema.default("en"),
+  role: z.enum(JOB_ROLE_SLUGS).nullish().transform((r) => r ?? null),
+  agent: agentInfoSchema,
+};
+
+const agentPersonFields = {
+  phone: z.string().min(1).max(20),
+  adult: z.literal(true),
+  consent: z.literal(true),
+};
+
+/** Agent → POST /api/agent/jobs: a text-only application in one request. */
+export const agentJobsRequestSchema = z
+  .object({
+    ...agentPageFields,
+    ...agentPersonFields,
+    text: z.string().trim().min(1).max(INTAKE_LIMITS.maxTextLength),
+  })
+  .strict();
+export type AgentJobsRequest = z.input<typeof agentJobsRequestSchema>;
+
+/** Agent → POST /api/agent/jobs/start: declare files, get upload URLs and a ticket. */
+export const agentJobsStartRequestSchema = z
+  .object({
+    ...agentPageFields,
+    files: z.array(fileDeclarationSchema).min(1).max(INTAKE_LIMITS.maxAttachments),
+  })
+  .strict();
+export type AgentJobsStartRequest = z.input<typeof agentJobsStartRequestSchema>;
+
+/** Agent → POST /api/agent/jobs/submit, after every upload has finished. */
+export const agentJobsSubmitRequestSchema = z
+  .object({
+    ticket: z.string().min(1).max(8192),
+    ...agentPersonFields,
+    text: z.string().trim().max(INTAKE_LIMITS.maxTextLength).nullish().transform((t) => t || null),
+  })
+  .strict();
+export type AgentJobsSubmitRequest = z.input<typeof agentJobsSubmitRequestSchema>;

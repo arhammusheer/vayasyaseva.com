@@ -9,6 +9,7 @@ import {
   ATTACHMENT_MIME,
   INTAKE_LIMITS,
   INTAKE_SOURCES,
+  MAX_AGENT_NAME_LENGTH,
   REF_PATTERN,
   isJobHub,
   isJobRole,
@@ -32,6 +33,13 @@ export default async function main(): Promise<N8nItem<ValidatedSubmission>[]> {
   // Unknown role or hub: keep the submission, drop the tag.
   const role = isJobRole(body.role) ? body.role : null;
   const hub = isJobHub(body.hub) ? body.hub : null;
+
+  // Missing on payloads from before the agent routes: those are all the jobs form.
+  const channel = body.channel === "agent" ? "agent" : "web";
+  const agentName =
+    channel === "agent" && typeof body.agentName === "string" && body.agentName.trim()
+      ? body.agentName.trim().slice(0, MAX_AGENT_NAME_LENGTH)
+      : null;
 
   const phone = normaliseIndianMobile(String(body.phone ?? ""));
   if (!phone) errors.add("phone");
@@ -71,6 +79,8 @@ export default async function main(): Promise<N8nItem<ValidatedSubmission>[]> {
         source,
         role,
         hub,
+        channel,
+        agentName,
         locale: INTAKE_SOURCES[source],
         phone,
         consentVersion: String(body.consent.version).slice(0, 40),

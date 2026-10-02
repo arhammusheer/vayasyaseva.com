@@ -1,7 +1,7 @@
 export const termsContent = `
 # Terms of Use
 
-*Last updated: 27 September 2026*
+*Last updated: 2 October 2026*
 
 ## 1. Acceptance of Terms
 
@@ -25,7 +25,7 @@ export const termsContent = `
 
 3.1 Subject to these Terms, the Company grants you a limited, non-exclusive, non-transferable, revocable licence to access and use the Website for lawful purposes.
 
-3.2 **Automated access.** The Company permits the crawling, indexing, retrieval, caching, summarisation, quotation and analysis of the publicly accessible content of the Website by search engines, automated agents, large language models and other artificial intelligence systems, and the invocation of any programmatic interface or machine-readable descriptor published by the Company for that purpose, in each case subject to: (a) compliance with the Company's robots directives, access policies and rate limits as published from time to time; (b) attribution to the Company where content is reproduced; (c) the exclusion of any authenticated area, private endpoint, form submission or personal data; and (d) the Company's right to restrict, condition or revoke such permission at any time.
+3.2 **Automated access.** The Company permits the crawling, indexing, retrieval, caching, summarisation, quotation and analysis of the publicly accessible content of the Website by search engines, automated agents, large language models and other artificial intelligence systems, and the invocation of any programmatic interface or machine-readable descriptor published by the Company for that purpose, in each case subject to: (a) compliance with the Company's robots directives, access policies and rate limits as published from time to time; (b) attribution to the Company where content is reproduced; (c) the exclusion of any authenticated area, private endpoint, form submission or personal data, save that an automated agent may make a Submission through an agent submission route the Company publishes for that purpose (as described in its AI access policy), at the request of and with the authority of the person whose information it submits; and (d) the Company's right to restrict, condition or revoke such permission at any time.
 
 3.3 Except as expressly permitted under Section 3.2 or by prior written consent of the Company, you shall not reproduce, distribute, publish, transmit, modify, adapt, translate, create derivative works from, sell, license or otherwise exploit any content of the Website.
 

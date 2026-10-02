@@ -20,6 +20,24 @@ export const INTAKE_SOURCES = {
 export type IntakeSource = keyof typeof INTAKE_SOURCES;
 
 /**
+ * How a submission reached us: the jobs form in a browser ("web"), or an AI
+ * agent through the open routes under /api/agent/jobs ("agent"). Stored in
+ * submissions.channel and shown to staff in Chatwoot.
+ */
+export const INTAKE_CHANNELS = ["web", "agent"] as const;
+export type IntakeChannel = (typeof INTAKE_CHANNELS)[number];
+
+/** Locale an agent writes in, mapped to the jobs page source it stands in for. */
+export const AGENT_LANGUAGE_SOURCES = { en: "web_en", hi: "web_hi", hinglish: "web_hinglish" } as const satisfies Record<
+  (typeof INTAKE_SOURCES)[IntakeSource],
+  IntakeSource
+>;
+export type AgentLanguage = keyof typeof AGENT_LANGUAGE_SOURCES;
+
+/** Longest agent name kept with a submission. */
+export const MAX_AGENT_NAME_LENGTH = 100;
+
+/**
  * Role pages under /jobs/<slug>. A submission from one carries the slug, so
  * staff can find people by the work they asked about; the label is for staff.
  */

@@ -5,17 +5,15 @@
  */
 import { createHmac, randomInt, timingSafeEqual } from "node:crypto";
 import { AwsClient } from "aws4fetch";
-import type { AttachmentKind, IntakeSource, JobHub, JobRole } from "./rules";
+import type { AttachmentKind, IntakeChannel, IntakeSource, JobHub, JobRole } from "./rules";
 import { attachmentKeyPrefix } from "./rules";
 
 const R2_ENDPOINT = "https://3f03827748ac33418f1176adaa436f26.r2.cloudflarestorage.com";
 const R2_BUCKET = "vayasya-talent-intake";
 const WEBHOOK_URL = "https://hooks.vayasyaseva.com/webhook/vspl-talent-intake";
-/** Cloudflare's always-pass test secret, used only in local development. */
-const TURNSTILE_TEST_SECRET = "1x0000000000000000000000000000000AA";
 
 /** Version of the privacy notice a person agrees to on the jobs page. */
-export const TALENT_CONSENT_VERSION = "2026-09-26";
+export const TALENT_CONSENT_VERSION = "2026-10-02";
 
 /** Upload links and tickets are short-lived. */
 const UPLOAD_URL_SECONDS = 15 * 60;
@@ -90,6 +88,9 @@ export interface Ticket {
   role?: JobRole | null;
   /** Missing on tickets issued before hub pages sent it. */
   hub?: JobHub | null;
+  /** "agent" on tickets from /api/agent/jobs/start; missing means the jobs form. */
+  channel?: IntakeChannel;
+  agentName?: string | null;
   files: TicketFile[];
   exp: number;
 }
@@ -141,19 +142,6 @@ export async function uploadedSize(key: string): Promise<number | null> {
 export async function deleteUpload(key: string): Promise<void> {
   const res = await r2Client().fetch(objectUrl(key), { method: "DELETE" });
   if (!res.ok && res.status !== 404) throw new Error(`R2 DELETE ${key}: ${res.status}`);
-}
-
-// --- Turnstile ----------------------------------------------------------------
-
-export async function verifyTurnstile(token: string, ip: string | null): Promise<boolean> {
-  const secret = process.env.TURNSTILE_SECRET_KEY ?? (process.env.NODE_ENV === "development" ? TURNSTILE_TEST_SECRET : undefined);
-  if (!secret) throw new IntakeNotConfigured("TURNSTILE_SECRET_KEY is not set");
-  const form = new URLSearchParams({ secret, response: token });
-  if (ip) form.set("remoteip", ip);
-  const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", { method: "POST", body: form });
-  if (!res.ok) return false;
-  const data = (await res.json()) as { success?: boolean; action?: string };
-  return data.success === true;
 }
 
 // --- n8n ----------------------------------------------------------------------

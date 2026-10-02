@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "request": {
     "fields": {
       "name": {
@@ -92,6 +92,7 @@
     "successMessage": "Requirement received. Our operations team will review and respond — target response time is 2 business days (IST, Mon–Sat).",
     "validationError": "Invalid form data.",
     "rateLimitError": "Too many submissions. Please try again shortly.",
+    "verificationError": "We couldn't verify this browser. Please complete the check and try again, or call us.",
     "unknownError": "Something went wrong. Please try again or contact us directly."
   }
 }

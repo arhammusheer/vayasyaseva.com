@@ -12,6 +12,7 @@ const publicPages = new Set([
   "/how-we-operate",
   "/industries",
   "/jobs",
+  "/jobs/apply",
   ...[...JOB_ROLE_SLUGS, ...JOB_HUB_SLUGS].map((slug) => `/jobs/${slug}`),
   "/privacy",
   "/services",

@@ -75,6 +75,8 @@ export const pages: Record<string, PageLocales> = {
   "/services/factory-labour": { locales: ["en-IN", "hi-Latn-IN"] },
   "/services/housekeeping": { locales: ["en-IN", "hi-Latn-IN"] },
   "/jobs": { locales: ALL, override: "prompt" },
+  // Guided form, a Google Ads landing page (noindex, not in the sitemap).
+  "/jobs/apply": { locales: ALL, override: "prompt" },
   ...Object.fromEntries(
     [...JOB_ROLE_SLUGS, ...JOB_HUB_SLUGS].map((slug) => [`/jobs/${slug}`, { locales: ALL, override: "prompt" } as const]),
   ),

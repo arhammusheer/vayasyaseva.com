@@ -65,7 +65,7 @@ export function flushUmami() {
 }
 
 /** Events that complete a tracked form, so it doesn't count as abandoned. */
-const FORM_DONE: Record<string, string> = { generate_lead: "contact", job_form_submit: "jobs" };
+const FORM_DONE: Record<string, string> = { generate_lead: "contact", job_form_submit: "jobs", quick_apply_submit: "quick" };
 export const FORM_DONE_EVENT = "vayasya:form-done";
 
 /**

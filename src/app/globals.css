@@ -1908,3 +1908,151 @@ a:hover > svg {
   font-size: 15px;
   line-height: 1.45;
 }
+
+/* Guided jobs form (/jobs/apply): one question per screen, answers as large
+   tap targets, name and number only at the end. Gold marks progress and the
+   chosen answer; no boxes around the questions. */
+.quick-top {
+  padding-block: 28px 64px;
+}
+.quick-title {
+  margin-top: 12px;
+  font-family: var(--font-anek), var(--font-anek-deva);
+  font-size: clamp(32px, 6.5vw, 52px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.quick-title:lang(hi):not(:lang(hi-Latn)) {
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+.quick-lede {
+  margin-top: 10px;
+  max-width: 42ch;
+  color: var(--muted-foreground);
+  font-size: 17px;
+  line-height: 1.55;
+}
+.quick-apply {
+  max-width: 640px;
+}
+.quick-progress {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+.quick-progress span {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+  transition: background 200ms ease;
+}
+.quick-progress span.is-done {
+  background: var(--gold-500);
+}
+.quick-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+  min-height: 28px;
+}
+.quick-step-count {
+  color: var(--muted-foreground);
+  font-size: 14px;
+}
+.quick-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted-foreground);
+  font-size: 15px;
+}
+.quick-back:hover {
+  color: var(--foreground);
+}
+.quick-question {
+  margin-top: 18px;
+  font-size: clamp(24px, 4.5vw, 32px);
+  font-weight: 500;
+  line-height: 1.2;
+}
+.quick-question:focus {
+  outline: none;
+}
+.quick-hint {
+  margin-top: 6px;
+  color: var(--muted-foreground);
+}
+.quick-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+.quick-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 12px 18px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--background);
+  font-size: 17px;
+  line-height: 1.25;
+  text-align: left;
+  transition:
+    border-color 140ms ease,
+    background 140ms ease,
+    transform 140ms ease;
+}
+.quick-pill:hover {
+  border-color: var(--gold-500);
+}
+.quick-pill:active {
+  transform: scale(0.98);
+}
+.quick-pill:focus-visible {
+  outline: 2px solid var(--gold-500);
+  outline-offset: 2px;
+}
+.quick-pill.is-selected {
+  border-color: var(--gold-500);
+  background: color-mix(in srgb, var(--gold-500) 12%, var(--background));
+  font-weight: 600;
+}
+.quick-pill svg {
+  color: var(--gold-700);
+}
+.quick-pills.is-small .quick-pill {
+  min-height: 44px;
+  padding: 8px 14px;
+  font-size: 15px;
+}
+.quick-label {
+  display: block;
+  margin-top: 20px;
+  font-weight: 600;
+}
+.quick-note {
+  margin-top: 28px;
+  color: var(--muted-foreground);
+  font-size: 14px;
+}
+@media (max-width: 640px) {
+  .quick-pills:not(.is-small) {
+    flex-direction: column;
+  }
+  .quick-pills:not(.is-small) .quick-pill {
+    width: 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .quick-pill,
+  .quick-progress span {
+    transition: none;
+  }
+}

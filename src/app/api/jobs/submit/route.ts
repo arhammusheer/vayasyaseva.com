@@ -15,10 +15,10 @@ export async function POST(request: NextRequest) {
   if (!parsed.success) {
     return NextResponse.json({ error: "invalid_request", fields: parsed.error.issues.map((i) => i.path.join(".")) }, { status: 400 });
   }
-  const { ticket, phone, text } = parsed.data;
+  const { ticket, phone, text, form, name, answers } = parsed.data;
 
   try {
-    return await submitWithTicket(ticket, phone, text, "web");
+    return await submitWithTicket(ticket, phone, text, "web", { form, applicantName: name, answers });
   } catch (error) {
     return unavailable("jobs/submit", error);
   }

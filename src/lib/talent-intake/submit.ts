@@ -5,7 +5,7 @@
  */
 import { NextResponse } from "next/server";
 import { talentIntakeSchema, type JobsSubmitResponse } from "./contract";
-import type { IntakeChannel } from "./rules";
+import type { IntakeChannel, IntakeForm, QuickAnswers } from "./rules";
 import {
   IntakeNotConfigured,
   TALENT_CONSENT_VERSION,
@@ -17,21 +17,27 @@ import {
 } from "./server";
 
 type Draft = Omit<Ticket, "exp" | "files"> & { files: Ticket["files"] };
+/** What the quick form adds: which form, the typed name and the answers. */
+export type FormExtras = { form?: IntakeForm; applicantName?: string | null; answers?: QuickAnswers | null };
 
 /** Builds, validates and forwards one submission; answers 202 with the reference. */
-export async function forwardSubmission(draft: Draft, phone: string, text: string | null) {
+export async function forwardSubmission(draft: Draft, phone: string, text: string | null, extras: FormExtras = {}) {
+  const channel = draft.channel ?? "web";
   const payload = talentIntakeSchema.safeParse({
     ref: draft.ref,
     source: draft.source,
     role: draft.role ?? null,
     hub: draft.hub ?? null,
-    channel: draft.channel ?? "web",
+    channel,
     agentName: draft.agentName ?? null,
     phone,
     adult: true,
     consent: { version: TALENT_CONSENT_VERSION, at: new Date().toISOString() },
     text: text || null,
     attachments: draft.files.map(({ kind, key, mime, size, name }) => ({ kind, key, mime, size, name })),
+    form: channel === "web" ? (extras.form ?? "long") : null,
+    applicantName: extras.applicantName?.trim() || null,
+    answers: extras.answers ?? null,
   });
   if (!payload.success) {
     return NextResponse.json({ error: "invalid_request", fields: payload.error.issues.map((i) => i.path.join(".")) }, { status: 400 });
@@ -47,7 +53,7 @@ export async function forwardSubmission(draft: Draft, phone: string, text: strin
  * matches what was declared, then forwards. The attachment list comes from
  * the ticket, never from the caller.
  */
-export async function submitWithTicket(rawTicket: string, phone: string, text: string | null, channel: IntakeChannel) {
+export async function submitWithTicket(rawTicket: string, phone: string, text: string | null, channel: IntakeChannel, extras: FormExtras = {}) {
   const ticket = readTicket(rawTicket);
   if (!ticket) {
     return NextResponse.json({ error: "expired" }, { status: 410 });
@@ -68,7 +74,7 @@ export async function submitWithTicket(rawTicket: string, phone: string, text: s
     }
   }
 
-  return forwardSubmission(ticket, phone, text);
+  return forwardSubmission(ticket, phone, text, extras);
 }
 
 /** The 5xx answer for a failure on our side, logged under `route`. */

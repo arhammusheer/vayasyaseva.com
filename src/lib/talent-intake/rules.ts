@@ -79,6 +79,71 @@ export function isJobHub(value: unknown): value is JobHub {
   return typeof value === "string" && Object.hasOwn(JOB_HUBS, value);
 }
 
+/**
+ * Which web form a submission came from (submissions.form): the long form on
+ * /jobs and the role pages, or the guided quick form on /jobs/apply. Null for
+ * the agent routes. The label is for staff.
+ */
+export const INTAKE_FORMS = {
+  long: "Long form (/jobs and role pages)",
+  quick: "Quick apply (/jobs/apply)",
+} as const;
+export type IntakeForm = keyof typeof INTAKE_FORMS;
+export const INTAKE_FORM_KEYS = Object.keys(INTAKE_FORMS) as [IntakeForm, ...IntakeForm[]];
+
+export const MAX_APPLICANT_NAME_LENGTH = 80;
+
+/**
+ * The quick form's questions and answers: question -> answer id -> English
+ * label for staff. Ids are stored values (submissions.answers) and analytics
+ * labels, the same in every page language; page wording lives in
+ * src/content/pages/quick-apply.ts.
+ */
+export const QUICK_ANSWERS = {
+  work: {
+    "factory-helper": "Factory helper", packing: "Packing", warehouse: "Warehouse / loading", "machine-operator": "Machine operator",
+    "iti-trades": "ITI trade", housekeeping: "Housekeeping", "data-entry-operator": "Data entry", "forklift-operator": "Forklift operator",
+    any: "Any work",
+  },
+  trade: { electrician: "Electrician", welder: "Welder", fitter: "Fitter", machinist: "Machinist / turner", "other-trade": "Other trade" },
+  iti: { "iti-pass": "ITI passed", "iti-pursuing": "Studying / apprentice", "no-iti": "Experience, no ITI" },
+  machines: {
+    "packing-machine": "Packing machines", moulding: "Injection moulding", press: "Press / sheet metal", "cnc-vmc": "CNC / VMC",
+    "other-machine": "Other machines",
+  },
+  forklift: { "licence-experience": "Licence and experience", "experience-only": "Experience, no licence", "want-to-learn": "Wants to learn" },
+  computer: { typing: "Typing", excel: "Excel", tally: "Tally", "sap-erp": "SAP / ERP" },
+  experience: { fresher: "Fresher", "under-1": "Under 1 year", "1-3": "1 to 3 years", "3-plus": "3+ years" },
+  education: { "below-10th": "Below 10th", "10th": "10th pass", "12th": "12th pass", "iti-diploma": "ITI / diploma", graduate: "Graduate" },
+  shift: { day: "Day", night: "Night", rotating: "Rotating / any" },
+  start: { now: "Immediately", week: "Within a week", month: "Within a month" },
+  area: {
+    "sidcul-bahadrabad": "SIDCUL / Bahadrabad", "haridwar-jwalapur": "Haridwar city / Jwalapur", "roorkee-bhagwanpur": "Roorkee / Bhagwanpur",
+    laksar: "Laksar", outside: "Outside Haridwar",
+  },
+} as const;
+export type QuickQuestion = keyof typeof QUICK_ANSWERS;
+export type QuickAnswers = Partial<Record<QuickQuestion, string[]>>;
+
+/** Staff labels for the questions, in the order they are asked. */
+export const QUICK_QUESTIONS: Record<QuickQuestion, string> = {
+  work: "Work", trade: "ITI trade", iti: "ITI", machines: "Machines", forklift: "Forklift", computer: "Computer skills",
+  experience: "Experience", education: "Education", shift: "Shifts", start: "Can start", area: "Area",
+};
+
+/** Keeps only known questions and answer ids; null when nothing is left. */
+export function cleanQuickAnswers(raw: unknown): QuickAnswers | null {
+  if (!raw || typeof raw !== "object") return null;
+  const out: QuickAnswers = {};
+  for (const [question, options] of Object.entries(QUICK_ANSWERS) as [QuickQuestion, Record<string, string>][]) {
+    const values = (raw as Record<string, unknown>)[question];
+    if (!Array.isArray(values)) continue;
+    const kept = [...new Set(values.filter((v): v is string => typeof v === "string" && Object.hasOwn(options, v)))];
+    if (kept.length) out[question] = kept;
+  }
+  return Object.keys(out).length ? out : null;
+}
+
 export const ATTACHMENT_KINDS = ["audio", "image", "document"] as const;
 export type AttachmentKind = (typeof ATTACHMENT_KINDS)[number];
 

@@ -7,9 +7,10 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { trackAdsConversion, trackAnalyticsEvent } from "@/lib/analytics";
 import { jobsCopy } from "@/content/pages/jobs";
-import { AREA_OPTIONS, STAFF_LABELS, STEP_DEFS, quickApplyCopy, roleFor, type Answers, type StepDef } from "@/content/pages/quick-apply";
+import { AREA_OPTIONS, STEP_DEFS, quickApplyCopy, roleFor, type Answers, type StepDef } from "@/content/pages/quick-apply";
+import { readPrefill } from "@/lib/prefill";
 import { localePath, type Locale } from "@/lib/i18n";
-import { isJobRole, normaliseIndianMobile, type IntakeSource } from "@/lib/talent-intake/rules";
+import { MAX_APPLICANT_NAME_LENGTH, cleanQuickAnswers, isJobRole, normaliseIndianMobile, type IntakeSource } from "@/lib/talent-intake/rules";
 import type { JobsStartResponse } from "@/lib/talent-intake/contract";
 import { TURNSTILE_SCRIPT_URL, TURNSTILE_SITE_KEY } from "@/lib/turnstile";
 
@@ -100,16 +101,33 @@ export function QuickApply({ locale }: { locale: Locale }) {
     trackAnalyticsEvent("quick_apply_start", { locale, entry: entry.current });
   };
 
-  // A role in the link (?role=packing, from an ad group) answers the first question.
+  // Answers in the link, from ads, hub pages or AI assistants:
+  // ?work=packing,warehouse&experience=fresher (any question, comma-separated
+  // answer ids) or ?role=<job role page>. Name and phone come from the hash
+  // (#name=…&phone=…), which never reaches the server.
   useEffect(() => {
-    const preset = new URLSearchParams(window.location.search).get("role");
-    if (!isJobRole(preset)) return;
-    entry.current = "preset";
-    const trade = WORK_FOR_ROLE[preset];
+    const params = new URLSearchParams(window.location.search);
+    const raw: Record<string, string[]> = {};
+    for (const [key, value] of params) raw[key] = value.split(",").map((v) => v.trim());
+    const role = params.get("role");
+    if (isJobRole(role) && !raw.work) {
+      const trade = WORK_FOR_ROLE[role];
+      raw.work = [trade ?? role];
+      if (trade) raw.trade = [role];
+    }
+    const preset = cleanQuickAnswers(raw);
+    const hash = readPrefill(["name", "phone"] as const);
     // Reading the link happens once, after hydration.
     /* eslint-disable react-hooks/set-state-in-effect */
-    setAnswers(trade ? { work: [trade], trade: [preset] } : { work: [preset] });
-    setConfirmed(trade ? ["work", "trade"] : ["work"]);
+    if (preset) {
+      entry.current = "preset";
+      const { area: presetArea, ...rest } = preset;
+      setAnswers(rest);
+      setConfirmed(Object.keys(rest));
+      if (presetArea) setArea(presetArea[0]);
+    }
+    if (hash?.name) setName(hash.name.slice(0, MAX_APPLICANT_NAME_LENGTH));
+    if (hash?.phone) setPhone(hash.phone);
     /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
@@ -178,13 +196,8 @@ export function QuickApply({ locale }: { locale: Locale }) {
     }
 
     const role = roleFor(answers);
-    const label = (v: string) => STAFF_LABELS[v] ?? v;
-    const text = [
-      "Quick apply form (guided, /jobs/apply)",
-      `Name: ${name.trim()}`,
-      ...active.map((s) => `${label(s.id)}: ${(answers[s.id] ?? []).map(label).join(", ") || "Not given"}`),
-      `${label("area")}: ${area ? label(area) : "Not given"}`,
-    ].join("\n");
+    // Only the questions that applied, plus the area: n8n stores them as data.
+    const sent = cleanQuickAnswers({ ...Object.fromEntries(active.map((s) => [s.id, answers[s.id] ?? []])), area: area ? [area] : [] });
 
     setPhase({ name: "sending" });
     try {
@@ -200,7 +213,16 @@ export function QuickApply({ locale }: { locale: Locale }) {
       const done = await fetch("/api/jobs/submit", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ ticket: ticket.ticket, phone, adult: true, consent: true, text }),
+        body: JSON.stringify({
+          ticket: ticket.ticket,
+          phone,
+          adult: true,
+          consent: true,
+          text: null,
+          form: "quick",
+          name: name.trim().slice(0, MAX_APPLICANT_NAME_LENGTH),
+          answers: sent,
+        }),
       });
       if (!done.ok) throw new Error("server");
       setPhase({ name: "done", ref: ticket.ref });
@@ -291,6 +313,7 @@ export function QuickApply({ locale }: { locale: Locale }) {
             <Input
               id="quick-name"
               autoComplete="name"
+              maxLength={MAX_APPLICANT_NAME_LENGTH}
               placeholder={t.details.namePlaceholder}
               value={name}
               onFocus={markStarted}

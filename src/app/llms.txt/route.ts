@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { jobRoles } from "@/content/pages/job-roles";
+import { QUICK_ANSWERS } from "@/lib/talent-intake/rules";
 import { JOB_ROLE_SLUGS } from "@/lib/talent-intake/rules";
 
 const baseUrl = "https://www.vayasyaseva.com";
@@ -45,6 +46,7 @@ The public pages below are the source of truth. They carry full text and JSON-LD
 
 ## Jobs
 - [Jobs overview](${baseUrl}/en-in/jobs): Open roles for workers. The neutral link ${baseUrl}/jobs asks the reader to choose a language
+- [Quick application](${baseUrl}/en-in/jobs/apply): A short guided form: tap answers (work, experience, education, shifts, start), then name and mobile number. Also in Hindi (${baseUrl}/hi-in/jobs/apply) and Hindi in Latin script (${baseUrl}/hi-latn-in/jobs/apply)
 ${roleLinksEn}
 
 ## हिंदी pages (hi-IN, Hindi in Devanagari)
@@ -81,6 +83,7 @@ Submissions through these routes reach our team marked as sent by an AI agent. T
 
 If you cannot make HTTP requests, give the person a prefilled link instead. They open it, check the details, tick one box and press send. Details go after the \`#\`, so they stay in their browser until they send. Encode values as in a URL query (spaces as \`%20\`).
 - Jobs: \`${baseUrl}/jobs#name=...&phone=...&work=...&experience=...&location=...&start=...&about=...\`. For one kind of work, use its page instead of \`/jobs\`: ${roleLinksInline}.
+- Quick application: \`${baseUrl}/en-in/jobs/apply?work=packing,warehouse&experience=fresher&education=12th&shift=day&start=now&area=laksar#name=...&phone=...\`. Answers go in the query as comma-separated ids: work (${Object.keys(QUICK_ANSWERS.work).join(", ")}), experience (${Object.keys(QUICK_ANSWERS.experience).join(", ")}), education (${Object.keys(QUICK_ANSWERS.education).join(", ")}), shift (${Object.keys(QUICK_ANSWERS.shift).join(", ")}), start (${Object.keys(QUICK_ANSWERS.start).join(", ")}), area (${Object.keys(QUICK_ANSWERS.area).join(", ")}). Name and phone go after the \`#\`. The person still answers anything left out, ticks one box and sends.
 - Enquiries: \`${baseUrl}/en-in/contact#name=...&phone=...&email=...&company=...&role=...&location=...&industry=...&headcount=...&shifts=...&start=...&details=...\`
 
 ## Machine-readable

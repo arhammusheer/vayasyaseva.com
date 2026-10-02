@@ -24,7 +24,15 @@ step("Build");
 run("pnpm -s build");
 
 step("SEO check on the local build");
-const server = spawn("pnpm", ["-s", "start", "-p", "3123"], { stdio: "ignore", detached: true });
+// A server left on the port (an earlier run) would answer for the old build.
+try {
+  await fetch("http://localhost:3123", { signal: AbortSignal.timeout(1000) });
+  throw new Error("Port 3123 is already in use; stop that server first (lsof -ti tcp:3123 | xargs kill).");
+} catch (error) {
+  if (error instanceof Error && error.message.startsWith("Port 3123")) throw error;
+}
+// Next itself, not through pnpm, so killing this process stops the server.
+const server = spawn("node_modules/.bin/next", ["start", "-p", "3123"], { stdio: "ignore", detached: true });
 try {
   for (let i = 0; i < 30; i++) {
     try {

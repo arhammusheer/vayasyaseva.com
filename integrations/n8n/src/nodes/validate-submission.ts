@@ -11,6 +11,8 @@ import {
   INTAKE_SOURCES,
   MAX_AGENT_NAME_LENGTH,
   REF_PATTERN,
+  MAX_APPLICANT_NAME_LENGTH,
+  cleanQuickAnswers,
   isJobHub,
   isJobRole,
   isAttachmentKeyFor,
@@ -67,7 +69,13 @@ export default async function main(): Promise<N8nItem<ValidatedSubmission>[]> {
     if (!isAttachmentKeyFor(a.key, ref)) errors.add("attachment key");
   }
 
-  if (!text && attachments.length === 0) errors.add("empty");
+  // The quick form sends answers instead of a message; the agent routes no form.
+  const form = channel === "web" ? (body.form === "quick" ? "quick" : "long") : null;
+  const applicantName =
+    typeof body.applicantName === "string" && body.applicantName.trim() ? body.applicantName.trim().slice(0, MAX_APPLICANT_NAME_LENGTH) : null;
+  const answers = cleanQuickAnswers(body.answers);
+
+  if (!text && attachments.length === 0 && !answers) errors.add("empty");
   if (errors.size || !source || !phone || !body.consent) {
     throw new Error(`Invalid submission: ${[...errors].join(", ")}`);
   }
@@ -81,6 +89,9 @@ export default async function main(): Promise<N8nItem<ValidatedSubmission>[]> {
         hub,
         channel,
         agentName,
+        form,
+        applicantName,
+        answers,
         locale: INTAKE_SOURCES[source],
         phone,
         consentVersion: String(body.consent.version).slice(0, 40),

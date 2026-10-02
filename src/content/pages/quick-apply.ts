@@ -1,5 +1,5 @@
 import type { Locale } from "@/lib/i18n";
-import type { JobRole } from "@/lib/talent-intake/rules";
+import { QUICK_ANSWERS, type JobRole, type QuickQuestion } from "@/lib/talent-intake/rules";
 
 /**
  * The guided jobs page (/jobs/apply): tap answers, with follow-up questions
@@ -9,23 +9,15 @@ import type { JobRole } from "@/lib/talent-intake/rules";
  * staff, the same in every language. hi-IN and hi-Latn-IN are drafts pending
  * native review, like the other jobs pages.
  */
-export const WORK_OPTIONS = [
-  "factory-helper",
-  "packing",
-  "warehouse",
-  "machine-operator",
-  "iti-trades",
-  "housekeeping",
-  "data-entry-operator",
-  "forklift-operator",
-  "any",
-] as const;
-export type WorkOption = (typeof WORK_OPTIONS)[number];
+/** Answer ids per question, from the shared rules (also read by n8n). */
+const ids = (q: QuickQuestion) => Object.keys(QUICK_ANSWERS[q]);
+export const WORK_OPTIONS = Object.keys(QUICK_ANSWERS.work) as (keyof typeof QUICK_ANSWERS.work)[];
+export type WorkOption = keyof typeof QUICK_ANSWERS.work;
 
 export type Answers = Record<string, string[]>;
 
 export interface StepDef {
-  id: string;
+  id: QuickQuestion;
   kind: "single" | "multi";
   options: readonly string[];
   /** Shown only when this returns true for the answers so far. */
@@ -36,18 +28,18 @@ const picked = (a: Answers, step: string, value: string) => a[step]?.includes(va
 
 /** The questions, in order. Follow-ups appear only for the work chosen. */
 export const STEP_DEFS: StepDef[] = [
-  { id: "work", kind: "multi", options: WORK_OPTIONS },
-  { id: "trade", kind: "multi", options: ["electrician", "welder", "fitter", "machinist", "other-trade"], when: (a) => picked(a, "work", "iti-trades") },
-  { id: "iti", kind: "single", options: ["iti-pass", "iti-pursuing", "no-iti"], when: (a) => picked(a, "work", "iti-trades") },
-  { id: "machines", kind: "multi", options: ["packing-machine", "moulding", "press", "cnc-vmc", "other-machine"], when: (a) => picked(a, "work", "machine-operator") },
-  { id: "forklift", kind: "single", options: ["licence-experience", "experience-only", "want-to-learn"], when: (a) => picked(a, "work", "forklift-operator") },
-  { id: "computer", kind: "multi", options: ["typing", "excel", "tally", "sap-erp"], when: (a) => picked(a, "work", "data-entry-operator") },
-  { id: "experience", kind: "single", options: ["fresher", "under-1", "1-3", "3-plus"] },
-  { id: "education", kind: "single", options: ["below-10th", "10th", "12th", "iti-diploma", "graduate"] },
-  { id: "shift", kind: "multi", options: ["day", "night", "rotating"] },
-  { id: "start", kind: "single", options: ["now", "week", "month"] },
+  { id: "work", kind: "multi", options: ids("work") },
+  { id: "trade", kind: "multi", options: ids("trade"), when: (a) => picked(a, "work", "iti-trades") },
+  { id: "iti", kind: "single", options: ids("iti"), when: (a) => picked(a, "work", "iti-trades") },
+  { id: "machines", kind: "multi", options: ids("machines"), when: (a) => picked(a, "work", "machine-operator") },
+  { id: "forklift", kind: "single", options: ids("forklift"), when: (a) => picked(a, "work", "forklift-operator") },
+  { id: "computer", kind: "multi", options: ids("computer"), when: (a) => picked(a, "work", "data-entry-operator") },
+  { id: "experience", kind: "single", options: ids("experience") },
+  { id: "education", kind: "single", options: ids("education") },
+  { id: "shift", kind: "multi", options: ids("shift") },
+  { id: "start", kind: "single", options: ids("start") },
 ];
-export const AREA_OPTIONS = ["sidcul-bahadrabad", "haridwar-jwalapur", "roorkee-bhagwanpur", "laksar", "outside"] as const;
+export const AREA_OPTIONS = ids("area");
 
 /** The role a submission is tagged with: the first work chosen, or the ITI trade when only one. */
 export function roleFor(a: Answers): JobRole | null {
@@ -60,28 +52,12 @@ export function roleFor(a: Answers): JobRole | null {
   return first as JobRole;
 }
 
-/** English labels for the note staff read in Chatwoot, whatever the page language. */
-export const STAFF_LABELS: Record<string, string> = {
-  work: "Work", trade: "ITI trade", iti: "ITI", machines: "Machines", forklift: "Forklift", computer: "Computer skills",
-  experience: "Experience", education: "Education", shift: "Shifts", start: "Can start", area: "Area",
-  "factory-helper": "Factory helper", packing: "Packing", warehouse: "Warehouse / loading", "machine-operator": "Machine operator",
-  "iti-trades": "ITI trade", housekeeping: "Housekeeping", "data-entry-operator": "Data entry", "forklift-operator": "Forklift operator",
-  any: "Any work", electrician: "Electrician", welder: "Welder", fitter: "Fitter", machinist: "Machinist / turner",
-  "other-trade": "Other trade", "iti-pass": "ITI passed", "iti-pursuing": "Studying / apprentice", "no-iti": "Experience, no ITI",
-  "packing-machine": "Packing machines", moulding: "Injection moulding", press: "Press / sheet metal", "cnc-vmc": "CNC / VMC",
-  "other-machine": "Other machines", "licence-experience": "Licence and experience", "experience-only": "Experience, no licence",
-  "want-to-learn": "Wants to learn", typing: "Typing", excel: "Excel", tally: "Tally", "sap-erp": "SAP / ERP",
-  fresher: "Fresher", "under-1": "Under 1 year", "1-3": "1 to 3 years", "3-plus": "3+ years", "below-10th": "Below 10th",
-  "10th": "10th pass", "12th": "12th pass", "iti-diploma": "ITI / diploma", graduate: "Graduate", day: "Day", night: "Night",
-  rotating: "Rotating / any", now: "Immediately", week: "Within a week", month: "Within a month",
-  "sidcul-bahadrabad": "SIDCUL / Bahadrabad", "haridwar-jwalapur": "Haridwar city / Jwalapur", "roorkee-bhagwanpur": "Roorkee / Bhagwanpur",
-  laksar: "Laksar", outside: "Outside Haridwar",
-};
-
 export interface QuickApplyCopy {
   title: string;
   description: string;
   eyebrow: string;
+  /** Last breadcrumb, after Home and Jobs. */
+  breadcrumb: string;
   heading: string;
   lede: string;
   next: string;
@@ -107,6 +83,7 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
     title: "Apply for Work in SIDCUL Haridwar: Quick Form",
     description: "Tap a few answers, then leave your name and number. Factory, packing, warehouse and ITI work in SIDCUL Haridwar. No fee.",
     eyebrow: "JOBS",
+    breadcrumb: "Quick application",
     heading: "Looking for work in SIDCUL Haridwar?",
     lede: "Tap a few answers, then just your name and number. We call you about suitable work.",
     next: "Next",
@@ -152,6 +129,7 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
     title: "सिडकुल हरिद्वार में काम के लिए अप्लाई करें: छोटा फ़ॉर्म",
     description: "कुछ जवाब चुनिए, फिर बस नाम और नंबर। सिडकुल हरिद्वार में फ़ैक्टरी, पैकिंग, वेयरहाउस और ITI का काम। कोई फ़ीस नहीं।",
     eyebrow: "नौकरी",
+    breadcrumb: "जल्दी आवेदन",
     heading: "सिडकुल हरिद्वार में काम चाहिए?",
     lede: "कुछ जवाब चुनिए, फिर बस अपना नाम और नंबर। सही काम होने पर हम आपको फ़ोन करेंगे।",
     next: "आगे",
@@ -197,6 +175,7 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
     title: "SIDCUL Haridwar Mein Kaam Ke Liye Apply Karein: Chhota Form",
     description: "Kuch jawab tap kijiye, phir bas naam aur number. SIDCUL Haridwar mein factory, packing, warehouse aur ITI ka kaam. Koi fee nahi.",
     eyebrow: "NAUKRI",
+    breadcrumb: "Jaldi apply",
     heading: "SIDCUL Haridwar mein kaam chahiye?",
     lede: "Kuch jawab tap kijiye, phir bas apna naam aur number. Sahi kaam hone par hum aapko phone karenge.",
     next: "Aage",

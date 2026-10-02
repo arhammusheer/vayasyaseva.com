@@ -24,6 +24,7 @@ const sitePages: Page[] = [
   { path: "/services/factory-labour", lastModified: contentUpdated, changeFrequency: "monthly", priority: 0.8 },
   { path: "/services/housekeeping", lastModified: contentUpdated, changeFrequency: "monthly", priority: 0.8 },
   { path: "/jobs", lastModified: contentUpdated, changeFrequency: "monthly", priority: 0.8 },
+  { path: "/jobs/apply", lastModified: new Date("2026-10-03"), changeFrequency: "monthly", priority: 0.8 },
   ...jobRoles["en-IN"].map((r) => ({
     path: `/jobs/${r.slug}`,
     lastModified: jobsAdded,

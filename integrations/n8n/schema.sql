@@ -34,6 +34,11 @@ BEGIN
   ALTER TABLE submissions ADD CONSTRAINT submissions_channel_check CHECK (channel IN ('web', 'agent'));
   -- The name an agent gave for itself, if any.
   ALTER TABLE submissions ADD COLUMN IF NOT EXISTS agent_name text;
+  -- Which web form ('long' or 'quick'; INTAKE_FORMS in rules.ts), the name typed
+  -- on the quick form, and its answers by question (QUICK_ANSWERS ids).
+  ALTER TABLE submissions ADD COLUMN IF NOT EXISTS form text;
+  ALTER TABLE submissions ADD COLUMN IF NOT EXISTS applicant_name text;
+  ALTER TABLE submissions ADD COLUMN IF NOT EXISTS answers jsonb;
   CREATE INDEX IF NOT EXISTS submissions_phone_idx ON submissions (phone);
 
   CREATE TABLE IF NOT EXISTS attachments (

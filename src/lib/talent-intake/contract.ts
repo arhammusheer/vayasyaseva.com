@@ -6,7 +6,10 @@ import {
   INTAKE_CHANNELS,
   INTAKE_LIMITS,
   INTAKE_SOURCES,
+  INTAKE_FORM_KEYS,
   JOB_HUB_SLUGS,
+  MAX_APPLICANT_NAME_LENGTH,
+  cleanQuickAnswers,
   JOB_ROLE_SLUGS,
   MAX_AGENT_NAME_LENGTH,
   REF_PATTERN,
@@ -33,6 +36,11 @@ const attachmentSchema = z
   })
   .refine((a) => ATTACHMENT_MIME[a.kind].test(a.mime), { message: "Unsupported file type", path: ["mime"] })
   .refine((a) => a.size <= INTAKE_LIMITS.maxBytes[a.kind], { message: "File too large", path: ["size"] });
+
+/** Quick form answers: unknown questions and answer ids are dropped, empty becomes null. */
+const quickAnswersSchema = z
+  .record(z.string(), z.array(z.string().max(40)).max(12))
+  .transform((value) => cleanQuickAnswers(value));
 
 export const talentIntakeSchema = z
   .object({
@@ -63,8 +71,14 @@ export const talentIntakeSchema = z
     }),
     text: z.string().trim().max(INTAKE_LIMITS.maxTextLength).nullable(),
     attachments: z.array(attachmentSchema).max(INTAKE_LIMITS.maxAttachments),
+    /** Which web form ("long" or "quick"); null from the agent routes. */
+    form: z.enum(INTAKE_FORM_KEYS).nullable(),
+    /** The name typed on the quick form. */
+    applicantName: z.string().trim().min(1).max(MAX_APPLICANT_NAME_LENGTH).nullable(),
+    /** The quick form's answers by question (QUICK_ANSWERS ids). */
+    answers: quickAnswersSchema.nullable(),
   })
-  .refine((p) => Boolean(p.text) || p.attachments.length > 0, {
+  .refine((p) => Boolean(p.text) || p.attachments.length > 0 || Boolean(p.answers), {
     message: "Add a voice note, a file or a few words about yourself",
     path: ["text"],
   })
@@ -116,6 +130,10 @@ export const jobsSubmitRequestSchema = z.object({
   adult: z.literal(true),
   consent: z.literal(true),
   text: z.string().trim().max(INTAKE_LIMITS.maxTextLength).nullable(),
+  /** "quick" from /jobs/apply; the long form leaves it out. */
+  form: z.enum(INTAKE_FORM_KEYS).optional(),
+  name: z.string().trim().max(MAX_APPLICANT_NAME_LENGTH).nullish(),
+  answers: quickAnswersSchema.nullish(),
 });
 export type JobsSubmitRequest = z.infer<typeof jobsSubmitRequestSchema>;
 

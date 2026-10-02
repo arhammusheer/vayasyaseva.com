@@ -52,7 +52,12 @@ export function statusOf(form: string): AnalyticsParams {
   if (el.dataset.draftVoiceSeconds) filled.push("voice");
   if (el.dataset.draftFiles) filled.push("files");
   const focused = fields.find((f) => f.input === document.activeElement)?.field;
+  // How many digits each phone field holds, never the number itself.
+  const digits = fields
+    .filter((f) => f.input instanceof HTMLInputElement && f.input.type === "tel")
+    .map((f) => `${f.field}:${f.value.replace(/\D/g, "").length}`);
   return {
+    ...(digits.length && { phone_digits: digits.join(",") }),
     focused_field: focused ?? "none",
     filled: filled.join(",") || "none",
     empty: empty.join(",") || "none",
@@ -77,3 +82,93 @@ export function draftOf(form: string): AnalyticsParams | null {
   return draft;
 }
 
+
+/** "a:12,b:3" for a count per field, capped to fit an Umami property. */
+const perField = (counts: Map<string, number>) =>
+  [...counts].map(([field, n]) => `${field}:${n}`).join(",").slice(0, DRAFT_MAX) || "none";
+
+/**
+ * Behaviour inside tracked forms, per page view: seconds spent in each field,
+ * corrections (deletions) and pastes per field, and time since the first
+ * field was used. Counts only, never content.
+ */
+export function createFormWatch() {
+  type State = { start: number; seconds: Map<string, number>; corrections: Map<string, number>; pastes: Map<string, number>; focus?: { field: string; at: number } };
+  const forms = new Map<string, State>();
+  const state = (form: string, now: number) => {
+    let s = forms.get(form);
+    if (!s) forms.set(form, (s = { start: now, seconds: new Map(), corrections: new Map(), pastes: new Map() }));
+    return s;
+  };
+  const bump = (counts: Map<string, number>, field: string, by = 1) => counts.set(field, (counts.get(field) ?? 0) + by);
+  const settle = (s: State, now: number) => {
+    if (!s.focus) return;
+    bump(s.seconds, s.focus.field, (now - s.focus.at) / 1000);
+    s.focus = undefined;
+  };
+
+  return {
+    focus(form: string, field: string, now = Date.now()) {
+      const s = state(form, now);
+      settle(s, now);
+      s.focus = { field, at: now };
+    },
+    blur(form: string, now = Date.now()) {
+      const s = forms.get(form);
+      if (s) settle(s, now);
+    },
+    correction(form: string, field: string) {
+      bump(state(form, Date.now()).corrections, field);
+    },
+    paste(form: string, field: string) {
+      bump(state(form, Date.now()).pastes, field);
+    },
+    /** Timing for the abandonment or completion event; ends the field in focus. */
+    stats(form: string, now = Date.now()): AnalyticsParams {
+      const s = forms.get(form);
+      if (!s) return {};
+      settle(s, now);
+      const seconds = new Map([...s.seconds].map(([f, n]) => [f, Math.round(n)]));
+      return {
+        form_seconds: Math.round((now - s.start) / 1000),
+        field_seconds: perField(seconds),
+        corrections: perField(s.corrections),
+        pastes: perField(s.pastes),
+      };
+    },
+    reset(form: string) {
+      forms.delete(form);
+    },
+  };
+}
+
+const INTERACTIVE =
+  "a[href], button, input, select, textarea, label, summary, details, video, audio, [role=button], [role=link], [role=tab], [role=checkbox], [role=switch], [tabindex]:not([tabindex='-1']), [contenteditable=true]";
+
+/** A short, stable name for a clicked element: never its text. */
+export function describeTarget(el: Element) {
+  const named = el.closest<HTMLElement>("[data-analytics], [id]");
+  const label = named?.dataset.analytics || named?.id;
+  const tag = el.tagName.toLowerCase();
+  const cls = typeof el.className === "string" ? el.className.trim().split(/\s+/)[0] : "";
+  return (label ? `${label}>${tag}` : cls ? `${tag}.${cls}` : tag).slice(0, 60);
+}
+
+/** A click on something that looks clickable (pointer cursor) but isn't. */
+export function isDeadClick(el: Element) {
+  if (el.closest(INTERACTIVE)) return false;
+  return getComputedStyle(el).cursor === "pointer";
+}
+
+/**
+ * Rage clicks: three or more clicks within a second, close together. Returns
+ * true on the click that crosses the threshold.
+ */
+export function createRageDetector() {
+  let clicks: { x: number; y: number; t: number }[] = [];
+  return (x: number, y: number, t = Date.now()) => {
+    clicks = clicks.filter((c) => t - c.t < 1000 && Math.hypot(c.x - x, c.y - y) < 30);
+    clicks.push({ x, y, t });
+    return clicks.length === 3;
+  };
+}

@@ -98,7 +98,10 @@ export function Analytics({ gaId }: { gaId: string }) {
   }, [consent]);
 
   function choose(next: Exclude<Consent, null>) {
-    trackAnalyticsEvent("consent_choice", { choice: next, from: consent === "accepted" ? "allow_all" : consent === "rejected" ? "required_only" : "none" });
+    const from = consent === "accepted" ? "allow_all" : consent === "rejected" ? "required_only" : "none";
+    trackAnalyticsEvent("consent_choice", { choice: next, from });
+    // One event per choice too: Umami funnel steps match event names, not properties.
+    trackAnalyticsEvent(next === "accepted" ? "consent_allow_all" : "consent_required_only", { from });
     try {
       localStorage.setItem(analyticsConsentKey, next);
       if (next === "accepted") {

@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useReportWebVitals } from "next/web-vitals";
 import { FORM_DONE_EVENT, trackAbandonedDraft, trackAnalyticsEvent, trackPageView, type AnalyticsParams } from "@/lib/analytics";
 import { safeAnalyticsPath } from "@/lib/analytics-pages";
-import { draftOf, fieldOf, statusOf } from "@/lib/form-analytics";
+import { createFormWatch, createRageDetector, describeTarget, draftOf, fieldOf, isDeadClick, statusOf } from "@/lib/form-analytics";
 import { FALLBACK_LOCALE, splitLocalePath } from "@/lib/i18n";
 
 /**
@@ -19,6 +19,7 @@ import { FALLBACK_LOCALE, splitLocalePath } from "@/lib/i18n";
 const SCROLL_MARKS = [25, 50, 75, 90];
 const TIME_MARKS = [10, 30, 60, 180];
 const MAX_ERRORS = 3;
+const MAX_CLICK_SIGNALS = 5; // rage and dead clicks, each, per page view
 const CAMPAIGN_PARAMS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
 
 export function pageType(path: string) {
@@ -109,9 +110,20 @@ export function AnalyticsTracker() {
       trackAnalyticsEvent(name, params);
     };
 
-    // Clicks: links by kind and page area.
+    // Clicks: links by kind and page area; rage clicks (three quick clicks in
+    // one spot) and dead clicks (on something that looks clickable but isn't).
+    const rage = createRageDetector();
+    let rageClicks = 0;
+    let deadClicks = 0;
     const onClick = (event: MouseEvent) => {
       if (!(event.target instanceof Element)) return;
+      const zone = zoneOf(event.target);
+      if (rage(event.clientX, event.clientY) && rageClicks++ < MAX_CLICK_SIGNALS) {
+        trackAnalyticsEvent("rage_click", { target: describeTarget(event.target), zone, page });
+      }
+      if (isDeadClick(event.target) && deadClicks++ < MAX_CLICK_SIGNALS) {
+        trackAnalyticsEvent("dead_click", { target: describeTarget(event.target), zone, page });
+      }
       const link = event.target.closest<HTMLAnchorElement>("a[href]");
       if (link) {
         const tracked = linkEvent(link, page);
@@ -156,18 +168,39 @@ export function AnalyticsTracker() {
 
     // Form steps: first focus per field, and abandonment when the page is left
     // (not when the tab is hidden: people switch apps mid-form and come back).
+    // Time in each field, corrections and pastes: counts only (form-analytics).
     const touched = new Map<string, string>();
+    const watch = createFormWatch();
     const onFocus = (event: FocusEvent) => {
       const target = fieldOf(event.target);
       if (!target) return;
       touched.set(target.form, target.field);
+      watch.focus(target.form, target.field);
       once(`field:${target.form}:${target.field}`, "form_field", { ...target, page });
     };
-    const onDone = (event: Event) => touched.delete((event as CustomEvent<string>).detail);
+    const onBlur = (event: FocusEvent) => {
+      const target = fieldOf(event.target);
+      if (target) watch.blur(target.form);
+    };
+    const onInput = (event: Event) => {
+      const target = fieldOf(event.target);
+      if (target && event instanceof InputEvent && event.inputType.startsWith("delete")) watch.correction(target.form, target.field);
+    };
+    const onPaste = (event: ClipboardEvent) => {
+      const target = fieldOf(event.target);
+      if (target) watch.paste(target.form, target.field);
+    };
+    const onDone = (event: Event) => {
+      const form = (event as CustomEvent<string>).detail;
+      // The same timing for forms that were sent, to compare with abandoned ones.
+      trackAnalyticsEvent("form_complete", { form, page, ...watch.stats(form) });
+      watch.reset(form);
+      touched.delete(form);
+    };
     const onLeave = () => {
       for (const [form, last_field] of touched) {
         if (fired.has(`abandon:${form}`)) continue;
-        once(`abandon:${form}`, "form_abandon", { form, last_field, page, ...statusOf(form) });
+        once(`abandon:${form}`, "form_abandon", { form, last_field, page, ...statusOf(form), ...watch.stats(form) });
         const draft = draftOf(form);
         if (draft && Object.keys(draft).length) trackAbandonedDraft({ form, last_field, page, ...draft });
       }
@@ -190,6 +223,9 @@ export function AnalyticsTracker() {
     window.addEventListener("scroll", onScroll, { passive: true });
     document.addEventListener("toggle", onToggle, true);
     document.addEventListener("focusin", onFocus);
+    document.addEventListener("focusout", onBlur);
+    document.addEventListener("input", onInput, true);
+    document.addEventListener("paste", onPaste, true);
     window.addEventListener(FORM_DONE_EVENT, onDone);
     window.addEventListener("pagehide", onLeave);
     document.addEventListener("copy", onCopy);
@@ -204,6 +240,9 @@ export function AnalyticsTracker() {
       window.removeEventListener("scroll", onScroll);
       document.removeEventListener("toggle", onToggle, true);
       document.removeEventListener("focusin", onFocus);
+      document.removeEventListener("focusout", onBlur);
+      document.removeEventListener("input", onInput, true);
+      document.removeEventListener("paste", onPaste, true);
       window.removeEventListener(FORM_DONE_EVENT, onDone);
       window.removeEventListener("pagehide", onLeave);
       document.removeEventListener("copy", onCopy);

@@ -183,8 +183,11 @@ export function JobsForm({
     let stream: MediaStream;
     try {
       stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    } catch {
-      trackAnalyticsEvent("voice_error", { locale, reason: "no_mic" });
+    } catch (error) {
+      const name = error instanceof Error ? error.name : "";
+      // Denied permission and a missing microphone need different fixes.
+      const reason = name === "NotAllowedError" || name === "SecurityError" ? "denied" : name === "NotFoundError" ? "no_mic" : "mic_error";
+      trackAnalyticsEvent("voice_error", { locale, reason });
       setVoiceError(t.record.noMic);
       return;
     }
@@ -193,6 +196,7 @@ export function JobsForm({
     const chunks: Blob[] = [];
     let seconds = 0;
     rec.ondataavailable = (e) => e.data.size && chunks.push(e.data);
+    rec.onerror = () => trackAnalyticsEvent("voice_error", { locale, reason: "recorder" });
     rec.onstop = () => {
       if (timer.current) clearInterval(timer.current);
       stream.getTracks().forEach((track) => track.stop());
@@ -283,9 +287,15 @@ export function JobsForm({
       const started = (await start.json()) as JobsStartResponse;
 
       for (const [i, target] of started.uploads.entries()) {
-        await upload(target.url, target.headers, bodies[i], (percent) =>
-          setPhase({ name: "sending", message: t.sendingFile(i + 1, started.uploads.length, percent) }),
-        );
+        try {
+          await upload(target.url, target.headers, bodies[i], (percent) =>
+            setPhase({ name: "sending", message: t.sendingFile(i + 1, started.uploads.length, percent) }),
+          );
+        } catch (error) {
+          const reason = error instanceof Error ? error.message.replace(/\s+/g, "_").slice(0, 20) : "unknown";
+          trackAnalyticsEvent("upload_error", { locale, kind: declared[i]?.kind ?? "unknown", size_mb: Math.ceil(bodies[i].size / 1048576), reason });
+          throw error;
+        }
       }
 
       setPhase({ name: "sending", message: t.sending });

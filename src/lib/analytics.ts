@@ -26,7 +26,6 @@ type Umami = {
 declare global {
   interface Window {
     umami?: Umami;
-    clarity?: (...args: unknown[]) => void;
   }
 }
 
@@ -71,7 +70,7 @@ export const FORM_DONE_EVENT = "vayasya:form-done";
 
 /**
  * One interaction event. Umami (self-hosted, cookie-free) records it for every
- * visitor. With "Allow All", Google Analytics and Clarity get it too.
+ * visitor. With "Allow All", Google Analytics gets it too.
  */
 export function trackAnalyticsEvent(name: string, parameters?: AnalyticsParams) {
   try {
@@ -79,7 +78,6 @@ export function trackAnalyticsEvent(name: string, parameters?: AnalyticsParams) 
     if (FORM_DONE[name]) window.dispatchEvent(new CustomEvent(FORM_DONE_EVENT, { detail: FORM_DONE[name] }));
     if (!hasAnalyticsConsent()) return;
     if (window.dataLayer) sendGAEvent("event", name, parameters ?? {});
-    if (typeof window.clarity === "function") window.clarity("event", name);
   } catch {
     // Analytics must never interrupt the visitor's task.
   }
@@ -127,7 +125,7 @@ export function trackAdsConversion(conversion: keyof typeof adsConversions) {
 
 /**
  * What an unfinished form held, with "Allow All" only. Umami alone (our own
- * servers), never Google or Clarity, as the separate event
+ * servers), never Google, as the separate event
  * `form_abandon_draft` so a nightly job can delete its data after 30 days
  * (vayasya-infra apps/umami). Used only to see why forms are left; it never
  * reaches the enquiry or applicant records.

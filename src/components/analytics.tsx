@@ -15,10 +15,9 @@ import {
   setSessionData,
   trackAnalyticsEvent,
 } from "@/lib/analytics";
-import { splitLocalePath } from "@/lib/i18n";
 import { safeAnalyticsPath } from "@/lib/analytics-pages";
-import { AnalyticsTracker, pageLocale, pageType } from "@/components/analytics-tracker";
-import { clarityId, gaId, umamiWebsiteId } from "@/lib/analytics-config";
+import { AnalyticsTracker, pageLocale } from "@/components/analytics-tracker";
+import { gaId, umamiWebsiteId } from "@/lib/analytics-config";
 import { Button } from "@/components/ui/button";
 
 type Consent = "accepted" | "rejected" | null;
@@ -90,25 +89,12 @@ export function Analytics({ gaId }: { gaId: string }) {
   const locale = pageLocale(pathname);
   const consentState = consent === "loading" ? null : (consent ?? "none");
 
-  // Session properties in Umami, and tags on Clarity recordings so they can be
-  // filtered by language, page type and consent.
+  // Session properties in Umami, so any report can be filtered by language,
+  // consent and the ad campaign that brought the visit.
   useEffect(() => {
     if (!consentState) return;
     setSessionData({ locale, consent: consentState, ...campaignTags() });
-    if (consentState !== "accepted") return;
-    try {
-      const w = window as Window & { clarity?: ((...args: unknown[]) => void) & { q?: unknown[] } };
-      // Same stub as Clarity's snippet: calls queue until the tag loads.
-      if (typeof w.clarity !== "function") {
-        const stub = Object.assign((...args: unknown[]) => void (stub.q ??= []).push(args), { q: undefined as unknown[] | undefined });
-        w.clarity = stub;
-      }
-      w.clarity("set", "locale", locale);
-      w.clarity("set", "page_type", pageType(splitLocalePath(pathname).path));
-    } catch {
-      // Analytics must never interrupt the visitor's task.
-    }
-  }, [consentState, locale, pathname]);
+  }, [consentState, locale]);
 
   // How many visitors see the prompt, for the choice rate. Once per visit:
   // not again when a page of this site loads another (language switch,
@@ -151,7 +137,7 @@ export function Analytics({ gaId }: { gaId: string }) {
 
   return (
     <>
-      {/* Cookie-free counts (Vercel) and events (Umami) run for every visitor; "Allow All" adds GA4, Clarity, Umami recordings and the Google Ads conversion. */}
+      {/* Cookie-free counts (Vercel) and events (Umami) run for every visitor; "Allow All" adds GA4, Umami recordings and the Google Ads conversion. */}
       <VercelAnalytics beforeSend={sanitizeBasicEvent} />
       {umamiWebsiteId && (
         <Script
@@ -190,13 +176,6 @@ export function Analytics({ gaId }: { gaId: string }) {
         </Script>
       )}
       {consent === "accepted" && <GoogleAnalytics gaId={gaId} />}
-      {consent === "accepted" && clarityId && (
-        // Not id="clarity": an element id becomes a window property, so window.clarity
-        // would be this <script> and Clarity's stub would never install.
-        <Script id="ms-clarity-tag" strategy="afterInteractive">
-          {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","${clarityId}");`}
-        </Script>
-      )}
       {consent !== "loading" && (consent === null || showPreferences) && (
         <section
           aria-label="Privacy choices"
@@ -216,7 +195,7 @@ export function Analytics({ gaId }: { gaId: string }) {
             </button>
           </div>
           <div id={detailsId} hidden={!showDetails} className="mt-2 text-xs leading-relaxed text-white/80">
-            Cookie-free page counts and usage events (which links and form steps are used, never what you type) always run. Allowing adds Google Analytics (referrals, approximate location, device details, site actions) and recordings of clicks, scrolls and cursor movement (Microsoft Clarity, and Umami on our own servers), with page text and form fields hidden, and Google Ads counting when a visit from one of our ads ends in a job application or enquiry. If you leave a form unfinished, what you typed is kept on our own servers for 30 days, only to fix the forms; voice notes and files are never kept. No ad targeting or remarketing. See our{" "}
+            Cookie-free page counts and usage events (which links and form steps are used, never what you type) always run. Allowing adds Google Analytics (referrals, approximate location, device details, site actions) and recordings of clicks, scrolls and page layout (Umami, on our own servers), with page text hidden and forms left out, and Google Ads counting when a visit from one of our ads ends in a job application or enquiry. If you leave a form unfinished, what you typed is kept on our own servers for 30 days, only to fix the forms; voice notes and files are never kept. No ad targeting or remarketing. See our{" "}
             <Link href="/privacy" className="text-white underline underline-offset-2 hover:text-gold-400">privacy policy</Link>.
           </div>
           <div className="mt-2 flex flex-wrap items-center justify-end gap-1">

@@ -9,7 +9,7 @@ import { FALLBACK_LOCALE, splitLocalePath } from "@/lib/i18n";
 
 /**
  * Automatic interaction events, sent through trackAnalyticsEvent: Umami for
- * every visitor, plus Google Analytics and Clarity with "Allow All". Page speed
+ * every visitor, plus Google Analytics with "Allow All". Page speed
  * comes from Umami's own performance tracking (data-performance on the tracker). Every
  * value is a fixed label, a known page path or a number. No link text and no
  * full external URLs. The one exception is draftOf: with "Allow All", what an
@@ -240,7 +240,7 @@ export function AnalyticsTracker() {
   return null;
 }
 
-/** Page language for session data and Clarity tags. */
+/** Page language for session data. */
 export function pageLocale(pathname: string) {
   return splitLocalePath(pathname).locale ?? FALLBACK_LOCALE;
 }

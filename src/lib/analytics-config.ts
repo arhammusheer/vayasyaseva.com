@@ -2,9 +2,6 @@ export const gaId =
   process.env.NEXT_PUBLIC_GA_ID ||
   (process.env.NODE_ENV === "production" ? "G-80VCZT0V6G" : undefined);
 
-export const clarityId =
-  process.env.NEXT_PUBLIC_CLARITY_ID ||
-  (process.env.NODE_ENV === "production" ? "yogh8zv088" : undefined);
 
 // Google Ads conversion measurement, after "Allow All" only, with ad
 // personalisation off (no remarketing). Loaded through the same gtag.js as GA4.

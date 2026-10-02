@@ -307,7 +307,6 @@ export function QuickApply({ locale }: { locale: Locale }) {
       {detailsUnlocked && (
         <section className="quick-section" data-step="details">
           <form
-            data-clarity-mask="true"
             data-analytics-form="quick"
             data-form-errors={failedChecks?.join(",")}
             onSubmit={submit}

@@ -357,7 +357,6 @@ export function JobsForm({
 
   return (
     <form
-      data-clarity-mask="true"
       data-analytics-form="jobs"
       // Read by the analytics draft log if the form is left unfinished: only
       // whether a voice note or files were added, never their content.

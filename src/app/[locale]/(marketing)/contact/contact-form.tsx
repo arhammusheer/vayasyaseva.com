@@ -184,7 +184,6 @@ export function ContactForm() {
 
   return (
     <form
-      data-clarity-mask="true"
       data-analytics-form="contact"
       // Failed checks from the last Send ("" if it passed), for the
       // abandonment event: field names and failure kinds only.

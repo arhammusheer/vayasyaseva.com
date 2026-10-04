@@ -38,8 +38,9 @@ export const STEP_DEFS: StepDef[] = [
   { id: "education", kind: "single", options: ids("education") },
   { id: "shift", kind: "multi", options: ids("shift") },
   { id: "start", kind: "single", options: ids("start") },
+  // Last of the taps, so the final step is only name and number.
+  { id: "area", kind: "single", options: ids("area") },
 ];
-export const AREA_OPTIONS = ids("area");
 
 /** The role a submission is tagged with: the first work chosen, or the ITI trade when only one. */
 export function roleFor(a: Answers): JobRole | null {
@@ -69,8 +70,7 @@ export interface QuickApplyCopy {
     namePlaceholder: string;
     phone: string;
     phonePlaceholder: string;
-    area: string;
-    /** Marks the photos and documents step as one that can be skipped. */
+    /** Marks the photos and documents button as one that can be skipped. */
     optional: string;
     send: string;
   };
@@ -100,6 +100,7 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       education: { question: "How far have you studied?" },
       shift: { question: "Which shifts can you do?", hint: MULTI_HINT["en-IN"] },
       start: { question: "When can you start?" },
+      area: { question: "Where do you live?" },
     },
     labels: {
       "factory-helper": "Factory helper", packing: "Packing", warehouse: "Warehouse / loading", "machine-operator": "Machine operator",
@@ -121,7 +122,6 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       namePlaceholder: "Name",
       phone: "Mobile number",
       phonePlaceholder: "10-digit mobile number",
-      area: "Where do you live?",
       optional: "Optional",
       send: "Send",
     },
@@ -147,6 +147,7 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       education: { question: "आपने कहाँ तक पढ़ाई की है?" },
       shift: { question: "आप कौन-सी शिफ्ट कर सकते हैं?", hint: MULTI_HINT["hi-IN"] },
       start: { question: "आप कब से काम शुरू कर सकते हैं?" },
+      area: { question: "आप कहाँ रहते हैं?" },
     },
     labels: {
       "factory-helper": "फ़ैक्टरी हेल्पर", packing: "पैकिंग", warehouse: "वेयरहाउस / लोडिंग", "machine-operator": "मशीन ऑपरेटर",
@@ -168,7 +169,6 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       namePlaceholder: "नाम",
       phone: "मोबाइल नंबर",
       phonePlaceholder: "10 अंकों का मोबाइल नंबर",
-      area: "आप कहाँ रहते हैं?",
       optional: "ज़रूरी नहीं",
       send: "भेजें",
     },
@@ -194,6 +194,7 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       education: { question: "Aapne kahan tak padhai ki hai?" },
       shift: { question: "Aap kaun-si shift kar sakte hain?", hint: MULTI_HINT["hi-Latn-IN"] },
       start: { question: "Aap kab se kaam shuru kar sakte hain?" },
+      area: { question: "Aap kahan rehte hain?" },
     },
     labels: {
       "factory-helper": "Factory helper", packing: "Packing", warehouse: "Warehouse / loading", "machine-operator": "Machine operator",
@@ -215,7 +216,6 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       namePlaceholder: "Naam",
       phone: "Mobile number",
       phonePlaceholder: "10 digit ka mobile number",
-      area: "Aap kahan rehte hain?",
       optional: "Zaroori nahi",
       send: "Bhejiye",
     },

@@ -1,7 +1,7 @@
 export const privacyContent = `
 # Privacy Policy
 
-*Last updated: 4 October 2026*
+*Last updated: 5 October 2026*
 
 ## 1. Who this notice covers
 
@@ -31,22 +31,24 @@ Our contact details are in Section 11. The Site is intended for businesses and f
 
 **Advertising measurement.** If you choose "Allow All", the Google tag also tells Google Ads when a visit that began with a click on one of our ads ends in a submitted job application or business enquiry, so we can see which ads bring them. Google Ads may use a cookie or similar identifier for this and receives technical data such as your IP address and page URL. It receives no form details: not your name, phone number, email address, company, voice note, files or message. We switch off ad personalisation for this tag, so your visit is not used to target ads at you or to add you to remarketing audiences.
 
+**Job applications from our ads.** When you click one of our Google ads, Google adds a click identifier to the link (\`gclid\`, \`gbraid\` or \`wbraid\`). Your browser keeps it for that visit only, in the tab's session storage. If you then send a job application, our server tells Google Ads that this ad click led to an application, with the click identifier, the time and our application reference. Nothing else about you is sent: not your name, phone number, answers, voice note or files. This lets us see which ads bring applications, and it runs unless you choose "Required Only", in which case the identifier is not kept or sent.
+
 ## 3. Your analytics choices
 
 The Site offers two choices for the measurement described above:
 
-- **Required Only:** keeps Google Analytics, Umami recordings, unfinished-form records and Google Ads measurement off. Essential hosting and security processing and the cookie-free site counts and usage events still occur.
+- **Required Only:** keeps Google Analytics, Umami recordings, unfinished-form records and Google Ads measurement off, including the job application report described under "Job applications from our ads". Essential hosting and security processing and the cookie-free site counts and usage events still occur.
 - **Allow All:** also enables the additional site measurement, the usage recordings and heatmaps, the unfinished-form records and the advertising measurement described in Section 2.
 
 You can reopen these choices at any time using "Privacy choices" in the footer. Your choice is stored in your browser's local storage so the Site can remember it. An affirmative choice expires after 180 days and must be renewed. Changing from "Allow All" to "Required Only" reloads the page to stop scripts that are already running. Withdrawal affects future collection; it does not erase data already received by a provider. You may also block scripts or storage in your browser.
 
-Only the cookie-free site counts and usage events run until you actively choose "Allow All"; Google Analytics, Umami recordings, unfinished-form records and Google Ads measurement stay off. This choice covers only the purposes and data described here, not ad personalisation, retargeting or other materially different uses. If we add such uses, we will explain them and request a new, separate choice where required. Consent rules for audience measurement vary by jurisdiction; this notice does not remove any rights you have under local law.
+Only the cookie-free site counts and usage events, and the job application report described under "Job applications from our ads", run until you make a choice; Google Analytics, Umami recordings, unfinished-form records and Google Ads measurement stay off. This choice covers only the purposes and data described here, not ad personalisation, retargeting or other materially different uses. If we add such uses, we will explain them and request a new, separate choice where required. Consent rules for audience measurement vary by jurisdiction; this notice does not remove any rights you have under local law.
 
 ## 4. Why we use information
 
 Job applications are used as described in Section 10. We use enquiries to respond, discuss your requirements, prepare proposals and maintain relevant business records. We use operational request data to deliver and secure the Site, investigate abuse and meet legal obligations. Aggregate counts help us understand which pages are useful. If you allow additional measurement, further reports help us understand traffic sources and whether visitors reach or complete an enquiry.
 
-Where a legal basis is required, we rely on your request and the applicable lawful basis for responding to it, our legitimate interests in operating, improving and protecting the Site where permitted (including the cookie-free site counts), or your consent for Google Analytics, Umami recordings, unfinished-form records and Google Ads measurement. We do not treat acceptance of this policy as blanket consent to unrelated processing.
+Where a legal basis is required, we rely on your request and the applicable lawful basis for responding to it, our legitimate interests in operating, improving and protecting the Site where permitted (including the cookie-free site counts and the job application report to Google Ads, which you can turn off with "Required Only"), or your consent for Google Analytics, Umami recordings, unfinished-form records and Google Ads measurement. We do not treat acceptance of this policy as blanket consent to unrelated processing.
 
 ## 5. Who receives information
 
@@ -86,7 +88,7 @@ This section applies when you send us your details through the jobs pages of the
 
 **Transcription.** Voice recordings are converted to text by automated speech recognition so that our team can read them. No decision about you is made automatically; a member of our team reviews each submission.
 
-**Who handles it.** Our authorised team, and service providers acting on our instructions: Vercel (website hosting), Cloudflare (file storage, and Turnstile, which checks browser and device signals to keep automated abuse off the form), Sarvam AI (speech recognition for voice recordings), and the systems we operate to store submissions and manage conversations with applicants. Some providers may process data outside India.
+**Who handles it.** Our authorised team, and service providers acting on our instructions: Vercel (website hosting), Cloudflare (file storage, and Turnstile, which checks browser and device signals to keep automated abuse off the form), Sarvam AI (speech recognition for voice recordings), and the systems we operate to store submissions and manage conversations with applicants. If you came from one of our Google ads, Google Ads is told only that the ad click led to an application (see "Job applications from our ads" in Section 2). Some providers may process data outside India.
 
 **How long we keep it.** Files uploaded through the jobs pages are deleted from our upload storage 90 days after they are received. Your submission, including copies of your files in our applicant and conversation records, is kept for up to 12 months after our last contact with you and then deleted, unless you ask us to delete it sooner. If you are placed in work, the records needed for your engagement are kept for as long as employment and statutory obligations require.
 

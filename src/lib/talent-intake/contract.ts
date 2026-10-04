@@ -124,6 +124,13 @@ export interface JobsStartResponse {
 }
 
 /** Browser → POST /api/jobs/submit, after every upload has finished. */
+/** The Google Ads click a web application came from (src/lib/ad-click.ts). */
+export const adClickSchema = z.object({
+  type: z.enum(["gclid", "gbraid", "wbraid"]),
+  id: z.string().regex(/^[\w-]{10,300}$/),
+});
+export type AdClick = z.infer<typeof adClickSchema>;
+
 export const jobsSubmitRequestSchema = z.object({
   ticket: z.string().min(1).max(8192),
   phone: z.string().min(1).max(20),
@@ -134,6 +141,8 @@ export const jobsSubmitRequestSchema = z.object({
   form: z.enum(INTAKE_FORM_KEYS).optional(),
   name: z.string().trim().max(MAX_APPLICANT_NAME_LENGTH).nullish(),
   answers: quickAnswersSchema.nullish(),
+  /** Reported to Google Ads by the server, then dropped; never stored with the application. */
+  adClick: adClickSchema.nullish(),
 });
 export type JobsSubmitRequest = z.infer<typeof jobsSubmitRequestSchema>;
 

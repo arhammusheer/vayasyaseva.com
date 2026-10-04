@@ -20,6 +20,7 @@ import {
 import type { JobsStartResponse } from "@/lib/talent-intake/contract";
 import { TURNSTILE_SCRIPT_URL, TURNSTILE_SITE_KEY } from "@/lib/turnstile";
 import { AgentGuidance } from "@/components/agent-guidance";
+import { adClick } from "@/lib/ad-click";
 import { JobFilePicker, declareFiles, uploadAll, useJobFiles } from "@/components/jobs/job-files";
 
 /** Intake source per page. These are stored values shared with n8n and its database; don't rename them here alone. */
@@ -226,7 +227,7 @@ export function JobsForm({
       const done = await fetch("/api/jobs/submit", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ ticket: started.ticket, phone, adult: true, consent: true, text: text.trim() || null }),
+        body: JSON.stringify({ ticket: started.ticket, phone, adult: true, consent: true, text: text.trim() || null, adClick: adClick() }),
       });
       if (!done.ok) throw new Error("server");
       setPhase({ name: "done", ref: started.ref });

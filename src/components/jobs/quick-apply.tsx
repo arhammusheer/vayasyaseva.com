@@ -7,16 +7,35 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { formPage, trackAdsConversion, trackAnalyticsEvent } from "@/lib/analytics";
 import { jobsCopy } from "@/content/pages/jobs";
-import { AREA_OPTIONS, STEP_DEFS, quickApplyCopy, roleFor, type Answers, type StepDef } from "@/content/pages/quick-apply";
+import { STEP_DEFS, quickApplyCopy, roleFor, type Answers, type StepDef } from "@/content/pages/quick-apply";
 import { readPrefill } from "@/lib/prefill";
 import { localePath, type Locale } from "@/lib/i18n";
 import { MAX_APPLICANT_NAME_LENGTH, cleanQuickAnswers, isJobRole, normaliseIndianMobile, type IntakeSource } from "@/lib/talent-intake/rules";
 import type { JobsStartResponse } from "@/lib/talent-intake/contract";
 import { TURNSTILE_SCRIPT_URL, TURNSTILE_SITE_KEY } from "@/lib/turnstile";
+import { adClick } from "@/lib/ad-click";
 import { JobFilePicker, declareFiles, uploadAll, useJobFiles } from "@/components/jobs/job-files";
 
 /** Stored values shared with n8n; same as the long form. */
 const SOURCE: Record<Locale, IntakeSource> = { "en-IN": "web_en", "hi-IN": "web_hi", "hi-Latn-IN": "web_hinglish" };
+/**
+ * Answers kept in this browser tab only (sessionStorage), so switching
+ * language or going back does not clear them. Never sent anywhere; cleared
+ * once the application is sent.
+ */
+const SAVED_KEY = "vayasya-quick-apply";
+type Saved = { answers: Answers; confirmed: string[] };
+
+function readSaved(): Saved | null {
+  try {
+    const saved = JSON.parse(sessionStorage.getItem(SAVED_KEY) ?? "null") as Saved | null;
+    const answers = cleanQuickAnswers(saved?.answers);
+    return answers && Array.isArray(saved?.confirmed) ? { answers: answers as Answers, confirmed: saved.confirmed } : null;
+  } catch {
+    return null;
+  }
+}
+
 /** Trade pages answer the ITI question and its trade follow-up. */
 const WORK_FOR_ROLE: Record<string, string> = { electrician: "iti-trades", welder: "iti-trades", fitter: "iti-trades" };
 
@@ -62,8 +81,8 @@ function Pills({
 
 /**
  * The guided jobs form. Questions unlock one below another and stay editable;
- * follow-ups depend on the work chosen (STEP_DEFS). Then name, mobile number
- * and area. Same intake as the long form (/api/jobs/start and /submit, with
+ * follow-ups depend on the work chosen (STEP_DEFS), area last. Then only
+ * name and mobile number, an optional file, and Send. Same intake as the long form (/api/jobs/start and /submit, with
  * Turnstile); the answers reach staff as a short note. Events carry
  * variant "quick" so the two forms can be compared.
  */
@@ -75,7 +94,6 @@ export function QuickApply({ locale }: { locale: Locale }) {
   const [confirmed, setConfirmed] = useState<string[]>([]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [area, setArea] = useState<string | null>(null);
   const [agreed, setAgreed] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const [failedChecks, setFailedChecks] = useState<string[] | null>(null);
@@ -84,7 +102,8 @@ export function QuickApply({ locale }: { locale: Locale }) {
   const turnstileBox = useRef<HTMLDivElement>(null);
   const turnstileId = useRef<string | null>(null);
   const started = useRef(false);
-  const entry = useRef<"preset" | "fresh">("fresh");
+  const entry = useRef<"preset" | "fresh" | "restored">("fresh");
+  const restored = useRef(false);
 
   // Which questions apply, and how far the visitor has unlocked: every
   // applicable question up to and including the first unanswered one.
@@ -120,19 +139,33 @@ export function QuickApply({ locale }: { locale: Locale }) {
     }
     const preset = cleanQuickAnswers(raw);
     const hash = readPrefill(["name", "phone"] as const);
-    // Reading the link happens once, after hydration.
+    const saved = readSaved();
+    // Reading the link happens once, after hydration. Answers already given
+    // in this tab win over the link's.
     /* eslint-disable react-hooks/set-state-in-effect */
-    if (preset) {
+    if (saved) {
+      entry.current = "restored";
+      setAnswers(saved.answers);
+      setConfirmed(saved.confirmed);
+    } else if (preset) {
       entry.current = "preset";
-      const { area: presetArea, ...rest } = preset;
-      setAnswers(rest);
-      setConfirmed(Object.keys(rest));
-      if (presetArea) setArea(presetArea[0]);
+      setAnswers(preset as Answers);
+      setConfirmed(Object.keys(preset));
     }
+    restored.current = true;
     if (hash?.name) setName(hash.name.slice(0, MAX_APPLICANT_NAME_LENGTH));
     if (hash?.phone) setPhone(hash.phone);
     /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
+
+  useEffect(() => {
+    if (!restored.current) return;
+    try {
+      sessionStorage.setItem(SAVED_KEY, JSON.stringify({ answers, confirmed } satisfies Saved));
+    } catch {
+      // Private mode or storage off: answers just aren't kept.
+    }
+  }, [answers, confirmed]);
 
   // Bring each newly unlocked question into view and give it focus, so the
   // next step is obvious on a phone and announced to screen readers.
@@ -205,8 +238,8 @@ export function QuickApply({ locale }: { locale: Locale }) {
     }
 
     const role = roleFor(answers);
-    // Only the questions that applied, plus the area: n8n stores them as data.
-    const sent = cleanQuickAnswers({ ...Object.fromEntries(active.map((s) => [s.id, answers[s.id] ?? []])), area: area ? [area] : [] });
+    // Only the questions that applied: n8n stores them as data.
+    const sent = cleanQuickAnswers(Object.fromEntries(active.map((s) => [s.id, answers[s.id] ?? []])));
 
     const declared = declareFiles(files);
     setPhase({ name: "sending", message: form.sending });
@@ -236,10 +269,16 @@ export function QuickApply({ locale }: { locale: Locale }) {
           form: "quick",
           name: name.trim().slice(0, MAX_APPLICANT_NAME_LENGTH),
           answers: sent,
+          adClick: adClick(),
         }),
       });
       if (!done.ok) throw new Error("server");
       setPhase({ name: "done", ref: ticket.ref });
+      try {
+        sessionStorage.removeItem(SAVED_KEY);
+      } catch {
+        // Nothing kept to clear.
+      }
       const summary = {
         locale,
         variant: "quick",
@@ -349,26 +388,7 @@ export function QuickApply({ locale }: { locale: Locale }) {
               disabled={sending}
               className={cn(fieldClass, "mt-2 max-w-xs font-data")}
             />
-            <p className="quick-label" id="quick-area">{t.details.area}</p>
-            <Pills
-              labelledBy="quick-area"
-              small
-              options={AREA_OPTIONS}
-              labels={t.labels}
-              selected={(v) => area === v}
-              onPick={(v) => {
-                setArea(v);
-                trackAnalyticsEvent("quick_step", { locale, step: "area", answer: v });
-              }}
-            />
-            {/* Last and skippable: certificates or a resume help, but the
-                application goes without them. */}
-            <p className="quick-label" id="quick-files">
-              {form.steps.files.title} <span className="quick-optional">· {t.details.optional}</span>
-            </p>
-            <p className="quick-hint">{form.steps.files.hint}</p>
-            <p className="jobs-step-warning">{form.steps.files.warning}</p>
-            <JobFilePicker locale={locale} picker={filePicker} disabled={sending} />
+            <JobFilePicker locale={locale} picker={filePicker} disabled={sending} compact optionalLabel={t.details.optional} />
             <label className="jobs-check mt-6">
               <input type="checkbox" name="agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} disabled={sending} />
               <span>

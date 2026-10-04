@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FileText, ImageIcon, X } from "lucide-react";
+import { FileText, ImageIcon, Paperclip, X } from "lucide-react";
 import { trackAnalyticsEvent } from "@/lib/analytics";
 import { jobsCopy } from "@/content/pages/jobs";
 import type { Locale } from "@/lib/i18n";
@@ -121,29 +121,27 @@ export function useJobFiles(locale: Locale, onAdd?: () => void) {
   };
 }
 
-/** Take a photo / Choose files, then the list of what was picked. */
+/**
+ * Take a photo / Choose files, then the list of what was picked. `compact`:
+ * one quiet button (a phone's file chooser offers the camera too), and the
+ * Aadhaar warning only once a file is picked.
+ */
 export function JobFilePicker({
   locale,
   picker,
   disabled,
+  compact = false,
+  optionalLabel,
 }: {
   locale: Locale;
   picker: ReturnType<typeof useJobFiles>;
   disabled: boolean;
+  compact?: boolean;
+  optionalLabel?: string;
 }) {
   const t = jobsCopy[locale].form;
-  return (
+  const list = (
     <>
-      <div className="mt-4 flex flex-wrap gap-3">
-        <label className="jobs-file-button">
-          <ImageIcon size={18} aria-hidden="true" /> {t.files.camera}
-          <input type="file" accept="image/jpeg,image/png,image/webp" capture="environment" className="sr-only" disabled={disabled} onChange={(e) => { picker.add(e.target.files); e.target.value = ""; }} />
-        </label>
-        <label className="jobs-file-button">
-          <FileText size={18} aria-hidden="true" /> {t.files.choose}
-          <input type="file" accept={FILE_ACCEPT} multiple className="sr-only" disabled={disabled} onChange={(e) => { picker.add(e.target.files); e.target.value = ""; }} />
-        </label>
-      </div>
       {picker.files.length > 0 && (
         <ul className="jobs-file-list">
           {picker.files.map((f, i) => (
@@ -159,6 +157,34 @@ export function JobFilePicker({
         </ul>
       )}
       {picker.error && <p className="jobs-error">{picker.error}</p>}
+    </>
+  );
+  if (compact) {
+    return (
+      <div className="mt-5">
+        <label className="quick-attach">
+          <Paperclip size={16} aria-hidden="true" /> {t.steps.files.title}
+          {optionalLabel && <span className="quick-optional">· {optionalLabel}</span>}
+          <input type="file" accept={FILE_ACCEPT} multiple className="sr-only" disabled={disabled} onChange={(e) => { picker.add(e.target.files); e.target.value = ""; }} />
+        </label>
+        {list}
+        {picker.files.length > 0 && <p className="mt-2 text-sm text-muted-foreground">{t.steps.files.warning}</p>}
+      </div>
+    );
+  }
+  return (
+    <>
+      <div className="mt-4 flex flex-wrap gap-3">
+        <label className="jobs-file-button">
+          <ImageIcon size={18} aria-hidden="true" /> {t.files.camera}
+          <input type="file" accept="image/jpeg,image/png,image/webp" capture="environment" className="sr-only" disabled={disabled} onChange={(e) => { picker.add(e.target.files); e.target.value = ""; }} />
+        </label>
+        <label className="jobs-file-button">
+          <FileText size={18} aria-hidden="true" /> {t.files.choose}
+          <input type="file" accept={FILE_ACCEPT} multiple className="sr-only" disabled={disabled} onChange={(e) => { picker.add(e.target.files); e.target.value = ""; }} />
+        </label>
+      </div>
+      {list}
     </>
   );
 }

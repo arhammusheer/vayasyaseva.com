@@ -6,6 +6,7 @@ import { FORM_DONE_EVENT, trackAbandonedDraft, trackAnalyticsEvent, trackPageVie
 import { safeAnalyticsPath } from "@/lib/analytics-pages";
 import { createFormWatch, createRageDetector, describeTarget, draftOf, fieldOf, isDeadClick, statusOf } from "@/lib/form-analytics";
 import { FALLBACK_LOCALE, splitLocalePath } from "@/lib/i18n";
+import { rememberAdClick } from "@/lib/ad-click";
 
 /**
  * Automatic interaction events, sent through trackAnalyticsEvent: Umami for
@@ -88,6 +89,7 @@ export function AnalyticsTracker() {
   useEffect(() => {
     const page = pageType(splitLocalePath(pathname).path);
     trackPageView(pageViewUrl(pathname));
+    rememberAdClick();
 
     const fired = new Set<string>();
     const once = (key: string, name: string, params: AnalyticsParams) => {

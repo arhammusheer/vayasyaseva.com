@@ -2036,6 +2036,24 @@ a:hover > svg {
   font-weight: 400;
   color: var(--muted-foreground);
 }
+.quick-attach {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  color: var(--foreground);
+  text-decoration: underline;
+  text-decoration-color: var(--border);
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+.quick-attach:hover {
+  text-decoration-color: var(--gold-500);
+}
+.quick-attach:focus-within {
+  outline: 2px solid var(--gold-500);
+  outline-offset: 2px;
+}
 .quick-note {
   margin-top: 28px;
   color: var(--muted-foreground);

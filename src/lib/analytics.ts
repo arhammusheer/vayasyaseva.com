@@ -4,12 +4,13 @@ import { sendGAEvent } from "@next/third-parties/google";
 import { adsConversions, googleAdsId } from "@/lib/analytics-config";
 import { safeAnalyticsPath } from "@/lib/analytics-pages";
 
-export const analyticsConsentKey = "vayasya-site-measurement-v5";
-export const analyticsConsentAtKey = "vayasya-site-measurement-v5-at";
+export const analyticsConsentKey = "vayasya-site-measurement-v6";
+export const analyticsConsentAtKey = "vayasya-site-measurement-v6-at";
 // v2 (Sept 2026): Clarity session replay added, so v1 choices no longer cover it.
 // v3 (Oct 2026): Google Ads conversion measurement added; everyone is asked again.
 // v4 (Oct 2026): unfinished form contents logged in Umami; everyone is asked again.
 // v5 (Oct 2026): Umami recordings include forms and typed values; everyone is asked again.
+// v6 (Oct 2026): job applications from ad clicks reported to Google Ads by the server unless Required Only.
 const consentMaxAge = 180 * 24 * 60 * 60 * 1000;
 
 /** Fixed labels only: never form contents, names, numbers or free text. */

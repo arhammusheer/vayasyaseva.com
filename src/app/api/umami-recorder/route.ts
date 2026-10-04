@@ -1,8 +1,9 @@
 /**
  * Umami's replay recorder, served at /_t/recorder.js (src/proxy.ts) with one
  * change: Umami 3.4 masks every form input at every mask level. Here mask
- * level "none" (Umami dashboard, website replay settings) records inputs as
- * typed; "moderate" and "strict" behave as upstream. The recorder only loads
+ * level "moderate" (Umami dashboard, website replay settings; the API allows
+ * only "strict" or "moderate") records inputs and text as shown, and
+ * "strict" masks everything as upstream does. The recorder only loads
  * after "Allow All" (src/components/analytics.tsx), and the privacy notice
  * says recordings include what is typed.
  *
@@ -11,7 +12,7 @@
  */
 const UPSTREAM = "https://t.vayasyaseva.com/recorder.js";
 const MASKED = '"strict"===e?{maskAllInputs:!0,maskTextSelector:"*"}:{maskAllInputs:!0}';
-const BY_LEVEL = '"strict"===e?{maskAllInputs:!0,maskTextSelector:"*"}:{maskAllInputs:"none"!==e}';
+const BY_LEVEL = '"strict"===e?{maskAllInputs:!0,maskTextSelector:"*"}:{maskAllInputs:!1}';
 
 export const revalidate = 3600;
 

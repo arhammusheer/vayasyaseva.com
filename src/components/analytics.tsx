@@ -160,7 +160,7 @@ export function Analytics({ gaId }: { gaId: string }) {
       <AnalyticsTracker />
       {consent === "accepted" && umamiWebsiteId && (
         // Umami replays and heatmaps, unmasked: forms and typed values are
-        // recorded (mask level "none", nothing blocked, in the Umami
+        // recorded (mask level "moderate", nothing blocked, in the Umami
         // dashboard; /_t/recorder.js is patched to honour it, api/umami-recorder).
         <Script
           src="/_t/recorder.js"

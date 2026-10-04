@@ -70,6 +70,8 @@ export interface QuickApplyCopy {
     phone: string;
     phonePlaceholder: string;
     area: string;
+    /** Marks the photos and documents step as one that can be skipped. */
+    optional: string;
     send: string;
   };
   errors: { name: string };
@@ -120,6 +122,7 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       phone: "Mobile number",
       phonePlaceholder: "10-digit mobile number",
       area: "Where do you live?",
+      optional: "Optional",
       send: "Send",
     },
     errors: { name: "Please write your name." },
@@ -166,6 +169,7 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       phone: "मोबाइल नंबर",
       phonePlaceholder: "10 अंकों का मोबाइल नंबर",
       area: "आप कहाँ रहते हैं?",
+      optional: "ज़रूरी नहीं",
       send: "भेजें",
     },
     errors: { name: "कृपया अपना नाम लिखिए।" },
@@ -212,6 +216,7 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       phone: "Mobile number",
       phonePlaceholder: "10 digit ka mobile number",
       area: "Aap kahan rehte hain?",
+      optional: "Zaroori nahi",
       send: "Bhejiye",
     },
     errors: { name: "Kripya apna naam likhiye." },

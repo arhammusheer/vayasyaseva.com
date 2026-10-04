@@ -2,7 +2,7 @@
 
 import Script from "next/script";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { FileText, ImageIcon, Loader2, Mic, RotateCcw, Square, X } from "lucide-react";
+import { Loader2, Mic, RotateCcw, Square, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
@@ -11,10 +11,8 @@ import { JOB_PREFILL_FIELDS, labelledLines, readPrefill } from "@/lib/prefill";
 import { jobsCopy } from "@/content/pages/jobs";
 import { localePath, type Locale } from "@/lib/i18n";
 import {
-  ATTACHMENT_MIME,
   INTAKE_LIMITS,
   normaliseIndianMobile,
-  type AttachmentKind,
   type IntakeSource,
   type JobHub,
   type JobRole,
@@ -22,28 +20,11 @@ import {
 import type { JobsStartResponse } from "@/lib/talent-intake/contract";
 import { TURNSTILE_SCRIPT_URL, TURNSTILE_SITE_KEY } from "@/lib/turnstile";
 import { AgentGuidance } from "@/components/agent-guidance";
+import { JobFilePicker, declareFiles, uploadAll, useJobFiles } from "@/components/jobs/job-files";
 
 /** Intake source per page. These are stored values shared with n8n and its database; don't rename them here alone. */
 const SOURCE: Record<Locale, IntakeSource> = { "en-IN": "web_en", "hi-IN": "web_hi", "hi-Latn-IN": "web_hinglish" };
-const MAX_FILES = INTAKE_LIMITS.maxAttachments - 1; // one slot is the voice note
 const RECORDER_TYPES = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4", "audio/ogg;codecs=opus"];
-const EXTENSION_TYPES: Record<string, string> = {
-  pdf: "application/pdf",
-  doc: "application/msword",
-  docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  jpg: "image/jpeg",
-  jpeg: "image/jpeg",
-  png: "image/png",
-  webp: "image/webp",
-};
-const FILE_ACCEPT = "image/jpeg,image/png,image/webp,application/pdf,.pdf,.doc,.docx,application/msword";
-
-interface PickedFile {
-  file: File;
-  kind: AttachmentKind;
-  mime: string;
-}
-
 type Voice =
   | { state: "idle" }
   | { state: "recording"; seconds: number }
@@ -55,36 +36,6 @@ type Phase =
   | { name: "done"; ref: string };
 
 const clock = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
-
-function classify(file: File): PickedFile | null {
-  const ext = file.name.split(".").pop()?.toLowerCase() ?? "";
-  const mime = file.type || EXTENSION_TYPES[ext] || "";
-  for (const kind of ["image", "document"] as const) {
-    if (ATTACHMENT_MIME[kind].test(mime)) return { file, kind, mime };
-  }
-  return null;
-}
-
-/** PUT with progress (fetch can't report upload progress), three attempts. */
-async function upload(url: string, headers: Record<string, string>, body: Blob, onProgress: (p: number) => void) {
-  for (let attempt = 1; ; attempt++) {
-    try {
-      await new Promise<void>((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open("PUT", url);
-        for (const [k, v] of Object.entries(headers)) xhr.setRequestHeader(k, v);
-        xhr.upload.onprogress = (e) => e.lengthComputable && onProgress(Math.round((e.loaded / e.total) * 100));
-        xhr.onload = () => (xhr.status >= 200 && xhr.status < 300 ? resolve() : reject(new Error(`upload ${xhr.status}`)));
-        xhr.onerror = () => reject(new Error("network"));
-        xhr.send(body);
-      });
-      return;
-    } catch (error) {
-      if (attempt >= 3) throw error;
-      await new Promise((r) => setTimeout(r, 1500 * attempt));
-    }
-  }
-}
 
 /**
  * `role`: set on a role page (/jobs/<slug>) so the submission is tagged with it.
@@ -111,8 +62,6 @@ export function JobsForm({
   const noFee = jobsCopy[locale].noFee;
   const [voice, setVoice] = useState<Voice>({ state: "idle" });
   const [voiceError, setVoiceError] = useState<string | null>(null);
-  const [files, setFiles] = useState<PickedFile[]>([]);
-  const [fileError, setFileError] = useState<string | null>(null);
   const [text, setText] = useState("");
   const [phone, setPhone] = useState("");
   // One checkbox covers both: 18 or older, and consent to be contacted.
@@ -135,6 +84,8 @@ export function JobsForm({
     trackedStart.current = true;
     trackAnalyticsEvent("job_form_start", { locale, variant: "long", page: formPage() });
   };
+  const filePicker = useJobFiles(locale, markStarted);
+  const { files } = filePicker;
 
   // --- Prefilled link (#phone=…&work=…) --------------------------------------
   useEffect(() => {
@@ -233,27 +184,6 @@ export function JobsForm({
     [],
   );
 
-  // --- Files ---------------------------------------------------------------
-  function addFiles(list: FileList | null) {
-    markStarted();
-    setFileError(null);
-    if (!list) return;
-    const next = [...files];
-    const problems: string[] = [];
-    for (const file of Array.from(list)) {
-      const picked = classify(file);
-      const reject = !picked ? "wrong_type" : file.size > INTAKE_LIMITS.maxBytes[picked.kind] ? "too_large" : next.length >= MAX_FILES ? "too_many" : null;
-      if (reject) trackAnalyticsEvent("file_rejected", { locale, reason: reject });
-      else trackAnalyticsEvent("file_added", { locale, kind: picked!.kind });
-      if (!picked) problems.push(`${file.name} ${t.files.wrongType}`);
-      else if (file.size > INTAKE_LIMITS.maxBytes[picked.kind]) problems.push(`${file.name} ${t.files.tooLarge}`);
-      else if (next.length >= MAX_FILES) problems.push(t.files.tooMany);
-      else next.push(picked);
-    }
-    setFiles(next);
-    if (problems.length) setFileError([...new Set(problems)].join(" "));
-  }
-
   // --- Submit ----------------------------------------------------------------
   async function submit(event: React.FormEvent) {
     event.preventDefault();
@@ -273,7 +203,7 @@ export function JobsForm({
     const bodies: Blob[] = [...(hasVoice ? [voice.blob] : []), ...files.map((f) => f.file)];
     const declared = [
       ...(hasVoice ? [{ kind: "audio" as const, mime: voice.blob.type, size: voice.blob.size, name: null }] : []),
-      ...files.map((f) => ({ kind: f.kind, mime: f.mime, size: f.file.size, name: f.file.name.slice(0, 200) })),
+      ...declareFiles(files),
     ];
 
     setPhase({ name: "sending", message: t.sending });
@@ -288,17 +218,9 @@ export function JobsForm({
       if (!start.ok) throw new Error("server");
       const started = (await start.json()) as JobsStartResponse;
 
-      for (const [i, target] of started.uploads.entries()) {
-        try {
-          await upload(target.url, target.headers, bodies[i], (percent) =>
-            setPhase({ name: "sending", message: t.sendingFile(i + 1, started.uploads.length, percent) }),
-          );
-        } catch (error) {
-          const reason = error instanceof Error ? error.message.replace(/\s+/g, "_").slice(0, 20) : "unknown";
-          trackAnalyticsEvent("upload_error", { locale, kind: declared[i]?.kind ?? "unknown", size_mb: Math.ceil(bodies[i].size / 1048576), reason });
-          throw error;
-        }
-      }
+      await uploadAll(started.uploads, bodies, declared.map((d) => d.kind), locale, (n, total, percent) =>
+        setPhase({ name: "sending", message: t.sendingFile(n, total, percent) }),
+      );
 
       setPhase({ name: "sending", message: t.sending });
       const done = await fetch("/api/jobs/submit", {
@@ -326,7 +248,7 @@ export function JobsForm({
 
   function reset() {
     discardVoice();
-    setFiles([]);
+    filePicker.clear();
     setText("");
     setAgreed(false);
     setErrors([]);
@@ -467,31 +389,7 @@ export function JobsForm({
             <h2 className="jobs-step-title">{t.steps.files.title}</h2>
             <p className="jobs-step-hint">{t.steps.files.hint}</p>
             <p className="jobs-step-warning">{t.steps.files.warning}</p>
-            <div className="mt-4 flex flex-wrap gap-3">
-              <label className="jobs-file-button">
-                <ImageIcon size={18} aria-hidden="true" /> {t.files.camera}
-                <input type="file" accept="image/jpeg,image/png,image/webp" capture="environment" className="sr-only" disabled={sending} onChange={(e) => { addFiles(e.target.files); e.target.value = ""; }} />
-              </label>
-              <label className="jobs-file-button">
-                <FileText size={18} aria-hidden="true" /> {t.files.choose}
-                <input type="file" accept={FILE_ACCEPT} multiple className="sr-only" disabled={sending} onChange={(e) => { addFiles(e.target.files); e.target.value = ""; }} />
-              </label>
-            </div>
-            {files.length > 0 && (
-              <ul className="jobs-file-list">
-                {files.map((f, i) => (
-                  <li key={`${f.file.name}-${i}`}>
-                    <span className="truncate">
-                      {f.kind === "image" ? t.labels.photo : t.labels.document} · {f.file.name}
-                    </span>
-                    <button type="button" aria-label={`${t.files.remove} ${f.file.name}`} onClick={() => setFiles(files.filter((_, j) => j !== i))} disabled={sending}>
-                      <X size={16} aria-hidden="true" />
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-            {fileError && <p className="jobs-error">{fileError}</p>}
+            <JobFilePicker locale={locale} picker={filePicker} disabled={sending} />
           </div>
         </li>
       </ol>

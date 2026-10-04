@@ -2032,6 +2032,10 @@ a:hover > svg {
   margin-top: 20px;
   font-weight: 600;
 }
+.quick-optional {
+  font-weight: 400;
+  color: var(--muted-foreground);
+}
 .quick-note {
   margin-top: 28px;
   color: var(--muted-foreground);

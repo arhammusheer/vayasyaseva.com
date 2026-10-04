@@ -13,13 +13,14 @@ import { localePath, type Locale } from "@/lib/i18n";
 import { MAX_APPLICANT_NAME_LENGTH, cleanQuickAnswers, isJobRole, normaliseIndianMobile, type IntakeSource } from "@/lib/talent-intake/rules";
 import type { JobsStartResponse } from "@/lib/talent-intake/contract";
 import { TURNSTILE_SCRIPT_URL, TURNSTILE_SITE_KEY } from "@/lib/turnstile";
+import { JobFilePicker, declareFiles, uploadAll, useJobFiles } from "@/components/jobs/job-files";
 
 /** Stored values shared with n8n; same as the long form. */
 const SOURCE: Record<Locale, IntakeSource> = { "en-IN": "web_en", "hi-IN": "web_hi", "hi-Latn-IN": "web_hinglish" };
 /** Trade pages answer the ITI question and its trade follow-up. */
 const WORK_FOR_ROLE: Record<string, string> = { electrician: "iti-trades", welder: "iti-trades", fitter: "iti-trades" };
 
-type Phase = { name: "form" } | { name: "sending" } | { name: "done"; ref: string };
+type Phase = { name: "form" } | { name: "sending"; message: string } | { name: "done"; ref: string };
 
 /** Answers as large buttons: a radio group, or toggles when `multi`. */
 function Pills({
@@ -100,6 +101,8 @@ export function QuickApply({ locale }: { locale: Locale }) {
     trackAnalyticsEvent("job_form_start", { locale, variant: "quick", page: formPage() });
     trackAnalyticsEvent("quick_apply_start", { locale, entry: entry.current });
   };
+  const filePicker = useJobFiles(locale, markStarted);
+  const { files } = filePicker;
 
   // Answers in the link, from ads, hub pages or AI assistants:
   // ?work=packing,warehouse&experience=fresher (any question, comma-separated
@@ -205,17 +208,22 @@ export function QuickApply({ locale }: { locale: Locale }) {
     // Only the questions that applied, plus the area: n8n stores them as data.
     const sent = cleanQuickAnswers({ ...Object.fromEntries(active.map((s) => [s.id, answers[s.id] ?? []])), area: area ? [area] : [] });
 
-    setPhase({ name: "sending" });
+    const declared = declareFiles(files);
+    setPhase({ name: "sending", message: form.sending });
     try {
       const start = await fetch("/api/jobs/start", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ source: SOURCE[locale], role, hub: null, turnstileToken, files: [] }),
+        body: JSON.stringify({ source: SOURCE[locale], role, hub: null, turnstileToken, files: declared }),
       });
       resetTurnstile(); // tokens are single-use
       if (start.status === 403) throw new Error("verification");
       if (!start.ok) throw new Error("server");
       const ticket = (await start.json()) as JobsStartResponse;
+      await uploadAll(ticket.uploads, files.map((f) => f.file), declared.map((d) => d.kind), locale, (n, total, percent) =>
+        setPhase({ name: "sending", message: form.sendingFile(n, total, percent) }),
+      );
+      setPhase({ name: "sending", message: form.sending });
       const done = await fetch("/api/jobs/submit", {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -238,6 +246,7 @@ export function QuickApply({ locale }: { locale: Locale }) {
         work: (answers.work ?? []).join(",") || "none",
         experience: answers.experience?.[0] ?? "none",
         questions: active.length,
+        files: files.length,
       };
       trackAnalyticsEvent("job_form_submit", { ...summary, page: formPage(), voice: "no" });
       trackAnalyticsEvent("quick_apply_submit", summary);
@@ -309,6 +318,7 @@ export function QuickApply({ locale }: { locale: Locale }) {
           <form
             data-analytics-form="quick"
             data-form-errors={failedChecks?.join(",")}
+            data-draft-files={files.length || undefined}
             onSubmit={submit}
             noValidate
             aria-busy={sending}
@@ -351,6 +361,14 @@ export function QuickApply({ locale }: { locale: Locale }) {
                 trackAnalyticsEvent("quick_step", { locale, step: "area", answer: v });
               }}
             />
+            {/* Last and skippable: certificates or a resume help, but the
+                application goes without them. */}
+            <p className="quick-label" id="quick-files">
+              {form.steps.files.title} <span className="quick-optional">· {t.details.optional}</span>
+            </p>
+            <p className="quick-hint">{form.steps.files.hint}</p>
+            <p className="jobs-step-warning">{form.steps.files.warning}</p>
+            <JobFilePicker locale={locale} picker={filePicker} disabled={sending} />
             <label className="jobs-check mt-6">
               <input type="checkbox" name="agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} disabled={sending} />
               <span>
@@ -371,6 +389,11 @@ export function QuickApply({ locale }: { locale: Locale }) {
               {sending && <Loader2 size={18} className="animate-spin" aria-hidden="true" />}
               {t.details.send}
             </button>
+            {phase.name === "sending" && (
+              <p className="mt-3 text-sm text-muted-foreground" aria-live="polite">
+                {phase.message}
+              </p>
+            )}
           </form>
         </section>
       )}

@@ -38,9 +38,9 @@ function formFields(form: string) {
 
 /**
  * Where an unfinished form stood, for every visitor: which fields had
- * something in them, which were empty, where the cursor was, and which
- * checks failed if Send was pressed. Field names and flags only, never what
- * was typed. The form marks voice notes, files and failed checks in data-*
+ * something in them and how many characters, which were empty, where the
+ * cursor was, and which checks failed if Send was pressed. Field names,
+ * flags and lengths only, never what was typed. The form marks voice notes, files and failed checks in data-*
  * attributes (data-draft-*, data-form-errors).
  */
 export function statusOf(form: string): AnalyticsParams {
@@ -56,8 +56,13 @@ export function statusOf(form: string): AnalyticsParams {
   const digits = fields
     .filter((f) => f.input instanceof HTMLInputElement && f.input.type === "tel")
     .map((f) => `${f.field}:${f.value.replace(/\D/g, "").length}`);
+  // How much was typed in each text field (phone fields count digits above).
+  const chars = fields
+    .filter((f) => f.value && !(f.input instanceof HTMLInputElement && ["tel", "checkbox", "radio"].includes(f.input.type)) && !(f.input instanceof HTMLSelectElement))
+    .map((f) => `${f.field}:${f.value.length}`);
   return {
     ...(digits.length && { phone_digits: digits.join(",") }),
+    ...(chars.length && { chars: chars.join(",").slice(0, DRAFT_MAX) }),
     focused_field: focused ?? "none",
     filled: filled.join(",") || "none",
     empty: empty.join(",") || "none",

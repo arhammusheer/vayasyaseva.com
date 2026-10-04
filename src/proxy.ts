@@ -17,6 +17,10 @@ const CLIENT_IP_HEADER = "x-vspl-client-ip";
 const GEO_HEADERS = ["x-vercel-ip-country", "x-vercel-ip-country-region", "x-vercel-ip-city"];
 
 function umami(request: NextRequest) {
+  // The replay recorder is patched before it is served (api/umami-recorder).
+  if (request.nextUrl.pathname === "/_t/recorder.js") {
+    return NextResponse.rewrite(new URL("/api/umami-recorder", request.url));
+  }
   const headers = new Headers(request.headers);
   const ip =
     request.headers.get("x-real-ip") ??

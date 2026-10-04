@@ -159,8 +159,9 @@ export function Analytics({ gaId }: { gaId: string }) {
       )}
       <AnalyticsTracker />
       {consent === "accepted" && umamiWebsiteId && (
-        // Umami replays and heatmaps. Sampling, strict masking and the blocked
-        // forms are set per website in the Umami dashboard, not here.
+        // Umami replays and heatmaps, unmasked: forms and typed values are
+        // recorded (mask level "none", nothing blocked, in the Umami
+        // dashboard; /_t/recorder.js is patched to honour it, api/umami-recorder).
         <Script
           src="/_t/recorder.js"
           data-host-url="/_t"
@@ -206,7 +207,7 @@ export function Analytics({ gaId }: { gaId: string }) {
             </button>
           </div>
           <div id={detailsId} hidden={!showDetails} className="mt-2 text-xs leading-relaxed text-white/80">
-            Cookie-free page counts and usage events (which links and form steps are used, never what you type) always run. Allowing adds Google Analytics (referrals, approximate location, device details, site actions) and recordings of clicks, scrolls and page layout (Umami, on our own servers), with page text hidden and forms left out, and Google Ads counting when a visit from one of our ads ends in a job application or enquiry. If you leave a form unfinished, what you typed is kept on our own servers for 30 days, only to fix the forms; voice notes and files are never kept. No ad targeting or remarketing. See our{" "}
+            Cookie-free page counts and usage events (which links and form steps are used, never what you type) always run. Allowing adds Google Analytics (referrals, approximate location, device details, site actions) and recordings of your visit (Umami, on our own servers) that include the forms and what you type in them, and Google Ads counting when a visit from one of our ads ends in a job application or enquiry. If you leave a form unfinished, what you typed is kept on our own servers for 30 days, only to fix the forms; voice notes and files are never kept. No ad targeting or remarketing. See our{" "}
             <Link href="/privacy" className="text-white underline underline-offset-2 hover:text-gold-400">privacy policy</Link>.
           </div>
           <div className="mt-2 flex flex-wrap items-center justify-end gap-1">

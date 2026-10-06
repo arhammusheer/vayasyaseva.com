@@ -105,7 +105,7 @@ export function Header() {
   const pageLocale = split.locale ?? FALLBACK_LOCALE;
   const path = split.path;
   const isHome = path === "/";
-  const jobs = { href: localePath("/jobs", pageLocale), label: JOBS_LABEL[pageLocale], lang: pageLocale === "hi-IN" ? "hi-IN" : undefined };
+  const jobs = { href: localePath("/jobs/apply", pageLocale), label: JOBS_LABEL[pageLocale], lang: pageLocale === "hi-IN" ? "hi-IN" : undefined };
   const primary = navigation.filter((item) =>
     [
       "/services",

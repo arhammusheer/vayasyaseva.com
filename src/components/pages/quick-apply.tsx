@@ -9,8 +9,8 @@ const PATH = "/jobs/apply";
 
 /**
  * The guided application page, in the sitemap and llms.txt and used as a
- * Google Ads landing page. Kept apart from /jobs (not linked from it) until
- * the owner decides from data which form /jobs should be.
+ * Google Ads landing page. The header and footer "Jobs" links open it (it
+ * converted better); /jobs and the role pages keep their full form.
  */
 export function quickApplyMetadata(locale: Locale) {
   const t = quickApplyCopy[locale];

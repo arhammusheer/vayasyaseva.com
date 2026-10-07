@@ -79,9 +79,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "Factory helper",
       metaTitle: "Factory Helper Jobs in SIDCUL Haridwar",
       description:
-        "Factory helper and production helper jobs in SIDCUL and across Haridwar: line work, material handling and packing. Tell us by voice. No fee, ever.",
+        "Factory helper and production helper jobs in SIDCUL and across Haridwar: line work, material handling and packing. Apply online. No fee, ever.",
       heading: "Factory helper jobs in SIDCUL Haridwar.",
-      lede: "Production helper work on factory shopfloors. Tell us about yourself in your own voice and we'll call you when there's suitable work.",
+      lede: "Production helper work on factory shopfloors. Tell us about yourself and we'll call you when there's suitable work.",
       work: [
         "Feeding and assisting on production lines",
         "Moving material between stores and the line",
@@ -122,9 +122,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "Packing jobs",
       metaTitle: "Packing Jobs in SIDCUL Haridwar: Pharma, FMCG and Line Packing",
       description:
-        "Packing jobs in SIDCUL and across Haridwar: line packing, cartons, labelling and checks at pharma, FMCG and other plants. Tell us by voice. No fee, ever.",
+        "Packing jobs in SIDCUL and across Haridwar: line packing, cartons, labelling and checks at pharma, FMCG and other plants. Apply online. No fee, ever.",
       heading: "Packing jobs in SIDCUL Haridwar.",
-      lede: "Packing work on factory lines and in packing halls. Tell us about yourself in your own voice and we'll call you when there's suitable work.",
+      lede: "Packing work on factory lines and in packing halls. Tell us about yourself and we'll call you when there's suitable work.",
       work: [
         "Packing products into cartons, cases and pouches on the line",
         "Labelling, batch coding and checking the print",
@@ -166,9 +166,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "Machine operator",
       metaTitle: "Machine Operator Jobs in SIDCUL Haridwar",
       description:
-        "Machine operator jobs in SIDCUL and across Haridwar: packing, moulding, press and production machines at plants. Tell us by voice. No fee, ever.",
+        "Machine operator jobs in SIDCUL and across Haridwar: packing, moulding, press and production machines at plants. Apply online. No fee, ever.",
       heading: "Machine operator jobs in SIDCUL Haridwar.",
-      lede: "Running production and packing machines at plants. Tell us which machines you have run, in your own voice, and we'll call you when there's suitable work.",
+      lede: "Running production and packing machines at plants. Tell us which machines you have run, and we'll call you when there's suitable work.",
       work: [
         "Running packing machines: blister, filling, sealing and cartoning",
         "Injection moulding, press and other production machines",
@@ -210,9 +210,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "Warehouse jobs",
       metaTitle: "Warehouse Jobs in SIDCUL Haridwar: Loading, Picking, Packing",
       description:
-        "Warehouse jobs in SIDCUL and across Haridwar: loading, unloading, picking, packing, stacking and dispatch. Tell us by voice. No fee, ever.",
+        "Warehouse jobs in SIDCUL and across Haridwar: loading, unloading, picking, packing, stacking and dispatch. Apply online. No fee, ever.",
       heading: "Warehouse jobs in SIDCUL Haridwar.",
-      lede: "Loading, unloading, picking, packing and dispatch. Tell us about yourself in your own voice and we'll call you when there's suitable work.",
+      lede: "Loading, unloading, picking, packing and dispatch. Tell us about yourself and we'll call you when there's suitable work.",
       work: [
         "Loading and unloading trucks",
         "Picking and packing orders",
@@ -256,7 +256,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       description:
         "Forklift operator jobs in SIDCUL and across Haridwar: loading, stacking and moving goods in warehouses and plants. For experienced operators. No fee, ever.",
       heading: "Forklift operator jobs in SIDCUL Haridwar.",
-      lede: "Loading, moving and stacking goods by forklift in warehouses and plants. Tell us about your experience in your own voice and we'll call you when there's suitable work.",
+      lede: "Loading, moving and stacking goods by forklift in warehouses and plants. Tell us about your experience and we'll call you when there's suitable work.",
       work: [
         "Loading and unloading trucks by forklift",
         "Moving pallets between docks, stores and the line",
@@ -300,7 +300,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       description:
         "Data entry operator (DEO) jobs in SIDCUL and across Haridwar: computer entry in ERP systems such as SAP for stores, dispatch and production. No fee.",
       heading: "Data entry operator jobs in Haridwar.",
-      lede: "Computer work in ERP systems such as SAP, at factories and warehouses in SIDCUL. Tell us about yourself in your own voice and we'll call you when there's suitable work.",
+      lede: "Computer work in ERP systems such as SAP, at factories and warehouses in SIDCUL. Tell us about yourself and we'll call you when there's suitable work.",
       work: [
         "Stores and inventory entries: receipts, issues, stock",
         "Dispatch, gate entry and delivery documents",
@@ -341,9 +341,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "Housekeeping",
       metaTitle: "Housekeeping Jobs in SIDCUL Haridwar",
       description:
-        "Housekeeping jobs in SIDCUL and across Haridwar: factories, offices, canteens and campuses. For men and women. Tell us by voice. No fee, ever.",
+        "Housekeeping jobs in SIDCUL and across Haridwar: factories, offices, canteens and campuses. For men and women. Apply online. No fee, ever.",
       heading: "Housekeeping jobs in SIDCUL Haridwar.",
-      lede: "Housekeeping at factories, offices, canteens and campuses. Tell us about yourself in your own voice and we'll call you when there's suitable work.",
+      lede: "Housekeeping at factories, offices, canteens and campuses. Tell us about yourself and we'll call you when there's suitable work.",
       work: [
         "Cleaning shopfloors, offices and common areas",
         "Washroom upkeep",
@@ -380,9 +380,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "ITI trades",
       metaTitle: "ITI Jobs in SIDCUL Haridwar: Welder, Fitter, Electrician",
       description:
-        "Jobs for ITI welders, fitters and electricians in SIDCUL and across Haridwar: fabrication, installation and maintenance work. Tell us by voice. No fee.",
+        "Jobs for ITI welders, fitters and electricians in SIDCUL and across Haridwar: fabrication, installation and maintenance work. Apply online. No fee.",
       heading: "ITI jobs in SIDCUL Haridwar: welder, fitter, electrician.",
-      lede: "Fabrication, installation and maintenance work at plants in SIDCUL. Tell us about your trade in your own voice and we'll call you when there's suitable work.",
+      lede: "Fabrication, installation and maintenance work at plants in SIDCUL. Tell us about your trade and we'll call you when there's suitable work.",
       work: [
         "Welding and gas cutting for fabrication (MS and SS)",
         "Fitting and installation of structures and equipment",
@@ -423,9 +423,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "Electrician",
       metaTitle: "Electrician Jobs in SIDCUL Haridwar: ITI Electrician Vacancy",
       description:
-        "Electrician jobs in SIDCUL and across Haridwar: plant maintenance, wiring, motors and panels for ITI electricians. Tell us by voice. No fee, ever.",
+        "Electrician jobs in SIDCUL and across Haridwar: plant maintenance, wiring, motors and panels for ITI electricians. Apply online. No fee, ever.",
       heading: "Electrician jobs in SIDCUL Haridwar.",
-      lede: "Maintenance and wiring work at plants in SIDCUL. Tell us about your trade and experience in your own voice and we'll call you when there's suitable work.",
+      lede: "Maintenance and wiring work at plants in SIDCUL. Tell us about your trade and experience and we'll call you when there's suitable work.",
       work: [
         "Preventive and breakdown maintenance on plant equipment",
         "Wiring, cabling and lighting work",
@@ -466,9 +466,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "Welder",
       metaTitle: "Welder Jobs in SIDCUL Haridwar: Arc, MIG, TIG and Gas Cutting",
       description:
-        "Welder jobs in SIDCUL and across Haridwar: arc, MIG and TIG welding and gas cutting for fabrication and maintenance. Tell us by voice. No fee, ever.",
+        "Welder jobs in SIDCUL and across Haridwar: arc, MIG and TIG welding and gas cutting for fabrication and maintenance. Apply online. No fee, ever.",
       heading: "Welder jobs in SIDCUL Haridwar.",
-      lede: "Fabrication and maintenance welding at plants and project sites. Tell us the processes you know, in your own voice, and we'll call you when there's suitable work.",
+      lede: "Fabrication and maintenance welding at plants and project sites. Tell us the processes you know, and we'll call you when there's suitable work.",
       work: [
         "Arc, MIG and TIG welding on MS and SS",
         "Gas cutting and grinding",
@@ -510,9 +510,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "Fitter",
       metaTitle: "Fitter Jobs in SIDCUL Haridwar: Maintenance and Mechanical Fitter",
       description:
-        "Fitter jobs in SIDCUL and across Haridwar: mechanical maintenance, machine fitting and installation for ITI fitters. Tell us by voice. No fee, ever.",
+        "Fitter jobs in SIDCUL and across Haridwar: mechanical maintenance, machine fitting and installation for ITI fitters. Apply online. No fee, ever.",
       heading: "Fitter jobs in SIDCUL Haridwar.",
-      lede: "Mechanical maintenance and fitting work at plants in SIDCUL. Tell us about your trade and experience in your own voice and we'll call you when there's suitable work.",
+      lede: "Mechanical maintenance and fitting work at plants in SIDCUL. Tell us about your trade and experience and we'll call you when there's suitable work.",
       work: [
         "Mechanical maintenance of machines and conveyors",
         "Fitting, alignment and installation of equipment",
@@ -555,9 +555,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "फ़ैक्टरी हेल्पर",
       metaTitle: "सिडकुल हरिद्वार में फ़ैक्टरी हेल्पर की नौकरी",
       description:
-        "सिडकुल और पूरे हरिद्वार में फ़ैक्टरी हेल्पर और प्रोडक्शन हेल्पर की नौकरी: लाइन का काम, माल उठाना-रखना और पैकिंग। बोलकर बताइए। कोई फ़ीस नहीं।",
+        "सिडकुल और पूरे हरिद्वार में फ़ैक्टरी हेल्पर और प्रोडक्शन हेल्पर की नौकरी: लाइन का काम, माल उठाना-रखना और पैकिंग। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
       heading: "सिडकुल हरिद्वार में फ़ैक्टरी हेल्पर की नौकरी।",
-      lede: "फ़ैक्टरी के शॉपफ़्लोर पर प्रोडक्शन हेल्पर का काम। अपनी आवाज़ में अपने बारे में बताइए, सही काम होने पर हम आपको फ़ोन करेंगे।",
+      lede: "फ़ैक्टरी के शॉपफ़्लोर पर प्रोडक्शन हेल्पर का काम। अपने बारे में बताइए, सही काम होने पर हम आपको फ़ोन करेंगे।",
       work: [
         "प्रोडक्शन लाइन पर माल डालना और मदद करना",
         "स्टोर से लाइन तक माल लाना-ले जाना",
@@ -598,9 +598,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "पैकिंग की नौकरी",
       metaTitle: "सिडकुल हरिद्वार में पैकिंग की नौकरी: फ़ार्मा, FMCG और लाइन पैकिंग",
       description:
-        "सिडकुल और पूरे हरिद्वार में पैकिंग की नौकरी: फ़ार्मा, FMCG और दूसरी फ़ैक्टरियों में लाइन पैकिंग, कार्टन, लेबलिंग और चेकिंग। बोलकर बताइए। कोई फ़ीस नहीं।",
+        "सिडकुल और पूरे हरिद्वार में पैकिंग की नौकरी: फ़ार्मा, FMCG और दूसरी फ़ैक्टरियों में लाइन पैकिंग, कार्टन, लेबलिंग और चेकिंग। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
       heading: "सिडकुल हरिद्वार में पैकिंग की नौकरी।",
-      lede: "फ़ैक्टरी की लाइन और पैकिंग हॉल में पैकिंग का काम। अपनी आवाज़ में अपने बारे में बताइए, सही काम होने पर हम आपको फ़ोन करेंगे।",
+      lede: "फ़ैक्टरी की लाइन और पैकिंग हॉल में पैकिंग का काम। अपने बारे में बताइए, सही काम होने पर हम आपको फ़ोन करेंगे।",
       work: [
         "लाइन पर माल को कार्टन, केस और पाउच में पैक करना",
         "लेबल लगाना, बैच कोडिंग और प्रिंट चेक करना",
@@ -642,9 +642,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "मशीन ऑपरेटर",
       metaTitle: "सिडकुल हरिद्वार में मशीन ऑपरेटर की नौकरी",
       description:
-        "सिडकुल और पूरे हरिद्वार में मशीन ऑपरेटर की नौकरी: प्लांट में पैकिंग, मोल्डिंग, प्रेस और प्रोडक्शन मशीनें। बोलकर बताइए। कोई फ़ीस नहीं।",
+        "सिडकुल और पूरे हरिद्वार में मशीन ऑपरेटर की नौकरी: प्लांट में पैकिंग, मोल्डिंग, प्रेस और प्रोडक्शन मशीनें। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
       heading: "सिडकुल हरिद्वार में मशीन ऑपरेटर की नौकरी।",
-      lede: "प्लांट में प्रोडक्शन और पैकिंग मशीनें चलाना। अपनी आवाज़ में बताइए कि आपने कौन-सी मशीनें चलाई हैं, सही काम होने पर हम आपको फ़ोन करेंगे।",
+      lede: "प्लांट में प्रोडक्शन और पैकिंग मशीनें चलाना। बताइए कि आपने कौन-सी मशीनें चलाई हैं, सही काम होने पर हम आपको फ़ोन करेंगे।",
       work: [
         "पैकिंग मशीनें चलाना: ब्लिस्टर, फ़िलिंग, सीलिंग और कार्टनिंग",
         "इंजेक्शन मोल्डिंग, प्रेस और दूसरी प्रोडक्शन मशीनें",
@@ -686,9 +686,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "वेयरहाउस की नौकरी",
       metaTitle: "सिडकुल हरिद्वार में वेयरहाउस की नौकरी: लोडिंग, पिकिंग, पैकिंग",
       description:
-        "सिडकुल और पूरे हरिद्वार में वेयरहाउस की नौकरी: लोडिंग, अनलोडिंग, पिकिंग, पैकिंग, स्टैकिंग और डिस्पैच। बोलकर बताइए। कोई फ़ीस नहीं।",
+        "सिडकुल और पूरे हरिद्वार में वेयरहाउस की नौकरी: लोडिंग, अनलोडिंग, पिकिंग, पैकिंग, स्टैकिंग और डिस्पैच। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
       heading: "सिडकुल हरिद्वार में वेयरहाउस की नौकरी।",
-      lede: "लोडिंग, अनलोडिंग, पिकिंग, पैकिंग और डिस्पैच। अपनी आवाज़ में अपने बारे में बताइए, सही काम होने पर हम आपको फ़ोन करेंगे।",
+      lede: "लोडिंग, अनलोडिंग, पिकिंग, पैकिंग और डिस्पैच। अपने बारे में बताइए, सही काम होने पर हम आपको फ़ोन करेंगे।",
       work: [
         "ट्रक में माल चढ़ाना और उतारना",
         "ऑर्डर का माल निकालना और पैक करना",
@@ -732,7 +732,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       description:
         "सिडकुल और पूरे हरिद्वार में फ़ोर्कलिफ़्ट ऑपरेटर की नौकरी: वेयरहाउस और प्लांट में माल की लोडिंग, स्टैकिंग और ढुलाई। अनुभवी ऑपरेटरों के लिए। कोई फ़ीस नहीं।",
       heading: "सिडकुल हरिद्वार में फ़ोर्कलिफ़्ट ऑपरेटर की नौकरी।",
-      lede: "वेयरहाउस और प्लांट में फ़ोर्कलिफ़्ट से माल की लोडिंग, ढुलाई और स्टैकिंग। अपनी आवाज़ में अपने अनुभव के बारे में बताइए, सही काम होने पर हम आपको फ़ोन करेंगे।",
+      lede: "वेयरहाउस और प्लांट में फ़ोर्कलिफ़्ट से माल की लोडिंग, ढुलाई और स्टैकिंग। अपने अनुभव के बारे में बताइए, सही काम होने पर हम आपको फ़ोन करेंगे।",
       work: [
         "फ़ोर्कलिफ़्ट से ट्रक की लोडिंग और अनलोडिंग",
         "डॉक, स्टोर और लाइन के बीच पैलेट ले जाना",
@@ -776,7 +776,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       description:
         "सिडकुल और पूरे हरिद्वार में डेटा एंट्री ऑपरेटर (DEO) की नौकरी: स्टोर, डिस्पैच और प्रोडक्शन के लिए SAP जैसे ERP में कंप्यूटर एंट्री। कोई फ़ीस नहीं।",
       heading: "हरिद्वार में डेटा एंट्री ऑपरेटर की नौकरी।",
-      lede: "सिडकुल की फ़ैक्टरियों और वेयरहाउस में SAP जैसे ERP पर कंप्यूटर का काम। अपनी आवाज़ में अपने बारे में बताइए, सही काम होने पर हम आपको फ़ोन करेंगे।",
+      lede: "सिडकुल की फ़ैक्टरियों और वेयरहाउस में SAP जैसे ERP पर कंप्यूटर का काम। अपने बारे में बताइए, सही काम होने पर हम आपको फ़ोन करेंगे।",
       work: [
         "स्टोर और इन्वेंटरी की एंट्री: माल आना, जाना, स्टॉक",
         "डिस्पैच, गेट एंट्री और डिलीवरी के कागज़",
@@ -817,9 +817,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "हाउसकीपिंग",
       metaTitle: "सिडकुल हरिद्वार में हाउसकीपिंग की नौकरी",
       description:
-        "सिडकुल और पूरे हरिद्वार में हाउसकीपिंग की नौकरी: फ़ैक्टरी, ऑफ़िस, कैंटीन और कैंपस। पुरुष और महिलाएँ दोनों। बोलकर बताइए। कोई फ़ीस नहीं।",
+        "सिडकुल और पूरे हरिद्वार में हाउसकीपिंग की नौकरी: फ़ैक्टरी, ऑफ़िस, कैंटीन और कैंपस। पुरुष और महिलाएँ दोनों। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
       heading: "सिडकुल हरिद्वार में हाउसकीपिंग की नौकरी।",
-      lede: "फ़ैक्टरी, ऑफ़िस, कैंटीन और कैंपस में हाउसकीपिंग। अपनी आवाज़ में अपने बारे में बताइए, सही काम होने पर हम आपको फ़ोन करेंगे।",
+      lede: "फ़ैक्टरी, ऑफ़िस, कैंटीन और कैंपस में हाउसकीपिंग। अपने बारे में बताइए, सही काम होने पर हम आपको फ़ोन करेंगे।",
       work: [
         "शॉपफ़्लोर, ऑफ़िस और कॉमन एरिया की सफ़ाई",
         "वॉशरूम की देखभाल",
@@ -855,9 +855,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "ITI ट्रेड",
       metaTitle: "सिडकुल हरिद्वार में ITI की नौकरी: वेल्डर, फ़िटर, इलेक्ट्रीशियन",
       description:
-        "सिडकुल और पूरे हरिद्वार में ITI वेल्डर, फ़िटर और इलेक्ट्रीशियन की नौकरी: फ़ैब्रिकेशन, इंस्टॉलेशन और मेंटेनेंस। बोलकर बताइए। कोई फ़ीस नहीं।",
+        "सिडकुल और पूरे हरिद्वार में ITI वेल्डर, फ़िटर और इलेक्ट्रीशियन की नौकरी: फ़ैब्रिकेशन, इंस्टॉलेशन और मेंटेनेंस। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
       heading: "सिडकुल हरिद्वार में ITI की नौकरी: वेल्डर, फ़िटर, इलेक्ट्रीशियन।",
-      lede: "सिडकुल के प्लांट में फ़ैब्रिकेशन, इंस्टॉलेशन और मेंटेनेंस का काम। अपनी आवाज़ में अपने ट्रेड के बारे में बताइए, सही काम होने पर हम आपको फ़ोन करेंगे।",
+      lede: "सिडकुल के प्लांट में फ़ैब्रिकेशन, इंस्टॉलेशन और मेंटेनेंस का काम। अपने ट्रेड के बारे में बताइए, सही काम होने पर हम आपको फ़ोन करेंगे।",
       work: [
         "फ़ैब्रिकेशन के लिए वेल्डिंग और गैस कटिंग (MS और SS)",
         "स्ट्रक्चर और मशीनों की फ़िटिंग और इंस्टॉलेशन",
@@ -896,9 +896,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "इलेक्ट्रीशियन",
       metaTitle: "सिडकुल हरिद्वार में इलेक्ट्रीशियन की नौकरी: ITI इलेक्ट्रीशियन वैकेंसी",
       description:
-        "सिडकुल और पूरे हरिद्वार में इलेक्ट्रीशियन की नौकरी: ITI इलेक्ट्रीशियन के लिए प्लांट मेंटेनेंस, वायरिंग, मोटर और पैनल का काम। बोलकर बताइए। कोई फ़ीस नहीं।",
+        "सिडकुल और पूरे हरिद्वार में इलेक्ट्रीशियन की नौकरी: ITI इलेक्ट्रीशियन के लिए प्लांट मेंटेनेंस, वायरिंग, मोटर और पैनल का काम। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
       heading: "सिडकुल हरिद्वार में इलेक्ट्रीशियन की नौकरी।",
-      lede: "सिडकुल के प्लांट में मेंटेनेंस और वायरिंग का काम। अपनी आवाज़ में अपने ट्रेड और अनुभव के बारे में बताइए, सही काम होने पर हम आपको फ़ोन करेंगे।",
+      lede: "सिडकुल के प्लांट में मेंटेनेंस और वायरिंग का काम। अपने ट्रेड और अनुभव के बारे में बताइए, सही काम होने पर हम आपको फ़ोन करेंगे।",
       work: [
         "प्लांट की मशीनों का रूटीन और ब्रेकडाउन मेंटेनेंस",
         "वायरिंग, केबलिंग और लाइटिंग का काम",
@@ -939,9 +939,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "वेल्डर",
       metaTitle: "सिडकुल हरिद्वार में वेल्डर की नौकरी: आर्क, MIG, TIG और गैस कटिंग",
       description:
-        "सिडकुल और पूरे हरिद्वार में वेल्डर की नौकरी: फ़ैब्रिकेशन और मेंटेनेंस के लिए आर्क, MIG और TIG वेल्डिंग और गैस कटिंग। बोलकर बताइए। कोई फ़ीस नहीं।",
+        "सिडकुल और पूरे हरिद्वार में वेल्डर की नौकरी: फ़ैब्रिकेशन और मेंटेनेंस के लिए आर्क, MIG और TIG वेल्डिंग और गैस कटिंग। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
       heading: "सिडकुल हरिद्वार में वेल्डर की नौकरी।",
-      lede: "प्लांट और प्रोजेक्ट साइटों पर फ़ैब्रिकेशन और मेंटेनेंस की वेल्डिंग। अपनी आवाज़ में बताइए कि आप कौन-सी वेल्डिंग जानते हैं, सही काम होने पर हम आपको फ़ोन करेंगे।",
+      lede: "प्लांट और प्रोजेक्ट साइटों पर फ़ैब्रिकेशन और मेंटेनेंस की वेल्डिंग। बताइए कि आप कौन-सी वेल्डिंग जानते हैं, सही काम होने पर हम आपको फ़ोन करेंगे।",
       work: [
         "MS और SS पर आर्क, MIG और TIG वेल्डिंग",
         "गैस कटिंग और ग्राइंडिंग",
@@ -983,9 +983,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "फ़िटर",
       metaTitle: "सिडकुल हरिद्वार में फ़िटर की नौकरी: मेंटेनेंस और मैकेनिकल फ़िटर",
       description:
-        "सिडकुल और पूरे हरिद्वार में फ़िटर की नौकरी: ITI फ़िटर के लिए मैकेनिकल मेंटेनेंस, मशीन फ़िटिंग और इंस्टॉलेशन। बोलकर बताइए। कोई फ़ीस नहीं।",
+        "सिडकुल और पूरे हरिद्वार में फ़िटर की नौकरी: ITI फ़िटर के लिए मैकेनिकल मेंटेनेंस, मशीन फ़िटिंग और इंस्टॉलेशन। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
       heading: "सिडकुल हरिद्वार में फ़िटर की नौकरी।",
-      lede: "सिडकुल के प्लांट में मैकेनिकल मेंटेनेंस और फ़िटिंग का काम। अपनी आवाज़ में अपने ट्रेड और अनुभव के बारे में बताइए, सही काम होने पर हम आपको फ़ोन करेंगे।",
+      lede: "सिडकुल के प्लांट में मैकेनिकल मेंटेनेंस और फ़िटिंग का काम। अपने ट्रेड और अनुभव के बारे में बताइए, सही काम होने पर हम आपको फ़ोन करेंगे।",
       work: [
         "मशीनों और कन्वेयर का मैकेनिकल मेंटेनेंस",
         "मशीनों की फ़िटिंग, अलाइनमेंट और इंस्टॉलेशन",
@@ -1028,9 +1028,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "Factory helper",
       metaTitle: "SIDCUL Haridwar mein Factory Helper Job",
       description:
-        "SIDCUL aur poore Haridwar mein factory helper aur production helper ki naukri: line ka kaam, maal uthana-rakhna aur packing. Bolkar bataiye. Koi fee nahi.",
+        "SIDCUL aur poore Haridwar mein factory helper aur production helper ki naukri: line ka kaam, maal uthana-rakhna aur packing. Online apply karein. Koi fee nahi.",
       heading: "SIDCUL Haridwar mein factory helper ki naukri.",
-      lede: "Factory ke shopfloor par production helper ka kaam. Apni awaaz mein apne baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
+      lede: "Factory ke shopfloor par production helper ka kaam. apne baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
       work: [
         "Production line par maal daalna aur madad karna",
         "Store se line tak maal lana-le jana",
@@ -1071,9 +1071,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "Packing job",
       metaTitle: "SIDCUL Haridwar mein Packing Job: Pharma, FMCG aur Line Packing",
       description:
-        "SIDCUL aur poore Haridwar mein packing ki naukri: pharma, FMCG aur dusri factories mein line packing, carton, labelling aur checking. Bolkar bataiye. Koi fee nahi.",
+        "SIDCUL aur poore Haridwar mein packing ki naukri: pharma, FMCG aur dusri factories mein line packing, carton, labelling aur checking. Online apply karein. Koi fee nahi.",
       heading: "SIDCUL Haridwar mein packing ki naukri.",
-      lede: "Factory ki line aur packing hall mein packing ka kaam. Apni awaaz mein apne baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
+      lede: "Factory ki line aur packing hall mein packing ka kaam. apne baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
       work: [
         "Line par maal ko carton, case aur pouch mein pack karna",
         "Label lagana, batch coding aur print check karna",
@@ -1115,9 +1115,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "Machine operator",
       metaTitle: "SIDCUL Haridwar mein Machine Operator Job",
       description:
-        "SIDCUL aur poore Haridwar mein machine operator ki naukri: plants mein packing, moulding, press aur production machines. Bolkar bataiye. Koi fee nahi.",
+        "SIDCUL aur poore Haridwar mein machine operator ki naukri: plants mein packing, moulding, press aur production machines. Online apply karein. Koi fee nahi.",
       heading: "SIDCUL Haridwar mein machine operator ki naukri.",
-      lede: "Plants mein production aur packing machines chalana. Apni awaaz mein bataiye ki aapne kaun-si machines chalayi hain, sahi kaam hone par hum aapko phone karenge.",
+      lede: "Plants mein production aur packing machines chalana. bataiye ki aapne kaun-si machines chalayi hain, sahi kaam hone par hum aapko phone karenge.",
       work: [
         "Packing machines chalana: blister, filling, sealing aur cartoning",
         "Injection moulding, press aur dusri production machines",
@@ -1159,9 +1159,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "Warehouse job",
       metaTitle: "SIDCUL Haridwar mein Warehouse Job: Loading, Picking, Packing",
       description:
-        "SIDCUL aur poore Haridwar mein warehouse ki naukri: loading, unloading, picking, packing, stacking aur dispatch. Bolkar bataiye. Koi fee nahi.",
+        "SIDCUL aur poore Haridwar mein warehouse ki naukri: loading, unloading, picking, packing, stacking aur dispatch. Online apply karein. Koi fee nahi.",
       heading: "SIDCUL Haridwar mein warehouse ki naukri.",
-      lede: "Loading, unloading, picking, packing aur dispatch. Apni awaaz mein apne baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
+      lede: "Loading, unloading, picking, packing aur dispatch. apne baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
       work: [
         "Truck mein maal chadhana aur utaarna",
         "Order ka maal nikaalna aur pack karna",
@@ -1205,7 +1205,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       description:
         "SIDCUL aur poore Haridwar mein forklift operator ki naukri: warehouse aur plant mein maal ki loading, stacking aur dhulai. Experienced operators ke liye. Koi fee nahi.",
       heading: "SIDCUL Haridwar mein forklift operator ki naukri.",
-      lede: "Warehouse aur plant mein forklift se maal ki loading, dhulai aur stacking. Apni awaaz mein apne experience ke baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
+      lede: "Warehouse aur plant mein forklift se maal ki loading, dhulai aur stacking. apne experience ke baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
       work: [
         "Forklift se truck ki loading aur unloading",
         "Dock, store aur line ke beech pallet le jaana",
@@ -1249,7 +1249,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       description:
         "SIDCUL aur poore Haridwar mein data entry operator (DEO) ki naukri: stores, dispatch aur production ke liye SAP jaise ERP mein computer entry. Koi fee nahi.",
       heading: "Haridwar mein data entry operator ki naukri.",
-      lede: "SIDCUL ki factories aur warehouses mein SAP jaise ERP par computer ka kaam. Apni awaaz mein apne baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
+      lede: "SIDCUL ki factories aur warehouses mein SAP jaise ERP par computer ka kaam. apne baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
       work: [
         "Stores aur inventory ki entry: maal aana, jaana, stock",
         "Dispatch, gate entry aur delivery ke documents",
@@ -1290,9 +1290,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "Housekeeping",
       metaTitle: "SIDCUL Haridwar mein Housekeeping Job",
       description:
-        "SIDCUL aur poore Haridwar mein housekeeping ki naukri: factory, office, canteen aur campus. Purush aur mahilaayein dono. Bolkar bataiye. Koi fee nahi.",
+        "SIDCUL aur poore Haridwar mein housekeeping ki naukri: factory, office, canteen aur campus. Purush aur mahilaayein dono. Online apply karein. Koi fee nahi.",
       heading: "SIDCUL Haridwar mein housekeeping ki naukri.",
-      lede: "Factory, office, canteen aur campus mein housekeeping. Apni awaaz mein apne baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
+      lede: "Factory, office, canteen aur campus mein housekeeping. apne baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
       work: [
         "Shopfloor, office aur common area ki safai",
         "Washroom ki dekhbhaal",
@@ -1328,9 +1328,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "ITI trades",
       metaTitle: "SIDCUL Haridwar mein ITI Job: Welder, Fitter, Electrician",
       description:
-        "SIDCUL aur poore Haridwar mein ITI welder, fitter aur electrician ki naukri: fabrication, installation aur maintenance. Bolkar bataiye. Koi fee nahi.",
+        "SIDCUL aur poore Haridwar mein ITI welder, fitter aur electrician ki naukri: fabrication, installation aur maintenance. Online apply karein. Koi fee nahi.",
       heading: "SIDCUL Haridwar mein ITI ki naukri: welder, fitter, electrician.",
-      lede: "SIDCUL ke plants mein fabrication, installation aur maintenance ka kaam. Apni awaaz mein apne trade ke baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
+      lede: "SIDCUL ke plants mein fabrication, installation aur maintenance ka kaam. apne trade ke baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
       work: [
         "Fabrication ke liye welding aur gas cutting (MS aur SS)",
         "Structure aur machines ki fitting aur installation",
@@ -1369,9 +1369,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "Electrician",
       metaTitle: "SIDCUL Haridwar mein Electrician Job: ITI Electrician Vacancy",
       description:
-        "SIDCUL aur poore Haridwar mein electrician ki naukri: ITI electrician ke liye plant maintenance, wiring, motor aur panel ka kaam. Bolkar bataiye. Koi fee nahi.",
+        "SIDCUL aur poore Haridwar mein electrician ki naukri: ITI electrician ke liye plant maintenance, wiring, motor aur panel ka kaam. Online apply karein. Koi fee nahi.",
       heading: "SIDCUL Haridwar mein electrician ki naukri.",
-      lede: "SIDCUL ke plants mein maintenance aur wiring ka kaam. Apni awaaz mein apne trade aur experience ke baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
+      lede: "SIDCUL ke plants mein maintenance aur wiring ka kaam. apne trade aur experience ke baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
       work: [
         "Plant ki machines ka routine aur breakdown maintenance",
         "Wiring, cabling aur lighting ka kaam",
@@ -1412,9 +1412,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "Welder",
       metaTitle: "SIDCUL Haridwar mein Welder Job: Arc, MIG, TIG aur Gas Cutting",
       description:
-        "SIDCUL aur poore Haridwar mein welder ki naukri: fabrication aur maintenance ke liye arc, MIG aur TIG welding aur gas cutting. Bolkar bataiye. Koi fee nahi.",
+        "SIDCUL aur poore Haridwar mein welder ki naukri: fabrication aur maintenance ke liye arc, MIG aur TIG welding aur gas cutting. Online apply karein. Koi fee nahi.",
       heading: "SIDCUL Haridwar mein welder ki naukri.",
-      lede: "Plants aur project sites par fabrication aur maintenance ki welding. Apni awaaz mein bataiye ki aap kaun-si welding jaante hain, sahi kaam hone par hum aapko phone karenge.",
+      lede: "Plants aur project sites par fabrication aur maintenance ki welding. bataiye ki aap kaun-si welding jaante hain, sahi kaam hone par hum aapko phone karenge.",
       work: [
         "MS aur SS par arc, MIG aur TIG welding",
         "Gas cutting aur grinding",
@@ -1456,9 +1456,9 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "Fitter",
       metaTitle: "SIDCUL Haridwar mein Fitter Job: Maintenance aur Mechanical Fitter",
       description:
-        "SIDCUL aur poore Haridwar mein fitter ki naukri: ITI fitter ke liye mechanical maintenance, machine fitting aur installation. Bolkar bataiye. Koi fee nahi.",
+        "SIDCUL aur poore Haridwar mein fitter ki naukri: ITI fitter ke liye mechanical maintenance, machine fitting aur installation. Online apply karein. Koi fee nahi.",
       heading: "SIDCUL Haridwar mein fitter ki naukri.",
-      lede: "SIDCUL ke plants mein mechanical maintenance aur fitting ka kaam. Apni awaaz mein apne trade aur experience ke baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
+      lede: "SIDCUL ke plants mein mechanical maintenance aur fitting ka kaam. apne trade aur experience ke baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
       work: [
         "Machines aur conveyor ka mechanical maintenance",
         "Machines ki fitting, alignment aur installation",

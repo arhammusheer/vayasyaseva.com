@@ -10,6 +10,7 @@ const HOME_ADDRESS_MARKER = "Deep Ganga";
 const HOME_ADDRESS_PAGES = new Set(["/en-in/privacy", "/en-in/terms"]);
 
 const errors = [];
+const checkedImages = new Map();
 const fail = (path, message) => errors.push(`${path || "/"}: ${message}`);
 const local = (url) => base + url.slice(SITE.length);
 const trim = (url) => url.replace(/\/$/, "");
@@ -48,6 +49,20 @@ await Promise.all(
     const canonical = body.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
     if (!canonical) fail(path, "no canonical link");
     else if (trim(canonical) !== trim(url)) fail(path, `canonical is ${canonical}`);
+
+    const image = body.match(/<meta property="og:image" content="([^"]+)"/)?.[1];
+    if (!image?.startsWith(`${SITE}/share/`)) fail(path, "missing page-specific branded share image");
+    else {
+      const check = checkedImages.get(image) ?? (async () => {
+        const response = await fetch(local(image));
+        const data = Buffer.from(await response.arrayBuffer());
+        return response.status === 200 && response.headers.get("content-type")?.includes("image/png")
+          && data.length >= 24 && data.subarray(1, 4).toString() === "PNG"
+          && data.readUInt32BE(16) === 1200 && data.readUInt32BE(20) === 630;
+      })();
+      checkedImages.set(image, check);
+      if (!(await check)) fail(path, "share image is unavailable or has wrong dimensions");
+    }
 
     if (/<meta name="robots" content="[^"]*noindex/.test(body)) fail(path, "noindex");
 

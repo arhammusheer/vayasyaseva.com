@@ -10,12 +10,17 @@ import { localeParams } from "@/lib/i18n";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/contact");
 
-export const metadata = pageMetadata({
-  title: "Contact Vayasya Seva, Haridwar",
+const contactMetadata = (assessment = false) => pageMetadata({
+  title: assessment ? "Site Assessment in Haridwar" : "Contact Vayasya Seva, Haridwar",
   description:
     "Talk to Vayasya Seva about contract labour, workforce services, compliance support or a project. Contact our Haridwar team by phone, email or enquiry form.",
   alternates: { canonical: "/contact" },
+  shareVariant: assessment ? "assessment" : "",
 });
+
+export async function generateMetadata({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  return contactMetadata((await searchParams).type === "assessment");
+}
 
 function ContactFormFallback() {
   return (
@@ -49,7 +54,8 @@ const lines = [
   { label: "Office", value: siteConfig.address },
 ];
 
-export default function ContactPage() {
+export default async function ContactPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const assessment = (await searchParams).type === "assessment";
   return (
     <>
       <JsonLd
@@ -102,7 +108,7 @@ export default function ContactPage() {
             {/* Outside Suspense: the form renders on the client only, and agents read the server HTML. */}
             <AgentGuidance form="contact" />
             <Suspense fallback={<ContactFormFallback />}>
-              <ContactForm />
+              <ContactForm key={assessment ? "assessment" : "contact"} />
             </Suspense>
           </div>
         </div>

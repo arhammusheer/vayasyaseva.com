@@ -2004,7 +2004,7 @@ a:hover > svg {
     background 140ms ease,
     transform 140ms ease;
 }
-.quick-pill:hover {
+.quick-pill:hover:not(:disabled) {
   border-color: var(--gold-500);
 }
 .quick-pill:active {
@@ -2086,4 +2086,10 @@ a:hover > svg {
 }
 .jobs-check input[type="checkbox"] {
   scroll-margin-top: 24px;
+}
+
+.quick-pill:disabled,
+.quick-attach:has(input:disabled) {
+  opacity: 0.6;
+  cursor: default;
 }

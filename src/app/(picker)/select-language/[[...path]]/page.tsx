@@ -1,3 +1,5 @@
+import { pageMetadata } from "@/lib/metadata";
+import { quickShareVariant } from "@/lib/share-content";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { jobsCopy } from "@/content/pages/jobs";
@@ -27,7 +29,7 @@ export function generateStaticParams() {
     .map((path) => ({ path: path.split("/").filter(Boolean) }));
 }
 
-type Props = { params: Promise<{ path?: string[] }> };
+type Props = { params: Promise<{ path?: string[] }>; searchParams: Promise<Record<string, string | string[] | undefined>> };
 
 const toPath = (segments: string[] = []) => `/${segments.join("/")}`;
 
@@ -50,11 +52,16 @@ const PROMPT = [
   { locale: "hi-Latn-IN", text: "Apni bhasha chunein" },
 ] as const;
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const path = toPath((await params).path);
   const english = pageSummary(path, "en-IN");
   const languages = languageAlternates(path);
+  const query = await searchParams;
+  const value = (key: string) => typeof query[key] === "string" ? query[key] as string : undefined;
+  const sharing = pageMetadata({ title: english.title, description: english.text ?? "Choose your language", alternates: { canonical: localePath(path, "en-IN") }, shareVariant: quickShareVariant({ role: value("role"), hub: value("hub"), work: value("work") }) });
   return {
+    openGraph: { ...sharing.openGraph, url: path },
+    twitter: sharing.twitter,
     title: { absolute: `${english.title} | Vayasya Seva` },
     description: `${english.text ? `${english.text} ` : ""}Choose your language: ${localesOf(path).map((l) => locales[l].label).join(", ")}.`,
     alternates: { canonical: path, ...(languages && { languages }) },

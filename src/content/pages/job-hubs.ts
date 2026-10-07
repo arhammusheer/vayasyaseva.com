@@ -86,9 +86,9 @@ export const jobHubs: Record<Locale, JobHubCopy[]> = {
       name: "Fresher jobs",
       metaTitle: "SIDCUL Haridwar Vacancy for Freshers: Factory, Packing, Warehouse",
       description:
-        "Jobs for freshers in SIDCUL and across Haridwar: factory helper, packing, warehouse and housekeeping work that needs no experience. Tell us by voice. No fee, ever.",
+        "Jobs for freshers in SIDCUL and across Haridwar: factory helper, packing, warehouse and housekeeping work that needs no experience. Apply online. No fee, ever.",
       heading: "Jobs for freshers in SIDCUL Haridwar.",
-      lede: "No experience yet? Many factory and warehouse jobs in SIDCUL are open to freshers. Tell us about yourself in your own voice and we'll call you when there's suitable work.",
+      lede: "No experience yet? Many factory and warehouse jobs in SIDCUL are open to freshers. Tell us about yourself and we'll call you when there's suitable work.",
       intro:
         "Plants in SIDCUL and across Haridwar take freshers for helper, packing, warehouse and housekeeping work, and teach the job at induction. ITI freshers can start as helpers or trainees in their trade. We tell you the site, the shift and the work before you join.",
       roles: [
@@ -121,9 +121,9 @@ export const jobHubs: Record<Locale, JobHubCopy[]> = {
       name: "10th pass jobs",
       metaTitle: "10th Pass Jobs in SIDCUL Haridwar: Helper, Packing, Warehouse",
       description:
-        "Jobs for 10th pass candidates in SIDCUL and across Haridwar: factory helper, packing, warehouse and housekeeping work. Tell us by voice. No fee, ever.",
+        "Jobs for 10th pass candidates in SIDCUL and across Haridwar: factory helper, packing, warehouse and housekeeping work. Apply online. No fee, ever.",
       heading: "10th pass jobs in SIDCUL Haridwar.",
-      lede: "Factory and warehouse work in SIDCUL for people who have passed 10th. Tell us about yourself in your own voice and we'll call you when there's suitable work.",
+      lede: "Factory and warehouse work in SIDCUL for people who have passed 10th. Tell us about yourself and we'll call you when there's suitable work.",
       intro:
         "For most helper, packing, warehouse and housekeeping work, 10th pass is enough. What matters more is being ready for shift work and the site's safety rules. If you did an ITI after 10th, apply for the work in your trade.",
       roles: [
@@ -156,9 +156,9 @@ export const jobHubs: Record<Locale, JobHubCopy[]> = {
       name: "12th pass jobs",
       metaTitle: "12th Pass Jobs in SIDCUL Haridwar: Data Entry, Operator, Packing",
       description:
-        "Jobs for 12th pass candidates in SIDCUL and across Haridwar: data entry, trainee machine operator, packing and warehouse work. Tell us by voice. No fee, ever.",
+        "Jobs for 12th pass candidates in SIDCUL and across Haridwar: data entry, trainee machine operator, packing and warehouse work. Apply online. No fee, ever.",
       heading: "12th pass jobs in SIDCUL Haridwar.",
-      lede: "Factory, warehouse and computer work in SIDCUL for people who have passed 12th. Tell us about yourself in your own voice and we'll call you when there's suitable work.",
+      lede: "Factory, warehouse and computer work in SIDCUL for people who have passed 12th. Tell us about yourself and we'll call you when there's suitable work.",
       intro:
         "12th pass opens a few more doors than 10th: data entry and store work if you can use a computer, and trainee operator roles on production machines. Helper, packing and warehouse work is open too. Tell us your stream and any computer skills.",
       roles: [
@@ -192,9 +192,9 @@ export const jobHubs: Record<Locale, JobHubCopy[]> = {
       name: "फ़्रेशर की नौकरी",
       metaTitle: "सिडकुल हरिद्वार में फ़्रेशर के लिए वैकेंसी: फ़ैक्टरी, पैकिंग, वेयरहाउस",
       description:
-        "सिडकुल और पूरे हरिद्वार में फ़्रेशर के लिए नौकरी: फ़ैक्टरी हेल्पर, पैकिंग, वेयरहाउस और हाउसकीपिंग का काम, बिना अनुभव के। बोलकर बताइए। कोई फ़ीस नहीं।",
+        "सिडकुल और पूरे हरिद्वार में फ़्रेशर के लिए नौकरी: फ़ैक्टरी हेल्पर, पैकिंग, वेयरहाउस और हाउसकीपिंग का काम, बिना अनुभव के। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
       heading: "सिडकुल हरिद्वार में फ़्रेशर के लिए नौकरी।",
-      lede: "अभी अनुभव नहीं है? सिडकुल में फ़ैक्टरी और वेयरहाउस की कई नौकरियाँ फ़्रेशर के लिए हैं। अपनी आवाज़ में अपने बारे में बताइए, सही काम होने पर हम आपको फ़ोन करेंगे।",
+      lede: "अभी अनुभव नहीं है? सिडकुल में फ़ैक्टरी और वेयरहाउस की कई नौकरियाँ फ़्रेशर के लिए हैं। अपने बारे में बताइए, सही काम होने पर हम आपको फ़ोन करेंगे।",
       intro:
         "सिडकुल और पूरे हरिद्वार के प्लांट हेल्पर, पैकिंग, वेयरहाउस और हाउसकीपिंग के काम के लिए फ़्रेशर रखते हैं, और इंडक्शन में काम सिखाते हैं। ITI फ़्रेशर अपने ट्रेड में हेल्पर या ट्रेनी के तौर पर शुरू कर सकते हैं। जॉइन करने से पहले हम साइट, शिफ्ट और काम बताते हैं।",
       roles: [
@@ -227,9 +227,9 @@ export const jobHubs: Record<Locale, JobHubCopy[]> = {
       name: "10वीं पास नौकरी",
       metaTitle: "सिडकुल हरिद्वार में 10वीं पास नौकरी: हेल्पर, पैकिंग, वेयरहाउस",
       description:
-        "सिडकुल और पूरे हरिद्वार में 10वीं पास के लिए नौकरी: फ़ैक्टरी हेल्पर, पैकिंग, वेयरहाउस और हाउसकीपिंग का काम। बोलकर बताइए। कोई फ़ीस नहीं।",
+        "सिडकुल और पूरे हरिद्वार में 10वीं पास के लिए नौकरी: फ़ैक्टरी हेल्पर, पैकिंग, वेयरहाउस और हाउसकीपिंग का काम। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
       heading: "सिडकुल हरिद्वार में 10वीं पास नौकरी।",
-      lede: "10वीं पास लोगों के लिए सिडकुल में फ़ैक्टरी और वेयरहाउस का काम। अपनी आवाज़ में अपने बारे में बताइए, सही काम होने पर हम आपको फ़ोन करेंगे।",
+      lede: "10वीं पास लोगों के लिए सिडकुल में फ़ैक्टरी और वेयरहाउस का काम। अपने बारे में बताइए, सही काम होने पर हम आपको फ़ोन करेंगे।",
       intro:
         "हेल्पर, पैकिंग, वेयरहाउस और हाउसकीपिंग के ज़्यादातर कामों के लिए 10वीं पास काफ़ी है। इससे ज़्यादा ज़रूरी है शिफ्ट में काम करने और साइट के सेफ़्टी नियम मानने के लिए तैयार रहना। 10वीं के बाद ITI किया है तो अपने ट्रेड के काम के लिए अप्लाई कीजिए।",
       roles: [
@@ -261,9 +261,9 @@ export const jobHubs: Record<Locale, JobHubCopy[]> = {
       name: "12वीं पास नौकरी",
       metaTitle: "सिडकुल हरिद्वार में 12वीं पास नौकरी: डेटा एंट्री, ऑपरेटर, पैकिंग",
       description:
-        "सिडकुल और पूरे हरिद्वार में 12वीं पास के लिए नौकरी: डेटा एंट्री, ट्रेनी मशीन ऑपरेटर, पैकिंग और वेयरहाउस का काम। बोलकर बताइए। कोई फ़ीस नहीं।",
+        "सिडकुल और पूरे हरिद्वार में 12वीं पास के लिए नौकरी: डेटा एंट्री, ट्रेनी मशीन ऑपरेटर, पैकिंग और वेयरहाउस का काम। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
       heading: "सिडकुल हरिद्वार में 12वीं पास नौकरी।",
-      lede: "12वीं पास लोगों के लिए सिडकुल में फ़ैक्टरी, वेयरहाउस और कंप्यूटर का काम। अपनी आवाज़ में अपने बारे में बताइए, सही काम होने पर हम आपको फ़ोन करेंगे।",
+      lede: "12वीं पास लोगों के लिए सिडकुल में फ़ैक्टरी, वेयरहाउस और कंप्यूटर का काम। अपने बारे में बताइए, सही काम होने पर हम आपको फ़ोन करेंगे।",
       intro:
         "12वीं पास से 10वीं के मुक़ाबले कुछ और रास्ते खुलते हैं: कंप्यूटर चला सकें तो डेटा एंट्री और स्टोर का काम, और प्रोडक्शन मशीनों पर ट्रेनी ऑपरेटर का काम। हेल्पर, पैकिंग और वेयरहाउस का काम भी है। अपनी स्ट्रीम और कंप्यूटर की जानकारी बताइए।",
       roles: [
@@ -297,9 +297,9 @@ export const jobHubs: Record<Locale, JobHubCopy[]> = {
       name: "Fresher job",
       metaTitle: "SIDCUL Haridwar Vacancy for Freshers: Factory, Packing, Warehouse",
       description:
-        "SIDCUL aur poore Haridwar mein fresher ke liye naukri: factory helper, packing, warehouse aur housekeeping ka kaam, bina experience ke. Bolkar bataiye. Koi fee nahi.",
+        "SIDCUL aur poore Haridwar mein fresher ke liye naukri: factory helper, packing, warehouse aur housekeeping ka kaam, bina experience ke. Online apply karein. Koi fee nahi.",
       heading: "SIDCUL Haridwar mein fresher ke liye naukri.",
-      lede: "Abhi experience nahi hai? SIDCUL mein factory aur warehouse ki kai naukriyan fresher ke liye hain. Apni awaaz mein apne baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
+      lede: "Abhi experience nahi hai? SIDCUL mein factory aur warehouse ki kai naukriyan fresher ke liye hain. apne baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
       intro:
         "SIDCUL aur poore Haridwar ke plants helper, packing, warehouse aur housekeeping ke kaam ke liye fresher rakhte hain, aur induction mein kaam sikhate hain. ITI fresher apne trade mein helper ya trainee ke taur par shuru kar sakte hain. Join karne se pehle hum site, shift aur kaam batate hain.",
       roles: [
@@ -332,9 +332,9 @@ export const jobHubs: Record<Locale, JobHubCopy[]> = {
       name: "10th pass job",
       metaTitle: "SIDCUL Haridwar mein 10th Pass Job: Helper, Packing, Warehouse",
       description:
-        "SIDCUL aur poore Haridwar mein 10th pass ke liye naukri: factory helper, packing, warehouse aur housekeeping ka kaam. Bolkar bataiye. Koi fee nahi.",
+        "SIDCUL aur poore Haridwar mein 10th pass ke liye naukri: factory helper, packing, warehouse aur housekeeping ka kaam. Online apply karein. Koi fee nahi.",
       heading: "SIDCUL Haridwar mein 10th pass naukri.",
-      lede: "10th pass logon ke liye SIDCUL mein factory aur warehouse ka kaam. Apni awaaz mein apne baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
+      lede: "10th pass logon ke liye SIDCUL mein factory aur warehouse ka kaam. apne baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
       intro:
         "Helper, packing, warehouse aur housekeeping ke zyada kaamon ke liye 10th pass kaafi hai. Isse zyada zaroori hai shift mein kaam karne aur site ke safety rules maanne ke liye taiyaar rehna. 10th ke baad ITI kiya hai to apne trade ke kaam ke liye apply kijiye.",
       roles: [
@@ -366,9 +366,9 @@ export const jobHubs: Record<Locale, JobHubCopy[]> = {
       name: "12th pass job",
       metaTitle: "SIDCUL Haridwar mein 12th Pass Job: Data Entry, Operator, Packing",
       description:
-        "SIDCUL aur poore Haridwar mein 12th pass ke liye naukri: data entry, trainee machine operator, packing aur warehouse ka kaam. Bolkar bataiye. Koi fee nahi.",
+        "SIDCUL aur poore Haridwar mein 12th pass ke liye naukri: data entry, trainee machine operator, packing aur warehouse ka kaam. Online apply karein. Koi fee nahi.",
       heading: "SIDCUL Haridwar mein 12th pass naukri.",
-      lede: "12th pass logon ke liye SIDCUL mein factory, warehouse aur computer ka kaam. Apni awaaz mein apne baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
+      lede: "12th pass logon ke liye SIDCUL mein factory, warehouse aur computer ka kaam. apne baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
       intro:
         "12th pass se 10th ke muqable kuch aur raaste khulte hain: computer chala sakein to data entry aur store ka kaam, aur production machines par trainee operator ka kaam. Helper, packing aur warehouse ka kaam bhi hai. Apni stream aur computer ki jaankari bataiye.",
       roles: [

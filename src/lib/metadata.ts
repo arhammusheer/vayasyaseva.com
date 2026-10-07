@@ -1,3 +1,4 @@
+import { shareImageUrl } from "@/lib/share-images";
 import type { Metadata } from "next";
 import { languageAlternates, localizeHref, locales, splitLocalePath, FALLBACK_LOCALE, type Locale } from "@/lib/i18n";
 
@@ -11,8 +12,9 @@ export function pageMetadata(input: {
   description: string;
   alternates: { canonical: string };
   locale?: Locale;
+  shareVariant?: string;
 }): Metadata {
-  const { locale: requested, ...rest } = input;
+  const { locale: requested, shareVariant = "", ...rest } = input;
   const title =
     typeof input.title === "string"
       ? `${input.title} | Vayasya Seva`
@@ -22,6 +24,7 @@ export function pageMetadata(input: {
   const canonical = localizeHref(input.alternates.canonical, requested);
   const { locale = FALLBACK_LOCALE, path } = splitLocalePath(canonical);
   const languages = languageAlternates(path);
+  const image = shareImageUrl(canonical, shareVariant);
   return {
     ...rest,
     alternates: { canonical, ...(languages && { languages }) },
@@ -35,10 +38,10 @@ export function pageMetadata(input: {
       url: canonical,
       images: [
         {
-          url: "/opengraph-image",
+          url: image,
           width: 1200,
           height: 630,
-          alt: "Vayasya Seva",
+          alt: title,
         },
       ],
     },
@@ -46,7 +49,7 @@ export function pageMetadata(input: {
       card: "summary_large_image",
       title,
       description: input.description,
-      images: ["/opengraph-image"],
+      images: [image],
     },
   };
 }

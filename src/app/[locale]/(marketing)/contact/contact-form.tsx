@@ -3,23 +3,35 @@
 import Script from "next/script";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowUpRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useTurnstile } from "@/lib/use-turnstile";
+import { useSessionDraft } from "@/lib/use-session-draft";
+import { FormDraftNotice } from "@/components/form-draft-notice";
 import { revealFormTarget } from "@/lib/form-navigation";
 import { cn } from "@/lib/utils";
-import { formPage, trackAdsConversion, trackAnalyticsEvent } from "@/lib/analytics";
+import { trackAdsConversion, trackAnalyticsEvent } from "@/lib/analytics";
 import { ENQUIRY_PREFILL_FIELDS, labelledLines, readPrefill } from "@/lib/prefill";
-import { TURNSTILE_SCRIPT_URL, TURNSTILE_SITE_KEY } from "@/lib/turnstile";
+import { TURNSTILE_SCRIPT_URL } from "@/lib/turnstile";
 import {
   contactSchema,
   type ContactFormData,
   type ContactFormInput,
 } from "@/lib/contact-contract";
+
+const ASSESSMENT_DETAILS = "Site assessment requested.\nSite: \nRoles: \nHeadcount: \nShift pattern: \nTarget start: ";
+type ContactDraft = { name: string; phone: string; email: string; company: string; details: string };
+function decodeContactDraft(raw: unknown): ContactDraft | null {
+  if (!raw || typeof raw !== "object") return null;
+  const values = raw as Record<string, unknown>;
+  const draft = Object.fromEntries(["name", "phone", "email", "company", "details"].map((key) => [key, typeof values[key] === "string" ? values[key] : ""])) as ContactDraft;
+  return Object.values(draft).some(Boolean) ? draft : null;
+}
 
 const field =
   "form-scroll-target mt-2 h-12 rounded-lg border-neutral-300 bg-background px-4 text-base text-foreground shadow-none placeholder:text-neutral-400 focus-visible:border-gold-500 focus-visible:ring-gold-500/25 md:text-base";
@@ -62,11 +74,7 @@ export function ContactForm() {
   const [sendFailure, setSendFailure] = useState<string | null>(null);
   const [formStartedAt] = useState(() => Date.now());
   const [error, setError] = useState<string | null>(null);
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
-  const turnstileBox = useRef<HTMLDivElement>(null);
-  const turnstileId = useRef<string | null>(null);
-  // State as well as the ref: onSubmit runs through handleSubmit, so it must not read refs.
-  const [turnstileWidget, setTurnstileWidget] = useState<string | null>(null);
+  const { token: turnstileToken, box: turnstileBox, onReady: onVerificationReady, reset: resetTurnstile } = useTurnstile("contact", "contact");
   const trackedStart = useRef(false);
   const doneHeading = useRef<HTMLHeadingElement>(null);
   const errorSummary = useRef<HTMLParagraphElement>(null);
@@ -74,15 +82,18 @@ export function ContactForm() {
 
   const {
     register,
+    control,
+    reset,
     handleSubmit,
     setValue,
     formState: { errors, isSubmitting, submitCount },
   } = useForm<ContactFormInput, undefined, ContactFormData>({
     resolver: zodResolver(contactSchema),
     shouldFocusError: false,
+    reValidateMode: "onChange",
     defaultValues: {
       details: isAssessment
-        ? "Site assessment requested.\nSite: \nRoles: \nHeadcount: \nShift pattern: \nTarget start: "
+        ? ASSESSMENT_DETAILS
         : "",
     },
   });
@@ -108,25 +119,21 @@ export function ContactForm() {
     trackAnalyticsEvent("form_prefilled", { form: "contact", fields: Object.keys(values).length });
   }, [setValue]);
 
-  const renderTurnstile = useCallback(() => {
-    if (!window.turnstile || !turnstileBox.current || turnstileId.current) return;
-    turnstileId.current = window.turnstile.render(turnstileBox.current, {
-      sitekey: TURNSTILE_SITE_KEY,
-      action: "contact",
-      appearance: "interaction-only",
-      callback: (token: string) => setTurnstileToken(token),
-      "expired-callback": () => setTurnstileToken(null),
-      "error-callback": () => setTurnstileToken(null),
-      // Cloudflare is about to ask for an interaction: friction worth counting.
-      "before-interactive-callback": () => trackAnalyticsEvent("verification_shown", { form: "contact", page: formPage() }),
-    });
-    setTurnstileWidget(turnstileId.current);
-  }, []);
-  useEffect(() => renderTurnstile(), [renderTurnstile]);
-  const resetTurnstile = () => {
-    setTurnstileToken(null);
-    if (window.turnstile && turnstileWidget) window.turnstile.reset(turnstileWidget);
+  const values = useWatch({ control });
+  const snapshot: ContactDraft = {
+    name: typeof values.name === "string" ? values.name : "", phone: typeof values.phone === "string" ? values.phone : "",
+    email: typeof values.email === "string" ? values.email : "", company: typeof values.company === "string" ? values.company : "",
+    details: typeof values.details === "string" ? values.details : "",
   };
+  const hasDraft = Boolean(snapshot.name || snapshot.phone || snapshot.email || snapshot.company || (snapshot.details && snapshot.details !== ASSESSMENT_DETAILS));
+  const restoreDraft = useCallback((saved: ContactDraft) => reset(saved), [reset]);
+  const draft = useSessionDraft(isAssessment ? "vayasya-assessment-draft" : "vayasya-contact-draft", hasDraft ? snapshot : null, decodeContactDraft, restoreDraft, !submitted);
+  function clearDraft() {
+    draft.clear(); reset({ name: "", phone: "", email: "", company: "", details: isAssessment ? ASSESSMENT_DETAILS : "" });
+    setError(null); setSendFailure(null); resetTurnstile();
+    revealFormTarget(document.getElementById("name"));
+  }
+
 
   async function onSubmit(data: ContactFormData) {
     setError(null);
@@ -160,6 +167,7 @@ export function ContactForm() {
         setError(result.error ?? "Submission failed. Please try again.");
         return;
       }
+      draft.clear();
       setSubmitted(true);
       trackAdsConversion("businessEnquiry");
       trackAnalyticsEvent("generate_lead", {
@@ -221,7 +229,8 @@ export function ContactForm() {
       }}
       noValidate
     >
-      <Script src={TURNSTILE_SCRIPT_URL} onReady={renderTurnstile} />
+      {hasDraft && draft.restored && <FormDraftNotice restored={draft.restored} disabled={isSubmitting} onClear={clearDraft} onResume={() => revealFormTarget(document.getElementById(!snapshot.name ? "name" : !snapshot.phone ? "phone" : "details"))} />}
+      <Script src={TURNSTILE_SCRIPT_URL} onReady={onVerificationReady} />
       <div
         aria-hidden="true"
         className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden"

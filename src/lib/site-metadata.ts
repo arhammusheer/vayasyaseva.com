@@ -1,3 +1,4 @@
+import { shareImageUrl } from "@/lib/share-images";
 import type { Metadata } from "next";
 import {
   brandDisplay,
@@ -51,7 +52,7 @@ export const siteMetadata: Metadata = {
     description: appDescription,
     images: [
       {
-        url: "/opengraph-image",
+        url: shareImageUrl("/en-in"),
         width: 1200,
         height: 630,
         alt: "Vayasya Seva",
@@ -62,7 +63,7 @@ export const siteMetadata: Metadata = {
     card: "summary_large_image",
     title: "Vayasya Seva | Contract Labour & Workforce Services",
     description: appDescription,
-    images: ["/opengraph-image"],
+    images: [shareImageUrl("/en-in")],
   },
 };
 

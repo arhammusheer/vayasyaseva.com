@@ -3,7 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
 import { Section } from "@/components/layout/section";
 import { FaqSection } from "@/components/sections/faq-section";
-import { JobsForm } from "@/components/jobs/jobs-form";
+import { QuickApply } from "@/components/jobs/quick-apply";
 import { JsonLd, breadcrumbSchema, webPageSchema } from "@/lib/structured-data";
 import { jobsCopy } from "@/content/pages/jobs";
 import { getJobHub, jobHubLabels } from "@/content/pages/job-hubs";
@@ -32,8 +32,7 @@ export function jobHubMetadata(slug: string, locale: Locale) {
 
 /**
  * Who is searching (freshers, 10th or 12th pass): the jobs form on top, then
- * the role pages that fit, what to send and FAQs. Not linked from the rest of
- * the site; the links here go out to role pages only.
+ * the role pages that fit, what to send and FAQs. Linked from the jobs overview.
  */
 export function JobHubPage({ slug, locale }: { slug: string; locale: Locale }) {
   const hub = hubOrThrow(slug, locale);
@@ -52,18 +51,18 @@ export function JobHubPage({ slug, locale }: { slug: string; locale: Locale }) {
           { name: hub.name, href: url },
         ])}
       />
-      <section className="jobs-top">
-        <div className="site-shell grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
+      <section className="quick-top">
+        <div className="site-shell grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
           <div className="lg:sticky lg:top-28 lg:self-start">
             <p className="eyebrow text-gold-700">
               <Link href={localePath("/jobs", locale)} className="hover:underline underline-offset-4">
                 {jobs.eyebrow}
               </Link>
             </p>
-            <h1 className="jobs-title">{hub.heading}</h1>
-            <p className="jobs-lede">{hub.lede}</p>
+            <h1 className="quick-title">{hub.heading}</h1>
+            <p className="quick-lede">{hub.lede}</p>
           </div>
-          <JobsForm locale={locale} hub={hub.slug} />
+          <QuickApply key={hub.slug} locale={locale} hub={hub.slug} />
         </div>
       </section>
       <Section variant="subtle">

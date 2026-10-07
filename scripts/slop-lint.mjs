@@ -21,7 +21,7 @@ const SCAN = [
   "src/app/(picker)",
   "src/components/sections",
   "src/components/layout",
-  "src/app/opengraph-image.tsx",
+  "src/lib/share-content.ts",
 ];
 const SKIP = /privacy\.ts|terms\.ts|\.contract\.json|types\.ts/;
 const showAll = process.argv.includes("--all");

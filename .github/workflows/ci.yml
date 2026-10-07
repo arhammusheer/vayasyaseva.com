@@ -40,6 +40,12 @@ jobs:
       - name: Verify n8n workflows are generated
         run: pnpm n8n:build --check
 
+      - name: Verify upload renewal
+        run: pnpm forms:unit
+
+      - name: Verify share images
+        run: pnpm share:check
+
       - name: Build
         run: pnpm build
 

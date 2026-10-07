@@ -3,7 +3,8 @@ import { ArrowUpRight } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
 import { Section } from "@/components/layout/section";
 import { FaqSection } from "@/components/sections/faq-section";
-import { JobsForm } from "@/components/jobs/jobs-form";
+import { quickApplyCopy } from "@/content/pages/quick-apply";
+import { jobHubs } from "@/content/pages/job-hubs";
 import { JsonLd, breadcrumbSchema, webPageSchema } from "@/lib/structured-data";
 import { jobsCopy } from "@/content/pages/jobs";
 import { localePath, locales, type Locale } from "@/lib/i18n";
@@ -21,13 +22,14 @@ export function jobsMetadata(locale: Locale) {
 }
 
 /**
- * The job seeker page: one form (voice, files, text, number) and the kinds
- * of work we hire for. Submissions go through /api/jobs/* to n8n and on to
- * Chatwoot (integrations/n8n/README.md).
+ * Searchable overview of work and candidate categories, with a direct
+ * action to the shared guided application.
  */
 export function JobsPage({ locale }: { locale: Locale }) {
   const t = jobsCopy[locale];
   const url = localePath(PATH, locale);
+  const quick = quickApplyCopy[locale];
+  const apply = { "en-IN": "Apply now", "hi-IN": "आवेदन करें", "hi-Latn-IN": "Apply karein" }[locale];
   return (
     <>
       <JsonLd
@@ -39,8 +41,6 @@ export function JobsPage({ locale }: { locale: Locale }) {
           { name: t.breadcrumb.page, href: url },
         ])}
       />
-      {/* Compact top: on a phone the headline, one line and the record
-          button all show on the first screen. */}
       <section className="jobs-top">
         <div className="site-shell grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
           <div className="lg:sticky lg:top-28 lg:self-start">
@@ -48,7 +48,14 @@ export function JobsPage({ locale }: { locale: Locale }) {
             <h1 className="jobs-title">{t.heading}</h1>
             <p className="jobs-lede">{t.lede}</p>
           </div>
-          <JobsForm locale={locale} />
+          <div className="lg:self-center">
+            <h2 className="text-3xl font-medium">{quick.heading}</h2>
+            <p className="mt-4 max-w-md leading-relaxed text-muted-foreground">{quick.lede}</p>
+            <Link href={localePath("/jobs/apply", locale)} className="jobs-submit mt-6 inline-flex">
+              {apply} <ArrowUpRight size={20} aria-hidden="true" />
+            </Link>
+            <p className="quick-note">{quick.noFee}</p>
+          </div>
         </div>
       </section>
       <Section variant="subtle">
@@ -74,6 +81,15 @@ export function JobsPage({ locale }: { locale: Locale }) {
             ))}
           </ul>
         </div>
+      </Section>
+      <Section variant="subtle">
+        <nav aria-label={t.breadcrumb.page} className="flex flex-wrap gap-x-10 gap-y-4">
+          {jobHubs[locale].map((hub) => (
+            <Link key={hub.slug} href={localePath(`/jobs/${hub.slug}`, locale)} className="text-link">
+              {hub.name} <ArrowUpRight size={18} aria-hidden="true" />
+            </Link>
+          ))}
+        </nav>
       </Section>
       <FaqSection eyebrow={t.faqEyebrow} title={t.faqTitle} items={t.faqs} />
     </>

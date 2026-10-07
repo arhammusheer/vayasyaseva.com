@@ -3,7 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
 import { Section } from "@/components/layout/section";
 import { FaqSection } from "@/components/sections/faq-section";
-import { JobsForm } from "@/components/jobs/jobs-form";
+import { QuickApply } from "@/components/jobs/quick-apply";
 import { JsonLd, breadcrumbSchema, webPageSchema } from "@/lib/structured-data";
 import { jobsCopy } from "@/content/pages/jobs";
 import { getJobRole, jobRoleLabels, jobRoles } from "@/content/pages/job-roles";
@@ -53,18 +53,18 @@ export function JobRolePage({ slug, locale }: { slug: string; locale: Locale }) 
           { name: role.name, href: url },
         ])}
       />
-      <section className="jobs-top">
-        <div className="site-shell grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
+      <section className="quick-top">
+        <div className="site-shell grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
           <div className="lg:sticky lg:top-28 lg:self-start">
             <p className="eyebrow text-gold-700">
               <Link href={localePath("/jobs", locale)} className="hover:underline underline-offset-4">
                 {jobs.eyebrow}
               </Link>
             </p>
-            <h1 className="jobs-title">{role.heading}</h1>
-            <p className="jobs-lede">{role.lede}</p>
+            <h1 className="quick-title">{role.heading}</h1>
+            <p className="quick-lede">{role.lede}</p>
           </div>
-          <JobsForm locale={locale} role={role.slug} />
+          <QuickApply key={role.slug} locale={locale} role={role.slug} />
         </div>
       </section>
       <Section variant="subtle">

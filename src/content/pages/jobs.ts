@@ -25,6 +25,8 @@ export interface JobsFormCopy {
   };
   files: { camera: string; choose: string; remove: string; tooLarge: string; wrongType: string; tooMany: string };
   next: string;
+  retry: string;
+  retryNotice: string;
   submit: string;
   sending: string;
   sendingFile: (n: number, total: number, percent: number) => string;
@@ -35,6 +37,7 @@ export interface JobsFormCopy {
     verification: string;
     network: string;
     server: string;
+    expired: string;
   };
   done: { title: string; refLabel: string; body: string; again: string };
   labels: { voice: string; photo: string; document: string };
@@ -69,11 +72,11 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
   "en-IN": {
     title: "SIDCUL Haridwar Vacancy: Factory, Warehouse and ITI Jobs",
     description:
-      "Looking for work in SIDCUL or anywhere in Haridwar? Send a voice note, a photo of your certificates or a few lines about yourself. Vayasya Seva never charges a fee for a job.",
+      "Jobs in SIDCUL and across Haridwar: factory, packing, warehouse, housekeeping and ITI work. Apply online. Vayasya Seva never charges a fee for a job.",
     breadcrumb: { home: "Home", page: "Jobs" },
     eyebrow: "JOBS · SIDCUL HARIDWAR",
-    heading: "Looking for work? Just tell us.",
-    lede: "Factory, warehouse, housekeeping or other work. No long form: say it in your own voice and we'll call you.",
+    heading: "Find work in SIDCUL Haridwar.",
+    lede: "Explore factory, warehouse, housekeeping and ITI work. Choose the work that suits you, then apply through a few simple questions.",
     noFee: "Vayasya Seva never charges a fee for a job. If anyone asks you for money, tell us.",
     form: {
       steps: {
@@ -118,6 +121,8 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         tooMany: "You can send up to 7 files.",
       },
       next: "Next",
+      retry: "Retry submission",
+      retryNotice: "Retry this application to confirm receipt. Your reference:",
       submit: "Send",
       sending: "Sending…",
       sendingFile: (n, total, percent) => `Sending file ${n} of ${total}… ${percent}%`,
@@ -128,6 +133,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         verification: "We couldn't verify this browser. Please try again.",
         network: "The connection dropped. Check your signal and press Send again.",
         server: "Something went wrong on our side. Please try again in a few minutes.",
+        expired: "Your submission session has expired. If you already pressed Send, check your SMS or contact us with your reference before applying again.",
       },
       done: {
         title: "Received. Thank you.",
@@ -182,11 +188,11 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
   "hi-IN": {
     title: "सिडकुल हरिद्वार वैकेंसी: फ़ैक्टरी, वेयरहाउस और ITI की नौकरी",
     description:
-      "सिडकुल या हरिद्वार में कहीं भी काम चाहिए? अपनी आवाज़ में बताइए, सर्टिफ़िकेट की फ़ोटो भेजिए या दो लाइन लिखिए। Vayasya Seva नौकरी के लिए कोई फ़ीस नहीं लेती।",
+      "सिडकुल और पूरे हरिद्वार में फ़ैक्टरी, पैकिंग, वेयरहाउस, हाउसकीपिंग और ITI की नौकरी। ऑनलाइन आवेदन करें। Vayasya Seva नौकरी के लिए कोई फ़ीस नहीं लेती।",
     breadcrumb: { home: "होम", page: "नौकरी" },
     eyebrow: "नौकरी · सिडकुल हरिद्वार",
-    heading: "काम चाहिए? बोलकर बताइए।",
-    lede: "फ़ैक्टरी, वेयरहाउस, हाउसकीपिंग या कोई और काम। फ़ॉर्म भरने की ज़रूरत नहीं: अपनी आवाज़ में बताइए, हम आपको फ़ोन करेंगे।",
+    heading: "सिडकुल हरिद्वार में काम ढूँढें।",
+    lede: "फ़ैक्टरी, वेयरहाउस, हाउसकीपिंग और ITI का काम देखें। अपने लिए काम चुनें और कुछ आसान सवालों के जवाब देकर आवेदन करें।",
     noFee: "Vayasya Seva नौकरी के लिए कभी कोई फ़ीस नहीं लेती। कोई पैसे माँगे तो हमें बताइए।",
     form: {
       steps: {
@@ -231,6 +237,8 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         tooMany: "ज़्यादा से ज़्यादा 7 फ़ाइलें भेज सकते हैं।",
       },
       next: "आगे",
+      retry: "फिर से भेजें",
+      retryNotice: "इस आवेदन की पुष्टि के लिए फिर से भेजें। आपका नंबर:",
       submit: "भेजें",
       sending: "भेज रहे हैं…",
       sendingFile: (n, total, percent) => `फ़ाइल ${n} / ${total} भेज रहे हैं… ${percent}%`,
@@ -241,6 +249,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         verification: "ब्राउज़र की जाँच नहीं हो पाई। कृपया फिर से कोशिश करें।",
         network: "नेटवर्क टूट गया। सिग्नल देखकर फिर से भेजें दबाएँ।",
         server: "हमारी तरफ़ से कुछ गड़बड़ हुई। कुछ मिनट बाद फिर से कोशिश करें।",
+        expired: "आवेदन का समय समाप्त हो गया है। अगर भेज चुके हैं, तो दोबारा आवेदन करने से पहले SMS देखें या अपने रेफ़रेंस के साथ हमसे संपर्क करें।",
       },
       done: {
         title: "मिल गया, धन्यवाद।",
@@ -295,11 +304,11 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
   "hi-Latn-IN": {
     title: "SIDCUL Haridwar Vacancy: Factory, Warehouse aur ITI Naukri",
     description:
-      "SIDCUL ya Haridwar mein kahin bhi kaam chahiye? Apni awaaz mein bataiye, certificate ki photo bhejiye ya do line likhiye. Vayasya Seva naukri ke liye koi fee nahi leti.",
+      "SIDCUL aur poore Haridwar mein factory, packing, warehouse, housekeeping aur ITI ki naukri. Online apply karein. Vayasya Seva naukri ke liye koi fee nahi leti.",
     breadcrumb: { home: "Home", page: "Jobs" },
     eyebrow: "JOBS · SIDCUL HARIDWAR",
-    heading: "Kaam chahiye? Bolkar bataiye.",
-    lede: "Factory, warehouse, housekeeping ya koi aur kaam. Form bharne ki zaroorat nahi: apni awaaz mein bataiye, hum aapko phone karenge.",
+    heading: "SIDCUL Haridwar mein kaam dhoondhein.",
+    lede: "Factory, warehouse, housekeeping aur ITI ka kaam dekhein. Apne liye kaam chunein aur kuch aasaan sawaalon ke jawaab dekar apply karein.",
     noFee: "Vayasya Seva naukri ke liye kabhi koi fee nahi leti. Koi paise maange to humein bataiye.",
     form: {
       steps: {
@@ -344,6 +353,8 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         tooMany: "Zyada se zyada 7 files bhej sakte hain.",
       },
       next: "Aage",
+      retry: "Phir se bhejein",
+      retryNotice: "Isi application ki pushti ke liye phir se bhejein. Aapka reference:",
       submit: "Bhejein",
       sending: "Bhej rahe hain…",
       sendingFile: (n, total, percent) => `File ${n} / ${total} bhej rahe hain… ${percent}%`,
@@ -354,6 +365,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         verification: "Browser ki jaanch nahi ho paayi. Please phir se try karein.",
         network: "Network toot gaya. Signal dekhkar phir se Bhejein dabayein.",
         server: "Hamari taraf se kuch gadbad hui. Kuch minute baad phir se try karein.",
+        expired: "Application ka samay khatam ho gaya hai. Agar Send daba chuke hain, toh dobara apply karne se pehle SMS dekhein ya apne reference ke saath humse sampark karein.",
       },
       done: {
         title: "Mil gaya, dhanyavaad.",

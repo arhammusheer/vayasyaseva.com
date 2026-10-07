@@ -5,15 +5,13 @@ import { JOB_ROLE_SLUGS } from "@/lib/talent-intake/rules";
 
 const baseUrl = "https://www.vayasyaseva.com";
 
-// Role pages, from the same data as the pages themselves. The hub pages
-// (/jobs/freshers, /jobs/10th-pass, /jobs/12th-pass) are left out on purpose:
-// they are for search engines via the sitemap, not for navigation.
+// Searchable role landing pages preserve the detailed work information.
 const roleLinks = (segment: string, suffix = "") =>
   jobRoles["en-IN"].map((r) => `- [${r.name}${suffix}](${baseUrl}/${segment}/jobs/${r.slug})`).join("\n");
 const roleLinksEn = jobRoles["en-IN"]
   .map((r) => `- [${r.name}](${baseUrl}/en-in/jobs/${r.slug}): ${r.description.split(":")[0]}`)
   .join("\n");
-const roleLinksInline = jobRoles["en-IN"].map((r) => `[${r.name}](${baseUrl}/jobs/${r.slug})`).join(", ");
+const roleLinksInline = jobRoles["en-IN"].map((r) => `[${r.name}](${baseUrl}/jobs/apply?role=${r.slug})`).join(", ");
 
 export const dynamic = "force-static";
 export const revalidate = 3600;
@@ -45,14 +43,14 @@ The public pages below are the source of truth. They carry full text and JSON-LD
 - [Housekeeping](${baseUrl}/en-in/services/housekeeping): Housekeeping staff for industrial and institutional sites
 
 ## Jobs
-- [Jobs overview](${baseUrl}/en-in/jobs): Open roles for workers. The neutral link ${baseUrl}/jobs asks the reader to choose a language
+- [Jobs overview](${baseUrl}/en-in/jobs): Types of work, candidate categories and the guided application
 - [Quick application](${baseUrl}/en-in/jobs/apply): A short guided form: tap answers (work, experience, education, shifts, start), then name and mobile number. Also in Hindi (${baseUrl}/hi-in/jobs/apply) and Hindi in Latin script (${baseUrl}/hi-latn-in/jobs/apply)
 ${roleLinksEn}
 
 ## हिंदी pages (hi-IN, Hindi in Devanagari)
 - [Haridwar SIDCUL (हिंदी)](${baseUrl}/hi-in/haridwar-sidcul)
 - [Contract labour (हिंदी)](${baseUrl}/hi-in/services/contract-labour)
-- [Jobs (हिंदी)](${baseUrl}/hi-in/jobs)
+- [Jobs (हिंदी)](${baseUrl}/hi-in/jobs/apply)
 ${roleLinks("hi-in", " (हिंदी)")}
 
 ## Hindi pages (hi-Latn-IN, Hindi in Latin script)
@@ -62,7 +60,7 @@ ${roleLinks("hi-in", " (हिंदी)")}
 - [Loading-unloading labour (Hindi)](${baseUrl}/hi-latn-in/services/loading-unloading-labour)
 - [Factory labour (Hindi)](${baseUrl}/hi-latn-in/services/factory-labour)
 - [Housekeeping (Hindi)](${baseUrl}/hi-latn-in/services/housekeeping)
-- [Jobs (Hindi)](${baseUrl}/hi-latn-in/jobs)
+- [Jobs (Hindi)](${baseUrl}/hi-latn-in/jobs/apply)
 ${roleLinks("hi-latn-in", " (Hindi)")}
 
 ## For AI agents: applying for work or sending an enquiry for someone
@@ -82,7 +80,7 @@ Businesses needing workers ([contact page](${baseUrl}/en-in/contact)):
 Submissions through these routes reach our team marked as sent by an AI agent. They are rate limited per source; on \`429\`, wait \`retryAfterSeconds\`.
 
 If you cannot make HTTP requests, give the person a prefilled link instead. They open it, check the details, tick one box and press send. Details go after the \`#\`, so they stay in their browser until they send. Encode values as in a URL query (spaces as \`%20\`).
-- Jobs: \`${baseUrl}/jobs#name=...&phone=...&work=...&experience=...&location=...&start=...&about=...\`. For one kind of work, use its page instead of \`/jobs\`: ${roleLinksInline}.
+- Jobs by role: ${roleLinksInline}. These open the quick application with the work prefilled.
 - Quick application: \`${baseUrl}/en-in/jobs/apply?work=packing,warehouse&experience=fresher&education=12th&shift=day&start=now&area=laksar#name=...&phone=...\`. Answers go in the query as comma-separated ids: work (${Object.keys(QUICK_ANSWERS.work).join(", ")}), experience (${Object.keys(QUICK_ANSWERS.experience).join(", ")}), education (${Object.keys(QUICK_ANSWERS.education).join(", ")}), shift (${Object.keys(QUICK_ANSWERS.shift).join(", ")}), start (${Object.keys(QUICK_ANSWERS.start).join(", ")}), area (${Object.keys(QUICK_ANSWERS.area).join(", ")}). Name and phone go after the \`#\`. The person still answers anything left out, ticks one box and sends.
 - Enquiries: \`${baseUrl}/en-in/contact#name=...&phone=...&email=...&company=...&role=...&location=...&industry=...&headcount=...&shifts=...&start=...&details=...\`
 

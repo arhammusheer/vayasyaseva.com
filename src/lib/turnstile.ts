@@ -18,6 +18,7 @@ export class TurnstileNotConfigured extends Error {}
 export type TurnstileWidget = {
   render: (el: HTMLElement, options: Record<string, unknown>) => string;
   reset: (id: string) => void;
+  remove: (id: string) => void;
 };
 declare global {
   interface Window {

@@ -1,3 +1,4 @@
+import { getShareContent, quickShareVariant } from "@/lib/share-content";
 import { pageMetadata } from "@/lib/metadata";
 import { QuickApply } from "@/components/jobs/quick-apply";
 import { JsonLd, breadcrumbSchema, webPageSchema } from "@/lib/structured-data";
@@ -9,21 +10,24 @@ const PATH = "/jobs/apply";
 
 /**
  * The guided application page, in the sitemap and llms.txt and used as a
- * Google Ads landing page. The header and footer "Jobs" links open it (it
- * converted better); /jobs and the role pages keep their full form.
+ * Google Ads landing page. The header and footer "Jobs" links open it;
+ * role and category landing pages embed the same guided form.
  */
-export function quickApplyMetadata(locale: Locale) {
+export function quickApplyMetadata(locale: Locale, query: { role?: string; hub?: string; work?: string } = {}) {
   const t = quickApplyCopy[locale];
+  const variant = quickShareVariant(query);
+  const share = getShareContent(PATH, locale, variant);
   return pageMetadata({
-    title: { absolute: `${t.title} | Vayasya Seva` },
+    title: { absolute: `${variant ? share.heading.replaceAll("\n", " ") : t.title} | Vayasya Seva` },
     description: t.description,
     alternates: { canonical: localePath(PATH, locale) },
     locale,
+    shareVariant: variant,
   });
 }
 
 /** A short top and the guided form; nothing else competes for attention. */
-export function QuickApplyPage({ locale }: { locale: Locale }) {
+export function QuickApplyPage({ locale, prefillKey = "" }: { locale: Locale; prefillKey?: string }) {
   const t = quickApplyCopy[locale];
   const jobs = jobsCopy[locale];
   const url = localePath(PATH, locale);
@@ -44,7 +48,7 @@ export function QuickApplyPage({ locale }: { locale: Locale }) {
           <h1 className="quick-title">{t.heading}</h1>
           <p className="quick-lede">{t.lede}</p>
         </div>
-        <QuickApply locale={locale} />
+        <QuickApply key={prefillKey} locale={locale} />
       </div>
     </section>
     </>

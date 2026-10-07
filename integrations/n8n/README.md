@@ -1,6 +1,6 @@
 # Job seeker intake: n8n workflows
 
-The `/jobs` pages on the website collect a phone number, consent and whatever a person wants to send: a voice note, photos, PDF or Word files, or a typed message. These workflows take it from there. No AI reads it; staff see the originals in Chatwoot.
+The `/jobs/apply` form collects work preferences, a name, phone number, consent and optional photos, PDF or Word files. `/jobs` retains the work overview; role and candidate-category pages embed the same guided form with relevant answers prefilled. Open agent routes can also accept typed details and voice notes. These workflows take it from there. No AI reads it; staff see the originals in Chatwoot.
 
 ```
 website ──POST──► VSPL talent · intake      checks and saves the submission (talent DB), answers 202

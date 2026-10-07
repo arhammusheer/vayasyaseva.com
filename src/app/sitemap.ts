@@ -6,6 +6,7 @@ import { JOB_HUB_SLUGS } from "@/lib/talent-intake/rules";
 const lastModified = new Date("2026-09-13");
 const contentUpdated = new Date("2026-10-01");
 const jobsAdded = new Date("2026-10-02");
+const jobsUpdated = new Date("2026-10-07");
 
 type Page = {
   path: string;
@@ -23,18 +24,18 @@ const sitePages: Page[] = [
   { path: "/services/loading-unloading-labour", lastModified: jobsAdded, changeFrequency: "monthly", priority: 0.8 },
   { path: "/services/factory-labour", lastModified: contentUpdated, changeFrequency: "monthly", priority: 0.8 },
   { path: "/services/housekeeping", lastModified: contentUpdated, changeFrequency: "monthly", priority: 0.8 },
-  { path: "/jobs", lastModified: contentUpdated, changeFrequency: "monthly", priority: 0.8 },
-  { path: "/jobs/apply", lastModified: new Date("2026-10-03"), changeFrequency: "monthly", priority: 0.8 },
+  { path: "/jobs", lastModified: jobsUpdated, changeFrequency: "monthly", priority: 0.8 },
+  { path: "/jobs/apply", lastModified: jobsUpdated, changeFrequency: "monthly", priority: 0.8 },
   ...jobRoles["en-IN"].map((r) => ({
     path: `/jobs/${r.slug}`,
-    lastModified: jobsAdded,
+    lastModified: jobsUpdated,
     changeFrequency: "monthly" as const,
     priority: 0.8,
   })),
-  // Hubs are not linked from the site; the sitemap is how search engines find them.
+  // Candidate categories are linked from the jobs overview as well.
   ...JOB_HUB_SLUGS.map((slug) => ({
     path: `/jobs/${slug}`,
-    lastModified: jobsAdded,
+    lastModified: jobsUpdated,
     changeFrequency: "monthly" as const,
     priority: 0.7,
   })),

@@ -4,6 +4,7 @@ import Script from "next/script";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Check, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { revealFormTarget } from "@/lib/form-navigation";
 import { cn } from "@/lib/utils";
 import { formPage, trackAdsConversion, trackAnalyticsEvent } from "@/lib/analytics";
 import { jobsCopy } from "@/content/pages/jobs";
@@ -104,6 +105,10 @@ export function QuickApply({ locale }: { locale: Locale }) {
   const started = useRef(false);
   const entry = useRef<"preset" | "fresh" | "restored">("fresh");
   const restored = useRef(false);
+  const root = useRef<HTMLDivElement>(null);
+  const doneHeading = useRef<HTMLHeadingElement>(null);
+  const errorSummary = useRef<HTMLUListElement>(null);
+  const pendingStep = useRef<string | null>(null);
 
   // Which questions apply, and how far the visitor has unlocked: every
   // applicable question up to and including the first unanswered one.
@@ -112,7 +117,6 @@ export function QuickApply({ locale }: { locale: Locale }) {
   const firstOpen = active.findIndex((s) => !isDone(s));
   const visible = firstOpen === -1 ? active : active.slice(0, firstOpen + 1);
   const detailsUnlocked = firstOpen === -1;
-  const newest = detailsUnlocked ? "details" : visible[visible.length - 1]?.id;
 
   const markStarted = () => {
     if (started.current) return;
@@ -167,16 +171,25 @@ export function QuickApply({ locale }: { locale: Locale }) {
     }
   }, [answers, confirmed]);
 
-  // Bring each newly unlocked question into view and give it focus, so the
-  // next step is obvious on a phone and announced to screen readers.
+  // Only explicit choices navigate: restored/prefilled answers never move
+  // the page. Re-selecting an answer or revisiting Next still advances.
   useEffect(() => {
-    if (!started.current || !newest) return;
-    const el = document.querySelector<HTMLElement>(`.quick-section[data-step="${newest}"]`);
-    if (!el) return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
-    el.querySelector<HTMLElement>(".quick-question")?.focus({ preventScroll: true });
-  }, [newest]);
+    const step = pendingStep.current;
+    if (!step) return;
+    pendingStep.current = null;
+    const applicable = STEP_DEFS.filter((s) => !s.when || s.when(answers));
+    const next = applicable[applicable.findIndex((s) => s.id === step) + 1]?.id ?? "details";
+    const section = root.current?.querySelector<HTMLElement>(`[data-step="${next}"]`);
+    return revealFormTarget(section ?? null, { focus: section?.querySelector<HTMLElement>(".quick-question") });
+  }, [answers, confirmed]);
+
+  useEffect(() => {
+    if (phase.name === "done") return revealFormTarget(doneHeading.current, { instant: true });
+    if (phase.name !== "form" || !errors.length) return;
+    const field = failedChecks?.find((key) => key === "name" || key === "phone" || key === "agree");
+    const target = field ? root.current?.querySelector<HTMLElement>(field === "agree" ? '[name="agree"]' : `#quick-${field}`) : errorSummary.current;
+    return revealFormTarget(target ?? null);
+  }, [phase.name, errors, failedChecks]);
 
   const renderTurnstile = useCallback(() => {
     if (!window.turnstile || !turnstileBox.current || turnstileId.current) return;
@@ -203,6 +216,7 @@ export function QuickApply({ locale }: { locale: Locale }) {
     // changed = yes when an answer already given is changed: a sign the
     // question or its choices confused someone.
     if (step.kind === "single") {
+      pendingStep.current = step.id;
       const before = answers[step.id]?.[0];
       setAnswers((a) => ({ ...a, [step.id]: [value] }));
       trackAnalyticsEvent("quick_step", { locale, step: step.id, answer: value, ...(before && before !== value ? { changed: "yes" } : {}) });
@@ -219,7 +233,8 @@ export function QuickApply({ locale }: { locale: Locale }) {
   }
 
   function confirm(step: StepDef) {
-    setConfirmed((c) => (c.includes(step.id) ? c : [...c, step.id]));
+    pendingStep.current = step.id;
+    setConfirmed((c) => [...c.filter((id) => id !== step.id), step.id]);
     trackAnalyticsEvent("quick_step", { locale, step: step.id, answer: (answers[step.id] ?? []).join(",").slice(0, 200) });
   }
 
@@ -303,7 +318,7 @@ export function QuickApply({ locale }: { locale: Locale }) {
   if (phase.name === "done") {
     return (
       <div role="status" className="jobs-done">
-        <h2 className="text-4xl font-medium sm:text-5xl">{form.done.title}</h2>
+        <h2 ref={doneHeading} tabIndex={-1} className="form-scroll-target text-4xl font-medium sm:text-5xl">{form.done.title}</h2>
         <p className="mt-8 text-sm text-muted-foreground">{form.done.refLabel}</p>
         <p className="font-data text-3xl tracking-wide text-gold-700 sm:text-4xl">{phase.ref}</p>
         <p className="mt-6 max-w-md text-lg leading-relaxed text-muted-foreground">{form.done.body}</p>
@@ -320,7 +335,7 @@ export function QuickApply({ locale }: { locale: Locale }) {
   // Questions stay on the page once unlocked, so earlier answers can be
   // changed in place; each new one appears below the last.
   return (
-    <div className="quick-apply">
+    <div ref={root} className="quick-apply">
       <Script src={TURNSTILE_SCRIPT_URL} onReady={renderTurnstile} />
       <div className="quick-progress" style={{ gridTemplateColumns: `repeat(${total}, 1fr)` }} aria-hidden="true">
         {Array.from({ length: total }, (_, i) => (
@@ -343,7 +358,7 @@ export function QuickApply({ locale }: { locale: Locale }) {
               selected={(v) => values.includes(v)}
               onPick={(v) => pick(step, v)}
             />
-            {step.kind === "multi" && !confirmed.includes(step.id) && (
+            {step.kind === "multi" && (
               <button type="button" className="jobs-submit mt-6" disabled={values.length === 0} onClick={() => confirm(step)}>
                 {t.next}
               </button>
@@ -366,6 +381,14 @@ export function QuickApply({ locale }: { locale: Locale }) {
             <label htmlFor="quick-name" className="quick-label">{t.details.name}</label>
             <Input
               id="quick-name"
+              aria-invalid={failedChecks?.includes("name") || undefined}
+              aria-describedby={errors.length ? "quick-errors" : undefined}
+              enterKeyHint="next"
+              onKeyDown={(event) => {
+                if (event.key !== "Enter" || event.nativeEvent.isComposing) return;
+                event.preventDefault();
+                revealFormTarget(root.current?.querySelector<HTMLElement>("#quick-phone") ?? null);
+              }}
               autoComplete="name"
               maxLength={MAX_APPLICANT_NAME_LENGTH}
               placeholder={t.details.namePlaceholder}
@@ -373,12 +396,15 @@ export function QuickApply({ locale }: { locale: Locale }) {
               onFocus={markStarted}
               onChange={(e) => setName(e.target.value)}
               disabled={sending}
-              className={cn(fieldClass, "mt-2 max-w-sm")}
+              className={cn(fieldClass, "form-scroll-target mt-2 max-w-sm")}
             />
             <label htmlFor="quick-phone" className="quick-label">{t.details.phone}</label>
             <Input
               id="quick-phone"
               type="tel"
+              aria-invalid={failedChecks?.includes("phone") || undefined}
+              aria-describedby={errors.length ? "quick-errors" : undefined}
+              enterKeyHint="done"
               inputMode="tel"
               autoComplete="tel-national"
               placeholder={t.details.phonePlaceholder}
@@ -386,11 +412,11 @@ export function QuickApply({ locale }: { locale: Locale }) {
               onFocus={markStarted}
               onChange={(e) => setPhone(e.target.value)}
               disabled={sending}
-              className={cn(fieldClass, "mt-2 max-w-xs font-data")}
+              className={cn(fieldClass, "form-scroll-target mt-2 max-w-xs font-data")}
             />
             <JobFilePicker locale={locale} picker={filePicker} disabled={sending} compact optionalLabel={t.details.optional} />
             <label className="jobs-check mt-6">
-              <input type="checkbox" name="agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} disabled={sending} />
+              <input type="checkbox" name="agree" aria-invalid={failedChecks?.includes("agree") || undefined} aria-describedby={errors.length ? "quick-errors" : undefined} checked={agreed} onChange={(e) => setAgreed(e.target.checked)} disabled={sending} />
               <span>
                 {form.steps.phone.agree}{" "}
                 <a href={localePath("/privacy", "en-IN")} target="_blank" rel="noopener" className="underline underline-offset-4">
@@ -399,7 +425,7 @@ export function QuickApply({ locale }: { locale: Locale }) {
               </span>
             </label>
             {errors.length > 0 && (
-              <ul className="jobs-errors" role="alert">
+              <ul ref={errorSummary} id="quick-errors" tabIndex={-1} className="jobs-errors form-scroll-target" role="alert">
                 {errors.map((e) => (
                   <li key={e}>{e}</li>
                 ))}

@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Loader2, Mic, RotateCcw, Square, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { revealFormTarget } from "@/lib/form-navigation";
 import { cn } from "@/lib/utils";
 import { formPage, trackAdsConversion, trackAnalyticsEvent } from "@/lib/analytics";
 import { JOB_PREFILL_FIELDS, labelledLines, readPrefill } from "@/lib/prefill";
@@ -79,6 +80,10 @@ export function JobsForm({
   const turnstileId = useRef<string | null>(null);
   const doneHeading = useRef<HTMLHeadingElement>(null);
   const trackedStart = useRef(false);
+  const formRoot = useRef<HTMLFormElement>(null);
+  const errorSummary = useRef<HTMLUListElement>(null);
+  const resetRequested = useRef(false);
+  const goToStep = (step: string) => revealFormTarget(formRoot.current?.querySelector<HTMLElement>(`[data-form-step="${step}"]`) ?? null);
 
   const markStarted = () => {
     if (trackedStart.current) return;
@@ -244,10 +249,20 @@ export function JobsForm({
   }
 
   useEffect(() => {
-    if (phase.name === "done") doneHeading.current?.focus();
-  }, [phase.name]);
+    if (phase.name === "done") return revealFormTarget(doneHeading.current, { instant: true });
+    if (phase.name !== "form") return;
+    if (resetRequested.current) {
+      resetRequested.current = false;
+      return revealFormTarget(formRoot.current?.querySelector<HTMLElement>('[data-form-step="about"]') ?? null, { instant: true });
+    }
+    if (!errors.length) return;
+    const first = failedChecks?.[0];
+    const selector = first === "empty" ? "#jobs-text" : first === "phone" ? "#jobs-phone" : first === "agree" ? '[name="agree"]' : null;
+    return revealFormTarget(selector ? formRoot.current?.querySelector<HTMLElement>(selector) ?? null : errorSummary.current);
+  }, [phase.name, errors, failedChecks]);
 
   function reset() {
+    resetRequested.current = true;
     discardVoice();
     filePicker.clear();
     setText("");
@@ -261,7 +276,7 @@ export function JobsForm({
   if (phase.name === "done") {
     return (
       <div role="status" className="jobs-done">
-        <h2 ref={doneHeading} tabIndex={-1} className="text-4xl font-medium sm:text-5xl">
+        <h2 ref={doneHeading} tabIndex={-1} className="form-scroll-target text-4xl font-medium sm:text-5xl">
           {t.done.title}
         </h2>
         <p className="mt-8 text-sm text-muted-foreground">{t.done.refLabel}</p>
@@ -280,6 +295,7 @@ export function JobsForm({
 
   return (
     <form
+      ref={formRoot}
       data-analytics-form="jobs"
       // Read by the analytics draft log if the form is left unfinished: only
       // whether a voice note or files were added, never their content.
@@ -303,7 +319,7 @@ export function JobsForm({
         <li>
           <span className="jobs-step-number" aria-hidden="true">01</span>
           <div>
-            <h2 className="jobs-step-title">{t.steps.record.title}</h2>
+            <h2 data-form-step="about" tabIndex={-1} className="jobs-step-title form-scroll-target">{t.steps.record.title}</h2>
             <p className="jobs-step-hint">{t.steps.record.lead}</p>
             <ul className="jobs-say">
               {t.steps.record.points.map((point) => (
@@ -353,6 +369,8 @@ export function JobsForm({
             </label>
             <Textarea
               id="jobs-text"
+              aria-invalid={failedChecks?.includes("empty") || undefined}
+              aria-describedby={errors.length ? "jobs-errors" : undefined}
               rows={3}
               maxLength={INTAKE_LIMITS.maxTextLength}
               placeholder={t.steps.text.placeholder}
@@ -360,18 +378,27 @@ export function JobsForm({
               onFocus={markStarted}
               onChange={(e) => setText(e.target.value)}
               disabled={sending}
-              className={cn(fieldClass, "mt-2 h-auto min-h-20 resize-y py-3 leading-relaxed")}
+              className={cn(fieldClass, "form-scroll-target mt-2 h-auto min-h-20 resize-y py-3 leading-relaxed")}
             />
+            <button type="button" className="text-link mt-5 min-h-11" disabled={sending || voice.state === "recording"} onClick={() => goToStep("phone")}>{t.next}</button>
           </div>
         </li>
 
         <li>
           <span className="jobs-step-number" aria-hidden="true">02</span>
           <div>
-            <label htmlFor="jobs-phone" className="jobs-step-title block">{t.steps.phone.title}</label>
+            <label data-form-step="phone" tabIndex={-1} htmlFor="jobs-phone" className="jobs-step-title form-scroll-target block">{t.steps.phone.title}</label>
             <Input
               id="jobs-phone"
               type="tel"
+              aria-invalid={failedChecks?.includes("phone") || undefined}
+              aria-describedby={errors.length ? "jobs-errors" : undefined}
+              enterKeyHint="next"
+              onKeyDown={(event) => {
+                if (event.key !== "Enter" || event.nativeEvent.isComposing) return;
+                event.preventDefault();
+                goToStep("files");
+              }}
               inputMode="tel"
               autoComplete="tel-national"
               placeholder={t.steps.phone.placeholder}
@@ -379,25 +406,27 @@ export function JobsForm({
               onFocus={markStarted}
               onChange={(e) => setPhone(e.target.value)}
               disabled={sending}
-              className={cn(fieldClass, "mt-3 max-w-xs font-data")}
+              className={cn(fieldClass, "form-scroll-target mt-3 max-w-xs font-data")}
             />
+            <button type="button" className="text-link mt-5 min-h-11" disabled={sending} onClick={() => goToStep("files")}>{t.next}</button>
           </div>
         </li>
 
         <li>
           <span className="jobs-step-number" aria-hidden="true">03</span>
           <div>
-            <h2 className="jobs-step-title">{t.steps.files.title}</h2>
+            <h2 data-form-step="files" tabIndex={-1} className="jobs-step-title form-scroll-target">{t.steps.files.title}</h2>
             <p className="jobs-step-hint">{t.steps.files.hint}</p>
             <p className="jobs-step-warning">{t.steps.files.warning}</p>
             <JobFilePicker locale={locale} picker={filePicker} disabled={sending} />
+            <button type="button" className="text-link mt-5 min-h-11" disabled={sending} onClick={() => goToStep("consent")}>{t.next}</button>
           </div>
         </li>
       </ol>
 
       <div className="jobs-consent">
-        <label className="jobs-check">
-          <input type="checkbox" name="agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} disabled={sending} />
+        <label data-form-step="consent" tabIndex={-1} className="jobs-check form-scroll-target">
+          <input type="checkbox" name="agree" aria-invalid={failedChecks?.includes("agree") || undefined} aria-describedby={errors.length ? "jobs-errors" : undefined} checked={agreed} onChange={(e) => setAgreed(e.target.checked)} disabled={sending} />
           <span>
             {t.steps.phone.agree}{" "}
             <a href={localePath("/privacy", "en-IN")} target="_blank" rel="noopener" className="underline underline-offset-4">
@@ -410,7 +439,7 @@ export function JobsForm({
       <div ref={turnstileBox} className="mt-5" />
 
       {errors.length > 0 && (
-        <ul className="jobs-errors" role="alert">
+        <ul ref={errorSummary} id="jobs-errors" tabIndex={-1} className="jobs-errors form-scroll-target" role="alert">
           {errors.map((e) => (
             <li key={e}>{e}</li>
           ))}

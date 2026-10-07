@@ -24,6 +24,7 @@ export interface JobsFormCopy {
     unsupported: string;
   };
   files: { camera: string; choose: string; remove: string; tooLarge: string; wrongType: string; tooMany: string };
+  next: string;
   submit: string;
   sending: string;
   sendingFile: (n: number, total: number, percent: number) => string;
@@ -116,6 +117,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         wrongType: "can't be sent (use a photo, PDF or Word file)",
         tooMany: "You can send up to 7 files.",
       },
+      next: "Next",
       submit: "Send",
       sending: "Sending…",
       sendingFile: (n, total, percent) => `Sending file ${n} of ${total}… ${percent}%`,
@@ -228,6 +230,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         wrongType: "नहीं भेजी जा सकती (फ़ोटो, PDF या Word फ़ाइल भेजें)",
         tooMany: "ज़्यादा से ज़्यादा 7 फ़ाइलें भेज सकते हैं।",
       },
+      next: "आगे",
       submit: "भेजें",
       sending: "भेज रहे हैं…",
       sendingFile: (n, total, percent) => `फ़ाइल ${n} / ${total} भेज रहे हैं… ${percent}%`,
@@ -340,6 +343,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         wrongType: "nahi bheji ja sakti (photo, PDF ya Word file bhejein)",
         tooMany: "Zyada se zyada 7 files bhej sakte hain.",
       },
+      next: "Aage",
       submit: "Bhejein",
       sending: "Bhej rahe hain…",
       sendingFile: (n, total, percent) => `File ${n} / ${total} bhej rahe hain… ${percent}%`,

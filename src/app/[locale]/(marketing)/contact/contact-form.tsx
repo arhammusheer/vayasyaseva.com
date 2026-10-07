@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { revealFormTarget } from "@/lib/form-navigation";
 import { cn } from "@/lib/utils";
 import { formPage, trackAdsConversion, trackAnalyticsEvent } from "@/lib/analytics";
 import { ENQUIRY_PREFILL_FIELDS, labelledLines, readPrefill } from "@/lib/prefill";
@@ -21,7 +22,7 @@ import {
 } from "@/lib/contact-contract";
 
 const field =
-  "mt-2 h-12 rounded-lg border-neutral-300 bg-background px-4 text-base text-foreground shadow-none placeholder:text-neutral-400 focus-visible:border-gold-500 focus-visible:ring-gold-500/25 md:text-base";
+  "form-scroll-target mt-2 h-12 rounded-lg border-neutral-300 bg-background px-4 text-base text-foreground shadow-none placeholder:text-neutral-400 focus-visible:border-gold-500 focus-visible:ring-gold-500/25 md:text-base";
 
 function Field({
   id,
@@ -47,7 +48,7 @@ function Field({
         )}
       </Label>
       {children}
-      {error && <p className="mt-1.5 text-xs text-destructive">{error}</p>}
+      {error && <p id={`${id}-error`} className="mt-1.5 text-xs text-destructive">{error}</p>}
     </div>
   );
 }
@@ -67,6 +68,8 @@ export function ContactForm() {
   // State as well as the ref: onSubmit runs through handleSubmit, so it must not read refs.
   const [turnstileWidget, setTurnstileWidget] = useState<string | null>(null);
   const trackedStart = useRef(false);
+  const doneHeading = useRef<HTMLHeadingElement>(null);
+  const errorSummary = useRef<HTMLParagraphElement>(null);
   const formType = isAssessment ? "site_assessment" : "contact";
 
   const {
@@ -76,6 +79,7 @@ export function ContactForm() {
     formState: { errors, isSubmitting, submitCount },
   } = useForm<ContactFormInput, undefined, ContactFormData>({
     resolver: zodResolver(contactSchema),
+    shouldFocusError: false,
     defaultValues: {
       details: isAssessment
         ? "Site assessment requested.\nSite: \nRoles: \nHeadcount: \nShift pattern: \nTarget start: "
@@ -170,10 +174,15 @@ export function ContactForm() {
     }
   }
 
+  useEffect(() => {
+    if (submitted) return revealFormTarget(doneHeading.current, { instant: true });
+    if (error) return revealFormTarget(errorSummary.current);
+  }, [submitted, error]);
+
   if (submitted) {
     return (
       <div role="status" className="border-t pt-8">
-        <h2 className="text-3xl font-medium">Received.</h2>
+        <h2 ref={doneHeading} tabIndex={-1} className="form-scroll-target text-3xl font-medium">Received.</h2>
         <p className="mt-3 max-w-md text-muted-foreground leading-relaxed">
           Thank you. Our team will review your message and contact you using
           the details you shared.
@@ -184,13 +193,27 @@ export function ContactForm() {
 
   return (
     <form
+      aria-busy={isSubmitting}
       data-analytics-form="contact"
       // Failed checks from the last Send ("" if it passed), for the
       // abandonment event: field names and failure kinds only.
       data-form-errors={submitCount > 0 ? [...Object.keys(errors), sendFailure].filter(Boolean).join(",") : undefined}
-      onSubmit={handleSubmit(onSubmit, (invalid) => {
+      onSubmit={handleSubmit(onSubmit, (invalid, event) => {
         trackAnalyticsEvent("contact_form_error", { form_type: formType, reason: "validation", checks: Object.keys(invalid).join(",") });
+        const submittedForm = event?.target as HTMLFormElement | undefined;
+        const first = Array.from(submittedForm?.querySelectorAll<HTMLElement>("input, textarea") ?? [])
+          .find((input) => input.id in invalid);
+        revealFormTarget(first ?? null);
       })}
+      onKeyDownCapture={(event) => {
+        if (event.key !== "Enter" || event.nativeEvent.isComposing || !(event.target instanceof HTMLInputElement)) return;
+        const inputs = Array.from(event.currentTarget.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input:not([tabindex="-1"]), textarea'));
+        const next = inputs[inputs.indexOf(event.target) + 1];
+        if (next) {
+          event.preventDefault();
+          revealFormTarget(next);
+        }
+      }}
       onFocusCapture={(event) => {
         if (trackedStart.current || !(event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement)) return;
         trackedStart.current = true;
@@ -217,6 +240,9 @@ export function ContactForm() {
         <Field id="name" label="Name" error={errors.name?.message}>
           <Input
             id="name"
+            aria-invalid={Boolean(errors.name) || undefined}
+            aria-describedby={errors.name ? "name-error" : undefined}
+            enterKeyHint="next"
             autoComplete="name"
             placeholder="Your name"
             {...register("name")}
@@ -226,7 +252,11 @@ export function ContactForm() {
         <Field id="phone" label="Phone" error={errors.phone?.message}>
           <Input
             id="phone"
+            aria-invalid={Boolean(errors.phone) || undefined}
+            aria-describedby={errors.phone ? "phone-error" : undefined}
             type="tel"
+            inputMode="tel"
+            enterKeyHint="next"
             autoComplete="tel"
             placeholder="+91 98765 43210"
             {...register("phone")}
@@ -236,7 +266,10 @@ export function ContactForm() {
         <Field id="email" label="Email" optional error={errors.email?.message}>
           <Input
             id="email"
+            aria-invalid={Boolean(errors.email) || undefined}
+            aria-describedby={errors.email ? "email-error" : undefined}
             type="email"
+            enterKeyHint="next"
             autoComplete="email"
             placeholder="you@company.com"
             {...register("email")}
@@ -246,6 +279,9 @@ export function ContactForm() {
         <Field id="company" label="Company" optional error={errors.company?.message}>
           <Input
             id="company"
+            aria-invalid={Boolean(errors.company) || undefined}
+            aria-describedby={errors.company ? "company-error" : undefined}
+            enterKeyHint="next"
             autoComplete="organization"
             placeholder="Company name"
             {...register("company")}
@@ -260,6 +296,8 @@ export function ContactForm() {
         >
           <Textarea
             id="details"
+            aria-invalid={Boolean(errors.details) || undefined}
+            aria-describedby={errors.details ? "details-error" : undefined}
             rows={6}
             placeholder="Roles, headcount, shifts, site and timing, as far as you know them."
             {...register("details")}
@@ -275,7 +313,7 @@ export function ContactForm() {
       <div ref={turnstileBox} className="mt-6" />
 
       {error && (
-        <p role="alert" className="mt-6 text-sm text-destructive">
+        <p ref={errorSummary} tabIndex={-1} role="alert" className="form-scroll-target mt-6 text-sm text-destructive">
           {error}
         </p>
       )}

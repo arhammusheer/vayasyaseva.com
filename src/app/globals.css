@@ -1956,7 +1956,7 @@ a:hover > svg {
 }
 /* A newly unlocked question slides in below the last answer. */
 .quick-section {
-  scroll-margin-top: 96px;
+  scroll-margin-top: 24px;
   animation: quick-reveal 320ms ease-out;
 }
 @keyframes quick-reveal {
@@ -2075,4 +2075,15 @@ a:hover > svg {
   .quick-section {
     animation: none;
   }
+}
+
+/* Adds breathing room to html's 64px sticky-header scroll padding. */
+.form-scroll-target {
+  scroll-margin-top: 24px;
+}
+.form-scroll-target:focus:not(input):not(textarea):not(button) {
+  outline: none;
+}
+.jobs-check input[type="checkbox"] {
+  scroll-margin-top: 24px;
 }

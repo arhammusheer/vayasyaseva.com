@@ -41,6 +41,23 @@ BEGIN
   ALTER TABLE submissions ADD COLUMN IF NOT EXISTS answers jsonb;
   CREATE INDEX IF NOT EXISTS submissions_phone_idx ON submissions (phone);
 
+  -- Separate from Chatwoot delivery. Only new submissions are queued by intake;
+  -- setup never backfills acknowledgements for historical applications.
+  CREATE TABLE IF NOT EXISTS sms_acknowledgements (
+    submission_id uuid PRIMARY KEY REFERENCES submissions (id) ON DELETE CASCADE,
+    status text NOT NULL DEFAULT 'pending'
+      CHECK (status IN ('pending', 'sending', 'accepted', 'failed', 'unknown')),
+    attempts int NOT NULL DEFAULT 0,
+    request_id text,
+    last_error text,
+    next_attempt_at timestamptz NOT NULL DEFAULT now(),
+    accepted_at timestamptz,
+    created_at timestamptz NOT NULL DEFAULT now(),
+    updated_at timestamptz NOT NULL DEFAULT now()
+  );
+  CREATE INDEX IF NOT EXISTS sms_acknowledgements_pending_idx
+    ON sms_acknowledgements (next_attempt_at, created_at) WHERE status = 'pending';
+
   CREATE TABLE IF NOT EXISTS attachments (
     id                  uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     submission_id       uuid NOT NULL REFERENCES submissions (id) ON DELETE CASCADE,

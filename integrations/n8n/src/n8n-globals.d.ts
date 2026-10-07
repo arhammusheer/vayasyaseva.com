@@ -24,6 +24,7 @@ interface N8nNodeRef<J> {
 }
 
 interface NodeOutputs {
+  "Claim acknowledgement": { submission_id: string; attempts: number; ref: string; phone: string };
   "Webhook": { body: unknown };
   "Validate submission": import("./types").ValidatedSubmission;
   "Claim voice notes": import("./types").ClaimedVoiceNote;

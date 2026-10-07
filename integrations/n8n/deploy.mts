@@ -7,14 +7,14 @@
  * workflows are imported under fixed ids, so a re-run updates them in place.
  *
  * 1. Reads the secrets from the cluster: the talent database password
- *    (data/pg-main-talent) and the R2 key and webhook secret (growth/n8n-env).
+ *    (data/pg-main-talent), R2 key, webhook secret and Fast2SMS key (growth/n8n-env).
  *    They are piped into the n8n pod and never printed or written locally.
- * 2. Imports the credentials talent-pg, r2-talent-intake and
+ * 2. Imports talent-pg, r2-talent-intake, fast2sms-vspl and
  *    vspl-talent-intake-webhook. sarvam-vspl must already exist (made by hand).
- * 3. Imports the four workflows, linking credentials by name and filling in
+ * 3. Imports the five workflows, linking credentials by name and filling in
  *    the Chatwoot inbox identifier of the "Jobs, website" inbox.
  * 4. Runs "VSPL talent · setup" (schema), publishes intake, transcribe and
- *    deliver, and restarts n8n so the triggers load.
+ *    deliver and acknowledge, and restarts n8n so the triggers load.
  */
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
@@ -57,6 +57,7 @@ const talentPassword = secretValue("data", "pg-main-talent", "password");
 const r2KeyId = secretValue("growth", "n8n-env", "TALENT_R2_ACCESS_KEY_ID");
 const r2Secret = secretValue("growth", "n8n-env", "TALENT_R2_SECRET_ACCESS_KEY");
 const webhookSecret = secretValue("growth", "n8n-env", "TALENT_INTAKE_WEBHOOK_SECRET");
+const fast2smsKey = secretValue("growth", "n8n-env", "FAST2SMS_API_KEY");
 const r2Endpoint = `https://3f03827748ac33418f1176adaa436f26.r2.cloudflarestorage.com`;
 
 step(`looking up the "${INBOX_NAME}" inbox identifier in Chatwoot`);
@@ -82,7 +83,7 @@ const existing = JSON.parse(
 
 // 2. Credentials. Ids come from the generated workflows, so links are exact;
 //    an existing credential with the same name keeps its id.
-const workflowFiles = ["vspl-talent-setup", "vspl-talent-intake", "vspl-talent-transcribe", "vspl-talent-deliver"];
+const workflowFiles = ["vspl-talent-setup", "vspl-talent-intake", "vspl-talent-transcribe", "vspl-talent-deliver", "vspl-talent-acknowledge"];
 const workflows = workflowFiles.map((f) => JSON.parse(readFileSync(resolve(here, "workflows", `${f}.json`), "utf8")));
 
 const referenced = new Map<string, { id: string; type: string }>();
@@ -96,6 +97,11 @@ for (const w of workflows) {
 const idFor = (name: string) => existing.find((c) => c.name === name)?.id ?? referenced.get(name)?.id;
 
 const credentials = [
+  {
+    name: "fast2sms-vspl",
+    type: "httpHeaderAuth",
+    data: { name: "Authorization", value: fast2smsKey },
+  },
   {
     name: "talent-pg",
     type: "postgres",

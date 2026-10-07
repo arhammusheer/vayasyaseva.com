@@ -66,6 +66,7 @@ const CREDENTIALS = {
   r2: "r2-talent-intake",
   webhook: "vspl-talent-intake-webhook",
   sarvam: "sarvam-vspl",
+  fast2sms: "fast2sms-vspl",
 } as const;
 
 const BUCKET = "vayasya-talent-intake";
@@ -381,6 +382,10 @@ WITH s AS (
   VALUES ($1, $2, $3, $4, $5, $6::timestamptz, true, $7, $9, $10, $11, $12, $13, $14, $15::jsonb)
   ON CONFLICT (ref) DO NOTHING
   RETURNING id
+), ack AS (
+  INSERT INTO sms_acknowledgements (submission_id)
+  SELECT id FROM s
+  RETURNING 1
 ), a AS (
   INSERT INTO attachments (submission_id, position, kind, r2_key, mime, size_bytes, original_name, transcript_status)
   SELECT s.id, (x->>'position')::int, x->>'kind', x->>'key', x->>'mime', (x->>'size')::int, x->>'name',
@@ -388,7 +393,7 @@ WITH s AS (
   FROM s, jsonb_array_elements($8::jsonb) AS x
   RETURNING 1
 )
-SELECT (SELECT id FROM s) AS submission_id, (SELECT count(*) FROM a) AS attachments;`,
+SELECT (SELECT id FROM s) AS submission_id, (SELECT count(*) FROM a) AS attachments, (SELECT count(*) FROM ack) AS acknowledgements;`,
       grid(2),
       "[$json.ref, $json.source, $json.locale, $json.phone, $json.consentVersion, $json.consentedAt, $json.text, JSON.stringify($json.attachments), $json.role, $json.hub, $json.channel, $json.agentName, $json.form, $json.applicantName, $json.answers ? JSON.stringify($json.answers) : null]",
     ),
@@ -405,6 +410,52 @@ SELECT (SELECT id FROM s) AS submission_id, (SELECT count(*) FROM a) AS attachme
     },
   });
   w.chain("Webhook", "Validate submission", "Save submission", "Respond 202");
+  addAcknowledgement(w, "Respond 202", grid(4), "s.id = $1::uuid", "[$('Save submission').first().json.submission_id]");
+  return w.build();
+}
+
+// Claims are shared by immediate intake and the scheduled recovery workflow.
+// A timeout can mean the SMS was accepted: never automatically resend it.
+function addAcknowledgement(w: WorkflowBuilder, start: string, position: Position, filter = "true", params?: string) {
+  const at = (col: number): Position => [position[0] + col * 240, position[1]];
+  w.add(sql("Claim acknowledgement", `
+WITH candidate AS (
+  SELECT a.submission_id FROM sms_acknowledgements a
+  JOIN submissions s ON s.id = a.submission_id
+  WHERE a.status = 'pending' AND a.next_attempt_at <= now() AND a.attempts < 3 AND ${filter}
+  ORDER BY a.created_at LIMIT 1 FOR UPDATE OF a SKIP LOCKED
+), claimed AS (
+  UPDATE sms_acknowledgements a SET status = 'sending', attempts = attempts + 1, updated_at = now()
+  FROM candidate c WHERE a.submission_id = c.submission_id RETURNING a.*
+)
+SELECT c.submission_id, c.attempts, s.ref, s.phone FROM claimed c
+JOIN submissions s ON s.id = c.submission_id;`, at(0), params));
+  w.add(condition("Acknowledgement claimed?", "Boolean($json.submission_id)", at(1)));
+  w.add(http("Fast2SMS: acknowledgement", at(2), {
+    method: "POST", url: "https://www.fast2sms.com/dev/bulkV2", auth: CREDENTIALS.fast2sms,
+    json: `={{ JSON.stringify({ route: 'dlt', sender_id: 'VAYSPL', message: '227115', variables_values: $json.ref, numbers: $json.phone.slice(-10), sms_details: '1', udf1: $json.ref }) }}`,
+    responseJson: true, fullResponse: true, continueOnError: true, timeout: 15000,
+  }));
+  w.add(code("Acknowledgement result", "acknowledgement-result.ts", at(3)));
+  w.add(sql("Save acknowledgement result", `
+UPDATE sms_acknowledgements
+SET status = $2, request_id = $3, last_error = $4,
+    accepted_at = CASE WHEN $2 = 'accepted' THEN now() ELSE accepted_at END,
+    next_attempt_at = now() + interval '1 minute', updated_at = now()
+WHERE submission_id = $1::uuid AND status = 'sending'
+RETURNING submission_id, status;`, at(4), "[$json.submissionId, $json.status, $json.requestId, $json.error]"));
+  w.chain(start, "Claim acknowledgement", "Acknowledgement claimed?", "Fast2SMS: acknowledgement", "Acknowledgement result", "Save acknowledgement result");
+}
+
+function acknowledgeWorkflow() {
+  const w = new WorkflowBuilder("VSPL talent · acknowledge");
+  w.add(everyMinute("Every minute", grid(0)));
+  w.add(sql("Recover interrupted sends", `
+UPDATE sms_acknowledgements SET status = 'unknown',
+  last_error = 'Interrupted send; check Fast2SMS delivery history before retrying', updated_at = now()
+WHERE status = 'sending' AND updated_at < now() - interval '5 minutes';`, grid(1)));
+  w.chain("Every minute", "Recover interrupted sends");
+  addAcknowledgement(w, "Recover interrupted sends", grid(2));
   return w.build();
 }
 
@@ -734,6 +785,7 @@ const outputs: Record<string, Workflow> = {
   "vspl-talent-intake.json": intakeWorkflow(),
   "vspl-talent-transcribe.json": transcribeWorkflow(),
   "vspl-talent-deliver.json": deliverWorkflow(),
+  "vspl-talent-acknowledge.json": acknowledgeWorkflow(),
 };
 
 const check = process.argv.includes("--check");

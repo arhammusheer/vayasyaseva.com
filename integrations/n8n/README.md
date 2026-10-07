@@ -4,6 +4,8 @@ The `/jobs` pages on the website collect a phone number, consent and whatever a 
 
 ```
 website ──POST──► VSPL talent · intake      checks and saves the submission (talent DB), answers 202
+                  after 202: Fast2SMS DLT acknowledgement with the reference
+                  VSPL talent · acknowledge every minute: picks up queued SMS, flags interrupted sends
                   VSPL talent · transcribe  every minute: voice notes → Sarvam saaras:v4 → transcript
                   VSPL talent · deliver     every minute: Chatwoot contact + conversation in the
                                             "Jobs, website" inbox, message with text and transcripts,
@@ -45,6 +47,7 @@ Code: `src/lib/talent-intake/{rules,contract,server,submit,agent}.ts`, `src/app/
 
 ```bash
 pnpm n8n:check           # type-check the sources
+pnpm n8n:test            # SMS acceptance, rejection, ambiguity and retry limits
 pnpm n8n:build           # regenerate workflows/*.json
 pnpm n8n:build --check   # CI: fail if the JSON is stale
 pnpm n8n:deploy          # ship to n8n (needs kubectl access to the cluster, WARP on)
@@ -60,6 +63,7 @@ pnpm talent:sync-secrets # copy the jobs form's secrets into Vercel (production 
 | `talent-pg` | Secret `data/pg-main-talent` (talent role on pg-main) |
 | `r2-talent-intake` | `TALENT_R2_*` in `growth/n8n-env`: read-only token scoped to `vayasya-talent-intake` |
 | `vspl-talent-intake-webhook` | `TALENT_INTAKE_WEBHOOK_SECRET` in `growth/n8n-env`, sent as `x-vspl-intake-secret` |
+| `fast2sms-vspl` | Header Auth (`Authorization`), `FAST2SMS_API_KEY` in `growth/n8n-env`; encrypted source: infra `apps/n8n/overlays/growth/secrets.sops.yaml` |
 | `sarvam-vspl` | Made by hand in n8n (Header Auth, `api-subscription-key`) |
 
 Chatwoot needs no credential. The deliver workflow uses Chatwoot's public API for the "Jobs, website" API inbox (account 1, inbox 2), which is authorised by the inbox identifier. The deploy script reads that identifier from Chatwoot and fills it into the workflow's **Settings** node, so it is not in git.
@@ -111,3 +115,57 @@ Execution errors are in the n8n database (`execution_entity`, `execution_data`);
 **Lessons from bring-up:**
 - An n8n Postgres query that returns no rows still outputs one `{success: true}` item, hence the "Claimed any?" checks.
 - Chatwoot can save a message and still answer 500, so the nodes that create messages don't retry.
+
+
+## SMS acknowledgement (Fast2SMS)
+
+Every newly saved application, including quick/long forms and agent submissions,
+queues one row in `sms_acknowledgements` in the same database statement as the
+application. After answering HTTP 202, intake claims and sends it immediately;
+the scheduled **VSPL talent · acknowledge** workflow picks up pending rows if
+intake stops before sending. Neither transcription nor Chatwoot delivery waits
+for SMS. Setup does not queue historical applications.
+
+The account's existing approved DLT sender **VAYSPL** and Fast2SMS message ID
+**227115** are used with the reference as the only variable:
+
+> Vayasya Seva received your job application. Ref {#VAR#}. We will contact you on this number about work.
+
+All locales currently receive this approved English text. New language versions
+need their own approved DLT templates before changing the workflow. Requests use
+`POST https://www.fast2sms.com/dev/bulkV2`, route `dlt`, a ten-digit Indian number,
+`variables_values` = reference, and `udf1` = reference. The API key is only in the
+n8n Header Auth credential, never in workflow JSON, browser code or Vercel.
+
+The database row is unique per application. Atomic claims with `SKIP LOCKED`
+prevent concurrent executions from sending it twice. `accepted` means Fast2SMS
+accepted the request and returned a request ID; it does not prove handset delivery.
+Explicit API rejections are `failed`; rate limits retry after a minute, at most
+three attempts. Network timeouts, server errors, malformed responses and sends
+interrupted for five minutes become `unknown` and are not automatically resent,
+because Fast2SMS may already have accepted them.
+
+```sql
+SELECT s.ref, a.status, a.attempts, a.request_id, a.last_error, a.accepted_at
+FROM sms_acknowledgements a JOIN submissions s ON s.id = a.submission_id
+WHERE a.status <> 'accepted' ORDER BY a.created_at DESC;
+
+-- After correcting the cause and checking Fast2SMS history to ensure no SMS
+-- was already accepted, explicitly retry one application:
+UPDATE sms_acknowledgements SET status = 'pending', attempts = 0,
+  next_attempt_at = now(), last_error = NULL, updated_at = now()
+WHERE submission_id = (SELECT id FROM submissions WHERE ref = 'VS-J-XXXXXX')
+  AND status IN ('failed', 'unknown');
+```
+
+Fast2SMS's DLT Manager API can list templates and import an already approved DLT
+content template (`/dev/dlt_manager/add_template`). Import requires the principal
+entity ID, approved sender, DLT template ID, exact approved text, template type and
+a hosted screenshot proving approval. It does not obtain telecom DLT approval.
+The acknowledgement template is already approved and mapped, so no separate
+assets are needed for the current workflow.
+
+Verified live on 7 October 2026: application `VS-J-SMS7A2` returned HTTP 202,
+Fast2SMS accepted request `S6ueHXZGarwwIAh`, and its SMS Logs API reported
+**Delivered** (one English SMS, INR 0.25). Replaying the same application
+returned 202 again and kept the same provider request ID with one send attempt.

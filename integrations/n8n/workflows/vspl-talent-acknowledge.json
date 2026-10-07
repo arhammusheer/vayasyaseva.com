@@ -1,0 +1,250 @@
+{
+  "id": "vdJo82OvXPFouaZv",
+  "name": "VSPL talent · acknowledge",
+  "active": false,
+  "nodes": [
+    {
+      "id": "01f2b6bf-0a03-56f3-a649-cc1dacfc2dad",
+      "name": "Every minute",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "27d37711-831e-51a4-aa1c-4bba12bfb0c0",
+      "name": "Recover interrupted sends",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        240,
+        0
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE sms_acknowledgements SET status = 'unknown',\n  last_error = 'Interrupted send; check Fast2SMS delivery history before retrying', updated_at = now()\nWHERE status = 'sending' AND updated_at < now() - interval '5 minutes';",
+        "options": {}
+      },
+      "credentials": {
+        "postgres": {
+          "id": "2004d6af-1a6c-52e9-a169-9e91ef0487d2",
+          "name": "talent-pg"
+        }
+      }
+    },
+    {
+      "id": "d3d3dbdc-f144-57e0-ae12-19315c3cbacd",
+      "name": "Claim acknowledgement",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        480,
+        0
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH candidate AS (\n  SELECT a.submission_id FROM sms_acknowledgements a\n  JOIN submissions s ON s.id = a.submission_id\n  WHERE a.status = 'pending' AND a.next_attempt_at <= now() AND a.attempts < 3 AND true\n  ORDER BY a.created_at LIMIT 1 FOR UPDATE OF a SKIP LOCKED\n), claimed AS (\n  UPDATE sms_acknowledgements a SET status = 'sending', attempts = attempts + 1, updated_at = now()\n  FROM candidate c WHERE a.submission_id = c.submission_id RETURNING a.*\n)\nSELECT c.submission_id, c.attempts, s.ref, s.phone FROM claimed c\nJOIN submissions s ON s.id = c.submission_id;",
+        "options": {}
+      },
+      "credentials": {
+        "postgres": {
+          "id": "2004d6af-1a6c-52e9-a169-9e91ef0487d2",
+          "name": "talent-pg"
+        }
+      }
+    },
+    {
+      "id": "d550b69d-7c2d-510b-a60a-68d1bb86c3dd",
+      "name": "Acknowledgement claimed?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "60edf178-358c-561e-a2c5-102e01f18395",
+              "leftValue": "={{ Boolean($json.submission_id) }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "aec3a362-3e0a-50b7-a4a2-0cdaf9661c82",
+      "name": "Fast2SMS: acknowledgement",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.fast2sms.com/dev/bulkV2",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": false,
+        "sendBody": true,
+        "options": {
+          "timeout": 15000,
+          "response": {
+            "response": {
+              "responseFormat": "json",
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        },
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ route: 'dlt', sender_id: 'VAYSPL', message: '227115', variables_values: $json.ref, numbers: $json.phone.slice(-10), sms_details: '1', udf1: $json.ref }) }}"
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "79d214e5-9d68-521e-adc3-d9575a15b985",
+          "name": "fast2sms-vspl"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "23c8ca38-7ab8-5c30-aedb-ede3d62bd3bc",
+      "name": "Acknowledgement result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        0
+      ],
+      "parameters": {
+        "jsCode": "// Generated from integrations/n8n/src/nodes/acknowledgement-result.ts by integrations/n8n/build.mts. Edit the source, not this.\n\nasync function main() {\n    const claim = $(\"Claim acknowledgement\").first().json;\n    const response = $input.first().json;\n    const body = response.body;\n    const accepted = response.statusCode === 200 && body?.return === true\n        && typeof body.request_id === \"string\" && body.request_id.length > 0;\n    const rejected = (response.statusCode === 400 || response.statusCode === 401) && body?.return === false;\n    const limited = response.statusCode === 429;\n    const status = accepted ? \"accepted\"\n        : limited && claim.attempts < 3 ? \"pending\"\n            : rejected || limited ? \"failed\" : \"unknown\";\n    return [{ json: {\n                submissionId: claim.submission_id,\n                status,\n                requestId: accepted ? body.request_id : null,\n                error: accepted ? null\n                    : rejected ? `Fast2SMS rejected request (HTTP ${response.statusCode}, code ${body?.status_code ?? \"unspecified\"})`\n                        : limited ? \"Fast2SMS rate limit\"\n                            : \"Send outcome uncertain; check Fast2SMS delivery history before retrying\",\n            } }];\n}\n\nreturn main.call(this);"
+      }
+    },
+    {
+      "id": "5a1c4f6b-5132-5a33-a753-dd4a654c2a6a",
+      "name": "Save acknowledgement result",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1440,
+        0
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE sms_acknowledgements\nSET status = $2, request_id = $3, last_error = $4,\n    accepted_at = CASE WHEN $2 = 'accepted' THEN now() ELSE accepted_at END,\n    next_attempt_at = now() + interval '1 minute', updated_at = now()\nWHERE submission_id = $1::uuid AND status = 'sending'\nRETURNING submission_id, status;",
+        "options": {
+          "queryReplacement": "={{ [$json.submissionId, $json.status, $json.requestId, $json.error] }}"
+        }
+      },
+      "credentials": {
+        "postgres": {
+          "id": "2004d6af-1a6c-52e9-a169-9e91ef0487d2",
+          "name": "talent-pg"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Every minute": {
+      "main": [
+        [
+          {
+            "node": "Recover interrupted sends",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recover interrupted sends": {
+      "main": [
+        [
+          {
+            "node": "Claim acknowledgement",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claim acknowledgement": {
+      "main": [
+        [
+          {
+            "node": "Acknowledgement claimed?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Acknowledgement claimed?": {
+      "main": [
+        [
+          {
+            "node": "Fast2SMS: acknowledgement",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fast2SMS: acknowledgement": {
+      "main": [
+        [
+          {
+            "node": "Acknowledgement result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Acknowledgement result": {
+      "main": [
+        [
+          {
+            "node": "Save acknowledgement result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none"
+  },
+  "pinData": {}
+}

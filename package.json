@@ -12,6 +12,7 @@
     "start": "next start",
     "lint": "eslint",
     "type-check": "tsc --noEmit && pnpm n8n:check",
+    "n8n:test": "node --test integrations/n8n/acknowledgement.test.mjs",
     "n8n:check": "tsc -p integrations/n8n",
     "n8n:build": "node integrations/n8n/build.mts",
     "n8n:deploy": "node integrations/n8n/deploy.mts",

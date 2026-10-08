@@ -6,6 +6,7 @@ import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { ContactForm } from "./contact-form";
 import { AgentGuidance } from "@/components/agent-guidance";
 import { localeParams } from "@/lib/i18n";
+import Link from "@/components/i18n/link";
 
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/contact");
@@ -83,6 +84,14 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
             <p className="mt-5 max-w-sm text-lg leading-relaxed text-muted-foreground">
               A workforce requirement, a project or an early idea. Tell us what
               you have in mind and our team will be in touch.
+            </p>
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
+              Looking for work?{" "}
+              <Link href="/jobs/apply" className="text-gold-700 underline underline-offset-4">
+                Apply on the jobs page
+              </Link>
+              . We don’t take job applications on this number, and our team
+              calls you back on the number you apply with.
             </p>
             <dl className="mt-10">
               {lines.map((l) => (

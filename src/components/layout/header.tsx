@@ -105,6 +105,8 @@ export function Header() {
   const pageLocale = split.locale ?? FALLBACK_LOCALE;
   const path = split.path;
   const isHome = path === "/";
+  // The number is the business line; job seekers apply through the form.
+  const isJobs = path === "/jobs" || path.startsWith("/jobs/");
   const jobs = { href: localePath("/jobs/apply", pageLocale), label: JOBS_LABEL[pageLocale], lang: pageLocale === "hi-IN" ? "hi-IN" : undefined };
   const primary = navigation.filter((item) =>
     [
@@ -152,12 +154,14 @@ export function Header() {
             {jobs.label}
           </Link>
         </nav>
-        <a
-          className="header-phone"
-          href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
-        >
-          {siteConfig.phone}
-        </a>
+        {!isJobs && (
+          <a
+            className="header-phone"
+            href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
+          >
+            {siteConfig.phone}
+          </a>
+        )}
         {languages.length > 0 && (
           <nav aria-label="Language" className="header-lang">
             {languages.map((l) => (
@@ -198,12 +202,14 @@ export function Header() {
                 {jobs.label}
               </Link>
             </nav>
-            <a
-              href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
-              className="mt-6 text-sm"
-            >
-              {siteConfig.phone}
-            </a>
+            {!isJobs && (
+              <a
+                href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
+                className="mt-6 text-sm"
+              >
+                {siteConfig.phone}
+              </a>
+            )}
           </SheetContent>
         </Sheet>
       </div>

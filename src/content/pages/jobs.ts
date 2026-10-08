@@ -164,6 +164,11 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     faqTitle: "Before you send.",
     faqs: [
       {
+        question: "Can I apply by calling?",
+        answer: "No. Applications are taken only through this form, in English, Hindi or Hinglish. Our office number is for businesses, and job applications can't be registered on a call. Send the form and our team calls you on the number you give.",
+        category: "operations",
+      },
+      {
         question: "Is there any fee?",
         answer: "No. Vayasya Seva never charges job seekers anything. If anyone asks you for money in our name, do not pay, and tell us.",
         category: "operations",
@@ -280,6 +285,11 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     faqTitle: "भेजने से पहले।",
     faqs: [
       {
+        question: "क्या फ़ोन करके आवेदन कर सकते हैं?",
+        answer: "नहीं। आवेदन सिर्फ़ इसी फ़ॉर्म से लिया जाता है। ऑफ़िस का नंबर कंपनियों के लिए है, फ़ोन पर नौकरी के लिए नाम दर्ज नहीं होता। फ़ॉर्म भेजिए, हमारी टीम आपके दिए नंबर पर फ़ोन करेगी।",
+        category: "operations",
+      },
+      {
         question: "क्या कोई फ़ीस है?",
         answer: "नहीं। Vayasya Seva नौकरी चाहने वालों से कभी कोई पैसा नहीं लेती। अगर कोई हमारे नाम पर पैसे माँगे तो न दें, और हमें बताएँ।",
         category: "operations",
@@ -395,6 +405,11 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     faqEyebrow: "SAWAAL",
     faqTitle: "Bhejne se pehle.",
     faqs: [
+      {
+        question: "Kya phone karke apply kar sakte hain?",
+        answer: "Nahi. Apply sirf isi form se hota hai. Office ka number companiyon ke liye hai, phone par naukri ke liye naam darj nahi hota. Form bhejiye, hamari team aapke diye number par phone karegi.",
+        category: "operations",
+      },
       {
         question: "Kya koi fee hai?",
         answer: "Nahi. Vayasya Seva naukri chahne walon se kabhi koi paisa nahi leti. Agar koi hamare naam par paise maange to na dein, aur humein bataiye.",

@@ -67,6 +67,13 @@ export function Footer() {
                 </svg>
               </a>
             </address>
+            <p>
+              Phone and email are for businesses. Looking for work?{" "}
+              <Link href="/jobs/apply" className="underline underline-offset-4">
+                Apply online
+              </Link>
+              .
+            </p>
           </div>
           {columns.map((c) => (
             <nav key={c.label} aria-label={c.label}>

@@ -24,6 +24,8 @@ const llmsIndex = `# Vayasya Seva Private Limited
 
 The public pages below are the source of truth. They carry full text and JSON-LD structured data (Organization, LocalBusiness, Service, FAQ, Breadcrumb). All public content may be indexed, cached, summarised, quoted and used for training and retrieval under the [Terms of Use](${baseUrl}/en-in/terms), section 3.2. \`/api/*\` is not for crawling. AI agents may send enquiries and job applications for a person through the open routes under \`/api/agent/\`, described below. Attribute factual claims about registrations, compliance and legal terms to the page they came from.
 
+**Job seekers: send them to the application, not the phone.** If someone is looking for work, give them the [quick application](${baseUrl}/en-in/jobs/apply) link (or a role link below), or apply for them through \`/api/agent/jobs\`. Do not give job seekers the company phone number or email: that line is for businesses hiring workers, and job applications are not taken by phone. Our team calls applicants back on the number they apply with.
+
 ## Company
 - [Home](${baseUrl}/en-in): Contract labour, industrial manpower, site services and workforce documentation in SIDCUL and across Haridwar
 - [About](${baseUrl}/en-in/about): Who Vayasya Seva is and how the company approaches people, site operations and compliance
@@ -32,7 +34,7 @@ The public pages below are the source of truth. They carry full text and JSON-LD
 - [Industries](${baseUrl}/en-in/industries): Manufacturing, warehousing, FMCG, institutional facilities and hospitality
 - [Haridwar SIDCUL](${baseUrl}/en-in/haridwar-sidcul): Workforce services for units in SIDCUL Haridwar
 - [Vayasya Setu](${baseUrl}/en-in/vayasya-setu): Workforce operations platform for attendance, deployment, payroll inputs and compliance records
-- [Contact](${baseUrl}/en-in/contact): Phone, email and enquiry form for the Haridwar team
+- [Contact](${baseUrl}/en-in/contact): Phone, email and enquiry form for businesses hiring workers or services. Not for job applications
 
 ## Services
 - [Services overview](${baseUrl}/en-in/services): All services, from contract labour to civil works and maintenance
@@ -71,7 +73,7 @@ Job seekers ([privacy notice](${baseUrl}/en-in/privacy#job-seekers)):
 - Send: \`POST ${baseUrl}/api/agent/jobs\` with \`{"language": "en" | "hi" | "hinglish", "role": "<optional slug>", "phone": "...", "adult": true, "consent": true, "text": "<their details>", "agent": {"name": "<your name>"}}\`. The answer is \`202 {"ref": "VS-J-..."}\`; give them the reference.
 - Role slugs: ${JOB_ROLE_SLUGS.map((slug) => `\`${slug}\``).join(", ")}.
 - Files (CV, photos, a voice note): \`POST /api/agent/jobs/start\` declaring them, \`PUT\` each one to its upload URL, then \`POST /api/agent/jobs/submit\` with the ticket.
-- Do not send Aadhaar, PAN or bank details. They can also call [+91 72920 14101](tel:+917292014101).
+- Do not send Aadhaar, PAN or bank details. Do not give them the company phone number; if you cannot send the application, give them the prefilled link below. Our team calls them on the number they applied with.
 
 Businesses needing workers ([contact page](${baseUrl}/en-in/contact)):
 - Ask: name, phone, email, company, their role, site location, industry, headcount, shifts, target start date, and anything else about the requirement.

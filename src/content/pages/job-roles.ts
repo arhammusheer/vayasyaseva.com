@@ -1061,7 +1061,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         {
           question: "Kya PF aur ESIC milega?",
           answer:
-            "Hum jin workers ko kaam par rakhte hain, woh hamare records mein hote hain, aur applicable EPF aur ESIC aapke naam par jama hota hai. Phone par humse poochiye.",
+            "Hum jin workers ko kaam par rakhte hain, woh hamare records mein hote hain, aur applicable EPF aur ESIC aapke naam par jama hota hai. Apply karne ke baad hamari team aapko phone karke sab batayegi.",
           category: "compliance",
         },
       ],
@@ -1193,7 +1193,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         {
           question: "Kya PF aur ESIC milega?",
           answer:
-            "Hum jin workers ko kaam par rakhte hain, woh hamare records mein hote hain, aur applicable EPF aur ESIC aapke naam par jama hota hai. Phone par humse poochiye.",
+            "Hum jin workers ko kaam par rakhte hain, woh hamare records mein hote hain, aur applicable EPF aur ESIC aapke naam par jama hota hai. Apply karne ke baad hamari team aapko phone karke sab batayegi.",
           category: "compliance",
         },
       ],
@@ -1237,7 +1237,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         {
           question: "Kya PF aur ESIC milega?",
           answer:
-            "Hum jin workers ko kaam par rakhte hain, woh hamare records mein hote hain, aur applicable EPF aur ESIC aapke naam par jama hota hai. Phone par humse poochiye.",
+            "Hum jin workers ko kaam par rakhte hain, woh hamare records mein hote hain, aur applicable EPF aur ESIC aapke naam par jama hota hai. Apply karne ke baad hamari team aapko phone karke sab batayegi.",
           category: "compliance",
         },
       ],
@@ -1318,7 +1318,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         {
           question: "Kya PF aur ESIC milega?",
           answer:
-            "Hum jin workers ko kaam par rakhte hain, woh hamare records mein hote hain, aur applicable EPF aur ESIC aapke naam par jama hota hai. Phone par humse poochiye.",
+            "Hum jin workers ko kaam par rakhte hain, woh hamare records mein hote hain, aur applicable EPF aur ESIC aapke naam par jama hota hai. Apply karne ke baad hamari team aapko phone karke sab batayegi.",
           category: "compliance",
         },
       ],
@@ -1446,7 +1446,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         {
           question: "Kya PF aur ESIC milega?",
           answer:
-            "Hum jin workers ko kaam par rakhte hain, woh hamare records mein hote hain, aur applicable EPF aur ESIC aapke naam par jama hota hai. Phone par humse poochiye.",
+            "Hum jin workers ko kaam par rakhte hain, woh hamare records mein hote hain, aur applicable EPF aur ESIC aapke naam par jama hota hai. Apply karne ke baad hamari team aapko phone karke sab batayegi.",
           category: "compliance",
         },
       ],

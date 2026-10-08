@@ -109,16 +109,19 @@ export function siteGraphSchema() {
           {
             "@type": "ContactPoint",
             contactType: "sales",
+            description: "For businesses hiring workers or services. Not for job applications.",
             telephone: siteConfig.phone,
             email: siteConfig.email,
             areaServed: "IN",
             availableLanguage: ["en", "hi"],
           },
+          // No telephone here on purpose: assistants were handing job seekers
+          // the business line. Applications go through the form or agent route.
           {
             "@type": "ContactPoint",
             contactType: "job applications",
-            telephone: siteConfig.phone,
-            url: `${BASE_URL}/jobs`,
+            description: "Apply online. Job applications are not taken by phone.",
+            url: `${BASE_URL}/en-in/jobs/apply`,
             areaServed: "IN",
             availableLanguage: ["en", "hi"],
           },

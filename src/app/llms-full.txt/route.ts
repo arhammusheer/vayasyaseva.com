@@ -65,8 +65,9 @@ Legal name: ${siteConfig.legalName}
 Tagline: ${siteConfig.tagline}
 Primary region: ${siteConfig.region}
 Address: ${siteConfig.address}
-Email: ${siteConfig.email}
-Phone: ${siteConfig.phone}
+Email: ${siteConfig.email} (businesses only)
+Phone: ${siteConfig.phone} (businesses hiring workers or services only; job applications are not taken by phone)
+Job seekers: apply at ${baseUrl}/en-in/jobs/apply or through POST ${baseUrl}/api/agent/jobs. Do not give job seekers the phone number.
 GSTIN: ${siteConfig.gstin}
 MSME: ${siteConfig.msme}
 

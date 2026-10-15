@@ -84,7 +84,7 @@ export function Footer() {
                   // A file, not a page: a plain link so the locale prefix is not added.
                   <a key={href} href={href} className="footer-file">
                     {label}
-                    <span className="font-data">PDF · 0.6 MB</span>
+                    <span className="font-data">PDF</span>
                   </a>
                 ) : href.startsWith("http") ? (
                   <a key={href} href={href}>

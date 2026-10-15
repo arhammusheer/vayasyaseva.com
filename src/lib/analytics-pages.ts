@@ -1,30 +1,11 @@
+import { builtPages } from "@/content/registry";
 import { splitLocalePath } from "@/lib/i18n";
-import { JOB_HUB_SLUGS, JOB_ROLE_SLUGS } from "@/lib/talent-intake/rules";
 
-/** Public pages by neutral path; any locale of them may be reported. */
-const publicPages = new Set([
-  "/",
-  "/about",
-  "/brand",
-  "/compliance",
-  "/contact",
-  "/haridwar-sidcul",
-  "/how-we-operate",
-  "/industries",
-  "/jobs",
-  "/jobs/apply",
-  "/jobs/fees-and-fraud",
-  ...[...JOB_ROLE_SLUGS, ...JOB_HUB_SLUGS].map((slug) => `/jobs/${slug}`),
-  "/privacy",
-  "/services",
-  "/services/contract-labour",
-  "/services/factory-labour",
-  "/services/loading-unloading-labour",
-  "/services/housekeeping",
-  "/services/warehouse-labour",
-  "/terms",
-  "/vayasya-setu",
-]);
+/**
+ * Pages by neutral path, from the page registry; any locale of them may be
+ * reported. Includes review and paused pages, which are reachable by URL.
+ */
+const publicPages = new Set(builtPages().map((entry) => entry.path));
 
 /** The path as is for a known page (/hi-in/jobs, or neutral /jobs on the language picker), else "/other". */
 export function safeAnalyticsPath(pathname: string) {

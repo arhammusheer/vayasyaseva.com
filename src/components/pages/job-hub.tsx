@@ -8,11 +8,13 @@ import { JsonLd, breadcrumbSchema, webPageSchema } from "@/lib/structured-data";
 import { jobsCopy } from "@/content/pages/jobs";
 import { getJobHub, jobHubLabels } from "@/content/pages/job-hubs";
 import { getJobRole, jobRoleLabels } from "@/content/pages/job-roles";
-import { localePath, locales, type Locale } from "@/lib/i18n";
+import { localePath, locales, localesOf, type Locale } from "@/lib/i18n";
 import { JOB_HUB_SLUGS } from "@/lib/talent-intake/rules";
 import { jobRolePath } from "@/components/pages/job-role";
 
-export const jobHubParams = () => JOB_HUB_SLUGS.map((slug) => ({ role: slug }));
+/** Hub pages built in this language (src/content/registry). */
+export const jobHubParams = (locale: Locale) =>
+  JOB_HUB_SLUGS.filter((slug) => localesOf(`/jobs/${slug}`).includes(locale)).map((slug) => ({ role: slug }));
 
 function hubOrThrow(slug: string, locale: Locale) {
   const hub = getJobHub(slug, locale);

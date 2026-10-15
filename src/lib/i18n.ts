@@ -9,7 +9,8 @@
  * entry or header link from published pages. Flip `published` once a native
  * speaker has reviewed the copy.
  */
-import { JOB_HUB_SLUGS, JOB_ROLE_SLUGS } from "@/lib/talent-intake/rules";
+import { builtLocales, builtPages, publishedLocales, redirectTarget } from "@/content/registry";
+import type { LocaleTag } from "@/content/registry/identifiers";
 
 export const locales = {
   "en-IN": {
@@ -36,7 +37,7 @@ export const locales = {
     hint: "Ye page Hindi mein padhein, English letters mein",
     published: true,
   },
-} as const;
+} as const satisfies Record<LocaleTag, unknown>;
 
 export type Locale = keyof typeof locales;
 export const allLocales = Object.keys(locales) as Locale[];
@@ -48,7 +49,7 @@ export type LocaleOverride = Locale | "prompt";
 export const FALLBACK_LOCALE: Locale = "en-IN";
 
 type PageLocales = {
-  /** Languages the page exists in. Default: English only. */
+  /** Languages the page is built in. */
   locales: readonly Locale[];
   /**
    * Where the neutral URL goes. Unset: English (FALLBACK_LOCALE), or the
@@ -59,30 +60,18 @@ type PageLocales = {
   override?: LocaleOverride;
 };
 
-const ALL = allLocales;
-
 /**
- * Pages with more than English, or with an override. Any page not listed is
- * English only and its neutral URL opens English. Business pages (home,
- * services index, compliance, about…) stay English only; see
- * docs/plan-multilingual.md.
+ * Every built page and its languages, derived from the page registry
+ * (src/content/registry/pages.ts), which also holds each language's status.
+ * A path that isn't listed is treated as English only, so unknown URLs
+ * resolve to /en-in/... and 404 there.
  */
-export const pages: Record<string, PageLocales> = {
-  "/haridwar-sidcul": { locales: ALL },
-  "/services/contract-labour": { locales: ALL },
-  "/services/warehouse-labour": { locales: ["en-IN", "hi-Latn-IN"] },
-  "/services/loading-unloading-labour": { locales: ["en-IN", "hi-Latn-IN"] },
-  "/services/factory-labour": { locales: ["en-IN", "hi-Latn-IN"] },
-  "/services/housekeeping": { locales: ["en-IN", "hi-Latn-IN"] },
-  "/jobs": { locales: ALL, override: "prompt" },
-  // Focused guided application, also used by ads and direct application links.
-  "/jobs/apply": { locales: ALL, override: "prompt" },
-  // No fee, and how to report anyone who asks for money in our name.
-  "/jobs/fees-and-fraud": { locales: ALL, override: "prompt" },
-  ...Object.fromEntries(
-    [...JOB_ROLE_SLUGS, ...JOB_HUB_SLUGS].map((slug) => [`/jobs/${slug}`, { locales: ALL, override: "prompt" } as const]),
-  ),
-};
+export const pages: Record<string, PageLocales> = Object.fromEntries(
+  builtPages().map((entry) => [
+    entry.path,
+    { locales: builtLocales(entry.path), ...(entry.neutral && { override: entry.neutral }) },
+  ]),
+);
 
 const ENGLISH_ONLY: PageLocales = { locales: [FALLBACK_LOCALE] };
 
@@ -90,14 +79,32 @@ function pageConfig(path: string) {
   return pages[path] ?? ENGLISH_ONLY;
 }
 
-/** Languages a page exists in, given its neutral path ("/jobs"). */
+/** Languages a page exists in (is built in), given its neutral path ("/jobs"). */
 export function localesOf(path: string): readonly Locale[] {
   return pageConfig(path).locales;
 }
 
+/**
+ * Whether a language version may be indexed, listed in the sitemap and
+ * hreflang, and linked from published pages: its locale is published and
+ * the page's status in it is "published". A path outside the registry is
+ * not a page (content:check keeps routes and registry in step).
+ */
+export function isIndexable(path: string, locale: Locale) {
+  return locales[locale].published && publishedLocales(path).includes(locale);
+}
+
+/** The languages to offer a reader: the published ones, or every built one while none is. */
+export function preferredLocales(path: string): readonly Locale[] {
+  const available = localesOf(path);
+  const published = available.filter((l) => isIndexable(path, l));
+  return published.length ? published : available;
+}
+
 /** The locale a page falls back to when no other choice applies. */
 function defaultLocaleOf(path: string): Locale {
-  const { locales: available, override } = pageConfig(path);
+  const { override } = pageConfig(path);
+  const available = preferredLocales(path);
   if (override && override !== "prompt" && available.includes(override)) return override;
   return available.includes(FALLBACK_LOCALE) ? FALLBACK_LOCALE : available[0];
 }
@@ -138,7 +145,8 @@ export function localeOfParams(params: { locale?: string }): Locale {
 
 /**
  * Point an in-site link at a real page. A neutral path ("/contact") goes to
- * the reader's locale when the page exists in it, else the page's default
+ * the reader's locale when the page is published in it (or, for reviewers
+ * reading an unpublished locale, built in it), else the page's default
  * language. Paths that already carry a locale, other sites, anchors, files
  * and the API are left alone.
  */
@@ -149,8 +157,23 @@ export function localizeHref(href: string, locale?: Locale) {
   const suffix = match[2];
   if (splitLocalePath(path).locale) return href;
   if (/^\/(api|_next|_t)(\/|$)/.test(path) || /\.[a-z0-9]+$/i.test(path)) return href;
-  const target = locale && localesOf(path).includes(locale) ? locale : defaultLocaleOf(path);
+  const reachable = locale && localesOf(path).includes(locale) && (isIndexable(path, locale) || !locales[locale].published);
+  const target = reachable ? locale : defaultLocaleOf(path);
   return `${localePath(path, target)}${suffix}`;
+}
+
+/**
+ * Where an alias or retired page 308s to (src/content/registry
+ * redirectTarget), as a full pathname: the target in the language asked for
+ * when it is reachable there, by the same rule as localizeHref, else the
+ * target's neutral URL resolution. Undefined when the path is not moved.
+ */
+export function movedPathname(path: string, locale?: Locale): string | undefined {
+  const moved = redirectTarget(path);
+  if (!moved) return undefined;
+  const keep = locale && localesOf(moved).includes(locale) && (isIndexable(moved, locale) || !locales[locale].published);
+  const target = keep ? locale : neutralTarget(moved);
+  return target === "prompt" ? moved : localePath(moved, target);
 }
 
 /**
@@ -159,7 +182,7 @@ export function localizeHref(href: string, locale?: Locale) {
  * neutral URL) and the default language's page everywhere else.
  */
 export function languageAlternates(path: string) {
-  const published = localesOf(path).filter((l) => locales[l].published);
+  const published = localesOf(path).filter((l) => isIndexable(path, l));
   if (published.length < 2) return undefined;
   const xDefault = neutralTarget(path) === "prompt" ? path : localePath(path, defaultLocaleOf(path));
   return {
@@ -170,18 +193,38 @@ export function languageAlternates(path: string) {
 
 /**
  * Other-language versions of the current page for the header switch.
- * From a published locale, only published locales show; from an unpublished
- * one, every version shows so reviewers can move between drafts.
+ * From a published version, only published versions show; from an
+ * unpublished one (a locale or page still in review), every built version
+ * shows so reviewers can move between drafts.
  */
 export function languageLinks(pathname: string) {
   const { locale: current, path } = splitLocalePath(pathname);
   const available = localesOf(path);
   if (!current || available.length < 2 || !available.includes(current)) return [];
   return available
-    .filter((l) => l !== current && (!locales[current].published || locales[l].published))
+    .filter((l) => l !== current && (!isIndexable(path, current) || isIndexable(path, l)))
     .map((l) => ({
       href: localePath(path, l),
       label: locales[l].label,
       lang: l,
     }));
+}
+
+/**
+ * Why a link from the page at `fromPathname` to `href` is not allowed, or
+ * undefined when it is. A published page may link only to published pages
+ * (the registry's linkable rule); pages that are not published are not
+ * checked. (Their links still resolve through localizeHref, so from a
+ * published locale they open published versions only.) Links to other sites, files, the
+ * API and anchors on the same page are not checked.
+ */
+export function linkProblem(href: string, fromPathname: string): string | undefined {
+  const from = splitLocalePath(fromPathname);
+  if (!from.locale || !isIndexable(from.path, from.locale)) return undefined;
+  if (!href.startsWith("/") || href.startsWith("//")) return undefined;
+  const target = /^[^?#]*/.exec(href)![0] || "/";
+  if (/^\/(api|_next|_t)(\/|$)/.test(target) || /\.[a-z0-9]+$/i.test(target)) return undefined;
+  const to = splitLocalePath(target.length > 1 ? target.replace(/\/$/, "") : target);
+  if (to.locale ? isIndexable(to.path, to.locale) : localesOf(to.path).some((l) => isIndexable(to.path, l))) return undefined;
+  return `${fromPathname} links to ${href}, which is not a published page (src/content/registry/pages.ts)`;
 }

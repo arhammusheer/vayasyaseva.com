@@ -18,11 +18,11 @@ Google does not treat Hindi in Latin script as its own search language and may r
 
 ## Routing
 
-Every page is at `/<locale><path>`, for example `/en-in/about`, `/hi-in/jobs`, `/hi-latn-in/services/housekeeping`. The path without a locale (`/about`, `/jobs`) is the page's **neutral URL**. What it does is set per page in `pages` in `src/lib/i18n.ts`:
+Every page is at `/<locale><path>`, for example `/en-in/about`, `/hi-in/jobs`, `/hi-latn-in/services/housekeeping`. The path without a locale (`/about`, `/jobs`) is the page's **neutral URL**. What it does is set per page in the page registry, `src/content/registry/pages.ts` (`neutral`); `pages` in `src/lib/i18n.ts` is derived from it:
 
-1. **Default in code:** the neutral URL redirects (308) to English. A page not listed in `pages` is English only.
-2. **Page override set to a locale:** the neutral URL redirects (308) to that locale, e.g. `{ locales: ["en-IN", "hi-IN"], override: "hi-IN" }`.
-3. **Page override set to `"prompt"`:** the neutral URL shows a language picker. The address bar keeps the neutral URL, and each choice links to that page in one language. Query strings carry over, so `/jobs?utm_source=whatsapp` keeps its tag.
+1. **Default in code:** the neutral URL redirects (308) to English. A path not in the registry is treated as English only, so it lands on `/en-in/...` and 404s there.
+2. **`neutral` set to a locale:** the neutral URL redirects (308) to that locale.
+3. **`neutral` set to `"prompt"`:** the neutral URL shows a language picker. The address bar keeps the neutral URL, and each choice links to that page in one language. Query strings carry over, so `/jobs?utm_source=whatsapp` keeps its tag.
 
 `/jobs` and every `/jobs/<role>` page use `"prompt"`. Share `www.vayasyaseva.com/jobs` when you don't know which language the person reads.
 
@@ -36,7 +36,7 @@ Other rules, in `src/proxy.ts`:
 
 ### Adding or changing a page's languages
 
-1. Set the page's `locales` (and `override`, if any) in `pages` in `src/lib/i18n.ts`.
+1. Set the page's `locales` (each language with its status) and `neutral`, if any, in `src/content/registry/pages.ts`. Start a new language at `review`: it is built, `noindex`, left out of the sitemap and hreflang, and links from published pages go to another language. Set it to `published` once reviewed. The status rules are in `src/content/registry/identifiers.ts` (`PAGE_STATUSES`).
 2. Give the page the copy for each locale and read the locale from its params (`localeOfParams`). Its `generateStaticParams` is `localeParams("/the-path")`, so only its languages are built.
 3. Write in-site links as neutral paths (`<Link href="/contact">`). `@/components/i18n/link` points them at the reader's current locale when the target page has it, else the target's default language.
 
@@ -65,7 +65,7 @@ Revisit this split with Search Console data.
 
 - `src/app/[locale]/layout.tsx` is the root layout, so `<html lang>` is the page's locale. The header and footer are English and carry `lang="en-IN"`.
 - `src/app/(picker)/` is a second root layout for the language picker (`<html lang="en-IN">`, each choice marked with its own language). `src/app/global-not-found.tsx` serves URLs no route matches.
-- `src/lib/i18n.ts` holds the locales, the `pages` registry, the publish flags and the link helpers. `pageMetadata({ locale })` adds the canonical, hreflang and `noindex` while unpublished. The sitemap lists each page once per published locale, with `xhtml:link` alternates.
+- `src/content/registry/` holds the page registry (every page, its languages and each one's status), the clusters with public pages, and the canonical identifiers. `src/lib/i18n.ts` holds the locales, the publish flags and the link helpers, and derives `pages` from the registry. `pageMetadata({ locale })` adds the canonical, hreflang and `noindex` unless both the locale and the page's status are published. The sitemap lists each page once per published locale, with `xhtml:link` alternates.
 - Every translated page uses one shared template for all locales. The three service pages share `ServiceLanding`, with content in `src/content/service-pages.ts` and `src/content/hi-latn/service-pages.ts`. The Haridwar, contract labour and jobs pages use `src/components/pages/*` with all three locales in `src/content/pages/*.ts`. When the English copy changes, update the others in the same file.
 - Fonts: WOFF2 subsets containing only Devanagari (`AnekDevanagari-Devanagari.woff2` at weight 500, and Hind at 400 to 700) with `unicode-range`. Pages without Devanagari never download them.
 - Devanagari type rules in `globals.css` apply to `:lang(hi)` but not `:lang(hi-Latn)`: no letter-spacing, and a taller line-height on headings.

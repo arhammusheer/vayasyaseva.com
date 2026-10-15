@@ -10,6 +10,11 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  env: {
+    // Build-time flag (src/content/registry/index.ts): inlined so the server,
+    // the browser and the proxy agree on which drafts exist.
+    VSPL_SHOW_DRAFTS: process.env.VSPL_SHOW_DRAFTS ?? "",
+  },
   experimental: {
     // The root layout is per locale (app/[locale]), so unmatched URLs need their own 404.
     globalNotFound: true,

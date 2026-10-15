@@ -8,12 +8,14 @@ import { getJobHub } from "@/content/pages/job-hubs";
 import { quickApplyCopy } from "@/content/pages/quick-apply";
 import { feesAndFraudCopy } from "@/content/pages/fees-and-fraud";
 import {
+  isIndexable,
   languageAlternates,
   localePath,
   locales,
   localesOf,
   neutralTarget,
   pages,
+  preferredLocales,
   type Locale,
 } from "@/lib/i18n";
 import { LanguageChoices } from "./language-choices";
@@ -65,14 +67,16 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
     openGraph: { ...sharing.openGraph, url: path },
     twitter: sharing.twitter,
     title: { absolute: `${english.title} | Vayasya Seva` },
-    description: `${english.text ? `${english.text} ` : ""}Choose your language: ${localesOf(path).map((l) => locales[l].label).join(", ")}.`,
+    description: `${english.text ? `${english.text} ` : ""}Choose your language: ${preferredLocales(path).map((l) => locales[l].label).join(", ")}.`,
     alternates: { canonical: path, ...(languages && { languages }) },
+    // Indexed while at least one language version is (src/content/registry).
+    ...(localesOf(path).some((l) => isIndexable(path, l)) ? {} : { robots: { index: false, follow: true } }),
   };
 }
 
 export default async function LanguagePickerPage({ params }: Props) {
   const path = toPath((await params).path);
-  const choices = localesOf(path).map((locale) => ({
+  const choices = preferredLocales(path).map((locale) => ({
     href: localePath(path, locale),
     locale,
     label: locales[locale].label,

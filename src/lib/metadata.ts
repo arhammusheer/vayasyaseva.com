@@ -1,11 +1,15 @@
 import { shareImageUrl } from "@/lib/share-images";
 import type { Metadata } from "next";
-import { languageAlternates, localizeHref, locales, splitLocalePath, FALLBACK_LOCALE, type Locale } from "@/lib/i18n";
+import { isIndexable, languageAlternates, localizeHref, locales, splitLocalePath, FALLBACK_LOCALE, type Locale } from "@/lib/i18n";
 
 /**
  * Share previews and canonicals follow the actual landing page. The canonical
  * may be a neutral path ("/about"): it resolves to the page in `locale`, or
  * its default language.
+ *
+ * Robots and hreflang follow the page registry (src/content/registry): only
+ * a published page in a published locale is indexed; review and paused
+ * pages are noindex, follow and drop out of every alternate list.
  */
 export function pageMetadata(input: {
   title: Metadata["title"];
@@ -28,7 +32,7 @@ export function pageMetadata(input: {
   return {
     ...rest,
     alternates: { canonical, ...(languages && { languages }) },
-    ...(locales[locale].published ? {} : { robots: { index: false, follow: true } }),
+    ...(isIndexable(path, locale) ? {} : { robots: { index: false, follow: true } }),
     openGraph: {
       type: "website",
       locale: locales[locale].ogLocale,

@@ -2,7 +2,9 @@
 //   pnpm seo:check                           -> http://localhost:3000 (after pnpm build && pnpm start)
 //   pnpm seo:check https://www.vayasyaseva.com
 // Sitemap URLs are absolute (www); they are fetched from the given base instead.
-// Also runs check C7 (no business phone on jobs pages): scripts/check-jobs-phone.mjs.
+// Also runs check C7 (no business phone on jobs pages): scripts/check-jobs-phone.mjs,
+// and C11 (no published page links to a page outside the sitemap, i.e. a
+// review, paused, draft or missing page; see src/content/registry).
 import { checkJobsPhone } from "./check-jobs-phone.mjs";
 
 const SITE = "https://www.vayasyaseva.com";
@@ -34,6 +36,8 @@ if (sitemap.status !== 200) {
   process.exit(1);
 }
 const urls = [...new Set([...sitemap.body.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]))];
+const sitemapPaths = new Set(urls.map((url) => trim(url.slice(SITE.length)) || "/"));
+const LOCALE_LINK = /href="(\/(?:en-in|hi-in|hi-latn-in)(?:\/[^"?#]*)?)(?:[?#][^"]*)?"/g;
 
 await Promise.all(
   urls.map(async (url) => {
@@ -77,6 +81,12 @@ await Promise.all(
       }
     }
 
+    // C11: links to other language-prefixed pages must be published pages.
+    for (const [, href] of body.matchAll(LOCALE_LINK)) {
+      const target = trim(href.replaceAll("&amp;", "&"));
+      if (!sitemapPaths.has(target)) fail(path, `links to ${target}, which is not a published page (C11)`);
+    }
+
     if (body.includes(HOME_ADDRESS_MARKER) && !HOME_ADDRESS_PAGES.has(path)) {
       fail(path, "registered (home) address outside Privacy/Terms");
     }
@@ -89,4 +99,4 @@ if (errors.length) {
   console.error(`SEO check failed (${errors.length}):\n- ${errors.sort().join("\n- ")}`);
   process.exit(1);
 }
-console.log(`SEO check passed: ${urls.length} URLs on ${base}, including the jobs phone check (C7)`);
+console.log(`SEO check passed: ${urls.length} URLs on ${base}, including the jobs phone check (C7) and link leaks (C11)`);

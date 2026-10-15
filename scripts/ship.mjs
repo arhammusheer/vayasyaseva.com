@@ -15,7 +15,9 @@ run("git fetch -q origin main");
 if (out("git rev-list --count HEAD..origin/main") !== "0") throw new Error("origin/main has commits you don't; pull first.");
 if (out("git rev-list --count origin/main..HEAD") === "0") throw new Error("Nothing to ship: main matches origin.");
 
-step("Slop lint, lint, type check");
+step("Content check, registry tests, slop lint, lint, type check");
+run("pnpm -s content:check");
+run("pnpm -s content:unit");
 run("pnpm -s lint:slop");
 run("pnpm -s lint");
 run("pnpm -s type-check");

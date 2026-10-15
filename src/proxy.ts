@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { localePath, localesOf, neutralTarget, splitLocalePath } from "@/lib/i18n";
+import { localePath, localesOf, movedPathname, neutralTarget, splitLocalePath } from "@/lib/i18n";
 
 /**
  * First-party proxy for our self-hosted Umami: /_t/s.js (tracker) and /_t/e
@@ -51,6 +51,15 @@ function routeLocale(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const { locale, path } = splitLocalePath(pathname);
   const url = request.nextUrl.clone();
+
+  // Aliases and retired pages (src/content/registry): one 308 straight to
+  // the target page, in the language asked for when the target is published
+  // in it (reviewers in an unpublished locale may land on a built version).
+  const moved = movedPathname(path, locale);
+  if (moved) {
+    url.pathname = moved;
+    return NextResponse.redirect(url, 308);
+  }
 
   if (locale) {
     // /hi-IN/jobs -> /hi-in/jobs: one spelling per page.

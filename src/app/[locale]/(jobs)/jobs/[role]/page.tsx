@@ -5,7 +5,12 @@ import { isJobHub } from "@/lib/talent-intake/rules";
 
 /** Role pages (/jobs/packing) and candidate category pages (/jobs/freshers). */
 export const dynamicParams = false;
-export const generateStaticParams = () => [...jobRoleParams(), ...jobHubParams()];
+// Runs once per locale from app/[locale]/layout.tsx; only versions the
+// registry builds in that language get a page, so the rest 404.
+export function generateStaticParams({ params }: { params: { locale: string } }) {
+  const locale = localeOfParams(params);
+  return [...jobRoleParams(locale), ...jobHubParams(locale)];
+}
 
 type Props = { params: Promise<{ locale: string; role: string }> };
 

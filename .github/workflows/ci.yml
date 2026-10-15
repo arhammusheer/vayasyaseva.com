@@ -31,6 +31,17 @@ jobs:
       - name: Verify AI discovery consistency
         run: pnpm ai:check
 
+      - name: Content check (registry, /jobs namespace, internal-only keys, public denylist)
+        run: pnpm content:check
+        env:
+          PUBLIC_DENYLIST: ${{ secrets.PUBLIC_DENYLIST }}
+
+      - name: Registry and sitemap snapshot tests
+        run: pnpm content:unit
+
+      - name: Slop lint
+        run: pnpm lint:slop
+
       - name: Lint
         run: pnpm lint
 
@@ -54,3 +65,8 @@ jobs:
           pnpm start -p 3000 > /tmp/next.log 2>&1 &
           for i in $(seq 1 30); do curl -s -o /dev/null http://localhost:3000 && break; sleep 1; done
           pnpm seo:check http://localhost:3000
+
+      - name: Public denylist in the built HTML
+        run: pnpm content:check
+        env:
+          PUBLIC_DENYLIST: ${{ secrets.PUBLIC_DENYLIST }}

@@ -7,13 +7,14 @@ import { QuickApply } from "@/components/jobs/quick-apply";
 import { JsonLd, breadcrumbSchema, webPageSchema } from "@/lib/structured-data";
 import { jobsCopy } from "@/content/pages/jobs";
 import { getJobRole, jobRoleLabels, jobRoles } from "@/content/pages/job-roles";
-import { localePath, locales, type Locale } from "@/lib/i18n";
+import { localePath, locales, localesOf, type Locale } from "@/lib/i18n";
 import type { JobRole } from "@/lib/talent-intake/rules";
 
 export const jobRolePath = (slug: JobRole) => `/jobs/${slug}`;
 
-export function jobRoleParams() {
-  return jobRoles["en-IN"].map((r) => ({ role: r.slug }));
+/** Role pages built in this language (src/content/registry). */
+export function jobRoleParams(locale: Locale) {
+  return jobRoles["en-IN"].filter((r) => localesOf(jobRolePath(r.slug)).includes(locale)).map((r) => ({ role: r.slug }));
 }
 
 function roleOrThrow(slug: string, locale: Locale) {

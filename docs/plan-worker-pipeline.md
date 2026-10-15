@@ -134,7 +134,7 @@ Submission { id, ref, source, phone, locale, consent{version, at}, adult, text?,
 
 ## Jobs pages (decided 26 September 2026)
 
-- **Name and URLs:** "Jobs" / "नौकरी", at `/en-in/jobs`, `/hi-in/jobs` and `/hi-latn-in/jobs` (translations of one another in `pages`, `src/lib/i18n.ts`). The neutral `/jobs` asks the reader to choose a language: share that one when you don't know which they read.
+- **Name and URLs:** "Jobs" / "नौकरी", at `/en-in/jobs`, `/hi-in/jobs` and `/hi-latn-in/jobs` (translations of one another in `src/content/registry/pages.ts`). The neutral `/jobs` asks the reader to choose a language: share that one when you don't know which they read.
 - **Header and footer link** follows the page's language: en-IN pages link to `/en-in/jobs`, hi-IN pages to `/hi-in/jobs`, hi-Latn-IN pages to `/hi-latn-in/jobs`.
 - **One page with the form**, no separate apply page, in this order:
   1. The no-fee line.

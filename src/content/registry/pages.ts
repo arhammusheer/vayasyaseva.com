@@ -11,7 +11,7 @@
  * Public repo: publishable facts only (content:check enforces part of this).
  */
 import { JOB_HUB_SLUGS, JOB_ROLE_SLUGS } from "@/lib/talent-intake/rules";
-import { HARIDWAR_HUB_PATH, LOCALE_TAGS, type Audience, type ClusterId, type LocaleTag, type PageStatus } from "./identifiers";
+import { HARIDWAR_HUB_PATH, LOCALE_TAGS, jobsHubPath, type Audience, type ClusterId, type LocaleTag, type PageStatus } from "./identifiers";
 
 export const PAGE_KINDS = [
   "home",
@@ -59,6 +59,7 @@ const REDESIGN = "2026-09-13";
 const CONTENT_UPDATE = "2026-10-01";
 const JOBS_ADDED = "2026-10-02";
 const PHONE_FREE_JOBS = "2026-10-16";
+const HARIDWAR_DEPTH = "2026-10-16";
 
 const ALL = Object.fromEntries(LOCALE_TAGS.map((l) => [l, "published"])) as Record<LocaleTag, PageStatus>;
 const EN = { "en-IN": "published" } as const;
@@ -93,7 +94,9 @@ export const pageEntries: readonly PageEntry[] = [
   ...JOB_ROLE_SLUGS.map((slug) => jobsPage(`/jobs/${slug}`, "job-role", 0.8)),
   // Candidate categories (freshers, 10th, 12th pass), linked from the jobs overview.
   ...JOB_HUB_SLUGS.map((slug) => jobsPage(`/jobs/${slug}`, "job-hub", 0.7)),
-  { path: HARIDWAR_HUB_PATH, kind: "cluster-hub", audience: "business", locales: ALL, parent: "/", cluster: "haridwar", updated: CONTENT_UPDATE, changeFrequency: "monthly", priority: 0.9 },
+  // Cluster jobs hubs (PLAN §5.3): /jobs/<cluster>, linked from /jobs and the cluster's buyer hub.
+  { ...jobsPage(jobsHubPath("haridwar"), "jobs-city", 0.8), cluster: "haridwar", updated: HARIDWAR_DEPTH },
+  { path: HARIDWAR_HUB_PATH, kind: "cluster-hub", audience: "business", locales: ALL, parent: "/", cluster: "haridwar", updated: HARIDWAR_DEPTH, changeFrequency: "monthly", priority: 0.9 },
   { path: "/industries", kind: "static", audience: "business", locales: EN, parent: "/", updated: REDESIGN, changeFrequency: "monthly", priority: 0.8 },
   { path: "/how-we-operate", kind: "static", audience: "business", locales: EN, parent: "/", updated: REDESIGN, changeFrequency: "monthly", priority: 0.8 },
   { path: "/compliance", kind: "static", audience: "business", locales: EN, parent: "/", updated: REDESIGN, changeFrequency: "monthly", priority: 0.8 },

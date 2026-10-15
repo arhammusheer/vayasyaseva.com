@@ -209,6 +209,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       {
         question: "Where is the work?",
         answer: "Mostly in the SIDCUL industrial area and across Haridwar, with some work around Roorkee, Bhagwanpur and Bahadrabad.",
+        link: { href: "/en-in/jobs/haridwar", label: "Jobs in Haridwar" },
         category: "operations",
       },
     ],
@@ -302,6 +303,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       {
         question: "काम किन इलाकों में है?",
         answer: "ज़्यादातर सिडकुल औद्योगिक क्षेत्र और पूरे हरिद्वार में, और कुछ काम रुड़की, भगवानपुर और बहादराबाद के आसपास।",
+        link: { href: "/hi-in/jobs/haridwar", label: "हरिद्वार में नौकरी" },
         category: "operations",
       },
     ],
@@ -395,6 +397,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       {
         question: "Kaam kin areas mein hai?",
         answer: "Zyadatar SIDCUL industrial area aur poore Haridwar mein, aur kuch kaam Roorkee, Bhagwanpur aur Bahadrabad ke aas-paas.",
+        link: { href: "/hi-latn-in/jobs/haridwar", label: "Haridwar mein job" },
         category: "operations",
       },
     ],

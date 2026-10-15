@@ -8,9 +8,10 @@
 export const REF_PATTERN = /^VS-J-[A-Z0-9]{6}$/;
 
 /**
- * Which jobs page the submission came from, and the locale it implies. These
- * are stored values (integrations/n8n/schema.sql): web_hinglish is the
- * hi-Latn-IN page. Renaming one needs a database migration and an n8n deploy.
+ * Legacy sources: which jobs page a submission came from, and the short
+ * locale it implies. Stored values (integrations/n8n/schema.sql): web_hinglish
+ * is the hi-Latn-IN page. Old rows keep them, the agent routes still send
+ * them, and tickets issued before WEB_SOURCE may carry them. Never rename one.
  */
 export const INTAKE_SOURCES = {
   web_en: "en",
@@ -18,6 +19,55 @@ export const INTAKE_SOURCES = {
   web_hinglish: "hinglish",
 } as const;
 export type IntakeSource = keyof typeof INTAKE_SOURCES;
+export type LegacyLocale = (typeof INTAKE_SOURCES)[IntakeSource];
+
+/**
+ * The source of new web submissions (PLAN §1a): one value, with the page's
+ * language in `locale` as a BCP 47 tag instead of being folded into the source.
+ */
+export const WEB_SOURCE = "web";
+export type SubmissionSource = IntakeSource | typeof WEB_SOURCE;
+
+export function isSubmissionSource(value: unknown): value is SubmissionSource {
+  return value === WEB_SOURCE || (typeof value === "string" && Object.hasOwn(INTAKE_SOURCES, value));
+}
+
+/**
+ * Page languages a submission can carry (BCP 47). Same list as LOCALE_TAGS in
+ * src/content/registry/identifiers.ts (content:check compares them); repeated
+ * here because n8n inlines this file and it must stay import-free.
+ */
+export const INTAKE_LOCALES = ["en-IN", "hi-IN", "hi-Latn-IN"] as const;
+export type IntakeLocale = (typeof INTAKE_LOCALES)[number];
+
+export function isIntakeLocale(value: unknown): value is IntakeLocale {
+  return typeof value === "string" && (INTAKE_LOCALES as readonly string[]).includes(value);
+}
+
+/** The BCP 47 locale a legacy source stands for. */
+export const LEGACY_SOURCE_LOCALES = { web_en: "en-IN", web_hi: "hi-IN", web_hinglish: "hi-Latn-IN" } as const satisfies Record<
+  IntakeSource,
+  IntakeLocale
+>;
+
+/**
+ * Cluster ids (PLAN §1a). Same list as CLUSTER_IDS in
+ * src/content/registry/identifiers.ts (content:check compares them).
+ */
+export const INTAKE_CLUSTERS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other"] as const;
+export type IntakeCluster = (typeof INTAKE_CLUSTERS)[number];
+
+export function isIntakeCluster(value: unknown): value is IntakeCluster {
+  return typeof value === "string" && (INTAKE_CLUSTERS as readonly string[]).includes(value);
+}
+
+/** The page a form sits on: a neutral path such as /jobs/haridwar (no locale, no query). */
+export const PAGE_PATH_PATTERN = /^\/([a-z0-9]+(-[a-z0-9]+)*(\/[a-z0-9]+(-[a-z0-9]+)*)*)?$/;
+export const MAX_PAGE_PATH_LENGTH = 200;
+
+export function isPagePath(value: unknown): value is string {
+  return typeof value === "string" && value.length <= MAX_PAGE_PATH_LENGTH && PAGE_PATH_PATTERN.test(value);
+}
 
 /**
  * How a submission reached us: the jobs form in a browser ("web"), or an AI
@@ -123,6 +173,33 @@ export const QUICK_ANSWERS = {
   },
 } as const;
 export type QuickQuestion = keyof typeof QUICK_ANSWERS;
+
+/**
+ * The cluster each `area` answer lies in; null when the answer names no
+ * cluster ("outside" Haridwar), so the page's cluster or "other" decides.
+ * Append-only, like the answer ids.
+ */
+export const AREA_CLUSTERS: Record<keyof typeof QUICK_ANSWERS.area, IntakeCluster | null> = {
+  "sidcul-bahadrabad": "haridwar",
+  "haridwar-jwalapur": "haridwar",
+  "roorkee-bhagwanpur": "haridwar",
+  laksar: "haridwar",
+  outside: null,
+};
+
+/**
+ * The cluster a submission belongs to (PLAN pipelines, rules 1 to 3): the
+ * area the person chose when it names a cluster, else the page's cluster,
+ * else "other", which is a real cluster, not an error. So "Outside Haridwar"
+ * on /jobs/haridwar files under haridwar (the page), and the same answer on
+ * /jobs/apply files under other. The page's own cluster is stored separately
+ * (page_cluster).
+ */
+export function submissionCluster(pageCluster: IntakeCluster | null | undefined, answers: QuickAnswers | null | undefined): IntakeCluster {
+  const area = answers?.area?.[0];
+  const fromArea = area && Object.hasOwn(AREA_CLUSTERS, area) ? AREA_CLUSTERS[area as keyof typeof AREA_CLUSTERS] : null;
+  return fromArea ?? pageCluster ?? "other";
+}
 export type QuickAnswers = Partial<Record<QuickQuestion, string[]>>;
 
 /** Staff labels for the questions, in the order they are asked. */

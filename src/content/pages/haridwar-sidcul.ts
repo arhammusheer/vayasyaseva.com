@@ -1,7 +1,11 @@
 import type { FaqItem } from "../types";
 import type { Locale } from "@/lib/i18n";
+import type { HARIDWAR_SECTION_ANCHORS } from "@/content/registry/identifiers";
 
 type Link = { href: string; label: string };
+
+/** One industrial area of Haridwar district, a section of this page (HARIDWAR_SECTION_ANCHORS). */
+export type HaridwarArea = { id: (typeof HARIDWAR_SECTION_ANCHORS)[number]; name: string; text: string };
 
 export interface HaridwarCopy {
   title: string;
@@ -12,6 +16,28 @@ export interface HaridwarCopy {
   introHeading: [string, string];
   intro: string[];
   links: Link[];
+  /**
+   * Bhagwanpur, Bahadrabad and Roorkee (PLAN §5.4). Only facts already on
+   * the site or checkable in public sources: no shift timings, bus routes or
+   * company names until first-hand facts come in. Kept short until then.
+   */
+  areas: {
+    eyebrow: string;
+    heading: string;
+    intro: string;
+    items: HaridwarArea[];
+    /**
+     * TODO(wage pages, PLAN §5.5): link this line to the Uttarakhand wage
+     * page once it is published, so a buyer can check the notification.
+     */
+    wages: string;
+    hire: Link;
+  };
+  /** "What we hold" (registry-driven; renders nothing until signed off). */
+  holdEyebrow: string;
+  holdHeading: string;
+  /** One quiet line for job seekers, linking the jobs hub. No phone near it. */
+  jobs: { text: string; link: Link };
   supportEyebrow: string;
   support: { title: string; text: string; href: string; link: string }[];
   faqHeading: string;
@@ -26,7 +52,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
   "en-IN": {
     title: "Labour Contractor in SIDCUL Haridwar",
     description:
-      "Haridwar-based labour contractor for factories and warehouses in SIDCUL and across the city. Discuss contract manpower, site coordination and EPF/ESIC workforce records.",
+      "Labour contractor for factories and warehouses in SIDCUL Haridwar, Bahadrabad, Bhagwanpur and Roorkee. Contract manpower with EPF/ESIC records.",
     breadcrumb: { home: "Home", page: "SIDCUL Haridwar" },
     hero: ["Labour contractor in Haridwar.", "Supporting SIDCUL industry."],
     lede: "Contract labour and manpower for factories, warehouses and facilities in SIDCUL and across Haridwar, with site coordination and applicable workforce documentation.",
@@ -43,6 +69,35 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
       { href: "/services/loading-unloading-labour", label: "Loading and unloading labour in SIDCUL" },
       { href: "/contact", label: "Tell us about your site" },
     ],
+    areas: {
+      eyebrow: "AROUND SIDCUL HARIDWAR",
+      heading: "Bhagwanpur, Bahadrabad and Roorkee.",
+      intro:
+        "Haridwar district has industry beyond the SIDCUL estate. We take requirements for units in these three areas, and some of our work is already there.",
+      items: [
+        {
+          id: "bhagwanpur",
+          name: "Bhagwanpur",
+          text: "An industrial area in Haridwar district, near Roorkee.",
+        },
+        {
+          id: "bahadrabad",
+          name: "Bahadrabad",
+          text: "An industrial area on the Haridwar–Roorkee road, near SIDCUL Haridwar.",
+        },
+        {
+          id: "roorkee",
+          name: "Roorkee",
+          text: "A city in Haridwar district, on the Delhi–Haridwar route.",
+        },
+      ],
+      wages:
+        "All three are in Uttarakhand, so the Uttarakhand minimum wage notification applies there, as it does in SIDCUL Haridwar.",
+      hire: { href: "/contact", label: "Need workers at a unit in one of these areas? Tell us the site" },
+    },
+    holdEyebrow: "WHAT WE HOLD",
+    holdHeading: "Registrations for sites in Haridwar.",
+    jobs: { text: "Looking for work?", link: { href: "/jobs/haridwar", label: "Jobs in Haridwar" } },
     supportEyebrow: "SUPPORT FOR YOUR SITE",
     support: [
       {
@@ -95,7 +150,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
   "hi-IN": {
     title: "सिडकुल हरिद्वार में लेबर ठेकेदार (Labour Contractor)",
     description:
-      "हरिद्वार में स्थित लेबर ठेकेदार। सिडकुल और पूरे हरिद्वार की फ़ैक्टरियों और वेयरहाउस के लिए कॉन्ट्रैक्ट लेबर, मैनपावर, साइट कोऑर्डिनेशन और EPF/ESIC रिकॉर्ड।",
+      "सिडकुल हरिद्वार, बहादराबाद, भगवानपुर और रुड़की की फ़ैक्टरियों और वेयरहाउस के लिए लेबर ठेकेदार। EPF/ESIC रिकॉर्ड के साथ कॉन्ट्रैक्ट मैनपावर।",
     breadcrumb: { home: "होम", page: "सिडकुल हरिद्वार" },
     hero: ["हरिद्वार में लेबर ठेकेदार।", "सिडकुल उद्योग के साथ।"],
     lede: "सिडकुल और पूरे हरिद्वार की फ़ैक्टरियों, वेयरहाउस और फ़ैसिलिटी के लिए कॉन्ट्रैक्ट लेबर और मैनपावर, साइट कोऑर्डिनेशन और ज़रूरी वर्कफ़ोर्स रिकॉर्ड के साथ।",
@@ -112,6 +167,34 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
       { href: "/services/loading-unloading-labour", label: "सिडकुल में लोडिंग-अनलोडिंग लेबर (अंग्रेज़ी में)" },
       { href: "/contact", label: "अपनी साइट के बारे में बताइए" },
     ],
+    areas: {
+      eyebrow: "सिडकुल हरिद्वार के आसपास",
+      heading: "भगवानपुर, बहादराबाद और रुड़की।",
+      intro:
+        "हरिद्वार ज़िले में सिडकुल के अलावा भी उद्योग हैं। इन तीनों इलाकों की यूनिटों के लिए भी हम ज़रूरतें लेते हैं, और हमारा कुछ काम वहाँ पहले से है।",
+      items: [
+        {
+          id: "bhagwanpur",
+          name: "भगवानपुर",
+          text: "हरिद्वार ज़िले का औद्योगिक क्षेत्र, रुड़की के पास।",
+        },
+        {
+          id: "bahadrabad",
+          name: "बहादराबाद",
+          text: "हरिद्वार–रुड़की रोड पर औद्योगिक क्षेत्र, सिडकुल हरिद्वार के पास।",
+        },
+        {
+          id: "roorkee",
+          name: "रुड़की",
+          text: "हरिद्वार ज़िले का शहर, दिल्ली–हरिद्वार रास्ते पर।",
+        },
+      ],
+      wages: "तीनों इलाके उत्तराखंड में हैं, इसलिए वहाँ उत्तराखंड की न्यूनतम मज़दूरी अधिसूचना लागू होती है, जैसे सिडकुल हरिद्वार में।",
+      hire: { href: "/contact", label: "इनमें से किसी इलाके की यूनिट के लिए कामगार चाहिए? साइट बताइए" },
+    },
+    holdEyebrow: "हमारे रजिस्ट्रेशन",
+    holdHeading: "हरिद्वार की साइटों के लिए रजिस्ट्रेशन।",
+    jobs: { text: "काम ढूँढ रहे हैं?", link: { href: "/jobs/haridwar", label: "हरिद्वार में नौकरी" } },
     supportEyebrow: "आपकी साइट के लिए सहायता",
     support: [
       {
@@ -164,7 +247,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
   "hi-Latn-IN": {
     title: "SIDCUL Haridwar mein Labour Contractor (Labour Thekedar)",
     description:
-      "Haridwar based labour contractor. SIDCUL aur poore Haridwar ki factories aur warehouses ke liye contract labour, manpower, site coordination aur EPF/ESIC records.",
+      "SIDCUL Haridwar, Bahadrabad, Bhagwanpur aur Roorkee ki factories aur warehouses ke liye labour contractor. EPF/ESIC records ke saath contract manpower.",
     breadcrumb: { home: "Home", page: "SIDCUL Haridwar" },
     hero: ["Haridwar mein labour contractor.", "SIDCUL industry ke saath."],
     lede: "SIDCUL aur poore Haridwar ki factories, warehouses aur facilities ke liye contract labour aur manpower, site coordination aur zaroori workforce records ke saath.",
@@ -181,6 +264,34 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
       { href: "/services/loading-unloading-labour", label: "SIDCUL mein loading-unloading labour" },
       { href: "/contact", label: "Apni site ke baare mein bataiye" },
     ],
+    areas: {
+      eyebrow: "SIDCUL HARIDWAR KE AAS-PAAS",
+      heading: "Bhagwanpur, Bahadrabad aur Roorkee.",
+      intro:
+        "Haridwar district mein SIDCUL ke alawa bhi industry hai. In teeno areas ki units ke liye bhi hum requirements lete hain, aur hamara kuch kaam wahan pehle se hai.",
+      items: [
+        {
+          id: "bhagwanpur",
+          name: "Bhagwanpur",
+          text: "Haridwar district ka industrial area, Roorkee ke paas.",
+        },
+        {
+          id: "bahadrabad",
+          name: "Bahadrabad",
+          text: "Haridwar–Roorkee road par industrial area, SIDCUL Haridwar ke paas.",
+        },
+        {
+          id: "roorkee",
+          name: "Roorkee",
+          text: "Haridwar district ka shehar, Delhi–Haridwar raaste par.",
+        },
+      ],
+      wages: "Teeno areas Uttarakhand mein hain, isliye wahan Uttarakhand ki minimum wage notification lagu hoti hai, jaise SIDCUL Haridwar mein.",
+      hire: { href: "/contact", label: "Inmein se kisi area ki unit ke liye workers chahiye? Site bataiye" },
+    },
+    holdEyebrow: "HAMARE REGISTRATIONS",
+    holdHeading: "Haridwar ki sites ke liye registrations.",
+    jobs: { text: "Kaam dhoondh rahe hain?", link: { href: "/jobs/haridwar", label: "Haridwar mein job" } },
     supportEyebrow: "AAPKI SITE KE LIYE SUPPORT",
     support: [
       {

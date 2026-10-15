@@ -101,7 +101,7 @@ export const industriesFaqs: FaqItem[] = [
   {
     question: "Do you work outside Haridwar?",
     answer:
-      "Our base is Haridwar: the SIDCUL industrial estate and the city around it. Enquiries for Roorkee, Bhagwanpur, Bahadrabad and other locations in Uttarakhand are welcome; share the site and we will discuss what is possible.",
+      "Our base is SIDCUL Haridwar. Some of our work is around Roorkee, Bhagwanpur and Bahadrabad. For other locations in Uttarakhand, share the site and we will discuss what is possible.",
     category: "commercial",
   },
 ];

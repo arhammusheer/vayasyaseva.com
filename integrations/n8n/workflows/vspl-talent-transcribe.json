@@ -179,7 +179,7 @@
             {
               "parameterType": "formData",
               "name": "language_code",
-              "value": "={{ $('Claim voice notes').item.json.locale === 'en' ? 'unknown' : 'hi-IN' }}"
+              "value": "={{ ['en', 'en-IN'].includes($('Claim voice notes').item.json.locale) ? 'unknown' : 'hi-IN' }}"
             },
             {
               "parameterType": "formData",
@@ -322,7 +322,7 @@
         "sendBody": true,
         "options": {},
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ job_parameters: { model: 'saaras:v4', language_code: $('Claim voice notes').item.json.locale === 'en' ? 'unknown' : 'hi-IN', keyterms: [\"SIDCUL\"] } }) }}"
+        "jsonBody": "={{ JSON.stringify({ job_parameters: { model: 'saaras:v4', language_code: ['en', 'en-IN'].includes($('Claim voice notes').item.json.locale) ? 'unknown' : 'hi-IN', keyterms: [\"SIDCUL\"] } }) }}"
       },
       "credentials": {
         "httpHeaderAuth": {

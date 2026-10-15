@@ -40,6 +40,23 @@ BEGIN
   ALTER TABLE submissions ADD COLUMN IF NOT EXISTS applicant_name text;
   ALTER TABLE submissions ADD COLUMN IF NOT EXISTS answers jsonb;
   CREATE INDEX IF NOT EXISTS submissions_phone_idx ON submissions (phone);
+  -- PLAN §1a and §8.2 (16 Oct 2026), additive: new web submissions arrive as
+  -- source 'web' with a BCP 47 locale. The legacy sources and short locales
+  -- stay valid for old rows and the agent routes. Deploy this before the
+  -- website starts sending 'web'.
+  ALTER TABLE submissions DROP CONSTRAINT IF EXISTS submissions_source_check;
+  ALTER TABLE submissions ADD CONSTRAINT submissions_source_check
+    CHECK (source IN ('web', 'web_en', 'web_hi', 'web_hinglish', 'whatsapp', 'phone', 'sms'));
+  ALTER TABLE submissions DROP CONSTRAINT IF EXISTS submissions_locale_check;
+  ALTER TABLE submissions ADD CONSTRAINT submissions_locale_check
+    CHECK (locale IN ('en-IN', 'hi-IN', 'hi-Latn-IN', 'en', 'hi', 'hinglish'));
+  -- The submission's cluster (INTAKE_CLUSTERS in rules.ts): the area chosen,
+  -- else the page's, else 'other'; the page's own cluster; and the page's
+  -- neutral path (/jobs/haridwar). All null on older rows.
+  ALTER TABLE submissions ADD COLUMN IF NOT EXISTS cluster text;
+  ALTER TABLE submissions ADD COLUMN IF NOT EXISTS page_cluster text;
+  ALTER TABLE submissions ADD COLUMN IF NOT EXISTS page_path text;
+  CREATE INDEX IF NOT EXISTS submissions_cluster_idx ON submissions (cluster, created_at);
 
   -- Separate from Chatwoot delivery. Only new submissions are queued by intake;
   -- setup never backfills acknowledgements for historical applications.

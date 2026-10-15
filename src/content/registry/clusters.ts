@@ -23,6 +23,25 @@ export type PublicClaim = {
   expires: string;
 };
 
+/**
+ * One registration or licence VSPL holds for a cluster's sites, from the
+ * compliance adviser's list, signed off by the owner (PLAN §5.2 "What we
+ * hold"). Public facts only: the name and, where it is safe to publish, the
+ * number. Like claims, an entry stops showing at `expires`.
+ */
+export type PublicRegistration = {
+  /** What it is, per language; English is required. */
+  name: Partial<Record<LocaleTag, string>> & { "en-IN": string };
+  /** The registration or licence number, if it may be published. */
+  number?: string;
+  /** Who issued it, per language; English is required, e.g. "EPFO" or "Labour Department, Uttarakhand". */
+  issuedBy: Partial<Record<LocaleTag, string>> & { "en-IN": string };
+  /** ISO date of the owner's sign-off. */
+  signedOffOn: string;
+  /** ISO date the entry stops showing (six months after sign-off at most). */
+  expires: string;
+};
+
 export type Cluster = {
   id: ClusterId;
   /** Passed the readiness check. A cluster that hasn't is left out instead. */
@@ -36,6 +55,11 @@ export type Cluster = {
   buyerHub: string;
   /** Signed-off public claims. Rendered only from here. */
   claims: readonly PublicClaim[];
+  /**
+   * "What we hold" on the buyer hub. Empty until the owner signs off the
+   * compliance adviser's list; the block renders nothing while it is empty.
+   */
+  registrations: readonly PublicRegistration[];
 };
 
 export const clusters: readonly Cluster[] = [
@@ -49,9 +73,16 @@ export const clusters: readonly Cluster[] = [
     buyerHub: "/haridwar-sidcul",
     // None signed off yet; the page copy carries no claim block.
     claims: [],
+    // Waiting for the state registration list (PLAN §12, decision 3).
+    registrations: [],
   },
 ];
 
 export function clusterById(id: string) {
   return clusters.find((c) => c.id === id);
+}
+
+/** Registrations to show today: signed off and not yet expired. */
+export function liveRegistrations(cluster: Cluster, today = new Date().toISOString().slice(0, 10)) {
+  return cluster.registrations.filter((r) => r.signedOffOn <= today && today < r.expires);
 }

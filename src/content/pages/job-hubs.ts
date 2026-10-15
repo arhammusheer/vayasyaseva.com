@@ -58,7 +58,7 @@ export const jobHubLabels: Record<Locale, JobHubLabels> = {
   },
 };
 
-const AGE_FAQ: Record<Locale, FaqItem> = {
+export const AGE_FAQ: Record<Locale, FaqItem> = {
   "en-IN": {
     question: "Is there an age limit?",
     answer:

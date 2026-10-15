@@ -160,6 +160,21 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
           cta: { href: "/contact", label: "Let’s talk" },
         };
   const current = (href: string) => (href === pathname || href === path ? "page" : undefined);
+  // Jobs pages: links a job seeker rarely follows are not prefetched, to
+  // spare data on patchy 4G (as in the jobs footer).
+  const prefetch = door === "jobs" ? false : undefined;
+  // A jobs page with the form on it (#apply, e.g. /jobs/haridwar): Apply
+  // scrolls to that form instead of loading /jobs/apply without the page's
+  // cluster. Without JavaScript the link still opens /jobs/apply.
+  const applyHere = (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (door !== "jobs" || href !== localePath("/jobs/apply", pageLocale)) return;
+    const form = document.getElementById("apply");
+    if (!form) return;
+    event.preventDefault();
+    setOpen(false);
+    form.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "start" });
+    form.querySelector<HTMLElement>(".quick-question")?.focus({ preventScroll: true });
+  };
   return (
     <header
       ref={headerRef}
@@ -194,6 +209,7 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
               key={item.href}
               href={item.href}
               lang={item.lang}
+              prefetch={prefetch}
               aria-current={current(item.href)}
             >
               {item.label}
@@ -208,13 +224,19 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
         {languages.length > 0 && (
           <nav aria-label="Language" className="header-lang">
             {languages.map((l) => (
-              <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang}>
+              <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang} prefetch={false}>
                 {l.label}
               </Link>
             ))}
           </nav>
         )}
-        <Link href={nav.cta.href} className="header-contact" aria-current={current(nav.cta.href)}>
+        <Link
+          href={nav.cta.href}
+          className="header-contact"
+          prefetch={prefetch}
+          onClick={(event) => applyHere(event, nav.cta.href)}
+          aria-current={current(nav.cta.href)}
+        >
           {nav.cta.label} <ArrowUpRight size={17} aria-hidden="true" />
         </Link>
         <Sheet open={open} onOpenChange={setOpen}>
@@ -229,7 +251,11 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
                   key={item.href}
                   href={item.href}
                   lang={item.lang}
-                  onClick={() => setOpen(false)}
+                  prefetch={prefetch}
+                  onClick={(event) => {
+                    setOpen(false);
+                    applyHere(event, item.href);
+                  }}
                   aria-current={current(item.href)}
                   className="border-b py-3 text-lg"
                 >

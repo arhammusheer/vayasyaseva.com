@@ -46,6 +46,7 @@ The public pages below are the source of truth. They carry full text and JSON-LD
 
 ## Jobs
 - [Jobs overview](${baseUrl}/en-in/jobs): Types of work, candidate categories and the guided application
+- [Jobs in Haridwar](${baseUrl}/en-in/jobs/haridwar): Factory, packing, warehouse and helper work in SIDCUL Haridwar, Bahadrabad, Bhagwanpur and Roorkee, in full 8-hour shifts, with the guided application on the page. Also in Hindi (${baseUrl}/hi-in/jobs/haridwar) and Hindi in Latin script (${baseUrl}/hi-latn-in/jobs/haridwar)
 - [Fees and fraud](${baseUrl}/en-in/jobs/fees-and-fraud): There is no fee to apply. How our SMS looks, and how to report anyone who asks for money in our name
 - [Quick application](${baseUrl}/en-in/jobs/apply): A short guided form: tap answers (work, experience, education, shifts, start), then name and mobile number. Also in Hindi (${baseUrl}/hi-in/jobs/apply) and Hindi in Latin script (${baseUrl}/hi-latn-in/jobs/apply)
 ${roleLinksEn}
@@ -54,6 +55,7 @@ ${roleLinksEn}
 - [Haridwar SIDCUL (हिंदी)](${baseUrl}/hi-in/haridwar-sidcul)
 - [Contract labour (हिंदी)](${baseUrl}/hi-in/services/contract-labour)
 - [Jobs (हिंदी)](${baseUrl}/hi-in/jobs/apply)
+- [Jobs in Haridwar (हिंदी)](${baseUrl}/hi-in/jobs/haridwar)
 ${roleLinks("hi-in", " (हिंदी)")}
 
 ## Hindi pages (hi-Latn-IN, Hindi in Latin script)
@@ -64,6 +66,7 @@ ${roleLinks("hi-in", " (हिंदी)")}
 - [Factory labour (Hindi)](${baseUrl}/hi-latn-in/services/factory-labour)
 - [Housekeeping (Hindi)](${baseUrl}/hi-latn-in/services/housekeeping)
 - [Jobs (Hindi)](${baseUrl}/hi-latn-in/jobs/apply)
+- [Jobs in Haridwar (Hindi)](${baseUrl}/hi-latn-in/jobs/haridwar)
 ${roleLinks("hi-latn-in", " (Hindi)")}
 
 ## For AI agents: applying for work or sending an enquiry for someone

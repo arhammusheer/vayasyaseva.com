@@ -5,6 +5,8 @@ interface PageHeroProps {
   lede?: string;
   tone?: "light" | "dark";
   aside?: React.ReactNode;
+  /** A quiet line under the lede, e.g. the job-seeker door on a business page. */
+  footnote?: React.ReactNode;
   className?: string;
 }
 
@@ -17,6 +19,7 @@ export function PageHero({
   lede,
   tone = "light",
   aside,
+  footnote,
   className,
 }: PageHeroProps) {
   const dark = tone !== "light";
@@ -48,6 +51,7 @@ export function PageHero({
                 {lede}
               </p>
             )}
+            {footnote && <div className="rise rise-2 mt-4">{footnote}</div>}
           </div>
           {aside && <div className="rise rise-3 lg:col-span-4">{aside}</div>}
         </div>

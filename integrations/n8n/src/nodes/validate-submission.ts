@@ -9,6 +9,11 @@ import {
   ATTACHMENT_MIME,
   INTAKE_LIMITS,
   INTAKE_SOURCES,
+  WEB_SOURCE,
+  isIntakeCluster,
+  isIntakeLocale,
+  isPagePath,
+  isSubmissionSource,
   MAX_AGENT_NAME_LENGTH,
   REF_PATTERN,
   MAX_APPLICANT_NAME_LENGTH,
@@ -29,8 +34,21 @@ export default async function main(): Promise<N8nItem<ValidatedSubmission>[]> {
   const ref = String(body.ref ?? "");
   if (!REF_PATTERN.test(ref)) errors.add("ref");
 
-  const source = body.source && body.source in INTAKE_SOURCES ? body.source : null;
+  // "web" (with a BCP 47 locale) from the jobs pages; a legacy page source
+  // from the agent routes and older pages.
+  const source = isSubmissionSource(body.source) ? body.source : null;
   if (!source) errors.add("source");
+  const locale = isIntakeLocale(body.locale)
+    ? body.locale
+    : source && source !== WEB_SOURCE
+      ? INTAKE_SOURCES[source]
+      : null;
+  if (source && !locale) errors.add("locale");
+
+  // Set by the page, not typed by the person: an unknown value is dropped, not fatal.
+  const cluster = isIntakeCluster(body.cluster) ? body.cluster : null;
+  const pageCluster = isIntakeCluster(body.pageCluster) ? body.pageCluster : null;
+  const pagePath = isPagePath(body.pagePath) ? body.pagePath : null;
 
   // Unknown role or hub: keep the submission, drop the tag.
   const role = isJobRole(body.role) ? body.role : null;
@@ -76,7 +94,7 @@ export default async function main(): Promise<N8nItem<ValidatedSubmission>[]> {
   const answers = cleanQuickAnswers(body.answers);
 
   if (!text && attachments.length === 0 && !answers) errors.add("empty");
-  if (errors.size || !source || !phone || !body.consent) {
+  if (errors.size || !source || !locale || !phone || !body.consent) {
     throw new Error(`Invalid submission: ${[...errors].join(", ")}`);
   }
 
@@ -92,7 +110,10 @@ export default async function main(): Promise<N8nItem<ValidatedSubmission>[]> {
         form,
         applicantName,
         answers,
-        locale: INTAKE_SOURCES[source],
+        locale,
+        cluster,
+        pageCluster,
+        pagePath,
         phone,
         consentVersion: String(body.consent.version).slice(0, 40),
         consentedAt: new Date(consentAt).toISOString(),

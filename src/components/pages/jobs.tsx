@@ -5,6 +5,7 @@ import { Section } from "@/components/layout/section";
 import { FaqSection } from "@/components/sections/faq-section";
 import { quickApplyCopy } from "@/content/pages/quick-apply";
 import { jobHubs } from "@/content/pages/job-hubs";
+import { jobClusters } from "@/content/pages/job-clusters";
 import { JsonLd, breadcrumbSchema, webPageSchema } from "@/lib/structured-data";
 import { jobsCopy } from "@/content/pages/jobs";
 import { localePath, locales, type Locale } from "@/lib/i18n";
@@ -85,6 +86,12 @@ export function JobsPage({ locale }: { locale: Locale }) {
       </Section>
       <Section variant="subtle">
         <nav aria-label={t.breadcrumb.page} className="flex flex-wrap gap-x-10 gap-y-4">
+          {/* Cluster jobs hubs first (/jobs/haridwar), then who is searching. */}
+          {jobClusters[locale].map((c) => (
+            <Link key={c.slug} href={localePath(`/jobs/${c.slug}`, locale)} className="text-link">
+              {c.linkLabel} <ArrowUpRight size={18} aria-hidden="true" />
+            </Link>
+          ))}
           {jobHubs[locale].map((hub) => (
             <Link key={hub.slug} href={localePath(`/jobs/${hub.slug}`, locale)} className="text-link">
               {hub.name} <ArrowUpRight size={18} aria-hidden="true" />

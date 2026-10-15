@@ -14,15 +14,22 @@ import { formPage, trackAdsConversion, trackAnalyticsEvent } from "@/lib/analyti
 import { jobsCopy } from "@/content/pages/jobs";
 import { STEP_DEFS, quickApplyCopy, roleFor, type Answers, type StepDef } from "@/content/pages/quick-apply";
 import { readPrefill } from "@/lib/prefill";
-import { localePath, type Locale } from "@/lib/i18n";
-import { MAX_APPLICANT_NAME_LENGTH, cleanQuickAnswers, isJobRole, isJobHub, normaliseIndianMobile, type IntakeSource, type JobHub, type JobRole } from "@/lib/talent-intake/rules";
+import { localePath, splitLocalePath, type Locale } from "@/lib/i18n";
+import { clusterById } from "@/content/registry/clusters";
+import { MAX_APPLICANT_NAME_LENGTH, WEB_SOURCE, cleanQuickAnswers, isJobRole, isJobHub, isPagePath, normaliseIndianMobile, type IntakeCluster, type JobHub, type JobRole } from "@/lib/talent-intake/rules";
 import { JobSubmissionFailure, useJobSubmission } from "@/lib/use-job-submission";
 import { TURNSTILE_SCRIPT_URL } from "@/lib/turnstile";
 import { adClick } from "@/lib/ad-click";
 import { JobFilePicker, declareFiles, uploadAll, useJobFiles } from "@/components/jobs/job-files";
 
-/** Stored values shared with n8n; same as the long form. */
-const SOURCE: Record<Locale, IntakeSource> = { "en-IN": "web_en", "hi-IN": "web_hi", "hi-Latn-IN": "web_hinglish" };
+/**
+ * The page's cluster: the hub's own (/jobs/haridwar), or ?cluster=<id> on
+ * /jobs/apply from an ad, when that cluster has public pages. Never asked.
+ */
+function linkCluster(params: URLSearchParams): IntakeCluster | null {
+  const id = params.get("cluster");
+  return id && clusterById(id) ? (id as IntakeCluster) : null;
+}
 /**
  * Answers kept in this browser tab only (sessionStorage), so switching
  * language or going back does not clear them. Never sent anywhere; cleared
@@ -103,7 +110,18 @@ function Pills({
  * Turnstile); the answers reach staff as a short note. Events carry
  * variant "quick" so the two forms can be compared.
  */
-export function QuickApply({ locale, role: pageRole, hub: pageHub }: { locale: Locale; role?: JobRole; hub?: JobHub }) {
+export function QuickApply({
+  locale,
+  role: pageRole,
+  hub: pageHub,
+  cluster: pageCluster,
+}: {
+  locale: Locale;
+  role?: JobRole;
+  hub?: JobHub;
+  /** The cluster of the page the form sits on, sent with the application. */
+  cluster?: IntakeCluster;
+}) {
   const t = quickApplyCopy[locale];
   const form = jobsCopy[locale].form;
   const [answers, setAnswers] = useState<Answers>({});
@@ -118,6 +136,7 @@ export function QuickApply({ locale, role: pageRole, hub: pageHub }: { locale: L
   const started = useRef(false);
   const linkAnswers = useRef<Answers>({});
   const [hub, setHub] = useState<JobHub | null>(null);
+  const [cluster, setCluster] = useState<IntakeCluster | null>(pageCluster ?? null);
   const entry = useRef<"preset" | "fresh" | "restored">("fresh");
   const [missingFiles, setMissingFiles] = useState(false);
   const submission = useJobSubmission("vayasya-quick-submission");
@@ -165,6 +184,7 @@ export function QuickApply({ locale, role: pageRole, hub: pageHub }: { locale: L
     // over conflicting draft choices; the remaining saved fields survive.
     /* eslint-disable react-hooks/set-state-in-effect */
     setHub(pageHub ?? (isJobHub(params.get("hub")) ? params.get("hub") as JobHub : null));
+    setCluster(pageCluster ?? linkCluster(params));
     if (preset) {
       entry.current = "preset";
       setAnswers(preset as Answers);
@@ -173,7 +193,7 @@ export function QuickApply({ locale, role: pageRole, hub: pageHub }: { locale: L
     if (hash?.name) setName(hash.name.slice(0, MAX_APPLICANT_NAME_LENGTH));
     if (hash?.phone) setPhone(hash.phone);
     /* eslint-enable react-hooks/set-state-in-effect */
-  }, [pageRole, pageHub]);
+  }, [pageRole, pageHub, pageCluster]);
 
   const restoreDraft = useCallback((saved: Saved) => {
     entry.current = "restored";
@@ -277,10 +297,13 @@ export function QuickApply({ locale, role: pageRole, hub: pageHub }: { locale: L
     const sent = cleanQuickAnswers(Object.fromEntries(active.map((s) => [s.id, answers[s.id] ?? []])));
 
     const declared = declareFiles(files);
+    // The page the form sits on, without its locale segment (/jobs/haridwar).
+    const path = splitLocalePath(window.location.pathname).path;
+    const pagePath = isPagePath(path) ? path : null;
     setPhase({ name: "sending", message: form.sending });
     try {
       const ref = await submission.send({
-        start: { source: SOURCE[locale], role, hub, turnstileToken: turnstileToken ?? "", files: declared },
+        start: { source: WEB_SOURCE, locale, pageCluster: cluster, pagePath, role, hub, turnstileToken: turnstileToken ?? "", files: declared },
         payload: { phone, adult: true, consent: true, text: null, form: "quick", name: name.trim().slice(0, MAX_APPLICANT_NAME_LENGTH), answers: sent, adClick: adClick() },
         resetVerification: resetTurnstile,
         upload: async (uploads) => {

@@ -810,8 +810,47 @@
     }
   },
   {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/haridwar",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/haridwar",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/haridwar",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/haridwar"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/haridwar",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/haridwar",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/haridwar",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/haridwar"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/haridwar",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/haridwar",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/haridwar",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/haridwar"
+      }
+    }
+  },
+  {
     "url": "https://www.vayasyaseva.com/en-in/haridwar-sidcul",
-    "lastModified": "2026-10-01T00:00:00.000Z",
+    "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "monthly",
     "priority": 0.9,
     "alternates": {
@@ -824,7 +863,7 @@
   },
   {
     "url": "https://www.vayasyaseva.com/hi-in/haridwar-sidcul",
-    "lastModified": "2026-10-01T00:00:00.000Z",
+    "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "monthly",
     "priority": 0.9,
     "alternates": {
@@ -837,7 +876,7 @@
   },
   {
     "url": "https://www.vayasyaseva.com/hi-latn-in/haridwar-sidcul",
-    "lastModified": "2026-10-01T00:00:00.000Z",
+    "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "monthly",
     "priority": 0.9,
     "alternates": {

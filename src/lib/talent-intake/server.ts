@@ -5,7 +5,7 @@
  */
 import { createHmac, randomInt, timingSafeEqual } from "node:crypto";
 import { AwsClient } from "aws4fetch";
-import type { AttachmentKind, IntakeChannel, IntakeSource, JobHub, JobRole } from "./rules";
+import type { AttachmentKind, IntakeChannel, IntakeCluster, IntakeLocale, JobHub, JobRole, SubmissionSource } from "./rules";
 import { attachmentKeyPrefix } from "./rules";
 
 const R2_ENDPOINT = "https://3f03827748ac33418f1176adaa436f26.r2.cloudflarestorage.com";
@@ -83,7 +83,14 @@ export interface TicketFile {
 
 export interface Ticket {
   ref: string;
-  source: IntakeSource;
+  /** "web" on tickets from pages that send their locale; a legacy page source otherwise. */
+  source: SubmissionSource;
+  /** The page's language. Missing on tickets with a legacy source, which implies it. */
+  locale?: IntakeLocale | null;
+  /** The cluster of the page the form sits on. Missing on older tickets. */
+  pageCluster?: IntakeCluster | null;
+  /** The neutral path of the page the form sits on. Missing on older tickets. */
+  pagePath?: string | null;
   /** Missing on tickets issued before role pages existed. */
   role?: JobRole | null;
   /** Missing on tickets issued before hub pages sent it. */

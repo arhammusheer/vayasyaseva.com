@@ -57,8 +57,9 @@ try {
   const neutral=await context.request.get(origin+'/jobs/packing?utm_source=check',{maxRedirects:0});
   assert.equal(neutral.status(),200);assert.ok((await neutral.text()).includes('Choose your language'));
   await open('/en-in/jobs');
-  assert.equal(await page.locator('a[href="/en-in/jobs/packing"]').count(),1);
-  assert.equal(await page.locator('a[href="/en-in/jobs/freshers"]').count(),1);
+  assert.equal(await page.locator('main a[href="/en-in/jobs/packing"]').count(),1);
+  assert.equal(await page.locator('main a[href="/en-in/jobs/freshers"]').count(),1);
+  assert.equal(await page.locator('main a[href="/en-in/jobs/haridwar"]').count(),2);
   await page.locator('.jobs-submit').click();await page.waitForURL('**/en-in/jobs/apply');assert.equal(new URL(page.url()).pathname,'/en-in/jobs/apply');
   console.log('Job landing pages preserve self-canonicals, unique content, role links and guided application access');
   await open('/en-in/jobs/apply'+complete);
@@ -123,6 +124,19 @@ try {
   await open('/en-in/jobs/warehouse');
   assert.ok((await page.locator('[data-step=work] .is-selected').textContent()).includes('Warehouse'));
   console.log('Category and role pages prefill and tag the shared intake; send another retains the page role');
+  // The cluster jobs hub sends "web", its locale, its cluster and its page path.
+  for (const [locale, tag] of [['en-in','en-IN'],['hi-latn-in','hi-Latn-IN']]) {
+    await page.evaluate(()=>sessionStorage.clear());await open('/'+locale+'/jobs/haridwar'+complete);
+    await fill();await send();await visible('.jobs-done h2');
+    const body=startedBodies.at(-1);
+    assert.equal(body.source,'web');assert.equal(body.locale,tag);assert.equal(body.pageCluster,'haridwar');assert.equal(body.pagePath,'/jobs/haridwar');
+  }
+  await page.evaluate(()=>sessionStorage.clear());await open('/en-in/jobs/apply'+complete+'&cluster=haridwar');
+  await fill();await send();await visible('.jobs-done h2');
+  assert.equal(startedBodies.at(-1).pageCluster,'haridwar');assert.equal(startedBodies.at(-1).pagePath,'/jobs/apply');
+  await page.evaluate(()=>sessionStorage.clear());await open('/en-in/jobs/apply'+complete+'&cluster=mumbai');
+  await fill();await send();await visible('.jobs-done h2');assert.equal(startedBodies.at(-1).pageCluster,null);
+  console.log('The Haridwar jobs hub and ?cluster= tag applications with source, locale, cluster and page');
   console.log('Role prefills override conflicting saved choices; multilingual drafts restore');
   await page.evaluate(()=>sessionStorage.clear());
   for(const query of ['', '?type=assessment']) {

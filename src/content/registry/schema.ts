@@ -44,6 +44,16 @@ const publicClaimSchema = z.strictObject({
   expires: isoDate,
 });
 
+const publicRegistrationSchema = z
+  .strictObject({
+    name: z.strictObject(perLocale(z.string().min(1))).refine((n) => Boolean(n["en-IN"]), "English name is required"),
+    number: z.string().min(1).optional(),
+    issuedBy: z.strictObject(perLocale(z.string().min(1))).refine((n) => Boolean(n["en-IN"]), "English issuer is required"),
+    signedOffOn: isoDate,
+    expires: isoDate,
+  })
+  .refine((r) => r.expires > r.signedOffOn, "expires must be after signedOffOn");
+
 export const clusterSchema = z.strictObject({
   id: z.enum(CLUSTER_IDS),
   publishable: z.literal(true),
@@ -52,4 +62,5 @@ export const clusterSchema = z.strictObject({
   quickSwitch: z.array(z.enum(LOCALE_TAGS)).min(1),
   buyerHub: neutralPath,
   claims: z.array(publicClaimSchema),
+  registrations: z.array(publicRegistrationSchema),
 });

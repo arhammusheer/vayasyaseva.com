@@ -378,8 +378,8 @@ function intakeWorkflow() {
       "Save submission",
       `
 WITH s AS (
-  INSERT INTO submissions (ref, source, locale, phone, consent_version, consented_at, adult, text, role, hub, channel, agent_name, form, applicant_name, answers)
-  VALUES ($1, $2, $3, $4, $5, $6::timestamptz, true, $7, $9, $10, $11, $12, $13, $14, $15::jsonb)
+  INSERT INTO submissions (ref, source, locale, phone, consent_version, consented_at, adult, text, role, hub, channel, agent_name, form, applicant_name, answers, cluster, page_cluster, page_path)
+  VALUES ($1, $2, $3, $4, $5, $6::timestamptz, true, $7, $9, $10, $11, $12, $13, $14, $15::jsonb, $16, $17, $18)
   ON CONFLICT (ref) DO NOTHING
   RETURNING id
 ), ack AS (
@@ -395,7 +395,7 @@ WITH s AS (
 )
 SELECT (SELECT id FROM s) AS submission_id, (SELECT count(*) FROM a) AS attachments, (SELECT count(*) FROM ack) AS acknowledgements;`,
       grid(2),
-      "[$json.ref, $json.source, $json.locale, $json.phone, $json.consentVersion, $json.consentedAt, $json.text, JSON.stringify($json.attachments), $json.role, $json.hub, $json.channel, $json.agentName, $json.form, $json.applicantName, $json.answers ? JSON.stringify($json.answers) : null]",
+      "[$json.ref, $json.source, $json.locale, $json.phone, $json.consentVersion, $json.consentedAt, $json.text, JSON.stringify($json.attachments), $json.role, $json.hub, $json.channel, $json.agentName, $json.form, $json.applicantName, $json.answers ? JSON.stringify($json.answers) : null, $json.cluster, $json.pageCluster, $json.pagePath]",
     ),
   );
   w.add({
@@ -474,7 +474,8 @@ function transcribeWorkflow() {
   const claimed = `$('Claim voice notes').item.json`;
   const job = `$('Sarvam: create job').item.json.job_id`;
   // hi-IN and hi-Latn-IN pages: Hindi. English page: let Sarvam detect it.
-  const language = `${claimed}.locale === 'en' ? 'unknown' : 'hi-IN'`;
+  // Stored locales are BCP 47 on new rows and short codes on older ones.
+  const language = `['en', 'en-IN'].includes(${claimed}.locale) ? 'unknown' : 'hi-IN'`;
 
   w.add(everyMinute("Every minute", grid(0)));
   w.add(
@@ -695,7 +696,7 @@ WITH claimed AS (
         SELECT 1 FROM attachments a
         WHERE a.submission_id = c.id AND a.transcript_status IN ('pending', 'running'))
     ORDER BY c.created_at LIMIT 1 FOR UPDATE SKIP LOCKED)
-  RETURNING s.id, s.ref, s.source, s.role, s.hub, s.channel, s.agent_name AS "agentName", s.form, s.applicant_name AS "applicantName", s.answers, s.locale, s.phone, s.text
+  RETURNING s.id, s.ref, s.source, s.role, s.hub, s.channel, s.agent_name AS "agentName", s.form, s.applicant_name AS "applicantName", s.answers, s.locale, s.cluster, s.page_cluster AS "pageCluster", s.page_path AS "pagePath", s.phone, s.text
 )
 SELECT c.*, coalesce((
   SELECT jsonb_agg(jsonb_build_object(
@@ -724,8 +725,8 @@ FROM claimed c;`,
       method: "POST",
       url: `${inbox}/contacts/{{ $json.source_id }}/conversations`,
       // job_role / job_hub: filter conversations by role or hub page; submitted_via: "agent" for the open agent route;
-      // job_form: "long" or "quick" (conversation attributes in Chatwoot).
-      json: `={{ JSON.stringify({ custom_attributes: { ...(${submission}.role ? { job_role: ${submission}.role } : {}), ...(${submission}.hub ? { job_hub: ${submission}.hub } : {}), ...(${submission}.channel === 'agent' ? { submitted_via: 'agent' } : {}), ...(${submission}.form ? { job_form: ${submission}.form } : {}) } }) }}`,
+      // job_form: "long" or "quick"; job_cluster: the cluster id (conversation attributes in Chatwoot).
+      json: `={{ JSON.stringify({ custom_attributes: { ...(${submission}.cluster ? { job_cluster: ${submission}.cluster } : {}), ...(${submission}.role ? { job_role: ${submission}.role } : {}), ...(${submission}.hub ? { job_hub: ${submission}.hub } : {}), ...(${submission}.channel === 'agent' ? { submitted_via: 'agent' } : {}), ...(${submission}.form ? { job_form: ${submission}.form } : {}) } }) }}`,
     }),
   );
   w.add(

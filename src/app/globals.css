@@ -1727,6 +1727,22 @@ a:hover > svg {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  /* A thumb target (48px), not just a line of text. */
+  min-height: 48px;
+}
+/* Linked rows: the whole row is the tap target, not only the title. */
+.jobs-work.is-linked li {
+  position: relative;
+}
+.jobs-work.is-linked .jobs-work-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.jobs-work.is-linked li:hover .jobs-work-link {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-thickness: 1px;
 }
 .jobs-work-link svg {
   color: var(--gold-700);
@@ -1997,7 +2013,8 @@ a:hover > svg {
 }
 /* A newly unlocked question slides in below the last answer. */
 .quick-section {
-  scroll-margin-top: 24px;
+  /* On top of html's 64px scroll padding: the step question stays clear of the header. */
+  scroll-margin-top: 32px;
   animation: quick-reveal 320ms ease-out;
 }
 @keyframes quick-reveal {
@@ -2106,10 +2123,32 @@ a:hover > svg {
 .quick-shifts:lang(hi):not(:lang(hi-Latn)) {
   line-height: 1.7;
 }
+/* The fee-fraud line: the main trust line, so body size and colour. */
 .quick-note {
   margin-top: 28px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.quick-note:lang(hi):not(:lang(hi-Latn)) {
+  line-height: 1.7;
+}
+/* The form's anchor (#apply): clear the sticky header when scrolled to. */
+.quick-anchor {
+  scroll-margin-top: 16px;
+}
+/* One quiet line for job seekers on a business page. */
+.seeker-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 12px;
   color: var(--muted-foreground);
-  font-size: 14px;
+}
+.seeker-line .text-link {
+  margin-top: 0;
+  gap: 8px;
+  font-size: 17px;
+  color: var(--foreground);
 }
 @media (max-width: 640px) {
   .quick-pills:not(.is-small) {

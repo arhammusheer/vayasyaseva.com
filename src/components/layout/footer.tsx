@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "@/components/i18n/link";
 import { siteConfig } from "@/content/site";
 import { jobHubs } from "@/content/pages/job-hubs";
+import { jobClusters } from "@/content/pages/job-clusters";
 import { AnalyticsPreferencesButton } from "@/components/analytics";
 import { FooterJobsLink } from "@/components/layout/footer-jobs-link";
 import { FALLBACK_LOCALE, localePath, type Locale } from "@/lib/i18n";
@@ -66,6 +67,7 @@ function jobsColumns(locale: Locale): Column[] {
       links: [
         [localePath("/jobs", locale), t.all],
         [localePath("/jobs/apply", locale), t.apply],
+        ...jobClusters[locale].map((c) => [localePath(`/jobs/${c.slug}`, locale), c.linkLabel]),
         ...jobHubs[locale].map((hub) => [localePath(`/jobs/${hub.slug}`, locale), hub.name]),
         [localePath("/jobs/fees-and-fraud", locale), t.fraud],
       ],

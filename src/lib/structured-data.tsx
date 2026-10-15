@@ -9,7 +9,7 @@ const SITE_ID = `${BASE_URL}/#website`;
 const LOGO_URL = `${BASE_URL}/brand/downloads/vayasya-seva-mark.png`;
 
 /** Absolute URL of a page; neutral paths resolve to the page's default language. */
-const pageUrl = (href: string) => `${BASE_URL}${localizeHref(href)}`;
+export const pageUrl = (href: string) => `${BASE_URL}${localizeHref(href)}`;
 
 export function JsonLd({ data }: { data: Record<string, unknown> }) {
   return (

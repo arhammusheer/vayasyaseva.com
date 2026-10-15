@@ -5,6 +5,7 @@ import Image from "next/image";
 import { jobsCopy } from "@/content/pages/jobs";
 import { getJobRole } from "@/content/pages/job-roles";
 import { getJobHub } from "@/content/pages/job-hubs";
+import { getJobCluster } from "@/content/pages/job-clusters";
 import { quickApplyCopy } from "@/content/pages/quick-apply";
 import { feesAndFraudCopy } from "@/content/pages/fees-and-fraud";
 import {
@@ -45,7 +46,7 @@ function pageSummary(path: string, locale: Locale): { title: string; text?: stri
   if (path === "/jobs/apply") return { title: quickApplyCopy[locale].title, text: quickApplyCopy[locale].lede };
   if (path === "/jobs/fees-and-fraud") return { title: feesAndFraudCopy[locale].title, text: feesAndFraudCopy[locale].lede };
   const slug = /^\/jobs\/([^/]+)$/.exec(path)?.[1];
-  const role = slug ? (getJobRole(slug, locale) ?? getJobHub(slug, locale)) : undefined;
+  const role = slug ? (getJobCluster(slug, locale) ?? getJobRole(slug, locale) ?? getJobHub(slug, locale)) : undefined;
   if (role) return { title: role.metaTitle, text: role.lede };
   return { title: locales[locale].hint };
 }

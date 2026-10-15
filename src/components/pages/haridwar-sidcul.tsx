@@ -4,6 +4,7 @@ import { pageMetadata } from "@/lib/metadata";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
+import { WhatWeHold } from "@/components/sections/what-we-hold";
 import {
   JsonLd,
   breadcrumbSchema,
@@ -54,6 +55,16 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
           </>
         }
         lede={t.lede}
+        footnote={
+          // A quiet door for job seekers, above the fold and away from the
+          // business phone (PLAN §5.2): Search sends seekers here too.
+          <p className="seeker-line">
+            {t.jobs.text}
+            <Link href={t.jobs.link.href} className="text-link">
+              {t.jobs.link.label} <ArrowUpRight size={18} aria-hidden="true" />
+            </Link>
+          </p>
+        }
       />
       <Section>
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
@@ -74,7 +85,31 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
           </div>
         </div>
       </Section>
-      <Section variant="subtle">
+      <Section variant="subtle" id="areas">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+          <div>
+            <p className="eyebrow text-gold-700">{t.areas.eyebrow}</p>
+            <h2 className="mt-5 text-4xl font-medium">{t.areas.heading}</h2>
+            <p className="mt-5 max-w-md text-lg leading-relaxed text-muted-foreground">{t.areas.intro}</p>
+          </div>
+          <div>
+            {/* One anchored row per area: /haridwar-sidcul#bhagwanpur etc. */}
+            <ul className="jobs-work">
+              {t.areas.items.map((area) => (
+                <li key={area.id} id={area.id} className="scroll-mt-28">
+                  <h3>{area.name}</h3>
+                  <p>{area.text}</p>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-8 border-t pt-6 leading-relaxed text-muted-foreground">{t.areas.wages}</p>
+            <Link href={t.areas.hire.href} className="text-link text-foreground">
+              {t.areas.hire.label} <ArrowUpRight size={18} aria-hidden="true" />
+            </Link>
+          </div>
+        </div>
+      </Section>
+      <Section>
         <p className="eyebrow text-gold-700">{t.supportEyebrow}</p>
         <div className="grid grid-cols-1 gap-8 mt-8 md:grid-cols-3">
           {t.support.map((s) => (
@@ -88,7 +123,8 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
           ))}
         </div>
       </Section>
-      <Section>
+      <WhatWeHold cluster="haridwar" locale={locale} eyebrow={t.holdEyebrow} heading={t.holdHeading} />
+      <Section variant="subtle">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.6fr]">
           <h2 className="text-4xl font-medium">{t.faqHeading}</h2>
           <div className="detail-list">

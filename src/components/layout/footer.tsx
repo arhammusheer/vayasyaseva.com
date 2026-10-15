@@ -23,6 +23,7 @@ const columns = [
       ["/vayasya-setu", "Vayasya Setu"],
       ["https://setu.vayasyaseva.com", "Setu login ↗"],
       ["/brand", "Brand guidelines"],
+      ["/vayasya-seva-company-profile.pdf", "Company profile"],
       ["/contact", "Contact"],
     ],
   },
@@ -79,7 +80,13 @@ export function Footer() {
             <nav key={c.label} aria-label={c.label}>
               <p className="footer-label">{c.label}</p>
               {c.links.map(([href, label]) =>
-                href.startsWith("http") ? (
+                href.endsWith(".pdf") ? (
+                  // A file, not a page: a plain link so the locale prefix is not added.
+                  <a key={href} href={href} className="footer-file">
+                    {label}
+                    <span className="font-data">PDF · 0.6 MB</span>
+                  </a>
+                ) : href.startsWith("http") ? (
                   <a key={href} href={href}>
                     {label}
                   </a>

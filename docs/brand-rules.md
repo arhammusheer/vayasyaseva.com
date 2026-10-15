@@ -23,6 +23,22 @@ A compliance-minded contract labour and industrial services partner for factorie
 
 Buyers search for "labour contractor", "labour supplier", "manpower supplier" and "manpower services". Use these terms where a buyer would look for them: titles, headings, service descriptions and FAQs that answer those searches. Don't use them as taglines, and don't use them to describe individual people.
 
+#### We are a contractor, not a staffing agency
+
+Vayasya Seva supplies the workforce. Workers are on our rolls: we pay wages, deposit EPF and ESIC, supervise the crew on site and replace absentees. A staffing agency or placement consultancy finds candidates for the client to hire and steps away. Buyers often search the agency words while wanting what we do, so we answer those searches and say plainly which one we are. We don't pretend to be an agency, and we don't ignore the people who search that way. (Owner's direction, 16 October 2026; Keyword Planner, India: manpower company 5,400/month, manpower consultancy 5,400, manpower agency 4,400, labour contractor 4,400, staffing agency 1,600.)
+
+| Term | Where it may appear |
+|---|---|
+| labour contractor, contract labour, manpower supply, manpower supplier, manpower company, manpower contractor, labour supplier, manpower outsourcing | Titles, H1s, headings, body, FAQs |
+| manpower agency, manpower consultancy, staffing agency, staffing company, placement agency, job consultancy | Body text and FAQs only, always next to the difference ("we supply and manage the workers ourselves"). Never in a title, an H1 or a tagline, and never to describe Vayasya Seva as one. |
+
+Say it the same way each time: **"We're a manpower contractor, not a placement agency: the workers are on our payroll, and we manage attendance, wages, EPF and ESIC."** The standard FAQ for buyer pages:
+
+> **Are you a manpower agency or a staffing company?**
+> We're a manpower contractor. An agency sends you candidates to hire. We supply the workers, keep them on our payroll, supervise them on site, replace absentees and handle wages, EPF and ESIC. You get a working crew and one invoice.
+
+Job-seeker pages may use "job consultancy" and "placement" in the same way: say we hire people onto our own rolls and place them at client sites, and that there is no fee.
+
 | Do | Don't |
 |----|-------|
 | "Contract labour and manpower for factories in SIDCUL and across Haridwar." | "We provide the best manpower solutions instantly." |

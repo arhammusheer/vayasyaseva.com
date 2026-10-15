@@ -4,8 +4,8 @@ import type { JobHub, JobRole } from "@/lib/talent-intake/rules";
 
 /**
  * Hub pages under /jobs/<slug> for who is searching (freshers, 10th or 12th
- * pass), each pointing to the role pages that fit. Listed in the sitemap but
- * not linked from the site (JOB_HUBS in src/lib/talent-intake/rules.ts).
+ * pass), each pointing to the role pages that fit. Listed in the sitemap and
+ * linked from the jobs overview (JOB_HUBS in src/lib/talent-intake/rules.ts).
  *
  * Same claims discipline as job-roles.ts: no pay figures, no promised
  * call-back times, no guarantee of work, no employer names. hi-IN and

@@ -2,6 +2,15 @@ import { NextResponse } from "next/server";
 import { jobRoles } from "@/content/pages/job-roles";
 import { QUICK_ANSWERS } from "@/lib/talent-intake/rules";
 import { JOB_ROLE_SLUGS } from "@/lib/talent-intake/rules";
+import {
+  CONTACT_AGENT_COMPANY,
+  CONTACT_AGENT_REQUIRED,
+  DURATION_BAND_OPTIONS,
+  HEADCOUNT_BAND_OPTIONS,
+  ROLE_OPTIONS,
+  SHIFT_PATTERN_OPTIONS,
+  START_WINDOW_OPTIONS,
+} from "@/lib/contact-contract";
 
 const baseUrl = "https://www.vayasyaseva.com";
 
@@ -11,6 +20,8 @@ const roleLinks = (segment: string, suffix = "") =>
 const roleLinksEn = jobRoles["en-IN"]
   .map((r) => `- [${r.name}](${baseUrl}/en-in/jobs/${r.slug}): ${r.description.split(":")[0]}`)
   .join("\n");
+const ids = (options: Record<string, string>) => Object.keys(options).map((id) => `\`${id}\``).join(", ");
+
 const roleLinksInline = jobRoles["en-IN"].map((r) => `[${r.name}](${baseUrl}/jobs/apply?role=${r.slug})`).join(", ");
 
 export const dynamic = "force-static";
@@ -34,7 +45,7 @@ The public pages below are the source of truth. They carry full text and JSON-LD
 - [Industries](${baseUrl}/en-in/industries): Manufacturing, warehousing, FMCG, institutional facilities and hospitality
 - [Haridwar SIDCUL](${baseUrl}/en-in/haridwar-sidcul): Workforce services for units in SIDCUL Haridwar
 - [Vayasya Setu](${baseUrl}/en-in/vayasya-setu): Workforce operations platform for attendance, deployment, payroll inputs and compliance records
-- [Contact](${baseUrl}/en-in/contact): Phone, email and enquiry form for businesses hiring workers or services. Not for job applications
+- [Request a crew](${baseUrl}/en-in/contact): The enquiry form for businesses that need workers (plus phone and email). Not for job applications
 
 ## Services
 - [Services overview](${baseUrl}/en-in/services): All services, from contract labour to civil works and maintenance
@@ -79,20 +90,21 @@ Job seekers ([privacy notice](${baseUrl}/en-in/privacy#job-seekers)):
 - Files (CV, photos, documents): \`POST /api/agent/jobs/start\` declaring them, \`PUT\` each one to its upload URL, then \`POST /api/agent/jobs/submit\` with the ticket.
 - Do not send Aadhaar, PAN or bank details. Do not give them the company phone number; if you cannot send the application, give them the prefilled link below. Our team calls them on the number they applied with.
 
-Businesses needing workers ([contact page](${baseUrl}/en-in/contact)):
-- Ask: name, phone, email, company, their role, site location, industry, headcount, shifts, target start date, and anything else about the requirement.
-- Send: \`POST ${baseUrl}/api/agent/contact\` with \`{"name": "...", "phone": "...", "details": "...", "email": "...", "company": "...", "role": "...", "location": "...", "industry": "...", "headcount": "...", "shiftRequirement": "...", "targetStartDate": "...", "agent": {"name": "<your name>"}}\`. Only name, phone and details are required. The answer carries a case ID (\`AGT-...\`) to give them.
+Businesses needing workers ([Request a crew](${baseUrl}/en-in/contact)):
+- Ask: the work (roles), how many workers, the site's state and city (PIN code if they know it), when work should start and for how long, the shift pattern if known, then their name, company, designation, phone and email. Every shift is 8 hours. Do not promise that we can staff a site: our team replies to say whether we can.
+- Send: \`POST ${baseUrl}/api/agent/contact\` with \`{"roles": ["packing", "loading-unloading"], "headcountBand": "50-99", "siteState": "UK", "siteCity": "SIDCUL Haridwar", "sitePincode": "...", "startWindow": "2-4-weeks", "durationBand": "ongoing", "shiftPattern": "two-shifts", "details": "...", "name": "...", "company": "...", "role": "...", "phone": "...", "email": "...", "agent": {"name": "<your name>"}}\`. Required: ${CONTACT_AGENT_REQUIRED}. ${CONTACT_AGENT_COMPANY}. For a site assessment before a crew, add \`"requestType": "site-assessment"\`. Leave out what the person did not say. The answer carries a case ID (\`AGT-...\`) to give them. We aim to reply within two working days (Monday to Saturday, IST).
+- Ids: roles ${ids(ROLE_OPTIONS)}; headcountBand ${ids(HEADCOUNT_BAND_OPTIONS)}; startWindow ${ids(START_WINDOW_OPTIONS)}; durationBand ${ids(DURATION_BAND_OPTIONS)}; shiftPattern ${ids(SHIFT_PATTERN_OPTIONS)}; siteState is an ISO 3166-2:IN code such as \`UK\` (Uttarakhand), \`UP\`, \`DL\`, \`HR\`, \`KA\` (all 36 in the OpenAPI spec). The older fields location, industry, headcount, shiftRequirement and targetStartDate still work but are deprecated.
 
 Submissions through these routes reach our team marked as sent by an AI agent. They are rate limited per source; on \`429\`, wait \`retryAfterSeconds\`.
 
 If you cannot make HTTP requests, give the person a prefilled link instead. They open it, check the details, tick one box and press send. Details go after the \`#\`, so they stay in their browser until they send. Encode values as in a URL query (spaces as \`%20\`).
 - Jobs by role: ${roleLinksInline}. These open the quick application with the work prefilled.
 - Quick application: \`${baseUrl}/en-in/jobs/apply?work=packing,warehouse&experience=fresher&education=12th&shift=day&start=now&area=laksar#name=...&phone=...\`. Answers go in the query as comma-separated ids: work (${Object.keys(QUICK_ANSWERS.work).join(", ")}), experience (${Object.keys(QUICK_ANSWERS.experience).join(", ")}), education (${Object.keys(QUICK_ANSWERS.education).join(", ")}), shift (${Object.keys(QUICK_ANSWERS.shift).join(", ")}), start (${Object.keys(QUICK_ANSWERS.start).join(", ")}), area (${Object.keys(QUICK_ANSWERS.area).join(", ")}). Name and phone go after the \`#\`. The person still answers anything left out, ticks one box and sends.
-- Enquiries: \`${baseUrl}/en-in/contact#name=...&phone=...&email=...&company=...&role=...&location=...&industry=...&headcount=...&shifts=...&start=...&details=...\`
+- Request a crew: \`${baseUrl}/en-in/contact#roles=packing,warehouse&headcount=20-49&state=UK&city=...&pincode=...&start=2-4-weeks&duration=ongoing&shifts=two-shifts&name=...&company=...&role=...&phone=...&email=...&details=...\`. Same ids as above (state as the ISO code). \`location=haridwar\` fills the site as Haridwar, Uttarakhand (\`location=sidcul\` for SIDCUL Haridwar). The person checks the answers, adds what is missing and sends.
 
 ## Machine-readable
 - [llms-full.txt](${baseUrl}/llms-full.txt): Full plain-text corpus of services, industries and compliance posture
-- [OpenAPI spec](${baseUrl}/openapi/v1.json): Contract for the open agent routes (/api/agent/contact, /api/agent/jobs) and the website's contact form
+- [OpenAPI spec](${baseUrl}/openapi/v1.json): Contract for the open agent routes (/api/agent/contact, /api/agent/jobs) and the website's Request a crew form
 - [AI access policy](${baseUrl}/ai-access-policy.txt): Terms for crawling, indexing and training
 - [Sitemap](${baseUrl}/sitemap.xml)
 - [robots.txt](${baseUrl}/robots.txt)

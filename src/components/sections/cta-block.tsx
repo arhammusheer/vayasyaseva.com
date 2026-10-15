@@ -26,7 +26,8 @@ const copy = {
   },
 } satisfies Record<Locale, unknown>;
 
-export function CtaBlock({ locale = "en-IN" }: { locale?: Locale }) {
+/** `href` lets a location page keep its prefill, e.g. "/contact#location=haridwar". */
+export function CtaBlock({ locale = "en-IN", href = "/contact" }: { locale?: Locale; href?: string }) {
   const t = copy[locale];
   return (
     <section className="contact-invitation">
@@ -40,7 +41,7 @@ export function CtaBlock({ locale = "en-IN" }: { locale?: Locale }) {
           </h2>
           <p>{t.text}</p>
         </div>
-        <Link href="/contact" className="round-link" aria-label={t.aria}>
+        <Link href={href} className="round-link" aria-label={t.aria}>
           <ArrowUpRight aria-hidden="true" />
           <span>{t.link}</span>
         </Link>

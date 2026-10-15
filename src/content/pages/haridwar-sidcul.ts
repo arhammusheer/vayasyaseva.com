@@ -67,7 +67,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
       { href: "/services/contract-labour", label: "How our contract labour service works" },
       { href: "/services/warehouse-labour", label: "Warehouse labour in SIDCUL" },
       { href: "/services/loading-unloading-labour", label: "Loading and unloading labour in SIDCUL" },
-      { href: "/contact", label: "Tell us about your site" },
+      { href: "/contact#location=haridwar", label: "Tell us about your site" },
     ],
     areas: {
       eyebrow: "AROUND SIDCUL HARIDWAR",
@@ -93,7 +93,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
       ],
       wages:
         "All three are in Uttarakhand, so the Uttarakhand minimum wage notification applies there, as it does in SIDCUL Haridwar.",
-      hire: { href: "/contact", label: "Need workers at a unit in one of these areas? Tell us the site" },
+      hire: { href: "/contact#location=haridwar", label: "Need workers at a unit in one of these areas? Tell us the site" },
     },
     holdEyebrow: "WHAT WE HOLD",
     holdHeading: "Registrations for sites in Haridwar.",
@@ -165,7 +165,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
       { href: "/services/contract-labour", label: "हमारी कॉन्ट्रैक्ट लेबर सेवा कैसे काम करती है" },
       { href: "/services/warehouse-labour", label: "सिडकुल में वेयरहाउस लेबर (अंग्रेज़ी में)" },
       { href: "/services/loading-unloading-labour", label: "सिडकुल में लोडिंग-अनलोडिंग लेबर (अंग्रेज़ी में)" },
-      { href: "/contact", label: "अपनी साइट के बारे में बताइए" },
+      { href: "/contact#location=haridwar", label: "अपनी साइट के बारे में बताइए" },
     ],
     areas: {
       eyebrow: "सिडकुल हरिद्वार के आसपास",
@@ -190,7 +190,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
         },
       ],
       wages: "तीनों इलाके उत्तराखंड में हैं, इसलिए वहाँ उत्तराखंड की न्यूनतम मज़दूरी अधिसूचना लागू होती है, जैसे सिडकुल हरिद्वार में।",
-      hire: { href: "/contact", label: "इनमें से किसी इलाके की यूनिट के लिए कामगार चाहिए? साइट बताइए" },
+      hire: { href: "/contact#location=haridwar", label: "इनमें से किसी इलाके की यूनिट के लिए कामगार चाहिए? साइट बताइए" },
     },
     holdEyebrow: "हमारे रजिस्ट्रेशन",
     holdHeading: "हरिद्वार की साइटों के लिए रजिस्ट्रेशन।",
@@ -262,7 +262,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
       { href: "/services/contract-labour", label: "Hamari contract labour service kaise kaam karti hai" },
       { href: "/services/warehouse-labour", label: "SIDCUL mein warehouse labour" },
       { href: "/services/loading-unloading-labour", label: "SIDCUL mein loading-unloading labour" },
-      { href: "/contact", label: "Apni site ke baare mein bataiye" },
+      { href: "/contact#location=haridwar", label: "Apni site ke baare mein bataiye" },
     ],
     areas: {
       eyebrow: "SIDCUL HARIDWAR KE AAS-PAAS",
@@ -287,7 +287,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
         },
       ],
       wages: "Teeno areas Uttarakhand mein hain, isliye wahan Uttarakhand ki minimum wage notification lagu hoti hai, jaise SIDCUL Haridwar mein.",
-      hire: { href: "/contact", label: "Inmein se kisi area ki unit ke liye workers chahiye? Site bataiye" },
+      hire: { href: "/contact#location=haridwar", label: "Inmein se kisi area ki unit ke liye workers chahiye? Site bataiye" },
     },
     holdEyebrow: "HAMARE REGISTRATIONS",
     holdHeading: "Haridwar ki sites ke liye registrations.",

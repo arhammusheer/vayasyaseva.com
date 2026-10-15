@@ -21,42 +21,62 @@ export function loadContactContract() {
   return JSON.parse(fs.readFileSync(contactContractPath, "utf8"));
 }
 
-function buildRequestSchema(fields) {
+function buildFieldProperty(definition) {
+  const property =
+    definition.type === "enum"
+      ? { type: "string", enum: Object.keys(definition.values) }
+      : definition.type === "enum-array"
+        ? {
+            type: "array",
+            items: { type: "string", enum: Object.keys(definition.values) },
+            uniqueItems: true,
+            minItems: definition.minItems ?? 1,
+          }
+        : { type: "string" };
+
+  // Ids with their labels, so an agent can match what the person said.
+  const labels =
+    definition.type === "enum" || definition.type === "enum-array"
+      ? Object.entries(definition.values)
+          .filter(([id, label]) => id !== label)
+          .map(([id, label]) => `${id} (${label})`)
+          .join(", ")
+      : "";
+  property.description = labels ? `${definition.description} Values: ${labels}.` : definition.description;
+
+  if (typeof definition.minLength === "number") property.minLength = definition.minLength;
+  if (typeof definition.maxLength === "number") property.maxLength = definition.maxLength;
+  if (typeof definition.pattern === "string") property.pattern = definition.pattern;
+  if (typeof definition.format === "string") property.format = definition.format;
+  if (definition.example !== undefined) property.example = definition.example;
+  if (definition.deprecated) property.deprecated = true;
+  return property;
+}
+
+function buildRequestSchema(request) {
   const properties = {};
   const required = [];
 
-  for (const [fieldName, definition] of Object.entries(fields)) {
-    const property = {
-      type: "string",
-      description: definition.description,
-    };
-
-    if (typeof definition.minLength === "number") {
-      property.minLength = definition.minLength;
-    }
-
-    if (typeof definition.format === "string") {
-      property.format = definition.format;
-    }
-
-    if (typeof definition.example === "string") {
-      property.example = definition.example;
-    }
-
+  for (const [fieldName, definition] of Object.entries(request.fields)) {
     if (definition.required) {
       required.push(fieldName);
     }
 
-    properties[fieldName] = property;
+    properties[fieldName] = buildFieldProperty(definition);
   }
 
   return {
     type: "object",
     additionalProperties: false,
     required,
+    description: request.requireOneOfMessage,
+    anyOf: request.requireOneOf.map((group) => ({ required: group })),
     properties,
   };
 }
+
+/** Fields only the website sets; the agent route drops them. */
+const WEBSITE_ONLY_FIELDS = ["pageCluster", "sourcePath"];
 
 const json = (ref) => ({ "application/json": { schema: { $ref: `#/components/schemas/${ref}` } } });
 const response = (description, ref) => ({ description, content: json(ref) });
@@ -233,7 +253,7 @@ function buildAgentPaths() {
         tags: ["Agents"],
         summary: "Send a business enquiry for a person (AI agents)",
         description:
-          "Open route for AI agents and assistants: no CAPTCHA, no key. Send only details the person gave you and confirm with them first. The enquiry goes to our team marked as sent by an agent; no email is sent to the address given. Rate limited per source.",
+          "Open route for AI agents and assistants: no CAPTCHA, no key. A Request a crew enquiry: send the requirement (roles, headcountBand, siteState, siteCity, startWindow, durationBand) or, from older integrations, a free-text details. Send only details the person gave you and confirm with them first. The enquiry goes to our team marked as sent by an agent; no email is sent to the address given. We aim to reply within two working days (Monday to Saturday, IST). Rate limited per source.",
         operationId: "agentSubmitContactInquiry",
         security: [],
         requestBody: { required: true, content: json("AgentContactRequest") },
@@ -290,7 +310,10 @@ function buildAgentPaths() {
 }
 
 export function buildOpenApiSpec(contactContract) {
-  const requestSchema = buildRequestSchema(contactContract.request.fields);
+  const requestSchema = buildRequestSchema(contactContract.request);
+  const agentProperties = Object.fromEntries(
+    Object.entries(requestSchema.properties).filter(([name]) => !WEBSITE_ONLY_FIELDS.includes(name))
+  );
 
   return {
     openapi: "3.1.1",
@@ -311,9 +334,9 @@ export function buildOpenApiSpec(contactContract) {
       "/api/contact": {
         post: {
           tags: ["Contact"],
-          summary: "Submit contact inquiry (website form)",
+          summary: "Request a crew (website form)",
           description:
-            "Used by the contact form on the website. Requires a Cloudflare Turnstile token in the x-turnstile-token header. AI agents: use /api/agent/contact.",
+            "Used by the Request a crew form on the website's contact page. Requires a Cloudflare Turnstile token in the x-turnstile-token header. AI agents: use /api/agent/contact.",
           operationId: "submitContactInquiry",
           parameters: [
             {
@@ -395,7 +418,7 @@ export function buildOpenApiSpec(contactContract) {
         ContactInquiryRequest: requestSchema,
         AgentContactRequest: {
           ...requestSchema,
-          properties: { ...requestSchema.properties, agent: { $ref: "#/components/schemas/AgentInfo" } },
+          properties: { ...agentProperties, agent: { $ref: "#/components/schemas/AgentInfo" } },
         },
         AgentContactSuccess: {
           type: "object",
@@ -416,6 +439,11 @@ export function buildOpenApiSpec(contactContract) {
               type: "boolean",
               const: true,
               example: true,
+            },
+            caseId: {
+              type: "string",
+              example: "REQ-20261016-1A2B3C4D",
+              description: "Reference for this enquiry, shown to the person.",
             },
             message: {
               type: "string",

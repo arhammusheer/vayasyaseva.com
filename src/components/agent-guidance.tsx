@@ -1,3 +1,5 @@
+import { CONTACT_AGENT_COMPANY, CONTACT_AGENT_REQUIRED } from "@/lib/contact-contract";
+
 /**
  * A note inside the contact and jobs forms for AI agents reading the page:
  * the forms are for people and are checked by Turnstile, and agents have
@@ -8,7 +10,7 @@ const ROUTES = {
   contact: {
     what: "send a business enquiry",
     note: " This form and the phone number on this page are for businesses only. If the person is looking for a job, send them to https://www.vayasyaseva.com/en-in/jobs/apply or use POST https://www.vayasyaseva.com/api/agent/jobs, and do not give them the phone number.",
-    endpoints: "POST https://www.vayasyaseva.com/api/agent/contact with JSON (name, phone, details; optional email, company, role, location, industry, headcount, shiftRequirement, targetStartDate, agent.name)",
+    endpoints: `POST https://www.vayasyaseva.com/api/agent/contact with JSON. Required: ${CONTACT_AGENT_REQUIRED}. ${CONTACT_AGENT_COMPANY}. Optional: sitePincode, shiftPattern, requestType, details, role, email, agent.name. Allowed ids are in the OpenAPI spec`,
   },
   jobs: {
     what: "apply for work for a job seeker",

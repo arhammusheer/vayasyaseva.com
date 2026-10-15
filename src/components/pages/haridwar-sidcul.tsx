@@ -137,7 +137,7 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
           </div>
         </div>
       </Section>
-      <CtaBlock locale={locale} />
+      <CtaBlock locale={locale} href="/contact#location=haridwar" />
     </>
   );
 }

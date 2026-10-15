@@ -12,7 +12,7 @@
     "start": "next start",
     "lint": "eslint",
     "type-check": "tsc --noEmit && pnpm n8n:check",
-    "forms:unit": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test tests/job-resume.spec.mjs tests/job-intake.spec.mjs tests/registry.spec.mjs",
+    "forms:unit": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test tests/job-resume.spec.mjs tests/job-intake.spec.mjs tests/registry.spec.mjs tests/crew-request.spec.mjs",
     "content:check": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/content-check.mjs",
     "content:unit": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test tests/sitemap-snapshot.spec.mjs tests/registry-status.spec.mjs",
     "forms:check": "node tests/forms.spec.mjs",

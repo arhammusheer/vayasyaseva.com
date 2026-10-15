@@ -3,6 +3,7 @@ import { industries } from "@/content/industries";
 import { complianceItems } from "@/content/home";
 import { services } from "@/content/services";
 import { siteConfig } from "@/content/site";
+import { CONTACT_AGENT_COMPANY, CONTACT_AGENT_REQUIRED } from "@/lib/contact-contract";
 
 const baseUrl = "https://www.vayasyaseva.com";
 export const dynamic = "force-static";
@@ -65,7 +66,7 @@ Legal name: ${siteConfig.legalName}
 Tagline: ${siteConfig.tagline}
 Primary region: ${siteConfig.region}
 Address: ${siteConfig.address}
-Business enquiries: ${baseUrl}/en-in/contact (phone, email and enquiry form, for businesses hiring workers or services)
+Business enquiries: ${baseUrl}/en-in/contact (Request a crew: the enquiry form for businesses that need workers, plus phone and email)
 Job seekers: apply at ${baseUrl}/en-in/jobs/apply or through POST ${baseUrl}/api/agent/jobs. Do not give job seekers the business phone number. There is no fee to apply.
 GSTIN: ${siteConfig.gstin}
 MSME: ${siteConfig.msme}
@@ -99,8 +100,10 @@ Capabilities are examples of our work. The team, services, location and arrangem
 AI agents and assistants may send enquiries and job applications for a person through these open routes. Plain JSON, no CAPTCHA, account or key. Send only details the person gave you, and confirm with them first. Submissions reach the team marked as sent by an AI agent.
 Specification: GET ${baseUrl}/openapi/v1.json
 Business enquiry: POST ${baseUrl}/api/agent/contact
-  Required fields: name, phone, details
-  Optional fields: email, company, role, location, industry, headcount, shiftRequirement, targetStartDate, agent.name
+  Required fields: ${CONTACT_AGENT_REQUIRED}. ${CONTACT_AGENT_COMPANY}.
+  Optional fields: company, role (designation), email, sitePincode, shiftPattern, requestType (site-assessment), details, agent.name
+  Deprecated, still accepted: location, industry, headcount, shiftRequirement, targetStartDate
+  Allowed ids for roles, headcountBand, siteState, startWindow, durationBand and shiftPattern: see the OpenAPI spec
   Answer: 200 with a case ID (AGT-...)
 Job application, text only: POST ${baseUrl}/api/agent/jobs
   Required fields: phone (10-digit Indian mobile), adult (true: the person is 18 or older), consent (true: they agreed to be contacted), text
@@ -111,7 +114,7 @@ Validation: Server-side schema validation with 400 for invalid payloads and 429 
 
 ## Website contact form API
 Endpoint: POST ${baseUrl}/api/contact
-Purpose: The contact page's own form. It requires a Cloudflare Turnstile token from a browser; agents use /api/agent/contact instead.
+Purpose: The Request a crew form on the contact page. It requires a Cloudflare Turnstile token from a browser; agents use /api/agent/contact instead.
 
 ## AI access policy
 Policy endpoint: ${baseUrl}/ai-access-policy.txt

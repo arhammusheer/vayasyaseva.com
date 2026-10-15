@@ -114,7 +114,7 @@ export const communicateAction = {
     },
     {
       "@type": "EntryPoint",
-      urlTemplate: `${BASE_URL}/en-in/contact#name={name}&phone={phone}&email={email}&company={company}&location={location}&headcount={headcount}&details={details}`,
+      urlTemplate: `${BASE_URL}/en-in/contact#roles={roles}&headcount={headcount}&state={state}&city={city}&start={start}&duration={duration}&name={name}&company={company}&phone={phone}&email={email}&details={details}`,
       inLanguage: "en-IN",
     },
   ],

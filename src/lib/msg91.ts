@@ -1,10 +1,18 @@
 import { siteConfig } from "@/content/site";
-import type { ContactFormData } from "@/lib/contact-contract";
+import { contactOptionLabel, type ContactFormData } from "@/lib/contact-contract";
+import {
+  assessCrewRequest,
+  headcountToBand,
+  outOfScopeLabel,
+  requirementLines,
+  siteLine,
+} from "@/lib/crew-request";
 
 const MSG91_SEND_URL = "https://control.msg91.com/api/v5/email/send";
 const MSG91_TEMPLATE_VERSIONS_URL =
   "https://control.msg91.com/api/v5/email/template-versions";
-const DEFAULT_RESPONSE_WINDOW = "2 business days (IST, Mon-Sat)";
+// The response-time wording (PLAN §8.1): a target, never a promise.
+const DEFAULT_RESPONSE_WINDOW = "We aim to reply within two working days (Monday to Saturday, IST)";
 const TEMPLATE_VERSION_PAGE_SIZE = 100;
 const TEMPLATE_VERSION_MAX_PAGES = 10;
 const TEMPLATE_IDENTIFIER_CACHE_TTL_MS = 5 * 60_000;
@@ -311,28 +319,71 @@ export function createContactCaseId(date = new Date()) {
   return `REQ-${stamp}-${token}`;
 }
 
+/**
+ * Lines for our team only (PLAN §8.1): never in the buyer's copy, the
+ * response or the page.
+ */
+function staffFlagLines(data: ContactFormData) {
+  const { qualified, soon, outOfScope } = assessCrewRequest(data);
+  return [
+    `Qualified (20+ workers, 3+ months): ${qualified ? "YES" : "no"}`,
+    `Starts within 4 weeks: ${soon ? "yes" : "no"}`,
+    ...outOfScope.map((id) => `Possibly out of scope: ${outOfScopeLabel(id)}`),
+    ...(data.pageCluster ? [`Page cluster: ${data.pageCluster}`] : []),
+    ...(data.sourcePath ? [`Came from: ${data.sourcePath}`] : []),
+  ];
+}
+
+/**
+ * The requirement as one block of text: structured lines first, then the
+ * buyer's own words. Staff copies start with the lead flags.
+ */
+function detailsBlock(data: ContactFormData, audience: "staff" | "buyer") {
+  const parts: string[] = [];
+  if (audience === "staff") parts.push(["FOR OUR TEAM ONLY", ...staffFlagLines(data)].join("\n"));
+  // The template's own rows already show site, workers, start and shifts;
+  // only what has no row of its own goes here.
+  const summary = requirementLines(data).filter((line) => /^(Request|Work): /.test(line));
+  if (summary.length) parts.push(summary.join("\n"));
+  if (data.details?.trim()) parts.push(data.details.trim());
+  return parts.join("\n\n") || "Not provided";
+}
+
 function buildCommonVariables(
   data: ContactFormData,
-  caseId: string
+  caseId: string,
+  audience: "staff" | "buyer"
 ): Msg91TemplateVariables {
   const name = requireField(data.name, "name");
   const phone = requireField(data.phone, "phone");
+  const band = data.headcountBand ?? headcountToBand(data.headcount);
 
   return {
     case_id: caseId,
     company: withFallback(data.company, "Not provided"),
-    details: requireField(data.details, "details"),
+    details: detailsBlock(data, audience),
     email: withFallback(data.email, "Not provided"),
-    headcount: withFallback(data.headcount, "Not provided"),
+    headcount: withFallback(contactOptionLabel("headcountBand", band) ?? data.headcount, "Not provided"),
     industry: withFallback(data.industry, "Not provided"),
-    location: withFallback(data.location, "Not provided"),
+    location: withFallback(siteLine(data), "Not provided"),
     name,
     phone,
     response_window: DEFAULT_RESPONSE_WINDOW,
     role: withFallback(data.role, "Not provided"),
-    shift_requirement: withFallback(data.shiftRequirement, "Not specified"),
+    shift_requirement: withFallback(
+      contactOptionLabel("shiftPattern", data.shiftPattern) ?? data.shiftRequirement,
+      "Not specified"
+    ),
     submitted_at: new Date().toISOString(),
-    target_start_date: withFallback(data.targetStartDate, "Not specified"),
+    target_start_date: withFallback(
+      [
+        contactOptionLabel("startWindow", data.startWindow) ?? data.targetStartDate,
+        data.durationBand && `duration: ${contactOptionLabel("durationBand", data.durationBand)}`,
+      ]
+        .filter(Boolean)
+        .join("; "),
+      "Not specified"
+    ),
   };
 }
 
@@ -557,7 +608,7 @@ export async function sendInternalContactEmail(
   }
 
   const sharedInboxEmail = getSharedInboxEmail(config.replyToEmail);
-  const variables = buildCommonVariables(data, options.caseId);
+  const variables = buildCommonVariables(data, options.caseId, "staff");
   const resolvedTemplate = await resolveRegisteredTemplateIdentifier(
     config,
     templateId
@@ -604,10 +655,10 @@ export async function sendContactAutoReply(
   }
 
   const sharedInboxEmail = getSharedInboxEmail(config.replyToEmail);
-  const variables = {
-    ...buildCommonVariables(data, options.caseId),
-    response_window: DEFAULT_RESPONSE_WINDOW,
-  };
+  // The buyer's copy: their requirement, so they can correct it by replying.
+  // No lead flags, and no copy to the shared inbox: the staff email (sent
+  // first, always) is the team's record.
+  const variables = buildCommonVariables(data, options.caseId, "buyer");
   const resolvedTemplate = await resolveRegisteredTemplateIdentifier(
     config,
     templateId
@@ -625,12 +676,6 @@ export async function sendContactAutoReply(
           {
             email,
             name,
-          },
-        ],
-        bcc: [
-          {
-            email: sharedInboxEmail,
-            name: `${siteConfig.companyName} Shared Inbox`,
           },
         ],
         variables,

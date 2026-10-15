@@ -2168,6 +2168,147 @@ a:hover > svg {
   }
 }
 
+/* Request a crew (/contact): two steps, questions as plain headings with
+   answers as tap targets (the jobs form's pills), hairline-free and unboxed.
+   Optional parts sit after a quiet "skip" line. */
+.crew-intro-title {
+  margin-top: 16px;
+  font-family: var(--font-anek), var(--font-anek-deva);
+  font-size: clamp(44px, 9vw, 72px);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.crew-reply {
+  margin-top: 20px;
+  padding-left: 14px;
+  border-left: 2px solid var(--gold-500);
+  font-size: 16px;
+  line-height: 1.5;
+}
+.crew-form {
+  max-width: 680px;
+}
+.crew-step {
+  margin-top: 14px;
+}
+.crew-step-title {
+  margin-top: 6px;
+  font-family: var(--font-anek), var(--font-anek-deva);
+  font-size: clamp(28px, 5vw, 36px);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+.crew-step-body {
+  animation: quick-reveal 320ms ease-out;
+}
+.crew-section {
+  margin-top: 36px;
+}
+.crew-question {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.crew-question .quick-optional {
+  font-size: 16px;
+}
+.crew-pills {
+  margin-top: 14px;
+  gap: 8px;
+}
+/* Answers wrap side by side on phones too (the jobs form stacks them):
+   ten roles stacked would push the next question off the screen. */
+.quick-pills.crew-pills {
+  flex-direction: row;
+}
+.quick-pills.crew-pills .quick-pill {
+  width: auto;
+  min-height: 48px;
+  padding: 10px 16px;
+  font-size: 16px;
+}
+.crew-site,
+.crew-people {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  margin-top: 16px;
+}
+.crew-people {
+  margin-top: 32px;
+}
+@media (min-width: 640px) {
+  .crew-site {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 0.6fr);
+  }
+  .crew-people {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+.crew-select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 20px) 50%, calc(100% - 15px) 50%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 40px;
+}
+.crew-skip {
+  margin-top: 44px;
+  color: var(--muted-foreground);
+  font-size: 15px;
+}
+.crew-skip + .crew-section {
+  margin-top: 16px;
+}
+.crew-actions {
+  margin-top: 40px;
+}
+.crew-recap {
+  margin-top: 20px;
+  padding-left: 14px;
+  border-left: 2px solid var(--border);
+}
+.crew-done {
+  padding-top: 8px;
+}
+/* Who carries the workers: a ruled list beside the form (no rule above the first). */
+.crew-assurances {
+  max-width: 24rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.crew-assurances li {
+  padding: 16px 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+.crew-assurances li + li {
+  border-top: 1px solid var(--border);
+}
+.crew-assurances li:first-child {
+  padding-top: 0;
+}
+.crew-assurances strong {
+  font-weight: 600;
+  color: var(--foreground);
+}
+@media (max-width: 640px) {
+  .crew-next {
+    width: 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .crew-step-body {
+    animation: none;
+  }
+}
+
 /* Adds breathing room to html's 64px sticky-header scroll padding. */
 .form-scroll-target {
   scroll-margin-top: 24px;

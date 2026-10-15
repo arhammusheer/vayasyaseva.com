@@ -63,7 +63,7 @@ export function isJobRole(value: unknown): value is JobRole {
 
 /**
  * Hub pages under /jobs/<slug>: who the search was from, not a kind of work.
- * They are in the sitemap but not linked from the site. A submission from one
+ * They are in the sitemap and linked from the jobs overview. A submission from one
  * carries the slug, so staff can see which hub brought the person in; the
  * label is for staff.
  */

@@ -1,10 +1,15 @@
 import Image from "next/image";
 import Link from "@/components/i18n/link";
 import { siteConfig } from "@/content/site";
+import { jobHubs } from "@/content/pages/job-hubs";
 import { AnalyticsPreferencesButton } from "@/components/analytics";
 import { FooterJobsLink } from "@/components/layout/footer-jobs-link";
+import { FALLBACK_LOCALE, localePath, type Locale } from "@/lib/i18n";
+import type { HeaderDoor, HeaderPhone } from "@/components/layout/header";
 
-const columns = [
+type Column = { label: string; links: string[][] };
+
+const columns: Column[] = [
   {
     label: "Company",
     links: [
@@ -29,13 +34,90 @@ const columns = [
   },
 ];
 
-export function Footer() {
+/** Jobs footer copy, in the page's language. Privacy and Terms are English pages. */
+const JOBS_FOOTER: Record<Locale, { about: string; jobs: string; company: string; all: string; apply: string; fraud: string; business: string; privacy: string; terms: string }> = {
+  "en-IN": {
+    about: "Factory, warehouse and ITI work in SIDCUL Haridwar. There is no fee to apply.",
+    jobs: "Jobs", company: "For businesses", all: "All jobs", apply: "Apply now", fraud: "Fees and fraud",
+    business: "Business enquiries", privacy: "Privacy", terms: "Terms",
+  },
+  "hi-IN": {
+    about: "सिडकुल हरिद्वार में फ़ैक्टरी, वेयरहाउस और ITI का काम। आवेदन की कोई फ़ीस नहीं है।",
+    jobs: "नौकरी", company: "कंपनियों के लिए", all: "सभी नौकरियाँ", apply: "आवेदन करें", fraud: "फ़ीस और धोखा",
+    business: "कंपनियों की पूछताछ", privacy: "गोपनीयता", terms: "नियम",
+  },
+  "hi-Latn-IN": {
+    about: "SIDCUL Haridwar mein factory, warehouse aur ITI ka kaam. Apply karne ki koi fee nahi hai.",
+    jobs: "Jobs", company: "Companies ke liye", all: "Sabhi jobs", apply: "Apply karein", fraud: "Fee aur fraud",
+    business: "Business enquiries", privacy: "Privacy", terms: "Terms",
+  },
+};
+
+/**
+ * Jobs pages: jobs links, then the business door. No phone, no email, no
+ * company profile PDF (it carries the phone), and no links to business
+ * pages that show the phone (About, SIDCUL Haridwar): one door, labelled.
+ */
+function jobsColumns(locale: Locale): Column[] {
+  const t = JOBS_FOOTER[locale];
+  return [
+    {
+      label: t.jobs,
+      links: [
+        [localePath("/jobs", locale), t.all],
+        [localePath("/jobs/apply", locale), t.apply],
+        ...jobHubs[locale].map((hub) => [localePath(`/jobs/${hub.slug}`, locale), hub.name]),
+        [localePath("/jobs/fees-and-fraud", locale), t.fraud],
+      ],
+    },
+    {
+      label: t.company,
+      links: [["/contact", t.business]],
+    },
+  ];
+}
+
+/** Reference pages (wages, guides): business and jobs links, no phone and no PDF. */
+const referenceColumns: Column[] = [
+  columns[0],
+  {
+    label: "More",
+    links: [
+      ["/haridwar-sidcul", "SIDCUL Haridwar"],
+      ["/jobs/apply", "Jobs"],
+      ["/contact", "Business enquiries"],
+    ],
+  },
+];
+
+/**
+ * Site footer. The business layout passes the phone; jobs and reference
+ * layouts cannot (eslint.config.mjs), so their footers carry none, and
+ * their contact link reads "Business enquiries".
+ */
+export function Footer({
+  door = "business",
+  phone,
+  locale = FALLBACK_LOCALE,
+}: {
+  door?: HeaderDoor;
+  phone?: HeaderPhone;
+  /** The page's language; used by the jobs footer only. */
+  locale?: Locale;
+}) {
+  const isJobs = door === "jobs";
+  const t = JOBS_FOOTER[locale];
+  const shown = isJobs ? jobsColumns(locale) : door === "reference" ? referenceColumns : columns;
   return (
-    <footer className="site-footer" lang="en-IN">
+    <footer className="site-footer" lang={isJobs ? locale : "en-IN"}>
       <div className="site-shell">
         <div className="footer-main">
           <div className="footer-about">
-            <Link href="/" className="footer-brand" aria-label="Vayasya Seva home">
+            <Link
+              href={isJobs ? localePath("/jobs", locale) : "/"}
+              className="footer-brand"
+              aria-label={isJobs ? "Vayasya Seva jobs" : "Vayasya Seva home"}
+            >
               <Image
                 src="/brand/logos/master-logo-light.svg"
                 alt=""
@@ -44,15 +126,14 @@ export function Footer() {
               />
               <span>Vayasya Seva</span>
             </Link>
-            <p>Contract labour and industrial services. Haridwar, Uttarakhand.</p>
+            <p>{isJobs ? t.about : "Contract labour and industrial services. Haridwar, Uttarakhand."}</p>
             <address>
-              <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
-              <a
-                className="font-data"
-                href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
-              >
-                {siteConfig.phone}
-              </a>
+              {door === "business" && <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>}
+              {door === "business" && phone && (
+                <a className="font-data" href={phone.href}>
+                  {phone.display}
+                </a>
+              )}
               <a
                 className="footer-social"
                 href={siteConfig.linkedin}
@@ -68,15 +149,17 @@ export function Footer() {
                 </svg>
               </a>
             </address>
-            <p>
-              Phone and email are for businesses. Looking for work?{" "}
-              <Link href="/jobs/apply" className="underline underline-offset-4">
-                Apply online
-              </Link>
-              .
-            </p>
+            {door === "business" && (
+              <p>
+                Phone and email are for businesses. Looking for work?{" "}
+                <Link href="/jobs/apply" className="underline underline-offset-4">
+                  Apply online
+                </Link>
+                .
+              </p>
+            )}
           </div>
-          {columns.map((c) => (
+          {shown.map((c) => (
             <nav key={c.label} aria-label={c.label}>
               <p className="footer-label">{c.label}</p>
               {c.links.map(([href, label]) =>
@@ -91,17 +174,18 @@ export function Footer() {
                     {label}
                   </a>
                 ) : (
-                  <Link key={href} href={href}>
+                  // Jobs footers: no viewport prefetch, to spare data on patchy 4G.
+                  <Link key={href} href={href} prefetch={isJobs ? false : undefined}>
                     {label}
                   </Link>
                 ),
               )}
-              {c.label === "More" && <FooterJobsLink />}
+              {door === "business" && c.label === "More" && <FooterJobsLink />}
             </nav>
           ))}
         </div>
         <div className="footer-bottom">
-          <div className="footer-legal">
+          <div className="footer-legal" lang="en-IN">
             <span>
               © {new Date().getFullYear()} {siteConfig.legalName}
             </span>
@@ -115,8 +199,12 @@ export function Footer() {
           </div>
           <div>
             <AnalyticsPreferencesButton />
-            <Link href="/privacy">Privacy</Link>
-            <Link href="/terms">Terms</Link>
+            <Link href="/privacy" lang={isJobs && locale !== "en-IN" ? locale : undefined}>
+              {isJobs ? t.privacy : "Privacy"}
+            </Link>
+            <Link href="/terms" lang={isJobs && locale !== "en-IN" ? locale : undefined}>
+              {isJobs ? t.terms : "Terms"}
+            </Link>
           </div>
         </div>
       </div>

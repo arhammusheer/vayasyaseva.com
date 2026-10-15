@@ -1,7 +1,7 @@
 export const privacyContent = `
 # Privacy Policy
 
-*Last updated: 5 October 2026*
+*Last updated: 16 October 2026*
 
 ## 1. Who this notice covers
 
@@ -92,7 +92,7 @@ This section applies when you send us your details through the jobs pages of the
 
 **How long we keep it.** Files uploaded through the jobs pages are deleted from our upload storage 90 days after they are received. Your submission, including copies of your files in our applicant and conversation records, is kept for up to 12 months after our last contact with you and then deleted, unless you ask us to delete it sooner. If you are placed in work, the records needed for your engagement are kept for as long as employment and statutory obligations require.
 
-**Your choices.** You may withdraw your consent or ask us to correct or delete your submission at any time. Email help@vayasyaseva.com or call +91 72920 14101, ideally from the mobile number you used, and quote your reference (it begins with VS-J-). Withdrawal does not affect processing that took place before it.
+**Your choices.** You may withdraw your consent or ask us to correct or delete your submission at any time. Email help@vayasyaseva.com with the mobile number you applied with and your reference, if you have it (it begins with VS-J- and is in the SMS we sent you). We may call that mobile number to confirm the request is yours before we act on it. Withdrawal does not affect processing that took place before it.
 
 ## 11. Contact
 
@@ -102,7 +102,6 @@ For privacy questions, requests or grievances, contact:
 
 - Registered office: P-2-230, Deep Ganga Apartments, Sector-5A, SIDCUL, Roshnabad, Haridwar, Uttarakhand 249403, India
 - Email: help@vayasyaseva.com
-- Phone: +91 72920 14101
 - CIN: \`U01619UT2023PTC015814\`
 - GSTIN: \`05AAJCV4562E1ZB\`
 - MSME: \`UDYAM-UK-06-0029670\`

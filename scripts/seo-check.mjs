@@ -2,6 +2,9 @@
 //   pnpm seo:check                           -> http://localhost:3000 (after pnpm build && pnpm start)
 //   pnpm seo:check https://www.vayasyaseva.com
 // Sitemap URLs are absolute (www); they are fetched from the given base instead.
+// Also runs check C7 (no business phone on jobs pages): scripts/check-jobs-phone.mjs.
+import { checkJobsPhone } from "./check-jobs-phone.mjs";
+
 const SITE = "https://www.vayasyaseva.com";
 const base = (process.argv[2] ?? "http://localhost:3000").replace(/\/$/, "");
 
@@ -80,8 +83,10 @@ await Promise.all(
   }),
 );
 
+errors.push(...(await checkJobsPhone(base, urls)));
+
 if (errors.length) {
   console.error(`SEO check failed (${errors.length}):\n- ${errors.sort().join("\n- ")}`);
   process.exit(1);
 }
-console.log(`SEO check passed: ${urls.length} URLs on ${base}`);
+console.log(`SEO check passed: ${urls.length} URLs on ${base}, including the jobs phone check (C7)`);

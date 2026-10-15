@@ -46,7 +46,7 @@ jobs:
         run: sleep 30
 
       - name: Check production SEO
-        run: node scripts/seo-check.mjs https://www.vayasyaseva.com
+        run: node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/seo-check.mjs https://www.vayasyaseva.com
 
       - name: Submit changed pages
         run: node scripts/indexnow.mjs --changed .indexnow-state.json

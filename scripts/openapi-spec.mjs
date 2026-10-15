@@ -209,7 +209,7 @@ function buildAgentJobsSchemas() {
         ref: {
           type: "string",
           example: "VS-J-7K2M9Q",
-          description: "Give this to the person. They quote it if they call +91 72920 14101.",
+          description: "Give this to the person. Our team calls them on the number they applied with; they quote this reference if they write to us about the application.",
         },
       },
     },
@@ -262,7 +262,7 @@ function buildAgentPaths() {
         tags: ["Agents"],
         summary: "Start a job application with files (AI agents)",
         description:
-          "Step 1 of 3. Declare the files (CV, photos, voice note). Then PUT each file to its upload URL, then call /api/agent/jobs/submit with the ticket.",
+          "Step 1 of 3. Declare the files (CV, photos, documents). Then PUT each file to its upload URL, then call /api/agent/jobs/submit with the ticket.",
         operationId: "agentStartJobApplication",
         security: [],
         requestBody: { required: true, content: json("AgentJobsStartRequest") },

@@ -13,6 +13,7 @@ const publicPages = new Set([
   "/industries",
   "/jobs",
   "/jobs/apply",
+  "/jobs/fees-and-fraud",
   ...[...JOB_ROLE_SLUGS, ...JOB_HUB_SLUGS].map((slug) => `/jobs/${slug}`),
   "/privacy",
   "/services",

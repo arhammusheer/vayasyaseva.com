@@ -122,7 +122,7 @@ export function JobRolePage({ slug, locale }: { slug: string; locale: Locale }) 
           </Link>
         </nav>
       </Section>
-      <FaqSection eyebrow={t.faqEyebrow} title={t.faqTitle} items={[...role.faqs, jobs.faqs[0]]} />
+      <FaqSection eyebrow={t.faqEyebrow} title={t.faqTitle} items={[...role.faqs, ...jobs.sharedFaqs]} />
     </>
   );
 }

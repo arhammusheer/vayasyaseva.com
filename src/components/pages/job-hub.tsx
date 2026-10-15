@@ -99,7 +99,7 @@ export function JobHubPage({ slug, locale }: { slug: string; locale: Locale }) {
           </ul>
         </div>
       </Section>
-      <FaqSection eyebrow={t.faqEyebrow} title={t.faqTitle} variant="subtle" items={[...hub.faqs, jobs.faqs[0]]} />
+      <FaqSection eyebrow={t.faqEyebrow} title={t.faqTitle} variant="subtle" items={[...hub.faqs, ...jobs.sharedFaqs]} />
     </>
   );
 }

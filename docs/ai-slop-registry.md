@@ -185,7 +185,7 @@ Rewrite rule for this site: **subject, verb, object, period.** "A VSPL superviso
 
 ## Part D -- Lint
 
-`scripts/slop-lint.mjs` scans `src/content` and `src/app/(marketing)` and `src/components/sections` for Tier 1/2/V words, dash density, and the constructions in A2. It prints counts and the offending lines. It is a smoke test, not a judge: read the lines.
+`scripts/slop-lint.mjs` scans `src/content`, the `(marketing)`, `(jobs)` and `(reference)` route groups, `src/components/sections`, `src/components/layout`, `src/components/jobs` and `src/components/pages` for Tier 1/2/V words, dash density, and the constructions in A2. It also fails on "Haridwar and SIDCUL" and its variants: SIDCUL is inside Haridwar (`docs/brand-rules.md`). It prints counts and the offending lines. It is a smoke test, not a judge: read the lines.
 
 ```
 pnpm lint:slop

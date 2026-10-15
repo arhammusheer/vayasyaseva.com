@@ -1,5 +1,6 @@
 import type { Locale } from "@/lib/i18n";
 import { QUICK_ANSWERS, type JobRole, type QuickQuestion } from "@/lib/talent-intake/rules";
+import { NO_FEE, SHIFTS_LINE } from "@/content/pages/jobs";
 
 /**
  * The guided jobs page (/jobs/apply): tap answers, with follow-up questions
@@ -76,6 +77,8 @@ export interface QuickApplyCopy {
   };
   errors: { name: string };
   noFee: string;
+  /** One calm line above the form: full 8-hour shifts, no part-time work. */
+  shifts: string;
 }
 
 const MULTI_HINT = { "en-IN": "Choose all that apply.", "hi-IN": "जो भी लागू हों, सब चुनिए।", "hi-Latn-IN": "Jo bhi laagu hon, sab chuniye." };
@@ -126,7 +129,8 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       send: "Send",
     },
     errors: { name: "Please write your name." },
-    noFee: "No fee for a job. If anyone asks you for money in our name, tell us.",
+    noFee: NO_FEE["en-IN"],
+    shifts: SHIFTS_LINE["en-IN"],
   },
   "hi-IN": {
     title: "सिडकुल हरिद्वार में काम के लिए अप्लाई करें: छोटा फ़ॉर्म",
@@ -173,7 +177,8 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       send: "भेजें",
     },
     errors: { name: "कृपया अपना नाम लिखिए।" },
-    noFee: "नौकरी के लिए कोई फ़ीस नहीं। हमारे नाम पर कोई पैसे माँगे तो हमें बताइए।",
+    noFee: NO_FEE["hi-IN"],
+    shifts: SHIFTS_LINE["hi-IN"],
   },
   "hi-Latn-IN": {
     title: "SIDCUL Haridwar Mein Kaam Ke Liye Apply Karein: Chhota Form",
@@ -220,6 +225,7 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       send: "Bhejiye",
     },
     errors: { name: "Kripya apna naam likhiye." },
-    noFee: "Naukri ke liye koi fee nahi. Hamare naam par koi paise maange to humein bataiye.",
+    noFee: NO_FEE["hi-Latn-IN"],
+    shifts: SHIFTS_LINE["hi-Latn-IN"],
   },
 };

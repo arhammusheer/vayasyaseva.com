@@ -26,7 +26,7 @@ export default function Error({
         Something went wrong.
       </h1>
       <p className="mt-5 max-w-sm text-lg leading-relaxed text-muted-foreground">
-        The page failed to load. Try again, or call us on +91 72920 14101.
+        The page failed to load. Please try again in a moment.
       </p>
       <div className="mt-10 flex flex-wrap gap-3">
         <Button size="lg" onClick={reset}>

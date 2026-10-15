@@ -32,7 +32,7 @@ export const locales = {
     segment: "hi-latn-in",
     hreflang: "hi-Latn-IN",
     ogLocale: "hi_IN",
-    label: "Hindi",
+    label: "Hinglish",
     hint: "Ye page Hindi mein padhein, English letters mein",
     published: true,
   },
@@ -77,6 +77,8 @@ export const pages: Record<string, PageLocales> = {
   "/jobs": { locales: ALL, override: "prompt" },
   // Focused guided application, also used by ads and direct application links.
   "/jobs/apply": { locales: ALL, override: "prompt" },
+  // No fee, and how to report anyone who asks for money in our name.
+  "/jobs/fees-and-fraud": { locales: ALL, override: "prompt" },
   ...Object.fromEntries(
     [...JOB_ROLE_SLUGS, ...JOB_HUB_SLUGS].map((slug) => [`/jobs/${slug}`, { locales: ALL, override: "prompt" } as const]),
   ),

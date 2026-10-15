@@ -1,5 +1,5 @@
 import Link from "@/components/i18n/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
 import { Section } from "@/components/layout/section";
 import { FaqSection } from "@/components/sections/faq-section";
@@ -49,12 +49,13 @@ export function JobsPage({ locale }: { locale: Locale }) {
             <p className="jobs-lede">{t.lede}</p>
           </div>
           <div className="lg:self-center">
-            <h2 className="text-3xl font-medium">{quick.heading}</h2>
-            <p className="mt-4 max-w-md leading-relaxed text-muted-foreground">{quick.lede}</p>
+            {/* The H1 already asks the question; here only what to do, then the shift line. */}
+            <p className="max-w-md leading-relaxed text-muted-foreground">{quick.lede}</p>
             <Link href={localePath("/jobs/apply", locale)} className="jobs-submit mt-6 inline-flex">
-              {apply} <ArrowUpRight size={20} aria-hidden="true" />
+              {apply} <ArrowRight size={20} aria-hidden="true" />
             </Link>
-            <p className="quick-note">{quick.noFee}</p>
+            <p className="quick-shifts mt-6 mb-0">{quick.shifts}</p>
+            <p className="quick-note mt-4">{quick.noFee}</p>
           </div>
         </div>
       </section>

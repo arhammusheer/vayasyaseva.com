@@ -18,6 +18,10 @@ const ROOT = new URL("..", import.meta.url).pathname;
 const SCAN = [
   "src/content",
   "src/app/[locale]/(marketing)",
+  "src/app/[locale]/(jobs)",
+  "src/app/[locale]/(reference)",
+  "src/components/jobs",
+  "src/components/pages",
   "src/app/(picker)",
   "src/components/sections",
   "src/components/layout",
@@ -41,6 +45,10 @@ const PROHIBITED = [
   "नंबर वन",
   // hi-Latn-IN (Hindi in Latin script) equivalents
   "guarantee", "hamesha", "kabhi nahi", "sabse best", "number 1", "number one",
+  // SIDCUL is inside Haridwar, not beside it (docs/brand-rules.md): write
+  // "SIDCUL Haridwar" or "in SIDCUL and across Haridwar".
+  "Haridwar and SIDCUL", "Haridwar & SIDCUL", "Haridwar &amp; SIDCUL", "Haridwar–SIDCUL",
+  "Haridwar aur SIDCUL", "हरिद्वार और सिडकुल",
 ];
 const TIER2 = [
   "robust", "comprehensive", "cutting-edge", "innovative", "streamline",

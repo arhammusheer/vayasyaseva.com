@@ -28,7 +28,8 @@
     "share:check": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/build-share-images.mjs --check",
     "brand:assets": "node scripts/build-brand-assets.mjs",
     "indexnow": "node scripts/indexnow.mjs",
-    "seo:check": "node scripts/seo-check.mjs",
+    "seo:check": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/seo-check.mjs",
+    "phone:check": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/check-jobs-phone.mjs",
     "ship": "node scripts/ship.mjs"
   },
   "dependencies": {

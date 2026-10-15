@@ -6,6 +6,7 @@ import { Section } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
 import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { siteConfig } from "@/content/site";
+import { businessPhone, businessPhoneHref } from "@/content/business-contact";
 import { localeParams } from "@/lib/i18n";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/about");
@@ -96,8 +97,8 @@ export default function AboutPage() {
               },
               {
                 label: "Phone",
-                value: siteConfig.phone,
-                href: `tel:${siteConfig.phone.replace(/\s/g, "")}`,
+                value: businessPhone.display,
+                href: businessPhoneHref,
               },
             ].map((d) => (
               <div key={d.label} className="py-5">

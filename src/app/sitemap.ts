@@ -6,7 +6,7 @@ import { JOB_HUB_SLUGS } from "@/lib/talent-intake/rules";
 const lastModified = new Date("2026-09-13");
 const contentUpdated = new Date("2026-10-01");
 const jobsAdded = new Date("2026-10-02");
-const jobsUpdated = new Date("2026-10-07");
+const phoneFreeJobs = new Date("2026-10-16");
 
 type Page = {
   path: string;
@@ -24,18 +24,19 @@ const sitePages: Page[] = [
   { path: "/services/loading-unloading-labour", lastModified: jobsAdded, changeFrequency: "monthly", priority: 0.8 },
   { path: "/services/factory-labour", lastModified: contentUpdated, changeFrequency: "monthly", priority: 0.8 },
   { path: "/services/housekeeping", lastModified: contentUpdated, changeFrequency: "monthly", priority: 0.8 },
-  { path: "/jobs", lastModified: jobsUpdated, changeFrequency: "monthly", priority: 0.8 },
-  { path: "/jobs/apply", lastModified: jobsUpdated, changeFrequency: "monthly", priority: 0.8 },
+  { path: "/jobs", lastModified: phoneFreeJobs, changeFrequency: "monthly", priority: 0.8 },
+  { path: "/jobs/apply", lastModified: phoneFreeJobs, changeFrequency: "monthly", priority: 0.8 },
+  { path: "/jobs/fees-and-fraud", lastModified: phoneFreeJobs, changeFrequency: "yearly", priority: 0.5 },
   ...jobRoles["en-IN"].map((r) => ({
     path: `/jobs/${r.slug}`,
-    lastModified: jobsUpdated,
+    lastModified: phoneFreeJobs,
     changeFrequency: "monthly" as const,
     priority: 0.8,
   })),
   // Candidate categories are linked from the jobs overview as well.
   ...JOB_HUB_SLUGS.map((slug) => ({
     path: `/jobs/${slug}`,
-    lastModified: jobsUpdated,
+    lastModified: phoneFreeJobs,
     changeFrequency: "monthly" as const,
     priority: 0.7,
   })),
@@ -47,7 +48,7 @@ const sitePages: Page[] = [
   { path: "/about", lastModified, changeFrequency: "monthly", priority: 0.7 },
   { path: "/contact", lastModified, changeFrequency: "yearly", priority: 0.9 },
   { path: "/brand", lastModified, changeFrequency: "yearly", priority: 0.3 },
-  { path: "/privacy", lastModified, changeFrequency: "yearly", priority: 0.3 },
+  { path: "/privacy", lastModified: phoneFreeJobs, changeFrequency: "yearly", priority: 0.3 },
   { path: "/terms", lastModified, changeFrequency: "yearly", priority: 0.3 },
 ];
 

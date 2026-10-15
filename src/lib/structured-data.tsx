@@ -74,128 +74,141 @@ export const knowsAbout = [
   "SIDCUL Haridwar (Integrated Industrial Estate)",
 ];
 
-/** Site-wide graph: one Organization/LocalBusiness node and the WebSite, both addressable by @id. */
-export function siteGraphSchema() {
+/** Which door a page belongs to; it decides what the site graph may carry. */
+export type GraphDoor = "jobs" | "reference";
+
+const applyAction = {
+  "@type": "ApplyAction",
+  name: "Apply for work",
+  target: [
+    {
+      "@type": "EntryPoint",
+      name: "Open route for AI agents",
+      url: `${BASE_URL}/api/agent/jobs`,
+      httpMethod: "POST",
+      contentType: "application/json",
+      encodingType: "application/json",
+      actionPlatform: "https://www.vayasyaseva.com/openapi/v1.json",
+    },
+    {
+      "@type": "EntryPoint",
+      urlTemplate: `${BASE_URL}/jobs#name={name}&phone={phone}&work={work}&experience={experience}&location={location}&start={start}&about={about}`,
+      inLanguage: ["en-IN", "hi-IN", "hi-Latn-IN"],
+    },
+  ],
+};
+
+/** The enquiry action: the agent route and the prefilled /contact form. */
+export const communicateAction = {
+  "@type": "CommunicateAction",
+  name: "Send an enquiry",
+  target: [
+    {
+      "@type": "EntryPoint",
+      name: "Open route for AI agents",
+      url: `${BASE_URL}/api/agent/contact`,
+      httpMethod: "POST",
+      contentType: "application/json",
+      encodingType: "application/json",
+      actionPlatform: "https://www.vayasyaseva.com/openapi/v1.json",
+    },
+    {
+      "@type": "EntryPoint",
+      urlTemplate: `${BASE_URL}/en-in/contact#name={name}&phone={phone}&email={email}&company={company}&location={location}&headcount={headcount}&details={details}`,
+      inLanguage: "en-IN",
+    },
+  ],
+};
+
+// No telephone here on purpose: assistants were handing job seekers the
+// business line. Applications go through the form or the agent route.
+export const jobApplicationsContactPoint = {
+  "@type": "ContactPoint",
+  contactType: "job applications",
+  description: "Apply online through the application form.",
+  url: `${BASE_URL}/en-in/jobs/apply`,
+  areaServed: "IN",
+  availableLanguage: ["en", "hi"],
+};
+
+/**
+ * The Organization/LocalBusiness node every page shares by @id, with no
+ * phone and no sales contact. Business pages extend it with the phone
+ * (src/lib/business-graph.ts); jobs and reference pages use it as is.
+ */
+export function organizationNode() {
   return {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": ["Organization", "LocalBusiness"],
-        "@id": ORG_ID,
-        name: siteConfig.companyName,
-        legalName: siteConfig.legalName,
-        alternateName: "VSPL",
-        url: BASE_URL,
-        logo: { "@type": "ImageObject", url: LOGO_URL, width: 1024, height: 1024 },
-        image: LOGO_URL,
-        description: siteConfig.tagline,
-        email: siteConfig.email,
-        telephone: siteConfig.phone,
-        address: postalAddress,
-        geo: {
-          "@type": "GeoCoordinates",
-          latitude: siteConfig.geo.latitude,
-          longitude: siteConfig.geo.longitude,
-        },
-        areaServed: areaServed(),
-        knowsAbout,
-        taxID: siteConfig.gstin,
-        identifier: [
-          { "@type": "PropertyValue", propertyID: "GSTIN", value: siteConfig.gstin },
-          { "@type": "PropertyValue", propertyID: "CIN", value: siteConfig.cin },
-          { "@type": "PropertyValue", propertyID: "Udyam", value: siteConfig.msme },
-        ],
-        contactPoint: [
-          {
-            "@type": "ContactPoint",
-            contactType: "sales",
-            description: "For businesses hiring workers or services. Not for job applications.",
-            telephone: siteConfig.phone,
-            email: siteConfig.email,
-            areaServed: "IN",
-            availableLanguage: ["en", "hi"],
-          },
-          // No telephone here on purpose: assistants were handing job seekers
-          // the business line. Applications go through the form or agent route.
-          {
-            "@type": "ContactPoint",
-            contactType: "job applications",
-            description: "Apply online. Job applications are not taken by phone.",
-            url: `${BASE_URL}/en-in/jobs/apply`,
-            areaServed: "IN",
-            availableLanguage: ["en", "hi"],
-          },
-        ],
-        sameAs: siteConfig.sameAs,
-        // Two ways in for an assistant: the open agent routes (/api/agent/*,
-        // contract in /openapi/v1.json), or a prefilled form link
-        // (src/lib/prefill.ts) the person checks and sends. See /llms.txt.
-        potentialAction: [
-          {
-            "@type": "ApplyAction",
-            name: "Apply for work",
-            target: [
-              {
-                "@type": "EntryPoint",
-                name: "Open route for AI agents",
-                url: `${BASE_URL}/api/agent/jobs`,
-                httpMethod: "POST",
-                contentType: "application/json",
-                encodingType: "application/json",
-                actionPlatform: "https://www.vayasyaseva.com/openapi/v1.json",
-              },
-              {
-                "@type": "EntryPoint",
-                urlTemplate: `${BASE_URL}/jobs#name={name}&phone={phone}&work={work}&experience={experience}&location={location}&start={start}&about={about}`,
-                inLanguage: ["en-IN", "hi-IN", "hi-Latn-IN"],
-              },
-            ],
-          },
-          {
-            "@type": "CommunicateAction",
-            name: "Send an enquiry",
-            target: [
-              {
-                "@type": "EntryPoint",
-                name: "Open route for AI agents",
-                url: `${BASE_URL}/api/agent/contact`,
-                httpMethod: "POST",
-                contentType: "application/json",
-                encodingType: "application/json",
-                actionPlatform: "https://www.vayasyaseva.com/openapi/v1.json",
-              },
-              {
-                "@type": "EntryPoint",
-                urlTemplate: `${BASE_URL}/en-in/contact#name={name}&phone={phone}&email={email}&company={company}&location={location}&headcount={headcount}&details={details}`,
-                inLanguage: "en-IN",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        "@type": "WebSite",
-        "@id": SITE_ID,
-        url: BASE_URL,
-        name: siteConfig.companyName,
-        publisher: { "@id": ORG_ID },
-        inLanguage: "en-IN",
-      },
+    "@type": ["Organization", "LocalBusiness"],
+    "@id": ORG_ID,
+    name: siteConfig.companyName,
+    legalName: siteConfig.legalName,
+    alternateName: "VSPL",
+    url: BASE_URL,
+    logo: { "@type": "ImageObject", url: LOGO_URL, width: 1024, height: 1024 },
+    image: LOGO_URL,
+    description: siteConfig.tagline,
+    address: postalAddress,
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: siteConfig.geo.latitude,
+      longitude: siteConfig.geo.longitude,
+    },
+    areaServed: areaServed(),
+    knowsAbout,
+    taxID: siteConfig.gstin,
+    identifier: [
+      { "@type": "PropertyValue", propertyID: "GSTIN", value: siteConfig.gstin },
+      { "@type": "PropertyValue", propertyID: "CIN", value: siteConfig.cin },
+      { "@type": "PropertyValue", propertyID: "Udyam", value: siteConfig.msme },
     ],
+    contactPoint: [jobApplicationsContactPoint],
+    sameAs: siteConfig.sameAs,
+    // Two ways in for an assistant: the open agent routes (/api/agent/*,
+    // contract in /openapi/v1.json), or a prefilled form link
+    // (src/lib/prefill.ts) the person checks and sends. See /llms.txt.
+    potentialAction: [applyAction],
   };
 }
 
-/** Kept for pages that want a standalone LocalBusiness node; references the site graph by @id. */
-export function localBusinessSchema() {
+export const websiteNode = {
+  "@type": "WebSite",
+  "@id": SITE_ID,
+  url: BASE_URL,
+  name: siteConfig.companyName,
+  publisher: { "@id": ORG_ID },
+  inLanguage: "en-IN",
+};
+
+/**
+ * Site graph for jobs pages (/jobs/**) and reference pages (wages, guides):
+ * the same Organization @id as business pages, with no telephone. Jobs pages
+ * carry no sales contact and no enquiry action; reference pages, read by
+ * buyers and workers alike, point businesses to /contact (never the phone).
+ */
+export function phoneFreeGraphSchema(door: GraphDoor) {
+  const org = organizationNode();
   return {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "@id": ORG_ID,
-    name: siteConfig.companyName,
-    url: BASE_URL,
-    telephone: siteConfig.phone,
-    address: postalAddress,
-    areaServed: areaServed(),
+    "@graph": [
+      door === "jobs"
+        ? org
+        : {
+            ...org,
+            contactPoint: [
+              {
+                "@type": "ContactPoint",
+                contactType: "sales",
+                description: "For businesses hiring workers or services. Not for job applications.",
+                url: `${BASE_URL}/en-in/contact`,
+                areaServed: "IN",
+                availableLanguage: ["en", "hi"],
+              },
+              jobApplicationsContactPoint,
+            ],
+            potentialAction: [applyAction, communicateAction],
+          },
+      websiteNode,
+    ],
   };
 }
 

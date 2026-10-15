@@ -6,7 +6,6 @@ export const siteConfig: SiteConfig = {
   tagline:
     "Contract labour, workforce management and industrial services, with a focus on labour compliance",
   email: "help@vayasyaseva.com",
-  phone: "+91 72920 14101",
   gstin: "05AAJCV4562E1ZB",
   cin: "U01619UT2023PTC015814",
   msme: "UDYAM-UK-06-0029670",

@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { pageMetadata } from "@/lib/metadata";
 import { Section } from "@/components/layout/section";
 import { siteConfig } from "@/content/site";
+import { businessPhone, businessPhoneHref } from "@/content/business-contact";
 import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { ContactForm } from "./contact-form";
 import { AgentGuidance } from "@/components/agent-guidance";
@@ -48,8 +49,8 @@ const lines = [
   },
   {
     label: "Phone",
-    value: siteConfig.phone,
-    href: `tel:${siteConfig.phone.replace(/\s/g, "")}`,
+    value: businessPhone.display,
+    href: businessPhoneHref,
     data: true,
   },
   { label: "Office", value: siteConfig.address },
@@ -77,6 +78,13 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
       <Section className="pt-10 sm:pt-14 lg:pt-16">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.6fr] lg:gap-20">
           <div className="lg:sticky lg:top-24 lg:self-start">
+            {/* One link for job seekers, a full thumb target (48px). */}
+            <Link
+              href="/jobs/apply"
+              className="mb-6 inline-flex min-h-12 items-center text-sm leading-relaxed text-muted-foreground hover:text-gold-700"
+            >
+              Looking for work?&nbsp;<span className="text-gold-700 underline underline-offset-4">Apply here →</span>
+            </Link>
             <p className="eyebrow text-gold-700">CONTACT</p>
             <h1 className="mt-5 text-5xl font-medium leading-[1.04] tracking-[-0.03em] sm:text-6xl">
               Let’s talk.
@@ -84,14 +92,6 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
             <p className="mt-5 max-w-sm text-lg leading-relaxed text-muted-foreground">
               A workforce requirement, a project or an early idea. Tell us what
               you have in mind and our team will be in touch.
-            </p>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
-              Looking for work?{" "}
-              <Link href="/jobs/apply" className="text-gold-700 underline underline-offset-4">
-                Apply on the jobs page
-              </Link>
-              . We don’t take job applications on this number, and our team
-              calls you back on the number you apply with.
             </p>
             <dl className="mt-10">
               {lines.map((l) => (

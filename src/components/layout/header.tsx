@@ -10,13 +10,34 @@ import {
   SheetTrigger,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { navigation, siteConfig } from "@/content/site";
-import { FALLBACK_LOCALE, languageLinks, localePath, splitLocalePath } from "@/lib/i18n";
+import { navigation } from "@/content/site";
+import { FALLBACK_LOCALE, languageLinks, localePath, splitLocalePath, type Locale } from "@/lib/i18n";
 
 /** The jobs link follows the page's language (docs/plan-worker-pipeline.md). */
 const JOBS_LABEL = { "en-IN": "Jobs", "hi-IN": "नौकरी", "hi-Latn-IN": "Jobs" } as const;
 
-export function Header() {
+/** The jobs header, in the page's language. "For businesses" is the door back to the business site. */
+const JOBS_NAV: Record<Locale, { all: string; fraud: string; business: string; apply: string; menu: string }> = {
+  "en-IN": { all: "All jobs", fraud: "Fees and fraud", business: "For businesses", apply: "Apply", menu: "Jobs" },
+  "hi-IN": { all: "सभी नौकरियाँ", fraud: "फ़ीस और धोखा", business: "कंपनियों के लिए", apply: "आवेदन करें", menu: "नौकरी" },
+  "hi-Latn-IN": { all: "Sabhi jobs", fraud: "Fee aur fraud", business: "Companies ke liye", apply: "Apply karein", menu: "Jobs" },
+};
+
+/**
+ * Which door the page belongs to. Business pages show the Jobs door and the
+ * phone; jobs pages show the "For businesses" door and no phone; reference
+ * pages (wages, guides) show both doors and no phone.
+ */
+export type HeaderDoor = "business" | "jobs" | "reference";
+
+/**
+ * The business line, passed in by the business layout only. This component
+ * must not import it (eslint.config.mjs): a jobs or reference layout cannot
+ * hand it a phone, so it cannot show one there.
+ */
+export type HeaderPhone = { display: string; href: string };
+
+export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?: HeaderPhone }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
@@ -100,38 +121,65 @@ export function Header() {
     };
   }, [pathname]);
   const languages = languageLinks(pathname);
-  // The header is English; links follow the page's language where they can.
+  // The business header is English; links follow the page's language where
+  // they can. The jobs header is in the page's language.
   const split = splitLocalePath(pathname);
   const pageLocale = split.locale ?? FALLBACK_LOCALE;
   const path = split.path;
   const isHome = path === "/";
-  // The number is the business line; job seekers apply through the form.
-  const isJobs = path === "/jobs" || path.startsWith("/jobs/");
-  const jobs = { href: localePath("/jobs/apply", pageLocale), label: JOBS_LABEL[pageLocale], lang: pageLocale === "hi-IN" ? "hi-IN" : undefined };
-  const primary = navigation.filter((item) =>
-    [
-      "/services",
-      "/industries",
-      "/how-we-operate",
-      "/compliance",
-      "/about",
-    ].includes(item.href),
-  );
+  // The number is the business line, and only the business layout passes it.
+  const showPhone = door === "business" && phone;
+  const pageLang = pageLocale === "en-IN" ? undefined : pageLocale;
+  type NavLink = { href: string; label: string; lang?: string };
+  const jobsDoor: NavLink = { href: localePath("/jobs/apply", pageLocale), label: JOBS_LABEL[pageLocale], lang: pageLocale === "hi-IN" ? "hi-IN" : undefined };
+  const t = JOBS_NAV[pageLocale];
+  const nav: { desktop: NavLink[]; sheet: NavLink[]; cta: NavLink } =
+    door === "jobs"
+      ? {
+          desktop: [
+            { href: localePath("/jobs", pageLocale), label: t.all },
+            { href: localePath("/jobs/fees-and-fraud", pageLocale), label: t.fraud },
+            { href: "/", label: t.business },
+          ],
+          sheet: [
+            { href: localePath("/jobs", pageLocale), label: t.all },
+            { href: localePath("/jobs/apply", pageLocale), label: t.apply },
+            { href: localePath("/jobs/fees-and-fraud", pageLocale), label: t.fraud },
+            { href: "/", label: t.business },
+          ],
+          cta: { href: localePath("/jobs/apply", pageLocale), label: t.apply },
+        }
+      : {
+          desktop: [
+            ...navigation
+              .filter((item) => ["/services", "/industries", "/how-we-operate", "/compliance", "/about"].includes(item.href))
+              .map((item) => ({ href: item.href, label: item.href === "/how-we-operate" ? "Our approach" : item.label })),
+            jobsDoor,
+          ],
+          sheet: [...navigation, jobsDoor],
+          cta: { href: "/contact", label: "Let’s talk" },
+        };
+  const current = (href: string) => (href === pathname || href === path ? "page" : undefined);
   return (
     <header
       ref={headerRef}
       className="site-header"
-      lang="en-IN"
+      lang={door === "jobs" ? pageLocale : "en-IN"}
+      data-door={door}
       data-theme={isHome ? "dark" : "light"}
       data-home={isHome ? "true" : undefined}
       data-clear={isHome ? "true" : undefined}
       data-top="true"
     >
       <a href="#main-content" className="skip-link">
-        Skip to content
+        {door !== "jobs" || pageLocale === "en-IN" ? "Skip to content" : pageLocale === "hi-IN" ? "सीधे पेज पर जाएँ" : "Seedhe page par jaayein"}
       </a>
       <div className="site-shell header-inner">
-        <Link href="/" aria-label="Vayasya Seva home" className="brand-lockup">
+        <Link
+          href={door === "jobs" ? localePath("/jobs", pageLocale) : "/"}
+          aria-label={door === "jobs" ? "Vayasya Seva jobs" : "Vayasya Seva home"}
+          className="brand-lockup"
+        >
           <Image
             src="/brand/logos/master-logo-light.svg"
             alt=""
@@ -141,25 +189,20 @@ export function Header() {
           />
         </Link>
         <nav aria-label="Main navigation" className="desktop-nav">
-          {primary.map((item) => (
+          {nav.desktop.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              aria-current={path === item.href ? "page" : undefined}
+              lang={item.lang}
+              aria-current={current(item.href)}
             >
-              {item.href === "/how-we-operate" ? "Our approach" : item.label}
+              {item.label}
             </Link>
           ))}
-          <Link href={jobs.href} lang={jobs.lang} aria-current={pathname === jobs.href ? "page" : undefined}>
-            {jobs.label}
-          </Link>
         </nav>
-        {!isJobs && (
-          <a
-            className="header-phone"
-            href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
-          >
-            {siteConfig.phone}
+        {showPhone && (
+          <a className="header-phone" href={phone.href}>
+            {phone.display}
           </a>
         )}
         {languages.length > 0 && (
@@ -171,43 +214,32 @@ export function Header() {
             ))}
           </nav>
         )}
-        <Link href="/contact" className="header-contact">
-          Let’s talk <ArrowUpRight size={17} aria-hidden="true" />
+        <Link href={nav.cta.href} className="header-contact" aria-current={current(nav.cta.href)}>
+          {nav.cta.label} <ArrowUpRight size={17} aria-hidden="true" />
         </Link>
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger className="mobile-menu" aria-label="Open navigation">
             <Menu size={24} />
           </SheetTrigger>
-          <SheetContent className="w-[min(360px,90vw)] p-7">
-            <SheetTitle className="mt-8 text-2xl">Vayasya Seva</SheetTitle>
+          <SheetContent className="w-[min(360px,90vw)] p-7" lang={door === "jobs" ? pageLang : undefined}>
+            <SheetTitle className="mt-8 text-2xl">{door === "jobs" ? t.menu : "Vayasya Seva"}</SheetTitle>
             <nav aria-label="Mobile navigation" className="flex flex-col mt-8">
-              {navigation.map((item) => (
+              {nav.sheet.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
+                  lang={item.lang}
                   onClick={() => setOpen(false)}
-                  aria-current={path === item.href ? "page" : undefined}
+                  aria-current={current(item.href)}
                   className="border-b py-3 text-lg"
                 >
                   {item.label}
                 </Link>
               ))}
-              <Link
-                href={jobs.href}
-                lang={jobs.lang}
-                onClick={() => setOpen(false)}
-                aria-current={pathname === jobs.href ? "page" : undefined}
-                className="border-b py-3 text-lg"
-              >
-                {jobs.label}
-              </Link>
             </nav>
-            {!isJobs && (
-              <a
-                href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
-                className="mt-6 text-sm"
-              >
-                {siteConfig.phone}
+            {showPhone && (
+              <a href={phone.href} className="mt-6 text-sm">
+                {phone.display}
               </a>
             )}
           </SheetContent>

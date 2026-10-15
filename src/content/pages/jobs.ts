@@ -5,23 +5,9 @@ import type { Locale } from "@/lib/i18n";
 /** Strings the jobs form shows while it works (client component). */
 export interface JobsFormCopy {
   steps: {
-    record: { title: string; lead: string; points: string[] };
     files: { title: string; hint: string; warning: string };
-    /** The word between the voice note and the text box. */
-    or: string;
-    text: { title: string; placeholder: string };
     /** One checkbox: 18 or older, and consent to be contacted. */
     phone: { title: string; placeholder: string; agree: string; privacyLink: string };
-  };
-  record: {
-    start: string;
-    stop: string;
-    again: string;
-    remove: string;
-    recording: string;
-    recorded: string;
-    noMic: string;
-    unsupported: string;
   };
   files: { camera: string; choose: string; remove: string; tooLarge: string; wrongType: string; tooMany: string };
   next: string;
@@ -31,7 +17,6 @@ export interface JobsFormCopy {
   sending: string;
   sendingFile: (n: number, total: number, percent: number) => string;
   errors: {
-    empty: string;
     phone: string;
     agree: string;
     verification: string;
@@ -39,8 +24,9 @@ export interface JobsFormCopy {
     server: string;
     expired: string;
   };
-  done: { title: string; refLabel: string; body: string; again: string };
-  labels: { voice: string; photo: string; document: string };
+  /** `fraud`: the link to the fees and fraud page under the confirmation. */
+  done: { title: string; refLabel: string; body: string; fraud: string; again: string };
+  labels: { photo: string; document: string };
   /** Labels for details filled in from a prefilled link (src/lib/prefill.ts). */
   prefill: { name: string; work: string; experience: string; location: string; start: string };
 }
@@ -60,8 +46,73 @@ export interface JobsCopy {
   work: { title: string; text: string; role?: JobRole }[];
   faqEyebrow: string;
   faqTitle: string;
+  /** The overview's FAQs: the shared ones first, then its own. */
   faqs: FaqItem[];
+  /** Fee and part-time questions, also shown on every role and category page. */
+  sharedFaqs: FaqItem[];
 }
+
+/** The fees and fraud page, linked from the fee question on every job page. */
+const FRAUD_PATH = "/jobs/fees-and-fraud";
+
+/**
+ * The no-fee line (PLAN §5.3), used wherever a page says there is no fee.
+ * It replaces the old "never charges" lines.
+ */
+export const NO_FEE: Record<Locale, string> = {
+  "en-IN": "There is no fee to apply. If anyone asks you for money in our name, don't pay.",
+  "hi-IN": "आवेदन की कोई फ़ीस नहीं है। अगर कोई हमारे नाम पर पैसे माँगे, तो मत दीजिए।",
+  "hi-Latn-IN": "Apply karne ki koi fee nahi hai. Agar koi hamare naam par paise maange, to mat dijiye.",
+};
+
+/** Work is shift-wise only: say so plainly (owner, 16 October 2026). */
+export const SHIFTS_LINE: Record<Locale, string> = {
+  "en-IN": "Work is in full 8-hour shifts. There is no part-time work.",
+  "hi-IN": "काम पूरी 8 घंटे की शिफ्ट में होता है। पार्ट-टाइम काम नहीं है।",
+  "hi-Latn-IN": "Kaam poori 8 ghante ki shift mein hota hai. Part-time kaam nahi hai.",
+};
+
+const SHARED_FAQS: Record<Locale, FaqItem[]> = {
+  "en-IN": [
+    {
+      question: "Is there any fee?",
+      answer: "No. There is no fee to apply. If anyone asks you for money, don't pay. Tell us.",
+      link: { href: `/en-in${FRAUD_PATH}`, label: "Fees and fraud" },
+      category: "operations",
+    },
+    {
+      question: "Is there part-time work?",
+      answer: "No. All our work is in full 8-hour shifts. Some sites run day, night or rotating shifts. We tell you the shift before you join.",
+      category: "operations",
+    },
+  ],
+  "hi-IN": [
+    {
+      question: "क्या कोई फ़ीस है?",
+      answer: "नहीं। आवेदन की कोई फ़ीस नहीं है। अगर कोई पैसे माँगे, तो मत दीजिए। हमें बताइए।",
+      link: { href: `/hi-in${FRAUD_PATH}`, label: "फ़ीस और धोखा" },
+      category: "operations",
+    },
+    {
+      question: "क्या पार्ट-टाइम काम है?",
+      answer: "नहीं। हमारा सारा काम पूरी 8 घंटे की शिफ्ट में होता है। कुछ साइटों पर दिन, रात या बदलती शिफ्ट होती है। जॉइन करने से पहले हम शिफ्ट बताते हैं।",
+      category: "operations",
+    },
+  ],
+  "hi-Latn-IN": [
+    {
+      question: "Kya koi fee hai?",
+      answer: "Nahi. Apply karne ki koi fee nahi hai. Agar koi paise maange, to mat dijiye. Humein bataiye.",
+      link: { href: `/hi-latn-in${FRAUD_PATH}`, label: "Fee aur fraud" },
+      category: "operations",
+    },
+    {
+      question: "Kya part-time kaam hai?",
+      answer: "Nahi. Hamara saara kaam poori 8 ghante ki shift mein hota hai. Kuch sites par din, raat ya badalti shift hoti hai. Join karne se pehle hum shift batate hain.",
+      category: "operations",
+    },
+  ],
+};
 
 /**
  * /jobs in every locale. hi-IN is the page most job seekers use; en-IN and
@@ -72,28 +123,18 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
   "en-IN": {
     title: "SIDCUL Haridwar Vacancy: Factory, Warehouse and ITI Jobs",
     description:
-      "Jobs in SIDCUL and across Haridwar: factory, packing, warehouse, housekeeping and ITI work. Apply online. Vayasya Seva never charges a fee for a job.",
+      "Jobs in SIDCUL and across Haridwar: factory, packing, warehouse, housekeeping and ITI work in 8-hour shifts. Apply online. There is no fee to apply.",
     breadcrumb: { home: "Home", page: "Jobs" },
     eyebrow: "JOBS · SIDCUL HARIDWAR",
     heading: "Find work in SIDCUL Haridwar.",
     lede: "Explore factory, warehouse, housekeeping and ITI work. Choose the work that suits you, then apply through a few simple questions.",
-    noFee: "Vayasya Seva never charges a fee for a job. If anyone asks you for money, tell us.",
+    noFee: NO_FEE["en-IN"],
     form: {
       steps: {
-        record: {
-          title: "Tell us about yourself",
-          lead: "Just say:",
-          points: ["Your name", "Where you live", "Work you know", "Your experience", "When you can start"],
-        },
         files: {
           title: "Add photos or documents",
           hint: "Certificates, ITI, licence, salary slip or resume.",
           warning: "Please don't send Aadhaar or bank documents.",
-        },
-        or: "Or",
-        text: {
-          title: "type it instead",
-          placeholder: "For example: I know packing work and have two years of experience…",
         },
         phone: {
           title: "Your mobile number",
@@ -101,16 +142,6 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
           agree: "I am 18 or older, and Vayasya Seva may use my details to contact me about work.",
           privacyLink: "Privacy Policy",
         },
-      },
-      record: {
-        start: "Record",
-        stop: "Stop",
-        again: "Record again",
-        remove: "Remove",
-        recording: "Recording",
-        recorded: "Voice note ready",
-        noMic: "We couldn't use your microphone. Allow it in your browser, or type your message instead.",
-        unsupported: "This browser can't record. Type your message or add a file instead.",
       },
       files: {
         camera: "Take a photo",
@@ -127,21 +158,21 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       sending: "Sending…",
       sendingFile: (n, total, percent) => `Sending file ${n} of ${total}… ${percent}%`,
       errors: {
-        empty: "Record a voice note, add a file or type a few words about yourself.",
         phone: "Enter a 10-digit mobile number.",
         agree: "Please tick the box: you are 18 or older and agree that we can contact you.",
         verification: "We couldn't verify this browser. Please try again.",
         network: "The connection dropped. Check your signal and press Send again.",
         server: "Something went wrong on our side. Please try again in a few minutes.",
-        expired: "Your submission session has expired. If you already pressed Send, check your SMS or contact us with your reference before applying again.",
+        expired: "This form timed out. Please apply again. We match applications by mobile number, so sending twice is fine.",
       },
       done: {
         title: "Received. Thank you.",
         refLabel: "Your reference",
-        body: "Our team will call you on this number. Remember: we never charge a fee.",
+        body: `We will SMS this reference from VAYSPL. If there is suitable work, our team calls the mobile number you gave. ${NO_FEE["en-IN"]}`,
+        fraud: "How to spot a fake job offer",
         again: "Send another",
       },
-      labels: { voice: "Voice note", photo: "Photo", document: "Document" },
+      labels: { photo: "Photo", document: "Document" },
       prefill: { name: "Name", work: "Work I want", experience: "Experience", location: "Area", start: "Can start" },
     },
     workEyebrow: "WHO WE HIRE",
@@ -162,17 +193,9 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     ],
     faqEyebrow: "QUESTIONS",
     faqTitle: "Before you send.",
+    sharedFaqs: SHARED_FAQS["en-IN"],
     faqs: [
-      {
-        question: "Can I apply by calling?",
-        answer: "No. Applications are taken only through this form, in English, Hindi or Hinglish. Our office number is for businesses, and job applications can't be registered on a call. Send the form and our team calls you on the number you give.",
-        category: "operations",
-      },
-      {
-        question: "Is there any fee?",
-        answer: "No. Vayasya Seva never charges job seekers anything. If anyone asks you for money in our name, do not pay, and tell us.",
-        category: "operations",
-      },
+      ...SHARED_FAQS["en-IN"],
       {
         question: "When will you call?",
         answer: "Our team reviews every submission and typically calls within a few days when there is suitable work. We may not be able to call everyone.",
@@ -180,7 +203,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       },
       {
         question: "I don't have a resume. Can I still apply?",
-        answer: "Yes. A voice note is enough. Tell us your name, area, the work you know and when you can start.",
+        answer: "Yes. The short form is enough. Tell us the work you know, where you live and when you can start.",
         category: "operations",
       },
       {
@@ -193,28 +216,18 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
   "hi-IN": {
     title: "सिडकुल हरिद्वार वैकेंसी: फ़ैक्टरी, वेयरहाउस और ITI की नौकरी",
     description:
-      "सिडकुल और पूरे हरिद्वार में फ़ैक्टरी, पैकिंग, वेयरहाउस, हाउसकीपिंग और ITI की नौकरी। ऑनलाइन आवेदन करें। Vayasya Seva नौकरी के लिए कोई फ़ीस नहीं लेती।",
+      "सिडकुल और पूरे हरिद्वार में फ़ैक्टरी, पैकिंग, वेयरहाउस, हाउसकीपिंग और ITI की नौकरी, 8 घंटे की शिफ्ट में। ऑनलाइन आवेदन करें। आवेदन की कोई फ़ीस नहीं है।",
     breadcrumb: { home: "होम", page: "नौकरी" },
     eyebrow: "नौकरी · सिडकुल हरिद्वार",
     heading: "सिडकुल हरिद्वार में काम ढूँढें।",
     lede: "फ़ैक्टरी, वेयरहाउस, हाउसकीपिंग और ITI का काम देखें। अपने लिए काम चुनें और कुछ आसान सवालों के जवाब देकर आवेदन करें।",
-    noFee: "Vayasya Seva नौकरी के लिए कभी कोई फ़ीस नहीं लेती। कोई पैसे माँगे तो हमें बताइए।",
+    noFee: NO_FEE["hi-IN"],
     form: {
       steps: {
-        record: {
-          title: "अपने बारे में बताइए",
-          lead: "बस इतना बताइए:",
-          points: ["आपका नाम", "कहाँ रहते हैं", "कौन-सा काम आता है", "कितना अनुभव है", "कब से शुरू कर सकते हैं"],
-        },
         files: {
           title: "फ़ोटो या कागज़ जोड़ें",
           hint: "सर्टिफ़िकेट, ITI, लाइसेंस, सैलरी स्लिप या रिज़्यूमे।",
           warning: "आधार या बैंक के कागज़ न भेजें।",
-        },
-        or: "या",
-        text: {
-          title: "लिखकर बताइए",
-          placeholder: "जैसे: मैं पैकिंग का काम जानता हूँ, दो साल का अनुभव है…",
         },
         phone: {
           title: "आपका मोबाइल नंबर",
@@ -222,16 +235,6 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
           agree: "मेरी उम्र 18 साल या उससे ज़्यादा है, और मैं सहमत हूँ कि Vayasya Seva नौकरी के लिए मुझसे संपर्क करने में मेरी जानकारी इस्तेमाल करे।",
           privacyLink: "गोपनीयता नीति",
         },
-      },
-      record: {
-        start: "रिकॉर्ड करें",
-        stop: "रोकें",
-        again: "फिर से रिकॉर्ड करें",
-        remove: "हटाएँ",
-        recording: "रिकॉर्ड हो रहा है",
-        recorded: "आवाज़ तैयार है",
-        noMic: "माइक्रोफ़ोन नहीं चला। ब्राउज़र में माइक्रोफ़ोन की अनुमति दीजिए, या लिखकर बताइए।",
-        unsupported: "इस ब्राउज़र में रिकॉर्डिंग नहीं होती। लिखकर बताइए या फ़ाइल जोड़िए।",
       },
       files: {
         camera: "फ़ोटो खींचें",
@@ -248,21 +251,21 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       sending: "भेज रहे हैं…",
       sendingFile: (n, total, percent) => `फ़ाइल ${n} / ${total} भेज रहे हैं… ${percent}%`,
       errors: {
-        empty: "आवाज़ रिकॉर्ड करें, फ़ाइल जोड़ें या अपने बारे में कुछ लिखें।",
         phone: "10 अंकों का मोबाइल नंबर लिखें।",
         agree: "कृपया बॉक्स पर टिक करें: आपकी उम्र 18 साल या उससे ज़्यादा है और आप संपर्क के लिए सहमत हैं।",
         verification: "ब्राउज़र की जाँच नहीं हो पाई। कृपया फिर से कोशिश करें।",
         network: "नेटवर्क टूट गया। सिग्नल देखकर फिर से भेजें दबाएँ।",
         server: "हमारी तरफ़ से कुछ गड़बड़ हुई। कुछ मिनट बाद फिर से कोशिश करें।",
-        expired: "आवेदन का समय समाप्त हो गया है। अगर भेज चुके हैं, तो दोबारा आवेदन करने से पहले SMS देखें या अपने रेफ़रेंस के साथ हमसे संपर्क करें।",
+        expired: "फ़ॉर्म का समय ख़त्म हो गया। कृपया फिर से आवेदन करें। हम आवेदन मोबाइल नंबर से मिलाते हैं, इसलिए दोबारा भेजना ठीक है।",
       },
       done: {
         title: "मिल गया, धन्यवाद।",
         refLabel: "आपका नंबर",
-        body: "हमारी टीम आपको इसी मोबाइल नंबर पर फ़ोन करेगी। याद रखें, हम कोई फ़ीस नहीं लेते।",
+        body: `हम यह रेफ़रेंस VAYSPL से SMS करेंगे। अगर आपके लायक काम हुआ, तो हमारी टीम आपके दिए मोबाइल नंबर पर फ़ोन करेगी। ${NO_FEE["hi-IN"]}`,
+        fraud: "नकली नौकरी के ऑफ़र कैसे पहचानें",
         again: "एक और भेजें",
       },
-      labels: { voice: "आवाज़", photo: "फ़ोटो", document: "कागज़" },
+      labels: { photo: "फ़ोटो", document: "कागज़" },
       prefill: { name: "नाम", work: "कौन-सा काम चाहिए", experience: "अनुभव", location: "इलाका", start: "कब से शुरू कर सकते हैं" },
     },
     workEyebrow: "किन कामों के लिए",
@@ -283,17 +286,9 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     ],
     faqEyebrow: "सवाल",
     faqTitle: "भेजने से पहले।",
+    sharedFaqs: SHARED_FAQS["hi-IN"],
     faqs: [
-      {
-        question: "क्या फ़ोन करके आवेदन कर सकते हैं?",
-        answer: "नहीं। आवेदन सिर्फ़ इसी फ़ॉर्म से लिया जाता है। ऑफ़िस का नंबर कंपनियों के लिए है, फ़ोन पर नौकरी के लिए नाम दर्ज नहीं होता। फ़ॉर्म भेजिए, हमारी टीम आपके दिए नंबर पर फ़ोन करेगी।",
-        category: "operations",
-      },
-      {
-        question: "क्या कोई फ़ीस है?",
-        answer: "नहीं। Vayasya Seva नौकरी चाहने वालों से कभी कोई पैसा नहीं लेती। अगर कोई हमारे नाम पर पैसे माँगे तो न दें, और हमें बताएँ।",
-        category: "operations",
-      },
+      ...SHARED_FAQS["hi-IN"],
       {
         question: "फ़ोन कब आएगा?",
         answer: "हमारी टीम हर जानकारी देखती है और सही काम होने पर आमतौर पर कुछ दिनों में फ़ोन करती है। हर किसी को फ़ोन करना मुमकिन नहीं हो सकता।",
@@ -301,7 +296,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       },
       {
         question: "मेरे पास रिज़्यूमे नहीं है, क्या फिर भी भेज सकते हैं?",
-        answer: "हाँ। आवाज़ में बताना काफ़ी है। अपना नाम, इलाका, कौन-सा काम आता है और कब से शुरू कर सकते हैं, बताइए।",
+        answer: "हाँ। छोटा फ़ॉर्म काफ़ी है। कौन-सा काम आता है, कहाँ रहते हैं और कब से शुरू कर सकते हैं, बताइए।",
         category: "operations",
       },
       {
@@ -314,28 +309,18 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
   "hi-Latn-IN": {
     title: "SIDCUL Haridwar Vacancy: Factory, Warehouse aur ITI Naukri",
     description:
-      "SIDCUL aur poore Haridwar mein factory, packing, warehouse, housekeeping aur ITI ki naukri. Online apply karein. Vayasya Seva naukri ke liye koi fee nahi leti.",
+      "SIDCUL aur poore Haridwar mein factory, packing, warehouse aur ITI ki naukri, 8 ghante ki shift. Online apply karein. Apply karne ki koi fee nahi hai.",
     breadcrumb: { home: "Home", page: "Jobs" },
     eyebrow: "JOBS · SIDCUL HARIDWAR",
     heading: "SIDCUL Haridwar mein kaam dhoondhein.",
     lede: "Factory, warehouse, housekeeping aur ITI ka kaam dekhein. Apne liye kaam chunein aur kuch aasaan sawaalon ke jawaab dekar apply karein.",
-    noFee: "Vayasya Seva naukri ke liye kabhi koi fee nahi leti. Koi paise maange to humein bataiye.",
+    noFee: NO_FEE["hi-Latn-IN"],
     form: {
       steps: {
-        record: {
-          title: "Apne baare mein bataiye",
-          lead: "Bas itna bataiye:",
-          points: ["Aapka naam", "Kahan rehte hain", "Kaun-sa kaam aata hai", "Kitna experience hai", "Kab se shuru kar sakte hain"],
-        },
         files: {
           title: "Photo ya documents jodein",
           hint: "Certificate, ITI, licence, salary slip ya resume.",
           warning: "Aadhaar ya bank ke documents na bhejein.",
-        },
-        or: "Ya",
-        text: {
-          title: "likhkar bataiye",
-          placeholder: "Jaise: main packing ka kaam jaanta hoon, do saal ka experience hai…",
         },
         phone: {
           title: "Aapka mobile number",
@@ -343,16 +328,6 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
           agree: "Meri umar 18 saal ya usse zyada hai, aur main sehmat hoon ki Vayasya Seva naukri ke liye mujhse contact karne mein meri jaankari use kare.",
           privacyLink: "Privacy Policy",
         },
-      },
-      record: {
-        start: "Record karein",
-        stop: "Rokein",
-        again: "Phir se record karein",
-        remove: "Hatayein",
-        recording: "Record ho raha hai",
-        recorded: "Awaaz taiyaar hai",
-        noMic: "Microphone nahi chala. Browser mein microphone ki permission dijiye, ya likhkar bataiye.",
-        unsupported: "Is browser mein recording nahi hoti. Likhkar bataiye ya file jodiye.",
       },
       files: {
         camera: "Photo khichein",
@@ -369,21 +344,21 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       sending: "Bhej rahe hain…",
       sendingFile: (n, total, percent) => `File ${n} / ${total} bhej rahe hain… ${percent}%`,
       errors: {
-        empty: "Awaaz record karein, file jodein ya apne baare mein kuch likhein.",
         phone: "10 digit ka mobile number likhein.",
         agree: "Please box par tick karein: aapki umar 18 saal ya usse zyada hai aur aap contact ke liye sehmat hain.",
         verification: "Browser ki jaanch nahi ho paayi. Please phir se try karein.",
         network: "Network toot gaya. Signal dekhkar phir se Bhejein dabayein.",
         server: "Hamari taraf se kuch gadbad hui. Kuch minute baad phir se try karein.",
-        expired: "Application ka samay khatam ho gaya hai. Agar Send daba chuke hain, toh dobara apply karne se pehle SMS dekhein ya apne reference ke saath humse sampark karein.",
+        expired: "Form ka samay khatam ho gaya. Please phir se apply karein. Hum application mobile number se milaate hain, isliye dobara bhejna theek hai.",
       },
       done: {
         title: "Mil gaya, dhanyavaad.",
         refLabel: "Aapka number",
-        body: "Hamari team aapko isi mobile number par phone karegi. Yaad rakhein, hum koi fee nahi lete.",
+        body: `Hum yeh reference VAYSPL se SMS karenge. Agar aapke laayak kaam hua, to hamari team aapke diye mobile number par phone karegi. ${NO_FEE["hi-Latn-IN"]}`,
+        fraud: "Nakli job offer kaise pehchanein",
         again: "Ek aur bhejein",
       },
-      labels: { voice: "Awaaz", photo: "Photo", document: "Document" },
+      labels: { photo: "Photo", document: "Document" },
       prefill: { name: "Naam", work: "Kaunsa kaam chahiye", experience: "Anubhav", location: "Ilaaka", start: "Kab se shuru kar sakte hain" },
     },
     workEyebrow: "KIN KAAMON KE LIYE",
@@ -404,17 +379,9 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     ],
     faqEyebrow: "SAWAAL",
     faqTitle: "Bhejne se pehle.",
+    sharedFaqs: SHARED_FAQS["hi-Latn-IN"],
     faqs: [
-      {
-        question: "Kya phone karke apply kar sakte hain?",
-        answer: "Nahi. Apply sirf isi form se hota hai. Office ka number companiyon ke liye hai, phone par naukri ke liye naam darj nahi hota. Form bhejiye, hamari team aapke diye number par phone karegi.",
-        category: "operations",
-      },
-      {
-        question: "Kya koi fee hai?",
-        answer: "Nahi. Vayasya Seva naukri chahne walon se kabhi koi paisa nahi leti. Agar koi hamare naam par paise maange to na dein, aur humein bataiye.",
-        category: "operations",
-      },
+      ...SHARED_FAQS["hi-Latn-IN"],
       {
         question: "Phone kab aayega?",
         answer: "Hamari team har submission dekhti hai aur sahi kaam hone par aam taur par kuch dinon mein phone karti hai. Har kisi ko phone karna mumkin nahi ho sakta.",
@@ -422,7 +389,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       },
       {
         question: "Mere paas resume nahi hai, kya phir bhi bhej sakte hain?",
-        answer: "Haan. Awaaz mein bataana kaafi hai. Apna naam, area, kaun-sa kaam aata hai aur kab se shuru kar sakte hain, bataiye.",
+        answer: "Haan. Chhota form kaafi hai. Kaun-sa kaam aata hai, kahan rehte hain aur kab se shuru kar sakte hain, bataiye.",
         category: "operations",
       },
       {

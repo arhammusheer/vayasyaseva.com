@@ -48,6 +48,8 @@ export interface ComplianceItem {
 export interface FaqItem {
   question: string;
   answer: string;
+  /** An optional link shown after the answer (not part of the FAQPage text). */
+  link?: { href: string; label: string };
   category: "operations" | "compliance" | "integration" | "commercial";
 }
 
@@ -78,7 +80,7 @@ export interface SiteConfig {
   legalName: string;
   tagline: string;
   email: string;
-  phone: string;
+  /** No phone here: it lives in business-contact.ts, for business pages only. */
   gstin: string;
   /** Corporate Identity Number (MCA). */
   cin: string;

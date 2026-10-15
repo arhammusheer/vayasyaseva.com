@@ -4,6 +4,7 @@ import Script from "next/script";
 import { useCallback, useEffect, useRef, useState, useMemo } from "react";
 import { Check, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import Link from "@/components/i18n/link";
 import { useTurnstile } from "@/lib/use-turnstile";
 import { useSessionDraft } from "@/lib/use-session-draft";
 import { FormDraftNotice } from "@/components/form-draft-notice";
@@ -316,7 +317,10 @@ export function QuickApply({ locale, role: pageRole, hub: pageHub }: { locale: L
         <p className="mt-8 text-sm text-muted-foreground">{form.done.refLabel}</p>
         <p className="font-data text-3xl tracking-wide text-gold-700 sm:text-4xl">{phase.ref}</p>
         <p className="mt-6 max-w-md text-lg leading-relaxed text-muted-foreground">{form.done.body}</p>
-        <button type="button" className="text-link mt-8" onClick={() => { clearDraft(); setPhase({ name: "form" }); }}>{form.done.again}</button>
+        <div className="mt-6 flex flex-col items-start">
+          <Link href={localePath("/jobs/fees-and-fraud", locale)} className="text-link mt-0">{form.done.fraud}</Link>
+          <button type="button" className="text-link mt-0" onClick={() => { clearDraft(); setPhase({ name: "form" }); }}>{form.done.again}</button>
+        </div>
       </div>
     );
   }
@@ -335,6 +339,7 @@ export function QuickApply({ locale, role: pageRole, hub: pageHub }: { locale: L
       {hasDraft && draft.restored && !submission.attempt && <FormDraftNotice locale={locale} restored={draft.restored} missingFiles={missingFiles && files.length === 0} disabled={sending} onClear={clearDraft} onResume={() => revealFormTarget(root.current?.querySelector<HTMLElement>(`#quick-q-${detailsUnlocked ? "details" : visible[visible.length - 1]?.id}`) ?? null)} />}
       {submission.attempt && phase.name === "form" && <p role="status" className="mb-6 text-sm leading-relaxed" data-retry-notice>{form.retryNotice} <strong className="font-data">{submission.attempt.started.ref}</strong></p>}
       <Script src={TURNSTILE_SCRIPT_URL} onReady={onVerificationReady} />
+      <p className="quick-shifts">{t.shifts}</p>
       <div className="quick-progress" style={{ gridTemplateColumns: `repeat(${total}, 1fr)` }} aria-hidden="true">
         {Array.from({ length: total }, (_, i) => (
           <span key={i} className={cn(i < doneCount && "is-done")} />

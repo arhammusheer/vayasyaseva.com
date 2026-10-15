@@ -1,3 +1,5 @@
+import { ArrowUpRight } from "lucide-react";
+import Link from "@/components/i18n/link";
 import { Section } from "@/components/layout/section";
 import { JsonLd, faqSchema } from "@/lib/structured-data";
 import type { FaqItem } from "@/content/types";
@@ -28,6 +30,11 @@ export function FaqSection({
               <summary>{f.question}</summary>
               <div className="detail-body">
                 <p>{f.answer}</p>
+                {f.link && (
+                  <Link href={f.link.href} className="text-link">
+                    {f.link.label} <ArrowUpRight size={18} aria-hidden="true" />
+                  </Link>
+                )}
               </div>
             </details>
           ))}

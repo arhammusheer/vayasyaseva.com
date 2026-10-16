@@ -5,7 +5,10 @@
  * and a named legal reviewer before it is published.
  *
  * Text markup, kept small on purpose:
- *   [[source-id]]  a citation, rendered as a numbered link to the source list.
+ *   [[source-id]]  a citation. The page lists each section's sources, by
+ *                  number, at the foot of the section (not after each
+ *                  sentence); the marker stays so a reviewer can trace
+ *                  every statement.
  * Anything else is plain text.
  *
  * A guide stays in review (src/content/registry/pages.ts, GUIDE_STATUS) until
@@ -13,7 +16,6 @@
  */
 import type { Audience, GuideSlug } from "@/content/registry/identifiers";
 import { newLabourCodes } from "./new-labour-codes";
-import { whatIsContractLabour } from "./what-is-contract-labour";
 
 export type { GuideSlug };
 
@@ -40,16 +42,11 @@ export type GuideBlock =
   | { type: "table"; caption: string; columns: [string, ...string[]]; rows: { head: string; cells: string[] }[] }
   /** Ruled rows with a short heading each: a checklist or a set of points, not bullets. */
   | { type: "rows"; items: { title: string; text: string }[] }
-  /** What Vayasya Seva does, set apart from the law above it. */
-  | { type: "vspl"; text: string }
   | { type: "link"; href: string; label: string };
 
 export type GuideSection = {
   id: string;
-  eyebrow: string;
   heading: string;
-  /** Shown in the contents list; defaults to the heading. */
-  short?: string;
   blocks: GuideBlock[];
 };
 
@@ -81,13 +78,12 @@ export type Guide = {
   faqs: { question: string; answer: string }[];
   /** Source ids in the order they are listed (and numbered) on the page. */
   sources: string[];
-  /** Which door leads at the foot of the page: workers read the labour codes guide too. */
-  doors: "mixed" | "business";
 };
 
 export const guides: Record<GuideSlug, Guide | undefined> = {
   "new-labour-codes": newLabourCodes,
-  "what-is-contract-labour": whatIsContractLabour,
+  // Retired (never public): a 404, no content.
+  "what-is-contract-labour": undefined,
   // Phase 3 (PLAN §7.5 PR13).
   "contract-labour-act": undefined,
 };
@@ -106,15 +102,15 @@ export const citesIn = (text: string) => [...text.matchAll(CITE)].map((m) => m[1
 /** Text without its citation markers, for meta tags and schema. */
 export const plainText = (text: string) => text.replace(CITE, "").replace(/\s+([.,;:])/g, "$1").trim();
 
+/** Every piece of citable text in some blocks, citation markers included. */
+export const blockTexts = (blocks: GuideBlock[]) =>
+  blocks.flatMap((b) => (b.type === "p" ? [b.text] : b.type === "table" ? b.rows.flatMap((r) => [r.head, ...r.cells]) : b.type === "rows" ? b.items.map((i) => i.text) : []));
+
 /** Every source id a guide cites anywhere. */
 export function citedSources(guide: Guide): string[] {
   const texts = [
     ...guide.facts.map((f) => (f.cite ? `[[${f.cite}]]` : "")),
-    ...guide.sections.flatMap((s) =>
-      s.blocks.flatMap((b) =>
-        b.type === "p" || b.type === "vspl" ? [b.text] : b.type === "table" ? b.rows.flatMap((r) => [r.head, ...r.cells]) : b.type === "rows" ? b.items.map((i) => i.text) : [],
-      ),
-    ),
+    ...guide.sections.flatMap((s) => blockTexts(s.blocks)),
     ...guide.faqs.map((f) => f.answer),
   ];
   return [...new Set(texts.flatMap(citesIn))];

@@ -26,6 +26,10 @@ const COMMON: Record<string, { heading: string; description: string }> = {
   "/brand": { heading: "The Vayasya Seva\nbrand.", description: "Our identity, typography, colours and official brand resources." },
   "/privacy": { heading: "Your information.\nHandled with care.", description: "How Vayasya Seva uses information shared through this website." },
   "/terms": { heading: "Using the\nVayasya Seva website.", description: "Terms of use, public information and access to our website." },
+  "/minimum-wages": { heading: "Minimum wages\nby state.", description: "Current rates by skill level, each from the state's own notification." },
+  "/minimum-wages/uttarakhand": { heading: "Minimum wages\nin Uttarakhand.", description: "Monthly rates by skill level, basic wage and VDA, from the notification." },
+  "/minimum-wages/uttar-pradesh": { heading: "Minimum wages\nin Uttar Pradesh.", description: "Rates by district category and skill level, basic wage and VDA." },
+  "/minimum-wages/delhi": { heading: "Minimum wages\nin Delhi.", description: "Monthly and daily rates by skill level, from the Labour Department's order." },
 };
 
 export function quickShareVariant(params: { role?: string; hub?: string; work?: string }) {
@@ -38,7 +42,7 @@ export function quickShareVariant(params: { role?: string; hub?: string; work?: 
 export function getShareContent(path: string, locale: Locale = "en-IN", variant = ""): ShareContent {
   let heading = COMMON[path]?.heading ?? "Vayasya Seva";
   let description = COMMON[path]?.description ?? "Workforce and industrial services in Haridwar.";
-  let eyebrow = "VAYASYA SEVA · HARIDWAR";
+  let eyebrow = path.startsWith("/minimum-wages") ? "MINIMUM WAGES · REFERENCE" : "VAYASYA SEVA · HARIDWAR";
   if (path === "/jobs") {
     const t = jobsCopy[locale]; heading = t.heading; description = t.lede; eyebrow = t.eyebrow;
   } else if (path === "/jobs/fees-and-fraud") {

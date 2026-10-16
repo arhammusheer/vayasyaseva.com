@@ -6,7 +6,8 @@ import { CtaBlock } from "@/components/sections/cta-block";
 import { JsonLd, faqSchema, webPageSchema } from "@/lib/structured-data";
 import { homeFaqs, trustClients, whereWeWork } from "@/content/home";
 import { clusters, linkable } from "@/content/registry";
-import { WAGE_HUB_PATH, guidePath } from "@/content/registry/identifiers";
+import { WAGE_HUB_PATH, guidePath, wageStatePath } from "@/content/registry/identifiers";
+import { wageStates } from "@/content/wages";
 import { localeParams } from "@/lib/i18n";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/");
@@ -62,6 +63,11 @@ const references = [
   { href: WAGE_HUB_PATH, label: "Minimum wages by state" },
   { href: guidePath("new-labour-codes"), label: "The new labour codes, explained" },
 ].filter((r) => linkable(r.href, "en-IN"));
+
+/** Published state wage pages, linked by name under the wage hub link. */
+const wageLinks = wageStates
+  .map((s) => ({ href: wageStatePath(s.state), label: s.name }))
+  .filter((l) => linkable(l.href, "en-IN"));
 
 export default function HomePage() {
   return (
@@ -291,6 +297,16 @@ export default function HomePage() {
                 {r.label} <ArrowUpRight size={19} aria-hidden="true" />
               </Link>
             ))}
+            {wageLinks.length > 0 && linkable(WAGE_HUB_PATH, "en-IN") && (
+              <p className="band-states">
+                <span>Minimum wages in</span>
+                {wageLinks.map((l) => (
+                  <Link key={l.href} href={l.href}>
+                    {l.label}
+                  </Link>
+                ))}
+              </p>
+            )}
           </div>
         </div>
       </section>

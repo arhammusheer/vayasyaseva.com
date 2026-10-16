@@ -7,8 +7,13 @@ import { AnalyticsPreferencesButton } from "@/components/analytics";
 import { FooterJobsLink } from "@/components/layout/footer-jobs-link";
 import { FALLBACK_LOCALE, localePath, type Locale } from "@/lib/i18n";
 import type { HeaderDoor, HeaderPhone } from "@/components/layout/header";
+import { linkable } from "@/content/registry";
+import { WAGE_HUB_PATH } from "@/content/registry/identifiers";
 
 type Column = { label: string; links: string[][] };
+
+/** Reference pages, listed once they are published (src/content/registry). */
+const referenceLinks = [[WAGE_HUB_PATH, "Minimum wages"]].filter(([href]) => linkable(href, "en-IN"));
 
 const columns: Column[] = [
   {
@@ -26,6 +31,7 @@ const columns: Column[] = [
     label: "More",
     links: [
       ["/haridwar-sidcul", "SIDCUL Haridwar"],
+      ...referenceLinks,
       ["/vayasya-setu", "Vayasya Setu"],
       ["https://setu.vayasyaseva.com", "Setu login ↗"],
       ["/brand", "Brand guidelines"],
@@ -86,6 +92,7 @@ const referenceColumns: Column[] = [
     label: "More",
     links: [
       ["/haridwar-sidcul", "SIDCUL Haridwar"],
+      ...referenceLinks,
       ["/jobs", "Jobs"],
       ["/contact", "Request a crew"],
     ],

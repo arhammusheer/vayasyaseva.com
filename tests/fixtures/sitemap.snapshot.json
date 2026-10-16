@@ -924,6 +924,30 @@
     "priority": 0.9
   },
   {
+    "url": "https://www.vayasyaseva.com/en-in/minimum-wages",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/minimum-wages/uttarakhand",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/minimum-wages/uttar-pradesh",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/minimum-wages/delhi",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
     "url": "https://www.vayasyaseva.com/en-in/brand",
     "lastModified": "2026-09-13T00:00:00.000Z",
     "changeFrequency": "yearly",

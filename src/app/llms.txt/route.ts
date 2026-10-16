@@ -12,7 +12,26 @@ import {
   START_WINDOW_OPTIONS,
 } from "@/lib/contact-contract";
 
+import { linkable } from "@/content/registry";
+import { WAGE_HUB_PATH, wageStatePath } from "@/content/registry/identifiers";
+import { wageStates } from "@/content/wages";
+
 const baseUrl = "https://www.vayasyaseva.com";
+
+// Reference pages, listed once published (src/content/registry).
+const referenceSection = linkable(WAGE_HUB_PATH, "en-IN")
+  ? [
+      "## Reference",
+      `- [Minimum wages by state](${baseUrl}/en-in${WAGE_HUB_PATH}): Current minimum wage rates for the states below, each entered from the state's own notification, with the notification number, effective date and the date we last checked the state's sources`,
+      ...wageStates
+        .filter((s) => linkable(wageStatePath(s.state), "en-IN"))
+        .map(
+          (s) =>
+            `- [Minimum wages in ${s.name}](${baseUrl}/en-in${wageStatePath(s.state)}): Monthly and daily rates by ${s.tables.some((t) => t.zones.length > 1) ? "district category and " : ""}skill level, from the state's own notifications and orders${s.tables.some((t) => t.basicLabel === "Basic" && t.rates.some((r) => r.vda > 0)) ? ", with the basic wage and VDA" : ""}. Sources last checked ${s.checked.on}`,
+        ),
+      "",
+    ].join("\n")
+  : "";
 
 // Searchable role landing pages preserve the detailed work information.
 const roleLinks = (segment: string, suffix = "") =>
@@ -55,6 +74,7 @@ The public pages below are the source of truth. They carry full text and JSON-LD
 - [Factory labour](${baseUrl}/en-in/services/factory-labour): Manufacturing and shopfloor manpower
 - [Housekeeping](${baseUrl}/en-in/services/housekeeping): Housekeeping staff for industrial and institutional sites
 
+${referenceSection}
 ## Jobs
 - [Jobs overview](${baseUrl}/en-in/jobs): Types of work, candidate categories and the guided application
 - [Jobs in Haridwar](${baseUrl}/en-in/jobs/haridwar): Factory, packing, warehouse and helper work in SIDCUL Haridwar, Bahadrabad, Bhagwanpur and Roorkee, in full 8-hour shifts, with the guided application on the page. Also in Hindi (${baseUrl}/hi-in/jobs/haridwar) and Hindi in Latin script (${baseUrl}/hi-latn-in/jobs/haridwar)

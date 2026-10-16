@@ -2,6 +2,11 @@
 //   C1  the page and cluster registry (src/content/registry) is valid and
 //       matches the app routes;
 //   C2  nothing collides in the /jobs/<slug> namespace, and stored ids agree;
+//   C8  every minimum wage file (src/content/wages) is valid: its shape, every
+//       monthly rate is basic + VDA, daily rates follow the state's rule,
+//       every rate cites a source, and every built wage page has a file.
+//       A revision that is due or overdue is a warning: the page shows its
+//       own notice and drops the year (PLAN §5.5), so CI never breaks on a date.
 //   C9  no file under src/ has an internal-only key (payrollEntity,
 //       deliveryRoute, partner, internal, routingKey, fulfil*, sister*), and,
 //       when the PUBLIC_DENYLIST secret is set, no denylisted name appears in
@@ -152,6 +157,23 @@ if (INTAKE_LOCALES.join() !== LOCALE_TAGS.join()) fail(`C2 INTAKE_LOCALES in rul
 if (INTAKE_CLUSTERS.join() !== CLUSTER_IDS.join()) fail(`C2 INTAKE_CLUSTERS in rules.ts (${INTAKE_CLUSTERS.join(", ")}) differs from CLUSTER_IDS`);
 if (Object.keys(AREA_CLUSTERS).join() !== areaIds.join()) fail("C2 AREA_CLUSTERS in rules.ts must give a cluster (or null) for every area answer");
 
+// ── C8: the minimum wage dataset ───────────────────────────────────────────
+const { wageStates, wageStatus } = await importTs("src/content/wages/index.ts");
+const { wageStateSchema, wageIntegrityProblems } = await importTs("src/content/wages/schema.ts");
+const { WAGE_STATE_SLUGS, wageStatePath } = await importTs("src/content/registry/identifiers.ts");
+for (const state of wageStates) {
+  const parsed = wageStateSchema.safeParse(state);
+  if (!parsed.success) fail(`C8 wages ${state.state}: ${parsed.error.issues.map((i) => `${i.path.join(".") || "file"} ${i.message}`).join("; ")}`);
+  for (const problem of wageIntegrityProblems(state)) fail(`C8 wages ${state.state}: ${problem}`);
+  if (!state.checked.by) warn(`C8 wages ${state.state}: no sign-off yet (checked.by); the page says the figures were entered from the state's documents, not that anyone checked them`);
+  const status = wageStatus(state);
+  if (status.stale) warn(`C8 wages ${state.state}: stale since ${status.staleFrom} (revision expected ${state.nextRevision.expected}, last check ${state.checked.on}); the page shows the "may have been revised" notice until it is re-checked`);
+  else if (status.revisionDue) warn(`C8 wages ${state.state}: revision was due on ${state.nextRevision.expected}; re-check the state's sources before ${status.staleFrom}`);
+}
+for (const slug of WAGE_STATE_SLUGS) {
+  if (builtLocales(wageStatePath(slug)).length && !wageStates.some((s) => s.state === slug)) fail(`C8 ${wageStatePath(slug)} is built but src/content/wages/${slug}.json does not exist`);
+}
+
 // ── C9: internal-only keys and the public denylist ─────────────────────────
 const TEXT = /\.(ts|tsx|js|mjs|cjs|json|md|mdx|txt|css|html|svg|xml|yml|yaml|csv|tsv|webmanifest|body|rsc|sh|py|toml|example)$/i;
 const FORBIDDEN_KEY =
@@ -203,4 +225,4 @@ if (errors.length) {
   console.error(`Content check failed (${errors.length}):\n- ${errors.join("\n- ")}`);
   process.exit(1);
 }
-console.log(`Content check passed: ${pageEntries.length} pages, ${clusters.length} cluster(s), /jobs namespace clear, no internal-only keys`);
+console.log(`Content check passed: ${pageEntries.length} pages, ${clusters.length} cluster(s), ${wageStates.length} wage state(s), /jobs namespace clear, no internal-only keys`);

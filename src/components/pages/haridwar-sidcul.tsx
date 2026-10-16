@@ -13,6 +13,15 @@ import {
 } from "@/lib/structured-data";
 import { haridwarCopy } from "@/content/pages/haridwar-sidcul";
 import { localePath, locales, type Locale } from "@/lib/i18n";
+import { linkable } from "@/content/registry";
+import { wageStatePath } from "@/content/registry/identifiers";
+
+/** The Uttarakhand wage page is English only for now; the label says so in the other languages. */
+const WAGE_LINK: Record<Locale, string> = {
+  "en-IN": "Minimum wages in Uttarakhand",
+  "hi-IN": "उत्तराखंड की न्यूनतम मजदूरी (अंग्रेज़ी में)",
+  "hi-Latn-IN": "Uttarakhand ki minimum wages (English mein)",
+};
 
 const PATH = "/haridwar-sidcul";
 
@@ -103,6 +112,11 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
               ))}
             </ul>
             <p className="mt-8 border-t pt-6 leading-relaxed text-muted-foreground">{t.areas.wages}</p>
+            {linkable(wageStatePath("uttarakhand"), "en-IN") && (
+              <Link href={wageStatePath("uttarakhand")} className="text-link text-foreground" hrefLang="en-IN">
+                {WAGE_LINK[locale]} <ArrowUpRight size={18} aria-hidden="true" />
+              </Link>
+            )}
             <Link href={t.areas.hire.href} className="text-link text-foreground">
               {t.areas.hire.label} <ArrowUpRight size={18} aria-hidden="true" />
             </Link>

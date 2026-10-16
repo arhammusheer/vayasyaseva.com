@@ -11,7 +11,20 @@
  * Public repo: publishable facts only (content:check enforces part of this).
  */
 import { JOB_HUB_SLUGS, JOB_ROLE_SLUGS } from "@/lib/talent-intake/rules";
-import { HARIDWAR_HUB_PATH, LOCALE_TAGS, jobsHubPath, type Audience, type ClusterId, type LocaleTag, type PageStatus } from "./identifiers";
+import {
+  HARIDWAR_HUB_PATH,
+  LOCALE_TAGS,
+  WAGE_HUB_PATH,
+  WAGE_STATE_CODES,
+  jobsHubPath,
+  wageStatePath,
+  type Audience,
+  type ClusterId,
+  type LocaleTag,
+  type PageStatus,
+  type WageStateSlug,
+} from "./identifiers";
+import { wageStates } from "@/content/wages";
 
 export const PAGE_KINDS = [
   "home",
@@ -61,6 +74,31 @@ const JOBS_ADDED = "2026-10-02";
 const PHONE_FREE_JOBS = "2026-10-16";
 const HARIDWAR_DEPTH = "2026-10-16";
 const HOME_NATIONAL = "2026-10-16";
+/** A wage page changes when its state's figures or check date do: lastmod follows the data, not a constant. */
+const wageUpdated = (state: WageStateSlug) => {
+  const data = wageStates.find((s) => s.state === state);
+  if (!data) throw new Error(`No wage data for ${state}`);
+  return [data.checked.on, ...data.tables.map((t) => t.effectiveFrom)].sort().at(-1)!;
+};
+const WAGE_HUB_UPDATED = () =>
+  wageStates
+    .filter((s) => WAGE_STATE_STATUS[s.state] === "published")
+    .map((s) => wageUpdated(s.state))
+    .sort()
+    .at(-1)!;
+
+/**
+ * Minimum wage pages (PLAN §5.5), English first. A state is published only
+ * when every figure on it was verified end to end against the state's own
+ * notification (src/content/wages/<state>.json, `verification`); otherwise
+ * it stays in review: built, noindex, unlinked and out of the sitemap.
+ * Haryana waits for the NCR readiness check.
+ */
+const WAGE_STATE_STATUS: Partial<Record<WageStateSlug, PageStatus>> = {
+  uttarakhand: "published",
+  "uttar-pradesh": "published",
+  delhi: "published",
+};
 
 const ALL = Object.fromEntries(LOCALE_TAGS.map((l) => [l, "published"])) as Record<LocaleTag, PageStatus>;
 const EN = { "en-IN": "published" } as const;
@@ -104,6 +142,20 @@ export const pageEntries: readonly PageEntry[] = [
   { path: "/vayasya-setu", kind: "static", audience: "business", locales: EN, parent: "/", updated: REDESIGN, changeFrequency: "monthly", priority: 0.7 },
   { path: "/about", kind: "static", audience: "business", locales: EN, parent: "/", updated: REDESIGN, changeFrequency: "monthly", priority: 0.7 },
   { path: "/contact", kind: "static", audience: "business", locales: EN, parent: "/", updated: REDESIGN, changeFrequency: "yearly", priority: 0.9 },
+  { path: WAGE_HUB_PATH, kind: "wage-hub", audience: "mixed", locales: EN, parent: "/", updated: WAGE_HUB_UPDATED(), changeFrequency: "monthly", priority: 0.7 },
+  ...Object.entries(WAGE_STATE_STATUS).map(
+    ([state, status]) =>
+      ({
+        path: wageStatePath(state as WageStateSlug),
+        kind: "wage-state",
+        audience: "mixed",
+        locales: { "en-IN": status },
+        parent: WAGE_HUB_PATH,
+        updated: wageUpdated(state as WageStateSlug),
+        changeFrequency: "monthly",
+        priority: 0.7,
+      }) satisfies PageEntry,
+  ),
   { path: "/brand", kind: "static", audience: "business", locales: EN, parent: "/", updated: REDESIGN, changeFrequency: "yearly", priority: 0.3 },
   { path: "/privacy", kind: "legal", audience: "mixed", locales: EN, parent: "/", updated: PHONE_FREE_JOBS, changeFrequency: "yearly", priority: 0.3 },
   { path: "/terms", kind: "legal", audience: "mixed", locales: EN, parent: "/", updated: REDESIGN, changeFrequency: "yearly", priority: 0.3 },
@@ -115,4 +167,10 @@ export const pageEntries: readonly PageEntry[] = [
  */
 export const pathAliases: Readonly<Record<string, string>> = {
   "/locations/haridwar": HARIDWAR_HUB_PATH,
+  // Short state codes (/minimum-wages/up) for the published state pages.
+  ...Object.fromEntries(
+    Object.entries(WAGE_STATE_CODES)
+      .filter(([, state]) => WAGE_STATE_STATUS[state] === "published")
+      .map(([code, state]) => [`${WAGE_HUB_PATH}/${code}`, wageStatePath(state)]),
+  ),
 };

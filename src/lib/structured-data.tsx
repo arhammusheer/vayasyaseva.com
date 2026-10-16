@@ -2,6 +2,7 @@ import type { FaqItem } from "@/content/types";
 import type { ServiceDetail } from "@/content/services";
 import { siteConfig } from "@/content/site";
 import { localizeHref } from "@/lib/i18n";
+import { formatDate, type WageSource, type WageState } from "@/content/wages";
 
 const BASE_URL = "https://www.vayasyaseva.com";
 const ORG_ID = `${BASE_URL}/#organization`;
@@ -212,7 +213,7 @@ export function phoneFreeGraphSchema(door: GraphDoor) {
   };
 }
 
-export function faqSchema(faqs: FaqItem[]) {
+export function faqSchema(faqs: Pick<FaqItem, "question" | "answer">[]) {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -300,5 +301,93 @@ export function serviceLandingSchema(page: {
     provider: { "@id": ORG_ID },
     areaServed: areaServed(),
     url: pageUrl(page.url),
+  };
+}
+
+/** A notification or order, as schema.org Legislation, cited by wage datasets. */
+export function legislationSchema(source: WageSource, jurisdiction: string) {
+  return {
+    "@type": "Legislation",
+    "@id": `${source.url}#${source.id}`,
+    name: source.title,
+    legislationIdentifier: source.number,
+    legislationDate: source.date,
+    legislationType: source.kind === "notification" ? "Notification" : source.kind === "order" ? "Order" : "Corrigendum",
+    legislationJurisdiction: { "@type": "AdministrativeArea", name: jurisdiction, containedInPlace: { "@type": "Country", name: "India" } },
+    legislationPassedBy: { "@type": "GovernmentOrganization", name: source.authority },
+    inLanguage: source.language === "hi" ? "hi-IN" : "en-IN",
+    url: source.url,
+  };
+}
+
+/**
+ * A state wage page (PLAN §5.5): WebPage, and a Dataset of the rates citing
+ * the Legislation it is based on. Only what the page shows: lastReviewed and
+ * reviewedBy appear only once a person has signed the figures off.
+ */
+export function wageStateSchema(state: WageState, page: { name: string; description: string; url: string }) {
+  const url = pageUrl(page.url);
+  const effective = state.tables.map((t) => t.effectiveFrom).sort()[0];
+  const cited = [...new Set(state.tables.flatMap((t) => t.sources))].map((id) => state.sources.find((s) => s.id === id)!);
+  const reviewed = state.checked.by ? { lastReviewed: state.checked.on, reviewedBy: { "@id": ORG_ID } } : {};
+  const by = [state.tables.length > 1 && "employment", state.tables.some((t) => t.zones.length > 1) && "district category", "skill level"].filter(Boolean) as string[];
+  const byClause = by.length > 1 ? `${by.slice(0, -1).join(", ")} and ${by.at(-1)}` : by[0];
+  const parts = [...new Set(state.tables.filter((t) => t.rates.some((r) => r.vda > 0)).flatMap((t) => [t.basicLabel, t.vdaLabel]))];
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${url}#webpage`,
+        name: page.name,
+        description: page.description,
+        url,
+        isPartOf: { "@id": SITE_ID },
+        publisher: { "@id": ORG_ID },
+        inLanguage: "en-IN",
+        dateModified: state.checked.on,
+        ...reviewed,
+        mainEntity: { "@id": `${url}#dataset` },
+      },
+      {
+        "@type": "Dataset",
+        "@id": `${url}#dataset`,
+        name: `Minimum wage rates in ${state.name}`,
+        description: `Monthly and daily minimum wage rates in ${state.name} by ${byClause}, in force from ${formatDate(effective)}. Entered by hand from the state's own notifications and orders; the state's sources were last checked on ${formatDate(state.checked.on)}.`,
+        url,
+        creator: { "@id": ORG_ID },
+        publisher: { "@id": ORG_ID },
+        inLanguage: "en-IN",
+        isAccessibleForFree: true,
+        license: pageUrl("/terms"),
+        spatialCoverage: { "@type": "AdministrativeArea", name: state.name, containedInPlace: { "@type": "Country", name: "India" } },
+        temporalCoverage: `${effective}/..`,
+        dateModified: state.checked.on,
+        variableMeasured: [...parts.map((p) => `${p}, per month (INR)`), "Minimum wage per month (INR)", "Minimum wage per day (INR)"],
+        isBasedOn: cited.map((s) => legislationSchema(s, state.name)),
+      },
+    ],
+  };
+}
+
+/** The wage hub: a CollectionPage listing the state pages. */
+export function wageHubSchema(page: { name: string; description: string; url: string; dateModified: string; reviewed: boolean; states: { name: string; url: string }[] }) {
+  const url = pageUrl(page.url);
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": `${url}#webpage`,
+    name: page.name,
+    description: page.description,
+    url,
+    isPartOf: { "@id": SITE_ID },
+    publisher: { "@id": ORG_ID },
+    inLanguage: "en-IN",
+    dateModified: page.dateModified,
+    ...(page.reviewed ? { lastReviewed: page.dateModified, reviewedBy: { "@id": ORG_ID } } : {}),
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: page.states.map((s, i) => ({ "@type": "ListItem", position: i + 1, name: s.name, url: pageUrl(s.url) })),
+    },
   };
 }

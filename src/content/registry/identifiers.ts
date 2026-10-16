@@ -60,7 +60,7 @@ export const jobsHubPath = (cluster: Exclude<ClusterId, "other">) => `/jobs/${cl
 /** Wage pages use full state slugs; short codes 308 to them. */
 export const WAGE_STATE_SLUGS = ["uttarakhand", "uttar-pradesh", "delhi", "haryana"] as const;
 export type WageStateSlug = (typeof WAGE_STATE_SLUGS)[number];
-export const WAGE_STATE_CODES = { up: "uttar-pradesh", dl: "delhi" } as const satisfies Record<
+export const WAGE_STATE_CODES = { up: "uttar-pradesh", dl: "delhi", uk: "uttarakhand" } as const satisfies Record<
   string,
   WageStateSlug
 >;

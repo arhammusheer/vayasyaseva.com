@@ -1,5 +1,7 @@
 # Project Charter -- VSPL Website Rebuild
 
+> Historical document. Since the site restructure of 16 Oct 2026, /services/contract-labour, /industries and /how-we-operate are retired with a 308 to /services (/industries to /services#sectors). Links to them below are kept as written at the time.
+
 **Entity:** Vayasya Seva Private Limited (VSPL)
 **Project:** Marketing website rebuild -- vayasyaseva.com
 **Stack:** Next.js 16 App Router + shadcn/ui + Tailwind CSS v4

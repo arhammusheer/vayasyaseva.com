@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { trackServerEvent } from "@/lib/server-events";
-import { contactContract, contactSchema } from "@/lib/contact-contract";
+import { contactContract, parseContactRequest } from "@/lib/contact-contract";
+import { BUSINESS_NOTICE_VERSION, assessCrewRequest } from "@/lib/crew-request";
 import {
   canSendContactAutoReply,
   createContactCaseId,
@@ -132,7 +133,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = contactSchema.safeParse(body);
+    const result = parseContactRequest(body);
     if (!result.success) {
       return NextResponse.json(
         { error: contactContract.responses.validationError, details: result.error.issues },
@@ -187,47 +188,52 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // The staff email first, always: it carries the lead flags (qualified,
+    // starts soon, out of scope), which never reach the buyer.
+    const assessment = assessCrewRequest(data);
+    const sharedInboxDelivery = await sendInternalContactEmail(data, { caseId });
+
+    console.info("[CONTACT SUBMISSION DELIVERED]", {
+      timestamp: new Date().toISOString(),
+      caseId,
+      deliveryPath: "shared-inbox-intake",
+      duplicateKey,
+      ip,
+      name: data.name,
+      company: data.company,
+      email: data.email,
+      headcountBand: assessment.headcountBand,
+      qualified: assessment.qualified,
+      // The privacy notice the buyer saw (also in the staff email's flags).
+      privacyVersion: BUSINESS_NOTICE_VERSION,
+      messageId: sharedInboxDelivery.messageId,
+      threadId: sharedInboxDelivery.threadId,
+      uniqueId: sharedInboxDelivery.uniqueId,
+    });
+
+    // Then the buyer's copy, if they gave an email. The enquiry is already
+    // with our team, so a failure here doesn't fail the request.
     if (canSendContactAutoReply(data)) {
-      const sharedInboxDelivery = await sendContactAutoReply(data, { caseId });
-
-      console.info("[CONTACT SUBMISSION DELIVERED]", {
-        timestamp: new Date().toISOString(),
-        caseId,
-        deliveryPath: "shared-inbox-acknowledgement",
-        duplicateKey,
-        ip,
-        name: data.name,
-        company: data.company,
-        email: data.email,
-        industry: data.industry,
-        headcount: data.headcount,
-        messageId: sharedInboxDelivery.messageId,
-        threadId: sharedInboxDelivery.threadId,
-        uniqueId: sharedInboxDelivery.uniqueId,
-      });
-    } else {
-      const sharedInboxDelivery = await sendInternalContactEmail(data, { caseId });
-
-      console.info("[CONTACT SUBMISSION DELIVERED]", {
-        timestamp: new Date().toISOString(),
-        caseId,
-        deliveryPath: "shared-inbox-intake",
-        duplicateKey,
-        ip,
-        name: data.name,
-        company: data.company,
-        email: data.email,
-        industry: data.industry,
-        headcount: data.headcount,
-        messageId: sharedInboxDelivery.messageId,
-        threadId: sharedInboxDelivery.threadId,
-        uniqueId: sharedInboxDelivery.uniqueId,
-      });
+      try {
+        const acknowledgement = await sendContactAutoReply(data, { caseId });
+        console.info("[CONTACT ACKNOWLEDGEMENT SENT]", { caseId, messageId: acknowledgement.messageId });
+      } catch (error) {
+        console.error("[CONTACT ACKNOWLEDGEMENT FAILED]", {
+          caseId,
+          error: error instanceof Error ? error.message : "Unknown error",
+        });
+      }
     }
 
-    trackServerEvent("enquiry_received", "/api/contact", { channel: "web" });
+    trackServerEvent("enquiry_received", "/api/contact", {
+      channel: "web",
+      cluster: data.pageCluster ?? "none",
+      qualified: assessment.qualified ? "yes" : "no",
+      request_type: data.requestType ?? "crew",
+    });
     return NextResponse.json({
       success: true,
+      caseId,
       message: contactContract.responses.successMessage,
     });
   } catch (error) {

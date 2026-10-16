@@ -62,15 +62,15 @@ The group already runs what this needs (see the `vayasya-infra` repo): **n8n** f
 
 - **Files never pass through Vercel.** Its functions take request bodies of only about 4.5 MB, so the API route issues short-lived presigned R2 upload URLs, and the browser uploads directly.
 - **Three workflows that hand off through the database** (`received` → `delivering` → `delivered`), so none of them waits on another inside one run. Stuck steps are reset and retried up to three times.
-- **Sarvam `saaras:v4` for voice, REST first.** The synchronous REST endpoint answers in about a second but stops at 30 seconds of audio; longer notes (up to 3 minutes) fall back to the Batch API. Both routes were verified by hand; see `integrations/n8n/README.md`. The key is the n8n credential `sarvam-vspl`. The Hindi transcript is kept word for word; Aadhaar and PAN numbers are masked in transcripts and typed text.
-- **Chatwoot is the review screen.** Voice notes, photos and documents are attached to the conversation, so staff can listen and read the originals. There is no AI check for identity documents, so the jobs page must ask people not to upload Aadhaar or bank documents.
+- **Voice notes are retired (16 October 2026).** The website no longer accepts audio. What follows describes how notes sent before then were transcribed. **Sarvam `saaras:v4` for voice, REST first.** The synchronous REST endpoint answers in about a second but stops at 30 seconds of audio; longer notes (up to 3 minutes) fall back to the Batch API. Both routes were verified by hand; see `integrations/n8n/README.md`. The key is the n8n credential `sarvam-vspl`. The Hindi transcript is kept word for word; Aadhaar and PAN numbers are masked in transcripts and typed text.
+- **Chatwoot is the review screen.** Photos and documents are attached to the conversation, so staff read the originals. There is no AI check for identity documents, so the jobs page must ask people not to upload Aadhaar or bank documents.
 - **Type safety:** the website→n8n contract is a Zod schema (`src/lib/talent-intake/contract.ts`), sharing its rules (`rules.ts`) with the n8n Code nodes. The nodes are written in TypeScript and compiled into the workflow JSON by `integrations/n8n/build.mts`.
 
 ## Optional later: AI parsing through OpenRouter
 
 The owner prefers **OpenRouter's free models** if parsing is added. Design, not built:
 
-- **A side workflow, never in the delivery path.** It runs after `delivered`, sends the masked text and transcripts (no files, no phone number) and posts a second private note: "AI draft summary". If it fails or is rate-limited, nothing is lost.
+- **A side workflow, never in the delivery path.** It runs after `delivered`, sends the masked text (no files, no phone number) and posts a second private note: "AI draft summary". If it fails or is rate-limited, nothing is lost.
 - **Documents:** most free models read text only. PDF text can come from n8n's built-in Extract from File node. Word documents and photos would need other handling.
 - **Structured output:** request JSON with `response_format`. Free models vary in how reliably they follow it, so the Code node validates the JSON and drops invalid answers. Keep a fallback list of models, because free model IDs change.
 - **Limits:** 20 requests per minute. 50 a day without purchased credits, or 1,000 a day with at least $10 of credits.
@@ -134,7 +134,7 @@ Submission { id, ref, source, phone, locale, consent{version, at}, adult, text?,
 
 ## Jobs pages (decided 26 September 2026)
 
-- **Name and URLs:** "Jobs" / "नौकरी", at `/en-in/jobs`, `/hi-in/jobs` and `/hi-latn-in/jobs` (translations of one another in `pages`, `src/lib/i18n.ts`). The neutral `/jobs` asks the reader to choose a language: share that one when you don't know which they read.
+- **Name and URLs:** "Jobs" / "नौकरी", at `/en-in/jobs`, `/hi-in/jobs` and `/hi-latn-in/jobs` (translations of one another in `src/content/registry/pages.ts`). The neutral `/jobs` asks the reader to choose a language: share that one when you don't know which they read.
 - **Header and footer link** follows the page's language: en-IN pages link to `/en-in/jobs`, hi-IN pages to `/hi-in/jobs`, hi-Latn-IN pages to `/hi-latn-in/jobs`.
 - **One page with the form**, no separate apply page, in this order:
   1. The no-fee line.

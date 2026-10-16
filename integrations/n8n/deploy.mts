@@ -11,7 +11,7 @@
  *    They are piped into the n8n pod and never printed or written locally.
  * 2. Imports talent-pg, r2-talent-intake, fast2sms-vspl and
  *    vspl-talent-intake-webhook. sarvam-vspl must already exist (made by hand).
- * 3. Imports the five workflows, linking credentials by name and filling in
+ * 3. Imports the six workflows (retention stays unpublished until switched on by hand), linking credentials by name and filling in
  *    the Chatwoot inbox identifier of the "Jobs, website" inbox.
  * 4. Runs "VSPL talent · setup" (schema), publishes intake, transcribe and
  *    deliver and acknowledge, and restarts n8n so the triggers load.
@@ -83,7 +83,10 @@ const existing = JSON.parse(
 
 // 2. Credentials. Ids come from the generated workflows, so links are exact;
 //    an existing credential with the same name keeps its id.
-const workflowFiles = ["vspl-talent-setup", "vspl-talent-intake", "vspl-talent-transcribe", "vspl-talent-deliver", "vspl-talent-acknowledge"];
+const workflowFiles = ["vspl-talent-setup", "vspl-talent-intake", "vspl-talent-transcribe", "vspl-talent-deliver", "vspl-talent-acknowledge", "vspl-talent-retention"];
+// Imported but not published: retention deletes data, so the owner switches
+// it on by hand after a first manual run (README, "Retention and erasure").
+const MANUAL_PUBLISH = new Set(["vspl-talent-retention"]);
 const workflows = workflowFiles.map((f) => JSON.parse(readFileSync(resolve(here, "workflows", `${f}.json`), "utf8")));
 
 const referenced = new Map<string, { id: string; type: string }>();
@@ -163,7 +166,12 @@ if (!/Execution was successful/i.test(setupOut)) {
   throw new Error("setup workflow failed");
 }
 
-for (const w of workflows.slice(1)) {
+for (const [i, w] of workflows.entries()) {
+  if (i === 0) continue;
+  if (MANUAL_PUBLISH.has(workflowFiles[i])) {
+    step(`imported "${w.name}" unpublished: publish it by hand once checked`);
+    continue;
+  }
   step(`publishing "${w.name}"`);
   kubectl([...N8N, "n8n", "publish:workflow", `--id=${w.id}`]);
 }

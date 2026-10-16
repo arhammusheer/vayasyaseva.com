@@ -2,7 +2,6 @@ import { shareImageUrl } from "@/lib/share-images";
 import type { Metadata } from "next";
 import {
   brandDisplay,
-  brandDisplayDevanagari,
   brandMono,
   brandSerif,
   brandSerifDevanagari,
@@ -67,4 +66,4 @@ export const siteMetadata: Metadata = {
   },
 };
 
-export const fontClassName = `${brandDisplay.variable} ${brandSerif.variable} ${brandMono.variable} ${brandDisplayDevanagari.variable} ${brandSerifDevanagari.variable} font-serif antialiased`;
+export const fontClassName = `${brandDisplay.variable} ${brandSerif.variable} ${brandMono.variable} ${brandSerifDevanagari.variable} font-serif antialiased`;

@@ -1,146 +1,78 @@
-import { notFound } from "next/navigation";
+import NextLink from "next/link";
 import Link from "@/components/i18n/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
 import { FaqSection } from "@/components/sections/faq-section";
-import {
-  JsonLd,
-  breadcrumbSchema,
-  serviceLandingSchema,
-  webPageSchema,
-} from "@/lib/structured-data";
-import { getServicePage, type ServiceLandingContent } from "@/content/service-pages";
-import { getServicePageHiLatn } from "@/content/hi-latn/service-pages";
-import { localePath, locales, type Locale } from "@/lib/i18n";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
+import { JsonLd, serviceLandingSchema, webPageSchema } from "@/lib/structured-data";
+import { nextServicePage, type ServiceLandingContent } from "@/content/service-pages";
+import { faqHref } from "@/content/faq";
 
-/** Service pages have English and hi-Latn-IN only (see pages in src/lib/i18n.ts). */
-type ServiceLocale = Exclude<Locale, "hi-IN">;
-
-const labels = {
-  "en-IN": {
-    rolesEyebrow: "TYPICAL ROLES",
-    rolesHeading: "Who we plan for.",
-    planningHeading: "Planned around your site.",
-    records:
-      "Attendance, wage records and applicable EPF and ESIC contributions are maintained by us and available for your review.",
-    complianceLink: "Our labour compliance approach",
-    related: "RELATED",
-    relatedAria: "Related services",
-    local: { href: "/haridwar-sidcul", label: "Labour contractor in SIDCUL Haridwar" },
-    faqEyebrow: "QUESTIONS",
-    faqTitle: "Common questions.",
-    home: "Home",
-    services: "Services",
-  },
-  "hi-Latn-IN": {
-    rolesEyebrow: "TYPICAL ROLES",
-    rolesHeading: "Hum kinke liye plan karte hain.",
-    planningHeading: "Aapki site ke hisaab se planning.",
-    records:
-      "Attendance, wage records aur applicable EPF aur ESIC contributions hum maintain karte hain, aur ye aapke review ke liye available hain.",
-    complianceLink: "Hamara labour compliance approach (English mein)",
-    related: "RELATED",
-    relatedAria: "Related services",
-    local: { href: "/haridwar-sidcul", label: "SIDCUL Haridwar mein labour contractor" },
-    faqEyebrow: "SAWAAL",
-    faqTitle: "Aam sawaal.",
-    home: "Home",
-    services: "Services",
-  },
-} satisfies Record<ServiceLocale, unknown>;
-
-/** A service page's content in a locale; there are no hi-IN service pages. */
-export function serviceLanding(slug: string, locale: Locale) {
-  if (locale === "hi-IN") notFound();
-  const page = locale === "hi-Latn-IN" ? getServicePageHiLatn(slug) : getServicePage(slug);
-  return { page, locale };
-}
-
-export function serviceLandingMetadata(page: ServiceLandingContent, locale: ServiceLocale = "en-IN") {
+export function serviceLandingMetadata(page: ServiceLandingContent) {
   return pageMetadata({
     title: page.metaTitle,
     description: page.description,
-    alternates: { canonical: localePath(`/services/${page.slug}`, locale) },
-    locale,
+    alternates: { canonical: `/services/${page.slug}` },
   });
 }
 
-/** Short service page: roles, how it is planned, related services, FAQs. */
-export function ServiceLanding({
-  page,
-  locale = "en-IN",
-}: {
-  page: ServiceLandingContent;
-  locale?: ServiceLocale;
-}) {
-  const t = labels[locale];
-  const url = localePath(`/services/${page.slug}`, locale);
+/**
+ * A service landing (English only): roles, one planning paragraph, its
+ * FAQs (more on /faq#<slug>), the next sibling and the gold band. Request a crew sits in the
+ * header and the band; the hero's one action is the quiet jobs line, to the
+ * matching role page (neutral URL, so a seeker picks a language first).
+ */
+export function ServiceLanding({ page }: { page: ServiceLandingContent }) {
+  const url = `/services/${page.slug}`;
+  const next = nextServicePage(page.slug);
   return (
     <>
-      <JsonLd
-        data={webPageSchema({
-          name: page.metaTitle,
-          description: page.description,
-          url,
-          inLanguage: locales[locale].hreflang,
-        })}
+      <JsonLd data={webPageSchema({ name: page.metaTitle, description: page.description, url })} />
+      <JsonLd data={serviceLandingSchema({ name: page.name, description: page.description, url })} />
+      <PageHero
+        crumbs={<Breadcrumbs path={url} locale="en-IN" name={page.name} />}
+        title={page.heading}
+        lede={page.lede}
+        footnote={
+          <p className="seeker-line">
+            Looking for work?{" "}
+            <NextLink href={`/jobs/${page.jobs.role}`} className="text-link" prefetch={false}>
+              {page.jobs.label} <ArrowRight size={18} aria-hidden="true" />
+            </NextLink>
+          </p>
+        }
       />
-      <JsonLd
-        data={serviceLandingSchema({ name: page.name, description: page.description, url })}
-      />
-      <JsonLd
-        data={breadcrumbSchema([
-          { name: t.home, href: "/" },
-          { name: t.services, href: "/services" },
-          { name: page.name, href: url },
-        ])}
-      />
-      <PageHero title={page.heading} lede={page.lede} />
       <Section>
         <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.6fr]">
+          <h2 className="text-4xl font-medium">{page.rolesHeading}</h2>
           <div>
-            <p className="eyebrow text-gold-700">{t.rolesEyebrow}</p>
-            <h2 className="mt-5 text-3xl font-medium">{t.rolesHeading}</h2>
-          </div>
-          <ul className="divide-y border-y">
-            {page.roles.map((role) => (
-              <li key={role} className="py-4 text-lg">
-                {role}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </Section>
-      <Section variant="subtle">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          <h2 className="text-3xl font-medium">{t.planningHeading}</h2>
-          <div>
-            <p className="leading-relaxed text-muted-foreground">{page.planning}</p>
-            <p className="mt-4 leading-relaxed text-muted-foreground">{t.records}</p>
-            <Link href="/compliance" className="text-link">
-              {t.complianceLink} <ArrowUpRight size={18} />
-            </Link>
+            <ul className="jobs-work">
+              {page.roles.map((role) => (
+                <li key={role.name}>
+                  <h3>{role.name}</h3>
+                  <p>{role.task}</p>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-10 border-t pt-8 text-lg leading-relaxed text-muted-foreground">{page.planning}</p>
           </div>
         </div>
       </Section>
-      <Section>
-        <p className="eyebrow text-gold-700">{t.related}</p>
-        <nav aria-label={t.relatedAria} className="mt-6 flex flex-wrap gap-x-10 gap-y-2">
-          {page.related.map((r) => (
-            <Link key={r.href} href={r.href} className="text-link">
-              {r.label} <ArrowUpRight size={18} />
-            </Link>
-          ))}
-          <Link href={t.local.href} className="text-link">
-            {t.local.label} <ArrowUpRight size={18} />
+      <FaqSection variant="subtle" items={page.faqs} open more={{ href: faqHref(page.slug), label: "More questions" }} />
+      <nav aria-label="Next service" className="service-next">
+        <div className="site-shell">
+          <Link href={`/services/${next.slug}`}>
+            <span>NEXT</span>
+            <strong>
+              {next.name} <ArrowUpRight size={26} aria-hidden="true" />
+            </strong>
           </Link>
-        </nav>
-      </Section>
-      <FaqSection eyebrow={t.faqEyebrow} title={t.faqTitle} variant="subtle" items={page.faqs} />
-      <CtaBlock locale={locale} />
+        </div>
+      </nav>
+      <CtaBlock />
     </>
   );
 }

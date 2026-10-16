@@ -122,3 +122,7 @@ The following words and phrases are **never** to be used in website copy:
 - Any content that violates this policy must be corrected before deployment.
 - If a claim cannot be categorized or evidenced, it is removed -- not softened.
 - This policy applies to all website copy, meta descriptions, Open Graph text, and alt text.
+
+## Register
+
+Every public claim, its tier, evidence, sign-off and review date: `docs/claims-register.md`. Add a line there in the same pull request that adds a claim.

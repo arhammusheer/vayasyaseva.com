@@ -10,6 +10,8 @@ website ──POST──► VSPL talent · intake      checks and saves the subm
                   VSPL talent · deliver     every minute: Chatwoot contact + conversation in the
                                             "Jobs, website" inbox, message with text and transcripts,
                                             then each file attached
+                  VSPL talent · retention   hourly (published by hand): the 12-month rule and
+                                            erasure requests, across R2, Chatwoot and the talent DB
 ```
 
 Live since 26 September 2026 on the growth cluster's n8n (verified end to end, including a 10-second note through REST and a 35-second note through Batch). Infrastructure is in `vayasya-infra`, RUNBOOK section "Talent intake".
@@ -28,6 +30,8 @@ Live since 26 September 2026 on the growth cluster's n8n (verified end to end, i
    - takes the attachment list from the ticket, never from the browser;
    - stamps the consent version and time on the server;
    - validates everything against `talentIntakeSchema` and forwards it to the n8n webhook. n8n answers 202.
+
+Web submissions carry the page's BCP 47 `locale`, `pageCluster` and `pagePath`, and the server adds `cluster` (the area chosen, else the page's, else `other`). They go to n8n as source `web` only when the server env var `TALENT_INTAKE_WEB_SOURCE=1` is set. Set it (Vercel, or the self-hosted env) only **after** `pnpm n8n:deploy` has run the setup and intake workflows that accept `web`; an older n8n rejects it and every application fails. Until then the website sends the legacy source (`web_en`, `web_hi`, `web_hinglish`) and the older n8n ignores the extra fields.
 
 AI agents have their own open routes with no Turnstile, documented in `/openapi/v1.json` and `/llms.txt`: `POST /api/agent/jobs` sends a text-only application in one request, and `/api/agent/jobs/start` plus `/api/agent/jobs/submit` work like the two steps above when there are files. Their payloads carry `channel: "agent"` and the agent's name if it gave one; n8n saves them in `submissions.channel` and `agent_name`, the Chatwoot note says an agent sent it, and the conversation gets `submitted_via: agent`. They are rate limited per IP and per phone number (`src/lib/talent-intake/agent.ts`).
 
@@ -65,6 +69,8 @@ pnpm talent:sync-secrets # copy the jobs form's secrets into Vercel (production 
 | `vspl-talent-intake-webhook` | `TALENT_INTAKE_WEBHOOK_SECRET` in `growth/n8n-env`, sent as `x-vspl-intake-secret` |
 | `fast2sms-vspl` | Header Auth (`Authorization`), `FAST2SMS_API_KEY` in `growth/n8n-env`; encrypted source: infra `apps/n8n/overlays/growth/secrets.sops.yaml` |
 | `sarvam-vspl` | Made by hand in n8n (Header Auth, `api-subscription-key`) |
+| `r2-talent-erase` | Made by hand: an S3 credential with **delete** rights on `vayasya-talent-intake`, used only by the retention workflow (intake's token stays read-only) |
+| `chatwoot-talent-admin` | Made by hand: Header Auth, name `api_access_token`, a Chatwoot agent or admin token that may delete contacts in the account holding "Jobs, website" |
 
 Chatwoot needs no credential. The deliver workflow uses Chatwoot's public API for the "Jobs, website" API inbox (account 1, inbox 2), which is authorised by the inbox identifier. The deploy script reads that identifier from Chatwoot and fills it into the workflow's **Settings** node, so it is not in git.
 
@@ -169,3 +175,67 @@ Verified live on 7 October 2026: application `VS-J-SMS7A2` returned HTTP 202,
 Fast2SMS accepted request `S6ueHXZGarwwIAh`, and its SMS Logs API reported
 **Delivered** (one English SMS, INR 0.25). Replaying the same application
 returned 202 again and kept the same provider request ID with one send attempt.
+
+
+## The worker list (`people`)
+
+Intake upserts one `people` row per mobile number with every new submission (PLAN §8.2): name, clusters, home area, roles (the role page and the work answers), language, consent version, `last_applied_at` and `last_contact_at`. The setup workflow creates the table and fills it once from existing submissions. Lists merge; the newest name and language win.
+
+`last_contact_at` is the retention clock. Only something the person does renews it: a new application, a reply, or a confirmation on a call. Calls or SMS we send that go unanswered never renew it. When a person confirms on a call, record it:
+
+```sql
+UPDATE people SET last_confirmed_at = now(), last_contact_at = now(), updated_at = now()
+WHERE phone = '+91XXXXXXXXXX';
+```
+
+## Retention and erasure
+
+**VSPL talent · retention** runs hourly once published. Each run:
+
+1. queues everyone whose last contact (`last_contact_at` or `last_confirmed_at`) is more than 12 months old, plus older submissions with no `people` row, as `erasure_requests` with reason `retention`;
+2. takes one queued request and deletes, in this order: the person's R2 files, their Chatwoot contacts (which deletes their conversations), then their submissions (attachments and SMS rows go with them) and their `people` row;
+3. marks the request `done`, keeping only the counts: the phone and reference are cleared.
+
+An R2 or Chatwoot failure stops the run before any row is deleted; the request goes back to `pending` after an hour and fails after three attempts. One request per run keeps each run short; raise the schedule if the queue grows.
+
+**A person's own request** (privacy notice §10: an email with their mobile number and reference). Check the reference matches the number, then queue it:
+
+```sql
+INSERT INTO erasure_requests (phone, ref, reason)
+SELECT phone, ref, 'request' FROM submissions
+WHERE ref = 'VS-J-XXXXXX' AND phone = '+91XXXXXXXXXX'
+LIMIT 1
+ON CONFLICT (phone) WHERE status IN ('pending', 'running') DO NOTHING;
+
+-- Progress
+SELECT reason, status, attempts, last_error, removed_submissions, removed_files, removed_contacts, requested_at, processed_at
+FROM erasure_requests ORDER BY requested_at DESC LIMIT 20;
+```
+
+Reply to the person once the request shows `done`.
+
+**Switching it on.** `pnpm n8n:deploy` imports the retention workflow but does not publish it. Before publishing:
+
+1. create the `r2-talent-erase` and `chatwoot-talent-admin` credentials (deploy refuses to run without them), and check `chatwootAccountId` in its **Retention settings** node;
+2. run the setup workflow (deploy does) so `people` and `erasure_requests` exist;
+3. queue one test request for a test number, run the workflow once by hand in n8n, and check R2, Chatwoot and the tables;
+4. publish it: `n8n publish:workflow --id=<id>` in the n8n pod, or the toggle in the editor.
+
+If retention later moves to vayasya-infra (a CronJob), keep the same order and link it here.
+
+## Deploy order (16 October 2026 changes)
+
+1. **n8n first** (`pnpm n8n:deploy`, owner): the setup workflow widens the source and locale checks, adds the cluster and page columns, and creates `people` and `erasure_requests`; intake starts accepting source `web`, upserts `people` and rejects audio (voice notes are retired). The transcribe workflow then has nothing new to do; switch it off and remove the Sarvam key when you are ready.
+2. **Then the website.** It keeps sending the legacy sources until `TALENT_INTAKE_WEB_SOURCE=1` is set, so this order is safe either way; set the variable only after step 1.
+3. **Then retention**, published by hand as above.
+
+## SMS templates to register (DLT)
+
+Pending DLT approval and native review (PLAN §8.3, decision 19). Register them before changing the acknowledgement workflow: today every locale gets the approved English template 227115. Each uses the reference as the only variable, and each carries the no-fee line, because changing an approved template needs a new approval.
+
+| Language | Text |
+|---|---|
+| Hinglish (hi-Latn-IN) | Vayasya Seva ko aapka job application mila. Ref {#var#}. Aapke area mein kaam hone par hum isi number par call karenge. Koi fee nahi lagti. |
+| Hindi (hi-IN) | Vayasya Seva को आपका नौकरी का आवेदन मिला। Ref {#var#}। आपके इलाके में काम होने पर हम इसी नंबर पर कॉल करेंगे। कोई फ़ीस नहीं लगती। |
+
+The Hindi template is Unicode SMS (70 characters a part), so it is sent and billed as two parts. Once both are approved and imported into Fast2SMS, pick the message id by the submission's `locale` in the acknowledgement step (`hi-IN`, `hi-Latn-IN`/`hinglish`, else 227115).

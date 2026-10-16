@@ -1,5 +1,7 @@
 # Redesign changelog — 12 September 2026
 
+> Historical document. Since the site restructure of 16 Oct 2026, /services/contract-labour, /industries and /how-we-operate are retired with a 308 to /services (/industries to /services#sectors). Links to them below are kept as written at the time.
+
 Commit `10a0b5d` ("Overhaul marketing site design to editorial layout"). 58 files, +3420 / −3973. Companion to `website-redesign.md`, which records the direction; this file records what actually changed.
 
 ## Summary

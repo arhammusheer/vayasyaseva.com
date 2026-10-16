@@ -1,5 +1,7 @@
 # VSPL Website Rebuild — Project Status Report
 
+> Historical document. Since the site restructure of 16 Oct 2026, /services/contract-labour, /industries and /how-we-operate are retired with a 308 to /services (/industries to /services#sectors). Links to them below are kept as written at the time.
+
 **Date:** 2026-04-17
 **Stack:** Next.js 16.1.6, React 19, TypeScript, Tailwind CSS 4, shadcn/ui 3
 **Build status:** Clean (0 errors, 0 warnings)

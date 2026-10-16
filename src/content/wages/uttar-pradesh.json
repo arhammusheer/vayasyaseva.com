@@ -1,0 +1,109 @@
+{
+  "state": "uttar-pradesh",
+  "name": "Uttar Pradesh",
+  "titleName": "UP",
+  "nextRevision": {
+    "expected": "2026-10-01",
+    "basis": "Uttar Pradesh adjusts the variable dearness allowance for the 74 scheduled employments every 1 April and 1 October, from the six-monthly average consumer price index. The 17 April 2026 order sets interim rates while the Uttar Pradesh Code on Wages Rules, 2026 are being notified, so new rates may also come under the Code."
+  },
+  "checked": { "on": "2026-10-16" },
+  "sources": [
+    {
+      "id": "up-2026-04",
+      "kind": "order",
+      "title": "Interim minimum wages in three categories of districts, with effect from 1 April 2026 (English translation)",
+      "number": "374/36-2-2026-2041256",
+      "date": "2026-04-17",
+      "authority": "Shram Anubhag-2, Government of Uttar Pradesh",
+      "legalBasis": "Section 3(b), United Provinces Industrial Disputes Act, 1947, read with section 21, Uttar Pradesh General Clauses Act, 1904. Supersedes Labour Commissioner's order 1477-84 (M.W.)/15 dated 25 March 2026, except piece-rate wages in brick kilns.",
+      "url": "https://uplabour.gov.in/MediaGallery/TickerScrolls/document-34.pdf",
+      "listing": "https://uplabour.gov.in/",
+      "language": "en",
+      "sha256": "547a96259729094536a671ab1421a185c8012fc40c69d7b1125c727573f43d17",
+      "sizeKb": 110,
+      "retrievedOn": "2026-10-16"
+    },
+    {
+      "id": "up-2026-04-hi",
+      "kind": "order",
+      "title": "अंतरिम न्यूनतम मजदूरी, दिनांक 01-04-2026 से प्रभावी (हिंदी मूल)",
+      "number": "374/36-2-2026-2041256",
+      "date": "2026-04-17",
+      "authority": "Shram Anubhag-2, Government of Uttar Pradesh",
+      "url": "https://uplabour.gov.in/MediaGallery/TickerScrolls/document-33.pdf",
+      "listing": "https://uplabour.gov.in/",
+      "language": "hi",
+      "sha256": "2d0871c9219ce6fe39d26d1037952b223549bd692e2d58fb84837b0776ff46bb",
+      "sizeKb": 197,
+      "retrievedOn": "2026-10-16"
+    },
+    {
+      "id": "up-vda-2024-10",
+      "kind": "order",
+      "title": "Variable dearness allowance in 74 scheduled employments, 1 October 2024 to 31 March 2025",
+      "number": "801-07 Pravartan-(M.W.)/15",
+      "date": "2024-10-01",
+      "authority": "Office of the Labour Commissioner, Uttar Pradesh, Kanpur",
+      "legalBasis": "Minimum Wages Act, 1948; notifications 194/36-3-2014-07(MW)/4 dated 28 January 2014 and 850/36-03-2019-931(MW)/06 dated 30 September 2019",
+      "url": "https://uplabour.gov.in/MediaGallery/Circulars/VDAin74niyojan011024.pdf",
+      "listing": "https://uplabour.gov.in/Pages/MWA.aspx",
+      "language": "hi",
+      "sha256": "691185923cab8522becb3f695153781d888e3884581e2552c3dd52ff53a5dcb3",
+      "sizeKb": 965,
+      "retrievedOn": "2026-10-16"
+    }
+  ],
+  "tables": [
+    {
+      "id": "scheduled-employments",
+      "headline": true,
+      "title": "Scheduled employments",
+      "appliesTo": "Workers in every employment where minimum wages are fixed under the Minimum Wages Act, 1948 (the state's 74 scheduled employments). Piece-rate wages in brick kilns stay under the earlier order.",
+      "sources": ["up-2026-04", "up-2026-04-hi"],
+      "effectiveFrom": "2026-04-01",
+      "zones": [
+        { "id": "category-1", "name": "Category I", "areas": "Gautam Buddha Nagar (Noida, Greater Noida) and Ghaziabad districts." },
+        { "id": "category-2", "name": "Category II", "areas": "Districts with a Nagar Nigam (municipal corporation): Agra, Aligarh, Ayodhya, Bareilly, Firozabad, Gorakhpur, Jhansi, Kanpur Nagar, Lucknow, Mathura, Meerut, Moradabad, Prayagraj, Saharanpur, Shahjahanpur and Varanasi." },
+        { "id": "category-3", "name": "Category III", "areas": "All remaining districts." }
+      ],
+      "daily": "derived",
+      "dailyRule": "The April 2026 order fixes monthly rates. The 74-employment notifications set the daily rate at no less than 1/26 of basic wage plus VDA, so the daily figures here are the monthly total divided by 26, rounded up to the paisa.",
+      "basicLabel": "Basic",
+      "vdaLabel": "VDA",
+      "rates": [
+        { "zone": "category-1", "skill": "unskilled", "basic": 12885, "vda": 805, "monthly": 13690, "daily": 526.54 },
+        { "zone": "category-1", "skill": "semi-skilled", "basic": 14173, "vda": 886, "monthly": 15059, "daily": 579.2 },
+        { "zone": "category-1", "skill": "skilled", "basic": 15876, "vda": 992, "monthly": 16868, "daily": 648.77 },
+        { "zone": "category-2", "skill": "unskilled", "basic": 12241, "vda": 765, "monthly": 13006, "daily": 500.24 },
+        { "zone": "category-2", "skill": "semi-skilled", "basic": 13464, "vda": 842, "monthly": 14306, "daily": 550.24 },
+        { "zone": "category-2", "skill": "skilled", "basic": 15082, "vda": 943, "monthly": 16025, "daily": 616.35 },
+        { "zone": "category-3", "skill": "unskilled", "basic": 11629, "vda": 727, "monthly": 12356, "daily": 475.24 },
+        { "zone": "category-3", "skill": "semi-skilled", "basic": 12791, "vda": 799, "monthly": 13590, "daily": 522.7 },
+        { "zone": "category-3", "skill": "skilled", "basic": 14328, "vda": 896, "monthly": 15224, "daily": 585.54 }
+      ]
+    }
+  ],
+  "history": [
+    {
+      "table": "scheduled-employments",
+      "effectiveFrom": "2024-10-01",
+      "effectiveTo": "2025-03-31",
+      "source": "up-vda-2024-10",
+      "note": "One statewide rate, before the April 2026 split into three categories. The orders in between are not on the Labour Department's site.",
+      "rates": [
+        { "skill": "unskilled", "monthly": 10701, "daily": 412 },
+        { "skill": "semi-skilled", "monthly": 11772, "daily": 453 },
+        { "skill": "skilled", "monthly": 13186, "daily": 507 }
+      ]
+    }
+  ],
+  "verification": [
+    "2026-10-16: uplabour.gov.in home page news ticker links 'Revised minimum wages basic rates with VDA in 74 scheduled employment, effective from 01/04/2026' (document-34.pdf, English) and the Hindi original (document-33.pdf). Both PDFs carry a text layer, created 17 April 2026.",
+    "2026-10-16: document-34.pdf read in full. Order No. 374/36-2-2026-2041256, Lucknow, 17-04-2026, signed Dr. M.K. Shanmuga Sundaram, Principal Secretary. Category I (Gautam Buddha Nagar and Ghaziabad): unskilled 12885 + 805 = 13690; semi-skilled 14173 + 886 = 15059; skilled 15876 + 992 = 16868. Category II (districts having Nagar Nigam, other than those two): 12241 + 765 = 13006; 13464 + 842 = 14306; 15082 + 943 = 16025. Category III (other districts): 11629 + 727 = 12356; 12791 + 799 = 13590; 14328 + 896 = 15224. Effective from 01-04-2026.",
+    "2026-10-16, re-read: document-34.pdf preamble. Para 1 cites the outcome of talks 'arising out of the labour unrest in Noida and Greater Noida in Gautam Buddha Nagar district'. The classification para: 'keeping in view the geographical diversification of Uttar Pradesh, status of industries, urban infrastructure and cost of living, the Department of Labour has proposed classification of the State into three categories ... This proposal has been agreed upon by both employers and workers'. The operative para supersedes Labour Commissioner's order 1477-84 (M.W.)/15 dated 25.03.2026, 'except in respect of employment in brick kilns where wages are fixed on piece-rate basis', and applies 'in those employments where minimum wages are otherwise fixed under the Minimum Wages Act, 1948'. The order names no districts beyond Category I and has no annexure.",
+    "2026-10-16: Category II districts are the districts (जनपद) of the 17 Nagar Nigams listed by the Directorate of Local Bodies, Uttar Pradesh (localbodies.up.nic.in/listnn.htm, mayors elected in 2023), less Ghaziabad: Ayodhya, Aligarh, Agra, Kanpur Nagar, Gorakhpur, Jhansi, Prayagraj, Firozabad, Bareilly, Mathura (Mathura-Vrindavan), Meerut, Moradabad, Lucknow, Varanasi, Shahjahanpur, Saharanpur. Gautam Buddha Nagar has no Nagar Nigam; the order names it in Category I.",
+    "2026-10-16: document-33.pdf (Hindi) tables match the English translation figure for figure.",
+    "2026-10-16: VDAin74niyojan011024.pdf (scanned, read by eye). Daily rate no less than 1/26 of basic plus VDA, hourly no less than 1/6 of daily. From 1.10.2024 to 31.3.2025: unskilled 10701 per month and 412 per day, semi-skilled 11772 and 453, skilled 13186 and 507. Issued as 801-07 Pravartan-(M.W.)/15 dated 01/10/2024 by the Office of the Labour Commissioner, Kanpur.",
+    "Daily rates for April 2026 are derived: monthly total / 26, rounded up to the paisa (e.g. 13690 / 26 = 526.538 -> 526.54)."
+  ]
+}

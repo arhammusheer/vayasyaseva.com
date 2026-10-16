@@ -2,40 +2,84 @@ import Image from "next/image";
 import Link from "@/components/i18n/link";
 import { siteConfig } from "@/content/site";
 import { AnalyticsPreferencesButton } from "@/components/analytics";
-import { FooterJobsLink } from "@/components/layout/footer-jobs-link";
+import NextLink from "next/link";
+import { FALLBACK_LOCALE, localePath, type Locale } from "@/lib/i18n";
+import type { HeaderDoor } from "@/components/layout/header";
+import { JOBS_NAV, SETU_LOGIN, WORK_DOOR, jobsDoorHref, jobsFooterLinks, referenceLinks, type NavLink } from "@/components/layout/nav-links";
 
-const columns = [
-  {
-    label: "Company",
-    links: [
-      ["/about", "About"],
-      ["/services", "Services"],
-      ["/services/contract-labour", "Contract labour"],
-      ["/industries", "Industries"],
-      ["/how-we-operate", "Our approach"],
-      ["/compliance", "Compliance"],
-    ],
-  },
-  {
-    label: "More",
-    links: [
-      ["/haridwar-sidcul", "SIDCUL Haridwar"],
-      ["/vayasya-setu", "Vayasya Setu"],
-      ["https://setu.vayasyaseva.com", "Setu login ↗"],
-      ["/brand", "Brand guidelines"],
-      ["/vayasya-seva-company-profile.pdf", "Company profile"],
-      ["/contact", "Contact"],
-    ],
-  },
-];
+type Column = { label: string; links: NavLink[] };
 
-export function Footer() {
+/**
+ * Business and reference pages: the services, the company, and the
+ * reference pages once published. Reference pages list Resources first and
+ * leave out the Company column (the spec's footer cut): their readers are
+ * often workers. English on every page, as are the pages they open.
+ */
+function businessColumns(reference: boolean): Column[] {
+  const columns: Column[] = [
+    {
+      label: "Work with us",
+      links: [
+        { href: "/services", label: "Services" },
+        { href: "/services/factory-labour", label: "Factory labour" },
+        { href: "/services/loading-unloading-labour", label: "Loading and unloading" },
+        { href: "/services/housekeeping", label: "Housekeeping and grounds" },
+        { href: "/haridwar-sidcul", label: "Haridwar SIDCUL" },
+        { href: "/faq", label: "Questions" },
+      ],
+    },
+    {
+      label: "Company",
+      links: [
+        { href: "/about", label: "About" },
+        { href: "/compliance", label: "Compliance" },
+        { href: "/vayasya-setu", label: "Vayasya Setu" },
+        { href: "/contact", label: "Contact" },
+      ],
+    },
+  ];
+  const resources = referenceLinks(true);
+  const column = resources.length ? [{ label: "Resources", links: resources }] : [];
+  return reference ? [...column, columns[0]] : [...columns, ...column];
+}
+
+/**
+ * Site footer, with no phone on any page (the business header carries it).
+ * Business and reference pages share one footer; reference pages put
+ * Resources first and drop the company profile PDF (it carries the phone).
+ * Privacy and terms sit in the reference layout, so they get the reference
+ * footer too. Jobs pages get their own: jobs links and one business door.
+ */
+export function Footer({
+  door = "business",
+  locale = FALLBACK_LOCALE,
+}: {
+  door?: HeaderDoor;
+  /** The page's language: the jobs footer, and the business footer's jobs line. */
+  locale?: Locale;
+}) {
+  const isJobs = door === "jobs";
+  const t = JOBS_NAV[locale];
+  // Reference pages are English throughout, as in their header.
+  const workLocale = door === "business" ? locale : FALLBACK_LOCALE;
+  const work = WORK_DOOR[workLocale];
+  const shown: Column[] = isJobs
+    ? [
+        { label: t.menu, links: jobsFooterLinks(locale) },
+        // The enquiry page is English: flagged, as Privacy and Terms are.
+        { label: t.business, links: [{ href: "/contact", label: `${t.enquiries}${t.english}` }] },
+      ]
+    : businessColumns(door === "reference");
   return (
-    <footer className="site-footer" lang="en-IN">
+    <footer className="site-footer" lang={isJobs ? locale : "en-IN"} data-door={door}>
       <div className="site-shell">
         <div className="footer-main">
           <div className="footer-about">
-            <Link href="/" className="footer-brand" aria-label="Vayasya Seva home">
+            <Link
+              href={isJobs ? localePath("/jobs", locale) : "/"}
+              className="footer-brand"
+              aria-label={isJobs ? t.logo : "Vayasya Seva home"}
+            >
               <Image
                 src="/brand/logos/master-logo-light.svg"
                 alt=""
@@ -44,79 +88,63 @@ export function Footer() {
               />
               <span>Vayasya Seva</span>
             </Link>
-            <p>Contract labour and industrial services. Haridwar, Uttarakhand.</p>
-            <address>
-              <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
-              <a
-                className="font-data"
-                href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
-              >
-                {siteConfig.phone}
-              </a>
-              <a
-                className="footer-social"
-                href={siteConfig.linkedin}
-                target="_blank"
-                rel="me noopener"
-                aria-label="Vayasya Seva on LinkedIn"
-              >
-                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-                  <path
-                    fill="currentColor"
-                    d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"
-                  />
-                </svg>
-              </a>
-            </address>
-            <p>
-              Phone and email are for businesses. Looking for work?{" "}
-              <Link href="/jobs/apply" className="underline underline-offset-4">
-                Apply online
-              </Link>
-              .
-            </p>
+            {!isJobs && (
+              <>
+                <address lang="en-IN">
+                  <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+                </address>
+                {/* The one jobs link in this footer: Jobs in Haridwar
+                    (neutral from English pages, so not the i18n Link). */}
+                <p className="footer-jobs-door" lang={workLocale}>
+                  {work.lead}{" "}
+                  <NextLink href={jobsDoorHref(workLocale)} prefetch={false}>
+                    {work.label} →
+                  </NextLink>
+                </p>
+              </>
+            )}
           </div>
-          {columns.map((c) => (
+          {shown.map((c) => (
             <nav key={c.label} aria-label={c.label}>
               <p className="footer-label">{c.label}</p>
-              {c.links.map(([href, label]) =>
-                href.endsWith(".pdf") ? (
-                  // A file, not a page: a plain link so the locale prefix is not added.
-                  <a key={href} href={href} className="footer-file">
-                    {label}
-                    <span className="font-data">PDF</span>
-                  </a>
-                ) : href.startsWith("http") ? (
-                  <a key={href} href={href}>
-                    {label}
-                  </a>
-                ) : (
-                  <Link key={href} href={href}>
-                    {label}
-                  </Link>
-                ),
-              )}
-              {c.label === "More" && <FooterJobsLink />}
+              {c.links.map(({ href, label }) => (
+                // Jobs footers: no viewport prefetch, to spare data on patchy 4G.
+                <Link key={href} href={href} prefetch={isJobs ? false : undefined}>
+                  {label}
+                </Link>
+              ))}
             </nav>
           ))}
         </div>
         <div className="footer-bottom">
-          <div className="footer-legal">
+          <div className="footer-legal" lang="en-IN">
             <span>
               © {new Date().getFullYear()} {siteConfig.legalName}
-            </span>
-            <span>EPF, ESIC, GST and MSME registered</span>
-            <span>
-              GSTIN <span className="font-data">{siteConfig.gstin}</span>
             </span>
             <span>
               CIN <span className="font-data">{siteConfig.cin}</span>
             </span>
+            <span>
+              GSTIN <span className="font-data">{siteConfig.gstin}</span>
+            </span>
           </div>
-          <div>
+          <div className="footer-utility">
+            {!isJobs && <a href={SETU_LOGIN}>Setu login ↗</a>}
+            {!isJobs && <Link href="/brand">Brand</Link>}
+            {door === "business" && (
+              // A file, not a page: a plain link so the locale prefix is not added.
+              <a href="/vayasya-seva-company-profile.pdf" className="footer-file">
+                Company profile
+                <span className="font-data">PDF</span>
+              </a>
+            )}
+            <Link href="/privacy" lang={isJobs ? locale : "en-IN"}>
+              {isJobs ? `${t.privacy}${t.english}` : "Privacy"}
+            </Link>
+            <Link href="/terms" lang={isJobs ? locale : "en-IN"}>
+              {isJobs ? `${t.terms}${t.english}` : "Terms"}
+            </Link>
             <AnalyticsPreferencesButton />
-            <Link href="/privacy">Privacy</Link>
-            <Link href="/terms">Terms</Link>
           </div>
         </div>
       </div>

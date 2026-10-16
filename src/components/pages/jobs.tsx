@@ -1,12 +1,13 @@
 import Link from "@/components/i18n/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
 import { Section } from "@/components/layout/section";
-import { FaqSection } from "@/components/sections/faq-section";
-import { quickApplyCopy } from "@/content/pages/quick-apply";
-import { jobHubs } from "@/content/pages/job-hubs";
-import { JsonLd, breadcrumbSchema, webPageSchema } from "@/lib/structured-data";
-import { jobsCopy } from "@/content/pages/jobs";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
+import { JOB_GROUPS, JOB_HUB_LINKS } from "@/components/layout/nav-links";
+import { getJobCluster } from "@/content/pages/job-clusters";
+import { JsonLd, webPageSchema } from "@/lib/structured-data";
+import { JOB_GROUP_ROLES, jobsCopy } from "@/content/pages/jobs";
+import { jobRolePath } from "@/components/pages/job-role";
 import { localePath, locales, type Locale } from "@/lib/i18n";
 
 const PATH = "/jobs";
@@ -22,76 +23,66 @@ export function jobsMetadata(locale: Locale) {
 }
 
 /**
- * Searchable overview of work and candidate categories, with a direct
- * action to the shared guided application.
+ * A router, not a second Haridwar landing (no form, no shifts line: those
+ * are on /jobs/haridwar, where Apply goes): Apply, or pick your work (four
+ * groups, names only, each a #id the jobs menu links to) or your
+ * qualification. No FAQ: the form pages and /jobs/fees-and-fraud carry the
+ * rest.
  */
 export function JobsPage({ locale }: { locale: Locale }) {
   const t = jobsCopy[locale];
   const url = localePath(PATH, locale);
-  const quick = quickApplyCopy[locale];
-  const apply = { "en-IN": "Apply now", "hi-IN": "आवेदन करें", "hi-Latn-IN": "Apply karein" }[locale];
+  const haridwar = getJobCluster("haridwar", locale)!;
+  const title = (role: string) => t.work.find((w) => w.role === role)?.title ?? role;
   return (
     <>
       <JsonLd
         data={webPageSchema({ name: t.title, description: t.description, url, inLanguage: locales[locale].hreflang })}
       />
-      <JsonLd
-        data={breadcrumbSchema([
-          { name: t.breadcrumb.home, href: "/" },
-          { name: t.breadcrumb.page, href: url },
-        ])}
-      />
+      <Breadcrumbs path={PATH} locale={locale} name={t.breadcrumb} />
       <section className="jobs-top">
-        <div className="site-shell grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
-          <div className="lg:sticky lg:top-28 lg:self-start">
-            <p className="eyebrow text-gold-700">{t.eyebrow}</p>
+        <div className="site-shell grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1fr] lg:items-end lg:gap-16">
+          <div>
             <h1 className="jobs-title">{t.heading}</h1>
             <p className="jobs-lede">{t.lede}</p>
           </div>
-          <div className="lg:self-center">
-            <h2 className="text-3xl font-medium">{quick.heading}</h2>
-            <p className="mt-4 max-w-md leading-relaxed text-muted-foreground">{quick.lede}</p>
-            <Link href={localePath("/jobs/apply", locale)} className="jobs-submit mt-6 inline-flex">
-              {apply} <ArrowUpRight size={20} aria-hidden="true" />
+          <div>
+            <Link href={localePath(`/jobs/${haridwar.slug}`, locale)} className="jobs-submit">
+              {t.apply} <ArrowRight size={20} aria-hidden="true" />
             </Link>
-            <p className="quick-note">{quick.noFee}</p>
           </div>
         </div>
       </section>
       <Section variant="subtle">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_2fr]">
-          <div>
-            <p className="eyebrow text-gold-700">{t.workEyebrow}</p>
-            <h2 className="mt-5 text-4xl font-medium">{t.workHeading}</h2>
-          </div>
-          <ul className="jobs-work">
-            {t.work.map((w) => (
-              <li key={w.title}>
-                <h3>
-                  {w.role ? (
-                    <Link href={localePath(`/jobs/${w.role}`, locale)} className="jobs-work-link">
-                      {w.title} <ArrowUpRight size={20} aria-hidden="true" />
+        <div>
+          {JOB_GROUPS[locale].map((group) => (
+            <section key={group.id} id={group.id} className="jobs-group">
+              <h2>{group.label}</h2>
+              <ul>
+                {JOB_GROUP_ROLES[group.id].map((role) => (
+                  <li key={role}>
+                    <Link href={localePath(jobRolePath(role), locale)} className="jobs-work-link">
+                      {title(role)} <ArrowUpRight size={20} aria-hidden="true" />
                     </Link>
-                  ) : (
-                    w.title
-                  )}
-                </h3>
-                <p>{w.text}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </Section>
-      <Section variant="subtle">
-        <nav aria-label={t.breadcrumb.page} className="flex flex-wrap gap-x-10 gap-y-4">
-          {jobHubs[locale].map((hub) => (
-            <Link key={hub.slug} href={localePath(`/jobs/${hub.slug}`, locale)} className="text-link">
-              {hub.name} <ArrowUpRight size={18} aria-hidden="true" />
-            </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
           ))}
-        </nav>
+        </div>
+        <dl className="jobs-lines">
+          <div>
+            <dt>{t.who}</dt>
+            <dd>
+              {JOB_HUB_LINKS[locale].map((hub) => (
+                <Link key={hub.slug} href={localePath(`/jobs/${hub.slug}`, locale)} className="text-link mt-0">
+                  {hub.label} <ArrowRight size={18} aria-hidden="true" />
+                </Link>
+              ))}
+            </dd>
+          </div>
+        </dl>
       </Section>
-      <FaqSection eyebrow={t.faqEyebrow} title={t.faqTitle} items={t.faqs} />
     </>
   );
 }

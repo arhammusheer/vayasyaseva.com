@@ -1,48 +1,77 @@
 import { pageMetadata } from "@/lib/metadata";
 import Image from "next/image";
+import NextLink from "next/link";
 import Link from "@/components/i18n/link";
-import { ArrowRight, ArrowUpRight, Plus } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { CtaBlock } from "@/components/sections/cta-block";
-import { JsonLd, webPageSchema } from "@/lib/structured-data";
-import { trustClients } from "@/content/home";
+import { JsonLd, faqSchema, webPageSchema } from "@/lib/structured-data";
+import { homeFaqs, FAQ_PATH } from "@/content/faq";
+import { ClientStrip } from "@/components/sections/client-strip";
+import { servicePages } from "@/content/service-pages";
+import { jobsDoorHref } from "@/components/layout/nav-links";
 import { localeParams } from "@/lib/i18n";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/");
 
+// National contractor terms (PLAN §5.2, owner decision 7). The Haridwar
+// terms live on /haridwar-sidcul and /jobs/haridwar. The search snapshot
+// taken before this retitle is kept outside the repo, with the rollback rule
+// in PLAN §9.5. Keep the title, the H1 and the three capability rows.
+const TITLE = "Labour Contractor and Manpower Supply Company";
+const DESCRIPTION =
+  "Supervised crews for factories, warehouses and facilities on 8-hour shifts. Absentees replaced, EPF and ESIC handled, one monthly invoice for the crew.";
+
 export const metadata = pageMetadata({
-  title: { absolute: "Labour Contractor in Haridwar | Vayasya Seva" },
-  description:
-    "Vayasya Seva supports businesses in SIDCUL and across Haridwar with contract labour, industrial manpower, site services and workforce documentation.",
+  title: { absolute: `${TITLE} | Vayasya Seva` },
+  description: DESCRIPTION,
   alternates: { canonical: "/" },
 });
-const capabilities = [
+
+/**
+ * What a buyer gets, one line each. The third is the site's one contractor
+ * line (with the agency FAQ below). The training line is described only: no
+ * figures until measured and signed off (docs/claim-policy.md).
+ */
+const benefits = [
   {
-    title: "Contract labour & manpower",
-    text: "Workers for production, warehousing and the everyday work of your business.",
-    href: "/services/contract-labour",
+    title: "Shifts that stay staffed.",
+    text: "Our supervisor runs the crew and sends a replacement when someone is absent.",
   },
   {
-    title: "Facility & site services",
-    text: "Housekeeping, grounds and the upkeep of your working environment.",
-    href: "/services/housekeeping",
+    title: "A crew that learns your line.",
+    text: "We track each worker’s training and how long they stay.",
   },
   {
-    title: "Industrial & contract works",
-    text: "Civil work, fabrication and maintenance for your next project.",
-    href: "/services#civil-works",
+    title: "Our payroll, our paperwork.",
+    text: "Wages, EPF, ESIC and the registers are ours. You get one invoice.",
   },
 ];
+
+/**
+ * The home compliance band: what we run for the crew, nationally. PT and
+ * LWF are state levies; the licence depends on the state and crew size
+ * (docs/claims-register.md). The detail lives on /compliance.
+ */
+const statutory: [string, string][] = [
+  ["Payroll and wage slips", "Every worker, every wage period"],
+  ["Attendance and wage registers", "Every shift"],
+  ["EPF and ESIC", "Deposited every month"],
+  ["Professional Tax", "Where the state levies it"],
+  ["Labour Welfare Fund", "Where the state levies it"],
+  ["Contract labour licence", "For your site, where required"],
+];
+
 export default function HomePage() {
   return (
     <>
       <JsonLd
         data={webPageSchema({
-          name: "Vayasya Seva",
-          description:
-            "Contract labour, workforce management and industrial services, with a focus on labour compliance.",
+          name: TITLE,
+          description: DESCRIPTION,
           url: "/",
         })}
       />
+      <JsonLd data={faqSchema(homeFaqs)} />
       <section className="home-hero">
         <Image
           src="/assets/images/warehouse.webp"
@@ -55,162 +84,127 @@ export default function HomePage() {
         <div className="hero-shade" />
         <div className="site-shell hero-content">
           <p className="eyebrow hero-eyebrow rise">
-            LABOUR CONTRACTOR IN SIDCUL HARIDWAR
+            LABOUR CONTRACTOR AND MANPOWER SUPPLY
           </p>
-          <h1 className="rise rise-1">Workforce. With care.</h1>
+          <h1 className="home-hero-title rise rise-1">
+            Contract labour for factories, warehouses and facilities.
+          </h1>
           <p className="hero-description rise rise-2">
-            Vayasya Seva coordinates workers for factories, warehouses and
-            facilities in SIDCUL and across Haridwar, with attention to people, site
-            operations and workforce records.
+            Tell us the roles, the headcount and the shifts. We put a
+            supervised crew on your floor and keep it running, for a season or
+            for years.
           </p>
-          <Link href="/services/contract-labour" className="light-link rise rise-3">
-            Explore contract labour services <ArrowUpRight size={20} aria-hidden="true" />
-          </Link>
-        </div>
-        <div className="hero-foot site-shell">
-          <span>BASED IN HARIDWAR, UTTARAKHAND</span>
+          {/* The two doors (PLAN §5.2): buyers to the form, job seekers to
+              Jobs in Haridwar (neutral, so not the i18n Link). */}
+          <div className="hero-doors rise rise-3">
+            <Link href="/contact" className="light-link">
+              Request a crew <ArrowUpRight size={20} aria-hidden="true" />
+            </Link>
+            <p className="hero-seeker">
+              Looking for work?
+              <NextLink href={jobsDoorHref("en-IN")} prefetch={false}>
+                See jobs <ArrowRight size={18} aria-hidden="true" />
+              </NextLink>
+            </p>
+          </div>
         </div>
       </section>
+      <ClientStrip />
       <section id="introduction" className="site-shell home-intro">
-        <p className="eyebrow">A PARTNER IN YOUR DAY-TO-DAY</p>
+        <p className="eyebrow">WHY TEAMS USE US</p>
         <div>
           <h2>
-            Good work begins
+            You run the line.
             <br />
-            with the right people.
+            We run the crew.
           </h2>
-          <p>
-            We bring together the workforce, site support and compliance care
-            that businesses need to keep moving. From ongoing operations to a
-            new project, we build the engagement around your requirements.
-          </p>
-          <Link href="/about" className="text-link">
-            Meet Vayasya Seva <ArrowUpRight size={18} aria-hidden="true" />
-          </Link>
-        </div>
-      </section>
-      <section
-        className="client-section site-shell"
-        aria-label="Client experience"
-      >
-        <p>Our experience includes work with</p>
-        <div>
-          {trustClients
-            .filter((c) => c.visible)
-            .map((c) => (
-              <Image
-                key={c.name}
-                src={c.logoLight}
-                alt={c.name}
-                width={130}
-                height={70}
-                sizes="130px"
-                className="client-logo"
-              />
+          <ol className="tracked-list">
+            {benefits.map((item, i) => (
+              <li key={item.title}>
+                <span aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+                <div>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
+                </div>
+              </li>
             ))}
+          </ol>
         </div>
       </section>
       <section className="capability-section">
         <div className="site-shell">
           <div className="section-intro">
-            <p className="eyebrow">WHAT WE DO</p>
+            <p className="eyebrow">WHAT WE SUPPLY</p>
             <div>
               <h2>
-                Support that fits
+                Crews for the
                 <br />
-                the work ahead.
+                work you run.
               </h2>
-              <p>
-                A workforce partner for your operations.
-                <br />A wider set of capabilities as your needs grow.
-              </p>
+              <p>A workforce partner for your operations.</p>
             </div>
           </div>
           <div className="capability-list">
-            {capabilities.map((c) => (
-              <Link className="capability-row" key={c.title} href={c.href}>
-                <h3>{c.title}</h3>
-                <p>{c.text}</p>
+            {servicePages.map((s) => (
+              <Link className="capability-row" key={s.slug} href={`/services/${s.slug}`}>
+                <h3>{s.name}</h3>
+                <p>{s.summary}</p>
                 <ArrowUpRight size={24} aria-hidden="true" />
               </Link>
             ))}
           </div>
           <Link href="/services" className="text-link">
-            Explore our capabilities <ArrowRight size={18} aria-hidden="true" />
+            All services <ArrowRight size={18} aria-hidden="true" />
           </Link>
         </div>
       </section>
       <section className="compliance-feature">
         <div className="site-shell compliance-inner">
           <div>
-            <p className="eyebrow">RESPONSIBILITY, IN PRACTICE</p>
+            <p className="eyebrow">COMPLIANCE</p>
             <h2>
-              The work matters.
+              Payroll and
               <br />
-              So does how
+              compliance,
               <br />
-              it’s managed.
+              handled.
             </h2>
-            <Link href="/compliance" className="light-link">
-              Our approach to compliance{" "}
-              <ArrowUpRight size={19} aria-hidden="true" />
-            </Link>
           </div>
           <div className="compliance-detail">
             <p>
-              Labour compliance is central to our work. We bring the same
-              attention to worker records, wage documentation and statutory
-              contributions as we do to the site.
+              We run the statutory work for the crew by each state’s rules, and
+              keep every record open to your audit.
             </p>
-            <div className="registration-line">
-              <span>EPF &amp; ESIC</span>
-              <span>Registered</span>
-            </div>
-            <div className="registration-line">
-              <span>GST &amp; MSME</span>
-              <span>Registered</span>
-            </div>
-            <p className="small-note">
-              Registration documents available for your review.
-            </p>
+            <ul className="statutory-list">
+              {statutory.map(([name, note]) => (
+                <li key={name}>
+                  <span>{name}</span>
+                  <span>{note}</span>
+                </li>
+              ))}
+            </ul>
+            <Link href="/compliance" className="light-link">
+              How we handle compliance <ArrowUpRight size={19} aria-hidden="true" />
+            </Link>
           </div>
         </div>
       </section>
-      <section className="site-shell closer-section">
-        <div>
-          <p className="eyebrow">GET TO KNOW US</p>
-          <h2>
-            A little more,
-            <br />
-            when you need it.
-          </h2>
-        </div>
-        <div className="closer-links">
-          <Link href="/how-we-operate">
-            <span>
-              How we work with you
-              <small>
-                From the first conversation to day-to-day coordination.
-              </small>
-            </span>
-            <Plus size={22} aria-hidden="true" />
-          </Link>
-          <Link href="/industries">
-            <span>
-              The businesses we support
-              <small>Manufacturing, logistics, facilities and beyond.</small>
-            </span>
-            <Plus size={22} aria-hidden="true" />
-          </Link>
-          <Link href="/haridwar-sidcul">
-            <span>
-              Our roots in Haridwar
-              <small>
-                Contract labour and site services in SIDCUL and across Haridwar.
-              </small>
-            </span>
-            <Plus size={22} aria-hidden="true" />
-          </Link>
+      <section className="home-faq" id="questions">
+        <div className="site-shell home-faq-inner">
+          <div>
+            <h2>Questions.</h2>
+          </div>
+          <div className="faq-prose">
+            {homeFaqs.map((f) => (
+              <div key={f.question}>
+                <h3>{f.question}</h3>
+                <p>{f.answer}</p>
+              </div>
+            ))}
+            <Link href={FAQ_PATH} className="text-link">
+              More questions <ArrowRight size={18} aria-hidden="true" />
+            </Link>
+          </div>
         </div>
       </section>
       <CtaBlock />

@@ -40,6 +40,23 @@ BEGIN
   ALTER TABLE submissions ADD COLUMN IF NOT EXISTS applicant_name text;
   ALTER TABLE submissions ADD COLUMN IF NOT EXISTS answers jsonb;
   CREATE INDEX IF NOT EXISTS submissions_phone_idx ON submissions (phone);
+  -- PLAN §1a and §8.2 (16 Oct 2026), additive: new web submissions arrive as
+  -- source 'web' with a BCP 47 locale. The legacy sources and short locales
+  -- stay valid for old rows and the agent routes. Deploy this before the
+  -- website starts sending 'web'.
+  ALTER TABLE submissions DROP CONSTRAINT IF EXISTS submissions_source_check;
+  ALTER TABLE submissions ADD CONSTRAINT submissions_source_check
+    CHECK (source IN ('web', 'web_en', 'web_hi', 'web_hinglish', 'whatsapp', 'phone', 'sms'));
+  ALTER TABLE submissions DROP CONSTRAINT IF EXISTS submissions_locale_check;
+  ALTER TABLE submissions ADD CONSTRAINT submissions_locale_check
+    CHECK (locale IN ('en-IN', 'hi-IN', 'hi-Latn-IN', 'en', 'hi', 'hinglish'));
+  -- The submission's cluster (INTAKE_CLUSTERS in rules.ts): the area chosen,
+  -- else the page's, else 'other'; the page's own cluster; and the page's
+  -- neutral path (/jobs/haridwar). All null on older rows.
+  ALTER TABLE submissions ADD COLUMN IF NOT EXISTS cluster text;
+  ALTER TABLE submissions ADD COLUMN IF NOT EXISTS page_cluster text;
+  ALTER TABLE submissions ADD COLUMN IF NOT EXISTS page_path text;
+  CREATE INDEX IF NOT EXISTS submissions_cluster_idx ON submissions (cluster, created_at);
 
   -- Separate from Chatwoot delivery. Only new submissions are queued by intake;
   -- setup never backfills acknowledgements for historical applications.
@@ -79,5 +96,64 @@ BEGIN
     UNIQUE (submission_id, position)
   );
   CREATE INDEX IF NOT EXISTS attachments_transcript_idx ON attachments (transcript_status, created_at);
+
+  -- The worker list (PLAN §8.2): one row per mobile number, upserted by the
+  -- intake workflow with each submission. Nullable and additive. The 12-month
+  -- retention clock (privacy notice §10) runs from last_contact_at, which
+  -- only something the person does renews: an application, a reply, or a
+  -- confirmation on a call (last_confirmed_at). Calls or SMS we send that go
+  -- unanswered never renew it.
+  CREATE TABLE IF NOT EXISTS people (
+    phone             text PRIMARY KEY,
+    name              text,
+    clusters          text[] NOT NULL DEFAULT '{}',
+    home_area         text,
+    relocate          boolean,
+    roles             text[] NOT NULL DEFAULT '{}',
+    locale            text,
+    status            text NOT NULL DEFAULT 'active'
+                      CHECK (status IN ('active', 'placed', 'not-looking', 'do-not-contact')),
+    consent_version   text,
+    last_applied_at   timestamptz,
+    last_confirmed_at timestamptz,
+    last_contact_at   timestamptz,
+    created_at        timestamptz NOT NULL DEFAULT now(),
+    updated_at        timestamptz NOT NULL DEFAULT now()
+  );
+  CREATE INDEX IF NOT EXISTS people_last_contact_idx ON people (last_contact_at);
+  -- First run: everyone who already applied, from their submissions.
+  INSERT INTO people (phone, name, clusters, roles, locale, consent_version, last_applied_at, last_contact_at, created_at)
+  SELECT s.phone,
+         (array_agg(s.applicant_name ORDER BY s.created_at DESC) FILTER (WHERE s.applicant_name IS NOT NULL))[1],
+         coalesce(array_agg(DISTINCT s.cluster) FILTER (WHERE s.cluster IS NOT NULL), '{}'),
+         coalesce(array_agg(DISTINCT s.role) FILTER (WHERE s.role IS NOT NULL), '{}'),
+         (array_agg(s.locale ORDER BY s.created_at DESC))[1],
+         (array_agg(s.consent_version ORDER BY s.created_at DESC))[1],
+         max(s.created_at), max(s.created_at), min(s.created_at)
+  FROM submissions s
+  GROUP BY s.phone
+  ON CONFLICT (phone) DO NOTHING;
+
+  -- Erasure: a person's request (by mobile number, checked against a
+  -- VS-J- reference) or the 12-month retention rule. The retention workflow
+  -- deletes their R2 files, Chatwoot contacts (with conversations) and rows,
+  -- then clears the phone and reference here, keeping only the counts.
+  CREATE TABLE IF NOT EXISTS erasure_requests (
+    id                  uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    phone               text,
+    ref                 text,
+    reason              text NOT NULL CHECK (reason IN ('request', 'retention')),
+    status              text NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'running', 'done', 'failed')),
+    attempts            int NOT NULL DEFAULT 0,
+    last_error          text,
+    removed_submissions int,
+    removed_files       int,
+    removed_contacts    int,
+    requested_at        timestamptz NOT NULL DEFAULT now(),
+    processed_at        timestamptz,
+    updated_at          timestamptz NOT NULL DEFAULT now()
+  );
+  CREATE INDEX IF NOT EXISTS erasure_requests_pending_idx ON erasure_requests (status, requested_at);
+  CREATE UNIQUE INDEX IF NOT EXISTS erasure_requests_open_phone_idx ON erasure_requests (phone) WHERE status IN ('pending', 'running');
 END
 $$;

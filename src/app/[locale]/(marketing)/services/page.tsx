@@ -4,146 +4,75 @@ import { ArrowUpRight } from "lucide-react";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
-import { FaqSection } from "@/components/sections/faq-section";
-import { servicesFaqs } from "@/content/faqs";
-import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
-import { services } from "@/content/services";
-import { servicePageSchema } from "@/lib/structured-data";
+import { JsonLd, webPageSchema, breadcrumbSchema, servicePageSchema } from "@/lib/structured-data";
 import { servicePages } from "@/content/service-pages";
+import { ENGAGEMENT_STEPS, SECTORS } from "@/content/services";
 import { localeParams } from "@/lib/i18n";
 
-const servicePageFor = new Map(servicePages.map((p) => [p.serviceId, p]));
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/services");
 
+const TITLE = "Contract Labour Services in SIDCUL Haridwar";
+const DESCRIPTION =
+  "Factory, loading and unloading, and housekeeping crews for sites in SIDCUL and across Haridwar, and how an engagement runs from site visit to monthly records.";
+
 export const metadata = pageMetadata({
-  title: "Contract Labour & Industrial Services in Haridwar",
-  description:
-    "Explore contract labour, factory and warehouse manpower, data entry operators, housekeeping, civil works and maintenance services for sites in SIDCUL and across Haridwar.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/services" },
 });
+
+/** The services hub: the three crews, the sectors we staff, and the four engagement steps. */
 export default function ServicesPage() {
   return (
     <>
-      <JsonLd
-        data={webPageSchema({
-          type: "CollectionPage",
-          name: "Contract Labour & Industrial Services in Haridwar",
-          description:
-            "Explore contract labour, factory and warehouse manpower, data entry operators, housekeeping, civil works and maintenance services for sites in SIDCUL and across Haridwar.",
-          url: "/services",
-        })}
-      />
+      <JsonLd data={webPageSchema({ type: "CollectionPage", name: TITLE, description: DESCRIPTION, url: "/services" })} />
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", href: "/" },
           { name: "Services", href: "/services" },
         ])}
       />
-      <JsonLd data={servicePageSchema(services)} />
+      <JsonLd data={servicePageSchema(servicePages)} />
       <PageHero
-        title={
-          <>
-            Contract labour and industrial services.
-            <br />
-            Planned around your site.
-          </>
-        }
-        lede="Contract workers for factory, warehouse and facility operations in SIDCUL and across Haridwar, alongside civil, fabrication and maintenance support."
+        title="What we supply."
+        lede="Supervised crews for shopfloors, docks and premises, in SIDCUL and across Haridwar."
       />
-      <Section>
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_2fr]">
-          <div className="lg:sticky lg:top-32 lg:self-start">
-            <p className="eyebrow text-gold-700">OUR CAPABILITIES</p>
-            <h2 className="mt-5 text-3xl font-medium">
-              Built around
-              <br />
-              your requirement.
-            </h2>
-            <p className="mt-5 max-w-xs text-muted-foreground">
-              These are some of the ways we support our clients across{" "}
-              <Link href="/industries" className="underline underline-offset-4">
-                manufacturing, logistics and facilities
-              </Link>{" "}
-              in{" "}
-              <Link
-                href="/haridwar-sidcul"
-                className="underline underline-offset-4"
-              >
-                SIDCUL Haridwar
-              </Link>{" "}
-              and across the city. Tell us about your site, your priorities and the work you need
-              done.
-            </p>
-            <Link href="/contact" className="text-link">
-              Discuss your requirement <ArrowUpRight size={18} />
-            </Link>
-            <p className="mt-6 max-w-xs text-sm text-muted-foreground">
-              Looking for a manpower supplier or labour provider? See how our{" "}
-              <Link href="/services/contract-labour" className="underline underline-offset-4">
-                contract labour service
-              </Link>{" "}
-              handles roles, site coordination and workforce records.
-            </p>
-          </div>
-          <div>
-            {services.map((service) => (
-              <article
-                id={service.id}
-                key={service.id}
-                className="scroll-mt-28 border-t py-8 first:pt-0 first:border-0"
-              >
-                <h2 className="text-3xl font-medium">{service.title}</h2>
-                <p className="mt-3 max-w-2xl text-muted-foreground leading-relaxed">
-                  {service.description}
-                </p>
-                <details className="mt-4">
-                  <summary className="cursor-pointer py-2 text-sm text-gold-700">
-                    Typical roles &amp; support
-                  </summary>
-                  <div className="pt-3 text-sm text-muted-foreground leading-relaxed">
-                    <p>{service.roles.join(", ")}.</p>
-                    <p className="mt-3">
-                      We plan the team, supervision and working arrangements
-                      around your site.
-                    </p>
-                  </div>
-                </details>
-                {servicePageFor.has(service.id) && (
-                  <Link
-                    href={`/services/${servicePageFor.get(service.id)!.slug}`}
-                    className="text-link"
-                  >
-                    {servicePageFor.get(service.id)!.name} in SIDCUL Haridwar{" "}
-                    <ArrowUpRight size={16} />
-                  </Link>
-                )}
-              </article>
+      <section className="capability-section">
+        <div className="site-shell">
+          <div className="capability-list">
+            {servicePages.map((s) => (
+              <Link className="capability-row" key={s.slug} href={`/services/${s.slug}`}>
+                <h2>{s.name}</h2>
+                <p>{s.summary}</p>
+                <ArrowUpRight size={24} aria-hidden="true" />
+              </Link>
             ))}
           </div>
         </div>
-      </Section>
-      <Section variant="subtle">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          <h2 className="text-4xl font-medium">
-            Compliance stays
-            <br />
-            part of the conversation.
-          </h2>
-          <div>
-            <p className="text-muted-foreground leading-relaxed">
-              Worker onboarding, attendance, wage records and statutory
-              contributions are an important part of a labour engagement. Our
-              compliance page explains the records and registrations available
-              for review.
-            </p>
-            <Link href="/compliance" className="text-link">
-              Labour compliance at Vayasya Seva <ArrowUpRight size={18} />
-            </Link>
-          </div>
+      </section>
+      <Section id="sectors" className="scroll-mt-28">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.6fr]">
+          <h2 className="text-4xl font-medium">Sites we staff.</h2>
+          <p className="max-w-[40ch] text-xl leading-relaxed sm:text-2xl">{SECTORS}</p>
         </div>
       </Section>
-      <FaqSection eyebrow="QUESTIONS" items={servicesFaqs} />
+      <Section variant="subtle" id="engagement">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.6fr]">
+          <h2 className="text-4xl font-medium">How an engagement runs.</h2>
+          <ol className="tracked-list is-steps">
+            {ENGAGEMENT_STEPS.map((step, i) => (
+              <li key={step.title}>
+                <span aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+                <div>
+                  <h3>{step.title}</h3>
+                  <p>{step.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </Section>
       <CtaBlock />
     </>
   );

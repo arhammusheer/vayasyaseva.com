@@ -1,0 +1,412 @@
+// The daily wage source monitor (PLAN §11): scripts/wage-monitor/.
+// Everything here runs offline against fixtures; `pnpm wages:monitor
+// --dry-run` exercises the real sources.
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import test from 'node:test';
+import { deflateSync } from 'node:zlib';
+import { importTs, root } from '../scripts/lib/register-ts.mjs';
+import { describeDocument, diffLines, documentLinks, htmlText, sha256 } from '../scripts/wage-monitor/extract.mjs';
+import { buildTargets, fetchSource, fingerprint, istDate, registryProblems, runMonitor } from '../scripts/wage-monitor/monitor.mjs';
+import { extractPdfText, parseCMap } from '../scripts/wage-monitor/pdf-text.mjs';
+import { issueTitle, reportEvents, safe } from '../scripts/wage-monitor/report.mjs';
+
+const { wageStates } = await importTs('src/content/wages/index.ts');
+const registry = JSON.parse(readFileSync(`${root}/scripts/wage-monitor/sources.json`, 'utf8'));
+
+// ---------------------------------------------------------------- fixtures
+
+/** Builds a small PDF: objects in order, optional object stream, no xref (the reader does not need one). */
+function makePdf({ objects, objStm = [] }) {
+  const parts = ['%PDF-1.5\n'];
+  for (const [num, body, stream] of objects) {
+    if (stream) {
+      const data = deflateSync(Buffer.from(stream, 'latin1'));
+      parts.push(`${num} 0 obj\n<< ${body} /Length ${data.length} /Filter /FlateDecode >>\nstream\n`, data, '\nendstream\nendobj\n');
+    } else parts.push(`${num} 0 obj\n${body}\nendobj\n`);
+  }
+  if (objStm.length) {
+    let header = '';
+    let content = '';
+    for (const [num, body] of objStm) {
+      header += `${num} ${content.length} `;
+      content += `${body}\n`;
+    }
+    const data = deflateSync(Buffer.from(header + content, 'latin1'));
+    parts.push(`99 0 obj\n<< /Type /ObjStm /N ${objStm.length} /First ${header.length} /Length ${data.length} /Filter /FlateDecode >>\nstream\n`, data, '\nendstream\nendobj\n');
+  }
+  parts.push('trailer\n<< /Root 1 0 R >>\n%%EOF\n');
+  return Buffer.concat(parts.map((p) => (Buffer.isBuffer(p) ? p : Buffer.from(p, 'latin1'))));
+}
+
+// Devanagari through a 2-byte ToUnicode map: 0001 न, 0002 ्, 0003 य, 0004 ू, 0005 space.
+const toUnicode = `/CIDInit /ProcSet findresource begin
+begincmap
+1 begincodespacerange <0000> <FFFF> endcodespacerange
+2 beginbfchar
+<0001> <0928>
+<0005> <0020>
+endbfchar
+1 beginbfrange
+<0002> <0004> [<094D> <092F> <0942>]
+endbfrange
+endcmap`;
+
+const pageContent = [
+  'BT /F1 12 Tf 72 720 Td (Minimum wages from 1 April 2026) Tj ET',
+  'BT /F1 12 Tf 72 700 Td [(Unskilled) -300 (13,690)] TJ ET',
+  // Printed-PDF style: one glyph per Td, drawn twice for fake bold.
+  'BT /F2 12 Tf 1 0 0 1 72 680 Tm <0001> Tj 6 0 Td <0002> Tj 1 0 0 1 71.5 680 Tm <0001> Tj ET',
+  'BT /F2 12 Tf 1 0 0 1 90 680 Tm <00030004> Tj ET',
+].join('\n');
+
+const samplePdf = (objStm) =>
+  makePdf({
+    objects: [
+      [1, '<< /Type /Catalog /Pages 2 0 R >>'],
+      [2, '<< /Type /Pages /Kids [3 0 R] /Count 1 >>'],
+      [3, '<< /Type /Page /Parent 2 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> /Contents 4 0 R >>'],
+      [4, '', pageContent],
+      ...(objStm ? [] : [[5, '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>'], [6, '<< /Type /Font /Subtype /Type0 /ToUnicode 7 0 R >>']]),
+      [7, '', toUnicode],
+    ],
+    objStm: objStm ? [[5, '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>'], [6, '<< /Type /Font /Subtype /Type0 /ToUnicode 7 0 R >>']] : [],
+  });
+
+const listingHtml = (rows) => `<!doctype html><html><head><script>var a = '<a href="x.pdf">no</a>';</script></head><body>
+<nav><a href="/about.pdf">About us</a></nav>
+<table>${rows.join('\n')}</table>
+<a href='../files/single.pdf' title="Single quoted order">View</a>
+<a href="#top">Top</a><a href="mailto:x@example.org">Mail</a>
+</body></html>`;
+const row = (file, title) => `<tr><td>1</td><td>${title}</td><td><a class="download_icon" title="Click here to view details" href="/docs/${file}"><em class="fa"></em></a></td></tr>`;
+
+/** A fetcher over a URL → response map; a missing URL fails like a dead server. */
+const fakeFetcher = (pages) => async (url) => {
+  const page = pages[url];
+  if (page === undefined) return { ok: false, status: 0, error: 'ECONNREFUSED' };
+  if (typeof page === 'number') return { ok: false, status: page };
+  return { ok: true, status: 200, body: Buffer.isBuffer(page) ? page : Buffer.from(page) };
+};
+
+const DOC = 'https://labour.example.gov.in/docs/order-2026.pdf';
+const LISTING = 'https://labour.example.gov.in/minimum-wages';
+const docBytes = samplePdf(false);
+const fakeState = {
+  state: 'delhi',
+  name: 'Delhi',
+  sources: [
+    { id: 'dl-2026-04', title: 'Order of 1 April 2026', url: DOC, listing: LISTING, sha256: sha256(docBytes) },
+    { id: 'dl-2026-04-corr', title: 'Corrigendum in the same file', url: DOC, listing: LISTING, sha256: sha256(docBytes) },
+  ],
+};
+const fakeRegistry = { states: { delhi: { listings: [{ url: LISTING, name: 'Delhi wage orders' }] } } };
+const targets = buildTargets([fakeState], fakeRegistry);
+const at = (iso) => new Date(`${iso}T03:00:00Z`); // 08:30 IST
+
+// ------------------------------------------------------------------- tests
+
+test('the source registry covers every wage dataset and its listings', () => {
+  assert.deepEqual(registryProblems(wageStates, registry), []);
+  const all = buildTargets(wageStates, registry);
+  for (const state of wageStates) {
+    for (const source of state.sources) {
+      assert.ok(all.some((t) => t.kind === 'document' && t.url === source.url && t.sourceIds.includes(source.id)), source.id);
+      assert.ok(all.some((t) => t.kind === 'listing' && t.url === source.listing), source.listing);
+    }
+  }
+  assert.equal(new Set(all.map((t) => `${t.state} ${t.url}`)).size, all.length, 'each URL is fetched once per state');
+});
+
+test('registryProblems catches a listing missing from the registry, a bad pattern and one file with two hashes', () => {
+  const problems = registryProblems([fakeState], { states: { delhi: { listings: [{ url: 'https://other.example/', name: 'x', match: '(' }] } } });
+  assert.ok(problems.some((p) => p.includes(LISTING)));
+  assert.ok(problems.some((p) => p.includes('invalid match')));
+  const split = { ...fakeState, sources: [fakeState.sources[0], { ...fakeState.sources[1], sha256: 'e'.repeat(64) }] };
+  assert.ok(registryProblems([split], fakeRegistry).some((p) => p.includes('different sha256')));
+});
+
+test('buildTargets fetches a file cited twice only once, with both source ids', () => {
+  const docs = targets.filter((t) => t.kind === 'document');
+  assert.equal(docs.length, 1);
+  assert.deepEqual(docs[0].sourceIds, ['dl-2026-04', 'dl-2026-04-corr']);
+  assert.equal(docs[0].expectedSha256, sha256(docBytes));
+  assert.equal(targets.filter((t) => t.kind === 'listing').length, 1);
+});
+
+test('documentLinks resolves, labels and filters document links', () => {
+  const html = listingHtml([row('a.pdf', 'Minimum wages from 1 April 2026'), row('b.PDF?x=1', 'Dearness allowance &amp; VDA order')]);
+  const links = documentLinks(html, 'https://labour.example.gov.in/pages/list.aspx');
+  assert.deepEqual(
+    links.map((l) => [l.url, l.label]),
+    [
+      ['https://labour.example.gov.in/about.pdf', 'About us'],
+      ['https://labour.example.gov.in/docs/a.pdf', '1 Minimum wages from 1 April 2026'],
+      ['https://labour.example.gov.in/docs/b.PDF?x=1', '1 Dearness allowance & VDA order'],
+      ['https://labour.example.gov.in/files/single.pdf', 'Single quoted order'],
+    ],
+  );
+  const wageOnly = documentLinks(html, 'https://labour.example.gov.in/pages/list.aspx', /wage|\bv?da\b/i);
+  assert.deepEqual(wageOnly.map((l) => l.url.split('/').pop()), ['a.pdf', 'b.PDF?x=1']);
+});
+
+test('documentLinks drops "New" badges and "Accessible Version" size notes', () => {
+  const html = `<ul><li><a href="/u/2026.pdf">Uttarakhand Minimum Wages 2026 New</a></li><li>Minimum Wages Chai 2024 Accessible Version : (2 MB) <a href="/u/chai.pdf">View</a></li></ul>`;
+  assert.deepEqual(documentLinks(html, 'https://labour.example.gov.in/').map((l) => l.label), ['Uttarakhand Minimum Wages 2026', 'Minimum Wages Chai 2024']);
+});
+
+test('htmlText keeps visible text only', () => {
+  const text = htmlText('<style>p{}</style><p>Rates&nbsp;from <b>1 April</b></p><script>x()</script><div>Next</div>');
+  assert.equal(text, 'Rates from 1 April\nNext');
+});
+
+test('extractPdfText reads simple fonts and ToUnicode fonts, drops fake-bold overdraw', () => {
+  for (const objStm of [false, true]) {
+    const { pages, text } = extractPdfText(samplePdf(objStm));
+    assert.equal(pages, 1);
+    assert.deepEqual(text.split('\n'), ['Minimum wages from 1 April 2026', 'Unskilled 13,690', 'न्यू'.normalize('NFC')], objStm ? 'object stream' : 'plain objects');
+  }
+});
+
+test('extractPdfText returns no text for a PDF without a text layer, and describeDocument still hashes it', () => {
+  const scan = makePdf({ objects: [[1, '<< /Type /Catalog /Pages 2 0 R >>'], [2, '<< /Type /Pages /Kids [3 0 R] /Count 1 >>'], [3, '<< /Type /Page /Parent 2 0 R /Contents 4 0 R >>'], [4, '', 'q 600 0 0 800 0 0 cm /Im0 Do Q']] });
+  const d = describeDocument(scan);
+  assert.equal(d.pages, 1);
+  assert.equal(d.text, '');
+  assert.equal(d.textSha256, null);
+  assert.equal(d.sha256, sha256(scan));
+  assert.equal(describeDocument(Buffer.from('<html>not a pdf</html>')).pages, null);
+});
+
+test('parseCMap reads bfchar, bfrange with a base and with an array', () => {
+  const { width, map } = parseCMap('1 begincodespacerange <00> <FF> endcodespacerange 1 beginbfchar <41> <0041> endbfchar 1 beginbfrange <61> <63> <0061> endbfrange');
+  assert.equal(width, 1);
+  assert.equal(map.get(0x62), 'b');
+  assert.equal(parseCMap(toUnicode).map.get(3), 'य');
+});
+
+test('diffLines is a multiset difference', () => {
+  assert.deepEqual(diffLines('a\nb\nb\nc', 'a\nb\nc\nd'), { added: ['d'], removed: ['b'] });
+  assert.deepEqual(diffLines('', 'x'), { added: ['x'], removed: [] });
+});
+
+test('istDate uses the Indian calendar day', () => {
+  assert.equal(istDate(new Date('2026-10-16T18:29:00Z')), '2026-10-16');
+  assert.equal(istDate(new Date('2026-10-16T18:31:00Z')), '2026-10-17');
+});
+
+test('first run: listings become a baseline, a cited file matching the dataset is unchanged', async () => {
+  const run = await runMonitor({ targets, previous: null, fetcher: fakeFetcher({ [DOC]: docBytes, [LISTING]: listingHtml([row('order-2026.pdf', 'Order')]) }), now: at('2026-10-16') });
+  assert.deepEqual(run.events, []);
+  assert.deepEqual(run.results.map((r) => r.outcome), ['unchanged', 'baseline']);
+  assert.equal(run.state.sources[DOC].sha256, sha256(docBytes));
+  assert.ok(run.state.sources[DOC].text.includes('13,690'));
+  assert.equal(run.state.sources[LISTING].links.length, 3);
+});
+
+test('first run: a cited file that differs from the dataset hash is reported', async () => {
+  const changed = Buffer.concat([docBytes, Buffer.from('\n% re-saved\n')]);
+  const run = await runMonitor({ targets, previous: null, fetcher: fakeFetcher({ [DOC]: changed, [LISTING]: listingHtml([]) }), now: at('2026-10-16') });
+  assert.equal(run.events.length, 1);
+  const [e] = run.events;
+  assert.equal(e.type, 'document-changed');
+  assert.deepEqual(e.sourceIds, ['dl-2026-04', 'dl-2026-04-corr']);
+  assert.equal(e.before.sha256, sha256(docBytes));
+  assert.equal(e.diff, null, 'no stored text to diff on a first run');
+});
+
+test('a changed document reports the text diff, once', async () => {
+  const day1 = await runMonitor({ targets, previous: null, fetcher: fakeFetcher({ [DOC]: docBytes, [LISTING]: listingHtml([]) }), now: at('2026-10-16') });
+  const revised = makePdf({ objects: [[1, '<< /Type /Catalog /Pages 2 0 R >>'], [2, '<< /Type /Pages /Kids [3 0 R] /Count 1 >>'], [3, '<< /Type /Page /Parent 2 0 R /Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>'], [4, '', 'BT /F1 12 Tf 72 720 Td (Minimum wages from 1 April 2026) Tj ET BT /F1 12 Tf 72 700 Td (Unskilled 14,200) Tj ET'], [5, '<< /Type /Font /Subtype /Type1 >>']] });
+  const day2 = await runMonitor({ targets, previous: day1.state, fetcher: fakeFetcher({ [DOC]: revised, [LISTING]: listingHtml([]) }), now: at('2026-10-17') });
+  assert.equal(day2.events.length, 1);
+  assert.deepEqual(day2.events[0].diff.added, ['Unskilled 14,200']);
+  assert.ok(day2.events[0].diff.removed.includes('Unskilled 13,690'));
+  const day3 = await runMonitor({ targets, previous: day2.state, fetcher: fakeFetcher({ [DOC]: revised, [LISTING]: listingHtml([]) }), now: at('2026-10-18') });
+  assert.deepEqual(day3.events, [], 'the new file is the new baseline');
+  assert.equal(day3.results[0].outcome, 'differs-from-dataset');
+});
+
+test('a listing change reports new and removed documents, flags a cited one and describes the new file', async () => {
+  const before = listingHtml([row('order-2026.pdf', 'Order of 1 April 2026'), row('old.pdf', 'Old order')]);
+  const after = listingHtml([row('new-order.pdf', 'Minimum wages from 1 October 2026')]);
+  const pages = { [DOC]: docBytes, [LISTING]: before };
+  const day1 = await runMonitor({ targets, previous: null, fetcher: fakeFetcher(pages), now: at('2026-10-16') });
+  const newDoc = 'https://labour.example.gov.in/docs/new-order.pdf';
+  const day2 = await runMonitor({ targets, previous: day1.state, fetcher: fakeFetcher({ ...pages, [LISTING]: after, [newDoc]: docBytes }), now: at('2026-10-17') });
+  assert.equal(day2.events.length, 1);
+  const [e] = day2.events;
+  assert.equal(e.type, 'listing-changed');
+  assert.deepEqual(e.added.map((l) => l.url), [newDoc]);
+  assert.equal(e.added[0].pages, 1);
+  assert.ok(e.added[0].figures.includes('Unskilled 13,690'));
+  assert.deepEqual(e.removed.map((l) => [l.url.split('/').pop(), l.citedAs]), [['old.pdf', []], ['order-2026.pdf', ['dl-2026-04', 'dl-2026-04-corr']]]);
+});
+
+test('a source failing three days in a row alerts once, keeps its baseline, and its recovery is reported', async () => {
+  const good = { [DOC]: docBytes, [LISTING]: listingHtml([]) };
+  let state = (await runMonitor({ targets, previous: null, fetcher: fakeFetcher(good), now: at('2026-10-10') })).state;
+  const down = { [DOC]: docBytes, [LISTING]: 503 };
+  const days = ['2026-10-11', '2026-10-11', '2026-10-12', '2026-10-13', '2026-10-14'];
+  const eventsPerRun = [];
+  for (const day of days) {
+    const run = await runMonitor({ targets, previous: state, fetcher: fakeFetcher(down), now: at(day) });
+    eventsPerRun.push(run.events.map((e) => e.type));
+    state = run.state;
+  }
+  // Two runs on the 11th count as one day; the alert comes on the third day only.
+  assert.deepEqual(eventsPerRun, [[], [], [], ['unreachable'], []]);
+  assert.equal(state.sources[LISTING].failing.days, 4);
+  assert.equal(state.sources[LISTING].links.length, 2, 'baseline kept while failing');
+  const back = await runMonitor({ targets, previous: state, fetcher: fakeFetcher(good), now: at('2026-10-15') });
+  assert.deepEqual(back.events.map((e) => e.type), ['recovered']);
+  assert.equal(back.state.sources[LISTING].failing, undefined);
+});
+
+test('a day with no run does not restart the count; only a successful load does', async () => {
+  let state = (await runMonitor({ targets, previous: null, fetcher: fakeFetcher({ [DOC]: docBytes, [LISTING]: listingHtml([]) }), now: at('2026-10-10') })).state;
+  const events = [];
+  for (const day of ['2026-10-11', '2026-10-12', '2026-10-14']) {
+    const run = await runMonitor({ targets, previous: state, fetcher: fakeFetcher({ [DOC]: 404, [LISTING]: listingHtml([]) }), now: at(day) });
+    events.push(run.events.map((e) => e.type));
+    state = run.state;
+  }
+  assert.deepEqual(events, [[], [], ['unreachable']], 'the missed 13th (no run) does not reset the count');
+  assert.equal(state.sources[DOC].failing.since, '2026-10-11');
+  const ok = await runMonitor({ targets, previous: state, fetcher: fakeFetcher({ [DOC]: docBytes, [LISTING]: listingHtml([]) }), now: at('2026-10-15') });
+  assert.equal(ok.state.sources[DOC].failing, undefined);
+  const again = await runMonitor({ targets, previous: ok.state, fetcher: fakeFetcher({ [DOC]: 404, [LISTING]: listingHtml([]) }), now: at('2026-10-16') });
+  assert.equal(again.state.sources[DOC].failing.days, 1, 'a load starts the count again');
+});
+
+test('a firewall or error page served with 200 counts as a failed fetch, not a change', async () => {
+  const full = { [DOC]: docBytes, [LISTING]: listingHtml([row('order-2026.pdf', 'Order of 1 April 2026'), row('old.pdf', 'Old order')]) };
+  const rejected = '<html><body><h1>Request Rejected</h1><p>The requested URL was rejected.</p></body></html>';
+  const day1 = await runMonitor({ targets, previous: null, fetcher: fakeFetcher(full), now: at('2026-10-16') });
+  const blocked = async () => ({ ok: true, status: 200, contentType: 'text/html', body: Buffer.from(rejected) });
+  const day2 = await runMonitor({ targets, previous: day1.state, fetcher: blocked, now: at('2026-10-17') });
+  assert.deepEqual(day2.events, []);
+  assert.deepEqual(day2.results.map((r) => r.outcome), ['failed', 'failed']);
+  assert.match(day2.results[0].detail, /HTML page instead of the PDF/);
+  assert.match(day2.results[1].detail, /looks empty/);
+  assert.equal(day2.state.sources[LISTING].links.length, 4, 'baseline kept');
+  assert.equal(day2.state.sources[DOC].sha256, sha256(docBytes), 'baseline kept');
+  const day3 = await runMonitor({ targets, previous: day2.state, fetcher: fakeFetcher(full), now: at('2026-10-18') });
+  assert.deepEqual(day3.events, [], 'the page coming back is not a change either');
+  assert.deepEqual(day3.results.map((r) => r.outcome), ['unchanged', 'unchanged']);
+  // A first run against a blocked listing records no empty baseline.
+  const first = await runMonitor({ targets, previous: null, fetcher: blocked, now: at('2026-10-16') });
+  assert.equal(first.state.sources[LISTING].links, undefined);
+});
+
+test('a listing that loses most of its links counts as a failed fetch', async () => {
+  const many = Array.from({ length: 10 }, (_, i) => row(`o${i}.pdf`, `Order ${i}`));
+  const day1 = await runMonitor({ targets, previous: null, fetcher: fakeFetcher({ [DOC]: docBytes, [LISTING]: listingHtml(many) }), now: at('2026-10-16') });
+  const day2 = await runMonitor({ targets, previous: day1.state, fetcher: fakeFetcher({ [DOC]: docBytes, [LISTING]: listingHtml(many.slice(0, 2)) }), now: at('2026-10-17') });
+  assert.deepEqual(day2.events, []);
+  assert.match(day2.results[1].detail, /lost most of its links \(4 of 12\)/);
+});
+
+test('a host that does not respond costs one timeout per run, and hosts are fetched concurrently', async () => {
+  const other = 'https://other.example.gov.in/wages';
+  const hanging = buildTargets(
+    [{ ...fakeState, sources: [...fakeState.sources, { id: 'dl-x', title: 'Second order', url: 'https://labour.example.gov.in/docs/x.pdf', listing: LISTING, sha256: 'f'.repeat(64) }] }],
+    { states: { delhi: { listings: [{ url: LISTING, name: 'Delhi wage orders' }, { url: other, name: 'Other' }] } } },
+  );
+  const calls = [];
+  const fetcher = async (url) => {
+    calls.push(url);
+    if (url.startsWith('https://labour.example.gov.in/')) return { ok: false, status: 0, error: 'TimeoutError' };
+    return { ok: true, status: 200, body: Buffer.from(listingHtml([])) };
+  };
+  const run = await runMonitor({ targets: hanging, previous: null, fetcher, now: at('2026-10-16') });
+  assert.equal(calls.filter((u) => u.startsWith('https://labour.example.gov.in/')).length, 1);
+  assert.ok(calls.includes(other));
+  assert.deepEqual(run.results.map((r) => r.outcome), ['failed', 'failed', 'failed', 'baseline']);
+  assert.match(run.results[1].detail, /skipped: labour\.example\.gov\.in did not respond/);
+});
+
+test('a file new on two listings is fetched once and described once in the issue', async () => {
+  const second = 'https://labour.example.gov.in/';
+  const both = buildTargets([fakeState], { states: { delhi: { listings: [{ url: LISTING, name: 'Delhi wage orders' }, { url: second, name: 'Home page notices' }] } } });
+  const before = listingHtml([row('order-2026.pdf', 'Order of 1 April 2026')]);
+  const newDoc = 'https://labour.example.gov.in/docs/new-order.pdf';
+  const after = listingHtml([row('order-2026.pdf', 'Order of 1 April 2026'), row('new-order.pdf', 'Minimum wages from 1 October 2026')]);
+  const day1 = await runMonitor({ targets: both, previous: null, fetcher: fakeFetcher({ [DOC]: docBytes, [LISTING]: before, [second]: before }), now: at('2026-10-16') });
+  const calls = [];
+  const pages = fakeFetcher({ [DOC]: docBytes, [LISTING]: after, [second]: after, [newDoc]: docBytes });
+  const day2 = await runMonitor({ targets: both, previous: day1.state, fetcher: (url) => (calls.push(url), pages(url)), now: at('2026-10-17') });
+  assert.equal(day2.events.length, 2);
+  assert.equal(calls.filter((u) => u === newDoc).length, 1);
+  assert.ok(day2.events.every((e) => e.added[0].pages === 1));
+  const [action] = await reportEvents(day2.events, { github: null, today: '2026-10-17', env: {} });
+  assert.equal(action.stateName, 'Delhi');
+  assert.equal(action.body.split('Unskilled 13,690').length - 1, 1, 'figures shown once');
+  assert.ok(action.body.includes('also new on Delhi wage orders, described above'));
+});
+
+/** A GitHub client double that records calls. */
+function fakeGitHub(openIssues = []) {
+  const calls = [];
+  return {
+    calls,
+    ensureLabel: async () => calls.push(['label']),
+    findOpenIssue: async (title) => openIssues.find((i) => i.title === title) ?? null,
+    listCommentBodies: async (n) => openIssues.find((i) => i.number === n)?.comments ?? [],
+    createIssue: async (title, body) => (calls.push(['create', title, body]), { number: 7 }),
+    comment: async (n, body) => calls.push(['comment', n, body]),
+  };
+}
+const changeEvent = { type: 'document-changed', state: 'delhi', stateName: 'Delhi', url: DOC, name: 'Order [1] @someone', sourceIds: ['dl-2026-04'], before: { sha256: 'a'.repeat(64), bytes: 1000, pages: 2 }, after: { sha256: 'b'.repeat(64), bytes: 2000, pages: 3 }, diff: { added: ['Unskilled 14,200'], removed: [] }, hasText: true };
+
+test('reportEvents opens an issue per state with the label, links and a fingerprint', async () => {
+  const gh = fakeGitHub();
+  const actions = await reportEvents([changeEvent], { github: gh, today: '2026-10-17', env: {} });
+  assert.deepEqual(actions.map((a) => a.action), ['create']);
+  const [, title, body] = gh.calls.find((c) => c[0] === 'create');
+  assert.equal(title, issueTitle('Delhi'));
+  assert.ok(gh.calls.some((c) => c[0] === 'label'));
+  assert.ok(body.includes('src/content/wages/delhi.json'));
+  assert.ok(body.includes(`](${DOC})`));
+  assert.ok(body.includes('Unskilled 14,200'));
+  assert.ok(body.includes('Order \\[1\\] @​someone'), 'page text cannot add links or mention anyone');
+  assert.ok(body.includes(`<!-- wage-monitor:${fingerprint(changeEvent)} -->`));
+});
+
+test('reportEvents comments on the open issue and never repeats an event already reported', async () => {
+  const issue = { number: 3, title: issueTitle('Delhi'), body: 'x', comments: [] };
+  const gh = fakeGitHub([issue]);
+  const first = await reportEvents([changeEvent], { github: gh, today: '2026-10-17', env: {} });
+  assert.deepEqual(first.map((a) => [a.action, a.issue]), [['comment', 3]]);
+  issue.comments.push(gh.calls.find((c) => c[0] === 'comment')[2]);
+  const again = await reportEvents([changeEvent], { github: gh, today: '2026-10-18', env: {} });
+  assert.deepEqual(again.map((a) => a.action), ['skip']);
+  assert.equal(gh.calls.filter((c) => c[0] === 'comment').length, 1);
+});
+
+test('a recovery alone does not open an issue; a dry run plans without calling GitHub', async () => {
+  const recovered = { type: 'recovered', state: 'delhi', stateName: 'Delhi', url: LISTING, name: 'Delhi wage orders', since: '2026-10-11' };
+  const gh = fakeGitHub();
+  assert.deepEqual((await reportEvents([recovered], { github: gh, today: '2026-10-17', env: {} })).map((a) => a.action), ['skip']);
+  assert.equal(gh.calls.filter((c) => c[0] !== 'label').length, 0);
+  const planned = await reportEvents([changeEvent], { github: null, today: '2026-10-17', env: {} });
+  assert.deepEqual(planned.map((a) => a.action), ['create (dry run)']);
+  assert.ok(planned[0].body.length > 100);
+});
+
+test('safe() escapes Markdown and HTML from government pages', () => {
+  assert.equal(safe('<b>x</b> [y](z) @team'), '\\<b\\>x\\</b\\> \\[y\\]\\(z\\) @​team');
+});
+
+test('fetchSource retries a server error once, not a 404, and never throws', async () => {
+  let calls = 0;
+  const flaky = async () => (++calls === 1 ? new Response('busy', { status: 503 }) : new Response('ok'));
+  const ok = await fetchSource('https://x.example/', { fetchImpl: flaky, retryDelayMs: 0 });
+  assert.equal(ok.ok, true);
+  assert.equal(calls, 2);
+  calls = 0;
+  const missing = await fetchSource('https://x.example/', { fetchImpl: async () => (calls++, new Response('', { status: 404 })), retryDelayMs: 0 });
+  assert.deepEqual([missing.ok, missing.status, calls], [false, 404, 1]);
+  const down = await fetchSource('https://x.example/', { fetchImpl: async () => { throw Object.assign(new Error('fetch failed'), { cause: { code: 'ENOTFOUND' } }); }, retryDelayMs: 0 });
+  assert.deepEqual([down.ok, down.error], [false, 'ENOTFOUND']);
+});

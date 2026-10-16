@@ -5,7 +5,7 @@
     "title": "Vayasya Seva API",
     "summary": "Public API contract for vayasyaseva.com",
     "description": "Submission routes for vayasyaseva.com. The /api/agent/* routes are open to AI agents and assistants acting for a person: plain JSON, no CAPTCHA, no key, validated and rate limited server-side. /api/contact serves the website's own contact form and needs a Cloudflare Turnstile token from a browser; agents should use /api/agent/contact instead. See https://www.vayasyaseva.com/llms.txt and https://www.vayasyaseva.com/ai-access-policy.txt.",
-    "version": "1.1.0"
+    "version": "1.3.0"
   },
   "servers": [
     {
@@ -18,8 +18,8 @@
         "tags": [
           "Contact"
         ],
-        "summary": "Submit contact inquiry (website form)",
-        "description": "Used by the contact form on the website. Requires a Cloudflare Turnstile token in the x-turnstile-token header. AI agents: use /api/agent/contact.",
+        "summary": "Request a crew (website form)",
+        "description": "Used by the Request a crew form on the website's contact page. Requires a Cloudflare Turnstile token in the x-turnstile-token header. AI agents: use /api/agent/contact.",
         "operationId": "submitContactInquiry",
         "parameters": [
           {
@@ -102,7 +102,7 @@
           "Agents"
         ],
         "summary": "Send a business enquiry for a person (AI agents)",
-        "description": "Open route for AI agents and assistants: no CAPTCHA, no key. Send only details the person gave you and confirm with them first. The enquiry goes to our team marked as sent by an agent; no email is sent to the address given. Rate limited per source.",
+        "description": "Open route for AI agents and assistants: no CAPTCHA, no key. A Request a crew enquiry: send the requirement (roles, headcountBand, siteState, siteCity, startWindow, durationBand) or, from older integrations, a free-text details. Send only details the person gave you and confirm with them first. The enquiry goes to our team marked as sent by an agent; no email is sent to the address given. We aim to reply within two working days (Monday to Saturday, IST). Rate limited per source.",
         "operationId": "agentSubmitContactInquiry",
         "security": [],
         "requestBody": {
@@ -238,7 +238,7 @@
           "Agents"
         ],
         "summary": "Start a job application with files (AI agents)",
-        "description": "Step 1 of 3. Declare the files (CV, photos, voice note). Then PUT each file to its upload URL, then call /api/agent/jobs/submit with the ticket.",
+        "description": "Step 1 of 3. Declare the files (CV, photos, documents). Then PUT each file to its upload URL, then call /api/agent/jobs/submit with the ticket.",
         "operationId": "agentStartJobApplication",
         "security": [],
         "requestBody": {
@@ -416,8 +416,25 @@
         "additionalProperties": false,
         "required": [
           "name",
-          "phone",
-          "details"
+          "phone"
+        ],
+        "description": "Send either details, or the requirement fields roles, headcountBand, siteState, siteCity, startWindow and durationBand.",
+        "anyOf": [
+          {
+            "required": [
+              "details"
+            ]
+          },
+          {
+            "required": [
+              "roles",
+              "headcountBand",
+              "siteState",
+              "siteCity",
+              "startWindow",
+              "durationBand"
+            ]
+          }
         ],
         "properties": {
           "name": {
@@ -428,13 +445,13 @@
           },
           "company": {
             "type": "string",
-            "description": "Company name",
+            "description": "Company name. The website form asks for it; agent requests should include it when the person gives it.",
             "minLength": 1,
             "example": "Vayasya Seva Private Limited"
           },
           "role": {
             "type": "string",
-            "description": "Role or designation of the requester",
+            "description": "Designation of the requester",
             "minLength": 1,
             "example": "Warehouse Manager"
           },
@@ -452,36 +469,197 @@
           },
           "location": {
             "type": "string",
-            "description": "Site location for service delivery",
+            "description": "Deprecated since 1.2.0: use siteState and siteCity. Site location for service delivery",
             "minLength": 1,
-            "example": "Haridwar SIDCUL"
+            "example": "SIDCUL Haridwar",
+            "deprecated": true
           },
           "industry": {
             "type": "string",
-            "description": "Industry classification",
+            "description": "Deprecated since 1.2.0: put it in details. Industry classification",
             "minLength": 1,
-            "example": "Manufacturing"
+            "example": "Manufacturing",
+            "deprecated": true
           },
           "headcount": {
             "type": "string",
-            "description": "Approximate workforce or crew size required",
+            "description": "Deprecated since 1.2.0: use headcountBand. Approximate number of workers required",
             "minLength": 1,
-            "example": "50"
+            "example": "50",
+            "deprecated": true
           },
           "shiftRequirement": {
             "type": "string",
-            "description": "Shift structure requirement",
-            "example": "2 shifts, 8 hours each"
+            "description": "Deprecated since 1.2.0: use shiftPattern. Shift structure requirement",
+            "example": "2 shifts, 8 hours each",
+            "deprecated": true
           },
           "targetStartDate": {
             "type": "string",
-            "description": "Preferred start date",
-            "example": "2026-03-01"
+            "description": "Deprecated since 1.2.0: use startWindow. Preferred start date",
+            "example": "2026-03-01",
+            "deprecated": true
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "factory-helpers",
+                "packing",
+                "machine-operators",
+                "loading-unloading",
+                "warehouse",
+                "housekeeping",
+                "iti-trades",
+                "maintenance",
+                "fabrication-civil",
+                "gardening",
+                "data-entry",
+                "forklift",
+                "other"
+              ]
+            },
+            "uniqueItems": true,
+            "minItems": 1,
+            "description": "The work the crew will do. One or more role ids. Values: factory-helpers (Factory helpers), packing (Packing), machine-operators (Machine operators), loading-unloading (Loading and unloading), warehouse (Warehouse picking and dispatch), housekeeping (Housekeeping (factory, office, campus)), iti-trades (ITI trades (electrician, fitter, welder)), maintenance (Maintenance technicians), fabrication-civil (Fabrication and civil crews), gardening (Gardening and grounds), data-entry (Data entry and stores), forklift (Forklift operators), other (Something else).",
+            "example": [
+              "packing",
+              "loading-unloading"
+            ]
+          },
+          "headcountBand": {
+            "type": "string",
+            "enum": [
+              "1-9",
+              "10-19",
+              "20-49",
+              "50-99",
+              "100-249",
+              "250+"
+            ],
+            "description": "How many workers are needed, as a band. Values: 1-9 (1 to 9 workers), 10-19 (10 to 19 workers), 20-49 (20 to 49 workers), 50-99 (50 to 99 workers), 100-249 (100 to 249 workers), 250+ (250 or more workers).",
+            "example": "50-99"
+          },
+          "siteState": {
+            "type": "string",
+            "enum": [
+              "AN",
+              "AP",
+              "AR",
+              "AS",
+              "BR",
+              "CH",
+              "CG",
+              "DH",
+              "DL",
+              "GA",
+              "GJ",
+              "HR",
+              "HP",
+              "JK",
+              "JH",
+              "KA",
+              "KL",
+              "LA",
+              "LD",
+              "MP",
+              "MH",
+              "MN",
+              "ML",
+              "MZ",
+              "NL",
+              "OD",
+              "PY",
+              "PB",
+              "RJ",
+              "SK",
+              "TN",
+              "TS",
+              "TR",
+              "UP",
+              "UK",
+              "WB"
+            ],
+            "description": "State or union territory of the site, as an ISO 3166-2:IN code. Values: AN (Andaman and Nicobar Islands), AP (Andhra Pradesh), AR (Arunachal Pradesh), AS (Assam), BR (Bihar), CH (Chandigarh), CG (Chhattisgarh), DH (Dadra and Nagar Haveli and Daman and Diu), DL (Delhi), GA (Goa), GJ (Gujarat), HR (Haryana), HP (Himachal Pradesh), JK (Jammu and Kashmir), JH (Jharkhand), KA (Karnataka), KL (Kerala), LA (Ladakh), LD (Lakshadweep), MP (Madhya Pradesh), MH (Maharashtra), MN (Manipur), ML (Meghalaya), MZ (Mizoram), NL (Nagaland), OD (Odisha), PY (Puducherry), PB (Punjab), RJ (Rajasthan), SK (Sikkim), TN (Tamil Nadu), TS (Telangana), TR (Tripura), UP (Uttar Pradesh), UK (Uttarakhand), WB (West Bengal).",
+            "example": "UK"
+          },
+          "siteCity": {
+            "type": "string",
+            "description": "City, town or industrial area of the site.",
+            "minLength": 2,
+            "maxLength": 120,
+            "example": "SIDCUL Haridwar"
+          },
+          "sitePincode": {
+            "type": "string",
+            "description": "Six-digit PIN code of the site.",
+            "pattern": "^[1-9][0-9]{5}$",
+            "example": "249403"
+          },
+          "startWindow": {
+            "type": "string",
+            "enum": [
+              "within-1-week",
+              "2-4-weeks",
+              "1-3-months",
+              "planning"
+            ],
+            "description": "When the crew should start. Values: within-1-week (Within a week), 2-4-weeks (In 2 to 4 weeks), 1-3-months (In 1 to 3 months), planning (Just planning).",
+            "example": "2-4-weeks"
+          },
+          "durationBand": {
+            "type": "string",
+            "enum": [
+              "under-1-month",
+              "1-3-months",
+              "3-12-months",
+              "ongoing",
+              "not-sure"
+            ],
+            "description": "How long the work is expected to last. Values: under-1-month (Under a month), 1-3-months (1 to 3 months), 3-12-months (3 to 12 months), ongoing (Ongoing (no end date)), not-sure (Not sure yet).",
+            "example": "ongoing"
+          },
+          "shiftPattern": {
+            "type": "string",
+            "enum": [
+              "general",
+              "two-shifts",
+              "three-shifts",
+              "night-only",
+              "not-sure"
+            ],
+            "description": "Shift pattern at the site. Every shift is 8 hours. Values: general (General (one day shift)), two-shifts (Two shifts), three-shifts (Three shifts (round the clock)), night-only (Night shift only), not-sure (Not sure yet).",
+            "example": "two-shifts"
+          },
+          "requestType": {
+            "type": "string",
+            "enum": [
+              "crew",
+              "site-assessment",
+              "compliance-help"
+            ],
+            "description": "What the person is asking for: a crew (the default), a site assessment first, or help getting their own site compliant (EPF, ESIC, PT, LWF, contract labour licence, registers, minimum wage; send details and siteState). Values: crew (A crew), site-assessment (A site assessment), compliance-help (Compliance help).",
+            "example": "crew"
+          },
+          "pageCluster": {
+            "type": "string",
+            "description": "Set by the website: the cluster of the page the form was opened from. Agents leave it out.",
+            "maxLength": 32,
+            "pattern": "^[a-z-]{2,32}$",
+            "example": "haridwar"
+          },
+          "sourcePath": {
+            "type": "string",
+            "description": "Set by the website: the page the person came from. Agents leave it out.",
+            "maxLength": 200,
+            "pattern": "^/[A-Za-z0-9/_-]*$",
+            "example": "/haridwar-sidcul"
           },
           "details": {
             "type": "string",
-            "description": "Additional requirement details",
-            "minLength": 8,
+            "description": "Anything else about the requirement: the work, the site, timings. Required when the structured requirement fields are left out.",
+            "maxLength": 10000,
             "example": "Need housekeeping teams, fabrication fitters, and preventive maintenance support for a new line."
           }
         }
@@ -491,8 +669,25 @@
         "additionalProperties": false,
         "required": [
           "name",
-          "phone",
-          "details"
+          "phone"
+        ],
+        "description": "Send either details, or the requirement fields roles, headcountBand, siteState, siteCity, startWindow and durationBand.",
+        "anyOf": [
+          {
+            "required": [
+              "details"
+            ]
+          },
+          {
+            "required": [
+              "roles",
+              "headcountBand",
+              "siteState",
+              "siteCity",
+              "startWindow",
+              "durationBand"
+            ]
+          }
         ],
         "properties": {
           "name": {
@@ -503,13 +698,13 @@
           },
           "company": {
             "type": "string",
-            "description": "Company name",
+            "description": "Company name. The website form asks for it; agent requests should include it when the person gives it.",
             "minLength": 1,
             "example": "Vayasya Seva Private Limited"
           },
           "role": {
             "type": "string",
-            "description": "Role or designation of the requester",
+            "description": "Designation of the requester",
             "minLength": 1,
             "example": "Warehouse Manager"
           },
@@ -527,36 +722,183 @@
           },
           "location": {
             "type": "string",
-            "description": "Site location for service delivery",
+            "description": "Deprecated since 1.2.0: use siteState and siteCity. Site location for service delivery",
             "minLength": 1,
-            "example": "Haridwar SIDCUL"
+            "example": "SIDCUL Haridwar",
+            "deprecated": true
           },
           "industry": {
             "type": "string",
-            "description": "Industry classification",
+            "description": "Deprecated since 1.2.0: put it in details. Industry classification",
             "minLength": 1,
-            "example": "Manufacturing"
+            "example": "Manufacturing",
+            "deprecated": true
           },
           "headcount": {
             "type": "string",
-            "description": "Approximate workforce or crew size required",
+            "description": "Deprecated since 1.2.0: use headcountBand. Approximate number of workers required",
             "minLength": 1,
-            "example": "50"
+            "example": "50",
+            "deprecated": true
           },
           "shiftRequirement": {
             "type": "string",
-            "description": "Shift structure requirement",
-            "example": "2 shifts, 8 hours each"
+            "description": "Deprecated since 1.2.0: use shiftPattern. Shift structure requirement",
+            "example": "2 shifts, 8 hours each",
+            "deprecated": true
           },
           "targetStartDate": {
             "type": "string",
-            "description": "Preferred start date",
-            "example": "2026-03-01"
+            "description": "Deprecated since 1.2.0: use startWindow. Preferred start date",
+            "example": "2026-03-01",
+            "deprecated": true
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "factory-helpers",
+                "packing",
+                "machine-operators",
+                "loading-unloading",
+                "warehouse",
+                "housekeeping",
+                "iti-trades",
+                "maintenance",
+                "fabrication-civil",
+                "gardening",
+                "data-entry",
+                "forklift",
+                "other"
+              ]
+            },
+            "uniqueItems": true,
+            "minItems": 1,
+            "description": "The work the crew will do. One or more role ids. Values: factory-helpers (Factory helpers), packing (Packing), machine-operators (Machine operators), loading-unloading (Loading and unloading), warehouse (Warehouse picking and dispatch), housekeeping (Housekeeping (factory, office, campus)), iti-trades (ITI trades (electrician, fitter, welder)), maintenance (Maintenance technicians), fabrication-civil (Fabrication and civil crews), gardening (Gardening and grounds), data-entry (Data entry and stores), forklift (Forklift operators), other (Something else).",
+            "example": [
+              "packing",
+              "loading-unloading"
+            ]
+          },
+          "headcountBand": {
+            "type": "string",
+            "enum": [
+              "1-9",
+              "10-19",
+              "20-49",
+              "50-99",
+              "100-249",
+              "250+"
+            ],
+            "description": "How many workers are needed, as a band. Values: 1-9 (1 to 9 workers), 10-19 (10 to 19 workers), 20-49 (20 to 49 workers), 50-99 (50 to 99 workers), 100-249 (100 to 249 workers), 250+ (250 or more workers).",
+            "example": "50-99"
+          },
+          "siteState": {
+            "type": "string",
+            "enum": [
+              "AN",
+              "AP",
+              "AR",
+              "AS",
+              "BR",
+              "CH",
+              "CG",
+              "DH",
+              "DL",
+              "GA",
+              "GJ",
+              "HR",
+              "HP",
+              "JK",
+              "JH",
+              "KA",
+              "KL",
+              "LA",
+              "LD",
+              "MP",
+              "MH",
+              "MN",
+              "ML",
+              "MZ",
+              "NL",
+              "OD",
+              "PY",
+              "PB",
+              "RJ",
+              "SK",
+              "TN",
+              "TS",
+              "TR",
+              "UP",
+              "UK",
+              "WB"
+            ],
+            "description": "State or union territory of the site, as an ISO 3166-2:IN code. Values: AN (Andaman and Nicobar Islands), AP (Andhra Pradesh), AR (Arunachal Pradesh), AS (Assam), BR (Bihar), CH (Chandigarh), CG (Chhattisgarh), DH (Dadra and Nagar Haveli and Daman and Diu), DL (Delhi), GA (Goa), GJ (Gujarat), HR (Haryana), HP (Himachal Pradesh), JK (Jammu and Kashmir), JH (Jharkhand), KA (Karnataka), KL (Kerala), LA (Ladakh), LD (Lakshadweep), MP (Madhya Pradesh), MH (Maharashtra), MN (Manipur), ML (Meghalaya), MZ (Mizoram), NL (Nagaland), OD (Odisha), PY (Puducherry), PB (Punjab), RJ (Rajasthan), SK (Sikkim), TN (Tamil Nadu), TS (Telangana), TR (Tripura), UP (Uttar Pradesh), UK (Uttarakhand), WB (West Bengal).",
+            "example": "UK"
+          },
+          "siteCity": {
+            "type": "string",
+            "description": "City, town or industrial area of the site.",
+            "minLength": 2,
+            "maxLength": 120,
+            "example": "SIDCUL Haridwar"
+          },
+          "sitePincode": {
+            "type": "string",
+            "description": "Six-digit PIN code of the site.",
+            "pattern": "^[1-9][0-9]{5}$",
+            "example": "249403"
+          },
+          "startWindow": {
+            "type": "string",
+            "enum": [
+              "within-1-week",
+              "2-4-weeks",
+              "1-3-months",
+              "planning"
+            ],
+            "description": "When the crew should start. Values: within-1-week (Within a week), 2-4-weeks (In 2 to 4 weeks), 1-3-months (In 1 to 3 months), planning (Just planning).",
+            "example": "2-4-weeks"
+          },
+          "durationBand": {
+            "type": "string",
+            "enum": [
+              "under-1-month",
+              "1-3-months",
+              "3-12-months",
+              "ongoing",
+              "not-sure"
+            ],
+            "description": "How long the work is expected to last. Values: under-1-month (Under a month), 1-3-months (1 to 3 months), 3-12-months (3 to 12 months), ongoing (Ongoing (no end date)), not-sure (Not sure yet).",
+            "example": "ongoing"
+          },
+          "shiftPattern": {
+            "type": "string",
+            "enum": [
+              "general",
+              "two-shifts",
+              "three-shifts",
+              "night-only",
+              "not-sure"
+            ],
+            "description": "Shift pattern at the site. Every shift is 8 hours. Values: general (General (one day shift)), two-shifts (Two shifts), three-shifts (Three shifts (round the clock)), night-only (Night shift only), not-sure (Not sure yet).",
+            "example": "two-shifts"
+          },
+          "requestType": {
+            "type": "string",
+            "enum": [
+              "crew",
+              "site-assessment",
+              "compliance-help"
+            ],
+            "description": "What the person is asking for: a crew (the default), a site assessment first, or help getting their own site compliant (EPF, ESIC, PT, LWF, contract labour licence, registers, minimum wage; send details and siteState). Values: crew (A crew), site-assessment (A site assessment), compliance-help (Compliance help).",
+            "example": "crew"
           },
           "details": {
             "type": "string",
-            "description": "Additional requirement details",
-            "minLength": 8,
+            "description": "Anything else about the requirement: the work, the site, timings. Required when the structured requirement fields are left out.",
+            "maxLength": 10000,
             "example": "Need housekeeping teams, fabrication fitters, and preventive maintenance support for a new line."
           },
           "agent": {
@@ -583,7 +925,7 @@
           },
           "message": {
             "type": "string",
-            "example": "Requirement received. Our operations team will review and respond — target response time is 2 business days (IST, Mon–Sat)."
+            "example": "Requirement received. Our team will review it and reply. We aim to reply within two working days (Monday to Saturday, IST)."
           }
         }
       },
@@ -661,7 +1003,7 @@
           "consent": {
             "type": "boolean",
             "const": true,
-            "description": "The person agreed to be contacted about work and to the job seeker privacy notice (https://www.vayasyaseva.com/en-in/privacy#job-seekers)."
+            "description": "The person agreed that Vayasya Seva may keep their details and contact them about work, under the job seeker privacy notice (https://www.vayasyaseva.com/en-in/privacy#job-seekers; in plain words, in their language: https://www.vayasyaseva.com/en-in/jobs/privacy)."
           },
           "text": {
             "type": "string",
@@ -730,20 +1072,19 @@
                 "kind": {
                   "type": "string",
                   "enum": [
-                    "audio",
                     "image",
                     "document"
                   ]
                 },
                 "mime": {
                   "type": "string",
-                  "description": "audio: audio/webm, ogg, mp4, mpeg, aac, wav or x-m4a. image: image/jpeg, png or webp. document: application/pdf, msword or vnd.openxmlformats-officedocument.wordprocessingml.document.",
+                  "description": "image: image/jpeg, png or webp. document: application/pdf, msword or vnd.openxmlformats-officedocument.wordprocessingml.document.",
                   "example": "application/pdf"
                 },
                 "size": {
                   "type": "integer",
                   "minimum": 1,
-                  "description": "Bytes. At most 10485760 for audio and images, 20971520 for documents."
+                  "description": "Bytes. At most 10485760 for images, 20971520 for documents."
                 },
                 "name": {
                   "type": [
@@ -828,7 +1169,7 @@
           "consent": {
             "type": "boolean",
             "const": true,
-            "description": "The person agreed to be contacted about work and to the job seeker privacy notice (https://www.vayasyaseva.com/en-in/privacy#job-seekers)."
+            "description": "The person agreed that Vayasya Seva may keep their details and contact them about work, under the job seeker privacy notice (https://www.vayasyaseva.com/en-in/privacy#job-seekers; in plain words, in their language: https://www.vayasyaseva.com/en-in/jobs/privacy)."
           },
           "text": {
             "type": [
@@ -848,7 +1189,7 @@
           "ref": {
             "type": "string",
             "example": "VS-J-7K2M9Q",
-            "description": "Give this to the person. They quote it if they call +91 72920 14101."
+            "description": "Give this to the person. Our team calls them on the number they applied with; they quote this reference if they write to us about the application."
           }
         }
       },
@@ -888,9 +1229,14 @@
             "const": true,
             "example": true
           },
+          "caseId": {
+            "type": "string",
+            "example": "REQ-20261016-1A2B3C4D",
+            "description": "Reference for this enquiry, shown to the person."
+          },
           "message": {
             "type": "string",
-            "example": "Requirement received. Our operations team will review and respond — target response time is 2 business days (IST, Mon–Sat)."
+            "example": "Requirement received. Our team will review it and reply. We aim to reply within two working days (Monday to Saturday, IST)."
           }
         }
       },

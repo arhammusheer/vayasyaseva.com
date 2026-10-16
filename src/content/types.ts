@@ -1,27 +1,3 @@
-/**
- * Claims discipline (per brand.vayasyaseva.com)
- *
- * Aspirational:  Forward-looking intent ("We aim to...")
- * Directional:   Active work in progress ("We are working toward...")
- * Measured:       Quantified results with data source
- * Contractual:   Legally binding, clause-referenced
- */
-export type ClaimType = "aspirational" | "directional" | "measured" | "contractual";
-
-export interface Claim {
-  text: string;
-  type: ClaimType;
-  evidence?: string;
-  expiresAt?: string; // ISO date
-}
-
-/** Navigation item */
-export interface NavItem {
-  label: string;
-  href: string;
-  children?: NavItem[];
-}
-
 /** Trust strip */
 export interface TrustClient {
   name: string;
@@ -31,35 +7,13 @@ export interface TrustClient {
   context?: string; // engagement context e.g. "Warehousing operations"
 }
 
-export interface Registration {
-  label: string;
-  value: string;
-}
-
-/** Compliance item */
-export interface ComplianceItem {
-  title: string;
-  description: string;
-  claim: ClaimType;
-  registrations?: string[];
-}
-
 /** FAQ item — grouped by persona */
 export interface FaqItem {
   question: string;
   answer: string;
+  /** An optional link shown after the answer (not part of the FAQPage text). */
+  link?: { href: string; label: string };
   category: "operations" | "compliance" | "integration" | "commercial";
-}
-
-/** Industry sector */
-export interface IndustrySector {
-  id: string;
-  title: string;
-  description: string;
-  staffingPattern: string;
-  riskControlNeeds: string;
-  reportingCadence: string;
-  icon: string;
 }
 
 /** Contact form field */
@@ -78,14 +32,13 @@ export interface SiteConfig {
   legalName: string;
   tagline: string;
   email: string;
-  phone: string;
+  /** No phone here: it lives in business-contact.ts, for business pages only. */
   gstin: string;
   /** Corporate Identity Number (MCA). */
   cin: string;
   msme: string;
   address: string;
   region: string;
-  linkedin: string;
   /** Public profiles for Organization.sameAs. Add as they are created. */
   sameAs: string[];
   /** City-level coordinates for LocalBusiness.geo. */

@@ -3,15 +3,29 @@
  * mirror integrations/n8n/schema.sql; the claim queries in build.mts select
  * exactly these columns.
  */
-import type { AttachmentKind, IntakeChannel, IntakeSource, JobHub, JobRole, IntakeForm, QuickAnswers } from "../../../src/lib/talent-intake/rules.ts";
+import type {
+  AttachmentKind,
+  IntakeChannel,
+  IntakeCluster,
+  IntakeForm,
+  IntakeLocale,
+  JobHub,
+  JobRole,
+  LegacyLocale,
+  QuickAnswers,
+  SubmissionSource,
+} from "../../../src/lib/talent-intake/rules.ts";
 
-/** Stored values (schema.sql). "hinglish" is the website's hi-Latn-IN locale. */
-export type Locale = "en" | "hi" | "hinglish";
+/**
+ * Stored values (schema.sql): a BCP 47 tag on new rows, the legacy short code
+ * on older ones ("hinglish" is hi-Latn-IN).
+ */
+export type Locale = IntakeLocale | LegacyLocale;
 
 /** Output of "Validate submission", the parameters of "Save submission". */
 export interface ValidatedSubmission {
   ref: string;
-  source: IntakeSource;
+  source: SubmissionSource;
   role: JobRole | null;
   hub: JobHub | null;
   /** "agent" when sent through /api/agent/jobs (submissions.channel). */
@@ -22,6 +36,10 @@ export interface ValidatedSubmission {
   applicantName: string | null;
   answers: QuickAnswers | null;
   locale: Locale;
+  /** submissions.cluster, page_cluster, page_path: set by the page; null when unknown. */
+  cluster: IntakeCluster | null;
+  pageCluster: IntakeCluster | null;
+  pagePath: string | null;
   phone: string;
   consentVersion: string;
   consentedAt: string;
@@ -49,7 +67,8 @@ export interface ClaimedVoiceNote {
 export interface ClaimedAttachment {
   id: string;
   position: number;
-  kind: AttachmentKind;
+  /** "audio" only on rows saved before 16 October 2026; the intake no longer accepts it. */
+  kind: AttachmentKind | "audio";
   key: string;
   mime: string;
   name: string | null;
@@ -61,7 +80,7 @@ export interface ClaimedAttachment {
 export interface ClaimedSubmission {
   id: string;
   ref: string;
-  source: IntakeSource;
+  source: SubmissionSource;
   role: JobRole | null;
   hub: JobHub | null;
   /** "agent" when sent through /api/agent/jobs (submissions.channel). */
@@ -72,6 +91,9 @@ export interface ClaimedSubmission {
   applicantName: string | null;
   answers: QuickAnswers | null;
   locale: Locale;
+  cluster: IntakeCluster | null;
+  pageCluster: IntakeCluster | null;
+  pagePath: string | null;
   phone: string;
   text: string | null;
   attachments: ClaimedAttachment[];
@@ -107,4 +129,34 @@ export interface FileToAttach {
   key: string;
   conversationId: number;
   label: string;
+}
+
+/**
+ * One row of "Claim erasure" (retention workflow): an erasure request, with
+ * every R2 key and Chatwoot contact stored for its phone number.
+ */
+export interface ClaimedErasure {
+  id: string;
+  phone: string;
+  reason: "request" | "retention";
+  files: string[];
+  contacts: number[];
+}
+
+/** Output of "Files to delete": one R2 key, or null when there is none. */
+export interface FileToDelete {
+  requestId: string;
+  key: string | null;
+}
+
+/** Output of "Contacts to delete": one Chatwoot contact id, or null when there is none. */
+export interface ContactToDelete {
+  requestId: string;
+  contactId: number | null;
+}
+
+/** The retention workflow's Settings node (filled by the deploy script). */
+export interface RetentionSettings {
+  chatwootBaseUrl: string;
+  chatwootAccountId: string;
 }

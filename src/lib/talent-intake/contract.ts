@@ -4,9 +4,14 @@ import {
   ATTACHMENT_KINDS,
   ATTACHMENT_MIME,
   INTAKE_CHANNELS,
+  INTAKE_CLUSTERS,
   INTAKE_LIMITS,
+  INTAKE_LOCALES,
   INTAKE_SOURCES,
   INTAKE_FORM_KEYS,
+  MAX_PAGE_PATH_LENGTH,
+  PAGE_PATH_PATTERN,
+  WEB_SOURCE,
   JOB_HUB_SLUGS,
   MAX_APPLICANT_NAME_LENGTH,
   cleanQuickAnswers,
@@ -37,6 +42,13 @@ const attachmentSchema = z
   .refine((a) => ATTACHMENT_MIME[a.kind].test(a.mime), { message: "Unsupported file type", path: ["mime"] })
   .refine((a) => a.size <= INTAKE_LIMITS.maxBytes[a.kind], { message: "File too large", path: ["size"] });
 
+const legacySourceSchema = z.enum(Object.keys(INTAKE_SOURCES) as [IntakeSource, ...IntakeSource[]]);
+/** "web" for new web submissions; the legacy page sources stay valid (rules.ts). */
+const sourceSchema = z.union([z.literal(WEB_SOURCE), legacySourceSchema]);
+const localeSchema = z.enum(INTAKE_LOCALES);
+const clusterSchema = z.enum(INTAKE_CLUSTERS);
+const pagePathSchema = z.string().max(MAX_PAGE_PATH_LENGTH).regex(PAGE_PATH_PATTERN);
+
 /** Quick form answers: unknown questions and answer ids are dropped, empty becomes null. */
 const quickAnswersSchema = z
   .record(z.string(), z.array(z.string().max(40)).max(12))
@@ -45,7 +57,16 @@ const quickAnswersSchema = z
 export const talentIntakeSchema = z
   .object({
     ref: z.string().regex(REF_PATTERN),
-    source: z.enum(Object.keys(INTAKE_SOURCES) as [IntakeSource, ...IntakeSource[]]),
+    /** "web" from the jobs pages; a legacy page source from the agent routes. */
+    source: sourceSchema,
+    /** The page's language (BCP 47). Required with source "web". */
+    locale: localeSchema.nullish().transform((l) => l ?? null),
+    /** The submission's cluster: the area chosen, else the page's (rules.ts submissionCluster). */
+    cluster: clusterSchema.nullish().transform((c) => c ?? null),
+    /** The cluster of the page the form sits on (/jobs/haridwar), or null. */
+    pageCluster: clusterSchema.nullish().transform((c) => c ?? null),
+    /** The neutral path of the page the form sits on, e.g. /jobs/haridwar. */
+    pagePath: pagePathSchema.nullish().transform((p) => p ?? null),
     /** The role page it came from, or null from the general jobs page. */
     role: z.enum(JOB_ROLE_SLUGS).nullable(),
     /** The hub page it came from (/jobs/freshers…), or null. */
@@ -79,13 +100,14 @@ export const talentIntakeSchema = z
     answers: quickAnswersSchema.nullable(),
   })
   .refine((p) => Boolean(p.text) || p.attachments.length > 0 || Boolean(p.answers), {
-    message: "Add a voice note, a file or a few words about yourself",
+    message: "Add a file, your answers or a few words about yourself",
     path: ["text"],
   })
   .refine((p) => p.attachments.every((a) => isAttachmentKeyFor(a.key, p.ref)), {
     message: "Attachment does not belong to this submission",
     path: ["attachments"],
-  });
+  })
+  .refine((p) => p.source !== WEB_SOURCE || p.locale !== null, { message: "A web submission needs its page locale", path: ["locale"] });
 
 /** The payload after validation: phone normalised to +91XXXXXXXXXX. */
 export type TalentIntakePayload = z.output<typeof talentIntakeSchema>;
@@ -107,13 +129,18 @@ const fileDeclarationSchema = z
  * ticket that /api/jobs/submit requires.
  */
 export const jobsStartRequestSchema = z.object({
-  source: z.enum(Object.keys(INTAKE_SOURCES) as [IntakeSource, ...IntakeSource[]]),
+  /** "web" with `locale`; pages built before it send a legacy page source. */
+  source: sourceSchema,
+  locale: localeSchema.nullish().transform((l) => l ?? null),
+  /** Set by the page, never typed by the applicant. */
+  pageCluster: clusterSchema.nullish().transform((c) => c ?? null),
+  pagePath: pagePathSchema.nullish().transform((p) => p ?? null),
   role: z.enum(JOB_ROLE_SLUGS).nullish().transform((r) => r ?? null),
   hub: z.enum(JOB_HUB_SLUGS).nullish().transform((h) => h ?? null),
   turnstileToken: z.string().min(1).max(4096),
   files: z.array(fileDeclarationSchema).max(INTAKE_LIMITS.maxAttachments),
-});
-export type JobsStartRequest = z.infer<typeof jobsStartRequestSchema>;
+}).refine((r) => r.source !== WEB_SOURCE || r.locale !== null, { message: "A web submission needs its page locale", path: ["locale"] });
+export type JobsStartRequest = z.input<typeof jobsStartRequestSchema>;
 
 export interface JobsStartResponse {
   ref: string;
@@ -152,7 +179,8 @@ export interface JobsSubmitResponse {
 
 // --- Open agent routes (/api/agent/jobs*) -------------------------------------
 // No Turnstile: an AI agent applies on a person's behalf with plain JSON. The
-// agent confirms the person is 18 or older and agreed to be contacted, the
+// agent confirms the person is 18 or older and agreed that we may keep their
+// details and contact them about work, the
 // same two things the jobs form asks the person to tick.
 
 const agentLanguageSchema = z.enum(Object.keys(AGENT_LANGUAGE_SOURCES) as [AgentLanguage, ...AgentLanguage[]]);
@@ -172,7 +200,7 @@ export const agentInfoSchema = z
   .optional();
 
 const agentPageFields = {
-  /** Language the person speaks; picks the team and transcription language. */
+  /** Language the person speaks; picks the team that replies. */
   language: agentLanguageSchema.default("en"),
   role: z.enum(JOB_ROLE_SLUGS).nullish().transform((r) => r ?? null),
   agent: agentInfoSchema,

@@ -1,19 +1,26 @@
+import NextLink from "next/link";
 import Link from "@/components/i18n/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
+import { Button } from "@/components/ui/button";
 import { CtaBlock } from "@/components/sections/cta-block";
-import {
-  JsonLd,
-  breadcrumbSchema,
-  faqSchema,
-  webPageSchema,
-} from "@/lib/structured-data";
+import { ClientStrip } from "@/components/sections/client-strip";
+import { FaqSection } from "@/components/sections/faq-section";
+import { faqHref } from "@/content/faq";
+import { JsonLd, webPageSchema } from "@/lib/structured-data";
 import { haridwarCopy } from "@/content/pages/haridwar-sidcul";
+import { jobsDoorHref } from "@/components/layout/nav-links";
+import { HARIDWAR_SECTION_ANCHORS } from "@/content/registry/identifiers";
 import { localePath, locales, type Locale } from "@/lib/i18n";
+import { isPaused } from "@/content/registry";
+import { PausedNotice } from "@/components/sections/paused-notice";
 
 const PATH = "/haridwar-sidcul";
+const CREW_HREF = "/contact#location=haridwar";
+const AND: Record<Locale, string> = { "en-IN": "and", "hi-IN": "और", "hi-Latn-IN": "aur" };
 
 export function haridwarMetadata(locale: Locale) {
   const t = haridwarCopy[locale];
@@ -25,9 +32,37 @@ export function haridwarMetadata(locale: Locale) {
   });
 }
 
+/** "A, B and C", each area name carrying its anchor (/haridwar-sidcul#bhagwanpur). */
+function Areas({ locale }: { locale: Locale }) {
+  const names = haridwarCopy[locale].areas;
+  return HARIDWAR_SECTION_ANCHORS.map((id, i) => (
+    <span key={id}>
+      {i > 0 && (i === HARIDWAR_SECTION_ANCHORS.length - 1 ? ` ${AND[locale]} ` : ", ")}
+      <span id={id} className="scroll-mt-28">
+        {names[id]}
+      </span>
+    </span>
+  ));
+}
+
+/**
+ * The Haridwar buyer hub: the hero, client proof, one SIDCUL paragraph, the
+ * three services and its FAQs (more on /faq#haridwar-sidcul). The hero carries Request a crew (prefilled
+ * for Haridwar) and a quiet jobs line. Most hi-IN visitors are job seekers,
+ * so there the jobs door is a button first, with Request a crew beside it.
+ */
 export function HaridwarPage({ locale }: { locale: Locale }) {
   const t = haridwarCopy[locale];
   const url = localePath(PATH, locale);
+  const [before, after] = t.sidcul.split("{areas}");
+  const jobsFirst = locale === "hi-IN";
+  const crewButton = (
+    <Button asChild size="lg" variant={jobsFirst ? "outline" : "default"}>
+      <Link href={CREW_HREF}>
+        {t.crew} <ArrowUpRight aria-hidden="true" />
+      </Link>
+    </Button>
+  );
   return (
     <>
       <JsonLd
@@ -38,70 +73,72 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
           inLanguage: locales[locale].hreflang,
         })}
       />
-      <JsonLd data={faqSchema(t.faqs)} />
-      <JsonLd
-        data={breadcrumbSchema([
-          { name: t.breadcrumb.home, href: "/" },
-          { name: t.breadcrumb.page, href: url },
-        ])}
-      />
+      <Breadcrumbs path={PATH} locale={locale} name={t.breadcrumb} />
       <PageHero
-        title={
-          <>
-            {t.hero[0]}
-            <br />
-            {t.hero[1]}
-          </>
-        }
+        title={t.hero.map((line, i) => (
+          <span key={line}>
+            {i > 0 && <br />}
+            {line}
+          </span>
+        ))}
         lede={t.lede}
-      />
-      <Section>
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
-          <h2 className="text-4xl font-medium">
-            {t.introHeading[0]}
-            <br />
-            {t.introHeading[1]}
-          </h2>
-          <div className="text-lg text-muted-foreground leading-relaxed space-y-5">
-            {t.intro.map((p) => (
-              <p key={p}>{p}</p>
-            ))}
-            {t.links.map((l) => (
-              <Link key={l.href} href={l.href} className="text-link text-foreground">
-                {l.label} <ArrowUpRight size={18} />
-              </Link>
-            ))}
-          </div>
-        </div>
-      </Section>
-      <Section variant="subtle">
-        <p className="eyebrow text-gold-700">{t.supportEyebrow}</p>
-        <div className="grid grid-cols-1 gap-8 mt-8 md:grid-cols-3">
-          {t.support.map((s) => (
-            <div key={s.title}>
-              <h2 className="text-2xl font-medium">{s.title}</h2>
-              <p className="mt-3 text-muted-foreground leading-relaxed">{s.text}</p>
-              <Link href={s.href} className="text-link">
-                {s.link} <ArrowUpRight size={16} />
-              </Link>
+        footnote={
+          jobsFirst ? (
+            <div className="flex flex-wrap gap-3 pt-2">
+              <Button asChild size="lg">
+                <NextLink href={jobsDoorHref(locale)} prefetch={false}>
+                  {t.jobs.label} <ArrowRight aria-hidden="true" />
+                </NextLink>
+              </Button>
+              {crewButton}
             </div>
-          ))}
+          ) : (
+            // Request a crew first; a quiet door for job seekers, away from
+            // the business phone (PLAN §5.2).
+            <div className="flex flex-wrap items-center gap-x-8 gap-y-4 pt-2">
+              {crewButton}
+              <p className="seeker-line">
+                {t.jobs.text}{" "}
+                <NextLink href={jobsDoorHref(locale)} className="text-link mt-0" prefetch={false}>
+                  {t.jobs.label} <ArrowRight size={18} aria-hidden="true" />
+                </NextLink>
+              </p>
+            </div>
+          )
+        }
+      />
+      <ClientStrip label={t.clients} afterRule />
+      {isPaused(PATH, locale) && (
+        <div className="site-shell pb-10">
+          <PausedNotice kind="business" locale={locale} />
         </div>
-      </Section>
-      <Section>
+      )}
+      <Section className="border-t border-border">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.6fr]">
-          <h2 className="text-4xl font-medium">{t.faqHeading}</h2>
-          <div className="detail-list">
-            {t.faqs.map((f) => (
-              <details key={f.question}>
-                <summary>{f.question}</summary>
-                <div className="detail-body">{f.answer}</div>
-              </details>
-            ))}
+          <p className="eyebrow text-gold-700">{locale === "en-IN" ? t.breadcrumb.toUpperCase() : t.breadcrumb}</p>
+          <div>
+            <p className="text-xl leading-relaxed sm:text-2xl">
+              {before}
+              <Areas locale={locale} />
+              {after}
+            </p>
+            <nav aria-label={t.servicesLabel} className="mt-10">
+              <p className="text-sm text-muted-foreground">{t.servicesLabel}</p>
+              <ul className="link-row mt-2">
+                {t.services.map((s) => (
+                  <li key={s.href}>
+                    <Link href={s.href} className="text-link" hrefLang="en-IN">
+                      {s.label} <ArrowUpRight size={18} aria-hidden="true" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
         </div>
       </Section>
-      <CtaBlock locale={locale} />
+      <FaqSection title={t.faqHeading} variant="subtle" items={t.faqs} open more={{ href: faqHref("haridwar-sidcul"), label: t.moreFaqs }} />
+      <CtaBlock locale={locale} href={CREW_HREF} />
     </>
   );
 }

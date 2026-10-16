@@ -35,6 +35,8 @@ interface NodeOutputs {
   "Chatwoot: contact": { id: number; source_id: string };
   "Chatwoot: create conversation": { id: number };
   "Files to fetch": import("./types").FileToAttach;
+  "Claim erasure": import("./types").ClaimedErasure;
+  "Retention settings": import("./types").RetentionSettings;
 }
 
 declare function $<K extends keyof NodeOutputs>(name: K): N8nNodeRef<NodeOutputs[K]>;

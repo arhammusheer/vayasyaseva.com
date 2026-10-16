@@ -6,7 +6,16 @@
 import { NextResponse } from "next/server";
 import { talentIntakeSchema, type JobsSubmitResponse } from "./contract";
 import { trackServerEvent } from "@/lib/server-events";
-import type { IntakeChannel, IntakeForm, QuickAnswers } from "./rules";
+import {
+  LEGACY_SOURCE_LOCALES,
+  WEB_SOURCE,
+  submissionCluster,
+  type IntakeChannel,
+  type IntakeForm,
+  type IntakeLocale,
+  type IntakeSource,
+  type QuickAnswers,
+} from "./rules";
 import {
   IntakeNotConfigured,
   TALENT_CONSENT_VERSION,
@@ -21,12 +30,39 @@ type Draft = Omit<Ticket, "exp" | "files"> & { files: Ticket["files"] };
 /** What the quick form adds: which form, the typed name and the answers. */
 export type FormExtras = { form?: IntakeForm; applicantName?: string | null; answers?: QuickAnswers | null };
 
+/** The legacy page source for each locale: what n8n accepted before "web". */
+const LOCALE_LEGACY_SOURCES = Object.fromEntries(
+  Object.entries(LEGACY_SOURCE_LOCALES).map(([source, locale]) => [locale, source]),
+) as Record<IntakeLocale, IntakeSource>;
+
+/**
+ * Whether web submissions go to n8n as source "web" (PLAN §1a). Off until
+ * the owner has deployed the n8n intake and setup workflows that accept it
+ * (schema.sql widens the source and locale checks): the n8n running before
+ * that rejects "web", so every application would fail. While it is off, web
+ * submissions keep their legacy source (web_en, web_hi, web_hinglish); the
+ * locale, cluster and page fields still go along, and the older n8n ignores
+ * them. A plain server env var, so it works the same on Vercel and self-hosted.
+ */
+export function webSourceEnabled() {
+  return process.env.TALENT_INTAKE_WEB_SOURCE === "1";
+}
+
 /** Builds, validates and forwards one submission; answers 202 with the reference. */
 export async function forwardSubmission(draft: Draft, phone: string, text: string | null, extras: FormExtras = {}) {
   const channel = draft.channel ?? "web";
+  // The jobs pages send "web" plus the page locale; a ticket issued before
+  // that carries a legacy page source, which implies the locale. The agent
+  // routes keep their legacy source and gain the locale it implies.
+  const locale = draft.locale ?? (draft.source === WEB_SOURCE ? null : LEGACY_SOURCE_LOCALES[draft.source]);
+  const pageCluster = draft.pageCluster ?? null;
   const payload = talentIntakeSchema.safeParse({
     ref: draft.ref,
-    source: draft.source,
+    source: channel !== "web" ? draft.source : webSourceEnabled() || !locale ? WEB_SOURCE : LOCALE_LEGACY_SOURCES[locale],
+    locale,
+    cluster: submissionCluster(pageCluster, extras.answers),
+    pageCluster,
+    pagePath: draft.pagePath ?? null,
     role: draft.role ?? null,
     hub: draft.hub ?? null,
     channel,
@@ -51,6 +87,8 @@ export async function forwardSubmission(draft: Draft, phone: string, text: strin
     role: payload.data.role ?? "none",
     hub: payload.data.hub ?? "none",
     source: payload.data.source,
+    locale: payload.data.locale ?? "none",
+    cluster: payload.data.cluster ?? "none",
     files: payload.data.attachments.length,
   });
   const body: JobsSubmitResponse = { ref: draft.ref };

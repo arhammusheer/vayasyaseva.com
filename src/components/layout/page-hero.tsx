@@ -5,6 +5,10 @@ interface PageHeroProps {
   lede?: string;
   tone?: "light" | "dark";
   aside?: React.ReactNode;
+  /** A quiet line under the lede, e.g. the job-seeker door on a business page. */
+  footnote?: React.ReactNode;
+  /** The breadcrumb trail above the H1 (<Breadcrumbs>), on pages two levels down. */
+  crumbs?: React.ReactNode;
   className?: string;
 }
 
@@ -17,6 +21,8 @@ export function PageHero({
   lede,
   tone = "light",
   aside,
+  footnote,
+  crumbs,
   className,
 }: PageHeroProps) {
   const dark = tone !== "light";
@@ -35,6 +41,7 @@ export function PageHero({
           className={cn("grid gap-10", aside && "lg:grid-cols-12 lg:items-end")}
         >
           <div className={cn(aside && "lg:col-span-8")}>
+            {crumbs}
             <h1 className="rise rise-1 max-w-4xl text-balance text-[2.5rem] font-medium leading-[1.06] tracking-[-0.03em] sm:text-6xl lg:text-[4.5rem]">
               {title}
             </h1>
@@ -48,6 +55,7 @@ export function PageHero({
                 {lede}
               </p>
             )}
+            {footnote && <div className="rise rise-2 mt-4">{footnote}</div>}
           </div>
           {aside && <div className="rise rise-3 lg:col-span-4">{aside}</div>}
         </div>

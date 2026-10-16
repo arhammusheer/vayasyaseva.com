@@ -1,7 +1,7 @@
 export const termsContent = `
 # Terms of Use
 
-*Last updated: 2 October 2026*
+*Last updated: 16 October 2026*
 
 ## 1. Acceptance of Terms
 
@@ -127,5 +127,4 @@ GSTIN: \`05AAJCV4562E1ZB\`
 MSME: \`UDYAM-UK-06-0029670\`
 Registered office: P-2-230, Deep Ganga Apartments, Sector-5A, SIDCUL, Roshnabad, Haridwar, Uttarakhand 249403, India
 Electronic mail: help@vayasyaseva.com
-Telephone: +91 72920 14101
 `;

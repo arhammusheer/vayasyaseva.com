@@ -1,92 +1,64 @@
 import { pageMetadata } from "@/lib/metadata";
-import Link from "@/components/i18n/link";
 import { ArrowUpRight } from "lucide-react";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
+import { Button } from "@/components/ui/button";
 import { CtaBlock } from "@/components/sections/cta-block";
-import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
+import { JsonLd, webPageSchema } from "@/lib/structured-data";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
+import { SETU_LOGIN } from "@/components/layout/nav-links";
 import { localeParams } from "@/lib/i18n";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/vayasya-setu");
 
+const TITLE = "Vayasya Setu, Workforce Management System";
+const DESCRIPTION =
+  "Vayasya Setu keeps the attendance, payroll inputs and EPF and ESIC records for each site we staff. Log in to Setu, or ask how it reports for your crew.";
+
 export const metadata = pageMetadata({
-  title: "Vayasya Setu, Workforce Management System",
-  description:
-    "Vayasya Setu supports Vayasya Seva’s workforce operations with attendance, deployment information, payroll inputs and compliance records.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/vayasya-setu" },
 });
+
+const rows = [
+  { title: "Attendance and deployment", text: "Who is working, where, and on which shift." },
+  { title: "Payroll and compliance records", text: "Payroll inputs with the EPF and ESIC records, ready for review." },
+  { title: "Reporting for your team", text: "Attendance and compliance reports in a format agreed with you." },
+];
+
+/** Most visitors here are clients looking for the login: it is the first, largest action. */
 export default function SetuPage() {
   return (
     <>
-      <JsonLd
-        data={webPageSchema({
-          type: "WebPage",
-          name: "Vayasya Setu, Workforce Management System",
-          description:
-            "Vayasya Setu supports Vayasya Seva’s workforce operations with attendance, deployment information, payroll inputs and compliance records.",
-          url: "/vayasya-setu",
-        })}
-      />
-      <JsonLd
-        data={breadcrumbSchema([
-          { name: "Home", href: "/" },
-          { name: "Vayasya Setu", href: "/vayasya-setu" },
-        ])}
-      />
+      <JsonLd data={webPageSchema({ name: TITLE, description: DESCRIPTION, url: "/vayasya-setu" })} />
       <PageHero
+        crumbs={<Breadcrumbs path="/vayasya-setu" locale="en-IN" name="Vayasya Setu" />}
         tone="dark"
         title="Vayasya Setu"
-        lede="Our internal system for connecting the people on site with the information behind the operation."
+        lede="The system behind our crews: attendance, wage and challan records for your site, each month."
+        footnote={
+          <Button asChild size="lg" className="mt-4">
+            <a href={SETU_LOGIN}>
+              Log in to Setu <ArrowUpRight aria-hidden="true" />
+            </a>
+          </Button>
+        }
       />
       <Section>
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
-          <div>
-            <p className="eyebrow text-gold-700">SUPPORTING OUR PEOPLE</p>
-            <h2 className="mt-5 text-4xl font-medium">
-              Better information.
-              <br />
-              Closer coordination.
-            </h2>
-            <p className="mt-5 max-w-md text-muted-foreground leading-relaxed">
-              Setu helps our teams work from a shared view of attendance,
-              deployment and workforce records. It supports the service you
-              receive from Vayasya Seva.
-            </p>
-          </div>
-          <div className="detail-list">
-            {[
-              {
-                title: "Attendance & deployment",
-                text: "A record of who is working, where they are deployed and the attendance information used by the operations team.",
-              },
-              {
-                title: "Payroll & compliance records",
-                text: "Workforce records and payroll inputs brought together with EPF and ESIC information for administration and review.",
-              },
-              {
-                title: "Reporting for your team",
-                text: "Attendance, deployment and compliance information in reports suited to your engagement. Formats and delivery are discussed with your team.",
-              },
-            ].map((r, i) => (
-              <details open={i === 0} key={r.title}>
-                <summary>{r.title}</summary>
-                <div className="detail-body">{r.text}</div>
-              </details>
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.6fr]">
+          <h2 className="text-4xl font-medium">What Setu keeps.</h2>
+          <ul className="jobs-work">
+            {rows.map((r) => (
+              <li key={r.title}>
+                <h3>{r.title}</h3>
+                <p>{r.text}</p>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </Section>
-      <Section variant="subtle">
-        <h2 className="text-3xl font-medium">Part of how we work.</h2>
-        <p className="mt-4 max-w-2xl text-muted-foreground">
-          Our team manages Setu as part of day-to-day operations. We’ll discuss
-          any reporting or system requirements as we plan the engagement.
-        </p>
-        <Link href="/how-we-operate" className="text-link">
-          Our approach to your engagement <ArrowUpRight size={18} />
-        </Link>
-      </Section>
-      <CtaBlock />
+      <CtaBlock variant="setu" />
     </>
   );
 }

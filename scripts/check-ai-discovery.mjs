@@ -17,6 +17,7 @@ const requiredFiles = [
   "src/app/ai-access-policy.txt/route.ts",
   "src/app/robots.ts",
   "src/app/sitemap.ts",
+  "src/content/registry/pages.ts",
 ];
 
 const requiredEndpointPaths = [
@@ -37,7 +38,10 @@ if (errors.length === 0) {
   const llms = read("src/app/llms.txt/route.ts");
   const llmsFull = read("src/app/llms-full.txt/route.ts");
   const robots = read("src/app/robots.ts");
-  const sitemap = read("src/app/sitemap.ts");
+  // The sitemap is generated from the page registry: check its output.
+  const { importTs } = await import("./lib/register-ts.mjs");
+  const { default: buildSitemap } = await importTs("src/app/sitemap.ts");
+  const sitemapPaths = buildSitemap().map((entry) => new URL(entry.url).pathname.replace(/^\/[^/]+/, "") || "/");
 
   // The open agent routes must be documented wherever agents look.
   const agentRoutes = ["/api/agent/contact", "/api/agent/jobs"];
@@ -91,8 +95,8 @@ if (errors.length === 0) {
   // Search sitemap lists marketing pages; machine discovery remains in llms.txt.
   const sitemapChecks = ["/services", "/compliance", "/haridwar-sidcul", "/contact"];
   for (const endpoint of sitemapChecks) {
-    if (!sitemap.includes(endpoint)) {
-      errors.push(`sitemap.ts is missing endpoint: ${endpoint}`);
+    if (!sitemapPaths.includes(endpoint)) {
+      errors.push(`sitemap is missing endpoint: ${endpoint} (src/content/registry/pages.ts)`);
     }
   }
 

@@ -1,0 +1,902 @@
+[
+  {
+    "url": "https://www.vayasyaseva.com/en-in",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 1
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/services",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.9
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/services/factory-labour",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/services/loading-unloading-labour",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/services/housekeeping",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/jobs",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs",
+        "x-default": "https://www.vayasyaseva.com/jobs"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs",
+        "x-default": "https://www.vayasyaseva.com/jobs"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs",
+        "x-default": "https://www.vayasyaseva.com/jobs"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/fees-and-fraud",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "yearly",
+    "priority": 0.5,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/fees-and-fraud",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/fees-and-fraud",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/fees-and-fraud",
+        "x-default": "https://www.vayasyaseva.com/jobs/fees-and-fraud"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/fees-and-fraud",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "yearly",
+    "priority": 0.5,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/fees-and-fraud",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/fees-and-fraud",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/fees-and-fraud",
+        "x-default": "https://www.vayasyaseva.com/jobs/fees-and-fraud"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/fees-and-fraud",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "yearly",
+    "priority": 0.5,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/fees-and-fraud",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/fees-and-fraud",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/fees-and-fraud",
+        "x-default": "https://www.vayasyaseva.com/jobs/fees-and-fraud"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/privacy",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "yearly",
+    "priority": 0.4,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/privacy",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/privacy",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/privacy",
+        "x-default": "https://www.vayasyaseva.com/jobs/privacy"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/privacy",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "yearly",
+    "priority": 0.4,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/privacy",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/privacy",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/privacy",
+        "x-default": "https://www.vayasyaseva.com/jobs/privacy"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/privacy",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "yearly",
+    "priority": 0.4,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/privacy",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/privacy",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/privacy",
+        "x-default": "https://www.vayasyaseva.com/jobs/privacy"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/factory-helper",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/factory-helper",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/factory-helper",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/factory-helper",
+        "x-default": "https://www.vayasyaseva.com/jobs/factory-helper"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/factory-helper",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/factory-helper",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/factory-helper",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/factory-helper",
+        "x-default": "https://www.vayasyaseva.com/jobs/factory-helper"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/factory-helper",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/factory-helper",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/factory-helper",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/factory-helper",
+        "x-default": "https://www.vayasyaseva.com/jobs/factory-helper"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/packing",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/packing",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/packing",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/packing",
+        "x-default": "https://www.vayasyaseva.com/jobs/packing"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/packing",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/packing",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/packing",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/packing",
+        "x-default": "https://www.vayasyaseva.com/jobs/packing"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/packing",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/packing",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/packing",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/packing",
+        "x-default": "https://www.vayasyaseva.com/jobs/packing"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/machine-operator",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/machine-operator",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/machine-operator",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/machine-operator",
+        "x-default": "https://www.vayasyaseva.com/jobs/machine-operator"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/machine-operator",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/machine-operator",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/machine-operator",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/machine-operator",
+        "x-default": "https://www.vayasyaseva.com/jobs/machine-operator"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/machine-operator",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/machine-operator",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/machine-operator",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/machine-operator",
+        "x-default": "https://www.vayasyaseva.com/jobs/machine-operator"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/warehouse",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/warehouse",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/warehouse",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/warehouse",
+        "x-default": "https://www.vayasyaseva.com/jobs/warehouse"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/warehouse",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/warehouse",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/warehouse",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/warehouse",
+        "x-default": "https://www.vayasyaseva.com/jobs/warehouse"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/warehouse",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/warehouse",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/warehouse",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/warehouse",
+        "x-default": "https://www.vayasyaseva.com/jobs/warehouse"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/forklift-operator",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/forklift-operator",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/forklift-operator",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/forklift-operator",
+        "x-default": "https://www.vayasyaseva.com/jobs/forklift-operator"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/forklift-operator",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/forklift-operator",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/forklift-operator",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/forklift-operator",
+        "x-default": "https://www.vayasyaseva.com/jobs/forklift-operator"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/forklift-operator",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/forklift-operator",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/forklift-operator",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/forklift-operator",
+        "x-default": "https://www.vayasyaseva.com/jobs/forklift-operator"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/data-entry-operator",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/data-entry-operator",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/data-entry-operator",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/data-entry-operator",
+        "x-default": "https://www.vayasyaseva.com/jobs/data-entry-operator"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/data-entry-operator",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/data-entry-operator",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/data-entry-operator",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/data-entry-operator",
+        "x-default": "https://www.vayasyaseva.com/jobs/data-entry-operator"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/data-entry-operator",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/data-entry-operator",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/data-entry-operator",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/data-entry-operator",
+        "x-default": "https://www.vayasyaseva.com/jobs/data-entry-operator"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/housekeeping",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/housekeeping",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/housekeeping",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/housekeeping",
+        "x-default": "https://www.vayasyaseva.com/jobs/housekeeping"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/housekeeping",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/housekeeping",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/housekeeping",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/housekeeping",
+        "x-default": "https://www.vayasyaseva.com/jobs/housekeeping"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/housekeeping",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/housekeeping",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/housekeeping",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/housekeeping",
+        "x-default": "https://www.vayasyaseva.com/jobs/housekeeping"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/iti-trades",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/iti-trades",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/iti-trades",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/iti-trades",
+        "x-default": "https://www.vayasyaseva.com/jobs/iti-trades"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/iti-trades",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/iti-trades",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/iti-trades",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/iti-trades",
+        "x-default": "https://www.vayasyaseva.com/jobs/iti-trades"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/iti-trades",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/iti-trades",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/iti-trades",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/iti-trades",
+        "x-default": "https://www.vayasyaseva.com/jobs/iti-trades"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/electrician",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/electrician",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/electrician",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/electrician",
+        "x-default": "https://www.vayasyaseva.com/jobs/electrician"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/electrician",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/electrician",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/electrician",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/electrician",
+        "x-default": "https://www.vayasyaseva.com/jobs/electrician"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/electrician",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/electrician",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/electrician",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/electrician",
+        "x-default": "https://www.vayasyaseva.com/jobs/electrician"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/welder",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/welder",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/welder",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/welder",
+        "x-default": "https://www.vayasyaseva.com/jobs/welder"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/welder",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/welder",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/welder",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/welder",
+        "x-default": "https://www.vayasyaseva.com/jobs/welder"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/welder",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/welder",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/welder",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/welder",
+        "x-default": "https://www.vayasyaseva.com/jobs/welder"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/fitter",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/fitter",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/fitter",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/fitter",
+        "x-default": "https://www.vayasyaseva.com/jobs/fitter"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/fitter",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/fitter",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/fitter",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/fitter",
+        "x-default": "https://www.vayasyaseva.com/jobs/fitter"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/fitter",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/fitter",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/fitter",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/fitter",
+        "x-default": "https://www.vayasyaseva.com/jobs/fitter"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/freshers",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/freshers",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/freshers",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/freshers",
+        "x-default": "https://www.vayasyaseva.com/jobs/freshers"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/freshers",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/freshers",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/freshers",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/freshers",
+        "x-default": "https://www.vayasyaseva.com/jobs/freshers"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/freshers",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/freshers",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/freshers",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/freshers",
+        "x-default": "https://www.vayasyaseva.com/jobs/freshers"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/10th-pass",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/10th-pass",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/10th-pass",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/10th-pass",
+        "x-default": "https://www.vayasyaseva.com/jobs/10th-pass"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/10th-pass",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/10th-pass",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/10th-pass",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/10th-pass",
+        "x-default": "https://www.vayasyaseva.com/jobs/10th-pass"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/10th-pass",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/10th-pass",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/10th-pass",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/10th-pass",
+        "x-default": "https://www.vayasyaseva.com/jobs/10th-pass"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/12th-pass",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/12th-pass",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/12th-pass",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/12th-pass",
+        "x-default": "https://www.vayasyaseva.com/jobs/12th-pass"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/12th-pass",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/12th-pass",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/12th-pass",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/12th-pass",
+        "x-default": "https://www.vayasyaseva.com/jobs/12th-pass"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/12th-pass",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/12th-pass",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/12th-pass",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/12th-pass",
+        "x-default": "https://www.vayasyaseva.com/jobs/12th-pass"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/haridwar",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/haridwar",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/haridwar",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/haridwar",
+        "x-default": "https://www.vayasyaseva.com/jobs/haridwar"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/haridwar",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/haridwar",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/haridwar",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/haridwar",
+        "x-default": "https://www.vayasyaseva.com/jobs/haridwar"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/haridwar",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/haridwar",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/haridwar",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/haridwar",
+        "x-default": "https://www.vayasyaseva.com/jobs/haridwar"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/haridwar-sidcul",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.9,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/haridwar-sidcul",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/haridwar-sidcul",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/haridwar-sidcul",
+        "x-default": "https://www.vayasyaseva.com/en-in/haridwar-sidcul"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/haridwar-sidcul",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.9,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/haridwar-sidcul",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/haridwar-sidcul",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/haridwar-sidcul",
+        "x-default": "https://www.vayasyaseva.com/en-in/haridwar-sidcul"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/haridwar-sidcul",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.9,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/haridwar-sidcul",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/haridwar-sidcul",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/haridwar-sidcul",
+        "x-default": "https://www.vayasyaseva.com/en-in/haridwar-sidcul"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/compliance",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/vayasya-setu",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/about",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/faq",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.6
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/contact",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "yearly",
+    "priority": 0.9
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/minimum-wages",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/minimum-wages/uttarakhand",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/minimum-wages/uttar-pradesh",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/minimum-wages/delhi",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/minimum-wages/how-we-check",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "yearly",
+    "priority": 0.5
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/privacy",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "yearly",
+    "priority": 0.3
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/terms",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "yearly",
+    "priority": 0.3
+  }
+]

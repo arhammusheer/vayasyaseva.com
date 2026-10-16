@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { trackServerEvent } from "@/lib/server-events";
-import { contactContract, contactSchema } from "@/lib/contact-contract";
+import { contactContract, parseContactRequest } from "@/lib/contact-contract";
+import { assessCrewRequest } from "@/lib/crew-request";
 import { createContactCaseId, sendInternalContactEmail } from "@/lib/msg91";
 import { clientIp, createRateLimiter } from "@/lib/rate-limit";
 import { agentInfoSchema } from "@/lib/talent-intake/contract";
@@ -22,18 +23,21 @@ export async function POST(request: NextRequest) {
   const body: unknown = await request.json().catch(() => null);
   // The contact form's fields, plus an optional `agent` naming the sender.
   const { agent: rawAgent, ...fields } = body && typeof body === "object" ? (body as Record<string, unknown>) : {};
-  const parsed = contactSchema.safeParse(body && typeof body === "object" ? fields : body);
+  const parsed = parseContactRequest(body && typeof body === "object" ? fields : body);
   const parsedAgent = agentInfoSchema.safeParse(rawAgent);
   if (!parsed.success || !parsedAgent.success) {
     return NextResponse.json(
       {
         error: contactContract.responses.validationError,
-        details: [...(parsed.error?.issues ?? []), ...(parsedAgent.error?.issues.map((i) => ({ ...i, path: ["agent", ...i.path] })) ?? [])],
+        details: [...(parsed.success ? [] : parsed.error.issues), ...(parsedAgent.error?.issues.map((i) => ({ ...i, path: ["agent", ...i.path] })) ?? [])],
       },
       { status: 400 }
     );
   }
   const data = parsed.data;
+  // Set by the website only; an agent can't claim a page.
+  delete data.pageCluster;
+  delete data.sourcePath;
   const agent = parsedAgent.data;
 
   const ip = clientIp(request) ?? "unknown";
@@ -52,14 +56,18 @@ export async function POST(request: NextRequest) {
   const note = `[Sent by an AI agent${agent ? ` (${agent.name})` : ""} on the person's behalf through /api/agent/contact. Confirm the details with them when you reply.]`;
 
   try {
-    const delivery = await sendInternalContactEmail({ ...data, details: `${note}\n\n${data.details}` }, { caseId });
+    const delivery = await sendInternalContactEmail({ ...data, details: [note, data.details].filter(Boolean).join("\n\n") }, { caseId });
     console.info("[AGENT CONTACT DELIVERED]", {
       caseId,
       ip,
       agent: agent?.name ?? null,
       messageId: delivery.messageId,
     });
-    trackServerEvent("enquiry_received", "/api/agent/contact", { channel: "agent" });
+    trackServerEvent("enquiry_received", "/api/agent/contact", {
+      channel: "agent",
+      cluster: "none",
+      qualified: assessCrewRequest(data).qualified ? "yes" : "no",
+    });
     return NextResponse.json({
       success: true,
       caseId,

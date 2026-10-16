@@ -11,6 +11,7 @@ registerHooks({ resolve(specifier, context, next) {
   const base = specifier.startsWith('@/') ? resolve(root, 'src', specifier.slice(2))
     : specifier.startsWith('.') && context.parentURL?.endsWith('.ts') ? resolve(dirname(fileURLToPath(context.parentURL)), specifier) : null;
   if (base && existsSync(`${base}.ts`)) return next(pathToFileURL(`${base}.ts`).href, context);
+  if (base && existsSync(`${base}/index.ts`)) return next(pathToFileURL(`${base}/index.ts`).href, context);
   return next(specifier, context);
 } });
 const { allShareContent, shareLanding } = await import('../src/lib/share-content.ts');

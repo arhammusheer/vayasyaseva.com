@@ -2,8 +2,9 @@
 
 import Script from "next/script";
 import { useCallback, useEffect, useRef, useState, useMemo } from "react";
-import { Check, Loader2 } from "lucide-react";
+import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import Link from "@/components/i18n/link";
 import { useTurnstile } from "@/lib/use-turnstile";
 import { useSessionDraft } from "@/lib/use-session-draft";
 import { FormDraftNotice } from "@/components/form-draft-notice";
@@ -13,15 +14,22 @@ import { formPage, trackAdsConversion, trackAnalyticsEvent } from "@/lib/analyti
 import { jobsCopy } from "@/content/pages/jobs";
 import { STEP_DEFS, quickApplyCopy, roleFor, type Answers, type StepDef } from "@/content/pages/quick-apply";
 import { readPrefill } from "@/lib/prefill";
-import { localePath, type Locale } from "@/lib/i18n";
-import { MAX_APPLICANT_NAME_LENGTH, cleanQuickAnswers, isJobRole, isJobHub, normaliseIndianMobile, type IntakeSource, type JobHub, type JobRole } from "@/lib/talent-intake/rules";
+import { localePath, splitLocalePath, type Locale } from "@/lib/i18n";
+import { clusterById } from "@/content/registry/clusters";
+import { MAX_APPLICANT_NAME_LENGTH, WEB_SOURCE, cleanQuickAnswers, isJobRole, isJobHub, isPagePath, normaliseIndianMobile, type IntakeCluster, type JobHub, type JobRole } from "@/lib/talent-intake/rules";
 import { JobSubmissionFailure, useJobSubmission } from "@/lib/use-job-submission";
 import { TURNSTILE_SCRIPT_URL } from "@/lib/turnstile";
 import { adClick } from "@/lib/ad-click";
 import { JobFilePicker, declareFiles, uploadAll, useJobFiles } from "@/components/jobs/job-files";
 
-/** Stored values shared with n8n; same as the long form. */
-const SOURCE: Record<Locale, IntakeSource> = { "en-IN": "web_en", "hi-IN": "web_hi", "hi-Latn-IN": "web_hinglish" };
+/**
+ * The page's cluster: the hub's own (/jobs/haridwar), or ?cluster=<id> on
+ * /jobs/apply from an ad, when that cluster has public pages. Never asked.
+ */
+function linkCluster(params: URLSearchParams): IntakeCluster | null {
+  const id = params.get("cluster");
+  return id && clusterById(id) ? (id as IntakeCluster) : null;
+}
 /**
  * Answers kept in this browser tab only (sessionStorage), so switching
  * language or going back does not clear them. Never sent anywhere; cleared
@@ -102,7 +110,18 @@ function Pills({
  * Turnstile); the answers reach staff as a short note. Events carry
  * variant "quick" so the two forms can be compared.
  */
-export function QuickApply({ locale, role: pageRole, hub: pageHub }: { locale: Locale; role?: JobRole; hub?: JobHub }) {
+export function QuickApply({
+  locale,
+  role: pageRole,
+  hub: pageHub,
+  cluster: pageCluster,
+}: {
+  locale: Locale;
+  role?: JobRole;
+  hub?: JobHub;
+  /** The cluster of the page the form sits on, sent with the application. */
+  cluster?: IntakeCluster;
+}) {
   const t = quickApplyCopy[locale];
   const form = jobsCopy[locale].form;
   const [answers, setAnswers] = useState<Answers>({});
@@ -117,6 +136,7 @@ export function QuickApply({ locale, role: pageRole, hub: pageHub }: { locale: L
   const started = useRef(false);
   const linkAnswers = useRef<Answers>({});
   const [hub, setHub] = useState<JobHub | null>(null);
+  const [cluster, setCluster] = useState<IntakeCluster | null>(pageCluster ?? null);
   const entry = useRef<"preset" | "fresh" | "restored">("fresh");
   const [missingFiles, setMissingFiles] = useState(false);
   const submission = useJobSubmission("vayasya-quick-submission");
@@ -164,6 +184,7 @@ export function QuickApply({ locale, role: pageRole, hub: pageHub }: { locale: L
     // over conflicting draft choices; the remaining saved fields survive.
     /* eslint-disable react-hooks/set-state-in-effect */
     setHub(pageHub ?? (isJobHub(params.get("hub")) ? params.get("hub") as JobHub : null));
+    setCluster(pageCluster ?? linkCluster(params));
     if (preset) {
       entry.current = "preset";
       setAnswers(preset as Answers);
@@ -172,7 +193,7 @@ export function QuickApply({ locale, role: pageRole, hub: pageHub }: { locale: L
     if (hash?.name) setName(hash.name.slice(0, MAX_APPLICANT_NAME_LENGTH));
     if (hash?.phone) setPhone(hash.phone);
     /* eslint-enable react-hooks/set-state-in-effect */
-  }, [pageRole, pageHub]);
+  }, [pageRole, pageHub, pageCluster]);
 
   const restoreDraft = useCallback((saved: Saved) => {
     entry.current = "restored";
@@ -264,7 +285,9 @@ export function QuickApply({ locale, role: pageRole, hub: pageHub }: { locale: L
     if (name.trim().length < 2) failed.push("name");
     if (!normaliseIndianMobile(phone)) failed.push("phone");
     if (!agreed) failed.push("agree");
-    if (!turnstileToken && !submission.attempt) failed.push("verification");
+    // The browser check is reported only once the fields are right, so it
+    // never stacks with them (Turnstile is often still finishing then).
+    if (!failed.length && !turnstileToken && !submission.attempt) failed.push("verification");
     setFailedChecks(failed);
     if (failed.length) {
       trackAnalyticsEvent("job_form_error", { locale, variant: "quick", page: formPage(), reason: "validation", checks: failed.join(",") });
@@ -276,10 +299,13 @@ export function QuickApply({ locale, role: pageRole, hub: pageHub }: { locale: L
     const sent = cleanQuickAnswers(Object.fromEntries(active.map((s) => [s.id, answers[s.id] ?? []])));
 
     const declared = declareFiles(files);
+    // The page the form sits on, without its locale segment (/jobs/haridwar).
+    const path = splitLocalePath(window.location.pathname).path;
+    const pagePath = isPagePath(path) ? path : null;
     setPhase({ name: "sending", message: form.sending });
     try {
       const ref = await submission.send({
-        start: { source: SOURCE[locale], role, hub, turnstileToken: turnstileToken ?? "", files: declared },
+        start: { source: WEB_SOURCE, locale, pageCluster: cluster, pagePath, role, hub, turnstileToken: turnstileToken ?? "", files: declared },
         payload: { phone, adult: true, consent: true, text: null, form: "quick", name: name.trim().slice(0, MAX_APPLICANT_NAME_LENGTH), answers: sent, adClick: adClick() },
         resetVerification: resetTurnstile,
         upload: async (uploads) => {
@@ -298,7 +324,7 @@ export function QuickApply({ locale, role: pageRole, hub: pageHub }: { locale: L
         questions: active.length,
         files: files.length,
       };
-      trackAnalyticsEvent("job_form_submit", { ...summary, page: formPage(), voice: "no" });
+      trackAnalyticsEvent("job_form_submit", { ...summary, page: formPage() });
       trackAnalyticsEvent("quick_apply_submit", summary);
       trackAdsConversion("jobApplication");
     } catch (error) {
@@ -316,7 +342,10 @@ export function QuickApply({ locale, role: pageRole, hub: pageHub }: { locale: L
         <p className="mt-8 text-sm text-muted-foreground">{form.done.refLabel}</p>
         <p className="font-data text-3xl tracking-wide text-gold-700 sm:text-4xl">{phase.ref}</p>
         <p className="mt-6 max-w-md text-lg leading-relaxed text-muted-foreground">{form.done.body}</p>
-        <button type="button" className="text-link mt-8" onClick={() => { clearDraft(); setPhase({ name: "form" }); }}>{form.done.again}</button>
+        <div className="mt-6 flex flex-col items-start">
+          <Link href={localePath("/jobs/fees-and-fraud", locale)} className="text-link mt-0">{form.done.fraud} <ArrowRight size={18} aria-hidden="true" /></Link>
+          <button type="button" className="text-link mt-0" onClick={() => { clearDraft(); setPhase({ name: "form" }); }}>{form.done.again}</button>
+        </div>
       </div>
     );
   }
@@ -335,6 +364,7 @@ export function QuickApply({ locale, role: pageRole, hub: pageHub }: { locale: L
       {hasDraft && draft.restored && !submission.attempt && <FormDraftNotice locale={locale} restored={draft.restored} missingFiles={missingFiles && files.length === 0} disabled={sending} onClear={clearDraft} onResume={() => revealFormTarget(root.current?.querySelector<HTMLElement>(`#quick-q-${detailsUnlocked ? "details" : visible[visible.length - 1]?.id}`) ?? null)} />}
       {submission.attempt && phase.name === "form" && <p role="status" className="mb-6 text-sm leading-relaxed" data-retry-notice>{form.retryNotice} <strong className="font-data">{submission.attempt.started.ref}</strong></p>}
       <Script src={TURNSTILE_SCRIPT_URL} onReady={onVerificationReady} />
+      <p className="quick-shifts">{t.shifts}</p>
       <div className="quick-progress" style={{ gridTemplateColumns: `repeat(${total}, 1fr)` }} aria-hidden="true">
         {Array.from({ length: total }, (_, i) => (
           <span key={i} className={cn(i < doneCount && "is-done")} />
@@ -417,14 +447,17 @@ export function QuickApply({ locale, role: pageRole, hub: pageHub }: { locale: L
             {errorFor("phone") && <p id="quick-phone-error" className="jobs-error" role="alert">{errorFor("phone")}</p>}
             <JobFilePicker locale={locale} picker={filePicker} disabled={locked} compact optionalLabel={t.details.optional} />
             <label className="jobs-check mt-6">
-              <input type="checkbox" name="agree" aria-invalid={visibleChecks.includes("agree") || undefined} aria-describedby={errorFor("agree") ? "quick-agree-error" : undefined} checked={agreed} onChange={(e) => setAgreed(e.target.checked)} disabled={locked} />
-              <span>
-                {form.steps.phone.agree}{" "}
-                <a href={localePath("/privacy", "en-IN")} target="_blank" rel="noopener" className="underline underline-offset-4">
-                  {form.steps.phone.privacyLink}
-                </a>
-              </span>
+              <input type="checkbox" name="agree" aria-invalid={visibleChecks.includes("agree") || undefined} aria-describedby={errorFor("agree") ? "quick-agree-error quick-keep" : "quick-keep"} checked={agreed} onChange={(e) => setAgreed(e.target.checked)} disabled={locked} />
+              <span>{form.steps.phone.agree}</span>
             </label>
+            {/* The applicant notice opens in a new tab, so this form and its
+                answers stay as they are; the tab's draft covers a reload. */}
+            <p id="quick-keep" className="jobs-check-note">
+              {form.steps.phone.keep}{" "}
+              <a href={localePath("/jobs/privacy", locale)} target="_blank" rel="noopener" className="jobs-check-link underline underline-offset-4">
+                {form.steps.phone.details}&nbsp;<span aria-hidden="true">→</span>
+              </a>
+            </p>
             {errorFor("agree") && <p id="quick-agree-error" className="jobs-error" role="alert">{errorFor("agree")}</p>}
             {summaryChecks.length > 0 && (
               <ul ref={errorSummary} id="quick-errors" tabIndex={-1} className="jobs-errors form-scroll-target" role="alert">
@@ -449,7 +482,12 @@ export function QuickApply({ locale, role: pageRole, hub: pageHub }: { locale: L
       {/* One Turnstile box for the whole flow: it checks the browser while the
           questions are answered, and only shows if it needs an interaction. */}
       <div ref={turnstileBox} className="mt-5" />
-      <p className="quick-note">{t.noFee}</p>
+      <p className="quick-note">
+        {t.noFee.text}{" "}
+        <Link href={localePath("/jobs/fees-and-fraud", locale)} className="underline underline-offset-4">
+          {t.noFee.link}&nbsp;<span aria-hidden="true">→</span>
+        </Link>
+      </p>
     </div>
   );
 }

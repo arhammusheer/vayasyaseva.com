@@ -5,15 +5,28 @@
  */
 import { createHmac, randomInt, timingSafeEqual } from "node:crypto";
 import { AwsClient } from "aws4fetch";
-import type { AttachmentKind, IntakeChannel, IntakeSource, JobHub, JobRole } from "./rules";
+import type { AttachmentKind, IntakeChannel, IntakeCluster, IntakeLocale, JobHub, JobRole, SubmissionSource } from "./rules";
 import { attachmentKeyPrefix } from "./rules";
 
 const R2_ENDPOINT = "https://3f03827748ac33418f1176adaa436f26.r2.cloudflarestorage.com";
 const R2_BUCKET = "vayasya-talent-intake";
 const WEBHOOK_URL = "https://hooks.vayasyaseva.com/webhook/vspl-talent-intake";
 
-/** Version of the privacy notice a person agrees to on the jobs page. */
-export const TALENT_CONSENT_VERSION = "2026-10-02";
+/**
+ * Version of the privacy notice and consent line a person agrees to on the
+ * jobs pages, stored with each submission. Bump it whenever either changes.
+ * Earlier versions stay valid for the records that carry them (n8n stores
+ * the string as given): 2026-10-02, the first jobs notice; 2026-10-16, the
+ * area, page and language fields, the worker list (the 12 months restart
+ * only when the person speaks with us, replies or confirms; unanswered
+ * outreach does not count), Fast2SMS, sharing with another employer only
+ * with fresh agreement, no audio or Sarvam, and the phone-free withdrawal
+ * route (PLAN §8.3); 2026-10-16-v7, the same day's consent v7: the checkbox
+ * line "We keep your details for 12 months. Details →" and the plain
+ * applicant notice at /jobs/privacy in each jobs language, with /privacy §10
+ * still the governing text. Owner/counsel sign-off pending.
+ */
+export const TALENT_CONSENT_VERSION = "2026-10-16-v7";
 
 /** Upload links and tickets are short-lived. */
 const UPLOAD_URL_SECONDS = 15 * 60;
@@ -51,13 +64,6 @@ export function newRef() {
 }
 
 const EXTENSIONS: Record<string, string> = {
-  "audio/webm": "webm",
-  "audio/ogg": "ogg",
-  "audio/mp4": "m4a",
-  "audio/x-m4a": "m4a",
-  "audio/mpeg": "mp3",
-  "audio/aac": "aac",
-  "audio/wav": "wav",
   "image/jpeg": "jpg",
   "image/png": "png",
   "image/webp": "webp",
@@ -83,7 +89,14 @@ export interface TicketFile {
 
 export interface Ticket {
   ref: string;
-  source: IntakeSource;
+  /** "web" on tickets from pages that send their locale; a legacy page source otherwise. */
+  source: SubmissionSource;
+  /** The page's language. Missing on tickets with a legacy source, which implies it. */
+  locale?: IntakeLocale | null;
+  /** The cluster of the page the form sits on. Missing on older tickets. */
+  pageCluster?: IntakeCluster | null;
+  /** The neutral path of the page the form sits on. Missing on older tickets. */
+  pagePath?: string | null;
   /** Missing on tickets issued before role pages existed. */
   role?: JobRole | null;
   /** Missing on tickets issued before hub pages sent it. */

@@ -2,45 +2,59 @@ import Link from "@/components/i18n/link";
 import { ArrowUpRight } from "lucide-react";
 import type { Locale } from "@/lib/i18n";
 
+type BandCopy = { heading: [string, string]; aria: string; link: string };
+
+/**
+ * The crew band: heading and button only. The ask (roles, headcount,
+ * shifts) is in the home hero, and the reply time on /contact. Hindi and
+ * Hinglish are drafts for native review.
+ */
 const copy = {
   "en-IN": {
-    eyebrow: "START A CONVERSATION",
-    heading: ["What’s next for", "your business?"],
-    text: "Tell us what you have in mind. We’ll take it from there.",
-    aria: "Contact Vayasya Seva",
-    link: "Let’s talk",
+    heading: ["Need workers", "on your site?"],
+    aria: "Request a crew from Vayasya Seva",
+    link: "Request a crew",
   },
   "hi-IN": {
-    eyebrow: "बातचीत शुरू करें",
-    heading: ["आपके बिज़नेस के लिए", "आगे क्या?"],
-    text: "आपके मन में जो है, बताइए। आगे हम संभाल लेंगे।",
-    aria: "Vayasya Seva से संपर्क करें",
-    link: "बात करें",
+    heading: ["अपनी साइट पर", "कामगार चाहिए?"],
+    aria: "Vayasya Seva से कामगार माँगें",
+    link: "कामगार माँगें",
   },
   "hi-Latn-IN": {
-    eyebrow: "BAATCHEET SHURU KAREIN",
-    heading: ["Aapke business ke liye", "aage kya?"],
-    text: "Aapke mann mein jo hai, bataiye. Aage hum sambhal lenge.",
-    aria: "Vayasya Seva se contact karein",
-    link: "Baat karein",
+    heading: ["Apni site par", "workers chahiye?"],
+    aria: "Vayasya Seva se workers maangein",
+    link: "Workers maangein",
   },
-} satisfies Record<Locale, unknown>;
+} satisfies Record<Locale, BandCopy>;
 
-export function CtaBlock({ locale = "en-IN" }: { locale?: Locale }) {
-  const t = copy[locale];
+/** The Setu product page: its next step is a Setu conversation, not a crew. */
+const setuCopy: BandCopy = {
+  heading: ["Want to see", "Setu at work?"],
+  aria: "Ask Vayasya Seva about Setu",
+  link: "Ask about Setu",
+};
+
+/**
+ * `href` lets a location page keep its prefill, e.g. "/contact#location=haridwar".
+ * `variant="setu"` swaps the crew request for the Setu enquiry (English only).
+ */
+export function CtaBlock({
+  locale = "en-IN",
+  href = "/contact",
+  variant = "crew",
+}: { locale?: Locale; href?: string; variant?: "crew" | "setu" }) {
+  const t: BandCopy = variant === "setu" ? setuCopy : copy[locale];
   return (
     <section className="contact-invitation">
       <div className="site-shell invitation-inner">
         <div>
-          <p className="eyebrow">{t.eyebrow}</p>
           <h2>
             {t.heading[0]}
             <br />
             {t.heading[1]}
           </h2>
-          <p>{t.text}</p>
         </div>
-        <Link href="/contact" className="round-link" aria-label={t.aria}>
+        <Link href={href} className="round-link" aria-label={t.aria}>
           <ArrowUpRight aria-hidden="true" />
           <span>{t.link}</span>
         </Link>

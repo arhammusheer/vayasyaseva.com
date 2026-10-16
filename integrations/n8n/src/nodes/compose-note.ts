@@ -6,27 +6,42 @@
 import { INTAKE_FORMS, JOB_HUBS, JOB_ROLES, QUICK_ANSWERS, QUICK_QUESTIONS, type QuickQuestion } from "../../../../src/lib/talent-intake/rules.ts";
 import type { ComposedNote } from "../types.ts";
 
+/** The page's language, by stored locale (BCP 47 on new rows, short code on older ones). */
 const PAGES: Record<string, string> = {
-  web_en: "English jobs page (en-IN)",
-  web_hi: "हिंदी jobs page (hi-IN)",
-  web_hinglish: "Hindi jobs page, Latin script (hi-Latn-IN)",
+  "en-IN": "English jobs page (en-IN)",
+  "hi-IN": "हिंदी jobs page (hi-IN)",
+  "hi-Latn-IN": "Hindi jobs page, Latin script (hi-Latn-IN)",
+  en: "English jobs page (en-IN)",
+  hi: "हिंदी jobs page (hi-IN)",
+  hinglish: "Hindi jobs page, Latin script (hi-Latn-IN)",
 };
-/** An agent's submission has no page; its source only says the language. */
-const AGENT_LANGUAGES: Record<string, string> = { web_en: "English", web_hi: "Hindi", web_hinglish: "Hindi, Latin script" };
+/** An agent's submission has no page; its locale only says the language. */
+const AGENT_LANGUAGES: Record<string, string> = {
+  "en-IN": "English",
+  "hi-IN": "Hindi",
+  "hi-Latn-IN": "Hindi, Latin script",
+  en: "English",
+  hi: "Hindi",
+  hinglish: "Hindi, Latin script",
+};
 const KIND: Record<string, string> = { audio: "voice note", image: "photo", document: "document" };
 
 export default async function main(): Promise<N8nItem<ComposedNote>[]> {
   const s = $("Claim submission").first().json;
-  const page = s.channel === "agent" ? `AI agent (${AGENT_LANGUAGES[s.source] ?? s.source})` : (PAGES[s.source] ?? s.source);
+  const page = s.channel === "agent" ? `AI agent (${AGENT_LANGUAGES[s.locale] ?? s.locale})` : (PAGES[s.locale] ?? s.locale);
   const lines = [`**${s.applicantName ? `${s.applicantName} · ` : ""}Job seeker ${s.ref}** · ${page} · ${s.phone}`];
-  if (s.form) lines.push(`**Form:** ${INTAKE_FORMS[s.form] ?? s.form}`);
+  if (s.form) lines.push(`**Form:** ${INTAKE_FORMS[s.form] ?? s.form}${s.pagePath ? ` on ${s.pagePath}` : ""}`);
+  if (s.cluster) {
+    const page = s.pageCluster && s.pageCluster !== s.cluster ? ` (page: ${s.pageCluster})` : "";
+    lines.push(`**Cluster:** ${s.cluster}${page}`);
+  }
   if (s.channel === "agent") {
     lines.push(
       `**Sent by an AI agent${s.agentName ? ` (${s.agentName})` : ""}** on the person's behalf, not through the form. Confirm the details and their consent when you call.`,
     );
   }
   if (s.role) lines.push(`**Asked about:** ${JOB_ROLES[s.role] ?? s.role}`);
-  if (s.hub) lines.push(`**Came from:** ${JOB_HUBS[s.hub] ?? s.hub} (not linked on the site; found through search)`);
+  if (s.hub) lines.push(`**Came from:** ${JOB_HUBS[s.hub] ?? s.hub}`);
 
   if (s.answers) {
     lines.push("", "**Their answers:**");

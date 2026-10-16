@@ -4,50 +4,49 @@ import { ArrowUpRight } from "lucide-react";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
-import { FaqSection } from "@/components/sections/faq-section";
-import { complianceFaqs } from "@/content/faqs";
 import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { siteConfig } from "@/content/site";
+import { COMPLIANCE_HELP, COMPLIANCE_RECORDS, CONTRACTOR_CHECKS } from "@/content/compliance";
+import { linkable } from "@/content/registry";
+import { WAGE_HUB_PATH, guidePath } from "@/content/registry/identifiers";
 import { localeParams } from "@/lib/i18n";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/compliance");
 
+const TITLE = "Contract Labour Compliance: EPF, ESIC, PT and LWF";
+const DESCRIPTION =
+  "Registers, payroll, EPF, ESIC, Professional Tax, Labour Welfare Fund and the contract labour licence: what we run for each worker, and the documents you get.";
+
 export const metadata = pageMetadata({
-  title: "Labour Compliance, EPF & ESIC Support",
-  description:
-    "Vayasya Seva’s approach to contract labour compliance: worker documentation, attendance, wage records, EPF and ESIC contributions, and support for client reviews.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/compliance" },
 });
-const records = [
-  {
-    title: "Worker onboarding & records",
-    text: "Worker identification, employment documentation and applicable EPF and ESIC enrolment form the basis of workforce administration.",
-  },
-  {
-    title: "Attendance & wage documentation",
-    text: "Site attendance and wage records help connect the work performed with payroll inputs and statutory reporting.",
-  },
-  {
-    title: "EPF & ESIC contributions",
-    text: "Contribution records and challans support the review of statutory payments for eligible workers.",
-  },
-  {
-    title: "Client reviews & audit support",
-    text: "Registration certificates, contribution records and workforce documentation can be shared for due diligence and review. Our team helps coordinate the documents relevant to your engagement.",
-  },
-];
+
+/** Reference pages, in the resources line once published. */
+const resources = [
+  { href: WAGE_HUB_PATH, label: "Minimum wages by state" },
+  { href: guidePath("new-labour-codes"), label: "New labour codes guide" },
+].filter((r) => linkable(r.href, "en-IN"));
+
+/** Ruled rows: a title and one line each, all visible. */
+function Rows({ items }: { items: { title: string; text: string }[] }) {
+  return (
+    <ul className="jobs-work">
+      {items.map((r) => (
+        <li key={r.title}>
+          <h3>{r.title}</h3>
+          <p>{r.text}</p>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export default function CompliancePage() {
   return (
     <>
-      <JsonLd
-        data={webPageSchema({
-          type: "WebPage",
-          name: "Labour Compliance, EPF & ESIC Support",
-          description:
-            "Vayasya Seva’s approach to contract labour compliance: worker documentation, attendance, wage records, EPF and ESIC contributions, and support for client reviews.",
-          url: "/compliance",
-        })}
-      />
+      <JsonLd data={webPageSchema({ name: TITLE, description: DESCRIPTION, url: "/compliance" })} />
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", href: "/" },
@@ -55,99 +54,54 @@ export default function CompliancePage() {
         ])}
       />
       <PageHero
-        tone="dark"
-        title={
-          <>
-            Care for the workforce.
-            <br />
-            Attention to the detail.
-          </>
-        }
-        lede="Labour compliance is central to how we manage an engagement, from worker onboarding to the records your team needs to review."
+        title="Labour compliance: the records we keep."
+        lede="What we keep for every worker on your site, what to check with any contractor, and how to get the documents."
       />
       <Section>
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-[1fr_1.6fr]">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.6fr]">
+          <h2 className="text-4xl font-medium">For every worker.</h2>
           <div>
-            <p className="eyebrow text-gold-700">COMPLIANCE IN PRACTICE</p>
-            <h2 className="mt-5 text-4xl font-medium">
-              The records behind
-              <br />
-              the relationship.
-            </h2>
-            <p className="mt-5 text-muted-foreground leading-relaxed">
-              We coordinate documentation with your HR, operations and
-              procurement teams, keeping the requirements of the site and the
-              workforce in view.
+            <Rows items={COMPLIANCE_RECORDS} />
+            <p className="compliance-line">
+              <span>Registered under EPF and ESIC.</span>
+              <Link href="/about" className="text-link">
+                Company details on About <ArrowUpRight size={18} aria-hidden="true" />
+              </Link>
+              <a href={`mailto:${siteConfig.email}?subject=Compliance%20documents`} className="text-link">
+                Request compliance documents <ArrowUpRight size={18} aria-hidden="true" />
+              </a>
             </p>
-          </div>
-          <div className="detail-list">
-            {records.map((r, i) => (
-              <details key={r.title} open={i === 0}>
-                <summary>{r.title}</summary>
-                <div className="detail-body">
-                  <p>{r.text}</p>
-                </div>
-              </details>
-            ))}
           </div>
         </div>
       </Section>
       <Section variant="subtle">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.6fr]">
+          <h2 className="text-4xl font-medium">Before you sign with any contractor.</h2>
           <div>
-            <h2 className="text-4xl font-medium">
-              Registered.
-              <br />
-              Open to review.
-            </h2>
-            <p className="mt-5 max-w-sm text-muted-foreground">
-              Our registration documents are available during vendor onboarding
-              and due diligence.
-            </p>
+            <Rows items={CONTRACTOR_CHECKS} />
+            {resources.length > 0 && (
+              <p className="link-row mt-10 border-t pt-4">
+                {resources.map((r) => (
+                  <Link key={r.href} href={r.href} className="text-link">
+                    {r.label} <ArrowUpRight size={18} aria-hidden="true" />
+                  </Link>
+                ))}
+              </p>
+            )}
           </div>
-          <dl className="divide-y border-y">
-            {[
-              { label: "EPF", value: "Registered" },
-              { label: "ESIC", value: "Registered" },
-              { label: "GSTIN", value: siteConfig.gstin },
-              { label: "MSME / UDYAM", value: siteConfig.msme },
-            ].map((r) => (
-              <div
-                key={r.label}
-                className="flex flex-wrap justify-between gap-3 py-5"
-              >
-                <dt>{r.label}</dt>
-                <dd className="font-data text-sm text-muted-foreground break-all">
-                  {r.value}
-                </dd>
-              </div>
-            ))}
-          </dl>
         </div>
       </Section>
-      <Section>
-        <div className="max-w-2xl">
-          <h2 className="text-4xl font-medium">Need a closer look?</h2>
-          <p className="mt-4 text-muted-foreground">
-            Tell us which documents your team needs for vendor assessment or an
-            engagement review.
-          </p>
-          <a
-            href={`mailto:${siteConfig.email}?subject=Compliance%20documentation`}
-            className="text-link"
-          >
-            Request compliance documents <ArrowUpRight size={18} />
-          </a>
-          <p className="mt-8 text-sm text-muted-foreground">
-            See how compliance fits into{" "}
-            <Link href="/services" className="underline underline-offset-4">
-              our workforce and industrial services
+      <Section id="help">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.6fr]">
+          <h2 className="text-4xl font-medium">{COMPLIANCE_HELP.heading}</h2>
+          <div>
+            <p className="text-lg leading-relaxed text-muted-foreground">{COMPLIANCE_HELP.text}</p>
+            <Link href={COMPLIANCE_HELP.href} className="text-link">
+              {COMPLIANCE_HELP.label} <ArrowUpRight size={18} aria-hidden="true" />
             </Link>
-            .
-          </p>
+          </div>
         </div>
       </Section>
-      <FaqSection eyebrow="QUESTIONS" variant="subtle" items={complianceFaqs} />
       <CtaBlock />
     </>
   );

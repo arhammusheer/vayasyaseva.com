@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useState, useSyncExternalStore } from "react";
+import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import Link from "@/components/i18n/link";
 import Script from "next/script";
 import { usePathname } from "next/navigation";
@@ -74,11 +74,60 @@ function sanitizeBasicEvent(event: BeforeSendEvent): BeforeSendEvent | null {
   }
 }
 
+/**
+ * The banner speaks the page's language. Hindi and Hinglish strings are drafts
+ * for native review, like every hi-IN and hi-Latn-IN string. Two sentences
+ * and a link: the detail is the table in the privacy notice (§3, #analytics),
+ * which is English only, and the link says so. The sentences keep what
+ * consent v7 rests on (cookie-free counts, the ad-click report, recordings
+ * with typed text, 30-day unsent forms, no remarketing); dropping any of
+ * them needs owner or legal sign-off and a consent version bump.
+ */
+const BANNER = {
+  "en-IN": {
+    label: "Privacy choices",
+    question: "Allow additional analytics?",
+    more: "Learn more",
+    less: "Show less",
+    reject: "Required Only",
+    accept: "Allow All",
+    details:
+      "Cookie-free page counts run on every visit, and if you apply for a job after clicking one of our ads, Google Ads learns which click it was unless you choose Required Only. Allow All adds Google Analytics, ad measurement (no remarketing) and recordings of your visit, including what you type in forms; a form you leave unsent is kept 30 days, only to fix the forms.",
+    privacy: "How each one works",
+    end: ".",
+  },
+  "hi-IN": {
+    label: "गोपनीयता के विकल्प",
+    question: "ज़्यादा एनालिटिक्स चालू करें?",
+    more: "और जानें",
+    less: "कम दिखाएँ",
+    reject: "सिर्फ़ ज़रूरी",
+    accept: "सब की अनुमति दें",
+    details:
+      "हर विज़िट पर बिना कुकी वाली पेज गिनती चलती है, और अगर आप हमारे विज्ञापन से आकर आवेदन करते हैं, तो Google Ads को बस यह पता चलता है कि कौन सा क्लिक था (“सिर्फ़ ज़रूरी” चुनने पर यह भी नहीं)। “सब की अनुमति दें” चुनने पर Google Analytics, विज्ञापन की गिनती (रीमार्केटिंग नहीं) और आपकी विज़िट की रिकॉर्डिंग भी चलती है, जिसमें फ़ॉर्म में लिखी बातें भी आती हैं; अधूरा छोड़ा फ़ॉर्म 30 दिन रखा जाता है, सिर्फ़ फ़ॉर्म ठीक करने के लिए।",
+    privacy: "हर एक का ब्योरा (अंग्रेज़ी में)",
+    end: "।",
+  },
+  "hi-Latn-IN": {
+    label: "Privacy ke vikalp",
+    question: "Extra analytics chalu karein?",
+    more: "Aur jaanein",
+    less: "Kam dikhayein",
+    reject: "Sirf zaroori",
+    accept: "Sab allow karein",
+    details:
+      "Har visit par bina cookie wali page ginti chalti hai, aur agar aap hamare ad se aakar apply karte hain, to Google Ads ko bas yeh pata chalta hai ki kaun sa click tha (“Sirf zaroori” chunne par yeh bhi nahi). “Sab allow karein” chunne par Google Analytics, ad ki ginti (remarketing nahi) aur aapki visit ki recording bhi chalti hai, jismein form mein likhi baatein bhi aati hain; adhoora chhoda form 30 din rakha jaata hai, sirf form theek karne ke liye.",
+    privacy: "Poori jaankari (English mein)",
+    end: ".",
+  },
+} as const;
+
 export function Analytics({ gaId }: { gaId: string }) {
   const consent = useSyncExternalStore(subscribeToConsent, getConsent, () => "loading");
   const [showPreferences, setShowPreferences] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const detailsId = useId();
+  const bannerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const openPreferences = () => setShowPreferences(true);
@@ -88,6 +137,28 @@ export function Analytics({ gaId }: { gaId: string }) {
 
   const pathname = usePathname();
   const locale = pageLocale(pathname);
+  const t = BANNER[locale as keyof typeof BANNER] ?? BANNER["en-IN"];
+  const bannerOpen = consent !== "loading" && (consent === null || showPreferences);
+
+  // While the banner is open, reserve its height at the foot of the page so
+  // the last form controls can scroll clear of it (globals.css, .consent-open).
+  useEffect(() => {
+    const root = document.documentElement;
+    const banner = bannerRef.current;
+    if (!bannerOpen || !banner) {
+      root.classList.remove("consent-open");
+      return;
+    }
+    const measure = () => root.style.setProperty("--consent-banner-h", `${Math.ceil(banner.getBoundingClientRect().height)}px`);
+    measure();
+    root.classList.add("consent-open");
+    const observer = new ResizeObserver(measure);
+    observer.observe(banner);
+    return () => {
+      observer.disconnect();
+      root.classList.remove("consent-open");
+    };
+  }, [bannerOpen]);
   const consentState = consent === "loading" ? null : (consent ?? "none");
 
   // Session properties in Umami, so any report can be filtered by language,
@@ -188,34 +259,36 @@ export function Analytics({ gaId }: { gaId: string }) {
         </Script>
       )}
       {consent === "accepted" && metaPixelId && <MetaPixel pixelId={metaPixelId} />}
-      {consent !== "loading" && (consent === null || showPreferences) && (
+      {bannerOpen && (
         <section
-          aria-label="Privacy choices"
-          className="fixed bottom-3 right-3 z-[100] max-h-[calc(100dvh-1.5rem)] w-[min(320px,calc(100vw-1.5rem))] overflow-y-auto rounded-md border border-white/10 border-l-[3px] border-l-gold-500/70 bg-neutral-950/55 p-3 text-white shadow-[0_8px_24px_rgba(0,0,0,0.12)] backdrop-blur-md transition-[background-color,border-color,box-shadow] duration-200 hover:border-l-gold-500 hover:bg-neutral-950/95 hover:shadow-[0_12px_32px_rgba(0,0,0,0.22)] focus-within:border-l-gold-500 focus-within:bg-neutral-950/95 sm:right-5"
+          ref={bannerRef}
+          lang={locale}
+          aria-label={t.label}
+          className="consent-banner fixed bottom-3 right-3 z-[100] max-h-[calc(100dvh-1.5rem)] w-[min(340px,calc(100vw-1.5rem))] overflow-y-auto rounded-md border border-white/10 border-l-[3px] border-l-gold-500/70 bg-neutral-950/95 p-3 text-white shadow-[0_12px_32px_rgba(0,0,0,0.22)] sm:right-5"
         >
-          <div className="flex items-center justify-between gap-3">
-            <p className="text-sm leading-snug">Allow additional analytics?</p>
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-sm leading-snug">{t.question}</p>
             <button
               type="button"
               aria-expanded={showDetails}
               aria-controls={detailsId}
               onClick={() => setShowDetails((open) => !open)}
-              className="inline-flex min-h-6 shrink-0 items-center gap-0.5 text-xs text-white/70 underline underline-offset-2 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-500"
+              className="inline-flex min-h-12 shrink-0 items-center gap-0.5 px-1 text-xs text-white/75 underline underline-offset-2 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-500 sm:min-h-10"
             >
-              {showDetails ? "Show less" : "Learn more"}
+              {showDetails ? t.less : t.more}
               <ChevronDownIcon aria-hidden="true" className={`size-3.5 transition-transform ${showDetails ? "rotate-180" : ""}`} />
             </button>
           </div>
-          <div id={detailsId} hidden={!showDetails} className="mt-2 text-xs leading-relaxed text-white/80">
-            Cookie-free page counts and usage events (which links and form steps are used, never what you type) always run. If you came from one of our Google ads and apply for a job, we tell Google Ads which ad click it was, nothing about you; Required Only stops this. Allowing adds Google Analytics (referrals, approximate location, device details, site actions) and recordings of your visit (Umami, on our own servers) that include the forms and what you type in them, and Google Ads counting when a visit from one of our ads ends in an enquiry. If you leave a form unfinished, what you typed is kept on our own servers for 30 days, only to fix the forms; voice notes and files are never kept. No ad targeting or remarketing. See our{" "}
-            <Link href="/privacy" className="text-white underline underline-offset-2 hover:text-gold-400">privacy policy</Link>.
+          <div id={detailsId} hidden={!showDetails} className="mt-1 text-xs leading-relaxed text-white/80">
+            {t.details}{" "}
+            <Link href="/privacy#analytics" className="text-white underline underline-offset-2 hover:text-gold-400">{t.privacy}</Link>{t.end}
           </div>
-          <div className="mt-2 flex flex-wrap items-center justify-end gap-1">
-            <Button type="button" size="sm" variant="ghost" onClick={() => choose("rejected")} className="text-white/75 hover:bg-white/10 hover:text-white">
-              Required Only
+          <div className="mt-2 grid grid-cols-2 gap-2">
+            <Button type="button" variant="ghost" onClick={() => choose("rejected")} className="min-h-12 whitespace-normal px-3 text-white/80 hover:bg-white/10 hover:text-white sm:h-10 sm:min-h-10">
+              {t.reject}
             </Button>
-            <Button type="button" size="sm" onClick={() => choose("accepted")}>
-              Allow All
+            <Button type="button" onClick={() => choose("accepted")} className="min-h-12 whitespace-normal px-3 sm:h-10 sm:min-h-10">
+              {t.accept}
             </Button>
           </div>
         </section>

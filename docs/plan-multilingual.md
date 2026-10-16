@@ -18,11 +18,11 @@ Google does not treat Hindi in Latin script as its own search language and may r
 
 ## Routing
 
-Every page is at `/<locale><path>`, for example `/en-in/about`, `/hi-in/jobs`, `/hi-latn-in/services/housekeeping`. The path without a locale (`/about`, `/jobs`) is the page's **neutral URL**. What it does is set per page in `pages` in `src/lib/i18n.ts`:
+Every page is at `/<locale><path>`, for example `/en-in/about`, `/hi-in/jobs`, `/hi-latn-in/services/housekeeping`. The path without a locale (`/about`, `/jobs`) is the page's **neutral URL**. What it does is set per page in the page registry, `src/content/registry/pages.ts` (`neutral`); `pages` in `src/lib/i18n.ts` is derived from it:
 
-1. **Default in code:** the neutral URL redirects (308) to English. A page not listed in `pages` is English only.
-2. **Page override set to a locale:** the neutral URL redirects (308) to that locale, e.g. `{ locales: ["en-IN", "hi-IN"], override: "hi-IN" }`.
-3. **Page override set to `"prompt"`:** the neutral URL shows a language picker. The address bar keeps the neutral URL, and each choice links to that page in one language. Query strings carry over, so `/jobs?utm_source=whatsapp` keeps its tag.
+1. **Default in code:** the neutral URL redirects (308) to English. A path not in the registry is treated as English only, so it lands on `/en-in/...` and 404s there.
+2. **`neutral` set to a locale:** the neutral URL redirects (308) to that locale.
+3. **`neutral` set to `"prompt"`:** the neutral URL shows a language picker. The address bar keeps the neutral URL, and each choice links to that page in one language. Query strings carry over, so `/jobs?utm_source=whatsapp` keeps its tag.
 
 `/jobs` and every `/jobs/<role>` page use `"prompt"`. Share `www.vayasyaseva.com/jobs` when you don't know which language the person reads.
 
@@ -31,12 +31,17 @@ Redirects from a neutral URL are permanent (308), so ranking moves to the locale
 Other rules, in `src/proxy.ts`:
 
 - A locale the page doesn't have (e.g. `/hi-in/about`) resolves as the neutral URL, so `/hi-in/about` goes to `/en-in/about`. This redirect is temporary (307), because it stops applying once the translation exists.
-- The old prefixes redirect permanently in `next.config.ts`: `/hi/*` to `/hi-in/*`, and the old Latin-script prefix to `/hi-latn-in/*`.
-- The picker's internal route (`/select-language/...`) is reached only by rewrite; visiting it directly redirects to the neutral URL.
+- The old prefixes (`/hi/*`, and the old Latin-script prefix) are mapped in the proxy's locale routing (`fromLegacyPrefix` in `src/lib/i18n.ts`), not in `next.config.ts`, whose redirects would run first. The mapped URL is then routed like any other, so an old link takes one redirect to its final page even when that page has since retired or lost a language (`tests/legacy-redirects.spec.mjs`). That redirect is permanent (308) even where the mapped URL's own is temporary (`/hi` to `/en-in` while the Hindi home is unbuilt): the old prefix never comes back. An old URL whose page 404s answers 404 itself, with no hop. On the apex host they go straight to www, so they are one hop too.
+- The picker's internal route (`/select-language/...`) is reached only by rewrite; visiting it directly redirects to the neutral URL. Only a real order key (2–3 distinct codes, then an optional known share variant) is stripped: `/select-language/hi` goes to `/hi`.
+- The picker's order is chosen per request (PLAN §6.4, `src/lib/language-rank.ts`). Signals, in order: the `vspl_lang` cookie (set only when someone picks a language on the picker; it holds only the locale), non-English `Accept-Language` tags by q-value (`hi` pulls Hinglish in right after हिंदी), the visitor's state from the geo headers (`x-vercel-ip-country-region` on Vercel; `CF-IPCountry` plus `cf-region-code` behind Cloudflare, read by one helper, `visitorRegion`), the page's cluster (a jobs page without its own uses the one cluster with a published jobs hub, today Haridwar, so `/jobs` stays Hindi-first when the region is missing or misread), then the default set. Sets: Hindi belt हिंदी · Hinglish · English; Punjab Hinglish · English · हिंदी; Karnataka English · Hinglish · हिंदी until kn-IN exists; default, crawlers and outside India English · हिंदी · Hinglish.
+- The proxy turns the order into a short key (`hi-hl-en`) and rewrites to `/select-language/<key>/<path>` (on `/jobs/apply`, `<key>_<share variant>` for `?role=`/`?hub=` links). Every key is prerendered, so no page renders per visit. The top three choices are large; any others sit under a "More languages" `<details>`. Every variant lists every language as an `<a hreflang>` link, and canonical and x-default stay the neutral URL, so crawlers see the same page in a different order. Title and meta description are the English page's own, the same in every variant: one snippet per canonical URL. Each choice shows its page's title and short description in its own language (8-hour shifts, no fee). Devanagari on the picker uses the phone's own font. The response carries `CDN-Cache-Control: no-store` and `Cloudflare-CDN-Cache-Control: no-store`, so no shared cache in front of a self-hosted server keeps one visitor's order; `Vercel-CDN-Cache-Control` keeps Vercel's cache, which keys on the variant path. `pnpm seo:check` asserts the snippet, the headers and the one-hop redirects.
+- `language_choice` carries `position` (1–3, or `more`) and `order_key`. After 30 days, if fewer than about seven in ten choices are the first option of a set, revisit that set.
+- The header quick switch is fixed per page, never per visitor: the page cluster's `quickSwitch` (`src/content/registry/clusters.ts`), else English · हिंदी · Hinglish. Languages outside that set go under "More" ("और भाषाएँ" / "Aur bhasha" on Hindi and Hinglish jobs pages), which closes on Escape, a tap outside it and a new page. Each link has the language's hint ("Ye page Hindi mein padhein, English letters mein") as its `title`.
+- The apex host (`vayasyaseva.com/x`) redirects in the proxy, straight to the resolved `https://www.vayasyaseva.com/<locale>/x`: one hop instead of two.
 
 ### Adding or changing a page's languages
 
-1. Set the page's `locales` (and `override`, if any) in `pages` in `src/lib/i18n.ts`.
+1. Set the page's `locales` (each language with its status) and `neutral`, if any, in `src/content/registry/pages.ts`. Start a new language at `review`: it is built, `noindex`, left out of the sitemap and hreflang, and links from published pages go to another language. Set it to `published` once reviewed. The status rules are in `src/content/registry/identifiers.ts` (`PAGE_STATUSES`).
 2. Give the page the copy for each locale and read the locale from its params (`localeOfParams`). Its `generateStaticParams` is `localeParams("/the-path")`, so only its languages are built.
 3. Write in-site links as neutral paths (`<Link href="/contact">`). `@/components/i18n/link` points them at the reader's current locale when the target page has it, else the target's default language.
 
@@ -46,9 +51,8 @@ The homepage and every business-facing page stay English. Translate a page only 
 
 | Page | Languages | Neutral URL | Reason |
 |------|-----------|-------------|--------|
-| `/`, `/services`, `/industries`, `/how-we-operate`, `/about`, `/vayasya-setu`, `/compliance`, `/contact`, `/brand`, `/privacy`, `/terms` | en-IN | English | Business buyers; legal text in one reviewed version |
-| `/haridwar-sidcul`, `/services/contract-labour` | en-IN, hi-IN, hi-Latn-IN | English | Core local search terms in every script |
-| `/services/warehouse-labour`, `/services/factory-labour`, `/services/housekeeping` | en-IN, hi-Latn-IN | English | Devanagari searches for these are mostly from job seekers, not buyers |
+| `/`, `/services`, `/services/factory-labour`, `/services/loading-unloading-labour`, `/services/housekeeping`, `/about`, `/vayasya-setu`, `/compliance`, `/contact`, `/brand`, `/privacy`, `/terms` | en-IN | English | Business buyers; legal text in one reviewed version. Business pages are English only since 16 Oct 2026: the Hinglish service landings 308 to English |
+| `/haridwar-sidcul` | en-IN, hi-IN, hi-Latn-IN | English | Core local search terms in every script; the one business page kept in three languages |
 | `/jobs`, `/jobs/<role>` | en-IN, hi-IN, hi-Latn-IN; hi-IN first | Language picker | Workers read हिंदी and type in Latin script; skilled roles use English. The link is often shared on a call |
 
 Later: `/privacy` in hi-IN, so worker applicants can read the data notice (DPDP). Latin-script Hindi is too loose for legal text.
@@ -65,9 +69,9 @@ Revisit this split with Search Console data.
 
 - `src/app/[locale]/layout.tsx` is the root layout, so `<html lang>` is the page's locale. The header and footer are English and carry `lang="en-IN"`.
 - `src/app/(picker)/` is a second root layout for the language picker (`<html lang="en-IN">`, each choice marked with its own language). `src/app/global-not-found.tsx` serves URLs no route matches.
-- `src/lib/i18n.ts` holds the locales, the `pages` registry, the publish flags and the link helpers. `pageMetadata({ locale })` adds the canonical, hreflang and `noindex` while unpublished. The sitemap lists each page once per published locale, with `xhtml:link` alternates.
-- Every translated page uses one shared template for all locales. The three service pages share `ServiceLanding`, with content in `src/content/service-pages.ts` and `src/content/hi-latn/service-pages.ts`. The Haridwar, contract labour and jobs pages use `src/components/pages/*` with all three locales in `src/content/pages/*.ts`. When the English copy changes, update the others in the same file.
-- Fonts: WOFF2 subsets containing only Devanagari (`AnekDevanagari-Devanagari.woff2` at weight 500, and Hind at 400 to 700) with `unicode-range`. Pages without Devanagari never download them.
+- `src/content/registry/` holds the page registry (every page, its languages and each one's status), the clusters with public pages, and the canonical identifiers. `src/lib/i18n.ts` holds the locales, the publish flags and the link helpers, and derives `pages` from the registry. `pageMetadata({ locale })` adds the canonical, hreflang and `noindex` unless both the locale and the page's status are published. The sitemap lists each page once per published locale, with `xhtml:link` alternates.
+- Every translated page uses one shared template for all locales. The three service landings are English only and share `ServiceLanding`, with content in `src/content/service-pages.ts`. The Haridwar and jobs pages use `src/components/pages/*` with all three locales in `src/content/pages/*.ts`. When the English copy changes, update the others in the same file.
+- Fonts: WOFF2 subsets of Hind containing only Devanagari (Regular, SemiBold for weights 500–600, Bold) with `unicode-range`. Devanagari headings use Hind SemiBold, not Anek Devanagari, to keep a first Hindi visit light (16 October 2026). Pages without Devanagari never download them.
 - Devanagari type rules in `globals.css` apply to `:lang(hi)` but not `:lang(hi-Latn)`: no letter-spacing, and a taller line-height on headings.
 - The jobs form still sends the intake source `web_hinglish` for hi-Latn-IN. It is a stored value shared with n8n and its database (`integrations/n8n/schema.sql`); renaming it needs a migration and an n8n deploy.
 

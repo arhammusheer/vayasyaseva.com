@@ -5,17 +5,30 @@
  * Values only fill fields: nothing is ticked or sent for the person.
  */
 export const JOB_PREFILL_FIELDS = ["name", "phone", "work", "experience", "location", "start", "about"] as const;
+/**
+ * "Request a crew" (/contact). Ids as in contact.contract.json: roles
+ * (comma-separated), headcount (a band such as 50-99, or a number), state
+ * (ISO code such as UK, or the name), city, pincode, start, duration, shifts.
+ * location takes a place id (haridwar, bhagwanpur, bahadrabad, roorkee) or
+ * free text; cluster tags the page. Mapping: crewPrefill in crew-request.ts.
+ */
 export const ENQUIRY_PREFILL_FIELDS = [
   "name",
   "phone",
   "email",
   "company",
   "role",
-  "location",
-  "industry",
+  "roles",
   "headcount",
-  "shifts",
+  "state",
+  "city",
+  "pincode",
+  "location",
+  "cluster",
   "start",
+  "duration",
+  "shifts",
+  "industry",
   "details",
 ] as const;
 

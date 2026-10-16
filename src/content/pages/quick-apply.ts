@@ -1,11 +1,13 @@
 import type { Locale } from "@/lib/i18n";
 import { QUICK_ANSWERS, type JobRole, type QuickQuestion } from "@/lib/talent-intake/rules";
+import { NO_FEE, SHIFTS_LINE } from "@/content/pages/jobs";
 
 /**
  * The guided jobs page (/jobs/apply): tap answers, with follow-up questions
- * that depend on the work chosen, then name and number. An experiment against
- * the long form on /jobs, used as a Google Ads landing page; not in the
- * sitemap and noindex. Option ids are fixed values sent to analytics and to
+ * that depend on the work chosen, then name and number. The same form is
+ * embedded on /jobs/haridwar, the role and hub pages. /jobs/apply is noindex
+ * and out of the sitemap (a form, not a search landing), and stays the
+ * Google Ads and SMS landing (docs/seo-checklist.md). Option ids are fixed values sent to analytics and to
  * staff, the same in every language. hi-IN and hi-Latn-IN are drafts pending
  * native review, like the other jobs pages.
  */
@@ -56,6 +58,7 @@ export function roleFor(a: Answers): JobRole | null {
 export interface QuickApplyCopy {
   title: string;
   description: string;
+  /** The share image's label only: the page itself has no eyebrow. */
   eyebrow: string;
   /** Last breadcrumb, after Home and Jobs. */
   breadcrumb: string;
@@ -75,30 +78,32 @@ export interface QuickApplyCopy {
     send: string;
   };
   errors: { name: string };
-  noFee: string;
+  /** The form's footer: the page's one no-fee line, linking /jobs/fees-and-fraud. */
+  noFee: { text: string; link: string };
+  /** One calm line above the form: full 8-hour shifts, no part-time work. */
+  shifts: string;
 }
 
-const MULTI_HINT = { "en-IN": "Choose all that apply.", "hi-IN": "जो भी लागू हों, सब चुनिए।", "hi-Latn-IN": "Jo bhi laagu hon, sab chuniye." };
 
 export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
   "en-IN": {
     title: "Apply for Work in SIDCUL Haridwar: Quick Form",
-    description: "Tap a few answers, then leave your name and number. Factory, packing, warehouse and ITI work in SIDCUL Haridwar. No fee.",
+    description: "Apply for SIDCUL Haridwar jobs. No fee to apply. Full 8-hour shifts. Tap a few answers, then your name and number. Factory, packing, warehouse and ITI work.",
     eyebrow: "JOBS",
     breadcrumb: "Quick application",
     heading: "Looking for work in SIDCUL Haridwar?",
-    lede: "Tap a few answers, then just your name and number. We call you about suitable work.",
+    lede: "Tap a few answers, then your name and number.",
     next: "Next",
     questions: {
-      work: { question: "What work are you looking for?", hint: MULTI_HINT["en-IN"] },
-      trade: { question: "Which ITI trade?", hint: MULTI_HINT["en-IN"] },
+      work: { question: "What work are you looking for?" },
+      trade: { question: "Which ITI trade?" },
       iti: { question: "Your ITI?" },
-      machines: { question: "Which machines have you run?", hint: MULTI_HINT["en-IN"] },
+      machines: { question: "Which machines have you run?" },
       forklift: { question: "Do you have a licence?" },
-      computer: { question: "What can you do on a computer?", hint: MULTI_HINT["en-IN"] },
+      computer: { question: "What can you do on a computer?" },
       experience: { question: "How much work experience do you have?" },
       education: { question: "How far have you studied?" },
-      shift: { question: "Which shifts can you do?", hint: MULTI_HINT["en-IN"] },
+      shift: { question: "Which shifts can you do?" },
       start: { question: "When can you start?" },
       area: { question: "Where do you live?" },
     },
@@ -125,27 +130,28 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       optional: "Optional",
       send: "Send",
     },
-    errors: { name: "Please write your name." },
-    noFee: "No fee for a job. If anyone asks you for money in our name, tell us.",
+    errors: { name: "Write your full name (at least 2 letters)." },
+    noFee: NO_FEE["en-IN"],
+    shifts: SHIFTS_LINE["en-IN"],
   },
   "hi-IN": {
     title: "सिडकुल हरिद्वार में काम के लिए अप्लाई करें: छोटा फ़ॉर्म",
-    description: "कुछ जवाब चुनिए, फिर बस नाम और नंबर। सिडकुल हरिद्वार में फ़ैक्टरी, पैकिंग, वेयरहाउस और ITI का काम। कोई फ़ीस नहीं।",
+    description: "सिडकुल हरिद्वार में नौकरी के लिए आवेदन करें। कोई फ़ीस नहीं। पूरी 8 घंटे की शिफ्ट। कुछ जवाब चुनिए, फिर नाम और नंबर। फ़ैक्टरी, पैकिंग, वेयरहाउस और ITI का काम।",
     eyebrow: "नौकरी",
     breadcrumb: "जल्दी आवेदन",
     heading: "सिडकुल हरिद्वार में काम चाहिए?",
-    lede: "कुछ जवाब चुनिए, फिर बस अपना नाम और नंबर। सही काम होने पर हम आपको फ़ोन करेंगे।",
+    lede: "कुछ जवाब चुनिए, फिर अपना नाम और नंबर।",
     next: "आगे",
     questions: {
-      work: { question: "आपको कौन-सा काम चाहिए?", hint: MULTI_HINT["hi-IN"] },
-      trade: { question: "कौन-सा ITI ट्रेड?", hint: MULTI_HINT["hi-IN"] },
+      work: { question: "आपको कौन-सा काम चाहिए?" },
+      trade: { question: "कौन-सा ITI ट्रेड?" },
       iti: { question: "आपका ITI?" },
-      machines: { question: "आपने कौन-सी मशीनें चलाई हैं?", hint: MULTI_HINT["hi-IN"] },
+      machines: { question: "आपने कौन-सी मशीनें चलाई हैं?" },
       forklift: { question: "क्या आपके पास लाइसेंस है?" },
-      computer: { question: "आप कंप्यूटर पर क्या कर लेते हैं?", hint: MULTI_HINT["hi-IN"] },
+      computer: { question: "आप कंप्यूटर पर क्या कर लेते हैं?" },
       experience: { question: "आपके पास काम का कितना अनुभव है?" },
       education: { question: "आपने कहाँ तक पढ़ाई की है?" },
-      shift: { question: "आप कौन-सी शिफ्ट कर सकते हैं?", hint: MULTI_HINT["hi-IN"] },
+      shift: { question: "आप कौन-सी शिफ्ट कर सकते हैं?" },
       start: { question: "आप कब से काम शुरू कर सकते हैं?" },
       area: { question: "आप कहाँ रहते हैं?" },
     },
@@ -172,27 +178,28 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       optional: "ज़रूरी नहीं",
       send: "भेजें",
     },
-    errors: { name: "कृपया अपना नाम लिखिए।" },
-    noFee: "नौकरी के लिए कोई फ़ीस नहीं। हमारे नाम पर कोई पैसे माँगे तो हमें बताइए।",
+    errors: { name: "पूरा नाम लिखिए (कम से कम 2 अक्षर)।" },
+    noFee: NO_FEE["hi-IN"],
+    shifts: SHIFTS_LINE["hi-IN"],
   },
   "hi-Latn-IN": {
-    title: "SIDCUL Haridwar Mein Kaam Ke Liye Apply Karein: Chhota Form",
-    description: "Kuch jawab tap kijiye, phir bas naam aur number. SIDCUL Haridwar mein factory, packing, warehouse aur ITI ka kaam. Koi fee nahi.",
-    eyebrow: "NAUKRI",
+    title: "SIDCUL Haridwar Job: Apply Karein, Chhota Form",
+    description: "SIDCUL Haridwar job ke liye apply karein. Koi fee nahi. Poori 8 ghante ki shift. Kuch jawab tap kijiye, phir naam aur number. Factory, packing, warehouse, ITI.",
+    eyebrow: "Jobs",
     breadcrumb: "Jaldi apply",
     heading: "SIDCUL Haridwar mein kaam chahiye?",
-    lede: "Kuch jawab tap kijiye, phir bas apna naam aur number. Sahi kaam hone par hum aapko phone karenge.",
+    lede: "Kuch jawab tap kijiye, phir apna naam aur number.",
     next: "Aage",
     questions: {
-      work: { question: "Aapko kaun-sa kaam chahiye?", hint: MULTI_HINT["hi-Latn-IN"] },
-      trade: { question: "Kaun-sa ITI trade?", hint: MULTI_HINT["hi-Latn-IN"] },
+      work: { question: "Aapko kaun-sa kaam chahiye?" },
+      trade: { question: "Kaun-sa ITI trade?" },
       iti: { question: "Aapka ITI?" },
-      machines: { question: "Aapne kaun-si machines chalayi hain?", hint: MULTI_HINT["hi-Latn-IN"] },
+      machines: { question: "Aapne kaun-si machines chalayi hain?" },
       forklift: { question: "Kya aapke paas licence hai?" },
-      computer: { question: "Aap computer par kya kar lete hain?", hint: MULTI_HINT["hi-Latn-IN"] },
+      computer: { question: "Aap computer par kya kar lete hain?" },
       experience: { question: "Aapke paas kaam ka kitna experience hai?" },
       education: { question: "Aapne kahan tak padhai ki hai?" },
-      shift: { question: "Aap kaun-si shift kar sakte hain?", hint: MULTI_HINT["hi-Latn-IN"] },
+      shift: { question: "Aap kaun-si shift kar sakte hain?" },
       start: { question: "Aap kab se kaam shuru kar sakte hain?" },
       area: { question: "Aap kahan rehte hain?" },
     },
@@ -217,9 +224,10 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       phone: "Mobile number",
       phonePlaceholder: "10 digit ka mobile number",
       optional: "Zaroori nahi",
-      send: "Bhejiye",
+      send: "Bhejein",
     },
-    errors: { name: "Kripya apna naam likhiye." },
-    noFee: "Naukri ke liye koi fee nahi. Hamare naam par koi paise maange to humein bataiye.",
+    errors: { name: "Poora naam likhiye (kam se kam 2 akshar)." },
+    noFee: NO_FEE["hi-Latn-IN"],
+    shifts: SHIFTS_LINE["hi-Latn-IN"],
   },
 };

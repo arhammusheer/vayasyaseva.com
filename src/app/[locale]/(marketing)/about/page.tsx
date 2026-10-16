@@ -10,24 +10,33 @@ import { localeParams } from "@/lib/i18n";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/about");
 
+// The search phrase stays in the title; the page itself is who we are: one
+// sentence, then the facts. The contractor point stays on home and the
+// records on /compliance.
+const TITLE = "About Us: Labour Contractor in Haridwar";
+const DESCRIPTION =
+  "Vayasya Seva Private Limited is a contract labour company incorporated in Haridwar, Uttarakhand, in 2023. The company's CIN, GSTIN and Udyam numbers.";
+
 export const metadata = pageMetadata({
-  title: "About Vayasya Seva, Labour Contractor in Haridwar",
-  description:
-    "Meet Vayasya Seva Private Limited, a Haridwar-based contract labour and industrial services company with a focus on people, site operations and labour compliance.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/about" },
 });
+
+/**
+ * Company facts with a number only. EPF and ESIC codes join once the owner
+ * approves publishing them (docs/claims-register.md).
+ */
+const facts = [
+  { label: "CIN", value: siteConfig.cin },
+  { label: "GSTIN", value: siteConfig.gstin },
+  { label: "MSME / UDYAM", value: siteConfig.msme },
+];
+
 export default function AboutPage() {
   return (
     <>
-      <JsonLd
-        data={webPageSchema({
-          type: "AboutPage",
-          name: "About Vayasya Seva, Labour Contractor in Haridwar",
-          description:
-            "Meet Vayasya Seva Private Limited, a Haridwar-based contract labour and industrial services company with a focus on people, site operations and labour compliance.",
-          url: "/about",
-        })}
-      />
+      <JsonLd data={webPageSchema({ type: "AboutPage", name: TITLE, description: DESCRIPTION, url: "/about" })} />
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", href: "/" },
@@ -42,33 +51,8 @@ export default function AboutPage() {
             around the work.
           </>
         }
-        lede="Vayasya Seva brings people and practical support to business operations. Our roots are in Haridwar. Our approach starts with understanding what each client needs."
+        lede="Incorporated in Haridwar in 2023, we supply supervised crews to factories, warehouses and facilities in SIDCUL and across Haridwar."
       />
-      <Section>
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
-          <h2 className="text-4xl font-medium">
-            Close to the people.
-            <br />
-            Close to the operation.
-          </h2>
-          <div className="space-y-5 text-lg leading-relaxed text-muted-foreground">
-            <p>
-              As a contract labour provider, we work with businesses to source,
-              onboard and manage the people their operations need. Our work
-              extends into data entry operators, housekeeping, site services, civil
-              works, fabrication and maintenance.
-            </p>
-            <p>
-              Careful compliance is a core part of that relationship. Our site
-              teams and office coordinate worker documentation, attendance and
-              statutory records alongside the daily work.
-            </p>
-            <Link href="/how-we-operate" className="text-link text-foreground">
-              How we work with you <ArrowUpRight size={18} />
-            </Link>
-          </div>
-        </div>
-      </Section>
       <Section variant="subtle">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
           <div>
@@ -78,38 +62,23 @@ export default function AboutPage() {
               <br />
               Private Limited
             </h2>
-            <p className="mt-5 text-muted-foreground">
-              Based in Haridwar, Uttarakhand.
-            </p>
             <Link href="/haridwar-sidcul" className="text-link">
-              Our work in SIDCUL Haridwar <ArrowUpRight size={18} />
+              Our work in SIDCUL Haridwar <ArrowUpRight size={18} aria-hidden="true" />
             </Link>
           </div>
-          <dl className="divide-y border-y">
-            {[
-              { label: "GSTIN", value: siteConfig.gstin },
-              { label: "MSME / UDYAM", value: siteConfig.msme },
-              {
-                label: "Email",
-                value: siteConfig.email,
-                href: `mailto:${siteConfig.email}`,
-              },
-              {
-                label: "Phone",
-                value: siteConfig.phone,
-                href: `tel:${siteConfig.phone.replace(/\s/g, "")}`,
-              },
-            ].map((d) => (
-              <div key={d.label} className="py-5">
-                <dt className="text-xs text-muted-foreground mb-2">
-                  {d.label}
-                </dt>
-                <dd className={d.href ? undefined : "font-data text-sm"}>
-                  {d.href ? <a href={d.href}>{d.value}</a> : d.value}
-                </dd>
-              </div>
-            ))}
-          </dl>
+          <div>
+            <dl className="divide-y border-y">
+              {facts.map((d) => (
+                <div key={d.label} className="py-5">
+                  <dt className="mb-2 text-xs text-muted-foreground">{d.label}</dt>
+                  <dd className="font-data text-sm">{d.value}</dd>
+                </div>
+              ))}
+            </dl>
+            <Link href="/vayasya-setu" className="text-link">
+              Vayasya Setu, our workforce system <ArrowUpRight size={18} aria-hidden="true" />
+            </Link>
+          </div>
         </div>
       </Section>
       <CtaBlock />

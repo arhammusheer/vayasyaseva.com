@@ -1,0 +1,64 @@
+name: Wage monitor
+
+# Daily check of every state's minimum wage primary sources (PLAN §11):
+# the documents the wage pages cite and the department pages where a new
+# notification would appear (scripts/wage-monitor/, docs/wage-monitor.md).
+# A change, or a source that fails three days running, opens or updates a
+# GitHub issue labelled wage-monitor. The snapshot it compares against lives
+# in the Actions cache, so the workflow never writes to the repository. The
+# same command runs from a Kubernetes CronJob or n8n when the site leaves
+# Vercel; nothing here depends on Vercel.
+on:
+  schedule:
+    - cron: "30 1 * * *" # 07:00 IST
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run: compare and print, but open no issues and keep the snapshot"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: wage-monitor
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Restore snapshot
+        uses: actions/cache/restore@v4
+        with:
+          path: .wage-monitor
+          key: wage-monitor-state-${{ github.run_id }}
+          restore-keys: wage-monitor-state-
+
+      - name: Check wage sources
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          DRY_RUN: ${{ inputs.dry_run && '--dry-run' || '' }}
+        run: |
+          set -o pipefail
+          node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/wage-monitor/index.mjs $DRY_RUN | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Save snapshot
+        if: success() && !inputs.dry_run
+        uses: actions/cache/save@v4
+        with:
+          path: .wage-monitor
+          key: wage-monitor-state-${{ github.run_id }}

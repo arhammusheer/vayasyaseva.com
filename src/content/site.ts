@@ -1,18 +1,16 @@
-import type { NavItem, SiteConfig } from "./types";
+import type { SiteConfig } from "./types";
 
 export const siteConfig: SiteConfig = {
   companyName: "Vayasya Seva",
   legalName: "Vayasya Seva Private Limited",
   tagline:
-    "Contract labour, workforce management and industrial services, with a focus on labour compliance",
+    "Labour contractor and manpower supply company: a manpower contractor supplying contract labour to factories, warehouses and facilities, with the workers on its own payroll",
   email: "help@vayasyaseva.com",
-  phone: "+91 72920 14101",
   gstin: "05AAJCV4562E1ZB",
   cin: "U01619UT2023PTC015814",
   msme: "UDYAM-UK-06-0029670",
   address: "Haridwar, Uttarakhand",
   region: "SIDCUL Haridwar",
-  linkedin: "https://www.linkedin.com/company/vayasya-seva/",
   sameAs: [
     "https://www.linkedin.com/company/vayasya-seva/",
     // Google Business Profile
@@ -21,32 +19,4 @@ export const siteConfig: SiteConfig = {
     "https://www.wikidata.org/wiki/Q141622734",
   ],
   geo: { latitude: 29.9457, longitude: 78.1642 },
-};
-
-export const navigation: NavItem[] = [
-  { label: "Home", href: "/" },
-  { label: "Services", href: "/services" },
-  { label: "Industries", href: "/industries" },
-  { label: "How We Operate", href: "/how-we-operate" },
-  { label: "Compliance", href: "/compliance" },
-  { label: "Vayasya Setu", href: "/vayasya-setu" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
-];
-
-export const footerLinks = {
-  utility: [
-    { label: "SIDCUL Haridwar", href: "/haridwar-sidcul" },
-    { label: "Privacy Policy", href: "/privacy" },
-    { label: "Terms of Use", href: "/terms" },
-  ],
-  company: [
-    { label: "Setu Login", href: "https://setu.vayasyaseva.com" },
-    { label: "Brand Handbook", href: "https://brand.vayasyaseva.com" },
-    { label: "Mail", href: "https://mail.vayasyaseva.com" },
-  ],
-  legal: {
-    gstin: siteConfig.gstin,
-    msme: siteConfig.msme,
-  },
 };

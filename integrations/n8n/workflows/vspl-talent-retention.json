@@ -1,0 +1,450 @@
+{
+  "id": "mMq13kq5yWddsGZG",
+  "name": "VSPL talent · retention",
+  "active": false,
+  "nodes": [
+    {
+      "id": "f9cc90f6-8476-536e-a43b-5c02d8353ff3",
+      "name": "Every hour",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "23250a87-e58a-5971-ab46-f8d972243313",
+      "name": "Retention settings",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        0
+      ],
+      "notes": "chatwootAccountId: the account that holds the \"Jobs, website\" inbox.",
+      "notesInFlow": true,
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "620b87f9-a845-5ff1-ab60-ac4d072308ec",
+              "name": "chatwootBaseUrl",
+              "value": "http://chatwoot.growth.svc.cluster.local",
+              "type": "string"
+            },
+            {
+              "id": "7d1f3d17-e3ca-5b2b-a264-2c207722072f",
+              "name": "chatwootAccountId",
+              "value": "1",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "ae5d4a74-1530-56f5-aa90-0e03479bed59",
+      "name": "Queue expired and recover",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        480,
+        0
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH recovered AS (\n  UPDATE erasure_requests\n  SET status = CASE WHEN attempts >= 3 THEN 'failed' ELSE 'pending' END,\n      last_error = coalesce(last_error, 'Interrupted; retried'), updated_at = now()\n  WHERE status = 'running' AND updated_at < now() - interval '1 hour'\n  RETURNING id\n), expired AS (\n  SELECT p.phone FROM people p\n  WHERE greatest(coalesce(p.last_contact_at, p.created_at), coalesce(p.last_confirmed_at, p.created_at)) < now() - interval '12 months'\n  UNION\n  -- Submissions from before the people table, with no row of their own.\n  SELECT s.phone FROM submissions s\n  WHERE NOT EXISTS (SELECT 1 FROM people p WHERE p.phone = s.phone)\n  GROUP BY s.phone HAVING max(s.created_at) < now() - interval '12 months'\n), queued AS (\n  INSERT INTO erasure_requests (phone, reason)\n  SELECT phone, 'retention' FROM expired\n  ON CONFLICT (phone) WHERE status IN ('pending', 'running') DO NOTHING\n  RETURNING id\n)\nSELECT (SELECT count(*) FROM recovered) AS recovered, (SELECT count(*) FROM queued) AS queued;",
+        "options": {}
+      },
+      "credentials": {
+        "postgres": {
+          "id": "2004d6af-1a6c-52e9-a169-9e91ef0487d2",
+          "name": "talent-pg"
+        }
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "84f1e38e-7f0b-5ee9-a6f9-23c7eb473c1e",
+      "name": "Claim erasure",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        720,
+        0
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH claimed AS (\n  UPDATE erasure_requests e\n  SET status = 'running', attempts = e.attempts + 1, last_error = NULL, updated_at = now()\n  WHERE e.id = (\n    SELECT id FROM erasure_requests WHERE status = 'pending' AND phone IS NOT NULL\n    ORDER BY requested_at LIMIT 1 FOR UPDATE SKIP LOCKED)\n  RETURNING e.id, e.phone, e.reason\n)\nSELECT c.id, c.phone, c.reason,\n  coalesce((SELECT jsonb_agg(a.r2_key) FROM attachments a JOIN submissions s ON s.id = a.submission_id WHERE s.phone = c.phone), '[]'::jsonb) AS files,\n  coalesce((SELECT jsonb_agg(DISTINCT s.chatwoot_contact_id) FROM submissions s WHERE s.phone = c.phone AND s.chatwoot_contact_id IS NOT NULL), '[]'::jsonb) AS contacts\nFROM claimed c;",
+        "options": {}
+      },
+      "credentials": {
+        "postgres": {
+          "id": "2004d6af-1a6c-52e9-a169-9e91ef0487d2",
+          "name": "talent-pg"
+        }
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "d34dd060-4693-5664-ac2c-3b489b576599",
+      "name": "Claimed any?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        960,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "aa3666b3-c014-5d35-aabd-066b3bc3296e",
+              "leftValue": "={{ $json.id !== undefined }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "ebb365b2-5266-563f-ad9e-3181724fba52",
+      "name": "Files to delete",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        0
+      ],
+      "parameters": {
+        "jsCode": "// Generated from integrations/n8n/src/nodes/erase-files.ts by integrations/n8n/build.mts. Edit the source, not this.\n\nasync function main() {\n    const claimed = $(\"Claim erasure\").first().json;\n    const keys = [...new Set(claimed.files.filter((key) => typeof key === \"string\" && key.length > 0))];\n    if (!keys.length)\n        return [{ json: { requestId: claimed.id, key: null } }];\n    return keys.map((key) => ({ json: { requestId: claimed.id, key } }));\n}\n\nreturn main.call(this);"
+      }
+    },
+    {
+      "id": "4b129935-a4d4-5d82-a231-435f8f7fc8d9",
+      "name": "Has file?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1440,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e9480f6b-f2a7-5644-a86e-45ad54d68b41",
+              "leftValue": "={{ $json.key !== null }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "1eae9d99-2095-51cf-ac95-0efe82e774fe",
+      "name": "R2: delete file",
+      "type": "n8n-nodes-base.s3",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        -180
+      ],
+      "parameters": {
+        "resource": "file",
+        "operation": "delete",
+        "bucketName": "vayasya-talent-intake",
+        "fileKey": "={{ $json.key }}",
+        "options": {}
+      },
+      "credentials": {
+        "s3": {
+          "id": "b33d21ed-4b84-53dd-af8b-bd3a5ab99276",
+          "name": "r2-talent-erase"
+        }
+      }
+    },
+    {
+      "id": "22889095-baa1-5ce6-a9e5-57372e744cbb",
+      "name": "Contacts to delete",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1920,
+        0
+      ],
+      "parameters": {
+        "jsCode": "// Generated from integrations/n8n/src/nodes/erase-contacts.ts by integrations/n8n/build.mts. Edit the source, not this.\n\nasync function main() {\n    const claimed = $(\"Claim erasure\").first().json;\n    const ids = [...new Set(claimed.contacts.filter((id) => Number.isInteger(id) && id > 0))];\n    if (!ids.length)\n        return [{ json: { requestId: claimed.id, contactId: null } }];\n    return ids.map((contactId) => ({ json: { requestId: claimed.id, contactId } }));\n}\n\nreturn main.call(this);"
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "ede75156-bead-5392-ab6b-d67ca26bb7db",
+      "name": "Has contact?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2160,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b42e5f03-e579-5234-af0f-6731bc9556c5",
+              "leftValue": "={{ $json.contactId !== null }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "28a2cc68-0dc6-5804-a711-a603363b2221",
+      "name": "Chatwoot: delete contact",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2400,
+        -180
+      ],
+      "parameters": {
+        "method": "DELETE",
+        "url": "={{ $('Retention settings').first().json.chatwootBaseUrl }}/api/v1/accounts/{{ $('Retention settings').first().json.chatwootAccountId }}/contacts/{{ $json.contactId }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": false,
+        "sendBody": false,
+        "options": {}
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "824bbaf7-d1f9-533a-aab8-39de1b892189",
+          "name": "chatwoot-talent-admin"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "id": "c03f1aae-bbbb-522d-a018-1e4e2daef696",
+      "name": "Delete rows",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2640,
+        0
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH gone AS (\n  DELETE FROM submissions WHERE phone = $2 RETURNING id\n), person AS (\n  DELETE FROM people WHERE phone = $2 RETURNING 1\n)\nUPDATE erasure_requests\nSET status = 'done', processed_at = now(), updated_at = now(),\n    removed_submissions = (SELECT count(*) FROM gone), removed_files = $3::int, removed_contacts = $4::int,\n    phone = NULL, ref = NULL\nWHERE id = $1::uuid AND status = 'running'\nRETURNING id, status, removed_submissions;",
+        "options": {
+          "queryReplacement": "={{ [$('Claim erasure').first().json.id, $('Claim erasure').first().json.phone, $('Claim erasure').first().json.files.length, $('Claim erasure').first().json.contacts.length] }}"
+        }
+      },
+      "credentials": {
+        "postgres": {
+          "id": "2004d6af-1a6c-52e9-a169-9e91ef0487d2",
+          "name": "talent-pg"
+        }
+      },
+      "executeOnce": true
+    }
+  ],
+  "connections": {
+    "Every hour": {
+      "main": [
+        [
+          {
+            "node": "Retention settings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retention settings": {
+      "main": [
+        [
+          {
+            "node": "Queue expired and recover",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Queue expired and recover": {
+      "main": [
+        [
+          {
+            "node": "Claim erasure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claim erasure": {
+      "main": [
+        [
+          {
+            "node": "Claimed any?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claimed any?": {
+      "main": [
+        [
+          {
+            "node": "Files to delete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Files to delete": {
+      "main": [
+        [
+          {
+            "node": "Has file?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has file?": {
+      "main": [
+        [
+          {
+            "node": "R2: delete file",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Contacts to delete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "R2: delete file": {
+      "main": [
+        [
+          {
+            "node": "Contacts to delete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contacts to delete": {
+      "main": [
+        [
+          {
+            "node": "Has contact?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has contact?": {
+      "main": [
+        [
+          {
+            "node": "Chatwoot: delete contact",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Delete rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chatwoot: delete contact": {
+      "main": [
+        [
+          {
+            "node": "Delete rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none"
+  },
+  "pinData": {}
+}

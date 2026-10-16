@@ -9,7 +9,8 @@
  * entry or header link from published pages. Flip `published` once a native
  * speaker has reviewed the copy.
  */
-import { JOB_HUB_SLUGS, JOB_ROLE_SLUGS } from "@/lib/talent-intake/rules";
+import { builtLocales, builtPages, clusterById, isNoindex, isPaused, pageEntry, publishedLocales, redirectTarget } from "@/content/registry";
+import type { LocaleTag } from "@/content/registry/identifiers";
 
 export const locales = {
   "en-IN": {
@@ -32,11 +33,11 @@ export const locales = {
     segment: "hi-latn-in",
     hreflang: "hi-Latn-IN",
     ogLocale: "hi_IN",
-    label: "Hindi",
+    label: "Hinglish",
     hint: "Ye page Hindi mein padhein, English letters mein",
     published: true,
   },
-} as const;
+} as const satisfies Record<LocaleTag, unknown>;
 
 export type Locale = keyof typeof locales;
 export const allLocales = Object.keys(locales) as Locale[];
@@ -48,7 +49,7 @@ export type LocaleOverride = Locale | "prompt";
 export const FALLBACK_LOCALE: Locale = "en-IN";
 
 type PageLocales = {
-  /** Languages the page exists in. Default: English only. */
+  /** Languages the page is built in. */
   locales: readonly Locale[];
   /**
    * Where the neutral URL goes. Unset: English (FALLBACK_LOCALE), or the
@@ -59,45 +60,65 @@ type PageLocales = {
   override?: LocaleOverride;
 };
 
-const ALL = allLocales;
-
 /**
- * Pages with more than English, or with an override. Any page not listed is
- * English only and its neutral URL opens English. Business pages (home,
- * services index, compliance, about…) stay English only; see
- * docs/plan-multilingual.md.
+ * Every built page and its languages, derived from the page registry
+ * (src/content/registry/pages.ts), which also holds each language's status.
+ * A path that isn't listed is treated as English only, so unknown URLs
+ * resolve to /en-in/... and 404 there. A listed page with nothing built
+ * (draft or retired everywhere) has no languages: its route builds no
+ * version, and the proxy lets its URLs 404 (isGone).
  */
-export const pages: Record<string, PageLocales> = {
-  "/haridwar-sidcul": { locales: ALL },
-  "/services/contract-labour": { locales: ALL },
-  "/services/warehouse-labour": { locales: ["en-IN", "hi-Latn-IN"] },
-  "/services/loading-unloading-labour": { locales: ["en-IN", "hi-Latn-IN"] },
-  "/services/factory-labour": { locales: ["en-IN", "hi-Latn-IN"] },
-  "/services/housekeeping": { locales: ["en-IN", "hi-Latn-IN"] },
-  "/jobs": { locales: ALL, override: "prompt" },
-  // Focused guided application, also used by ads and direct application links.
-  "/jobs/apply": { locales: ALL, override: "prompt" },
-  ...Object.fromEntries(
-    [...JOB_ROLE_SLUGS, ...JOB_HUB_SLUGS].map((slug) => [`/jobs/${slug}`, { locales: ALL, override: "prompt" } as const]),
-  ),
-};
+export const pages: Record<string, PageLocales> = Object.fromEntries(
+  builtPages().map((entry) => [
+    entry.path,
+    { locales: builtLocales(entry.path), ...(entry.neutral && { override: entry.neutral }) },
+  ]),
+);
 
 const ENGLISH_ONLY: PageLocales = { locales: [FALLBACK_LOCALE] };
+const NOT_BUILT: PageLocales = { locales: [] };
 
 function pageConfig(path: string) {
-  return pages[path] ?? ENGLISH_ONLY;
+  return pages[path] ?? (pageEntry(path) ? NOT_BUILT : ENGLISH_ONLY);
 }
 
-/** Languages a page exists in, given its neutral path ("/jobs"). */
+/** Languages a page exists in (is built in), given its neutral path ("/jobs"). */
 export function localesOf(path: string): readonly Locale[] {
   return pageConfig(path).locales;
 }
 
+/**
+ * Whether a language version is public: its locale is published and the
+ * page's status in it is "published". Public versions may be linked from
+ * published pages and offered in the language switch. A path outside the
+ * registry is not a page (content:check keeps routes and registry in step).
+ */
+export function isPublic(path: string, locale: Locale) {
+  return locales[locale].published && publishedLocales(path).includes(locale);
+}
+
+/**
+ * Whether a language version may be indexed and listed in the sitemap and
+ * hreflang: it is public and the page is not flagged noindex (a form
+ * endpoint or the brand kit stays linkable but out of search).
+ */
+export function isIndexable(path: string, locale: Locale) {
+  return isPublic(path, locale) && !isNoindex(path);
+}
+
+/** The languages to offer a reader: the public ones, or every built one while none is. */
+export function preferredLocales(path: string): readonly Locale[] {
+  const available = localesOf(path);
+  const published = available.filter((l) => isPublic(path, l));
+  return published.length ? published : available;
+}
+
 /** The locale a page falls back to when no other choice applies. */
 function defaultLocaleOf(path: string): Locale {
-  const { locales: available, override } = pageConfig(path);
+  const { override } = pageConfig(path);
+  const available = preferredLocales(path);
   if (override && override !== "prompt" && available.includes(override)) return override;
-  return available.includes(FALLBACK_LOCALE) ? FALLBACK_LOCALE : available[0];
+  return available.includes(FALLBACK_LOCALE) || available.length === 0 ? FALLBACK_LOCALE : available[0];
 }
 
 /** What the neutral URL of a page resolves to: a locale, or "prompt". */
@@ -110,6 +131,22 @@ export function localeFromSegment(segment: string | undefined): Locale | undefin
   if (!segment) return undefined;
   const lower = segment.toLowerCase();
   return allLocales.find((l) => locales[l].segment === lower);
+}
+
+/**
+ * URL segments used before 1 October 2026 (/hi/jobs, /hinglish/jobs). The
+ * proxy maps them and then routes the result, so an old URL takes one 308
+ * to its final page, even when that page has moved since.
+ */
+const LEGACY_SEGMENTS: Readonly<Record<string, Locale>> = { hi: "hi-IN", hinglish: "hi-Latn-IN" };
+
+/** The current pathname for an old-prefix URL ("/hinglish/jobs" -> "/hi-latn-in/jobs"), or undefined. */
+export function fromLegacyPrefix(pathname: string): string | undefined {
+  const [, first, ...rest] = pathname.split("/");
+  const locale = first !== undefined && Object.hasOwn(LEGACY_SEGMENTS, first.toLowerCase()) ? LEGACY_SEGMENTS[first.toLowerCase()] : undefined;
+  if (!locale) return undefined;
+  const path = `/${rest.join("/")}`.replace(/\/+$/, "");
+  return `/${locales[locale].segment}${path}`;
 }
 
 /** Split "/hi-in/jobs" into its locale and neutral path ("/jobs"). */
@@ -136,7 +173,8 @@ export function localeOfParams(params: { locale?: string }): Locale {
 
 /**
  * Point an in-site link at a real page. A neutral path ("/contact") goes to
- * the reader's locale when the page exists in it, else the page's default
+ * the reader's locale when the page is published in it (or, for reviewers
+ * reading an unpublished locale, built in it), else the page's default
  * language. Paths that already carry a locale, other sites, anchors, files
  * and the API are left alone.
  */
@@ -147,8 +185,40 @@ export function localizeHref(href: string, locale?: Locale) {
   const suffix = match[2];
   if (splitLocalePath(path).locale) return href;
   if (/^\/(api|_next|_t)(\/|$)/.test(path) || /\.[a-z0-9]+$/i.test(path)) return href;
-  const target = locale && localesOf(path).includes(locale) ? locale : defaultLocaleOf(path);
+  const reachable =
+    locale && localesOf(path).includes(locale) && (isPublic(path, locale) || isPaused(path, locale) || !locales[locale].published);
+  const target = reachable ? locale : defaultLocaleOf(path);
   return `${localePath(path, target)}${suffix}`;
+}
+
+/**
+ * Where an alias or retired page (or one retired language of a page) 308s
+ * to (src/content/registry redirectTarget), as a full pathname with any
+ * #anchor: the target in the language asked for when it is reachable there,
+ * by the same rule as localizeHref, else the target's neutral URL
+ * resolution. Undefined when the path is not moved.
+ */
+export function movedPathname(path: string, locale?: Locale): string | undefined {
+  const to = redirectTarget(path, locale);
+  if (!to) return undefined;
+  const [moved, anchor] = to.split("#");
+  const hash = anchor ? `#${anchor}` : "";
+  const keep = locale && localesOf(moved).includes(locale) && (isPublic(moved, locale) || !locales[locale].published);
+  const target = keep ? locale : neutralTarget(moved);
+  return `${target === "prompt" ? moved : localePath(moved, target)}${hash}`;
+}
+
+/**
+ * Whether a registered page has nothing to show at this URL, so it should
+ * 404 rather than fall back to another language: it is built in no language
+ * (draft or retired everywhere), or this language is retired with no target
+ * (a version that was never public). Check movedPathname first.
+ */
+export function isGone(path: string, locale?: Locale): boolean {
+  const entry = pageEntry(path);
+  if (!entry) return false;
+  if (localesOf(path).length === 0) return true;
+  return locale !== undefined && entry.locales[locale] === "retired";
 }
 
 /**
@@ -157,7 +227,7 @@ export function localizeHref(href: string, locale?: Locale) {
  * neutral URL) and the default language's page everywhere else.
  */
 export function languageAlternates(path: string) {
-  const published = localesOf(path).filter((l) => locales[l].published);
+  const published = localesOf(path).filter((l) => isIndexable(path, l));
   if (published.length < 2) return undefined;
   const xDefault = neutralTarget(path) === "prompt" ? path : localePath(path, defaultLocaleOf(path));
   return {
@@ -167,19 +237,61 @@ export function languageAlternates(path: string) {
 }
 
 /**
- * Other-language versions of the current page for the header switch.
- * From a published locale, only published locales show; from an unpublished
- * one, every version shows so reviewers can move between drafts.
+ * The header quick switch on pages without a cluster (PLAN §6.4, default and
+ * Hindi belt): English · हिंदी · Hinglish. A cluster page uses its cluster's
+ * `quickSwitch` (src/content/registry/clusters.ts). Fixed per page, never
+ * per visitor, so the switch stays in the static HTML.
+ */
+export const DEFAULT_QUICK_SWITCH: readonly Locale[] = ["en-IN", "hi-IN", "hi-Latn-IN"];
+
+/** The quick-switch order for a page: its cluster's set, else the default. */
+export function quickSwitchOf(path: string): readonly Locale[] {
+  const cluster = pageEntry(path)?.cluster;
+  return (cluster && clusterById(cluster)?.quickSwitch) || DEFAULT_QUICK_SWITCH;
+}
+
+/**
+ * Other-language versions of the current page for the header switch, in the
+ * page's quick-switch order. Languages outside that set come last with
+ * `more: true` (shown under "More"). From a published version, only
+ * published versions show; from an unpublished one (a locale or page still
+ * in review), every built version shows so reviewers can move between drafts.
  */
 export function languageLinks(pathname: string) {
   const { locale: current, path } = splitLocalePath(pathname);
   const available = localesOf(path);
   if (!current || available.length < 2 || !available.includes(current)) return [];
+  const set = quickSwitchOf(path);
+  const rank = (l: Locale) => (set.includes(l) ? set.indexOf(l) : set.length + allLocales.indexOf(l));
   return available
-    .filter((l) => l !== current && (!locales[current].published || locales[l].published))
+    .filter((l) => l !== current && (!isPublic(path, current) || isPublic(path, l)))
+    .sort((a, b) => rank(a) - rank(b))
     .map((l) => ({
       href: localePath(path, l),
       label: locales[l].label,
+      hint: locales[l].hint,
       lang: l,
+      more: !set.includes(l),
     }));
+}
+
+/**
+ * Why a link from the page at `fromPathname` to `href` is not allowed, or
+ * undefined when it is. A published page may link only to published pages
+ * (the registry's linkable rule) or paused ones, which stay reachable and
+ * show their notice (PLAN §8.3); pages that are not published are not
+ * checked. (Their links still resolve through localizeHref, so from a
+ * published locale they open published versions only.) Links to other sites, files, the
+ * API and anchors on the same page are not checked.
+ */
+export function linkProblem(href: string, fromPathname: string): string | undefined {
+  const from = splitLocalePath(fromPathname);
+  if (!from.locale || !isPublic(from.path, from.locale)) return undefined;
+  if (!href.startsWith("/") || href.startsWith("//")) return undefined;
+  const target = /^[^?#]*/.exec(href)![0] || "/";
+  if (/^\/(api|_next|_t)(\/|$)/.test(target) || /\.[a-z0-9]+$/i.test(target)) return undefined;
+  const to = splitLocalePath(target.length > 1 ? target.replace(/\/$/, "") : target);
+  const open = (l: Locale) => isPublic(to.path, l) || isPaused(to.path, l);
+  if (to.locale ? open(to.locale) : localesOf(to.path).some(open)) return undefined;
+  return `${fromPathname} links to ${href}, which is not a published page (src/content/registry/pages.ts)`;
 }

@@ -1,4 +1,4 @@
-// The wage monitor's core (PLAN §11, owner decision 4): what to watch,
+// The compliance source monitor's core (PLAN §11, owner decision 4): what to watch,
 // how to compare today's fetch with the stored snapshot, and which events
 // deserve an alert. runMonitor takes its fetcher as an argument, so the
 // tests run it against fixtures; fetchSource is the real one. No GitHub here.
@@ -10,17 +10,45 @@ export const FAIL_DAYS = 3;
 /** New documents fetched per run to describe them in the alert. */
 export const MAX_NEW_DOCS = 6;
 
+/**
+ * What each source is about. Wages are per state; EPF, ESIC and the labour
+ * codes are national; PT, LWF and the contract labour licence are per state.
+ */
+export const TOPICS = {
+  wages: "Minimum wages",
+  epf: "EPF",
+  esic: "ESIC",
+  pt: "Professional Tax",
+  lwf: "Labour Welfare Fund",
+  licence: "Contract labour licence",
+  codes: "Labour codes",
+};
+/** Topics every published state must have at least one source for, and the national ones. */
+export const STATE_TOPICS = ["wages", "pt", "lwf", "licence"];
+export const NATIONAL_TOPICS = ["epf", "esic", "codes"];
+export const NATIONAL = { state: "national", stateName: "All states" };
+
+/**
+ * The snapshot key for a target. Wage sources keep their plain URL (the
+ * snapshot format before topics); other topics prefix it, so one page
+ * watched for two topics with two patterns has two entries.
+ */
+export const targetKey = (t) => (!t.topic || t.topic === "wages" ? t.url : `${t.topic}:${t.url}`);
+
+/** The lines of a page's text that match its pattern, de-duplicated and sorted (pages that reorder their text are stable). */
+export const pageLines = (html, match) => [...new Set(htmlText(html).split("\n").map((l) => l.trim()).filter((l) => l && match.test(l)))].sort();
+
 const USER_AGENT = "vayasyaseva.com wage source monitor (+https://vayasyaseva.com/minimum-wages)";
 /** Per request, body included. A host that hangs costs this once per run (see fetchAll). */
 export const TIMEOUT_MS = 45_000;
 
 /** GET with one retry on a network error or 5xx/429; never throws. */
-export async function fetchSource(url, { attempts = 2, retryDelayMs = 5_000, fetchImpl = fetch } = {}) {
+export async function fetchSource(url, { attempts = 2, retryDelayMs = 5_000, fetchImpl = fetch, userAgent = USER_AGENT } = {}) {
   let last = { ok: false, status: 0, error: "not tried" };
   for (let i = 0; i < attempts; i++) {
     if (i) await new Promise((r) => setTimeout(r, retryDelayMs));
     try {
-      const res = await fetchImpl(url, { redirect: "follow", signal: AbortSignal.timeout(TIMEOUT_MS), headers: { "user-agent": USER_AGENT, accept: "*/*" } });
+      const res = await fetchImpl(url, { redirect: "follow", signal: AbortSignal.timeout(TIMEOUT_MS), headers: { "user-agent": userAgent, accept: "*/*" } });
       const body = Buffer.from(await res.arrayBuffer());
       last = { ok: res.ok, status: res.status, contentType: res.headers?.get?.("content-type") ?? "", body };
       if (res.ok || (res.status >= 400 && res.status < 500 && res.status !== 429)) return last;
@@ -92,34 +120,74 @@ function implausible(target, res, prev, links, allCount) {
   return null;
 }
 
+/** The extra sources of one registry entry (a state or "national"): documents, listings and pages, each with its topic. */
+function registryTargets(entry, scope) {
+  const out = [];
+  for (const d of entry?.documents ?? []) out.push({ ...scope, kind: "document", url: d.url, name: d.name, topic: d.topic ?? "wages", sourceIds: d.sourceIds ?? [], listings: [] });
+  for (const l of entry?.listings ?? []) out.push({ ...scope, kind: "listing", url: l.url, name: l.name, match: l.match, topic: l.topic ?? "wages" });
+  for (const pg of entry?.pages ?? []) out.push({ ...scope, kind: "page", url: pg.url, name: pg.name, match: pg.match, topic: pg.topic ?? "wages" });
+  return out;
+}
+
 /**
- * Everything to fetch, per state: each document the wage page cites (once
+ * Everything to fetch: per state, each document the wage page cites (once
  * per URL, with every source id that points at it and the SHA-256 recorded
- * in the dataset) and each listing page, from the dataset and the registry.
+ * in the dataset) and each listing page, from the dataset and the registry;
+ * then the registry's other topics for that state (PT, LWF, licence); then
+ * the national sources (EPF, ESIC, the labour codes).
  */
 export function buildTargets(wageStates, registry) {
   const targets = [];
+  const seen = new Set();
+  const add = (t) => {
+    const key = targetKey(t);
+    if (seen.has(key)) return;
+    seen.add(key);
+    targets.push(t);
+  };
   for (const state of wageStates) {
-    const extra = registry.states?.[state.state] ?? {};
+    const scope = { state: state.state, stateName: state.name };
     const docs = new Map();
     for (const source of state.sources) {
-      const doc = docs.get(source.url) ?? { state: state.state, stateName: state.name, kind: "document", url: source.url, name: source.title, sourceIds: [], expectedSha256: source.sha256, listings: [] };
+      const doc = docs.get(source.url) ?? { ...scope, kind: "document", topic: "wages", url: source.url, name: source.title, sourceIds: [], expectedSha256: source.sha256, listings: [] };
       doc.sourceIds.push(source.id);
       if (!doc.listings.includes(source.listing)) doc.listings.push(source.listing);
       docs.set(source.url, doc);
     }
-    for (const d of extra.documents ?? []) {
-      if (!docs.has(d.url)) docs.set(d.url, { state: state.state, stateName: state.name, kind: "document", url: d.url, name: d.name, sourceIds: [], listings: [] });
-    }
-    targets.push(...docs.values());
-    const listings = new Map();
-    for (const l of extra.listings ?? []) listings.set(l.url, { state: state.state, stateName: state.name, kind: "listing", url: l.url, name: l.name, match: l.match });
-    for (const source of state.sources) {
-      if (!listings.has(source.listing)) listings.set(source.listing, { state: state.state, stateName: state.name, kind: "listing", url: source.listing, name: `Listing for ${source.title}` });
-    }
-    targets.push(...listings.values());
+    docs.forEach(add);
+    const extra = registryTargets(registry.states?.[state.state], scope);
+    extra.filter((t) => t.kind === "document").forEach(add);
+    extra.filter((t) => t.kind !== "document" && t.topic === "wages").forEach(add);
+    for (const source of state.sources) add({ ...scope, kind: "listing", topic: "wages", url: source.listing, name: `Listing for ${source.title}` });
+    extra.filter((t) => t.kind !== "document" && t.topic !== "wages").forEach(add);
   }
+  if (registry.national) registryTargets(registry.national, NATIONAL).forEach(add);
   return targets;
+}
+
+/**
+ * Coverage: every state with a wage page has at least one source for each
+ * state topic, the national entry covers EPF, ESIC and the labour codes,
+ * and every document the employer dues cite (src/content/statutory.ts) is
+ * watched somewhere.
+ */
+export function coverageProblems(wageStates, registry, citedUrls = []) {
+  const problems = [];
+  const topicsOf = (entry) => new Set([...(entry?.documents ?? []), ...(entry?.listings ?? []), ...(entry?.pages ?? [])].map((x) => x.topic ?? "wages"));
+  for (const state of wageStates) {
+    const have = topicsOf(registry.states?.[state.state]);
+    have.add("wages");
+    for (const topic of STATE_TOPICS) if (!have.has(topic)) problems.push(`${state.state}: no source watched for ${TOPICS[topic]} (add one to scripts/wage-monitor/sources.json)`);
+  }
+  const national = topicsOf(registry.national);
+  for (const topic of NATIONAL_TOPICS) if (!national.has(topic)) problems.push(`national: no source watched for ${TOPICS[topic]}`);
+  const watched = new Set(buildTargets(wageStates, registry).map((t) => t.url));
+  for (const url of citedUrls) if (!watched.has(url)) problems.push(`${url} is cited on the site but not watched`);
+  for (const t of buildTargets(wageStates, registry)) {
+    if (!TOPICS[t.topic]) problems.push(`${t.url}: unknown topic "${t.topic}"`);
+    if (t.kind === "page" && !t.match) problems.push(`${t.url}: a page needs a match pattern (the lines to compare)`);
+  }
+  return problems;
 }
 
 /** Problems with the registry itself, for the unit tests and a pre-flight check. */
@@ -140,9 +208,9 @@ export function registryProblems(wageStates, registry) {
       problems.push(`${state.state}: no listing pages in the registry`);
       continue;
     }
-    const urls = new Set(entry.listings.map((l) => l.url));
+    const urls = new Set(entry.listings.filter((l) => !l.topic || l.topic === "wages").map((l) => l.url));
     for (const source of state.sources) if (!urls.has(source.listing)) problems.push(`${state.state}: listing ${source.listing} (cited by ${source.id}) is missing from the registry`);
-    for (const l of entry.listings) {
+    for (const l of [...entry.listings, ...(entry.pages ?? []), ...(entry.documents ?? [])]) {
       if (!/^https:\/\//.test(l.url)) problems.push(`${state.state}: ${l.url} is not https`);
       if (!l.name) problems.push(`${state.state}: ${l.url} has no name`);
       if (l.match) {
@@ -151,6 +219,17 @@ export function registryProblems(wageStates, registry) {
         } catch {
           problems.push(`${state.state}: ${l.url} has an invalid match pattern`);
         }
+      }
+    }
+  }
+  for (const l of [...(registry.national?.listings ?? []), ...(registry.national?.pages ?? []), ...(registry.national?.documents ?? [])]) {
+    if (!/^https:\/\//.test(l.url)) problems.push(`national: ${l.url} is not https`);
+    if (!l.name) problems.push(`national: ${l.url} has no name`);
+    if (l.match) {
+      try {
+        new RegExp(l.match, "i");
+      } catch {
+        problems.push(`national: ${l.url} has an invalid match pattern`);
       }
     }
   }
@@ -177,25 +256,31 @@ export async function runMonitor({ targets, previous, fetcher, now = new Date(),
   const newDocs = [];
   const guarded = hostBreaker(fetcher);
   const fetched = await fetchAll(
-    targets.map((t) => t.url),
+    [...new Set(targets.map((t) => t.url))],
     guarded,
   );
 
   for (const target of targets) {
-    const prev = prevSources[target.url];
+    const key = targetKey(target);
+    const prev = prevSources[key];
     const res = fetched.get(target.url);
     let html = null;
     let links = null;
     let allCount = null;
     let bogus = null;
+    let lines = null;
     if (res.ok) {
+      if (target.kind === "page") {
+        lines = pageLines(res.body.toString("utf8"), new RegExp(target.match, "i"));
+        if (!lines.length) bogus = prev?.lines?.length ? "none of the watched lines are on the page any more" : "no lines match the pattern";
+      }
       if (target.kind === "listing") {
         html = res.body.toString("utf8");
         const all = documentLinks(html, target.url);
         allCount = all.length;
         links = target.match ? documentLinks(html, target.url, new RegExp(target.match, "i")) : all;
       }
-      bogus = implausible(target, res, prev, links, allCount);
+      if (target.kind !== "page") bogus = implausible(target, res, prev, links, allCount);
     }
     if (!res.ok || bogus) {
       const error = bogus ?? (res.status ? `HTTP ${res.status}` : res.error || "no response");
@@ -205,7 +290,7 @@ export async function runMonitor({ targets, previous, fetcher, now = new Date(),
         failing.days += 1;
         failing.lastDay = today;
       }
-      sources[target.url] = { ...prev, kind: target.kind, state: target.state, failing };
+      sources[key] = { ...prev, kind: target.kind, state: target.state, failing };
       if (failing.days >= FAIL_DAYS && !failing.alerted) {
         failing.alerted = true;
         events.push({ type: "unreachable", state: target.state, stateName: target.stateName, url: target.url, name: target.name, kind: target.kind, since: failing.since, days: failing.days, error });
@@ -219,11 +304,26 @@ export async function runMonitor({ targets, previous, fetcher, now = new Date(),
     }
     const base = { kind: target.kind, state: target.state, lastOk: today };
 
+    if (target.kind === "page") {
+      sources[key] = { ...base, lines };
+      if (!prev?.lines) {
+        results.push({ target, outcome: "baseline", detail: `${lines.length} lines watched` });
+        continue;
+      }
+      const before = new Set(prev.lines);
+      const after = new Set(lines);
+      const added = lines.filter((l) => !before.has(l));
+      const removed = prev.lines.filter((l) => !after.has(l));
+      if (added.length || removed.length) events.push({ type: "page-changed", state: target.state, stateName: target.stateName, url: target.url, name: target.name, added, removed });
+      results.push({ target, outcome: added.length || removed.length ? "changed" : "unchanged", detail: `${lines.length} lines watched${added.length ? `, ${added.length} new` : ""}${removed.length ? `, ${removed.length} gone` : ""}` });
+      continue;
+    }
+
     if (target.kind === "document") {
       const doc = describeDocument(res.body);
       const baseline = prev?.sha256 ?? target.expectedSha256;
       const next = { ...base, sha256: doc.sha256, pdf: doc.isPdf, bytes: doc.bytes, pages: doc.pages, textSha256: doc.textSha256, text: clipText(doc.text) };
-      sources[target.url] = next;
+      sources[key] = next;
       if (baseline && doc.sha256 !== baseline) {
         events.push({
           type: "document-changed",
@@ -243,7 +343,7 @@ export async function runMonitor({ targets, previous, fetcher, now = new Date(),
       continue;
     }
 
-    sources[target.url] = { ...base, links, allCount, textSha256: sha256(htmlText(html)) };
+    sources[key] = { ...base, links, allCount, textSha256: sha256(htmlText(html)) };
     const cited = target.state ? [...citedUrls.values()].filter((d) => d.state === target.state && d.listings.includes(target.url)) : [];
     const missingCited = cited.filter((d) => !links.some((l) => l.url === d.url));
     if (!prev?.links) {
@@ -284,7 +384,10 @@ export async function runMonitor({ targets, previous, fetcher, now = new Date(),
     }
   }
 
-  return { state: { version: STATE_VERSION, updatedAt: now.toISOString(), sources }, events, results };
+  // Every event carries its target's topic (wages, epf, esic, pt, lwf, licence, codes).
+  const topicOf = new Map(targets.map((t) => [`${t.state}|${t.url}`, t.topic ?? "wages"]));
+  for (const e of events) e.topic ??= topicOf.get(`${e.state}|${e.url}`) ?? "wages";
+  return { state: { version: STATE_VERSION, updatedAt: now.toISOString(), sources, reported: previous?.reported ?? {}, chatwoot: previous?.chatwoot ?? {} }, events, results };
 }
 
 /**
@@ -297,6 +400,8 @@ export function fingerprint(event) {
       ? [event.type, event.url, event.after.sha256]
       : event.type === "listing-changed"
         ? [event.type, event.url, ...event.added.map((l) => `+${l.url}`).sort(), ...event.removed.map((l) => `-${l.url}`).sort()]
+        : event.type === "page-changed"
+          ? [event.type, event.topic ?? "", event.url, ...event.added.map((l) => `+${l}`), ...event.removed.map((l) => `-${l}`)]
         : [event.type, event.url, event.since];
   return sha256(key.join("\n")).slice(0, 16);
 }

@@ -1,16 +1,12 @@
 name: Wage monitor
 
-# Daily check of every state's minimum wage primary sources (PLAN §11):
-# the documents the wage pages cite and the department pages where a new
-# notification would appear (scripts/wage-monitor/, docs/wage-monitor.md).
-# A change, or a source that fails three days running, opens or updates a
-# GitHub issue labelled wage-monitor. The snapshot it compares against lives
-# in the Actions cache, so the workflow never writes to the repository. The
-# same command runs from a Kubernetes CronJob or n8n when the site leaves
-# Vercel; nothing here depends on Vercel.
+# Manual fallback for the compliance source monitor (scripts/wage-monitor/,
+# docs/wage-monitor.md). The daily run is a Kubernetes CronJob that notifies
+# Chatwoot (vayasya-infra apps/compliance-monitor); this workflow runs the
+# same command by hand and reports to GitHub issues labelled wage-monitor
+# instead. Its snapshot lives in the Actions cache, separate from the
+# cluster's, so the workflow never writes to the repository.
 on:
-  schedule:
-    - cron: "30 1 * * *" # 07:00 IST
   workflow_dispatch:
     inputs:
       dry_run:
@@ -54,7 +50,7 @@ jobs:
           DRY_RUN: ${{ inputs.dry_run && '--dry-run' || '' }}
         run: |
           set -o pipefail
-          node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/wage-monitor/index.mjs $DRY_RUN | tee -a "$GITHUB_STEP_SUMMARY"
+          node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/wage-monitor/index.mjs --notify github $DRY_RUN | tee -a "$GITHUB_STEP_SUMMARY"
 
       - name: Save snapshot
         if: success() && !inputs.dry_run

@@ -23,6 +23,15 @@ import {
   referenceLinks,
   type NavLink,
 } from "@/components/layout/nav-links";
+import { clusterById } from "@/content/registry";
+import { jobsHubPath, type ClusterId } from "@/content/registry/identifiers";
+import { trackAnalyticsEvent } from "@/lib/analytics";
+import { useAreaDecision } from "@/lib/intent/use-area";
+import { noteChoice } from "@/lib/intent/store";
+import { JOBS_AREA_LABEL, businessLabel, jobsAreaHref } from "@/lib/intent/surfaces";
+
+/** A header link that names an area: clicking it records the visitor's pick. */
+type AreaLink = NavLink & { neutral?: boolean; cluster?: string; surface?: "business" | "jobs" };
 
 /**
  * "Request a crew" on business pages, in the page's language. The Hindi and
@@ -173,6 +182,10 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
   const split = splitLocalePath(pathname);
   const pageLocale = split.locale ?? FALLBACK_LOCALE;
   const path = split.path;
+  // Which area(s) to show (src/lib/intent): the no-signal default until
+  // the page has loaded, then the visitor's intent, or both when their
+  // region and intent disagree with no clear winner.
+  const area = useAreaDecision(path);
   const isHome = path === "/";
   const view: HeaderDoor = door === "reference" && LEGAL.has(path) ? "business" : door;
   const isJobs = view === "jobs";
@@ -186,7 +199,30 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
   const doorLocale = view === "reference" ? FALLBACK_LOCALE : pageLocale;
   const doorLang = doorLocale === "en-IN" ? undefined : doorLocale;
   const work = WORK_DOOR[doorLocale];
-  const jobsDoor = { href: jobsDoorHref(doorLocale), label: work.label, lang: doorLang, neutral: true };
+  const jobsDoors: AreaLink[] = area.jobs.length
+    ? area.jobs.map((id) => ({
+        href: jobsAreaHref(id, doorLocale),
+        label: area.jobs.length > 1 ? (JOBS_AREA_LABEL[doorLocale][id] ?? work.label) : work.label,
+        lang: doorLang,
+        neutral: true,
+        cluster: id,
+        surface: "jobs" as const,
+      }))
+    : [{ href: jobsDoorHref(doorLocale), label: work.label, lang: doorLang, neutral: true }];
+  // The business bar's area slot: the buyer page(s) of the decided area.
+  const areaLinks: AreaLink[] = area.business
+    .map((id) => ({ id, hub: clusterById(id)?.buyerHub }))
+    .filter((a): a is { id: string; hub: string } => Boolean(a.hub))
+    .map(({ id, hub }) => ({ href: hub, label: businessLabel(id), cluster: id, surface: "business" as const }));
+  const businessLinks: AreaLink[] = BUSINESS_LINKS.flatMap((l) => (l.href === "/haridwar-sidcul" && areaLinks.length ? areaLinks : [l]));
+  // Jobs hubs on the jobs side, the decided ones first.
+  const jobsHubs = area.jobs.map((id) => ({
+    href: localePath(jobsHubPath(id as Exclude<ClusterId, "other">), pageLocale),
+    label: JOBS_AREA_LABEL[pageLocale][id] ?? t.haridwar,
+    cluster: id,
+    surface: "jobs" as const,
+  }));
+  const applyHref = jobsHubs[0]?.href ?? localePath("/jobs/haridwar", pageLocale);
   const businessDoor = { href: "/", label: JOBS_NAV[doorLocale].business, lang: doorLang };
   const jobsHome = localePath("/jobs", pageLocale);
   const nav: { bar: NavLink[]; doors: SheetRow["links"]; sheet: SheetRow[]; more: SheetRow[]; cta?: NavLink } =
@@ -197,7 +233,7 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
           bar: [],
           doors: [businessDoor],
           sheet: [
-            { links: [{ href: localePath("/jobs/haridwar", pageLocale), label: t.haridwar }] },
+            { links: jobsHubs.length ? jobsHubs : [{ href: localePath("/jobs/haridwar", pageLocale), label: t.haridwar }] },
             ...jobGroupLinks(pageLocale).map((g) => ({ links: [g] })),
             { links: JOB_HUB_LINKS[pageLocale].map((h) => ({ href: localePath(`/jobs/${h.slug}`, pageLocale), label: h.label })) },
           ],
@@ -205,23 +241,23 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
             { links: [{ href: localePath("/jobs/fees-and-fraud", pageLocale), label: t.fee }] },
             { links: [businessDoor] },
           ],
-          cta: { href: localePath("/jobs/haridwar", pageLocale), label: t.apply },
+          cta: { href: applyHref, label: t.apply },
         }
       : view === "reference"
         ? {
             bar: referenceLinks().slice(0, 1),
-            doors: [businessDoor, jobsDoor],
+            doors: [businessDoor, ...jobsDoors],
             sheet: referenceLinks().map((l) => ({ links: [l] })),
-            more: [{ links: [businessDoor] }, { links: [jobsDoor] }],
+            more: [{ links: [businessDoor] }, { links: jobsDoors }],
           }
         : {
-            bar: BUSINESS_LINKS,
-            doors: [jobsDoor],
-            sheet: BUSINESS_LINKS.map((l) => ({ links: [l] })),
+            bar: businessLinks,
+            doors: jobsDoors,
+            sheet: businessLinks.map((l) => ({ links: [l] })),
             // Setu login stays here for returning clients: the Setu page's
             // traffic is mostly people looking for it.
             more: [
-              { lead: work.lead, lang: doorLang, links: [jobsDoor] },
+              { lead: work.lead, lang: doorLang, links: jobsDoors },
               { links: [{ href: SETU_LOGIN, label: "Setu login ↗" }] },
             ],
             cta: { href: "/contact", label: CREW_LABEL[pageLocale], lang: pageLang },
@@ -235,7 +271,7 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
   // form instead, keeping the role it pre-selects. /jobs/apply is left for
   // agent and legacy links.
   const applyHere = (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (!isJobs || href !== localePath("/jobs/haridwar", pageLocale)) return;
+    if (!isJobs || href !== applyHref) return;
     const form = document.getElementById("apply");
     if (!form) return;
     event.preventDefault();
@@ -245,13 +281,21 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
   };
   // One link in the bar or the menu: external, neutral (no locale added),
   // or an in-site link through the i18n Link.
-  const navLink = (item: NavLink & { neutral?: boolean }, extra: { className?: string; onClick?: () => void } = {}) =>
+  // An area link remembers the pick and reports it (area_nav_click).
+  const picked = (item: AreaLink, then?: () => void) => () => {
+    if (item.cluster) {
+      noteChoice(item.cluster);
+      trackAnalyticsEvent("area_nav_click", { cluster: item.cluster, surface: item.surface ?? "business", mode: area.mode });
+    }
+    then?.();
+  };
+  const navLink = (item: AreaLink, extra: { className?: string; onClick?: () => void } = {}) =>
     item.href.startsWith("http") ? (
       <a key={item.href} href={item.href} className={extra.className}>
         {item.label}
       </a>
     ) : item.neutral ? (
-      <NextLink key={item.href} href={item.href} lang={item.lang} prefetch={false} className={extra.className} onClick={extra.onClick}>
+      <NextLink key={item.href} href={item.href} lang={item.lang} prefetch={false} className={extra.className} onClick={picked(item, extra.onClick)}>
         {item.label}
       </NextLink>
     ) : (
@@ -261,7 +305,7 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
         lang={item.lang}
         prefetch={prefetch}
         className={extra.className}
-        onClick={extra.onClick}
+        onClick={picked(item, extra.onClick)}
         aria-current={current(item.href)}
       >
         {item.label}

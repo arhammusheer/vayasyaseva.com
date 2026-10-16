@@ -16,7 +16,8 @@ import { STEP_DEFS, areaOptions, quickApplyCopy, roleFor, type Answers, type Ste
 import { readPrefill } from "@/lib/prefill";
 import { localePath, splitLocalePath, type Locale } from "@/lib/i18n";
 import { clusterById } from "@/content/registry/clusters";
-import { MAX_APPLICANT_NAME_LENGTH, WEB_SOURCE, cleanQuickAnswers, isJobRole, isJobHub, isPagePath, normaliseIndianMobile, type IntakeCluster, type JobHub, type JobRole } from "@/lib/talent-intake/rules";
+import { noteChoice } from "@/lib/intent/store";
+import { AREA_CLUSTERS, MAX_APPLICANT_NAME_LENGTH, WEB_SOURCE, cleanQuickAnswers, isJobRole, isJobHub, isPagePath, normaliseIndianMobile, type IntakeCluster, type JobHub, type JobRole } from "@/lib/talent-intake/rules";
 import { JobSubmissionFailure, useJobSubmission } from "@/lib/use-job-submission";
 import { TURNSTILE_SCRIPT_URL } from "@/lib/turnstile";
 import { adClick } from "@/lib/ad-click";
@@ -260,6 +261,11 @@ export function QuickApply({
       pendingStep.current = step.id;
       const before = answers[step.id]?.[0];
       setAnswers((a) => ({ ...a, [step.id]: [value] }));
+      // An area that names a cluster is an explicit pick for the header (src/lib/intent).
+      if (step.id === "area" && Object.hasOwn(AREA_CLUSTERS, value)) {
+        const c = AREA_CLUSTERS[value as keyof typeof AREA_CLUSTERS];
+        if (c) noteChoice(c);
+      }
       trackAnalyticsEvent("quick_step", { locale, step: step.id, answer: value, ...(before && before !== value ? { changed: "yes" } : {}) });
       return;
     }

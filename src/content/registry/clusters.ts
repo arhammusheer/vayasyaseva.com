@@ -47,6 +47,8 @@ export type Cluster = {
   /** Passed the readiness check. A cluster that hasn't is left out instead. */
   publishable: true;
   name: Partial<Record<LocaleTag, string>>;
+  /** The business header's label for the buyer page, when it differs from the English name. */
+  navLabel?: string;
   /** States the cluster's sites are in (links to wage pages once they exist). */
   states: readonly WageStateSlug[];
   /**
@@ -76,6 +78,7 @@ export const clusters: readonly Cluster[] = [
     id: "haridwar",
     publishable: true,
     name: { "en-IN": "Haridwar", "hi-IN": "हरिद्वार", "hi-Latn-IN": "Haridwar" },
+    navLabel: "Haridwar SIDCUL",
     states: ["uttarakhand"],
     // Hindi belt (PLAN §6.4): English · हिंदी · Hinglish.
     quickSwitch: ["en-IN", "hi-IN", "hi-Latn-IN"],

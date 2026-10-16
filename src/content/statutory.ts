@@ -26,6 +26,8 @@ export type DueRow = {
   applies: string;
   worker: string;
   employer: string;
+  /** A row that is not a rate (the UP-law welfare fund): what is paid and when, as labelled lines under the row. */
+  explain?: [label: string, text: string][];
   sources: string[];
 };
 
@@ -167,7 +169,7 @@ const licence = (rules: string): Deadline => ({
 const upLwfDeadline: Deadline = {
   when: "Quarterly",
   detail: "by 15 Jan, Apr, Jul, Oct",
-  what: "Labour Welfare Fund, for units with 50+ persons",
+  what: "Labour Welfare Fund: fines and long-unpaid wages, for units with 50+ persons",
   sources: ["up-lwf-rules-1972"],
 };
 
@@ -185,11 +187,31 @@ const esic: DueRow = {
   employer: "3.25%",
   sources: ["css-2020", "ss-central-rules-2026", "esic-contribution"],
 };
+/**
+ * The U.P. Labour Welfare Fund Act, 1965 (in force in Uttarakhand as
+ * inherited in 2000) has no contribution. Section 3(2)(a): the Fund takes
+ * "all fines realised from or payable by the employees"; section 2(12)
+ * (U.P. Act 17 of 1978): "unpaid accumulations" are sums due to employees,
+ * including wages, gratuity and house allowance, not paid within two years
+ * of falling due, excluding PF contributions; section 6: the Board invites
+ * claims, which must arrive within one year of the first notice. Rule 3(iii)
+ * of the 1972 Rules: both are paid quarterly, by the 15th of the month after
+ * the quarter. U.P. Act 23 of 2024 changed only the "employee" definition and
+ * section 8(3). The Act's text is on India Code (not reachable by the
+ * compliance monitor, so the page cites it by section; docs/claims-register.md).
+ */
 const upLwf: DueRow = {
   name: "Labour Welfare Fund",
-  applies: "50+ persons",
-  worker: "Nil",
-  employer: "Fines and unpaid wages",
+  applies: "Units with 50+ persons",
+  worker: "Nothing",
+  employer: "No set rate",
+  explain: [
+    ["Fines", "Every fine you deducted from a worker's wages, paid for the quarter it was deducted."],
+    ["Unpaid wages", "Wages, gratuity or house allowance owed to a worker and still unpaid two years after it fell due. PF is not included."],
+    ["When", "Each quarter, by 15 January, April, July and October, with the statement in Annexure I."],
+    ["After", "The Labour Welfare Board publishes notices. The worker has one year from the first notice to claim the money; unclaimed money stays in the Fund."],
+    ["Law", "U.P. Labour Welfare Fund Act, 1965, sections 2, 3 and 6, and its 1972 Rules, rule 3. There is no regular contribution."],
+  ],
   sources: ["up-lwf-rules-1972"],
 };
 

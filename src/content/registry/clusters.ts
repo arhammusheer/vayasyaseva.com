@@ -55,8 +55,13 @@ export type Cluster = {
    * Punjab English · Hinglish · हिंदी). A page's other languages go under "More".
    */
   quickSwitch: readonly LocaleTag[];
-  /** The buyer page for this cluster. */
-  buyerHub: string;
+  /**
+   * The buyer page for this cluster. Absent for a jobs-only cluster: one
+   * whose jobs side passed readiness (a recruiter calls back, VSPL is the
+   * employer of record) but whose buyer side has not (PLAN §3.2), so it gets
+   * /jobs/<cluster> and nothing that sells crews there.
+   */
+  buyerHub?: string;
   /** Signed-off public claims. Rendered only from here. */
   claims: readonly PublicClaim[];
   /**
@@ -78,6 +83,22 @@ export const clusters: readonly Cluster[] = [
     // None signed off yet; the page copy carries no claim block.
     claims: [],
     // Waiting for the state registration list (PLAN §12, decision 3).
+    registrations: [],
+  },
+  {
+    // Jobs only (16 Oct 2026): VSPL is the employer of record in writing and
+    // a recruiter calls applicants back, so /jobs/bengaluru is open as a
+    // worker list (PLAN §3.2, §5.3). No buyer hub, payroll claim or estate
+    // until the Karnataka registrations are on file. No Kannada until there
+    // is a native reviewer and someone who can reply in it.
+    id: "bengaluru",
+    publishable: true,
+    name: { "en-IN": "Bengaluru", "hi-IN": "बेंगलुरु", "hi-Latn-IN": "Bengaluru" },
+    states: ["karnataka"],
+    // Karnataka (PLAN §6.4) is English · ಕನ್ನಡ · Hinglish; until kn-IN is
+    // published it falls through to English · Hinglish · हिंदी.
+    quickSwitch: ["en-IN", "hi-Latn-IN", "hi-IN"],
+    claims: [],
     registrations: [],
   },
 ];

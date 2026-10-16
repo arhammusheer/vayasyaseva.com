@@ -129,6 +129,7 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
     };
   },
   haryana: undefined,
+  karnataka: undefined,
 };
 
 export function getWageStateCopy(slug: WageStateSlug): WageStateCopy | undefined {

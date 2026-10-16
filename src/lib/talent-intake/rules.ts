@@ -170,6 +170,8 @@ export const QUICK_ANSWERS = {
   area: {
     "sidcul-bahadrabad": "SIDCUL / Bahadrabad", "haridwar-jwalapur": "Haridwar city / Jwalapur", "roorkee-bhagwanpur": "Roorkee / Bhagwanpur",
     laksar: "Laksar", outside: "Outside Haridwar",
+    "bengaluru:north": "Bengaluru North / Peenya", "bengaluru:south": "Bengaluru South / Electronic City", "bengaluru:east": "Bengaluru East / Whitefield",
+    "bengaluru:west": "Bengaluru West / Kengeri", "bengaluru:outside": "Outside Bengaluru",
   },
 } as const;
 export type QuickQuestion = keyof typeof QUICK_ANSWERS;
@@ -185,6 +187,11 @@ export const AREA_CLUSTERS: Record<keyof typeof QUICK_ANSWERS.area, IntakeCluste
   "roorkee-bhagwanpur": "haridwar",
   laksar: "haridwar",
   outside: null,
+  "bengaluru:north": "bengaluru",
+  "bengaluru:south": "bengaluru",
+  "bengaluru:east": "bengaluru",
+  "bengaluru:west": "bengaluru",
+  "bengaluru:outside": null,
 };
 
 /**

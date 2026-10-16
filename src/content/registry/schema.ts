@@ -72,7 +72,7 @@ export const clusterSchema = z.strictObject({
   name: z.strictObject(perLocale(z.string().min(1))),
   states: z.array(z.enum(WAGE_STATE_SLUGS)).min(1),
   quickSwitch: z.array(z.enum(LOCALE_TAGS)).min(1),
-  buyerHub: neutralPath,
+  buyerHub: neutralPath.optional(),
   claims: z.array(publicClaimSchema),
   registrations: z.array(publicRegistrationSchema),
 });

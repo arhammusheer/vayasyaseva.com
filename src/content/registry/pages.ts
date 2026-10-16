@@ -209,6 +209,8 @@ export const pageEntries: readonly PageEntry[] = [
   ...JOB_HUB_SLUGS.map((slug) => jobsPage(`/jobs/${slug}`, "job-hub", 0.7)),
   // Cluster jobs hubs (PLAN §5.3): /jobs/<cluster>, linked from /jobs and the cluster's buyer hub.
   { ...jobsPage(jobsHubPath("haridwar"), "jobs-city", 0.8), cluster: "haridwar" },
+  // Jobs only: a worker list, no buyer hub yet (clusters.ts).
+  { ...jobsPage(jobsHubPath("bengaluru"), "jobs-city", 0.7), cluster: "bengaluru" },
   { path: HARIDWAR_HUB_PATH, kind: "cluster-hub", audience: "business", locales: ALL, parent: "/", cluster: "haridwar", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.9 },
   // Sectors and engagement steps now live on /services.
   { path: "/industries", kind: "static", audience: "business", locales: RETIRED_EN, parent: "/", retiredTo: "/services#sectors", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.8 },

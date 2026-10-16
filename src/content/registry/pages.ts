@@ -87,11 +87,12 @@ export type PageEntry = {
 
 /** Dates of the content changes the current pages carry. */
 const PHONE_FREE_JOBS = "2026-10-16";
-const HARIDWAR_DEPTH = "2026-10-16";
 const EDITORIAL_POLICY = "2026-10-16";
 const CONTACT_CREW_FORM = "2026-10-16";
 /** The business pages rebuilt in the site restructure (fewer pages, fewer words). */
 const RESTRUCTURE = "2026-10-16";
+/** The jobs pages rebuilt in the restructure, and the new applicant notice. */
+const JOBS_RESTRUCTURE = "2026-10-16";
 const TERMS_PHONE_FREE = PHONE_FREE_JOBS;
 
 /**
@@ -167,7 +168,7 @@ const jobsPage = (path: string, kind: PageKind, priority: number, changeFrequenc
     locales: ALL,
     neutral: "prompt",
     parent: path === "/jobs" ? "/" : "/jobs",
-    updated: PHONE_FREE_JOBS,
+    updated: JOBS_RESTRUCTURE,
     changeFrequency,
     priority,
   }) satisfies PageEntry;
@@ -201,11 +202,13 @@ export const pageEntries: readonly PageEntry[] = [
   { ...jobsPage("/jobs/apply", "jobs-apply", 0.8), noindex: true },
   // No fee, and how to report anyone who asks for money in our name.
   jobsPage("/jobs/fees-and-fraud", "static", 0.5, "yearly"),
+  // What happens to an applicant's details, in plain words; the form's checkbox links here.
+  jobsPage("/jobs/privacy", "static", 0.4, "yearly"),
   ...JOB_ROLE_SLUGS.map((slug) => jobsPage(`/jobs/${slug}`, "job-role", 0.8)),
   // Candidate categories (freshers, 10th, 12th pass), linked from the jobs overview.
   ...JOB_HUB_SLUGS.map((slug) => jobsPage(`/jobs/${slug}`, "job-hub", 0.7)),
   // Cluster jobs hubs (PLAN §5.3): /jobs/<cluster>, linked from /jobs and the cluster's buyer hub.
-  { ...jobsPage(jobsHubPath("haridwar"), "jobs-city", 0.8), cluster: "haridwar", updated: HARIDWAR_DEPTH },
+  { ...jobsPage(jobsHubPath("haridwar"), "jobs-city", 0.8), cluster: "haridwar" },
   { path: HARIDWAR_HUB_PATH, kind: "cluster-hub", audience: "business", locales: ALL, parent: "/", cluster: "haridwar", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.9 },
   // Sectors and engagement steps now live on /services.
   { path: "/industries", kind: "static", audience: "business", locales: RETIRED_EN, parent: "/", retiredTo: "/services#sectors", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.8 },

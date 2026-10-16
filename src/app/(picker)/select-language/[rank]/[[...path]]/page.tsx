@@ -7,6 +7,7 @@ import { getJobHub } from "@/content/pages/job-hubs";
 import { getJobCluster } from "@/content/pages/job-clusters";
 import { quickApplyCopy } from "@/content/pages/quick-apply";
 import { feesAndFraudCopy } from "@/content/pages/fees-and-fraud";
+import { jobsPrivacyCopy } from "@/content/pages/jobs-privacy";
 import {
   isIndexable,
   languageAlternates,
@@ -49,17 +50,38 @@ async function readParams(params: Props["params"]) {
 }
 
 /**
- * What each choice opens, in its own language: the page's title and its
- * short description (the one its own page uses as the meta description).
- * That line carries what a job seeker checks first: 8-hour shifts, no fee.
+ * The page's title and short description, for <head> only (the English
+ * ones: one snippet per canonical URL, whatever the order).
  */
-function pageSummary(path: string, locale: Locale): { title: string; text?: string } {
-  if (path === "/jobs") return { title: jobsCopy[locale].title, text: jobsCopy[locale].description };
-  if (path === "/jobs/apply") return { title: quickApplyCopy[locale].title, text: quickApplyCopy[locale].description };
-  if (path === "/jobs/fees-and-fraud") return { title: feesAndFraudCopy[locale].title, text: feesAndFraudCopy[locale].description };
+function pageSummary(path: string): { title: string; text?: string } {
+  if (path === "/jobs") return { title: jobsCopy["en-IN"].title, text: jobsCopy["en-IN"].description };
+  if (path === "/jobs/apply") return { title: quickApplyCopy["en-IN"].title, text: quickApplyCopy["en-IN"].description };
+  if (path === "/jobs/fees-and-fraud") return { title: feesAndFraudCopy["en-IN"].title, text: feesAndFraudCopy["en-IN"].description };
+  if (path === "/jobs/privacy") return { title: jobsPrivacyCopy["en-IN"].title, text: jobsPrivacyCopy["en-IN"].description };
   const slug = /^\/jobs\/([^/]+)$/.exec(path)?.[1];
-  const role = slug ? (getJobCluster(slug, locale) ?? getJobRole(slug, locale) ?? getJobHub(slug, locale)) : undefined;
+  const role = slug ? (getJobCluster(slug, "en-IN") ?? getJobRole(slug, "en-IN") ?? getJobHub(slug, "en-IN")) : undefined;
   if (role) return { title: role.metaTitle, text: role.description };
+  return { title: locales["en-IN"].hint };
+}
+
+/**
+ * What each choice opens, in its own language: a short page name, never the
+ * meta title and description. /jobs names "Haridwar jobs", where all the
+ * work is, and a visitor from a search engine goes straight there
+ * (`searchHref`): "haridwar job vacancy" lands on the form in two taps.
+ */
+function pageName(path: string, locale: Locale): { title: string; searchHref?: string } {
+  const haridwar = getJobCluster("haridwar", locale);
+  if (path === "/jobs" && haridwar) return { title: haridwar.linkLabel, searchHref: localePath(`/jobs/${haridwar.slug}`, locale) };
+  if (path === "/jobs/apply") return { title: quickApplyCopy[locale].breadcrumb };
+  if (path === "/jobs/fees-and-fraud") return { title: feesAndFraudCopy[locale].breadcrumb };
+  if (path === "/jobs/privacy") return { title: jobsPrivacyCopy[locale].breadcrumb };
+  const slug = /^\/jobs\/([^/]+)$/.exec(path)?.[1];
+  if (slug) {
+    const cluster = getJobCluster(slug, locale);
+    const name = cluster?.linkLabel ?? getJobRole(slug, locale)?.name ?? getJobHub(slug, locale)?.name;
+    if (name) return { title: name };
+  }
   return { title: locales[locale].hint };
 }
 
@@ -72,7 +94,7 @@ const PROMPT: Record<Locale, string> = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { path, variant } = await readParams(params);
-  const english = pageSummary(path, "en-IN");
+  const english = pageSummary(path);
   const languages = languageAlternates(path);
   const sharing = pageMetadata({ title: english.title, description: english.text ?? "Choose your language.", alternates: { canonical: localePath(path, "en-IN") }, shareVariant: variant });
   return {
@@ -95,7 +117,7 @@ export default async function LanguagePickerPage({ params }: Props) {
     locale,
     label: locales[locale].label,
     hint: locales[locale].hint,
-    ...pageSummary(path, locale),
+    ...pageName(path, locale),
   }));
   const top = choices.slice(0, PICKER_TOP);
   return (

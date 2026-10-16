@@ -2,7 +2,7 @@
 
 import Script from "next/script";
 import { useCallback, useEffect, useRef, useState, useMemo } from "react";
-import { Check, Loader2 } from "lucide-react";
+import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import Link from "@/components/i18n/link";
 import { useTurnstile } from "@/lib/use-turnstile";
@@ -343,7 +343,7 @@ export function QuickApply({
         <p className="font-data text-3xl tracking-wide text-gold-700 sm:text-4xl">{phase.ref}</p>
         <p className="mt-6 max-w-md text-lg leading-relaxed text-muted-foreground">{form.done.body}</p>
         <div className="mt-6 flex flex-col items-start">
-          <Link href={localePath("/jobs/fees-and-fraud", locale)} className="text-link mt-0">{form.done.fraud}</Link>
+          <Link href={localePath("/jobs/fees-and-fraud", locale)} className="text-link mt-0">{form.done.fraud} <ArrowRight size={18} aria-hidden="true" /></Link>
           <button type="button" className="text-link mt-0" onClick={() => { clearDraft(); setPhase({ name: "form" }); }}>{form.done.again}</button>
         </div>
       </div>
@@ -447,15 +447,17 @@ export function QuickApply({
             {errorFor("phone") && <p id="quick-phone-error" className="jobs-error" role="alert">{errorFor("phone")}</p>}
             <JobFilePicker locale={locale} picker={filePicker} disabled={locked} compact optionalLabel={t.details.optional} />
             <label className="jobs-check mt-6">
-              <input type="checkbox" name="agree" aria-invalid={visibleChecks.includes("agree") || undefined} aria-describedby={errorFor("agree") ? "quick-agree-error" : undefined} checked={agreed} onChange={(e) => setAgreed(e.target.checked)} disabled={locked} />
-              <span>
-                {form.steps.phone.agree}{" "}
-                <a href={`${localePath("/privacy", "en-IN")}#job-seekers`} target="_blank" rel="noopener" className="jobs-check-link underline underline-offset-4">
-                  {form.steps.phone.privacyLink}
-                </a>
-              </span>
+              <input type="checkbox" name="agree" aria-invalid={visibleChecks.includes("agree") || undefined} aria-describedby={errorFor("agree") ? "quick-agree-error quick-keep" : "quick-keep"} checked={agreed} onChange={(e) => setAgreed(e.target.checked)} disabled={locked} />
+              <span>{form.steps.phone.agree}</span>
             </label>
-            <p className="jobs-check-note">{form.steps.phone.keepNote}</p>
+            {/* The applicant notice opens in a new tab, so this form and its
+                answers stay as they are; the tab's draft covers a reload. */}
+            <p id="quick-keep" className="jobs-check-note">
+              {form.steps.phone.keep}{" "}
+              <a href={localePath("/jobs/privacy", locale)} target="_blank" rel="noopener" className="jobs-check-link underline underline-offset-4">
+                {form.steps.phone.details}&nbsp;<span aria-hidden="true">→</span>
+              </a>
+            </p>
             {errorFor("agree") && <p id="quick-agree-error" className="jobs-error" role="alert">{errorFor("agree")}</p>}
             {summaryChecks.length > 0 && (
               <ul ref={errorSummary} id="quick-errors" tabIndex={-1} className="jobs-errors form-scroll-target" role="alert">
@@ -480,7 +482,12 @@ export function QuickApply({
       {/* One Turnstile box for the whole flow: it checks the browser while the
           questions are answered, and only shows if it needs an interaction. */}
       <div ref={turnstileBox} className="mt-5" />
-      <p className="quick-note">{t.noFee}</p>
+      <p className="quick-note">
+        {t.noFee.text}{" "}
+        <Link href={localePath("/jobs/fees-and-fraud", locale)} className="underline underline-offset-4">
+          {t.noFee.link}&nbsp;<span aria-hidden="true">→</span>
+        </Link>
+      </p>
     </div>
   );
 }

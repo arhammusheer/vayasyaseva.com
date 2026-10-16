@@ -75,9 +75,10 @@ The public pages below are the source of truth. They carry full text and JSON-LD
 
 ${referenceSection}
 ## Jobs
-- [Jobs overview](${baseUrl}/en-in/jobs): Types of work, candidate categories and the guided application
+- [Jobs overview](${baseUrl}/en-in/jobs): The work by group, Jobs in Haridwar, the freshers, 10th and 12th pass pages, and Apply
 - [Jobs in Haridwar](${baseUrl}/en-in/jobs/haridwar): Factory, packing, warehouse and helper work in SIDCUL Haridwar, Bahadrabad, Bhagwanpur and Roorkee, in full 8-hour shifts, with the guided application on the page. Also in Hindi (${baseUrl}/hi-in/jobs/haridwar) and Hindi in Latin script (${baseUrl}/hi-latn-in/jobs/haridwar)
 - [Fees and fraud](${baseUrl}/en-in/jobs/fees-and-fraud): There is no fee to apply. How our SMS looks, and how to report anyone who asks for money in our name
+- [Your details](${baseUrl}/en-in/jobs/privacy): What we keep when someone applies, who sees it, for how long and how to have it removed, in plain words. Also in Hindi (${baseUrl}/hi-in/jobs/privacy) and Hindi in Latin script (${baseUrl}/hi-latn-in/jobs/privacy)
 ${roleLinksEn}
 
 ## हिंदी pages (hi-IN, Hindi in Devanagari)

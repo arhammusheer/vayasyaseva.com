@@ -9,9 +9,9 @@ import { localePath, locales, type Locale } from "@/lib/i18n";
 const PATH = "/jobs/apply";
 
 /**
- * The guided application page, in the sitemap and llms.txt and used as a
- * Google Ads landing page. The header and footer "Jobs" links open it;
- * role and category landing pages embed the same guided form.
+ * The guided application page: noindex and out of the sitemap, but the
+ * Google Ads, SMS and header Apply landing. Role, hub and Haridwar pages
+ * embed the same guided form.
  */
 export function quickApplyMetadata(locale: Locale, query: { role?: string; hub?: string; work?: string } = {}) {
   const t = quickApplyCopy[locale];
@@ -26,7 +26,7 @@ export function quickApplyMetadata(locale: Locale, query: { role?: string; hub?:
   });
 }
 
-/** A short top and the guided form; nothing else competes for attention. */
+/** An H1, one line and the guided form; nothing else competes for attention. */
 export function QuickApplyPage({ locale, prefillKey = "" }: { locale: Locale; prefillKey?: string }) {
   const t = quickApplyCopy[locale];
   const url = localePath(PATH, locale);
@@ -34,16 +34,15 @@ export function QuickApplyPage({ locale, prefillKey = "" }: { locale: Locale; pr
     <>
       <JsonLd data={webPageSchema({ name: t.title, description: t.description, url, inLanguage: locales[locale].hreflang })} />
       <Breadcrumbs path={PATH} locale={locale} name={t.breadcrumb} visible={false} />
-    <section className="quick-top">
-      <div className="site-shell grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
-        <div className="lg:sticky lg:top-28 lg:self-start">
-          <p className="eyebrow text-gold-700">{t.eyebrow}</p>
-          <h1 className="quick-title">{t.heading}</h1>
-          <p className="quick-lede">{t.lede}</p>
+      <section className="quick-top">
+        <div className="site-shell grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
+          <div className="lg:sticky lg:top-28 lg:self-start">
+            <h1 className="quick-title">{t.heading}</h1>
+            <p className="quick-lede">{t.lede}</p>
+          </div>
+          <QuickApply key={prefillKey} locale={locale} />
         </div>
-        <QuickApply key={prefillKey} locale={locale} />
-      </div>
-    </section>
+      </section>
     </>
   );
 }

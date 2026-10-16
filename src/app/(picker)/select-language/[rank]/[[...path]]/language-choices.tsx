@@ -4,6 +4,7 @@ import { useSyncExternalStore } from "react";
 import { ArrowRight } from "lucide-react";
 import { trackAnalyticsEvent } from "@/lib/analytics";
 import { LANGUAGE_COOKIE, LANGUAGE_COOKIE_MAX_AGE } from "@/lib/language-cookie";
+import { fromSearchReferrer } from "@/lib/search-referrer";
 
 export type LanguageChoice = {
   href: string;
@@ -11,8 +12,10 @@ export type LanguageChoice = {
   label: string;
   /** "Read this page in …", in that language: the link's title. */
   hint: string;
+  /** A short page name, in that language. */
   title: string;
-  text?: string;
+  /** Where the choice goes for a visitor who came from a search engine. */
+  searchHref?: string;
 };
 
 const subscribe = () => () => {};
@@ -42,19 +45,24 @@ export function LanguageChoices({ choices, more, orderKey }: { choices: Language
     () => window.location.search + window.location.hash,
     () => "",
   );
+  const fromSearch = useSyncExternalStore(
+    subscribe,
+    () => fromSearchReferrer(document.referrer),
+    () => false,
+  );
+  const target = (c: LanguageChoice) => `${(fromSearch && c.searchHref) || c.href}${suffix}`;
   const choose = (c: LanguageChoice, position: number | "more") => {
     rememberChoice(c.locale);
-    trackAnalyticsEvent("language_choice", { locale: c.locale, page: c.href, position, order_key: orderKey });
+    trackAnalyticsEvent("language_choice", { locale: c.locale, page: (fromSearch && c.searchHref) || c.href, position, order_key: orderKey });
   };
   return (
     <>
       <ul className="language-choices">
         {choices.map((c, i) => (
           <li key={c.locale}>
-            <a href={`${c.href}${suffix}`} lang={c.locale} hrefLang={c.locale} title={c.hint} onClick={() => choose(c, i + 1)}>
+            <a href={target(c)} lang={c.locale} hrefLang={c.locale} title={c.hint} onClick={() => choose(c, i + 1)}>
               <span className="language-choice-label">{c.label}</span>
               <span className="language-choice-title">{c.title}</span>
-              {c.text && <span className="language-choice-text">{c.text}</span>}
               <ArrowRight aria-hidden="true" />
             </a>
           </li>
@@ -68,7 +76,7 @@ export function LanguageChoices({ choices, more, orderKey }: { choices: Language
           <ul className="language-choices language-choices-more">
             {more.map((c) => (
               <li key={c.locale}>
-                <a href={`${c.href}${suffix}`} lang={c.locale} hrefLang={c.locale} title={c.hint} onClick={() => choose(c, "more")}>
+                <a href={target(c)} lang={c.locale} hrefLang={c.locale} title={c.hint} onClick={() => choose(c, "more")}>
                   <span className="language-choice-label">{c.label}</span>
                   <span className="language-choice-title">{c.title}</span>
                 </a>

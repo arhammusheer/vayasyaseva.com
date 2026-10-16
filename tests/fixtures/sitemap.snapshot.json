@@ -114,6 +114,48 @@
     }
   },
   {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/privacy",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "yearly",
+    "priority": 0.4,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/privacy",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/privacy",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/privacy",
+        "x-default": "https://www.vayasyaseva.com/jobs/privacy"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/privacy",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "yearly",
+    "priority": 0.4,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/privacy",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/privacy",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/privacy",
+        "x-default": "https://www.vayasyaseva.com/jobs/privacy"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/privacy",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "yearly",
+    "priority": 0.4,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/privacy",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/privacy",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/privacy",
+        "x-default": "https://www.vayasyaseva.com/jobs/privacy"
+      }
+    }
+  },
+  {
     "url": "https://www.vayasyaseva.com/en-in/jobs/factory-helper",
     "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "monthly",

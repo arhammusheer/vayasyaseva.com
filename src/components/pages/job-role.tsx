@@ -6,8 +6,8 @@ import { FaqSection } from "@/components/sections/faq-section";
 import { QuickApply } from "@/components/jobs/quick-apply";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { JsonLd, webPageSchema } from "@/lib/structured-data";
+import { RELATED_ROLES, getJobRole, jobRoleLabels, jobRoles } from "@/content/pages/job-roles";
 import { jobsCopy } from "@/content/pages/jobs";
-import { getJobRole, jobRoleLabels, jobRoles } from "@/content/pages/job-roles";
 import { localePath, locales, localesOf, type Locale } from "@/lib/i18n";
 import type { JobRole } from "@/lib/talent-intake/rules";
 
@@ -35,90 +35,69 @@ export function jobRoleMetadata(slug: string, locale: Locale) {
 }
 
 /**
- * One kind of work: the jobs form (tagged with the role) on top, then what
- * the work is, who it suits, what to send, the other roles and FAQs.
+ * One kind of work: a one-sentence lede (the work and who it suits), the
+ * jobs form tagged with the role, the duties as a numbered strip, two or
+ * three questions about this work, then three related roles and All jobs.
  */
 export function JobRolePage({ slug, locale }: { slug: string; locale: Locale }) {
   const role = roleOrThrow(slug, locale);
-  const jobs = jobsCopy[locale];
   const t = jobRoleLabels[locale];
   const url = localePath(jobRolePath(role.slug), locale);
+  // Role names as /jobs lists them, so every row uses one naming.
+  const title = (r: JobRole) => jobsCopy[locale].work.find((w) => w.role === r)?.title ?? roleOrThrow(r, locale).name;
   return (
     <>
       <JsonLd
         data={webPageSchema({ name: role.metaTitle, description: role.description, url, inLanguage: locales[locale].hreflang })}
       />
-      <Breadcrumbs path={jobRolePath(role.slug)} locale={locale} name={role.name} visible={false} />
       <section className="quick-top">
         <div className="site-shell grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
           <div className="lg:sticky lg:top-28 lg:self-start">
-            <p className="eyebrow text-gold-700">
-              <Link href={localePath("/jobs", locale)} className="hover:underline underline-offset-4">
-                {jobs.eyebrow}
-              </Link>
-            </p>
+            <Breadcrumbs path={jobRolePath(role.slug)} locale={locale} name={role.name} />
             <h1 className="quick-title">{role.heading}</h1>
             <p className="quick-lede">{role.lede}</p>
           </div>
-          <QuickApply key={role.slug} locale={locale} role={role.slug} />
+          {/* #apply: the header's Apply scrolls here instead of leaving the role. */}
+          <div id="apply" className="quick-anchor">
+            <QuickApply key={role.slug} locale={locale} role={role.slug} />
+          </div>
         </div>
       </section>
       <Section variant="subtle">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.6fr]">
-          <div>
-            <h2 className="text-4xl font-medium">{t.workHeading}</h2>
-            <p className="mt-5 max-w-md leading-relaxed text-muted-foreground">{role.setting}</p>
-            <p className="mt-4 max-w-md leading-relaxed text-muted-foreground">{t.records}</p>
-          </div>
-          <ul className="divide-y border-y">
-            {role.work.map((item) => (
-              <li key={item} className="py-4 text-lg">
-                {item}
+          <h2 className="text-4xl font-medium">{t.workHeading}</h2>
+          <ol className="jobs-steps">
+            {role.work.map((item, i) => (
+              <li key={item}>
+                <span className="jobs-step-number" aria-hidden="true">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <p className="jobs-step-title">{item}</p>
               </li>
             ))}
-          </ul>
+          </ol>
         </div>
       </Section>
-      <Section>
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
-          <div>
-            <h2 className="text-3xl font-medium">{t.suitsHeading}</h2>
-            <ul className="mt-6 divide-y border-y">
-              {role.suits.map((item) => (
-                <li key={item} className="py-3 leading-relaxed">
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h2 className="text-3xl font-medium">{t.sendHeading}</h2>
-            <ul className="mt-6 divide-y border-y">
-              {role.send.map((item) => (
-                <li key={item} className="py-3 leading-relaxed">
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </Section>
-      <Section variant="subtle">
-        <p className="eyebrow text-gold-700">{t.otherEyebrow}</p>
-        <nav aria-label={t.otherEyebrow} className="mt-6 flex flex-wrap gap-x-10 gap-y-2">
-          {jobRoles[locale]
-            .filter((r) => r.slug !== role.slug)
-            .map((r) => (
-              <Link key={r.slug} href={localePath(jobRolePath(r.slug), locale)} className="text-link">
-                {r.name} <ArrowUpRight size={18} />
-              </Link>
+      <FaqSection title={t.faqTitle} items={role.faqs} />
+      <Section variant="subtle" className="py-10 sm:py-12 lg:py-12">
+        <nav aria-label={t.related} className="jobs-related-row">
+          <p>{t.related}</p>
+          <ul>
+            {RELATED_ROLES[role.slug].map((r) => (
+              <li key={r}>
+                <Link href={localePath(jobRolePath(r), locale)} className="text-link mt-0">
+                  {title(r)} <ArrowUpRight size={18} aria-hidden="true" />
+                </Link>
+              </li>
             ))}
-          <Link href={localePath("/jobs", locale)} className="text-link">
-            {t.allJobs} <ArrowUpRight size={18} />
-          </Link>
+            <li>
+              <Link href={localePath("/jobs", locale)} className="text-link mt-0">
+                {t.allJobs} <ArrowUpRight size={18} aria-hidden="true" />
+              </Link>
+            </li>
+          </ul>
         </nav>
       </Section>
-      <FaqSection eyebrow={t.faqEyebrow} title={t.faqTitle} items={[...role.faqs, ...jobs.sharedFaqs]} />
     </>
   );
 }

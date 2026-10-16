@@ -1,6 +1,7 @@
 import { linkable } from "@/content/registry";
 import { WAGE_HUB_PATH, WAGE_METHOD_PATH, guidePath, wageStatePath } from "@/content/registry/identifiers";
 import { localePath, type Locale } from "@/lib/i18n";
+import type { JobGroupId } from "@/content/pages/jobs";
 
 /**
  * Links shared by the header and footer (one place for each label). Kept
@@ -76,10 +77,10 @@ export const JOBS_NAV: Record<
 };
 
 /**
- * The four work groups on /jobs (each a #id on that page) and the
- * qualification hubs, in the jobs menu.
+ * The four work groups on /jobs (each a #id on that page, listing the roles
+ * in JOB_GROUP_ROLES) and the qualification hubs, in the jobs menu.
  */
-const JOB_GROUPS: Record<Locale, { id: string; label: string }[]> = {
+export const JOB_GROUPS: Record<Locale, { id: JobGroupId; label: string }[]> = {
   "en-IN": [
     { id: "helper", label: "Helper, packing and warehouse" },
     { id: "machine", label: "Machine and forklift" },
@@ -100,15 +101,9 @@ const JOB_GROUPS: Record<Locale, { id: string; label: string }[]> = {
   ],
 };
 
-/**
- * /jobs lists its roles without the four group sections yet, so the menu
- * leaves the groups out. TODO(/jobs rebuild): give each group section its
- * id from JOB_GROUPS, then set this to true; seo:check fails if a group's
- * #id is missing from /jobs.
- */
-const JOB_GROUPS_ON_JOBS_PAGE = false;
+/** The jobs menu's group links; seo:check fails if a group's #id is missing from /jobs. */
 export const jobGroupLinks = (locale: Locale): NavLink[] =>
-  JOB_GROUPS_ON_JOBS_PAGE ? JOB_GROUPS[locale].map((g) => ({ href: `${localePath("/jobs", locale)}#${g.id}`, label: g.label })) : [];
+  JOB_GROUPS[locale].map((g) => ({ href: `${localePath("/jobs", locale)}#${g.id}`, label: g.label }));
 
 export const JOB_HUB_LINKS: Record<Locale, { slug: string; label: string }[]> = {
   "en-IN": [

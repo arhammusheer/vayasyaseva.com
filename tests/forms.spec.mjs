@@ -42,9 +42,9 @@ try {
   for(const [path, title, text] of [
     ['/en-in/jobs', 'SIDCUL Haridwar', 'Apply now'],
     ['/en-in/jobs/packing', 'Packing Jobs', 'Packing products into cartons'],
-    ['/hi-in/jobs/electrician', 'इलेक्ट्रीशियन', 'EPF'],
+    ['/hi-in/jobs/electrician', 'इलेक्ट्रीशियन', 'वायरमैन'],
     ['/hi-latn-in/jobs/freshers', 'Freshers', 'fresher'],
-    ['/en-in/jobs/10th-pass', '10th Pass', 'marksheet'],
+    ['/en-in/jobs/10th-pass', '10th Pass', 'welder, fitter, electrician'],
     ['/en-in/jobs/12th-pass', '12th Pass', 'computer'],
   ]) {
     const response=await context.request.get(origin+path,{maxRedirects:0});
@@ -60,7 +60,8 @@ try {
   await open('/en-in/jobs');
   assert.equal(await page.locator('main a[href="/en-in/jobs/packing"]').count(),1);
   assert.equal(await page.locator('main a[href="/en-in/jobs/freshers"]').count(),1);
-  assert.equal(await page.locator('main a[href="/en-in/jobs/haridwar"]').count(),2);
+  assert.equal(await page.locator('main a[href="/en-in/jobs/haridwar"]').count(),1);
+  for (const id of ['helper','machine','iti','office']) assert.equal(await page.locator('main section#'+id).count(),1,'/jobs #'+id);
   await page.locator('.jobs-submit').click();await page.waitForURL('**/en-in/jobs/apply');assert.equal(new URL(page.url()).pathname,'/en-in/jobs/apply');
   console.log('Job landing pages preserve self-canonicals, unique content, role links and guided application access');
   await open('/en-in/jobs/apply'+complete);
@@ -102,6 +103,28 @@ try {
   failUpload=true;const uploadBefore=starts;await send();await page.locator('[data-retry-notice]').waitFor({timeout:15000});
   failUpload=false;await send();await visible('.jobs-done h2');assert.equal(starts,uploadBefore+1);assert.equal(resumes,1);
   console.log('Upload retries renew URLs while preserving the original application reference');
+  // The checkbox line opens /jobs/privacy in a new tab; Back to Apply there closes the tab, leaving the form as it was.
+  await page.evaluate(()=>sessionStorage.clear());await open('/en-in/jobs/apply'+complete);
+  const details=page.locator('#quick-keep a');
+  assert.equal(await details.getAttribute('href'),'/en-in/jobs/privacy');assert.equal(await details.getAttribute('target'),'_blank');
+  await page.locator('#quick-name').fill('Draft Test');await page.locator('#quick-phone').fill('9999900001');await tick();
+  const [notice]=await Promise.all([page.context().waitForEvent('page'),details.click()]);
+  await notice.locator('main a.jobs-submit').waitFor();
+  await Promise.all([notice.waitForEvent('close',{timeout:5000}),notice.locator('main a.jobs-submit').click()]);
+  assert.equal(await page.locator('#quick-name').inputValue(),'Draft Test');assert.equal(await page.locator('#quick-phone').inputValue(),'9999900001');
+  // In the same tab, Back to Apply returns to a restored draft.
+  await page.goto(origin+'/en-in/jobs/privacy');await page.locator('h1').waitFor();
+  assert.equal(await page.locator('main a[href="/en-in/privacy#job-seekers"]').count(),1);
+  await page.locator('main a.jobs-submit').click();await page.waitForURL('**/en-in/jobs/apply**');await page.locator('[data-draft-notice]').waitFor();
+  assert.equal(await page.locator('#quick-name').inputValue(),'Draft Test');assert.equal(await page.locator('#quick-phone').inputValue(),'9999900001');
+  assert.equal(await page.locator('[name=agree]').isChecked(),false);
+  // One no-fee line in the page (the form's footer), and the done screen says only what we do if the work fits.
+  assert.equal(await page.locator('main .quick-note a[href="/en-in/jobs/fees-and-fraud"]').count(),1);
+  await fill();await send();await visible('.jobs-done h2');
+  assert.match(await page.locator('.jobs-done').textContent(),/If the work fits, we call you\./);
+  assert.doesNotMatch(await page.locator('.jobs-done').textContent(),/no fee/i);
+  assert.equal(await page.locator('.jobs-done a[href="/en-in/jobs/fees-and-fraud"]').count(),1);
+  console.log('The applicant notice opens beside the form, and the draft survives a round trip through it');
   // A role link should override a conflicting saved work preference.
   await open('/en-in/jobs/apply'+complete);await tick();await open('/hi-in/jobs/electrician');
   assert.equal(await page.locator('[data-step=work] .is-selected').textContent(),'ITI ट्रेड');

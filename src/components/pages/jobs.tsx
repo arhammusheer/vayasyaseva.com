@@ -2,12 +2,12 @@ import Link from "@/components/i18n/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
 import { Section } from "@/components/layout/section";
-import { FaqSection } from "@/components/sections/faq-section";
+import { JOB_GROUPS, JOB_HUB_LINKS } from "@/components/layout/nav-links";
 import { quickApplyCopy } from "@/content/pages/quick-apply";
-import { jobHubs } from "@/content/pages/job-hubs";
-import { jobClusters } from "@/content/pages/job-clusters";
+import { getJobCluster } from "@/content/pages/job-clusters";
 import { JsonLd, breadcrumbSchema, webPageSchema } from "@/lib/structured-data";
-import { jobsCopy } from "@/content/pages/jobs";
+import { JOB_GROUP_ROLES, jobsCopy } from "@/content/pages/jobs";
+import { jobRolePath } from "@/components/pages/job-role";
 import { localePath, locales, type Locale } from "@/lib/i18n";
 
 const PATH = "/jobs";
@@ -23,14 +23,16 @@ export function jobsMetadata(locale: Locale) {
 }
 
 /**
- * Searchable overview of work and candidate categories, with a direct
- * action to the shared guided application.
+ * A router, not a second Haridwar landing: Apply, or pick your work (four
+ * groups, names only, each a #id the jobs menu links to), your area or your
+ * qualification. No FAQ: the form pages and /jobs/fees-and-fraud carry the
+ * rest.
  */
 export function JobsPage({ locale }: { locale: Locale }) {
   const t = jobsCopy[locale];
   const url = localePath(PATH, locale);
-  const quick = quickApplyCopy[locale];
-  const apply = { "en-IN": "Apply now", "hi-IN": "आवेदन करें", "hi-Latn-IN": "Apply karein" }[locale];
+  const haridwar = getJobCluster("haridwar", locale)!;
+  const title = (role: string) => t.work.find((w) => w.role === role)?.title ?? role;
   return (
     <>
       <JsonLd
@@ -43,63 +45,57 @@ export function JobsPage({ locale }: { locale: Locale }) {
         ])}
       />
       <section className="jobs-top">
-        <div className="site-shell grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
-          <div className="lg:sticky lg:top-28 lg:self-start">
-            <p className="eyebrow text-gold-700">{t.eyebrow}</p>
+        <div className="site-shell grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1fr] lg:items-end lg:gap-16">
+          <div>
             <h1 className="jobs-title">{t.heading}</h1>
             <p className="jobs-lede">{t.lede}</p>
           </div>
-          <div className="lg:self-center">
-            {/* The H1 already asks the question; here only what to do, then the shift line. */}
-            <p className="max-w-md leading-relaxed text-muted-foreground">{quick.lede}</p>
-            <Link href={localePath("/jobs/apply", locale)} className="jobs-submit mt-6 inline-flex">
-              {apply} <ArrowRight size={20} aria-hidden="true" />
+          <div>
+            <p className="quick-shifts">{quickApplyCopy[locale].shifts}</p>
+            <Link href={localePath("/jobs/apply", locale)} className="jobs-submit">
+              {t.apply} <ArrowRight size={20} aria-hidden="true" />
             </Link>
-            <p className="quick-shifts mt-6 mb-0">{quick.shifts}</p>
-            <p className="quick-note mt-4">{quick.noFee}</p>
           </div>
         </div>
       </section>
       <Section variant="subtle">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_2fr]">
-          <div>
-            <p className="eyebrow text-gold-700">{t.workEyebrow}</p>
-            <h2 className="mt-5 text-4xl font-medium">{t.workHeading}</h2>
-          </div>
-          <ul className="jobs-work">
-            {t.work.map((w) => (
-              <li key={w.title}>
-                <h3>
-                  {w.role ? (
-                    <Link href={localePath(`/jobs/${w.role}`, locale)} className="jobs-work-link">
-                      {w.title} <ArrowUpRight size={20} aria-hidden="true" />
+        <div>
+          {JOB_GROUPS[locale].map((group) => (
+            <section key={group.id} id={group.id} className="jobs-group">
+              <h2>{group.label}</h2>
+              <ul>
+                {JOB_GROUP_ROLES[group.id].map((role) => (
+                  <li key={role}>
+                    <Link href={localePath(jobRolePath(role), locale)} className="jobs-work-link">
+                      {title(role)} <ArrowUpRight size={20} aria-hidden="true" />
                     </Link>
-                  ) : (
-                    w.title
-                  )}
-                </h3>
-                <p>{w.text}</p>
-              </li>
-            ))}
-          </ul>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
         </div>
+        <dl className="jobs-lines">
+          <div>
+            <dt>{t.where}</dt>
+            <dd>
+              <Link href={localePath(`/jobs/${haridwar.slug}`, locale)} className="text-link mt-0">
+                {haridwar.linkLabel} <ArrowRight size={18} aria-hidden="true" />
+              </Link>
+            </dd>
+          </div>
+          <div>
+            <dt>{t.who}</dt>
+            <dd>
+              {JOB_HUB_LINKS[locale].map((hub) => (
+                <Link key={hub.slug} href={localePath(`/jobs/${hub.slug}`, locale)} className="text-link mt-0">
+                  {hub.label} <ArrowRight size={18} aria-hidden="true" />
+                </Link>
+              ))}
+            </dd>
+          </div>
+        </dl>
       </Section>
-      <Section variant="subtle">
-        <nav aria-label={t.breadcrumb.page} className="flex flex-wrap gap-x-10 gap-y-4">
-          {/* Cluster jobs hubs first (/jobs/haridwar), then who is searching. */}
-          {jobClusters[locale].map((c) => (
-            <Link key={c.slug} href={localePath(`/jobs/${c.slug}`, locale)} className="text-link">
-              {c.linkLabel} <ArrowUpRight size={18} aria-hidden="true" />
-            </Link>
-          ))}
-          {jobHubs[locale].map((hub) => (
-            <Link key={hub.slug} href={localePath(`/jobs/${hub.slug}`, locale)} className="text-link">
-              {hub.name} <ArrowUpRight size={18} aria-hidden="true" />
-            </Link>
-          ))}
-        </nav>
-      </Section>
-      <FaqSection eyebrow={t.faqEyebrow} title={t.faqTitle} items={t.faqs} />
     </>
   );
 }

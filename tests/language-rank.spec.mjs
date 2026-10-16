@@ -103,3 +103,27 @@ test("header quick switch: the page's regional set, fixed per page", () => {
   assert.deepEqual(i18n.languageLinks("/en-in/about"), []);
   assert.ok(i18n.languageLinks("/en-in/jobs").every((l) => l.hint));
 });
+
+test("picker search deep link: search sites and the Google app count, other referrers do not", async () => {
+  const { fromSearchReferrer } = await importTs("src/lib/search-referrer.ts");
+  for (const r of [
+    "https://www.google.com/",
+    "https://www.google.co.in/search?q=haridwar+job+vacancy",
+    "http://google.com",
+    "https://www.bing.com/",
+    "https://duckduckgo.com/",
+    "https://in.search.yahoo.com/",
+    "android-app://com.google.android.googlequicksearchbox/",
+    "android-app://com.google.android.googlequicksearchbox",
+    "android-app://com.google.android.googlequicksearchbox/https/www.google.com",
+  ]) assert.equal(fromSearchReferrer(r), true, r);
+  for (const r of [
+    "",
+    undefined,
+    "https://vayasyaseva.com/en-in/jobs",
+    "https://notgoogle.example.com/",
+    "android-app://com.google.android.gm/",
+    "android-app://com.whatsapp/",
+    "android-app://com.google.android.googlequicksearchboxx/",
+  ]) assert.equal(fromSearchReferrer(r), false, String(r));
+});

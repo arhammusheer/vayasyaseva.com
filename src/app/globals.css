@@ -1879,6 +1879,192 @@ a:hover > svg {
   }
 }
 
+/* /jobs, the router: four ruled work groups (the group name, then its
+   roles as large links), then two labelled lines, Where and Who can apply. */
+.jobs-group {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 8px 32px;
+  padding-block: 24px;
+  scroll-margin-top: 96px;
+}
+.jobs-group:first-child {
+  padding-top: 0;
+}
+.jobs-group + .jobs-group {
+  border-top: 1px solid var(--border);
+}
+.jobs-group h2 {
+  padding-top: 12px;
+  color: var(--muted-foreground);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.jobs-group ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 28px;
+}
+.jobs-group .jobs-work-link {
+  font-family: var(--font-anek), var(--font-hind-deva);
+  font-size: 24px;
+  font-weight: 500;
+}
+.jobs-lines {
+  margin-top: 48px;
+  border-top: 2px solid var(--foreground);
+}
+.jobs-lines > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 4px 32px;
+  align-items: baseline;
+  padding-block: 18px;
+}
+.jobs-lines > div + div {
+  border-top: 1px solid var(--border);
+}
+.jobs-lines dt {
+  color: var(--muted-foreground);
+  font-size: 15px;
+  font-weight: 600;
+}
+.jobs-lines dd {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 24px;
+}
+.jobs-lines .text-link {
+  font-size: 18px;
+}
+/* .text-link is unlayered, so Tailwind's mt-0 cannot reach it. Rows of
+   links sit flush, the arrow beside its label. */
+.text-link.mt-0 {
+  margin-top: 0;
+}
+.jobs-lines .text-link,
+.jobs-related-row .text-link {
+  gap: 10px;
+}
+
+/* /jobs/haridwar: one line on where the work is, the role names as a
+   compact row, then a three-step strip of what happens after you apply. */
+.jobs-areas {
+  max-width: 40ch;
+  font-size: clamp(20px, 2.2vw, 22px);
+  line-height: 1.5;
+  text-wrap: balance;
+}
+.jobs-role-row,
+.jobs-related-row {
+  display: grid;
+  gap: 12px;
+}
+.jobs-role-row {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.jobs-role-row > p,
+.jobs-related-row > p {
+  color: var(--muted-foreground);
+  font-size: 15px;
+  font-weight: 600;
+}
+.jobs-role-row ul,
+.jobs-related-row ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 22px;
+}
+.jobs-role-row a {
+  display: inline-block;
+  padding-block: 8px;
+  font-size: 18px;
+  text-decoration: underline;
+  text-decoration-color: var(--gold-500);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+}
+.jobs-role-row a:hover {
+  text-decoration-thickness: 2px;
+}
+.jobs-after {
+  padding-block: 56px;
+  background: var(--neutral-900);
+  color: var(--neutral-0);
+}
+.jobs-after-label {
+  color: var(--gold-400);
+  font-size: 15px;
+  font-weight: 600;
+}
+.jobs-after ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 20px;
+  margin-top: 16px;
+}
+.jobs-after li {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-anek), var(--font-hind-deva);
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 500;
+  line-height: 1.2;
+}
+.jobs-after li > span {
+  color: var(--gold-400);
+  font-size: 0.8em;
+}
+.jobs-after-arrow {
+  margin-left: 8px;
+  color: var(--neutral-400);
+}
+
+/* /jobs/privacy: "In short" as four ruled rows, label then text. */
+.jobs-short {
+  margin-top: 16px;
+  max-width: 880px;
+  border-top: 2px solid var(--foreground);
+}
+.jobs-short > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 4px 32px;
+  padding-block: 20px;
+}
+.jobs-short > div + div {
+  border-top: 1px solid var(--border);
+}
+.jobs-short dt {
+  font-weight: 600;
+}
+.jobs-short dd {
+  font-size: 18px;
+  line-height: 1.55;
+}
+@media (max-width: 700px) {
+  .jobs-group,
+  .jobs-lines > div,
+  .jobs-short > div {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .jobs-group h2 {
+    padding-top: 0;
+  }
+  .jobs-after ol {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  /* Stacked, the numerals carry the order. */
+  .jobs-after-arrow {
+    display: none;
+  }
+}
+
 /* Language picker: the neutral URL of a "prompt" page (e.g. /jobs). One
    column, big tap targets; each choice names the page in its own language. */
 .language-picker {
@@ -1897,9 +2083,6 @@ a:hover > svg {
 .language-picker :lang(hi):not(:lang(hi-Latn)) {
   font-family: system-ui, sans-serif;
   letter-spacing: 0;
-}
-.language-picker .language-choice-text:lang(hi):not(:lang(hi-Latn)) {
-  line-height: 1.6;
 }
 .language-picker h1 {
   margin-top: 20px;
@@ -1960,12 +2143,6 @@ a:hover > svg {
   margin-top: 2px;
   font-size: 15px;
   font-weight: 600;
-}
-.language-choice-text {
-  margin-top: 4px;
-  color: var(--muted-foreground);
-  font-size: 15px;
-  line-height: 1.45;
 }
 /* Languages past the top three: quiet, one tap away, still in the HTML. */
 .language-more {
@@ -2339,8 +2516,8 @@ a:hover > svg {
   cursor: default;
 }
 
-/* Fees and fraud (/jobs/fees-and-fraud): an oversized no-fee line, ruled
-   checks with gold numerals, then a dark band with what to do. */
+/* Fees and fraud (/jobs/fees-and-fraud): an oversized no-fee line with the
+   one report button beside it, then two ruled checks with gold numerals. */
 .fraud-title {
   margin-top: 12px;
   font-family: var(--font-anek), var(--font-hind-deva);
@@ -2369,93 +2546,6 @@ a:hover > svg {
 .fraud-report p {
   font-size: 15px;
   color: var(--muted-foreground);
-}
-.fraud-band {
-  background: var(--neutral-900);
-  color: var(--neutral-0);
-  padding-block: 88px;
-}
-.fraud-band .eyebrow {
-  color: var(--gold-400);
-}
-.fraud-band h2 {
-  margin: 20px 0 32px;
-  font-family: var(--font-anek), var(--font-hind-deva);
-  font-size: clamp(36px, 6vw, 64px);
-  font-weight: 500;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-}
-.fraud-band h2:lang(hi):not(:lang(hi-Latn)) {
-  letter-spacing: 0;
-  line-height: 1.25;
-}
-.fraud-band .fraud-report p {
-  color: var(--neutral-300);
-}
-.fraud-steps {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.fraud-steps > li {
-  display: grid;
-  grid-template-columns: 56px minmax(0, 1fr);
-  gap: 16px;
-  padding-block: 28px;
-}
-.fraud-steps > li:first-child {
-  padding-top: 0;
-}
-.fraud-steps > li + li {
-  border-top: 1px solid var(--neutral-700);
-}
-.fraud-steps > li > span {
-  font-family: var(--font-anek), var(--font-hind-deva);
-  font-size: 40px;
-  line-height: 1;
-  color: var(--gold-400);
-}
-.fraud-steps h3 {
-  font-family: var(--font-anek), var(--font-hind-deva);
-  font-size: 24px;
-  font-weight: 500;
-  line-height: 1.2;
-}
-.fraud-steps p {
-  margin-top: 8px;
-  max-width: 48ch;
-  color: var(--neutral-200);
-  font-size: 17px;
-  line-height: 1.6;
-}
-.fraud-closer {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  font-family: var(--font-anek), var(--font-hind-deva);
-  font-size: clamp(26px, 4vw, 40px);
-  font-weight: 500;
-  line-height: 1.15;
-}
-.fraud-closer svg {
-  flex-shrink: 0;
-  color: var(--gold-700);
-  transition: transform 160ms ease;
-}
-.fraud-closer:hover svg {
-  transform: translate(3px, -3px);
-}
-@media (max-width: 700px) {
-  .fraud-band {
-    padding-block: 64px;
-  }
-  .fraud-steps > li {
-    grid-template-columns: 44px minmax(0, 1fr);
-  }
-  .fraud-steps > li > span {
-    font-size: 32px;
-  }
 }
 
 /* Each section's header: its own links beside the logo, then (pushed

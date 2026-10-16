@@ -470,7 +470,7 @@ export function WageHubPage({ locale = "en-IN" }: { locale?: Locale }) {
   const headlines = states.map((s) => ({ state: s, ...headlineRate(s) }));
   const lowest = [...headlines].sort((a, b) => a.low.monthly - b.low.monthly)[0];
   const highest = [...headlines].sort((a, b) => b.high.monthly - a.high.monthly)[0];
-  const faq = wageHubCopy.faq(year, `${formatRupees(lowest.low.monthly)} (${lowest.state.name})`, `${formatRupees(highest.high.monthly)} (${highest.state.name})`);
+  const lede = wageHubCopy.lede(`${formatRupees(lowest.low.monthly)} a month in ${lowest.state.name}`, `${formatRupees(highest.high.monthly)} in ${highest.state.name}`);
   const lastChecked = states.map((s) => s.checked.on).sort()[0];
   return (
     <>
@@ -484,10 +484,10 @@ export function WageHubPage({ locale = "en-IN" }: { locale?: Locale }) {
           states: states.map((s) => ({ name: `Minimum wages in ${s.name}`, url: wageStatePath(s.state) })),
         })}
       />
-      <JsonLd data={faqSchema([faq])} />
       <Breadcrumbs path={WAGE_HUB_PATH} locale="en-IN" name={x.minimumWages} />
-      <PageHero title={wageHubCopy.heading(year)} lede={wageHubCopy.lede} className={HERO_TIGHT} />
-      <Section id="states">
+      <PageHero title={wageHubCopy.heading(year)} lede={lede} className={HERO_TIGHT} />
+      {/* The table right under the answer: no second heading, no gap to scroll past. */}
+      <Section id="states" className="pt-6 sm:pt-10 lg:pt-12">
         <div className="wage-table-scroll">
           <table className="wage-table is-index">
             <caption className="sr-only">Monthly minimum wages by state and skill level, in rupees</caption>
@@ -500,7 +500,6 @@ export function WageHubPage({ locale = "en-IN" }: { locale?: Locale }) {
                 <th scope="col">{x.hub.semiSkilled}</th>
                 <th scope="col">{x.hub.skilled}</th>
                 <th scope="col" className="col-split">{x.hub.inForce}</th>
-                <th scope="col" className="col-split">{x.hub.lastChange}</th>
               </tr>
             </thead>
             <tbody>
@@ -510,7 +509,7 @@ export function WageHubPage({ locale = "en-IN" }: { locale?: Locale }) {
                 // Only what changes the reading of the row: UP's categories, or a stale rate.
                 const note = [table.zones.length > 1 && x.hub.byCategory, stale && x.hub.mayBeRevised].filter(Boolean).join(" · ");
                 return (
-                  <tr key={state.state}>
+                  <tr key={state.state} className="wage-row">
                     <th scope="row">
                       <Link href={wageStatePath(state.state)} className="wage-row-link">
                         {state.name} <ArrowRight size={18} aria-hidden="true" />
@@ -522,16 +521,16 @@ export function WageHubPage({ locale = "en-IN" }: { locale?: Locale }) {
                     </td>
                     <td>{skillRange(table, "semi-skilled")}</td>
                     <td>{skillRange(table, "skilled")}</td>
-                    <td className="col-split">{formatShortDate(table.effectiveFrom)}</td>
-                    <td className="col-split wage-change">{change}</td>
+                    <td className="col-split">
+                      {formatShortDate(table.effectiveFrom)}
+                      {change && <span className="wage-change">{change}</span>}
+                    </td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
         </div>
-        {/* The table's caption line, outside the scroller so a phone shows it whole. */}
-        <p className="wage-caption">{wageHubCopy.caption}</p>
         <p className="wage-note">
           {x.hub.checked}{" "}
           <Link href={EDITORIAL_HREF} className="wage-inline-link">
@@ -539,8 +538,7 @@ export function WageHubPage({ locale = "en-IN" }: { locale?: Locale }) {
           </Link>
         </p>
       </Section>
-      <Faqs faqs={[faq]} />
-      <Doors doors={[wageDoors.jobs, wageDoors.business]} />
+      <Doors doors={[wageDoors.jobsAll, wageDoors.business]} />
     </>
   );
 }

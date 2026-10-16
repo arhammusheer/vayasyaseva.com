@@ -3316,24 +3316,38 @@ a:hover > svg {
   padding-top: 0;
   border-top: 0;
 }
-/* The line under the hub table: the national minimum wage answer. */
-.wage-caption {
-  margin-top: 20px;
-  max-width: 760px;
-  font-size: 16px;
-  line-height: 1.6;
-  color: var(--foreground);
-}
 .wage-th-unit {
   display: block;
   font-weight: 400;
   letter-spacing: 0;
   text-transform: none;
 }
-.wage-table td.wage-change {
+/* The hub: what changed, small under the in-force date. */
+.wage-table .wage-change {
+  display: block;
+  max-width: 240px;
+  margin-top: 4px;
   font-family: var(--font-hind), sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
   white-space: normal;
-  min-width: 180px;
+  color: var(--muted-foreground);
+}
+/* The hub: the whole row opens the state (a bigger target than the name). */
+.wage-table.is-index .wage-row {
+  position: relative;
+}
+/* Names and figures share a baseline, so each row reads straight across. */
+.wage-table.is-index .wage-row > * {
+  vertical-align: baseline;
+}
+.wage-table.is-index .wage-row-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.wage-table.is-index .wage-row:hover .wage-row-link {
+  color: var(--gold-700);
 }
 .wage-tables.is-hindi .wage-table-block h2 {
   font-size: clamp(28px, 3vw, 36px);

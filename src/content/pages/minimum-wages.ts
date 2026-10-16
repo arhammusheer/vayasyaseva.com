@@ -175,21 +175,18 @@ export const wageHubCopy = {
   description: () =>
     `Minimum wage rates for Uttarakhand, Uttar Pradesh and Delhi by skill level, each with its notification number and effective date. ${stamp(wageStates)}.`,
   heading: (year: string | null) => (year ? `Minimum wages in ${year}, by state.` : "Minimum wages by state."),
-  lede: "Monthly rates. Open a state for every skill level and the daily rate.",
-  /** The visible table caption: the "national minimum wage" answer. */
-  caption:
-    "There is no single national minimum wage. Each state fixes its own rates, and the Code on Wages, 2019 lets the Centre set a floor wage that no state may go below.",
-  /** The table's "Last change" cell, one short phrase per state. */
+  /**
+   * The answer, first: the hero lede carries what the old one-question FAQ
+   * and the "no national minimum wage" caption said (owner direction,
+   * 17 Oct 2026: no filler on the hub).
+   */
+  lede: (lowest: string, highest: string) =>
+    `Each state sets its own; there is no national rate. For unskilled work it runs from ${lowest} to ${highest}.`,
+  /** What changed in the last revision, under the in-force date; none where nothing did. */
   lastChange: {
     uttarakhand: (s: WageState) => `VDA up to ${formatRupees(rate(s, "factories-and-industries", "uttarakhand", "unskilled").vda)}; new engineering rates`,
     "uttar-pradesh": () => "Split into three district categories",
-    delhi: (s: WageState) => `None since ${formatMonth(s.tables[0].effectiveFrom)}`,
   } as Partial<Record<WageStateSlug, (s: WageState) => string>>,
-  /** The year drops out with the H1's once the figures may be stale. */
-  faq: (year: string | null, lowest: string, highest: string): FaqItem => ({
-    question: year ? `What is the minimum wage in ${year}?` : "What is the minimum wage in India?",
-    answer: `It depends on the state, the kind of work and the skill level. For unskilled work in the employments shown here, monthly rates run from ${lowest} to ${highest}.`,
-  }),
 };
 
 type Door = { eyebrow: string; heading: string; text: string; link: LinkItem; external?: boolean };
@@ -201,6 +198,13 @@ export const wageDoors = {
     heading: "Factory and warehouse jobs in SIDCUL and across Haridwar.",
     text: "Full 8-hour shifts. There is no fee to apply.",
     link: { href: "/jobs/haridwar", label: "Jobs in Haridwar" },
+  } satisfies Door,
+  /** The hub covers several states, so its jobs door is the national jobs page, not one city's. */
+  jobsAll: {
+    eyebrow: "LOOKING FOR WORK",
+    heading: "Factory and warehouse jobs.",
+    text: "In Haridwar and Bengaluru. Full 8-hour shifts. There is no fee to apply.",
+    link: { href: "/jobs", label: "See jobs" },
   } satisfies Door,
   business: {
     eyebrow: "HIRING FOR A UNIT",
@@ -293,7 +297,6 @@ export const wageUi = {
     skilled: "Skilled",
     perMonth: "per month",
     inForce: "In force from",
-    lastChange: "Last change",
     byCategory: "by district category",
     mayBeRevised: "may have been revised",
     checked: "Updated from each state's own notifications.",

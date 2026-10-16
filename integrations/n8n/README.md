@@ -236,16 +236,17 @@ If retention later moves to vayasya-infra (a CronJob), keep the same order and l
 2. **Then the website.** It keeps sending the legacy sources until `TALENT_INTAKE_WEB_SOURCE=1` is set, so this order is safe either way; set the variable only after step 1.
 3. **Then retention**, published by hand as above.
 
-## SMS templates to register (DLT)
+## SMS templates (DLT)
 
-Submitted for DLT registration on 16 October 2026 (bulk sheet, sender `VAYSPL`, type Service Implicit), alongside the approved English acknowledgement 227115: 15 templates in all; keep the total under 20. Each names Vayasya Seva and every job-seeker template that can carries the no-fee line. Hindi rows are Unicode (70 characters a part). Wire each into a workflow only once it is approved and imported into Fast2SMS; until then every locale gets 227115.
+Sender `VAYSPL`, entity 1601762179117932232, all Service Implicit. The account holds 18 templates (export of 16 October 2026); keep the total under 20.
 
-| Template | Languages | Variables | Use |
-|---|---|---|---|
-| `vspl_job_ack_*` | Hinglish, Hindi | reference | Application received (English is 227115). Pick by the submission's `locale`. |
-| `vspl_job_missed_call_*` | English, Hinglish, Hindi | reference | After a call to an applicant goes unanswered. |
-| `vspl_job_joining_*` | English, Hinglish, Hindi | site, date, time, role, reference (order differs in Hindi and Hinglish) | Before someone joins: where, when and what work. |
-| `vspl_job_erased_*` | English, Hinglish, Hindi | reference | When a person's own erasure request is `done` (privacy notice §10). |
-| `vspl_job_renew_*` | English, Hinglish, Hindi | URL (`https://www.vayasyaseva.com/jobs/haridwar`, whitelist it) | Shortly before retention removes someone, so they can apply again. |
+- **Active:** Job Application Received - English (`1677100000000394062`, Fast2SMS message 227115, the only one wired in), Interview Scheduled, Joining Details, Shift Change.
+- **Sent for modification:** 14 more (missed call, still looking, details deleted, position filled, verification code, documents, wages, PF/ESI numbers, absence, client enquiry, deployment, invoice, payment). Edit and resubmit these in the DLT portal rather than adding new ones. For job seekers, drop the "call us on {#var#}" variables (seekers are not offered the business phone).
+- **Submitted 16 October 2026 (bulk content template):** the Hinglish and Hindi application acknowledgements:
 
-The exact texts are in the DLT sheet; the Hindi and Hinglish wording still needs native review, and any change after approval needs a new approval.
+| Language | Text |
+|---|---|
+| Hinglish (hi-Latn-IN) | Vayasya Seva ko aapka job application mila. Ref {#var#}. Aapke area mein kaam hone par hum isi number par call karenge. Koi fee nahi lagti. |
+| Hindi (hi-IN) | Vayasya Seva को आपका नौकरी का आवेदन मिला। Ref {#var#}। आपके इलाके में काम होने पर हम इसी नंबर पर कॉल करेंगे। कोई फ़ीस नहीं लगती। |
+
+The Hindi template is Unicode SMS (70 characters a part), so it is sent and billed as two parts. Once both are approved and imported into Fast2SMS, pick the message id by the submission's `locale` in the acknowledgement step (`hi-IN`, `hi-Latn-IN`/`hinglish`, else 227115). Delete the duplicate "Job Application Received - English v2" to stay at 19.

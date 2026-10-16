@@ -106,6 +106,7 @@ export const WAGE_STATE_UPDATED: Readonly<Partial<Record<WageStateSlug, string>>
   uttarakhand: "2026-10-16",
   "uttar-pradesh": "2026-10-16",
   delhi: "2026-10-16",
+  karnataka: "2026-10-16",
 };
 const wageUpdated = (state: WageStateSlug) => {
   const updated = WAGE_STATE_UPDATED[state];
@@ -135,6 +136,11 @@ const WAGE_STATE_STATUS: Partial<Record<WageStateSlug, PageStatus>> = {
   uttarakhand: "published",
   "uttar-pradesh": "published",
   delhi: "published",
+  // Built and in review (16 Oct 2026): the 22 May 2026 single notification
+  // is in force but challenged in court, and whether its VDA is paid on top
+  // of the basic rates needs a reviewer's sign-off (karnataka.json,
+  // verification) before publishing.
+  karnataka: "review",
 };
 
 /**

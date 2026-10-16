@@ -210,8 +210,8 @@ function RateTable({ state, table }: { state: WageState; table: WageTable }) {
 /** "Documents used", in two groups: the wage notifications and the employer dues sources. Title, number and date each. */
 function Documents({ state, slug }: { state: WageState; slug: WageStateSlug }) {
   const groups = [
-    { label: x.sections.wageDocs, items: state.sources.map((s) => ({ id: s.id, title: s.title, url: s.url, number: s.number, date: s.date, hindi: s.language === "hi" })) },
-    { label: x.sections.duesDocs, items: duesSources(slug).map((s) => ({ ...s, hindi: false })) },
+    { label: x.sections.wageDocs, items: state.sources.map((s) => ({ id: s.id, title: s.title, url: s.url, number: s.number, date: s.date, language: s.language })) },
+    { label: x.sections.duesDocs, items: duesSources(slug).map((s) => ({ ...s, language: "en" as const })) },
   ].filter((g) => g.items.length);
   return (
     <Section id="documents" className="border-t border-border wage-documents">
@@ -225,7 +225,7 @@ function Documents({ state, slug }: { state: WageState; slug: WageStateSlug }) {
             <ol className="wage-sources">
               {g.items.map((d) => (
                 <li key={d.id}>
-                  <a href={d.url} lang={d.hindi ? "hi-IN" : "en-IN"}>
+                  <a href={d.url} lang={d.language === "hi" ? "hi-IN" : d.language === "kn" ? "kn-IN" : "en-IN"}>
                     {d.title}
                   </a>
                   <span>
@@ -233,7 +233,7 @@ function Documents({ state, slug }: { state: WageState; slug: WageStateSlug }) {
                       <OrderNumber value={d.number} />
                     </span>
                     , {formatDate(d.date)}
-                    {d.hindi ? `. ${x.hindi}` : ""}.
+                    {d.language !== "en" ? `. ${x.inLanguage[d.language]}` : ""}.
                   </span>
                 </li>
               ))}
@@ -405,7 +405,8 @@ export function WageStatePage({ slug }: { slug: WageStateSlug }) {
   const { state, t } = stateOrThrow(slug);
   const today = todayIso();
   const year = yearOf(state, today);
-  const doors = t.band === "haridwar" ? [wageDoors.jobs, wageDoors.business] : [wageDoors.paidLess(state.name, t.labourDepartment), wageDoors.neutral];
+  const doors =
+    t.band === "haridwar" ? [wageDoors.jobs, wageDoors.business] : t.band === "bengaluru" ? [wageDoors.jobsBengaluru, wageDoors.neutral] : [wageDoors.paidLess(state.name, t.labourDepartment), wageDoors.neutral];
   return (
     <>
       <JsonLd data={wageStateSchema(state, { name: t.title(year), description: t.description, url: localePath(wageStatePath(slug), "en-IN") })} />

@@ -116,6 +116,65 @@
           "match": "contribut|paise|rupee|₹|Rs\\.?|half.?year|june|december"
         }
       ]
+    },
+    "karnataka": {
+      "listings": [
+        {
+          "url": "https://karmikaspandana.karnataka.gov.in/47/minimum-wages-final-notification/en",
+          "name": "Labour Commissioner, Karnataka: minimum wages final notifications"
+        },
+        {
+          "url": "https://karmikaspandana.karnataka.gov.in/64/minimum-wages-rates-for-the-year-2026-27/en",
+          "name": "Labour Commissioner, Karnataka: minimum wage rates for 2026-27 (VDA tables)"
+        },
+        {
+          "url": "https://karmikaspandana.karnataka.gov.in/54/minimum-wages-draft-notifications/en",
+          "name": "Labour Commissioner, Karnataka: minimum wages draft notifications"
+        },
+        {
+          "url": "https://karmikaspandana.karnataka.gov.in/en",
+          "name": "Labour Commissioner, Karnataka: home page notices",
+          "match": "wage|\\bv?da\\b|dearness|ವೇತನ|ಕನಿಷ್ಠ"
+        },
+        {
+          "url": "https://karmikaspandana.karnataka.gov.in/16/new-labour-rules-and-bills/en",
+          "name": "Labour Commissioner, Karnataka: labour code rules and bills (OSH Code and contract labour)",
+          "topic": "licence"
+        },
+        {
+          "url": "https://karmikaspandana.karnataka.gov.in/en",
+          "name": "Labour Commissioner, Karnataka: home page notices (Professional Tax)",
+          "topic": "pt",
+          "match": "professional tax|profession tax|ವೃತ್ತಿ ತೆರಿಗೆ"
+        },
+        {
+          "url": "https://klwb.karnataka.gov.in/en",
+          "name": "Karnataka Labour Welfare Board: notices",
+          "topic": "lwf"
+        }
+      ],
+      "documents": [
+        {
+          "url": "https://prsindia.org/files/bills_acts/acts_states/karnataka/1976/1976KR35.pdf",
+          "name": "Karnataka Tax on Professions Act, 1976",
+          "topic": "pt"
+        },
+        {
+          "url": "https://prsindia.org/files/bills_acts/bills_states/karnataka/2025/Bill8of2025KA.pdf",
+          "name": "Karnataka Tax on Professions (Amendment) Bill, 2025",
+          "topic": "pt"
+        },
+        {
+          "url": "https://klwb.karnataka.gov.in/uploads/Govt%20Gazette%20copy%20Lwf%2050&100_1766057899.pdf",
+          "name": "Karnataka Labour Welfare Fund (Amendment) Act, 2024",
+          "topic": "lwf"
+        },
+        {
+          "url": "https://karmikaspandana.karnataka.gov.in/uploads/media_to_upload1769512711.pdf",
+          "name": "OSH (Karnataka) Rules, 2026: draft",
+          "topic": "licence"
+        }
+      ]
     }
   },
   "national": {

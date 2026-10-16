@@ -21,7 +21,7 @@ const sourceSchema = z.strictObject({
   legalBasis: z.string().min(1).optional(),
   url: z.url({ protocol: /^https$/ }),
   listing: z.url({ protocol: /^https$/ }),
-  language: z.enum(["en", "hi"]),
+  language: z.enum(["en", "hi", "kn"]),
   sha256: z.string().regex(/^[0-9a-f]{64}$/),
   sizeKb: z.number().int().positive().optional(),
   retrievedOn: isoDate,

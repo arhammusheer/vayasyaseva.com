@@ -1,7 +1,12 @@
 /**
- * Copy for the minimum wage pages (PLAN §5.5). English only for now; hi-IN
- * versions come with PR8. Wage rates are not typed here: they come from the
+ * Copy for the minimum wage pages (PLAN §5.5). The hi-IN versions (PR8) are in
+ * ./minimum-wages.hi.ts. Wage rates are not typed here: they come from the
  * dataset (src/content/wages), so the copy and the tables cannot drift.
+ *
+ * Translation lint (PLAN §6.6): each block between "@hi-source <key>" and
+ * "@hi-source-end" has a Hindi version that records the sourceHash of this
+ * English text. content:check (C13) fails when a block here changes and the
+ * Hindi has not been updated; update the Hindi, then its hash.
  * Reference pages are read by buyers and workers alike: short sentences,
  * no phone, contractor vocabulary, and no agency words.
  */
@@ -64,13 +69,14 @@ const contractCheck =
   "If you use contract labour, ask your contractor each month for wage slips, the wage register and the EPF and ESIC challans. They show whether workers got at least these rates.";
 
 const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined> = {
+  // @hi-source state:uttarakhand
   uttarakhand: (s) => {
     const factory = rs(s, "factories-and-industries", "uttarakhand", "unskilled");
     const engineering = rs(s, "engineering-50-plus", "uttarakhand", "unskilled");
     const unskilled = rate(s, "factories-and-industries", "uttarakhand", "unskilled");
     return {
       title: (year) => `Uttarakhand Minimum Wages${year ? ` ${year}` : ""}: Rates by Skill`,
-      description: `Uttarakhand minimum wage from 1 Apr 2026: ${factory} a month for unskilled work under notification 289, ${engineering} in engineering units with 50+ workers. Checked ${formatShortMonth(s.checked.on)}.`,
+      description: `Uttarakhand minimum wage from 1 Apr 2026: ${factory} a month unskilled (notification 289), ${engineering} in engineering units with 50+ workers. Checked ${formatShortMonth(s.checked.on)}.`,
       lede: `From 1 April 2026, an unskilled factory worker in Uttarakhand must get at least ${factory} a month. That is about ${formatRupees(Math.round(unskilled.daily ?? 0))} a day. This is the rate under notification 289, which covers most registered factories. Engineering units with 50 or more workers pay at least ${engineering} a month.`,
       headlineSource: { label: "Notification", number: "289 + VDA order 1203" },
       contactHref: "/contact#location=haridwar",
@@ -122,13 +128,15 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
       labourDepartment: { href: "https://labour.uk.gov.in/", label: "Labour Department, Uttarakhand" },
     };
   },
+  // @hi-source-end
+  // @hi-source state:uttar-pradesh
   "uttar-pradesh": (s) => {
     const t = "scheduled-employments";
     const [c1, c2, c3] = ["category-1", "category-2", "category-3"].map((z) => rs(s, t, z, "unskilled"));
     const first = rate(s, t, "category-1", "unskilled");
     return {
       title: (year) => `Minimum Wages in UP${year ? ` ${year}` : ""}: Rates by Skill Level`,
-      description: `UP minimum wage from 1 Apr 2026, unskilled: ${c1} Noida/Ghaziabad, ${c2} Nagar Nigam districts, ${c3} elsewhere. Checked ${formatShortMonth(s.checked.on)}.`,
+      description: `UP minimum wage from 1 Apr 2026, unskilled: ${c1} Noida/Ghaziabad, ${c2} Nagar Nigam districts, ${c3} elsewhere. All skill levels. Checked ${formatShortMonth(s.checked.on)}.`,
       lede: `From 1 April 2026, an unskilled worker in Uttar Pradesh must get at least ${c1} a month in Gautam Buddha Nagar and Ghaziabad. It is ${c2} in other districts with a Nagar Nigam, and ${c3} elsewhere. These rates come from order ${sourceById(s, "up-2026-04").number}.`,
       headlineSource: { label: "Order", number: sourceById(s, "up-2026-04").number },
       contactHref: "/contact#state=UP",
@@ -181,13 +189,15 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
       labourDepartment: { href: "https://uplabour.gov.in/", label: "Labour Department, Uttar Pradesh" },
     };
   },
+  // @hi-source-end
+  // @hi-source state:delhi
   delhi: (s) => {
     const t = "all-scheduled-employments";
     const unskilled = rate(s, t, "delhi", "unskilled");
     const effective = formatDate(s.tables[0].effectiveFrom);
     return {
       title: (year) => `Delhi Minimum Wage${year ? ` ${year}` : ""}: ${formatRupees(unskilled.daily ?? 0)}/day, ${formatRupees(unskilled.monthly)}/month`,
-      description: `Delhi minimum wage from ${formatShortDate(s.tables[0].effectiveFrom)}: ${rs(s, t, "delhi", "unskilled")} a month (${formatRupees(unskilled.daily ?? 0)} a day) unskilled, ${rs(s, t, "delhi", "semi-skilled")} semi-skilled, ${rs(s, t, "delhi", "skilled")} skilled. Checked ${formatShortMonth(s.checked.on)}.`,
+      description: `Delhi minimum wage from ${formatShortDate(s.tables[0].effectiveFrom)}: ${rs(s, t, "delhi", "unskilled")} a month (${formatRupees(unskilled.daily ?? 0)} a day) unskilled, ${rs(s, t, "delhi", "semi-skilled")} semi-skilled, ${rs(s, t, "delhi", "skilled")} skilled. Latest order. Checked ${formatShortMonth(s.checked.on)}.`,
       lede: `From ${effective}, an unskilled worker in Delhi must get at least ${formatRupees(unskilled.monthly)} a month, or ${formatRupees(unskilled.daily ?? 0)} a day. Semi-skilled is ${rs(s, t, "delhi", "semi-skilled")} and skilled is ${rs(s, t, "delhi", "skilled")}. These are the latest rates the Labour Department has published, under its order of ${formatDate(sourceById(s, "dl-2025-04").date)}.`,
       headlineSource: { label: "Order", number: sourceById(s, "dl-2025-04").number },
       contactHref: "/contact#state=DL",
@@ -235,6 +245,7 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
       labourDepartment: { href: "https://labour.delhi.gov.in/labour/current-minimum-wage-rate", label: "Labour Department, Delhi" },
     };
   },
+  // @hi-source-end
   haryana: undefined,
 };
 
@@ -252,6 +263,7 @@ export function sourceLine(state: WageState, id: string) {
   return `${kind} ${/^F\.?\s?No\./i.test(s.number) ? "" : "No. "}${s.number}, dated ${formatDate(s.date)}. ${s.authority}.`;
 }
 
+// @hi-source hub
 export const wageHubCopy = {
   title: (year: string | null) => `Minimum Wages${year ? ` ${year}` : ""}: Uttarakhand, UP and Delhi`,
   /** The oldest check across the states, so the line is true for every one of them. */
@@ -342,3 +354,156 @@ export const wageDoors = {
   },
   business: { eyebrow: "HIRING FOR A UNIT", heading: "Need a crew on your site?", text: "Tell us the work, the headcount and the shifts.", link: { href: "/contact", label: "Request a crew" } },
 };
+// @hi-source-end
+
+/** Labels the wage page components use, so the Hindi pages can swap them (./minimum-wages.hi.ts). */
+export type WageUi = {
+  home: string;
+  minimumWages: string;
+  stateHeading: (name: string, year: string | null) => string;
+  statesListItem: (name: string) => string;
+  facts: { inForce: string; checked: string; checkedBy: (by: string) => string; fromDocs: string; overdue: string; wasDue: string; next: string };
+  checkedPhrase: (by: string | null, date: string) => string;
+  doors: { looking: string; hiring: string; paidLess: string; whatYouCanDo: string };
+  notice: {
+    staleStrong: string;
+    staleText: string;
+    staleLink: string;
+    many: (dates: string, checked: string) => [string, string];
+    one: (date: string, checked: string, name: string) => [string, string];
+  };
+  table: {
+    caption: (title: string, name: string, date: string) => string;
+    skill: string;
+    month: string;
+    day: string;
+    dayDerived: string;
+    split: (basicLabel: string, basic: string, vdaLabel: string, vda: string) => string;
+    notSet: string;
+    from: (date: string) => string;
+    also: string;
+    range: (from: string, to: string) => string;
+  };
+  pdf: (kind: "notification" | "order" | "corrigendum", hindi: boolean, size: string | null) => string;
+  sourceKind: (kind: "notification" | "order" | "corrigendum") => string;
+  dated: string;
+  sections: {
+    rates: string;
+    ratesHeading: (name: string) => string;
+    where: string;
+    theRate: string;
+    madeUpHeading: string;
+    history: string;
+    historyHeading: string;
+    employers: string;
+    employersHeading: (name: string) => string;
+    workerLine: [string, string];
+    others: string;
+    allStates: string;
+    questions: string;
+    questionsHeading: string;
+    sources: string;
+    editorial: string;
+    documents: string;
+  };
+  hub: {
+    byState: string;
+    tableHeading: string;
+    caption: string;
+    state: string;
+    unskilledMonth: string;
+    inForce: string;
+    checked: string;
+    byCategory: string;
+    mayBeRevised: string;
+    from: (date: string) => string;
+    note: string;
+    basics: string;
+    thisYear: string;
+    employers: string;
+    requestCrew: string;
+    workers: string;
+  };
+};
+
+// @hi-source ui
+export const wageUiEn: WageUi = {
+  home: "Home",
+  minimumWages: "Minimum wages",
+  stateHeading: (name, year) => `Minimum wages in ${name}${year ? `, ${year}` : ""}.`,
+  statesListItem: (name) => `Minimum wages in ${name}`,
+  facts: {
+    inForce: "In force from",
+    checked: "Checked",
+    checkedBy: (by) => `, by ${by}`,
+    fromDocs: ", from the state's documents",
+    overdue: "Revisions overdue since",
+    wasDue: "Revision was due",
+    next: "Next revision",
+  },
+  checkedPhrase: (by, date) => (by ? `Checked by ${by} on ${date}.` : `Entered from the state's own documents on ${date}.`),
+  doors: { looking: "Looking for work?", hiring: "Hiring for a unit?", paidLess: "Paid less than this?", whatYouCanDo: "What you can do" },
+  notice: {
+    staleStrong: "These rates may have been revised.",
+    staleText: "Check the latest notification.",
+    staleLink: "Latest notifications from the state",
+    many: (dates, checked) => [
+      `Revisions were due on ${dates}.`,
+      `None had been published when we checked on ${checked}. If they are published with back effect, arrears may be due. These are the latest published rates.`,
+    ],
+    one: (date, checked, name) => [`A revision was due on ${date}.`, `When we checked on ${checked}, ${name} had not published one. These are the latest published rates.`],
+  },
+  table: {
+    caption: (title, name, date) => `${title}: minimum wages in ${name} from ${date}, in rupees`,
+    skill: "Skill level",
+    month: "Per month",
+    day: "Per day",
+    dayDerived: "Per day (÷ 26)",
+    split: (basicLabel, basic, vdaLabel, vda) => `${basicLabel} ${basic} plus ${vdaLabel} ${vda}`,
+    notSet: "Not set",
+    from: (date) => `From ${date}.`,
+    also: "Also:",
+    range: (from, to) => `${from} to ${to}`,
+  },
+  pdf: (kind, hindi, size) => `Read the ${kind === "corrigendum" ? "amendment" : kind} (PDF${hindi ? ", Hindi" : ""}${size ? `, ${size}` : ""})`,
+  sourceKind: (kind) => (kind === "notification" ? "Notification" : kind === "order" ? "Order" : "Amendment"),
+  dated: "dated",
+  sections: {
+    rates: "RATES",
+    ratesHeading: (name) => `Minimum wage rates in ${name}`,
+    where: "WHERE IT APPLIES",
+    theRate: "THE RATE",
+    madeUpHeading: "How the rate is made up",
+    history: "HISTORY",
+    historyHeading: "Earlier rates",
+    employers: "FOR EMPLOYERS",
+    employersHeading: (name) => `If you use contract labour in ${name}`,
+    workerLine: ["Paid less than this? You can complain to the", ". Keep your wage slips and attendance record."],
+    others: "OTHER STATES",
+    allStates: "All states",
+    questions: "QUESTIONS",
+    questionsHeading: "Common questions",
+    sources: "SOURCES AND CHECKS",
+    editorial: "Our editorial policy",
+    documents: "Documents used for this page",
+  },
+  hub: {
+    byState: "BY STATE",
+    tableHeading: "Unskilled rate by state",
+    caption: "Monthly minimum wage for unskilled work in the main factory employments, by state, in rupees",
+    state: "State",
+    unskilledMonth: "Unskilled, per month",
+    inForce: "In force from",
+    checked: "Checked",
+    byCategory: ", by district category",
+    mayBeRevised: " · may have been revised",
+    from: (date) => `from ${date}`,
+    note: "These are the rates for the main factory employments. Each state page has every skill level and zone, the other tables it covers, and the notification each comes from.",
+    basics: "THE BASICS",
+    thisYear: "THIS YEAR",
+    employers: "FOR EMPLOYERS",
+    requestCrew: "Request a crew",
+    workers: "FOR WORKERS",
+  },
+};
+// @hi-source-end

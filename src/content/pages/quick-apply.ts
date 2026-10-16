@@ -4,9 +4,10 @@ import { NO_FEE, SHIFTS_LINE } from "@/content/pages/jobs";
 
 /**
  * The guided jobs page (/jobs/apply): tap answers, with follow-up questions
- * that depend on the work chosen, then name and number. An experiment against
- * the long form on /jobs, used as a Google Ads landing page; not in the
- * sitemap and noindex. Option ids are fixed values sent to analytics and to
+ * that depend on the work chosen, then name and number. The same form is
+ * embedded on /jobs/haridwar, the role and hub pages. /jobs/apply is indexed,
+ * in the sitemap and llms.txt, and is the Google Ads landing page
+ * (docs/seo-checklist.md). Option ids are fixed values sent to analytics and to
  * staff, the same in every language. hi-IN and hi-Latn-IN are drafts pending
  * native review, like the other jobs pages.
  */
@@ -86,7 +87,7 @@ const MULTI_HINT = { "en-IN": "Choose all that apply.", "hi-IN": "जो भी 
 export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
   "en-IN": {
     title: "Apply for Work in SIDCUL Haridwar: Quick Form",
-    description: "Tap a few answers, then leave your name and number. Factory, packing, warehouse and ITI work in SIDCUL Haridwar. No fee.",
+    description: "Apply for SIDCUL Haridwar jobs. No fee to apply. Full 8-hour shifts. Tap a few answers, then your name and number. Factory, packing, warehouse and ITI work.",
     eyebrow: "JOBS",
     breadcrumb: "Quick application",
     heading: "Looking for work in SIDCUL Haridwar?",
@@ -128,13 +129,13 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       optional: "Optional",
       send: "Send",
     },
-    errors: { name: "Please write your name." },
+    errors: { name: "Write your full name (at least 2 letters)." },
     noFee: NO_FEE["en-IN"],
     shifts: SHIFTS_LINE["en-IN"],
   },
   "hi-IN": {
     title: "सिडकुल हरिद्वार में काम के लिए अप्लाई करें: छोटा फ़ॉर्म",
-    description: "कुछ जवाब चुनिए, फिर बस नाम और नंबर। सिडकुल हरिद्वार में फ़ैक्टरी, पैकिंग, वेयरहाउस और ITI का काम। कोई फ़ीस नहीं।",
+    description: "सिडकुल हरिद्वार में नौकरी के लिए आवेदन करें। कोई फ़ीस नहीं। पूरी 8 घंटे की शिफ्ट। कुछ जवाब चुनिए, फिर नाम और नंबर। फ़ैक्टरी, पैकिंग, वेयरहाउस और ITI का काम।",
     eyebrow: "नौकरी",
     breadcrumb: "जल्दी आवेदन",
     heading: "सिडकुल हरिद्वार में काम चाहिए?",
@@ -176,14 +177,14 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       optional: "ज़रूरी नहीं",
       send: "भेजें",
     },
-    errors: { name: "कृपया अपना नाम लिखिए।" },
+    errors: { name: "पूरा नाम लिखिए (कम से कम 2 अक्षर)।" },
     noFee: NO_FEE["hi-IN"],
     shifts: SHIFTS_LINE["hi-IN"],
   },
   "hi-Latn-IN": {
-    title: "SIDCUL Haridwar Mein Kaam Ke Liye Apply Karein: Chhota Form",
-    description: "Kuch jawab tap kijiye, phir bas naam aur number. SIDCUL Haridwar mein factory, packing, warehouse aur ITI ka kaam. Koi fee nahi.",
-    eyebrow: "NAUKRI",
+    title: "SIDCUL Haridwar Job: Apply Karein, Chhota Form",
+    description: "SIDCUL Haridwar job ke liye apply karein. Koi fee nahi. Poori 8 ghante ki shift. Kuch jawab tap kijiye, phir naam aur number. Factory, packing, warehouse, ITI.",
+    eyebrow: "Jobs",
     breadcrumb: "Jaldi apply",
     heading: "SIDCUL Haridwar mein kaam chahiye?",
     lede: "Kuch jawab tap kijiye, phir bas apna naam aur number. Sahi kaam hone par hum aapko phone karenge.",
@@ -222,9 +223,9 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       phone: "Mobile number",
       phonePlaceholder: "10 digit ka mobile number",
       optional: "Zaroori nahi",
-      send: "Bhejiye",
+      send: "Bhejein",
     },
-    errors: { name: "Kripya apna naam likhiye." },
+    errors: { name: "Poora naam likhiye (kam se kam 2 akshar)." },
     noFee: NO_FEE["hi-Latn-IN"],
     shifts: SHIFTS_LINE["hi-Latn-IN"],
   },

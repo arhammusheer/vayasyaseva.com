@@ -50,6 +50,11 @@ const PROHIBITED = [
   "Haridwar and SIDCUL", "Haridwar & SIDCUL", "Haridwar &amp; SIDCUL", "Haridwar–SIDCUL",
   "Haridwar aur SIDCUL", "हरिद्वार और सिडकुल",
 ];
+// Banned in copy (docs/claim-policy.md) but common in code comments, so
+// checked only on copy lines that are not comments, and not in the brand
+// page's own rules text.
+const COPY_ONLY = ["always", "never"];
+const COPY_ONLY_SKIP = /src\/content\/brand\.ts$/;
 const TIER2 = [
   "robust", "comprehensive", "cutting-edge", "innovative", "streamline",
   "empower", "foster", "enhance", "elevate", "optimize", "scalable", "pivotal",
@@ -141,6 +146,7 @@ for (const file of files) {
     };
     check(TIER1, "tier1");
     check(PROHIBITED, "prohibited");
+    if (!/^(\/\/|\*|\/\*)/.test(text) && !/\bError\(/.test(text) && !COPY_ONLY_SKIP.test(rel)) check(COPY_ONLY, "prohibited");
     check(TIER2, "tier2");
     if (showAll) {
       check(TIER3, "tier3");

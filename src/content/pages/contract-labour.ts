@@ -1,4 +1,5 @@
 import type { Locale } from "@/lib/i18n";
+import type { FaqItem } from "../types";
 
 type Link = { href: string; label: string };
 
@@ -8,6 +9,10 @@ export interface ContractLabourCopy {
   breadcrumb: { home: string; services: string; page: string };
   hero: [string, string];
   lede: string;
+  /** The hero's button to the Request a crew form. */
+  heroCta: string;
+  /** One quiet line for job seekers under the hero. No phone near it. */
+  jobs: { text: string; link: Link };
   introEyebrow: string;
   introHeading: string;
   intro: string[];
@@ -20,206 +25,252 @@ export interface ContractLabourCopy {
   complianceHeading: string;
   complianceText: string;
   complianceLink: string;
+  faqEyebrow: string;
+  faqHeading: string;
+  /** Page FAQs; the standard agency FAQ (src/content/agency-faq.ts) is added after them. */
+  faqs: FaqItem[];
   contactHeading: string;
   contactText: string;
   contactLink: string;
 }
 
 /**
- * /services/contract-labour in every locale. hi-IN and hi-Latn-IN are drafts
- * pending native-speaker review; keep all three in step when the English changes.
+ * /services/contract-labour in every locale: the main page for "labour
+ * contractor" and "contract labour" searches, in the home page's voice
+ * (workers on our payroll; we pay, deposit, supervise and replace). hi-IN and
+ * hi-Latn-IN are drafts pending native-speaker review; keep all three in step
+ * when the English changes. Agency words: only in the standard FAQ.
  */
 export const contractLabourCopy: Record<Locale, ContractLabourCopy> = {
   "en-IN": {
-    title: "Contract Labour & Manpower Services",
+    title: "Contract Labour Contractor in SIDCUL Haridwar",
     description:
-      "Contract labour and industrial manpower for factory, warehouse and facility operations in SIDCUL and across Haridwar. Review roles, planning and workforce records.",
+      "Workers on our payroll at your plant. We pay wages, deposit EPF and ESIC where they apply, supervise shifts and replace absentees. SIDCUL and across Haridwar.",
     breadcrumb: { home: "Home", services: "Services", page: "Contract labour" },
     hero: ["Contract labour for factory", "and warehouse operations."],
-    lede: "Vayasya Seva brings workforce planning, site coordination and worker documentation together for industrial operations in SIDCUL and across Haridwar.",
-    introEyebrow: "CONTRACT WORKFORCE",
-    introHeading: "A service shaped by the work.",
+    lede: "Workers on our payroll, on your site. We pay wages, deposit EPF and ESIC where they apply, supervise the crew and replace absentees.",
+    heroCta: "Request a crew",
+    jobs: { text: "Looking for work?", link: { href: "/jobs/haridwar", label: "Jobs in Haridwar" } },
+    introEyebrow: "CONTRACT LABOUR",
+    introHeading: "What you get from us.",
     intro: [
-      "Businesses may search for a labour supplier, manpower provider or contract staffing partner. The practical question is the same: which people are needed, where will they work, and how will the engagement be managed?",
-      "We discuss those details with your plant, warehouse or facility team before planning the workforce. Ongoing needs, project work and seasonal changes can call for different arrangements.",
+      "You tell us the work, the headcount and the shifts. We supply the workers and employ them: they are on our payroll, not yours.",
+      "We pay their wages, deposit EPF and ESIC where they apply, keep the attendance and wage registers, and supervise the crew. If someone is absent, we send a replacement.",
+      "Every shift is a full 8 hours. Ongoing work, project work and seasonal peaks can each be planned as its own engagement.",
     ],
     localLink: { href: "/haridwar-sidcul", label: "Labour contractor in SIDCUL Haridwar" },
-    areasEyebrow: "WHERE WE SUPPORT OPERATIONS",
+    areasEyebrow: "WHERE OUR CREWS WORK",
     workAreas: [
       {
         title: "Factory and production",
-        text: "Production helpers, packers, line feeders, material handlers and quality check assistants for shopfloor work.",
+        text: "Production helpers, packers, material handlers and quality check helpers for shopfloor work.",
         href: "/services/factory-labour",
         link: "Factory labour",
       },
       {
         title: "Warehouse and dispatch",
-        text: "Teams for loading, unloading, picking, packing, stacking and dispatch, planned around warehouse activity.",
+        text: "Crews for loading, unloading, picking, packing, stacking and dispatch, planned around your dock hours.",
         href: "/services/warehouse-labour",
         link: "Warehouse labour",
       },
       {
         title: "Facilities and site support",
-        text: "Housekeeping, pantry, grounds and other site support roles for industrial and business premises.",
+        text: "Housekeeping, pantry and grounds staff for plants, warehouses and offices.",
         href: "/services/housekeeping",
-        link: "Housekeeping services",
+        link: "Housekeeping",
       },
     ],
-    stepsEyebrow: "HOW AN ENGAGEMENT STARTS",
-    stepsHeading: "From requirement to review.",
+    stepsEyebrow: "HOW AN ENGAGEMENT RUNS",
+    stepsHeading: "From requirement to monthly records.",
     steps: [
       {
-        title: "Define the requirement",
-        text: "Tell us the site, work, roles, headcount, shifts and intended start date. We discuss site procedures and the supervision needed.",
+        title: "You send the requirement",
+        text: "The site, the work, the headcount, the shifts and the start date. We agree the supervision and site rules with you.",
       },
       {
-        title: "Plan the workforce",
-        text: "We discuss sourcing, onboarding and working arrangements against the agreed scope and the readiness of your site.",
+        title: "We recruit and onboard",
+        text: "We find the workers and put them on our payroll before they start on your site.",
       },
       {
-        title: "Coordinate on site",
-        text: "Attendance, shift coordination and day-to-day communication are planned with your operations and HR teams.",
+        title: "We run the crew",
+        text: "We supervise the crew, keep attendance for every shift and replace absentees.",
       },
       {
-        title: "Keep records reviewable",
-        text: "Relevant onboarding, attendance, wage and applicable EPF and ESIC records are coordinated for client review.",
+        title: "We keep the records",
+        text: "We keep the attendance and wage registers, deposit EPF and ESIC where they apply, and share the challans with you each month.",
       },
     ],
-    complianceHeading: "Compliance in the engagement.",
+    complianceHeading: "Records you can check.",
     complianceText:
-      "We are registered under EPF and ESIC. Worker onboarding, attendance, wage documentation and applicable statutory contribution records are part of the discussion with each client. Relevant records can be shared for vendor assessment and review.",
-    complianceLink: "Review our labour compliance approach",
-    contactHeading: "Discuss a workforce requirement.",
+      "We are registered under EPF and ESIC. Attendance and wage registers, wage slips, and EPF and ESIC challans for the workers on your site are open for your monthly review and for audits.",
+    complianceLink: "How we handle labour compliance",
+    faqEyebrow: "QUESTIONS",
+    faqHeading: "Common questions.",
+    faqs: [
+      {
+        question: "Who employs the workers?",
+        answer:
+          "We do. The workers are on our payroll. We pay their wages and deposit EPF and ESIC where they apply. You pay us against one invoice.",
+        category: "commercial",
+      },
+    ],
+    contactHeading: "Send us a requirement.",
     contactText:
-      "Send the site location, roles, approximate headcount, shift pattern and timing. We can then discuss the scope, supervision and documentation relevant to your operation.",
-    contactLink: "Contact Vayasya Seva",
+      "Tell us the site, the roles, roughly how many workers and the shifts. We aim to reply within two working days (Monday to Saturday, IST).",
+    contactLink: "Request a crew",
   },
   "hi-IN": {
     title: "हरिद्वार में कॉन्ट्रैक्ट लेबर और मैनपावर सप्लाई",
     description:
-      "सिडकुल और पूरे हरिद्वार में फ़ैक्टरी, वेयरहाउस और फ़ैसिलिटी के लिए कॉन्ट्रैक्ट लेबर और औद्योगिक मैनपावर। रोल, योजना और वर्कफ़ोर्स रिकॉर्ड पर बात करें।",
+      "कामगार हमारे पेरोल पर, आपकी साइट पर। हम मज़दूरी देते हैं, जहाँ लागू हो EPF और ESIC जमा करते हैं, शिफ्ट की देखरेख करते हैं और ग़ैरहाज़िर की जगह दूसरा भेजते हैं।",
     breadcrumb: { home: "होम", services: "सेवाएँ", page: "कॉन्ट्रैक्ट लेबर" },
     hero: ["फ़ैक्टरी और वेयरहाउस के लिए", "कॉन्ट्रैक्ट लेबर।"],
-    lede: "Vayasya Seva सिडकुल और पूरे हरिद्वार के औद्योगिक कामों के लिए वर्कफ़ोर्स प्लानिंग, साइट कोऑर्डिनेशन और कामगारों के दस्तावेज़ एक साथ संभालती है।",
-    introEyebrow: "कॉन्ट्रैक्ट वर्कफ़ोर्स",
-    introHeading: "काम के हिसाब से बनी सेवा।",
+    lede: "कामगार हमारे पेरोल पर, आपकी साइट पर। हम मज़दूरी देते हैं, जहाँ लागू हो EPF और ESIC जमा करते हैं, टीम की देखरेख करते हैं और ग़ैरहाज़िर कामगार की जगह दूसरा भेजते हैं।",
+    heroCta: "कामगार माँगें",
+    jobs: { text: "काम चाहिए?", link: { href: "/jobs/haridwar", label: "हरिद्वार में नौकरी" } },
+    introEyebrow: "कॉन्ट्रैक्ट लेबर",
+    introHeading: "हमसे आपको क्या मिलता है।",
     intro: [
-      "कोई लेबर सप्लायर खोजता है, कोई मैनपावर प्रोवाइडर या लेबर ठेकेदार। असल सवाल एक ही है: किन लोगों की ज़रूरत है, वे कहाँ काम करेंगे, और पूरी व्यवस्था कैसे संभाली जाएगी?",
-      "वर्कफ़ोर्स की योजना बनाने से पहले हम आपकी प्लांट, वेयरहाउस या फ़ैसिलिटी टीम के साथ ये बातें तय करते हैं। लगातार चलने वाले काम, प्रोजेक्ट और सीज़नल बदलाव के लिए अलग-अलग व्यवस्था की ज़रूरत हो सकती है।",
+      "आप काम, कितने लोग और शिफ्ट बताइए। हम कामगार देते हैं और उन्हें नौकरी पर रखते हैं: वे हमारे पेरोल पर होते हैं, आपके नहीं।",
+      "हम उनकी मज़दूरी देते हैं, जहाँ लागू हो EPF और ESIC जमा करते हैं, हाज़िरी और वेतन रजिस्टर रखते हैं, और टीम की देखरेख करते हैं। कोई ग़ैरहाज़िर हो तो हम दूसरा कामगार भेजते हैं।",
+      "हर शिफ्ट पूरे 8 घंटे की होती है। लगातार चलने वाला काम, प्रोजेक्ट का काम और सीज़न का ज़्यादा काम, हर एक की अलग योजना बन सकती है।",
     ],
     localLink: { href: "/haridwar-sidcul", label: "सिडकुल हरिद्वार में लेबर ठेकेदार" },
-    areasEyebrow: "हम किन कामों में साथ देते हैं",
+    areasEyebrow: "हमारी टीमें कहाँ काम करती हैं",
     workAreas: [
       {
         title: "फ़ैक्टरी और प्रोडक्शन",
-        text: "शॉपफ़्लोर के काम के लिए प्रोडक्शन हेल्पर, पैकर, लाइन फ़ीडर, मटीरियल हैंडलर और क्वालिटी चेक असिस्टेंट।",
+        text: "शॉपफ़्लोर के काम के लिए प्रोडक्शन हेल्पर, पैकर, मटीरियल हैंडलर और क्वालिटी चेक हेल्पर।",
         href: "/services/factory-labour",
         link: "फ़ैक्टरी लेबर (अंग्रेज़ी में)",
       },
       {
         title: "वेयरहाउस और डिस्पैच",
-        text: "लोडिंग, अनलोडिंग, पिकिंग, पैकिंग, स्टैकिंग और डिस्पैच के लिए टीमें, वेयरहाउस के काम के हिसाब से।",
+        text: "लोडिंग, अनलोडिंग, पिकिंग, पैकिंग, स्टैकिंग और डिस्पैच के लिए टीमें, आपके डॉक के समय के हिसाब से।",
         href: "/services/warehouse-labour",
         link: "वेयरहाउस लेबर (अंग्रेज़ी में)",
       },
       {
         title: "फ़ैसिलिटी और साइट सपोर्ट",
-        text: "औद्योगिक और बिज़नेस परिसरों के लिए हाउसकीपिंग, पैंट्री, ग्राउंड्स और दूसरे सपोर्ट रोल।",
+        text: "प्लांट, वेयरहाउस और ऑफ़िस के लिए हाउसकीपिंग, पैंट्री और ग्राउंड्स स्टाफ़।",
         href: "/services/housekeeping",
-        link: "हाउसकीपिंग सेवाएँ (अंग्रेज़ी में)",
+        link: "हाउसकीपिंग (अंग्रेज़ी में)",
       },
     ],
-    stepsEyebrow: "शुरुआत कैसे होती है",
-    stepsHeading: "ज़रूरत से जाँच तक।",
+    stepsEyebrow: "काम कैसे चलता है",
+    stepsHeading: "ज़रूरत से हर महीने के रिकॉर्ड तक।",
     steps: [
       {
-        title: "ज़रूरत बताइए",
-        text: "साइट, काम, रोल, संख्या, शिफ्ट और शुरू करने की तारीख़ बताइए। हम साइट की प्रक्रियाओं और ज़रूरी सुपरविज़न पर बात करते हैं।",
+        title: "आप ज़रूरत भेजते हैं",
+        text: "साइट, काम, कितने लोग, शिफ्ट और शुरू करने की तारीख़। देखरेख और साइट के नियम हम आपके साथ तय करते हैं।",
       },
       {
-        title: "वर्कफ़ोर्स की योजना",
-        text: "तय दायरे और साइट की तैयारी के हिसाब से सोर्सिंग, ऑनबोर्डिंग और काम की व्यवस्था पर बात होती है।",
+        title: "हम भर्ती करते हैं",
+        text: "हम कामगार ढूँढते हैं और आपकी साइट पर शुरू करने से पहले उन्हें अपने पेरोल पर रखते हैं।",
       },
       {
-        title: "साइट पर कोऑर्डिनेशन",
-        text: "हाज़िरी, शिफ्ट कोऑर्डिनेशन और रोज़ की बातचीत आपकी ऑपरेशंस और HR टीम के साथ तय की जाती है।",
+        title: "हम टीम चलाते हैं",
+        text: "हम टीम की देखरेख करते हैं, हर शिफ्ट की हाज़िरी रखते हैं और ग़ैरहाज़िर की जगह दूसरा भेजते हैं।",
       },
       {
-        title: "रिकॉर्ड जाँच के लिए तैयार",
-        text: "ऑनबोर्डिंग, हाज़िरी, वेतन और लागू EPF व ESIC रिकॉर्ड क्लाइंट की जाँच के लिए व्यवस्थित रखे जाते हैं।",
+        title: "रिकॉर्ड हम रखते हैं",
+        text: "हम हाज़िरी और वेतन रजिस्टर रखते हैं, जहाँ लागू हो EPF और ESIC जमा करते हैं, और हर महीने चालान आपसे साझा करते हैं।",
       },
     ],
-    complianceHeading: "कॉन्ट्रैक्ट में कंप्लायंस।",
+    complianceHeading: "रिकॉर्ड जिन्हें आप जाँच सकते हैं।",
     complianceText:
-      "हम EPF और ESIC में रजिस्टर्ड हैं। कामगारों की ऑनबोर्डिंग, हाज़िरी, वेतन दस्तावेज़ और लागू वैधानिक योगदान के रिकॉर्ड हर क्लाइंट के साथ बातचीत का हिस्सा हैं। वेंडर असेसमेंट और जाँच के लिए ज़रूरी रिकॉर्ड साझा किए जा सकते हैं।",
+      "हम EPF और ESIC में रजिस्टर्ड हैं। आपकी साइट के कामगारों के हाज़िरी और वेतन रजिस्टर, वेतन पर्ची, और EPF व ESIC चालान आपकी मासिक जाँच और ऑडिट के लिए खुले हैं।",
     complianceLink: "हमारा लेबर कंप्लायंस तरीका (अंग्रेज़ी में)",
-    contactHeading: "अपनी वर्कफ़ोर्स ज़रूरत पर बात करें।",
+    faqEyebrow: "सवाल",
+    faqHeading: "आम सवाल।",
+    faqs: [
+      {
+        question: "कामगारों को नौकरी पर कौन रखता है?",
+        answer:
+          "हम। कामगार हमारे पेरोल पर होते हैं। हम उनकी मज़दूरी देते हैं और जहाँ लागू हो EPF और ESIC जमा करते हैं। आप हमें एक इनवॉइस पर भुगतान करते हैं।",
+        category: "commercial",
+      },
+    ],
+    contactHeading: "अपनी ज़रूरत भेजिए।",
     contactText:
-      "साइट की जगह, रोल, अनुमानित संख्या, शिफ्ट पैटर्न और समय बताइए। फिर हम आपके काम के हिसाब से दायरे, सुपरविज़न और दस्तावेज़ों पर बात कर सकते हैं।",
-    contactLink: "Vayasya Seva से संपर्क करें",
+      "साइट, रोल, लगभग कितने कामगार और शिफ्ट बताइए। हम दो कामकाजी दिनों में जवाब देने की कोशिश करते हैं (सोमवार से शनिवार, IST)।",
+    contactLink: "कामगार माँगें",
   },
   "hi-Latn-IN": {
     title: "Haridwar mein Contract Labour aur Manpower Supply",
     description:
-      "SIDCUL aur poore Haridwar mein factory, warehouse aur facility ke liye contract labour aur industrial manpower. Roles, planning aur workforce records par baat karein.",
+      "Workers hamare payroll par, aapki site par. Hum wages dete hain, EPF aur ESIC jama karte hain jahan laagu ho, aur absent ki jagah doosra bhejte hain.",
     breadcrumb: { home: "Home", services: "Services", page: "Contract labour" },
     hero: ["Factory aur warehouse ke liye", "contract labour."],
-    lede: "Vayasya Seva SIDCUL aur poore Haridwar ke industrial operations ke liye workforce planning, site coordination aur workers ke documents ek saath sambhalti hai.",
-    introEyebrow: "CONTRACT WORKFORCE",
-    introHeading: "Kaam ke hisaab se bani service.",
+    lede: "Workers hamare payroll par, aapki site par. Hum wages dete hain, jahan laagu ho EPF aur ESIC jama karte hain, team ki dekhrekh karte hain aur absent worker ki jagah doosra bhejte hain.",
+    heroCta: "Workers maangein",
+    jobs: { text: "Kaam chahiye?", link: { href: "/jobs/haridwar", label: "Haridwar mein job" } },
+    introEyebrow: "Contract labour",
+    introHeading: "Humse aapko kya milta hai.",
     intro: [
-      "Koi labour supplier dhoondhta hai, koi manpower provider ya labour thekedar. Asli sawaal ek hi hai: kin logon ki zaroorat hai, woh kahan kaam karenge, aur poora arrangement kaise manage hoga?",
-      "Workforce plan karne se pehle hum aapki plant, warehouse ya facility team ke saath ye baatein tay karte hain. Ongoing kaam, projects aur seasonal badlav ke liye alag arrangements ki zaroorat ho sakti hai.",
+      "Aap kaam, kitne log aur shifts bataiye. Hum workers dete hain aur unhe naukri par rakhte hain: woh hamare payroll par hote hain, aapke nahi.",
+      "Hum unki wages dete hain, jahan laagu ho EPF aur ESIC jama karte hain, attendance aur wage registers rakhte hain, aur team ki dekhrekh karte hain. Koi absent ho to hum doosra worker bhejte hain.",
+      "Har shift poore 8 ghante ki hoti hai. Ongoing kaam, project ka kaam aur season ka zyada kaam, har ek ki alag planning ho sakti hai.",
     ],
     localLink: { href: "/haridwar-sidcul", label: "SIDCUL Haridwar mein labour contractor" },
-    areasEyebrow: "HUM KIN KAAMON MEIN SAATH DETE HAIN",
+    areasEyebrow: "Hamari teams kahan kaam karti hain",
     workAreas: [
       {
         title: "Factory aur production",
-        text: "Shopfloor ke kaam ke liye production helpers, packers, line feeders, material handlers aur quality check assistants.",
+        text: "Shopfloor ke kaam ke liye production helpers, packers, material handlers aur quality check helpers.",
         href: "/services/factory-labour",
         link: "Factory labour",
       },
       {
         title: "Warehouse aur dispatch",
-        text: "Loading, unloading, picking, packing, stacking aur dispatch ke liye teams, warehouse activity ke hisaab se.",
+        text: "Loading, unloading, picking, packing, stacking aur dispatch ke liye teams, aapke dock hours ke hisaab se.",
         href: "/services/warehouse-labour",
         link: "Warehouse labour",
       },
       {
         title: "Facilities aur site support",
-        text: "Industrial aur business premises ke liye housekeeping, pantry, grounds aur doosre support roles.",
+        text: "Plant, warehouse aur office ke liye housekeeping, pantry aur grounds staff.",
         href: "/services/housekeeping",
-        link: "Housekeeping services",
+        link: "Housekeeping",
       },
     ],
-    stepsEyebrow: "SHURUAAT KAISE HOTI HAI",
-    stepsHeading: "Requirement se review tak.",
+    stepsEyebrow: "Kaam kaise chalta hai",
+    stepsHeading: "Requirement se har mahine ke records tak.",
     steps: [
       {
-        title: "Requirement bataiye",
-        text: "Site, kaam, roles, headcount, shifts aur start date bataiye. Hum site procedures aur zaroori supervision par baat karte hain.",
+        title: "Aap requirement bhejte hain",
+        text: "Site, kaam, kitne log, shifts aur start date. Supervision aur site ke rules hum aapke saath tay karte hain.",
       },
       {
-        title: "Workforce ki planning",
-        text: "Tay scope aur site ki readiness ke hisaab se sourcing, onboarding aur working arrangements par baat hoti hai.",
+        title: "Hum bharti karte hain",
+        text: "Hum workers dhoondhte hain aur aapki site par shuru karne se pehle unhe apne payroll par rakhte hain.",
       },
       {
-        title: "Site par coordination",
-        text: "Attendance, shift coordination aur roz ki baatcheet aapki operations aur HR team ke saath plan ki jaati hai.",
+        title: "Hum team chalate hain",
+        text: "Hum team ki dekhrekh karte hain, har shift ki attendance rakhte hain aur absent ki jagah doosra bhejte hain.",
       },
       {
-        title: "Records review ke liye ready",
-        text: "Onboarding, attendance, wage aur applicable EPF aur ESIC records client review ke liye coordinate kiye jaate hain.",
+        title: "Records hum rakhte hain",
+        text: "Hum attendance aur wage registers rakhte hain, jahan laagu ho EPF aur ESIC jama karte hain, aur har mahine challans aapse share karte hain.",
       },
     ],
-    complianceHeading: "Engagement mein compliance.",
+    complianceHeading: "Records jo aap check kar sakte hain.",
     complianceText:
-      "Hum EPF aur ESIC mein registered hain. Worker onboarding, attendance, wage documentation aur applicable statutory contribution records har client ke saath baatcheet ka hissa hain. Vendor assessment aur review ke liye zaroori records share kiye ja sakte hain.",
+      "Hum EPF aur ESIC mein registered hain. Aapki site ke workers ke attendance aur wage registers, wage slips, aur EPF aur ESIC challans aapke monthly review aur audits ke liye khule hain.",
     complianceLink: "Hamara labour compliance approach (English mein)",
-    contactHeading: "Apni workforce requirement par baat karein.",
+    faqEyebrow: "Sawaal",
+    faqHeading: "Aam sawaal.",
+    faqs: [
+      {
+        question: "Workers ko naukri par kaun rakhta hai?",
+        answer:
+          "Hum. Workers hamare payroll par hote hain. Hum unki wages dete hain aur jahan laagu ho EPF aur ESIC jama karte hain. Aap humein ek invoice par payment karte hain.",
+        category: "commercial",
+      },
+    ],
+    contactHeading: "Apni requirement bhejiye.",
     contactText:
-      "Site location, roles, approximate headcount, shift pattern aur timing bataiye. Phir hum aapke operation ke hisaab se scope, supervision aur documentation par baat kar sakte hain.",
-    contactLink: "Vayasya Seva se contact karein",
+      "Site, roles, lagbhag kitne workers aur shifts bataiye. Hum do working days mein jawaab dene ki koshish karte hain (Monday se Saturday, IST).",
+    contactLink: "Workers maangein",
   },
 };

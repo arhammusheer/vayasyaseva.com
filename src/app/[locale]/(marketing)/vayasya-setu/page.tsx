@@ -12,7 +12,7 @@ export const generateStaticParams = localeParams("/vayasya-setu");
 export const metadata = pageMetadata({
   title: "Vayasya Setu, Workforce Management System",
   description:
-    "Vayasya Setu supports Vayasya Seva’s workforce operations with attendance, deployment information, payroll inputs and compliance records.",
+    "Vayasya Setu supports Vayasya Seva’s workforce operations with attendance, deployment information, payroll inputs and compliance records for each site.",
   alternates: { canonical: "/vayasya-setu" },
 });
 export default function SetuPage() {
@@ -23,7 +23,7 @@ export default function SetuPage() {
           type: "WebPage",
           name: "Vayasya Setu, Workforce Management System",
           description:
-            "Vayasya Setu supports Vayasya Seva’s workforce operations with attendance, deployment information, payroll inputs and compliance records.",
+            "Vayasya Setu supports Vayasya Seva’s workforce operations with attendance, deployment information, payroll inputs and compliance records for each site.",
           url: "/vayasya-setu",
         })}
       />

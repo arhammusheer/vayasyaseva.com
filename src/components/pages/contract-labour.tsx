@@ -1,10 +1,12 @@
 import Link from "@/components/i18n/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
+import { FaqSection } from "@/components/sections/faq-section";
 import { JsonLd, breadcrumbSchema, webPageSchema } from "@/lib/structured-data";
+import { AGENCY_FAQ } from "@/content/agency-faq";
 import { contractLabourCopy } from "@/content/pages/contract-labour";
 import { localePath, locales, type Locale } from "@/lib/i18n";
 
@@ -23,6 +25,7 @@ export function contractLabourMetadata(locale: Locale) {
 export function ContractLabourPage({ locale }: { locale: Locale }) {
   const t = contractLabourCopy[locale];
   const url = localePath(PATH, locale);
+  const faqs = [...t.faqs, AGENCY_FAQ[locale]];
   return (
     <>
       <JsonLd
@@ -49,6 +52,19 @@ export function ContractLabourPage({ locale }: { locale: Locale }) {
           </>
         }
         lede={t.lede}
+        footnote={
+          <>
+            <Link href="/contact" className="jobs-submit inline-flex" lang={locale === "en-IN" ? undefined : locale}>
+              {t.heroCta} <ArrowRight size={20} aria-hidden="true" />
+            </Link>
+            <p className="seeker-line mt-6">
+              {t.jobs.text}
+              <Link href={t.jobs.link.href} className="text-link" prefetch={false}>
+                {t.jobs.link.label} <ArrowRight size={18} aria-hidden="true" />
+              </Link>
+            </p>
+          </>
+        }
       />
       <Section>
         <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.5fr]">
@@ -61,7 +77,7 @@ export function ContractLabourPage({ locale }: { locale: Locale }) {
               <p key={p}>{p}</p>
             ))}
             <Link href={t.localLink.href} className="text-link">
-              {t.localLink.label} <ArrowUpRight size={18} />
+              {t.localLink.label} <ArrowRight size={18} />
             </Link>
           </div>
         </div>
@@ -74,7 +90,7 @@ export function ContractLabourPage({ locale }: { locale: Locale }) {
               <h2 className="text-2xl font-medium">{area.title}</h2>
               <p className="mt-3 leading-relaxed text-muted-foreground">{area.text}</p>
               <Link href={area.href} className="text-link">
-                {area.link} <ArrowUpRight size={16} />
+                {area.link} <ArrowRight size={16} />
               </Link>
             </article>
           ))}
@@ -103,17 +119,18 @@ export function ContractLabourPage({ locale }: { locale: Locale }) {
           <div>
             <p className="leading-relaxed text-muted-foreground">{t.complianceText}</p>
             <Link href="/compliance" className="text-link">
-              {t.complianceLink} <ArrowUpRight size={18} />
+              {t.complianceLink} <ArrowRight size={18} />
             </Link>
           </div>
         </div>
       </Section>
+      <FaqSection eyebrow={t.faqEyebrow} title={t.faqHeading} items={faqs} />
       <Section>
         <div className="max-w-2xl">
           <h2 className="text-3xl font-medium">{t.contactHeading}</h2>
           <p className="mt-4 leading-relaxed text-muted-foreground">{t.contactText}</p>
           <Link href="/contact" className="text-link">
-            {t.contactLink} <ArrowUpRight size={18} />
+            {t.contactLink} <ArrowRight size={18} />
           </Link>
         </div>
       </Section>

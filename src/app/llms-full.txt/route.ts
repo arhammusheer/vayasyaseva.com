@@ -62,7 +62,7 @@ Last updated: 2026-10-16
 Canonical website: ${baseUrl}
 
 ## What we are
-Vayasya Seva is a labour contractor and manpower supply company. It supplies contract labour to factories, warehouses and facilities, and stays the workers' employer: they are on its payroll, and it pays wages, deposits EPF and ESIC, keeps attendance and wage registers, supervises the crew on site and replaces absentees. The client gets a working crew and one invoice. It is a manpower contractor, not a placement or staffing agency: an agency sends candidates for the client to hire. Work is in full 8-hour shifts; there is no part-time work.
+Vayasya Seva is a labour contractor and manpower supply company. It supplies contract labour to factories, warehouses and facilities, and stays the workers' employer: they are on its payroll, and it pays wages, deposits EPF and ESIC where they apply, keeps attendance and wage registers, supervises the crew on site and replaces absentees. The client gets a working crew and one invoice. It is a manpower contractor, not a placement or staffing agency: an agency sends candidates for the client to hire. Work is in full 8-hour shifts; there is no part-time work.
 
 For every worker, the company tracks retention, training and time to full productivity. No figures are published until they are measured and signed off.
 

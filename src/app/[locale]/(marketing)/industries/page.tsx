@@ -13,9 +13,9 @@ export const dynamicParams = false;
 export const generateStaticParams = localeParams("/industries");
 
 export const metadata = pageMetadata({
-  title: "Workforce for Manufacturing, Logistics & Facilities",
+  title: "Industries We Supply Contract Labour To",
   description:
-    "Contract labour and site support for manufacturing, warehousing, FMCG, institutional facilities and hospitality operations. Discuss your sector with Vayasya Seva.",
+    "Contract labour for manufacturing, warehousing, FMCG, institutional campuses and hospitality sites, on full 8-hour shifts. Workers on our payroll, not yours.",
   alternates: { canonical: "/industries" },
 });
 export default function IndustriesPage() {
@@ -24,9 +24,9 @@ export default function IndustriesPage() {
       <JsonLd
         data={webPageSchema({
           type: "CollectionPage",
-          name: "Workforce for Manufacturing, Logistics & Facilities",
+          name: "Industries We Supply Contract Labour To",
           description:
-            "Contract labour and site support for manufacturing, warehousing, FMCG, institutional facilities and hospitality operations. Discuss your sector with Vayasya Seva.",
+            "Contract labour for manufacturing, warehousing, FMCG, institutional campuses and hospitality sites, on full 8-hour shifts. Workers on our payroll, not yours.",
           url: "/industries",
         })}
       />
@@ -39,11 +39,12 @@ export default function IndustriesPage() {
       <PageHero
         title={
           <>
-            Different businesses.
-            <br />A personal understanding.
+            Industries we supply
+            <br />
+            contract labour to.
           </>
         }
-        lede="The right workforce arrangement starts with the realities of your industry: production demands, site conditions and the people who do the work."
+        lede="Different businesses, each understood on its own terms: production demands, site conditions and the people who do the work."
       />
       <Section>
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_2fr]">

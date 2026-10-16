@@ -15,6 +15,7 @@ pageEntries.push(
   page("/test-draft", { "en-IN": "draft" }),
   page("/test-retired", { "en-IN": "retired" }, { retiredTo: "/about" }),
   page("/test-mixed", { "en-IN": "published", "hi-IN": "review", "hi-Latn-IN": "published" }),
+  page("/jobs/test-hub", { "en-IN": "paused", "hi-IN": "paused" }, { kind: "jobs-city", audience: "jobs" }),
 );
 pathAliases["/test-alias"] = "/test-mixed";
 
@@ -89,4 +90,22 @@ test("robots: a version is indexable only when its locale and status are both pu
   assert.equal(i18n.isIndexable("/test-mixed", "hi-IN"), false);
   assert.equal(i18n.isIndexable("/no-such-page", "en-IN"), false);
   assert.equal(i18n.isIndexable("/about", "en-IN"), true);
+});
+
+test("paused hubs: built and noindex, out of the sitemap, but links to them keep working", () => {
+  assert.deepEqual(registry.builtLocales("/jobs/test-hub"), ["en-IN", "hi-IN"]);
+  assert.equal(registry.isPaused("/jobs/test-hub", "hi-IN"), true);
+  assert.equal(i18n.isIndexable("/jobs/test-hub", "en-IN"), false);
+  assert.ok(!urls.some((u) => u.endsWith("/jobs/test-hub")));
+  assert.equal(i18n.linkProblem("/hi-in/jobs/test-hub", "/en-in/about"), undefined);
+  assert.equal(i18n.localizeHref("/jobs/test-hub", "hi-IN"), "/hi-in/jobs/test-hub");
+  // linkable() stays "published only", so lists of hubs can still filter on it.
+  assert.equal(registry.linkable("/jobs/test-hub"), false);
+});
+
+test("only cluster hubs can be paused (they render the notice)", () => {
+  assert.ok(registry.PAUSABLE_KINDS.has("jobs-city"));
+  assert.ok(registry.PAUSABLE_KINDS.has("cluster-hub"));
+  assert.ok(!registry.PAUSABLE_KINDS.has("static"));
+  assert.ok(!registry.PAUSABLE_KINDS.has("job-role"));
 });

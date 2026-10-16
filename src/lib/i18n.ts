@@ -9,7 +9,7 @@
  * entry or header link from published pages. Flip `published` once a native
  * speaker has reviewed the copy.
  */
-import { builtLocales, builtPages, clusterById, pageEntry, publishedLocales, redirectTarget } from "@/content/registry";
+import { builtLocales, builtPages, clusterById, isPaused, pageEntry, publishedLocales, redirectTarget } from "@/content/registry";
 import type { LocaleTag } from "@/content/registry/identifiers";
 
 export const locales = {
@@ -157,7 +157,8 @@ export function localizeHref(href: string, locale?: Locale) {
   const suffix = match[2];
   if (splitLocalePath(path).locale) return href;
   if (/^\/(api|_next|_t)(\/|$)/.test(path) || /\.[a-z0-9]+$/i.test(path)) return href;
-  const reachable = locale && localesOf(path).includes(locale) && (isIndexable(path, locale) || !locales[locale].published);
+  const reachable =
+    locale && localesOf(path).includes(locale) && (isIndexable(path, locale) || isPaused(path, locale) || !locales[locale].published);
   const target = reachable ? locale : defaultLocaleOf(path);
   return `${localePath(path, target)}${suffix}`;
 }
@@ -233,7 +234,8 @@ export function languageLinks(pathname: string) {
 /**
  * Why a link from the page at `fromPathname` to `href` is not allowed, or
  * undefined when it is. A published page may link only to published pages
- * (the registry's linkable rule); pages that are not published are not
+ * (the registry's linkable rule) or paused ones, which stay reachable and
+ * show their notice (PLAN §8.3); pages that are not published are not
  * checked. (Their links still resolve through localizeHref, so from a
  * published locale they open published versions only.) Links to other sites, files, the
  * API and anchors on the same page are not checked.
@@ -245,6 +247,7 @@ export function linkProblem(href: string, fromPathname: string): string | undefi
   const target = /^[^?#]*/.exec(href)![0] || "/";
   if (/^\/(api|_next|_t)(\/|$)/.test(target) || /\.[a-z0-9]+$/i.test(target)) return undefined;
   const to = splitLocalePath(target.length > 1 ? target.replace(/\/$/, "") : target);
-  if (to.locale ? isIndexable(to.path, to.locale) : localesOf(to.path).some((l) => isIndexable(to.path, l))) return undefined;
+  const open = (l: Locale) => isIndexable(to.path, l) || isPaused(to.path, l);
+  if (to.locale ? open(to.locale) : localesOf(to.path).some(open)) return undefined;
   return `${fromPathname} links to ${href}, which is not a published page (src/content/registry/pages.ts)`;
 }

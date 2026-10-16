@@ -10,9 +10,9 @@ export const dynamicParams = false;
 export const generateStaticParams = localeParams("/how-we-operate");
 
 export const metadata = pageMetadata({
-  title: "Our Approach to Workforce Management",
+  title: "How a Contract Labour Engagement Runs",
   description:
-    "How Vayasya Seva plans a labour engagement, coordinates mobilisation and supervision, and connects site operations with workforce records and reporting.",
+    "How we run a contract labour engagement: we visit or call about the site, agree the crew and supervision, put workers on our payroll and keep the records.",
   alternates: { canonical: "/how-we-operate" },
 });
 const approach = [
@@ -39,9 +39,9 @@ export default function ApproachPage() {
       <JsonLd
         data={webPageSchema({
           type: "WebPage",
-          name: "Our Approach to Workforce Management",
+          name: "How a Contract Labour Engagement Runs",
           description:
-            "How Vayasya Seva plans a labour engagement, coordinates mobilisation and supervision, and connects site operations with workforce records and reporting.",
+            "How we run a contract labour engagement: we visit or call about the site, agree the crew and supervision, put workers on our payroll and keep the records.",
           url: "/how-we-operate",
         })}
       />
@@ -54,9 +54,9 @@ export default function ApproachPage() {
       <PageHero
         title={
           <>
-            First, understand.
+            How an engagement
             <br />
-            Then, get to work.
+            runs.
           </>
         }
         lede="Every site has its own demands. We work with your team to put the people, supervision and supporting processes in place."
@@ -64,7 +64,7 @@ export default function ApproachPage() {
       <Section>
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_2fr]">
           <div>
-            <p className="eyebrow text-gold-700">HOW AN ENGAGEMENT RUNS</p>
+            <p className="eyebrow text-gold-700">FOUR STAGES</p>
             <p className="mt-5 max-w-sm text-lg text-muted-foreground leading-relaxed">
               Four stages, from the first conversation to the everyday
               coordination of the team on your site.

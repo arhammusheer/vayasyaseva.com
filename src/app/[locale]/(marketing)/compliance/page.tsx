@@ -12,28 +12,32 @@ import { localeParams } from "@/lib/i18n";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/compliance");
 
+const TITLE = "Contract Labour Compliance: EPF, ESIC, Wage Records";
+const DESCRIPTION =
+  "Contract labour compliance by the employer: we register workers for EPF and ESIC where they apply, deposit them monthly and keep registers open to you.";
+
 export const metadata = pageMetadata({
-  title: "Labour Compliance, EPF & ESIC Support",
-  description:
-    "Vayasya Seva’s approach to contract labour compliance: worker documentation, attendance, wage records, EPF and ESIC contributions, and support for client reviews.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/compliance" },
 });
+/** What we do, in the home page's active voice: the workers are our employees. */
 const records = [
   {
-    title: "Worker onboarding & records",
-    text: "Worker identification, employment documentation and applicable EPF and ESIC enrolment form the basis of workforce administration.",
+    title: "Worker onboarding and records",
+    text: "We put each worker on our payroll with their identity and employment documents, and register them for EPF and ESIC where they apply.",
   },
   {
-    title: "Attendance & wage documentation",
-    text: "Site attendance and wage records help connect the work performed with payroll inputs and statutory reporting.",
+    title: "Attendance and wage registers",
+    text: "We keep attendance for every shift and the wage register that follows from it, and pay wages from those records.",
   },
   {
-    title: "EPF & ESIC contributions",
-    text: "Contribution records and challans support the review of statutory payments for eligible workers.",
+    title: "EPF and ESIC contributions",
+    text: "We deposit EPF and ESIC contributions every month for the workers they apply to, and give you the challans.",
   },
   {
-    title: "Client reviews & audit support",
-    text: "Registration certificates, contribution records and workforce documentation can be shared for due diligence and review. Our team helps coordinate the documents relevant to your engagement.",
+    title: "Your reviews and audits",
+    text: "Registers, wage slips, challans and our registration certificates are open for your monthly review, vendor assessment and audits.",
   },
 ];
 export default function CompliancePage() {
@@ -42,9 +46,8 @@ export default function CompliancePage() {
       <JsonLd
         data={webPageSchema({
           type: "WebPage",
-          name: "Labour Compliance, EPF & ESIC Support",
-          description:
-            "Vayasya Seva’s approach to contract labour compliance: worker documentation, attendance, wage records, EPF and ESIC contributions, and support for client reviews.",
+          name: TITLE,
+          description: DESCRIPTION,
           url: "/compliance",
         })}
       />
@@ -58,12 +61,12 @@ export default function CompliancePage() {
         tone="dark"
         title={
           <>
-            Care for the workforce.
+            Labour compliance: EPF, ESIC,
             <br />
-            Attention to the detail.
+            wage registers and licences.
           </>
         }
-        lede="Labour compliance is central to how we manage an engagement, from worker onboarding to the records your team needs to review."
+        lede="Care for the workforce, and attention to the detail. The workers are on our payroll, so their EPF, ESIC and wage records are ours to keep, and open to you."
       />
       <Section>
         <div className="grid grid-cols-1 gap-12 md:grid-cols-[1fr_1.6fr]">
@@ -75,9 +78,8 @@ export default function CompliancePage() {
               the relationship.
             </h2>
             <p className="mt-5 text-muted-foreground leading-relaxed">
-              We coordinate documentation with your HR, operations and
-              procurement teams, keeping the requirements of the site and the
-              workforce in view.
+              Your HR, operations and procurement teams can check every
+              record for the workers on your site.
             </p>
           </div>
           <div className="detail-list">
@@ -103,6 +105,10 @@ export default function CompliancePage() {
             <p className="mt-5 max-w-sm text-muted-foreground">
               Our registration documents are available during vendor onboarding
               and due diligence.
+            </p>
+            <p className="mt-4 max-w-sm text-muted-foreground">
+              Contract labour licence: before you sign, ask us for the
+              registration and licence details that apply to your site.
             </p>
           </div>
           <dl className="divide-y border-y">
@@ -136,7 +142,7 @@ export default function CompliancePage() {
             href={`mailto:${siteConfig.email}?subject=Compliance%20documentation`}
             className="text-link"
           >
-            Request compliance documents <ArrowUpRight size={18} />
+            Request compliance documents <ArrowUpRight size={18} aria-hidden="true" />
           </a>
           <p className="mt-8 text-sm text-muted-foreground">
             See how compliance fits into{" "}

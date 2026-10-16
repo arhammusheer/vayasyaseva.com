@@ -58,9 +58,25 @@ export function builtPages(): PageEntry[] {
 }
 
 /**
+ * Page kinds that can render the paused notice (PLAN §1a, §8.3): a cluster's
+ * jobs hub ("We're not taking applications for this area right now", its form
+ * replaced by a link to /jobs/apply) and a cluster's buyer hub. content:check
+ * rejects `paused` on any other kind of page.
+ */
+export const PAUSABLE_KINDS: ReadonlySet<PageEntry["kind"]> = new Set(["jobs-city", "cluster-hub"]);
+
+/** Whether this language version is paused: built, noindex, saying plainly it is not taking applications or new work. */
+export function isPaused(path: string, locale: LocaleTag): boolean {
+  return statusOf(path, locale) === "paused";
+}
+
+/**
  * Whether a published page may link to this page. With a locale: that
  * language version. Without one: any published version (links resolve to
- * a published language; see localizeHref in src/lib/i18n.ts).
+ * a published language; see localizeHref in src/lib/i18n.ts). Links to a
+ * paused page are allowed too (linkProblem in src/lib/i18n.ts): pausing an
+ * area is a person's quick decision, so existing links keep working and land
+ * on the page's notice; linkable() itself stays "published only" for lists.
  */
 export function linkable(path: string, locale?: LocaleTag): boolean {
   return locale ? statusOf(path, locale) === "published" : publishedLocales(path).length > 0;

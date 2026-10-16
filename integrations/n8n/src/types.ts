@@ -130,3 +130,33 @@ export interface FileToAttach {
   conversationId: number;
   label: string;
 }
+
+/**
+ * One row of "Claim erasure" (retention workflow): an erasure request, with
+ * every R2 key and Chatwoot contact stored for its phone number.
+ */
+export interface ClaimedErasure {
+  id: string;
+  phone: string;
+  reason: "request" | "retention";
+  files: string[];
+  contacts: number[];
+}
+
+/** Output of "Files to delete": one R2 key, or null when there is none. */
+export interface FileToDelete {
+  requestId: string;
+  key: string | null;
+}
+
+/** Output of "Contacts to delete": one Chatwoot contact id, or null when there is none. */
+export interface ContactToDelete {
+  requestId: string;
+  contactId: number | null;
+}
+
+/** The retention workflow's Settings node (filled by the deploy script). */
+export interface RetentionSettings {
+  chatwootBaseUrl: string;
+  chatwootAccountId: string;
+}

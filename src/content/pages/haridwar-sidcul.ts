@@ -26,10 +26,7 @@ export interface HaridwarCopy {
     heading: string;
     intro: string;
     items: HaridwarArea[];
-    /**
-     * TODO(wage pages, PLAN §5.5): link this line to the Uttarakhand wage
-     * page once it is published, so a buyer can check the notification.
-     */
+    /** The wage line; the page adds the Uttarakhand wage page link once it is published. */
     wages: string;
     hire: Link;
   };
@@ -56,7 +53,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
     breadcrumb: { home: "Home", page: "SIDCUL Haridwar" },
     hero: ["Labour contractor in Haridwar.", "Supporting SIDCUL industry."],
     lede: "Contract labour and manpower for factories, warehouses and facilities in SIDCUL and across Haridwar, with site coordination and applicable workforce documentation.",
-    introHeading: ["A local conversation.", "A practical way forward."],
+    introHeading: ["Contract labour in SIDCUL Haridwar.", "Workers on our payroll, on your site."],
     intro: [
       "SIDCUL Haridwar is the State's Integrated Industrial Estate in the city's Ranipur and BHEL area. We work with factories and warehouses there, and with businesses across the rest of Haridwar.",
       "Based in Haridwar, Vayasya Seva works with the needs of the surrounding industrial community: factory shifts, warehouse activity, facility upkeep and project work.",
@@ -154,7 +151,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
     breadcrumb: { home: "होम", page: "सिडकुल हरिद्वार" },
     hero: ["हरिद्वार में लेबर ठेकेदार।", "सिडकुल उद्योग के साथ।"],
     lede: "सिडकुल और पूरे हरिद्वार की फ़ैक्टरियों, वेयरहाउस और फ़ैसिलिटी के लिए कॉन्ट्रैक्ट लेबर और मैनपावर, साइट कोऑर्डिनेशन और ज़रूरी वर्कफ़ोर्स रिकॉर्ड के साथ।",
-    introHeading: ["स्थानीय बातचीत।", "व्यावहारिक रास्ता।"],
+    introHeading: ["सिडकुल हरिद्वार में कॉन्ट्रैक्ट लेबर।", "कामगार हमारे पेरोल पर, आपकी साइट पर।"],
     intro: [
       "सिडकुल हरिद्वार, शहर के रानीपुर और BHEL क्षेत्र में राज्य का एकीकृत औद्योगिक क्षेत्र (Integrated Industrial Estate) है। हम वहाँ की फ़ैक्टरियों और वेयरहाउस के साथ, और बाकी पूरे हरिद्वार के कारोबारों के साथ काम करते हैं।",
       "हरिद्वार में स्थित Vayasya Seva आसपास के औद्योगिक क्षेत्र की ज़रूरतों के साथ काम करती है: फ़ैक्टरी की शिफ्टें, वेयरहाउस का काम, फ़ैसिलिटी की देखरेख और प्रोजेक्ट का काम।",
@@ -245,13 +242,13 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
     ],
   },
   "hi-Latn-IN": {
-    title: "SIDCUL Haridwar mein Labour Contractor (Labour Thekedar)",
+    title: "SIDCUL Haridwar mein Labour Thekedar (Contractor)",
     description:
       "SIDCUL Haridwar, Bahadrabad, Bhagwanpur aur Roorkee ki factories aur warehouses ke liye labour contractor. EPF/ESIC records ke saath contract manpower.",
     breadcrumb: { home: "Home", page: "SIDCUL Haridwar" },
     hero: ["Haridwar mein labour contractor.", "SIDCUL industry ke saath."],
     lede: "SIDCUL aur poore Haridwar ki factories, warehouses aur facilities ke liye contract labour aur manpower, site coordination aur zaroori workforce records ke saath.",
-    introHeading: ["Local baatcheet.", "Practical raasta."],
+    introHeading: ["SIDCUL Haridwar mein contract labour.", "Workers hamare payroll par, aapki site par."],
     intro: [
       "SIDCUL Haridwar, shehar ke Ranipur aur BHEL area mein State ka Integrated Industrial Estate hai. Hum wahan ki factories aur warehouses ke saath, aur baaki poore Haridwar ke businesses ke saath kaam karte hain.",
       "Haridwar mein based Vayasya Seva aas-paas ke industrial area ki zarooraton ke saath kaam karti hai: factory shifts, warehouse ka kaam, facility ki dekhrekh aur project work.",
@@ -265,7 +262,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
       { href: "/contact#location=haridwar", label: "Apni site ke baare mein bataiye" },
     ],
     areas: {
-      eyebrow: "SIDCUL HARIDWAR KE AAS-PAAS",
+      eyebrow: "SIDCUL Haridwar ke aas-paas",
       heading: "Bhagwanpur, Bahadrabad aur Roorkee.",
       intro:
         "Haridwar district mein SIDCUL ke alawa bhi industry hai. In teeno areas ki units ke liye bhi hum requirements lete hain, aur hamara kuch kaam wahan pehle se hai.",
@@ -289,10 +286,10 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
       wages: "Teeno areas Uttarakhand mein hain, isliye wahan Uttarakhand ki minimum wage notifications lagu hoti hain, jaise SIDCUL Haridwar mein.",
       hire: { href: "/contact#location=haridwar", label: "Inmein se kisi area ki unit ke liye workers chahiye? Site bataiye" },
     },
-    holdEyebrow: "HAMARE REGISTRATIONS",
+    holdEyebrow: "Hamare registrations",
     holdHeading: "Haridwar ki sites ke liye registrations.",
     jobs: { text: "Kaam dhoondh rahe hain?", link: { href: "/jobs/haridwar", label: "Haridwar mein job" } },
-    supportEyebrow: "AAPKI SITE KE LIYE SUPPORT",
+    supportEyebrow: "Aapki site ke liye support",
     support: [
       {
         title: "Factory aur warehouse labour",

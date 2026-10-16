@@ -30,9 +30,10 @@ export type ClusterId = (typeof CLUSTER_IDS)[number];
  * - review: built, noindex, unlinked, not in the sitemap.
  * - published: indexed, in the sitemap, linkable.
  * - paused: built, noindex, not in the sitemap; the page says plainly that
- *   we're not taking applications or new work there. Set by a person, never
- *   automatically. Pages do not render that notice yet, so content:check
- *   rejects `paused` on a real page until the paused rendering lands.
+ *   we're not taking applications or new work there, and links to it still
+ *   work. Set by a person, never automatically. Only cluster jobs hubs and
+ *   buyer hubs can show the notice (PAUSABLE_KINDS in ./index.ts);
+ *   content:check rejects `paused` on any other kind of page.
  * - retired: not built; 308 to `retiredTo` when set, else 404.
  */
 export const PAGE_STATUSES = ["draft", "review", "published", "paused", "retired"] as const;

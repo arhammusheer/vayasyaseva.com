@@ -159,7 +159,7 @@ test('prefilled links: free text is kept, never dropped', () => {
 
 test('the requirement recap uses labels, not ids', () => {
   const lines = requirementLines({ ...person, ...requirement, sitePincode: '249403' });
-  assert.deepEqual(lines, ['Work: Packing, Loading and unloading', 'Workers: 50 to 99 workers', 'Site: SIDCUL Haridwar, Uttarakhand, 249403', 'Start: In 2 to 4 weeks', 'Duration: Ongoing (no end date)']);
+  assert.deepEqual(lines, ['Work: Packing, Loading and unloading', 'Workers: 50 to 99', 'Site: SIDCUL Haridwar, Uttarakhand, 249403', 'Start: In 2 to 4 weeks', 'Duration: Ongoing (no end date)']);
 });
 
 test('lead flags reach the staff email only, never the buyer copy', async () => {

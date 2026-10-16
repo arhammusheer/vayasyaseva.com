@@ -12,10 +12,13 @@ import { editorialPolicy } from "@/content/editorial";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/about");
 
+const TITLE = "About Us: Labour Contractor in Haridwar";
+const DESCRIPTION =
+  "Vayasya Seva Private Limited is a labour contractor based in Haridwar. We employ the workers we deploy: wages, EPF, ESIC and supervision are ours.";
+
 export const metadata = pageMetadata({
-  title: "About Vayasya Seva, Labour Contractor in Haridwar",
-  description:
-    "Meet Vayasya Seva Private Limited, a Haridwar-based contract labour and industrial services company with a focus on people, site operations and labour compliance.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/about" },
 });
 export default function AboutPage() {
@@ -24,9 +27,8 @@ export default function AboutPage() {
       <JsonLd
         data={webPageSchema({
           type: "AboutPage",
-          name: "About Vayasya Seva, Labour Contractor in Haridwar",
-          description:
-            "Meet Vayasya Seva Private Limited, a Haridwar-based contract labour and industrial services company with a focus on people, site operations and labour compliance.",
+          name: TITLE,
+          description: DESCRIPTION,
           url: "/about",
         })}
       />
@@ -39,12 +41,12 @@ export default function AboutPage() {
       <PageHero
         title={
           <>
-            A company built
+            About us: a labour
             <br />
-            around the work.
+            contractor in Haridwar.
           </>
         }
-        lede="Vayasya Seva brings people and practical support to business operations. Our roots are in Haridwar. Our approach starts with understanding what each client needs."
+        lede="Vayasya Seva Private Limited is based in Haridwar, Uttarakhand. We employ the workers we deploy: wages, EPF, ESIC and supervision are ours."
       />
       <Section>
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
@@ -55,15 +57,17 @@ export default function AboutPage() {
           </h2>
           <div className="space-y-5 text-lg leading-relaxed text-muted-foreground">
             <p>
-              As a contract labour provider, we work with businesses to source,
-              onboard and manage the people their operations need. Our work
-              extends into data entry operators, housekeeping, site services, civil
+              We supply contract labour to factories, warehouses and
+              facilities. The workers are our employees, on our payroll: we
+              pay their wages, deposit EPF and ESIC where they apply,
+              supervise them on site and replace absentees. Our work also
+              covers data entry operators, housekeeping, site services, civil
               works, fabrication and maintenance.
             </p>
             <p>
-              Careful compliance is a core part of that relationship. Our site
-              teams and office coordinate worker documentation, attendance and
-              statutory records alongside the daily work.
+              Careful compliance is part of the job. We keep the attendance
+              and wage registers and the EPF and ESIC challans alongside the
+              daily work, and open them to each client for review.
             </p>
             <Link href="/how-we-operate" className="text-link text-foreground">
               How we work with you <ArrowUpRight size={18} />
@@ -76,9 +80,7 @@ export default function AboutPage() {
           <div>
             <p className="eyebrow text-gold-700">COMPANY INFORMATION</p>
             <h2 className="mt-5 text-4xl font-medium">
-              Vayasya Seva
-              <br />
-              Private Limited
+              Company facts
             </h2>
             <p className="mt-5 text-muted-foreground">
               Based in Haridwar, Uttarakhand.
@@ -89,6 +91,9 @@ export default function AboutPage() {
           </div>
           <dl className="divide-y border-y">
             {[
+              { label: "CIN", value: siteConfig.cin },
+              { label: "EPF", value: "Registered" },
+              { label: "ESIC", value: "Registered" },
               { label: "GSTIN", value: siteConfig.gstin },
               { label: "MSME / UDYAM", value: siteConfig.msme },
               {

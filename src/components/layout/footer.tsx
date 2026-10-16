@@ -12,12 +12,35 @@ import { WAGE_HUB_PATH } from "@/content/registry/identifiers";
 
 type Column = { label: string; links: string[][] };
 
+/**
+ * Business footer labels in the page's language (Hindi and Hinglish business
+ * pages: /haridwar-sidcul and the services). The pages it links to are mostly
+ * English, so the link names stay English. Drafts for native review.
+ */
+const BUSINESS_FOOTER: Record<Locale, { company: string; more: string; crew: string; about: string; work: string; apply: string }> = {
+  "en-IN": {
+    company: "Company", more: "More", crew: "Request a crew",
+    about: "Labour contractor for factories, warehouses and facilities. Based in Haridwar, Uttarakhand.",
+    work: "Looking for work?", apply: "Apply online",
+  },
+  "hi-IN": {
+    company: "कंपनी", more: "और", crew: "कामगार माँगें",
+    about: "फ़ैक्टरी, वेयरहाउस और दूसरी साइटों के लिए लेबर ठेकेदार। हरिद्वार, उत्तराखंड में।",
+    work: "काम चाहिए?", apply: "ऑनलाइन आवेदन करें",
+  },
+  "hi-Latn-IN": {
+    company: "Company", more: "Aur", crew: "Workers maangein",
+    about: "Factory, warehouse aur dusri sites ke liye labour contractor. Haridwar, Uttarakhand mein.",
+    work: "Kaam chahiye?", apply: "Online apply karein",
+  },
+};
+
 /** Reference pages, listed once they are published (src/content/registry). */
 const referenceLinks = [[WAGE_HUB_PATH, "Minimum wages"]].filter(([href]) => linkable(href, "en-IN"));
 
-const columns: Column[] = [
+const businessColumns = (locale: Locale): Column[] => [
   {
-    label: "Company",
+    label: BUSINESS_FOOTER[locale].company,
     links: [
       ["/about", "About"],
       ["/services", "Services"],
@@ -28,7 +51,7 @@ const columns: Column[] = [
     ],
   },
   {
-    label: "More",
+    label: BUSINESS_FOOTER[locale].more,
     links: [
       ["/haridwar-sidcul", "SIDCUL Haridwar"],
       ...referenceLinks,
@@ -36,7 +59,7 @@ const columns: Column[] = [
       ["https://setu.vayasyaseva.com", "Setu login ↗"],
       ["/brand", "Brand guidelines"],
       ["/vayasya-seva-company-profile.pdf", "Company profile"],
-      ["/contact", "Request a crew"],
+      ["/contact", BUSINESS_FOOTER[locale].crew],
     ],
   },
 ];
@@ -87,7 +110,7 @@ function jobsColumns(locale: Locale): Column[] {
 
 /** Reference pages (wages, guides): business and jobs links, no phone and no PDF. */
 const referenceColumns: Column[] = [
-  columns[0],
+  businessColumns("en-IN")[0],
   {
     label: "More",
     links: [
@@ -111,14 +134,16 @@ export function Footer({
 }: {
   door?: HeaderDoor;
   phone?: HeaderPhone;
-  /** The page's language; used by the jobs footer only. */
+  /** The page's language: the jobs footer, and the labels of the business footer. */
   locale?: Locale;
 }) {
   const isJobs = door === "jobs";
   const t = JOBS_FOOTER[locale];
-  const shown = isJobs ? jobsColumns(locale) : door === "reference" ? referenceColumns : columns;
+  const b = BUSINESS_FOOTER[door === "business" ? locale : "en-IN"];
+  const shown = isJobs ? jobsColumns(locale) : door === "reference" ? referenceColumns : businessColumns(locale);
+  const footerLang = isJobs || door === "business" ? locale : "en-IN";
   return (
-    <footer className="site-footer" lang={isJobs ? locale : "en-IN"}>
+    <footer className="site-footer" lang={footerLang}>
       <div className="site-shell">
         <div className="footer-main">
           <div className="footer-about">
@@ -135,8 +160,19 @@ export function Footer({
               />
               <span>Vayasya Seva</span>
             </Link>
-            <p>{isJobs ? t.about : "Labour contractor for factories, warehouses and facilities. Based in Haridwar, Uttarakhand."}</p>
-            <address>
+            <p>{isJobs ? t.about : b.about}</p>
+            {door === "business" && (
+              // The jobs door sits before the contact lines, in the page's
+              // language. Nothing here says who the phone is for: business
+              // pages carry it, jobs pages never do (structural, not a note).
+              <p className="footer-jobs-door">
+                {b.work}{" "}
+                <Link href="/jobs/apply" className="underline underline-offset-4">
+                  {b.apply} →
+                </Link>
+              </p>
+            )}
+            <address lang="en-IN">
               {door === "business" && <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>}
               {door === "business" && phone && (
                 <a className="font-data" href={phone.href}>
@@ -158,15 +194,6 @@ export function Footer({
                 </svg>
               </a>
             </address>
-            {door === "business" && (
-              <p>
-                Phone and email are for businesses. Looking for work?{" "}
-                <Link href="/jobs/apply" className="underline underline-offset-4">
-                  Apply online
-                </Link>
-                .
-              </p>
-            )}
           </div>
           {shown.map((c) => (
             <nav key={c.label} aria-label={c.label}>
@@ -189,7 +216,7 @@ export function Footer({
                   </Link>
                 ),
               )}
-              {door === "business" && c.label === "More" && <FooterJobsLink />}
+              {door === "business" && c.label === b.more && <FooterJobsLink />}
             </nav>
           ))}
         </div>
@@ -208,10 +235,10 @@ export function Footer({
           </div>
           <div>
             <AnalyticsPreferencesButton />
-            <Link href="/privacy" lang={isJobs && locale !== "en-IN" ? locale : undefined}>
+            <Link href="/privacy" lang={isJobs ? locale : "en-IN"}>
               {isJobs ? t.privacy : "Privacy"}
             </Link>
-            <Link href="/terms" lang={isJobs && locale !== "en-IN" ? locale : undefined}>
+            <Link href="/terms" lang={isJobs ? locale : "en-IN"}>
               {isJobs ? t.terms : "Terms"}
             </Link>
           </div>

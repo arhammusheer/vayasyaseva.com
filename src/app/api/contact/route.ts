@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { trackServerEvent } from "@/lib/server-events";
 import { contactContract, parseContactRequest } from "@/lib/contact-contract";
-import { assessCrewRequest } from "@/lib/crew-request";
+import { BUSINESS_NOTICE_VERSION, assessCrewRequest } from "@/lib/crew-request";
 import {
   canSendContactAutoReply,
   createContactCaseId,
@@ -204,6 +204,8 @@ export async function POST(request: NextRequest) {
       email: data.email,
       headcountBand: assessment.headcountBand,
       qualified: assessment.qualified,
+      // The privacy notice the buyer saw (also in the staff email's flags).
+      privacyVersion: BUSINESS_NOTICE_VERSION,
       messageId: sharedInboxDelivery.messageId,
       threadId: sharedInboxDelivery.threadId,
       uniqueId: sharedInboxDelivery.uniqueId,

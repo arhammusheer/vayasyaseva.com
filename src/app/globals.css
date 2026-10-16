@@ -16,7 +16,7 @@
 
 @theme inline {
   /* Fonts — Anek Latin display, Hind body, JetBrains Mono data; Devanagari cuts fill in Hindi text */
-  --font-display: var(--font-anek), var(--font-anek-deva);
+  --font-display: var(--font-anek), var(--font-hind-deva);
   --font-serif: var(--font-hind), var(--font-hind-deva);
   --font-sans: var(--font-hind), var(--font-hind-deva);
   --font-mono: var(--font-jetbrains);
@@ -478,6 +478,12 @@ body {
   letter-spacing: 0.15em;
   font-weight: 600;
 }
+/* Hinglish eyebrows are written in sentence case: romanised Hindi in tracked
+   capitals loses its word shapes and has to be read letter by letter. */
+:lang(hi-Latn) .eyebrow {
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
 .home-hero {
   position: relative;
   isolation: isolate;
@@ -824,7 +830,7 @@ a:hover > svg {
   justify-content: space-between;
   gap: 30px;
   padding: 27px 0;
-  font-family: var(--font-anek), var(--font-anek-deva);
+  font-family: var(--font-anek), var(--font-hind-deva);
   font-size: 28px;
   line-height: 1.2;
 }
@@ -1268,7 +1274,7 @@ a:hover > svg {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  font-family: var(--font-anek), var(--font-anek-deva);
+  font-family: var(--font-anek), var(--font-hind-deva);
   font-weight: 500;
   font-size: 26px;
   line-height: 1;
@@ -1565,103 +1571,9 @@ a:hover > svg {
   text-underline-offset: 3px;
 }
 
-/* Jobs page (/en-in/jobs, /hi-in/jobs, /hi-latn-in/jobs): compact top, then one form in
-   ruled tiers. Voice leads, typing is the alternative, files come last.
-   One round gold record button. No boxes. */
-/* What to say in the voice note: short bullets, two columns where there's room. */
-.jobs-say {
-  margin-top: 6px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(9.5rem, 100%), 1fr));
-  gap: 4px 24px;
-  max-width: 36rem;
-}
-.jobs-say li {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  line-height: 1.5;
-}
-.jobs-say li::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--gold-500);
-  flex-shrink: 0;
-  transform: translateY(-2px);
-}
-.jobs-recorder {
-  margin-top: 14px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 20px 28px;
-}
-/* Sized for the longest label ("Record karein"); padding keeps any label
-   inside the circle, wrapping to two lines rather than spilling out. */
-.jobs-record-button {
-  width: 112px;
-  height: 112px;
-  padding-inline: 12px;
-  border-radius: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  text-align: center;
-  line-height: 1.15;
-  background: var(--gold-500);
-  color: var(--neutral-900);
-  font-weight: 600;
-  font-size: 15px;
-  transition:
-    background 160ms ease,
-    transform 160ms ease;
-}
-.jobs-record-button svg {
-  width: 26px;
-  height: 26px;
-}
-.jobs-record-button:hover {
-  background: var(--gold-400);
-  transform: translateY(-1px);
-}
-.jobs-record-button:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--gold-500) 45%, transparent);
-  outline-offset: 4px;
-}
-.jobs-record-button.is-recording {
-  background: var(--neutral-900);
-  color: var(--gold-500);
-}
-.jobs-record-clock {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 15px;
-}
-.jobs-record-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--danger, #b42318);
-  animation: jobs-pulse 1.2s ease-in-out infinite;
-}
-@keyframes jobs-pulse {
-  50% {
-    opacity: 0.3;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .jobs-record-dot {
-    animation: none;
-  }
-}
-.jobs-recorded {
-  width: 100%;
-}
+/* Jobs pages (/jobs, role and hub pages, /jobs/apply): a compact top, then the
+   quick-apply form (one question at a time, then name and number), and an
+   optional file picker for photos or documents. No boxes. */
 .jobs-file-list {
   margin-top: 18px;
   max-width: 34rem;
@@ -1766,7 +1678,7 @@ a:hover > svg {
   border-top: 1px solid var(--border);
 }
 .jobs-work h3 {
-  font-family: var(--font-anek), var(--font-anek-deva);
+  font-family: var(--font-anek), var(--font-hind-deva);
   font-size: 24px;
   font-weight: 500;
 }
@@ -1819,7 +1731,7 @@ a:hover > svg {
 }
 .jobs-title {
   margin-top: 12px;
-  font-family: var(--font-anek), var(--font-anek-deva);
+  font-family: var(--font-anek), var(--font-hind-deva);
   font-size: clamp(34px, 7vw, 56px);
   font-weight: 500;
   line-height: 1.08;
@@ -1837,8 +1749,7 @@ a:hover > svg {
   font-size: 17px;
   line-height: 1.55;
 }
-/* Three ruled tiers with gold numerals: 01 about you (voice, or type),
-   02 number, 03 documents. Typing sits inside tier 01 as the alternative. */
+/* Ruled tiers with gold numerals for the longer job form's steps. */
 .jobs-steps {
   list-style: none;
   padding: 0;
@@ -1857,13 +1768,13 @@ a:hover > svg {
   border-top: 1px solid var(--border);
 }
 .jobs-step-number {
-  font-family: var(--font-anek), var(--font-anek-deva);
+  font-family: var(--font-anek), var(--font-hind-deva);
   font-size: 32px;
   line-height: 1;
   color: var(--gold-700);
 }
 .jobs-step-title {
-  font-family: var(--font-anek), var(--font-anek-deva);
+  font-family: var(--font-anek), var(--font-hind-deva);
   font-size: 22px;
   font-weight: 500;
   line-height: 1.2;
@@ -1874,22 +1785,7 @@ a:hover > svg {
   color: var(--muted-foreground);
   line-height: 1.6;
 }
-.jobs-step-warning {
-  margin-top: 4px;
-  font-weight: 600;
-  color: var(--foreground);
-}
-/* The alternative to the voice note: a quiet word, then the text box. */
-.jobs-or {
-  margin-top: 22px;
-  font-size: 15px;
-  color: var(--muted-foreground);
-}
-.jobs-or strong {
-  margin-right: 6px;
-  font-weight: 600;
-  color: var(--gold-700);
-}
+
 .jobs-file-button {
   display: inline-flex;
   align-items: center;
@@ -1913,17 +1809,7 @@ a:hover > svg {
   outline: 3px solid color-mix(in srgb, var(--gold-500) 35%, transparent);
   outline-offset: 2px;
 }
-/* Consent closes the tiers: a rule, then the two checkboxes. */
-.jobs-consent {
-  border-top: 1px solid var(--border);
-  padding-top: 10px;
-}
-.jobs-fine {
-  margin-top: 4px;
-  color: var(--muted-foreground);
-  font-size: 13px;
-  line-height: 1.5;
-}
+
 @media (max-width: 700px) {
   .jobs-steps > li {
     grid-template-columns: minmax(0, 1fr);
@@ -1976,26 +1862,32 @@ a:hover > svg {
   font-size: 0.7em;
   color: var(--muted-foreground);
 }
+/* Ruled rows, not cards: a hairline between languages (none above the
+   first), the language name large, its title and line underneath, a gold
+   arrow. Each row is one tap target, at least 64px tall. */
 .language-choices {
   margin-top: 24px;
   display: grid;
-  gap: 12px;
+}
+.language-choices li + li {
+  border-top: 1px solid var(--border);
 }
 .language-choices a {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   column-gap: 16px;
-  min-height: 72px;
-  padding: 16px 20px;
-  background: var(--background);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  transition: border-color 150ms, transform 150ms;
+  min-height: 64px;
+  padding: 18px 0;
+  transition: color 150ms, transform 150ms;
 }
-.language-choices a:hover,
+.language-choices a:hover .language-choice-label,
+.language-choices a:focus-visible .language-choice-label {
+  color: var(--gold-700);
+}
 .language-choices a:focus-visible {
-  border-color: var(--gold-700);
+  outline: 2px solid var(--gold-500);
+  outline-offset: 4px;
 }
 .language-choices a:active {
   transform: translateY(1px);
@@ -2007,8 +1899,9 @@ a:hover > svg {
 }
 .language-choice-label {
   font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 600;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.2;
 }
 .language-choice-title {
   margin-top: 2px;
@@ -2052,7 +1945,7 @@ a:hover > svg {
   padding-block: 12px;
 }
 .language-choices-more .language-choice-label {
-  font-size: 18px;
+  font-size: 20px;
 }
 
 /* Guided jobs form (/jobs/apply): one question per screen, answers as large
@@ -2063,7 +1956,7 @@ a:hover > svg {
 }
 .quick-title {
   margin-top: 12px;
-  font-family: var(--font-anek), var(--font-anek-deva);
+  font-family: var(--font-anek), var(--font-hind-deva);
   font-size: clamp(32px, 6.5vw, 52px);
   font-weight: 500;
   line-height: 1.08;
@@ -2187,12 +2080,18 @@ a:hover > svg {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 44px;
+  min-height: 48px;
   color: var(--foreground);
   text-decoration: underline;
   text-decoration-color: var(--border);
   text-underline-offset: 4px;
   cursor: pointer;
+}
+/* "Optional", on its own line under the file button. */
+.quick-attach-note {
+  margin-top: -6px;
+  font-size: 14px;
+  color: var(--muted-foreground);
 }
 .quick-attach:hover {
   text-decoration-color: var(--gold-500);
@@ -2262,7 +2161,7 @@ a:hover > svg {
    Optional parts sit after a quiet "skip" line. */
 .crew-intro-title {
   margin-top: 16px;
-  font-family: var(--font-anek), var(--font-anek-deva);
+  font-family: var(--font-anek), var(--font-hind-deva);
   font-size: clamp(44px, 9vw, 72px);
   font-weight: 500;
   line-height: 1.02;
@@ -2284,7 +2183,7 @@ a:hover > svg {
 }
 .crew-step-title {
   margin-top: 6px;
-  font-family: var(--font-anek), var(--font-anek-deva);
+  font-family: var(--font-anek), var(--font-hind-deva);
   font-size: clamp(28px, 5vw, 36px);
   font-weight: 500;
   line-height: 1.12;
@@ -2399,7 +2298,8 @@ a:hover > svg {
 }
 
 /* Adds breathing room to html's 64px sticky-header scroll padding. */
-.form-scroll-target {
+.form-scroll-target,
+.crew-question {
   scroll-margin-top: 24px;
 }
 .form-scroll-target:focus:not(input):not(textarea):not(button) {
@@ -2419,7 +2319,7 @@ a:hover > svg {
    checks with gold numerals, then a dark band with what to do. */
 .fraud-title {
   margin-top: 12px;
-  font-family: var(--font-anek), var(--font-anek-deva);
+  font-family: var(--font-anek), var(--font-hind-deva);
   font-size: clamp(40px, 9vw, 84px);
   font-weight: 500;
   line-height: 1.02;
@@ -2456,7 +2356,7 @@ a:hover > svg {
 }
 .fraud-band h2 {
   margin: 20px 0 32px;
-  font-family: var(--font-anek), var(--font-anek-deva);
+  font-family: var(--font-anek), var(--font-hind-deva);
   font-size: clamp(36px, 6vw, 64px);
   font-weight: 500;
   line-height: 1.05;
@@ -2487,13 +2387,13 @@ a:hover > svg {
   border-top: 1px solid var(--neutral-700);
 }
 .fraud-steps > li > span {
-  font-family: var(--font-anek), var(--font-anek-deva);
+  font-family: var(--font-anek), var(--font-hind-deva);
   font-size: 40px;
   line-height: 1;
   color: var(--gold-400);
 }
 .fraud-steps h3 {
-  font-family: var(--font-anek), var(--font-anek-deva);
+  font-family: var(--font-anek), var(--font-hind-deva);
   font-size: 24px;
   font-weight: 500;
   line-height: 1.2;
@@ -2509,7 +2409,7 @@ a:hover > svg {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  font-family: var(--font-anek), var(--font-anek-deva);
+  font-family: var(--font-anek), var(--font-hind-deva);
   font-size: clamp(26px, 4vw, 40px);
   font-weight: 500;
   line-height: 1.15;
@@ -2582,7 +2482,7 @@ a:hover > svg {
   align-items: center;
   gap: 4px 24px;
   margin-top: 24px;
-  font-family: var(--font-anek), var(--font-anek-deva);
+  font-family: var(--font-anek), var(--font-hind-deva);
   font-size: 22px;
   font-weight: 500;
   line-height: 1.2;
@@ -2709,7 +2609,7 @@ a:hover > svg {
   border-top: 1px solid var(--border);
 }
 .tracked-list li > span {
-  font-family: var(--font-anek), var(--font-anek-deva);
+  font-family: var(--font-anek), var(--font-hind-deva);
   font-size: 34px;
   font-weight: 500;
   line-height: 1;
@@ -2754,7 +2654,7 @@ a:hover > svg {
   padding-top: 0;
 }
 .where-place {
-  font-family: var(--font-anek), var(--font-anek-deva);
+  font-family: var(--font-anek), var(--font-hind-deva);
   font-size: clamp(36px, 4.6vw, 64px);
   font-weight: 500;
   line-height: 1.02;
@@ -3108,7 +3008,7 @@ a:hover > svg {
 }
 .wage-table .zone-row th {
   padding-top: 32px;
-  font-family: var(--font-anek), var(--font-anek-deva);
+  font-family: var(--font-anek), var(--font-hind-deva);
   font-size: 22px;
   font-weight: 500;
   border-top: 1px solid var(--foreground);
@@ -3133,7 +3033,7 @@ a:hover > svg {
   padding-block: 10px;
 }
 .wage-table.is-index tbody th {
-  font-family: var(--font-anek), var(--font-anek-deva);
+  font-family: var(--font-anek), var(--font-hind-deva);
   font-size: 24px;
 }
 .wage-row-link {
@@ -3262,7 +3162,7 @@ a:hover > svg {
   justify-content: space-between;
   gap: 16px;
   min-height: 56px;
-  font-family: var(--font-anek), var(--font-anek-deva);
+  font-family: var(--font-anek), var(--font-hind-deva);
   font-size: 22px;
 }
 .wage-state-links.is-plain a {
@@ -3459,7 +3359,7 @@ a:hover > svg {
 .guide-rows h3,
 .guide-rows h4 {
   margin-top: 0;
-  font-family: var(--font-anek), var(--font-anek-deva);
+  font-family: var(--font-anek), var(--font-hind-deva);
   font-size: 21px;
   font-weight: 500;
   line-height: 1.25;
@@ -3502,7 +3402,7 @@ a:hover > svg {
   border-top: 0;
 }
 .guide-table tbody th {
-  font-family: var(--font-anek), var(--font-anek-deva);
+  font-family: var(--font-anek), var(--font-hind-deva);
   font-size: 19px;
   font-weight: 500;
   line-height: 1.25;
@@ -3576,4 +3476,30 @@ a:hover > svg {
   .guide-contents ol {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+}
+
+/* While the consent banner is open on a phone, the page keeps room for it at
+   the foot so the last form controls can scroll clear (analytics.tsx). */
+@media (max-width: 639px) {
+  html.consent-open body {
+    padding-bottom: calc(var(--consent-banner-h, 0px) + 16px);
+  }
+}
+
+/* A paused hub (PLAN §8.3): one plain notice, a gold rule, no box. */
+.paused-notice {
+  border-left: 3px solid var(--gold-500);
+  padding: 4px 0 4px 18px;
+  max-width: 40rem;
+}
+.paused-notice-heading {
+  font-family: var(--font-anek), var(--font-hind-deva);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+.paused-notice p + p {
+  margin-top: 8px;
+  color: var(--muted-foreground);
+  line-height: 1.6;
 }

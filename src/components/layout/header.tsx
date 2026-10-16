@@ -16,6 +16,9 @@ import { FALLBACK_LOCALE, languageLinks, localePath, splitLocalePath, type Local
 /** The jobs link follows the page's language (docs/plan-worker-pipeline.md). */
 const JOBS_LABEL = { "en-IN": "Jobs", "hi-IN": "नौकरी", "hi-Latn-IN": "Jobs" } as const;
 
+/** "Request a crew" on business pages, in the page's language (drafts for native review). */
+const CREW_LABEL: Record<Locale, string> = { "en-IN": "Request a crew", "hi-IN": "कामगार माँगें", "hi-Latn-IN": "Workers maangein" };
+
 /** The quick switch's "More" (languages outside the page's regional set). */
 const MORE_LABEL: Record<Locale, string> = { "en-IN": "More", "hi-IN": "और भाषाएँ", "hi-Latn-IN": "Aur bhasha" };
 
@@ -193,7 +196,7 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
               href: item.href,
               label: item.href === "/contact" ? "Request a crew" : item.href === "/how-we-operate" ? "Our approach" : item.label,
             })),
-          cta: { href: "/contact", label: "Request a crew" },
+          cta: { href: "/contact", label: door === "business" ? CREW_LABEL[pageLocale] : CREW_LABEL["en-IN"], lang: door === "business" ? pageLang : undefined },
         };
   const current = (href: string) => (href === pathname || href === path ? "page" : undefined);
   // Jobs pages: links a job seeker rarely follows are not prefetched, to
@@ -294,6 +297,7 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
         <Link
           href={nav.cta.href}
           className="header-contact"
+          lang={nav.cta.lang}
           prefetch={prefetch}
           onClick={(event) => applyHere(event, nav.cta.href)}
           aria-current={current(nav.cta.href)}

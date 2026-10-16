@@ -81,6 +81,9 @@ const STEP_2 = z.object({
   email: contactFieldSchema("email"),
 });
 /** Fields in page order, for focusing the first problem. */
+/** States listed first in the picker: where we run crews or have wage pages. */
+const FIRST_STATES: string[] = ["UK", "UP", "DL"];
+
 const STEP_1_ORDER: Field[] = ["roles", "headcountBand", "siteState", "siteCity", "sitePincode", "startWindow", "durationBand", "shiftPattern", "details"];
 const STEP_2_ORDER: Field[] = ["name", "company", "role", "phone", "email"];
 
@@ -252,7 +255,11 @@ export function ContactForm() {
 
   function focusFirst(found: Partial<Record<Field, string>>, order: Field[]) {
     const first = order.find((key) => found[key]);
-    if (first) revealFormTarget(document.getElementById(first));
+    if (!first) return;
+    // A chip group scrolls to its question, so the question and the chips
+    // show together under the sticky header; focus goes to the first chip.
+    const control = document.getElementById(first);
+    revealFormTarget(document.getElementById(`${first}-q`) ?? control, { focus: control });
   }
 
   function goToStep(next: 1 | 2) {
@@ -472,9 +479,19 @@ export function ContactForm() {
                   className={cn(field, "crew-select w-full border", !values.siteState && "text-neutral-400", errors.siteState && "border-destructive")}
                 >
                   <option value="" disabled>Choose a state</option>
-                  {Object.entries(STATE_OPTIONS).map(([code, name]) => (
-                    <option key={code} value={code} className="text-foreground">{name}</option>
-                  ))}
+                  {/* Where we run crews or publish wage pages first, then every state. */}
+                  <optgroup label="Uttarakhand, UP and Delhi">
+                    {FIRST_STATES.map((code) => (
+                      <option key={code} value={code} className="text-foreground">{STATE_OPTIONS[code]}</option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="All states and union territories">
+                    {Object.entries(STATE_OPTIONS)
+                      .filter(([code]) => !FIRST_STATES.includes(code))
+                      .map(([code, name]) => (
+                        <option key={code} value={code} className="text-foreground">{name}</option>
+                      ))}
+                  </optgroup>
                 </select>
                 <FieldError id="siteState" error={errors.siteState} />
               </div>

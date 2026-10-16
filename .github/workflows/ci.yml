@@ -51,6 +51,9 @@ jobs:
       - name: Verify n8n workflows are generated
         run: pnpm n8n:build --check
 
+      - name: n8n Code-node tests (intake, acknowledgement, retention)
+        run: pnpm n8n:test
+
       - name: Verify upload renewal
         run: pnpm forms:unit
 
@@ -66,7 +69,17 @@ jobs:
           for i in $(seq 1 30); do curl -s -o /dev/null http://localhost:3000 && break; sleep 1; done
           pnpm seo:check http://localhost:3000
 
-      - name: Public denylist in the built HTML
+      - name: Public denylist in the built HTML, and no wage data in client chunks
         run: pnpm content:check
+        env:
+          PUBLIC_DENYLIST: ${{ secrets.PUBLIC_DENYLIST }}
+
+      # The denylist step passes when the secret is unset; say so on the PR.
+      - name: Warn when PUBLIC_DENYLIST is not set
+        if: always()
+        run: |
+          if [ -z "$PUBLIC_DENYLIST" ]; then
+            echo "::warning title=Public denylist skipped::PUBLIC_DENYLIST is not set in this repo's Actions secrets, so the internal-names scan did not run."
+          fi
         env:
           PUBLIC_DENYLIST: ${{ secrets.PUBLIC_DENYLIST }}

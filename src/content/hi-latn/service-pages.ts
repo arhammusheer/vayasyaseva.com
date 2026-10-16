@@ -57,9 +57,9 @@ export const servicePagesHiLatn: ServiceLandingContent[] = [
     slug: "loading-unloading-labour",
     serviceId: "warehouse-logistics",
     name: "Loading-unloading labour",
-    metaTitle: "SIDCUL Haridwar mein Loading Unloading Labour Contractor",
+    metaTitle: "SIDCUL Haridwar mein Loading Unloading Contractor",
     description:
-      "SIDCUL aur poore Haridwar ki factories, warehouses aur transporters ke liye loading-unloading labour: truck aur container ka kaam, stacking aur shifting, EPF/ESIC records ke saath.",
+      "SIDCUL aur poore Haridwar ki factories, warehouses aur transporters ke liye loading-unloading labour: truck, container aur stacking, EPF/ESIC records ke saath.",
     heading: "SIDCUL aur poore Haridwar mein loading-unloading labour.",
     lede: "Factory, warehouse aur transport yard par truck, container aur maal ki dhulai ke liye teams, aapki gaadiyon ki ginti ke hisaab se.",
     roles: [
@@ -151,7 +151,7 @@ export const servicePagesHiLatn: ServiceLandingContent[] = [
     name: "Housekeeping",
     metaTitle: "SIDCUL Haridwar mein Housekeeping Services",
     description:
-      "SIDCUL aur poore Haridwar ki factories, offices aur campuses ke liye housekeeping, pantry aur facility support staff, premises ke hisaab se tay routine ke saath.",
+      "SIDCUL aur poore Haridwar ki factories, offices aur campuses ke liye housekeeping, pantry aur facility support staff, premises ke hisaab se routine ke saath.",
     heading: "Plants, offices aur campuses ke liye housekeeping.",
     lede: "SIDCUL aur poore Haridwar mein housekeeping, pantry, washroom aur facility support teams, aapke premises ke hisaab se tay routine ke saath.",
     roles: [

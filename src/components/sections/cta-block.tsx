@@ -10,19 +10,21 @@ const copy = {
     aria: "Request a crew from Vayasya Seva",
     link: "Request a crew",
   },
+  // Drafts of the English band for native review: the same ask and the same
+  // reply-time line (category A, docs/claims-register.md).
   "hi-IN": {
-    eyebrow: "बातचीत शुरू करें",
-    heading: ["आपके बिज़नेस के लिए", "आगे क्या?"],
-    text: "आपके मन में जो है, बताइए। आगे हम संभाल लेंगे।",
-    aria: "Vayasya Seva से संपर्क करें",
-    link: "बात करें",
+    eyebrow: "कंपनियों के लिए",
+    heading: ["अपनी साइट पर", "कामगार चाहिए?"],
+    text: "काम, कितने लोग और कौन-सी शिफ्ट, बताइए। हम दो कामकाजी दिनों में जवाब देने की कोशिश करते हैं (सोमवार से शनिवार, IST)।",
+    aria: "Vayasya Seva से कामगार माँगें",
+    link: "कामगार माँगें",
   },
   "hi-Latn-IN": {
-    eyebrow: "BAATCHEET SHURU KAREIN",
-    heading: ["Aapke business ke liye", "aage kya?"],
-    text: "Aapke mann mein jo hai, bataiye. Aage hum sambhal lenge.",
-    aria: "Vayasya Seva se contact karein",
-    link: "Baat karein",
+    eyebrow: "Companies ke liye",
+    heading: ["Apni site par", "workers chahiye?"],
+    text: "Kaam, kitne log aur kaun-si shift, bataiye. Hum do working days mein jawaab dene ki koshish karte hain (Monday se Saturday, IST).",
+    aria: "Vayasya Seva se workers maangein",
+    link: "Workers maangein",
   },
 } satisfies Record<Locale, unknown>;
 

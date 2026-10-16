@@ -19,7 +19,7 @@ export const generateStaticParams = localeParams("/services");
 export const metadata = pageMetadata({
   title: "Contract Labour & Industrial Services in Haridwar",
   description:
-    "Explore contract labour, factory and warehouse manpower, data entry operators, housekeeping, civil works and maintenance services for sites in SIDCUL and across Haridwar.",
+    "Contract labour for factories, warehouses and facilities in SIDCUL and across Haridwar, plus data entry operators, housekeeping, civil works and maintenance.",
   alternates: { canonical: "/services" },
 });
 export default function ServicesPage() {
@@ -30,7 +30,7 @@ export default function ServicesPage() {
           type: "CollectionPage",
           name: "Contract Labour & Industrial Services in Haridwar",
           description:
-            "Explore contract labour, factory and warehouse manpower, data entry operators, housekeeping, civil works and maintenance services for sites in SIDCUL and across Haridwar.",
+            "Contract labour for factories, warehouses and facilities in SIDCUL and across Haridwar, plus data entry operators, housekeeping, civil works and maintenance.",
           url: "/services",
         })}
       />
@@ -72,7 +72,7 @@ export default function ServicesPage() {
               >
                 SIDCUL Haridwar
               </Link>{" "}
-              and across the city. Tell us about your site, your priorities and the work you need
+              and across Haridwar. Tell us about your site, your priorities and the work you need
               done.
             </p>
             <Link href="/contact" className="text-link">
@@ -99,14 +99,10 @@ export default function ServicesPage() {
                 </p>
                 <details className="mt-4">
                   <summary className="cursor-pointer py-2 text-sm text-gold-700">
-                    Typical roles &amp; support
+                    {service.id === "equipment-provisioning" ? "What we supply" : "Typical roles"}
                   </summary>
                   <div className="pt-3 text-sm text-muted-foreground leading-relaxed">
                     <p>{service.roles.join(", ")}.</p>
-                    <p className="mt-3">
-                      We plan the team, supervision and working arrangements
-                      around your site.
-                    </p>
                   </div>
                 </details>
                 {servicePageFor.has(service.id) && (

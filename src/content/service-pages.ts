@@ -71,9 +71,9 @@ export const servicePages: ServiceLandingContent[] = [
     slug: "loading-unloading-labour",
     serviceId: "warehouse-logistics",
     name: "Loading and unloading labour",
-    metaTitle: "Loading Unloading Labour Contractor in SIDCUL Haridwar",
+    metaTitle: "Loading and Unloading Labour, SIDCUL Haridwar",
     description:
-      "Loading and unloading labour for factories, warehouses and transporters in SIDCUL and across Haridwar: truck and container handling, stacking and shifting, with EPF/ESIC records.",
+      "Loading and unloading labour for factories, warehouses and transporters in SIDCUL and across Haridwar: trucks, containers and stacking, with EPF/ESIC records.",
     heading: "Loading and unloading labour in SIDCUL and across Haridwar.",
     lede: "Crews for trucks, containers and material movement at factories, warehouses and transport yards, sized to how many vehicles you handle.",
     roles: [

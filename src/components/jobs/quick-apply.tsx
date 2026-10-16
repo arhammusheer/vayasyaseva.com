@@ -285,7 +285,9 @@ export function QuickApply({
     if (name.trim().length < 2) failed.push("name");
     if (!normaliseIndianMobile(phone)) failed.push("phone");
     if (!agreed) failed.push("agree");
-    if (!turnstileToken && !submission.attempt) failed.push("verification");
+    // The browser check is reported only once the fields are right, so it
+    // never stacks with them (Turnstile is often still finishing then).
+    if (!failed.length && !turnstileToken && !submission.attempt) failed.push("verification");
     setFailedChecks(failed);
     if (failed.length) {
       trackAnalyticsEvent("job_form_error", { locale, variant: "quick", page: formPage(), reason: "validation", checks: failed.join(",") });

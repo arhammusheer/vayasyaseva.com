@@ -1,5 +1,5 @@
 import Link from "@/components/i18n/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
@@ -13,7 +13,9 @@ import {
 } from "@/lib/structured-data";
 import { haridwarCopy } from "@/content/pages/haridwar-sidcul";
 import { localePath, locales, type Locale } from "@/lib/i18n";
-import { linkable } from "@/content/registry";
+import { AGENCY_FAQ } from "@/content/agency-faq";
+import { isPaused, linkable } from "@/content/registry";
+import { PausedNotice } from "@/components/sections/paused-notice";
 import { wageStatePath } from "@/content/registry/identifiers";
 
 /** The Uttarakhand wage page is English only for now; the label says so in the other languages. */
@@ -38,6 +40,8 @@ export function haridwarMetadata(locale: Locale) {
 export function HaridwarPage({ locale }: { locale: Locale }) {
   const t = haridwarCopy[locale];
   const url = localePath(PATH, locale);
+  // The standard agency FAQ (docs/brand-rules.md) closes the list, as on the home page.
+  const faqs = [...t.faqs, AGENCY_FAQ[locale]];
   return (
     <>
       <JsonLd
@@ -48,7 +52,7 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
           inLanguage: locales[locale].hreflang,
         })}
       />
-      <JsonLd data={faqSchema(t.faqs)} />
+      <JsonLd data={faqSchema(faqs)} />
       <JsonLd
         data={breadcrumbSchema([
           { name: t.breadcrumb.home, href: "/" },
@@ -70,11 +74,16 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
           <p className="seeker-line">
             {t.jobs.text}
             <Link href={t.jobs.link.href} className="text-link">
-              {t.jobs.link.label} <ArrowUpRight size={18} aria-hidden="true" />
+              {t.jobs.link.label} <ArrowRight size={18} aria-hidden="true" />
             </Link>
           </p>
         }
       />
+      {isPaused(PATH, locale) && (
+        <div className="site-shell pb-10">
+          <PausedNotice kind="business" locale={locale} />
+        </div>
+      )}
       <Section>
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
           <h2 className="text-4xl font-medium">
@@ -88,7 +97,7 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
             ))}
             {t.links.map((l) => (
               <Link key={l.href} href={l.href} className="text-link text-foreground">
-                {l.label} <ArrowUpRight size={18} />
+                {l.label} <ArrowRight size={18} />
               </Link>
             ))}
           </div>
@@ -114,11 +123,11 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
             <p className="mt-8 border-t pt-6 leading-relaxed text-muted-foreground">{t.areas.wages}</p>
             {linkable(wageStatePath("uttarakhand"), "en-IN") && (
               <Link href={wageStatePath("uttarakhand")} className="text-link text-foreground" hrefLang="en-IN">
-                {WAGE_LINK[locale]} <ArrowUpRight size={18} aria-hidden="true" />
+                {WAGE_LINK[locale]} <ArrowRight size={18} aria-hidden="true" />
               </Link>
             )}
             <Link href={t.areas.hire.href} className="text-link text-foreground">
-              {t.areas.hire.label} <ArrowUpRight size={18} aria-hidden="true" />
+              {t.areas.hire.label} <ArrowRight size={18} aria-hidden="true" />
             </Link>
           </div>
         </div>
@@ -131,7 +140,7 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
               <h2 className="text-2xl font-medium">{s.title}</h2>
               <p className="mt-3 text-muted-foreground leading-relaxed">{s.text}</p>
               <Link href={s.href} className="text-link">
-                {s.link} <ArrowUpRight size={16} />
+                {s.link} <ArrowRight size={16} />
               </Link>
             </div>
           ))}
@@ -142,7 +151,7 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.6fr]">
           <h2 className="text-4xl font-medium">{t.faqHeading}</h2>
           <div className="detail-list">
-            {t.faqs.map((f) => (
+            {faqs.map((f) => (
               <details key={f.question}>
                 <summary>{f.question}</summary>
                 <div className="detail-body">{f.answer}</div>

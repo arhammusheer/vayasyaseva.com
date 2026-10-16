@@ -617,7 +617,7 @@
               "ongoing",
               "not-sure"
             ],
-            "description": "How long the work is expected to last. Values: under-1-month (Less than a month), 1-3-months (1 to 3 months long), 3-12-months (3 to 12 months long), ongoing (Ongoing (no end date)), not-sure (Not sure yet).",
+            "description": "How long the work is expected to last. Values: under-1-month (Under a month), 1-3-months (1 to 3 months), 3-12-months (3 to 12 months), ongoing (Ongoing (no end date)), not-sure (Not sure yet).",
             "example": "ongoing"
           },
           "shiftPattern": {
@@ -869,7 +869,7 @@
               "ongoing",
               "not-sure"
             ],
-            "description": "How long the work is expected to last. Values: under-1-month (Less than a month), 1-3-months (1 to 3 months long), 3-12-months (3 to 12 months long), ongoing (Ongoing (no end date)), not-sure (Not sure yet).",
+            "description": "How long the work is expected to last. Values: under-1-month (Under a month), 1-3-months (1 to 3 months), 3-12-months (3 to 12 months), ongoing (Ongoing (no end date)), not-sure (Not sure yet).",
             "example": "ongoing"
           },
           "shiftPattern": {

@@ -148,11 +148,12 @@ export const services: ServiceDetail[] = [
     title: "Equipment and tools",
     description:
       "Tools, material-handling aids, housekeeping equipment and consumables to support the work on site.",
+    // What is supplied, not job titles (the page labels this list "What we supply").
     roles: [
-      "Equipment Coordinators",
-      "Stores & Issue Assistants",
-      "Inventory Support Staff",
-      "Maintenance Helpers",
+      "Hand and power tools",
+      "Material-handling aids such as trolleys and pallet jacks",
+      "Housekeeping equipment",
+      "Consumables for the work on site",
     ],
     shiftPatterns: ["Planned around the engagement"],
     included: [

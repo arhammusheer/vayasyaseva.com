@@ -15,8 +15,8 @@ export const generateStaticParams = localeParams("/contact");
 const contactMetadata = (assessment = false) => pageMetadata({
   title: assessment ? "Request a Site Assessment" : "Request a Crew: Contract Labour Enquiry",
   description: assessment
-    ? "Ask Vayasya Seva to look at your site before a crew starts. Tell us the work, the site and when. We aim to reply within two working days."
-    : "Need contract labour? Tell Vayasya Seva the work, how many workers, the site and the start date. We aim to reply within two working days.",
+    ? "Ask Vayasya Seva to look at your site before a crew starts. Tell us the work, the site and when. We aim to reply within two working days, Monday to Saturday."
+    : "Need contract labour? Tell Vayasya Seva the work, how many workers, the site and the start date. We aim to reply within two working days, Monday to Saturday.",
   alternates: { canonical: "/contact" },
   shareVariant: assessment ? "assessment" : "",
 });

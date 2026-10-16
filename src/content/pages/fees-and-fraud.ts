@@ -133,7 +133,7 @@ export const feesAndFraudCopy: Record<Locale, FeesAndFraudCopy> = {
     lede: "Agar koi hamare naam par paise maange, to mat dijiye. Yahan dekhiye ki humein kaise pehchanein aur humein kaise batayein.",
     report: "Paise maangne ki shikayat karein",
     apply: "Hamari website par apply karein",
-    checkEyebrow: "KAISE PEHCHANEIN",
+    checkEyebrow: "Kaise pehchanein",
     checkHeading: "Kaise jaanein ki yeh hum hain.",
     checks: [
       {
@@ -153,7 +153,7 @@ export const feesAndFraudCopy: Record<Locale, FeesAndFraudCopy> = {
         text: "Hamari team usi mobile number par phone karti hai jisse aapne apply kiya. Join karne se pehle hum site aur shift batate hain.",
       },
     ],
-    reportEyebrow: "KISI NE PAISE MAANGE?",
+    reportEyebrow: "Kisi ne paise maange?",
     reportHeading: "Paise mat dijiye. Humein bataiye.",
     steps: [
       { title: "Koi paisa na dein", text: "Na form ke liye, na joining letter ke liye, na naukri pakki karne ke liye." },

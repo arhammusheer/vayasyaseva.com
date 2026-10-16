@@ -25,7 +25,7 @@ Buyers search for "labour contractor", "labour supplier", "manpower supplier" an
 
 #### We are a contractor, not a staffing agency
 
-Vayasya Seva supplies the workforce. Workers are on our rolls: we pay wages, deposit EPF and ESIC, supervise the crew on site and replace absentees. A staffing agency or placement consultancy finds candidates for the client to hire and steps away. Buyers often search the agency words while wanting what we do, so we answer those searches and say plainly which one we are. We don't pretend to be an agency, and we don't ignore the people who search that way. (Owner's direction, 16 October 2026.)
+Vayasya Seva supplies the workforce. Workers are on our rolls: we pay wages, deposit EPF and ESIC, supervise the crew on site and replace absentees. A staffing agency or placement consultancy finds candidates for the client to hire and steps away. Buyers use the agency words too; answer them in body text and FAQs with the difference, and say plainly which one we are. We never describe ourselves as an agency. (Owner's direction, 16 October 2026.)
 
 | Term | Where it may appear |
 |---|---|

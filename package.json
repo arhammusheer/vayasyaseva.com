@@ -17,7 +17,7 @@
     "content:unit": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test tests/sitemap-snapshot.spec.mjs tests/registry-status.spec.mjs tests/wages.spec.mjs tests/wage-monitor.spec.mjs tests/language-rank.spec.mjs",
     "wages:monitor": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/wage-monitor/index.mjs",
     "forms:check": "node tests/forms.spec.mjs",
-    "n8n:test": "node --test integrations/n8n/acknowledgement.test.mjs integrations/n8n/intake.test.mjs",
+    "n8n:test": "node --test integrations/n8n/acknowledgement.test.mjs integrations/n8n/intake.test.mjs integrations/n8n/retention.test.mjs",
     "n8n:check": "tsc -p integrations/n8n",
     "n8n:build": "node integrations/n8n/build.mts",
     "n8n:deploy": "node integrations/n8n/deploy.mts",

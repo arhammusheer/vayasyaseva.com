@@ -52,7 +52,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       linkLabel: "Jobs in Haridwar",
       metaTitle: "Haridwar Jobs: SIDCUL Factory and Warehouse Work",
       description:
-        "Factory and warehouse jobs in SIDCUL Haridwar and Roorkee. No fee. Full 8-hour shifts. Apply online, a few short questions.",
+        "Haridwar jobs in SIDCUL and Roorkee. No fee. Full 8-hour shifts. Factory, packing, warehouse and housekeeping work. Apply online, a few short questions.",
       eyebrow: "JOBS · HARIDWAR",
       heading: "Factory and warehouse jobs in Haridwar.",
       lede: "Work in SIDCUL and across Haridwar. No fee to apply. Answer a few questions. We call you when there is suitable work.",
@@ -188,12 +188,12 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       linkLabel: "Haridwar mein job",
       metaTitle: "Haridwar Job: SIDCUL Factory aur Warehouse ka Kaam",
       description:
-        "SIDCUL Haridwar aur Roorkee mein factory, warehouse job. Koi fee nahi. Poori 8 ghante ki shift. Kuch aasaan sawaal, online apply.",
-      eyebrow: "JOBS · HARIDWAR",
+        "Haridwar job SIDCUL aur Roorkee mein. Koi fee nahi. Poori 8 ghante ki shift. Factory, packing, warehouse aur housekeeping. Kuch aasaan sawaal, online apply.",
+      eyebrow: "Jobs · Haridwar",
       heading: "Haridwar mein factory aur warehouse ki job.",
       lede: "SIDCUL aur poore Haridwar mein kaam. Apply karne ki koi fee nahi. Kuch sawaalon ke jawab dijiye. Sahi kaam hone par hum aapko call karenge.",
       where: {
-        eyebrow: "KAAM KAHAN HAI",
+        eyebrow: "Kaam kahan hai",
         heading: "Pehle SIDCUL. Phir aas-paas.",
         intro: "Form mein apna area chuniye. Hum aisi site dekhte hain jahan aap pahunch sakein. Join se pehle aapko site pata hoti hai.",
         places: [
@@ -205,7 +205,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
         outside: "Haridwar se bahar rehte hain? Phir bhi apply kar sakte hain. Form mein “Haridwar se bahar” chuniye.",
       },
       roles: {
-        eyebrow: "HUM KIS KAAM KE LIYE RAKHTE HAIN",
+        eyebrow: "Hum kis kaam ke liye rakhte hain",
         heading: "Jo kaam aata hai, woh chuniye.",
         intro: "Har page par likha hai: kaam kya hai, kiske liye hai aur kya bhejein.",
       },
@@ -214,7 +214,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
         text: "Fresher, 10th pass aur 12th pass bhi apply kar sakte hain.",
       },
       after: {
-        eyebrow: "APPLY KE BAAD",
+        eyebrow: "Apply ke baad",
         heading: "Aage kya hoga.",
         steps: [
           { title: "Aapko SMS milega.", text: "Usmein aapka reference number hoga. SMS VAYSPL se aata hai." },
@@ -223,7 +223,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
           { title: "Aap join karte hain. Salary hum dete hain.", text: "Aap kisi client ki factory ya warehouse mein kaam karte hain. Salary hum dete hain, applicable EPF aur ESIC ke saath." },
         ],
       },
-      faqEyebrow: "SAWAAL",
+      faqEyebrow: "Sawaal",
       faqTitle: "Apply karne se pehle.",
       applyAgain: "Apply karein",
       faqs: [

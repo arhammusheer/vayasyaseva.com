@@ -55,7 +55,7 @@ export const industries: IndustrySector[] = [
     description:
       "Back-of-house, pantry, housekeeping, and guest-area staff for hospitality and hospitality-adjacent sites.",
     staffingPattern:
-      "Split shifts and round-the-clock cover. Guest-facing and back-of-house roles kept separate.",
+      "Round-the-clock cover on 8-hour shifts. Guest-facing and back-of-house roles kept separate.",
     riskControlNeeds:
       "Guest interaction standards, hygiene, grooming, incident escalation.",
     reportingCadence: "Reporting arrangements discussed with your team.",

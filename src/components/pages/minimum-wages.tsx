@@ -22,13 +22,79 @@ import {
   unpublishedRevisions,
   wageStates,
   wageStatus,
+  type Skill,
   type WageHistory,
   type WageSource,
   type WageState,
   type WageTable,
 } from "@/content/wages";
 import { EDITORIAL_HREF } from "@/content/editorial";
-import { getWageStateCopy, howWeCheck, listDates, sourceLine, wageDoors, wageHubCopy } from "@/content/pages/minimum-wages";
+import { getWageStateCopy, howWeCheck, listDates, wageDoors, wageHubCopy, wageUiEn } from "@/content/pages/minimum-wages";
+import {
+  SKILLS_HI,
+  formatDateHi,
+  formatShortDateHi,
+  getWageStateCopyHi,
+  historyNoteHi,
+  howWeCheckHi,
+  listDatesHi,
+  stateNameHi,
+  tableTextHi,
+  wageDoorsHi,
+  wageHubCopyHi,
+  wageUiHi,
+} from "@/content/pages/minimum-wages.hi";
+import { localePath, type Locale } from "@/lib/i18n";
+
+/**
+ * The minimum wage pages in English and, in review (PR8), Hindi. Everything
+ * language-specific comes from one bundle per language; the figures come
+ * from the datasets in both.
+ */
+type WageLocale = Extract<Locale, "en-IN" | "hi-IN">;
+const asWageLocale = (locale: Locale): WageLocale => (locale === "hi-IN" ? "hi-IN" : "en-IN");
+
+function textFor(locale: WageLocale) {
+  if (locale === "hi-IN") {
+    return {
+      ui: wageUiHi,
+      stateCopy: getWageStateCopyHi,
+      hub: wageHubCopyHi,
+      check: howWeCheckHi,
+      doors: wageDoorsHi,
+      date: formatDateHi,
+      shortDate: formatShortDateHi,
+      listDates: listDatesHi,
+      name: stateNameHi,
+      skill: (k: Skill) => SKILLS_HI[k],
+      table: tableTextHi,
+      historyNote: historyNoteHi,
+      checkedBy: (state: WageState) => {
+        const by = state.checked.by;
+        return by ? (by.name ? `${by.name}, ${by.role}` : `Vayasya Seva के ${by.role}`) : null;
+      },
+    };
+  }
+  return {
+    ui: wageUiEn,
+    stateCopy: getWageStateCopy,
+    hub: wageHubCopy,
+    check: howWeCheck,
+    doors: wageDoors,
+    date: formatDate,
+    shortDate: formatShortDate,
+    listDates,
+    name: (state: WageState) => state.name,
+    skill: (k: Skill) => SKILLS[k],
+    table: (_state: WageState, table: WageTable) => ({
+      ...table,
+      zone: (id: string) => table.zones.find((z) => z.id === id)!,
+    }),
+    historyNote: (_state: WageState, entry: WageHistory) => entry.note,
+    checkedBy: checkedByLine,
+  };
+}
+type WageText = ReturnType<typeof textFor>;
 
 /** Published state pages, in hub order. A state in review is not listed or linked. */
 const listedStates = () => wageStates.filter((s) => linkable(wageStatePath(s.state), "en-IN"));
@@ -38,31 +104,34 @@ const yearOf = (state: WageState, today: string) => (wageStatus(state, today).st
 
 // ── Metadata ────────────────────────────────────────────────────────────────
 
-export function wageStateMetadata(slug: WageStateSlug) {
+export function wageStateMetadata(slug: WageStateSlug, pageLocale: Locale = "en-IN") {
+  const locale = asWageLocale(pageLocale);
   const state = stateOrThrow(slug);
-  const t = getWageStateCopy(slug)!;
+  const t = textFor(locale).stateCopy(slug)!;
   return pageMetadata({
     title: t.title(yearOf(state, todayIso())),
     description: t.description,
-    alternates: { canonical: wageStatePath(slug) },
-    locale: "en-IN",
+    alternates: { canonical: localePath(wageStatePath(slug), locale) },
+    locale,
   });
 }
 
-export function wageHubMetadata() {
+export function wageHubMetadata(pageLocale: Locale = "en-IN") {
+  const locale = asWageLocale(pageLocale);
+  const hub = textFor(locale).hub;
   const today = todayIso();
   const anyStale = listedStates().some((s) => wageStatus(s, today).stale);
   return pageMetadata({
-    title: wageHubCopy.title(anyStale ? null : hubYear()),
-    description: wageHubCopy.description(),
-    alternates: { canonical: WAGE_HUB_PATH },
-    locale: "en-IN",
+    title: hub.title(anyStale ? null : hubYear()),
+    description: hub.description(),
+    alternates: { canonical: localePath(WAGE_HUB_PATH, locale) },
+    locale,
   });
 }
 
 function stateOrThrow(slug: WageStateSlug) {
   const state = wageStates.find((s) => s.state === slug);
-  if (!state || !getWageStateCopy(slug)) throw new Error(`No wage data or copy for ${slug}`);
+  if (!state || !getWageStateCopy(slug) || !getWageStateCopyHi(slug)) throw new Error(`No wage data or copy for ${slug}`);
   return state;
 }
 
@@ -70,8 +139,16 @@ const hubYear = () => listedStates().map(ratesYear).sort().at(-1) ?? null;
 
 // ── Shared pieces ───────────────────────────────────────────────────────────
 
-const pdfLabel = (s: WageSource) =>
-  `Read the ${s.kind === "notification" ? "notification" : s.kind === "order" ? "order" : "amendment"} (PDF${s.language === "hi" ? ", Hindi" : ""}${s.sizeKb ? `, ${formatSize(s.sizeKb)}` : ""})`;
+const pdfLabel = (x: WageText, s: WageSource) => x.ui.pdf(s.kind, s.language === "hi", s.sizeKb ? formatSize(s.sizeKb) : null);
+
+/** "Notification No. 289, dated 1 April 2026. Labour Department." in the page's language. */
+function sourceLine(x: WageText, state: WageState, id: string) {
+  const s = sourceById(state, id);
+  // Delhi's numbers carry their own "F.No." prefix.
+  const no = /^F\.?\s?No\./i.test(s.number) ? "" : x.ui === wageUiEn ? "No. " : "सं. ";
+  const end = x.ui === wageUiEn ? "." : "।";
+  return `${x.ui.sourceKind(s.kind)} ${no}${s.number}, ${x.ui.dated} ${x.date(s.date)}${end} ${s.authority}.`;
+}
 
 /** An order number that breaks only after a slash, never at a hyphen, so it is copied whole. */
 function OrderNumber({ value }: { value: string }) {
@@ -89,35 +166,28 @@ function OrderNumber({ value }: { value: string }) {
   );
 }
 
-/** "Checked 16 October 2026, by a director of Vayasya Seva", or what is true until someone signs off. */
-const checkedPhrase = (state: WageState) => {
-  const by = checkedByLine(state);
-  return by
-    ? `Checked by ${by} on ${formatDate(state.checked.on)}.`
-    : `Entered from the state's own documents on ${formatDate(state.checked.on)}.`;
-};
-
 /** Both audiences get their next step in the first screen (no phone); workers also get the pay check. */
-function QuickDoors({ contactHref = "/contact", jobsLine, workers }: { contactHref?: string; jobsLine?: string; workers?: boolean }) {
+function QuickDoors({ x, contactHref = "/contact", jobsLine, workers }: { x: WageText; contactHref?: string; jobsLine?: string; workers?: boolean }) {
   return (
     <div className="wage-quick-doors">
       <p>
-        Looking for work?{jobsLine && <span className="wage-quick-note">{jobsLine}</span>}
-        <Link href={wageDoors.jobs.link.href} className="text-link">
-          {wageDoors.jobs.link.label} <ArrowRight size={18} aria-hidden="true" />
+        {x.ui.doors.looking}
+        {jobsLine && <span className="wage-quick-note">{jobsLine}</span>}
+        <Link href={x.doors.jobs.link.href} className="text-link">
+          {x.doors.jobs.link.label} <ArrowRight size={18} aria-hidden="true" />
         </Link>
       </p>
       <p>
-        Hiring for a unit?
+        {x.ui.doors.hiring}
         <Link href={contactHref} className="text-link">
-          {wageDoors.business.link.label} <ArrowUpRight size={18} aria-hidden="true" />
+          {x.doors.business.link.label} <ArrowRight size={18} aria-hidden="true" />
         </Link>
       </p>
       {workers && (
         <p>
-          Paid less than this?
+          {x.ui.doors.paidLess}
           <a href="#workers" className="text-link">
-            What you can do <ArrowRight size={18} aria-hidden="true" />
+            {x.ui.doors.whatYouCanDo} <ArrowRight size={18} aria-hidden="true" />
           </a>
         </p>
       )}
@@ -126,29 +196,22 @@ function QuickDoors({ contactHref = "/contact", jobsLine, workers }: { contactHr
 }
 
 /** "May have been revised" once stale; a quieter "revision due" note before that. */
-function RevisionNotice({ state, today }: { state: WageState; today: string }) {
+function RevisionNotice({ x, state, today }: { x: WageText; state: WageState; today: string }) {
   const status = wageStatus(state, today);
   const due = unpublishedRevisions(state, today);
   if (!due.length && !status.stale) return null;
   const listing = state.sources[0].listing;
+  const [strong, rest] = due.length > 1 ? x.ui.notice.many(x.listDates(due), x.date(state.checked.on)) : due.length ? x.ui.notice.one(x.date(due[0]), x.date(state.checked.on), x.name(state)) : ["", ""];
   return (
     <div className={status.stale ? "wage-notice is-stale" : "wage-notice"} role={status.stale ? "status" : undefined}>
       <div className="site-shell">
         {status.stale ? (
           <p>
-            <strong>These rates may have been revised.</strong> Check the latest notification.{" "}
-            <a href={listing}>Latest notifications from the state</a>
-          </p>
-        ) : due.length > 1 ? (
-          <p>
-            <strong>Revisions were due on {listDates(due)}.</strong> None had been published when we checked on{" "}
-            {formatDate(state.checked.on)}. If they are published with back effect, arrears may be due. These are the latest
-            published rates.
+            <strong>{x.ui.notice.staleStrong}</strong> {x.ui.notice.staleText} <a href={listing}>{x.ui.notice.staleLink}</a>
           </p>
         ) : (
           <p>
-            <strong>A revision was due on {formatDate(due[0])}.</strong> When we checked on {formatDate(state.checked.on)},{" "}
-            {state.name} had not published one. These are the latest published rates.
+            <strong>{strong}</strong> {rest}
           </p>
         )}
       </div>
@@ -156,31 +219,30 @@ function RevisionNotice({ state, today }: { state: WageState; today: string }) {
   );
 }
 
-function RateTable({ state, table }: { state: WageState; table: WageTable }) {
+function RateTable({ x, state, table }: { x: WageText; state: WageState; table: WageTable }) {
+  const tt = x.table(state, table);
   const split = table.rates.some((r) => r.vda > 0);
   const zones = table.zones.length > 1;
   const source = sourceById(state, table.sources[0]);
   const skills = [...new Set(table.rates.map((r) => r.skill))];
   return (
     <div className="wage-table-block" id={table.id}>
-      <h3>{table.title}</h3>
-      <p className="wage-applies">{table.appliesTo}</p>
+      <h3>{tt.title}</h3>
+      <p className="wage-applies">{tt.appliesTo}</p>
       <div className="wage-table-scroll">
         <table className="wage-table">
-          <caption className="sr-only">
-            {table.title}: minimum wages in {state.name} from {formatDate(table.effectiveFrom)}, in rupees
-          </caption>
+          <caption className="sr-only">{x.ui.table.caption(tt.title, x.name(state), x.date(table.effectiveFrom))}</caption>
           <thead>
             <tr>
-              <th scope="col">Skill level</th>
+              <th scope="col">{x.ui.table.skill}</th>
               {split && (
                 <>
-                  <th scope="col" className="col-split">{table.basicLabel}</th>
-                  <th scope="col" className="col-split">{table.vdaLabel}</th>
+                  <th scope="col" className="col-split">{tt.basicLabel}</th>
+                  <th scope="col" className="col-split">{tt.vdaLabel}</th>
                 </>
               )}
-              <th scope="col">Per month</th>
-              <th scope="col">{table.daily === "derived" ? "Per day (÷ 26)" : "Per day"}</th>
+              <th scope="col">{x.ui.table.month}</th>
+              <th scope="col">{table.daily === "derived" ? x.ui.table.dayDerived : x.ui.table.day}</th>
             </tr>
           </thead>
           {table.zones.map((zone) => (
@@ -188,16 +250,16 @@ function RateTable({ state, table }: { state: WageState; table: WageTable }) {
               {zones && (
                 <tr className="zone-row">
                   <th scope="rowgroup" colSpan={split ? 5 : 3}>
-                    {zone.name}
-                    <span>{zone.areas}</span>
+                    {tt.zone(zone.id).name}
+                    <span>{tt.zone(zone.id).areas}</span>
                   </th>
                 </tr>
               )}
               {skills.map((skill) => {
-                const r = table.rates.find((x) => x.zone === zone.id && x.skill === skill)!;
+                const r = table.rates.find((y) => y.zone === zone.id && y.skill === skill)!;
                 return (
                   <tr key={skill}>
-                    <th scope="row">{SKILLS[skill]}</th>
+                    <th scope="row">{x.skill(skill)}</th>
                     {split && (
                       <>
                         <td className="col-split">{formatRupees(r.basic)}</td>
@@ -207,12 +269,12 @@ function RateTable({ state, table }: { state: WageState; table: WageTable }) {
                     <td>
                       <strong>{formatRupees(r.monthly)}</strong>
                       {split && (
-                        <span className="split-inline" aria-label={`${table.basicLabel} ${formatRupees(r.basic)} plus ${table.vdaLabel} ${formatRupees(r.vda)}`}>
+                        <span className="split-inline" aria-label={x.ui.table.split(tt.basicLabel, formatRupees(r.basic), tt.vdaLabel, formatRupees(r.vda))}>
                           {formatRupees(r.basic)} + {formatRupees(r.vda)}
                         </span>
                       )}
                     </td>
-                    <td>{r.daily === null ? <span className="wage-none">Not set</span> : formatRupees(r.daily)}</td>
+                    <td>{r.daily === null ? <span className="wage-none">{x.ui.table.notSet}</span> : formatRupees(r.daily)}</td>
                   </tr>
                 );
               })}
@@ -221,8 +283,7 @@ function RateTable({ state, table }: { state: WageState; table: WageTable }) {
         </table>
       </div>
       <p className="wage-source">
-        From {formatDate(table.effectiveFrom)}. {sourceLine(state, source.id)}{" "}
-        <a href={source.url}>{pdfLabel(source)}</a>
+        {x.ui.table.from(x.date(table.effectiveFrom))} {sourceLine(x, state, source.id)} <a href={source.url}>{pdfLabel(x, source)}</a>
       </p>
       {table.sources.slice(1).map((id) => {
         const extra = sourceById(state, id);
@@ -230,67 +291,69 @@ function RateTable({ state, table }: { state: WageState; table: WageTable }) {
         if (extra.number === source.number && extra.date === source.date && extra.kind === source.kind) return null;
         return (
           <p key={id} className="wage-source is-extra">
-            Also: {sourceLine(state, id)} <a href={extra.url}>{pdfLabel(extra)}</a>
+            {x.ui.table.also} {sourceLine(x, state, id)} <a href={extra.url}>{pdfLabel(x, extra)}</a>
           </p>
         );
       })}
-      {table.dailyRule && <p className="wage-note">{table.dailyRule}</p>}
-      {table.vdaNote && <p className="wage-note">{table.vdaNote}</p>}
+      {tt.dailyRule && <p className="wage-note">{tt.dailyRule}</p>}
+      {tt.vdaNote && <p className="wage-note">{tt.vdaNote}</p>}
     </div>
   );
 }
 
-function HistoryBlock({ state, entry }: { state: WageState; entry: WageHistory }) {
+function HistoryBlock({ x, state, entry }: { x: WageText; state: WageState; entry: WageHistory }) {
   const source = sourceById(state, entry.source);
   const table = state.tables.find((t) => t.id === entry.table)!;
+  const title = x.table(state, table).title;
   const hasDaily = entry.rates.some((r) => r.daily !== undefined);
+  const note = x.historyNote(state, entry);
   return (
     <div className="wage-history-entry">
       <h3>
-        {formatShortDate(entry.effectiveFrom)} to {formatShortDate(entry.effectiveTo)}
-        <span>{table.title}</span>
+        {x.ui.table.range(x.shortDate(entry.effectiveFrom), x.shortDate(entry.effectiveTo))}
+        <span>{title}</span>
       </h3>
-      {entry.note && <p className="wage-applies">{entry.note}</p>}
+      {note && <p className="wage-applies">{note}</p>}
       <table className="wage-table is-compact">
         <caption className="sr-only">
-          {table.title}, {formatDate(entry.effectiveFrom)} to {formatDate(entry.effectiveTo)}
+          {title}, {x.ui.table.range(x.date(entry.effectiveFrom), x.date(entry.effectiveTo))}
         </caption>
         <thead>
           <tr>
-            <th scope="col">Skill level</th>
-            <th scope="col">Per month</th>
-            {hasDaily && <th scope="col">Per day</th>}
+            <th scope="col">{x.ui.table.skill}</th>
+            <th scope="col">{x.ui.table.month}</th>
+            {hasDaily && <th scope="col">{x.ui.table.day}</th>}
           </tr>
         </thead>
         <tbody>
           {entry.rates.map((r) => (
             <tr key={`${r.zone ?? ""}${r.skill}`}>
-              <th scope="row">{SKILLS[r.skill]}</th>
+              <th scope="row">{x.skill(r.skill)}</th>
               <td>{formatRupees(r.monthly)}</td>
-              {hasDaily && <td>{r.daily === undefined ? <span className="wage-none">Not set</span> : formatRupees(r.daily)}</td>}
+              {hasDaily && <td>{r.daily === undefined ? <span className="wage-none">{x.ui.table.notSet}</span> : formatRupees(r.daily)}</td>}
             </tr>
           ))}
         </tbody>
       </table>
       <p className="wage-source">
-        {sourceLine(state, source.id)} <a href={source.url}>{pdfLabel(source)}</a>
+        {sourceLine(x, state, source.id)} <a href={source.url}>{pdfLabel(x, source)}</a>
       </p>
     </div>
   );
 }
 
 /** The dark band with the two doors, at the foot of every wage page. */
-function WageDoors() {
+function WageDoors({ x }: { x: WageText }) {
   return (
     <section className="wage-doors" data-header-theme="dark">
       <div className="site-shell wage-doors-inner">
-        {[wageDoors.jobs, wageDoors.business].map((d) => (
+        {[x.doors.jobs, x.doors.business].map((d) => (
           <div key={d.eyebrow}>
             <p className="eyebrow">{d.eyebrow}</p>
             <h2>{d.heading}</h2>
             <p>{d.text}</p>
             <Link href={d.link.href} className="light-link">
-              {d.link.label} <ArrowUpRight size={19} aria-hidden="true" />
+              {d.link.label} <ArrowRight size={19} aria-hidden="true" />
             </Link>
           </div>
         ))}
@@ -299,44 +362,45 @@ function WageDoors() {
   );
 }
 
-function HowWeCheck({ states }: { states: readonly WageState[] }) {
+function HowWeCheck({ x, states }: { x: WageText; states: readonly WageState[] }) {
   const single = states.length === 1 ? states[0] : undefined;
   return (
     <Section id="how-we-check" className="border-t border-border">
       <div className="wage-split">
         <div>
-          <p className="eyebrow text-gold-700">SOURCES AND CHECKS</p>
-          <h2 className="wage-h2">{howWeCheck.heading}</h2>
+          <p className="eyebrow text-gold-700">{x.ui.sections.sources}</p>
+          <h2 className="wage-h2">{x.check.heading}</h2>
         </div>
         <div className="wage-prose">
-          {single && <p className="wage-reviewed">{checkedPhrase(single)}</p>}
-          {howWeCheck.text.map((p) => (
+          {single && <p className="wage-reviewed">{x.ui.checkedPhrase(x.checkedBy(single), x.date(single.checked.on))}</p>}
+          {x.check.text.map((p) => (
             <p key={p}>{p}</p>
           ))}
           <p>
-            {howWeCheck.corrections}{" "}
+            {x.check.corrections}{" "}
             <a href={`mailto:${siteConfig.email}`} className="font-data">
               {siteConfig.email}
             </a>
           </p>
           <Link href={EDITORIAL_HREF} className="text-link">
-            Our editorial policy <ArrowUpRight size={18} aria-hidden="true" />
+            {x.ui.sections.editorial} <ArrowRight size={18} aria-hidden="true" />
           </Link>
           {single && (
             <>
-              <h3>Documents used for this page</h3>
+              <h3>{x.ui.sections.documents}</h3>
               <ol className="wage-sources">
                 {single.sources.map((s) => (
                   <li key={s.id}>
-                    <a href={s.url} lang={s.language === "hi" ? "hi-IN" : undefined}>
+                    <a href={s.url} lang={s.language === "hi" ? "hi-IN" : "en-IN"}>
                       {s.title}
                     </a>
                     <span>
                       <span className="font-data">
                         <OrderNumber value={s.number} />
                       </span>
-                      , {formatDate(s.date)}. {s.authority}.{s.sizeKb && ` PDF, ${formatSize(s.sizeKb)}.`}
-                      {s.legalBasis && ` ${s.legalBasis.replace(/([^.])$/, "$1.")}`}
+                      , {x.date(s.date)}. {s.authority}.{s.sizeKb && ` PDF, ${formatSize(s.sizeKb)}.`}
+                      {/* The legal basis is quoted from the English record; the Hindi draft leaves it out. */}
+                      {x.ui === wageUiEn && s.legalBasis && ` ${s.legalBasis.replace(/([^.])$/, "$1.")}`}
                     </span>
                   </li>
                 ))}
@@ -349,13 +413,13 @@ function HowWeCheck({ states }: { states: readonly WageState[] }) {
   );
 }
 
-function FaqProse({ faqs }: { faqs: { question: string; answer: string }[] }) {
+function FaqProse({ x, faqs }: { x: WageText; faqs: { question: string; answer: string }[] }) {
   return (
     <Section id="questions" variant="subtle">
       <div className="wage-split">
         <div>
-          <p className="eyebrow text-gold-700">QUESTIONS</p>
-          <h2 className="wage-h2">Common questions</h2>
+          <p className="eyebrow text-gold-700">{x.ui.sections.questions}</p>
+          <h2 className="wage-h2">{x.ui.sections.questionsHeading}</h2>
         </div>
         <div className="faq-prose">
           {faqs.map((f) => (
@@ -372,33 +436,36 @@ function FaqProse({ faqs }: { faqs: { question: string; answer: string }[] }) {
 
 // ── State page ──────────────────────────────────────────────────────────────
 
-export function WageStatePage({ slug }: { slug: WageStateSlug }) {
+export function WageStatePage({ slug, locale: pageLocale = "en-IN" }: { slug: WageStateSlug; locale?: Locale }) {
+  const locale = asWageLocale(pageLocale);
+  const x = textFor(locale);
   const state = stateOrThrow(slug);
-  const t = getWageStateCopy(slug)!;
+  const t = x.stateCopy(slug)!;
   const today = todayIso();
   const year = yearOf(state, today);
-  const path = wageStatePath(slug);
+  const path = localePath(wageStatePath(slug), locale);
   const due = unpublishedRevisions(state, today);
   const others = listedStates().filter((s) => s.state !== slug);
+  const by = x.checkedBy(state);
   return (
     <>
-      <JsonLd data={wageStateSchema(state, { name: t.title(year), description: t.description, url: path })} />
+      <JsonLd data={wageStateSchema(state, { name: t.title(year), description: t.description, url: path, inLanguage: locale })} />
       <JsonLd data={faqSchema(t.faqs)} />
       <JsonLd
         data={breadcrumbSchema([
-          { name: "Home", href: "/" },
-          { name: "Minimum wages", href: WAGE_HUB_PATH },
-          { name: state.name, href: path },
+          { name: x.ui.home, href: "/" },
+          { name: x.ui.minimumWages, href: localePath(WAGE_HUB_PATH, locale) },
+          { name: x.name(state), href: path },
         ])}
       />
       <PageHero
-        title={`Minimum wages in ${state.name}${year ? `, ${year}` : ""}.`}
+        title={x.ui.stateHeading(x.name(state), year)}
         lede={t.lede}
         aside={
           <dl className="wage-facts">
             <div>
-              <dt>In force from</dt>
-              <dd>{formatDate(state.tables.map((x) => x.effectiveFrom).sort().at(-1)!)}</dd>
+              <dt>{x.ui.facts.inForce}</dt>
+              <dd>{x.date(state.tables.map((y) => y.effectiveFrom).sort().at(-1)!)}</dd>
             </div>
             <div>
               <dt>{t.headlineSource.label}</dt>
@@ -407,36 +474,36 @@ export function WageStatePage({ slug }: { slug: WageStateSlug }) {
               </dd>
             </div>
             <div>
-              <dt>Checked</dt>
+              <dt>{x.ui.facts.checked}</dt>
               <dd>
                 <a href="#how-we-check">
-                  {formatDate(state.checked.on)}
-                  {checkedByLine(state) ? `, by ${checkedByLine(state)}` : ", from the state's documents"}
+                  {x.date(state.checked.on)}
+                  {by ? x.ui.facts.checkedBy(by) : x.ui.facts.fromDocs}
                 </a>
               </dd>
             </div>
             <div>
-              <dt>{due.length > 1 ? "Revisions overdue since" : due.length ? "Revision was due" : "Next revision"}</dt>
-              <dd>{formatDate(due[0] ?? state.nextRevision.expected)}</dd>
+              <dt>{due.length > 1 ? x.ui.facts.overdue : due.length ? x.ui.facts.wasDue : x.ui.facts.next}</dt>
+              <dd>{x.date(due[0] ?? state.nextRevision.expected)}</dd>
             </div>
           </dl>
         }
-        footnote={<QuickDoors contactHref={t.contactHref} jobsLine={t.jobsLine} workers />}
+        footnote={<QuickDoors x={x} contactHref={t.contactHref} jobsLine={t.jobsLine} workers />}
       />
-      <RevisionNotice state={state} today={today} />
+      <RevisionNotice x={x} state={state} today={today} />
       <Section id="rates">
-        <p className="eyebrow text-gold-700">RATES</p>
-        <h2 className="wage-h2 mt-5">Minimum wage rates in {state.name}</h2>
+        <p className="eyebrow text-gold-700">{x.ui.sections.rates}</p>
+        <h2 className="wage-h2 mt-5">{x.ui.sections.ratesHeading(x.name(state))}</h2>
         <div className="wage-tables">
           {state.tables.map((table) => (
-            <RateTable key={table.id} state={state} table={table} />
+            <RateTable key={table.id} x={x} state={state} table={table} />
           ))}
         </div>
       </Section>
       <Section id="zones" variant="subtle">
         <div className="wage-split">
           <div>
-            <p className="eyebrow text-gold-700">WHERE IT APPLIES</p>
+            <p className="eyebrow text-gold-700">{x.ui.sections.where}</p>
             <h2 className="wage-h2">{t.zones.heading}</h2>
           </div>
           <div className="wage-prose">
@@ -451,7 +518,7 @@ export function WageStatePage({ slug }: { slug: WageStateSlug }) {
               ) : (
                 linkable(t.zones.link.href, "en-IN") && (
                   <Link href={t.zones.link.href} className="text-link">
-                    {t.zones.link.label} <ArrowUpRight size={18} aria-hidden="true" />
+                    {t.zones.link.label} <ArrowRight size={18} aria-hidden="true" />
                   </Link>
                 )
               ))}
@@ -461,8 +528,8 @@ export function WageStatePage({ slug }: { slug: WageStateSlug }) {
       <Section id="how-the-rate-is-made-up">
         <div className="wage-split">
           <div>
-            <p className="eyebrow text-gold-700">THE RATE</p>
-            <h2 className="wage-h2">How the rate is made up</h2>
+            <p className="eyebrow text-gold-700">{x.ui.sections.theRate}</p>
+            <h2 className="wage-h2">{x.ui.sections.madeUpHeading}</h2>
           </div>
           <div className="wage-prose">
             {t.madeUp.map((p) => (
@@ -475,12 +542,12 @@ export function WageStatePage({ slug }: { slug: WageStateSlug }) {
         <Section id="history" variant="subtle">
           <div className="wage-split">
             <div>
-              <p className="eyebrow text-gold-700">HISTORY</p>
-              <h2 className="wage-h2">Earlier rates</h2>
+              <p className="eyebrow text-gold-700">{x.ui.sections.history}</p>
+              <h2 className="wage-h2">{x.ui.sections.historyHeading}</h2>
             </div>
             <div className="wage-history">
               {state.history.map((h) => (
-                <HistoryBlock key={`${h.table}-${h.effectiveFrom}`} state={state} entry={h} />
+                <HistoryBlock key={`${h.table}-${h.effectiveFrom}`} x={x} state={state} entry={h} />
               ))}
             </div>
           </div>
@@ -489,8 +556,8 @@ export function WageStatePage({ slug }: { slug: WageStateSlug }) {
       <Section id="contract-labour">
         <div className="wage-split">
           <div>
-            <p className="eyebrow text-gold-700">FOR EMPLOYERS</p>
-            <h2 className="wage-h2">If you use contract labour in {state.name}</h2>
+            <p className="eyebrow text-gold-700">{x.ui.sections.employers}</p>
+            <h2 className="wage-h2">{x.ui.sections.employersHeading(x.name(state))}</h2>
           </div>
           <div className="wage-prose">
             {t.contractLabour.text.map((p) => (
@@ -498,44 +565,46 @@ export function WageStatePage({ slug }: { slug: WageStateSlug }) {
             ))}
             {t.contractLabour.vspl && <p className="wage-vspl">{t.contractLabour.vspl}</p>}
             <Link href={t.contractLabour.link.href} className="text-link">
-              {t.contractLabour.link.label} <ArrowUpRight size={18} aria-hidden="true" />
+              {t.contractLabour.link.label} <ArrowRight size={18} aria-hidden="true" />
             </Link>
             <p className="wage-worker-line" id="workers">
-              Paid less than this? You can complain to the{" "}
-              <a href={t.labourDepartment.href}>{t.labourDepartment.label}</a>. Keep your wage slips and attendance record.
+              {x.ui.sections.workerLine[0]} <a href={t.labourDepartment.href}>{t.labourDepartment.label}</a>
+              {x.ui.sections.workerLine[1]}
             </p>
           </div>
         </div>
       </Section>
-      <FaqProse faqs={t.faqs} />
+      <FaqProse x={x} faqs={t.faqs} />
       {others.length > 0 && (
         <Section className="wage-others">
-          <p className="eyebrow text-gold-700">OTHER STATES</p>
+          <p className="eyebrow text-gold-700">{x.ui.sections.others}</p>
           <ul className="wage-state-links">
             {others.map((s) => (
               <li key={s.state}>
                 <Link href={wageStatePath(s.state)}>
-                  Minimum wages in {s.name} <ArrowUpRight size={18} aria-hidden="true" />
+                  {x.ui.statesListItem(x.name(s))} <ArrowRight size={18} aria-hidden="true" />
                 </Link>
               </li>
             ))}
             <li>
               <Link href={WAGE_HUB_PATH}>
-                All states <ArrowUpRight size={18} aria-hidden="true" />
+                {x.ui.sections.allStates} <ArrowRight size={18} aria-hidden="true" />
               </Link>
             </li>
           </ul>
         </Section>
       )}
-      <WageDoors />
-      <HowWeCheck states={[state]} />
+      <WageDoors x={x} />
+      <HowWeCheck x={x} states={[state]} />
     </>
   );
 }
 
 // ── Hub ─────────────────────────────────────────────────────────────────────
 
-export function WageHubPage() {
+export function WageHubPage({ locale: pageLocale = "en-IN" }: { locale?: Locale }) {
+  const locale = asWageLocale(pageLocale);
+  const x = textFor(locale);
   const today = todayIso();
   const states = listedStates();
   const anyStale = states.some((s) => wageStatus(s, today).stale);
@@ -543,43 +612,45 @@ export function WageHubPage() {
   const headlines = states.map((s) => ({ state: s, ...headlineRate(s) }));
   const lowest = [...headlines].sort((a, b) => a.low.monthly - b.low.monthly)[0];
   const highest = [...headlines].sort((a, b) => b.high.monthly - a.high.monthly)[0];
-  const faqs = wageHubCopy.faqs(
-    `${formatRupees(lowest.low.monthly)} (${lowest.state.name})`,
-    `${formatRupees(highest.high.monthly)} (${highest.state.name})`,
+  const faqs = x.hub.faqs(
+    `${formatRupees(lowest.low.monthly)} (${x.name(lowest.state)})`,
+    `${formatRupees(highest.high.monthly)} (${x.name(highest.state)})`,
   );
   const lastChecked = states.map((s) => s.checked.on).sort()[0];
+  const hubPath = localePath(WAGE_HUB_PATH, locale);
   return (
     <>
       <JsonLd
         data={wageHubSchema({
-          name: wageHubCopy.title(year),
-          description: wageHubCopy.description(),
-          url: WAGE_HUB_PATH,
+          name: x.hub.title(year),
+          description: x.hub.description(),
+          url: hubPath,
           dateModified: lastChecked,
           reviewed: states.every((s) => s.checked.by),
-          states: states.map((s) => ({ name: `Minimum wages in ${s.name}`, url: wageStatePath(s.state) })),
+          states: states.map((s) => ({ name: x.ui.statesListItem(x.name(s)), url: wageStatePath(s.state) })),
+          inLanguage: locale,
         })}
       />
       <JsonLd data={faqSchema(faqs)} />
       <JsonLd
         data={breadcrumbSchema([
-          { name: "Home", href: "/" },
-          { name: "Minimum wages", href: WAGE_HUB_PATH },
+          { name: x.ui.home, href: "/" },
+          { name: x.ui.minimumWages, href: hubPath },
         ])}
       />
-      <PageHero title={wageHubCopy.heading(year)} lede={wageHubCopy.lede(states)} footnote={<QuickDoors />} className="pb-10 pt-10 sm:pb-12 sm:pt-16 lg:pb-14 lg:pt-16" />
+      <PageHero title={x.hub.heading(year)} lede={x.hub.lede(states)} footnote={<QuickDoors x={x} />} className="pb-10 pt-10 sm:pb-12 sm:pt-16 lg:pb-14 lg:pt-16" />
       <Section id="states">
-        <p className="eyebrow text-gold-700">BY STATE</p>
-        <h2 className="wage-h2 mt-5">Unskilled rate by state</h2>
+        <p className="eyebrow text-gold-700">{x.ui.hub.byState}</p>
+        <h2 className="wage-h2 mt-5">{x.ui.hub.tableHeading}</h2>
         <div className="wage-table-scroll mt-10">
           <table className="wage-table is-index">
-            <caption className="sr-only">Monthly minimum wage for unskilled work in the main factory employments, by state, in rupees</caption>
+            <caption className="sr-only">{x.ui.hub.caption}</caption>
             <thead>
               <tr>
-                <th scope="col">State</th>
-                <th scope="col">Unskilled, per month</th>
-                <th scope="col" className="col-split">In force from</th>
-                <th scope="col" className="col-split">Checked</th>
+                <th scope="col">{x.ui.hub.state}</th>
+                <th scope="col">{x.ui.hub.unskilledMonth}</th>
+                <th scope="col" className="col-split">{x.ui.hub.inForce}</th>
+                <th scope="col" className="col-split">{x.ui.hub.checked}</th>
               </tr>
             </thead>
             <tbody>
@@ -590,38 +661,36 @@ export function WageHubPage() {
                   <tr key={state.state}>
                     <th scope="row">
                       <Link href={wageStatePath(state.state)} className="wage-row-link">
-                        {state.name} <ArrowUpRight size={18} aria-hidden="true" />
+                        {x.name(state)} <ArrowRight size={18} aria-hidden="true" />
                       </Link>
                       <span className="wage-row-note">
-                        {table.title}
-                        {zoned && ", by district category"}
-                        {stale && " · may have been revised"}
+                        {x.table(state, table).title}
+                        {zoned && x.ui.hub.byCategory}
+                        {stale && x.ui.hub.mayBeRevised}
                       </span>
                     </th>
                     <td>
-                      <strong>{headlineRange(state)}</strong>
-                      <span className="split-inline">from {formatShortDate(table.effectiveFrom)}</span>
+                      <strong>{locale === "hi-IN" ? headlineRange(state).replace(" to ", " से ") : headlineRange(state)}</strong>
+                      <span className="split-inline">{x.ui.hub.from(x.shortDate(table.effectiveFrom))}</span>
                     </td>
-                    <td className="col-split">{formatDate(table.effectiveFrom)}</td>
-                    <td className="col-split">{formatDate(state.checked.on)}</td>
+                    <td className="col-split">{x.date(table.effectiveFrom)}</td>
+                    <td className="col-split">{x.date(state.checked.on)}</td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
         </div>
-        <p className="wage-note mt-6">
-          These are the rates for the main factory employments. Each state page has every skill level and zone, the other tables it covers, and the notification each comes from.
-        </p>
+        <p className="wage-note mt-6">{x.ui.hub.note}</p>
       </Section>
       <Section id="what-is-a-minimum-wage" variant="subtle">
         <div className="wage-split">
           <div>
-            <p className="eyebrow text-gold-700">THE BASICS</p>
-            <h2 className="wage-h2">{wageHubCopy.whatIs.heading}</h2>
+            <p className="eyebrow text-gold-700">{x.ui.hub.basics}</p>
+            <h2 className="wage-h2">{x.hub.whatIs.heading}</h2>
           </div>
           <div className="wage-prose">
-            {wageHubCopy.whatIs.text.map((p) => (
+            {x.hub.whatIs.text.map((p) => (
               <p key={p}>{p}</p>
             ))}
           </div>
@@ -630,16 +699,16 @@ export function WageHubPage() {
       <Section id="changes-2026">
         <div className="wage-split">
           <div>
-            <p className="eyebrow text-gold-700">THIS YEAR</p>
-            <h2 className="wage-h2">{wageHubCopy.changes.heading}</h2>
+            <p className="eyebrow text-gold-700">{x.ui.hub.thisYear}</p>
+            <h2 className="wage-h2">{x.hub.changes.heading}</h2>
           </div>
           <ul className="jobs-work">
-            {wageHubCopy.changes.items
+            {x.hub.changes.items
               .map((item) => ({ item, state: states.find((s) => s.state === item.state) }))
-              .filter((x) => x.state)
+              .filter((y) => y.state)
               .map(({ item, state }) => (
                 <li key={item.state}>
-                  <h3>{state!.name}</h3>
+                  <h3>{x.name(state!)}</h3>
                   <p>{item.text(state!)}</p>
                 </li>
               ))}
@@ -649,15 +718,15 @@ export function WageHubPage() {
       <Section id="contract-labour" variant="subtle">
         <div className="wage-split">
           <div>
-            <p className="eyebrow text-gold-700">FOR EMPLOYERS</p>
-            <h2 className="wage-h2">{wageHubCopy.employers.heading}</h2>
+            <p className="eyebrow text-gold-700">{x.ui.hub.employers}</p>
+            <h2 className="wage-h2">{x.hub.employers.heading}</h2>
           </div>
           <div className="wage-prose">
-            {wageHubCopy.employers.text.map((p) => (
+            {x.hub.employers.text.map((p) => (
               <p key={p}>{p}</p>
             ))}
             <Link href="/contact" className="text-link">
-              Request a crew <ArrowUpRight size={18} aria-hidden="true" />
+              {x.ui.hub.requestCrew} <ArrowRight size={18} aria-hidden="true" />
             </Link>
           </div>
         </div>
@@ -665,16 +734,16 @@ export function WageHubPage() {
       <Section id="for-workers">
         <div className="wage-split">
           <div>
-            <p className="eyebrow text-gold-700">FOR WORKERS</p>
-            <h2 className="wage-h2">{wageHubCopy.workers.heading}</h2>
+            <p className="eyebrow text-gold-700">{x.ui.hub.workers}</p>
+            <h2 className="wage-h2">{x.hub.workers.heading}</h2>
           </div>
           <div className="wage-prose">
-            {wageHubCopy.workers.text.map((p) => (
+            {x.hub.workers.text.map((p) => (
               <p key={p}>{p}</p>
             ))}
             <ul className="wage-state-links is-plain">
               {states.map((s) => {
-                const dept = getWageStateCopy(s.state)!.labourDepartment;
+                const dept = x.stateCopy(s.state)!.labourDepartment;
                 return (
                   <li key={s.state}>
                     <a href={dept.href}>
@@ -687,9 +756,9 @@ export function WageHubPage() {
           </div>
         </div>
       </Section>
-      <FaqProse faqs={faqs} />
-      <WageDoors />
-      <HowWeCheck states={states} />
+      <FaqProse x={x} faqs={faqs} />
+      <WageDoors x={x} />
+      <HowWeCheck x={x} states={states} />
     </>
   );
 }

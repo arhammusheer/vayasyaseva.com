@@ -283,7 +283,7 @@ test('a firewall or error page served with 200 counts as a failed fetch, not a c
   const full = { [DOC]: docBytes, [LISTING]: listingHtml([row('order-2026.pdf', 'Order of 1 April 2026'), row('old.pdf', 'Old order')]) };
   const rejected = '<html><body><h1>Request Rejected</h1><p>The requested URL was rejected.</p></body></html>';
   const day1 = await runMonitor({ targets, previous: null, fetcher: fakeFetcher(full), now: at('2026-10-16') });
-  const blocked = async (url) => ({ ok: true, status: 200, contentType: 'text/html', body: Buffer.from(rejected) });
+  const blocked = async () => ({ ok: true, status: 200, contentType: 'text/html', body: Buffer.from(rejected) });
   const day2 = await runMonitor({ targets, previous: day1.state, fetcher: blocked, now: at('2026-10-17') });
   assert.deepEqual(day2.events, []);
   assert.deepEqual(day2.results.map((r) => r.outcome), ['failed', 'failed']);

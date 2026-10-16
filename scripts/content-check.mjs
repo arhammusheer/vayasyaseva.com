@@ -16,6 +16,10 @@
 //       when the PUBLIC_DENYLIST secret is set, no denylisted name appears in
 //       any tracked text file or the built output (.next HTML, RSC and client
 //       chunks). The output names the file and line, never the term.
+//   C12 after a build: no client chunk carries the wage datasets.
+//   C13 translated wage copy (src/content/pages/minimum-wages.hi.ts) records
+//       the sourceHash of each English block it translates; a changed English
+//       block fails until the translation is updated (PLAN §6.6).
 // Claim expiry is a warning, not a failure: an expired claim hides itself
 // and the page stays live (PLAN §12), so CI never breaks on a date.
 import { readdirSync, readFileSync, statSync, existsSync } from "node:fs";
@@ -38,7 +42,7 @@ const fail = (message) => errors.push(message);
 const warnings = [];
 const warn = (message) => warnings.push(message);
 
-const { pageEntries, pathAliases, clusters, builtLocales, publishedLocales } = await importTs("src/content/registry/index.ts");
+const { pageEntries, pathAliases, clusters, builtLocales, publishedLocales, PAUSABLE_KINDS } = await importTs("src/content/registry/index.ts");
 const { pageEntrySchema, clusterSchema } = await importTs("src/content/registry/schema.ts");
 const { CLUSTER_IDS, HARIDWAR_AREA_IDS, LOCALE_TAGS } = await importTs("src/content/registry/identifiers.ts");
 const { JOB_ROLE_SLUGS, JOB_HUB_SLUGS, QUICK_ANSWERS, INTAKE_LOCALES, INTAKE_CLUSTERS, AREA_CLUSTERS } = await importTs("src/lib/talent-intake/rules.ts");
@@ -97,10 +101,11 @@ for (const entry of pageEntries) {
     fail(`C1 page ${entry.path} is published for cluster "${entry.cluster}", which is not in clusters.ts`);
   }
   if (entry.retiredTo && !isPublished(entry.retiredTo)) fail(`C1 page ${entry.path}: retiredTo ${entry.retiredTo} is not a published page`);
-  // Pages do not yet render the "not taking applications or new work" notice
-  // or turn their forms off, so a paused page would still look open. Remove
-  // this once the paused rendering lands.
-  if (Object.values(entry.locales).includes("paused")) fail(`C1 page ${entry.path} is paused, but pages cannot show the paused notice yet; use review instead`);
+  // Only cluster hubs render the "not taking applications or new work" notice
+  // (src/components/sections/paused-notice.tsx); anything else would still look open.
+  if (Object.values(entry.locales).includes("paused") && !PAUSABLE_KINDS.has(entry.kind)) {
+    fail(`C1 page ${entry.path} is paused, but a ${entry.kind} page cannot show the paused notice (only ${[...PAUSABLE_KINDS].join(", ")}); use review instead`);
+  }
 }
 for (const [from, to] of Object.entries(pathAliases)) {
   if (byPath.has(from)) fail(`C1 alias ${from} is also a page`);
@@ -112,13 +117,24 @@ const appDir = join(root, "src", "app", "[locale]");
 const routes = walk(appDir)
   .filter((file) => file.endsWith(`${sep}page.tsx`))
   .map((file) => {
-    const segments = relative(appDir, file).split(sep).slice(0, -1).filter((s) => !/^\(.+\)$/.test(s));
+    const all = relative(appDir, file).split(sep).slice(0, -1);
+    const group = all.find((s) => /^\(.+\)$/.test(s))?.slice(1, -1);
+    const segments = all.filter((s) => !/^\(.+\)$/.test(s));
     const path = `/${segments.join("/")}`;
     const pattern = new RegExp(`^${path.replace(/\[[^\]]+\]/g, "[^/]+")}$`);
-    return { path, pattern, dynamic: /\[/.test(path) };
+    return { path, pattern, group, dynamic: /\[/.test(path) };
   });
+// The audience flag decides the layout (PLAN §1a, §7.3): business pages live
+// in (marketing) with the phone, jobs pages in (jobs), mixed pages in the
+// phone-free (reference) group. The home page sits in (marketing).
+const GROUP_OF_AUDIENCE = { business: "marketing", jobs: "jobs", mixed: "reference" };
 for (const entry of pageEntries) {
-  if (builtLocales(entry.path).length && !routes.some((r) => r.pattern.test(entry.path))) fail(`C1 page ${entry.path} has no route under src/app/[locale]`);
+  if (!builtLocales(entry.path).length) continue;
+  const route = routes.find((r) => r.path === entry.path) ?? routes.find((r) => r.pattern.test(entry.path));
+  if (!route) fail(`C1 page ${entry.path} has no route under src/app/[locale]`);
+  else if (route.group !== GROUP_OF_AUDIENCE[entry.audience]) {
+    fail(`C1 page ${entry.path} has audience "${entry.audience}" but its route is in (${route.group ?? "no group"}); move it to (${GROUP_OF_AUDIENCE[entry.audience]}) or change the audience`);
+  }
 }
 for (const route of routes) {
   if (!route.dynamic && !byPath.has(route.path)) fail(`C1 route ${route.path} (src/app/[locale]) has no entry in src/content/registry/pages.ts`);
@@ -176,6 +192,32 @@ for (const state of wageStates) {
 }
 for (const slug of WAGE_STATE_SLUGS) {
   if (builtLocales(wageStatePath(slug)).length && !wageStates.some((s) => s.state === slug)) fail(`C8 ${wageStatePath(slug)} is built but src/content/wages/${slug}.json does not exist`);
+}
+
+// ── C13: translation sourceHash (PLAN §6.6) ────────────────────────────────
+// Each translated block records the hash of the English it was made from.
+// When the English changes, the Hindi must be checked and its hash updated.
+{
+  const { createHash } = await import("node:crypto");
+  const hash = (text) => createHash("sha256").update(text).digest("hex").slice(0, 12);
+  const english = readFileSync(join(root, "src/content/pages/minimum-wages.ts"), "utf8");
+  const current = {};
+  for (const [, key, body] of english.matchAll(/^[ \t]*\/\/ @hi-source (\S+)\n([\s\S]*?)^[ \t]*\/\/ @hi-source-end$/gm)) current[key] = hash(body);
+  for (const state of wageStates) {
+    current[`data:${state.state}`] = hash(
+      JSON.stringify({
+        tables: state.tables.map(({ id, title, appliesTo, dailyRule, basicLabel, vdaLabel, vdaNote, zones }) => ({ id, title, appliesTo, dailyRule, basicLabel, vdaLabel, vdaNote, zones })),
+        notes: state.history.map((h) => [h.table, h.effectiveFrom, h.note ?? null]),
+      }),
+    );
+  }
+  const { HI_SOURCE_HASH } = await importTs("src/content/pages/minimum-wages.hi.ts");
+  for (const [key, value] of Object.entries(current)) {
+    if (HI_SOURCE_HASH[key] !== value) {
+      fail(`C13 the English for "${key}" changed since its Hindi translation (src/content/pages/minimum-wages.hi.ts). Update the Hindi, then set HI_SOURCE_HASH["${key}"] to "${value}"`);
+    }
+  }
+  for (const key of Object.keys(HI_SOURCE_HASH)) if (!(key in current)) fail(`C13 HI_SOURCE_HASH has "${key}", which no English block carries`);
 }
 
 // ── C10: guides (PLAN §5.6, §10.1) ─────────────────────────────────────────
@@ -280,6 +322,19 @@ if (denylist.length) {
   console.log(`Public denylist: ${denylist.length} term(s) checked in ${scanned.length} files${found ? `, ${found} hit(s)` : ""}`);
 } else {
   console.log("Public denylist: PUBLIC_DENYLIST not set, skipped");
+}
+
+// ── C12: no wage dataset in the browser's JS ───────────────────────────────
+// The registry is imported by the client Link (through src/lib/i18n.ts), so
+// it must never import src/content/wages: every page would ship the state
+// datasets to job seekers on patchy 4G. Runs once a build exists.
+{
+  const chunks = walk(join(root, ".next", "static", "chunks")).filter((f) => f.endsWith(".js"));
+  const WAGE_DATA = /Shram Anubhag|"?sha256"?\s*:\s*"[0-9a-f]{64}"|legalBasis/;
+  for (const file of chunks) {
+    if (WAGE_DATA.test(readFileSync(file, "utf8"))) fail(`C12 ${rel(file)} carries wage dataset content; keep src/content/wages out of client imports (WAGE_STATE_UPDATED in src/content/registry/pages.ts)`);
+  }
+  if (chunks.length) console.log(`Client chunks: ${chunks.length} checked for wage data`);
 }
 
 if (warnings.length) console.warn(`Content check warnings (${warnings.length}):\n- ${warnings.join("\n- ")}`);

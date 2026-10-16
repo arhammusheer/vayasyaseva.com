@@ -123,11 +123,11 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
   "en-IN": {
     title: "SIDCUL Haridwar Vacancy: Factory, Warehouse, ITI Jobs",
     description:
-      "Jobs in SIDCUL and across Haridwar: factory, packing, warehouse, housekeeping and ITI work in 8-hour shifts. Apply online. There is no fee to apply.",
+      "SIDCUL Haridwar jobs. No fee to apply. Full 8-hour shifts. Factory, packing, warehouse, housekeeping and ITI work. Apply online with a few short answers.",
     breadcrumb: { home: "Home", page: "Jobs" },
     eyebrow: "JOBS · SIDCUL HARIDWAR",
     heading: "Find work in SIDCUL Haridwar.",
-    lede: "Explore factory, warehouse, housekeeping and ITI work. Choose the work that suits you, then apply through a few simple questions.",
+    lede: "Factory, packing, warehouse, housekeeping and ITI work.",
     noFee: NO_FEE["en-IN"],
     form: {
       steps: {
@@ -161,7 +161,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       errors: {
         phone: "Enter a 10-digit mobile number.",
         agree: "Please tick the box: you are 18 or older and agree that we can contact you.",
-        verification: "We couldn't verify this browser. Please try again.",
+        verification: "Please wait a few seconds, then press Send again.",
         network: "The connection dropped. Check your signal and press Send again.",
         server: "Something went wrong on our side. Please try again in a few minutes.",
         expired: "This form timed out. Please apply again. We match applications by mobile number, so sending twice is fine.",
@@ -169,7 +169,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       done: {
         title: "Received. Thank you.",
         refLabel: "Your reference",
-        body: `We will SMS this reference from VAYSPL. If there is suitable work, our team calls the mobile number you gave. ${NO_FEE["en-IN"]}`,
+        body: `We will SMS this reference from VAYSPL. Keep the SMS. We typically call within a few days when there is suitable work, on the mobile number you gave. ${NO_FEE["en-IN"]}`,
         fraud: "How to spot a fake job offer",
         again: "Send another",
       },
@@ -179,7 +179,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     workEyebrow: "WHO WE HIRE",
     workHeading: "The work we hire for.",
     work: [
-      { title: "Production helpers", text: "Line work, feeding and assisting on factory shopfloors.", role: "factory-helper" },
+      { title: "Production helpers", text: "Work on the factory line: putting parts in, helping operators.", role: "factory-helper" },
       { title: "Packing", text: "Packing, labelling and quality checks.", role: "packing" },
       { title: "Loading and unloading", text: "Warehouse and dispatch work, including stacking.", role: "warehouse" },
       { title: "Forklift operators", text: "Loading and stacking by forklift, for experienced operators.", role: "forklift-operator" },
@@ -218,11 +218,11 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
   "hi-IN": {
     title: "सिडकुल हरिद्वार वैकेंसी: फ़ैक्टरी, वेयरहाउस और ITI की नौकरी",
     description:
-      "सिडकुल और पूरे हरिद्वार में फ़ैक्टरी, पैकिंग, वेयरहाउस, हाउसकीपिंग और ITI की नौकरी, 8 घंटे की शिफ्ट में। ऑनलाइन आवेदन करें। आवेदन की कोई फ़ीस नहीं है।",
+      "सिडकुल हरिद्वार में नौकरी। आवेदन की कोई फ़ीस नहीं। पूरी 8 घंटे की शिफ्ट। फ़ैक्टरी, पैकिंग, वेयरहाउस, हाउसकीपिंग और ITI का काम। कुछ आसान सवालों से ऑनलाइन आवेदन करें।",
     breadcrumb: { home: "होम", page: "नौकरी" },
     eyebrow: "नौकरी · सिडकुल हरिद्वार",
     heading: "सिडकुल हरिद्वार में काम ढूँढें।",
-    lede: "फ़ैक्टरी, वेयरहाउस, हाउसकीपिंग और ITI का काम देखें। अपने लिए काम चुनें और कुछ आसान सवालों के जवाब देकर आवेदन करें।",
+    lede: "फ़ैक्टरी, पैकिंग, वेयरहाउस, हाउसकीपिंग और ITI का काम।",
     noFee: NO_FEE["hi-IN"],
     form: {
       steps: {
@@ -235,7 +235,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
           title: "आपका मोबाइल नंबर",
           placeholder: "98765 43210",
           agree: "मेरी उम्र 18 साल या उससे ज़्यादा है। Vayasya Seva मेरी जानकारी रख सकती है और काम के लिए मुझसे संपर्क कर सकती है।",
-          privacyLink: "गोपनीयता नीति",
+          privacyLink: "गोपनीयता नीति (अंग्रेज़ी में)",
           keepNote: "आपके आख़िरी जवाब के बाद हम आपकी जानकारी 12 महीने तक रखते हैं। पास की साइट पर काम आए तो कॉल करेंगे। हटवानी हो तो help@vayasyaseva.com पर लिखें।",
         },
       },
@@ -249,22 +249,22 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       },
       next: "आगे",
       retry: "फिर से भेजें",
-      retryNotice: "इस आवेदन की पुष्टि के लिए फिर से भेजें। आपका नंबर:",
+      retryNotice: "इस आवेदन की पुष्टि के लिए फिर से भेजें। आपका रेफ़रेंस नंबर:",
       submit: "भेजें",
       sending: "भेज रहे हैं…",
       sendingFile: (n, total, percent) => `फ़ाइल ${n} / ${total} भेज रहे हैं… ${percent}%`,
       errors: {
         phone: "10 अंकों का मोबाइल नंबर लिखें।",
         agree: "कृपया बॉक्स पर टिक करें: आपकी उम्र 18 साल या उससे ज़्यादा है और आप संपर्क के लिए सहमत हैं।",
-        verification: "ब्राउज़र की जाँच नहीं हो पाई। कृपया फिर से कोशिश करें।",
+        verification: "कुछ सेकंड रुकिए, फिर भेजें दबाइए।",
         network: "नेटवर्क टूट गया। सिग्नल देखकर फिर से भेजें दबाएँ।",
         server: "हमारी तरफ़ से कुछ गड़बड़ हुई। कुछ मिनट बाद फिर से कोशिश करें।",
         expired: "फ़ॉर्म का समय ख़त्म हो गया। कृपया फिर से आवेदन करें। हम आवेदन मोबाइल नंबर से मिलाते हैं, इसलिए दोबारा भेजना ठीक है।",
       },
       done: {
         title: "मिल गया, धन्यवाद।",
-        refLabel: "आपका नंबर",
-        body: `हम यह रेफ़रेंस VAYSPL से SMS करेंगे। अगर आपके लायक काम हुआ, तो हमारी टीम आपके दिए मोबाइल नंबर पर फ़ोन करेगी। ${NO_FEE["hi-IN"]}`,
+        refLabel: "आपका रेफ़रेंस नंबर",
+        body: `हम यह रेफ़रेंस VAYSPL से SMS करेंगे। यह SMS संभालकर रखिए। आपके लायक काम होने पर हम आम तौर पर कुछ दिनों में आपके दिए मोबाइल नंबर पर फ़ोन करते हैं। ${NO_FEE["hi-IN"]}`,
         fraud: "नकली नौकरी के ऑफ़र कैसे पहचानें",
         again: "एक और भेजें",
       },
@@ -274,7 +274,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     workEyebrow: "किन कामों के लिए",
     workHeading: "हम इन कामों के लिए लोग रखते हैं।",
     work: [
-      { title: "प्रोडक्शन हेल्पर", text: "फ़ैक्टरी के शॉपफ़्लोर पर लाइन का काम और मदद।", role: "factory-helper" },
+      { title: "प्रोडक्शन हेल्पर", text: "फ़ैक्टरी की लाइन पर काम: पार्ट लगाना, ऑपरेटर की मदद करना।", role: "factory-helper" },
       { title: "पैकिंग", text: "पैकिंग, लेबलिंग और क्वालिटी चेक।", role: "packing" },
       { title: "लोडिंग-अनलोडिंग", text: "वेयरहाउस और डिस्पैच का काम, स्टैकिंग समेत।", role: "warehouse" },
       { title: "फ़ोर्कलिफ़्ट ऑपरेटर", text: "फ़ोर्कलिफ़्ट से लोडिंग और स्टैकिंग, अनुभवी ऑपरेटरों के लिए।", role: "forklift-operator" },
@@ -313,11 +313,11 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
   "hi-Latn-IN": {
     title: "SIDCUL Haridwar Vacancy: Factory, Warehouse, ITI Naukri",
     description:
-      "SIDCUL aur poore Haridwar mein factory, packing, warehouse aur ITI ki naukri, 8 ghante ki shift. Online apply karein. Apply karne ki koi fee nahi hai.",
+      "SIDCUL Haridwar job. Koi fee nahi. Poori 8 ghante ki shift. Factory, packing, warehouse, housekeeping aur ITI ka kaam. Kuch aasaan sawaal, phir online apply.",
     breadcrumb: { home: "Home", page: "Jobs" },
-    eyebrow: "JOBS · SIDCUL HARIDWAR",
+    eyebrow: "Jobs · SIDCUL Haridwar",
     heading: "SIDCUL Haridwar mein kaam dhoondhein.",
-    lede: "Factory, warehouse, housekeeping aur ITI ka kaam dekhein. Apne liye kaam chunein aur kuch aasaan sawaalon ke jawaab dekar apply karein.",
+    lede: "Factory, packing, warehouse, housekeeping aur ITI ka kaam.",
     noFee: NO_FEE["hi-Latn-IN"],
     form: {
       steps: {
@@ -330,7 +330,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
           title: "Aapka mobile number",
           placeholder: "98765 43210",
           agree: "Meri umar 18 saal ya usse zyada hai. Vayasya Seva meri jaankari rakh sakti hai aur kaam ke liye mujhse contact kar sakti hai.",
-          privacyLink: "Privacy Policy",
+          privacyLink: "Privacy Policy (English mein)",
           keepNote: "Aapke aakhri jawab ke baad hum aapki jaankari 12 mahine tak rakhte hain. Paas ki site par kaam aaye to call karenge. Hatwani ho to help@vayasyaseva.com par likhiye.",
         },
       },
@@ -344,32 +344,32 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       },
       next: "Aage",
       retry: "Phir se bhejein",
-      retryNotice: "Isi application ki pushti ke liye phir se bhejein. Aapka reference:",
+      retryNotice: "Isi application ki pushti ke liye phir se bhejein. Aapka reference number:",
       submit: "Bhejein",
       sending: "Bhej rahe hain…",
       sendingFile: (n, total, percent) => `File ${n} / ${total} bhej rahe hain… ${percent}%`,
       errors: {
         phone: "10 digit ka mobile number likhein.",
         agree: "Please box par tick karein: aapki umar 18 saal ya usse zyada hai aur aap contact ke liye sehmat hain.",
-        verification: "Browser ki jaanch nahi ho paayi. Please phir se try karein.",
-        network: "Network toot gaya. Signal dekhkar phir se Bhejein dabayein.",
+        verification: "Kuch second rukiye, phir Bhejein dabaiye.",
+        network: "Network toot gaya. Signal dekhkar phir se Bhejein dabaiye.",
         server: "Hamari taraf se kuch gadbad hui. Kuch minute baad phir se try karein.",
         expired: "Form ka samay khatam ho gaya. Please phir se apply karein. Hum application mobile number se milaate hain, isliye dobara bhejna theek hai.",
       },
       done: {
         title: "Mil gaya, dhanyavaad.",
-        refLabel: "Aapka number",
-        body: `Hum yeh reference VAYSPL se SMS karenge. Agar aapke laayak kaam hua, to hamari team aapke diye mobile number par phone karegi. ${NO_FEE["hi-Latn-IN"]}`,
+        refLabel: "Aapka reference number",
+        body: `Hum yeh reference VAYSPL se SMS karenge. Yeh SMS sambhaal kar rakhiye. Aapke laayak kaam hone par hum aam taur par kuch dinon mein aapke diye mobile number par phone karte hain. ${NO_FEE["hi-Latn-IN"]}`,
         fraud: "Nakli job offer kaise pehchanein",
         again: "Ek aur bhejein",
       },
       labels: { photo: "Photo", document: "Document" },
       prefill: { name: "Naam", work: "Kaunsa kaam chahiye", experience: "Anubhav", location: "Ilaaka", start: "Kab se shuru kar sakte hain" },
     },
-    workEyebrow: "KIN KAAMON KE LIYE",
+    workEyebrow: "Kin kaamon ke liye",
     workHeading: "Hum in kaamon ke liye log rakhte hain.",
     work: [
-      { title: "Production helper", text: "Factory shopfloor par line ka kaam aur madad.", role: "factory-helper" },
+      { title: "Production helper", text: "Factory ki line par kaam: part lagana, operator ki madad karna.", role: "factory-helper" },
       { title: "Packing", text: "Packing, labelling aur quality check.", role: "packing" },
       { title: "Loading-unloading", text: "Warehouse aur dispatch ka kaam, stacking samet.", role: "warehouse" },
       { title: "Forklift operator", text: "Forklift se loading aur stacking, experienced operators ke liye.", role: "forklift-operator" },
@@ -382,7 +382,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       { title: "Data entry operator", text: "Computer par ERP ya SAP mein entry: stores, dispatch aur production.", role: "data-entry-operator" },
       { title: "Supervisor", text: "Shift aur site ki dekhrekh." },
     ],
-    faqEyebrow: "SAWAAL",
+    faqEyebrow: "Sawaal",
     faqTitle: "Bhejne se pehle.",
     sharedFaqs: SHARED_FAQS["hi-Latn-IN"],
     faqs: [

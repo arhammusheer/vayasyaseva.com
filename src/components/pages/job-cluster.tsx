@@ -9,7 +9,8 @@ import { JsonLd, breadcrumbSchema, pageUrl, webPageSchema } from "@/lib/structur
 import { jobsCopy } from "@/content/pages/jobs";
 import { getJobCluster } from "@/content/pages/job-clusters";
 import { jobHubs } from "@/content/pages/job-hubs";
-import { pageEntries } from "@/content/registry";
+import { isPaused, pageEntries } from "@/content/registry";
+import { PausedNotice } from "@/components/sections/paused-notice";
 import { localePath, locales, localesOf, type Locale } from "@/lib/i18n";
 import { jobRolePath } from "@/components/pages/job-role";
 
@@ -53,6 +54,7 @@ export function JobClusterPage({ slug, locale }: { slug: string; locale: Locale 
   const url = localePath(clusterPath(c.slug), locale);
   const roles = jobs.work.filter((w) => w.role);
   const number = (i: number) => String(i + 1).padStart(2, "0");
+  const paused = isPaused(clusterPath(c.slug), locale);
   return (
     <>
       <JsonLd
@@ -83,9 +85,10 @@ export function JobClusterPage({ slug, locale }: { slug: string; locale: Locale 
             <h1 className="quick-title">{c.heading}</h1>
             <p className="quick-lede">{c.lede}</p>
           </div>
-          {/* #apply: the header's Apply and the button after the FAQ scroll back here. */}
+          {/* #apply: the header's Apply and the button after the FAQ scroll back here.
+              A paused hub (PLAN §8.3) shows its notice there instead, with the national form. */}
           <div id="apply" className="quick-anchor">
-            <QuickApply key={c.slug} locale={locale} cluster={c.slug} />
+            {paused ? <PausedNotice kind="jobs" locale={locale} /> : <QuickApply key={c.slug} locale={locale} cluster={c.slug} />}
           </div>
         </div>
       </section>

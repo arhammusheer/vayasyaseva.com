@@ -12,15 +12,13 @@ const baseUrl = "https://www.vayasyaseva.com";
  * tests/sitemap-snapshot.spec.mjs compares the output with a committed snapshot.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  // Each translated page lists every published language on every entry.
+  // Each translated page lists every published language on every entry, plus
+  // x-default, exactly as the page head does (both come from
+  // languageAlternates; seo:check compares them).
   const withLanguages = (path: string) => {
     const languages = languageAlternates(path);
     return languages && {
-      languages: Object.fromEntries(
-        Object.entries(languages)
-          .filter(([key]) => key !== "x-default")
-          .map(([key, href]) => [key, `${baseUrl}${href}`]),
-      ),
+      languages: Object.fromEntries(Object.entries(languages).map(([key, href]) => [key, `${baseUrl}${href}`])),
     };
   };
 

@@ -131,7 +131,8 @@ export function requirementLines(data: ContactFormData) {
   const lines: [string, string | undefined][] = [
     ["Request", data.requestType === "site-assessment" ? REQUEST_TYPE_OPTIONS["site-assessment"] : undefined],
     ["Work", roles],
-    ["Workers", band ? HEADCOUNT_BAND_OPTIONS[band] : data.headcount],
+    // "Workers: 50 to 99", not "Workers: 50 to 99 workers".
+    ["Workers", band ? HEADCOUNT_BAND_OPTIONS[band].replace(/ workers$/, "") : data.headcount],
     ["Site", siteLine(data)],
     ["Start", data.startWindow ? START_WINDOW_OPTIONS[data.startWindow] : data.targetStartDate],
     ["Duration", data.durationBand ? DURATION_BAND_OPTIONS[data.durationBand] : undefined],

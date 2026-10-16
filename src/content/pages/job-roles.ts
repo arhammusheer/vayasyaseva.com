@@ -44,7 +44,7 @@ export const jobRoleLabels: Record<Locale, JobRoleLabels> = {
     workHeading: "The work.",
     suitsHeading: "Who it suits",
     sendHeading: "Useful to send",
-    records: "Workers we deploy are on our records, with applicable EPF and ESIC.",
+    records: "You are on our payroll. We pay your PF and ESIC where they apply.",
     otherEyebrow: "OTHER WORK WE HIRE FOR",
     allJobs: "All jobs",
     faqEyebrow: "QUESTIONS",
@@ -54,7 +54,7 @@ export const jobRoleLabels: Record<Locale, JobRoleLabels> = {
     workHeading: "काम क्या है।",
     suitsHeading: "किसके लिए",
     sendHeading: "भेज सकें तो अच्छा",
-    records: "हम जिन लोगों को काम पर रखते हैं, वे हमारे रिकॉर्ड में होते हैं, लागू होने पर EPF और ESIC के साथ।",
+    records: "आप हमारे पेरोल पर होते हैं। PF और ESIC हम जमा करते हैं, जहाँ लागू हो।",
     otherEyebrow: "और किन कामों के लिए",
     allJobs: "सभी नौकरियाँ",
     faqEyebrow: "सवाल",
@@ -64,10 +64,10 @@ export const jobRoleLabels: Record<Locale, JobRoleLabels> = {
     workHeading: "Kaam kya hai.",
     suitsHeading: "Kiske liye",
     sendHeading: "Bhej sakein to achha",
-    records: "Hum jin logon ko kaam par rakhte hain, woh hamare records mein hote hain, applicable EPF aur ESIC ke saath.",
-    otherEyebrow: "AUR KIN KAAMON KE LIYE",
+    records: "Aap hamare payroll par hote hain. PF aur ESIC hum jama karte hain, jahan laagu ho.",
+    otherEyebrow: "Aur kin kaamon ke liye",
     allJobs: "Saari naukriyan",
-    faqEyebrow: "SAWAAL",
+    faqEyebrow: "Sawaal",
     faqTitle: "Is kaam ke baare mein.",
   },
 };
@@ -81,7 +81,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       description:
         "Factory helper and production helper jobs in SIDCUL and across Haridwar: line work, material handling and packing. Apply online. There is no fee to apply.",
       heading: "Factory helper jobs in SIDCUL Haridwar.",
-      lede: "Production helper work on factory shopfloors. Tell us about yourself and we'll call you when there's suitable work.",
+      lede: "Production helper work on the factory line. Tell us about yourself and we'll call you when there's suitable work.",
       work: [
         "Feeding and assisting on production lines",
         "Moving material between stores and the line",
@@ -93,14 +93,14 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       suits: [
         "Freshers: many helper roles need no prior experience",
         "People who have worked on a line or in packing before",
-        "Anyone ready to follow site safety rules and wear PPE",
+        "Anyone ready to follow site safety rules and wear safety shoes and gloves",
       ],
       send: ["10th or 12th marksheet", "Any experience letter or salary slip", "A resume, if you have one"],
       faqs: [
         {
           question: "Do I need experience for a factory helper job?",
           answer:
-            "Often not. Many helper roles are open to freshers, and the site explains the work at induction. If you have worked in a factory before, tell us where and what you did.",
+            "Often not. Many helper roles are open to freshers, and the site teaches the work on the first day. If you have worked in a factory before, tell us where and what you did.",
           category: "operations",
         },
         {
@@ -112,7 +112,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         {
           question: "Will I get PF and ESIC?",
           answer:
-            "Workers we deploy are on our records, and applicable EPF and ESIC contributions are made in your name. Ask us about it when we call.",
+            "You are on our payroll. We pay your PF and ESIC where they apply. Ask us about it when we call.",
           category: "compliance",
         },
       ],
@@ -156,7 +156,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         {
           question: "What is different about pharma packing?",
           answer:
-            "Pharma packing areas follow clean-room rules: special clothing, hand hygiene, no phones on the floor and careful batch records. The site trains you on these at induction.",
+            "Pharma packing areas follow clean-room rules: special clothing, hand hygiene, no phones on the floor and careful batch records. The site teaches you these on the first day.",
           category: "operations",
         },
       ],
@@ -244,7 +244,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         {
           question: "Will I get PF and ESIC?",
           answer:
-            "Workers we deploy are on our records, and applicable EPF and ESIC contributions are made in your name. Ask us about it when we call.",
+            "You are on our payroll. We pay your PF and ESIC where they apply. Ask us about it when we call.",
           category: "compliance",
         },
       ],
@@ -288,7 +288,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         {
           question: "Will I get PF and ESIC?",
           answer:
-            "Workers we deploy are on our records, and applicable EPF and ESIC contributions are made in your name. Ask us about it when we call.",
+            "You are on our payroll. We pay your PF and ESIC where they apply. Ask us about it when we call.",
           category: "compliance",
         },
       ],
@@ -308,7 +308,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         "Office records and simple reports in Excel",
       ],
       setting:
-        "Factories, warehouses and site offices in SIDCUL and across Haridwar, usually in general or shift timings set by the site.",
+        "Factories, warehouses and site offices in SIDCUL and across Haridwar, usually in day or shift timings set by the site.",
       suits: [
         "People who can type in English and Hindi and know basic Excel",
         "Anyone who has worked in SAP, Tally or another ERP",
@@ -370,7 +370,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         {
           question: "Will I get PF and ESIC?",
           answer:
-            "Workers we deploy are on our records, and applicable EPF and ESIC contributions are made in your name. Ask us about it when we call.",
+            "You are on our payroll. We pay your PF and ESIC where they apply. Ask us about it when we call.",
           category: "compliance",
         },
       ],
@@ -500,7 +500,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         {
           question: "Will I get PF and ESIC?",
           answer:
-            "Workers we deploy are on our records, and applicable EPF and ESIC contributions are made in your name. Ask us about it when we call.",
+            "You are on our payroll. We pay your PF and ESIC where they apply. Ask us about it when we call.",
           category: "compliance",
         },
       ],
@@ -569,14 +569,14 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       suits: [
         "फ़्रेशर: हेल्पर के कई कामों में पहले का अनुभव ज़रूरी नहीं",
         "जिन्होंने पहले लाइन या पैकिंग में काम किया है",
-        "जो साइट के सेफ़्टी नियम मानें और PPE पहनें",
+        "जो साइट के सेफ़्टी नियम मानें और सेफ़्टी जूते, दस्ताने पहनें",
       ],
       send: ["10वीं या 12वीं की मार्कशीट", "अनुभव का कोई पत्र या सैलरी स्लिप", "रिज़्यूमे, अगर हो"],
       faqs: [
         {
           question: "क्या फ़ैक्टरी हेल्पर के लिए अनुभव ज़रूरी है?",
           answer:
-            "अक्सर नहीं। हेल्पर के कई काम फ़्रेशर के लिए भी हैं, और साइट इंडक्शन में काम समझाती है। पहले किसी फ़ैक्टरी में काम किया है तो बताइए कहाँ और क्या किया।",
+            "अक्सर नहीं। हेल्पर के कई काम फ़्रेशर के लिए भी हैं, और पहले दिन काम सिखाया जाता है। पहले किसी फ़ैक्टरी में काम किया है तो बताइए कहाँ और क्या किया।",
           category: "operations",
         },
         {
@@ -588,7 +588,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         {
           question: "क्या PF और ESIC मिलेगा?",
           answer:
-            "हम जिन वर्करों को काम पर रखते हैं, वे हमारे रिकॉर्ड में होते हैं, और लागू होने पर EPF और ESIC आपके नाम पर जमा होता है। फ़ोन पर हमसे पूछिए।",
+            "आप हमारे पेरोल पर होते हैं। PF और ESIC हम आपके नाम पर जमा करते हैं, जहाँ लागू हो। फ़ोन पर हमसे पूछिए।",
           category: "compliance",
         },
       ],
@@ -632,7 +632,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         {
           question: "फ़ार्मा पैकिंग में क्या अलग होता है?",
           answer:
-            "फ़ार्मा पैकिंग में क्लीन-रूम के नियम चलते हैं: ख़ास कपड़े, हाथों की सफ़ाई, फ़्लोर पर फ़ोन नहीं और बैच का पूरा रिकॉर्ड। साइट इंडक्शन में ये सब सिखाती है।",
+            "फ़ार्मा पैकिंग में क्लीन-रूम के नियम चलते हैं: ख़ास कपड़े, हाथों की सफ़ाई, फ़्लोर पर फ़ोन नहीं और बैच का पूरा रिकॉर्ड। पहले दिन ये सब सिखाया जाता है।",
           category: "operations",
         },
       ],
@@ -720,7 +720,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         {
           question: "क्या PF और ESIC मिलेगा?",
           answer:
-            "हम जिन वर्करों को काम पर रखते हैं, वे हमारे रिकॉर्ड में होते हैं, और लागू होने पर EPF और ESIC आपके नाम पर जमा होता है। फ़ोन पर हमसे पूछिए।",
+            "आप हमारे पेरोल पर होते हैं। PF और ESIC हम आपके नाम पर जमा करते हैं, जहाँ लागू हो। फ़ोन पर हमसे पूछिए।",
           category: "compliance",
         },
       ],
@@ -764,7 +764,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         {
           question: "क्या PF और ESIC मिलेगा?",
           answer:
-            "हम जिन वर्करों को काम पर रखते हैं, वे हमारे रिकॉर्ड में होते हैं, और लागू होने पर EPF और ESIC आपके नाम पर जमा होता है। फ़ोन पर हमसे पूछिए।",
+            "आप हमारे पेरोल पर होते हैं। PF और ESIC हम आपके नाम पर जमा करते हैं, जहाँ लागू हो। फ़ोन पर हमसे पूछिए।",
           category: "compliance",
         },
       ],
@@ -784,7 +784,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         "ऑफ़िस के रिकॉर्ड और Excel में आसान रिपोर्ट",
       ],
       setting:
-        "सिडकुल और पूरे हरिद्वार की फ़ैक्टरियाँ, वेयरहाउस और साइट ऑफ़िस, आमतौर पर साइट की तय जनरल या शिफ्ट टाइमिंग में।",
+        "सिडकुल और पूरे हरिद्वार की फ़ैक्टरियाँ, वेयरहाउस और साइट ऑफ़िस, आमतौर पर साइट की तय दिन या शिफ्ट टाइमिंग में।",
       suits: [
         "जो अंग्रेज़ी और हिंदी में टाइप कर सकें और बेसिक Excel जानें",
         "जिन्होंने SAP, Tally या किसी और ERP पर काम किया है",
@@ -845,7 +845,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         {
           question: "क्या PF और ESIC मिलेगा?",
           answer:
-            "हम जिन वर्करों को काम पर रखते हैं, वे हमारे रिकॉर्ड में होते हैं, और लागू होने पर EPF और ESIC आपके नाम पर जमा होता है। फ़ोन पर हमसे पूछिए।",
+            "आप हमारे पेरोल पर होते हैं। PF और ESIC हम आपके नाम पर जमा करते हैं, जहाँ लागू हो। फ़ोन पर हमसे पूछिए।",
           category: "compliance",
         },
       ],
@@ -973,7 +973,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         {
           question: "क्या PF और ESIC मिलेगा?",
           answer:
-            "हम जिन वर्करों को काम पर रखते हैं, वे हमारे रिकॉर्ड में होते हैं, और लागू होने पर EPF और ESIC आपके नाम पर जमा होता है। फ़ोन पर हमसे पूछिए।",
+            "आप हमारे पेरोल पर होते हैं। PF और ESIC हम आपके नाम पर जमा करते हैं, जहाँ लागू हो। फ़ोन पर हमसे पूछिए।",
           category: "compliance",
         },
       ],
@@ -1042,14 +1042,14 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       suits: [
         "Fresher: helper ke kai kaamon mein pehle ka experience zaroori nahi",
         "Jinhone pehle line ya packing mein kaam kiya hai",
-        "Jo site ke safety rules maanein aur PPE pehnein",
+        "Jo site ke safety rules maanein aur safety shoes, gloves pehnein",
       ],
       send: ["10th ya 12th ki marksheet", "Experience ka koi letter ya salary slip", "Resume, agar ho"],
       faqs: [
         {
           question: "Kya factory helper ke liye experience zaroori hai?",
           answer:
-            "Aksar nahi. Helper ke kai kaam fresher ke liye bhi hain, aur site induction mein kaam samjhati hai. Pehle kisi factory mein kaam kiya hai to bataiye kahan aur kya kiya.",
+            "Aksar nahi. Helper ke kai kaam fresher ke liye bhi hain, aur pehle din kaam sikhaya jaata hai. Pehle kisi factory mein kaam kiya hai to bataiye kahan aur kya kiya.",
           category: "operations",
         },
         {
@@ -1061,7 +1061,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         {
           question: "Kya PF aur ESIC milega?",
           answer:
-            "Hum jin workers ko kaam par rakhte hain, woh hamare records mein hote hain, aur applicable EPF aur ESIC aapke naam par jama hota hai. Apply karne ke baad hamari team aapko phone karke sab batayegi.",
+            "Aap hamare payroll par hote hain. PF aur ESIC hum aapke naam par jama karte hain, jahan laagu ho. Apply karne ke baad hamari team aapko phone karke sab batayegi.",
           category: "compliance",
         },
       ],
@@ -1071,7 +1071,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "Packing job",
       metaTitle: "SIDCUL Haridwar mein Packing Job: Pharma aur FMCG",
       description:
-        "SIDCUL aur poore Haridwar mein packing ki naukri: pharma, FMCG aur dusri factories mein line packing, carton, labelling aur checking. Online apply karein. Koi fee nahi.",
+        "Packing job SIDCUL Haridwar mein. Koi fee nahi. Poori 8 ghante ki shift. Pharma, FMCG factories mein line packing, carton, labelling. Online apply karein.",
       heading: "SIDCUL Haridwar mein packing ki naukri.",
       lede: "Factory ki line aur packing hall mein packing ka kaam. Apne baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
       work: [
@@ -1105,7 +1105,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         {
           question: "Pharma packing mein kya alag hota hai?",
           answer:
-            "Pharma packing mein clean-room ke rules chalte hain: khaas kapde, haathon ki safai, floor par phone nahi aur batch ka poora record. Site induction mein ye sab sikhati hai.",
+            "Pharma packing mein clean-room ke rules chalte hain: khaas kapde, haathon ki safai, floor par phone nahi aur batch ka poora record. Pehle din ye sab sikhaya jaata hai.",
           category: "operations",
         },
       ],
@@ -1193,7 +1193,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         {
           question: "Kya PF aur ESIC milega?",
           answer:
-            "Hum jin workers ko kaam par rakhte hain, woh hamare records mein hote hain, aur applicable EPF aur ESIC aapke naam par jama hota hai. Apply karne ke baad hamari team aapko phone karke sab batayegi.",
+            "Aap hamare payroll par hote hain. PF aur ESIC hum aapke naam par jama karte hain, jahan laagu ho. Apply karne ke baad hamari team aapko phone karke sab batayegi.",
           category: "compliance",
         },
       ],
@@ -1203,7 +1203,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "Forklift operator",
       metaTitle: "SIDCUL Haridwar mein Forklift Operator Job",
       description:
-        "SIDCUL aur poore Haridwar mein forklift operator ki naukri: warehouse aur plant mein maal ki loading, stacking aur dhulai. Experienced operators ke liye. Koi fee nahi.",
+        "Forklift operator job SIDCUL Haridwar mein. Koi fee nahi. Poori 8 ghante ki shift. Warehouse aur plant mein loading, stacking. Experienced operators ke liye.",
       heading: "SIDCUL Haridwar mein forklift operator ki naukri.",
       lede: "Warehouse aur plant mein forklift se maal ki loading, dhulai aur stacking. Apne experience ke baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
       work: [
@@ -1237,7 +1237,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         {
           question: "Kya PF aur ESIC milega?",
           answer:
-            "Hum jin workers ko kaam par rakhte hain, woh hamare records mein hote hain, aur applicable EPF aur ESIC aapke naam par jama hota hai. Apply karne ke baad hamari team aapko phone karke sab batayegi.",
+            "Aap hamare payroll par hote hain. PF aur ESIC hum aapke naam par jama karte hain, jahan laagu ho. Apply karne ke baad hamari team aapko phone karke sab batayegi.",
           category: "compliance",
         },
       ],
@@ -1257,7 +1257,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         "Office ke records aur Excel mein aasaan reports",
       ],
       setting:
-        "SIDCUL aur poore Haridwar ki factories, warehouses aur site offices, aamtaur par site ki tay general ya shift timing mein.",
+        "SIDCUL aur poore Haridwar ki factories, warehouses aur site offices, aamtaur par site ki tay din ya shift timing mein.",
       suits: [
         "Jo English aur Hindi mein type kar sakein aur basic Excel jaanein",
         "Jinhone SAP, Tally ya kisi aur ERP par kaam kiya hai",
@@ -1318,7 +1318,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         {
           question: "Kya PF aur ESIC milega?",
           answer:
-            "Hum jin workers ko kaam par rakhte hain, woh hamare records mein hote hain, aur applicable EPF aur ESIC aapke naam par jama hota hai. Apply karne ke baad hamari team aapko phone karke sab batayegi.",
+            "Aap hamare payroll par hote hain. PF aur ESIC hum aapke naam par jama karte hain, jahan laagu ho. Apply karne ke baad hamari team aapko phone karke sab batayegi.",
           category: "compliance",
         },
       ],
@@ -1369,7 +1369,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "Electrician",
       metaTitle: "SIDCUL Haridwar mein Electrician Job: ITI Electrician",
       description:
-        "SIDCUL aur poore Haridwar mein electrician ki naukri: ITI electrician ke liye plant maintenance, wiring, motor aur panel ka kaam. Online apply karein. Koi fee nahi.",
+        "ITI electrician job SIDCUL Haridwar mein. Koi fee nahi. Poori 8 ghante ki shift. Plant maintenance, wiring, motor aur panel ka kaam. Online apply karein.",
       heading: "SIDCUL Haridwar mein electrician ki naukri.",
       lede: "SIDCUL ke plants mein maintenance aur wiring ka kaam. Apne trade aur experience ke baare mein bataiye, sahi kaam hone par hum aapko phone karenge.",
       work: [
@@ -1412,7 +1412,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
       name: "Welder",
       metaTitle: "SIDCUL Haridwar mein Welder Job: Arc, MIG, TIG Welding",
       description:
-        "SIDCUL aur poore Haridwar mein welder ki naukri: fabrication aur maintenance ke liye arc, MIG aur TIG welding aur gas cutting. Online apply karein. Koi fee nahi.",
+        "Welder job SIDCUL Haridwar mein. Koi fee nahi. Poori 8 ghante ki shift. Fabrication aur maintenance: arc, MIG, TIG welding aur gas cutting. Online apply.",
       heading: "SIDCUL Haridwar mein welder ki naukri.",
       lede: "Plants aur project sites par fabrication aur maintenance ki welding. bataiye ki aap kaun-si welding jaante hain, sahi kaam hone par hum aapko phone karenge.",
       work: [
@@ -1446,7 +1446,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
         {
           question: "Kya PF aur ESIC milega?",
           answer:
-            "Hum jin workers ko kaam par rakhte hain, woh hamare records mein hote hain, aur applicable EPF aur ESIC aapke naam par jama hota hai. Apply karne ke baad hamari team aapko phone karke sab batayegi.",
+            "Aap hamare payroll par hote hain. PF aur ESIC hum aapke naam par jama karte hain, jahan laagu ho. Apply karne ke baad hamari team aapko phone karke sab batayegi.",
           category: "compliance",
         },
       ],

@@ -4,6 +4,7 @@ import type {
   ComplianceItem,
   FaqItem,
 } from "./types";
+import { AGENCY_FAQ } from "./agency-faq";
 
 export const trustClients: TrustClient[] = [
   {
@@ -79,12 +80,7 @@ export const homeFaqs: FaqItem[] = [
       "Attendance and wage registers, wage slips, and EPF and ESIC challans for the workers on your site. We share them for your monthly review and for audits.",
     category: "compliance",
   },
-  {
-    question: "Are you a manpower agency or a staffing company?",
-    answer:
-      "We’re a manpower contractor. An agency sends you candidates to hire. We supply the workers, keep them on our payroll, supervise them on site, replace absentees and handle wages, EPF and ESIC. You get a working crew and one invoice.",
-    category: "commercial",
-  },
+  AGENCY_FAQ["en-IN"],
   {
     question: "Where do you supply workers?",
     answer:

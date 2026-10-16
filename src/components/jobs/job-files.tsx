@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { FileText, ImageIcon, Paperclip, X } from "lucide-react";
 import { trackAnalyticsEvent } from "@/lib/analytics";
 import { jobsCopy } from "@/content/pages/jobs";
@@ -140,6 +140,7 @@ export function JobFilePicker({
   optionalLabel?: string;
 }) {
   const t = jobsCopy[locale].form;
+  const optionalId = useId();
   const list = (
     <>
       {picker.files.length > 0 && (
@@ -163,10 +164,12 @@ export function JobFilePicker({
     return (
       <div className="mt-5">
         <label className="quick-attach">
-          <Paperclip size={16} aria-hidden="true" /> {t.steps.files.title}
-          {optionalLabel && <span className="quick-optional">· {optionalLabel}</span>}
-          <input type="file" accept={FILE_ACCEPT} multiple className="sr-only" disabled={disabled} onChange={(e) => { picker.add(e.target.files); e.target.value = ""; }} />
+          <Paperclip size={16} aria-hidden="true" className="shrink-0" />
+          <span>{t.steps.files.title}</span>
+          <input type="file" accept={FILE_ACCEPT} multiple className="sr-only" disabled={disabled} aria-describedby={optionalLabel ? optionalId : undefined} onChange={(e) => { picker.add(e.target.files); e.target.value = ""; }} />
         </label>
+        {/* Its own line: wrapped next to the label it split into a column at 360px. */}
+        {optionalLabel && <p id={optionalId} className="quick-attach-note">{optionalLabel}</p>}
         {list}
         {picker.files.length > 0 && <p className="mt-2 text-sm text-muted-foreground">{t.steps.files.warning}</p>}
       </div>

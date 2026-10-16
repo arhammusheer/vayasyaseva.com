@@ -78,6 +78,41 @@ const urls = [...new Set([...sitemap.body.matchAll(/<loc>([^<]+)<\/loc>/g)].map(
 const sitemapPaths = new Set(urls.map((url) => trim(url.slice(SITE.length)) || "/"));
 const LOCALE_LINK = /href="(\/(?:en-in|hi-in|hi-latn-in)(?:\/[^"?#]*)?)(?:[?#][^"]*)?"/g;
 
+// hreflang sets in the sitemap, per URL, to compare with each page's head.
+const sitemapAlternates = new Map();
+for (const [, block] of sitemap.body.matchAll(/<url>([\s\S]*?)<\/url>/g)) {
+  const loc = block.match(/<loc>([^<]+)<\/loc>/)?.[1];
+  const set = [...block.matchAll(/hreflang="([^"]+)" href="([^"]+)"/g)].map(([, lang, href]) => `${lang} ${href}`).sort();
+  if (loc) sitemapAlternates.set(loc, set);
+}
+
+// Title and description lengths on every sitemap URL (PLAN §5.1, §10.1):
+// title at most 55 characters before " | Vayasya Seva", description 140 to
+// 160. Devanagari is measured without its combining marks (matras, nukta,
+// virama), which is close to its visible width, and only the upper limits
+// apply to it. LENGTH_ALLOWLIST holds pages left alone on purpose.
+const TITLE_MAX = 55;
+const DESCRIPTION_MIN = 140;
+const DESCRIPTION_MAX = 160;
+const LENGTH_ALLOWLIST = new Set([
+  // Legal pages: literal titles, descriptions written with counsel.
+  "/en-in/privacy",
+  "/en-in/terms",
+  // The brand page is a reference for designers, not a search landing page.
+  "/en-in/brand",
+]);
+const DEVANAGARI = /[\u0900-\u097F]/;
+const visibleLength = (text) => (DEVANAGARI.test(text) ? [...text].filter((ch) => !/\p{M}/u.test(ch)).length : text.length);
+function checkLengths(path, title, description) {
+  if (LENGTH_ALLOWLIST.has(path)) return;
+  const base = title.replace(TITLE_SUFFIX, "");
+  if (visibleLength(base) > TITLE_MAX) fail(path, `title is ${visibleLength(base)} characters before "${TITLE_SUFFIX}" (max ${TITLE_MAX}): ${base}`);
+  if (!description) return fail(path, "no meta description");
+  const length = visibleLength(description);
+  if (length > DESCRIPTION_MAX) fail(path, `meta description is ${length} characters (max ${DESCRIPTION_MAX})`);
+  if (!DEVANAGARI.test(description) && length < DESCRIPTION_MIN) fail(path, `meta description is ${length} characters (min ${DESCRIPTION_MIN})`);
+}
+
 await Promise.all(
   urls.map(async (url) => {
     const path = url.slice(SITE.length);
@@ -91,6 +126,12 @@ await Promise.all(
 
     const title = body.match(/<title>([^<]*)<\/title>/)?.[1]?.trim();
     if (!title) fail(path, "empty <title>");
+    else checkLengths(path, decode(title), decode(metaDescription(body) ?? ""));
+
+    // hreflang: the page head and the sitemap give the same set, x-default included.
+    const head = [...body.matchAll(/<link rel="alternate" hrefLang="([^"]+)" href="([^"]+)"/gi)].map(([, lang, href]) => `${lang} ${decode(href)}`).sort();
+    const listed = sitemapAlternates.get(url) ?? [];
+    if (head.join() !== listed.join()) fail(path, `hreflang in the head (${head.length}) differs from the sitemap (${listed.length}): head [${head.join(", ")}], sitemap [${listed.join(", ")}]`);
 
     const canonical = body.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
     if (!canonical) fail(path, "no canonical link");

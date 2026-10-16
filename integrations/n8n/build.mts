@@ -67,9 +67,15 @@ const CREDENTIALS = {
   webhook: "vspl-talent-intake-webhook",
   sarvam: "sarvam-vspl",
   fast2sms: "fast2sms-vspl",
+  /** Delete rights on the talent bucket, for erasure only; intake's token stays read-only. */
+  r2Erase: "r2-talent-erase",
+  /** A Chatwoot agent token (api_access_token) that may delete contacts. */
+  chatwootAdmin: "chatwoot-talent-admin",
 } as const;
 
 const BUCKET = "vayasya-talent-intake";
+/** Privacy notice §10: details are kept up to 12 months after the person last contacts us. */
+const RETENTION_MONTHS = 12;
 const SARVAM = "https://api.sarvam.ai/speech-to-text/job/v1";
 
 function stableId(...parts: string[]) {
@@ -253,7 +259,7 @@ const sql = (
 });
 
 interface HttpOptions {
-  method: "GET" | "POST" | "PUT";
+  method: "GET" | "POST" | "PUT" | "DELETE";
   url: string;
   auth?: string;
   headers?: [string, string][];
@@ -386,6 +392,28 @@ WITH s AS (
   INSERT INTO sms_acknowledgements (submission_id)
   SELECT id FROM s
   RETURNING 1
+), person AS (
+  -- The worker list (PLAN §8.2): an application is the person reaching us,
+  -- so it renews last_contact_at. Lists merge; the newest name and language win.
+  INSERT INTO people (phone, name, clusters, home_area, roles, locale, consent_version, last_applied_at, last_contact_at)
+  SELECT $4, $14,
+         CASE WHEN $16::text IS NULL THEN '{}'::text[] ELSE ARRAY[$16::text] END,
+         $15::jsonb #>> '{area,0}',
+         ARRAY(SELECT DISTINCT r FROM unnest(array_remove(ARRAY[$9::text], NULL) || ARRAY(SELECT jsonb_array_elements_text(coalesce($15::jsonb -> 'work', '[]'::jsonb)))) AS r),
+         $3, $5, now(), now()
+  FROM s
+  ON CONFLICT (phone) DO UPDATE SET
+    name = coalesce(EXCLUDED.name, people.name),
+    clusters = ARRAY(SELECT DISTINCT c FROM unnest(people.clusters || EXCLUDED.clusters) AS c),
+    home_area = coalesce(EXCLUDED.home_area, people.home_area),
+    roles = ARRAY(SELECT DISTINCT r FROM unnest(people.roles || EXCLUDED.roles) AS r),
+    locale = EXCLUDED.locale,
+    consent_version = EXCLUDED.consent_version,
+    status = CASE WHEN people.status = 'do-not-contact' THEN 'active' ELSE people.status END,
+    last_applied_at = now(),
+    last_contact_at = now(),
+    updated_at = now()
+  RETURNING 1
 ), a AS (
   INSERT INTO attachments (submission_id, position, kind, r2_key, mime, size_bytes, original_name, transcript_status)
   SELECT s.id, (x->>'position')::int, x->>'kind', x->>'key', x->>'mime', (x->>'size')::int, x->>'name',
@@ -393,7 +421,7 @@ WITH s AS (
   FROM s, jsonb_array_elements($8::jsonb) AS x
   RETURNING 1
 )
-SELECT (SELECT id FROM s) AS submission_id, (SELECT count(*) FROM a) AS attachments, (SELECT count(*) FROM ack) AS acknowledgements;`,
+SELECT (SELECT id FROM s) AS submission_id, (SELECT count(*) FROM a) AS attachments, (SELECT count(*) FROM ack) AS acknowledgements, (SELECT count(*) FROM person) AS people;`,
       grid(2),
       "[$json.ref, $json.source, $json.locale, $json.phone, $json.consentVersion, $json.consentedAt, $json.text, JSON.stringify($json.attachments), $json.role, $json.hub, $json.channel, $json.agentName, $json.form, $json.applicantName, $json.answers ? JSON.stringify($json.answers) : null, $json.cluster, $json.pageCluster, $json.pagePath]",
     ),
@@ -780,6 +808,141 @@ RETURNING id;`,
 }
 
 // ---------------------------------------------------------------------------
+// VSPL talent · retention - the 12-month rule and erasure requests (privacy
+// notice §10, PLAN §8.3). Hourly: queue everyone whose last contact is over
+// 12 months old, then erase one queued person per run: R2 files, Chatwoot
+// contacts (with their conversations), then their rows. Staff queue a
+// person's own request by mobile number and reference (README, "Erasure").
+
+function retentionWorkflow() {
+  const w = new WorkflowBuilder("VSPL talent · retention");
+  const settings = `$('Retention settings').first().json`;
+  const claimed = `$('Claim erasure').first().json`;
+  w.add({
+    name: "Every hour",
+    type: "n8n-nodes-base.scheduleTrigger",
+    typeVersion: 1.2,
+    position: grid(0),
+    parameters: { rule: { interval: [{ field: "hours", hoursInterval: 1 }] } },
+  });
+  w.add({
+    name: "Retention settings",
+    type: "n8n-nodes-base.set",
+    typeVersion: 3.4,
+    position: grid(1),
+    notes: "chatwootAccountId: the account that holds the \"Jobs, website\" inbox.",
+    notesInFlow: true,
+    parameters: {
+      assignments: {
+        assignments: [
+          ["chatwootBaseUrl", "http://chatwoot.growth.svc.cluster.local"],
+          ["chatwootAccountId", "1"],
+        ].map(([name, value]) => ({ id: stableId("retention-settings", name), name, value, type: "string" })),
+      },
+      options: {},
+    },
+  });
+  w.add(
+    sql(
+      "Queue expired and recover",
+      `
+WITH recovered AS (
+  UPDATE erasure_requests
+  SET status = CASE WHEN attempts >= 3 THEN 'failed' ELSE 'pending' END,
+      last_error = coalesce(last_error, 'Interrupted; retried'), updated_at = now()
+  WHERE status = 'running' AND updated_at < now() - interval '1 hour'
+  RETURNING id
+), expired AS (
+  SELECT p.phone FROM people p
+  WHERE greatest(coalesce(p.last_contact_at, p.created_at), coalesce(p.last_confirmed_at, p.created_at)) < now() - interval '${RETENTION_MONTHS} months'
+  UNION
+  -- Submissions from before the people table, with no row of their own.
+  SELECT s.phone FROM submissions s
+  WHERE NOT EXISTS (SELECT 1 FROM people p WHERE p.phone = s.phone)
+  GROUP BY s.phone HAVING max(s.created_at) < now() - interval '${RETENTION_MONTHS} months'
+), queued AS (
+  INSERT INTO erasure_requests (phone, reason)
+  SELECT phone, 'retention' FROM expired
+  ON CONFLICT (phone) WHERE status IN ('pending', 'running') DO NOTHING
+  RETURNING id
+)
+SELECT (SELECT count(*) FROM recovered) AS recovered, (SELECT count(*) FROM queued) AS queued;`,
+      grid(2),
+      undefined,
+      { executeOnce: true, alwaysOutputData: true },
+    ),
+  );
+  w.add(
+    sql(
+      "Claim erasure",
+      `
+WITH claimed AS (
+  UPDATE erasure_requests e
+  SET status = 'running', attempts = e.attempts + 1, last_error = NULL, updated_at = now()
+  WHERE e.id = (
+    SELECT id FROM erasure_requests WHERE status = 'pending' AND phone IS NOT NULL
+    ORDER BY requested_at LIMIT 1 FOR UPDATE SKIP LOCKED)
+  RETURNING e.id, e.phone, e.reason
+)
+SELECT c.id, c.phone, c.reason,
+  coalesce((SELECT jsonb_agg(a.r2_key) FROM attachments a JOIN submissions s ON s.id = a.submission_id WHERE s.phone = c.phone), '[]'::jsonb) AS files,
+  coalesce((SELECT jsonb_agg(DISTINCT s.chatwoot_contact_id) FROM submissions s WHERE s.phone = c.phone AND s.chatwoot_contact_id IS NOT NULL), '[]'::jsonb) AS contacts
+FROM claimed c;`,
+      grid(3),
+      undefined,
+      { executeOnce: true },
+    ),
+  );
+  w.add(condition("Claimed any?", "$json.id !== undefined", grid(4)));
+  w.add(code("Files to delete", "erase-files.ts", grid(5)));
+  w.add(condition("Has file?", "$json.key !== null", grid(6)));
+  w.add({
+    name: "R2: delete file",
+    type: "n8n-nodes-base.s3",
+    typeVersion: 1,
+    position: grid(7, -1),
+    parameters: { resource: "file", operation: "delete", bucketName: BUCKET, fileKey: "={{ $json.key }}", options: {} },
+    credentials: credential("s3", CREDENTIALS.r2Erase),
+  });
+  w.add({ ...code("Contacts to delete", "erase-contacts.ts", grid(8)), executeOnce: true });
+  w.add(condition("Has contact?", "$json.contactId !== null", grid(9)));
+  w.add(
+    http("Chatwoot: delete contact", grid(10, -1), {
+      method: "DELETE",
+      url: `={{ ${settings}.chatwootBaseUrl }}/api/v1/accounts/{{ ${settings}.chatwootAccountId }}/contacts/{{ $json.contactId }}`,
+      auth: CREDENTIALS.chatwootAdmin,
+      retry: true,
+    }),
+  );
+  w.add(
+    sql(
+      "Delete rows",
+      `
+WITH gone AS (
+  DELETE FROM submissions WHERE phone = $2 RETURNING id
+), person AS (
+  DELETE FROM people WHERE phone = $2 RETURNING 1
+)
+UPDATE erasure_requests
+SET status = 'done', processed_at = now(), updated_at = now(),
+    removed_submissions = (SELECT count(*) FROM gone), removed_files = $3::int, removed_contacts = $4::int,
+    phone = NULL, ref = NULL
+WHERE id = $1::uuid AND status = 'running'
+RETURNING id, status, removed_submissions;`,
+      grid(11),
+      `[${claimed}.id, ${claimed}.phone, ${claimed}.files.length, ${claimed}.contacts.length]`,
+      { executeOnce: true },
+    ),
+  );
+  w.chain("Every hour", "Retention settings", "Queue expired and recover", "Claim erasure", "Claimed any?", "Files to delete", "Has file?", "R2: delete file", "Contacts to delete");
+  // No file: straight on to the contacts.
+  w.connect("Has file?", "Contacts to delete", { output: 1 });
+  w.chain("Contacts to delete", "Has contact?", "Chatwoot: delete contact", "Delete rows");
+  w.connect("Has contact?", "Delete rows", { output: 1 });
+  return w.build();
+}
+
+// ---------------------------------------------------------------------------
 
 const outputs: Record<string, Workflow> = {
   "vspl-talent-setup.json": setupWorkflow(),
@@ -787,6 +950,7 @@ const outputs: Record<string, Workflow> = {
   "vspl-talent-transcribe.json": transcribeWorkflow(),
   "vspl-talent-deliver.json": deliverWorkflow(),
   "vspl-talent-acknowledge.json": acknowledgeWorkflow(),
+  "vspl-talent-retention.json": retentionWorkflow(),
 };
 
 const check = process.argv.includes("--check");

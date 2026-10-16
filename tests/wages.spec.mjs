@@ -95,3 +95,13 @@ test('file sizes read as KB or MB', () => {
   assert.equal(formatSize(751), '751 KB');
   assert.equal(formatSize(2368), '2.3 MB');
 });
+
+test('the registry sitemap dates match the wage datasets', async () => {
+  // pages.ts keeps these by hand so the registry never imports the datasets
+  // (they would ship in every page's client JS).
+  const { WAGE_STATE_UPDATED } = await importTs('src/content/registry/pages.ts');
+  for (const state of wageStates) {
+    const expected = [state.checked.on, ...state.tables.map((t) => t.effectiveFrom)].sort().at(-1);
+    assert.equal(WAGE_STATE_UPDATED[state.state], expected, `${state.state}: set WAGE_STATE_UPDATED to ${expected} in src/content/registry/pages.ts`);
+  }
+});

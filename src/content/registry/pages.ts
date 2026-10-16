@@ -26,7 +26,6 @@ import {
   type PageStatus,
   type WageStateSlug,
 } from "./identifiers";
-import { wageStates } from "@/content/wages";
 
 export const PAGE_KINDS = [
   "home",
@@ -77,16 +76,30 @@ const PHONE_FREE_JOBS = "2026-10-16";
 const HARIDWAR_DEPTH = "2026-10-16";
 const HOME_NATIONAL = "2026-10-16";
 const EDITORIAL_POLICY = "2026-10-16";
-/** A wage page changes when its state's figures or check date do: lastmod follows the data, not a constant. */
+const CONTACT_CREW_FORM = "2026-10-16";
+const TERMS_PHONE_FREE = PHONE_FREE_JOBS;
+
+/**
+ * The sitemap date of each state's wage page: the later of its check date and
+ * its newest effective date in src/content/wages/<state>.json. Kept here by
+ * hand so the registry (imported by the proxy and, through the i18n Link, by
+ * every page's client JS) never pulls in the wage datasets. tests/wages.spec.mjs
+ * fails when a dataset moves on and this map does not.
+ */
+export const WAGE_STATE_UPDATED: Readonly<Partial<Record<WageStateSlug, string>>> = {
+  uttarakhand: "2026-10-16",
+  "uttar-pradesh": "2026-10-16",
+  delhi: "2026-10-16",
+};
 const wageUpdated = (state: WageStateSlug) => {
-  const data = wageStates.find((s) => s.state === state);
-  if (!data) throw new Error(`No wage data for ${state}`);
-  return [data.checked.on, ...data.tables.map((t) => t.effectiveFrom)].sort().at(-1)!;
+  const updated = WAGE_STATE_UPDATED[state];
+  if (!updated) throw new Error(`No WAGE_STATE_UPDATED date for ${state}`);
+  return updated;
 };
 const WAGE_HUB_UPDATED = () =>
-  wageStates
-    .filter((s) => WAGE_STATE_STATUS[s.state] === "published")
-    .map((s) => wageUpdated(s.state))
+  (Object.keys(WAGE_STATE_STATUS) as WageStateSlug[])
+    .filter((state) => WAGE_STATE_STATUS[state] === "published")
+    .map(wageUpdated)
     .sort()
     .at(-1)!;
 
@@ -95,7 +108,11 @@ const WAGE_HUB_UPDATED = () =>
  * when every figure on it was verified end to end against the state's own
  * notification (src/content/wages/<state>.json, `verification`); otherwise
  * it stays in review: built, noindex, unlinked and out of the sitemap.
- * Haryana waits for the NCR readiness check.
+ * Haryana is not built yet (PLAN §5.5).
+ *
+ * hi-IN (PR8) is in review on every wage page until a native Hindi reviewer
+ * signs it off: built and noindex, unlinked, and out of the sitemap and
+ * llms.txt. The figures come from the same datasets.
  */
 const WAGE_STATE_STATUS: Partial<Record<WageStateSlug, PageStatus>> = {
   uttarakhand: "published",
@@ -112,8 +129,12 @@ const WAGE_STATE_STATUS: Partial<Record<WageStateSlug, PageStatus>> = {
 const GUIDES_WRITTEN = "2026-10-16";
 const GUIDE_STATUS: Partial<Record<GuideSlug, { audience: Audience; status: PageStatus }>> = {
   "new-labour-codes": { audience: "mixed", status: "review" },
-  "what-is-contract-labour": { audience: "business", status: "review" },
+  // Written for buyers (PLAN §5.2), but workers read it too (it has a jobs
+  // door), so it is mixed: the phone-free reference layout, as routed.
+  "what-is-contract-labour": { audience: "mixed", status: "review" },
 };
+/** Wage pages in Hindi: drafts in review (PR8). */
+const WAGE_HI_STATUS: PageStatus = "review";
 
 const ALL = Object.fromEntries(LOCALE_TAGS.map((l) => [l, "published"])) as Record<LocaleTag, PageStatus>;
 const EN = { "en-IN": "published" } as const;
@@ -156,15 +177,15 @@ export const pageEntries: readonly PageEntry[] = [
   { path: "/compliance", kind: "static", audience: "business", locales: EN, parent: "/", updated: REDESIGN, changeFrequency: "monthly", priority: 0.8 },
   { path: "/vayasya-setu", kind: "static", audience: "business", locales: EN, parent: "/", updated: REDESIGN, changeFrequency: "monthly", priority: 0.7 },
   { path: "/about", kind: "static", audience: "business", locales: EN, parent: "/", updated: EDITORIAL_POLICY, changeFrequency: "monthly", priority: 0.7 },
-  { path: "/contact", kind: "static", audience: "business", locales: EN, parent: "/", updated: REDESIGN, changeFrequency: "yearly", priority: 0.9 },
-  { path: WAGE_HUB_PATH, kind: "wage-hub", audience: "mixed", locales: EN, parent: "/", updated: WAGE_HUB_UPDATED(), changeFrequency: "monthly", priority: 0.7 },
+  { path: "/contact", kind: "static", audience: "business", locales: EN, parent: "/", updated: CONTACT_CREW_FORM, changeFrequency: "yearly", priority: 0.9 },
+  { path: WAGE_HUB_PATH, kind: "wage-hub", audience: "mixed", locales: { ...EN, "hi-IN": WAGE_HI_STATUS }, parent: "/", updated: WAGE_HUB_UPDATED(), changeFrequency: "monthly", priority: 0.7 },
   ...Object.entries(WAGE_STATE_STATUS).map(
     ([state, status]) =>
       ({
         path: wageStatePath(state as WageStateSlug),
         kind: "wage-state",
         audience: "mixed",
-        locales: { "en-IN": status },
+        locales: { "en-IN": status, "hi-IN": WAGE_HI_STATUS },
         parent: WAGE_HUB_PATH,
         updated: wageUpdated(state as WageStateSlug),
         changeFrequency: "monthly",
@@ -186,7 +207,7 @@ export const pageEntries: readonly PageEntry[] = [
   ),
   { path: "/brand", kind: "static", audience: "business", locales: EN, parent: "/", updated: REDESIGN, changeFrequency: "yearly", priority: 0.3 },
   { path: "/privacy", kind: "legal", audience: "mixed", locales: EN, parent: "/", updated: PHONE_FREE_JOBS, changeFrequency: "yearly", priority: 0.3 },
-  { path: "/terms", kind: "legal", audience: "mixed", locales: EN, parent: "/", updated: REDESIGN, changeFrequency: "yearly", priority: 0.3 },
+  { path: "/terms", kind: "legal", audience: "mixed", locales: EN, parent: "/", updated: TERMS_PHONE_FREE, changeFrequency: "yearly", priority: 0.3 },
 ];
 
 /**

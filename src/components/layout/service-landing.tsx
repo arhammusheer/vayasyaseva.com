@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "@/components/i18n/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
@@ -15,9 +15,24 @@ import {
 import { getServicePage, type ServiceLandingContent } from "@/content/service-pages";
 import { getServicePageHiLatn } from "@/content/hi-latn/service-pages";
 import { localePath, locales, type Locale } from "@/lib/i18n";
+import { AGENCY_FAQ } from "@/content/agency-faq";
+import type { JobRole } from "@/lib/talent-intake/rules";
 
 /** Service pages have English and hi-Latn-IN only (see pages in src/lib/i18n.ts). */
 type ServiceLocale = Exclude<Locale, "hi-IN">;
+
+/**
+ * A job seeker who lands on a service page (searching "warehouse job
+ * haridwar") gets one quiet line under the lede to the matching role page,
+ * as on /haridwar-sidcul. No phone next to it.
+ */
+const JOBS_DOOR: Record<string, { role: JobRole; label: Record<ServiceLocale, string> }> = {
+  "warehouse-labour": { role: "warehouse", label: { "en-IN": "Warehouse jobs", "hi-Latn-IN": "Warehouse job" } },
+  "loading-unloading-labour": { role: "warehouse", label: { "en-IN": "Loading and unloading jobs", "hi-Latn-IN": "Loading-unloading job" } },
+  "factory-labour": { role: "factory-helper", label: { "en-IN": "Factory helper jobs", "hi-Latn-IN": "Factory helper job" } },
+  housekeeping: { role: "housekeeping", label: { "en-IN": "Housekeeping jobs", "hi-Latn-IN": "Housekeeping job" } },
+};
+const LOOKING: Record<ServiceLocale, string> = { "en-IN": "Looking for work?", "hi-Latn-IN": "Kaam dhoondh rahe hain?" };
 
 const labels = {
   "en-IN": {
@@ -36,16 +51,16 @@ const labels = {
     services: "Services",
   },
   "hi-Latn-IN": {
-    rolesEyebrow: "TYPICAL ROLES",
+    rolesEyebrow: "Kaun-se kaam",
     rolesHeading: "Hum kinke liye plan karte hain.",
     planningHeading: "Aapki site ke hisaab se planning.",
     records:
       "Attendance, wage records aur applicable EPF aur ESIC contributions hum maintain karte hain, aur ye aapke review ke liye available hain.",
     complianceLink: "Hamara labour compliance approach (English mein)",
-    related: "RELATED",
+    related: "Related",
     relatedAria: "Related services",
     local: { href: "/haridwar-sidcul", label: "SIDCUL Haridwar mein labour contractor" },
-    faqEyebrow: "SAWAAL",
+    faqEyebrow: "Sawaal",
     faqTitle: "Aam sawaal.",
     home: "Home",
     services: "Services",
@@ -98,7 +113,20 @@ export function ServiceLanding({
           { name: page.name, href: url },
         ])}
       />
-      <PageHero title={page.heading} lede={page.lede} />
+      <PageHero
+        title={page.heading}
+        lede={page.lede}
+        footnote={
+          JOBS_DOOR[page.slug] && (
+            <p className="seeker-line">
+              {LOOKING[locale]}{" "}
+              <Link href={localePath(`/jobs/${JOBS_DOOR[page.slug].role}`, locale)} className="text-link" prefetch={false}>
+                {JOBS_DOOR[page.slug].label[locale]} <ArrowRight size={18} aria-hidden="true" />
+              </Link>
+            </p>
+          )
+        }
+      />
       <Section>
         <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.6fr]">
           <div>
@@ -139,7 +167,7 @@ export function ServiceLanding({
           </Link>
         </nav>
       </Section>
-      <FaqSection eyebrow={t.faqEyebrow} title={t.faqTitle} variant="subtle" items={page.faqs} />
+      <FaqSection eyebrow={t.faqEyebrow} title={t.faqTitle} variant="subtle" items={[...page.faqs, AGENCY_FAQ[locale]]} />
       <CtaBlock locale={locale} />
     </>
   );

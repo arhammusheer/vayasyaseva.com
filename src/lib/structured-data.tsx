@@ -232,7 +232,8 @@ export function serviceSchema(service: ServiceDetail) {
     "@type": "Service",
     "@id": pageUrl(`/services#${service.id}`),
     name: service.title,
-    serviceType: service.title,
+    // PLAN §6.1: one service type everywhere; the name carries the specifics.
+    serviceType: "Contract labour supply",
     description: service.description,
     provider: { "@id": ORG_ID },
     areaServed: areaServed(),
@@ -298,7 +299,7 @@ export function serviceLandingSchema(page: {
     "@type": "Service",
     "@id": `${pageUrl(page.url)}#service`,
     name: page.name,
-    serviceType: page.name,
+    serviceType: "Contract labour supply",
     description: page.description,
     provider: { "@id": ORG_ID },
     areaServed: areaServed(),
@@ -327,7 +328,7 @@ export function legislationSchema(source: WageSource, jurisdiction: string) {
  * the Legislation it is based on. Only what the page shows: lastReviewed and
  * reviewedBy appear only once a person has signed the figures off.
  */
-export function wageStateSchema(state: WageState, page: { name: string; description: string; url: string }) {
+export function wageStateSchema(state: WageState, page: { name: string; description: string; url: string; inLanguage?: string }) {
   const url = pageUrl(page.url);
   const effective = state.tables.map((t) => t.effectiveFrom).sort()[0];
   const cited = [...new Set(state.tables.flatMap((t) => t.sources))].map((id) => state.sources.find((s) => s.id === id)!);
@@ -346,7 +347,7 @@ export function wageStateSchema(state: WageState, page: { name: string; descript
         url,
         isPartOf: { "@id": SITE_ID },
         publisher: { "@id": ORG_ID },
-        inLanguage: "en-IN",
+        inLanguage: page.inLanguage ?? "en-IN",
         dateModified: state.checked.on,
         ...reviewed,
         mainEntity: { "@id": `${url}#dataset` },
@@ -373,7 +374,7 @@ export function wageStateSchema(state: WageState, page: { name: string; descript
 }
 
 /** The wage hub: a CollectionPage listing the state pages. */
-export function wageHubSchema(page: { name: string; description: string; url: string; dateModified: string; reviewed: boolean; states: { name: string; url: string }[] }) {
+export function wageHubSchema(page: { name: string; description: string; url: string; dateModified: string; reviewed: boolean; states: { name: string; url: string }[]; inLanguage?: string }) {
   const url = pageUrl(page.url);
   return {
     "@context": "https://schema.org",
@@ -384,7 +385,7 @@ export function wageHubSchema(page: { name: string; description: string; url: st
     url,
     isPartOf: { "@id": SITE_ID },
     publisher: { "@id": ORG_ID },
-    inLanguage: "en-IN",
+    inLanguage: page.inLanguage ?? "en-IN",
     dateModified: page.dateModified,
     ...(page.reviewed ? { lastReviewed: page.dateModified, reviewedBy: { "@id": ORG_ID } } : {}),
     mainEntity: {

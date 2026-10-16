@@ -36,7 +36,7 @@ export const servicesFaqs: FaqItem[] = [
     question:
       "Who handles EPF, ESIC and wage records for the workers you deploy?",
     answer:
-      "We do, as the contractor. Worker onboarding, attendance, wage documentation and applicable EPF and ESIC contributions are maintained by our team and are available for your review.",
+      "We do. The workers are on our payroll, so we keep their attendance and wage registers, register them for EPF and ESIC where they apply, deposit the contributions every month and share the challans for your review.",
     category: "compliance",
   },
   {
@@ -58,21 +58,27 @@ export const complianceFaqs: FaqItem[] = [
     question:
       "What compliance records can a client review during an engagement?",
     answer:
-      "Worker identification and onboarding records, attendance, wage documentation and applicable EPF and ESIC contribution records for the workers deployed to your site, coordinated with your HR, operations or procurement team.",
+      "Attendance and wage registers, wage slips, and EPF and ESIC challans for the workers on your site, plus their onboarding records. We share them for your monthly review and for audits.",
     category: "compliance",
   },
   {
     question:
       "Does using a contract labour provider reduce the principal employer's compliance exposure?",
     answer:
-      "A registered contractor that maintains worker records and statutory contributions supports the principal employer's obligations under contract labour law. Responsibilities remain shared, which is why we keep records open to your review throughout the engagement.",
+      "Partly. As the employer, we pay the wages and deposit EPF and ESIC where they apply. Under contract labour law the principal employer must still make sure the workers are paid, so we keep the records open to your review throughout the engagement.",
     category: "compliance",
   },
   {
     question:
       "How do I request compliance documents for an audit or vendor assessment?",
     answer:
-      "Email help@vayasyaseva.com with the documents your team needs and the engagement they relate to. Our team coordinates the relevant certificates and records with you.",
+      "Email help@vayasyaseva.com with the documents your team needs and the engagement they relate to. We send the certificates and records that apply.",
+    category: "compliance",
+  },
+  {
+    question: "Do you hold a contract labour licence for my site?",
+    answer:
+      "Whether a licence is needed, and under which law, depends on the state, the site and the headcount. Before you sign, ask us for the registration and licence details that apply to your site.",
     category: "compliance",
   },
 ];
@@ -101,7 +107,7 @@ export const industriesFaqs: FaqItem[] = [
   {
     question: "Do you work outside Haridwar?",
     answer:
-      "Our base is SIDCUL Haridwar. Some of our work is around Roorkee, Bhagwanpur and Bahadrabad. For other locations in Uttarakhand, share the site and we will discuss what is possible.",
+      "We’re based in Haridwar, Uttarakhand, and run crews at units in SIDCUL and across Haridwar. For a site elsewhere in India, send us the details. We’ll tell you plainly whether we can staff it.",
     category: "commercial",
   },
 ];

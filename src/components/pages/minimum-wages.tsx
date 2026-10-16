@@ -482,7 +482,7 @@ export function WageStatePage({ slug }: { slug: WageStateSlug }) {
   const year = yearOf(state, today);
   const crew = crewDoor(slug);
   const doors =
-    t.band === "haridwar" ? [wageDoors.jobs, wageDoors.business] : t.band === "bengaluru" ? [wageDoors.jobsBengaluru, crew] : [wageDoors.paidLess(state.name, t.labourDepartment), crew];
+    t.band === "haridwar" ? [wageDoors.jobs, wageDoors.business] : t.band === "bengaluru" ? [wageDoors.jobsBengaluru, crew] : [wageDoors.officialSource(state.name, t.labourDepartment), crew];
   return (
     <>
       <JsonLd data={wageStateSchema(state, { name: t.title(year), description: t.description, url: localePath(wageStatePath(slug), "en-IN") })} />

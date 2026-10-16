@@ -43,11 +43,11 @@ export type WageStateCopy = {
   note?: { text: string; link: LinkItem };
   /** Two questions, for the page and its FAQPage schema. */
   faqs: [FaqItem, FaqItem];
-  /** Where a worker paid less can complain: the state labour department. */
+  /** The state Labour Department's site, shown as the official source. */
   labourDepartment: LinkItem;
   /**
    * The doors band: "haridwar" (jobs and a crew, where we work) or
-   * "elsewhere" (the complaint link and a neutral crew door: no jobs door,
+   * "elsewhere" (the Labour Department as official source and a crew door: no jobs door,
    * and nothing that implies we staff sites in that state).
    */
   band: "haridwar" | "bengaluru" | "elsewhere";
@@ -219,11 +219,15 @@ export const wageDoors = {
     text: "Join our worker list. Full 8-hour shifts. There is no fee.",
     link: { href: "/jobs/bengaluru", label: "Jobs in Bengaluru" },
   } satisfies Door,
-  /** UP and Delhi: who to complain to, by state. */
-  paidLess: (name: string, department: LinkItem): Door => ({
-    eyebrow: "PAID LESS THAN THIS?",
-    heading: `Complain to the ${name} Labour Department.`,
-    text: "Keep your wage slips and attendance record. They show what you were paid.",
+  /**
+   * UP and Delhi: the state's Labour Department as the official source, not
+   * as a place to complain (owner direction, 17 Oct 2026: a complaint door
+   * read to employers as if we might act against them).
+   */
+  officialSource: (name: string, department: LinkItem): Door => ({
+    eyebrow: "OFFICIAL SOURCE",
+    heading: `${name} Labour Department.`,
+    text: "Notifications, registrations and forms, from the government itself.",
     link: department,
     external: true,
   }),

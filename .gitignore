@@ -44,3 +44,6 @@ next-env.d.ts
 # Local browser verification artifacts
 /.playwright-mcp/
 .indexnow-state.json
+
+# Wage monitor snapshot (kept in the Actions cache, not the repo)
+/.wage-monitor/

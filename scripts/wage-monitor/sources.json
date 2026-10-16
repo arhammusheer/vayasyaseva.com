@@ -1,0 +1,43 @@
+{
+  "$comment": "Primary sources the daily wage monitor watches, per state (PLAN section 11). Cited documents come from src/content/wages/<state>.json automatically; list here the department pages where a new notification would first appear. Listing pages are compared by the documents they link; `match` (a case-insensitive regex on the link text or file path) keeps only wage links on pages that link everything. See docs/wage-monitor.md.",
+  "states": {
+    "uttarakhand": {
+      "listings": [
+        {
+          "url": "https://labour.uk.gov.in/document-category/minimum-wages-notification/",
+          "name": "Labour Department, Uttarakhand: minimum wages notifications"
+        },
+        {
+          "url": "https://labour.uk.gov.in/document-category/circulars-notifications/",
+          "name": "Labour Department, Uttarakhand: circulars and notifications"
+        },
+        {
+          "url": "https://labour.uk.gov.in/",
+          "name": "Labour Department, Uttarakhand: home page notices",
+          "match": "wage|\\bv?da\\b|dearness|वेतन|मजदूरी|महंगाई"
+        }
+      ]
+    },
+    "uttar-pradesh": {
+      "listings": [
+        {
+          "url": "https://uplabour.gov.in/",
+          "name": "Labour Department, Uttar Pradesh: home page notices",
+          "match": "wage|\\bv?da\\b|dearness|वेतन|मजदूरी|महंगाई"
+        },
+        {
+          "url": "https://uplabour.gov.in/Pages/MWA.aspx",
+          "name": "Labour Department, Uttar Pradesh: Minimum Wages Act orders"
+        }
+      ]
+    },
+    "delhi": {
+      "listings": [
+        {
+          "url": "https://labour.delhi.gov.in/labour/current-minimum-wage-rate",
+          "name": "Labour Department, Delhi: current minimum wage rates"
+        }
+      ]
+    }
+  }
+}

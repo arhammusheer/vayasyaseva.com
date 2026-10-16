@@ -138,14 +138,17 @@ const routes = walk(appDir)
   });
 // The audience flag decides the layout (PLAN §1a, §7.3): business pages live
 // in (marketing) with the phone, jobs pages in (jobs), mixed pages in the
-// phone-free (reference) group. The home page sits in (marketing).
-const GROUP_OF_AUDIENCE = { business: "marketing", jobs: "jobs", mixed: "reference" };
+// phone-free (reference) group, or (locations), the business header without
+// the phone. The home page sits in (marketing).
+const GROUP_OF_AUDIENCE = { business: ["marketing"], jobs: ["jobs"], mixed: ["reference", "locations"] };
 // The kinds of page each dynamic route renders. Any other page under it (a
 // static page such as /minimum-wages/how-we-check) needs its own route
 // folder, which Next.js matches before the dynamic segment.
 const DYNAMIC_ROUTE_KINDS = {
   "/jobs/[role]": ["job-role", "job-hub", "jobs-city"],
   "/minimum-wages/[state]": ["wage-state"],
+  "/locations/[cluster]": ["cluster-hub"],
+  "/locations/[cluster]/[estate]": ["estate"],
 };
 for (const entry of pageEntries) {
   const exact = routes.find((r) => r.path === entry.path);
@@ -156,8 +159,8 @@ for (const entry of pageEntries) {
   if (!builtLocales(entry.path).length) continue;
   const route = exact ?? dynamic;
   if (!route) fail(`C1 page ${entry.path} has no route under src/app/[locale]`);
-  else if (route.group !== GROUP_OF_AUDIENCE[entry.audience]) {
-    fail(`C1 page ${entry.path} has audience "${entry.audience}" but its route is in (${route.group ?? "no group"}); move it to (${GROUP_OF_AUDIENCE[entry.audience]}) or change the audience`);
+  else if (!GROUP_OF_AUDIENCE[entry.audience].includes(route.group)) {
+    fail(`C1 page ${entry.path} has audience "${entry.audience}" but its route is in (${route.group ?? "no group"}); move it to (${GROUP_OF_AUDIENCE[entry.audience].join(") or (")}) or change the audience`);
   }
 }
 for (const route of routes) {

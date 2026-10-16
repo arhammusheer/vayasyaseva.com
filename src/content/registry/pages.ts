@@ -14,6 +14,11 @@ import { JOB_HUB_SLUGS, JOB_ROLE_SLUGS } from "@/lib/talent-intake/rules";
 import {
   HARIDWAR_HUB_PATH,
   LOCALE_TAGS,
+  LOCATIONS_PATH,
+  LOCATION_CLUSTERS,
+  LOCATION_ESTATES,
+  estatePath,
+  locationPath,
   WAGE_HUB_PATH,
   WAGE_METHOD_PATH,
   WAGE_STATE_CODES,
@@ -160,6 +165,14 @@ const GUIDE_STATUS: Partial<Record<GuideSlug, { audience: Audience; status: Page
 /** The Hindi wage hub: a draft in review. */
 const WAGE_HI_STATUS: PageStatus = "review";
 
+/**
+ * Location pages (owner direction, 16 Oct 2026, publish as normal): drafts
+ * until their copy in src/content/locations is written and checked; then
+ * published, English only like the other business pages.
+ */
+const LOCATIONS_STATUS: PageStatus = "published";
+const LOCATIONS_UPDATED = "2026-10-16";
+
 const ALL = Object.fromEntries(LOCALE_TAGS.map((l) => [l, "published"])) as Record<LocaleTag, PageStatus>;
 const EN = { "en-IN": "published" } as const;
 const RETIRED_ALL = Object.fromEntries(LOCALE_TAGS.map((l) => [l, "retired"])) as Record<LocaleTag, PageStatus>;
@@ -218,6 +231,17 @@ export const pageEntries: readonly PageEntry[] = [
   // Jobs only: a worker list, no buyer hub yet (clusters.ts).
   { ...jobsPage(jobsHubPath("bengaluru"), "jobs-city", 0.7), cluster: "bengaluru" },
   { path: HARIDWAR_HUB_PATH, kind: "cluster-hub", audience: "business", locales: ALL, parent: "/", cluster: "haridwar", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.9 },
+  // Location pages: the index, a hub per region, a page per industrial area.
+  // Mixed audience: buyers and job seekers both search estate names, so the
+  // (locations) layout has no phone.
+  { path: LOCATIONS_PATH, kind: "static", audience: "mixed", locales: { "en-IN": LOCATIONS_STATUS }, parent: "/", updated: LOCATIONS_UPDATED, changeFrequency: "monthly", priority: 0.6 },
+  ...LOCATION_CLUSTERS.flatMap((cluster) => [
+    { path: locationPath(cluster), kind: "cluster-hub", audience: "mixed", locales: { "en-IN": LOCATIONS_STATUS }, parent: LOCATIONS_PATH, cluster, updated: LOCATIONS_UPDATED, changeFrequency: "monthly", priority: 0.8 } satisfies PageEntry,
+    ...LOCATION_ESTATES[cluster].map(
+      (estate) =>
+        ({ path: estatePath(cluster, estate), kind: "estate", audience: "mixed", locales: { "en-IN": LOCATIONS_STATUS }, parent: locationPath(cluster), cluster, updated: LOCATIONS_UPDATED, changeFrequency: "monthly", priority: 0.7 }) satisfies PageEntry,
+    ),
+  ]),
   // Sectors and engagement steps now live on /services.
   { path: "/industries", kind: "static", audience: "business", locales: RETIRED_EN, parent: "/", retiredTo: "/services#sectors", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.8 },
   { path: "/how-we-operate", kind: "static", audience: "business", locales: RETIRED_EN, parent: "/", retiredTo: "/services", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.8 },

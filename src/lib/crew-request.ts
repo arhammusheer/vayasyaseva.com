@@ -163,6 +163,19 @@ const KNOWN_PLACES: Record<string, Place> = {
   bhagwanpur: { state: "UK", city: "Bhagwanpur, Haridwar", cluster: "haridwar" },
   bahadrabad: { state: "UK", city: "Bahadrabad, Haridwar", cluster: "haridwar" },
   roorkee: { state: "UK", city: "Roorkee, Haridwar", cluster: "haridwar" },
+  // The location pages (src/content/locations): one id per hub and estate.
+  uttarakhand: { state: "UK", city: "", cluster: "uttarakhand" },
+  selaqui: { state: "UK", city: "Selaqui, Dehradun", cluster: "uttarakhand" },
+  bengaluru: { state: "KA", city: "Bengaluru", cluster: "bengaluru" },
+  peenya: { state: "KA", city: "Peenya, Bengaluru", cluster: "bengaluru" },
+  "bommasandra-jigani-attibele": { state: "KA", city: "Bommasandra / Jigani / Attibele", cluster: "bengaluru" },
+  "electronic-city-whitefield": { state: "KA", city: "Electronic City / Whitefield, Bengaluru", cluster: "bengaluru" },
+  "hoskote-narasapura": { state: "KA", city: "Hoskote / Narasapura", cluster: "bengaluru" },
+  "delhi-ncr": { state: "", city: "Delhi NCR", cluster: "delhi-ncr" },
+  "gurugram-manesar": { state: "HR", city: "Gurugram / Manesar", cluster: "delhi-ncr" },
+  "noida-greater-noida": { state: "UP", city: "Noida / Greater Noida", cluster: "delhi-ncr" },
+  "faridabad-ghaziabad": { state: "", city: "Faridabad / Ghaziabad", cluster: "delhi-ncr" },
+  "delhi-industrial-areas": { state: "DL", city: "Delhi", cluster: "delhi-ncr" },
 };
 
 /** Words in free text that place a site in Uttarakhand's Haridwar district. */
@@ -210,9 +223,9 @@ export function crewPrefill(values: Partial<Record<string, string>>): CrewPrefil
   const place = location ? KNOWN_PLACES[location.toLowerCase()] : undefined;
   const cluster = knownCluster(values.cluster) ?? place?.cluster;
   if (cluster) fields.pageCluster = cluster;
-  const city = values.city?.trim() || place?.city || location;
+  const city = values.city?.trim() || place?.city || (place ? undefined : location);
   if (city) fields.siteCity = city.slice(0, 120);
-  const state = stateCode(values.state) ?? place?.state ?? (city && HARIDWAR_WORDS.test(city) ? "UK" : undefined);
+  const state = stateCode(values.state) ?? (place?.state || undefined) ?? (city && HARIDWAR_WORDS.test(city) ? "UK" : undefined);
   if (state) fields.siteState = state;
   if (values.pincode && /^[1-9][0-9]{5}$/.test(values.pincode.trim())) fields.sitePincode = values.pincode.trim();
 

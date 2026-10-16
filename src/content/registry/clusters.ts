@@ -89,11 +89,37 @@ export const clusters: readonly Cluster[] = [
     registrations: [],
   },
   {
-    // Jobs only (16 Oct 2026): VSPL is the employer of record in writing and
-    // a recruiter calls applicants back, so /jobs/bengaluru is open as a
-    // worker list (PLAN §3.2, §5.3). No buyer hub, payroll claim or estate
-    // until the Karnataka registrations are on file. No Kannada until there
-    // is a native reviewer and someone who can reply in it.
+    // The Uttarakhand business page (owner direction 16-17 Oct 2026: publish
+    // as normal; VSPL confirmed it can supply crews here). Haridwar keeps its
+    // own cluster and page; this one carries the rest of the state (Selaqui).
+    id: "uttarakhand",
+    publishable: true,
+    name: { "en-IN": "Uttarakhand", "hi-IN": "उत्तराखंड", "hi-Latn-IN": "Uttarakhand" },
+    states: ["uttarakhand"],
+    quickSwitch: ["en-IN", "hi-IN", "hi-Latn-IN"],
+    buyerHub: "/locations/uttarakhand",
+    claims: [],
+    registrations: [],
+  },
+  {
+    // Delhi NCR business pages (owner direction 16-17 Oct 2026: publish as
+    // normal; VSPL confirmed it can lawfully supply crews in Delhi, Haryana
+    // and UP). No jobs hub yet.
+    id: "delhi-ncr",
+    publishable: true,
+    name: { "en-IN": "Delhi NCR", "hi-IN": "दिल्ली NCR", "hi-Latn-IN": "Delhi NCR" },
+    states: ["delhi", "uttar-pradesh", "haryana"],
+    quickSwitch: ["en-IN", "hi-IN", "hi-Latn-IN"],
+    buyerHub: "/locations/delhi-ncr",
+    claims: [],
+    registrations: [],
+  },
+  {
+    // Jobs hub since 16 Oct 2026 (VSPL is the employer of record in writing,
+    // a recruiter calls back). Business pages since 17 Oct 2026, on the
+    // owner's confirmation that VSPL can lawfully supply crews in Karnataka.
+    // No Kannada until there is a native reviewer and someone who can reply
+    // in it.
     id: "bengaluru",
     publishable: true,
     name: { "en-IN": "Bengaluru", "hi-IN": "बेंगलुरु", "hi-Latn-IN": "Bengaluru" },
@@ -101,6 +127,7 @@ export const clusters: readonly Cluster[] = [
     // Karnataka (PLAN §6.4) is English · ಕನ್ನಡ · Hinglish; until kn-IN is
     // published it falls through to English · Hinglish · हिंदी.
     quickSwitch: ["en-IN", "hi-Latn-IN", "hi-IN"],
+    buyerHub: "/locations/bengaluru",
     claims: [],
     registrations: [],
   },

@@ -3916,26 +3916,7 @@ a:hover > svg {
   font-size: 15px;
 }
 
-/* Location pages: the facts table, the area lists and the nearby-areas row. */
-.location-facts {
-  display: grid;
-  gap: 0;
-  border-top: 1px solid var(--foreground);
-  align-self: start;
-}
-.location-facts > div {
-  padding: 14px 0;
-  border-bottom: 1px solid var(--border);
-}
-.location-facts dt {
-  font-size: 13px;
-  color: var(--muted-foreground);
-}
-.location-facts dd {
-  margin-top: 2px;
-  font-size: 16px;
-  line-height: 1.45;
-}
+/* /locations: the region list. */
 .location-areas {
   margin: 28px 0 0;
   padding: 0;
@@ -3965,19 +3946,4 @@ a:hover > svg {
 .location-areas span {
   color: var(--muted-foreground);
   line-height: 1.5;
-}
-.location-prose p + p {
-  margin-top: 16px;
-}
-.location-prose p {
-  font-size: 17px;
-  line-height: 1.7;
-  color: var(--muted-foreground);
-  max-width: 680px;
-}
-.location-siblings {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 28px;
-  padding-block: 24px 8px;
 }

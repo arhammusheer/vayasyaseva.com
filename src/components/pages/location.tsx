@@ -7,41 +7,54 @@ import { Section } from "@/components/layout/section";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { Button } from "@/components/ui/button";
 import { CtaBlock } from "@/components/sections/cta-block";
+import { ClientStrip } from "@/components/sections/client-strip";
 import { FaqSection } from "@/components/sections/faq-section";
 import { FAQ_PATH } from "@/content/faq";
 import { linkable } from "@/content/registry";
 import { JsonLd, pageUrl, webPageSchema } from "@/lib/structured-data";
 import { areaSurfaces, jobsAreaHref } from "@/lib/intent/surfaces";
-import type { LocationCopy } from "@/content/locations";
-import { LOCATION_ESTATES, estatePath, locationPath } from "@/content/registry/identifiers";
-import { locationPages } from "@/content/locations";
+import { locationPages, type LocationCopy } from "@/content/locations";
+import { estatePath, locationPath } from "@/content/registry/identifiers";
 
 const pathOf = (p: LocationCopy) => (p.estate ? estatePath(p.cluster, p.estate) : locationPath(p.cluster));
+
+/** The three crews, as on /haridwar-sidcul. */
+const SERVICES = [
+  { href: "/services/factory-labour", label: "Factory labour" },
+  { href: "/services/loading-unloading-labour", label: "Loading and unloading" },
+  { href: "/services/housekeeping", label: "Housekeeping and grounds" },
+];
 
 export function locationMetadata(p: LocationCopy) {
   return pageMetadata({ title: p.metaTitle, description: p.description, alternates: { canonical: pathOf(p) } });
 }
 
+/** "A, B and C", each a link, at the paragraph's {areas}. */
+function Areas({ areas }: { areas: { href: string; name: string }[] }) {
+  const live = areas.filter((a) => linkable(a.href, "en-IN"));
+  return live.map((a, i) => (
+    <span key={a.href}>
+      {i > 0 && (i === live.length - 1 ? " and " : ", ")}
+      <Link href={a.href} className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700">
+        {a.name}
+      </Link>
+    </span>
+  ));
+}
+
 /**
- * A location page (owner direction, 16 Oct 2026): a region hub or an
- * industrial area. One job: show a buyer we know the place and get the
- * requirement, through Request a crew prefilled with the place. The facts
- * come from the page's cited sources; nothing is claimed about tenants,
- * headcount or registrations. Jobs pages for the cluster, where they exist,
- * get one quiet line.
+ * A location page on the /haridwar-sidcul structure (owner direction,
+ * 17 Oct 2026): the hero with Request a crew (prefilled with the place) and
+ * a quiet jobs line where the cluster has a jobs hub; the client strip; one
+ * paragraph on the place with its areas and the crews we supply; four
+ * questions; the crew band. No phone (the (locations) layout).
  */
 export function LocationPage({ page }: { page: LocationCopy }) {
   const url = pathOf(page);
   const hub = locationPages.get(locationPath(page.cluster));
   const crewHref = `/contact#location=${page.placeId}`;
   const jobsHub = areaSurfaces()[page.cluster]?.jobs;
-  const siblings = page.estate
-    ? LOCATION_ESTATES[page.cluster]
-        .filter((e) => e !== page.estate)
-        .map((e) => locationPages.get(estatePath(page.cluster, e)))
-        .filter((p): p is LocationCopy => Boolean(p) && linkable(pathOf(p!), "en-IN"))
-    : [];
-  const ruleLinks = page.rules.links.filter((l) => linkable(l.href, "en-IN"));
+  const [before, after] = page.areas ? page.paragraph.split("{areas}") : [page.paragraph, ""];
   return (
     <>
       <JsonLd data={webPageSchema({ name: page.metaTitle, description: page.description, url })} />
@@ -80,99 +93,38 @@ export function LocationPage({ page }: { page: LocationCopy }) {
           </div>
         }
       />
+      <ClientStrip label="Our experience includes work with" afterRule />
       <Section className="border-t border-border">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.6fr]">
-          <dl className="location-facts">
-            {page.facts.map((f) => (
-              <div key={f.label}>
-                <dt>{f.label}</dt>
-                <dd>{f.value}</dd>
-              </div>
-            ))}
-          </dl>
+          <p className="eyebrow text-gold-700">{page.name.toUpperCase()}</p>
           <div>
-            <p className="text-xl leading-relaxed">{page.intro}</p>
-            {page.areas && page.areas.length > 0 && (
-              <ul className="location-areas">
-                {page.areas
-                  .filter((a) => linkable(a.href, "en-IN"))
-                  .map((a) => (
-                    <li key={a.href}>
-                      <Link href={a.href}>
-                        <strong>
-                          {a.name} <ArrowUpRight size={20} aria-hidden="true" />
-                        </strong>
-                        <span>{a.text}</span>
-                      </Link>
-                    </li>
-                  ))}
-              </ul>
-            )}
-          </div>
-        </div>
-      </Section>
-      {page.sections.map((s, i) => (
-        <Section key={s.heading} variant={i % 2 === 0 ? "subtle" : "default"}>
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.6fr]">
-            <h2 className="text-3xl font-medium">{s.heading}</h2>
-            <div className="location-prose">
-              {s.body.map((p) => (
-                <p key={p}>{p}</p>
-              ))}
-            </div>
-          </div>
-        </Section>
-      ))}
-      <Section className="border-t border-border">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.6fr]">
-          <h2 className="text-3xl font-medium">Wages and rules here</h2>
-          <div>
-            <p className="text-lg leading-relaxed text-muted-foreground">{page.rules.text}</p>
-            {ruleLinks.length > 0 && (
-              <p className="link-row mt-4">
-                {ruleLinks.map((l) => (
-                  <Link key={l.href} href={l.href} className="text-link">
-                    {l.label} <ArrowUpRight size={18} aria-hidden="true" />
-                  </Link>
+            <p className="text-xl leading-relaxed sm:text-2xl">
+              {before}
+              {page.areas && <Areas areas={page.areas} />}
+              {after}
+            </p>
+            <nav aria-label="Crews we supply" className="mt-10">
+              <p className="text-sm text-muted-foreground">Crews we supply</p>
+              <ul className="link-row mt-2">
+                {SERVICES.map((s) => (
+                  <li key={s.href}>
+                    <Link href={s.href} className="text-link">
+                      {s.label} <ArrowUpRight size={18} aria-hidden="true" />
+                    </Link>
+                  </li>
                 ))}
-              </p>
-            )}
+              </ul>
+            </nav>
           </div>
         </div>
       </Section>
-      <FaqSection variant="subtle" items={page.faqs} open more={{ href: FAQ_PATH, label: "More questions" }} />
-      {(siblings.length > 0 || (page.estate && hub)) && (
-        <nav aria-label="Nearby areas" className="site-shell location-siblings">
-          {page.estate && hub && (
-            <Link href={locationPath(page.cluster)} className="text-link">
-              All of {hub.name} <ArrowRight size={18} aria-hidden="true" />
-            </Link>
-          )}
-          {siblings.map((s) => (
-            <Link key={s.estate} href={pathOf(s)} className="text-link">
-              {s.name} <ArrowRight size={18} aria-hidden="true" />
-            </Link>
-          ))}
-        </nav>
-      )}
-      <Section className="border-t border-border">
-        <details className="wage-more is-section">
-          <summary>Sources ({page.sources.length})</summary>
-          <ol className="wage-sources">
-            {page.sources.map((s) => (
-              <li key={s.url}>
-                <a href={s.url}>{s.label}</a>
-              </li>
-            ))}
-          </ol>
-        </details>
-      </Section>
+      <FaqSection title="Questions." variant="subtle" items={page.faqs} open more={{ href: FAQ_PATH, label: "More questions" }} />
       <CtaBlock href={crewHref} />
     </>
   );
 }
 
-/** /locations: every published region hub, with its industrial areas. */
+/** /locations: SIDCUL Haridwar and every published region hub, one line each. */
 export function LocationsIndex() {
   const hubs = [...locationPages.values()].filter((p) => !p.estate && linkable(pathOf(p), "en-IN"));
   return (

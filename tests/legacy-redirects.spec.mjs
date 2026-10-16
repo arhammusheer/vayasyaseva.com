@@ -21,12 +21,13 @@ const LANDED = [
   ["/services/contract-labour", undefined, "/services"],
   ["/services/warehouse-labour", undefined, "/services/loading-unloading-labour"],
   ...["loading-unloading-labour", "factory-labour", "housekeeping"].map((slug) => [`/services/${slug}`, "hi-Latn-IN", `/services/${slug}`]),
+  // hi-IN wage states were never public: retired with no target, so they 404.
+  ...["uttarakhand", "uttar-pradesh", "delhi"].map((state) => [`/minimum-wages/${state}`, "hi-IN", undefined]),
+  // Never public either: retired with no redirect.
+  ["/guides/what-is-contract-labour", undefined, undefined],
 ];
 /** Retirements the spec asks for that a later step lands in pages.ts. */
-const PENDING = [
-  // hi-IN wage states were never public: retired with no target, so they 404.
-  ["/minimum-wages/uttarakhand", "hi-IN", undefined],
-];
+const PENDING = [];
 const isRetired = (path, locale) => {
   const { locales } = entry(path);
   return locale ? locales[locale] === "retired" : Object.values(locales).every((s) => s === "retired");
@@ -103,6 +104,8 @@ test("a retired language with no target, or a page not built, 404s with no hop",
     return new URL(res.headers.get("x-middleware-rewrite") ?? "", WWW).pathname;
   };
   assert.equal(gone(`${WWW}/hi-in/minimum-wages/uttarakhand`), "/hi-in/_gone");
+  assert.equal(gone(`${WWW}/hi-in/minimum-wages/delhi`), "/hi-in/_gone");
+  assert.equal(gone(`${WWW}/en-in/guides/what-is-contract-labour`), "/en-in/_gone");
   // An old-prefix URL whose page 404s answers 404 itself, not a 308 to a 404.
   assert.equal(gone(`${WWW}/hi/minimum-wages/uttarakhand`), "/hi-in/_gone");
   assert.equal(gone(`${WWW}/hi/minimum-wages/test-draft`), "/hi-in/_gone");
@@ -113,12 +116,11 @@ test("a retired language with no target, or a page not built, 404s with no hop",
   assert.equal(request(`${WWW}/en-in/minimum-wages/uttarakhand`).headers.get("x-middleware-next"), "1");
 });
 
-test("the registry carries the business retirements", () => {
+test("the registry carries the landed retirements", () => {
   assert.deepEqual(landedMisses, []);
 });
 
-// Turn on (drop `todo`) in the step that lands PENDING in pages.ts, and move
-// those lines to LANDED.
-test("the registry carries every retirement the spec asks for", { todo: "the reference step lands the hi-IN wage retirements" }, () => {
+// A later retirement goes in PENDING (with its setup) until pages.ts lands it.
+test("the registry carries every retirement the spec asks for", () => {
   assert.deepEqual(pendingMisses, []);
 });

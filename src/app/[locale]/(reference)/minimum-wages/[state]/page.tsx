@@ -2,13 +2,13 @@ import { notFound } from "next/navigation";
 import { WageStatePage, wageStateMetadata } from "@/components/pages/minimum-wages";
 import { builtLocales } from "@/content/registry";
 import { WAGE_STATE_SLUGS, wageStatePath, type WageStateSlug } from "@/content/registry/identifiers";
-import { localeOfParams, locales } from "@/lib/i18n";
+import { locales } from "@/lib/i18n";
 
 export const dynamicParams = false;
 // See ../page.tsx: the staleness rule needs a daily rebuild.
 export const revalidate = 86400;
 
-/** One page per state and language the registry builds (status review or published). */
+/** One page per state and language the registry builds (English only: the Hindi hub carries the Hindi rates). */
 export function generateStaticParams() {
   return WAGE_STATE_SLUGS.flatMap((state) => builtLocales(wageStatePath(state)).map((l) => ({ locale: locales[l].segment, state })));
 }
@@ -19,13 +19,13 @@ const isBuilt = (state: string): state is WageStateSlug =>
 type Props = { params: Promise<{ locale: string; state: string }> };
 
 export async function generateMetadata({ params }: Props) {
-  const { state, locale } = await params;
+  const { state } = await params;
   if (!isBuilt(state)) notFound();
-  return wageStateMetadata(state, localeOfParams({ locale }));
+  return wageStateMetadata(state);
 }
 
 export default async function MinimumWagesStatePage({ params }: Props) {
-  const { state, locale } = await params;
+  const { state } = await params;
   if (!isBuilt(state)) notFound();
-  return <WageStatePage slug={state} locale={localeOfParams({ locale })} />;
+  return <WageStatePage slug={state} />;
 }

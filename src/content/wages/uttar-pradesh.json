@@ -89,7 +89,7 @@
       "effectiveFrom": "2024-10-01",
       "effectiveTo": "2025-03-31",
       "source": "up-vda-2024-10",
-      "note": "One rate for the whole state, before the April 2026 order split it into three categories of districts. The Labour Department's site lists no VDA order for April 2025 to March 2026, and the 25 March 2026 order that the April 2026 order replaced is not published there, so those periods are not shown.",
+      "note": "One statewide rate, before the April 2026 split into three categories. The orders in between are not on the Labour Department's site.",
       "rates": [
         { "skill": "unskilled", "monthly": 10701, "daily": 412 },
         { "skill": "semi-skilled", "monthly": 11772, "daily": 453 },

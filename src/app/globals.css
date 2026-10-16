@@ -2784,27 +2784,6 @@ a:hover > svg {
 /* Minimum wage pages (/minimum-wages, /minimum-wages/<state>). Reference
    documents: literal headings, ruled tables with figures in JetBrains Mono,
    hairlines instead of boxes, one dark band for the two doors. */
-.wage-quick-doors {
-  display: flex;
-  flex-wrap: wrap;
-  column-gap: 32px;
-  color: var(--muted-foreground);
-}
-.wage-quick-doors p {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  column-gap: 12px;
-}
-.wage-quick-doors .text-link {
-  margin-top: 0;
-  gap: 8px;
-  font-size: 17px;
-  color: var(--foreground);
-}
-.wage-quick-doors .text-link svg {
-  color: var(--gold-700);
-}
 .wage-facts {
   margin: 0;
 }
@@ -2833,7 +2812,7 @@ a:hover > svg {
 }
 .wage-notice {
   border-bottom: 1px solid var(--border);
-  padding-block: 18px;
+  padding-block: 14px;
   font-size: 16px;
   line-height: 1.6;
   color: var(--muted-foreground);
@@ -2893,28 +2872,19 @@ a:hover > svg {
 .wage-prose .text-link svg {
   color: var(--gold-700);
 }
-.wage-vspl {
-  margin-top: 24px !important;
-  padding-top: 20px;
-  border-top: 1px solid var(--border);
-  color: var(--foreground) !important;
-}
-.wage-worker-line {
-  margin-top: 28px !important;
-  font-size: 16px;
-}
 .wage-reviewed {
   color: var(--foreground) !important;
   font-weight: 600;
 }
-.wage-tables {
-  margin-top: 48px;
+/* Uttarakhand's switch sits over its tables; elsewhere the tables lead. */
+.wage-switch + .wage-tables {
+  margin-top: 40px;
 }
 .wage-table-block + .wage-table-block {
   margin-top: 72px;
 }
 .wage-table-block h3 {
-  font-size: clamp(24px, 2.6vw, 32px);
+  font-size: clamp(22px, 2.2vw, 28px);
   font-weight: 500;
   line-height: 1.15;
 }
@@ -2928,9 +2898,6 @@ a:hover > svg {
   margin-top: 24px;
   max-width: 1040px;
   overflow-x: auto;
-}
-.wage-source.is-extra {
-  margin-top: 6px;
 }
 .wage-table {
   width: 100%;
@@ -2991,12 +2958,6 @@ a:hover > svg {
   color: var(--muted-foreground);
   white-space: normal;
 }
-.wage-table .split-inline {
-  display: none;
-  margin-top: 2px;
-  font-size: 14px;
-  color: var(--muted-foreground);
-}
 .wage-table.is-compact td,
 .wage-table.is-compact th {
   padding-block: 10px;
@@ -3043,43 +3004,17 @@ a:hover > svg {
   text-underline-offset: 3px;
   white-space: nowrap;
 }
-/* Source, document and complaint links: a 44px+ hit area on a phone. */
-.wage-source a,
+/* Document, method and complaint links: a 44px+ hit area on a phone. */
 .wage-sources a,
-.wage-worker-line a,
-.wage-prose > p > a[href^="mailto:"] {
+.wage-prose > p > a[href^="mailto:"],
+.wage-checked a,
+.wage-inline-link {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
 }
-.wage-quick-note {
-  flex-basis: 100%;
-  order: 2;
-  font-size: 15px;
-}
 .wage-note + .wage-note {
   margin-top: 6px;
-}
-.wage-history-entry + .wage-history-entry {
-  margin-top: 48px;
-  padding-top: 32px;
-  border-top: 1px solid var(--border);
-}
-.wage-history-entry h3 {
-  font-size: 24px;
-  font-weight: 500;
-}
-.wage-history-entry h3 span {
-  display: block;
-  margin-top: 4px;
-  font-family: var(--font-hind), sans-serif;
-  font-size: 15px;
-  font-weight: 400;
-  color: var(--muted-foreground);
-}
-.wage-history .wage-table {
-  margin-top: 20px;
-  max-width: 560px;
 }
 .wage-sources {
   margin-top: 16px;
@@ -3142,9 +3077,6 @@ a:hover > svg {
 .wage-state-links svg {
   color: var(--gold-700);
 }
-.wage-others {
-  padding-block: 56px !important;
-}
 .wage-doors {
   background: var(--neutral-900);
   color: var(--neutral-0);
@@ -3179,27 +3111,214 @@ a:hover > svg {
   min-height: 48px;
   color: var(--neutral-0);
 }
-@media (min-width: 640px) {
-  .wage-quick-doors .text-link {
-    font-size: 16px;
-  }
-  .wage-note.is-phone {
-    display: none;
-  }
+/* One band, one door (the guide; the Hindi hub). */
+.wage-doors-inner.is-single {
+  max-width: 760px;
+}
+/* The line under each wage H1: when the figures were checked, and how. */
+/* Runs as one paragraph; the link never splits from its arrow. */
+.wage-checked {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+.wage-checked a {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+.wage-checked a,
+.wage-inline-link {
+  gap: 6px;
+  color: var(--foreground);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--gold-700);
+}
+.wage-checked svg,
+.wage-inline-link svg {
+  color: var(--gold-700);
+}
+/* "Which table?": two anchors over Uttarakhand's two tables. */
+.wage-switch {
+  max-width: 760px;
+  color: var(--muted-foreground);
+}
+.wage-switch strong {
+  color: var(--foreground);
+  font-weight: 600;
+}
+.wage-switch ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.wage-switch a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--foreground);
+  font-size: 16px;
+}
+.wage-switch a:hover,
+.wage-switch a:focus-visible {
+  border-color: var(--gold-700);
+}
+/* Detail kept in the server HTML behind a toggle: the basic + VDA split,
+   the earlier period, the documents. */
+.wage-more {
+  margin-top: 16px;
+  max-width: 760px;
+}
+.wage-more > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 16px;
+  color: var(--foreground);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--gold-700);
+}
+.wage-more > summary::-webkit-details-marker {
+  display: none;
+}
+.wage-more > summary::after {
+  content: "+";
+  color: var(--gold-700);
+  text-decoration: none;
+}
+.wage-more[open] > summary::after {
+  content: "\2212";
+}
+.wage-more > .wage-table {
+  margin-top: 8px;
+  max-width: 560px;
+}
+.wage-more.is-section {
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.wage-more.is-section > summary {
+  font-family: var(--font-anek), var(--font-hind-deva);
+  font-size: 24px;
+  font-weight: 500;
+  text-decoration: none;
+}
+.wage-documents .wage-more.is-section {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+/* The line under the hub table: the national minimum wage answer. */
+.wage-caption {
+  margin-top: 20px;
+  max-width: 760px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--foreground);
+}
+.wage-th-unit {
+  display: block;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.wage-table td.wage-change {
+  font-family: var(--font-hind), sans-serif;
+  white-space: normal;
+  min-width: 180px;
+}
+.wage-tables.is-hindi .wage-table-block h2 {
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: 500;
+  line-height: 1.15;
+}
+.wage-hi-foot {
+  padding-block: 32px !important;
+}
+/* How we check: one ruled row per topic. */
+.method-rows > section + section {
+  margin-top: 48px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+}
+.method-rows h2 {
+  font-family: var(--font-anek), var(--font-hind-deva);
+  font-size: clamp(26px, 2.6vw, 32px);
+  font-weight: 500;
+  line-height: 1.15;
+}
+.method-foot {
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid var(--foreground);
+  font-size: 16px;
+  color: var(--muted-foreground);
+}
+.method-foot a:not(.text-link) {
+  color: var(--foreground);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--gold-700);
+}
+.method-back {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 32px;
+}
+.method-back .text-link svg {
+  color: var(--gold-700);
 }
 @media (max-width: 639px) {
   .wage-table .col-split {
     display: none;
   }
-  .wage-table .split-inline {
-    display: block;
-  }
   .wage-table th,
   .wage-table td {
     padding-right: 12px;
   }
+  /* The hub's four columns fit a 360px screen: ranges wrap after the dash. */
+  .wage-table.is-index th,
+  .wage-table.is-index td {
+    padding-right: 10px;
+  }
+  .wage-switch + .wage-tables {
+    margin-top: 28px;
+  }
+  .wage-table-block .wage-table-scroll {
+    margin-top: 16px;
+  }
+  .wage-table.is-index td {
+    white-space: normal;
+    font-size: 14px;
+  }
+  .wage-table.is-index td strong {
+    font-size: 15px;
+  }
   .wage-table.is-index tbody th {
-    font-size: 21px;
+    font-size: 18px;
+    line-height: 1.15;
+  }
+  .wage-table.is-index thead th {
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+  .wage-table.is-index .wage-row-link {
+    gap: 6px;
+  }
+  .wage-table.is-index .wage-row-link svg {
+    display: none;
   }
 }
 @media (min-width: 1024px) {
@@ -3222,65 +3341,26 @@ a:hover > svg {
   }
 }
 
-/* Guides (/guides/<slug>) and the editorial policy on /about. Reference
-   documents in the wage-page idiom: literal headings, ruled tables and rows,
-   numbered citations to the sources at the foot of the page. */
-.guide-contents {
-  border-bottom: 1px solid var(--border);
-  padding-block: 28px 20px;
-}
-.guide-contents ol {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  margin: 12px 0 0;
-  padding: 0;
-  list-style: none;
-  counter-reset: contents;
-}
-.guide-contents li {
-  counter-increment: contents;
-}
-.guide-contents a {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  min-height: 48px;
-  font-size: 17px;
-}
-.guide-contents a::before {
-  content: counter(contents, decimal-leading-zero);
+/* Guides (/guides/<slug>). Reference documents in the wage-page idiom:
+   literal headings, ruled tables and rows, and each section's sources
+   listed at its foot, numbered against the documents at the end. */
+.guide-cites {
+  margin-top: 24px !important;
   font-family: var(--font-data), ui-monospace, monospace;
   font-size: 13px;
-  color: var(--gold-700);
+  color: var(--muted-foreground) !important;
 }
-.guide-contents a:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  text-decoration-color: var(--gold-700);
-}
-/* Citations sit tight against the text ("2026.11,12"). Each link gets a
-   tall hit area from padding that negative margins keep out of the line box. */
-.cite {
-  font-family: var(--font-data), ui-monospace, monospace;
-  font-size: 0.72em;
-  vertical-align: super;
-  line-height: 0;
-  white-space: nowrap;
-}
-.cite a {
-  display: inline-block;
-  padding: 12px 5px;
-  margin: -12px -4px;
-  position: relative;
+.guide-cites a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  min-height: 24px;
   color: var(--gold-700);
   text-decoration: none !important;
 }
-.cite a:hover {
+.guide-cites a:hover {
   text-decoration: underline !important;
-}
-.wage-facts .cite a,
-.wage-prose .cite a {
-  color: var(--gold-700);
 }
 .guide-prose > h3 {
   margin-bottom: 4px;
@@ -3414,17 +3494,6 @@ a:hover > svg {
   }
   .guide-rows li {
     grid-template-columns: minmax(0, 1fr);
-  }
-}
-@media (min-width: 768px) {
-  .guide-contents ol {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    column-gap: 48px;
-  }
-}
-@media (min-width: 1024px) {
-  .guide-contents ol {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 

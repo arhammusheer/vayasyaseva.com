@@ -125,9 +125,10 @@ const WAGE_HUB_UPDATED = () =>
  * it stays in review: built, noindex, unlinked and out of the sitemap.
  * Haryana is not built yet (PLAN §5.5).
  *
- * hi-IN (PR8) is in review on every wage page until a native Hindi reviewer
- * signs it off: built and noindex, unlinked, and out of the sitemap and
- * llms.txt. The figures come from the same datasets.
+ * hi-IN has one wage page, the worker-first hub, in review until a native
+ * Hindi reviewer signs it off: built and noindex, unlinked, and out of the
+ * sitemap and llms.txt. The Hindi state pages (translations of the employer
+ * pages, never public) are retired with no target, so they 404.
  */
 const WAGE_STATE_STATUS: Partial<Record<WageStateSlug, PageStatus>> = {
   uttarakhand: "published",
@@ -144,11 +145,12 @@ const WAGE_STATE_STATUS: Partial<Record<WageStateSlug, PageStatus>> = {
 const GUIDES_WRITTEN = "2026-10-16";
 const GUIDE_STATUS: Partial<Record<GuideSlug, { audience: Audience; status: PageStatus }>> = {
   "new-labour-codes": { audience: "mixed", status: "review" },
-  // Written for buyers (PLAN §5.2), but workers read it too (it has a jobs
-  // door), so it is mixed: the phone-free reference layout, as routed.
-  "what-is-contract-labour": { audience: "mixed", status: "review" },
+  // Never public (review, noindex): retired with no redirect, so it 404s. It
+  // competed with /services for "contract labour"; a future CLRA explainer
+  // takes /guides/contract-labour-act.
+  "what-is-contract-labour": { audience: "mixed", status: "retired" },
 };
-/** Wage pages in Hindi: drafts in review (PR8). */
+/** The Hindi wage hub: a draft in review. */
 const WAGE_HI_STATUS: PageStatus = "review";
 
 const ALL = Object.fromEntries(LOCALE_TAGS.map((l) => [l, "published"])) as Record<LocaleTag, PageStatus>;
@@ -219,7 +221,7 @@ export const pageEntries: readonly PageEntry[] = [
         path: wageStatePath(state as WageStateSlug),
         kind: "wage-state",
         audience: "mixed",
-        locales: { "en-IN": status, "hi-IN": WAGE_HI_STATUS },
+        locales: { "en-IN": status, "hi-IN": "retired" },
         parent: WAGE_HUB_PATH,
         updated: wageUpdated(state as WageStateSlug),
         changeFrequency: "monthly",

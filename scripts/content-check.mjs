@@ -17,9 +17,12 @@
 //       any tracked text file or the built output (.next HTML, RSC and client
 //       chunks). The output names the file and line, never the term.
 //   C12 after a build: no client chunk carries the wage datasets.
-//   C13 translated wage copy (src/content/pages/minimum-wages.hi.ts) records
-//       the sourceHash of each English block it translates; a changed English
-//       block fails until the translation is updated (PLAN §6.6).
+//   C13 the Hindi wage hub (src/content/pages/minimum-wages.hi.ts) is in
+//       step with the datasets: every published state has an entry, and each
+//       names a real table, every zone of it, and skills rated in each zone
+//       (PLAN §6.6). Its key lines name places and units by hand, so it also
+//       records a hash of each state's tables and zones (HUB_HI_SOURCE_HASH):
+//       a changed district list or category fails until the Hindi is checked.
 // Claim expiry is a warning, not a failure: an expired claim hides itself
 // and the page stays live (PLAN §12), so CI never breaks on a date.
 import { readdirSync, readFileSync, statSync, existsSync } from "node:fs";
@@ -206,7 +209,7 @@ for (const state of wageStates) {
   const parsed = wageStateSchema.safeParse(state);
   if (!parsed.success) fail(`C8 wages ${state.state}: ${parsed.error.issues.map((i) => `${i.path.join(".") || "file"} ${i.message}`).join("; ")}`);
   for (const problem of wageIntegrityProblems(state)) fail(`C8 wages ${state.state}: ${problem}`);
-  if (!state.checked.by) warn(`C8 wages ${state.state}: no sign-off yet (checked.by); the page says the figures were entered from the state's documents, not that anyone checked them`);
+  if (!state.checked.by) warn(`C8 wages ${state.state}: no sign-off yet (checked.by); the page says the figures were updated from the state's documents, not that anyone checked them`);
   const status = wageStatus(state);
   if (status.stale) warn(`C8 wages ${state.state}: stale since ${status.staleFrom} (revision expected ${state.nextRevision.expected}, last check ${state.checked.on}); the page shows the "may have been revised" notice until it is re-checked`);
   else if (status.revisionDue) warn(`C8 wages ${state.state}: revision was due on ${state.nextRevision.expected}; re-check the state's sources before ${status.staleFrom}`);
@@ -232,30 +235,40 @@ for (const slug of WAGE_STATE_SLUGS) {
   }
 }
 
-// ── C13: translation sourceHash (PLAN §6.6) ────────────────────────────────
-// Each translated block records the hash of the English it was made from.
-// When the English changes, the Hindi must be checked and its hash updated.
+// ── C13: the Hindi wage hub in step with the datasets (PLAN §6.6) ───────────
+// The hub shows each published state's rates from the dataset; a new state,
+// table, zone or skill must reach it, or it would show a partial table.
 {
   const { createHash } = await import("node:crypto");
-  const hash = (text) => createHash("sha256").update(text).digest("hex").slice(0, 12);
-  const english = readFileSync(join(root, "src/content/pages/minimum-wages.ts"), "utf8");
-  const current = {};
-  for (const [, key, body] of english.matchAll(/^[ \t]*\/\/ @hi-source (\S+)\n([\s\S]*?)^[ \t]*\/\/ @hi-source-end$/gm)) current[key] = hash(body);
+  const { WAGE_HUB_HI, HUB_HI_SOURCE_HASH } = await importTs("src/content/pages/minimum-wages.hi.ts");
+  const where = "src/content/pages/minimum-wages.hi.ts (WAGE_HUB_HI)";
   for (const state of wageStates) {
-    current[`data:${state.state}`] = hash(
-      JSON.stringify({
-        tables: state.tables.map(({ id, title, appliesTo, dailyRule, basicLabel, vdaLabel, vdaNote, zones }) => ({ id, title, appliesTo, dailyRule, basicLabel, vdaLabel, vdaNote, zones })),
-        notes: state.history.map((h) => [h.table, h.effectiveFrom, h.note ?? null]),
-      }),
-    );
-  }
-  const { HI_SOURCE_HASH } = await importTs("src/content/pages/minimum-wages.hi.ts");
-  for (const [key, value] of Object.entries(current)) {
-    if (HI_SOURCE_HASH[key] !== value) {
-      fail(`C13 the English for "${key}" changed since its Hindi translation (src/content/pages/minimum-wages.hi.ts). Update the Hindi, then set HI_SOURCE_HASH["${key}"] to "${value}"`);
+    if (!isPublished(wageStatePath(state.state))) continue;
+    const hi = WAGE_HUB_HI[state.state];
+    if (!hi) {
+      fail(`C13 ${state.state} is published in English but has no entry in ${where}`);
+      continue;
+    }
+    const table = state.tables.find((t) => t.id === hi.table);
+    if (!table) {
+      fail(`C13 ${where} ${state.state}: no table "${hi.table}" in src/content/wages/${state.state}.json`);
+      continue;
+    }
+    const zones = table.zones.map((z) => z.id).join();
+    if (hi.zones.map((z) => z.id).join() !== zones) fail(`C13 ${where} ${state.state}: zones must be ${zones} (every zone of ${hi.table}, in order)`);
+    for (const skill of hi.skills) {
+      for (const zone of hi.zones) {
+        if (!table.rates.some((r) => r.zone === zone.id && r.skill === skill)) fail(`C13 ${where} ${state.state}: no ${skill} rate in ${hi.table}/${zone.id}`);
+      }
+    }
+    // Every table, not only the one shown: a key line may name another (Uttarakhand's engineering rate).
+    const shape = JSON.stringify(state.tables.map(({ id, title, zones }) => ({ id, title, zones: zones.map(({ id, name, areas }) => ({ id, name, areas })) })));
+    const hash = createHash("sha256").update(shape).digest("hex").slice(0, 12);
+    if (HUB_HI_SOURCE_HASH[state.state] !== hash) {
+      fail(`C13 the tables or zones of ${state.state} changed since the Hindi hub's key line was written. Check WAGE_HUB_HI.${state.state}.key, then set HUB_HI_SOURCE_HASH["${state.state}"] to "${hash}"`);
     }
   }
-  for (const key of Object.keys(HI_SOURCE_HASH)) if (!(key in current)) fail(`C13 HI_SOURCE_HASH has "${key}", which no English block carries`);
+  for (const key of Object.keys(WAGE_HUB_HI)) if (!wageStates.some((s) => s.state === key)) fail(`C13 ${where} has "${key}", which has no dataset`);
 }
 
 // ── C10: guides (PLAN §5.6, §10.1) ─────────────────────────────────────────
@@ -291,7 +304,7 @@ for (const slug of WAGE_STATE_SLUGS) {
     // at most per page. Comparison tables are exempt (§5.2).
     const prose = [
       ...guide.sections.flatMap((s) =>
-        s.blocks.flatMap((b) => (b.type === "p" || b.type === "vspl" ? [b.text] : b.type === "rows" ? b.items.flatMap((i) => [i.title, i.text]) : b.type === "h3" ? [b.text] : [])),
+        s.blocks.flatMap((b) => (b.type === "p" ? [b.text] : b.type === "rows" ? b.items.flatMap((i) => [i.title, i.text]) : b.type === "h3" ? [b.text] : [])),
       ),
       ...guide.faqs.flatMap((f) => [f.question, f.answer]),
     ].join("\n");

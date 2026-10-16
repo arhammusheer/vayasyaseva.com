@@ -22,12 +22,12 @@ const baseUrl = "https://www.vayasyaseva.com";
 const referenceSection = linkable(WAGE_HUB_PATH, "en-IN")
   ? [
       "## Reference",
-      `- [Minimum wages by state](${baseUrl}/en-in${WAGE_HUB_PATH}): Current minimum wage rates for the states below, each entered from the state's own notification, with the notification number, effective date and the date we last checked the state's sources`,
+      `- [Minimum wages by state](${baseUrl}/en-in${WAGE_HUB_PATH}): Current minimum wage rates for the states below, each entered from the state's own notification, with the notification number, effective date and the date the figures were last updated`,
       ...wageStates
         .filter((s) => linkable(wageStatePath(s.state), "en-IN"))
         .map(
           (s) =>
-            `- [Minimum wages in ${s.name}](${baseUrl}/en-in${wageStatePath(s.state)}): Monthly and daily rates by ${s.tables.some((t) => t.zones.length > 1) ? "district category and " : ""}skill level, from the state's own notifications and orders${s.tables.some((t) => t.basicLabel === "Basic" && t.rates.some((r) => r.vda > 0)) ? ", with the basic wage and VDA" : ""}. Sources last checked ${s.checked.on}`,
+            `- [Minimum wages in ${s.name}](${baseUrl}/en-in${wageStatePath(s.state)}): Monthly and daily rates by ${s.tables.some((t) => t.zones.length > 1) ? "district category and " : ""}skill level, from the state's own notifications and orders${s.tables.some((t) => t.basicLabel === "Basic" && t.rates.some((r) => r.vda > 0)) ? ", with the basic wage and VDA" : ""}. Figures last updated ${s.checked.on}`,
         ),
       ...(linkable(WAGE_METHOD_PATH, "en-IN")
         ? [`- [How we check](${baseUrl}/en-in${WAGE_METHOD_PATH}): The sources, checks, update schedule and corrections process behind the wage pages and guides`]

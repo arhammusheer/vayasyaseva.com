@@ -1,0 +1,97 @@
+{
+ "state": "punjab",
+ "name": "Punjab",
+ "titleName": "Punjab",
+ "nextRevision": {
+  "expected": "2027-03-01",
+  "basis": "Until 2025 Punjab adjusted its rates with the consumer price index twice a year, from 1 March and 1 September (the department's own compilation of adjustments, 1995 to 2025). The 1 May 2026 notification under the Code on Wages resets the base rates and leaves later adjustments to 'such intervals and in such manner as prescribed by the Punjab Government' (note 10); the Code on Wages (Punjab) Rules, 2026 were still a draft when checked. 1 March 2027 is the next date on the old cycle; no adjustment from 1 September 2026 was listed on the department's site on 17 October 2026."
+ },
+ "checked": { "on": "2026-10-17" },
+ "sources": [
+  {
+   "id": "pb-2026-05",
+   "kind": "notification",
+   "title": "Basic minimum rates of wages in all employments in Punjab with effect from 1 May 2026",
+   "number": "Labour-Lab0MIWA/1/2021-4L (260032)/166",
+   "date": "2026-05-01",
+   "authority": "Labour Department, Government of Punjab (Punjab Government Gazette, Extraordinary, 1 May 2026, pp. 2212-2214)",
+   "legalBasis": "Code on Wages, 2019, section 8(3)",
+   "url": "https://pblabour.gov.in/pbLabourStaticSiteAdmin/uploads/8ec9bd9d-aecf-4bf6-b9bf-672b2970adad_Basic%20Minimum%20rates%20of%20wages.pdf",
+   "listing": "https://pblabour.gov.in/",
+   "language": "en",
+   "sha256": "228e7a12db509dffcb89be2ba32a08c1f0bdeb7c4df9ebde523f16297be27bf5",
+   "sizeKb": 521,
+   "retrievedOn": "2026-10-17"
+  },
+  {
+   "id": "pb-adjustments-1995-2025",
+   "kind": "order",
+   "title": "Adjusted minimum rates of wages, 1 July 1995 to 1 September 2025 (compilation of the half-yearly adjustments)",
+   "number": "ST/CPI/MW series, Research and Statistical Section",
+   "date": "2025-09-01",
+   "authority": "Office of the Labour Commissioner, Punjab",
+   "url": "https://pblabour.gov.in/pbLabourStaticSiteAdmin/uploads/b97f63f2-9419-48d6-8904-ce3340584cc7_Minimum%20wages%20rates%20w.e.f.%201.7.1995%20to%201.9.2025-2-1.pdf",
+   "listing": "https://pblabour.gov.in/",
+   "language": "en",
+   "sha256": "b882338975251411e787dc4a32a29795450946dd5d5c2b8dd33b888c0dc5b815",
+   "sizeKb": 14681,
+   "retrievedOn": "2026-10-17"
+  }
+ ],
+ "tables": [
+  {
+   "id": "all-employments",
+   "headline": true,
+   "title": "All employments",
+   "appliesTo": "Every employment in Punjab under the Code on Wages, 2019: establishments, factories, employees, workers and contract labour. Brick kilns and agriculture have their own rates.",
+   "sources": ["pb-2026-05"],
+   "effectiveFrom": "2026-05-01",
+   "zones": [{ "id": "punjab", "name": "All of Punjab", "areas": "One rate for the whole state." }],
+   "daily": "stated",
+   "basicLabel": "Basic minimum rate",
+   "vdaLabel": "Dearness allowance",
+   "vdaNote": "The 1 May 2026 notification fixes one basic rate per category, not split into allowances; it is to be adjusted with the consumer price index at intervals the state will prescribe.",
+   "rates": [
+    { "zone": "punjab", "skill": "unskilled", "basic": 13486, "vda": 0, "monthly": 13486, "daily": 518.69 },
+    { "zone": "punjab", "skill": "semi-skilled", "basic": 14383, "vda": 0, "monthly": 14383, "daily": 553.19 },
+    { "zone": "punjab", "skill": "skilled", "basic": 15414, "vda": 0, "monthly": 15414, "daily": 592.84 },
+    { "zone": "punjab", "skill": "highly-skilled", "basic": 16601, "vda": 0, "monthly": 16601, "daily": 638.5 }
+   ]
+  }
+ ],
+ "history": [
+  {
+   "table": "all-employments",
+   "effectiveFrom": "2025-09-01",
+   "effectiveTo": "2026-04-30",
+   "source": "pb-adjustments-1995-2025",
+   "rates": [
+    { "zone": "punjab", "skill": "unskilled", "monthly": 11726.4, "daily": 451.01 },
+    { "zone": "punjab", "skill": "semi-skilled", "monthly": 12506.4, "daily": 481.01 },
+    { "zone": "punjab", "skill": "skilled", "monthly": 13403.4, "daily": 515.51 },
+    { "zone": "punjab", "skill": "highly-skilled", "monthly": 14435.4, "daily": 555.2 }
+   ]
+  },
+  {
+   "table": "all-employments",
+   "effectiveFrom": "2025-03-01",
+   "effectiveTo": "2025-08-31",
+   "source": "pb-adjustments-1995-2025",
+   "rates": [
+    { "zone": "punjab", "skill": "unskilled", "monthly": 11389.64, "daily": 438.06 },
+    { "zone": "punjab", "skill": "semi-skilled", "monthly": 12169.64, "daily": 468.06 },
+    { "zone": "punjab", "skill": "skilled", "monthly": 13066.64, "daily": 502.56 },
+    { "zone": "punjab", "skill": "highly-skilled", "monthly": 14098.64, "daily": 542.25 }
+   ]
+  }
+ ],
+ "verification": [
+  "2026-10-17: pblabour.gov.in home page (the department's notifications block; /Profile/Notification renders its list by script and shows no documents to a plain fetch) links 'Notification on No. Labour-Lab0MIWA/1/2021-4L (260032)/166.-In Dated 1st MAY,2026 Notification Regarding Bye Basic Minimum rates of wages w.e.f 1st May 2026', the brick-kiln piece rates from the same date, and the 1995-2025 compilation. No later wage notification or adjustment was listed.",
+  "2026-10-17: 8ec9bd9d..._Basic Minimum rates of wages.pdf, Punjab Government Gazette (Extraordinary), 1 May 2026, 3 pages, Code on Wages s. 8(3), signed Manvesh Singh Sidhu, Secretary, Labour. The rate tables are images; read at 260 dpi. Per month / per day / per hour: unskilled 13486 / 518.69 / 64.83; semi-skilled 14383 / 553.19 / 69.14; skilled 15414 / 592.84 / 74.10; highly skilled 16601 / 638.50 / 79.81. Staff Category A 19431 / 747.34 / 93.41; B 17510 / 673.46 / 84.18; C 15786 / 607.15 / 75.89; D 14406 / 554.07 / 69.25. Attached agricultural labour 90973.28 a year with meals; other agricultural labour 486.588 a day with meals, 540.983 without.",
+  "2026-10-17: Notes in the notification: rates are basic rates that may not be split into allowances (1, 9); full neutralisation of CPI movement, adjustment as prescribed under the Code (1, 10); daily rate is the monthly rate / 26 and includes the weekly rest day, but a day's deduction for absence is monthly / 30 (7, 16); the principal employer is responsible for contractors paying these rates (5, 11); 30% / 10% less in hotels, restaurants, tea stalls, halwais, ahatas and households where meals and lodging are given (13); 8-hour normal day (15).",
+  "2026-10-17: The notification's daily figures are the monthly rate / 26, mostly rounded to the nearest paisa, but skilled 15414 / 26 = 592.846 is printed 592.84 (truncated). The printed figures are used ('stated').",
+  "2026-10-17: Minimum wages rates w.e.f. 1.7.1995 to 1.9.2025-2-1.pdf (112 scanned pages, Punjabi headings, no text layer), page 108 (table 1): from 01.03.2025 unskilled 11389.64 / 438.06 / 54.75, semi-skilled 12169.64 / 468.06 / 58.50, skilled 13066.64 / 502.56 / 62.82, highly skilled 14098.64 / 542.25 / 67.78; from 01.09.2025 11726.40 / 451.01 / 56.37, 12506.40 / 481.01 / 60.12, 13403.40 / 515.51 / 64.43, 14435.40 / 555.20 / 69.40. Read at 150 dpi; the scan is faint, a reviewer should confirm. The compilation has no single number or date; the date given here is its last adjustment.",
+  "OPEN QUESTION for the reviewer: when the next adjustment falls. The old cycle was 1 March and 1 September; the 2026 notification leaves the interval to rules, and the Code on Wages (Punjab) Rules, 2026 were published only in draft (29 December 2025, per secondary reports). The Central rules use 1 April and 1 October. nextRevision is set to 1 March 2027 without marking 1 September 2026 as missed.",
+  "NOT INCLUDED: Staff Categories A to D (no matching skill labels on the site yet), agricultural labour, and brick kilns (separate piece-rate notification)."
+ ]
+}

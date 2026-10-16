@@ -4,11 +4,12 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { Button } from "@/components/ui/button";
 import { CtaBlock } from "@/components/sections/cta-block";
 import { ClientStrip } from "@/components/sections/client-strip";
 import { FaqSection } from "@/components/sections/faq-section";
-import { JsonLd, breadcrumbSchema, webPageSchema } from "@/lib/structured-data";
+import { JsonLd, webPageSchema } from "@/lib/structured-data";
 import { haridwarCopy } from "@/content/pages/haridwar-sidcul";
 import { jobsDoorHref } from "@/components/layout/nav-links";
 import { HARIDWAR_SECTION_ANCHORS } from "@/content/registry/identifiers";
@@ -45,17 +46,17 @@ function Areas({ locale }: { locale: Locale }) {
 
 /**
  * The Haridwar buyer hub: the hero, client proof, one SIDCUL paragraph, the
- * three services and one FAQ. Most hi-IN visitors are job seekers, so there
- * the jobs door is a button with Request a crew beside it; elsewhere the hero
- * carries only a quiet jobs line and the band takes the crew request.
+ * three services and one FAQ. The hero carries Request a crew (prefilled
+ * for Haridwar) and a quiet jobs line. Most hi-IN visitors are job seekers,
+ * so there the jobs door is a button first, with Request a crew beside it.
  */
 export function HaridwarPage({ locale }: { locale: Locale }) {
   const t = haridwarCopy[locale];
   const url = localePath(PATH, locale);
   const [before, after] = t.sidcul.split("{areas}");
   const jobsFirst = locale === "hi-IN";
-  const crewButton = t.crew && (
-    <Button asChild size="lg" variant="outline">
+  const crewButton = (
+    <Button asChild size="lg" variant={jobsFirst ? "outline" : "default"}>
       <Link href={CREW_HREF}>
         {t.crew} <ArrowUpRight aria-hidden="true" />
       </Link>
@@ -71,20 +72,14 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
           inLanguage: locales[locale].hreflang,
         })}
       />
-      <JsonLd
-        data={breadcrumbSchema([
-          { name: t.breadcrumb.home, href: "/" },
-          { name: t.breadcrumb.page, href: url },
-        ])}
-      />
+      <Breadcrumbs path={PATH} locale={locale} name={t.breadcrumb} />
       <PageHero
-        title={
-          <>
-            {t.hero[0]}
-            <br />
-            {t.hero[1]}
-          </>
-        }
+        title={t.hero.map((line, i) => (
+          <span key={line}>
+            {i > 0 && <br />}
+            {line}
+          </span>
+        ))}
         lede={t.lede}
         footnote={
           jobsFirst ? (
@@ -97,14 +92,17 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
               {crewButton}
             </div>
           ) : (
-            // A quiet door for job seekers, away from the business phone (PLAN §5.2).
-            // Request a crew stays in the header and the prefilled band only.
-            <p className="seeker-line pt-2">
-              {t.jobs.text}{" "}
-              <NextLink href={jobsDoorHref(locale)} className="text-link" prefetch={false}>
-                {t.jobs.label} <ArrowRight size={18} aria-hidden="true" />
-              </NextLink>
-            </p>
+            // Request a crew first; a quiet door for job seekers, away from
+            // the business phone (PLAN §5.2).
+            <div className="flex flex-wrap items-center gap-x-8 gap-y-4 pt-2">
+              {crewButton}
+              <p className="seeker-line">
+                {t.jobs.text}{" "}
+                <NextLink href={jobsDoorHref(locale)} className="text-link mt-0" prefetch={false}>
+                  {t.jobs.label} <ArrowRight size={18} aria-hidden="true" />
+                </NextLink>
+              </p>
+            </div>
           )
         }
       />
@@ -116,7 +114,7 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
       )}
       <Section className="border-t border-border">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.6fr]">
-          <p className="eyebrow text-gold-700">{locale === "en-IN" ? t.breadcrumb.page.toUpperCase() : t.breadcrumb.page}</p>
+          <p className="eyebrow text-gold-700">{locale === "en-IN" ? t.breadcrumb.toUpperCase() : t.breadcrumb}</p>
           <div>
             <p className="text-xl leading-relaxed sm:text-2xl">
               {before}

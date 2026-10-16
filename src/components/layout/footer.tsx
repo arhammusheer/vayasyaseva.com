@@ -11,8 +11,9 @@ type Column = { label: string; links: NavLink[] };
 
 /**
  * Business and reference pages: the services, the company, and the
- * reference pages once published. Reference pages list Resources first.
- * English on every page, as are the pages they open.
+ * reference pages once published. Reference pages list Resources first and
+ * leave out the Company column (the spec's footer cut): their readers are
+ * often workers. English on every page, as are the pages they open.
  */
 function businessColumns(reference: boolean): Column[] {
   const columns: Column[] = [
@@ -37,9 +38,8 @@ function businessColumns(reference: boolean): Column[] {
     },
   ];
   const resources = referenceLinks(true);
-  if (!resources.length) return columns;
-  const column = { label: "Resources", links: resources };
-  return reference ? [column, ...columns] : [...columns, column];
+  const column = resources.length ? [{ label: "Resources", links: resources }] : [];
+  return reference ? [...column, columns[0]] : [...columns, ...column];
 }
 
 /**

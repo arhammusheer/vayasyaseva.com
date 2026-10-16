@@ -98,8 +98,8 @@ export const wageHubHi = {
     `उत्तराखंड, UP और दिल्ली में आपके काम की सबसे कम मजदूरी, महीने और रोज़ की। कम मिले तो शिकायत कहाँ करें। जाँच: ${formatMonthHi(wageStates.map((s) => s.checked.on).sort()[0])}।`,
   heading: (year: string | null) => `न्यूनतम मजदूरी${year ? ` ${year}` : ""}`,
   lede: "आपको कम से कम कितना मिलना चाहिए: अपना राज्य और अपना काम देखिए। इससे कम देने की इजाज़त नहीं है।",
-  /** A quiet job line under the lede; the full door is at the foot. */
-  jobsLine: { before: "नौकरी चाहिए?", label: "हरिद्वार में नौकरियाँ" },
+  /** The page's one jobs door: a quiet line under the lede. */
+  jobsLine: { before: "नौकरी चाहिए?", label: "हरिद्वार में नौकरियाँ", href: "/jobs/haridwar" },
   table: { skill: "काम", month: "महीना", day: "रोज़", notSet: "तय नहीं" },
   inForce: (date: string) => `${date} से लागू।`,
   /** Said once, under the lede, when any state's revision is overdue. */
@@ -112,12 +112,7 @@ export const wageHubHi = {
       { title: "शिकायत कीजिए", text: "आप जिस राज्य में काम करते हैं, उसके श्रम विभाग में शिकायत कर सकते हैं। कॉन्ट्रैक्ट पर काम करने वालों पर भी यही दरें लागू हैं।" },
     ],
   },
-  jobs: {
-    eyebrow: "नौकरी चाहिए?",
-    heading: "हरिद्वार में फ़ैक्टरी और वेयरहाउस की नौकरी।",
-    text: "पूरी 8 घंटे की शिफ्ट। आवेदन की कोई फ़ीस नहीं।",
-    link: { href: "/jobs/haridwar", label: "हरिद्वार में नौकरियाँ" },
-  },
+
   checked: (date: string) => `${date} को राज्य के अपने दस्तावेज़ों से भरा गया।`,
   howWeCheck: "हमने कैसे जाँचा (अंग्रेज़ी में)",
 };

@@ -37,17 +37,17 @@ export interface JobsFormCopy {
 export interface JobsCopy {
   title: string;
   description: string;
-  breadcrumb: { home: string; page: string };
+  /** The page's breadcrumb name (the trail comes from src/lib/breadcrumbs.ts). */
+  breadcrumb: string;
   /** The share image's label only: the page itself has no eyebrow. */
   eyebrow: string;
   heading: string;
   lede: string;
   apply: string;
   form: JobsFormCopy;
-  /** Role names, as the /jobs groups and the /jobs/haridwar link row show them. */
+  /** Role names, as the /jobs groups and related-role rows show them. */
   work: { title: string; role: JobRole }[];
-  /** The labelled lines under the groups: "Where" and "Who can apply". */
-  where: string;
+  /** The labelled line under the groups: "Who can apply". */
   who: string;
 }
 
@@ -83,7 +83,7 @@ export const SHIFTS_LINE: Record<Locale, string> = {
 
 /**
  * /jobs in every locale, and the jobs form's strings. /jobs is a router:
- * Apply, the four work groups, Where and Who can apply. Its H1 and title
+ * Apply (to /jobs/haridwar), the four work groups and Who can apply. Its H1 and title
  * stay as they are until /jobs/haridwar is indexed (the restructure's SEO
  * order). hi-IN is the page most job seekers use; en-IN and hi-Latn-IN
  * mirror it. hi-IN and hi-Latn-IN are drafts pending native review.
@@ -94,7 +94,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     title: "SIDCUL Haridwar Vacancy: Factory, Warehouse, ITI Jobs",
     description:
       "SIDCUL Haridwar jobs. No fee to apply. Full 8-hour shifts. Factory, packing, warehouse, housekeeping and ITI work. Apply online with a few short answers.",
-    breadcrumb: { home: "Home", page: "Jobs" },
+    breadcrumb: "Jobs",
     eyebrow: "JOBS · SIDCUL HARIDWAR",
     heading: "Find work in SIDCUL Haridwar.",
     lede: "Factory, packing, warehouse, housekeeping and ITI work.",
@@ -159,14 +159,13 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       { title: "Other ITI trades", role: "iti-trades" },
       { title: "Data entry operator", role: "data-entry-operator" },
     ],
-    where: "Where",
     who: "Who can apply",
   },
   "hi-IN": {
     title: "सिडकुल हरिद्वार वैकेंसी: फ़ैक्टरी, वेयरहाउस और ITI की नौकरी",
     description:
       "सिडकुल हरिद्वार में नौकरी। आवेदन की कोई फ़ीस नहीं। पूरी 8 घंटे की शिफ्ट। फ़ैक्टरी, पैकिंग, वेयरहाउस, हाउसकीपिंग और ITI का काम। कुछ आसान सवालों से ऑनलाइन आवेदन करें।",
-    breadcrumb: { home: "होम", page: "नौकरी" },
+    breadcrumb: "नौकरी",
     eyebrow: "नौकरी · सिडकुल हरिद्वार",
     heading: "सिडकुल हरिद्वार में काम ढूँढें।",
     lede: "फ़ैक्टरी, पैकिंग, वेयरहाउस, हाउसकीपिंग और ITI का काम।",
@@ -231,14 +230,13 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       { title: "दूसरे ITI ट्रेड", role: "iti-trades" },
       { title: "डेटा एंट्री ऑपरेटर", role: "data-entry-operator" },
     ],
-    where: "कहाँ",
     who: "कौन आवेदन कर सकता है",
   },
   "hi-Latn-IN": {
     title: "SIDCUL Haridwar Vacancy: Factory, Warehouse, ITI Naukri",
     description:
       "SIDCUL Haridwar job. Koi fee nahi. Poori 8 ghante ki shift. Factory, packing, warehouse, housekeeping aur ITI ka kaam. Kuch aasaan sawaal, phir online apply.",
-    breadcrumb: { home: "Home", page: "Jobs" },
+    breadcrumb: "Jobs",
     eyebrow: "Jobs · SIDCUL Haridwar",
     heading: "SIDCUL Haridwar mein kaam dhoondhein.",
     lede: "Factory, packing, warehouse, housekeeping aur ITI ka kaam.",
@@ -303,7 +301,6 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       { title: "Dusre ITI trade", role: "iti-trades" },
       { title: "Data entry operator", role: "data-entry-operator" },
     ],
-    where: "Kahan",
     who: "Kaun apply kar sakta hai",
   },
 };

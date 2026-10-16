@@ -34,7 +34,7 @@ Last compiled: 16 October 2026, for the national phase 1 pull request; business 
 | Claim | Pages | Tier | Evidence or approval | Signed off | Review by |
 |---|---|---|---|---|---|
 | We aim to reply within two working days (Monday to Saturday, IST) | /contact (page and sent message) only; cut from the CTA bands and the Setu band, 16 Oct 2026 | A | PLAN §8.1; becomes B after 90 days of first-reply data | | 16 Jan 2027 |
-| We'll tell you whether we can staff it (a site elsewhere in India) | /contact form hint, wage pages, llms.txt; cut from home and with /industries | A | Owner decision 3 | | 16 Oct 2027 |
+| We'll tell you whether we can staff it (a site elsewhere in India) | /contact form hint, llms.txt; cut from home, wage pages and with /industries | A | Owner decision 3 | | 16 Oct 2027 |
 | A site visit before a crew starts (site assessment request; engagement step 1) | /contact, /services | A | Owner to confirm | | 16 Oct 2027 |
 | A rate per worker covering wages, applicable EPF and ESIC and our service charge, on one monthly invoice | Home FAQ | A | Practice; owner to confirm billing basis | | 16 Oct 2027 |
 | We put a supervised crew on your floor and keep it running, for a season or for years | Home hero | A | Practice; owner to confirm | | 16 Oct 2027 |

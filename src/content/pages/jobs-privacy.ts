@@ -34,7 +34,7 @@ export const jobsPrivacyCopy: Record<Locale, JobsPrivacyCopy> = {
     shortLabel: "In short",
     short: [
       { label: "What we keep", text: "Your name, mobile number, your answers, and any photos or documents you send." },
-      { label: "Who sees it", text: "Our team, and the services that run this site, our files and our SMS. No other company." },
+      { label: "Who sees it", text: "Our team, and the services that run this site, our files and our SMS." },
       { label: "How long", text: "12 months after you last reply to us. Then we delete it." },
       { label: "To remove it", text: `Email ${EMAIL} with your mobile number, or tell us when we call.` },
     ],
@@ -64,9 +64,9 @@ export const jobsPrivacyCopy: Record<Locale, JobsPrivacyCopy> = {
     shortLabel: "थोड़े में",
     short: [
       { label: "हम क्या रखते हैं", text: "आपका नाम, मोबाइल नंबर, आपके जवाब, और जो फ़ोटो या कागज़ आप भेजें।" },
-      { label: "कौन देखता है", text: "हमारी टीम, और वे सेवाएँ जिन पर यह साइट, हमारी फ़ाइलें और SMS चलते हैं। कोई दूसरी कंपनी नहीं।" },
+      { label: "कौन देखता है", text: "हमारी टीम, और वे सेवाएँ जिन पर यह साइट, हमारी फ़ाइलें और SMS चलते हैं।" },
       { label: "कब तक", text: "आपके आख़िरी जवाब के बाद 12 महीने तक। फिर हम इसे हटा देते हैं।" },
-      { label: "हटवाना हो तो", text: `अपने मोबाइल नंबर के साथ ${EMAIL} पर ईमेल करें, या कॉल पर बता दें।` },
+      { label: "हटवाना हो तो", text: `अपने मोबाइल नंबर के साथ ${EMAIL} पर ईमेल करें, या जब हम कॉल करें तब बता दें।` },
     ],
     detailsLabel: "और जानकारी",
     details: [
@@ -94,9 +94,9 @@ export const jobsPrivacyCopy: Record<Locale, JobsPrivacyCopy> = {
     shortLabel: "Thode mein",
     short: [
       { label: "Hum kya rakhte hain", text: "Aapka naam, mobile number, aapke jawab, aur jo photo ya documents aap bhejein." },
-      { label: "Kaun dekhta hai", text: "Hamari team, aur woh services jin par yeh site, hamari files aur SMS chalte hain. Koi dusri company nahi." },
+      { label: "Kaun dekhta hai", text: "Hamari team, aur woh services jin par yeh site, hamari files aur SMS chalte hain." },
       { label: "Kab tak", text: "Aapke aakhri jawab ke baad 12 mahine tak. Phir hum ise hata dete hain." },
-      { label: "Hatwana ho to", text: `Apne mobile number ke saath ${EMAIL} par email karein, ya call par bata dein.` },
+      { label: "Hatwana ho to", text: `Apne mobile number ke saath ${EMAIL} par email karein, ya jab hum call karein tab bata dein.` },
     ],
     detailsLabel: "Aur jaankari",
     details: [

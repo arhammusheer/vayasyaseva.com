@@ -10,10 +10,12 @@ import { localeParams } from "@/lib/i18n";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/about");
 
-// The search phrase stays in the title; the page itself is who we are.
+// The search phrase stays in the title; the page itself is who we are: one
+// sentence, then the facts. The contractor point stays on home and the
+// records on /compliance.
 const TITLE = "About Us: Labour Contractor in Haridwar";
 const DESCRIPTION =
-  "Vayasya Seva Private Limited is a contract labour company based in Haridwar, Uttarakhand. Our story, and the company's CIN, GSTIN and Udyam numbers.";
+  "Vayasya Seva Private Limited is a contract labour company incorporated in Haridwar, Uttarakhand, in 2023. The company's CIN, GSTIN and Udyam numbers.";
 
 export const metadata = pageMetadata({
   title: TITLE,
@@ -49,28 +51,8 @@ export default function AboutPage() {
             around the work.
           </>
         }
-        lede="Vayasya Seva brings people and practical support to business operations. Our roots are in Haridwar. Our approach starts with understanding what each client needs."
+        lede="Incorporated in Haridwar in 2023, we supply supervised crews to factories, warehouses and facilities in SIDCUL and across Haridwar."
       />
-      <Section>
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
-          <h2 className="text-4xl font-medium">
-            Close to the people.
-            <br />
-            Close to the operation.
-          </h2>
-          <div className="space-y-5 text-lg leading-relaxed text-muted-foreground">
-            <p>
-              As a contract labour provider, we work with businesses to source,
-              onboard and manage the people their operations need.
-            </p>
-            <p>
-              Careful compliance is a core part of that relationship. Our site
-              teams and office coordinate worker documentation, attendance and
-              statutory records alongside the daily work.
-            </p>
-          </div>
-        </div>
-      </Section>
       <Section variant="subtle">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
           <div>
@@ -80,7 +62,6 @@ export default function AboutPage() {
               <br />
               Private Limited
             </h2>
-            <p className="mt-5 text-muted-foreground">Based in Haridwar, Uttarakhand.</p>
             <Link href="/haridwar-sidcul" className="text-link">
               Our work in SIDCUL Haridwar <ArrowUpRight size={18} aria-hidden="true" />
             </Link>

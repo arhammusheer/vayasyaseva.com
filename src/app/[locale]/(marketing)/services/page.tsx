@@ -35,7 +35,7 @@ export default function ServicesPage() {
       />
       <JsonLd data={servicePageSchema(servicePages)} />
       <PageHero
-        title="Contract labour for factories, warehouses and facilities."
+        title="What we supply."
         lede="Supervised crews for shopfloors, docks and premises, in SIDCUL and across Haridwar."
       />
       <section className="capability-section">

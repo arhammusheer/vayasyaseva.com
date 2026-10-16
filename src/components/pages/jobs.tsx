@@ -2,10 +2,10 @@ import Link from "@/components/i18n/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
 import { Section } from "@/components/layout/section";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { JOB_GROUPS, JOB_HUB_LINKS } from "@/components/layout/nav-links";
-import { quickApplyCopy } from "@/content/pages/quick-apply";
 import { getJobCluster } from "@/content/pages/job-clusters";
-import { JsonLd, breadcrumbSchema, webPageSchema } from "@/lib/structured-data";
+import { JsonLd, webPageSchema } from "@/lib/structured-data";
 import { JOB_GROUP_ROLES, jobsCopy } from "@/content/pages/jobs";
 import { jobRolePath } from "@/components/pages/job-role";
 import { localePath, locales, type Locale } from "@/lib/i18n";
@@ -23,8 +23,9 @@ export function jobsMetadata(locale: Locale) {
 }
 
 /**
- * A router, not a second Haridwar landing: Apply, or pick your work (four
- * groups, names only, each a #id the jobs menu links to), your area or your
+ * A router, not a second Haridwar landing (no form, no shifts line: those
+ * are on /jobs/haridwar, where Apply goes): Apply, or pick your work (four
+ * groups, names only, each a #id the jobs menu links to) or your
  * qualification. No FAQ: the form pages and /jobs/fees-and-fraud carry the
  * rest.
  */
@@ -38,12 +39,7 @@ export function JobsPage({ locale }: { locale: Locale }) {
       <JsonLd
         data={webPageSchema({ name: t.title, description: t.description, url, inLanguage: locales[locale].hreflang })}
       />
-      <JsonLd
-        data={breadcrumbSchema([
-          { name: t.breadcrumb.home, href: "/" },
-          { name: t.breadcrumb.page, href: url },
-        ])}
-      />
+      <Breadcrumbs path={PATH} locale={locale} name={t.breadcrumb} />
       <section className="jobs-top">
         <div className="site-shell grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1fr] lg:items-end lg:gap-16">
           <div>
@@ -51,8 +47,7 @@ export function JobsPage({ locale }: { locale: Locale }) {
             <p className="jobs-lede">{t.lede}</p>
           </div>
           <div>
-            <p className="quick-shifts">{quickApplyCopy[locale].shifts}</p>
-            <Link href={localePath("/jobs/apply", locale)} className="jobs-submit">
+            <Link href={localePath(`/jobs/${haridwar.slug}`, locale)} className="jobs-submit">
               {t.apply} <ArrowRight size={20} aria-hidden="true" />
             </Link>
           </div>
@@ -76,14 +71,6 @@ export function JobsPage({ locale }: { locale: Locale }) {
           ))}
         </div>
         <dl className="jobs-lines">
-          <div>
-            <dt>{t.where}</dt>
-            <dd>
-              <Link href={localePath(`/jobs/${haridwar.slug}`, locale)} className="text-link mt-0">
-                {haridwar.linkLabel} <ArrowRight size={18} aria-hidden="true" />
-              </Link>
-            </dd>
-          </div>
           <div>
             <dt>{t.who}</dt>
             <dd>

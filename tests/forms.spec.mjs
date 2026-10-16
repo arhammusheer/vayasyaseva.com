@@ -62,7 +62,7 @@ try {
   assert.equal(await page.locator('main a[href="/en-in/jobs/freshers"]').count(),1);
   assert.equal(await page.locator('main a[href="/en-in/jobs/haridwar"]').count(),1);
   for (const id of ['helper','machine','iti','office']) assert.equal(await page.locator('main section#'+id).count(),1,'/jobs #'+id);
-  await page.locator('.jobs-submit').click();await page.waitForURL('**/en-in/jobs/apply');assert.equal(new URL(page.url()).pathname,'/en-in/jobs/apply');
+  await page.locator('.jobs-submit').click();await page.waitForURL('**/en-in/jobs/haridwar');assert.equal(new URL(page.url()).pathname,'/en-in/jobs/haridwar');
   console.log('Job landing pages preserve self-canonicals, unique content, role links and guided application access');
   await open('/en-in/jobs/apply'+complete);
   await page.locator('#quick-name').waitFor();
@@ -115,7 +115,7 @@ try {
   // In the same tab, Back to Apply returns to a restored draft.
   await page.goto(origin+'/en-in/jobs/privacy');await page.locator('h1').waitFor();
   assert.equal(await page.locator('main a[href="/en-in/privacy#job-seekers"]').count(),1);
-  await page.locator('main a.jobs-submit').click();await page.waitForURL('**/en-in/jobs/apply**');await page.locator('[data-draft-notice]').waitFor();
+  await page.locator('main a.jobs-submit').click();await page.waitForURL('**/en-in/jobs/haridwar**');await page.locator('[data-draft-notice]').waitFor();
   assert.equal(await page.locator('#quick-name').inputValue(),'Draft Test');assert.equal(await page.locator('#quick-phone').inputValue(),'9999900001');
   assert.equal(await page.locator('[name=agree]').isChecked(),false);
   // One no-fee line in the page (the form's footer), and the done screen says only what we do if the work fits.

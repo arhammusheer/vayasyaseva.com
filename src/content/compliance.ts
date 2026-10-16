@@ -1,7 +1,7 @@
 /**
  * /compliance: the records we keep and the checks to make with any
- * contractor (the four that map to records we show). llms-full.txt reads
- * these too. Registration numbers live on /about.
+ * contractor that the records list does not already cover. llms-full.txt
+ * reads these too. Registration numbers live on /about.
  */
 export const COMPLIANCE_RECORDS = [
   { title: "Attendance and wage registers", text: "Attendance for every shift, and the wage register that follows from it." },
@@ -13,6 +13,4 @@ export const COMPLIANCE_RECORDS = [
 export const CONTRACTOR_CHECKS = [
   { title: "Minimum wage", text: "Rates at or above the minimum wage for your state, zone and skill level." },
   { title: "Wages on time", text: "Bank transfer records for each wage period, paid by the deadline." },
-  { title: "EPF and ESIC", text: "Monthly challans for each covered worker." },
-  { title: "Attendance and overtime", text: "Attendance that matches the wage sheet, with overtime at twice the rate." },
 ];

@@ -10,7 +10,7 @@ import type { FaqItem } from "@/content/types";
  * or two questions.
  */
 export function FaqSection({
-  title = "Common questions.",
+  title = "Questions.",
   eyebrow,
   items,
   variant = "default",

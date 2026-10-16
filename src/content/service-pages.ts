@@ -4,7 +4,7 @@ import type { JobRole } from "@/lib/talent-intake/rules";
 export interface ServiceLandingContent {
   slug: string;
   name: string;
-  /** One line of the roles, for the /services rows and the home capability rows. */
+  /** One line of the roles, for the /services rows. */
   summary: string;
   metaTitle: string;
   description: string;

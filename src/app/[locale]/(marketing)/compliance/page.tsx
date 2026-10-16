@@ -64,6 +64,9 @@ export default function CompliancePage() {
             <Rows items={COMPLIANCE_RECORDS} />
             <p className="compliance-line">
               <span>Registered under EPF and ESIC.</span>
+              <Link href="/about" className="text-link">
+                Company details on About <ArrowUpRight size={18} aria-hidden="true" />
+              </Link>
               <a href={`mailto:${siteConfig.email}?subject=Compliance%20documents`} className="text-link">
                 Request compliance documents <ArrowUpRight size={18} aria-hidden="true" />
               </a>

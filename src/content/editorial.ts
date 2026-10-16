@@ -13,7 +13,7 @@ export const EDITORIAL_HREF = WAGE_METHOD_PATH;
 export type EditorialItem = { title: string; text: string[] };
 
 export const editorialPolicy = {
-  intro: "Where the figures on our minimum wage pages and labour law guides come from, how we work them out and check them, and how to tell us when one is wrong.",
+  intro: "Where the figures on our minimum wage pages come from, how we work them out and check them against the state's documents, and how to tell us when one is wrong.",
   items: [
     {
       title: "Sources",

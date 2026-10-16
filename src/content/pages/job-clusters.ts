@@ -1,18 +1,16 @@
 import type { FaqItem } from "../types";
 import type { Locale } from "@/lib/i18n";
-import type { ClusterId, HARIDWAR_SECTION_ANCHORS } from "@/content/registry/identifiers";
+import type { ClusterId } from "@/content/registry/identifiers";
 import { AGE_FAQ } from "./job-hubs";
-
-type Area = (typeof HARIDWAR_SECTION_ANCHORS)[number];
 
 /**
  * Jobs hubs for one cluster, under /jobs/<cluster> (PLAN §5.3). Only
  * Haridwar today; a cluster gets one only once it is in
  * src/content/registry/clusters.ts and its page is in pages.ts.
  *
- * The page is a landing for "haridwar job vacancy": the form first, then one
- * line on where the work is, the role names, what happens after you apply
- * and three questions. "Who pays me?" is the only payroll line on the jobs
+ * The page is a landing for "haridwar job vacancy" and the one form page
+ * every Apply link opens: the lede names the areas, then the form, what
+ * happens after you apply and three questions (role links live on /jobs). "Who pays me?" is the only payroll line on the jobs
  * side. Job-page voice (PLAN §6.2): short sentences, words a class-10 reader
  * knows. Claims discipline: no pay figures, no promised call, no guarantee
  * of work, no employer names, no part-time. hi-IN and hi-Latn-IN are drafts
@@ -29,14 +27,8 @@ export interface JobClusterCopy {
   /** The share image's label only: the page itself has no eyebrow. */
   eyebrow: string;
   heading: string;
+  /** Where the work is: the area names. */
   lede: string;
-  /**
-   * One line on where the work is. `{areas}` is where the area names go;
-   * `and` joins the last two.
-   */
-  areas: { text: string; names: Record<Area, string>; and: string };
-  /** Label of the compact row of role links. */
-  roles: string;
   /** What happens after you apply, as a three-step strip. */
   after: { label: string; steps: [string, string, string] };
   faqTitle: string;
@@ -54,13 +46,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
         "Haridwar job vacancy in SIDCUL and Roorkee. No fee. Full 8-hour shifts. Factory, packing, warehouse and housekeeping work. Apply online, a few short questions.",
       eyebrow: "JOBS · HARIDWAR",
       heading: "Factory and warehouse jobs in Haridwar.",
-      lede: "Work in SIDCUL and across Haridwar.",
-      areas: {
-        text: "Most of the work is in SIDCUL. Some is in {areas}.",
-        names: { bahadrabad: "Bahadrabad", bhagwanpur: "Bhagwanpur", roorkee: "Roorkee" },
-        and: "and",
-      },
-      roles: "Jobs by work",
+      lede: "Work in SIDCUL, Bahadrabad, Bhagwanpur and Roorkee.",
       after: { label: "After you apply", steps: ["SMS from VAYSPL", "We call if the work fits", "You decide"] },
       faqTitle: "Questions.",
       faqs: [
@@ -89,13 +75,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
         "सिडकुल हरिद्वार और रुड़की में फ़ैक्टरी, वेयरहाउस की वैकेंसी। कोई फ़ीस नहीं। पूरी 8 घंटे की शिफ्ट। कुछ आसान सवाल, ऑनलाइन आवेदन।",
       eyebrow: "नौकरी · हरिद्वार",
       heading: "हरिद्वार में फ़ैक्टरी और वेयरहाउस की नौकरी।",
-      lede: "सिडकुल और पूरे हरिद्वार में काम।",
-      areas: {
-        text: "ज़्यादातर काम सिडकुल में है। कुछ काम {areas} में है।",
-        names: { bahadrabad: "बहादराबाद", bhagwanpur: "भगवानपुर", roorkee: "रुड़की" },
-        and: "और",
-      },
-      roles: "काम के हिसाब से",
+      lede: "सिडकुल, बहादराबाद, भगवानपुर और रुड़की में काम।",
       after: { label: "आवेदन के बाद", steps: ["VAYSPL से SMS", "काम लायक हुआ तो हम कॉल करते हैं", "फ़ैसला आपका"] },
       faqTitle: "सवाल।",
       faqs: [
@@ -124,13 +104,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
         "Haridwar job vacancy SIDCUL aur Roorkee mein. Koi fee nahi. Poori 8 ghante ki shift. Factory, packing, warehouse aur housekeeping. Online apply karein.",
       eyebrow: "Jobs · Haridwar",
       heading: "Haridwar mein factory aur warehouse ki job.",
-      lede: "SIDCUL aur poore Haridwar mein kaam.",
-      areas: {
-        text: "Zyadatar kaam SIDCUL mein hai. Kuch kaam {areas} mein hai.",
-        names: { bahadrabad: "Bahadrabad", bhagwanpur: "Bhagwanpur", roorkee: "Roorkee" },
-        and: "aur",
-      },
-      roles: "Kaam ke hisaab se",
+      lede: "SIDCUL, Bahadrabad, Bhagwanpur aur Roorkee mein kaam.",
       after: { label: "Apply ke baad", steps: ["VAYSPL se SMS", "Kaam laayak hua to hum call karte hain", "Faisla aapka"] },
       faqTitle: "Sawaal.",
       faqs: [

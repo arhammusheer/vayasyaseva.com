@@ -82,35 +82,32 @@ export function wageHubMetadata(locale: Locale = "en-IN") {
 
 // ── Shared pieces ───────────────────────────────────────────────────────────
 
-/** Directly under each H1: when the figures were checked, and the method page. */
-function CheckedLine({ state }: { state: WageState }) {
+/**
+ * Directly under each H1: when the figures were checked, the revision
+ * status (stale, or a revision due and not yet notified) when there is one,
+ * and the method page. One line, so the rates start right below the hero.
+ */
+function CheckedLine({ state, today }: { state: WageState; today: string }) {
+  const status = wageStatus(state, today);
+  const due = unpublishedRevisions(state, today);
   return (
-    <p className="wage-checked">
+    <p className={status.stale ? "wage-checked is-stale" : "wage-checked"} role={status.stale ? "status" : undefined}>
       {x.checked(checkedByLine(state), formatDate(state.checked.on))}.{" "}
+      {status.stale ? (
+        <>
+          <strong>{x.notice.staleStrong}</strong> {x.notice.staleText}{" "}
+          <a href={state.sources[0].listing} className="wage-inline-link">
+            {x.notice.staleLink}
+          </a>
+          .{" "}
+        </>
+      ) : (
+        due.length > 0 && <>{due.length > 1 ? x.notice.many(listDates(due)) : x.notice.one(formatDate(due[0]))} </>
+      )}
       <Link href={EDITORIAL_HREF}>
         {x.howWeCheck} <ArrowRight size={16} aria-hidden="true" />
       </Link>
     </p>
-  );
-}
-
-/** One status line: "may have been revised" once stale, else the overdue revision, said once. */
-function RevisionNotice({ state, today }: { state: WageState; today: string }) {
-  const status = wageStatus(state, today);
-  const due = unpublishedRevisions(state, today);
-  if (!due.length && !status.stale) return null;
-  return (
-    <div className={status.stale ? "wage-notice is-stale" : "wage-notice"} role={status.stale ? "status" : undefined}>
-      <div className="site-shell">
-        {status.stale ? (
-          <p>
-            <strong>{x.notice.staleStrong}</strong> {x.notice.staleText} <a href={state.sources[0].listing}>{x.notice.staleLink}</a>
-          </p>
-        ) : (
-          <p>{due.length > 1 ? x.notice.many(listDates(due)) : x.notice.one(formatDate(due[0]))}</p>
-        )}
-      </div>
-    </div>
   );
 }
 
@@ -354,11 +351,10 @@ export function WageStatePage({ slug }: { slug: WageStateSlug }) {
         crumbs={<Breadcrumbs path={wageStatePath(slug)} locale="en-IN" name={state.name} />}
         title={x.stateHeading(state.name, year)}
         lede={t.answer}
-        footnote={<CheckedLine state={state} />}
+        footnote={<CheckedLine state={state} today={today} />}
         className={HERO_TIGHT}
       />
-      <RevisionNotice state={state} today={today} />
-      {/* The rates start directly under the notice: the H2 is for the outline only. */}
+      {/* The rates start directly under the hero: the H2 is for the outline only. */}
       <Section id="rates" className="pt-6 sm:pt-10 lg:pt-12">
         <h2 className="sr-only">{x.sections.rates(state.name)}</h2>
         {t.whichTable && (
@@ -391,8 +387,8 @@ export function WageStatePage({ slug }: { slug: WageStateSlug }) {
         <EarlierRates state={state} />
       </Section>
       <Faqs faqs={t.faqs} />
-      <Doors doors={doors} />
       <Documents state={state} />
+      <Doors doors={doors} />
     </>
   );
 }
@@ -515,7 +511,7 @@ function WageHubPageHi() {
         footnote={
           <p className="wage-checked">
             {h.jobsLine.before}{" "}
-            <Link href={h.jobs.link.href}>
+            <Link href={h.jobsLine.href}>
               {h.jobsLine.label} <ArrowRight size={16} aria-hidden="true" />
             </Link>
           </p>
@@ -619,18 +615,6 @@ function WageHubPageHi() {
           </div>
         </div>
       </Section>
-      <section className="wage-doors" data-header-theme="dark">
-        <div className="site-shell wage-doors-inner is-single">
-          <div>
-            <p className="eyebrow">{h.jobs.eyebrow}</p>
-            <h2>{h.jobs.heading}</h2>
-            <p>{h.jobs.text}</p>
-            <Link href={h.jobs.link.href} className="light-link">
-              {h.jobs.link.label} <ArrowRight size={19} aria-hidden="true" />
-            </Link>
-          </div>
-        </div>
-      </section>
       <Section className="wage-hi-foot">
         <p className="wage-note">
           {h.checked(formatDateHi(lastChecked))}{" "}

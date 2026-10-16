@@ -213,7 +213,7 @@ export function GuidePage({ slug }: { slug: GuideSlug }) {
       ))}
       <Section id="questions" variant={guide.sections.length % 2 === 1 ? "subtle" : "default"}>
         <div className="wage-split">
-          <h2 className="wage-h2">Common questions</h2>
+          <h2 className="wage-h2">Questions</h2>
           <div className="faq-prose">
             {guide.faqs.map((f) => (
               <div key={f.question}>

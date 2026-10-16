@@ -54,7 +54,7 @@ export function getShareContent(path: string, locale: Locale = "en-IN", variant 
     if (role) { heading = role.heading; description = t.lede; }
     if (hub) { heading = hub.heading; description = t.lede; }
   } else if (path === "/haridwar-sidcul") {
-    const t = haridwarCopy[locale]; heading = t.hero.join(" "); description = t.description; eyebrow = t.breadcrumb.page;
+    const t = haridwarCopy[locale]; heading = t.hero.join(" "); description = t.description; eyebrow = t.breadcrumb;
   } else if (path.startsWith("/services/")) {
     const t = servicePages.find((s) => path === `/services/${s.slug}`);
     if (t) { heading = t.heading; description = t.description; eyebrow = t.name; }

@@ -94,9 +94,6 @@ export default function HomePage() {
             </p>
           </div>
         </div>
-        <div className="hero-foot site-shell">
-          <span>BASED IN HARIDWAR, UTTARAKHAND</span>
-        </div>
       </section>
       <ClientStrip />
       <section id="introduction" className="site-shell home-intro">
@@ -132,9 +129,8 @@ export default function HomePage() {
           </div>
           <div className="capability-list">
             {servicePages.map((s) => (
-              <Link className="capability-row" key={s.slug} href={`/services/${s.slug}`}>
+              <Link className="capability-row is-name-only" key={s.slug} href={`/services/${s.slug}`}>
                 <h3>{s.name}</h3>
-                <p>{s.summary}</p>
                 <ArrowUpRight size={24} aria-hidden="true" />
               </Link>
             ))}
@@ -156,9 +152,8 @@ export default function HomePage() {
           </div>
           <div className="compliance-detail">
             <p>
-              Attendance and wage registers, wage slips, and the EPF and ESIC
-              challans for every worker on your site, kept by us and open for
-              your monthly review and audits.
+              Registers, slips and EPF/ESIC challans for every worker, open to
+              your audit.
             </p>
             <Link href="/compliance" className="light-link">
               The records we keep <ArrowUpRight size={19} aria-hidden="true" />
@@ -169,12 +164,7 @@ export default function HomePage() {
       <section className="home-faq" id="questions">
         <div className="site-shell home-faq-inner">
           <div>
-            <p className="eyebrow">QUESTIONS</p>
-            <h2>
-              What buyers
-              <br />
-              ask us first.
-            </h2>
+            <h2>Questions.</h2>
           </div>
           <div className="faq-prose">
             {homeFaqs.map((f) => (

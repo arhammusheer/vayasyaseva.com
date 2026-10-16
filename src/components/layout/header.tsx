@@ -205,7 +205,7 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
             { links: [{ href: localePath("/jobs/fees-and-fraud", pageLocale), label: t.fee }] },
             { links: [businessDoor] },
           ],
-          cta: { href: localePath("/jobs/apply", pageLocale), label: t.apply },
+          cta: { href: localePath("/jobs/haridwar", pageLocale), label: t.apply },
         }
       : view === "reference"
         ? {
@@ -230,11 +230,12 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
   // Jobs pages: links a job seeker rarely follows are not prefetched, to
   // spare data on patchy 4G (as in the jobs footer).
   const prefetch = isJobs ? false : undefined;
-  // A jobs page with the form on it (#apply, e.g. /jobs/haridwar): Apply
-  // scrolls to that form instead of loading /jobs/apply without the page's
-  // cluster. Without JavaScript the link still opens /jobs/apply.
+  // Apply opens /jobs/haridwar, the one form page. A jobs page with the
+  // form on it (#apply: /jobs/haridwar, role and hub pages) scrolls to that
+  // form instead, keeping the role it pre-selects. /jobs/apply is left for
+  // agent and legacy links.
   const applyHere = (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (!isJobs || href !== localePath("/jobs/apply", pageLocale)) return;
+    if (!isJobs || href !== localePath("/jobs/haridwar", pageLocale)) return;
     const form = document.getElementById("apply");
     if (!form) return;
     event.preventDefault();

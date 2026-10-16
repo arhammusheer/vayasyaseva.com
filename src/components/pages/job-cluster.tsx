@@ -1,13 +1,11 @@
-import Link from "@/components/i18n/link";
 import { ArrowRight } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
-import { Section } from "@/components/layout/section";
 import { FaqSection } from "@/components/sections/faq-section";
 import { QuickApply } from "@/components/jobs/quick-apply";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { JsonLd, pageUrl, webPageSchema } from "@/lib/structured-data";
 import { jobsCopy } from "@/content/pages/jobs";
-import { getJobCluster, type JobClusterCopy } from "@/content/pages/job-clusters";
+import { getJobCluster } from "@/content/pages/job-clusters";
 import { isPaused, pageEntries } from "@/content/registry";
 import { PausedNotice } from "@/components/sections/paused-notice";
 import { localePath, locales, localesOf, type Locale } from "@/lib/i18n";
@@ -41,24 +39,11 @@ export function jobClusterMetadata(slug: string, locale: Locale) {
   });
 }
 
-/** The areas line: "A, B and C" in place of {areas}. */
-function AreasLine({ areas }: { areas: JobClusterCopy["areas"] }) {
-  const [before, after] = areas.text.split("{areas}");
-  const names = Object.values(areas.names);
-  const list = names.length > 1 ? `${names.slice(0, -1).join(", ")} ${areas.and} ${names.at(-1)}` : names.join("");
-  return (
-    <p className="jobs-areas">
-      {before}
-      {list}
-      {after}
-    </p>
-  );
-}
-
 /**
- * The Haridwar jobs landing (PLAN §5.3): the form on the first screen, one
- * line on where the work is, the role names, what happens after you apply
- * and three questions. No phone anywhere: this is a jobs page.
+ * The Haridwar jobs landing (PLAN §5.3), the one form page every Apply link
+ * opens: the form on the first screen, what happens after you apply and
+ * three questions. Role links live on /jobs, not under the role chips. No
+ * phone anywhere: this is a jobs page.
  */
 export function JobClusterPage({ slug, locale }: { slug: string; locale: Locale }) {
   const c = clusterOrThrow(slug, locale);
@@ -95,20 +80,6 @@ export function JobClusterPage({ slug, locale }: { slug: string; locale: Locale 
           </div>
         </div>
       </section>
-
-      <Section variant="subtle">
-        <AreasLine areas={c.areas} />
-        <nav aria-label={c.roles} className="jobs-role-row">
-          <p>{c.roles}</p>
-          <ul>
-            {jobs.work.map((w) => (
-              <li key={w.role}>
-                <Link href={localePath(jobRolePath(w.role), locale)}>{w.title}</Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </Section>
 
       <section className="jobs-after" aria-label={c.after.label}>
         <div className="site-shell">

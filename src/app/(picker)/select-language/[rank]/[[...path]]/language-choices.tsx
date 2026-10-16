@@ -4,7 +4,6 @@ import { useSyncExternalStore } from "react";
 import { ArrowRight } from "lucide-react";
 import { trackAnalyticsEvent } from "@/lib/analytics";
 import { LANGUAGE_COOKIE, LANGUAGE_COOKIE_MAX_AGE } from "@/lib/language-cookie";
-import { fromSearchReferrer } from "@/lib/search-referrer";
 
 export type LanguageChoice = {
   href: string;
@@ -14,8 +13,6 @@ export type LanguageChoice = {
   hint: string;
   /** A short page name, in that language. */
   title: string;
-  /** Where the choice goes for a visitor who came from a search engine. */
-  searchHref?: string;
 };
 
 const subscribe = () => () => {};
@@ -45,15 +42,10 @@ export function LanguageChoices({ choices, more, orderKey }: { choices: Language
     () => window.location.search + window.location.hash,
     () => "",
   );
-  const fromSearch = useSyncExternalStore(
-    subscribe,
-    () => fromSearchReferrer(document.referrer),
-    () => false,
-  );
-  const target = (c: LanguageChoice) => `${(fromSearch && c.searchHref) || c.href}${suffix}`;
+  const target = (c: LanguageChoice) => `${c.href}${suffix}`;
   const choose = (c: LanguageChoice, position: number | "more") => {
     rememberChoice(c.locale);
-    trackAnalyticsEvent("language_choice", { locale: c.locale, page: (fromSearch && c.searchHref) || c.href, position, order_key: orderKey });
+    trackAnalyticsEvent("language_choice", { locale: c.locale, page: c.href, position, order_key: orderKey });
   };
   return (
     <>

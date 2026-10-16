@@ -39,9 +39,9 @@ export interface JobRoleLabels {
 }
 
 export const jobRoleLabels: Record<Locale, JobRoleLabels> = {
-  "en-IN": { workHeading: "The work.", related: "Related work", allJobs: "All jobs", faqTitle: "About this work." },
-  "hi-IN": { workHeading: "काम क्या है।", related: "मिलते-जुलते काम", allJobs: "सभी नौकरियाँ", faqTitle: "इस काम के बारे में।" },
-  "hi-Latn-IN": { workHeading: "Kaam kya hai.", related: "Milte-julte kaam", allJobs: "Saari naukriyan", faqTitle: "Is kaam ke baare mein." },
+  "en-IN": { workHeading: "The work.", related: "Related work", allJobs: "All jobs", faqTitle: "Questions." },
+  "hi-IN": { workHeading: "काम क्या है।", related: "मिलते-जुलते काम", allJobs: "सभी नौकरियाँ", faqTitle: "सवाल।" },
+  "hi-Latn-IN": { workHeading: "Kaam kya hai.", related: "Milte-julte kaam", allJobs: "Saari naukriyan", faqTitle: "Sawaal." },
 };
 
 /** Three related roles per role page, closest first. */

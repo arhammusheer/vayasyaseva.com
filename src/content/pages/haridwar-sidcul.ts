@@ -7,11 +7,13 @@ type Area = (typeof HARIDWAR_SECTION_ANCHORS)[number];
 export interface HaridwarCopy {
   title: string;
   description: string;
-  breadcrumb: { home: string; page: string };
-  hero: [string, string];
+  /** The page's breadcrumb name (the trail comes from src/lib/breadcrumbs.ts). */
+  breadcrumb: string;
+  /** The H1, one line each. */
+  hero: [string] | [string, string];
   lede: string;
-  /** hi-IN only: the hero's Request a crew button beside the jobs button (prefilled for Haridwar). */
-  crew?: string;
+  /** The hero's Request a crew button (prefilled for Haridwar). */
+  crew: string;
   /** The jobs door: a quiet line in English and Hinglish, a button first in Hindi. */
   jobs: { text: string; label: string };
   clients: string;
@@ -42,9 +44,10 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
     title: "Labour Contractor in SIDCUL Haridwar",
     description:
       "Labour contractor for factories and warehouses in SIDCUL Haridwar, Bahadrabad, Bhagwanpur and Roorkee. Supervised crews with EPF and ESIC records.",
-    breadcrumb: { home: "Home", page: "SIDCUL Haridwar" },
-    hero: ["Labour contractor in Haridwar.", "Supporting SIDCUL industry."],
+    breadcrumb: "SIDCUL Haridwar",
+    hero: ["Labour contractor in SIDCUL Haridwar."],
     lede: "Supervised crews for factories, warehouses and facilities in SIDCUL and across Haridwar.",
+    crew: "Request a crew",
     jobs: { text: "Looking for work?", label: "Jobs in Haridwar" },
     clients: "Our experience includes work with",
     sidcul:
@@ -56,7 +59,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
       { href: SERVICE_HREFS[1], label: "Loading and unloading" },
       { href: SERVICE_HREFS[2], label: "Housekeeping and grounds" },
     ],
-    faqHeading: "Before we talk.",
+    faqHeading: "Questions.",
     faqs: [
       {
         question: "Do you supply contract labour to SIDCUL units?",
@@ -70,7 +73,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
     title: "सिडकुल हरिद्वार में लेबर ठेकेदार (Labour Contractor)",
     description:
       "सिडकुल हरिद्वार, बहादराबाद, भगवानपुर और रुड़की की फ़ैक्टरियों और वेयरहाउस के लिए लेबर ठेकेदार। सुपरवाइज़र के साथ टीम, EPF और ESIC रिकॉर्ड के साथ।",
-    breadcrumb: { home: "होम", page: "सिडकुल हरिद्वार" },
+    breadcrumb: "सिडकुल हरिद्वार",
     hero: ["सिडकुल हरिद्वार:", "फ़ैक्टरी का काम और लेबर ठेकेदार।"],
     lede: "सिडकुल और पूरे हरिद्वार की फ़ैक्टरियों, वेयरहाउस और फ़ैसिलिटी के लिए सुपरवाइज़र के साथ कामगारों की टीम।",
     crew: "कामगार माँगें",
@@ -85,7 +88,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
       { href: SERVICE_HREFS[1], label: "लोडिंग और अनलोडिंग" },
       { href: SERVICE_HREFS[2], label: "हाउसकीपिंग और ग्राउंड्स" },
     ],
-    faqHeading: "बात करने से पहले।",
+    faqHeading: "सवाल।",
     faqs: [
       {
         question: "क्या आप सिडकुल की यूनिटों को कॉन्ट्रैक्ट लेबर देते हैं?",
@@ -99,9 +102,10 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
     title: "SIDCUL Haridwar mein Labour Thekedar (Contractor)",
     description:
       "SIDCUL Haridwar, Bahadrabad, Bhagwanpur aur Roorkee ki factories aur warehouses ke liye labour contractor. Supervisor ke saath team, EPF/ESIC records ke saath.",
-    breadcrumb: { home: "Home", page: "SIDCUL Haridwar" },
-    hero: ["Haridwar mein labour contractor.", "SIDCUL industry ke saath."],
+    breadcrumb: "SIDCUL Haridwar",
+    hero: ["SIDCUL Haridwar mein labour contractor."],
     lede: "SIDCUL aur poore Haridwar ki factories, warehouses aur facilities ke liye supervisor ke saath workers ki team.",
+    crew: "Workers maangein",
     jobs: { text: "Kaam chahiye?", label: "Haridwar mein job" },
     clients: "Hamare experience mein inke saath kaam",
     sidcul:
@@ -113,7 +117,7 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
       { href: SERVICE_HREFS[1], label: "Loading aur unloading" },
       { href: SERVICE_HREFS[2], label: "Housekeeping aur grounds" },
     ],
-    faqHeading: "Baat karne se pehle.",
+    faqHeading: "Sawaal.",
     faqs: [
       {
         question: "Kya aap SIDCUL ki units ko contract labour dete hain?",

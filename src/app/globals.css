@@ -699,6 +699,10 @@ a:hover > svg {
 .capability-row:last-child {
   border-bottom: 1px solid var(--neutral-200);
 }
+/* Home: names and arrows only; the role lines live on /services. */
+.capability-row.is-name-only {
+  grid-template-columns: 1fr 28px;
+}
 .capability-row:hover {
   color: var(--gold-700);
 }
@@ -1948,47 +1952,21 @@ a:hover > svg {
   gap: 10px;
 }
 
-/* /jobs/haridwar: one line on where the work is, the role names as a
-   compact row, then a three-step strip of what happens after you apply. */
-.jobs-areas {
-  max-width: 40ch;
-  font-size: clamp(20px, 2.2vw, 22px);
-  line-height: 1.5;
-  text-wrap: balance;
-}
-.jobs-role-row,
+/* Related role links on role pages. /jobs/haridwar goes from the form
+   straight to a three-step strip of what happens after you apply. */
 .jobs-related-row {
   display: grid;
   gap: 12px;
 }
-.jobs-role-row {
-  margin-top: 40px;
-  padding-top: 24px;
-  border-top: 1px solid var(--border);
-}
-.jobs-role-row > p,
 .jobs-related-row > p {
   color: var(--muted-foreground);
   font-size: 15px;
   font-weight: 600;
 }
-.jobs-role-row ul,
 .jobs-related-row ul {
   display: flex;
   flex-wrap: wrap;
   gap: 4px 22px;
-}
-.jobs-role-row a {
-  display: inline-block;
-  padding-block: 8px;
-  font-size: 18px;
-  text-decoration: underline;
-  text-decoration-color: var(--gold-500);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 6px;
-}
-.jobs-role-row a:hover {
-  text-decoration-thickness: 2px;
 }
 .jobs-after {
   padding-block: 56px;
@@ -3272,6 +3250,10 @@ a:hover > svg {
   font-size: 16px;
   line-height: 1.6;
   color: var(--muted-foreground);
+}
+.wage-checked strong {
+  color: var(--warning);
+  font-weight: 600;
 }
 .wage-checked a {
   display: inline-flex;

@@ -18,7 +18,7 @@ function jobsReferrer(): string | undefined {
  * which opens this page in a new tab: there it closes the tab, so the
  * person is back on the form they were filling, answers intact. In the
  * same tab it goes back (the form restores its draft). If the tab cannot
- * close, it opens the jobs page it came from, and /jobs/apply last.
+ * close, it opens the jobs page it came from, and /jobs/haridwar last.
  */
 export function BackToApply({ href, label }: { href: string; label: string }) {
   return (

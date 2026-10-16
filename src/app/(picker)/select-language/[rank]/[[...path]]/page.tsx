@@ -67,12 +67,12 @@ function pageSummary(path: string): { title: string; text?: string } {
 /**
  * What each choice opens, in its own language: a short page name, never the
  * meta title and description. /jobs names "Haridwar jobs", where all the
- * work is, and a visitor from a search engine goes straight there
- * (`searchHref`): "haridwar job vacancy" lands on the form in two taps.
+ * work is, and opens that page (the form) rather than the jobs index: an
+ * SMS or search link reaches the first question in one tap.
  */
-function pageName(path: string, locale: Locale): { title: string; searchHref?: string } {
+function pageName(path: string, locale: Locale): { title: string; href?: string } {
   const haridwar = getJobCluster("haridwar", locale);
-  if (path === "/jobs" && haridwar) return { title: haridwar.linkLabel, searchHref: localePath(`/jobs/${haridwar.slug}`, locale) };
+  if (path === "/jobs" && haridwar) return { title: haridwar.linkLabel, href: localePath(`/jobs/${haridwar.slug}`, locale) };
   if (path === "/jobs/apply") return { title: quickApplyCopy[locale].breadcrumb };
   if (path === "/jobs/fees-and-fraud") return { title: feesAndFraudCopy[locale].breadcrumb };
   if (path === "/jobs/privacy") return { title: jobsPrivacyCopy[locale].breadcrumb };
@@ -112,13 +112,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function LanguagePickerPage({ params }: Props) {
   const { path, key, order } = await readParams(params);
-  const choices = order.map((locale) => ({
-    href: localePath(path, locale),
-    locale,
-    label: locales[locale].label,
-    hint: locales[locale].hint,
-    ...pageName(path, locale),
-  }));
+  const choices = order.map((locale) => {
+    const name = pageName(path, locale);
+    return {
+      href: name.href ?? localePath(path, locale),
+      locale,
+      label: locales[locale].label,
+      hint: locales[locale].hint,
+      title: name.title,
+    };
+  });
   const top = choices.slice(0, PICKER_TOP);
   return (
     <main id="main-content" className="language-picker">

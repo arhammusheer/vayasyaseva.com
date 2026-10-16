@@ -231,7 +231,7 @@ export const wageUi = {
   sections: {
     rates: (name: string) => `Minimum wage rates in ${name}`,
     earlier: "Earlier rates",
-    questions: "Common questions",
+    questions: "Questions",
     documents: "Documents used",
   },
   hub: {

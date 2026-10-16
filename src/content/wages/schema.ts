@@ -85,7 +85,10 @@ export function wageIntegrityProblems(state: WageState): string[] {
   const tableIds = new Set(state.tables.map((t) => t.id));
   if (state.tables.filter((t) => t.headline).length !== 1) problems.push("exactly one table must be marked headline");
   // A new order entered without moving the next revision forward would show "not published" next to it.
-  const newest = state.tables.map((t) => t.effectiveFrom).sort().at(-1)!;
+  // Judged on the headline table: one table can move (Uttarakhand's
+  // engineering DA from 1 October 2026) while the headline still awaits its
+  // revision.
+  const newest = (state.tables.find((t) => t.headline) ?? state.tables[0]).effectiveFrom;
   const { expected, missed = [] } = state.nextRevision;
   if (expected <= newest) problems.push(`nextRevision.expected ${expected} is not after the newest rates (${newest}); move it to the next revision date`);
   for (const date of missed) {

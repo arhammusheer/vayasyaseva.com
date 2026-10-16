@@ -1,166 +1,306 @@
 {
-  "state": "uttarakhand",
-  "name": "Uttarakhand",
-  "titleName": "Uttarakhand",
-  "nextRevision": {
-    "expected": "2026-10-01",
-    "basis": "Variable dearness allowance for the scheduled employments is adjusted every 1 April and 1 October, from the average consumer price index of July to December and January to June. The rates for engineering units with 50 or more workers are interim relief, in force until further orders. The state notified the Uttarakhand Code on Wages Rules, 2026 on 25 August 2026, so new rates may also come under the Code."
+ "state": "uttarakhand",
+ "name": "Uttarakhand",
+ "titleName": "Uttarakhand",
+ "nextRevision": {
+  "expected": "2026-10-01",
+  "basis": "Variable dearness allowance for the scheduled employments is adjusted every 1 April and 1 October, from the average consumer price index of July to December and January to June. The rates for engineering units with 50 or more workers are interim relief, in force until further orders. The state notified the Uttarakhand Code on Wages Rules, 2026 on 25 August 2026, so new rates may also come under the Code."
+ },
+ "checked": {
+  "on": "2026-10-17"
+ },
+ "sources": [
+  {
+   "id": "uk-eng-2026-04",
+   "kind": "order",
+   "title": "Interim minimum wages for engineering units and engineering industries employing 50 or more workers, with effect from 1 April 2026",
+   "number": "391604/VIII-1/26-228(Shram)/2001",
+   "date": "2026-04-29",
+   "authority": "Shram Anubhag, Government of Uttarakhand",
+   "legalBasis": "Section 3(b), United Provinces Industrial Disputes Act, 1947 (as adapted in Uttarakhand), read with section 21, Uttar Pradesh General Clauses Act, 1904 (as adapted in Uttarakhand). Supersedes all earlier notifications and orders for these units.",
+   "url": "https://cdnbbsr.s3waas.gov.in/s36547884cea64550284728eb26b0947ef/uploads/2026/05/202605021122219431.pdf",
+   "listing": "https://labour.uk.gov.in/document-category/minimum-wages-notification/",
+   "language": "hi",
+   "sha256": "e572c82d98287738b5bdf5b0053218c72aa492d32768cfd77854b47042c0bf35",
+   "sizeKb": 2368,
+   "retrievedOn": "2026-10-16"
   },
-  "checked": { "on": "2026-10-16" },
-  "sources": [
+  {
+   "id": "uk-eng-2026-04-amendment",
+   "kind": "corrigendum",
+   "title": "Amendment: semi-skilled rate in the 29 April 2026 order reads 15,100, not 15,000",
+   "number": "510/VIII-1/2026-228(Shram)/2001",
+   "date": "2026-04-30",
+   "authority": "Shram Anubhag, Government of Uttarakhand",
+   "url": "https://cdnbbsr.s3waas.gov.in/s36547884cea64550284728eb26b0947ef/uploads/2026/05/202605021122219431.pdf",
+   "listing": "https://labour.uk.gov.in/document-category/minimum-wages-notification/",
+   "language": "hi",
+   "sha256": "e572c82d98287738b5bdf5b0053218c72aa492d32768cfd77854b47042c0bf35",
+   "sizeKb": 2368,
+   "retrievedOn": "2026-10-16"
+  },
+  {
+   "id": "uk-289-2024",
+   "kind": "notification",
+   "title": "Minimum rates of wages for 16 scheduled employments, including engineering industries with fewer than 50 workers and all registered factories not covered elsewhere, from 1 April 2024",
+   "number": "289/(1)/VIII-1/24-228(Shram)/2001-Part-II",
+   "date": "2024-03-15",
+   "authority": "Shram Anubhag, Government of Uttarakhand",
+   "legalBasis": "Minimum Wages Act, 1948, sections 3 and 4, after consulting the Uttarakhand Minimum Wages Advisory Board. The printed date reads 15 March 2019; corrigendum 319/VIII-1/24-228/2001/Part-II dated 22 March 2024, in the same file, corrects it to 15 March 2024. The number field on its first page is blank; this number is from its endorsement, and DA orders 1202 and 1203 cite it the same way. Corrigendum 319 calls it 289/VIII/24-228 (Shram)/2001-Part-II.",
+   "url": "https://cdnbbsr.s3waas.gov.in/s36547884cea64550284728eb26b0947ef/uploads/2025/04/202504301480665784.pdf",
+   "listing": "https://labour.uk.gov.in/document-category/minimum-wages-notification/",
+   "language": "hi",
+   "sha256": "94e561be0be455d206946f5e817f37bfd1b6677e143fb80914102df7eba69d27",
+   "sizeKb": 5863,
+   "retrievedOn": "2026-10-16"
+  },
+  {
+   "id": "uk-vda-2026-04",
+   "kind": "order",
+   "title": "Variable dearness allowance in scheduled employments from 1 April 2026",
+   "number": "1203/4-01/2024",
+   "date": "2026-04-23",
+   "authority": "Labour Commissioner, Uttarakhand, Haldwani",
+   "legalBasis": "Issued under section 69(2) of the Code on Wages, 2019, in force until further orders under section 7(2). Applies notification 460(1)/VIII-1/2026-228(Shram)/2001 dated 22 April 2026: ₹57.60 for each point of the All-India CPI (2016=100) above 139.",
+   "url": "https://cdnbbsr.s3waas.gov.in/s36547884cea64550284728eb26b0947ef/uploads/2026/04/20260424405532924.pdf",
+   "listing": "https://labour.uk.gov.in/document-category/circulars-notifications/",
+   "language": "hi",
+   "sha256": "d19c003deaf1958976f9ce6fe3324d491b1d478dc86ad13686f74513b91c739b",
+   "sizeKb": 4299,
+   "retrievedOn": "2026-10-16"
+  },
+  {
+   "id": "uk-vda-2025-10",
+   "kind": "order",
+   "title": "Variable dearness allowance in scheduled employments, 1 October 2025 to 31 March 2026",
+   "number": "1202/4-01/2024",
+   "date": "2026-04-23",
+   "authority": "Labour Commissioner, Uttarakhand, Haldwani",
+   "url": "https://cdnbbsr.s3waas.gov.in/s36547884cea64550284728eb26b0947ef/uploads/2026/04/20260424497548017.pdf",
+   "listing": "https://labour.uk.gov.in/document-category/circulars-notifications/",
+   "language": "hi",
+   "sha256": "23785a5c91ba558f84692a22c7de76b1869bb0464680815928958f9c428aa61f",
+   "sizeKb": 3917,
+   "retrievedOn": "2026-10-16"
+  },
+  {
+   "id": "uk-code-rules-2026",
+   "kind": "notification",
+   "title": "Uttarakhand Code on Wages Rules, 2026 (Uttarakhand Gazette, Extraordinary)",
+   "number": "1115/VIII-I/2026-60(Shram)/2019",
+   "date": "2026-08-25",
+   "authority": "Shram Anubhag, Government of Uttarakhand",
+   "legalBasis": "Section 67, Code on Wages, 2019.",
+   "url": "https://cdnbbsr.s3waas.gov.in/s36547884cea64550284728eb26b0947ef/uploads/2026/09/202609241754770724.pdf",
+   "listing": "https://labour.uk.gov.in/",
+   "language": "hi",
+   "sha256": "f8ea9330286b4df9032fa7a1145fea5beed5f4c8013d4f7e4ae24362f24ebd87",
+   "sizeKb": 8071,
+   "retrievedOn": "2026-10-16"
+  },
+  {
+   "id": "uk-eng-da-2026-10",
+   "kind": "order",
+   "title": "Variable dearness allowance for engineering units employing 50 or more workers, 1 October 2026 to 31 March 2027",
+   "number": "3287/4-01/25",
+   "date": "2026-10-15",
+   "authority": "Labour Commissioner, Uttarakhand, Haldwani",
+   "legalBasis": "Applies order 391604/VIII-1/26-228(Shram)/2001 of 29 April 2026: DA on the basic wage for each point of the All-India CPI (2016=100) above 425, from the January to June 2026 average of 431.",
+   "url": "https://cdnbbsr.s3waas.gov.in/s36547884cea64550284728eb26b0947ef/uploads/2026/10/20261016907866791.pdf",
+   "listing": "https://labour.uk.gov.in/document-category/minimum-wages-notification/",
+   "language": "hi",
+   "sha256": "a15db4a844b072b52dfe657d3b197c6aba490c6d229580dc6b5ea5b39835ba0a",
+   "sizeKb": 292,
+   "retrievedOn": "2026-10-17"
+  }
+ ],
+ "tables": [
+  {
+   "id": "factories-and-industries",
+   "headline": true,
+   "title": "Registered factories and other industries",
+   "appliesTo": "The 16 employments in notification 289, including engineering industries with fewer than 50 workers, metal and foundry units, plastics, rubber, dairies, sweets and drinks makers, and every registered factory not covered by another notification. Engineering units with 50 or more workers use the table below. Shops, construction, hotels and some other employments have their own notifications and rates.",
+   "sources": [
+    "uk-289-2024",
+    "uk-vda-2026-04"
+   ],
+   "effectiveFrom": "2026-04-01",
+   "zones": [
     {
-      "id": "uk-eng-2026-04",
-      "kind": "order",
-      "title": "Interim minimum wages for engineering units and engineering industries employing 50 or more workers, with effect from 1 April 2026",
-      "number": "391604/VIII-1/26-228(Shram)/2001",
-      "date": "2026-04-29",
-      "authority": "Shram Anubhag, Government of Uttarakhand",
-      "legalBasis": "Section 3(b), United Provinces Industrial Disputes Act, 1947 (as adapted in Uttarakhand), read with section 21, Uttar Pradesh General Clauses Act, 1904 (as adapted in Uttarakhand). Supersedes all earlier notifications and orders for these units.",
-      "url": "https://cdnbbsr.s3waas.gov.in/s36547884cea64550284728eb26b0947ef/uploads/2026/05/202605021122219431.pdf",
-      "listing": "https://labour.uk.gov.in/document-category/minimum-wages-notification/",
-      "language": "hi",
-      "sha256": "e572c82d98287738b5bdf5b0053218c72aa492d32768cfd77854b47042c0bf35",
-      "sizeKb": 2368,
-      "retrievedOn": "2026-10-16"
-    },
-    {
-      "id": "uk-eng-2026-04-amendment",
-      "kind": "corrigendum",
-      "title": "Amendment: semi-skilled rate in the 29 April 2026 order reads 15,100, not 15,000",
-      "number": "510/VIII-1/2026-228(Shram)/2001",
-      "date": "2026-04-30",
-      "authority": "Shram Anubhag, Government of Uttarakhand",
-      "url": "https://cdnbbsr.s3waas.gov.in/s36547884cea64550284728eb26b0947ef/uploads/2026/05/202605021122219431.pdf",
-      "listing": "https://labour.uk.gov.in/document-category/minimum-wages-notification/",
-      "language": "hi",
-      "sha256": "e572c82d98287738b5bdf5b0053218c72aa492d32768cfd77854b47042c0bf35",
-      "sizeKb": 2368,
-      "retrievedOn": "2026-10-16"
-    },
-    {
-      "id": "uk-289-2024",
-      "kind": "notification",
-      "title": "Minimum rates of wages for 16 scheduled employments, including engineering industries with fewer than 50 workers and all registered factories not covered elsewhere, from 1 April 2024",
-      "number": "289/(1)/VIII-1/24-228(Shram)/2001-Part-II",
-      "date": "2024-03-15",
-      "authority": "Shram Anubhag, Government of Uttarakhand",
-      "legalBasis": "Minimum Wages Act, 1948, sections 3 and 4, after consulting the Uttarakhand Minimum Wages Advisory Board. The printed date reads 15 March 2019; corrigendum 319/VIII-1/24-228/2001/Part-II dated 22 March 2024, in the same file, corrects it to 15 March 2024. The number field on its first page is blank; this number is from its endorsement, and DA orders 1202 and 1203 cite it the same way. Corrigendum 319 calls it 289/VIII/24-228 (Shram)/2001-Part-II.",
-      "url": "https://cdnbbsr.s3waas.gov.in/s36547884cea64550284728eb26b0947ef/uploads/2025/04/202504301480665784.pdf",
-      "listing": "https://labour.uk.gov.in/document-category/minimum-wages-notification/",
-      "language": "hi",
-      "sha256": "94e561be0be455d206946f5e817f37bfd1b6677e143fb80914102df7eba69d27",
-      "sizeKb": 5863,
-      "retrievedOn": "2026-10-16"
-    },
-    {
-      "id": "uk-vda-2026-04",
-      "kind": "order",
-      "title": "Variable dearness allowance in scheduled employments from 1 April 2026",
-      "number": "1203/4-01/2024",
-      "date": "2026-04-23",
-      "authority": "Labour Commissioner, Uttarakhand, Haldwani",
-      "legalBasis": "Issued under section 69(2) of the Code on Wages, 2019, in force until further orders under section 7(2). Applies notification 460(1)/VIII-1/2026-228(Shram)/2001 dated 22 April 2026: ₹57.60 for each point of the All-India CPI (2016=100) above 139.",
-      "url": "https://cdnbbsr.s3waas.gov.in/s36547884cea64550284728eb26b0947ef/uploads/2026/04/20260424405532924.pdf",
-      "listing": "https://labour.uk.gov.in/document-category/circulars-notifications/",
-      "language": "hi",
-      "sha256": "d19c003deaf1958976f9ce6fe3324d491b1d478dc86ad13686f74513b91c739b",
-      "sizeKb": 4299,
-      "retrievedOn": "2026-10-16"
-    },
-    {
-      "id": "uk-vda-2025-10",
-      "kind": "order",
-      "title": "Variable dearness allowance in scheduled employments, 1 October 2025 to 31 March 2026",
-      "number": "1202/4-01/2024",
-      "date": "2026-04-23",
-      "authority": "Labour Commissioner, Uttarakhand, Haldwani",
-      "url": "https://cdnbbsr.s3waas.gov.in/s36547884cea64550284728eb26b0947ef/uploads/2026/04/20260424497548017.pdf",
-      "listing": "https://labour.uk.gov.in/document-category/circulars-notifications/",
-      "language": "hi",
-      "sha256": "23785a5c91ba558f84692a22c7de76b1869bb0464680815928958f9c428aa61f",
-      "sizeKb": 3917,
-      "retrievedOn": "2026-10-16"
-    },
-    {
-      "id": "uk-code-rules-2026",
-      "kind": "notification",
-      "title": "Uttarakhand Code on Wages Rules, 2026 (Uttarakhand Gazette, Extraordinary)",
-      "number": "1115/VIII-I/2026-60(Shram)/2019",
-      "date": "2026-08-25",
-      "authority": "Shram Anubhag, Government of Uttarakhand",
-      "legalBasis": "Section 67, Code on Wages, 2019.",
-      "url": "https://cdnbbsr.s3waas.gov.in/s36547884cea64550284728eb26b0947ef/uploads/2026/09/202609241754770724.pdf",
-      "listing": "https://labour.uk.gov.in/",
-      "language": "hi",
-      "sha256": "f8ea9330286b4df9032fa7a1145fea5beed5f4c8013d4f7e4ae24362f24ebd87",
-      "sizeKb": 8071,
-      "retrievedOn": "2026-10-16"
+     "id": "uttarakhand",
+     "name": "All of Uttarakhand",
+     "areas": "One rate for the whole state."
     }
-  ],
-  "tables": [
+   ],
+   "daily": "derived",
+   "dailyRule": "Paragraph 3 of the notification sets the daily rate at no less than 1/26 of the monthly basic wage plus VDA, so the daily figures here are the monthly total divided by 26, rounded up to the paisa.",
+   "basicLabel": "Basic",
+   "vdaLabel": "VDA",
+   "rates": [
     {
-      "id": "factories-and-industries",
-      "headline": true,
-      "title": "Registered factories and other industries",
-      "appliesTo": "The 16 employments in notification 289, including engineering industries with fewer than 50 workers, metal and foundry units, plastics, rubber, dairies, sweets and drinks makers, and every registered factory not covered by another notification. Engineering units with 50 or more workers use the table below. Shops, construction, hotels and some other employments have their own notifications and rates.",
-      "sources": ["uk-289-2024", "uk-vda-2026-04"],
-      "effectiveFrom": "2026-04-01",
-      "zones": [{ "id": "uttarakhand", "name": "All of Uttarakhand", "areas": "One rate for the whole state." }],
-      "daily": "derived",
-      "dailyRule": "Paragraph 3 of the notification sets the daily rate at no less than 1/26 of the monthly basic wage plus VDA, so the daily figures here are the monthly total divided by 26, rounded up to the paisa.",
-      "basicLabel": "Basic",
-      "vdaLabel": "VDA",
-      "rates": [
-        { "zone": "uttarakhand", "skill": "unskilled", "basic": 12500, "vda": 518, "monthly": 13018, "daily": 500.7 },
-        { "zone": "uttarakhand", "skill": "semi-skilled", "basic": 12933, "vda": 518, "monthly": 13451, "daily": 517.35 },
-        { "zone": "uttarakhand", "skill": "skilled", "basic": 13365, "vda": 518, "monthly": 13883, "daily": 533.97 },
-        { "zone": "uttarakhand", "skill": "highly-skilled", "basic": 14093, "vda": 518, "monthly": 14611, "daily": 561.97 },
-        { "zone": "uttarakhand", "skill": "clerical-grade-1", "basic": 14093, "vda": 518, "monthly": 14611, "daily": 561.97 },
-        { "zone": "uttarakhand", "skill": "clerical-grade-2", "basic": 13551, "vda": 518, "monthly": 14069, "daily": 541.12 }
-      ]
+     "zone": "uttarakhand",
+     "skill": "unskilled",
+     "basic": 12500,
+     "vda": 518,
+     "monthly": 13018,
+     "daily": 500.7
     },
     {
-      "id": "engineering-50-plus",
-      "title": "Engineering units with 50 or more workers",
-      "appliesTo": "Engineering units and engineering industries that employ 50 or more workers. Every other factory, whatever its size, uses the table above.",
-      "sources": ["uk-eng-2026-04", "uk-eng-2026-04-amendment"],
-      "effectiveFrom": "2026-04-01",
-      "zones": [{ "id": "uttarakhand", "name": "All of Uttarakhand", "areas": "One rate for the whole state." }],
-      "daily": "none",
-      "basicLabel": "Basic with DA merged",
-      "vdaLabel": "Separate DA",
-      "vdaNote": "The order fixes one monthly figure, the basic wage with DA merged into it, and no separate DA. It does not set a daily rate.",
-      "rates": [
-        { "zone": "uttarakhand", "skill": "unskilled", "basic": 13800, "vda": 0, "monthly": 13800, "daily": null },
-        { "zone": "uttarakhand", "skill": "semi-skilled", "basic": 15100, "vda": 0, "monthly": 15100, "daily": null },
-        { "zone": "uttarakhand", "skill": "skilled", "basic": 16900, "vda": 0, "monthly": 16900, "daily": null }
-      ]
-    }
-  ],
-  "history": [
+     "zone": "uttarakhand",
+     "skill": "semi-skilled",
+     "basic": 12933,
+     "vda": 518,
+     "monthly": 13451,
+     "daily": 517.35
+    },
     {
-      "table": "factories-and-industries",
-      "effectiveFrom": "2025-10-01",
-      "effectiveTo": "2026-03-31",
-      "source": "uk-vda-2025-10",
-      "note": "Same basic wage, with VDA of ₹288.",
-      "rates": [
-        { "zone": "uttarakhand", "skill": "unskilled", "monthly": 12788 },
-        { "zone": "uttarakhand", "skill": "semi-skilled", "monthly": 13221 },
-        { "zone": "uttarakhand", "skill": "skilled", "monthly": 13653 },
-        { "zone": "uttarakhand", "skill": "highly-skilled", "monthly": 14381 }
-      ]
+     "zone": "uttarakhand",
+     "skill": "skilled",
+     "basic": 13365,
+     "vda": 518,
+     "monthly": 13883,
+     "daily": 533.97
+    },
+    {
+     "zone": "uttarakhand",
+     "skill": "highly-skilled",
+     "basic": 14093,
+     "vda": 518,
+     "monthly": 14611,
+     "daily": 561.97
+    },
+    {
+     "zone": "uttarakhand",
+     "skill": "clerical-grade-1",
+     "basic": 14093,
+     "vda": 518,
+     "monthly": 14611,
+     "daily": 561.97
+    },
+    {
+     "zone": "uttarakhand",
+     "skill": "clerical-grade-2",
+     "basic": 13551,
+     "vda": 518,
+     "monthly": 14069,
+     "daily": 541.12
     }
-  ],
-  "verification": [
-    "2026-10-16: labour.uk.gov.in 'Minimum Wages Notification' list shows 'Uttarakhand Minimum Wages 2026', dated 29/04/2026, as its newest entry; the 'Circulars / Notifications' list (last updated 24 September 2026) shows the DA orders for other employments dated 23-24/04/2026 and no later minimum wage or DA order.",
-    "2026-10-16: 202605021122219431.pdf (5 pages, scanned Hindi, read by eye). Order 391604/VIII-1/26-228(Shram)/2001, Dehradun, 29 April 2026, digitally signed by Dr. Sridhar Babu Addanki, Secretary: interim minimum wages for workers in engineering units and industries employing 50 or more workers, basic wage with DA merged, effective 01.04.2026: unskilled 13,800; semi-skilled 15,000; skilled 16,900. Page 5: amendment 510/VIII-1/2026-228(Shram)/2001 dated 30 April 2026 reads the semi-skilled figure as 15,100. The order also records that the Code on Wages, 2019 came into force on 21.11.2025.",
-    "2026-10-16, re-read: 202605021122219431.pdf page 1, para 1 names the scope as 'अभियन्त्रण इकाईयों तथा उद्योगों' (engineering units and industries, the 2000 engineering notification 2492). Page 3, para 6: 'राज्य में गैर अभियन्त्रण इकाईयों हेतु वर्ष 2024 में यह पुनरीक्षण किया जा चुका है। अतः वर्तमान पुनरीक्षण अभियन्त्रण इकाईयों (50 से अधिक कर्मकार नियोजित करने वाले) हेतु किया जाए।' So the interim rates cover engineering units and engineering industries with 50 or more workers only; non-engineering units stay on the 2024 notifications. Para 7 table: unskilled 13,800, semi-skilled 15,000, skilled 16,900, basic with DA merged, from 01.04.2026.",
-    "2026-10-16: 202504301480665784.pdf (6 pages, scanned Hindi, read by eye). Notification 289/(1)/VIII-1/24-228(Shram)/2001-Part-II, signed R. Meenakshi Sundaram, Secretary, revising minimum rates from 1 April 2024. Monthly basic: unskilled 12500, semi-skilled 12933, skilled 13365, highly skilled 14093, clerical grade I 14093, clerical grade II 13551. Para 3: daily rate no less than 1/26 of basic plus VDA. Para 9: contract labour must be paid the same minimum wage and VDA as directly employed workers. Appendix 1 lists the 16 employments. Page 5: corrigendum 319 dated 22 March 2024 corrects the printed date to 15 March 2024.",
-    "2026-10-16: 20260424405532924.pdf (4 pages, scanned Hindi, read by eye). VDA from 01-04-2026 for all categories in the 57 listed scheduled employments, including those under notification 289: (148 - 139) x 57.60 = 518 (CPI 2016=100, July-December 2025 average 148). No. 1203/4-01/2024 dated 23/4/2026, Prakash Chandra Dumka, Labour Commissioner. Issued under section 69(2) of the Code on Wages, 2019.",
-    "2026-10-16: 20260424497548017.pdf (4 pages, scanned Hindi, read by eye). VDA for 01-10-2025 to 31-03-2026: (144 - 139) x 57.60 = 288. No. 1202/4-01/2024 dated 23/4/2026.",
-    "Not fetched: amendment notification 460(1)/VIII-1/2026-228(Shram)/2001 dated 22 April 2026, which both DA orders cite as the source of the CPI 2016=100 base of 139 and the Rs 57.60 per point rate. The DA orders state that the VDA is payable to every category in notification 289, and no document seen changes its basic rates.",
-    "2026-10-16: 202609241754770724.pdf (113 pages): first page read by eye. Uttarakhand Gazette, Extraordinary, 25 August 2026, notification 1115/VIII-I/2026-60(Shram)/2019 making the Uttarakhand Code on Wages Rules, 2026 under section 67 of the Code. The rest of the document was not reviewed for this page.",
-    "Daily rates are derived: monthly total / 26, rounded up to the paisa (e.g. 13018 / 26 = 500.692 -> 500.70)."
-  ]
+   ]
+  },
+  {
+   "id": "engineering-50-plus",
+   "title": "Engineering units with 50 or more workers",
+   "appliesTo": "Engineering units and engineering industries that employ 50 or more workers. Every other factory, whatever its size, uses the table above.",
+   "sources": [
+    "uk-eng-2026-04",
+    "uk-eng-2026-04-amendment",
+    "uk-eng-da-2026-10"
+   ],
+   "effectiveFrom": "2026-10-01",
+   "zones": [
+    {
+     "id": "uttarakhand",
+     "name": "All of Uttarakhand",
+     "areas": "One rate for the whole state."
+    }
+   ],
+   "daily": "none",
+   "basicLabel": "Basic (29 April 2026 order)",
+   "vdaLabel": "DA from 1 Oct 2026",
+   "vdaNote": "The 29 April 2026 order fixed the basic wage. From 1 October 2026 a variable DA is added on top, worked out from the average consumer price index of January to June 2026 (431, against a base of 425), by order 3287 of 15 October 2026. No daily rate is set.",
+   "rates": [
+    {
+     "zone": "uttarakhand",
+     "skill": "unskilled",
+     "basic": 13800,
+     "vda": 195,
+     "monthly": 13995,
+     "daily": null
+    },
+    {
+     "zone": "uttarakhand",
+     "skill": "semi-skilled",
+     "basic": 15100,
+     "vda": 213,
+     "monthly": 15313,
+     "daily": null
+    },
+    {
+     "zone": "uttarakhand",
+     "skill": "skilled",
+     "basic": 16900,
+     "vda": 239,
+     "monthly": 17139,
+     "daily": null
+    }
+   ]
+  }
+ ],
+ "history": [
+  {
+   "table": "engineering-50-plus",
+   "effectiveFrom": "2026-04-01",
+   "effectiveTo": "2026-09-30",
+   "source": "uk-eng-2026-04",
+   "note": "The interim rates of the 29 April 2026 order, with no separate DA.",
+   "rates": [
+    {
+     "zone": "uttarakhand",
+     "skill": "unskilled",
+     "monthly": 13800
+    },
+    {
+     "zone": "uttarakhand",
+     "skill": "semi-skilled",
+     "monthly": 15100
+    },
+    {
+     "zone": "uttarakhand",
+     "skill": "skilled",
+     "monthly": 16900
+    }
+   ]
+  },
+  {
+   "table": "factories-and-industries",
+   "effectiveFrom": "2025-10-01",
+   "effectiveTo": "2026-03-31",
+   "source": "uk-vda-2025-10",
+   "note": "Same basic wage, with VDA of ₹288.",
+   "rates": [
+    {
+     "zone": "uttarakhand",
+     "skill": "unskilled",
+     "monthly": 12788
+    },
+    {
+     "zone": "uttarakhand",
+     "skill": "semi-skilled",
+     "monthly": 13221
+    },
+    {
+     "zone": "uttarakhand",
+     "skill": "skilled",
+     "monthly": 13653
+    },
+    {
+     "zone": "uttarakhand",
+     "skill": "highly-skilled",
+     "monthly": 14381
+    }
+   ]
+  }
+ ],
+ "verification": [
+  "2026-10-16: labour.uk.gov.in 'Minimum Wages Notification' list shows 'Uttarakhand Minimum Wages 2026', dated 29/04/2026, as its newest entry; the 'Circulars / Notifications' list (last updated 24 September 2026) shows the DA orders for other employments dated 23-24/04/2026 and no later minimum wage or DA order.",
+  "2026-10-16: 202605021122219431.pdf (5 pages, scanned Hindi, read by eye). Order 391604/VIII-1/26-228(Shram)/2001, Dehradun, 29 April 2026, digitally signed by Dr. Sridhar Babu Addanki, Secretary: interim minimum wages for workers in engineering units and industries employing 50 or more workers, basic wage with DA merged, effective 01.04.2026: unskilled 13,800; semi-skilled 15,000; skilled 16,900. Page 5: amendment 510/VIII-1/2026-228(Shram)/2001 dated 30 April 2026 reads the semi-skilled figure as 15,100. The order also records that the Code on Wages, 2019 came into force on 21.11.2025.",
+  "2026-10-16, re-read: 202605021122219431.pdf page 1, para 1 names the scope as 'अभियन्त्रण इकाईयों तथा उद्योगों' (engineering units and industries, the 2000 engineering notification 2492). Page 3, para 6: 'राज्य में गैर अभियन्त्रण इकाईयों हेतु वर्ष 2024 में यह पुनरीक्षण किया जा चुका है। अतः वर्तमान पुनरीक्षण अभियन्त्रण इकाईयों (50 से अधिक कर्मकार नियोजित करने वाले) हेतु किया जाए।' So the interim rates cover engineering units and engineering industries with 50 or more workers only; non-engineering units stay on the 2024 notifications. Para 7 table: unskilled 13,800, semi-skilled 15,000, skilled 16,900, basic with DA merged, from 01.04.2026.",
+  "2026-10-16: 202504301480665784.pdf (6 pages, scanned Hindi, read by eye). Notification 289/(1)/VIII-1/24-228(Shram)/2001-Part-II, signed R. Meenakshi Sundaram, Secretary, revising minimum rates from 1 April 2024. Monthly basic: unskilled 12500, semi-skilled 12933, skilled 13365, highly skilled 14093, clerical grade I 14093, clerical grade II 13551. Para 3: daily rate no less than 1/26 of basic plus VDA. Para 9: contract labour must be paid the same minimum wage and VDA as directly employed workers. Appendix 1 lists the 16 employments. Page 5: corrigendum 319 dated 22 March 2024 corrects the printed date to 15 March 2024.",
+  "2026-10-16: 20260424405532924.pdf (4 pages, scanned Hindi, read by eye). VDA from 01-04-2026 for all categories in the 57 listed scheduled employments, including those under notification 289: (148 - 139) x 57.60 = 518 (CPI 2016=100, July-December 2025 average 148). No. 1203/4-01/2024 dated 23/4/2026, Prakash Chandra Dumka, Labour Commissioner. Issued under section 69(2) of the Code on Wages, 2019.",
+  "2026-10-16: 20260424497548017.pdf (4 pages, scanned Hindi, read by eye). VDA for 01-10-2025 to 31-03-2026: (144 - 139) x 57.60 = 288. No. 1202/4-01/2024 dated 23/4/2026.",
+  "Not fetched: amendment notification 460(1)/VIII-1/2026-228(Shram)/2001 dated 22 April 2026, which both DA orders cite as the source of the CPI 2016=100 base of 139 and the Rs 57.60 per point rate. The DA orders state that the VDA is payable to every category in notification 289, and no document seen changes its basic rates.",
+  "2026-10-16: 202609241754770724.pdf (113 pages): first page read by eye. Uttarakhand Gazette, Extraordinary, 25 August 2026, notification 1115/VIII-I/2026-60(Shram)/2019 making the Uttarakhand Code on Wages Rules, 2026 under section 67 of the Code. The rest of the document was not reviewed for this page.",
+  "Daily rates are derived: monthly total / 26, rounded up to the paisa (e.g. 13018 / 26 = 500.692 -> 500.70).",
+  "2026-10-17: Order 3287/4-01/25 dated 15/10/2026 (Deputy Labour Commissioner for the Labour Commissioner, Uttarakhand, Haldwani; one-page scan, read from the image): DA for engineering units with 50 or more workers from 01-10-2026 to 31-03-2027 on the CPI average of 431 (January to June 2026) against 425: unskilled (431-425) x 13800 / 425 = 195; totals 13995 unskilled, 15313 semi-skilled, 17139 skilled on basics of 13800, 15100 and 16900. The 1 October 2026 VDA for notification 289 had not been published."
+ ]
 }

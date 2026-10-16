@@ -108,7 +108,7 @@ const TERMS_PHONE_FREE = PHONE_FREE_JOBS;
  * fails when a dataset moves on and this map does not.
  */
 export const WAGE_STATE_UPDATED: Readonly<Partial<Record<WageStateSlug, string>>> = {
-  uttarakhand: "2026-10-16",
+  uttarakhand: "2026-10-17",
   "uttar-pradesh": "2026-10-16",
   delhi: "2026-10-16",
   karnataka: "2026-10-16",

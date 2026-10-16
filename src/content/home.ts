@@ -67,23 +67,49 @@ export const complianceItems: ComplianceItem[] = [
   },
 ];
 
-export const faqs: FaqItem[] = [
+/**
+ * The home page FAQ (PLAN §5.2). The second question is the standard agency
+ * FAQ from docs/brand-rules.md, word for word: keep it in sync with that file.
+ * A `link` renders after its answer and stays out of the FAQPage text.
+ */
+export const homeFaqs: FaqItem[] = [
   {
-    question: "What does Vayasya Seva do?",
+    question: "What records can we check?",
     answer:
-      "We provide contract labour, workforce management and industrial services. Our capabilities include data entry operators, housekeeping, civil works, fabrication, maintenance and other site support.",
+      "Attendance and wage registers, wage slips, and EPF and ESIC challans for the workers on your site. We share them for your monthly review and for audits.",
+    category: "compliance",
+  },
+  {
+    question: "Are you a manpower agency or a staffing company?",
+    answer:
+      "We’re a manpower contractor. An agency sends you candidates to hire. We supply the workers, keep them on our payroll, supervise them on site, replace absentees and handle wages, EPF and ESIC. You get a working crew and one invoice.",
     category: "commercial",
   },
   {
-    question: "Where is Vayasya Seva based?",
+    question: "Where do you supply workers?",
     answer:
-      "We are based in Haridwar, Uttarakhand, and support businesses in SIDCUL and across Haridwar. Contact us to discuss your site and location.",
+      "We’re based in Haridwar, Uttarakhand, and run crews at units in SIDCUL and across Haridwar. For a site elsewhere in India, send us the details. We’ll tell you plainly whether we can staff it.",
+    link: { href: "/contact", label: "Request a crew" },
     category: "commercial",
   },
   {
-    question: "Can you share compliance documentation?",
+    question: "Who handles EPF and ESIC?",
     answer:
-      "Registration certificates and relevant workforce records are available for vendor due diligence and engagement reviews. Contact our team with your documentation needs.",
+      "We do. The workers are on our payroll, so we register them for EPF and ESIC where they apply, deposit the contributions every month and keep the challans for your review.",
     category: "compliance",
   },
 ];
+
+/**
+ * "Where we work" on the home page: one factual line per cluster with a
+ * published buyer page. The list itself comes from the registry, so a
+ * cluster appears here only once it has passed the readiness check and its
+ * hub is published; a cluster without a line here is left out.
+ */
+export const whereWeWork: Partial<Record<string, { label: string; text: string; link: string }>> = {
+  haridwar: {
+    label: "OUR BASE",
+    text: "We run crews at units in SIDCUL and across Haridwar district, with some of our work around Bahadrabad, Bhagwanpur and Roorkee.",
+    link: "Contract labour in SIDCUL Haridwar",
+  },
+};

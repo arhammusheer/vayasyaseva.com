@@ -86,7 +86,7 @@ export default function SetuPage() {
           Our approach to your engagement <ArrowUpRight size={18} />
         </Link>
       </Section>
-      <CtaBlock />
+      <CtaBlock variant="setu" />
     </>
   );
 }

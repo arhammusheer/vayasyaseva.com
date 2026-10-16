@@ -60,6 +60,7 @@ const CONTENT_UPDATE = "2026-10-01";
 const JOBS_ADDED = "2026-10-02";
 const PHONE_FREE_JOBS = "2026-10-16";
 const HARIDWAR_DEPTH = "2026-10-16";
+const HOME_NATIONAL = "2026-10-16";
 
 const ALL = Object.fromEntries(LOCALE_TAGS.map((l) => [l, "published"])) as Record<LocaleTag, PageStatus>;
 const EN = { "en-IN": "published" } as const;
@@ -79,7 +80,7 @@ const jobsPage = (path: string, kind: PageKind, priority: number, changeFrequenc
   }) satisfies PageEntry;
 
 export const pageEntries: readonly PageEntry[] = [
-  { path: "/", kind: "home", audience: "business", locales: EN, updated: CONTENT_UPDATE, changeFrequency: "monthly", priority: 1 },
+  { path: "/", kind: "home", audience: "business", locales: EN, updated: HOME_NATIONAL, changeFrequency: "monthly", priority: 1 },
   { path: "/services", kind: "static", audience: "business", locales: EN, parent: "/", updated: CONTENT_UPDATE, changeFrequency: "monthly", priority: 0.9 },
   { path: "/services/contract-labour", kind: "service", audience: "business", locales: ALL, parent: "/services", updated: CONTENT_UPDATE, changeFrequency: "monthly", priority: 0.9 },
   { path: "/services/warehouse-labour", kind: "service", audience: "business", locales: EN_HINGLISH, parent: "/services", updated: CONTENT_UPDATE, changeFrequency: "monthly", priority: 0.8 },

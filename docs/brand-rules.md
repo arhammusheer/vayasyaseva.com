@@ -6,7 +6,7 @@ Visual identity (logo, colour, type) lives on `/brand` and in `globals.css`; thi
 
 ## 1. Position
 
-A compliance-minded contract labour and industrial services partner for factories, warehouses and facilities in SIDCUL and across Haridwar.
+A labour contractor and manpower supply company for factories, warehouses and facilities. The workers are on our payroll. Based in Haridwar, with crews in SIDCUL and across Haridwar; a site elsewhere in India is taken on only once we've checked we can recruit, pay and supervise people there. Home page title and H1 since 16 October 2026: "Labour Contractor and Manpower Supply Company" / "Contract labour for factories, warehouses and facilities". Haridwar search terms live on `/haridwar-sidcul` and `/jobs/haridwar`.
 
 ---
 
@@ -35,7 +35,7 @@ Vayasya Seva supplies the workforce. Workers are on our rolls: we pay wages, dep
 Say it the same way each time: **"We're a manpower contractor, not a placement agency: the workers are on our payroll, and we manage attendance, wages, EPF and ESIC."** The standard FAQ for buyer pages:
 
 > **Are you a manpower agency or a staffing company?**
-> We're a manpower contractor. An agency sends you candidates to hire. We supply the workers, keep them on our payroll, supervise them on site, replace absentees and handle wages, EPF and ESIC. You get a working crew and one invoice.
+> We’re a manpower contractor. An agency sends you candidates to hire. We supply the workers, keep them on our payroll, supervise them on site, replace absentees and handle wages, EPF and ESIC. You get a working crew and one invoice.
 
 Job-seeker pages may use "job consultancy" and "placement" in the same way: say we hire people onto our own rolls and place them at client sites, and that there is no fee.
 

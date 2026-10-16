@@ -4,7 +4,7 @@ export const siteConfig: SiteConfig = {
   companyName: "Vayasya Seva",
   legalName: "Vayasya Seva Private Limited",
   tagline:
-    "Contract labour, workforce management and industrial services, with a focus on labour compliance",
+    "Labour contractor and manpower supply company. Contract labour for factories, warehouses and facilities, with the workers on its own payroll",
   email: "help@vayasyaseva.com",
   gstin: "05AAJCV4562E1ZB",
   cin: "U01619UT2023PTC015814",

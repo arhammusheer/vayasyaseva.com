@@ -17,16 +17,18 @@ import { FALLBACK_LOCALE, languageLinks, localePath, splitLocalePath, type Local
 const JOBS_LABEL = { "en-IN": "Jobs", "hi-IN": "नौकरी", "hi-Latn-IN": "Jobs" } as const;
 
 /** The jobs header, in the page's language. "For businesses" is the door back to the business site. */
-const JOBS_NAV: Record<Locale, { all: string; fraud: string; business: string; apply: string; menu: string }> = {
-  "en-IN": { all: "All jobs", fraud: "Fees and fraud", business: "For businesses", apply: "Apply", menu: "Jobs" },
-  "hi-IN": { all: "सभी नौकरियाँ", fraud: "फ़ीस और धोखा", business: "कंपनियों के लिए", apply: "आवेदन करें", menu: "नौकरी" },
-  "hi-Latn-IN": { all: "Sabhi jobs", fraud: "Fee aur fraud", business: "Companies ke liye", apply: "Apply karein", menu: "Jobs" },
+const JOBS_NAV: Record<Locale, { all: string; fraud: string; business: string; apply: string; menu: string; doors: string }> = {
+  "en-IN": { all: "All jobs", fraud: "Fees and fraud", business: "For businesses", apply: "Apply", menu: "Jobs", doors: "Site sections" },
+  "hi-IN": { all: "सभी नौकरियाँ", fraud: "फ़ीस और धोखा", business: "कंपनियों के लिए", apply: "आवेदन करें", menu: "नौकरी", doors: "साइट के हिस्से" },
+  "hi-Latn-IN": { all: "Sabhi jobs", fraud: "Fee aur fraud", business: "Companies ke liye", apply: "Apply karein", menu: "Jobs", doors: "Site ke hisse" },
 };
 
 /**
- * Which door the page belongs to. Business pages show the Jobs door and the
- * phone; jobs pages show the "For businesses" door and no phone; reference
- * pages (wages, guides) show both doors and no phone.
+ * Which door the page belongs to. Every header shows both doors ("For
+ * businesses" and "Jobs") and marks the current one. Business pages add the
+ * phone and the Request a crew button; jobs pages add Apply and no phone;
+ * reference pages (wages, guides) are under neither door, with Request a
+ * crew and no phone.
  */
 export type HeaderDoor = "business" | "jobs" | "reference";
 
@@ -131,33 +133,41 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
   const showPhone = door === "business" && phone;
   const pageLang = pageLocale === "en-IN" ? undefined : pageLocale;
   type NavLink = { href: string; label: string; lang?: string };
-  const jobsDoor: NavLink = { href: localePath("/jobs/apply", pageLocale), label: JOBS_LABEL[pageLocale], lang: pageLocale === "hi-IN" ? "hi-IN" : undefined };
   const t = JOBS_NAV[pageLocale];
+  // The two doors, the same on every page: "For businesses" opens the
+  // business site at the home page, "Jobs" opens the jobs site. Both door
+  // labels follow the page's language, so a Hindi page never shows one
+  // English door beside a Devanagari one.
+  const doors: (NavLink & { id: HeaderDoor })[] = [
+    { id: "business", href: "/", label: t.business, lang: pageLang },
+    { id: "jobs", href: localePath("/jobs", pageLocale), label: JOBS_LABEL[pageLocale], lang: pageLang },
+  ];
   const nav: { desktop: NavLink[]; sheet: NavLink[]; cta: NavLink } =
     door === "jobs"
       ? {
           desktop: [
             { href: localePath("/jobs", pageLocale), label: t.all },
             { href: localePath("/jobs/fees-and-fraud", pageLocale), label: t.fraud },
-            { href: "/", label: t.business },
           ],
+          // "All jobs" is the Jobs door at the top of the menu.
           sheet: [
-            { href: localePath("/jobs", pageLocale), label: t.all },
             { href: localePath("/jobs/apply", pageLocale), label: t.apply },
             { href: localePath("/jobs/fees-and-fraud", pageLocale), label: t.fraud },
-            { href: "/", label: t.business },
           ],
           cta: { href: localePath("/jobs/apply", pageLocale), label: t.apply },
         }
       : {
-          desktop: [
-            ...navigation
-              .filter((item) => ["/services", "/industries", "/how-we-operate", "/compliance", "/about"].includes(item.href))
-              .map((item) => ({ href: item.href, label: item.href === "/how-we-operate" ? "Our approach" : item.label })),
-            jobsDoor,
-          ],
-          sheet: [...navigation, jobsDoor],
-          cta: { href: "/contact", label: "Let’s talk" },
+          desktop: navigation
+            .filter((item) => ["/services", "/industries", "/how-we-operate", "/compliance", "/about"].includes(item.href))
+            .map((item) => ({ href: item.href, label: item.href === "/how-we-operate" ? "Our approach" : item.label })),
+          // /contact is the Request a crew form; Home is the "For businesses" door.
+          sheet: navigation
+            .filter((item) => item.href !== "/")
+            .map((item) => ({
+              href: item.href,
+              label: item.href === "/contact" ? "Request a crew" : item.href === "/how-we-operate" ? "Our approach" : item.label,
+            })),
+          cta: { href: "/contact", label: "Request a crew" },
         };
   const current = (href: string) => (href === pathname || href === path ? "page" : undefined);
   // Jobs pages: links a job seeker rarely follows are not prefetched, to
@@ -203,6 +213,19 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
             priority
           />
         </Link>
+        <nav aria-label={door === "jobs" ? t.doors : "Site sections"} className="header-doors">
+          {doors.map((d) => (
+            <Link
+              key={d.id}
+              href={d.href}
+              lang={d.lang}
+              prefetch={prefetch}
+              aria-current={d.id === door ? "true" : undefined}
+            >
+              {d.label}
+            </Link>
+          ))}
+        </nav>
         <nav aria-label="Main navigation" className="desktop-nav">
           {nav.desktop.map((item) => (
             <Link
@@ -243,9 +266,23 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
           <SheetTrigger className="mobile-menu" aria-label="Open navigation">
             <Menu size={24} />
           </SheetTrigger>
-          <SheetContent className="w-[min(360px,90vw)] p-7" lang={door === "jobs" ? pageLang : undefined}>
+          <SheetContent className="w-[min(360px,90vw)] p-7" lang={door === "jobs" ? pageLang : "en-IN"}>
             <SheetTitle className="mt-8 text-2xl">{door === "jobs" ? t.menu : "Vayasya Seva"}</SheetTitle>
-            <nav aria-label="Mobile navigation" className="flex flex-col mt-8">
+            <nav aria-label={door === "jobs" ? t.doors : "Site sections"} className="sheet-doors">
+              {doors.map((d) => (
+                <Link
+                  key={d.id}
+                  href={d.href}
+                  lang={d.lang}
+                  prefetch={prefetch}
+                  onClick={() => setOpen(false)}
+                  aria-current={d.id === door ? "true" : undefined}
+                >
+                  {d.label}
+                </Link>
+              ))}
+            </nav>
+            <nav aria-label="Mobile navigation" className="flex flex-col mt-6">
               {nav.sheet.map((item) => (
                 <Link
                   key={item.href}
@@ -263,6 +300,15 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
                 </Link>
               ))}
             </nav>
+            {door !== "jobs" && languages.length > 0 && (
+              <nav aria-label="Language" className="sheet-lang">
+                {languages.map((l) => (
+                  <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang} prefetch={false} onClick={() => setOpen(false)}>
+                    {l.label}
+                  </Link>
+                ))}
+              </nav>
+            )}
             {showPhone && (
               <a href={phone.href} className="mt-6 text-sm">
                 {phone.display}

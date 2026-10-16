@@ -30,7 +30,7 @@ const columns: Column[] = [
       ["https://setu.vayasyaseva.com", "Setu login ↗"],
       ["/brand", "Brand guidelines"],
       ["/vayasya-seva-company-profile.pdf", "Company profile"],
-      ["/contact", "Contact"],
+      ["/contact", "Request a crew"],
     ],
   },
 ];
@@ -86,8 +86,8 @@ const referenceColumns: Column[] = [
     label: "More",
     links: [
       ["/haridwar-sidcul", "SIDCUL Haridwar"],
-      ["/jobs/apply", "Jobs"],
-      ["/contact", "Business enquiries"],
+      ["/jobs", "Jobs"],
+      ["/contact", "Request a crew"],
     ],
   },
 ];
@@ -128,7 +128,7 @@ export function Footer({
               />
               <span>Vayasya Seva</span>
             </Link>
-            <p>{isJobs ? t.about : "Contract labour and industrial services. Haridwar, Uttarakhand."}</p>
+            <p>{isJobs ? t.about : "Labour contractor for factories, warehouses and facilities. Based in Haridwar, Uttarakhand."}</p>
             <address>
               {door === "business" && <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>}
               {door === "business" && phone && (

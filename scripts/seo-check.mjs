@@ -5,13 +5,17 @@
 // Also runs check C7 (no business phone on jobs pages): scripts/check-jobs-phone.mjs,
 // and C11 (no published page links to a page outside the sitemap, i.e. a
 // review, paused, draft or missing page; see src/content/registry).
+// Also checks every page built in review (the guides awaiting a legal
+// reviewer): it answers 200 for reviewers, is noindex, stays out of the
+// sitemap and llms.txt, and carries no phone where the audience forbids it.
 // Also checks the language picker at prompt pages' neutral URLs (one stable
 // snippet per canonical, no shared caching of a visitor's order) and the
 // proxy's redirects: the apex host in one hop, and /select-language/... back
 // to the neutral URL.
 import http from "node:http";
 import https from "node:https";
-import { checkJobsPhone } from "./check-jobs-phone.mjs";
+import { checkJobsPhone, isPhoneFree, phoneIn } from "./check-jobs-phone.mjs";
+import { importTs } from "./lib/register-ts.mjs";
 
 const SITE = "https://www.vayasyaseva.com";
 const base = (process.argv[2] ?? "http://localhost:3000").replace(/\/$/, "");
@@ -181,10 +185,37 @@ for (const { path, host = new URL(base).host, status, location } of REDIRECTS) {
   }
 }
 
+// Pages built in review: reachable for reviewers, invisible to search.
+const { pageEntries, builtLocales, publishedLocales } = await importTs("src/content/registry/index.ts");
+const { locales: localeInfo } = await importTs("src/lib/i18n.ts");
+const llms = (await get(`${base}/llms.txt`)).body;
+let reviewPages = 0;
+for (const entry of pageEntries) {
+  const unpublished = builtLocales(entry.path).filter((l) => !publishedLocales(entry.path).includes(l));
+  for (const locale of unpublished) {
+    const path = `/${localeInfo[locale].segment}${entry.path === "/" ? "" : entry.path}`;
+    reviewPages++;
+    const { status, body } = await get(base + path);
+    if (status !== 200) {
+      fail(path, `review page answers ${status} (reviewers need it built)`);
+      continue;
+    }
+    if (!/<meta name="robots" content="[^"]*noindex/.test(body)) fail(path, "review page is not noindex");
+    if (sitemapPaths.has(path)) fail(path, "review page is in the sitemap");
+    // The localized URL, bounded: a published sibling locale or a longer path must not match.
+    const escaped = `${SITE}${path}`.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    if (new RegExp(`${escaped}(?=[)\\s#?]|$)`, "m").test(llms)) fail(path, "review page is listed in llms.txt");
+    if (isPhoneFree(path)) {
+      for (const where of phoneIn(body)) fail(path, `${where} on a phone-free review page (C7)`);
+      if (/"telephone"/.test(body)) fail(path, 'JSON-LD "telephone" on a phone-free review page (C7)');
+    }
+  }
+}
+
 errors.push(...(await checkJobsPhone(base, urls)));
 
 if (errors.length) {
   console.error(`SEO check failed (${errors.length}):\n- ${errors.sort().join("\n- ")}`);
   process.exit(1);
 }
-console.log(`SEO check passed: ${urls.length} URLs and ${pickers} language pickers on ${base}, including the jobs phone check (C7) and link leaks (C11)`);
+console.log(`SEO check passed: ${urls.length} URLs and ${pickers} language pickers on ${base}, ${reviewPages} review pages, including the jobs phone check (C7) and link leaks (C11)`);

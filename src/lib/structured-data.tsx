@@ -3,6 +3,8 @@ import type { ServiceDetail } from "@/content/services";
 import { siteConfig } from "@/content/site";
 import { localizeHref } from "@/lib/i18n";
 import { formatDate, type WageSource, type WageState } from "@/content/wages";
+import type { Guide } from "@/content/guides";
+import type { GuideSource } from "@/content/guides/sources";
 
 const BASE_URL = "https://www.vayasyaseva.com";
 const ORG_ID = `${BASE_URL}/#organization`;
@@ -389,5 +391,84 @@ export function wageHubSchema(page: { name: string; description: string; url: st
       "@type": "ItemList",
       itemListElement: page.states.map((s, i) => ({ "@type": "ListItem", position: i + 1, name: s.name, url: pageUrl(s.url) })),
     },
+  };
+}
+
+/** A guide's source as schema.org: Legislation for Acts, notifications and rules; CreativeWork otherwise. */
+function guideCitation(source: GuideSource) {
+  const legislation = source.kind === "act" || source.kind === "notification" || source.kind === "rules" || source.kind === "scheme";
+  const jurisdiction = {
+    "@type": source.jurisdiction === "India" ? "Country" : "AdministrativeArea",
+    name: source.jurisdiction,
+    ...(source.jurisdiction === "India" ? {} : { containedInPlace: { "@type": "Country", name: "India" } }),
+  };
+  return legislation
+    ? {
+        "@type": "Legislation",
+        name: source.title,
+        ...(source.number && { legislationIdentifier: source.number }),
+        legislationDate: source.date,
+        legislationType: { act: "Act", notification: "Notification", rules: "Rules", scheme: "Scheme" }[source.kind as "act"],
+        legislationJurisdiction: jurisdiction,
+        legislationPassedBy: { "@type": source.kind === "act" ? "Organization" : "GovernmentOrganization", name: source.authority },
+        inLanguage: source.language === "hi" ? "hi-IN" : "en-IN",
+        ...(source.url && { url: source.url }),
+      }
+    : {
+        "@type": "CreativeWork",
+        name: source.title,
+        datePublished: source.date,
+        publisher: { "@type": "GovernmentOrganization", name: source.authority },
+        inLanguage: source.language === "hi" ? "hi-IN" : "en-IN",
+        ...(source.url && { url: source.url }),
+      };
+}
+
+/**
+ * A guide (PLAN §5.6): WebPage + Article citing its sources. Only what the
+ * page shows: the reviewer (reviewedBy, lastReviewed) appears once the
+ * guide's `review` is filled in, never before.
+ */
+export function guideSchema(guide: Guide, page: { url: string; sources: GuideSource[]; headline: string; description: string }) {
+  const url = pageUrl(page.url);
+  const review = guide.review
+    ? {
+        lastReviewed: guide.review.on,
+        reviewedBy: { "@type": "Person", name: guide.review.name, jobTitle: guide.review.role, description: guide.review.credentials },
+      }
+    : {};
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${url}#webpage`,
+        name: page.headline,
+        description: page.description,
+        url,
+        isPartOf: { "@id": SITE_ID },
+        publisher: { "@id": ORG_ID },
+        inLanguage: "en-IN",
+        ...(guide.published && { datePublished: guide.published }),
+        dateModified: guide.updated,
+        ...review,
+        mainEntity: { "@id": `${url}#article` },
+      },
+      {
+        "@type": "Article",
+        "@id": `${url}#article`,
+        headline: guide.h1.replace(/\.$/, ""),
+        description: page.description,
+        url,
+        mainEntityOfPage: { "@id": `${url}#webpage` },
+        inLanguage: "en-IN",
+        ...(guide.published && { datePublished: guide.published }),
+        dateModified: guide.updated,
+        author: { "@id": ORG_ID },
+        publisher: { "@id": ORG_ID },
+        isAccessibleForFree: true,
+        citation: page.sources.map(guideCitation),
+      },
+    ],
   };
 }

@@ -8,6 +8,7 @@ import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { siteConfig } from "@/content/site";
 import { businessPhone, businessPhoneHref } from "@/content/business-contact";
 import { localeParams } from "@/lib/i18n";
+import { editorialPolicy } from "@/content/editorial";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/about");
 
@@ -111,6 +112,31 @@ export default function AboutPage() {
               </div>
             ))}
           </dl>
+        </div>
+      </Section>
+      <Section id="editorial">
+        <div className="wage-split">
+          <div>
+            <p className="eyebrow text-gold-700">{editorialPolicy.eyebrow}</p>
+            <h2 className="wage-h2">{editorialPolicy.heading}</h2>
+          </div>
+          <div className="wage-prose">
+            <p>{editorialPolicy.intro}</p>
+            <ul className="jobs-work guide-rows">
+              {editorialPolicy.items.map((item) => (
+                <li key={item.title}>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
+                </li>
+              ))}
+            </ul>
+            <p>
+              Write to{" "}
+              <a href={`mailto:${siteConfig.email}`} className="font-data">
+                {siteConfig.email}
+              </a>
+            </p>
+          </div>
         </div>
       </Section>
       <CtaBlock />

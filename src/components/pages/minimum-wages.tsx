@@ -27,6 +27,7 @@ import {
   type WageState,
   type WageTable,
 } from "@/content/wages";
+import { EDITORIAL_HREF } from "@/content/editorial";
 import { getWageStateCopy, howWeCheck, listDates, sourceLine, wageDoors, wageHubCopy } from "@/content/pages/minimum-wages";
 
 /** Published state pages, in hub order. A state in review is not listed or linked. */
@@ -318,6 +319,9 @@ function HowWeCheck({ states }: { states: readonly WageState[] }) {
               {siteConfig.email}
             </a>
           </p>
+          <Link href={EDITORIAL_HREF} className="text-link">
+            Our editorial policy <ArrowUpRight size={18} aria-hidden="true" />
+          </Link>
           {single && (
             <>
               <h3>Documents used for this page</h3>

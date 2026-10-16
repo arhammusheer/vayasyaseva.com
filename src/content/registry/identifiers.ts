@@ -69,7 +69,8 @@ export const wageStatePath = (state: WageStateSlug) => `${WAGE_HUB_PATH}/${state
 
 /** Guides. No agency word in any slug, title or H1. */
 export const GUIDE_SLUGS = ["new-labour-codes", "what-is-contract-labour", "contract-labour-act"] as const;
-export const guidePath = (slug: (typeof GUIDE_SLUGS)[number]) => `/guides/${slug}`;
+export type GuideSlug = (typeof GUIDE_SLUGS)[number];
+export const guidePath = (slug: GuideSlug) => `/guides/${slug}`;
 
 /**
  * Haridwar's quick-form area answers (stored values). New clusters add

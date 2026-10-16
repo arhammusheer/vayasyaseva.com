@@ -7,6 +7,10 @@
 //       every rate cites a source, and every built wage page has a file.
 //       A revision that is due or overdue is a warning: the page shows its
 //       own notice and drops the year (PLAN §5.5), so CI never breaks on a date.
+//   C10 guides: a published guide names its legal reviewer and carries a
+//       publish date no earlier than the review; citations resolve;
+//       contractor terms in titles, H1s, headings and metas; three agency
+//       terms at most outside comparison tables.
 //   C9  no file under src/ has an internal-only key (payrollEntity,
 //       deliveryRoute, partner, internal, routingKey, fulfil*, sister*), and,
 //       when the PUBLIC_DENYLIST secret is set, no denylisted name appears in
@@ -172,6 +176,64 @@ for (const state of wageStates) {
 }
 for (const slug of WAGE_STATE_SLUGS) {
   if (builtLocales(wageStatePath(slug)).length && !wageStates.some((s) => s.state === slug)) fail(`C8 ${wageStatePath(slug)} is built but src/content/wages/${slug}.json does not exist`);
+}
+
+// ── C10: guides (PLAN §5.6, §10.1) ─────────────────────────────────────────
+// A guide is published only with a named legal reviewer, re-reviewed within
+// six months; every citation resolves to a listed source; titles, H1s,
+// headings and metas use contractor terms only (docs/brand-rules.md).
+{
+  const { guides, citedSources } = await importTs("src/content/guides/index.ts");
+  const { guideSources } = await importTs("src/content/guides/sources.ts");
+  const { GUIDE_SLUGS, guidePath } = await importTs("src/content/registry/identifiers.ts");
+  const AGENCY = /\b(agency|agencies|consultancy|consultant|placement|staffing)\b/i;
+  const AGENCY_TERMS = /\b(?:manpower agenc(?:y|ies)|manpower consultanc(?:y|ies)|staffing (?:agenc(?:y|ies)|compan(?:y|ies))|placement agenc(?:y|ies)|job consultanc(?:y|ies)|staff agenc(?:y|ies))\b/gi;
+  const sourceIds = new Set(guideSources.map((s) => s.id));
+  const today = new Date().toISOString().slice(0, 10);
+  const sixMonthsAgo = new Date(Date.now() - 182 * 864e5).toISOString().slice(0, 10);
+  for (const slug of GUIDE_SLUGS) {
+    const path = guidePath(slug);
+    const guide = guides[slug];
+    const built = builtLocales(path).length > 0;
+    if (built && !guide) fail(`C10 ${path} is built but has no content in src/content/guides`);
+    if (!guide) continue;
+    if (guide.slug !== slug) fail(`C10 ${path}: content slug is ${guide.slug}`);
+    if (byPath.get(path)?.audience && byPath.get(path).audience !== guide.audience) fail(`C10 ${path}: registry audience ${byPath.get(path).audience} differs from the guide's ${guide.audience}`);
+    if (isPublished(path)) {
+      if (!guide.review) fail(`C10 ${path} is published without a named legal reviewer (src/content/guides/${slug}.ts, review)`);
+      else if (guide.review.on < sixMonthsAgo) warn(`C10 ${path}: last legal review ${guide.review.on} is more than six months old; ask for a re-review`);
+      if (!guide.published) fail(`C10 ${path} is published but has no publish date (src/content/guides/${slug}.ts, published)`);
+      else if (guide.review && guide.published < guide.review.on) fail(`C10 ${path}: publish date ${guide.published} is before the legal review (${guide.review.on})`);
+    } else if (guide.published) {
+      fail(`C10 ${path} is in review but has a publish date (${guide.published}); set published when it goes live`);
+    }
+    // PLAN §6.1: agency terms in the difference paragraph and FAQs only, three
+    // at most per page. Comparison tables are exempt (§5.2).
+    const prose = [
+      ...guide.sections.flatMap((s) =>
+        s.blocks.flatMap((b) => (b.type === "p" || b.type === "vspl" ? [b.text] : b.type === "rows" ? b.items.flatMap((i) => [i.title, i.text]) : b.type === "h3" ? [b.text] : [])),
+      ),
+      ...guide.faqs.flatMap((f) => [f.question, f.answer]),
+    ].join("\n");
+    const agencyTerms = prose.match(AGENCY_TERMS) ?? [];
+    if (agencyTerms.length > 3) fail(`C10 ${path}: ${agencyTerms.length} agency terms outside tables (max 3): ${agencyTerms.join(", ")}`);
+    if (guide.review && guide.review.on > today) fail(`C10 ${path}: review date ${guide.review.on} is in the future`);
+    if (guide.title.length > 55) fail(`C10 ${path}: title is ${guide.title.length} characters (max 55)`);
+    if (guide.description.length < 140 || guide.description.length > 160) fail(`C10 ${path}: meta description is ${guide.description.length} characters (140 to 160)`);
+    for (const [label, text] of [["title", guide.title], ["H1", guide.h1], ["meta description", guide.description], ...guide.sections.map((s) => ["heading", s.heading])]) {
+      if (AGENCY.test(text)) fail(`C10 ${path}: agency word in the ${label} "${text}" (contractor terms only)`);
+    }
+    const cited = citedSources(guide);
+    for (const id of cited) {
+      if (!sourceIds.has(id)) fail(`C10 ${path}: cites unknown source "${id}"`);
+      if (!guide.sources.includes(id)) fail(`C10 ${path}: cites "${id}" but does not list it in sources`);
+    }
+    for (const id of guide.sources) if (!cited.includes(id)) fail(`C10 ${path}: lists source "${id}" but never cites it`);
+  }
+  for (const s of guideSources) {
+    if (!s.url && s.kind !== "rules" && s.kind !== "notification") fail(`C10 guide source ${s.id} has no URL; only gazette notifications and rules may be cited by number alone`);
+    if (s.url && !/^https:\/\//.test(s.url)) fail(`C10 guide source ${s.id}: URL must be https`);
+  }
 }
 
 // ── C9: internal-only keys and the public denylist ─────────────────────────

@@ -59,7 +59,7 @@ function jsonLdBlocks(html) {
 }
 
 /** Where a phone shows up in a text, if anywhere. */
-function phoneIn(text, { tel = true } = {}) {
+export function phoneIn(text, { tel = true } = {}) {
   const found = [];
   if (tel && /href=["']?tel:|\btel:\+?\d/i.test(text)) found.push("tel: link");
   if (digitsPattern.test(text)) found.push("phone digits");

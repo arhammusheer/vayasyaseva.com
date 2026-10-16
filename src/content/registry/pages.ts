@@ -16,10 +16,12 @@ import {
   LOCALE_TAGS,
   WAGE_HUB_PATH,
   WAGE_STATE_CODES,
+  guidePath,
   jobsHubPath,
   wageStatePath,
   type Audience,
   type ClusterId,
+  type GuideSlug,
   type LocaleTag,
   type PageStatus,
   type WageStateSlug,
@@ -74,6 +76,7 @@ const JOBS_ADDED = "2026-10-02";
 const PHONE_FREE_JOBS = "2026-10-16";
 const HARIDWAR_DEPTH = "2026-10-16";
 const HOME_NATIONAL = "2026-10-16";
+const EDITORIAL_POLICY = "2026-10-16";
 /** A wage page changes when its state's figures or check date do: lastmod follows the data, not a constant. */
 const wageUpdated = (state: WageStateSlug) => {
   const data = wageStates.find((s) => s.state === state);
@@ -98,6 +101,18 @@ const WAGE_STATE_STATUS: Partial<Record<WageStateSlug, PageStatus>> = {
   uttarakhand: "published",
   "uttar-pradesh": "published",
   delhi: "published",
+};
+
+/**
+ * Guides (PLAN §5.6, decision 9): written and checked against the Gazette,
+ * but in review until the owner names a legal reviewer and the guide's
+ * `review` is filled in (src/content/guides). content:check fails a
+ * published guide without a reviewer. The CLRA guide is Phase 3.
+ */
+const GUIDES_WRITTEN = "2026-10-16";
+const GUIDE_STATUS: Partial<Record<GuideSlug, { audience: Audience; status: PageStatus }>> = {
+  "new-labour-codes": { audience: "mixed", status: "review" },
+  "what-is-contract-labour": { audience: "business", status: "review" },
 };
 
 const ALL = Object.fromEntries(LOCALE_TAGS.map((l) => [l, "published"])) as Record<LocaleTag, PageStatus>;
@@ -140,7 +155,7 @@ export const pageEntries: readonly PageEntry[] = [
   { path: "/how-we-operate", kind: "static", audience: "business", locales: EN, parent: "/", updated: REDESIGN, changeFrequency: "monthly", priority: 0.8 },
   { path: "/compliance", kind: "static", audience: "business", locales: EN, parent: "/", updated: REDESIGN, changeFrequency: "monthly", priority: 0.8 },
   { path: "/vayasya-setu", kind: "static", audience: "business", locales: EN, parent: "/", updated: REDESIGN, changeFrequency: "monthly", priority: 0.7 },
-  { path: "/about", kind: "static", audience: "business", locales: EN, parent: "/", updated: REDESIGN, changeFrequency: "monthly", priority: 0.7 },
+  { path: "/about", kind: "static", audience: "business", locales: EN, parent: "/", updated: EDITORIAL_POLICY, changeFrequency: "monthly", priority: 0.7 },
   { path: "/contact", kind: "static", audience: "business", locales: EN, parent: "/", updated: REDESIGN, changeFrequency: "yearly", priority: 0.9 },
   { path: WAGE_HUB_PATH, kind: "wage-hub", audience: "mixed", locales: EN, parent: "/", updated: WAGE_HUB_UPDATED(), changeFrequency: "monthly", priority: 0.7 },
   ...Object.entries(WAGE_STATE_STATUS).map(
@@ -154,6 +169,19 @@ export const pageEntries: readonly PageEntry[] = [
         updated: wageUpdated(state as WageStateSlug),
         changeFrequency: "monthly",
         priority: 0.7,
+      }) satisfies PageEntry,
+  ),
+  ...Object.entries(GUIDE_STATUS).map(
+    ([slug, guide]) =>
+      ({
+        path: guidePath(slug as GuideSlug),
+        kind: "guide",
+        audience: guide.audience,
+        locales: { "en-IN": guide.status },
+        parent: "/",
+        updated: GUIDES_WRITTEN,
+        changeFrequency: "monthly",
+        priority: 0.6,
       }) satisfies PageEntry,
   ),
   { path: "/brand", kind: "static", audience: "business", locales: EN, parent: "/", updated: REDESIGN, changeFrequency: "yearly", priority: 0.3 },

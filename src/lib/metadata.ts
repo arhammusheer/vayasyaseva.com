@@ -1,4 +1,4 @@
-import { shareImageUrl } from "@/lib/share-images";
+import { HOME_SHARE_ALT, hasOwnShareImage, shareImageUrl } from "@/lib/share-images";
 import type { Metadata } from "next";
 import { isIndexable, languageAlternates, localizeHref, locales, splitLocalePath, FALLBACK_LOCALE, type Locale } from "@/lib/i18n";
 
@@ -45,7 +45,7 @@ export function pageMetadata(input: {
           url: image,
           width: 1200,
           height: 630,
-          alt: title,
+          alt: hasOwnShareImage(canonical, shareVariant) ? title : HOME_SHARE_ALT,
         },
       ],
     },

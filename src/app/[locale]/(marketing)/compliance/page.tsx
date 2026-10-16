@@ -13,9 +13,9 @@ import { localeParams } from "@/lib/i18n";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/compliance");
 
-const TITLE = "Contract Labour Compliance: EPF, ESIC, Wage Records";
+const TITLE = "Contract Labour Compliance: EPF, ESIC, PT and LWF";
 const DESCRIPTION =
-  "The attendance and wage registers, wage slips and EPF and ESIC challans we keep for every worker, what to check with a contractor, and how to get the documents.";
+  "Registers, payroll, EPF, ESIC, Professional Tax, Labour Welfare Fund and the contract labour licence: what we run for each worker, and the documents you get.";
 
 export const metadata = pageMetadata({
   title: TITLE,

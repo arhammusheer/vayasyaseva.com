@@ -45,7 +45,7 @@ const REFERENCE: (NavLink & { long?: string })[] = [
   { href: wageStatePath("uttarakhand"), label: "Uttarakhand" },
   { href: wageStatePath("uttar-pradesh"), label: "Uttar Pradesh" },
   { href: wageStatePath("delhi"), label: "Delhi" },
-  { href: WAGE_METHOD_PATH, label: "How we check", long: "How we check these pages" },
+  { href: WAGE_METHOD_PATH, label: "How we check", long: "How we check minimum wages" },
   { href: guidePath("new-labour-codes"), label: "Labour codes guide" },
 ];
 export const referenceLinks = (long = false): NavLink[] =>

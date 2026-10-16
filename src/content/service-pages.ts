@@ -59,6 +59,24 @@ export const servicePages: ServiceLandingContent[] = [
           "We plan added workers for new lines, projects and seasonal demand around your start date.",
         category: "commercial",
       },
+      {
+        question: "Can the crew work to our shift pattern?",
+        answer:
+          "Yes. Every shift is a full 8 hours, set to your plant’s timings. Tell us the pattern and we plan the crew and its supervision to it.",
+        category: "operations",
+      },
+      {
+        question: "How do new workers learn our line?",
+        answer:
+          "We train each worker on your tasks with your team, and track their training and how long they stay.",
+        category: "operations",
+      },
+      {
+        question: "Who provides PPE and uniforms?",
+        answer:
+          "Tell us what your site issues and what you need us to provide. We agree it before the crew starts.",
+        category: "commercial",
+      },
     ],
   },
   {
@@ -95,6 +113,23 @@ export const servicePages: ServiceLandingContent[] = [
           "Yes. We plan loading and unloading crews for factory stores and dispatch, warehouses and transport yards in SIDCUL and across Haridwar.",
         category: "operations",
       },
+      {
+        question: "Do your workers drive forklifts?",
+        answer:
+          "Our crews load by hand or alongside your forklift operators. If you need licensed operators, tell us and we’ll say plainly whether we can supply them.",
+        category: "operations",
+      },
+      {
+        question: "Who checks the loads?",
+        answer: "The crew counts and checks each load against the challan and reports any shortage to your stores team.",
+        category: "operations",
+      },
+      {
+        question: "Do you charge per truck?",
+        answer:
+          "No. We bill a rate per worker on one monthly invoice, and size the crew to your normal and peak days.",
+        category: "commercial",
+      },
     ],
   },
   {
@@ -129,6 +164,22 @@ export const servicePages: ServiceLandingContent[] = [
         answer:
           "Yes. A site can combine housekeeping with production, warehouse or grounds support under one arrangement, with one point of coordination.",
         category: "commercial",
+      },
+      {
+        question: "Do you staff offices and canteens as well as plants?",
+        answer: "Yes. Shopfloors, offices, canteens, washrooms and grounds, on one routine for the whole site.",
+        category: "operations",
+      },
+      {
+        question: "Can housekeeping cover every shift?",
+        answer: "Yes. Teams work full 8-hour shifts set to your site’s timings and cleaning schedule.",
+        category: "operations",
+      },
+      {
+        question: "How is the cleaning checked?",
+        answer:
+          "We agree a routine for each area with your facility team, and our supervisor checks it through the shift.",
+        category: "operations",
       },
     ],
   },

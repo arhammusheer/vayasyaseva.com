@@ -38,7 +38,7 @@ function buildComplianceSection(): string {
 // Reference pages, listed once published (src/content/registry).
 function referenceSection(): string {
   if (!linkable(WAGE_METHOD_PATH, "en-IN")) return "";
-  return `\n## Reference\n- How we check (${baseUrl}/en-in${WAGE_METHOD_PATH}): The sources, checks, update schedule and corrections process behind the wage pages and guides\n`;
+  return `\n## Reference\n- How we check minimum wages (${baseUrl}/en-in${WAGE_METHOD_PATH}): Where the minimum wage rates come from, when we check them, and how to report a mistake\n`;
 }
 
 function buildDocument(): string {

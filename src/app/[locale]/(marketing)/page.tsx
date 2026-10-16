@@ -5,7 +5,7 @@ import Link from "@/components/i18n/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { CtaBlock } from "@/components/sections/cta-block";
 import { JsonLd, faqSchema, webPageSchema } from "@/lib/structured-data";
-import { homeFaqs } from "@/content/home";
+import { homeFaqs, FAQ_PATH } from "@/content/faq";
 import { ClientStrip } from "@/components/sections/client-strip";
 import { servicePages } from "@/content/service-pages";
 import { jobsDoorHref } from "@/components/layout/nav-links";
@@ -45,6 +45,20 @@ const benefits = [
     title: "Our payroll, our paperwork.",
     text: "Wages, EPF, ESIC and the registers are ours. You get one invoice.",
   },
+];
+
+/**
+ * The home compliance band: what we run for the crew, nationally. PT and
+ * LWF are state levies; the licence depends on the state and crew size
+ * (docs/claims-register.md). The detail lives on /compliance.
+ */
+const statutory: [string, string][] = [
+  ["Payroll and wage slips", "Every worker, every wage period"],
+  ["Attendance and wage registers", "Every shift"],
+  ["EPF and ESIC", "Deposited every month"],
+  ["Professional Tax", "Where the state levies it"],
+  ["Labour Welfare Fund", "Where the state levies it"],
+  ["Contract labour licence", "For your site, where required"],
 ];
 
 export default function HomePage() {
@@ -121,16 +135,20 @@ export default function HomePage() {
         <div className="site-shell">
           <div className="section-intro">
             <p className="eyebrow">WHAT WE SUPPLY</p>
-            <h2>
-              Crews for the
-              <br />
-              work you run.
-            </h2>
+            <div>
+              <h2>
+                Crews for the
+                <br />
+                work you run.
+              </h2>
+              <p>A workforce partner for your operations.</p>
+            </div>
           </div>
           <div className="capability-list">
             {servicePages.map((s) => (
-              <Link className="capability-row is-name-only" key={s.slug} href={`/services/${s.slug}`}>
+              <Link className="capability-row" key={s.slug} href={`/services/${s.slug}`}>
                 <h3>{s.name}</h3>
+                <p>{s.summary}</p>
                 <ArrowUpRight size={24} aria-hidden="true" />
               </Link>
             ))}
@@ -145,18 +163,28 @@ export default function HomePage() {
           <div>
             <p className="eyebrow">COMPLIANCE</p>
             <h2>
-              Wage records, attendance,
+              Payroll and
               <br />
-              EPF and ESIC.
+              compliance,
+              <br />
+              handled.
             </h2>
           </div>
           <div className="compliance-detail">
             <p>
-              Registers, slips and EPF/ESIC challans for every worker, open to
-              your audit.
+              We run the statutory work for the crew by each state’s rules, and
+              keep every record open to your audit.
             </p>
+            <ul className="statutory-list">
+              {statutory.map(([name, note]) => (
+                <li key={name}>
+                  <span>{name}</span>
+                  <span>{note}</span>
+                </li>
+              ))}
+            </ul>
             <Link href="/compliance" className="light-link">
-              The records we keep <ArrowUpRight size={19} aria-hidden="true" />
+              How we handle compliance <ArrowUpRight size={19} aria-hidden="true" />
             </Link>
           </div>
         </div>
@@ -173,6 +201,9 @@ export default function HomePage() {
                 <p>{f.answer}</p>
               </div>
             ))}
+            <Link href={FAQ_PATH} className="text-link">
+              More questions <ArrowRight size={18} aria-hidden="true" />
+            </Link>
           </div>
         </div>
       </section>

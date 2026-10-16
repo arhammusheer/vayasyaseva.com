@@ -216,6 +216,9 @@ export const pageEntries: readonly PageEntry[] = [
   { path: "/compliance", kind: "static", audience: "business", locales: EN, parent: "/", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.8 },
   { path: "/vayasya-setu", kind: "static", audience: "business", locales: EN, parent: "/about", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.7 },
   { path: "/about", kind: "static", audience: "business", locales: EN, parent: "/", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.7 },
+  // Every buyer question, grouped; home, the service landings and the
+  // Haridwar hub show their own few and link to /faq#<group>.
+  { path: "/faq", kind: "static", audience: "business", locales: EN, parent: "/", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.6 },
   { path: "/contact", kind: "static", audience: "business", locales: EN, parent: "/", updated: CONTACT_CREW_FORM, changeFrequency: "yearly", priority: 0.9 },
   { path: WAGE_HUB_PATH, kind: "wage-hub", audience: "mixed", locales: { ...EN, "hi-IN": WAGE_HI_STATUS }, parent: "/", updated: WAGE_HUB_UPDATED(), changeFrequency: "monthly", priority: 0.7 },
   ...Object.entries(WAGE_STATE_STATUS).map(

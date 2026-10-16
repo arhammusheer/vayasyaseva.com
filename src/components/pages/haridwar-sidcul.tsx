@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { CtaBlock } from "@/components/sections/cta-block";
 import { ClientStrip } from "@/components/sections/client-strip";
 import { FaqSection } from "@/components/sections/faq-section";
+import { faqHref } from "@/content/faq";
 import { JsonLd, webPageSchema } from "@/lib/structured-data";
 import { haridwarCopy } from "@/content/pages/haridwar-sidcul";
 import { jobsDoorHref } from "@/components/layout/nav-links";
@@ -46,7 +47,7 @@ function Areas({ locale }: { locale: Locale }) {
 
 /**
  * The Haridwar buyer hub: the hero, client proof, one SIDCUL paragraph, the
- * three services and one FAQ. The hero carries Request a crew (prefilled
+ * three services and its FAQs (more on /faq#haridwar-sidcul). The hero carries Request a crew (prefilled
  * for Haridwar) and a quiet jobs line. Most hi-IN visitors are job seekers,
  * so there the jobs door is a button first, with Request a crew beside it.
  */
@@ -136,7 +137,7 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
           </div>
         </div>
       </Section>
-      <FaqSection title={t.faqHeading} variant="subtle" items={t.faqs} open />
+      <FaqSection title={t.faqHeading} variant="subtle" items={t.faqs} open more={{ href: faqHref("haridwar-sidcul"), label: t.moreFaqs }} />
       <CtaBlock locale={locale} href={CREW_HREF} />
     </>
   );

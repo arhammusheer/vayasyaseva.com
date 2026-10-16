@@ -22,11 +22,13 @@ import { pageMetadata } from "@/lib/metadata";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams(WAGE_METHOD_PATH);
 
-const TITLE = "How We Check Our Minimum Wage Pages";
+const TITLE = "How We Check Minimum Wages";
+const DESCRIPTION =
+  "How we check the minimum wage rates on our state pages: only government notices, copied by hand, re-checked each April and October, and how to report a mistake.";
 
 export const metadata = pageMetadata({
   title: TITLE,
-  description: editorialPolicy.intro,
+  description: DESCRIPTION,
   alternates: { canonical: WAGE_METHOD_PATH },
 });
 
@@ -44,10 +46,10 @@ export default async function HowWeCheckPage({ params }: Props) {
   const { notAdvice } = editorialPolicy;
   return (
     <>
-      <JsonLd data={webPageSchema({ name: TITLE, description: editorialPolicy.intro, url: WAGE_METHOD_PATH })} />
+      <JsonLd data={webPageSchema({ name: TITLE, description: DESCRIPTION, url: WAGE_METHOD_PATH })} />
       <PageHero
         crumbs={<Breadcrumbs path={WAGE_METHOD_PATH} locale={locale} name="How we check" />}
-        title="How we check these pages."
+        title="How we check minimum wages."
         lede={editorialPolicy.intro}
       />
       <Section>

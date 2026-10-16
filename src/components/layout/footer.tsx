@@ -25,6 +25,7 @@ function businessColumns(reference: boolean): Column[] {
         { href: "/services/loading-unloading-labour", label: "Loading and unloading" },
         { href: "/services/housekeeping", label: "Housekeeping and grounds" },
         { href: "/haridwar-sidcul", label: "Haridwar SIDCUL" },
+        { href: "/faq", label: "Questions" },
       ],
     },
     {

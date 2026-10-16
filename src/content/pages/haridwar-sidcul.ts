@@ -1,6 +1,6 @@
 import type { FaqItem } from "../types";
 import type { Locale } from "@/lib/i18n";
-import type { HARIDWAR_SECTION_ANCHORS } from "@/content/registry/identifiers";
+import { wageStatePath, type HARIDWAR_SECTION_ANCHORS } from "@/content/registry/identifiers";
 
 type Area = (typeof HARIDWAR_SECTION_ANCHORS)[number];
 
@@ -29,7 +29,11 @@ export interface HaridwarCopy {
   services: { href: string; label: string }[];
   faqHeading: string;
   faqs: FaqItem[];
+  /** The link to /faq, which is in English. */
+  moreFaqs: string;
 }
+
+const UTTARAKHAND_WAGES = wageStatePath("uttarakhand");
 
 const SERVICE_HREFS = ["/services/factory-labour", "/services/loading-unloading-labour", "/services/housekeeping"];
 
@@ -60,11 +64,28 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
       { href: SERVICE_HREFS[2], label: "Housekeeping and grounds" },
     ],
     faqHeading: "Questions.",
+    moreFaqs: "More questions",
     faqs: [
       {
         question: "Do you supply contract labour to SIDCUL units?",
         answer:
           "Yes. Crews for production, packing, material handling, loading and dispatch, and housekeeping, planned with your site team and run by our supervisor.",
+        category: "operations",
+      },
+      {
+        question: "Do you cover Bhagwanpur, Bahadrabad and Roorkee?",
+        answer: "Yes. We take requirements from units there as well as in SIDCUL.",
+        category: "operations",
+      },
+      {
+        question: "Do you pay the Uttarakhand minimum wage?",
+        answer: "Yes. We pay at least the notified rate for the employment and skill.",
+        link: { href: UTTARAKHAND_WAGES, label: "Uttarakhand minimum wages" },
+        category: "compliance",
+      },
+      {
+        question: "Will you visit our site first?",
+        answer: "Yes. We visit before a crew starts, to see the work, the shifts and your safety rules.",
         category: "operations",
       },
     ],
@@ -89,11 +110,28 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
       { href: SERVICE_HREFS[2], label: "हाउसकीपिंग और ग्राउंड्स" },
     ],
     faqHeading: "सवाल।",
+    moreFaqs: "और सवाल (English)",
     faqs: [
       {
         question: "क्या आप सिडकुल की यूनिटों को कॉन्ट्रैक्ट लेबर देते हैं?",
         answer:
           "हाँ। प्रोडक्शन, पैकिंग, मटीरियल हैंडलिंग, लोडिंग और डिस्पैच, और हाउसकीपिंग के लिए टीमें, आपकी साइट टीम के साथ प्लान की हुई और हमारे सुपरवाइज़र की देखरेख में।",
+        category: "operations",
+      },
+      {
+        question: "क्या आप भगवानपुर, बहादराबाद और रुड़की में भी काम करते हैं?",
+        answer: "हाँ। सिडकुल के साथ-साथ वहाँ की यूनिटों से भी ज़रूरतें लेते हैं।",
+        category: "operations",
+      },
+      {
+        question: "क्या आप उत्तराखंड की न्यूनतम मजदूरी देते हैं?",
+        answer: "हाँ। काम और स्किल के लिए तय की गई दर से कम नहीं।",
+        link: { href: UTTARAKHAND_WAGES, label: "उत्तराखंड न्यूनतम मजदूरी (English)" },
+        category: "compliance",
+      },
+      {
+        question: "क्या आप पहले हमारी साइट देखने आएँगे?",
+        answer: "हाँ। टीम शुरू होने से पहले हम साइट पर आकर काम, शिफ़्ट और आपके सेफ़्टी नियम देखते हैं।",
         category: "operations",
       },
     ],
@@ -118,11 +156,28 @@ export const haridwarCopy: Record<Locale, HaridwarCopy> = {
       { href: SERVICE_HREFS[2], label: "Housekeeping aur grounds" },
     ],
     faqHeading: "Sawaal.",
+    moreFaqs: "Aur sawaal (English)",
     faqs: [
       {
         question: "Kya aap SIDCUL ki units ko contract labour dete hain?",
         answer:
           "Haan. Production, packing, material handling, loading aur dispatch, aur housekeeping ke liye teams, aapki site team ke saath plan ki hui aur hamare supervisor ki dekhrekh mein.",
+        category: "operations",
+      },
+      {
+        question: "Kya aap Bhagwanpur, Bahadrabad aur Roorkee mein bhi kaam karte hain?",
+        answer: "Haan. SIDCUL ke saath-saath wahan ki units se bhi requirements lete hain.",
+        category: "operations",
+      },
+      {
+        question: "Kya aap Uttarakhand ki minimum wage dete hain?",
+        answer: "Haan. Kaam aur skill ke liye notified rate se kam nahi.",
+        link: { href: UTTARAKHAND_WAGES, label: "Uttarakhand minimum wages (English)" },
+        category: "compliance",
+      },
+      {
+        question: "Kya aap pehle hamari site dekhne aayenge?",
+        answer: "Haan. Team shuru hone se pehle hum site par aakar kaam, shifts aur aapke safety rules dekhte hain.",
         category: "operations",
       },
     ],

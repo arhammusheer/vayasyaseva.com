@@ -30,7 +30,7 @@ const referenceSection = linkable(WAGE_HUB_PATH, "en-IN")
             `- [Minimum wages in ${s.name}](${baseUrl}/en-in${wageStatePath(s.state)}): Monthly and daily rates by ${s.tables.some((t) => t.zones.length > 1) ? "district category and " : ""}skill level, from the state's own notifications and orders${s.tables.some((t) => t.basicLabel === "Basic" && t.rates.some((r) => r.vda > 0)) ? ", with the basic wage and VDA" : ""}. Figures last updated ${s.checked.on}`,
         ),
       ...(linkable(WAGE_METHOD_PATH, "en-IN")
-        ? [`- [How we check](${baseUrl}/en-in${WAGE_METHOD_PATH}): The sources, checks, update schedule and corrections process behind the wage pages and guides`]
+        ? [`- [How we check minimum wages](${baseUrl}/en-in${WAGE_METHOD_PATH}): Where the minimum wage rates come from, when we check them, and how to report a mistake`]
         : []),
       "",
     ].join("\n")

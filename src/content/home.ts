@@ -1,5 +1,4 @@
-import type { TrustClient, FaqItem } from "./types";
-import { AGENCY_FAQ } from "./agency-faq";
+import type { TrustClient } from "./types";
 
 export const trustClients: TrustClient[] = [
   {
@@ -20,19 +19,4 @@ export const trustClients: TrustClient[] = [
     logoDark: "/assets/clients/Unilever-dark.png",
     visible: true,
   },
-];
-
-/**
- * The home page FAQ: pricing, then the agency question, the only agency FAQ
- * on the site (docs/brand-rules.md). No crew-size question: its answer would
- * either repeat the hero or imply capacity we don't publish.
- */
-export const homeFaqs: FaqItem[] = [
-  {
-    question: "How is the crew priced?",
-    answer:
-      "A rate per worker that covers wages, the EPF and ESIC that apply, and our service charge, billed on one monthly invoice.",
-    category: "commercial",
-  },
-  AGENCY_FAQ,
 ];

@@ -16,7 +16,8 @@ const COMMON: Record<string, { heading: string; description: string }> = {
   "/": { heading: "Workforce.\nWith care.", description: "Contract labour and industrial services for SIDCUL and across Haridwar." },
   "/services": { heading: "Contract labour for factories,\nwarehouses and facilities.", description: "Factory, loading and unloading, and housekeeping crews, and how an engagement runs." },
   "/about": { heading: "People at the heart\nof work.", description: "Meet Vayasya Seva: a Haridwar-based contract labour and industrial services company." },
-  "/compliance": { heading: "Labour compliance:\nthe records we keep.", description: "Registers, wage slips and EPF and ESIC challans for every worker on your site." },
+  "/faq": { heading: "Questions,\nanswered.", description: "Pricing, crews, payroll and compliance: what buyers ask us most." },
+  "/compliance": { heading: "Labour compliance:\nthe records we keep.", description: "Registers, payroll, EPF, ESIC, PT and LWF for every worker on your site." },
   "/vayasya-setu": { heading: "Vayasya Setu.", description: "Attendance, wage and challan records for your site, each month." },
   "/contact": { heading: "Let’s discuss\nyour requirement.", description: "Talk to our Haridwar team about workforce, site services or a project." },
   "/brand": { heading: "The Vayasya Seva\nbrand.", description: "Our identity, typography, colours and official brand resources." },
@@ -25,7 +26,7 @@ const COMMON: Record<string, { heading: string; description: string }> = {
   "/minimum-wages": { heading: "Minimum wages\nby state.", description: "Current rates by skill level, each from the state's own notification." },
   "/minimum-wages/uttarakhand": { heading: "Minimum wages\nin Uttarakhand.", description: "Monthly rates by skill level, basic wage and VDA, from the notification." },
   "/minimum-wages/uttar-pradesh": { heading: "Minimum wages\nin Uttar Pradesh.", description: "Rates by district category and skill level, basic wage and VDA." },
-  "/minimum-wages/how-we-check": { heading: "How we check\nthese pages.", description: "Our sources, how the figures are worked out, and how to report an error." },
+  "/minimum-wages/how-we-check": { heading: "How we check\nminimum wages.", description: "Where the rates come from, when we check them, and how to report an error." },
   "/minimum-wages/delhi": { heading: "Minimum wages\nin Delhi.", description: "Monthly and daily rates by skill level, from the Labour Department's order." },
 };
 

@@ -5,9 +5,12 @@
  */
 export const COMPLIANCE_RECORDS = [
   { title: "Attendance and wage registers", text: "Attendance for every shift, and the wage register that follows from it." },
-  { title: "Wage slips", text: "A slip for every worker, every wage period." },
-  { title: "EPF and ESIC challans", text: "Deposited every month for the workers they apply to, and the challans sent to you." },
-  { title: "Monthly review", text: "Registers, slips and challans open for your monthly review and for audits." },
+  { title: "Payroll and wage slips", text: "Wages for every worker, with a slip each wage period." },
+  { title: "EPF and ESIC", text: "Deposited every month for the workers they apply to, and the challans sent to you." },
+  { title: "Professional Tax", text: "Deducted, deposited and filed where your site’s state levies it." },
+  { title: "Labour Welfare Fund", text: "Worker and employer contributions deposited where your site’s state levies it." },
+  { title: "Contract labour licence", text: "Where the state and the crew size need one, we apply for the contractor’s licence for your site." },
+  { title: "Monthly review", text: "Registers, slips, challans and returns open for your monthly review and for audits." },
 ];
 
 export const CONTRACTOR_CHECKS = [

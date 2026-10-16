@@ -9,6 +9,7 @@ import { FaqSection } from "@/components/sections/faq-section";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { JsonLd, serviceLandingSchema, webPageSchema } from "@/lib/structured-data";
 import { nextServicePage, type ServiceLandingContent } from "@/content/service-pages";
+import { faqHref } from "@/content/faq";
 
 export function serviceLandingMetadata(page: ServiceLandingContent) {
   return pageMetadata({
@@ -19,8 +20,8 @@ export function serviceLandingMetadata(page: ServiceLandingContent) {
 }
 
 /**
- * A service landing (English only): roles, one planning paragraph, two
- * FAQs, the next sibling and the gold band. Request a crew sits in the
+ * A service landing (English only): roles, one planning paragraph, its
+ * FAQs (more on /faq#<slug>), the next sibling and the gold band. Request a crew sits in the
  * header and the band; the hero's one action is the quiet jobs line, to the
  * matching role page (neutral URL, so a seeker picks a language first).
  */
@@ -60,7 +61,7 @@ export function ServiceLanding({ page }: { page: ServiceLandingContent }) {
           </div>
         </div>
       </Section>
-      <FaqSection variant="subtle" items={page.faqs} open />
+      <FaqSection variant="subtle" items={page.faqs} open more={{ href: faqHref(page.slug), label: "More questions" }} />
       <nav aria-label="Next service" className="service-next">
         <div className="site-shell">
           <Link href={`/services/${next.slug}`}>

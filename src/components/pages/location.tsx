@@ -132,7 +132,7 @@ export function LocationsIndex() {
       <JsonLd data={webPageSchema({ name: "Locations", description: "Where Vayasya Seva supplies contract labour crews.", url: "/locations", type: "CollectionPage" })} />
       <PageHero title="Where we supply crews." lede="Uttarakhand, Bengaluru and Delhi NCR. Pick a region, or tell us where your site is." />
       <Section className="border-t border-border">
-        <ul className="location-areas is-index">
+        <ul className="location-areas">
           {linkable("/haridwar-sidcul", "en-IN") && (
             <li>
               <Link href="/haridwar-sidcul">

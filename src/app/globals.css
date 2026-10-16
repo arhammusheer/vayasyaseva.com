@@ -3917,15 +3917,11 @@ a:hover > svg {
 }
 
 /* /locations: the region list. */
+/* No top rule: the section's own border sits just above. */
 .location-areas {
-  margin: 28px 0 0;
+  margin: 0;
   padding: 0;
   list-style: none;
-  border-top: 1px solid var(--border);
-}
-.location-areas.is-index {
-  margin-top: 0;
-  border-top-color: var(--foreground);
 }
 .location-areas li a {
   display: grid;

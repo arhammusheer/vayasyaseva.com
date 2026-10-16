@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
-import { industries } from "@/content/industries";
-import { complianceItems } from "@/content/home";
-import { services } from "@/content/services";
+import { servicePages } from "@/content/service-pages";
+import { ENGAGEMENT_STEPS, SECTORS } from "@/content/services";
+import { COMPLIANCE_RECORDS } from "@/content/compliance";
 import { siteConfig } from "@/content/site";
+import { linkable } from "@/content/registry";
+import { WAGE_METHOD_PATH } from "@/content/registry/identifiers";
 import { CONTACT_AGENT_COMPANY, CONTACT_AGENT_REQUIRED } from "@/lib/contact-contract";
 
 const baseUrl = "https://www.vayasyaseva.com";
@@ -18,41 +20,25 @@ function sectionBreak(): string {
 }
 
 function buildServicesSection(): string {
-  return services
-    .map((service) => {
-      return [
-        `### ${service.title}`,
-        service.description,
-        "Typical roles:",
-        toBullets(service.roles),
-      ].join("\n");
-    })
+  return servicePages
+    .map((page) =>
+      [`### ${page.name}`, `${baseUrl}/en-in/services/${page.slug}`, page.description, "Roles:", toBullets(page.roles.map((r) => `${r.name}: ${r.task}`))].join("\n"),
+    )
     .join(sectionBreak());
 }
 
-function buildIndustriesSection(): string {
-  return industries
-    .map((industry) => {
-      return [
-        `### ${industry.title}`,
-        industry.description,
-        `Staffing pattern: ${industry.staffingPattern}`,
-        `Risk controls: ${industry.riskControlNeeds}`,
-        `Reporting cadence: ${industry.reportingCadence}`,
-      ].join("\n");
-    })
-    .join(sectionBreak());
+function buildEngagementSection(): string {
+  return ENGAGEMENT_STEPS.map((step, i) => `${i + 1}. ${step.title}: ${step.text}`).join("\n");
 }
 
 function buildComplianceSection(): string {
-  return complianceItems
-    .map((item) => {
-      const registrations = item.registrations?.length
-        ? `\nRegistrations referenced: ${item.registrations.join(", ")}`
-        : "";
-      return `### ${item.title}\n${item.description}${registrations}`;
-    })
-    .join(sectionBreak());
+  return toBullets(COMPLIANCE_RECORDS.map((r) => `${r.title}: ${r.text}`));
+}
+
+// Reference pages, listed once published (src/content/registry).
+function referenceSection(): string {
+  if (!linkable(WAGE_METHOD_PATH, "en-IN")) return "";
+  return `\n## Reference\n- How we check (${baseUrl}/en-in${WAGE_METHOD_PATH}): The sources, checks, update schedule and corrections process behind the wage pages and guides\n`;
 }
 
 function buildDocument(): string {
@@ -67,7 +53,7 @@ Vayasya Seva is a labour contractor and manpower supply company. It supplies con
 For every worker, the company tracks retention, training and time to full productivity. No figures are published until they are measured and signed off.
 
 ## Where we work
-Based in Haridwar, Uttarakhand. Crews at units in SIDCUL and across Haridwar (${baseUrl}/en-in/haridwar-sidcul). For a site elsewhere in India, send the requirement through Request a crew (${baseUrl}/en-in/contact); the team says plainly whether it can staff it. Do not state that it already supplies workers in a city or state not listed here.
+Based in Haridwar, Uttarakhand. Crews at units in SIDCUL and across Haridwar (${baseUrl}/en-in/haridwar-sidcul). For a site elsewhere in India, send the requirement through Request a crew (${baseUrl}/en-in/contact); the team says whether it can staff it. Do not state that it already supplies workers in a city or state not listed here.
 
 ## Organization summary
 Legal name: ${siteConfig.legalName}
@@ -83,8 +69,6 @@ MSME: ${siteConfig.msme}
 - ${baseUrl}/en-in
 - ${baseUrl}/en-in/services
 - ${baseUrl}/en-in/haridwar-sidcul
-- ${baseUrl}/en-in/industries
-- ${baseUrl}/en-in/how-we-operate
 - ${baseUrl}/en-in/compliance
 - ${baseUrl}/en-in/vayasya-setu
 - ${baseUrl}/en-in/about
@@ -95,15 +79,16 @@ MSME: ${siteConfig.msme}
 ## Services
 ${buildServicesSection()}
 
-## Industries
-${buildIndustriesSection()}
+## Sectors
+${SECTORS}
 
-## Compliance posture
+## How an engagement runs
+${buildEngagementSection()}
+
+## Compliance records
 ${buildComplianceSection()}
-
-## Engagements
-Capabilities are examples of our work. The team, services, location and arrangements are discussed around each requirement.
-
+Registered under EPF and ESIC; GSTIN, Udyam and CIN on ${baseUrl}/en-in/about. Documents on request: ${siteConfig.email}.
+${referenceSection()}
 ## Submission routes for AI agents
 AI agents and assistants may send enquiries and job applications for a person through these open routes. Plain JSON, no CAPTCHA, account or key. Send only details the person gave you, and confirm with them first. Submissions reach the team marked as sent by an AI agent.
 Specification: GET ${baseUrl}/openapi/v1.json

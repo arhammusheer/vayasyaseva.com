@@ -7,155 +7,27 @@
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/services",
-    "lastModified": "2026-10-01T00:00:00.000Z",
+    "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "monthly",
     "priority": 0.9
   },
   {
-    "url": "https://www.vayasyaseva.com/en-in/services/contract-labour",
-    "lastModified": "2026-10-01T00:00:00.000Z",
+    "url": "https://www.vayasyaseva.com/en-in/services/factory-labour",
+    "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.9,
-    "alternates": {
-      "languages": {
-        "en-IN": "https://www.vayasyaseva.com/en-in/services/contract-labour",
-        "hi-IN": "https://www.vayasyaseva.com/hi-in/services/contract-labour",
-        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/services/contract-labour",
-        "x-default": "https://www.vayasyaseva.com/en-in/services/contract-labour"
-      }
-    }
-  },
-  {
-    "url": "https://www.vayasyaseva.com/hi-in/services/contract-labour",
-    "lastModified": "2026-10-01T00:00:00.000Z",
-    "changeFrequency": "monthly",
-    "priority": 0.9,
-    "alternates": {
-      "languages": {
-        "en-IN": "https://www.vayasyaseva.com/en-in/services/contract-labour",
-        "hi-IN": "https://www.vayasyaseva.com/hi-in/services/contract-labour",
-        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/services/contract-labour",
-        "x-default": "https://www.vayasyaseva.com/en-in/services/contract-labour"
-      }
-    }
-  },
-  {
-    "url": "https://www.vayasyaseva.com/hi-latn-in/services/contract-labour",
-    "lastModified": "2026-10-01T00:00:00.000Z",
-    "changeFrequency": "monthly",
-    "priority": 0.9,
-    "alternates": {
-      "languages": {
-        "en-IN": "https://www.vayasyaseva.com/en-in/services/contract-labour",
-        "hi-IN": "https://www.vayasyaseva.com/hi-in/services/contract-labour",
-        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/services/contract-labour",
-        "x-default": "https://www.vayasyaseva.com/en-in/services/contract-labour"
-      }
-    }
-  },
-  {
-    "url": "https://www.vayasyaseva.com/en-in/services/warehouse-labour",
-    "lastModified": "2026-10-01T00:00:00.000Z",
-    "changeFrequency": "monthly",
-    "priority": 0.8,
-    "alternates": {
-      "languages": {
-        "en-IN": "https://www.vayasyaseva.com/en-in/services/warehouse-labour",
-        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/services/warehouse-labour",
-        "x-default": "https://www.vayasyaseva.com/en-in/services/warehouse-labour"
-      }
-    }
-  },
-  {
-    "url": "https://www.vayasyaseva.com/hi-latn-in/services/warehouse-labour",
-    "lastModified": "2026-10-01T00:00:00.000Z",
-    "changeFrequency": "monthly",
-    "priority": 0.8,
-    "alternates": {
-      "languages": {
-        "en-IN": "https://www.vayasyaseva.com/en-in/services/warehouse-labour",
-        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/services/warehouse-labour",
-        "x-default": "https://www.vayasyaseva.com/en-in/services/warehouse-labour"
-      }
-    }
+    "priority": 0.8
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/services/loading-unloading-labour",
-    "lastModified": "2026-10-02T00:00:00.000Z",
+    "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.8,
-    "alternates": {
-      "languages": {
-        "en-IN": "https://www.vayasyaseva.com/en-in/services/loading-unloading-labour",
-        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/services/loading-unloading-labour",
-        "x-default": "https://www.vayasyaseva.com/en-in/services/loading-unloading-labour"
-      }
-    }
-  },
-  {
-    "url": "https://www.vayasyaseva.com/hi-latn-in/services/loading-unloading-labour",
-    "lastModified": "2026-10-02T00:00:00.000Z",
-    "changeFrequency": "monthly",
-    "priority": 0.8,
-    "alternates": {
-      "languages": {
-        "en-IN": "https://www.vayasyaseva.com/en-in/services/loading-unloading-labour",
-        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/services/loading-unloading-labour",
-        "x-default": "https://www.vayasyaseva.com/en-in/services/loading-unloading-labour"
-      }
-    }
-  },
-  {
-    "url": "https://www.vayasyaseva.com/en-in/services/factory-labour",
-    "lastModified": "2026-10-01T00:00:00.000Z",
-    "changeFrequency": "monthly",
-    "priority": 0.8,
-    "alternates": {
-      "languages": {
-        "en-IN": "https://www.vayasyaseva.com/en-in/services/factory-labour",
-        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/services/factory-labour",
-        "x-default": "https://www.vayasyaseva.com/en-in/services/factory-labour"
-      }
-    }
-  },
-  {
-    "url": "https://www.vayasyaseva.com/hi-latn-in/services/factory-labour",
-    "lastModified": "2026-10-01T00:00:00.000Z",
-    "changeFrequency": "monthly",
-    "priority": 0.8,
-    "alternates": {
-      "languages": {
-        "en-IN": "https://www.vayasyaseva.com/en-in/services/factory-labour",
-        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/services/factory-labour",
-        "x-default": "https://www.vayasyaseva.com/en-in/services/factory-labour"
-      }
-    }
+    "priority": 0.8
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/services/housekeeping",
-    "lastModified": "2026-10-01T00:00:00.000Z",
+    "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.8,
-    "alternates": {
-      "languages": {
-        "en-IN": "https://www.vayasyaseva.com/en-in/services/housekeeping",
-        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/services/housekeeping",
-        "x-default": "https://www.vayasyaseva.com/en-in/services/housekeeping"
-      }
-    }
-  },
-  {
-    "url": "https://www.vayasyaseva.com/hi-latn-in/services/housekeeping",
-    "lastModified": "2026-10-01T00:00:00.000Z",
-    "changeFrequency": "monthly",
-    "priority": 0.8,
-    "alternates": {
-      "languages": {
-        "en-IN": "https://www.vayasyaseva.com/en-in/services/housekeeping",
-        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/services/housekeeping",
-        "x-default": "https://www.vayasyaseva.com/en-in/services/housekeeping"
-      }
-    }
+    "priority": 0.8
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/jobs",
@@ -914,26 +786,14 @@
     }
   },
   {
-    "url": "https://www.vayasyaseva.com/en-in/industries",
-    "lastModified": "2026-09-13T00:00:00.000Z",
-    "changeFrequency": "monthly",
-    "priority": 0.8
-  },
-  {
-    "url": "https://www.vayasyaseva.com/en-in/how-we-operate",
-    "lastModified": "2026-09-13T00:00:00.000Z",
-    "changeFrequency": "monthly",
-    "priority": 0.8
-  },
-  {
     "url": "https://www.vayasyaseva.com/en-in/compliance",
-    "lastModified": "2026-09-13T00:00:00.000Z",
+    "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "monthly",
     "priority": 0.8
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/vayasya-setu",
-    "lastModified": "2026-09-13T00:00:00.000Z",
+    "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "monthly",
     "priority": 0.7
   },
@@ -972,6 +832,12 @@
     "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "monthly",
     "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/minimum-wages/how-we-check",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "yearly",
+    "priority": 0.5
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/privacy",

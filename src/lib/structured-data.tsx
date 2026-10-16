@@ -1,5 +1,5 @@
 import type { FaqItem } from "@/content/types";
-import type { ServiceDetail } from "@/content/services";
+import type { ServiceLandingContent } from "@/content/service-pages";
 import { siteConfig } from "@/content/site";
 import { localizeHref } from "@/lib/i18n";
 import { formatDate, type WageSource, type WageState } from "@/content/wages";
@@ -227,29 +227,32 @@ export function faqSchema(faqs: Pick<FaqItem, "question" | "answer">[]) {
   };
 }
 
-export function serviceSchema(service: ServiceDetail) {
-  return {
-    "@type": "Service",
-    "@id": pageUrl(`/services#${service.id}`),
-    name: service.title,
-    // PLAN §6.1: one service type everywhere; the name carries the specifics.
-    serviceType: "Contract labour supply",
-    description: service.description,
-    provider: { "@id": ORG_ID },
-    areaServed: areaServed(),
-    url: pageUrl(`/services#${service.id}`),
-  };
-}
-
-export function servicePageSchema(services: ServiceDetail[]) {
+/**
+ * The /services hub: a list of the landing pages' Service nodes (same @id as
+ * serviceLandingSchema on each landing, so the graph joins up).
+ */
+export function servicePageSchema(pages: ServiceLandingContent[]) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    itemListElement: services.map((service, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      item: serviceSchema(service),
-    })),
+    itemListElement: pages.map((page, index) => {
+      const url = `/services/${page.slug}`;
+      return {
+        "@type": "ListItem",
+        position: index + 1,
+        item: {
+          "@type": "Service",
+          "@id": `${pageUrl(url)}#service`,
+          name: page.name,
+          // PLAN §6.1: one service type everywhere; the name carries the specifics.
+          serviceType: "Contract labour supply",
+          description: page.description,
+          provider: { "@id": ORG_ID },
+          areaServed: areaServed(),
+          url: pageUrl(url),
+        },
+      };
+    }),
   };
 }
 

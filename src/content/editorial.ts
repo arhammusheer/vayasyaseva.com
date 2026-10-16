@@ -1,14 +1,15 @@
+import { WAGE_METHOD_PATH } from "@/content/registry/identifiers";
+
 /**
- * Editorial policy (PLAN §10.4), shown on /about#editorial and linked from
- * every wage page and guide. It describes what we do today: keep it true.
- * The corrections line is directional ("aim to", docs/claim-policy.md) and
- * names no time until the owner signs one off.
+ * Editorial policy (PLAN §10.4), on /minimum-wages/how-we-check (it moved
+ * there from /about) and linked from every wage page and guide. It
+ * describes what we do today: keep it true. The corrections line is
+ * directional ("aim to", docs/claim-policy.md) and names no time until the
+ * owner signs one off.
  */
-export const EDITORIAL_HREF = "/about#editorial";
+export const EDITORIAL_HREF = WAGE_METHOD_PATH;
 
 export const editorialPolicy = {
-  eyebrow: "EDITORIAL POLICY",
-  heading: "How we write and check our reference pages",
   intro: "Our minimum wage pages and labour law guides are written by the Vayasya Seva team. They explain the rules in plain words for plant teams and for workers.",
   items: [
     {
@@ -26,10 +27,8 @@ export const editorialPolicy = {
     {
       title: "Corrections",
       text: "If you spot an error, email us with the page and the document that shows it. We aim to correct a confirmed error quickly, and the page shows the date of the change.",
-    },
-    {
-      title: "Not legal advice",
-      text: "These pages explain the law in general terms. For a decision about your own site, check the current notification or ask a labour-law adviser.",
+      /** Renders "email us" as a mailto link to siteConfig.email. */
+      mailto: "email us",
     },
   ],
 };

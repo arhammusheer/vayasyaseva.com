@@ -13,7 +13,7 @@ import {
 } from "@/lib/contact-contract";
 
 import { linkable } from "@/content/registry";
-import { WAGE_HUB_PATH, wageStatePath } from "@/content/registry/identifiers";
+import { WAGE_HUB_PATH, WAGE_METHOD_PATH, wageStatePath } from "@/content/registry/identifiers";
 import { wageStates } from "@/content/wages";
 
 const baseUrl = "https://www.vayasyaseva.com";
@@ -29,6 +29,9 @@ const referenceSection = linkable(WAGE_HUB_PATH, "en-IN")
           (s) =>
             `- [Minimum wages in ${s.name}](${baseUrl}/en-in${wageStatePath(s.state)}): Monthly and daily rates by ${s.tables.some((t) => t.zones.length > 1) ? "district category and " : ""}skill level, from the state's own notifications and orders${s.tables.some((t) => t.basicLabel === "Basic" && t.rates.some((r) => r.vda > 0)) ? ", with the basic wage and VDA" : ""}. Sources last checked ${s.checked.on}`,
         ),
+      ...(linkable(WAGE_METHOD_PATH, "en-IN")
+        ? [`- [How we check](${baseUrl}/en-in${WAGE_METHOD_PATH}): The sources, checks, update schedule and corrections process behind the wage pages and guides`]
+        : []),
       "",
     ].join("\n")
   : "";
@@ -50,7 +53,7 @@ export const revalidate = 3600;
 // of Markdown link lists ("- [name](url): notes"). Bare URLs are not parsed as links.
 const llmsIndex = `# Vayasya Seva Private Limited
 
-> Labour contractor and manpower supply company. Vayasya Seva supplies contract labour to factories, warehouses and facilities and stays the workers' employer: they are on its payroll, and it pays wages, deposits EPF and ESIC where they apply, supervises the crew on site and replaces absentees. It is a manpower contractor, not a placement or staffing agency. Work is in full 8-hour shifts. Based in Haridwar, Uttarakhand, with crews in SIDCUL and across Haridwar; for a site elsewhere in India, the team reviews each requirement and says plainly whether it can staff it. EPF, ESIC, GST and MSME registered.
+> Labour contractor and manpower supply company. Vayasya Seva supplies contract labour to factories, warehouses and facilities and stays the workers' employer: they are on its payroll, and it pays wages, deposits EPF and ESIC where they apply, supervises the crew on site and replaces absentees. It is a manpower contractor, not a placement or staffing agency. Work is in full 8-hour shifts. Based in Haridwar, Uttarakhand, with crews in SIDCUL and across Haridwar; for a site elsewhere in India, the team reviews each requirement and says whether it can staff it. EPF, ESIC, GST and MSME registered.
 
 The public pages below are the source of truth. They carry full text and JSON-LD structured data (Organization, LocalBusiness, Service, FAQ, Breadcrumb). All public content may be indexed, cached, summarised, quoted and used for training and retrieval under the [Terms of Use](${baseUrl}/en-in/terms), section 3.2. \`/api/*\` is not for crawling. AI agents may send enquiries and job applications for a person through the open routes under \`/api/agent/\`, described below. Attribute factual claims about registrations, compliance and legal terms to the page they came from.
 
@@ -58,21 +61,17 @@ The public pages below are the source of truth. They carry full text and JSON-LD
 
 ## Company
 - [Home](${baseUrl}/en-in): Labour contractor and manpower supply company: contract labour for factories, warehouses and facilities, with the workers on our payroll
-- [About](${baseUrl}/en-in/about): Who Vayasya Seva is and how the company approaches people, site operations and compliance
-- [How we operate](${baseUrl}/en-in/how-we-operate): Engagement planning, mobilisation, supervision, workforce records and reporting
-- [Compliance](${baseUrl}/en-in/compliance): Worker documentation, attendance, wage records, EPF and ESIC contributions, client reviews
-- [Industries](${baseUrl}/en-in/industries): Manufacturing, warehousing, FMCG, institutional facilities and hospitality
+- [Services](${baseUrl}/en-in/services): The three crews we supply, the sectors we staff and how an engagement runs, from site visit to monthly records
 - [SIDCUL Haridwar](${baseUrl}/en-in/haridwar-sidcul): Our base. Contract labour for units in SIDCUL and across Haridwar, including Bahadrabad, Bhagwanpur and Roorkee
-- [Vayasya Setu](${baseUrl}/en-in/vayasya-setu): Workforce operations platform for attendance, deployment, payroll inputs and compliance records
+- [Compliance](${baseUrl}/en-in/compliance): The records we keep for every worker (registers, wage slips, EPF and ESIC challans), checks to make with any contractor, and how to request documents
+- [About](${baseUrl}/en-in/about): Who Vayasya Seva is, with the CIN, GSTIN and Udyam numbers
+- [Vayasya Setu](${baseUrl}/en-in/vayasya-setu): Our workforce system for attendance, payroll inputs and compliance records, and the client login
 - [Request a crew](${baseUrl}/en-in/contact): The enquiry form for businesses that need workers (plus phone and email). Not for job applications
 
 ## Services
-- [Services overview](${baseUrl}/en-in/services): All services, from contract labour to civil works and maintenance
-- [Contract labour](${baseUrl}/en-in/services/contract-labour): Contract labour supply with compliance records
-- [Warehouse labour](${baseUrl}/en-in/services/warehouse-labour): Warehouse and logistics manpower
-- [Loading and unloading labour](${baseUrl}/en-in/services/loading-unloading-labour): Loading, unloading and material handling crews
-- [Factory labour](${baseUrl}/en-in/services/factory-labour): Manufacturing and shopfloor manpower
-- [Housekeeping](${baseUrl}/en-in/services/housekeeping): Housekeeping staff for industrial and institutional sites
+- [Factory labour](${baseUrl}/en-in/services/factory-labour): Production helpers, packers, line feeders and material handlers
+- [Loading and unloading labour](${baseUrl}/en-in/services/loading-unloading-labour): Loading, unloading, container, picking, packing, racking and dispatch crews for warehouses and factory stores
+- [Housekeeping manpower](${baseUrl}/en-in/services/housekeeping): Housekeeping, pantry, washroom and grounds staff for plants, offices and campuses
 
 ${referenceSection}
 ## Jobs
@@ -83,18 +82,12 @@ ${roleLinksEn}
 
 ## हिंदी pages (hi-IN, Hindi in Devanagari)
 - [SIDCUL Haridwar (हिंदी)](${baseUrl}/hi-in/haridwar-sidcul)
-- [Contract labour (हिंदी)](${baseUrl}/hi-in/services/contract-labour)
 - [Jobs (हिंदी)](${baseUrl}/hi-in/jobs)
 - [Jobs in Haridwar (हिंदी)](${baseUrl}/hi-in/jobs/haridwar)
 ${roleLinks("hi-in", " (हिंदी)")}
 
 ## Hindi pages (hi-Latn-IN, Hindi in Latin script)
 - [SIDCUL Haridwar (Hindi)](${baseUrl}/hi-latn-in/haridwar-sidcul)
-- [Contract labour (Hindi)](${baseUrl}/hi-latn-in/services/contract-labour)
-- [Warehouse labour (Hindi)](${baseUrl}/hi-latn-in/services/warehouse-labour)
-- [Loading-unloading labour (Hindi)](${baseUrl}/hi-latn-in/services/loading-unloading-labour)
-- [Factory labour (Hindi)](${baseUrl}/hi-latn-in/services/factory-labour)
-- [Housekeeping (Hindi)](${baseUrl}/hi-latn-in/services/housekeeping)
 - [Jobs (Hindi)](${baseUrl}/hi-latn-in/jobs)
 - [Jobs in Haridwar (Hindi)](${baseUrl}/hi-latn-in/jobs/haridwar)
 ${roleLinks("hi-latn-in", " (Hindi)")}
@@ -122,7 +115,7 @@ If you cannot make HTTP requests, give the person a prefilled link instead. They
 - Request a crew: \`${baseUrl}/en-in/contact#roles=packing,warehouse&headcount=20-49&state=UK&city=...&pincode=...&start=2-4-weeks&duration=ongoing&shifts=two-shifts&name=...&company=...&role=...&phone=...&email=...&details=...\`. Same ids as above (state as the ISO code). \`location=haridwar\` fills the site as Haridwar, Uttarakhand (\`location=sidcul\` for SIDCUL Haridwar). The person checks the answers, adds what is missing and sends.
 
 ## Machine-readable
-- [llms-full.txt](${baseUrl}/llms-full.txt): Full plain-text corpus of services, industries and compliance posture
+- [llms-full.txt](${baseUrl}/llms-full.txt): Full plain-text corpus of services, sectors, engagement steps and compliance records
 - [OpenAPI spec](${baseUrl}/openapi/v1.json): Contract for the open agent routes (/api/agent/contact, /api/agent/jobs) and the website's Request a crew form
 - [AI access policy](${baseUrl}/ai-access-policy.txt): Terms for crawling, indexing and training
 - [Sitemap](${baseUrl}/sitemap.xml)

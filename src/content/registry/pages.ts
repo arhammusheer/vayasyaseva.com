@@ -86,14 +86,12 @@ export type PageEntry = {
 };
 
 /** Dates of the content changes the current pages carry. */
-const REDESIGN = "2026-09-13";
-const CONTENT_UPDATE = "2026-10-01";
-const JOBS_ADDED = "2026-10-02";
 const PHONE_FREE_JOBS = "2026-10-16";
 const HARIDWAR_DEPTH = "2026-10-16";
-const HOME_NATIONAL = "2026-10-16";
 const EDITORIAL_POLICY = "2026-10-16";
 const CONTACT_CREW_FORM = "2026-10-16";
+/** The business pages rebuilt in the site restructure (fewer pages, fewer words). */
+const RESTRUCTURE = "2026-10-16";
 const TERMS_PHONE_FREE = PHONE_FREE_JOBS;
 
 /**
@@ -155,7 +153,9 @@ const WAGE_HI_STATUS: PageStatus = "review";
 
 const ALL = Object.fromEntries(LOCALE_TAGS.map((l) => [l, "published"])) as Record<LocaleTag, PageStatus>;
 const EN = { "en-IN": "published" } as const;
-const EN_HINGLISH = { "en-IN": "published", "hi-Latn-IN": "published" } as const;
+const RETIRED_ALL = Object.fromEntries(LOCALE_TAGS.map((l) => [l, "retired"])) as Record<LocaleTag, PageStatus>;
+const RETIRED_EN = { "en-IN": "retired" } as const;
+const RETIRED_EN_HINGLISH = { "en-IN": "retired", "hi-Latn-IN": "retired" } as const;
 
 const jobsPage = (path: string, kind: PageKind, priority: number, changeFrequency: PageEntry["changeFrequency"] = "monthly"): PageEntry =>
   ({
@@ -171,13 +171,28 @@ const jobsPage = (path: string, kind: PageKind, priority: number, changeFrequenc
   }) satisfies PageEntry;
 
 export const pageEntries: readonly PageEntry[] = [
-  { path: "/", kind: "home", audience: "business", locales: EN, updated: HOME_NATIONAL, changeFrequency: "monthly", priority: 1 },
-  { path: "/services", kind: "static", audience: "business", locales: EN, parent: "/", updated: CONTENT_UPDATE, changeFrequency: "monthly", priority: 0.9 },
-  { path: "/services/contract-labour", kind: "service", audience: "business", locales: ALL, parent: "/services", updated: CONTENT_UPDATE, changeFrequency: "monthly", priority: 0.9 },
-  { path: "/services/warehouse-labour", kind: "service", audience: "business", locales: EN_HINGLISH, parent: "/services", updated: CONTENT_UPDATE, changeFrequency: "monthly", priority: 0.8 },
-  { path: "/services/loading-unloading-labour", kind: "service", audience: "business", locales: EN_HINGLISH, parent: "/services", updated: JOBS_ADDED, changeFrequency: "monthly", priority: 0.8 },
-  { path: "/services/factory-labour", kind: "service", audience: "business", locales: EN_HINGLISH, parent: "/services", updated: CONTENT_UPDATE, changeFrequency: "monthly", priority: 0.8 },
-  { path: "/services/housekeeping", kind: "service", audience: "business", locales: EN_HINGLISH, parent: "/services", updated: CONTENT_UPDATE, changeFrequency: "monthly", priority: 0.8 },
+  { path: "/", kind: "home", audience: "business", locales: EN, updated: RESTRUCTURE, changeFrequency: "monthly", priority: 1 },
+  // The one services hub: crews, sectors (#sectors) and how an engagement runs.
+  { path: "/services", kind: "static", audience: "business", locales: EN, parent: "/", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.9 },
+  // Merged into /services; the old /hi and /hinglish URLs take the same single hop.
+  { path: "/services/contract-labour", kind: "service", audience: "business", locales: RETIRED_ALL, parent: "/services", retiredTo: "/services", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.9 },
+  // Merged into loading and unloading (its roles moved there).
+  { path: "/services/warehouse-labour", kind: "service", audience: "business", locales: RETIRED_EN_HINGLISH, parent: "/services", retiredTo: "/services/loading-unloading-labour", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.8 },
+  // Service landings are English only: each Hinglish version 308s to the English page.
+  ...["factory-labour", "loading-unloading-labour", "housekeeping"].map(
+    (slug) =>
+      ({
+        path: `/services/${slug}`,
+        kind: "service",
+        audience: "business",
+        locales: { "en-IN": "published", "hi-Latn-IN": "retired" },
+        parent: "/services",
+        retiredTo: { "hi-Latn-IN": `/services/${slug}` },
+        updated: RESTRUCTURE,
+        changeFrequency: "monthly",
+        priority: 0.8,
+      }) satisfies PageEntry,
+  ),
   jobsPage("/jobs", "jobs-index", 0.8),
   // Focused guided application, also used by ads and direct application links.
   // A form, not a search landing page: the role and cluster pages rank instead.
@@ -189,12 +204,13 @@ export const pageEntries: readonly PageEntry[] = [
   ...JOB_HUB_SLUGS.map((slug) => jobsPage(`/jobs/${slug}`, "job-hub", 0.7)),
   // Cluster jobs hubs (PLAN §5.3): /jobs/<cluster>, linked from /jobs and the cluster's buyer hub.
   { ...jobsPage(jobsHubPath("haridwar"), "jobs-city", 0.8), cluster: "haridwar", updated: HARIDWAR_DEPTH },
-  { path: HARIDWAR_HUB_PATH, kind: "cluster-hub", audience: "business", locales: ALL, parent: "/", cluster: "haridwar", updated: HARIDWAR_DEPTH, changeFrequency: "monthly", priority: 0.9 },
-  { path: "/industries", kind: "static", audience: "business", locales: EN, parent: "/", updated: REDESIGN, changeFrequency: "monthly", priority: 0.8 },
-  { path: "/how-we-operate", kind: "static", audience: "business", locales: EN, parent: "/", updated: REDESIGN, changeFrequency: "monthly", priority: 0.8 },
-  { path: "/compliance", kind: "static", audience: "business", locales: EN, parent: "/", updated: REDESIGN, changeFrequency: "monthly", priority: 0.8 },
-  { path: "/vayasya-setu", kind: "static", audience: "business", locales: EN, parent: "/about", updated: REDESIGN, changeFrequency: "monthly", priority: 0.7 },
-  { path: "/about", kind: "static", audience: "business", locales: EN, parent: "/", updated: EDITORIAL_POLICY, changeFrequency: "monthly", priority: 0.7 },
+  { path: HARIDWAR_HUB_PATH, kind: "cluster-hub", audience: "business", locales: ALL, parent: "/", cluster: "haridwar", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.9 },
+  // Sectors and engagement steps now live on /services.
+  { path: "/industries", kind: "static", audience: "business", locales: RETIRED_EN, parent: "/", retiredTo: "/services#sectors", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.8 },
+  { path: "/how-we-operate", kind: "static", audience: "business", locales: RETIRED_EN, parent: "/", retiredTo: "/services", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.8 },
+  { path: "/compliance", kind: "static", audience: "business", locales: EN, parent: "/", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.8 },
+  { path: "/vayasya-setu", kind: "static", audience: "business", locales: EN, parent: "/about", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.7 },
+  { path: "/about", kind: "static", audience: "business", locales: EN, parent: "/", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.7 },
   { path: "/contact", kind: "static", audience: "business", locales: EN, parent: "/", updated: CONTACT_CREW_FORM, changeFrequency: "yearly", priority: 0.9 },
   { path: WAGE_HUB_PATH, kind: "wage-hub", audience: "mixed", locales: { ...EN, "hi-IN": WAGE_HI_STATUS }, parent: "/", updated: WAGE_HUB_UPDATED(), changeFrequency: "monthly", priority: 0.7 },
   ...Object.entries(WAGE_STATE_STATUS).map(
@@ -211,8 +227,9 @@ export const pageEntries: readonly PageEntry[] = [
       }) satisfies PageEntry,
   ),
   // Sources, method, checks and corrections for the wage pages and guides:
-  // a static page beside the dynamic /minimum-wages/[state] route.
-  { path: WAGE_METHOD_PATH, kind: "static", audience: "mixed", locales: { "en-IN": "draft" }, parent: WAGE_HUB_PATH, updated: EDITORIAL_POLICY, changeFrequency: "yearly", priority: 0.5 },
+  // a static page beside the dynamic /minimum-wages/[state] route. The
+  // editorial policy moved here from /about.
+  { path: WAGE_METHOD_PATH, kind: "static", audience: "mixed", locales: { "en-IN": "published" }, parent: WAGE_HUB_PATH, updated: EDITORIAL_POLICY, changeFrequency: "yearly", priority: 0.5 },
   // Guides sit in the reference section beside the wage pages (its header,
   // no phone), so their trail runs through the wage hub, not /compliance.
   ...Object.entries(GUIDE_STATUS).map(
@@ -229,7 +246,7 @@ export const pageEntries: readonly PageEntry[] = [
       }) satisfies PageEntry,
   ),
   // For press and printers: linked from About and the footer, kept out of search.
-  { path: "/brand", kind: "static", audience: "business", locales: EN, parent: "/about", noindex: true, updated: REDESIGN, changeFrequency: "yearly", priority: 0.3 },
+  { path: "/brand", kind: "static", audience: "business", locales: EN, parent: "/about", noindex: true, updated: RESTRUCTURE, changeFrequency: "yearly", priority: 0.3 },
   { path: "/privacy", kind: "legal", audience: "mixed", locales: EN, parent: "/", updated: PHONE_FREE_JOBS, changeFrequency: "yearly", priority: 0.3 },
   { path: "/terms", kind: "legal", audience: "mixed", locales: EN, parent: "/", updated: TERMS_PHONE_FREE, changeFrequency: "yearly", priority: 0.3 },
 ];

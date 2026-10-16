@@ -3,11 +3,10 @@
 // routing, then routed like any URL, so a page that has since retired or
 // lost a language is reached in one 308, never a chain.
 //
-// The IA restructure retires these pages. Until each retirement lands in
-// src/content/registry/pages.ts, the test sets it up here the same way; a
-// setup line fails once pages.ts carries that retirement, so it is deleted
-// rather than left to mask the registry. The last test checks the real
-// registry and is a todo until the retirement step turns it on.
+// The IA restructure retires these pages. The business retirements are in
+// src/content/registry/pages.ts; the ones still to land (PENDING) are set up
+// here the same way. A setup line fails once pages.ts carries that
+// retirement, so it moves to LANDED rather than masking the registry.
 import assert from "node:assert/strict";
 import test from "node:test";
 import { importTs } from "../scripts/lib/register-ts.mjs";
@@ -15,13 +14,16 @@ import { importTs } from "../scripts/lib/register-ts.mjs";
 const { pageEntries } = await importTs("src/content/registry/pages.ts");
 const entry = (path) => pageEntries.find((e) => e.path === path) ?? assert.fail(`${path} is not in the registry`);
 
-/** The retirements the spec asks for: [path, locale (all when undefined), target (404 when undefined)]. */
-const SPEC_RETIREMENTS = [
+/** Retirements in pages.ts: [path, locale (all when undefined), target (404 when undefined)]. */
+const LANDED = [
   ["/industries", undefined, "/services#sectors"],
   ["/how-we-operate", undefined, "/services"],
   ["/services/contract-labour", undefined, "/services"],
   ["/services/warehouse-labour", undefined, "/services/loading-unloading-labour"],
   ...["loading-unloading-labour", "factory-labour", "housekeeping"].map((slug) => [`/services/${slug}`, "hi-Latn-IN", `/services/${slug}`]),
+];
+/** Retirements the spec asks for that a later step lands in pages.ts. */
+const PENDING = [
   // hi-IN wage states were never public: retired with no target, so they 404.
   ["/minimum-wages/uttarakhand", "hi-IN", undefined],
 ];
@@ -34,10 +36,12 @@ const targetOf = (path, locale) => {
   return locale ? (typeof retiredTo === "object" ? retiredTo[locale] : undefined) : retiredTo;
 };
 // What the real registry does, before the setup below changes it.
-const registryMisses = SPEC_RETIREMENTS.filter(([path, locale, to]) => !isRetired(path, locale) || targetOf(path, locale) !== to).map(([path, locale]) => `${path}${locale ? ` (${locale})` : ""}`);
+const misses = (list) => list.filter(([path, locale, to]) => !isRetired(path, locale) || targetOf(path, locale) !== to).map(([path, locale]) => `${path}${locale ? ` (${locale})` : ""}`);
+const landedMisses = misses(LANDED);
+const pendingMisses = misses(PENDING);
 
 const retired = (locales) => Object.fromEntries(Object.keys(locales).map((l) => [l, "retired"]));
-for (const [path, locale, retiredTo] of SPEC_RETIREMENTS) {
+for (const [path, locale, retiredTo] of PENDING) {
   if (isRetired(path, locale)) assert.fail(`${path}${locale ? ` (${locale})` : ""} is retired in pages.ts now: delete its setup line in this test`);
   const e = entry(path);
   if (locale) {
@@ -109,8 +113,12 @@ test("a retired language with no target, or a page not built, 404s with no hop",
   assert.equal(request(`${WWW}/en-in/minimum-wages/uttarakhand`).headers.get("x-middleware-next"), "1");
 });
 
-// Turn on (drop `todo`) in the step that retires these pages in pages.ts,
-// and empty SPEC_RETIREMENTS' setup with it.
-test("the registry carries every retirement the spec asks for", { todo: "the retirement step lands them in pages.ts" }, () => {
-  assert.deepEqual(registryMisses, []);
+test("the registry carries the business retirements", () => {
+  assert.deepEqual(landedMisses, []);
+});
+
+// Turn on (drop `todo`) in the step that lands PENDING in pages.ts, and move
+// those lines to LANDED.
+test("the registry carries every retirement the spec asks for", { todo: "the reference step lands the hi-IN wage retirements" }, () => {
+  assert.deepEqual(pendingMisses, []);
 });

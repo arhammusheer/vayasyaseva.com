@@ -191,15 +191,15 @@ try {
   await page.locator('#name').fill('Hub Test');await page.locator('#company').fill('Hub Company');await page.locator('#phone').fill('9999900001');
   await page.locator('button[type=submit]').click();await visible('[role=status] h2');
   assert.equal(contactBodies.at(-1).pageCluster,'haridwar');assert.equal(contactBodies.at(-1).siteState,'UK');
-  // Job seekers who land here get one quiet line to the application.
-  await open('/en-in/contact');assert.equal(await page.locator('main a[href="/en-in/jobs/apply"]').count(),1);
+  // Job seekers who land here get one quiet line to Jobs in Haridwar (neutral: the language picker, then the form).
+  await open('/en-in/contact');assert.equal(await page.locator('main a[href="/jobs/haridwar"]').count(),1);
   console.log('Request a crew: two steps, drafts stay separate, prefills from links and the Haridwar hub, no lead flags on the page');
   // Image metadata varies with public page/role data, never personal prefills.
   const image=await page.goto(origin+'/en-in/jobs/apply?role=packing&name=PrivateName&phone=9999900001');await page.locator('meta[property="og:image"]').waitFor({state:'attached'});
   const packing=await page.locator('meta[property="og:image"]').getAttribute('content');
   assert.match(packing,/jobs-apply-role-packing-/);assert.doesNotMatch(packing,/PrivateName|9999900001/);
   assert.equal(image.status(),200);
-  await open('/en-in/services/warehouse-labour');assert.match(await page.locator('meta[property="og:image"]').getAttribute('content'),/services-warehouse-labour-/);
+  await open('/en-in/services/loading-unloading-labour');assert.match(await page.locator('meta[property="og:image"]').getAttribute('content'),/services-loading-unloading-labour-/);
   console.log('Page and role share images are distinct and exclude personal prefills');
   assert.deepEqual(errors,[]);
   console.log('All form checks passed with mocked APIs; no enquiries or SMS sent.');

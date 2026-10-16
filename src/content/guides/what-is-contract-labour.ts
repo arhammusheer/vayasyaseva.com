@@ -192,7 +192,7 @@ export const whatIsContractLabour: Guide = {
           type: "p",
           text: "We supply crews for factories, warehouses and facilities, on full 8-hour shifts. Our supervisors run the crew on site and replace absentees. For each worker we track retention, training and how long they take to reach full pace.",
         },
-        { type: "link", href: "/how-we-operate", label: "How we work with you" },
+        { type: "link", href: "/services#engagement", label: "How an engagement runs" },
         { type: "link", href: "/compliance", label: "How we handle compliance" },
       ],
     },

@@ -163,7 +163,7 @@ const upLwf: DueRow = {
 
 export const employerDues: Partial<Record<WageStateSlug, StateDues>> = {
   uttarakhand: {
-    deadlines: [wages, epfEsic, upLwfDeadline, licence("State rules in draft.")],
+    deadlines: [wages, epfEsic, upLwfDeadline, licence("Uttarakhand has not yet fixed the forms and fees; ask the Labour Department how to apply.")],
     rows: [epf, esic, upLwf],
     notLevied: "Professional Tax is not levied in Uttarakhand.",
   },
@@ -177,7 +177,7 @@ export const employerDues: Partial<Record<WageStateSlug, StateDues>> = {
       wages,
       epfEsic,
       { when: "Half-yearly", detail: "by 15 Jul and 15 Jan", what: "Labour Welfare Fund, for units with 5+ persons", sources: ["dl-lwf-2004"] },
-      licence("State rules in draft."),
+      licence("Delhi has not yet fixed the forms and fees; ask the Labour Department how to apply."),
     ],
     rows: [
       epf,

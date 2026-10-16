@@ -142,8 +142,8 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
       },
       faqs: [
         {
-          question: "Is the rate the same in Gurugram, Manesar and Faridabad?",
-          answer: "Yes. The 9 April 2026 notification sets one rate for every scheduled employment across Haryana, with no zones. A worker in Kundli is paid Haryana's rate even if they live in Delhi.",
+          question: "Which level is a clerk, a driver or a peon?",
+          answer: "The notification lists no jobs. The draft Haryana wage rules of May 2026 place clerks, typists, data entry operators, storekeepers and drivers under Skilled, accountants under Highly skilled, and peons, helpers and loaders under Unskilled. They apply once the rules are final.",
         },
         {
           question: "When does Haryana's rate change next?",
@@ -164,8 +164,8 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
       answer: `From ${formatDate(from)}, unskilled work anywhere in Punjab pays at least ${formatRupees(u.monthly)} a month, or ${formatRupees(u.daily ?? 0)} a day. One rate covers the whole state.`,
       faqs: [
         {
-          question: "Why did Punjab's rates change in May 2026?",
-          answer: "The 1 May 2026 notification, Punjab's first under the Code on Wages, resets the base rates for all employments. Before it, the state adjusted its rates for prices every 1 March and 1 September.",
+          question: "Is there a separate rate for office staff?",
+          answer: `Yes. Alongside the four skill levels, the notification sets four staff categories, from ${formatRupees(rate(s, "office-staff", "punjab", "staff-d").monthly)} a month for Class IV staff such as peons and attendants, including those supplied through a contractor, to ${formatRupees(rate(s, "office-staff", "punjab", "staff-a").monthly)} for postgraduates and professionals.`,
         },
         {
           question: "Can the rate be split into allowances?",

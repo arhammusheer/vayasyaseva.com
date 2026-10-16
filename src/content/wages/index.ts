@@ -26,6 +26,11 @@ export const SKILLS = {
   "clerical-graduate": "Clerical: graduate and above",
   "clerical-grade-1": "Clerical grade I",
   "clerical-grade-2": "Clerical grade II",
+  // Punjab's staff categories (1 May 2026 notification), alongside its four skill levels.
+  "staff-a": "Staff A: postgraduate or professional",
+  "staff-b": "Staff B: graduate or supervisor",
+  "staff-c": "Staff C: above matric (clerk, storekeeper, timekeeper)",
+  "staff-d": "Staff D: Class IV (peon, attendant)",
 } as const;
 export type Skill = keyof typeof SKILLS;
 

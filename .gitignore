@@ -23,6 +23,8 @@
 # misc
 .DS_Store
 *.pem
+# Public CA certificates the compliance monitor trusts (docs/wage-monitor.md); never keys.
+!scripts/wage-monitor/certs/*.pem
 
 # debug
 npm-debug.log*

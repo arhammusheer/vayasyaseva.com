@@ -1,7 +1,9 @@
-// Turns monitor events into GitHub issues (one open issue per state,
-// label `wage-monitor`) and a run summary. The GitHub client is passed in;
-// with none (dry run) the planned issues are returned and nothing is sent.
-import { fingerprint } from "./monitor.mjs";
+// Turns monitor events into notifications and a run summary: Chatwoot
+// messages (one conversation per state and topic, the default in the
+// cluster) or GitHub issues (one open issue per state, label
+// `wage-monitor`). Clients are passed in; with none (dry run) the planned
+// messages are returned and nothing is sent.
+import { TOPICS, fingerprint } from "./monitor.mjs";
 
 export const LABEL = "wage-monitor";
 export const issueTitle = (stateName) => `Wage monitor: ${stateName} sources changed`;
@@ -82,6 +84,10 @@ export function renderEvent(event, shown = new Map()) {
         lines.push(`- ${link(l.label || l.url.split("/").pop(), l.url)}${cited}`);
       }
     }
+  } else if (event.type === "page-changed") {
+    lines.push(`### ${link(event.name, event.url)} changed`, ``);
+    if (event.added.length) lines.push(`New on the page:`, ``, fence(event.added.slice(0, 15)), ``);
+    if (event.removed.length) lines.push(`No longer on the page:`, ``, fence(event.removed.slice(0, 15)));
   } else if (event.type === "unreachable") {
     lines.push(`### A source has not loaded for ${event.days} days`, ``, `${link(event.name, event.url)} has failed every day since ${longDate(event.since)} (last: ${safe(event.error)}). The page may have moved; find where the department publishes it now and update the source in the dataset or \`scripts/wage-monitor/sources.json\`.`);
   } else if (event.type === "recovered") {
@@ -184,5 +190,108 @@ export function githubClient({ token, repo, fetchImpl = fetch, api = "https://ap
     },
     createIssue: (title, body) => call("POST", "/issues", { title, body, labels: [LABEL] }),
     comment: (number, body) => call("POST", `/issues/${number}/comments`, { body }),
+  };
+}
+
+// ── Chatwoot ────────────────────────────────────────────────────────────────
+
+/** "Minimum wages · Uttarakhand", "EPF · all states". */
+export const chatwootTitle = (topic, stateName) => `${TOPICS[topic] ?? topic} · ${stateName === "All states" ? "all states" : stateName}`;
+
+/** Where the fix goes, for the "Next" line. */
+const fileFor = (topic, slug) =>
+  topic === "wages" && slug !== "national" ? `src/content/wages/${slug}.json` : "src/content/statutory.ts";
+
+/** One Chatwoot message for one state and topic on one day. */
+export function renderChatwootMessage({ topic, slug, stateName, events, today }) {
+  const changed = events.some((e) => e.type !== "unreachable" && e.type !== "recovered");
+  const headline = changed
+    ? `**${chatwootTitle(topic, stateName)}: a source changed** (${longDate(today)})`
+    : `**${chatwootTitle(topic, stateName)}: monitor note** (${longDate(today)})`;
+  const shown = new Map();
+  const sections = events.map((e) => renderEvent(e, shown).replace(/^### /gm, "**").replace(/^(\*\*[^\n]*)$/gm, (m) => (m.endsWith("**") ? m : `${m}**`)));
+  const scope = slug === "national" ? "every state page" : `the ${stateName} page`;
+  const next = changed
+    ? `**Next:** open the documents above. If ${TOPICS[topic] ?? topic} changed for ${scope}, dispatch an update PR (edit \`${fileFor(topic, slug)}\`, run \`pnpm content:check\`). Reply here with the PR link when it is open.`
+    : `**Next:** if the source has moved, update \`scripts/wage-monitor/sources.json\`.`;
+  return [headline, ...sections, next].join("\n\n");
+}
+
+/**
+ * Sends the alerts to Chatwoot: per state and topic, one conversation
+ * (created once, kept in the snapshot) and one message per day with the
+ * events not reported before. `state` is the snapshot about to be saved;
+ * this records reported fingerprints and conversation ids on it. A
+ * recovery alone sends nothing unless that conversation exists.
+ */
+export async function reportToChatwoot(events, { chatwoot, state, today }) {
+  state.reported ??= {};
+  state.chatwoot ??= {};
+  state.chatwoot.conversations ??= {};
+  const groups = new Map();
+  for (const e of events) {
+    const key = `${e.state}:${e.topic ?? "wages"}`;
+    groups.set(key, [...(groups.get(key) ?? []), e]);
+  }
+  const actions = [];
+  for (const [key, group] of groups) {
+    const [slug, topic] = key.split(":");
+    const stateName = group[0].stateName;
+    const title = chatwootTitle(topic, stateName);
+    const fresh = group.filter((e) => !state.reported[fingerprint(e)]);
+    if (!fresh.length) {
+      actions.push({ state: slug, stateName, action: "skip", title, reason: "already reported" });
+      continue;
+    }
+    if (fresh.every((e) => e.type === "recovered") && !state.chatwoot.conversations[key]) {
+      actions.push({ state: slug, stateName, action: "skip", title, reason: "recovery with no open conversation" });
+      continue;
+    }
+    const body = renderChatwootMessage({ topic, slug, stateName, events: fresh, today });
+    if (!chatwoot) {
+      actions.push({ state: slug, stateName, action: "message (dry run)", title, body });
+      continue;
+    }
+    const contact = (state.chatwoot.contact ??= (await chatwoot.createContact()).source_id);
+    let conversation = state.chatwoot.conversations[key];
+    let created = false;
+    if (!conversation) {
+      conversation = state.chatwoot.conversations[key] = (await chatwoot.createConversation(contact, { title, topic, state: slug })).id;
+      created = true;
+    }
+    try {
+      await chatwoot.message(contact, conversation, body);
+    } catch (error) {
+      // The conversation was deleted in Chatwoot: start a new one, once.
+      if (created || !/HTTP 404/.test(String(error))) throw error;
+      conversation = state.chatwoot.conversations[key] = (await chatwoot.createConversation(contact, { title, topic, state: slug })).id;
+      created = true;
+      await chatwoot.message(contact, conversation, body);
+    }
+    for (const e of fresh) state.reported[fingerprint(e)] = today;
+    actions.push({ state: slug, stateName, action: created ? "new conversation" : "message", title, conversation, body });
+  }
+  // Forget fingerprints after 400 days; a change that old is not news.
+  const cutoff = new Date(Date.parse(`${today}T00:00:00Z`) - 400 * 864e5).toISOString().slice(0, 10);
+  for (const [fp, day] of Object.entries(state.reported)) if (day < cutoff) delete state.reported[fp];
+  return actions;
+}
+
+/**
+ * A client for Chatwoot's public API on one API inbox, authorised by the
+ * inbox identifier alone (no agent token). Messages arrive as incoming, so
+ * the inbox's agents are notified. The contact is "Compliance monitor".
+ */
+export function chatwootClient({ baseUrl, inboxIdentifier, fetchImpl = fetch }) {
+  const base = `${baseUrl.replace(/\/$/, "")}/public/api/v1/inboxes/${encodeURIComponent(inboxIdentifier)}`;
+  const call = async (path, body) => {
+    const res = await fetchImpl(`${base}${path}`, { method: "POST", headers: { "content-type": "application/json", "user-agent": "vayasyaseva-compliance-monitor" }, body: JSON.stringify(body) });
+    if (!res.ok) throw new Error(`Chatwoot POST ${path.replace(/\/contacts\/[^/]+/, "/contacts/…")}: HTTP ${res.status} ${(await res.text()).slice(0, 200)}`);
+    return res.json();
+  };
+  return {
+    createContact: () => call("/contacts", { identifier: "compliance-monitor", name: "Compliance monitor" }),
+    createConversation: (contact, attributes) => call(`/contacts/${encodeURIComponent(contact)}/conversations`, { custom_attributes: attributes }),
+    message: (contact, conversation, content) => call(`/contacts/${encodeURIComponent(contact)}/conversations/${conversation}/messages`, { content }),
   };
 }

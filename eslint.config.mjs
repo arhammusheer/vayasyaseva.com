@@ -57,6 +57,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Generated Windmill scripts (integrations/windmill/build.mts): plain JS bundles.
+    "integrations/windmill/f/**",
   ]),
 ]);
 

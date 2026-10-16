@@ -54,6 +54,12 @@ jobs:
       - name: n8n Code-node tests (intake, acknowledgement, retention)
         run: pnpm n8n:test
 
+      - name: Verify Windmill scripts are generated
+        run: pnpm windmill:build --check
+
+      - name: Windmill talent tests (intake, acknowledgement, deliver, retention)
+        run: pnpm windmill:test
+
       - name: Verify upload renewal
         run: pnpm forms:unit
 

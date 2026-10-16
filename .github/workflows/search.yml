@@ -6,7 +6,10 @@ name: Search
 #      other IndexNow engines; scripts/indexnow.mjs --changed);
 #   3. search-console: submit the sitemap to Google Search Console and report
 #      what Google last read from it, keyless through workload identity
-#      federation (scripts/search-console/).
+#      federation (scripts/search-console/);
+#   4. bing: submit the sitemap to Bing Webmaster Tools (the index behind
+#      ChatGPT search, Copilot and DuckDuckGo) and report Bing's crawl, with
+#      the BING_WEBMASTER_API_KEY secret (skipped while it is not set).
 # Run it by hand from the Actions tab as well.
 on:
   deployment_status:
@@ -125,3 +128,24 @@ jobs:
         run: |
           set -o pipefail
           node scripts/search-console/submit-sitemap.mjs --sitemap "$SITE/sitemap.xml" | tee -a "$GITHUB_STEP_SUMMARY"
+
+  bing:
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.deployment.sha || github.sha }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Submit the sitemap to Bing
+        env:
+          BING_WEBMASTER_API_KEY: ${{ secrets.BING_WEBMASTER_API_KEY }}
+        run: |
+          set -o pipefail
+          node scripts/search-console/bing-submit.mjs --sitemap "$SITE/sitemap.xml" | tee -a "$GITHUB_STEP_SUMMARY"

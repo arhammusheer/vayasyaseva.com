@@ -44,6 +44,7 @@
  *   Routes are served at /api/r/{route_path} (workspaced_route false).
  */
 import { execFileSync, spawn } from "node:child_process";
+import { randomBytes } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { createServer } from "node:net";
 import { dirname, resolve } from "node:path";
@@ -161,6 +162,15 @@ function api(base: string, token: string) {
   return { call, exists, write };
 }
 
+/**
+ * Owns the schedules and the route. Windmill runs them as their owner and
+ * refuses the superadmin secret's built-in identity there, so they belong to
+ * a service user, admin of the workspace, whose random password nobody
+ * keeps; this script acts as it through a short-lived impersonation token.
+ * Shared with nevaehfirstsource.com integrations/windmill.
+ */
+const SERVICE_USER = "automation@vayasyaseva.com";
+
 // --- deploy ------------------------------------------------------------------------
 
 async function main() {
@@ -182,6 +192,30 @@ async function main() {
     if (!(await exists(`/w/{ws}/folders/exists/${FOLDER}`))) {
       await w.write("/w/{ws}/folders/create", { name: FOLDER, owners: [], extra_perms: {} }, `creating folder ${FOLDER}`);
     }
+
+    // Service user (see SERVICE_USER)
+    if (!(await w.exists(`/users/exists/${encodeURIComponent(SERVICE_USER)}`))) {
+      await w.write(
+        "/users/create",
+        { email: SERVICE_USER, password: randomBytes(32).toString("hex"), super_admin: false, name: "Automation", skip_email: true },
+        `creating service user ${SERVICE_USER}`,
+      );
+    }
+    const members: { email: string }[] = wsReady ? JSON.parse(await w.call("GET", "/w/{ws}/users/list")) : [];
+    if (!members.some((m) => m.email === SERVICE_USER)) {
+      await w.write("/w/{ws}/workspaces/add_user", { email: SERVICE_USER, is_admin: true, operator: false }, `adding ${SERVICE_USER} to ${WORKSPACE.id} as admin`);
+    }
+    const asService = DRY_RUN
+      ? w
+      : api(
+          base,
+          await w.call("POST", "/users/tokens/impersonate", {
+            impersonate_email: SERVICE_USER,
+            label: "deploy (vayasyaseva.com integrations/windmill)",
+            expiration: new Date(Date.now() + 30 * 60_000).toISOString(),
+            workspace_id: WORKSPACE.id,
+          }),
+        );
 
     // 3. Variables
     for (const [name, { secret }] of Object.entries(VARIABLES) as [ConfigName, { secret: boolean }][]) {
@@ -233,20 +267,26 @@ async function main() {
     }
 
     // 6. Schedules and the HTTP route
-    for (const spec of SCRIPTS) await schedule(w, exists, spec);
-    for (const spec of SCRIPTS) await route(w, exists, spec);
+    for (const spec of SCRIPTS) await schedule(asService, exists, spec);
+    for (const spec of SCRIPTS) await route(asService, exists, spec);
 
     // 7. Warm the route: a wrong secret must answer 403
     for (const spec of SCRIPTS.filter((s) => s.route)) {
       step(`warming /api/r/${spec.route!.path} (expect 403)`);
       if (DRY_RUN) continue;
-      const res = await fetch(`${base}/api/r/${spec.route!.path}`, {
-        method: "POST",
-        headers: { "content-type": "application/json", "x-vspl-intake-secret": "deploy-warm-up" },
-        body: "{}",
-        signal: AbortSignal.timeout(120_000),
-      });
-      if (res.status !== 403) throw new Error(`route /api/r/${spec.route!.path} answered ${res.status}, expected 403`);
+      // A new route takes a few seconds to be served (404 until then).
+      let res: Response | undefined;
+      for (let i = 0; i < 30; i++) {
+        res = await fetch(`${base}/api/r/${spec.route!.path}`, {
+          method: "POST",
+          headers: { "content-type": "application/json", "x-vspl-intake-secret": "deploy-warm-up" },
+          body: "{}",
+          signal: AbortSignal.timeout(120_000),
+        });
+        if (res.status !== 404) break;
+        await new Promise((r) => setTimeout(r, 2000));
+      }
+      if (!res || res.status !== 403) throw new Error(`route /api/r/${spec.route!.path} answered ${res?.status}, expected 403`);
     }
     console.log("done");
   } finally {

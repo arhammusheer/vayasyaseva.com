@@ -45,12 +45,19 @@ const { VARIABLES, variablePath, setConfigForTests, config } = (() => {
 
 // integrations/windmill/talent/lib/db.ts
 const { withTalentDb, queryWith } = (() => {
+  const passThroughJson = (oid) => ({
+      to: oid,
+      from: [oid],
+      serialize: (value) => (typeof value === "string" ? value : JSON.stringify(value)),
+      parse: (value) => JSON.parse(value),
+  });
   async function withTalentDb(fn) {
       const sql = postgres(await config("talent_pg_url"), {
           max: 1,
           connect_timeout: 10,
           idle_timeout: 5,
           prepare: false,
+          types: { json: passThroughJson(114), jsonb: passThroughJson(3802) },
           onnotice: () => { },
       });
       try {
@@ -65,14 +72,15 @@ const { withTalentDb, queryWith } = (() => {
 })();
 
 // integrations/windmill/talent/lib/response.ts
-const { respond, accepted, forbidden, invalid } = (() => {
+const { respond, accepted, forbidden, invalid, failed } = (() => {
   function respond(status, body) {
       return { wm_status_code: status, result: body };
   }
   const accepted = (ref) => respond(202, { ok: true, ref });
   const forbidden = () => respond(403, { ok: false, error: "Forbidden" });
   const invalid = (errors) => respond(400, { ok: false, error: `Invalid submission: ${errors.join(", ")}` });
-  return { respond, accepted, forbidden, invalid };
+  const failed = () => respond(500, { ok: false, error: "Internal error" });
+  return { respond, accepted, forbidden, invalid, failed };
 })();
 
 // integrations/windmill/talent/lib/sql.ts
@@ -546,11 +554,17 @@ export async function preprocessor(event) {
     return { authorized, body: authorized ? (event.body ?? null) : null };
 }
 export async function main(authorized, body) {
-    return withTalentDb((query) => runIntake(authorized, body, {
-        query,
-        startAcknowledgement: async (submissionId) => {
-            await wmill.runScriptByPathAsync("f/talent/acknowledge", { submission_id: submissionId });
-        },
-    }));
+    try {
+        return await withTalentDb((query) => runIntake(authorized, body, {
+            query,
+            startAcknowledgement: async (submissionId) => {
+                await wmill.runScriptByPathAsync("f/talent/acknowledge", { submission_id: submissionId });
+            },
+        }));
+    }
+    catch (err) {
+        console.error("intake failed:", err instanceof Error ? `${err.name}: ${err.message}` : "unknown error");
+        return failed();
+    }
 }
 

@@ -10,7 +10,12 @@ import { attachmentKeyPrefix } from "./rules";
 
 const R2_ENDPOINT = "https://3f03827748ac33418f1176adaa436f26.r2.cloudflarestorage.com";
 const R2_BUCKET = "vayasya-talent-intake";
-const WEBHOOK_URL = "https://hooks.vayasyaseva.com/webhook/vspl-talent-intake";
+/**
+ * Windmill's intake route (integrations/windmill, f/talent/intake). Set
+ * TALENT_INTAKE_WEBHOOK_URL to point elsewhere, e.g. n8n's old
+ * https://hooks.vayasyaseva.com/webhook/vspl-talent-intake to roll back.
+ */
+const WEBHOOK_URL = process.env.TALENT_INTAKE_WEBHOOK_URL?.trim() || "https://hooks.vayasyaseva.com/api/r/webhook/vspl-talent-intake";
 
 /**
  * Version of the privacy notice and consent line a person agrees to on the
@@ -157,9 +162,9 @@ export async function deleteUpload(key: string): Promise<void> {
   if (!res.ok && res.status !== 404) throw new Error(`R2 DELETE ${key}: ${res.status}`);
 }
 
-// --- n8n ----------------------------------------------------------------------
+// --- intake (Windmill) ------------------------------------------------------------
 
-/** Forwards a validated submission; n8n answers 202 once it is saved. */
+/** Forwards a validated submission; the intake route answers 202 once it is saved. */
 export async function forwardToIntake(payload: unknown): Promise<void> {
   const res = await fetch(WEBHOOK_URL, {
     method: "POST",

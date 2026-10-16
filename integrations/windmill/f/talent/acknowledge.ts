@@ -43,12 +43,19 @@ const { VARIABLES, variablePath, setConfigForTests, config } = (() => {
 
 // integrations/windmill/talent/lib/db.ts
 const { withTalentDb, queryWith } = (() => {
+  const passThroughJson = (oid) => ({
+      to: oid,
+      from: [oid],
+      serialize: (value) => (typeof value === "string" ? value : JSON.stringify(value)),
+      parse: (value) => JSON.parse(value),
+  });
   async function withTalentDb(fn) {
       const sql = postgres(await config("talent_pg_url"), {
           max: 1,
           connect_timeout: 10,
           idle_timeout: 5,
           prepare: false,
+          types: { json: passThroughJson(114), jsonb: passThroughJson(3802) },
           onnotice: () => { },
       });
       try {

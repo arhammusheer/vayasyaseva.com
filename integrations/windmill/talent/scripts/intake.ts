@@ -12,6 +12,7 @@ import * as wmill from "windmill-client";
 import { config } from "../lib/config.ts";
 import { withTalentDb } from "../lib/db.ts";
 import { runIntake } from "../lib/run-intake.ts";
+import { failed } from "../lib/response.ts";
 
 export const SECRET_HEADER = "x-vspl-intake-secret";
 
@@ -35,12 +36,19 @@ export async function preprocessor(event: HttpEvent) {
 }
 
 export async function main(authorized: boolean, body: unknown) {
-  return withTalentDb((query) =>
-    runIntake(authorized, body, {
-      query,
-      startAcknowledgement: async (submissionId) => {
-        await wmill.runScriptByPathAsync("f/talent/acknowledge", { submission_id: submissionId });
-      },
-    }),
-  );
+  try {
+    return await withTalentDb((query) =>
+      runIntake(authorized, body, {
+        query,
+        startAcknowledgement: async (submissionId) => {
+          await wmill.runScriptByPathAsync("f/talent/acknowledge", { submission_id: submissionId });
+        },
+      }),
+    );
+  } catch (err) {
+    // The job log (staff only) gets the error's kind and message, never its
+    // parameters; the website gets a bare 500 (see failed()).
+    console.error("intake failed:", err instanceof Error ? `${err.name}: ${err.message}` : "unknown error");
+    return failed();
+  }
 }

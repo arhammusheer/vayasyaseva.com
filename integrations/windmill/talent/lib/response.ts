@@ -20,3 +20,9 @@ export const accepted = (ref: string) => respond(202, { ok: true, ref });
 export const forbidden = () => respond(403, { ok: false, error: "Forbidden" });
 /** n8n threw (500); the website treats any non-202 the same way. */
 export const invalid = (errors: string[]) => respond(400, { ok: false, error: `Invalid submission: ${errors.join(", ")}` });
+/**
+ * Anything unexpected (a database or code error). Never the error itself: a
+ * thrown error would answer 422 with its message and query parameters, which
+ * carry the applicant's phone number. The job log keeps the detail.
+ */
+export const failed = () => respond(500, { ok: false, error: "Internal error" });

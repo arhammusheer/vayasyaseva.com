@@ -106,7 +106,9 @@ export function bundle(entry: string): string {
     "",
   ].join("\n\n");
   if (out.includes("__TALENT_SCHEMA__")) {
-    out = out.replaceAll("__TALENT_SCHEMA__", JSON.stringify(readFileSync(resolve(here, "talent/schema.sql"), "utf8")));
+    // A function replacer: a string one would read "$$" in the SQL as an escaped "$".
+    const schemaLiteral = JSON.stringify(readFileSync(resolve(here, "talent/schema.sql"), "utf8"));
+    out = out.replaceAll("__TALENT_SCHEMA__", () => schemaLiteral);
   }
   return out;
 }

@@ -51,6 +51,22 @@ export type Audience = (typeof AUDIENCES)[number];
 /** The Haridwar buyer hub keeps its URL; /locations/haridwar 308s to it. */
 export const HARIDWAR_HUB_PATH = "/haridwar-sidcul";
 
+/**
+ * Location pages (owner direction, 16 Oct 2026): a business page per region
+ * and one per industrial area, under /locations. Haridwar keeps its own page
+ * (/haridwar-sidcul), linked from the Uttarakhand page.
+ */
+export const LOCATIONS_PATH = "/locations";
+export const LOCATION_ESTATES = {
+  uttarakhand: ["selaqui"],
+  bengaluru: ["peenya", "bommasandra-jigani-attibele", "electronic-city-whitefield", "hoskote-narasapura"],
+  "delhi-ncr": ["gurugram-manesar", "noida-greater-noida", "faridabad-ghaziabad", "delhi-industrial-areas"],
+} as const satisfies Partial<Record<ClusterId, readonly string[]>>;
+export type LocationCluster = keyof typeof LOCATION_ESTATES;
+export const LOCATION_CLUSTERS = Object.keys(LOCATION_ESTATES) as LocationCluster[];
+export const locationPath = (cluster: LocationCluster) => `${LOCATIONS_PATH}/${cluster}`;
+export const estatePath = (cluster: LocationCluster, estate: string) => `${LOCATIONS_PATH}/${cluster}/${estate}`;
+
 /** Industrial areas of Haridwar district are sections of the hub, not pages. */
 export const HARIDWAR_SECTION_ANCHORS = ["bhagwanpur", "bahadrabad", "roorkee"] as const;
 

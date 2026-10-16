@@ -870,6 +870,84 @@
     }
   },
   {
+    "url": "https://www.vayasyaseva.com/en-in/locations",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.6
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/uttarakhand",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/uttarakhand/selaqui",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/bengaluru",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/bengaluru/peenya",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/bengaluru/bommasandra-jigani-attibele",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/bengaluru/electronic-city-whitefield",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/bengaluru/hoskote-narasapura",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/gurugram-manesar",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/noida-greater-noida",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/faridabad-ghaziabad",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/delhi-industrial-areas",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
     "url": "https://www.vayasyaseva.com/en-in/compliance",
     "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "monthly",

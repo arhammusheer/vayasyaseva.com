@@ -29,6 +29,8 @@ import {
   type ContactFormData,
 } from "@/lib/contact-contract";
 import { assessCrewRequest, crewPrefill, requirementLines } from "@/lib/crew-request";
+import { SITE_STATE_CLUSTERS } from "@/lib/intent/model";
+import { noteChoice } from "@/lib/intent/store";
 
 /**
  * "Request a crew" (PLAN §8.1): step 1 the requirement, step 2 who to talk
@@ -564,7 +566,7 @@ export function ContactForm() {
             <p className="quick-hint">The rules and rates differ by state.</p>
             <div className="crew-site">
               <div>
-                <StateSelect value={values.siteState} error={errors.siteState} onChange={(value) => set("siteState", value)} />
+                <StateSelect value={values.siteState} error={errors.siteState} onChange={(value) => { set("siteState", value); if (SITE_STATE_CLUSTERS[value]) noteChoice(SITE_STATE_CLUSTERS[value]); }} />
                 <FieldError id="siteState" error={errors.siteState} />
               </div>
             </div>
@@ -620,7 +622,7 @@ export function ContactForm() {
             <div className="crew-site">
               <div>
                 <Label htmlFor="siteState" className="text-sm font-medium">State</Label>
-                <StateSelect value={values.siteState} error={errors.siteState} onChange={(value) => set("siteState", value)} />
+                <StateSelect value={values.siteState} error={errors.siteState} onChange={(value) => { set("siteState", value); if (SITE_STATE_CLUSTERS[value]) noteChoice(SITE_STATE_CLUSTERS[value]); }} />
                 <FieldError id="siteState" error={errors.siteState} />
               </div>
               <div>

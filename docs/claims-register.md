@@ -57,6 +57,13 @@ Last compiled: 16 October 2026, for the national phase 1 pull request; business 
 |---|---|---|---|---|---|
 | We work out what is due, guide employers to put it right, and connect them with the Vayasya Network of CAs, labour lawyers and compliance consultants | /compliance#help, wage state pages, /faq, /contact?type=compliance | A | Owner direction, 16 Oct 2026 | Owner, 16 Oct 2026 | 16 Oct 2027 |
 
+## Locations (owner direction, 16-17 October 2026)
+
+| Claim | Pages | Tier | Evidence or approval | Signed off | Review by |
+|---|---|---|---|---|---|
+| VSPL supplies supervised crews on its own payroll in Uttarakhand (Selaqui and the rest of the state), Bengaluru (Peenya, Bommasandra–Jigani–Attibele, Electronic City–Whitefield, Hoskote–Narasapura) and Delhi NCR (Gurugram–Manesar, Noida–Greater Noida, Faridabad–Ghaziabad, Delhi estates and Kundli) | /locations and its hubs and area pages | C | Owner: VSPL is the employer of record nationally (in writing) and can lawfully supply crews in all these states today; publish as normal. The pages claim no registration, licence, tenant, headcount or shift pattern | Owner, 17 Oct 2026 | 17 Apr 2027 |
+| Area facts (developers, sizes, sectors, transport, state rules) | Same | C | Each page's `sources` (official first; secondary sources marked in the research notes) | Pending: owner spot-check | 17 Apr 2027 |
+
 ## Wages and guides
 
 | Claim | Pages | Tier | Evidence or approval | Signed off | Review by |

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "@/components/i18n/link";
 import { siteConfig } from "@/content/site";
+import { linkable } from "@/content/registry";
 import { AnalyticsPreferencesButton } from "@/components/analytics";
 import NextLink from "next/link";
 import { FALLBACK_LOCALE, localePath, type Locale } from "@/lib/i18n";
@@ -25,6 +26,7 @@ function businessColumns(reference: boolean): Column[] {
         { href: "/services/loading-unloading-labour", label: "Loading and unloading" },
         { href: "/services/housekeeping", label: "Housekeeping and grounds" },
         { href: "/haridwar-sidcul", label: "Haridwar SIDCUL" },
+        ...(linkable("/locations", "en-IN") ? [{ href: "/locations", label: "Locations" }] : []),
         { href: "/faq", label: "Questions" },
       ],
     },

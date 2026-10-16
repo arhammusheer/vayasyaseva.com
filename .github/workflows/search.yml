@@ -1,0 +1,127 @@
+name: Search
+
+# After each successful production deploy (docs/search-pipeline.md):
+#   1. check: the SEO checks against the live domain;
+#   2. indexnow: submit only the pages whose content changed (Bing, Yandex and
+#      other IndexNow engines; scripts/indexnow.mjs --changed);
+#   3. search-console: submit the sitemap to Google Search Console and report
+#      what Google last read from it, keyless through workload identity
+#      federation (scripts/search-console/).
+# Run it by hand from the Actions tab as well.
+on:
+  deployment_status:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: search
+  cancel-in-progress: false
+
+env:
+  SITE: https://www.vayasyaseva.com
+
+jobs:
+  check:
+    if: github.event_name == 'workflow_dispatch' || (github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.deployment.sha || github.sha }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      # Deployment URLs are behind Vercel protection, so pages are read from the
+      # public domain; give the production alias a moment to point at this deploy.
+      - name: Wait for the production domain
+        if: github.event_name == 'deployment_status'
+        run: sleep 30
+
+      - name: Check production SEO
+        run: node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/seo-check.mjs "$SITE"
+
+  indexnow:
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.deployment.sha || github.sha }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      # Fingerprints are an artifact of the last successful run (actions/cache
+      # does not work on deployment_status, which has no branch ref); with none
+      # (first run, or expired) every page is submitted. Runs from before the
+      # rename to search.yml are looked up under indexnow.yml.
+      - name: Restore fingerprints
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for wf in search.yml indexnow.yml; do
+            last=$(gh run list -R "$GITHUB_REPOSITORY" --workflow "$wf" --status success -L 1 --json databaseId --jq '.[0].databaseId // empty' 2>/dev/null || true)
+            if [ -n "$last" ] && gh run download "$last" -R "$GITHUB_REPOSITORY" -n indexnow-state; then
+              echo "Fingerprints from $wf run $last"; exit 0
+            fi
+          done
+          echo "No previous fingerprints; submitting every page"
+
+      - name: Submit changed pages
+        run: node scripts/indexnow.mjs --changed .indexnow-state.json
+
+      - name: Save fingerprints
+        uses: actions/upload-artifact@v4
+        with:
+          name: indexnow-state
+          path: .indexnow-state.json
+          include-hidden-files: true
+          retention-days: 90
+
+  search-console:
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.deployment.sha || github.sha }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      # Keyless: GitHub's OIDC token is exchanged for a one-hour access token
+      # of a service account with no project roles, usable only by this
+      # repository (scripts/search-console/setup-gcp.mjs). Not secrets.
+      - name: Google access token
+        id: google
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/327384568608/locations/global/workloadIdentityPools/github/providers/vayasyaseva-com
+          service_account: search-console-submit@vayasya-ads.iam.gserviceaccount.com
+          token_format: access_token
+          access_token_scopes: https://www.googleapis.com/auth/webmasters
+
+      - name: Submit the sitemap
+        env:
+          GOOGLE_ACCESS_TOKEN: ${{ steps.google.outputs.access_token }}
+        run: |
+          set -o pipefail
+          node scripts/search-console/submit-sitemap.mjs --sitemap "$SITE/sitemap.xml" | tee -a "$GITHUB_STEP_SUMMARY"

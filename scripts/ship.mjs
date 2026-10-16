@@ -1,6 +1,6 @@
 // Checks, pushes main, waits for the Vercel production deploy of HEAD, then
 // runs the SEO check against production. IndexNow submission for changed pages
-// follows automatically in GitHub Actions (.github/workflows/indexnow.yml).
+// follows automatically in GitHub Actions (.github/workflows/search.yml).
 // Run: pnpm ship   (needs a clean tree on main and the gh CLI signed in)
 import { execSync, spawn } from "node:child_process";
 import { setTimeout as sleep } from "node:timers/promises";
@@ -75,4 +75,4 @@ step("SEO check on production");
 await sleep(30_000);
 run("pnpm -s seo:check https://www.vayasyaseva.com");
 
-console.log("\nShipped. IndexNow runs in GitHub Actions: gh run list --workflow indexnow.yml -L 1");
+console.log("\nShipped. IndexNow and the Search Console sitemap submission run in GitHub Actions: gh run list --workflow search.yml -L 1");

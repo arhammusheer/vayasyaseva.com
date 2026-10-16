@@ -4,7 +4,7 @@
 //   pnpm indexnow /jobs /terms            -> only the given paths
 //   pnpm indexnow --changed state.json    -> only URLs whose content changed since
 //                                            the fingerprints in state.json (then updated)
-// The IndexNow workflow (.github/workflows/indexnow.yml) runs --changed after
+// The Search workflow (.github/workflows/search.yml, job indexnow) runs --changed after
 // every production deploy. The key file public/b49baea781d6499a83ac8a0c5641b558.txt
 // must stay deployed.
 import { createHash } from "node:crypto";

@@ -21,9 +21,12 @@ const WEBHOOK_URL = "https://hooks.vayasyaseva.com/webhook/vspl-talent-intake";
  * only when the person speaks with us, replies or confirms; unanswered
  * outreach does not count), Fast2SMS, sharing with another employer only
  * with fresh agreement, no audio or Sarvam, and the phone-free withdrawal
- * route (PLAN §8.3).
+ * route (PLAN §8.3); 2026-10-16-v7, the same day's consent v7: the checkbox
+ * line "We keep your details for 12 months. Details →" and the plain
+ * applicant notice at /jobs/privacy in each jobs language, with /privacy §10
+ * still the governing text. Owner/counsel sign-off pending.
  */
-export const TALENT_CONSENT_VERSION = "2026-10-16";
+export const TALENT_CONSENT_VERSION = "2026-10-16-v7";
 
 /** Upload links and tickets are short-lived. */
 const UPLOAD_URL_SECONDS = 15 * 60;

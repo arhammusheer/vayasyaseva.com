@@ -112,7 +112,7 @@ const personFields = {
     type: "boolean",
     const: true,
     description:
-      "The person agreed that Vayasya Seva may keep their details and contact them about work, under the job seeker privacy notice (https://www.vayasyaseva.com/en-in/privacy#job-seekers).",
+      "The person agreed that Vayasya Seva may keep their details and contact them about work, under the job seeker privacy notice (https://www.vayasyaseva.com/en-in/privacy#job-seekers; in plain words, in their language: https://www.vayasyaseva.com/en-in/jobs/privacy).",
   },
 };
 

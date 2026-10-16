@@ -79,7 +79,7 @@ function sanitizeBasicEvent(event: BeforeSendEvent): BeforeSendEvent | null {
  * for native review, like every hi-IN and hi-Latn-IN string. Two sentences
  * and a link: the detail is the table in the privacy notice (§3, #analytics),
  * which is English only, and the link says so. The sentences keep what
- * consent v6 rests on (cookie-free counts, the ad-click report, recordings
+ * consent v7 rests on (cookie-free counts, the ad-click report, recordings
  * with typed text, 30-day unsent forms, no remarketing); dropping any of
  * them needs owner or legal sign-off and a consent version bump.
  */

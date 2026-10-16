@@ -17,6 +17,7 @@ process.env.TALENT_INTAKE_WEBHOOK_SECRET = 'local-unit-test';
 process.env.TALENT_INTAKE_WEB_SOURCE = '1';
 const { jobsStartRequestSchema, talentIntakeSchema } = await import('../src/lib/talent-intake/contract.ts');
 const { forwardSubmission } = await import('../src/lib/talent-intake/submit.ts');
+const { TALENT_CONSENT_VERSION } = await import('../src/lib/talent-intake/server.ts');
 const { submissionCluster, INTAKE_LOCALES, INTAKE_CLUSTERS } = await import('../src/lib/talent-intake/rules.ts');
 const { LOCALE_TAGS, CLUSTER_IDS } = await import('../src/content/registry/identifiers.ts');
 
@@ -60,6 +61,14 @@ test('a web application from /jobs/haridwar forwards web + locale + cluster + pa
   assert.equal(body.pageCluster, 'haridwar');
   assert.equal(body.pagePath, '/jobs/haridwar');
   assert.equal(body.channel, 'web');
+});
+
+test('applications carry consent v7 (the /jobs/privacy notice), within the 40 characters n8n stores', async () => {
+  const body = await forwarded({ source: 'web', locale: 'en-IN', pageCluster: null, pagePath: '/jobs/apply' }, { form: 'quick', applicantName: 'Ravi', answers });
+  assert.equal(TALENT_CONSENT_VERSION, '2026-10-16-v7');
+  assert.equal(body.consent.version, TALENT_CONSENT_VERSION);
+  assert.ok(TALENT_CONSENT_VERSION.length <= 40);
+  assert.ok(!Number.isNaN(Date.parse(body.consent.at)));
 });
 
 test('an older ticket with a legacy source forwards as web with the implied locale', async () => {

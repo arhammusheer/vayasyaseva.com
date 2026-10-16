@@ -34,6 +34,14 @@ const base = {
   answers: { work: ["packing"], area: ["sidcul-bahadrabad"] },
 };
 
+test("consent versions are stored as given: the earlier dates and the website's v7", async () => {
+  for (const version of ["2026-10-02", "2026-10-16", "2026-10-16-v7"]) {
+    const out = await validate({ ...base, source: "web", locale: "en-IN", consent: { version, at: "2026-10-16T10:00:00Z" } });
+    assert.equal(out.consentVersion, version);
+  }
+  await assert.rejects(validate({ ...base, source: "web", locale: "en-IN", consent: { at: "2026-10-16T10:00:00Z" } }), /consent/);
+});
+
 test("legacy page sources still pass and keep their short locale", async () => {
   const out = await validate({ ...base, source: "web_hinglish" });
   assert.equal(out.source, "web_hinglish");

@@ -32,12 +32,12 @@ Goal: improve qualified visibility for labour, manpower, compliance and industri
 - Site graph on every page: `Organization` + `LocalBusiness` (one node, `@id`), with logo, address, `geo`, `areaServed` (Haridwar, SIDCUL, Roorkee, Bahadrabad, Bhagwanpur, Uttarakhand), `contactPoint`, GSTIN/Udyam identifiers, `knowsAbout`, `sameAs` (LinkedIn company page) and a `WebSite` node.
 - Every page: typed `WebPage` (`CollectionPage`, `AboutPage`, `ContactPage`) linked to the site and organisation by `@id`, plus `BreadcrumbList`.
 - `/services`: `ItemList` of `Service` nodes with `serviceType`, `provider @id`, `areaServed`.
-- `FAQPage` with visible matching Q&A on `/services`, `/compliance`, `/industries`, `/haridwar-sidcul`.
+- `FAQPage` with visible matching Q&A on the home page, the service landings and `/haridwar-sidcul` (the agency FAQ is on the home page only).
 
 **Content and internal linking**
-- Local-intent FAQ sections (`src/content/faqs.ts`) written for the questions plant HR/admin/procurement teams search.
-- Services intro links to `/industries` and `/haridwar-sidcul`; every list page cross-links compliance; homepage "closer look" links the three hub pages; footer carries every primary page.
-- Homepage, services index, local page and footer link to the new contract-labour service page. Visible headings now use the language of relevant local and service searches.
+- FAQs live on the page they answer: pricing and the agency question on the home page (`src/content/home.ts`, `src/content/agency-faq.ts`), two per landing (`src/content/service-pages.ts`) and one on `/haridwar-sidcul` (`src/content/pages/haridwar-sidcul.ts`).
+- `/services` links the three landings and carries the sectors (`#sectors`, where `/industries` 308s) and the engagement steps; each landing links its next sibling; the footer carries every primary page.
+- Visible headings use the language of relevant local and service searches.
 - Headings: one `h1` per page; `h2` for sections; sentence case.
 - Copy passes the slop lint (no banned claims, no invented metrics).
 

@@ -148,13 +148,11 @@ const WAGE_STATE_STATUS: Partial<Record<WageStateSlug, PageStatus>> = {
   // of the basic rates needs a reviewer's sign-off (karnataka.json,
   // verification) before publishing.
   karnataka: "review",
-  // Built and in review (17 Oct 2026): one statewide rate each, from the
-  // official Gazette copies. Open for the reviewer (haryana.json and
-  // punjab.json, verification): the next revision date while each state's
-  // Code on Wages rules are in draft, Haryana's clerical staff now inside the
-  // four skill levels, and Punjab's staff categories A to D (not shown).
-  haryana: "review",
-  punjab: "review",
+  // Published 17 Oct 2026 (owner): one statewide rate each, from the
+  // official Gazette copies. Still open: a named checker, and Punjab's July
+  // 2025 LWF bill (shown on the page as pending).
+  haryana: "published",
+  punjab: "published",
 };
 
 /**

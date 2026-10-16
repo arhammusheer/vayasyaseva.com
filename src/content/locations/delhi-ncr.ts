@@ -22,6 +22,7 @@ const GRAP = { label: "Commission for Air Quality Management: Graded Response Ac
 const RULE_LINKS = {
   delhi: { href: "/minimum-wages/delhi", label: "Delhi minimum wages" },
   up: { href: "/minimum-wages/uttar-pradesh", label: "UP minimum wages" },
+  haryana: { href: "/minimum-wages/haryana", label: "Haryana minimum wages" },
   compliance: { href: "/compliance", label: "How we handle compliance" },
 };
 
@@ -94,7 +95,7 @@ export const delhiNcrPages: LocationCopy[] = [
       {
         question: "Which wage and rules apply in Haryana?",
         answer: "₹15,220.71 a month unskilled from 1 April 2026, and the notification makes the principal employer liable if a contractor underpays. There is no Professional Tax; the Labour Welfare Fund is 0.2% of wages a month, up to ₹35 from the worker and ₹70 from the employer.",
-        link: RULE_LINKS.compliance,
+        link: RULE_LINKS.haryana,
         category: "compliance",
       },
       {
@@ -185,7 +186,7 @@ export const delhiNcrPages: LocationCopy[] = [
       },
       {
         question: "Which minimum wage and rules apply?",
-        answer: "Faridabad pays Haryana's ₹15,220.71 a month unskilled plus its monthly Labour Welfare Fund; Ghaziabad pays UP Category I, ₹13,690. Neither state levies Professional Tax.",
+        answer: "Faridabad pays Haryana's ₹15,220.71 a month unskilled plus the Labour Welfare Fund; Ghaziabad pays UP Category I, ₹13,690. Neither state levies Professional Tax.",
         link: RULE_LINKS.up,
         category: "compliance",
       },

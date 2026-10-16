@@ -23,7 +23,7 @@ export const WORKING_WITH_US: FaqItem[] = [
   {
     question: "How is the crew priced?",
     answer:
-      "A rate per worker that covers wages, the EPF and ESIC that apply, and our service charge, billed on one monthly invoice.",
+      "Usually per manday: one rate that covers wages, the EPF and ESIC that apply, and our service charge, billed monthly. If you prefer, we can contract per piece or per kg instead.",
     category: "commercial",
   },
   {

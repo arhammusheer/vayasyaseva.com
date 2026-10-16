@@ -38,12 +38,13 @@ Last compiled: 16 October 2026, for the national phase 1 pull request; business 
 | We aim to reply within two working days (Monday to Saturday, IST) | /contact (page and sent message) only; cut from the CTA bands and the Setu band, 16 Oct 2026 | A | PLAN §8.1; becomes B after 90 days of first-reply data | | 16 Jan 2027 |
 | We'll tell you whether we can staff it (a site elsewhere in India) | /contact form hint, llms.txt; cut from home, wage pages and with /industries | A | Owner decision 3 | | 16 Oct 2027 |
 | A site visit before a crew starts (site assessment request; engagement step 1) | /contact, /services | A | Owner to confirm | | 16 Oct 2027 |
-| A rate per worker covering wages, applicable EPF and ESIC and our service charge, on one monthly invoice | Home FAQ | A | Practice; owner to confirm billing basis | | 16 Oct 2027 |
+| Priced per manday as standard (wages, applicable EPF and ESIC and our service charge, billed monthly); per piece or per kg contracts on request | Home FAQ, /faq, loading and unloading FAQ | C | Owner correction, 16 Oct 2026 | Owner, 16 Oct 2026 | 16 Oct 2027 |
 | We put a supervised crew on your floor and keep it running, for a season or for years | Home hero | A | Practice; owner to confirm | | 16 Oct 2027 |
 | We're set up for crews of about 20 workers or more, on 8-hour shifts, for three months or longer | Home FAQ, /faq (back by owner request, 16 Oct 2026) | A | Owner decision 6 | Owner, 16 Oct 2026 | 16 Oct 2027 |
 | Our supervisor runs attendance, shift allocation and replacements on site | /faq | A | Owner confirmed | Owner, 16 Oct 2026 | 16 Oct 2027 |
 | We train each worker on your tasks with your team | /services/factory-labour FAQ | A | Owner confirmed | Owner, 16 Oct 2026 | 16 Oct 2027 |
-| The crew checks loads against the challan and reports shortages; billed per worker, not per truck | /services/loading-unloading-labour FAQ | A | Owner confirmed | Owner, 16 Oct 2026 | 16 Oct 2027 |
+| The crew checks loads against the challan and reports shortages | /services/loading-unloading-labour FAQ | A | Owner confirmed | Owner, 16 Oct 2026 | 16 Oct 2027 |
+| We supply certified forklift operators | Loading and unloading roles and FAQ | C | Owner correction, 16 Oct 2026 | Owner, 16 Oct 2026 | 16 Oct 2027 |
 | A cleaning routine agreed per area, checked by our supervisor through the shift | /services/housekeeping FAQ | A | Owner confirmed | Owner, 16 Oct 2026 | 16 Oct 2027 |
 | A site visit before a crew starts | /haridwar-sidcul FAQ (3 languages), /faq | A | Owner confirmed | Owner, 16 Oct 2026 | 16 Oct 2027 |
 | Crew size, supervisor and rate agreed before anyone starts; workers inducted to your site before day one; a supervisor on site | /services engagement steps | A | Practice; owner to confirm | | 16 Oct 2027 |

@@ -91,7 +91,7 @@ export const servicePages: ServiceLandingContent[] = [
     jobs: { role: "warehouse", label: "Warehouse jobs" },
     rolesHeading: "Work we staff.",
     roles: [
-      { name: "Loading and unloading", task: "Trucks by hand, or alongside your forklift." },
+      { name: "Loading and unloading", task: "Trucks by hand, or with our certified forklift operators." },
       { name: "Container stuffing", task: "Stuffing and destuffing containers." },
       { name: "Load checks", task: "Count and check loads against the challan." },
       { name: "Picking and packing", task: "Pick and pack orders for dispatch." },
@@ -114,9 +114,8 @@ export const servicePages: ServiceLandingContent[] = [
         category: "operations",
       },
       {
-        question: "Do your workers drive forklifts?",
-        answer:
-          "Our crews load by hand or alongside your forklift operators. If you need licensed operators, tell us and we’ll say plainly whether we can supply them.",
+        question: "Can you supply forklift operators?",
+        answer: "Yes. We supply certified forklift operators, on their own or as part of the loading crew.",
         category: "operations",
       },
       {
@@ -125,9 +124,9 @@ export const servicePages: ServiceLandingContent[] = [
         category: "operations",
       },
       {
-        question: "Do you charge per truck?",
+        question: "How do you charge for loading and unloading?",
         answer:
-          "No. We bill a rate per worker on one monthly invoice, and size the crew to your normal and peak days.",
+          "Per manday as standard. If it suits your work better, we can contract per piece or per kg handled instead.",
         category: "commercial",
       },
     ],

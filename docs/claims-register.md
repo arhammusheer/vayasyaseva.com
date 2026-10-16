@@ -4,7 +4,7 @@ Every public claim the site makes about Vayasya Seva, with its tier under `docs/
 
 The owner signs off each line by filling in **Signed off** (name or role, date). A claim with no sign-off stays live only where it repeats a line the owner already approved; new claims wait for sign-off. Directional claims are re-confirmed every 12 months, measured ones every quarter. Cluster claim blocks live in `src/content/registry/clusters.ts` and expire 6 months after sign-off on their own.
 
-Last compiled: 16 October 2026, for the national phase 1 pull request; business pages updated for the site restructure the same day.
+Last compiled: 16 October 2026, for the national phase 1 pull request; business pages updated for the site restructure and the owner feedback round (FAQs, national compliance) the same day.
 
 ## Employer and payroll
 
@@ -15,7 +15,9 @@ Last compiled: 16 October 2026, for the national phase 1 pull request; business 
 | Attendance and wage registers, wage slips and challans are open for your monthly review and for audits | Home compliance band, /compliance, /services ("the month’s records sent to you") | A | Practice; owner to confirm | | 16 Oct 2027 |
 | Registered under EPF and ESIC; GSTIN, Udyam and CIN as shown | Footer (CIN, GSTIN), /about (CIN, GSTIN, Udyam), /compliance (EPF and ESIC line) | C | Registration certificates | | On any change |
 | Every shift is a full 8 hours; no part-time work | Home meta description, jobs pages, llms.txt | C | Owner decision 15 | Owner, 16 Oct 2026 | 16 Oct 2027 |
-| Contract labour licence: "before you sign, ask us for the registration and licence details that apply to your site" | Guides (cut from /compliance, 16 Oct 2026) | A | Says what to ask, not what is held; licence status is an owner todo | | When the licence list is confirmed |
+| Contract labour licence: "Ask us for the registration and licence details before you sign" | /faq, guides | A | Says what to ask | Owner, 16 Oct 2026 | 16 Oct 2027 |
+| Where the state and the crew size need one, we apply for the contractor's licence for your site | Home compliance band, /compliance, /faq | A | Owner confirmed, 16 Oct 2026 | Owner, 16 Oct 2026 | 16 Oct 2027 |
+| Professional Tax and Labour Welfare Fund deducted and deposited (PT also filed) where the site's state levies them | Home compliance band, /compliance, /faq | C | Owner confirmed, 16 Oct 2026; state PT and LWF registrations as each state starts | Owner, 16 Oct 2026 | On each new state |
 
 ## Workers and jobs
 
@@ -38,6 +40,12 @@ Last compiled: 16 October 2026, for the national phase 1 pull request; business 
 | A site visit before a crew starts (site assessment request; engagement step 1) | /contact, /services | A | Owner to confirm | | 16 Oct 2027 |
 | A rate per worker covering wages, applicable EPF and ESIC and our service charge, on one monthly invoice | Home FAQ | A | Practice; owner to confirm billing basis | | 16 Oct 2027 |
 | We put a supervised crew on your floor and keep it running, for a season or for years | Home hero | A | Practice; owner to confirm | | 16 Oct 2027 |
+| We're set up for crews of about 20 workers or more, on 8-hour shifts, for three months or longer | Home FAQ, /faq (back by owner request, 16 Oct 2026) | A | Owner decision 6 | Owner, 16 Oct 2026 | 16 Oct 2027 |
+| Our supervisor runs attendance, shift allocation and replacements on site | /faq | A | Owner confirmed | Owner, 16 Oct 2026 | 16 Oct 2027 |
+| We train each worker on your tasks with your team | /services/factory-labour FAQ | A | Owner confirmed | Owner, 16 Oct 2026 | 16 Oct 2027 |
+| The crew checks loads against the challan and reports shortages; billed per worker, not per truck | /services/loading-unloading-labour FAQ | A | Owner confirmed | Owner, 16 Oct 2026 | 16 Oct 2027 |
+| A cleaning routine agreed per area, checked by our supervisor through the shift | /services/housekeeping FAQ | A | Owner confirmed | Owner, 16 Oct 2026 | 16 Oct 2027 |
+| A site visit before a crew starts | /haridwar-sidcul FAQ (3 languages), /faq | A | Owner confirmed | Owner, 16 Oct 2026 | 16 Oct 2027 |
 | Crew size, supervisor and rate agreed before anyone starts; workers inducted to your site before day one; a supervisor on site | /services engagement steps | A | Practice; owner to confirm | | 16 Oct 2027 |
 | We staff manufacturing plants, warehouses and logistics hubs, FMCG and consumer goods lines, offices and campuses, and hospitality-linked sites | /services#sectors (moved from /industries) | A | Owner to confirm current work in each sector | | 16 Oct 2027 |
 | Setu keeps attendance, payroll inputs and EPF and ESIC records, with reports in a format agreed with the client | /vayasya-setu | A | Practice | | 16 Oct 2027 |
@@ -48,14 +56,14 @@ Last compiled: 16 October 2026, for the national phase 1 pull request; business 
 |---|---|---|---|---|---|
 | Every wage figure, with its notification and dates | /minimum-wages and state pages (hi-IN in review) | C | `src/content/wages/<state>.json`, `verification` array; daily source monitor | Pending: add `checked.by` per state | Each revision date |
 | We pay the workers we deploy at least the notified rate for their employment and skill | Uttarakhand wage page | C | Payroll records | | 16 Oct 2027 |
-| We re-check each state around every revision date; we correct confirmed errors quickly and note the date | Wage pages, /minimum-wages/how-we-check (moved from /about#editorial) | A | Practice; monitor runs daily once merged | | 16 Oct 2027 |
+| We re-check each state around every revision date; we fix confirmed errors and show the date | Wage pages, /minimum-wages/how-we-check (moved from /about#editorial) | A | Practice; monitor runs daily once merged | | 16 Oct 2027 |
 | Guide statements of law | Guides (review) | C | Cited to Gazette texts; named legal reviewer pending (decision 9) | Pending | 6 months after review |
 
 ## Removed or moved in the restructure (16 October 2026)
 
 Business pages were cut to one job each. These claims left the site, or now live on one page only:
 
-- "We're set up for crews of about 20 workers or more…" (home FAQ): cut. Its answer either repeated the hero or implied capacity we don't publish. The 20+ rule stays an internal lead filter (owner decision 6).
+- "We're set up for crews of about 20 workers or more…" (home FAQ): cut in the restructure, then restored on home and /faq when the owner asked for more questions the same day.
 - The principal employer's exposure ("Partly. As the employer, we pay…") and the licence line: cut from /compliance; for the contract labour act guide.
 - "Registration documents available for your review", the EPF, ESIC, GST and MSME "Registered" rows (home band, /about, /compliance) and the contact page's three assurances: cut. /about shows the numbers; /compliance has one EPF and ESIC line.
 - Onboarding ("we put each worker on our payroll with identity documents…") and "Your reviews and audits" on /compliance: folded into the four record rows.

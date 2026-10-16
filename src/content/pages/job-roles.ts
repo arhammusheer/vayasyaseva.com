@@ -120,7 +120,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
     {
       slug: "packing",
       name: "Packing jobs",
-      metaTitle: "Packing Jobs in SIDCUL Haridwar: Pharma, FMCG and Line Packing",
+      metaTitle: "Packing Jobs in SIDCUL Haridwar: Pharma and FMCG",
       description:
         "Packing jobs in SIDCUL and across Haridwar: line packing, cartons, labelling and checks at pharma and FMCG plants. Apply online. There is no fee to apply.",
       heading: "Packing jobs in SIDCUL Haridwar.",
@@ -208,7 +208,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
     {
       slug: "warehouse",
       name: "Warehouse jobs",
-      metaTitle: "Warehouse Jobs in SIDCUL Haridwar: Loading, Picking, Packing",
+      metaTitle: "Warehouse Jobs in SIDCUL Haridwar: Loading, Picking",
       description:
         "Warehouse jobs in SIDCUL and across Haridwar: loading, unloading, picking, packing, stacking and dispatch. Apply online. There is no fee to apply.",
       heading: "Warehouse jobs in SIDCUL Haridwar.",
@@ -378,7 +378,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
     {
       slug: "iti-trades",
       name: "ITI trades",
-      metaTitle: "ITI Jobs in SIDCUL Haridwar: Welder, Fitter, Electrician",
+      metaTitle: "SIDCUL Haridwar ITI Jobs: Welder, Fitter, Electrician",
       description:
         "Jobs for ITI welders, fitters and electricians in SIDCUL and across Haridwar: fabrication, installation and maintenance work. Apply online. No fee.",
       heading: "ITI jobs in SIDCUL Haridwar: welder, fitter, electrician.",
@@ -421,7 +421,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
     {
       slug: "electrician",
       name: "Electrician",
-      metaTitle: "Electrician Jobs in SIDCUL Haridwar: ITI Electrician Vacancy",
+      metaTitle: "Electrician Jobs in SIDCUL Haridwar: ITI Electrician",
       description:
         "Electrician jobs in SIDCUL and across Haridwar: plant maintenance, wiring, motors and panels for ITI electricians. Apply online. There is no fee to apply.",
       heading: "Electrician jobs in SIDCUL Haridwar.",
@@ -464,7 +464,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
     {
       slug: "welder",
       name: "Welder",
-      metaTitle: "Welder Jobs in SIDCUL Haridwar: Arc, MIG, TIG and Gas Cutting",
+      metaTitle: "Welder Jobs in SIDCUL Haridwar: Arc, MIG, TIG Welding",
       description:
         "Welder jobs in SIDCUL and across Haridwar: arc, MIG and TIG welding and gas cutting for fabrication and repair. Apply online. There is no fee to apply.",
       heading: "Welder jobs in SIDCUL Haridwar.",
@@ -508,7 +508,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
     {
       slug: "fitter",
       name: "Fitter",
-      metaTitle: "Fitter Jobs in SIDCUL Haridwar: Maintenance and Mechanical Fitter",
+      metaTitle: "Fitter Jobs in SIDCUL Haridwar: Maintenance Fitter",
       description:
         "Fitter jobs in SIDCUL and across Haridwar: maintenance, machine fitting and installation for ITI fitters. Apply online. There is no fee to apply.",
       heading: "Fitter jobs in SIDCUL Haridwar.",
@@ -1069,7 +1069,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
     {
       slug: "packing",
       name: "Packing job",
-      metaTitle: "SIDCUL Haridwar mein Packing Job: Pharma, FMCG aur Line Packing",
+      metaTitle: "SIDCUL Haridwar mein Packing Job: Pharma aur FMCG",
       description:
         "SIDCUL aur poore Haridwar mein packing ki naukri: pharma, FMCG aur dusri factories mein line packing, carton, labelling aur checking. Online apply karein. Koi fee nahi.",
       heading: "SIDCUL Haridwar mein packing ki naukri.",
@@ -1157,7 +1157,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
     {
       slug: "warehouse",
       name: "Warehouse job",
-      metaTitle: "SIDCUL Haridwar mein Warehouse Job: Loading, Picking, Packing",
+      metaTitle: "SIDCUL Haridwar mein Warehouse Job: Loading, Picking",
       description:
         "SIDCUL aur poore Haridwar mein warehouse ki naukri: loading, unloading, picking, packing, stacking aur dispatch. Online apply karein. Koi fee nahi.",
       heading: "SIDCUL Haridwar mein warehouse ki naukri.",
@@ -1326,7 +1326,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
     {
       slug: "iti-trades",
       name: "ITI trades",
-      metaTitle: "SIDCUL Haridwar mein ITI Job: Welder, Fitter, Electrician",
+      metaTitle: "SIDCUL Haridwar ITI Job: Welder, Fitter, Electrician",
       description:
         "SIDCUL aur poore Haridwar mein ITI welder, fitter aur electrician ki naukri: fabrication, installation aur maintenance. Online apply karein. Koi fee nahi.",
       heading: "SIDCUL Haridwar mein ITI ki naukri: welder, fitter, electrician.",
@@ -1367,7 +1367,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
     {
       slug: "electrician",
       name: "Electrician",
-      metaTitle: "SIDCUL Haridwar mein Electrician Job: ITI Electrician Vacancy",
+      metaTitle: "SIDCUL Haridwar mein Electrician Job: ITI Electrician",
       description:
         "SIDCUL aur poore Haridwar mein electrician ki naukri: ITI electrician ke liye plant maintenance, wiring, motor aur panel ka kaam. Online apply karein. Koi fee nahi.",
       heading: "SIDCUL Haridwar mein electrician ki naukri.",
@@ -1410,7 +1410,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
     {
       slug: "welder",
       name: "Welder",
-      metaTitle: "SIDCUL Haridwar mein Welder Job: Arc, MIG, TIG aur Gas Cutting",
+      metaTitle: "SIDCUL Haridwar mein Welder Job: Arc, MIG, TIG Welding",
       description:
         "SIDCUL aur poore Haridwar mein welder ki naukri: fabrication aur maintenance ke liye arc, MIG aur TIG welding aur gas cutting. Online apply karein. Koi fee nahi.",
       heading: "SIDCUL Haridwar mein welder ki naukri.",
@@ -1454,7 +1454,7 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
     {
       slug: "fitter",
       name: "Fitter",
-      metaTitle: "SIDCUL Haridwar mein Fitter Job: Maintenance aur Mechanical Fitter",
+      metaTitle: "SIDCUL Haridwar mein Fitter Job: Maintenance Fitter",
       description:
         "SIDCUL aur poore Haridwar mein fitter ki naukri: ITI fitter ke liye mechanical maintenance, machine fitting aur installation. Online apply karein. Koi fee nahi.",
       heading: "SIDCUL Haridwar mein fitter ki naukri.",

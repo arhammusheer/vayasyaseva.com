@@ -49,7 +49,11 @@ export type Cluster = {
   name: Partial<Record<LocaleTag, string>>;
   /** States the cluster's sites are in (links to wage pages once they exist). */
   states: readonly WageStateSlug[];
-  /** The header language switch on this cluster's pages, in order. */
+  /**
+   * The header language switch on this cluster's pages, in order (PLAN §6.4:
+   * Hindi belt English · हिंदी · Hinglish; Karnataka English · ಕನ್ನಡ · Hinglish;
+   * Punjab English · Hinglish · हिंदी). A page's other languages go under "More".
+   */
   quickSwitch: readonly LocaleTag[];
   /** The buyer page for this cluster. */
   buyerHub: string;
@@ -68,8 +72,8 @@ export const clusters: readonly Cluster[] = [
     publishable: true,
     name: { "en-IN": "Haridwar", "hi-IN": "हरिद्वार", "hi-Latn-IN": "Haridwar" },
     states: ["uttarakhand"],
-    // Hindi belt: Hindi in both scripts, then English.
-    quickSwitch: ["hi-IN", "hi-Latn-IN", "en-IN"],
+    // Hindi belt (PLAN §6.4): English · हिंदी · Hinglish.
+    quickSwitch: ["en-IN", "hi-IN", "hi-Latn-IN"],
     buyerHub: "/haridwar-sidcul",
     // None signed off yet; the page copy carries no claim block.
     claims: [],

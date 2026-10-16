@@ -1462,6 +1462,40 @@ a:hover > svg {
 .header-lang a:lang(hi):not(:lang(hi-Latn)) {
   font-family: system-ui, sans-serif;
 }
+/* Languages outside the page's regional set (PLAN §6.4): a quiet "More"
+   that opens a small list under it. */
+.header-lang-more {
+  position: relative;
+}
+.header-lang-more summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding-inline: 6px;
+  cursor: pointer;
+  list-style: none;
+  opacity: 0.75;
+}
+.header-lang-more summary::-webkit-details-marker {
+  display: none;
+}
+.header-lang-more[open] summary,
+.header-lang-more summary:hover {
+  opacity: 1;
+}
+.header-lang-more > div {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 10;
+  display: grid;
+  min-width: 140px;
+  padding: 4px 12px;
+  background: var(--background);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
 .header-contact {
   position: relative;
 }
@@ -1900,14 +1934,23 @@ a:hover > svg {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 48px 16px;
+  padding: 24px 16px 48px;
   background: var(--neutral-50);
 }
 .language-picker-inner {
   width: min(100%, 480px);
 }
+/* Devanagari on the picker uses the phone's own font: a page whose only job
+   is "tap your language" should not download three Hind Devanagari weights. */
+.language-picker :lang(hi):not(:lang(hi-Latn)) {
+  font-family: system-ui, sans-serif;
+  letter-spacing: 0;
+}
+.language-picker .language-choice-text:lang(hi):not(:lang(hi-Latn)) {
+  line-height: 1.6;
+}
 .language-picker h1 {
-  margin-top: 32px;
+  margin-top: 20px;
   font-family: var(--font-display);
   font-size: clamp(28px, 6vw, 36px);
   font-weight: 500;
@@ -1921,7 +1964,7 @@ a:hover > svg {
   color: var(--muted-foreground);
 }
 .language-choices {
-  margin-top: 32px;
+  margin-top: 24px;
   display: grid;
   gap: 12px;
 }
@@ -1964,6 +2007,39 @@ a:hover > svg {
   color: var(--muted-foreground);
   font-size: 15px;
   line-height: 1.45;
+}
+/* Languages past the top three: quiet, one tap away, still in the HTML. */
+.language-more {
+  margin-top: 20px;
+}
+.language-more summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  color: var(--muted-foreground);
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: var(--border);
+  text-underline-offset: 4px;
+}
+.language-more summary:hover,
+.language-more summary:focus-visible {
+  color: var(--foreground);
+  text-decoration-color: var(--gold-700);
+}
+.language-more[open] summary {
+  color: var(--foreground);
+}
+.language-choices-more {
+  margin-top: 8px;
+}
+.language-choices-more a {
+  min-height: 56px;
+  padding-block: 12px;
+}
+.language-choices-more .language-choice-label {
+  font-size: 18px;
 }
 
 /* Guided jobs form (/jobs/apply): one question per screen, answers as large

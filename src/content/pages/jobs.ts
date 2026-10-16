@@ -121,7 +121,7 @@ const SHARED_FAQS: Record<Locale, FaqItem[]> = {
  */
 export const jobsCopy: Record<Locale, JobsCopy> = {
   "en-IN": {
-    title: "SIDCUL Haridwar Vacancy: Factory, Warehouse and ITI Jobs",
+    title: "SIDCUL Haridwar Vacancy: Factory, Warehouse, ITI Jobs",
     description:
       "Jobs in SIDCUL and across Haridwar: factory, packing, warehouse, housekeeping and ITI work in 8-hour shifts. Apply online. There is no fee to apply.",
     breadcrumb: { home: "Home", page: "Jobs" },
@@ -309,7 +309,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     ],
   },
   "hi-Latn-IN": {
-    title: "SIDCUL Haridwar Vacancy: Factory, Warehouse aur ITI Naukri",
+    title: "SIDCUL Haridwar Vacancy: Factory, Warehouse, ITI Naukri",
     description:
       "SIDCUL aur poore Haridwar mein factory, packing, warehouse aur ITI ki naukri, 8 ghante ki shift. Online apply karein. Apply karne ki koi fee nahi hai.",
     breadcrumb: { home: "Home", page: "Jobs" },

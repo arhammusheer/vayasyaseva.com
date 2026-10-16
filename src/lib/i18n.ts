@@ -9,7 +9,7 @@
  * entry or header link from published pages. Flip `published` once a native
  * speaker has reviewed the copy.
  */
-import { builtLocales, builtPages, publishedLocales, redirectTarget } from "@/content/registry";
+import { builtLocales, builtPages, clusterById, pageEntry, publishedLocales, redirectTarget } from "@/content/registry";
 import type { LocaleTag } from "@/content/registry/identifiers";
 
 export const locales = {
@@ -192,21 +192,41 @@ export function languageAlternates(path: string) {
 }
 
 /**
- * Other-language versions of the current page for the header switch.
- * From a published version, only published versions show; from an
- * unpublished one (a locale or page still in review), every built version
- * shows so reviewers can move between drafts.
+ * The header quick switch on pages without a cluster (PLAN §6.4, default and
+ * Hindi belt): English · हिंदी · Hinglish. A cluster page uses its cluster's
+ * `quickSwitch` (src/content/registry/clusters.ts). Fixed per page, never
+ * per visitor, so the switch stays in the static HTML.
+ */
+export const DEFAULT_QUICK_SWITCH: readonly Locale[] = ["en-IN", "hi-IN", "hi-Latn-IN"];
+
+/** The quick-switch order for a page: its cluster's set, else the default. */
+export function quickSwitchOf(path: string): readonly Locale[] {
+  const cluster = pageEntry(path)?.cluster;
+  return (cluster && clusterById(cluster)?.quickSwitch) || DEFAULT_QUICK_SWITCH;
+}
+
+/**
+ * Other-language versions of the current page for the header switch, in the
+ * page's quick-switch order. Languages outside that set come last with
+ * `more: true` (shown under "More"). From a published version, only
+ * published versions show; from an unpublished one (a locale or page still
+ * in review), every built version shows so reviewers can move between drafts.
  */
 export function languageLinks(pathname: string) {
   const { locale: current, path } = splitLocalePath(pathname);
   const available = localesOf(path);
   if (!current || available.length < 2 || !available.includes(current)) return [];
+  const set = quickSwitchOf(path);
+  const rank = (l: Locale) => (set.includes(l) ? set.indexOf(l) : set.length + allLocales.indexOf(l));
   return available
     .filter((l) => l !== current && (!isIndexable(path, current) || isIndexable(path, l)))
+    .sort((a, b) => rank(a) - rank(b))
     .map((l) => ({
       href: localePath(path, l),
       label: locales[l].label,
+      hint: locales[l].hint,
       lang: l,
+      more: !set.includes(l),
     }));
 }
 

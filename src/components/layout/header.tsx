@@ -16,6 +16,9 @@ import { FALLBACK_LOCALE, languageLinks, localePath, splitLocalePath, type Local
 /** The jobs link follows the page's language (docs/plan-worker-pipeline.md). */
 const JOBS_LABEL = { "en-IN": "Jobs", "hi-IN": "नौकरी", "hi-Latn-IN": "Jobs" } as const;
 
+/** The quick switch's "More" (languages outside the page's regional set). */
+const MORE_LABEL: Record<Locale, string> = { "en-IN": "More", "hi-IN": "और भाषाएँ", "hi-Latn-IN": "Aur bhasha" };
+
 /** The jobs header, in the page's language. "For businesses" is the door back to the business site. */
 const JOBS_NAV: Record<Locale, { all: string; fraud: string; business: string; apply: string; menu: string; doors: string }> = {
   "en-IN": { all: "All jobs", fraud: "Fees and fraud", business: "For businesses", apply: "Apply", menu: "Jobs", doors: "Site sections" },
@@ -43,6 +46,25 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
+  const moreRef = useRef<HTMLDetailsElement>(null);
+
+  // The quick switch's "More" closes on Escape, a tap outside it, and a new
+  // page (the header stays mounted across client navigations).
+  useEffect(() => {
+    const more = moreRef.current;
+    if (!more) return;
+    more.open = false;
+    const close = (event: Event) => {
+      if (!more.open) return;
+      if (event instanceof KeyboardEvent ? event.key === "Escape" : !more.contains(event.target as Node)) more.open = false;
+    };
+    document.addEventListener("keydown", close);
+    document.addEventListener("pointerdown", close);
+    return () => {
+      document.removeEventListener("keydown", close);
+      document.removeEventListener("pointerdown", close);
+    };
+  }, [pathname]);
 
   // Sample only the surfaces behind the header. Blend at section boundaries,
   // without React renders or changing the blur radius during scroll.
@@ -122,7 +144,11 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
       window.removeEventListener("resize", schedule);
     };
   }, [pathname]);
+  // The page's regional languages in the bar; any others under "More"
+  // (the menu on phones lists them all).
   const languages = languageLinks(pathname);
+  const quick = languages.filter((l) => !l.more);
+  const more = languages.filter((l) => l.more);
   // The business header is English; links follow the page's language where
   // they can. The jobs header is in the page's language.
   const split = splitLocalePath(pathname);
@@ -246,11 +272,23 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
         )}
         {languages.length > 0 && (
           <nav aria-label="Language" className="header-lang">
-            {languages.map((l) => (
-              <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang} prefetch={false}>
+            {quick.map((l) => (
+              <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang} title={l.hint} prefetch={false}>
                 {l.label}
               </Link>
             ))}
+            {more.length > 0 && (
+              <details className="header-lang-more" ref={moreRef}>
+                <summary lang={door === "jobs" ? pageLocale : "en-IN"}>{MORE_LABEL[door === "jobs" ? pageLocale : "en-IN"]}</summary>
+                <div>
+                  {more.map((l) => (
+                    <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang} title={l.hint} prefetch={false}>
+                      {l.label}
+                    </Link>
+                  ))}
+                </div>
+              </details>
+            )}
           </nav>
         )}
         <Link
@@ -303,7 +341,7 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
             {door !== "jobs" && languages.length > 0 && (
               <nav aria-label="Language" className="sheet-lang">
                 {languages.map((l) => (
-                  <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang} prefetch={false} onClick={() => setOpen(false)}>
+                  <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang} title={l.hint} prefetch={false} onClick={() => setOpen(false)}>
                     {l.label}
                   </Link>
                 ))}

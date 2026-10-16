@@ -5,7 +5,7 @@ import { getJobRole } from "@/content/pages/job-roles";
 import { getJobHub } from "@/content/pages/job-hubs";
 import { getJobCluster, jobClusters } from "@/content/pages/job-clusters";
 import { feesAndFraudCopy } from "@/content/pages/fees-and-fraud";
-import { JOB_ROLE_SLUGS, JOB_HUB_SLUGS, isJobRole, isJobHub, type JobRole } from "./talent-intake/rules";
+import { JOB_ROLE_SLUGS, JOB_HUB_SLUGS, isJobRole, type JobRole } from "./talent-intake/rules";
 import { contractLabourCopy } from "@/content/pages/contract-labour";
 import { haridwarCopy } from "@/content/pages/haridwar-sidcul";
 import { servicePages } from "@/content/service-pages";
@@ -32,12 +32,7 @@ const COMMON: Record<string, { heading: string; description: string }> = {
   "/minimum-wages/delhi": { heading: "Minimum wages\nin Delhi.", description: "Monthly and daily rates by skill level, from the Labour Department's order." },
 };
 
-export function quickShareVariant(params: { role?: string; hub?: string; work?: string }) {
-  if (isJobRole(params.role)) return `role-${params.role}`;
-  if (isJobHub(params.hub)) return `hub-${params.hub}`;
-  if (isJobRole(params.work)) return `role-${params.work}`;
-  return "";
-}
+export { quickShareVariant } from "./share-variant";
 
 export function getShareContent(path: string, locale: Locale = "en-IN", variant = ""): ShareContent {
   let heading = COMMON[path]?.heading ?? "Vayasya Seva";

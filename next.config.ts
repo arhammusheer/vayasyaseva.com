@@ -8,6 +8,13 @@ const securityHeaders = [
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=()" },
 ];
 
+/** Old locale prefixes and their current segments. */
+const OLD_PREFIXES = [
+  ["hi", "hi-in"],
+  ["hinglish", "hi-latn-in"],
+] as const;
+const APEX_HOST = { type: "host", value: "vayasyaseva.com" } as const;
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   env: {
@@ -26,12 +33,6 @@ const nextConfig: NextConfig = {
     return [
       { source: "/:path*", headers: securityHeaders },
       {
-        // The jobs pages (hub and role pages) record voice notes: this site (only) may use the
-        // microphone there. Overrides the site-wide Permissions-Policy above.
-        source: "/:locale(en-in|hi-in|hi-latn-in)/jobs/:role*",
-        headers: [{ key: "Permissions-Policy", value: "camera=(), microphone=(self), geolocation=(), payment=()" }],
-      },
-      {
         // Downloadable brand assets are immutable once generated.
         source: "/brand/downloads/:path*",
         headers: [{ key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=604800" }],
@@ -40,19 +41,21 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      {
-        // One canonical host.
-        source: "/:path*",
-        has: [{ type: "host", value: "vayasyaseva.com" }],
-        destination: "https://www.vayasyaseva.com/:path*",
-        permanent: true,
-      },
+      // The apex host (vayasyaseva.com) redirects to www in src/proxy.ts, in
+      // one hop with the locale routing. Redirects here run before the proxy,
+      // so a host rule here would bring back the second hop.
       // Old locale prefixes (before 1 October 2026). English had none and is
-      // handled by the locale routing in src/proxy.ts.
-      { source: "/hi", destination: "/hi-in", permanent: true },
-      { source: "/hi/:path*", destination: "/hi-in/:path*", permanent: true },
-      { source: "/hinglish", destination: "/hi-latn-in", permanent: true },
-      { source: "/hinglish/:path*", destination: "/hi-latn-in/:path*", permanent: true },
+      // handled by the locale routing in src/proxy.ts. On the apex they go
+      // straight to www, so an old link there is one hop too.
+      ...OLD_PREFIXES.flatMap(([from, to]) =>
+        [
+          { source: `/${from}`, destination: `/${to}` },
+          { source: `/${from}/:path*`, destination: `/${to}/:path*` },
+        ].flatMap((rule) => [
+          { ...rule, has: [APEX_HOST], destination: `https://www.vayasyaseva.com${rule.destination}`, permanent: true },
+          { ...rule, permanent: true },
+        ]),
+      ),
     ];
   },
 };

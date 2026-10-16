@@ -84,7 +84,7 @@ export const jobHubs: Record<Locale, JobHubCopy[]> = {
     {
       slug: "freshers",
       name: "Fresher jobs",
-      metaTitle: "SIDCUL Haridwar Vacancy for Freshers: Factory, Packing, Warehouse",
+      metaTitle: "SIDCUL Haridwar Vacancy for Freshers: Factory, Packing",
       description:
         "Jobs for freshers in SIDCUL and across Haridwar: helper, packing, warehouse and housekeeping work, no experience needed. Apply online. There is no fee to apply.",
       heading: "Jobs for freshers in SIDCUL Haridwar.",
@@ -119,7 +119,7 @@ export const jobHubs: Record<Locale, JobHubCopy[]> = {
     {
       slug: "10th-pass",
       name: "10th pass jobs",
-      metaTitle: "10th Pass Jobs in SIDCUL Haridwar: Helper, Packing, Warehouse",
+      metaTitle: "10th Pass Jobs in SIDCUL Haridwar: Helper, Packing",
       description:
         "Jobs for 10th pass in SIDCUL and across Haridwar: factory helper, packing, warehouse and housekeeping work. Apply online. There is no fee to apply.",
       heading: "10th pass jobs in SIDCUL Haridwar.",
@@ -154,7 +154,7 @@ export const jobHubs: Record<Locale, JobHubCopy[]> = {
     {
       slug: "12th-pass",
       name: "12th pass jobs",
-      metaTitle: "12th Pass Jobs in SIDCUL Haridwar: Data Entry, Operator, Packing",
+      metaTitle: "12th Pass Jobs in SIDCUL Haridwar: Data Entry, Packing",
       description:
         "Jobs for 12th pass in SIDCUL and across Haridwar: data entry, trainee machine operator, packing and warehouse work. Apply online. There is no fee to apply.",
       heading: "12th pass jobs in SIDCUL Haridwar.",
@@ -295,7 +295,7 @@ export const jobHubs: Record<Locale, JobHubCopy[]> = {
     {
       slug: "freshers",
       name: "Fresher job",
-      metaTitle: "SIDCUL Haridwar Vacancy for Freshers: Factory, Packing, Warehouse",
+      metaTitle: "SIDCUL Haridwar Vacancy for Freshers: Factory, Packing",
       description:
         "SIDCUL aur poore Haridwar mein fresher ke liye naukri: factory helper, packing, warehouse aur housekeeping ka kaam, bina experience ke. Online apply karein. Koi fee nahi.",
       heading: "SIDCUL Haridwar mein fresher ke liye naukri.",
@@ -330,7 +330,7 @@ export const jobHubs: Record<Locale, JobHubCopy[]> = {
     {
       slug: "10th-pass",
       name: "10th pass job",
-      metaTitle: "SIDCUL Haridwar mein 10th Pass Job: Helper, Packing, Warehouse",
+      metaTitle: "SIDCUL Haridwar mein 10th Pass Job: Helper, Packing",
       description:
         "SIDCUL aur poore Haridwar mein 10th pass ke liye naukri: factory helper, packing, warehouse aur housekeeping ka kaam. Online apply karein. Koi fee nahi.",
       heading: "SIDCUL Haridwar mein 10th pass naukri.",
@@ -364,7 +364,7 @@ export const jobHubs: Record<Locale, JobHubCopy[]> = {
     {
       slug: "12th-pass",
       name: "12th pass job",
-      metaTitle: "SIDCUL Haridwar mein 12th Pass Job: Data Entry, Operator, Packing",
+      metaTitle: "SIDCUL Haridwar mein 12th Pass Job: Data Entry, Packing",
       description:
         "SIDCUL aur poore Haridwar mein 12th pass ke liye naukri: data entry, trainee machine operator, packing aur warehouse ka kaam. Online apply karein. Koi fee nahi.",
       heading: "SIDCUL Haridwar mein 12th pass naukri.",

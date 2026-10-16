@@ -1,0 +1,26 @@
+{
+  "summary": "Talent · intake",
+  "description": "The website's job applications (POST /webhook/vspl-talent-intake): checks x-vspl-intake-secret, validates, saves, answers 202 and starts the SMS acknowledgement.",
+  "lock": "",
+  "kind": "script",
+  "language": "bun",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "authorized": {
+        "type": "boolean",
+        "description": "Set by the preprocessor: the secret header matched."
+      },
+      "body": {
+        "type": "object",
+        "description": "The application, as the website's Zod contract defines it."
+      }
+    },
+    "required": [
+      "authorized",
+      "body"
+    ]
+  },
+  "has_preprocessor": true
+}

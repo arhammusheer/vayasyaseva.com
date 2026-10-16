@@ -1,0 +1,13 @@
+{
+  "summary": "Talent · setup",
+  "description": "Applies the talent database schema (talent/schema.sql). Safe to re-run; deploy runs it first.",
+  "lock": "",
+  "kind": "script",
+  "language": "bun",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {},
+    "required": []
+  }
+}

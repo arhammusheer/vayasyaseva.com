@@ -1,0 +1,50 @@
+/**
+ * Settings and secrets, read from the `vspl` workspace's variables under
+ * f/talent/ (set by integrations/windmill/deploy.mts from the cluster;
+ * README "Variables"). Tests replace the reader with setConfigForTests.
+ */
+import * as wmill from "windmill-client";
+
+/** Every variable the scripts read, and whether deploy stores it as a secret. */
+export const VARIABLES = {
+  /** postgres://talent:…@pg-main-rw.data.svc.cluster.local:5432/talent */
+  talent_pg_url: { secret: true },
+  fast2sms_api_key: { secret: true },
+  /** The x-vspl-intake-secret header the website sends. */
+  intake_webhook_secret: { secret: true },
+  /** Read-only R2 token scoped to vayasya-talent-intake (deliver attaches files). */
+  r2_read_key_id: { secret: true },
+  r2_read_secret: { secret: true },
+  /** Delete rights on vayasya-talent-intake, for erasure only. */
+  r2_erase_key_id: { secret: true },
+  r2_erase_secret: { secret: true },
+  /** Chatwoot user "Automation (retention)": deletes contacts. */
+  chatwoot_admin_token: { secret: true },
+  /** The "Jobs, website" API inbox identifier: it authorises Chatwoot's public API, so it is a secret too. */
+  chatwoot_inbox_identifier: { secret: true },
+  chatwoot_base_url: { secret: false },
+  chatwoot_account_id: { secret: false },
+  r2_endpoint: { secret: false },
+  r2_bucket: { secret: false },
+} as const;
+
+export type ConfigName = keyof typeof VARIABLES;
+export const variablePath = (name: ConfigName) => `f/talent/${name}`;
+
+let override: Partial<Record<ConfigName, string>> | null = null;
+
+/** Tests only: answer from this map instead of Windmill. */
+export function setConfigForTests(values: Partial<Record<ConfigName, string>> | null) {
+  override = values;
+}
+
+export async function config(name: ConfigName): Promise<string> {
+  if (override) {
+    const value = override[name];
+    if (value === undefined) throw new Error(`test config has no ${name}`);
+    return value;
+  }
+  const value = await wmill.getVariable(variablePath(name));
+  if (!value) throw new Error(`variable ${variablePath(name)} is empty`);
+  return value;
+}

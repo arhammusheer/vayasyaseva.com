@@ -1,0 +1,18 @@
+{
+  "summary": "Talent · acknowledge",
+  "description": "The Fast2SMS application acknowledgement: for one submission when intake starts it, else the oldest due one, after flagging interrupted sends as unknown.",
+  "lock": "",
+  "kind": "script",
+  "language": "bun",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "submission_id": {
+        "type": "string",
+        "description": "Only this submission (from intake). Empty: the oldest due one."
+      }
+    },
+    "required": []
+  }
+}

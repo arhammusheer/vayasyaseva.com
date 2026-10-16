@@ -1,0 +1,19 @@
+{
+  // The Windmill talent scripts, their library and tooling. Separate from the
+  // website's tsconfig (the generated f/ files are plain JS for Windmill's Bun
+  // and are not type-checked). Checked by `pnpm windmill:check` (part of
+  // `pnpm type-check`).
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2023", "DOM"],
+    "types": ["node"],
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "erasableSyntaxOnly": true,
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true
+  },
+  "include": ["talent/**/*.ts", "*.mts"]
+}

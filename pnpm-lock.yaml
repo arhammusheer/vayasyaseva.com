@@ -78,6 +78,9 @@ importers:
       playwright:
         specifier: ^1.63.0
         version: 1.63.0
+      postgres:
+        specifier: 3.4.7
+        version: 3.4.7
       shadcn:
         specifier: ^4.3.0
         version: 4.21.0(typescript@6.0.3)
@@ -90,6 +93,9 @@ importers:
       typescript:
         specifier: ^6
         version: 6.0.3
+      windmill-client:
+        specifier: 1.822.0
+        version: 1.822.0
 
 packages:
 
@@ -3466,6 +3472,10 @@ packages:
     resolution: {integrity: sha512-RRuzqDtt5Y9h3quz5hWhK+TPnsmVs6WwSU6LkJMeY4HstUEDuYTG8UJSdawMRzmzAtV+KEoG8N3Qg2qLy5vM/A==}
     engines: {node: ^10 || ^12 || >=14}
 
+  postgres@3.4.7:
+    resolution: {integrity: sha512-Jtc2612XINuBjIl/QTWsV5UvE8UHuNblcO3vVADSrKsrc6RqGX6lOW1cEo3CM2v0XG4Nat8nI+YM7/f26VxXLw==}
+    engines: {node: '>=12'}
+
   powershell-utils@0.1.0:
     resolution: {integrity: sha512-dM0jVuXJPsDN6DvRpea484tCUaMiXWjuCn++HGTqUWzGDjv5tZkEZldAJ/UMlqRYGFrD/etByo4/xOuC/snX2A==}
     engines: {node: '>=20'}
@@ -4065,6 +4075,9 @@ packages:
     resolution: {integrity: sha512-GlaYyEb07DPxYCKhKzplCWBJtvxZcZMrL+4UkrTSJHHPyZU4mYYTv3qaOe77H7EODLSSopAUFAc6W8U4yqvscg==}
     engines: {node: ^16.13.0 || >=18.0.0}
     hasBin: true
+
+  windmill-client@1.822.0:
+    resolution: {integrity: sha512-ID4phgmoVS41BYqQh7s3w6CT1m774n+gs5LK52hN2SqOhbqtQyqWwLvCgFf+VEAAabPD336vJd+FjsYU527bHQ==}
 
   word-wrap@1.2.5:
     resolution: {integrity: sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==}
@@ -7660,6 +7673,8 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
+  postgres@3.4.7: {}
+
   powershell-utils@0.1.0: {}
 
   powershell-utils@0.2.1: {}
@@ -8504,6 +8519,8 @@ snapshots:
   which@4.0.0:
     dependencies:
       isexe: 3.1.5
+
+  windmill-client@1.822.0: {}
 
   word-wrap@1.2.5: {}
 

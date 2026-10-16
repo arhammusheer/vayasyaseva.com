@@ -36,6 +36,9 @@ Last compiled: 16 October 2026, for the national phase 1 pull request.
 | We aim to reply within two working days (Monday to Saturday, IST) | /contact, CTA band (3 languages), /services/contract-labour | A | PLAN §8.1; becomes B after 90 days of first-reply data | | 16 Jan 2027 |
 | For a site elsewhere in India, we'll tell you plainly whether we can staff it | Home, /contact, /industries FAQ, wage pages | A | Owner decision 3 | | 16 Oct 2027 |
 | A site visit before a crew starts (site assessment request) | /contact, home | A | Owner to confirm | | 16 Oct 2027 |
+| We're set up for crews of about 20 workers or more, on 8-hour shifts, for three months or longer | Home FAQ | A | Owner decision 6 (qualified lead = 20+ workers, 3+ months) | | 16 Oct 2027 |
+| A rate per worker covering wages, applicable EPF and ESIC and our service charge, on one monthly invoice | Home FAQ | A | Practice; owner to confirm billing basis | | 16 Oct 2027 |
+| We put a supervised crew on your floor and keep it running, for a season or for years | Home hero | A | Practice; owner to confirm | | 16 Oct 2027 |
 
 ## Wages and guides
 

@@ -69,11 +69,31 @@ export const complianceItems: ComplianceItem[] = [
 ];
 
 /**
- * The home page FAQ (PLAN §5.2). The second question is the standard agency
- * FAQ from docs/brand-rules.md, word for word: keep it in sync with that file.
- * A `link` renders after its answer and stays out of the FAQPage text.
+ * The home page FAQ (PLAN §5.2). Buyer questions first; the standard agency
+ * FAQ from docs/brand-rules.md comes last, word for word: keep it in sync
+ * with that file. A `link` renders after its answer and stays out of the
+ * FAQPage text.
  */
 export const homeFaqs: FaqItem[] = [
+  {
+    question: "What size of crew do you take on?",
+    answer:
+      "We’re set up for crews of about 20 workers or more, on 8-hour shifts, for three months or longer, from one line to several shifts. Smaller or shorter? Ask anyway and we’ll tell you plainly.",
+    link: { href: "/contact", label: "Request a crew" },
+    category: "commercial",
+  },
+  {
+    question: "How is the crew priced?",
+    answer:
+      "A rate per worker that covers wages, the EPF and ESIC that apply, and our service charge, billed on one monthly invoice. Send the roles, headcount and shifts and we’ll quote.",
+    category: "commercial",
+  },
+  {
+    question: "Where do you supply workers?",
+    answer:
+      "We’re based in Haridwar, Uttarakhand, and run crews at units in SIDCUL and across Haridwar. For a site elsewhere in India, send us the details. We’ll tell you plainly whether we can staff it.",
+    category: "commercial",
+  },
   {
     question: "What records can we check?",
     answer:
@@ -81,19 +101,6 @@ export const homeFaqs: FaqItem[] = [
     category: "compliance",
   },
   AGENCY_FAQ["en-IN"],
-  {
-    question: "Where do you supply workers?",
-    answer:
-      "We’re based in Haridwar, Uttarakhand, and run crews at units in SIDCUL and across Haridwar. For a site elsewhere in India, send us the details. We’ll tell you plainly whether we can staff it.",
-    link: { href: "/contact", label: "Request a crew" },
-    category: "commercial",
-  },
-  {
-    question: "Who handles EPF and ESIC?",
-    answer:
-      "We do. The workers are on our payroll, so we register them for EPF and ESIC where they apply, deposit the contributions every month and keep the challans for your review.",
-    category: "compliance",
-  },
 ];
 
 /**

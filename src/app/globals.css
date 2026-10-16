@@ -2581,23 +2581,10 @@ a:hover > svg {
   font-size: clamp(44px, 5.4vw, 80px);
 }
 
-/* Home: what we track for every worker. Ruled rows, gold numerals. */
+/* Home: why teams use us. Ruled rows, gold numerals. */
 .tracked-list {
-  margin-top: 44px;
+  margin-top: 36px;
   max-width: 640px;
-}
-.home-intro .tracked-list > h3 {
-  margin-top: 0;
-  max-width: none;
-  font-family: var(--font-hind), var(--font-hind-deva);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--foreground);
-}
-.tracked-list ol {
-  margin-top: 8px;
 }
 .tracked-list li {
   display: grid;
@@ -2615,7 +2602,9 @@ a:hover > svg {
   line-height: 1;
   color: var(--gold-700);
 }
-.tracked-list h4 {
+.home-intro .tracked-list h3 {
+  margin-top: 0;
+  max-width: none;
   font-size: 21px;
   font-weight: 500;
   line-height: 1.25;
@@ -2624,10 +2613,6 @@ a:hover > svg {
   margin-top: 6px;
   font-size: 16px;
   line-height: 1.6;
-}
-.home-intro p.tracked-note {
-  margin-top: 8px;
-  font-size: 16px;
 }
 
 /* Home: where we work. One oversized place line per cluster with a

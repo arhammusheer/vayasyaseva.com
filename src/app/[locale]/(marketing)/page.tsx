@@ -18,7 +18,7 @@ export const generateStaticParams = localeParams("/");
 // in PLAN §9.5.
 const TITLE = "Labour Contractor and Manpower Supply Company";
 const DESCRIPTION =
-  "Contract labour for factories, warehouses and facilities. Workers on our payroll; we handle wages, EPF and ESIC, supervise and replace absentees.";
+  "Supervised crews for factories, warehouses and facilities on 8-hour shifts. Absentees replaced, EPF and ESIC handled, one monthly invoice for the crew.";
 
 export const metadata = pageMetadata({
   title: { absolute: `${TITLE} | Vayasya Seva` },
@@ -44,11 +44,24 @@ const capabilities = [
   },
 ];
 
-/** What we track for every worker. Described only: no figures until measured and signed off (docs/claim-policy.md). */
-const tracked = [
-  { title: "Retention", text: "How long people stay with a crew." },
-  { title: "Training", text: "Which training each worker has finished, and what comes next." },
-  { title: "Time to full productivity", text: "How long a new worker takes to work at full pace on the line." },
+/**
+ * What a buyer gets, in the order they care about it. The retention and
+ * training line is described only: no figures until measured and signed off
+ * (docs/claim-policy.md).
+ */
+const benefits = [
+  {
+    title: "Shifts that stay staffed",
+    text: "Our supervisor runs the crew on your shifts and sends a replacement when someone is absent, so the line doesn’t wait on attendance.",
+  },
+  {
+    title: "People who stay and get better",
+    text: "We track how long each worker stays, what training they’ve finished and how soon they reach full pace. A crew that stays and learns is a better crew for your line.",
+  },
+  {
+    title: "Paperwork off your desk",
+    text: "Wages, EPF, ESIC, attendance and wage registers are ours to run. You get one invoice for the crew and the records for your review.",
+  },
 ];
 
 /** Clusters whose buyer page is published, in registry order (PLAN §5.2 "Where we work"). */
@@ -98,9 +111,9 @@ export default function HomePage() {
             Contract labour for factories, warehouses and facilities.
           </h1>
           <p className="hero-description rise rise-2">
-            We supply the workers and stay their employer. We pay wages and
-            deposit EPF and ESIC where they apply, supervise the crew and
-            replace absentees.
+            Tell us the roles, the headcount and the shifts. We put a
+            supervised crew on your floor and keep it running, for a season or
+            for years.
           </p>
           {/* The two doors (PLAN §5.2): buyers to the form, job seekers to jobs. */}
           <div className="hero-doors rise rise-3">
@@ -120,45 +133,31 @@ export default function HomePage() {
         </div>
       </section>
       <section id="introduction" className="site-shell home-intro">
-        <p className="eyebrow">HOW IT WORKS</p>
+        <p className="eyebrow">WHY TEAMS USE US</p>
         <div>
           <h2>
-            On our payroll,
+            You run the line.
             <br />
-            on your site.
+            We run the crew.
           </h2>
           <p>
-            The workers we send are our employees, not candidates for you to
-            hire. We pay their wages, deposit EPF and ESIC where they apply,
-            and keep the
-            attendance and wage registers. Our supervisor runs the crew on
-            your shifts and sends a replacement when someone is absent.
-          </p>
-          <p>
-            Every shift is a full 8 hours. You tell us the work, the headcount
-            and the shift pattern, and you get one invoice for the crew.
-            Before a crew starts, we can visit the site to see the work, the
-            shifts and the safety rules.
+            Production helpers, packers, loaders, housekeeping: tell us the
+            work and the shift pattern, and we bring the people, a supervisor
+            and the records. Every shift is a full 8 hours, and before a crew
+            starts we can visit to see the work and the safety rules.
           </p>
           <div className="tracked-list">
-            <h3>What we track for every worker</h3>
             <ol>
-              {tracked.map((item, i) => (
+              {benefits.map((item, i) => (
                 <li key={item.title}>
                   <span aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
                   <div>
-                    <h4>{item.title}</h4>
+                    <h3>{item.title}</h3>
                     <p>{item.text}</p>
                   </div>
                 </li>
               ))}
             </ol>
-            <p className="tracked-note">
-              We treat the people we deploy as people to develop: a worker who
-              stays and learns is better for your line. These records show us
-              where a crew needs support. We&rsquo;ll publish figures only once
-              they&rsquo;re measured.
-            </p>
           </div>
         </div>
       </section>
@@ -277,9 +276,9 @@ export default function HomePage() {
           </div>
           <div className="compliance-detail">
             <p>
-              As the employer, we carry the statutory work for the workers we
-              deploy: attendance and wage registers, wage slips, and the EPF
-              and ESIC contributions that apply, ready for your review.
+              Attendance and wage registers, wage slips, and the EPF and ESIC
+              challans for every worker on your site, ready for your monthly
+              review and for audits.
             </p>
             <div className="registration-line">
               <span>EPF &amp; ESIC</span>

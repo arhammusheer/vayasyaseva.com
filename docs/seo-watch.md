@@ -13,6 +13,11 @@ The report covers:
   brand" also drops anonymised queries), and Haridwar-query impressions split
   by page (home, `/jobs/haridwar`, `/haridwar-sidcul`, other);
 - the month-3 targets of PLAN §9.5 over the last 28 days;
+- the location pages (live since 17 October 2026): last week's impressions
+  and clicks per region (/locations, Uttarakhand, Bengaluru, Delhi NCR), how
+  many of each region's pages Google has indexed (URL Inspection API, read
+  from the live sitemap, about 13 calls a week), the top queries reaching
+  them, and the pages still to request indexing for;
 - the top ten queries of the last week.
 
 ## The home retitle rule (PLAN §9.5)

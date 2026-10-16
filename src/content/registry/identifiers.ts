@@ -64,7 +64,7 @@ export const locationHubPath = (cluster: Exclude<ClusterId, "haridwar" | "other"
 export const jobsHubPath = (cluster: Exclude<ClusterId, "other">) => `/jobs/${cluster}`;
 
 /** Wage pages use full state slugs; short codes 308 to them. */
-export const WAGE_STATE_SLUGS = ["uttarakhand", "uttar-pradesh", "delhi", "haryana"] as const;
+export const WAGE_STATE_SLUGS = ["uttarakhand", "uttar-pradesh", "delhi", "haryana", "karnataka"] as const;
 export type WageStateSlug = (typeof WAGE_STATE_SLUGS)[number];
 export const WAGE_STATE_CODES = { up: "uttar-pradesh", dl: "delhi", uk: "uttarakhand" } as const satisfies Record<
   string,
@@ -88,3 +88,5 @@ export const guidePath = (slug: GuideSlug) => `/guides/${slug}`;
  * `<cluster>:<area>` ids, plus `relocate`, when their jobs hub publishes.
  */
 export const HARIDWAR_AREA_IDS = ["sidcul-bahadrabad", "haridwar-jwalapur", "roorkee-bhagwanpur", "laksar", "outside"] as const;
+/** Bengaluru's (jobs hub published 16 Oct 2026): the four directions and outside the city. Append-only too. */
+export const BENGALURU_AREA_IDS = ["bengaluru:north", "bengaluru:south", "bengaluru:east", "bengaluru:west", "bengaluru:outside"] as const;

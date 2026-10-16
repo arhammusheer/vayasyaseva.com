@@ -1,0 +1,183 @@
+{
+ "state": "karnataka",
+ "name": "Karnataka",
+ "titleName": "Karnataka",
+ "nextRevision": {
+  "expected": "2027-04-01",
+  "basis": "The 22 May 2026 notification sets the variable dearness allowance once a year, from 1 April, from the average consumer price index of the previous calendar year, so the next VDA is due on 1 April 2027. No October revision is due."
+ },
+ "checked": {
+  "on": "2026-10-16"
+ },
+ "sources": [
+  {
+   "id": "ka-2026-05",
+   "kind": "notification",
+   "title": "Revised minimum rates of wages for scheduled employments (single notification)",
+   "number": "LD 411 LWA 2023",
+   "date": "2026-05-22",
+   "authority": "Labour Department, Government of Karnataka",
+   "legalBasis": "Minimum Wages Act, 1948, sections 3(1)(b) and 5(1)(b), continued by section 69 of the Code on Wages, 2019. Karnataka Gazette (Extraordinary) Part IVA No. 389, 25 May 2026. In force from 22 May 2026; challenged in the Karnataka High Court (WP 16145/2026), which refused employers interim relief in September 2026.",
+   "url": "https://karmikaspandana.karnataka.gov.in/uploads/media_to_upload1780292271.pdf",
+   "listing": "https://karmikaspandana.karnataka.gov.in/47/minimum-wages-final-notification/en",
+   "language": "kn",
+   "sha256": "d3e6eb89818706317a9537815462c0b2fccfe84b3314f83950a4ec9b5e44a33e",
+   "sizeKb": 1549,
+   "retrievedOn": "2026-10-16"
+  },
+  {
+   "id": "ka-2026-05-sheet",
+   "kind": "notification",
+   "title": "Single notification: rates by zone and skill, and the VDA payable from 22 May 2026 (department summary)",
+   "number": "LD 411 LWA 2023 (summary)",
+   "date": "2026-05-22",
+   "authority": "Labour Commissioner, Karnataka",
+   "url": "https://karmikaspandana.karnataka.gov.in/uploads/media_to_upload1780296165.pdf",
+   "listing": "https://karmikaspandana.karnataka.gov.in/47/minimum-wages-final-notification/en",
+   "language": "en",
+   "sha256": "88d717c05f77324904e8a787ce9e858c155f971fb6e2ee172a30e59fa8dd2330",
+   "sizeKb": 482,
+   "retrievedOn": "2026-10-16"
+  }
+ ],
+ "tables": [
+  {
+   "id": "most-employments",
+   "headline": true,
+   "title": "Most scheduled employments",
+   "appliesTo": "The 79 employments in Annexures 1 and 3 of the 22 May 2026 notification, including engineering and fabrication, automobile engineering, shops and commercial establishments, security and office staff through agencies, e-commerce and courier, and any employment not in the schedule. Loading and unloading keeps its piece rates; foundry and chemical units and toilet and drain cleaning have their own rates.",
+   "sources": [
+    "ka-2026-05",
+    "ka-2026-05-sheet"
+   ],
+   "effectiveFrom": "2026-05-22",
+   "zones": [
+    {
+     "id": "zone-1",
+     "name": "Zone 1",
+     "areas": "Areas under the Greater Bengaluru Authority (Bengaluru city)."
+    },
+    {
+     "id": "zone-2",
+     "name": "Zone 2",
+     "areas": "Other city corporations and every district headquarters."
+    },
+    {
+     "id": "zone-3",
+     "name": "Zone 3",
+     "areas": "All other areas, including industrial areas outside Bengaluru city."
+    }
+   ],
+   "daily": "stated",
+   "basicLabel": "Basic (notified)",
+   "vdaLabel": "VDA",
+   "vdaNote": "The notification fixes the basic rates and a VDA of ₹1,030.80 a month (₹39.64 a day) payable from 22 May 2026, listed separately. The monthly and daily figures here are basic plus VDA, as the department's summary lists them.",
+   "rates": [
+    {
+     "zone": "zone-1",
+     "skill": "highly-skilled",
+     "basic": 31114.02,
+     "vda": 1030.8,
+     "monthly": 32144.82,
+     "daily": 1236.33
+    },
+    {
+     "zone": "zone-1",
+     "skill": "skilled",
+     "basic": 28285.47,
+     "vda": 1030.8,
+     "monthly": 29316.27,
+     "daily": 1127.54
+    },
+    {
+     "zone": "zone-1",
+     "skill": "semi-skilled",
+     "basic": 25714.07,
+     "vda": 1030.8,
+     "monthly": 26744.87,
+     "daily": 1028.64
+    },
+    {
+     "zone": "zone-1",
+     "skill": "unskilled",
+     "basic": 23376.43,
+     "vda": 1030.8,
+     "monthly": 24407.23,
+     "daily": 938.73
+    },
+    {
+     "zone": "zone-2",
+     "skill": "highly-skilled",
+     "basic": 28285.47,
+     "vda": 1030.8,
+     "monthly": 29316.27,
+     "daily": 1127.54
+    },
+    {
+     "zone": "zone-2",
+     "skill": "skilled",
+     "basic": 25714.07,
+     "vda": 1030.8,
+     "monthly": 26744.87,
+     "daily": 1028.64
+    },
+    {
+     "zone": "zone-2",
+     "skill": "semi-skilled",
+     "basic": 23376.43,
+     "vda": 1030.8,
+     "monthly": 24407.23,
+     "daily": 938.73
+    },
+    {
+     "zone": "zone-2",
+     "skill": "unskilled",
+     "basic": 21251.3,
+     "vda": 1030.8,
+     "monthly": 22282.1,
+     "daily": 856.99
+    },
+    {
+     "zone": "zone-3",
+     "skill": "highly-skilled",
+     "basic": 25714.07,
+     "vda": 1030.8,
+     "monthly": 26744.87,
+     "daily": 1028.64
+    },
+    {
+     "zone": "zone-3",
+     "skill": "skilled",
+     "basic": 23376.43,
+     "vda": 1030.8,
+     "monthly": 24407.23,
+     "daily": 938.73
+    },
+    {
+     "zone": "zone-3",
+     "skill": "semi-skilled",
+     "basic": 21251.3,
+     "vda": 1030.8,
+     "monthly": 22282.1,
+     "daily": 856.99
+    },
+    {
+     "zone": "zone-3",
+     "skill": "unskilled",
+     "basic": 19319.36,
+     "vda": 1030.8,
+     "monthly": 20350.16,
+     "daily": 782.69
+    }
+   ]
+  }
+ ],
+ "history": [],
+ "verification": [
+  "2026-10-16: karmikaspandana.karnataka.gov.in 'Minimum Wages Final Notification' lists the single notification LD 411 LWA 2023 dated 22.05.2026 (Gazette Part IVA No. 389, 25 May 2026), in force from 22 May 2026.",
+  "2026-10-16: Rates read from the gazette's Annexure 4 page images (the Kannada text layer is garbled) and from the department's English summary sheet. Zone 1 basic: highly skilled 31114.02 (1196.69 a day), skilled 28285.47 (1087.90), semi-skilled 25714.07 (989.00), unskilled 23376.43 (899.09); Zone 2 one step lower; Zone 3 two steps lower. VDA: 859 points x 0.04 x 30 = 1030.80 a month, 39.64 a day, payable from 22-05-2026.",
+  "2026-10-16: DISCREPANCY for the reviewer: Zone 3 unskilled basic reads 19319.36 in the gazette image and 19319.35 in the summary sheet's (poorly scanned) text layer. 19319.36 is used (21251.30 / 1.1 = 19319.36).",
+  "2026-10-16: OPEN QUESTION for the reviewer: the gazette prints basic rates and the VDA separately, with no total column. The monthly figures here add them (basic + VDA), as the department's summary sheet ('Payable VDA Rs. 1030.80/- from 22-05-2026') and consultants read it. Confirm before publishing.",
+  "2026-10-16: The notification is challenged in the Karnataka High Court (WP 16145/2026 with WA 1684-1685/2026). Reports (LiveLaw, Bar & Bench, not primary) say interim relief was refused around 21 Sep 2026 and the circulars of 29 Jul and 10 Aug 2026 deferring the rates were stayed on 18 Sep 2026."
+ ]
+}

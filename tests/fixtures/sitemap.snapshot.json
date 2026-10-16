@@ -786,6 +786,48 @@
     }
   },
   {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/bengaluru",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/bengaluru",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/bengaluru",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/bengaluru",
+        "x-default": "https://www.vayasyaseva.com/jobs/bengaluru"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/bengaluru",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/bengaluru",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/bengaluru",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/bengaluru",
+        "x-default": "https://www.vayasyaseva.com/jobs/bengaluru"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/bengaluru",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/bengaluru",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/bengaluru",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/bengaluru",
+        "x-default": "https://www.vayasyaseva.com/jobs/bengaluru"
+      }
+    }
+  },
+  {
     "url": "https://www.vayasyaseva.com/en-in/haridwar-sidcul",
     "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "monthly",

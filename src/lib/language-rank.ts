@@ -67,11 +67,12 @@ const CLUSTER_SETS: Readonly<Record<ClusterId, RankSet | undefined>> = {
 
 /**
  * The cluster of a jobs page without one of its own (/jobs, /jobs/apply,
- * the role pages and hubs): the one cluster with a published jobs hub, while
- * there is only one. Today every opening is in SIDCUL Haridwar, so a
- * visitor whose region is missing or misread (mobile CGNAT often places a
- * phone in a gateway state) still gets the Hindi-belt order there. With a
- * second jobs hub this returns undefined and those pages use the default.
+ * the role pages and hubs). Haridwar while its jobs hub is published: every
+ * opening is in SIDCUL Haridwar and the role pages stay Haridwar-first (PLAN
+ * §5.3), so a visitor whose region is missing or misread (mobile CGNAT often
+ * places a phone in a gateway state) still gets the Hindi-belt order there.
+ * Other hubs (Bengaluru, a worker list) keep their own order on their page.
+ * Without Haridwar, the one published hub if there is exactly one.
  */
 const JOBS_CLUSTER: ClusterId | undefined = (() => {
   const hubs = new Set(
@@ -79,6 +80,7 @@ const JOBS_CLUSTER: ClusterId | undefined = (() => {
       .filter((p) => p.kind === "jobs-city" && p.cluster && Object.values(p.locales).includes("published"))
       .map((p) => p.cluster!),
   );
+  if (hubs.has("haridwar")) return "haridwar";
   return hubs.size === 1 ? [...hubs][0] : undefined;
 })();
 

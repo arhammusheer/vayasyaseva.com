@@ -50,7 +50,7 @@ export type WageStateCopy = {
    * "elsewhere" (the complaint link and a neutral crew door: no jobs door,
    * and nothing that implies we staff sites in that state).
    */
-  band: "haridwar" | "elsewhere";
+  band: "haridwar" | "bengaluru" | "elsewhere";
 };
 
 const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined> = {
@@ -129,6 +129,32 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
     };
   },
   haryana: undefined,
+  karnataka: (s) => {
+    const t = "most-employments";
+    const u1 = rate(s, t, "zone-1", "unskilled");
+    const u3 = rate(s, t, "zone-3", "unskilled");
+    return {
+      title: (year) => `Karnataka Minimum Wages${year ? ` ${year}` : ""}: Rates by Zone`,
+      description: `Karnataka minimum wage from 22 May 2026, unskilled: ${formatRupees(u1.monthly)} a month in Bengaluru (Zone 1), ${formatRupees(u3.monthly)} in Zone 3, basic plus VDA. All skill levels. ${stamp([s])}.`,
+      answer: `From 22 May 2026, unskilled work in Bengaluru city (Zone 1) pays at least ${formatRupees(u1.monthly)} a month, or ${formatRupees(u1.daily ?? 0)} a day, basic plus VDA. Zones 2 and 3 pay less.`,
+      note: {
+        text: "Zone 1 is the Greater Bengaluru Authority area. Industrial areas outside it, such as Bommasandra, Jigani and Attibele, are Zone 3 unless they fall in a city corporation or district headquarters.",
+        link: { href: "/jobs/bengaluru", label: "Jobs in Bengaluru" },
+      },
+      faqs: [
+        {
+          question: "Is the new Karnataka minimum wage in force while it is challenged in court?",
+          answer: "Yes. Employers have challenged the 22 May 2026 notification in the Karnataka High Court, but it has not been stayed: in September 2026 the court refused employers interim relief and stayed the circulars that had deferred the new rates. This page will change if the court rules otherwise.",
+        },
+        {
+          question: "Is the VDA added on top of these rates?",
+          answer: `Yes. The notification fixes basic rates by zone and skill, and a VDA of ${formatRupees(u1.vda)} a month payable from 22 May 2026. The Labour Department lists them separately; the figures above add them. The VDA is revised once a year, from 1 April.`,
+        },
+      ],
+      labourDepartment: { href: "https://karmikaspandana.karnataka.gov.in/en", label: "Labour Department, Karnataka" },
+      band: "bengaluru",
+    };
+  },
 };
 
 export function getWageStateCopy(slug: WageStateSlug): WageStateCopy | undefined {
@@ -182,6 +208,13 @@ export const wageDoors = {
     text: "Tell us the work, the headcount and the shifts.",
     link: { href: "/contact", label: "Request a crew" },
   } satisfies Door,
+  /** Karnataka: the Bengaluru worker list (no buyer hub there yet, so the business door stays neutral). */
+  jobsBengaluru: {
+    eyebrow: "LOOKING FOR WORK",
+    heading: "Factory and warehouse work in Bengaluru.",
+    text: "Join our worker list. Full 8-hour shifts. There is no fee.",
+    link: { href: "/jobs/bengaluru", label: "Jobs in Bengaluru" },
+  } satisfies Door,
   /** UP and Delhi: who to complain to, by state. */
   paidLess: (name: string, department: LinkItem): Door => ({
     eyebrow: "PAID LESS THAN THIS?",
@@ -224,7 +257,7 @@ export const wageUi = {
       ["#documents", "4 Sources"],
     ] as [string, string][],
   },
-  hindi: "In Hindi",
+  inLanguage: { hi: "In Hindi", kn: "In Kannada" } as Record<"hi" | "kn", string>,
   notice: {
     staleStrong: "These rates may have been revised.",
     staleText: "Check the latest notification.",

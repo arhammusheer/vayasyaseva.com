@@ -28,6 +28,11 @@ export interface StepDef {
 
 const picked = (a: Answers, step: string, value: string) => a[step]?.includes(value) ?? false;
 
+/** "Where do you live?" answers per cluster: Bengaluru's on /jobs/bengaluru, Haridwar's everywhere else. */
+const HARIDWAR_AREAS = ["sidcul-bahadrabad", "haridwar-jwalapur", "roorkee-bhagwanpur", "laksar", "outside"] as const;
+const BENGALURU_AREAS = ["bengaluru:north", "bengaluru:south", "bengaluru:east", "bengaluru:west", "bengaluru:outside"] as const;
+export const areaOptions = (cluster: string | null | undefined): readonly string[] => (cluster === "bengaluru" ? BENGALURU_AREAS : HARIDWAR_AREAS);
+
 /** The questions, in order. Follow-ups appear only for the work chosen. */
 export const STEP_DEFS: StepDef[] = [
   { id: "work", kind: "multi", options: ids("work") },
@@ -40,8 +45,9 @@ export const STEP_DEFS: StepDef[] = [
   { id: "education", kind: "single", options: ids("education") },
   { id: "shift", kind: "multi", options: ids("shift") },
   { id: "start", kind: "single", options: ids("start") },
-  // Last of the taps, so the final step is only name and number.
-  { id: "area", kind: "single", options: ids("area") },
+  // Last of the taps, so the final step is only name and number. The
+  // options depend on the page's cluster (areaOptions).
+  { id: "area", kind: "single", options: HARIDWAR_AREAS },
 ];
 
 /** The role a submission is tagged with: the first work chosen, or the ITI trade when only one. */
@@ -120,6 +126,8 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       day: "Day", night: "Night", rotating: "Rotating, any shift", now: "Right away", week: "Within a week", month: "Within a month",
       "sidcul-bahadrabad": "SIDCUL / Bahadrabad", "haridwar-jwalapur": "Haridwar city / Jwalapur", "roorkee-bhagwanpur": "Roorkee / Bhagwanpur",
       laksar: "Laksar", outside: "Outside Haridwar",
+      "bengaluru:north": "North / Peenya", "bengaluru:south": "South / Electronic City", "bengaluru:east": "East / Whitefield", "bengaluru:west": "West / Kengeri",
+      "bengaluru:outside": "Outside Bengaluru",
     },
     details: {
       question: "Last step: how do we reach you?",
@@ -168,6 +176,8 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       day: "दिन", night: "रात", rotating: "बदलती शिफ्ट, कोई भी", now: "तुरंत", week: "एक हफ़्ते में", month: "एक महीने में",
       "sidcul-bahadrabad": "सिडकुल / बहादराबाद", "haridwar-jwalapur": "हरिद्वार शहर / ज्वालापुर", "roorkee-bhagwanpur": "रुड़की / भगवानपुर",
       laksar: "लक्सर", outside: "हरिद्वार से बाहर",
+      "bengaluru:north": "नॉर्थ / पीन्या", "bengaluru:south": "साउथ / इलेक्ट्रॉनिक सिटी", "bengaluru:east": "ईस्ट / व्हाइटफ़ील्ड", "bengaluru:west": "वेस्ट / केंगेरी",
+      "bengaluru:outside": "बेंगलुरु से बाहर",
     },
     details: {
       question: "आख़िरी कदम: आपसे संपर्क कैसे करें?",
@@ -216,6 +226,8 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       day: "Din", night: "Raat", rotating: "Badalti shift, koi bhi", now: "Turant", week: "Ek hafte mein", month: "Ek mahine mein",
       "sidcul-bahadrabad": "SIDCUL / Bahadrabad", "haridwar-jwalapur": "Haridwar shehar / Jwalapur", "roorkee-bhagwanpur": "Roorkee / Bhagwanpur",
       laksar: "Laksar", outside: "Haridwar se bahar",
+      "bengaluru:north": "North / Peenya", "bengaluru:south": "South / Electronic City", "bengaluru:east": "East / Whitefield", "bengaluru:west": "West / Kengeri",
+      "bengaluru:outside": "Bengaluru se bahar",
     },
     details: {
       question: "Aakhri step: aapse sampark kaise karein?",

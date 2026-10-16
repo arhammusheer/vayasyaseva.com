@@ -12,7 +12,7 @@ import { revealFormTarget } from "@/lib/form-navigation";
 import { cn } from "@/lib/utils";
 import { formPage, trackAdsConversion, trackAnalyticsEvent } from "@/lib/analytics";
 import { jobsCopy } from "@/content/pages/jobs";
-import { STEP_DEFS, quickApplyCopy, roleFor, type Answers, type StepDef } from "@/content/pages/quick-apply";
+import { STEP_DEFS, areaOptions, quickApplyCopy, roleFor, type Answers, type StepDef } from "@/content/pages/quick-apply";
 import { readPrefill } from "@/lib/prefill";
 import { localePath, splitLocalePath, type Locale } from "@/lib/i18n";
 import { clusterById } from "@/content/registry/clusters";
@@ -380,7 +380,7 @@ export function QuickApply({
             {q.hint && <p className="quick-hint">{q.hint}</p>}
             <Pills
               labelledBy={`quick-q-${step.id}`}
-              options={step.options}
+              options={step.id === "area" ? areaOptions(cluster) : step.options}
               labels={t.labels}
               multi={step.kind === "multi"}
               disabled={locked}

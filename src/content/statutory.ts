@@ -32,8 +32,8 @@ export type DueRow = {
 export type StateDues = {
   deadlines: Deadline[];
   rows: DueRow[];
-  /** "Professional Tax is not levied in Uttarakhand." */
-  notLevied: string;
+  /** "Professional Tax is not levied in Uttarakhand." Absent where it is levied (Karnataka). */
+  notLevied?: string;
 };
 
 export const statutorySources: StatutorySource[] = [
@@ -110,6 +110,38 @@ export const statutorySources: StatutorySource[] = [
     url: "https://cdnbbsr.s3waas.gov.in/s36547884cea64550284728eb26b0947ef/uploads/2025/04/2025041461612759.pdf",
   },
   {
+    id: "ka-pt-act",
+    title: "Karnataka Tax on Professions, Trades, Callings and Employments Act, 1976 (sections 4, 6 and 6A: deduction, returns and payment)",
+    number: "Karnataka Act 35 of 1976",
+    date: "1976-04-01",
+    authority: "Government of Karnataka",
+    url: "https://prsindia.org/files/bills_acts/acts_states/karnataka/1976/1976KR35.pdf",
+  },
+  {
+    id: "ka-pt-2025",
+    title: "Karnataka Tax on Professions (Amendment) Bill, 2025: ₹200 a month on ₹25,000 or more, ₹300 in February",
+    number: "L.A. Bill No. 8 of 2025",
+    date: "2025-03-01",
+    authority: "Karnataka Legislative Assembly",
+    url: "https://prsindia.org/files/bills_acts/bills_states/karnataka/2025/Bill8of2025KA.pdf",
+  },
+  {
+    id: "ka-lwf-2025",
+    title: "Karnataka Labour Welfare Fund (Amendment) Act, 2024: ₹50 worker, ₹100 employer, ₹50 government a year",
+    number: "Karnataka Act No. 5 of 2025",
+    date: "2025-01-10",
+    authority: "Karnataka Gazette, Part IVA No. 19",
+    url: "https://klwb.karnataka.gov.in/uploads/Govt%20Gazette%20copy%20Lwf%2050&100_1766057899.pdf",
+  },
+  {
+    id: "ka-osh-draft-2026",
+    title: "Occupational Safety, Health and Working Conditions (Karnataka) Rules, 2026: draft",
+    number: "LD 245 LET 2021",
+    date: "2026-01-23",
+    authority: "Labour Department, Government of Karnataka",
+    url: "https://karmikaspandana.karnataka.gov.in/uploads/media_to_upload1769512711.pdf",
+  },
+  {
     id: "osh-handbook-2026",
     title: "Labour codes compliance handbook (OSH Code, sections 45 to 48: contract labour licence)",
     number: "Ministry of Labour handbook",
@@ -162,6 +194,21 @@ const upLwf: DueRow = {
 };
 
 export const employerDues: Partial<Record<WageStateSlug, StateDues>> = {
+  karnataka: {
+    deadlines: [
+      wages,
+      epfEsic,
+      { when: "20th", detail: "of the next month", what: "Professional Tax (quarterly if under ₹5,000 a month)", sources: ["ka-pt-act"] },
+      { when: "Yearly", detail: "1 to 15 January", what: "Labour Welfare Fund, for the year before", sources: ["ka-lwf-2025"] },
+      { ...licence("Karnataka's rules are still in draft; ask the Labour Department how to apply."), sources: ["osh-handbook-2026", "ka-osh-draft-2026"] },
+    ],
+    rows: [
+      epf,
+      esic,
+      { name: "Professional Tax", applies: "Wages of ₹25,000 a month or more", worker: "₹200 a month, ₹300 in February", employer: "Deducts and pays it", sources: ["ka-pt-act", "ka-pt-2025"] },
+      { name: "Labour Welfare Fund", applies: "Factories with 10+ workers, 20+ contract workers, shops with 50+", worker: "₹50 a year", employer: "₹100 a year", sources: ["ka-lwf-2025"] },
+    ],
+  },
   uttarakhand: {
     deadlines: [wages, epfEsic, upLwfDeadline, licence("Uttarakhand has not yet fixed the forms and fees; ask the Labour Department how to apply.")],
     rows: [epf, esic, upLwf],

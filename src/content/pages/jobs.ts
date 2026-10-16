@@ -44,6 +44,8 @@ export interface JobsCopy {
   heading: string;
   lede: string;
   apply: string;
+  /** The quiet line under Apply to the Bengaluru worker list. */
+  bengaluru: string;
   form: JobsFormCopy;
   /** Role names, as the /jobs groups and related-role rows show them. */
   work: { title: string; role: JobRole }[];
@@ -99,6 +101,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     heading: "Find work in SIDCUL Haridwar.",
     lede: "Factory, packing, warehouse, housekeeping and ITI work.",
     apply: "Apply now",
+    bengaluru: "In Bengaluru?",
     form: {
       steps: {
         files: {
@@ -170,6 +173,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     heading: "सिडकुल हरिद्वार में काम ढूँढें।",
     lede: "फ़ैक्टरी, पैकिंग, वेयरहाउस, हाउसकीपिंग और ITI का काम।",
     apply: "आवेदन करें",
+    bengaluru: "बेंगलुरु में हैं?",
     form: {
       steps: {
         files: {
@@ -241,6 +245,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     heading: "SIDCUL Haridwar mein kaam dhoondhein.",
     lede: "Factory, packing, warehouse, housekeeping aur ITI ka kaam.",
     apply: "Apply karein",
+    bengaluru: "Bengaluru mein hain?",
     form: {
       steps: {
         files: {

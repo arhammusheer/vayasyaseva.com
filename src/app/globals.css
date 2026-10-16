@@ -3908,3 +3908,10 @@ a:hover > svg {
     color: var(--muted-foreground);
   }
 }
+
+/* /jobs: the quiet line under Apply to the other cities' worker lists. */
+.jobs-also {
+  margin-top: 16px;
+  color: var(--muted-foreground);
+  font-size: 15px;
+}

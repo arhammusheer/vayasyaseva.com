@@ -1,4 +1,4 @@
-// Request a crew (PLAN §8.1): contract v1.2.0 is additive (older enquiries
+// Request a crew (PLAN §8.1): contract v1.3.0 is additive (older enquiries
 // stay valid), enum fields are checked against fixed ids, the lead flags
 // reach the staff email only, and prefilled links map onto the form.
 import { registerHooks } from 'node:module';
@@ -33,8 +33,8 @@ const requirement = {
   durationBand: 'ongoing',
 };
 
-test('contract is v1.2.0 and older enquiries stay valid', () => {
-  assert.equal(contactContract.version, '1.2.0');
+test('contract is v1.3.0 and older enquiries stay valid', () => {
+  assert.equal(contactContract.version, '1.3.0');
   const legacy = { ...person, details: 'Need 40 packers for a new line', company: 'Acme', location: 'Haridwar', industry: 'FMCG', headcount: '40', shiftRequirement: '2 shifts', targetStartDate: '2026-11-01' };
   assert.equal(parseContactRequest(legacy).success, true);
 });
@@ -78,6 +78,17 @@ test('a site assessment is its own field, and long briefs stay valid', () => {
   assert.equal(result.success, true);
   assert.equal(requirementLines(result.data)[0], 'Request: A site assessment');
   assert.equal(parseContactRequest({ ...person, details: 'x'.repeat(9000) }).success, true);
+});
+
+test('compliance help needs only details, and is not judged as a crew lead', () => {
+  const result = parseContactRequest({ ...person, company: 'Acme', requestType: 'compliance-help', siteState: 'UP', headcountBand: '20-49', details: 'Help with: EPF, ESIC\nNo ESIC registration yet.' });
+  assert.equal(result.success, true);
+  assert.deepEqual(requirementLines(result.data), ['Request: Compliance help', 'Workers: 20 to 49', 'Site: Uttar Pradesh']);
+  const lead = assessCrewRequest(result.data);
+  assert.equal(lead.crew, false);
+  assert.equal(lead.qualified, false);
+  assert.equal(assessCrewRequest({ ...person, ...requirement }).crew, true);
+  assert.equal(requirementLines({ ...person, ...requirement, requestType: 'crew' })[0], 'Work: Packing, Loading and unloading');
 });
 
 test('empty optional values count as not given', () => {

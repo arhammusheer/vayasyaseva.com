@@ -101,6 +101,13 @@ export const COMPLIANCE_FAQS: FaqItem[] = [
     link: { href: "/compliance", label: "The records we keep" },
     category: "compliance",
   },
+  {
+    question: "Can you help us get our own workforce compliant?",
+    answer:
+      "Yes. We work out what is due on EPF, ESIC, PT, LWF, licences and registers, guide you through putting it right, and connect you with the CAs, labour lawyers and compliance consultants in the Vayasya Network.",
+    link: { href: "/contact?type=compliance", label: "Get compliance help" },
+    category: "compliance",
+  },
 ];
 
 /** The four on the home page, in order; the agency question last (docs/brand-rules.md). */

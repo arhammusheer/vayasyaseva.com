@@ -29,14 +29,18 @@ import { EDITORIAL_HREF } from "@/content/editorial";
 import { getWageStateCopy, listDates, wageDoors, wageHubCopy, wageUi as x, type WageDoor } from "@/content/pages/minimum-wages";
 import { SKILLS_HI, WAGE_HUB_HI, formatDateHi, wageHubHi } from "@/content/pages/minimum-wages.hi";
 import { localePath, type Locale } from "@/lib/i18n";
+import { duesNotes, duesSources, employerDues, type DueRow } from "@/content/statutory";
+import { COMPLIANCE_HELP } from "@/content/compliance";
 
 /**
  * The minimum wage pages: lean English answer pages (the hub and one page
  * per state) and, in review, the worker-first Hindi hub. The figures come
  * from the datasets in src/content/wages; the method behind them is on
  * /minimum-wages/how-we-check. Everything a long-tail search may need (the
- * basic + VDA split, the earlier period, the documents) stays in the
- * server-rendered HTML, behind <details>.
+ * basic + VDA split and the documents) stays in the server-rendered HTML,
+ * behind <details>. Each state page also carries the employer dues for that
+ * state (EPF, ESIC, PT, LWF, the licence) from src/content/statutory.ts, and
+ * one line on compliance help.
  */
 
 /** Published state pages, in hub order. A state in review is not listed or linked. */
@@ -204,53 +208,8 @@ function RateTable({ state, table }: { state: WageState; table: WageTable }) {
   );
 }
 
-/** The one earlier period (the latest entry in the dataset's history), collapsed. */
-function EarlierRates({ state }: { state: WageState }) {
-  const entry = [...state.history].sort((a, b) => b.effectiveFrom.localeCompare(a.effectiveFrom))[0];
-  if (!entry) return null;
-  const table = state.tables.find((t) => t.id === entry.table)!;
-  const hasDaily = entry.rates.some((r) => r.daily !== undefined);
-  const source = sourceById(state, entry.source);
-  const range = x.table.range(formatShortDate(entry.effectiveFrom), formatShortDate(entry.effectiveTo));
-  return (
-    <details className="wage-more is-section" id="history">
-      <summary>
-        {x.sections.earlier}: {range}
-      </summary>
-      {entry.note && <p className="wage-applies">{entry.note}</p>}
-      <table className="wage-table is-compact">
-        <caption className="sr-only">
-          {table.title}, {range}
-        </caption>
-        <thead>
-          <tr>
-            <th scope="col">{x.table.skill}</th>
-            <th scope="col">{x.table.month}</th>
-            {hasDaily && <th scope="col">{x.table.day}</th>}
-          </tr>
-        </thead>
-        <tbody>
-          {entry.rates.map((r) => (
-            <tr key={`${r.zone ?? ""}${r.skill}`}>
-              <th scope="row">
-                {r.zone && table.zones.length > 1 ? `${table.zones.find((z) => z.id === r.zone)?.name ?? r.zone}, ` : ""}
-                {SKILLS[r.skill]}
-              </th>
-              <td>{formatRupees(r.monthly)}</td>
-              {hasDaily && <td>{r.daily === undefined ? <span className="wage-none">{x.table.notSet}</span> : formatRupees(r.daily)}</td>}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <p className="wage-source">
-        {x.sourceKind(source.kind)} {/^F\.?\s?No\./i.test(source.number) ? source.number : `No. ${source.number}`}, {formatDate(source.date)}.
-      </p>
-    </details>
-  );
-}
-
 /** "Documents used": the only place each PDF and legal citation is linked. */
-function Documents({ state }: { state: WageState }) {
+function Documents({ state, slug }: { state: WageState; slug: WageStateSlug }) {
   return (
     <Section id="documents" className="border-t border-border wage-documents">
       <details className="wage-more is-section">
@@ -267,6 +226,17 @@ function Documents({ state }: { state: WageState }) {
                 </span>
                 , {formatDate(s.date)}. {s.authority}. {x.pdf(s.language === "hi", s.sizeKb ? formatSize(s.sizeKb) : null)}.
                 {s.legalBasis && ` ${s.legalBasis.replace(/([^.])$/, "$1.")}`}
+              </span>
+            </li>
+          ))}
+          {duesSources(slug).map((s) => (
+            <li key={s.id}>
+              <a href={s.url}>{s.title}</a>
+              <span>
+                <span className="font-data">
+                  <OrderNumber value={s.number} />
+                </span>
+                , {formatDate(s.date)}. {s.authority}.
               </span>
             </li>
           ))}
@@ -336,6 +306,65 @@ function Faqs({ faqs, variant = "subtle" }: { faqs: { question: string; answer: 
   );
 }
 
+/**
+ * What an employer owes in the state beyond the wage: a ruled table (cards
+ * on a phone), two short notes, and the one line on compliance help.
+ */
+function Dues({ slug, name }: { slug: WageStateSlug; name: string }) {
+  const rows = employerDues[slug];
+  if (!rows) return null;
+  const cols: [keyof DueRow, string][] = [
+    ["worker", x.dues.worker],
+    ["employer", x.dues.employer],
+    ["due", x.dues.due],
+  ];
+  return (
+    <Section id="employer-dues" className="border-t border-border">
+      <h2 className="wage-h2">{x.dues.heading(name)}</h2>
+      <div className="dues-table" role="table" aria-label={x.dues.heading(name)}>
+        <div className="dues-row is-head" role="row">
+          <span role="columnheader">{x.dues.what}</span>
+          {cols.map(([, label]) => (
+            <span key={label} role="columnheader">
+              {label}
+            </span>
+          ))}
+        </div>
+        {rows.map((r) => (
+          <div className="dues-row" role="row" key={r.name}>
+            <span role="rowheader">
+              <strong>{r.name}</strong>
+              <small>{r.applies}</small>
+            </span>
+            {r.none ? (
+              <span role="cell" className="is-none">
+                {r.none}
+              </span>
+            ) : (
+              cols.map(([key, label]) => (
+                <span key={key} role="cell" data-label={label}>
+                  {r[key] as string}
+                </span>
+              ))
+            )}
+          </div>
+        ))}
+      </div>
+      <p className="wage-note">
+        {duesNotes.late} {duesNotes.principal}
+      </p>
+      <div className="dues-help">
+        <p>
+          <strong>{x.dues.helpLead}</strong> {x.dues.helpText}
+        </p>
+        <Link href={COMPLIANCE_HELP.href} className="text-link">
+          {COMPLIANCE_HELP.label} <ArrowUpRight size={18} aria-hidden="true" />
+        </Link>
+      </div>
+    </Section>
+  );
+}
+
 // ── State page ──────────────────────────────────────────────────────────────
 
 export function WageStatePage({ slug }: { slug: WageStateSlug }) {
@@ -384,10 +413,10 @@ export function WageStatePage({ slug }: { slug: WageStateSlug }) {
             </Link>
           </p>
         )}
-        <EarlierRates state={state} />
       </Section>
+      <Dues slug={slug} name={state.name} />
       <Faqs faqs={t.faqs} />
-      <Documents state={state} />
+      <Documents state={state} slug={slug} />
       <Doors doors={doors} />
     </>
   );

@@ -199,6 +199,32 @@ try {
     for(const key of ['qualified','priority','outOfScope']) assert.equal(key in body,false);
     assert.doesNotMatch(await page.locator('main').textContent(),/qualified|out of scope/i);
   }
+  // Compliance help: its own step 1 (needs, state, workers, where stuck), its own draft, sent as details.
+  await page.evaluate(()=>sessionStorage.clear());
+  await open('/en-in/contact?type=compliance');
+  assert.equal(await page.locator('main h1').textContent(),'Get compliance help.');
+  assert.equal(await page.locator('#roles').count(),0);assert.equal(await page.locator('#siteCity').count(),0);
+  await page.locator('button[type=submit]').click();await visible('#needs');
+  for(const id of ['needs','siteState','details']) assert.ok(await page.locator(`#${id}-error`).isVisible(),id);
+  assert.equal(await page.locator('#headcountBand-error').count(),0);
+  await pill('needs','EPF').click();await pill('needs','ESIC').click();assert.equal(await page.locator('#needs-error').count(),0);
+  await page.locator('#siteState').selectOption('UP');await pill('headcountBand','20 to 49').click();
+  await page.locator('#details').fill('Notice from ESIC, six months missed.');await tick();
+  assert.notEqual(await page.evaluate(()=>sessionStorage.getItem('vayasya-compliance-draft')),null);
+  assert.equal(await page.evaluate(()=>sessionStorage.getItem('vayasya-contact-draft')),null);
+  await page.locator('button[type=submit]').click();await page.locator('#name').waitFor();
+  const recap=await page.locator('.crew-recap').textContent();
+  assert.ok(recap.includes('Request: Compliance help'));assert.ok(recap.includes('Help with: EPF, ESIC'));
+  await page.locator('#name').fill('Compliance Test');await page.locator('#company').fill('Compliance Company');await page.locator('#phone').fill('9999900002');
+  await page.locator('button[type=submit]').click();await visible('[role=status] h2');
+  {
+    const body=contactBodies.at(-1);
+    assert.equal(body.requestType,'compliance-help');assert.equal(body.siteState,'UP');assert.equal(body.headcountBand,'20-49');
+    assert.match(body.details,/^Help with: EPF, ESIC\n/);assert.ok(body.details.endsWith('six months missed.'));
+    assert.equal(body.company,'Compliance Company');
+    for(const key of ['roles','siteCity','startWindow','durationBand','shiftPattern']) assert.equal(key in body,false,key);
+  }
+  console.log('Get compliance help: own questions and draft, sent as compliance-help with a Help with: line');
   // Prefilled links: #location= from /haridwar-sidcul (in-app navigation) and from AI assistants.
   await page.evaluate(()=>sessionStorage.clear());
   await open('/en-in/contact#location=haridwar&roles=packing,warehouse&headcount=60&start=within-1-week&name=Prefill%20Test');

@@ -13,18 +13,44 @@ import { localeParams } from "@/lib/i18n";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/contact");
 
-const contactMetadata = (assessment = false) => pageMetadata({
-  title: assessment ? "Request a Site Assessment" : "Request a Crew: Contract Labour Enquiry",
-  description: assessment
-    ? "Ask Vayasya Seva to look at your site before a crew starts. Tell us the work, the site and when. We aim to reply within two working days, Monday to Saturday."
-    : "Need contract labour? Tell Vayasya Seva the work, how many workers, the site and the start date. We aim to reply within two working days, Monday to Saturday.",
-  alternates: { canonical: "/contact" },
-  shareVariant: assessment ? "assessment" : "",
-});
+type Mode = "crew" | "assessment" | "compliance";
+
+/** ?type=assessment and ?type=compliance: variants of one page (canonical /contact). */
+function modeOf(type: string | string[] | undefined): Mode {
+  return type === "assessment" ? "assessment" : type === "compliance" ? "compliance" : "crew";
+}
+
+const META: Record<Mode, { title: string; description: string; shareVariant: string }> = {
+  crew: {
+    title: "Request a Crew: Contract Labour Enquiry",
+    description:
+      "Need contract labour? Tell Vayasya Seva the work, how many workers, the site and the start date. We aim to reply within two working days, Monday to Saturday.",
+    shareVariant: "",
+  },
+  assessment: {
+    title: "Request a Site Assessment",
+    description:
+      "Ask Vayasya Seva to look at your site before a crew starts. Tell us the work, the site and when. We aim to reply within two working days, Monday to Saturday.",
+    shareVariant: "assessment",
+  },
+  compliance: {
+    title: "Get Compliance Help: EPF, ESIC and Labour Law",
+    description:
+      "Behind on EPF, ESIC, PT, LWF, a contract labour licence or registers? Vayasya Seva guides you to get compliant and connects you with CAs and labour lawyers.",
+    shareVariant: "compliance",
+  },
+};
 
 export async function generateMetadata({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
-  return contactMetadata((await searchParams).type === "assessment");
+  const { title, description, shareVariant } = META[modeOf((await searchParams).type)];
+  return pageMetadata({ title, description, alternates: { canonical: "/contact" }, shareVariant });
 }
+
+const HEADINGS: Record<Mode, string> = {
+  crew: "Request a crew.",
+  assessment: "Request a site assessment.",
+  compliance: "Get compliance help.",
+};
 
 function ContactFormFallback() {
   return (
@@ -63,7 +89,7 @@ const lines = [
 ];
 
 export default async function ContactPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
-  const assessment = (await searchParams).type === "assessment";
+  const mode = modeOf((await searchParams).type);
   return (
     <>
       <JsonLd
@@ -96,14 +122,21 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
               Looking for work?&nbsp;<span className="text-gold-700 underline underline-offset-4">Jobs in Haridwar →</span>
             </NextLink>
             <p className="eyebrow text-gold-700">FOR BUSINESSES</p>
-            <h1 className="crew-intro-title">{assessment ? "Request a site assessment." : "Request a crew."}</h1>
+            <h1 className="crew-intro-title">{HEADINGS[mode]}</h1>
+            {mode === "compliance" && (
+              <p className="crew-reply max-w-sm">
+                Missed EPF or ESIC filings, no contract labour licence, registers not kept? We guide you through
+                getting compliant, and connect you with CAs, labour lawyers and compliance consultants in the
+                Vayasya Network.
+              </p>
+            )}
             <p className="crew-reply max-w-sm">{RESPONSE_LINE}</p>
           </div>
           <div className="lg:col-start-2 lg:row-start-1 lg:row-span-2">
             {/* Outside Suspense: the form renders on the client only, and agents read the server HTML. */}
             <AgentGuidance form="contact" />
             <Suspense fallback={<ContactFormFallback />}>
-              <ContactForm key={assessment ? "assessment" : "contact"} />
+              <ContactForm key={mode} />
             </Suspense>
           </div>
           <div className="lg:col-start-1 lg:row-start-2 lg:pt-12">

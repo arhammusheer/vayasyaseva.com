@@ -325,10 +325,12 @@ export function createContactCaseId(date = new Date()) {
  * response or the page.
  */
 function staffFlagLines(data: ContactFormData) {
-  const { qualified, soon, outOfScope } = assessCrewRequest(data);
+  const { crew, qualified, soon, outOfScope } = assessCrewRequest(data);
   return [
-    `Qualified (20+ workers, 3+ months): ${qualified ? "YES" : "no"}`,
-    `Starts within 4 weeks: ${soon ? "yes" : "no"}`,
+    // Compliance help is not a crew request: no crew-lead judgement.
+    ...(crew
+      ? [`Qualified (20+ workers, 3+ months): ${qualified ? "YES" : "no"}`, `Starts within 4 weeks: ${soon ? "yes" : "no"}`]
+      : ["Compliance help: guide them and connect them with the Vayasya Network (not a crew request)"]),
     ...outOfScope.map((id) => `Possibly out of scope: ${outOfScopeLabel(id)}`),
     ...(data.pageCluster ? [`Page cluster: ${data.pageCluster}`] : []),
     ...(data.sourcePath ? [`Came from: ${data.sourcePath}`] : []),

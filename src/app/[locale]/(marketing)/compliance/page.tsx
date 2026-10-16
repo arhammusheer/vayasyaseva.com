@@ -6,7 +6,7 @@ import { Section } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
 import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { siteConfig } from "@/content/site";
-import { COMPLIANCE_RECORDS, CONTRACTOR_CHECKS } from "@/content/compliance";
+import { COMPLIANCE_HELP, COMPLIANCE_RECORDS, CONTRACTOR_CHECKS } from "@/content/compliance";
 import { linkable } from "@/content/registry";
 import { WAGE_HUB_PATH, guidePath } from "@/content/registry/identifiers";
 import { localeParams } from "@/lib/i18n";
@@ -88,6 +88,17 @@ export default function CompliancePage() {
                 ))}
               </p>
             )}
+          </div>
+        </div>
+      </Section>
+      <Section id="help">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.6fr]">
+          <h2 className="text-4xl font-medium">{COMPLIANCE_HELP.heading}</h2>
+          <div>
+            <p className="text-lg leading-relaxed text-muted-foreground">{COMPLIANCE_HELP.text}</p>
+            <Link href={COMPLIANCE_HELP.href} className="text-link">
+              {COMPLIANCE_HELP.label} <ArrowUpRight size={18} aria-hidden="true" />
+            </Link>
           </div>
         </div>
       </Section>

@@ -1,5 +1,5 @@
 {
-  "version": "1.2.0",
+  "version": "1.3.0",
   "request": {
     "fields": {
       "name": {
@@ -229,10 +229,11 @@
       "requestType": {
         "type": "enum",
         "required": false,
-        "description": "What the person is asking for: a crew (the default) or a site assessment first.",
+        "description": "What the person is asking for: a crew (the default), a site assessment first, or help getting their own site compliant (EPF, ESIC, PT, LWF, contract labour licence, registers, minimum wage; send details and siteState).",
         "values": {
           "crew": "A crew",
-          "site-assessment": "A site assessment"
+          "site-assessment": "A site assessment",
+          "compliance-help": "Compliance help"
         },
         "example": "crew"
       },

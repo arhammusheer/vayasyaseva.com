@@ -214,6 +214,18 @@ for (const state of wageStates) {
   if (status.stale) warn(`C8 wages ${state.state}: stale since ${status.staleFrom} (revision expected ${state.nextRevision.expected}, last check ${state.checked.on}); the page shows the "may have been revised" notice until it is re-checked`);
   else if (status.revisionDue) warn(`C8 wages ${state.state}: revision was due on ${state.nextRevision.expected}; re-check the state's sources before ${status.staleFrom}`);
 }
+// Employer dues (src/content/statutory.ts): every row cites a listed source,
+// every published state page has its dues, and a warning once the review date
+// passes (the ESIC due date and two states' OSH rules are provisional).
+{
+  const { employerDues, statutorySources, STATUTORY_REVIEW_BY } = await importTs("src/content/statutory.ts");
+  const ids = new Set(statutorySources.map((s) => s.id));
+  for (const [slug, rows] of Object.entries(employerDues)) {
+    for (const row of rows) for (const id of row.sources) if (!ids.has(id)) fail(`C8 dues ${slug}: "${row.name}" cites unknown source "${id}"`);
+  }
+  for (const state of wageStates) if (isPublished(wageStatePath(state.state)) && !employerDues[state.state]) fail(`C8 dues: ${state.state} is published with no employer dues in src/content/statutory.ts`);
+  if (new Date().toISOString().slice(0, 10) > STATUTORY_REVIEW_BY) warn(`C8 dues: review date ${STATUTORY_REVIEW_BY} has passed; re-check the ESIC due date and the Uttarakhand and Delhi OSH rules`);
+}
 for (const slug of WAGE_STATE_SLUGS) {
   if (builtLocales(wageStatePath(slug)).length && !wageStates.some((s) => s.state === slug)) fail(`C8 ${wageStatePath(slug)} is built but src/content/wages/${slug}.json does not exist`);
 }

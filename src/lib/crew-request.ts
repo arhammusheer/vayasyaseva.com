@@ -92,6 +92,8 @@ const OUT_OF_SCOPE: { id: string; label: string; pattern: RegExp }[] = [
 ];
 
 export interface CrewAssessment {
+  /** A crew or site-assessment request; false for compliance help, which is not judged as a crew lead. */
+  crew: boolean;
   /** 20+ workers and 3+ months. */
   qualified: boolean;
   /** Starting within 4 weeks (soft label). */
@@ -103,13 +105,15 @@ export interface CrewAssessment {
 
 export function assessCrewRequest(data: ContactFormData): CrewAssessment {
   const headcountBand = data.headcountBand ?? headcountToBand(data.headcount);
+  const crew = data.requestType !== "compliance-help";
   const qualified =
+    crew &&
     Boolean(headcountBand && QUALIFYING_HEADCOUNT.has(headcountBand)) &&
     Boolean(data.durationBand && QUALIFYING_DURATION.has(data.durationBand));
-  const soon = Boolean(data.startWindow && SOON.has(data.startWindow));
+  const soon = crew && Boolean(data.startWindow && SOON.has(data.startWindow));
   const text = [data.details, data.industry, data.shiftRequirement].filter(Boolean).join("\n");
   const outOfScope = OUT_OF_SCOPE.filter((rule) => rule.pattern.test(text)).map((rule) => rule.id);
-  return { qualified, soon, outOfScope, headcountBand };
+  return { crew, qualified, soon, outOfScope, headcountBand };
 }
 
 export function outOfScopeLabel(id: string) {
@@ -129,7 +133,8 @@ export function requirementLines(data: ContactFormData) {
   const roles = data.roles?.map((id) => ROLE_OPTIONS[id] ?? id).join(", ");
   const band = data.headcountBand ?? headcountToBand(data.headcount);
   const lines: [string, string | undefined][] = [
-    ["Request", data.requestType === "site-assessment" ? REQUEST_TYPE_OPTIONS["site-assessment"] : undefined],
+    // Only what differs from the default (a crew) is named.
+    ["Request", data.requestType && data.requestType !== "crew" ? REQUEST_TYPE_OPTIONS[data.requestType] : undefined],
     ["Work", roles],
     // "Workers: 50 to 99", not "Workers: 50 to 99 workers".
     ["Workers", band ? HEADCOUNT_BAND_OPTIONS[band].replace(/ workers$/, "") : data.headcount],

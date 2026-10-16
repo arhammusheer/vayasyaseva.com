@@ -51,6 +51,12 @@ Last compiled: 16 October 2026, for the national phase 1 pull request; business 
 | We staff manufacturing plants, warehouses and logistics hubs, FMCG and consumer goods lines, offices and campuses, and hospitality-linked sites | /services#sectors (moved from /industries) | A | Owner to confirm current work in each sector | | 16 Oct 2027 |
 | Setu keeps attendance, payroll inputs and EPF and ESIC records, with reports in a format agreed with the client | /vayasya-setu | A | Practice | | 16 Oct 2027 |
 
+## Compliance help (owner direction, 16 Oct 2026)
+
+| Claim | Pages | Tier | Evidence or approval | Signed off | Review by |
+|---|---|---|---|---|---|
+| We work out what is due, guide employers to put it right, and connect them with the Vayasya Network of CAs, labour lawyers and compliance consultants | /compliance#help, wage state pages, /faq, /contact?type=compliance | A | Owner direction, 16 Oct 2026 | Owner, 16 Oct 2026 | 16 Oct 2027 |
+
 ## Wages and guides
 
 | Claim | Pages | Tier | Evidence or approval | Signed off | Review by |
@@ -58,6 +64,7 @@ Last compiled: 16 October 2026, for the national phase 1 pull request; business 
 | Every wage figure, with its notification and dates | /minimum-wages and state pages (hi-IN in review) | C | `src/content/wages/<state>.json`, `verification` array; daily source monitor | Pending: add `checked.by` per state | Each revision date |
 | We pay the workers we deploy at least the notified rate for their employment and skill | Uttarakhand wage page | C | Payroll records | | 16 Oct 2027 |
 | We re-check each state around every revision date; we fix confirmed errors and show the date | Wage pages, /minimum-wages/how-we-check (moved from /about#editorial) | A | Practice; monitor runs daily once merged | | 16 Oct 2027 |
+| Employer dues per state (EPF, ESIC, PT, LWF, contract labour licence, wage payment date) | Wage state pages ("What employers pay in …") | C | `src/content/statutory.ts`, each row cited to a Gazette, EPFO, ESIC or state source; checked 16 Oct 2026; re-check by 21 Nov 2026 (ESIC due date saved only until then; UK and Delhi OSH rules in draft) | Pending: owner or CA to confirm the table | 21 Nov 2026 |
 | Guide statements of law | Guides (review) | C | Cited to Gazette texts; named legal reviewer pending (decision 9) | Pending | 6 months after review |
 
 ## Removed or moved in the restructure (16 October 2026)

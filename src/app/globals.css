@@ -3755,3 +3755,76 @@ a:hover > svg {
     gap: 48px;
   }
 }
+
+/* Wage state pages: what employers pay in the state. A ruled grid on a wide
+   screen; one card per row on a phone, each value with its label. */
+.dues-table {
+  margin-top: 28px;
+  border-top: 1px solid var(--foreground);
+}
+.dues-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.9fr) minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 24px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.dues-row.is-head {
+  padding: 12px 0;
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+.dues-row strong {
+  display: block;
+  font-size: 18px;
+  font-weight: 500;
+}
+.dues-row small {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+.dues-row > .is-none {
+  grid-column: 2 / -1;
+  color: var(--muted-foreground);
+}
+.dues-help {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 32px;
+  margin-top: 32px;
+  padding: 20px 24px;
+  border-left: 3px solid var(--gold-500);
+  background: var(--muted);
+}
+.dues-help p {
+  max-width: 640px;
+  line-height: 1.6;
+}
+.dues-help .text-link {
+  margin-top: 0;
+}
+@media (max-width: 760px) {
+  .dues-row.is-head {
+    display: none;
+  }
+  .dues-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+  }
+  .dues-row > .is-none {
+    grid-column: auto;
+  }
+  .dues-row > [data-label]::before {
+    content: attr(data-label) ": ";
+    color: var(--muted-foreground);
+  }
+  .dues-help {
+    padding: 16px;
+  }
+}

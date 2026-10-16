@@ -94,7 +94,7 @@ AI agents and assistants may send enquiries and job applications for a person th
 Specification: GET ${baseUrl}/openapi/v1.json
 Business enquiry: POST ${baseUrl}/api/agent/contact
   Required fields: ${CONTACT_AGENT_REQUIRED}. ${CONTACT_AGENT_COMPANY}.
-  Optional fields: company, role (designation), email, sitePincode, shiftPattern, requestType (site-assessment), details, agent.name
+  Optional fields: company, role (designation), email, sitePincode, shiftPattern, requestType (site-assessment; compliance-help for help getting their own site compliant, sent with siteState and details), details, agent.name
   Deprecated, still accepted: location, industry, headcount, shiftRequirement, targetStartDate
   Allowed ids for roles, headcountBand, siteState, startWindow, durationBand and shiftPattern: see the OpenAPI spec
   Answer: 200 with a case ID (AGT-...)

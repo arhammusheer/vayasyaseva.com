@@ -61,6 +61,8 @@ export function getShareContent(path: string, locale: Locale = "en-IN", variant 
     if (t) { heading = t.heading; description = t.description; eyebrow = t.name; }
   } else if (path === "/contact" && variant === "assessment") {
     heading = "Let’s understand\nyour site."; description = "Share your roles, headcount, shifts and timing to discuss a site assessment."; eyebrow = "SITE ASSESSMENT · HARIDWAR";
+  } else if (path === "/contact" && variant === "compliance") {
+    heading = "Get compliance\nhelp."; description = "EPF, ESIC, PT, LWF, licences and registers: we guide you and connect you with CAs and labour lawyers."; eyebrow = "COMPLIANCE HELP · VAYASYA SEVA";
   }
   return { key: shareKey(path, locale, variant), path, locale, variant, heading, description, eyebrow };
 }
@@ -72,7 +74,7 @@ export function allShareContent(): ShareContent[] {
     for (const role of JOB_ROLE_SLUGS) entries.push(getShareContent("/jobs/apply", locale, `role-${role}`));
     for (const hub of JOB_HUB_SLUGS) entries.push(getShareContent("/jobs/apply", locale, `hub-${hub}`));
   }
-  entries.push(getShareContent("/contact", "en-IN", "assessment"));
+  entries.push(getShareContent("/contact", "en-IN", "assessment"), getShareContent("/contact", "en-IN", "compliance"));
   return entries;
 }
 
@@ -80,6 +82,6 @@ export function shareLanding(content: ShareContent) {
   const params = new URLSearchParams();
   if (content.variant.startsWith("role-")) params.set("role", content.variant.slice(5) as JobRole);
   if (content.variant.startsWith("hub-")) params.set("hub", content.variant.slice(4));
-  if (content.variant === "assessment") params.set("type", "assessment");
+  if (content.variant === "assessment" || content.variant === "compliance") params.set("type", content.variant);
   return `${localePath(content.path, content.locale)}${params.size ? `?${params}` : ""}`;
 }

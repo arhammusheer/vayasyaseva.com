@@ -205,14 +205,23 @@ export const wageUi = {
   minimumWages: "Minimum wages",
   stateHeading: (name: string, year: string | null) => `Minimum wages in ${name}${year ? `, ${year}` : ""}.`,
   /** The line under each H1: who checked and when, or the unsigned wording until someone signs off. */
-  checked: (by: string | null, date: string) => (by ? `Rates checked ${date} by ${by}` : `Updated ${date} from the state's own documents`),
+  checked: (by: string | null, date: string) => (by ? `Checked ${date} by ${by}` : `Updated ${date}`),
   howWeCheck: "How we check",
+  dues: {
+    heading: (name: string) => `What employers pay in ${name}`,
+    what: "What",
+    worker: "Worker",
+    employer: "Employer",
+    due: "Due",
+    helpLead: "Behind on any of this?",
+    helpText: "We guide you to put it right and connect you with the CAs, labour lawyers and compliance consultants in the Vayasya Network.",
+  },
   notice: {
     staleStrong: "These rates may have been revised.",
     staleText: "Check the latest notification.",
     staleLink: "Latest notifications from the state",
-    many: (dates: string) => `Revisions due on ${dates} have not been notified. Arrears may be due when they are; these are the latest published rates.`,
-    one: (date: string) => `The revision due on ${date} has not been notified. These are the latest published rates.`,
+    many: (dates: string) => `Revisions due ${dates} not yet notified.`,
+    one: (date: string) => `Revision due ${date} not yet notified.`,
   },
   table: {
     caption: (title: string, name: string, date: string) => `${title}: minimum wages in ${name} from ${date}, in rupees`,
@@ -230,7 +239,6 @@ export const wageUi = {
   pdf: (hindi: boolean, size: string | null) => `PDF${hindi ? ", Hindi" : ""}${size ? `, ${size}` : ""}`,
   sections: {
     rates: (name: string) => `Minimum wage rates in ${name}`,
-    earlier: "Earlier rates",
     questions: "Questions",
     documents: "Documents used",
   },

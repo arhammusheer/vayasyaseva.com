@@ -39,6 +39,8 @@ Since 16 October 2026 the contractor point has one home: the home page, as benef
 > **Are you a manpower agency or a staffing company?**
 > We’re a manpower contractor. An agency sends you candidates to hire. We supply the workers, keep them on our payroll, supervise them on site, replace absentees and handle wages, EPF and ESIC. You get a working crew and one invoice.
 
+"Compliance consultancy" and "compliance consultants" name the compliance help service and the Vayasya Network (CAs, labour lawyers, compliance consultants); they never describe the crew business. (Owner direction, 16 October 2026.)
+
 Job-seeker pages may use "job consultancy" and "placement" in the same way: say we hire people onto our own rolls and place them at client sites, and that there is no fee.
 
 | Do | Don't |

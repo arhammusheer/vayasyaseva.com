@@ -18,7 +18,7 @@ export const editorialPolicy = {
     {
       title: "Where the rates come from",
       text: [
-        "Only from government notices: state gazettes and labour department orders, not news or summary sites. Each page links the notices it uses.",
+        "Only from government notices: state gazettes and labour department orders, not news or summary sites. The EPF, ESIC, PT and LWF figures come from the same kind of documents. Each page links the ones it uses.",
       ],
     },
     {

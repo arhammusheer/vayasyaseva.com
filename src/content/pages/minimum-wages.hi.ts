@@ -1,6 +1,7 @@
 /**
  * The worker-first Hindi wage hub (/hi-in/minimum-wages, PLAN §5.5): the
- * rate for your work in your state, what to do if you are paid less, and a
+ * rate for your work in your state, the state labour department as the
+ * official source (neutral, never "complain": owner direction 17 Oct 2026), and a
  * job door. It is not a translation of the English pages (those are for
  * plant HR), so it has no state pages of its own. A draft in review: built
  * and noindex, unlinked, out of the sitemap and llms.txt until a native
@@ -95,7 +96,7 @@ export const HUB_HI_SOURCE_HASH: Partial<Record<WageStateSlug, string>> = {
 export const wageHubHi = {
   title: (year: string | null) => `न्यूनतम मजदूरी${year ? ` ${year}` : ""}: उत्तराखंड, UP और दिल्ली`,
   description: () =>
-    `उत्तराखंड, UP और दिल्ली में आपके काम की सबसे कम मजदूरी, महीने और रोज़ की। कम मिले तो शिकायत कहाँ करें। जाँच: ${formatMonthHi(wageStates.map((s) => s.checked.on).sort()[0])}।`,
+    `उत्तराखंड, UP और दिल्ली में आपके काम की सबसे कम मजदूरी, महीने और रोज़ की, और हर राज्य के श्रम विभाग की आधिकारिक साइट। जाँच: ${formatMonthHi(wageStates.map((s) => s.checked.on).sort()[0])}।`,
   heading: (year: string | null) => `न्यूनतम मजदूरी${year ? ` ${year}` : ""}`,
   lede: "आपको कम से कम कितना मिलना चाहिए: अपना राज्य और अपना काम देखिए। इससे कम देने की इजाज़त नहीं है।",
   /** The page's one jobs door: a quiet line under the lede. */
@@ -106,10 +107,10 @@ export const wageHubHi = {
   overdue: "कुछ राज्यों में नई दर आनी थी, जो अभी नहीं आई। नीचे सबसे नई प्रकाशित दरें हैं।",
   stale: "ये दरें बदल चुकी हो सकती हैं। राज्य के श्रम विभाग की साइट देखिए।",
   paidLess: {
-    heading: "इससे कम मिल रहा है?",
+    heading: "मजदूरी पर सवाल है?",
     rows: [
       { title: "पर्ची संभालिए", text: "अपनी वेतन पर्ची और हाज़िरी का रिकॉर्ड रखिए। इनसे पता चलता है कि आपको कितना मिला।" },
-      { title: "शिकायत कीजिए", text: "आप जिस राज्य में काम करते हैं, उसके श्रम विभाग में शिकायत कर सकते हैं। कॉन्ट्रैक्ट पर काम करने वालों पर भी यही दरें लागू हैं।" },
+      { title: "श्रम विभाग से पूछिए", text: "आप जिस राज्य में काम करते हैं, उसका श्रम विभाग दरों और नियमों की आधिकारिक जानकारी देता है। कॉन्ट्रैक्ट पर काम करने वालों पर भी यही दरें लागू हैं।" },
     ],
   },
 

@@ -6,9 +6,9 @@ import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
 import { FaqSection } from "@/components/sections/faq-section";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import {
   JsonLd,
-  breadcrumbSchema,
   serviceLandingSchema,
   webPageSchema,
 } from "@/lib/structured-data";
@@ -47,8 +47,6 @@ const labels = {
     local: { href: "/haridwar-sidcul", label: "Labour contractor in SIDCUL Haridwar" },
     faqEyebrow: "QUESTIONS",
     faqTitle: "Common questions.",
-    home: "Home",
-    services: "Services",
   },
   "hi-Latn-IN": {
     rolesEyebrow: "Kaun-se kaam",
@@ -62,8 +60,6 @@ const labels = {
     local: { href: "/haridwar-sidcul", label: "SIDCUL Haridwar mein labour contractor" },
     faqEyebrow: "Sawaal",
     faqTitle: "Aam sawaal.",
-    home: "Home",
-    services: "Services",
   },
 } satisfies Record<ServiceLocale, unknown>;
 
@@ -106,14 +102,8 @@ export function ServiceLanding({
       <JsonLd
         data={serviceLandingSchema({ name: page.name, description: page.description, url })}
       />
-      <JsonLd
-        data={breadcrumbSchema([
-          { name: t.home, href: "/" },
-          { name: t.services, href: "/services" },
-          { name: page.name, href: url },
-        ])}
-      />
       <PageHero
+        crumbs={<Breadcrumbs path={`/services/${page.slug}`} locale={locale} name={page.name} />}
         title={page.heading}
         lede={page.lede}
         footnote={

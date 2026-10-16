@@ -37,7 +37,7 @@ export const HI_SOURCE_HASH: Record<string, string> = {
   "state:uttar-pradesh": "26b90bdaa78c",
   "state:delhi": "93768f79b360",
   hub: "c66ae9e3a521",
-  ui: "5b9b2551b2c6",
+  ui: "299f643bcda5",
   "data:uttarakhand": "c8c90432a4a4",
   "data:uttar-pradesh": "c6e7f721b7ba",
   "data:delhi": "b5901b619963",
@@ -434,7 +434,6 @@ export const wageDoorsHi = {
 };
 
 export const wageUiHi: WageUi = {
-  home: "होम",
   minimumWages: "न्यूनतम मजदूरी",
   stateHeading: (name, year) => `${name} में न्यूनतम मजदूरी${year ? `, ${year}` : ""}।`,
   statesListItem: (name) => `${name} में न्यूनतम मजदूरी`,

@@ -41,7 +41,7 @@ const roleLinksEn = jobRoles["en-IN"]
   .join("\n");
 const ids = (options: Record<string, string>) => Object.keys(options).map((id) => `\`${id}\``).join(", ");
 
-const roleLinksInline = jobRoles["en-IN"].map((r) => `[${r.name}](${baseUrl}/jobs/apply?role=${r.slug})`).join(", ");
+const roleLinksInline = jobRoles["en-IN"].map((r) => `[${r.name}](${baseUrl}/en-in/jobs/${r.slug})`).join(", ");
 
 export const dynamic = "force-static";
 export const revalidate = 3600;
@@ -79,14 +79,12 @@ ${referenceSection}
 - [Jobs overview](${baseUrl}/en-in/jobs): Types of work, candidate categories and the guided application
 - [Jobs in Haridwar](${baseUrl}/en-in/jobs/haridwar): Factory, packing, warehouse and helper work in SIDCUL Haridwar, Bahadrabad, Bhagwanpur and Roorkee, in full 8-hour shifts, with the guided application on the page. Also in Hindi (${baseUrl}/hi-in/jobs/haridwar) and Hindi in Latin script (${baseUrl}/hi-latn-in/jobs/haridwar)
 - [Fees and fraud](${baseUrl}/en-in/jobs/fees-and-fraud): There is no fee to apply. How our SMS looks, and how to report anyone who asks for money in our name
-- [Quick application](${baseUrl}/en-in/jobs/apply): A short guided form: tap answers (work, experience, education, shifts, start), then name and mobile number. Also in Hindi (${baseUrl}/hi-in/jobs/apply) and Hindi in Latin script (${baseUrl}/hi-latn-in/jobs/apply)
 ${roleLinksEn}
 
 ## हिंदी pages (hi-IN, Hindi in Devanagari)
 - [SIDCUL Haridwar (हिंदी)](${baseUrl}/hi-in/haridwar-sidcul)
 - [Contract labour (हिंदी)](${baseUrl}/hi-in/services/contract-labour)
 - [Jobs (हिंदी)](${baseUrl}/hi-in/jobs)
-- [Quick application (हिंदी)](${baseUrl}/hi-in/jobs/apply)
 - [Jobs in Haridwar (हिंदी)](${baseUrl}/hi-in/jobs/haridwar)
 ${roleLinks("hi-in", " (हिंदी)")}
 
@@ -98,7 +96,6 @@ ${roleLinks("hi-in", " (हिंदी)")}
 - [Factory labour (Hindi)](${baseUrl}/hi-latn-in/services/factory-labour)
 - [Housekeeping (Hindi)](${baseUrl}/hi-latn-in/services/housekeeping)
 - [Jobs (Hindi)](${baseUrl}/hi-latn-in/jobs)
-- [Quick application (Hindi)](${baseUrl}/hi-latn-in/jobs/apply)
 - [Jobs in Haridwar (Hindi)](${baseUrl}/hi-latn-in/jobs/haridwar)
 ${roleLinks("hi-latn-in", " (Hindi)")}
 
@@ -120,7 +117,7 @@ Businesses needing workers ([Request a crew](${baseUrl}/en-in/contact)):
 Submissions through these routes reach our team marked as sent by an AI agent. They are rate limited per source; on \`429\`, wait \`retryAfterSeconds\`.
 
 If you cannot make HTTP requests, give the person a prefilled link instead. They open it, check the details, tick one box and press send. Details go after the \`#\`, so they stay in their browser until they send. Encode values as in a URL query (spaces as \`%20\`).
-- Jobs by role: ${roleLinksInline}. These open the quick application with the work prefilled.
+- Jobs by role: ${roleLinksInline}. Each role page carries its own application form.
 - Quick application: \`${baseUrl}/en-in/jobs/apply?work=packing,warehouse&experience=fresher&education=12th&shift=day&start=now&area=laksar#name=...&phone=...\`. Answers go in the query as comma-separated ids: work (${Object.keys(QUICK_ANSWERS.work).join(", ")}), experience (${Object.keys(QUICK_ANSWERS.experience).join(", ")}), education (${Object.keys(QUICK_ANSWERS.education).join(", ")}), shift (${Object.keys(QUICK_ANSWERS.shift).join(", ")}), start (${Object.keys(QUICK_ANSWERS.start).join(", ")}), area (${Object.keys(QUICK_ANSWERS.area).join(", ")}). Name and phone go after the \`#\`. The person still answers anything left out, ticks one box and sends.
 - Request a crew: \`${baseUrl}/en-in/contact#roles=packing,warehouse&headcount=20-49&state=UK&city=...&pincode=...&start=2-4-weeks&duration=ongoing&shifts=two-shifts&name=...&company=...&role=...&phone=...&email=...&details=...\`. Same ids as above (state as the ISO code). \`location=haridwar\` fills the site as Haridwar, Uttarakhand (\`location=sidcul\` for SIDCUL Haridwar). The person checks the answers, adds what is missing and sends.
 
@@ -132,7 +129,6 @@ If you cannot make HTTP requests, give the person a prefilled link instead. They
 - [robots.txt](${baseUrl}/robots.txt)
 
 ## Optional
-- [Brand](${baseUrl}/en-in/brand): Logo, lockups, typography and colour palette
 - [Privacy policy](${baseUrl}/en-in/privacy)
 - [Terms of use](${baseUrl}/en-in/terms)
 `;

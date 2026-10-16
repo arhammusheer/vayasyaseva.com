@@ -3,7 +3,8 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
-import { JsonLd, breadcrumbSchema, faqSchema, wageHubSchema, wageStateSchema } from "@/lib/structured-data";
+import { JsonLd, faqSchema, wageHubSchema, wageStateSchema } from "@/lib/structured-data";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { linkable } from "@/content/registry";
 import { WAGE_HUB_PATH, wageStatePath, type WageStateSlug } from "@/content/registry/identifiers";
 import { siteConfig } from "@/content/site";
@@ -451,14 +452,8 @@ export function WageStatePage({ slug, locale: pageLocale = "en-IN" }: { slug: Wa
     <>
       <JsonLd data={wageStateSchema(state, { name: t.title(year), description: t.description, url: path, inLanguage: locale })} />
       <JsonLd data={faqSchema(t.faqs)} />
-      <JsonLd
-        data={breadcrumbSchema([
-          { name: x.ui.home, href: "/" },
-          { name: x.ui.minimumWages, href: localePath(WAGE_HUB_PATH, locale) },
-          { name: x.name(state), href: path },
-        ])}
-      />
       <PageHero
+        crumbs={<Breadcrumbs path={wageStatePath(slug)} locale={locale} name={x.name(state)} />}
         title={x.ui.stateHeading(x.name(state), year)}
         lede={t.lede}
         aside={
@@ -632,12 +627,7 @@ export function WageHubPage({ locale: pageLocale = "en-IN" }: { locale?: Locale 
         })}
       />
       <JsonLd data={faqSchema(faqs)} />
-      <JsonLd
-        data={breadcrumbSchema([
-          { name: x.ui.home, href: "/" },
-          { name: x.ui.minimumWages, href: hubPath },
-        ])}
-      />
+      <Breadcrumbs path={WAGE_HUB_PATH} locale={locale} name={x.ui.minimumWages} />
       <PageHero title={x.hub.heading(year)} lede={x.hub.lede(states)} footnote={<QuickDoors x={x} />} className="pb-10 pt-10 sm:pb-12 sm:pt-16 lg:pb-14 lg:pt-16" />
       <Section id="states">
         <p className="eyebrow text-gold-700">{x.ui.hub.byState}</p>

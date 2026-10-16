@@ -2,8 +2,8 @@ import Link from "@/components/i18n/link";
 import { ArrowRight, Mail } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
 import { Section } from "@/components/layout/section";
-import { JsonLd, breadcrumbSchema, webPageSchema } from "@/lib/structured-data";
-import { jobsCopy } from "@/content/pages/jobs";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
+import { JsonLd, webPageSchema } from "@/lib/structured-data";
 import { FRAUD_REPORT_EMAIL, feesAndFraudCopy } from "@/content/pages/fees-and-fraud";
 import { localePath, locales, type Locale } from "@/lib/i18n";
 
@@ -27,7 +27,6 @@ const number = (i: number) => String(i + 1).padStart(2, "0");
  */
 export function FeesAndFraudPage({ locale }: { locale: Locale }) {
   const t = feesAndFraudCopy[locale];
-  const jobs = jobsCopy[locale];
   const url = localePath(PATH, locale);
   const mailto = `mailto:${FRAUD_REPORT_EMAIL}?subject=${encodeURIComponent(t.mail.subject)}&body=${encodeURIComponent(`${t.mail.body.join("\r\n")}\r\n`)}`;
   const report = (
@@ -41,13 +40,7 @@ export function FeesAndFraudPage({ locale }: { locale: Locale }) {
   return (
     <>
       <JsonLd data={webPageSchema({ name: t.title, description: t.description, url, inLanguage: locales[locale].hreflang })} />
-      <JsonLd
-        data={breadcrumbSchema([
-          { name: jobs.breadcrumb.home, href: "/" },
-          { name: jobs.breadcrumb.page, href: localePath("/jobs", locale) },
-          { name: t.breadcrumb, href: url },
-        ])}
-      />
+      <Breadcrumbs path={PATH} locale={locale} name={t.breadcrumb} visible={false} />
       <section className="quick-top">
         <div className="site-shell grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:items-end lg:gap-16">
           <div>

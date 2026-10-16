@@ -4,7 +4,8 @@ import { pageMetadata } from "@/lib/metadata";
 import { Section } from "@/components/layout/section";
 import { FaqSection } from "@/components/sections/faq-section";
 import { QuickApply } from "@/components/jobs/quick-apply";
-import { JsonLd, breadcrumbSchema, webPageSchema } from "@/lib/structured-data";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
+import { JsonLd, webPageSchema } from "@/lib/structured-data";
 import { jobsCopy } from "@/content/pages/jobs";
 import { getJobRole, jobRoleLabels, jobRoles } from "@/content/pages/job-roles";
 import { localePath, locales, localesOf, type Locale } from "@/lib/i18n";
@@ -47,13 +48,7 @@ export function JobRolePage({ slug, locale }: { slug: string; locale: Locale }) 
       <JsonLd
         data={webPageSchema({ name: role.metaTitle, description: role.description, url, inLanguage: locales[locale].hreflang })}
       />
-      <JsonLd
-        data={breadcrumbSchema([
-          { name: jobs.breadcrumb.home, href: "/" },
-          { name: jobs.breadcrumb.page, href: localePath("/jobs", locale) },
-          { name: role.name, href: url },
-        ])}
-      />
+      <Breadcrumbs path={jobRolePath(role.slug)} locale={locale} name={role.name} visible={false} />
       <section className="quick-top">
         <div className="site-shell grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
           <div className="lg:sticky lg:top-28 lg:self-start">

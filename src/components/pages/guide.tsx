@@ -4,7 +4,8 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
-import { JsonLd, breadcrumbSchema, faqSchema, guideSchema } from "@/lib/structured-data";
+import { JsonLd, faqSchema, guideSchema } from "@/lib/structured-data";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { builtLocales, linkable } from "@/content/registry";
 import { guidePath } from "@/content/registry/identifiers";
 import { siteConfig } from "@/content/site";
@@ -181,17 +182,10 @@ export function GuidePage({ slug }: { slug: GuideSlug }) {
   const sources = guide.sources.map(guideSource);
   const path = guidePath(slug);
   const mixed = guide.doors === "mixed";
-  const headline = guide.h1.replace(/\.$/, "");
   return (
     <>
       <JsonLd data={guideSchema(guide, { url: path, sources, headline: guide.title, description: guide.description })} />
       <JsonLd data={faqSchema(guide.faqs.map((f) => ({ question: f.question, answer: plainText(f.answer) })))} />
-      <JsonLd
-        data={breadcrumbSchema([
-          { name: "Home", href: "/" },
-          { name: headline, href: path },
-        ])}
-      />
       {!guide.review && (
         <div className="wage-notice is-stale" role="note">
           <div className="site-shell">
@@ -203,6 +197,7 @@ export function GuidePage({ slug }: { slug: GuideSlug }) {
         </div>
       )}
       <PageHero
+        crumbs={<Breadcrumbs path={path} locale="en-IN" name={guide.crumb} />}
         title={guide.h1}
         lede={guide.lede}
         aside={

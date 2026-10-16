@@ -5,7 +5,8 @@ import { pageMetadata } from "@/lib/metadata";
 import { Section } from "@/components/layout/section";
 import { FaqSection } from "@/components/sections/faq-section";
 import { QuickApply } from "@/components/jobs/quick-apply";
-import { JsonLd, breadcrumbSchema, pageUrl, webPageSchema } from "@/lib/structured-data";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
+import { JsonLd, pageUrl, webPageSchema } from "@/lib/structured-data";
 import { jobsCopy } from "@/content/pages/jobs";
 import { getJobCluster } from "@/content/pages/job-clusters";
 import { jobHubs } from "@/content/pages/job-hubs";
@@ -71,13 +72,7 @@ export function JobClusterPage({ slug, locale }: { slug: string; locale: Locale 
           },
         }}
       />
-      <JsonLd
-        data={breadcrumbSchema([
-          { name: jobs.breadcrumb.home, href: "/" },
-          { name: jobs.breadcrumb.page, href: localePath("/jobs", locale) },
-          { name: c.name, href: url },
-        ])}
-      />
+      <Breadcrumbs path={clusterPath(c.slug)} locale={locale} name={c.name} visible={false} />
       <section className="quick-top">
         <div className="site-shell grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:gap-16">
           <div className="lg:sticky lg:top-28 lg:self-start">

@@ -58,6 +58,8 @@ export type Guide = {
   audience: Audience;
   /** Title before " | Vayasya Seva": 55 characters at most, no agency word. */
   title: string;
+  /** Short name for the breadcrumb ("New labour codes"). */
+  crumb: string;
   /** Meta description, 140 to 160 characters. */
   description: string;
   h1: string;

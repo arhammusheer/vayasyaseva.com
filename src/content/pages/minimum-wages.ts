@@ -358,7 +358,6 @@ export const wageDoors = {
 
 /** Labels the wage page components use, so the Hindi pages can swap them (./minimum-wages.hi.ts). */
 export type WageUi = {
-  home: string;
   minimumWages: string;
   stateHeading: (name: string, year: string | null) => string;
   statesListItem: (name: string) => string;
@@ -428,7 +427,6 @@ export type WageUi = {
 
 // @hi-source ui
 export const wageUiEn: WageUi = {
-  home: "Home",
   minimumWages: "Minimum wages",
   stateHeading: (name, year) => `Minimum wages in ${name}${year ? `, ${year}` : ""}.`,
   statesListItem: (name) => `Minimum wages in ${name}`,

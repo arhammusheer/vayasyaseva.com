@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { localePath, localesOf, movedPathname, neutralTarget, splitLocalePath } from "@/lib/i18n";
+import { FALLBACK_LOCALE, fromLegacyPrefix, isGone, localePath, localesOf, movedPathname, neutralTarget, splitLocalePath } from "@/lib/i18n";
 import { LANGUAGE_COOKIE, isRankSegment, rankSegmentFor, visitorRegion } from "@/lib/language-rank";
 
 /**
@@ -45,6 +45,10 @@ function umami(request: NextRequest) {
  * (src/lib/language-rank.ts), one prerendered variant per order.
  */
 const PICKER_ROUTE = "/select-language";
+/** A path under a locale that no route serves, so it renders the 404 page. */
+const GONE_PATH = "/_gone";
+const isGoneRewrite = (response: NextResponse) =>
+  new URL(response.headers.get("x-middleware-rewrite") ?? "/", "http://x").pathname.endsWith(GONE_PATH);
 const PER_VISITOR_CACHE_HEADERS = ["CDN-Cache-Control", "Cloudflare-CDN-Cache-Control"];
 
 /**
@@ -52,19 +56,50 @@ const PER_VISITOR_CACHE_HEADERS = ["CDN-Cache-Control", "Cloudflare-CDN-Cache-Co
  * A neutral URL (no segment) opens the page's default language, or shows the
  * language picker when the page's override is "prompt". The address bar keeps
  * the neutral URL for the picker, so /jobs stays shareable as is.
+ *
+ * Old locale prefixes (/hi/*, /hinglish/*, before 1 October 2026) are mapped
+ * here rather than in next.config.ts redirects, which run before the proxy:
+ * the mapped URL is routed in turn, so an old link takes one redirect to its
+ * final page even when that page has moved or retired since.
  */
-function routeLocale(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+function routeLocale(request: NextRequest, pathname = request.nextUrl.pathname): NextResponse {
+  const legacy = fromLegacyPrefix(pathname);
+  if (legacy !== undefined) {
+    const routed = routeLocale(request, legacy);
+    // Permanent even where the mapped URL's own redirect is temporary
+    // (/hi -> /en-in while the Hindi home is unbuilt): the old prefix never
+    // comes back, so search engines should drop it.
+    const location = routed.headers.get("location");
+    if (location && (routed.status === 307 || routed.status === 308)) return NextResponse.redirect(location, 308);
+    // A 404 answers at the old URL itself, with no hop to a dead new one.
+    if (isGoneRewrite(routed)) return routed;
+    const url = request.nextUrl.clone();
+    url.pathname = legacy;
+    return NextResponse.redirect(url, 308);
+  }
+
   const { locale, path } = splitLocalePath(pathname);
   const url = request.nextUrl.clone();
+  url.pathname = pathname;
 
-  // Aliases and retired pages (src/content/registry): one 308 straight to
-  // the target page, in the language asked for when the target is published
-  // in it (reviewers in an unpublished locale may land on a built version).
+  // Aliases and retired pages or languages (src/content/registry): one 308
+  // straight to the target page, in the language asked for when the target
+  // is published in it (reviewers in an unpublished locale may land on a
+  // built version). The target may carry an #anchor.
   const moved = movedPathname(path, locale);
   if (moved) {
-    url.pathname = moved;
+    const [movedPath, anchor] = moved.split("#");
+    url.pathname = movedPath;
+    url.hash = anchor ? `#${anchor}` : "";
     return NextResponse.redirect(url, 308);
+  }
+  // Retired with no target, or never built: a 404 at the URL asked for,
+  // with no hop to another language. Rewritten to a path no route has, so it
+  // is a 404 even where the page's route folder still exists. The 404 page
+  // is the shared English one, with no phone (src/app/[locale]/not-found.tsx).
+  if (isGone(path, locale)) {
+    url.pathname = localePath(GONE_PATH, locale ?? FALLBACK_LOCALE);
+    return NextResponse.rewrite(url);
   }
 
   if (locale) {
@@ -141,7 +176,7 @@ function apexRedirect(request: NextRequest) {
     const location = routed.headers.get("location");
     if (location && (routed.status === 307 || routed.status === 308)) {
       const next = new URL(location, request.url);
-      target = `${next.pathname}${next.search}`;
+      target = `${next.pathname}${next.search}${next.hash}`;
       status = routed.status;
     }
   }

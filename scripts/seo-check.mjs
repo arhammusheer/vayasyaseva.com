@@ -8,6 +8,9 @@
 // Also checks every page built in review (the guides awaiting a legal
 // reviewer): it answers 200 for reviewers, is noindex, stays out of the
 // sitemap and llms.txt, and carries no phone where the audience forbids it.
+// Published pages flagged noindex (the application form, the brand kit) get
+// the same checks, except that pages may link them and llms.txt may mention
+// them in its instructions (not in its page lists).
 // Also checks the language picker at prompt pages' neutral URLs (one stable
 // snippet per canonical, no shared caching of a visitor's order) and the
 // proxy's redirects: the apex host in one hop, and /select-language/... back
@@ -78,6 +81,14 @@ const urls = [...new Set([...sitemap.body.matchAll(/<loc>([^<]+)<\/loc>/g)].map(
 const sitemapPaths = new Set(urls.map((url) => trim(url.slice(SITE.length)) || "/"));
 const LOCALE_LINK = /href="(\/(?:en-in|hi-in|hi-latn-in)(?:\/[^"?#]*)?)(?:[?#][^"]*)?"/g;
 
+// Published but noindex (src/content/registry noindex): linkable, out of search.
+const { pageEntries, builtLocales, publishedLocales } = await importTs("src/content/registry/index.ts");
+const { locales: localeInfo } = await importTs("src/lib/i18n.ts");
+const localeUrl = (locale, path) => `/${localeInfo[locale].segment}${path === "/" ? "" : path}`;
+const noindexPaths = new Set(
+  pageEntries.filter((e) => e.noindex).flatMap((e) => publishedLocales(e.path).filter((l) => localeInfo[l].published).map((l) => localeUrl(l, e.path))),
+);
+
 // hreflang sets in the sitemap, per URL, to compare with each page's head.
 const sitemapAlternates = new Map();
 for (const [, block] of sitemap.body.matchAll(/<url>([\s\S]*?)<\/url>/g)) {
@@ -98,8 +109,6 @@ const LENGTH_ALLOWLIST = new Set([
   // Legal pages: literal titles, descriptions written with counsel.
   "/en-in/privacy",
   "/en-in/terms",
-  // The brand page is a reference for designers, not a search landing page.
-  "/en-in/brand",
 ]);
 const DEVANAGARI = /[\u0900-\u097F]/;
 const visibleLength = (text) => (DEVANAGARI.test(text) ? [...text].filter((ch) => !/\p{M}/u.test(ch)).length : text.length);
@@ -164,7 +173,7 @@ await Promise.all(
     // C11: links to other language-prefixed pages must be published pages.
     for (const [, href] of body.matchAll(LOCALE_LINK)) {
       const target = trim(href.replaceAll("&amp;", "&"));
-      if (!sitemapPaths.has(target)) fail(path, `links to ${target}, which is not a published page (C11)`);
+      if (!sitemapPaths.has(target) && !noindexPaths.has(target)) fail(path, `links to ${target}, which is not a published page (C11)`);
     }
 
     if (body.includes(HOME_ADDRESS_MARKER) && !HOME_ADDRESS_PAGES.has(path)) {
@@ -203,12 +212,17 @@ await Promise.all(
 );
 if (pickers === 0) fail("/jobs", "no language picker found at any neutral URL");
 
-// Redirects handled by the proxy and next.config.ts: each must be one hop.
+// Redirects handled by the proxy: each must be one hop.
 const REDIRECTS = [
   // The apex host: the locale routing's own redirect, on www, in one hop.
   { path: "/about", host: "vayasyaseva.com", status: 308, location: `${SITE}/en-in/about` },
   { path: "/hi-in/about", host: "vayasyaseva.com", status: 307, location: `${SITE}/en-in/about` },
   { path: "/hi/jobs", host: "vayasyaseva.com", status: 308, location: `${SITE}/hi-in/jobs` },
+  // Old locale prefixes: mapped in the proxy, straight to the final page.
+  { path: "/hinglish/jobs", status: 308, location: "/hi-latn-in/jobs" },
+  // Permanent even though the page has no Hindi version yet: /hi never returns.
+  { path: "/hi/about", status: 308, location: "/en-in/about" },
+  { path: "/hi/about", host: "vayasyaseva.com", status: 308, location: `${SITE}/en-in/about` },
   { path: "/jobs", host: "vayasyaseva.com", status: 308, location: `${SITE}/jobs` },
   { path: "/api/contact", host: "vayasyaseva.com", status: 308, location: `${SITE}/api/contact` },
   { path: "/robots.txt", host: "vayasyaseva.com", status: 308, location: `${SITE}/robots.txt` },
@@ -226,37 +240,46 @@ for (const { path, host = new URL(base).host, status, location } of REDIRECTS) {
   }
 }
 
-// Pages built in review: reachable for reviewers, invisible to search.
-const { pageEntries, builtLocales, publishedLocales } = await importTs("src/content/registry/index.ts");
-const { locales: localeInfo } = await importTs("src/lib/i18n.ts");
+// Pages built in review: reachable for reviewers, invisible to search. Then
+// published noindex pages: reachable for everyone, invisible to search.
 const llms = (await get(`${base}/llms.txt`)).body;
 let reviewPages = 0;
-for (const entry of pageEntries) {
-  const unpublished = builtLocales(entry.path).filter((l) => !publishedLocales(entry.path).includes(l));
-  for (const locale of unpublished) {
-    const path = `/${localeInfo[locale].segment}${entry.path === "/" ? "" : entry.path}`;
-    reviewPages++;
-    const { status, body } = await get(base + path);
-    if (status !== 200) {
-      fail(path, `review page answers ${status} (reviewers need it built)`);
-      continue;
-    }
-    if (!/<meta name="robots" content="[^"]*noindex/.test(body)) fail(path, "review page is not noindex");
-    if (sitemapPaths.has(path)) fail(path, "review page is in the sitemap");
-    // The localized URL, bounded: a published sibling locale or a longer path must not match.
-    const escaped = `${SITE}${path}`.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    if (new RegExp(`${escaped}(?=[)\\s#?]|$)`, "m").test(llms)) fail(path, "review page is listed in llms.txt");
-    if (isPhoneFree(path)) {
-      for (const where of phoneIn(body)) fail(path, `${where} on a phone-free review page (C7)`);
-      if (/"telephone"/.test(body)) fail(path, 'JSON-LD "telephone" on a phone-free review page (C7)');
-    }
+let noindexPages = 0;
+const hiddenPages = [
+  ...pageEntries.flatMap((entry) =>
+    builtLocales(entry.path)
+      .filter((l) => !publishedLocales(entry.path).includes(l))
+      .map((l) => ({ path: localeUrl(l, entry.path), kind: "review" })),
+  ),
+  ...[...noindexPaths].map((path) => ({ path, kind: "noindex" })),
+];
+for (const { path, kind } of hiddenPages) {
+  if (kind === "review") reviewPages++;
+  else noindexPages++;
+  const { status, body } = await get(base + path);
+  if (status !== 200) {
+    fail(path, `${kind} page answers ${status} (${kind === "review" ? "reviewers need it built" : "links to it must work"})`);
+    continue;
+  }
+  if (!/<meta name="robots" content="[^"]*noindex/.test(body)) fail(path, `${kind} page is not noindex`);
+  if (sitemapPaths.has(path)) fail(path, `${kind} page is in the sitemap`);
+  if (kind === "noindex" && /<link rel="alternate" hrefLang=/i.test(body)) fail(path, "noindex page carries hreflang alternates");
+  // The localized URL, bounded: a published sibling locale or a longer path must not match.
+  // A noindex page may appear in llms.txt instructions, not as a listed page.
+  const escaped = `${SITE}${path}`.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const listed = kind === "review" ? new RegExp(`${escaped}(?=[)\\s#?]|$)`, "m") : new RegExp(`^- \\[[^\\]]*\\]\\(${escaped}\\)`, "m");
+  if (listed.test(llms)) fail(path, `${kind} page is listed in llms.txt`);
+  if (isPhoneFree(path)) {
+    for (const where of phoneIn(body)) fail(path, `${where} on a phone-free ${kind} page (C7)`);
+    if (/"telephone"/.test(body)) fail(path, `JSON-LD "telephone" on a phone-free ${kind} page (C7)`);
   }
 }
 
-errors.push(...(await checkJobsPhone(base, urls)));
+// C7 covers the noindex pages too (the application form is a jobs page).
+errors.push(...(await checkJobsPhone(base, [...urls, ...[...noindexPaths].map((path) => `${SITE}${path}`)])));
 
 if (errors.length) {
   console.error(`SEO check failed (${errors.length}):\n- ${errors.sort().join("\n- ")}`);
   process.exit(1);
 }
-console.log(`SEO check passed: ${urls.length} URLs and ${pickers} language pickers on ${base}, ${reviewPages} review pages, including the jobs phone check (C7) and link leaks (C11)`);
+console.log(`SEO check passed: ${urls.length} URLs and ${pickers} language pickers on ${base}, ${reviewPages} review pages, ${noindexPages} noindex pages, including the jobs phone check (C7) and link leaks (C11)`);

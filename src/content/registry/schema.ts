@@ -9,6 +9,8 @@ import { PAGE_KINDS } from "./pages";
 
 const isoDate = z.iso.date();
 const neutralPath = z.string().regex(/^\/([a-z0-9]+(-[a-z0-9]+)*(\/[a-z0-9]+(-[a-z0-9]+)*)*)?$/, "lower-case neutral path without a locale or trailing slash");
+/** A redirect target: a neutral path, optionally with an #anchor on the target page. */
+const targetPath = z.string().regex(/^\/([a-z0-9]+(-[a-z0-9]+)*(\/[a-z0-9]+(-[a-z0-9]+)*)*)?(#[a-z0-9]+(-[a-z0-9]+)*)?$/, "neutral path (optionally with an #anchor)");
 
 const perLocale = <T extends z.ZodType>(schema: T) =>
   Object.fromEntries(LOCALE_TAGS.map((l) => [l, schema.optional()])) as Record<LocaleTag, z.ZodOptional<T>>;
@@ -29,13 +31,23 @@ export const pageEntrySchema = z
     updated: isoDate,
     changeFrequency: z.enum(["monthly", "yearly"]),
     priority: z.number().min(0).max(1),
-    retiredTo: neutralPath.optional(),
+    retiredTo: z.union([targetPath, z.strictObject(perLocale(targetPath))]).optional(),
+    noindex: z.literal(true).optional(),
   })
   .refine((p) => !p.neutral || p.neutral === "prompt" || p.locales[p.neutral], "neutral locale is not one of the page's languages")
   .refine(
-    (p) => !p.retiredTo || Object.values(p.locales).every((s) => s === "retired"),
-    "retiredTo needs every language retired (a partly retired page 404s in the retired languages)",
-  );
+    (p) => typeof p.retiredTo !== "string" || Object.values(p.locales).every((s) => s === "retired"),
+    "a single retiredTo path needs every language retired; for some languages, give a map per retired language",
+  )
+  .refine(
+    (p) => typeof p.retiredTo !== "object" || Object.entries(p.retiredTo).every(([l, to]) => !to || p.locales[l as LocaleTag] === "retired"),
+    "retiredTo names a language that is not retired",
+  )
+  .refine(
+    (p) => typeof p.retiredTo !== "object" || !Object.values(p.locales).every((s) => s === "retired"),
+    "every language is retired: give retiredTo as a single path",
+  )
+  .refine((p) => !p.noindex || Object.values(p.locales).includes("published"), "noindex is for published pages (review and paused are noindex already)");
 
 const publicClaimSchema = z.strictObject({
   text: z.string().min(1),

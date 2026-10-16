@@ -34,7 +34,12 @@ export type ClusterId = (typeof CLUSTER_IDS)[number];
  *   work. Set by a person, never automatically. Only cluster jobs hubs and
  *   buyer hubs can show the notice (PAUSABLE_KINDS in ./index.ts);
  *   content:check rejects `paused` on any other kind of page.
- * - retired: not built; 308 to `retiredTo` when set, else 404.
+ * - retired: not built; 308 to `retiredTo` when set, else 404. A page can
+ *   retire some languages and keep others: `retiredTo` then names a target
+ *   per retired language (pages.ts).
+ *
+ * A published page can also be `noindex` (pages.ts): built, linkable and
+ * noindex, out of the sitemap, hreflang and llms.txt.
  */
 export const PAGE_STATUSES = ["draft", "review", "published", "paused", "retired"] as const;
 export type PageStatus = (typeof PAGE_STATUSES)[number];
@@ -67,6 +72,11 @@ export const WAGE_STATE_CODES = { up: "uttar-pradesh", dl: "delhi", uk: "uttarak
 >;
 export const WAGE_HUB_PATH = "/minimum-wages";
 export const wageStatePath = (state: WageStateSlug) => `${WAGE_HUB_PATH}/${state}`;
+/**
+ * Static pages beside the state pages under /minimum-wages. Their slugs are
+ * reserved: content:check fails a wage state slug or code that takes one.
+ */
+export const WAGE_METHOD_PATH = `${WAGE_HUB_PATH}/how-we-check`;
 
 /** Guides. No agency word in any slug, title or H1. */
 export const GUIDE_SLUGS = ["new-labour-codes", "what-is-contract-labour", "contract-labour-act"] as const;

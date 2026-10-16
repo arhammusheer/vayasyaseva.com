@@ -200,48 +200,6 @@
     }
   },
   {
-    "url": "https://www.vayasyaseva.com/en-in/jobs/apply",
-    "lastModified": "2026-10-16T00:00:00.000Z",
-    "changeFrequency": "monthly",
-    "priority": 0.8,
-    "alternates": {
-      "languages": {
-        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/apply",
-        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/apply",
-        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/apply",
-        "x-default": "https://www.vayasyaseva.com/jobs/apply"
-      }
-    }
-  },
-  {
-    "url": "https://www.vayasyaseva.com/hi-in/jobs/apply",
-    "lastModified": "2026-10-16T00:00:00.000Z",
-    "changeFrequency": "monthly",
-    "priority": 0.8,
-    "alternates": {
-      "languages": {
-        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/apply",
-        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/apply",
-        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/apply",
-        "x-default": "https://www.vayasyaseva.com/jobs/apply"
-      }
-    }
-  },
-  {
-    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/apply",
-    "lastModified": "2026-10-16T00:00:00.000Z",
-    "changeFrequency": "monthly",
-    "priority": 0.8,
-    "alternates": {
-      "languages": {
-        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/apply",
-        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/apply",
-        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/apply",
-        "x-default": "https://www.vayasyaseva.com/jobs/apply"
-      }
-    }
-  },
-  {
     "url": "https://www.vayasyaseva.com/en-in/jobs/fees-and-fraud",
     "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "yearly",
@@ -1014,12 +972,6 @@
     "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "monthly",
     "priority": 0.7
-  },
-  {
-    "url": "https://www.vayasyaseva.com/en-in/brand",
-    "lastModified": "2026-09-13T00:00:00.000Z",
-    "changeFrequency": "yearly",
-    "priority": 0.3
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/privacy",

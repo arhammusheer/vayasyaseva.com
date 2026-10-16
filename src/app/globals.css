@@ -484,6 +484,55 @@ body {
   font-size: 13px;
   letter-spacing: 0.02em;
 }
+/* Breadcrumb trail above an inner page's H1 (two levels below home only).
+   Quiet: muted text, a gold separator, links underline on hover. */
+.crumbs {
+  margin-bottom: 24px;
+}
+.crumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 10px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--muted-foreground);
+}
+.crumbs li {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.crumbs li + li::before {
+  content: "›";
+  /* Empty alt text: screen readers skip the separator. */
+  content: "›" / "";
+  color: var(--gold-700);
+}
+/* A 24px tap target on a phone. */
+.crumbs a {
+  display: inline-block;
+  padding-block: 4px;
+  color: inherit;
+  text-underline-offset: 4px;
+}
+.crumbs a:hover {
+  color: var(--foreground);
+  text-decoration: underline;
+}
+.crumbs [aria-current="page"] {
+  color: var(--foreground);
+}
+[data-header-theme="dark"] .crumbs ol {
+  color: color-mix(in srgb, var(--background) 70%, transparent);
+}
+[data-header-theme="dark"] .crumbs [aria-current="page"],
+[data-header-theme="dark"] .crumbs a:hover {
+  color: var(--background);
+}
+[data-header-theme="dark"] .crumbs li + li::before {
+  color: var(--gold-500);
+}
 .home-hero {
   position: relative;
   isolation: isolate;

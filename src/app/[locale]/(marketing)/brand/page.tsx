@@ -3,7 +3,8 @@ import path from "node:path";
 import Image from "next/image";
 import { Download } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
-import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
+import { JsonLd, webPageSchema } from "@/lib/structured-data";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
 import { darkSurfaces, typeScale } from "@/content/brand";
@@ -177,13 +178,8 @@ export default function BrandPage() {
           url: "/brand",
         })}
       />
-      <JsonLd
-        data={breadcrumbSchema([
-          { name: "Home", href: "/" },
-          { name: "Brand guidelines", href: "/brand" },
-        ])}
-      />
       <PageHero
+        crumbs={<Breadcrumbs path="/brand" locale="en-IN" name="Brand" />}
         title="Brand guidelines"
         lede="Logo usage, typography and colour palette for Vayasya and its products, Seva and Setu, with downloadable logo files and fonts."
       />

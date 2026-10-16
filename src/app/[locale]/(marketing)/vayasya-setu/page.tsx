@@ -4,7 +4,8 @@ import { ArrowUpRight } from "lucide-react";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
-import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
+import { JsonLd, webPageSchema } from "@/lib/structured-data";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { localeParams } from "@/lib/i18n";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/vayasya-setu");
@@ -27,13 +28,8 @@ export default function SetuPage() {
           url: "/vayasya-setu",
         })}
       />
-      <JsonLd
-        data={breadcrumbSchema([
-          { name: "Home", href: "/" },
-          { name: "Vayasya Setu", href: "/vayasya-setu" },
-        ])}
-      />
       <PageHero
+        crumbs={<Breadcrumbs path="/vayasya-setu" locale="en-IN" name="Vayasya Setu" />}
         tone="dark"
         title="Vayasya Setu"
         lede="Our internal system for connecting the people on site with the information behind the operation."

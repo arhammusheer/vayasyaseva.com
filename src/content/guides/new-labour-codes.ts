@@ -22,6 +22,7 @@ export const newLabourCodes: Guide = {
   slug: "new-labour-codes",
   audience: "mixed",
   title: "New Labour Codes 2026: What Changes for Employers",
+  crumb: "New labour codes",
   description:
     "The four labour codes in plain English: what is in force, what changes for wages, PF, safety and fixed-term work, and what to check if you use contract labour.",
   h1: "The new labour codes, explained for employers.",

@@ -42,7 +42,7 @@ const fail = (message) => errors.push(message);
 const warnings = [];
 const warn = (message) => warnings.push(message);
 
-const { pageEntries, pathAliases, clusters, builtLocales, publishedLocales, PAUSABLE_KINDS } = await importTs("src/content/registry/index.ts");
+const { pageEntries, pathAliases, clusters, builtLocales, publishedLocales, isNoindex, PAUSABLE_KINDS } = await importTs("src/content/registry/index.ts");
 const { pageEntrySchema, clusterSchema } = await importTs("src/content/registry/schema.ts");
 const { CLUSTER_IDS, HARIDWAR_AREA_IDS, LOCALE_TAGS } = await importTs("src/content/registry/identifiers.ts");
 const { JOB_ROLE_SLUGS, JOB_HUB_SLUGS, QUICK_ANSWERS, INTAKE_LOCALES, INTAKE_CLUSTERS, AREA_CLUSTERS } = await importTs("src/lib/talent-intake/rules.ts");
@@ -94,13 +94,22 @@ for (const cluster of clusters) {
   }
 }
 const isPublished = (path) => publishedLocales(path).length > 0;
+const isIndexed = (path) => isPublished(path) && !isNoindex(path);
 for (const entry of pageEntries) {
   if (entry.parent && !byPath.has(entry.parent)) fail(`C1 page ${entry.path}: parent ${entry.parent} is not in the registry`);
   else if (entry.parent && isPublished(entry.path) && !isPublished(entry.parent)) fail(`C1 page ${entry.path} is published but its parent ${entry.parent} is not`);
   if (entry.cluster && isPublished(entry.path) && !clusterIds.has(entry.cluster)) {
     fail(`C1 page ${entry.path} is published for cluster "${entry.cluster}", which is not in clusters.ts`);
   }
-  if (entry.retiredTo && !isPublished(entry.retiredTo)) fail(`C1 page ${entry.path}: retiredTo ${entry.retiredTo} is not a published page`);
+  // A redirect hands the old URL's standing to its target, so the target must
+  // be a page search engines may index (published, not noindex).
+  const targets = typeof entry.retiredTo === "object" ? Object.values(entry.retiredTo) : [entry.retiredTo].filter(Boolean);
+  for (const to of targets) {
+    const page = to.split("#")[0];
+    if (!isIndexed(page)) fail(`C1 page ${entry.path}: retiredTo ${to} is not a published, indexed page`);
+    // A per-language target may be the page itself (its English version).
+    if (page === entry.path && typeof entry.retiredTo === "string") fail(`C1 page ${entry.path}: retiredTo points at the page itself`);
+  }
   // Only cluster hubs render the "not taking applications or new work" notice
   // (src/components/sections/paused-notice.tsx); anything else would still look open.
   if (Object.values(entry.locales).includes("paused") && !PAUSABLE_KINDS.has(entry.kind)) {
@@ -109,7 +118,7 @@ for (const entry of pageEntries) {
 }
 for (const [from, to] of Object.entries(pathAliases)) {
   if (byPath.has(from)) fail(`C1 alias ${from} is also a page`);
-  if (!isPublished(to)) fail(`C1 alias ${from} points to ${to}, which is not a published page`);
+  if (!isIndexed(to)) fail(`C1 alias ${from} points to ${to}, which is not a published, indexed page`);
 }
 
 // Every built page has a route under app/[locale], and every static route has a page entry.
@@ -128,9 +137,21 @@ const routes = walk(appDir)
 // in (marketing) with the phone, jobs pages in (jobs), mixed pages in the
 // phone-free (reference) group. The home page sits in (marketing).
 const GROUP_OF_AUDIENCE = { business: "marketing", jobs: "jobs", mixed: "reference" };
+// The kinds of page each dynamic route renders. Any other page under it (a
+// static page such as /minimum-wages/how-we-check) needs its own route
+// folder, which Next.js matches before the dynamic segment.
+const DYNAMIC_ROUTE_KINDS = {
+  "/jobs/[role]": ["job-role", "job-hub", "jobs-city"],
+  "/minimum-wages/[state]": ["wage-state"],
+};
 for (const entry of pageEntries) {
+  const exact = routes.find((r) => r.path === entry.path);
+  const dynamic = routes.find((r) => r.dynamic && r.pattern.test(entry.path));
+  if (!exact && dynamic && !(DYNAMIC_ROUTE_KINDS[dynamic.path] ?? []).includes(entry.kind)) {
+    if (builtLocales(entry.path).length) fail(`C1 page ${entry.path} (${entry.kind}) is built, but only ${dynamic.path} matches it, which does not render ${entry.kind} pages; give it its own route folder`);
+  }
   if (!builtLocales(entry.path).length) continue;
-  const route = routes.find((r) => r.path === entry.path) ?? routes.find((r) => r.pattern.test(entry.path));
+  const route = exact ?? dynamic;
   if (!route) fail(`C1 page ${entry.path} has no route under src/app/[locale]`);
   else if (route.group !== GROUP_OF_AUDIENCE[entry.audience]) {
     fail(`C1 page ${entry.path} has audience "${entry.audience}" but its route is in (${route.group ?? "no group"}); move it to (${GROUP_OF_AUDIENCE[entry.audience]}) or change the audience`);
@@ -192,6 +213,23 @@ for (const state of wageStates) {
 }
 for (const slug of WAGE_STATE_SLUGS) {
   if (builtLocales(wageStatePath(slug)).length && !wageStates.some((s) => s.state === slug)) fail(`C8 ${wageStatePath(slug)} is built but src/content/wages/${slug}.json does not exist`);
+}
+// Static pages beside the state pages (/minimum-wages/how-we-check) reserve
+// their slugs: a state slug, short code or dataset may not take one.
+{
+  const { WAGE_HUB_PATH, WAGE_METHOD_PATH, WAGE_STATE_CODES } = await importTs("src/content/registry/identifiers.ts");
+  const reserved = new Set(
+    [WAGE_METHOD_PATH, ...pageEntries.filter((p) => p.path.startsWith(`${WAGE_HUB_PATH}/`) && p.kind !== "wage-state").map((p) => p.path)].map((p) =>
+      p.slice(WAGE_HUB_PATH.length + 1),
+    ),
+  );
+  for (const [source, slugs] of [
+    ["WAGE_STATE_SLUGS", WAGE_STATE_SLUGS],
+    ["WAGE_STATE_CODES", Object.keys(WAGE_STATE_CODES)],
+    ["src/content/wages", wageStates.map((s) => s.state)],
+  ]) {
+    for (const slug of slugs) if (reserved.has(slug)) fail(`C8 "${slug}" in ${source} is reserved for the static page ${WAGE_HUB_PATH}/${slug}`);
+  }
 }
 
 // ── C13: translation sourceHash (PLAN §6.6) ────────────────────────────────

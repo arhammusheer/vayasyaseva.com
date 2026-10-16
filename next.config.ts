@@ -8,13 +8,6 @@ const securityHeaders = [
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=()" },
 ];
 
-/** Old locale prefixes and their current segments. */
-const OLD_PREFIXES = [
-  ["hi", "hi-in"],
-  ["hinglish", "hi-latn-in"],
-] as const;
-const APEX_HOST = { type: "host", value: "vayasyaseva.com" } as const;
-
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   env: {
@@ -39,25 +32,9 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  async redirects() {
-    return [
-      // The apex host (vayasyaseva.com) redirects to www in src/proxy.ts, in
-      // one hop with the locale routing. Redirects here run before the proxy,
-      // so a host rule here would bring back the second hop.
-      // Old locale prefixes (before 1 October 2026). English had none and is
-      // handled by the locale routing in src/proxy.ts. On the apex they go
-      // straight to www, so an old link there is one hop too.
-      ...OLD_PREFIXES.flatMap(([from, to]) =>
-        [
-          { source: `/${from}`, destination: `/${to}` },
-          { source: `/${from}/:path*`, destination: `/${to}/:path*` },
-        ].flatMap((rule) => [
-          { ...rule, has: [APEX_HOST], destination: `https://www.vayasyaseva.com${rule.destination}`, permanent: true },
-          { ...rule, permanent: true },
-        ]),
-      ),
-    ];
-  },
+  // No redirects() here: they run before src/proxy.ts, so a rule here would
+  // add a hop in front of the proxy's own redirect. The apex host and the old
+  // locale prefixes (/hi, /hinglish) are handled in the proxy, in one hop.
 };
 
 export default nextConfig;

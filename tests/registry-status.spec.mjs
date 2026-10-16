@@ -16,11 +16,18 @@ pageEntries.push(
   page("/test-retired", { "en-IN": "retired" }, { retiredTo: "/about" }),
   page("/test-mixed", { "en-IN": "published", "hi-IN": "review", "hi-Latn-IN": "published" }),
   page("/jobs/test-hub", { "en-IN": "paused", "hi-IN": "paused" }, { kind: "jobs-city", audience: "jobs" }),
+  page("/test-anchor", { "en-IN": "retired" }, { retiredTo: "/about#team" }),
+  // Hinglish retired to a named target, Hindi retired with none (never public).
+  page("/test-partly-retired", { "en-IN": "published", "hi-IN": "retired", "hi-Latn-IN": "retired" }, { retiredTo: { "hi-Latn-IN": "/test-mixed" } }),
+  page("/test-noindex", { "en-IN": "published", "hi-IN": "published", "hi-Latn-IN": "published" }, { noindex: true }),
+  page("/test-noindex/child", { "en-IN": "published" }, { parent: "/test-noindex" }),
 );
 pathAliases["/test-alias"] = "/test-mixed";
 
 const registry = await importTs("src/content/registry/index.ts");
+const { pageEntrySchema } = await importTs("src/content/registry/schema.ts");
 const i18n = await importTs("src/lib/i18n.ts");
+const { breadcrumbTrail, showsBreadcrumb, visibleTrail } = await importTs("src/lib/breadcrumbs.ts");
 const { default: sitemap } = await importTs("src/app/sitemap.ts");
 const urls = sitemap().map((e) => e.url.replace("https://www.vayasyaseva.com", ""));
 
@@ -108,4 +115,85 @@ test("only cluster hubs can be paused (they render the notice)", () => {
   assert.ok(registry.PAUSABLE_KINDS.has("cluster-hub"));
   assert.ok(!registry.PAUSABLE_KINDS.has("static"));
   assert.ok(!registry.PAUSABLE_KINDS.has("job-role"));
+});
+
+test("per-language retirement: a named target 308s, a retired language without one 404s", () => {
+  assert.deepEqual(registry.builtLocales("/test-partly-retired"), ["en-IN"]);
+  assert.equal(registry.redirectTarget("/test-partly-retired", "hi-Latn-IN"), "/test-mixed");
+  // The target keeps the language asked for where it is published in it.
+  assert.equal(i18n.movedPathname("/test-partly-retired", "hi-Latn-IN"), "/hi-latn-in/test-mixed");
+  // No target for Hindi and none for the live English or the neutral URL.
+  assert.equal(i18n.movedPathname("/test-partly-retired", "hi-IN"), undefined);
+  assert.equal(i18n.movedPathname("/test-partly-retired", "en-IN"), undefined);
+  assert.equal(i18n.movedPathname("/test-partly-retired"), undefined);
+  assert.equal(i18n.isGone("/test-partly-retired", "hi-IN"), true);
+  assert.equal(i18n.isGone("/test-partly-retired", "en-IN"), false);
+  assert.equal(i18n.isGone("/test-partly-retired"), false);
+  // Pages with nothing built 404 at every URL and build no version.
+  assert.equal(i18n.isGone("/test-draft", "en-IN"), true);
+  assert.equal(i18n.isGone("/test-draft"), true);
+  assert.deepEqual(i18n.localesOf("/test-draft"), []);
+  assert.equal(i18n.isGone("/no-such-page"), false);
+});
+
+test("a retired page can redirect to an anchor on its target", () => {
+  assert.equal(i18n.movedPathname("/test-anchor", "hi-IN"), "/en-in/about#team");
+});
+
+test("the schema keeps whole and partial retirement apart", () => {
+  const ok = (extra) => pageEntrySchema.safeParse(page("/x", { "en-IN": "published", "hi-IN": "retired" }, extra)).success;
+  assert.equal(ok({ retiredTo: { "hi-IN": "/about" } }), true);
+  assert.equal(ok({ retiredTo: "/about" }), false, "a single path needs every language retired");
+  assert.equal(ok({ retiredTo: { "en-IN": "/about" } }), false, "a target for a live language");
+  assert.equal(ok({ retiredTo: { "hi-IN": "/about#team" } }), true);
+  const allRetired = page("/x", { "en-IN": "retired" }, { retiredTo: { "en-IN": "/about" } });
+  assert.equal(pageEntrySchema.safeParse(allRetired).success, false, "every language retired takes a single path");
+  assert.equal(pageEntrySchema.safeParse(page("/x", { "en-IN": "review" }, { noindex: true })).success, false);
+});
+
+test("noindex pages: public and linkable, but out of search", () => {
+  for (const locale of ["en-IN", "hi-IN", "hi-Latn-IN"]) {
+    assert.equal(i18n.isPublic("/test-noindex", locale), true);
+    assert.equal(i18n.isIndexable("/test-noindex", locale), false);
+  }
+  assert.ok(!urls.some((u) => u.endsWith("/test-noindex")), "a noindex page is in the sitemap");
+  assert.equal(i18n.languageAlternates("/test-noindex"), undefined);
+  assert.equal(registry.linkable("/test-noindex", "hi-IN"), true);
+  assert.equal(i18n.linkProblem("/hi-in/test-noindex", "/en-in/about"), undefined);
+  assert.equal(i18n.localizeHref("/test-noindex", "hi-IN"), "/hi-in/test-noindex");
+  assert.deepEqual(i18n.languageLinks("/en-in/test-noindex").map((l) => l.lang), ["hi-IN", "hi-Latn-IN"]);
+  // A noindex page is still checked for links like any public page.
+  assert.match(i18n.linkProblem("/en-in/test-review", "/en-in/test-noindex"), /not a published page/);
+});
+
+test("the real noindex pages: the application form and the brand kit", () => {
+  for (const locale of ["en-IN", "hi-IN", "hi-Latn-IN"]) assert.equal(i18n.isIndexable("/jobs/apply", locale), false);
+  assert.equal(i18n.isIndexable("/brand", "en-IN"), false);
+  assert.ok(registry.linkable("/jobs/apply", "hi-IN") && registry.linkable("/brand", "en-IN"));
+  assert.ok(!urls.some((u) => u.endsWith("/jobs/apply") || u.endsWith("/brand")));
+});
+
+test("breadcrumbs follow the registry parent chain, home first; visible two levels down only", () => {
+  const names = (path, locale, name) => breadcrumbTrail(path, locale, name).map((c) => c.name);
+  assert.deepEqual(names("/brand", "en-IN", "Brand"), ["Home", "About", "Brand"]);
+  assert.deepEqual(names("/vayasya-setu", "en-IN", "Vayasya Setu"), ["Home", "About", "Vayasya Setu"]);
+  // Guides sit in the reference section, under the wage hub (its header).
+  assert.deepEqual(names("/guides/new-labour-codes", "en-IN", "New labour codes"), ["Home", "Minimum wages", "New labour codes"]);
+  assert.deepEqual(names("/minimum-wages/how-we-check", "en-IN", "How we check"), ["Home", "Minimum wages", "How we check"]);
+  // Home opens the English home, so it keeps its English name.
+  const jobs = breadcrumbTrail("/jobs/packing", "hi-IN", "पैकिंग");
+  assert.deepEqual(jobs, [
+    { name: "Home", href: "/en-in" },
+    { name: "नौकरी", href: "/hi-in/jobs" },
+    { name: "पैकिंग", href: "/hi-in/jobs/packing" },
+  ]);
+  // On jobs pages the visible trail starts at Jobs; other pages keep Home.
+  assert.deepEqual(visibleTrail("/jobs/packing", jobs), jobs.slice(1));
+  const service = breadcrumbTrail("/services/housekeeping", "en-IN", "Housekeeping");
+  assert.deepEqual(visibleTrail("/services/housekeeping", service), service);
+  assert.equal(showsBreadcrumb(breadcrumbTrail("/services/housekeeping", "en-IN", "Housekeeping")), true);
+  assert.equal(showsBreadcrumb(breadcrumbTrail("/about", "en-IN", "About")), false);
+  assert.equal(showsBreadcrumb(breadcrumbTrail("/", "en-IN", "Home")), false);
+  // An ancestor without a breadcrumb name fails the build.
+  assert.throws(() => breadcrumbTrail("/test-noindex/child", "en-IN", "Child"), /No breadcrumb name/);
 });

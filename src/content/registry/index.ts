@@ -82,15 +82,23 @@ export function linkable(path: string, locale?: LocaleTag): boolean {
   return locale ? statusOf(path, locale) === "published" : publishedLocales(path).length > 0;
 }
 
+/** Whether a published page is kept out of search (built, linkable, noindex). */
+export function isNoindex(path: string): boolean {
+  return byPath.get(path)?.noindex === true;
+}
+
 /**
- * Where a URL that is not a page 308s to: an alias (/locations/haridwar), or
- * a retired page with `retiredTo` set (the schema allows retiredTo only when
- * every language is retired).
+ * Where a URL that is not a page 308s to (a neutral path, maybe with an
+ * #anchor): an alias (/locations/haridwar), a retired page with a single
+ * `retiredTo` (every language retired), or, with a locale, that language's
+ * target when only some languages are retired. Undefined otherwise.
  */
-export function redirectTarget(path: string): string | undefined {
+export function redirectTarget(path: string, locale?: LocaleTag): string | undefined {
   if (Object.hasOwn(pathAliases, path)) return pathAliases[path];
   const entry = byPath.get(path);
-  if (!entry?.retiredTo) return undefined;
+  const to = entry?.retiredTo;
+  if (!to) return undefined;
+  if (typeof to !== "string") return locale && entry.locales[locale] === "retired" ? to[locale] : undefined;
   const statuses = Object.values(entry.locales);
-  return statuses.length > 0 && statuses.every((s) => s === "retired") ? entry.retiredTo : undefined;
+  return statuses.length > 0 && statuses.every((s) => s === "retired") ? to : undefined;
 }

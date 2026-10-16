@@ -15,6 +15,7 @@ export const whatIsContractLabour: Guide = {
   slug: "what-is-contract-labour",
   audience: "mixed",
   title: "What Is Contract Labour? How a Contractor Works",
+  crumb: "What is contract labour",
   description:
     "Contract labour explained: who employs the workers, who pays wages, EPF and ESIC, who supervises, and when it suits a plant better than hiring directly.",
   h1: "What contract labour is, and who employs the workers.",

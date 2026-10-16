@@ -120,7 +120,8 @@ function sourceLine(state: WageState, table: WageTable) {
   const s = sourceById(state, table.sources[0]);
   // Delhi's numbers carry their own "F.No." prefix.
   const number = /^F\.?\s?No\./i.test(s.number) ? s.number : `No. ${s.number}`;
-  return x.table.source(formatDate(table.effectiveFrom), x.sourceKind(s.kind), number);
+  // The sentence adds its own full stop ("2/25/26-2 Lab." would end "Lab..").
+  return x.table.source(formatDate(table.effectiveFrom), x.sourceKind(s.kind), number.replace(/\.$/, ""));
 }
 
 /**
@@ -176,7 +177,7 @@ function RateTable({ state, table }: { state: WageState; table: WageTable }) {
             </tbody>
           </table>
         ) : (
-          <table className="wage-table is-flat">
+          <table className={split ? "wage-table is-flat" : "wage-table is-flat is-narrow"}>
             {caption}
             <thead>
               <tr>
@@ -467,6 +468,7 @@ function TableChooser({ state, which }: { state: WageState; which: NonNullable<W
 const CREW_REGIONS: Partial<Record<WageStateSlug, [string, string, string]>> = {
   "uttar-pradesh": ["Noida or Ghaziabad", "We supply crews in Noida, Greater Noida and Ghaziabad.", "/locations/delhi-ncr/noida-greater-noida"],
   delhi: ["Delhi NCR", "We supply crews in Delhi's industrial areas and across NCR.", "/locations/delhi-ncr"],
+  haryana: ["Gurugram or Manesar", "We supply crews in IMT Manesar, Gurugram and Faridabad.", "/locations/delhi-ncr/gurugram-manesar"],
   karnataka: ["Bengaluru", "We supply crews across Bengaluru's industrial belts.", "/locations/bengaluru"],
 };
 function crewDoor(slug: WageStateSlug) {

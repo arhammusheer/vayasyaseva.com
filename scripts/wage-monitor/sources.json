@@ -117,6 +117,107 @@
         }
       ]
     },
+    "haryana": {
+      "listings": [
+        {
+          "url": "https://hrylabour.gov.in/home/readmore?cat_id=46&status=1",
+          "name": "Labour Department, Haryana: news and notifications",
+          "match": "wage|dearness|वेतन|मजदूरी|महंगाई"
+        },
+        {
+          "url": "https://hrylabour.gov.in/home/readmore?cat_id=46&status=1",
+          "name": "Labour Department, Haryana: news and notifications (Labour Welfare Fund)",
+          "topic": "lwf",
+          "match": "welfare fund|labour welfare|अंशदान|कल्याण"
+        },
+        {
+          "url": "https://hrylabour.gov.in/home/readmore?cat_id=46&status=1",
+          "name": "Labour Department, Haryana: news and notifications (Professional Tax)",
+          "topic": "pt",
+          "match": "professional tax|profession tax|व्यवसाय कर"
+        },
+        {
+          "url": "https://hrylabour.gov.in/home/readmore?cat_id=46&status=1",
+          "name": "Labour Department, Haryana: news and notifications (OSH Code and contract labour)",
+          "topic": "licence",
+          "match": "occupational safety|\\bOSH\\b|contract labour|ठेका"
+        }
+      ],
+      "documents": [
+        {
+          "url": "https://www.hrylabour.gov.in/staticdocs/labourActpdfdocs/Punjab_Labour_Welfar_Fund_Act.pdf",
+          "name": "Punjab Labour Welfare Fund Act, 1965, as amended by Haryana",
+          "topic": "lwf"
+        },
+        {
+          "url": "https://www.sgcms.com/regulatory-updates/wp-content/uploads/2026/05/Haryana-LWF-Revised-Rates.pdf",
+          "name": "Haryana Labour Welfare Board: contribution ceiling 2026 (SGCMS copy)",
+          "topic": "lwf"
+        },
+        {
+          "url": "https://storage.hrylabour.gov.in/uploads/labour_laws/Y2026/May/W1/D07/1778145221.pdf",
+          "name": "Haryana OSH Rules, 2026: draft",
+          "topic": "licence"
+        }
+      ]
+    },
+    "punjab": {
+      "listings": [
+        {
+          "url": "https://pblabour.gov.in/",
+          "name": "Labour Department, Punjab: home page notifications",
+          "match": "minimum (rates of )?wage|ਉਜਰਤ"
+        },
+        {
+          "url": "https://psdt.punjab.gov.in/",
+          "name": "Punjab State Development Tax: downloads",
+          "topic": "pt",
+          "match": "tax|amend|rule|clarif|PSDT"
+        },
+        {
+          "url": "https://pblabour.gov.in/Profile/ActAndRules",
+          "name": "Labour Department, Punjab: acts and rules (Labour Welfare Fund)",
+          "topic": "lwf",
+          "match": "welfare fund|labour welfare"
+        },
+        {
+          "url": "https://pblabour.gov.in/Profile/ActAndRules",
+          "name": "Labour Department, Punjab: acts and rules (OSH Code and contract labour)",
+          "topic": "licence",
+          "match": "contract labour|occupational|safety|\\bOSH\\b"
+        }
+      ],
+      "pages": [
+        {
+          "url": "https://pblabour.gov.in/Service/ContractLabour",
+          "name": "Labour Department, Punjab: contract labour licence",
+          "topic": "licence",
+          "match": "licen|twenty|fifty|fee"
+        }
+      ],
+      "documents": [
+        {
+          "url": "https://psdt.punjab.gov.in/docs/Punjab_State_Development_Tax_2018.pdf",
+          "name": "Punjab State Development Tax Act, 2018",
+          "topic": "pt"
+        },
+        {
+          "url": "https://psdt.punjab.gov.in/docs/Amendment_in_PSDT_Rules_2018.pdf",
+          "name": "Punjab State Development Tax (Amendment) Rules, 2021",
+          "topic": "pt"
+        },
+        {
+          "url": "https://pblabour.gov.in/pbLabourStaticSiteAdmin/uploads/5c6efb8f-d1d8-465a-b017-0064a1b1b5ad_the_punjab_labour_welfare_fund_act_1965.pdf",
+          "name": "Punjab Labour Welfare Fund Act, 1965",
+          "topic": "lwf"
+        },
+        {
+          "url": "https://prsindia.org/files/bills_acts/acts_states/punjab/1965/1965PB17.pdf",
+          "name": "Punjab Labour Welfare Fund (Amendment) Act, 2014 (PRS copy)",
+          "topic": "lwf"
+        }
+      ]
+    },
     "karnataka": {
       "listings": [
         {

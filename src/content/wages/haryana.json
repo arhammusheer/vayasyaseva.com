@@ -1,0 +1,79 @@
+{
+ "state": "haryana",
+ "name": "Haryana",
+ "titleName": "Haryana",
+ "nextRevision": {
+  "expected": "2026-10-01",
+  "basis": "The 9 April 2026 notification fixes basic rates with full neutralisation of the consumer price index, to be adjusted as the Code on Wages (Haryana) Rules, 2026 prescribe. Those rules are in draft (published 4 May 2026); rule 5 of the draft revises the variable dearness allowance before 1 April and 1 October each year. Before 2026 Haryana revised its rates every 1 January and 1 July. No revision on the new basic rates had been published by 17 October 2026."
+ },
+ "checked": {
+  "on": "2026-10-17"
+ },
+ "sources": [
+  {
+   "id": "hr-2026-04",
+   "kind": "notification",
+   "title": "Revised basic minimum rates of wages for all employments, with effect from 1 April 2026",
+   "number": "2/25/26-2 Lab.",
+   "date": "2026-04-09",
+   "authority": "Labour Department, Government of Haryana",
+   "legalBasis": "Section 8(3), Code on Wages, 2019. Haryana Government Gazette (Extraordinary) No. 51-2026/Ext., 9 April 2026. Replaces the basic rates of notification 3/42/83-3 Lab dated 21 October 2015.",
+   "url": "https://storage.hrylabour.gov.in/uploads/labour_laws/Y2026/April/W2/D09/1775725409.pdf",
+   "listing": "https://hrylabour.gov.in/home/readmore?cat_id=46&status=1",
+   "language": "en",
+   "sha256": "83a6818ba9144e9e700b63a65ee5a80b3d7508a4d63a9109647e713076c4d5fb",
+   "sizeKb": 380,
+   "retrievedOn": "2026-10-17"
+  },
+  {
+   "id": "hr-2026-10-order",
+   "kind": "order",
+   "title": "Implementation of the notification dated 9 April 2026 fixing minimum rates of wages",
+   "number": "25744-860",
+   "date": "2026-10-05",
+   "authority": "Labour Commissioner, Haryana",
+   "legalBasis": "Directs field officers to enforce the 9 April 2026 notification in all establishments, including petty establishments, while CWP-PIL-255 of 2026 (Court on its own motion v. State of Haryana) is pending in the Punjab and Haryana High Court.",
+   "url": "https://storage.hrylabour.gov.in/uploads/labour_laws/Y2026/Oct/W1/D05/1791186016.pdf",
+   "listing": "https://hrylabour.gov.in/home/readmore?cat_id=46&status=1",
+   "language": "en",
+   "sha256": "4d2c6c61d64e51018c431deb2e110ae8c724db3581279824b48a1a4e2a91fe85",
+   "sizeKb": 226,
+   "retrievedOn": "2026-10-17"
+  }
+ ],
+ "tables": [
+  {
+   "id": "all-employments",
+   "headline": true,
+   "title": "All employments",
+   "appliesTo": "Every employment in Haryana: establishments, factories, employees, workers and contract labour as the Code on Wages, 2019 defines them. Brick kilns are to be notified separately. Trainees get 75% of their category's rate for up to a year, but not less than the unskilled rate.",
+   "sources": ["hr-2026-04", "hr-2026-10-order"],
+   "effectiveFrom": "2026-04-01",
+   "zones": [
+    {
+     "id": "haryana",
+     "name": "All of Haryana",
+     "areas": "One rate for the whole state."
+    }
+   ],
+   "daily": "stated",
+   "basicLabel": "Basic minimum rate",
+   "vdaLabel": "VDA",
+   "vdaNote": "The notification fixes all-inclusive basic rates that an employer may not split into allowances. Rises in the consumer price index are to be passed on in full as the Code on Wages (Haryana) Rules, 2026 prescribe; no dearness allowance has been notified on these rates yet.",
+   "rates": [
+    { "zone": "haryana", "skill": "unskilled", "basic": 15220.71, "vda": 0, "monthly": 15220.71, "daily": 585.41 },
+    { "zone": "haryana", "skill": "semi-skilled", "basic": 16780.74, "vda": 0, "monthly": 16780.74, "daily": 645.41 },
+    { "zone": "haryana", "skill": "skilled", "basic": 18500.81, "vda": 0, "monthly": 18500.81, "daily": 711.56 },
+    { "zone": "haryana", "skill": "highly-skilled", "basic": 19425.85, "vda": 0, "monthly": 19425.85, "daily": 747.14 }
+   ]
+  }
+ ],
+ "history": [],
+ "verification": [
+  "2026-10-17: The Labour Department's 'News & Notifications' listing (hrylabour.gov.in, cat_id 46) links 'Revise Basic Minimum wages Notification dated 09-04-2026 w.e.f. 01-04-2026 in the State of Haryana' (storage.hrylabour.gov.in ... 1775725409.pdf). It is the Haryana Government Gazette (Extraordinary) No. 51-2026/Ext. of 9 April 2026, notification No. 2/25/26-2 Lab., with a text layer; figures read from it: per month 15220.71 / 16780.74 / 18500.81 / 19425.85, per day 585.41 / 645.41 / 711.56 / 747.14.",
+  "2026-10-17: The stated daily rates are the monthly rate divided by 26 and cut (not rounded) to the paisa: 18500.81 / 26 = 711.5696 is printed 711.56, 19425.85 / 26 = 747.148 is printed 747.14. The notification's note 7 sets the 26-day divisor. The printed figures are used.",
+  "2026-10-17: The notification has four categories only (unskilled, semi-skilled, skilled, highly skilled). The 2015 scheme's A/B grades and clerical, driver and security-guard rows (Labour Commissioner's letter 5377-522 of 22 February 2024, rates from 1 January 2024: unskilled 10924.24) are not carried over; the reviewer should confirm that clerical and other staff now fall in these four categories.",
+  "2026-10-17: Order No. 25744-860 of 5 October 2026 (Labour Commissioner, scanned, read from the page image) directs enforcement in all establishments including petty establishments, because CWP-PIL-255 of 2026 alleges the notification is not being implemented; the High Court hearing is listed for 28 October 2026.",
+  "2026-10-17: OPEN QUESTION for the reviewer: no VDA or dearness revision on the April 2026 rates was found on the listing (checked back to 2024). The draft Code on Wages (Haryana) Rules, 2026 (notification 02/08/2021-2Lab., 4 May 2026) say the VDA is revised before 1 April and 1 October; until the rules are final, whether a revision was due on 1 October 2026 is uncertain. nextRevision.expected is set to 1 October 2026 on that draft rule."
+ ]
+}

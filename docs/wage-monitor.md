@@ -48,6 +48,8 @@ Sources by state today (`scripts/wage-monitor/sources.json`):
 | Uttarakhand | Labour Department minimum wage notifications; circulars; home page notices | Circulars (PT pattern) | Acts and rules (LWF pattern); UP LWF Rules, 1972 | Acts and rules (OSH pattern) |
 | Uttar Pradesh | Home page notices; Minimum Wages Act orders | Home page (PT pattern) | Home page (LWF pattern); UP LWF Rules, 1972 | Home page (OSH pattern) |
 | Delhi | Current minimum wage rates | Notifications (PT pattern) | Delhi Labour Welfare Board circulars and orders; LWF contribution notification (page) | Notifications (OSH pattern) |
+| Haryana | News and notifications (wage pattern) | News and notifications (PT pattern) | Same listing (LWF pattern); the LWF Act as amended by Haryana; the Board's 2026 ceiling notice (SGCMS copy) | Same listing (OSH pattern); draft OSH rules, 2026 |
+| Punjab | Home page notifications | Development tax site downloads; the 2018 Act and 2021 amendment rules | Acts and rules (LWF pattern); LWF Act, 1965; Amendment Act, 2014 (PRS copy) | Acts and rules (OSH pattern); contract labour licence page |
 | National | | | | Labour codes handbook |
 
 National EPF, ESIC and codes: EPFO circulars; wage ceiling circular and FAQs;
@@ -55,7 +57,8 @@ ESIC circulars, notifications and contribution rates; Social Security
 (Central) Rules, 2026; S.O. 2698(E); the Code on Social Security, 2020; the
 Code on Wages, 2019.
 
-None of the three states levies Professional Tax, so its sources only catch a
+None of Uttarakhand, UP, Delhi or Haryana levies Professional Tax (Punjab's
+equivalent is its ₹200 development tax), so its sources only catch a
 new levy if the labour department announces it. Uttar Pradesh's labour site
 links few documents; its final OSH rules came out on another host. Treat a
 quiet PT or UP topic as weak evidence, not proof nothing changed.
@@ -121,7 +124,9 @@ request with one retry; a host that does not answer at all fails its other
 URLs at once. egazette.gov.in sends an incomplete certificate chain, so the
 monitor trusts the two Let's Encrypt certificates in
 `scripts/wage-monitor/certs/` (the YR1 intermediate and Root YR cross-signed
-by ISRG Root X1). www.labour.gov.in refuses descriptive user agents, so it
+by ISRG Root X1), and pblabour.gov.in and psdt.punjab.gov.in omit their
+intermediates, so it also trusts Sectigo Public Server Authentication CA DV
+R36 and GeoTrust TLS RSA CA G1 from the same folder. www.labour.gov.in refuses descriptive user agents, so it
 gets a plain one (`plainUserAgentHosts`).
 
 ## Where it runs

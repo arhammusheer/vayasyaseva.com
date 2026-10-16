@@ -128,7 +128,54 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
       band: "elsewhere",
     };
   },
-  haryana: undefined,
+  haryana: (s) => {
+    const t = "all-employments";
+    const u = rate(s, t, "haryana", "unskilled");
+    const from = s.tables[0].effectiveFrom;
+    return {
+      title: (year) => `Haryana Minimum Wage${year ? ` ${year}` : ""}: ${formatRupees(u.daily ?? 0)}/day, ${formatRupees(u.monthly)}/month`,
+      description: `Haryana minimum wage from ${formatShortDate(from)}: ${rs(s, t, "haryana", "unskilled")} a month (${formatRupees(u.daily ?? 0)} a day) unskilled, ${rs(s, t, "haryana", "semi-skilled")} semi-skilled, ${rs(s, t, "haryana", "skilled")} skilled. One statewide rate. ${stamp([s])}.`,
+      answer: `From ${formatDate(from)}, unskilled work anywhere in Haryana pays at least ${formatRupees(u.monthly)} a month, or ${formatRupees(u.daily ?? 0)} a day. One rate covers the whole state.`,
+      note: {
+        text: "One rate covers all of Haryana, including Gurugram, Manesar, Faridabad and Kundli. Delhi, Noida and Ghaziabad pay their own state's rates.",
+        link: { href: "/minimum-wages/delhi", label: "Delhi rates" },
+      },
+      faqs: [
+        {
+          question: "Is the rate the same in Gurugram, Manesar and Faridabad?",
+          answer: "Yes. The 9 April 2026 notification sets one rate for every scheduled employment across Haryana, with no zones. A worker in Kundli is paid Haryana's rate even if they live in Delhi.",
+        },
+        {
+          question: "When does Haryana's rate change next?",
+          answer: `Before 2026 Haryana revised its rates every January and July. The draft Code on Wages (Haryana) Rules, 2026 move the dearness allowance to 1 April and 1 October, but no revision had been published when we checked on ${formatDate(s.checked.on)}. When one is, we update this page.`,
+        },
+      ],
+      labourDepartment: { href: "https://hrylabour.gov.in/", label: "Labour Department, Haryana" },
+      band: "elsewhere",
+    };
+  },
+  punjab: (s) => {
+    const t = "all-employments";
+    const u = rate(s, t, "punjab", "unskilled");
+    const from = s.tables[0].effectiveFrom;
+    return {
+      title: (year) => `Punjab Minimum Wage${year ? ` ${year}` : ""}: ${formatRupees(u.daily ?? 0)}/day, ${formatRupees(u.monthly)}/month`,
+      description: `Punjab minimum wage from ${formatShortDate(from)}: ${rs(s, t, "punjab", "unskilled")} a month (${formatRupees(u.daily ?? 0)} a day) unskilled, ${rs(s, t, "punjab", "semi-skilled")} semi-skilled, ${rs(s, t, "punjab", "skilled")} skilled. One statewide rate. ${stamp([s])}.`,
+      answer: `From ${formatDate(from)}, unskilled work anywhere in Punjab pays at least ${formatRupees(u.monthly)} a month, or ${formatRupees(u.daily ?? 0)} a day. One rate covers the whole state.`,
+      faqs: [
+        {
+          question: "Why did Punjab's rates change in May 2026?",
+          answer: "The 1 May 2026 notification, Punjab's first under the Code on Wages, resets the base rates for all employments. Before it, the state adjusted its rates for prices every 1 March and 1 September.",
+        },
+        {
+          question: "Can the rate be split into allowances?",
+          answer: "No. The notification fixes these as basic rates and does not allow them to be split into allowances.",
+        },
+      ],
+      labourDepartment: { href: "https://pblabour.gov.in/", label: "Labour Department, Punjab" },
+      band: "elsewhere",
+    };
+  },
   karnataka: (s) => {
     const t = "most-employments";
     const u1 = rate(s, t, "zone-1", "unskilled");

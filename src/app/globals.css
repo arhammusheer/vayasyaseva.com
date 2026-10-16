@@ -3756,6 +3756,10 @@ a:hover > svg {
   font-size: 13px;
   color: var(--muted-foreground);
 }
+/* Three columns (no basic/VDA split): keep the figures beside their labels. */
+.wage-table.is-narrow {
+  max-width: 680px;
+}
 /* Basic and VDA: there for payroll, quieter than the rate itself. */
 .wage-table .is-quiet {
   color: var(--muted-foreground);

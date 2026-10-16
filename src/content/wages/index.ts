@@ -10,7 +10,9 @@
  */
 import type { WageStateSlug } from "@/content/registry/identifiers";
 import delhi from "./delhi.json" with { type: "json" };
+import haryana from "./haryana.json" with { type: "json" };
 import karnataka from "./karnataka.json" with { type: "json" };
+import punjab from "./punjab.json" with { type: "json" };
 import uttarPradesh from "./uttar-pradesh.json" with { type: "json" };
 import uttarakhand from "./uttarakhand.json" with { type: "json" };
 
@@ -104,8 +106,8 @@ export type WageState = {
   verification: string[];
 };
 
-/** Hub order: home state first, then the NCR neighbours. */
-export const wageStates = [uttarakhand, uttarPradesh, delhi, karnataka] as unknown as readonly WageState[];
+/** Hub order: home state first, then the NCR neighbours, then the rest. */
+export const wageStates = [uttarakhand, uttarPradesh, delhi, haryana, punjab, karnataka] as unknown as readonly WageState[];
 
 export function getWageState(slug: string): WageState | undefined {
   return wageStates.find((s) => s.state === slug);

@@ -112,6 +112,8 @@ export const WAGE_STATE_UPDATED: Readonly<Partial<Record<WageStateSlug, string>>
   "uttar-pradesh": "2026-10-16",
   delhi: "2026-10-16",
   karnataka: "2026-10-16",
+  haryana: "2026-10-17",
+  punjab: "2026-10-17",
 };
 const wageUpdated = (state: WageStateSlug) => {
   const updated = WAGE_STATE_UPDATED[state];
@@ -146,6 +148,13 @@ const WAGE_STATE_STATUS: Partial<Record<WageStateSlug, PageStatus>> = {
   // of the basic rates needs a reviewer's sign-off (karnataka.json,
   // verification) before publishing.
   karnataka: "review",
+  // Built and in review (17 Oct 2026): one statewide rate each, from the
+  // official Gazette copies. Open for the reviewer (haryana.json and
+  // punjab.json, verification): the next revision date while each state's
+  // Code on Wages rules are in draft, Haryana's clerical staff now inside the
+  // four skill levels, and Punjab's staff categories A to D (not shown).
+  haryana: "review",
+  punjab: "review",
 };
 
 /**

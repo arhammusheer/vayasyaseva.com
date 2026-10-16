@@ -4,53 +4,49 @@ import { ArrowUpRight } from "lucide-react";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
-import { FaqSection } from "@/components/sections/faq-section";
-import { complianceFaqs } from "@/content/faqs";
 import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { siteConfig } from "@/content/site";
+import { COMPLIANCE_RECORDS, CONTRACTOR_CHECKS } from "@/content/compliance";
+import { linkable } from "@/content/registry";
+import { WAGE_HUB_PATH, guidePath } from "@/content/registry/identifiers";
 import { localeParams } from "@/lib/i18n";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/compliance");
 
 const TITLE = "Contract Labour Compliance: EPF, ESIC, Wage Records";
 const DESCRIPTION =
-  "Contract labour compliance by the employer: we register workers for EPF and ESIC where they apply, deposit them monthly and keep registers open to you.";
+  "The attendance and wage registers, wage slips and EPF and ESIC challans we keep for every worker, what to check with a contractor, and how to get the documents.";
 
 export const metadata = pageMetadata({
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: "/compliance" },
 });
-/** What we do, in the home page's active voice: the workers are our employees. */
-const records = [
-  {
-    title: "Worker onboarding and records",
-    text: "We put each worker on our payroll with their identity and employment documents, and register them for EPF and ESIC where they apply.",
-  },
-  {
-    title: "Attendance and wage registers",
-    text: "We keep attendance for every shift and the wage register that follows from it, and pay wages from those records.",
-  },
-  {
-    title: "EPF and ESIC contributions",
-    text: "We deposit EPF and ESIC contributions every month for the workers they apply to, and give you the challans.",
-  },
-  {
-    title: "Your reviews and audits",
-    text: "Registers, wage slips, challans and our registration certificates are open for your monthly review, vendor assessment and audits.",
-  },
-];
+
+/** Reference pages, in the resources line once published. */
+const resources = [
+  { href: WAGE_HUB_PATH, label: "Minimum wages by state" },
+  { href: guidePath("new-labour-codes"), label: "New labour codes guide" },
+].filter((r) => linkable(r.href, "en-IN"));
+
+/** Ruled rows: a title and one line each, all visible. */
+function Rows({ items }: { items: { title: string; text: string }[] }) {
+  return (
+    <ul className="jobs-work">
+      {items.map((r) => (
+        <li key={r.title}>
+          <h3>{r.title}</h3>
+          <p>{r.text}</p>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export default function CompliancePage() {
   return (
     <>
-      <JsonLd
-        data={webPageSchema({
-          type: "WebPage",
-          name: TITLE,
-          description: DESCRIPTION,
-          url: "/compliance",
-        })}
-      />
+      <JsonLd data={webPageSchema({ name: TITLE, description: DESCRIPTION, url: "/compliance" })} />
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", href: "/" },
@@ -58,102 +54,40 @@ export default function CompliancePage() {
         ])}
       />
       <PageHero
-        tone="dark"
-        title={
-          <>
-            Labour compliance: EPF, ESIC,
-            <br />
-            wage registers and licences.
-          </>
-        }
-        lede="Care for the workforce, and attention to the detail. The workers are on our payroll, so their EPF, ESIC and wage records are ours to keep, and open to you."
+        title="Labour compliance: the records we keep."
+        lede="What we keep for every worker on your site, what to check with any contractor, and how to get the documents."
       />
       <Section>
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-[1fr_1.6fr]">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.6fr]">
+          <h2 className="text-4xl font-medium">For every worker.</h2>
           <div>
-            <p className="eyebrow text-gold-700">COMPLIANCE IN PRACTICE</p>
-            <h2 className="mt-5 text-4xl font-medium">
-              The records behind
-              <br />
-              the relationship.
-            </h2>
-            <p className="mt-5 text-muted-foreground leading-relaxed">
-              Your HR, operations and procurement teams can check every
-              record for the workers on your site.
+            <Rows items={COMPLIANCE_RECORDS} />
+            <p className="compliance-line">
+              <span>Registered under EPF and ESIC.</span>
+              <a href={`mailto:${siteConfig.email}?subject=Compliance%20documents`} className="text-link">
+                Request compliance documents <ArrowUpRight size={18} aria-hidden="true" />
+              </a>
             </p>
-          </div>
-          <div className="detail-list">
-            {records.map((r, i) => (
-              <details key={r.title} open={i === 0}>
-                <summary>{r.title}</summary>
-                <div className="detail-body">
-                  <p>{r.text}</p>
-                </div>
-              </details>
-            ))}
           </div>
         </div>
       </Section>
       <Section variant="subtle">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.6fr]">
+          <h2 className="text-4xl font-medium">Before you sign with any contractor.</h2>
           <div>
-            <h2 className="text-4xl font-medium">
-              Registered.
-              <br />
-              Open to review.
-            </h2>
-            <p className="mt-5 max-w-sm text-muted-foreground">
-              Our registration documents are available during vendor onboarding
-              and due diligence.
-            </p>
-            <p className="mt-4 max-w-sm text-muted-foreground">
-              Contract labour licence: before you sign, ask us for the
-              registration and licence details that apply to your site.
-            </p>
+            <Rows items={CONTRACTOR_CHECKS} />
+            {resources.length > 0 && (
+              <p className="link-row mt-10 border-t pt-4">
+                {resources.map((r) => (
+                  <Link key={r.href} href={r.href} className="text-link">
+                    {r.label} <ArrowUpRight size={18} aria-hidden="true" />
+                  </Link>
+                ))}
+              </p>
+            )}
           </div>
-          <dl className="divide-y border-y">
-            {[
-              { label: "EPF", value: "Registered" },
-              { label: "ESIC", value: "Registered" },
-              { label: "GSTIN", value: siteConfig.gstin },
-              { label: "MSME / UDYAM", value: siteConfig.msme },
-            ].map((r) => (
-              <div
-                key={r.label}
-                className="flex flex-wrap justify-between gap-3 py-5"
-              >
-                <dt>{r.label}</dt>
-                <dd className="font-data text-sm text-muted-foreground break-all">
-                  {r.value}
-                </dd>
-              </div>
-            ))}
-          </dl>
         </div>
       </Section>
-      <Section>
-        <div className="max-w-2xl">
-          <h2 className="text-4xl font-medium">Need a closer look?</h2>
-          <p className="mt-4 text-muted-foreground">
-            Tell us which documents your team needs for vendor assessment or an
-            engagement review.
-          </p>
-          <a
-            href={`mailto:${siteConfig.email}?subject=Compliance%20documentation`}
-            className="text-link"
-          >
-            Request compliance documents <ArrowUpRight size={18} aria-hidden="true" />
-          </a>
-          <p className="mt-8 text-sm text-muted-foreground">
-            See how compliance fits into{" "}
-            <Link href="/services" className="underline underline-offset-4">
-              our workforce and industrial services
-            </Link>
-            .
-          </p>
-        </div>
-      </Section>
-      <FaqSection eyebrow="QUESTIONS" variant="subtle" items={complianceFaqs} />
       <CtaBlock />
     </>
   );

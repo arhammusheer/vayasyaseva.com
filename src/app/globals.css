@@ -620,8 +620,7 @@ a:hover > svg {
   color: var(--gold-700);
 }
 .home-intro h2,
-.section-intro h2,
-.closer-section h2 {
+.section-intro h2 {
   font-size: clamp(38px, 4.4vw, 62px);
   font-weight: 500;
   line-height: 1.07;
@@ -650,6 +649,9 @@ a:hover > svg {
   justify-content: space-between;
   border-top: 1px solid var(--border);
   padding-block: 35px 50px;
+}
+.client-section.is-after-rule {
+  border-top: 0;
 }
 .client-section > p {
   color: var(--muted-foreground);
@@ -700,6 +702,7 @@ a:hover > svg {
 .capability-row:hover {
   color: var(--gold-700);
 }
+.capability-row h2,
 .capability-row h3 {
   font-size: clamp(25px, 2.3vw, 34px);
   font-weight: 500;
@@ -739,57 +742,7 @@ a:hover > svg {
   color: var(--neutral-200);
   margin-bottom: 45px;
 }
-.registration-line {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  border-top: 1px solid var(--neutral-600);
-  padding: 20px 0;
-}
-.registration-line span:first-child {
-  font-size: 24px;
-}
-.registration-line span:last-child {
-  color: var(--neutral-300);
-  font-size: 14px;
-}
-.small-note {
-  font-size: 13px;
-  color: var(--neutral-300);
-  margin-top: 16px;
-}
-.closer-section {
-  padding-block: 110px;
-  display: grid;
-  grid-template-columns: 1fr 1.4fr;
-  gap: 90px;
-}
-.closer-section h2 {
-  font-size: 44px;
-  margin-top: 26px;
-}
-.closer-section .eyebrow {
-  color: var(--gold-700);
-}
-.closer-links > a {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  border-top: 1px solid var(--border);
-  padding: 23px 0;
-  font-size: 23px;
-  line-height: 1.2;
-}
-.closer-links > a:last-child {
-  border-bottom: 1px solid var(--border);
-}
-.closer-links small {
-  display: block;
-  color: var(--muted-foreground);
-  font-size: 15px;
-  margin-top: 12px;
-  line-height: 1.5;
-}
+
 .contact-invitation {
   background: var(--gold-50);
   padding-block: 90px;
@@ -805,9 +758,6 @@ a:hover > svg {
   line-height: 1.03;
   font-weight: 500;
   margin: 30px 0 20px;
-}
-.invitation-inner p:last-child {
-  color: var(--neutral-600);
 }
 .round-link {
   width: 150px;
@@ -925,8 +875,7 @@ a:hover > svg {
     grid-template-columns: 1fr 1.7fr;
     gap: 35px;
   }
-  .compliance-inner,
-  .closer-section {
+  .compliance-inner {
     gap: 50px;
   }
   .client-section > div {
@@ -989,8 +938,7 @@ a:hover > svg {
   }
   .home-intro,
   .section-intro,
-  .compliance-inner,
-  .closer-section {
+  .compliance-inner {
     grid-template-columns: 1fr;
     gap: 28px;
   }
@@ -1030,6 +978,7 @@ a:hover > svg {
     gap: 12px 22px;
     padding: 26px 0;
   }
+  .capability-row h2,
   .capability-row h3 {
     font-size: 27px;
   }
@@ -1055,15 +1004,9 @@ a:hover > svg {
     font-size: 18px;
     margin-bottom: 30px;
   }
-  .closer-section {
-    padding-block: 65px;
-  }
-  .closer-section h2 {
-    font-size: 40px;
-  }
-  .closer-links > a {
-    font-size: 21px;
-  }
+  
+  
+  
   .contact-invitation {
     padding-block: 60px;
   }
@@ -1262,8 +1205,7 @@ a:hover > svg {
   box-shadow: none;
 }
 .home-intro > .eyebrow,
-.section-intro .eyebrow,
-.closer-section .eyebrow {
+.section-intro .eyebrow {
   color: var(--gold-700);
 }
 .text-link svg,
@@ -1284,8 +1226,7 @@ a:hover > svg {
   background: var(--gold-50);
 }
 .compliance-inner .eyebrow,
-.compliance-inner .light-link,
-.registration-line span:first-child {
+.compliance-inner .light-link {
   color: var(--gold-500);
 }
 .compliance-inner .light-link {
@@ -1293,9 +1234,6 @@ a:hover > svg {
 }
 .contact-invitation {
   background: var(--gold-500);
-  color: var(--neutral-900);
-}
-.invitation-inner p:last-child {
   color: var(--neutral-900);
 }
 .round-link {
@@ -2298,14 +2236,7 @@ a:hover > svg {
   background-repeat: no-repeat;
   padding-right: 40px;
 }
-.crew-skip {
-  margin-top: 44px;
-  color: var(--muted-foreground);
-  font-size: 15px;
-}
-.crew-skip + .crew-section {
-  margin-top: 16px;
-}
+
 .crew-actions {
   margin-top: 40px;
 }
@@ -2317,29 +2248,7 @@ a:hover > svg {
 .crew-done {
   padding-top: 8px;
 }
-/* Who carries the workers: a ruled list beside the form (no rule above the first). */
-.crew-assurances {
-  max-width: 24rem;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.crew-assurances li {
-  padding: 16px 0;
-  font-size: 16px;
-  line-height: 1.6;
-  color: var(--muted-foreground);
-}
-.crew-assurances li + li {
-  border-top: 1px solid var(--border);
-}
-.crew-assurances li:first-child {
-  padding-top: 0;
-}
-.crew-assurances strong {
-  font-weight: 600;
-  color: var(--foreground);
-}
+
 @media (max-width: 640px) {
   .crew-next {
     width: 100%;
@@ -2665,72 +2574,88 @@ a:hover > svg {
   line-height: 1;
   color: var(--gold-700);
 }
-.home-intro .tracked-list h3 {
+.tracked-list h3 {
   margin-top: 0;
   max-width: none;
   font-size: 21px;
   font-weight: 500;
   line-height: 1.25;
 }
+.tracked-list li p,
 .home-intro .tracked-list li p {
   margin-top: 6px;
   font-size: 16px;
   line-height: 1.6;
 }
 
-/* Home: where we work. One oversized place line per cluster with a
-   published buyer page, then the open question for everywhere else. */
-.where-section {
-  padding-block: 110px;
+/* Compliance: the registration line and the documents request, after the records. */
+.compliance-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 24px;
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  color: var(--muted-foreground);
+}
+
+.compliance-line .text-link {
+  margin-top: 0;
+}
+/* A row of links on one rule (service links, resources): no stacked margins. */
+.link-row {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 40px;
+}
+.link-row .text-link {
+  margin-top: 0;
+}
+/* A service landing's one "Next" link: the sibling, in display type. */
+.service-next {
+  padding-block: 40px;
   border-top: 1px solid var(--border);
 }
-.where-section .section-intro {
-  margin-bottom: 40px;
+.service-next a {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 16px;
+  min-height: 48px;
 }
-/* Same columns as .section-intro, so the text edges line up. */
-.where-list > li {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr);
-  gap: 16px 70px;
-  align-items: start;
-  padding-block: 36px;
-}
-.where-list > li + li {
-  border-top: 1px solid var(--border);
-}
-.where-list > li:first-child {
-  padding-top: 0;
-}
-.where-place {
-  font-family: var(--font-anek), var(--font-hind-deva);
-  font-size: clamp(36px, 4.6vw, 64px);
-  font-weight: 500;
-  line-height: 1.02;
-  letter-spacing: -0.035em;
-}
-.where-place small {
-  display: block;
-  margin-top: 12px;
-  font-family: var(--font-hind), var(--font-hind-deva);
-  font-size: 12px;
+.service-next span {
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.15em;
   color: var(--gold-700);
 }
-.where-list > li > div > p {
-  color: var(--muted-foreground);
-  font-size: 18px;
-  line-height: 1.65;
-  max-width: 520px;
+.service-next strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-anek), var(--font-hind-deva);
+  font-size: clamp(26px, 2.6vw, 36px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
 }
-.where-list .text-link {
-  margin-top: 12px;
+.service-next svg {
+  color: var(--gold-700);
 }
-.where-list .is-open .where-place {
-  color: var(--neutral-500);
+.service-next a:hover strong {
+  color: var(--gold-700);
 }
 
-/* Compliance band: the reference line under the registrations. */
+/* Services: the four engagement steps beside their heading. */
+.tracked-list.is-steps {
+  margin-top: 0;
+}
+.tracked-list.is-steps li:first-child {
+  padding-top: 0;
+}
+
+/* Home compliance band: its one link, under the records sentence. */
 .compliance-detail .light-link {
   margin-top: 28px;
 }
@@ -2794,14 +2719,10 @@ a:hover > svg {
   .tracked-list li > span {
     font-size: 28px;
   }
-  .where-section,
   .home-faq {
     padding-block: 65px;
   }
-  .where-list > li {
-    grid-template-columns: minmax(0, 1fr);
-    padding-block: 28px;
-  }
+  
   .home-faq-inner {
     grid-template-columns: minmax(0, 1fr);
     gap: 32px;
@@ -3299,25 +3220,6 @@ a:hover > svg {
   .wage-doors-inner > div:first-child {
     padding-right: 56px;
   }
-}
-/* Home compliance band: the state wage pages, by name, under the hub link. */
-.band-states {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  column-gap: 20px;
-  margin-top: 8px;
-  font-size: 15px;
-  color: var(--neutral-300);
-}
-.band-states a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 48px;
-  color: var(--neutral-0);
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  text-decoration-color: var(--gold-400);
 }
 
 /* Guides (/guides/<slug>) and the editorial policy on /about. Reference

@@ -465,7 +465,7 @@ export function ContactForm() {
 
           <section className="crew-section">
             <h3 className="crew-question">Where is the site?</h3>
-            <p className="quick-hint">Tell us where the site is. We&rsquo;ll tell you plainly whether we can staff it.</p>
+            <p className="quick-hint">We&rsquo;ll tell you whether we can staff it.</p>
             <div className="crew-site">
               <div>
                 <Label htmlFor="siteState" className="text-sm font-medium">State</Label>
@@ -545,11 +545,8 @@ export function ContactForm() {
             <FieldError id="durationBand" error={errors.durationBand} />
           </section>
 
-          <p className="crew-skip">The next two are optional. Skip them if you like.</p>
-
           <section className="crew-section">
             <h3 id="shiftPattern-q" className="crew-question">Shift pattern<Optional /></h3>
-            <p className="quick-hint">Every shift is 8 hours.</p>
             <Pills id="shiftPattern" options={SHIFT_PATTERN_OPTIONS} value={values.shiftPattern} onPick={(id) => set("shiftPattern", values.shiftPattern === id ? "" : id)} />
           </section>
 

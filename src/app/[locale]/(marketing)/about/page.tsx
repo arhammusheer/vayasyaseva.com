@@ -6,32 +6,35 @@ import { Section } from "@/components/layout/section";
 import { CtaBlock } from "@/components/sections/cta-block";
 import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { siteConfig } from "@/content/site";
-import { businessPhone, businessPhoneHref } from "@/content/business-contact";
 import { localeParams } from "@/lib/i18n";
-import { editorialPolicy } from "@/content/editorial";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/about");
 
+// The search phrase stays in the title; the page itself is who we are.
 const TITLE = "About Us: Labour Contractor in Haridwar";
 const DESCRIPTION =
-  "Vayasya Seva Private Limited is a labour contractor based in Haridwar. We employ the workers we deploy: wages, EPF, ESIC and supervision are ours.";
+  "Vayasya Seva Private Limited is a contract labour company based in Haridwar, Uttarakhand. Our story, and the company's CIN, GSTIN and Udyam numbers.";
 
 export const metadata = pageMetadata({
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: "/about" },
 });
+
+/**
+ * Company facts with a number only. EPF and ESIC codes join once the owner
+ * approves publishing them (docs/claims-register.md).
+ */
+const facts = [
+  { label: "CIN", value: siteConfig.cin },
+  { label: "GSTIN", value: siteConfig.gstin },
+  { label: "MSME / UDYAM", value: siteConfig.msme },
+];
+
 export default function AboutPage() {
   return (
     <>
-      <JsonLd
-        data={webPageSchema({
-          type: "AboutPage",
-          name: TITLE,
-          description: DESCRIPTION,
-          url: "/about",
-        })}
-      />
+      <JsonLd data={webPageSchema({ type: "AboutPage", name: TITLE, description: DESCRIPTION, url: "/about" })} />
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", href: "/" },
@@ -41,12 +44,12 @@ export default function AboutPage() {
       <PageHero
         title={
           <>
-            About us: a labour
+            A company built
             <br />
-            contractor in Haridwar.
+            around the work.
           </>
         }
-        lede="Vayasya Seva Private Limited is based in Haridwar, Uttarakhand. We employ the workers we deploy: wages, EPF, ESIC and supervision are ours."
+        lede="Vayasya Seva brings people and practical support to business operations. Our roots are in Haridwar. Our approach starts with understanding what each client needs."
       />
       <Section>
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
@@ -57,21 +60,14 @@ export default function AboutPage() {
           </h2>
           <div className="space-y-5 text-lg leading-relaxed text-muted-foreground">
             <p>
-              We supply contract labour to factories, warehouses and
-              facilities. The workers are our employees, on our payroll: we
-              pay their wages, deposit EPF and ESIC where they apply,
-              supervise them on site and replace absentees. Our work also
-              covers data entry operators, housekeeping, site services, civil
-              works, fabrication and maintenance.
+              As a contract labour provider, we work with businesses to source,
+              onboard and manage the people their operations need.
             </p>
             <p>
-              Careful compliance is part of the job. We keep the attendance
-              and wage registers and the EPF and ESIC challans alongside the
-              daily work, and open them to each client for review.
+              Careful compliance is a core part of that relationship. Our site
+              teams and office coordinate worker documentation, attendance and
+              statutory records alongside the daily work.
             </p>
-            <Link href="/how-we-operate" className="text-link text-foreground">
-              How we work with you <ArrowUpRight size={18} />
-            </Link>
           </div>
         </div>
       </Section>
@@ -80,67 +76,27 @@ export default function AboutPage() {
           <div>
             <p className="eyebrow text-gold-700">COMPANY INFORMATION</p>
             <h2 className="mt-5 text-4xl font-medium">
-              Company facts
+              Vayasya Seva
+              <br />
+              Private Limited
             </h2>
-            <p className="mt-5 text-muted-foreground">
-              Based in Haridwar, Uttarakhand.
-            </p>
+            <p className="mt-5 text-muted-foreground">Based in Haridwar, Uttarakhand.</p>
             <Link href="/haridwar-sidcul" className="text-link">
-              Our work in SIDCUL Haridwar <ArrowUpRight size={18} />
+              Our work in SIDCUL Haridwar <ArrowUpRight size={18} aria-hidden="true" />
             </Link>
           </div>
-          <dl className="divide-y border-y">
-            {[
-              { label: "CIN", value: siteConfig.cin },
-              { label: "EPF", value: "Registered" },
-              { label: "ESIC", value: "Registered" },
-              { label: "GSTIN", value: siteConfig.gstin },
-              { label: "MSME / UDYAM", value: siteConfig.msme },
-              {
-                label: "Email",
-                value: siteConfig.email,
-                href: `mailto:${siteConfig.email}`,
-              },
-              {
-                label: "Phone",
-                value: businessPhone.display,
-                href: businessPhoneHref,
-              },
-            ].map((d) => (
-              <div key={d.label} className="py-5">
-                <dt className="text-xs text-muted-foreground mb-2">
-                  {d.label}
-                </dt>
-                <dd className={d.href ? undefined : "font-data text-sm"}>
-                  {d.href ? <a href={d.href}>{d.value}</a> : d.value}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </Section>
-      <Section id="editorial">
-        <div className="wage-split">
           <div>
-            <p className="eyebrow text-gold-700">{editorialPolicy.eyebrow}</p>
-            <h2 className="wage-h2">{editorialPolicy.heading}</h2>
-          </div>
-          <div className="wage-prose">
-            <p>{editorialPolicy.intro}</p>
-            <ul className="jobs-work guide-rows">
-              {editorialPolicy.items.map((item) => (
-                <li key={item.title}>
-                  <h3>{item.title}</h3>
-                  <p>{item.text}</p>
-                </li>
+            <dl className="divide-y border-y">
+              {facts.map((d) => (
+                <div key={d.label} className="py-5">
+                  <dt className="mb-2 text-xs text-muted-foreground">{d.label}</dt>
+                  <dd className="font-data text-sm">{d.value}</dd>
+                </div>
               ))}
-            </ul>
-            <p>
-              Write to{" "}
-              <a href={`mailto:${siteConfig.email}`} className="font-data">
-                {siteConfig.email}
-              </a>
-            </p>
+            </dl>
+            <Link href="/vayasya-setu" className="text-link">
+              Vayasya Setu, our workforce system <ArrowUpRight size={18} aria-hidden="true" />
+            </Link>
           </div>
         </div>
       </Section>

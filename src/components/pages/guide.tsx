@@ -317,10 +317,10 @@ export function GuidePage({ slug }: { slug: GuideSlug }) {
           ) : (
             <div>
               <p className="eyebrow">HOW WE WORK</p>
-              <h2>Workers on our payroll, at your site.</h2>
+              <h2>From site visit to monthly records.</h2>
               <p>Wages, EPF and ESIC, supervision and replacements.</p>
-              <Link href="/how-we-operate" className="light-link">
-                How we work with you <ArrowUpRight size={19} aria-hidden="true" />
+              <Link href="/services#engagement" className="light-link">
+                How an engagement runs <ArrowUpRight size={19} aria-hidden="true" />
               </Link>
             </div>
           )}

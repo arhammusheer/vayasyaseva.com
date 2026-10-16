@@ -1,19 +1,13 @@
-import { ServiceLanding, serviceLanding, serviceLandingMetadata } from "@/components/layout/service-landing";
-import { localeOfParams, localeParams } from "@/lib/i18n";
+import { ServiceLanding, serviceLandingMetadata } from "@/components/layout/service-landing";
+import { getServicePage } from "@/content/service-pages";
+import { localeParams } from "@/lib/i18n";
 
-const SLUG = "housekeeping";
+const page = getServicePage("housekeeping");
 
 export const dynamicParams = false;
-export const generateStaticParams = localeParams(`/services/${SLUG}`);
+export const generateStaticParams = localeParams("/services/housekeeping");
+export const metadata = serviceLandingMetadata(page);
 
-type Props = { params: Promise<{ locale: string }> };
-
-export async function generateMetadata({ params }: Props) {
-  const { page, locale } = serviceLanding(SLUG, localeOfParams(await params));
-  return serviceLandingMetadata(page, locale);
-}
-
-export default async function HousekeepingPage({ params }: Props) {
-  const { page, locale } = serviceLanding(SLUG, localeOfParams(await params));
-  return <ServiceLanding page={page} locale={locale} />;
+export default function HousekeepingPage() {
+  return <ServiceLanding page={page} />;
 }

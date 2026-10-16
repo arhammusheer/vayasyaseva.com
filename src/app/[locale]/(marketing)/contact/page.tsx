@@ -1,13 +1,14 @@
 import { Suspense } from "react";
 import { pageMetadata } from "@/lib/metadata";
 import { Section } from "@/components/layout/section";
+import NextLink from "next/link";
 import { siteConfig } from "@/content/site";
 import { businessPhone, businessPhoneHref } from "@/content/business-contact";
 import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { ContactForm } from "./contact-form";
 import { AgentGuidance } from "@/components/agent-guidance";
+import { jobsDoorHref } from "@/components/layout/nav-links";
 import { localeParams } from "@/lib/i18n";
-import Link from "@/components/i18n/link";
 
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/contact");
@@ -44,7 +45,7 @@ function ContactFormFallback() {
   );
 }
 
-/** The response-time wording (PLAN §8.1). Location pages never state a different time. */
+/** The response-time wording (PLAN §8.1): here and in the sent message only. */
 const RESPONSE_LINE = "We aim to reply within two working days (Monday to Saturday, IST).";
 
 const lines = [
@@ -59,17 +60,6 @@ const lines = [
     href: businessPhoneHref,
     data: true,
   },
-  { label: "Office", value: siteConfig.address },
-];
-
-/**
- * What a buyer checks before sending: who carries the workers. Wording from
- * claims already on /faq and /compliance (claim-policy.md); nothing new.
- */
-const assurances = [
-  { title: "We are the contractor.", text: "Workers are on our records. We pay their wages, with EPF and ESIC where they apply." },
-  { title: "Records you can check.", text: "Attendance and wage records are kept by us and open for your review." },
-  { title: "Registered.", text: "EPF, ESIC, GST and MSME (Udyam). Certificates are shared during vendor onboarding." },
 ];
 
 export default async function ContactPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
@@ -96,20 +86,17 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
             on the left, the form on the right. */}
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] lg:grid-rows-[auto_1fr] lg:gap-x-20 lg:gap-y-0">
           <div className="lg:col-start-1 lg:row-start-1">
-            {/* One quiet line for job seekers, a full thumb target (48px). */}
-            <Link
-              href="/jobs/apply"
+            {/* One quiet line for job seekers, a full thumb target (48px), to
+                Jobs in Haridwar (neutral, so not the i18n Link). */}
+            <NextLink
+              href={jobsDoorHref("en-IN")}
+              prefetch={false}
               className="mb-4 inline-flex min-h-12 items-center text-sm leading-relaxed text-muted-foreground hover:text-gold-700"
             >
-              Looking for work?&nbsp;<span className="text-gold-700 underline underline-offset-4">Apply here →</span>
-            </Link>
+              Looking for work?&nbsp;<span className="text-gold-700 underline underline-offset-4">Jobs in Haridwar →</span>
+            </NextLink>
             <p className="eyebrow text-gold-700">FOR BUSINESSES</p>
             <h1 className="crew-intro-title">{assessment ? "Request a site assessment." : "Request a crew."}</h1>
-            <p className="mt-5 max-w-sm text-lg leading-relaxed text-muted-foreground">
-              {assessment
-                ? "Tell us the work, the site and when. Then who to talk to. We will plan the assessment with you."
-                : "Tell us the work, how many workers, where and when. Then who to talk to. Two short steps."}
-            </p>
             <p className="crew-reply max-w-sm">{RESPONSE_LINE}</p>
           </div>
           <div className="lg:col-start-2 lg:row-start-1 lg:row-span-2">
@@ -120,17 +107,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
             </Suspense>
           </div>
           <div className="lg:col-start-1 lg:row-start-2 lg:pt-12">
-            <ul className="crew-assurances" aria-label="Who carries the workers">
-              {assurances.map((item) => (
-                <li key={item.title}>
-                  <strong>{item.title}</strong> {item.text}
-                </li>
-              ))}
-            </ul>
-            <Link href="/compliance" className="mt-2 inline-flex min-h-12 items-center text-sm font-medium text-gold-700 underline underline-offset-4 hover:text-foreground">
-              How we handle compliance
-            </Link>
-            <p className="mt-10 text-sm text-muted-foreground">Prefer to write or call?</p>
+            <p className="text-sm text-muted-foreground">Prefer to write or call?</p>
             <dl className="mt-3">
               {lines.map((l, i) => (
                 <div

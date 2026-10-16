@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import ReactMarkdown from "react-markdown";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
@@ -18,12 +19,21 @@ const textOf = (node: React.ReactNode): string =>
         ? textOf((node as React.ReactElement<{ children?: React.ReactNode }>).props.children)
         : "";
 
+/** "3. Your analytics choices {#analytics}": the heading's own id, if it names one. */
+const ID_SUFFIX = /\s*\{#([a-z0-9-]+)\}\s*$/;
+const headingId = (text: string) => ID_SUFFIX.exec(text)?.[1] ?? slug(text);
+const headingText = (text: string) => text.replace(ID_SUFFIX, "");
+
+/** A line "[[insert:name]]" in the document is replaced by inserts[name]. */
+const INSERT = /^\[\[insert:([a-z0-9-]+)\]\]$/;
+
 /**
  * Legal documents share the inner-page skeleton: a plain hero with the
  * document title and revision date, a sticky section index on the left, and
- * the numbered clauses on the right.
+ * the numbered clauses on the right. `inserts` places a rendered block (a
+ * table, a conditional line) where the Markdown has its [[insert:name]] line.
  */
-export function LegalPage({ content }: { content: string }) {
+export function LegalPage({ content, inserts = {} }: { content: string; inserts?: Record<string, React.ReactNode> }) {
   const lines = content.trim().split("\n");
   const title = lines.find((l) => l.startsWith("# "))?.slice(2) ?? "";
   const updated = lines
@@ -32,10 +42,14 @@ export function LegalPage({ content }: { content: string }) {
   const sections = lines
     .filter((l) => l.startsWith("## "))
     .map((l) => l.slice(3))
-    .map((h) => ({ heading: h, id: slug(h) }));
-  const body = lines
-    .filter((l) => !l.startsWith("# ") && !/^\*Last updated/i.test(l))
-    .join("\n");
+    .map((h) => ({ heading: headingText(h), id: headingId(h) }));
+  // Markdown runs between the inserts.
+  const chunks: ({ markdown: string } | { insert: string })[] = [{ markdown: "" }];
+  for (const line of lines.filter((l) => !l.startsWith("# ") && !/^\*Last updated/i.test(l))) {
+    const name = INSERT.exec(line.trim())?.[1];
+    if (name) chunks.push({ insert: name }, { markdown: "" });
+    else (chunks.at(-1) as { markdown: string }).markdown += `${line}\n`;
+  }
 
   return (
     <>
@@ -61,15 +75,24 @@ export function LegalPage({ content }: { content: string }) {
             </ol>
           </nav>
           <div className="legal-body max-w-2xl">
-            <ReactMarkdown
-              components={{
-                h2: ({ children }) => (
-                  <h2 id={slug(textOf(children))}>{children}</h2>
-                ),
-              }}
-            >
-              {body}
-            </ReactMarkdown>
+            {chunks.map((chunk, i) =>
+              "insert" in chunk ? (
+                <Fragment key={i}>{inserts[chunk.insert] ?? null}</Fragment>
+              ) : (
+                <ReactMarkdown
+                  key={i}
+                  components={{
+                    h2: ({ children }) => (
+                      <h2 id={headingId(textOf(children))}>
+                        {typeof children === "string" ? headingText(children) : children}
+                      </h2>
+                    ),
+                  }}
+                >
+                  {chunk.markdown}
+                </ReactMarkdown>
+              ),
+            )}
           </div>
         </div>
       </Section>

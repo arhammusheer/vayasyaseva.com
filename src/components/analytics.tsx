@@ -76,8 +76,12 @@ function sanitizeBasicEvent(event: BeforeSendEvent): BeforeSendEvent | null {
 
 /**
  * The banner speaks the page's language. Hindi and Hinglish strings are drafts
- * for native review, like every hi-IN and hi-Latn-IN string. The privacy
- * notice is English only, and the link says so.
+ * for native review, like every hi-IN and hi-Latn-IN string. Two sentences
+ * and a link: the detail is the table in the privacy notice (§3, #analytics),
+ * which is English only, and the link says so. The sentences keep what
+ * consent v6 rests on (cookie-free counts, the ad-click report, recordings
+ * with typed text, 30-day unsent forms, no remarketing); dropping any of
+ * them needs owner or legal sign-off and a consent version bump.
  */
 const BANNER = {
   "en-IN": {
@@ -88,8 +92,8 @@ const BANNER = {
     reject: "Required Only",
     accept: "Allow All",
     details:
-      "Cookie-free page counts and usage events (which links and form steps are used, not what you type) run on every visit. If you came from one of our Google ads and apply for a job, we tell Google Ads which ad click it was, nothing about you; Required Only stops this. Allowing adds Google Analytics (referrals, approximate location, device details, site actions) and recordings of your visit (Umami, on our own servers) that include the forms and what you type in them, and Google Ads counting when a visit from one of our ads ends in an enquiry. If you leave a form unfinished, what you typed is kept on our own servers for 30 days, only to fix the forms; files are not kept. No ad targeting or remarketing. See our",
-    privacy: "privacy policy",
+      "Cookie-free page counts run on every visit, and if you apply for a job after clicking one of our ads, Google Ads learns which click it was unless you choose Required Only. Allow All adds Google Analytics, ad measurement (no remarketing) and recordings of your visit, including what you type in forms; a form you leave unsent is kept 30 days, only to fix the forms.",
+    privacy: "How each one works",
     end: ".",
   },
   "hi-IN": {
@@ -100,8 +104,8 @@ const BANNER = {
     reject: "सिर्फ़ ज़रूरी",
     accept: "सब की अनुमति दें",
     details:
-      "बिना कुकी वाली पेज गिनती और इस्तेमाल की जानकारी हर विज़िट पर चलती है। इसमें यह गिना जाता है कि कौन से लिंक और फ़ॉर्म के कदम इस्तेमाल हुए। आपने क्या लिखा, वह नहीं। अगर आप हमारे Google विज्ञापन से आए और आवेदन किया, तो हम Google Ads को बताते हैं कि कौन सा विज्ञापन क्लिक हुआ था। आपके बारे में कुछ नहीं। “सिर्फ़ ज़रूरी” चुनने पर यह बंद हो जाता है। “सब की अनुमति दें” चुनने पर Google Analytics चालू होता है (आप कहाँ से आए, अंदाज़न जगह, फ़ोन की जानकारी, साइट पर क्या किया)। आपकी विज़िट की रिकॉर्डिंग भी होती है (Umami, हमारे अपने सर्वर पर)। इसमें फ़ॉर्म और उनमें आप जो लिखते हैं, वह भी रिकॉर्ड होता है। Google Ads यह भी गिनता है कि हमारे विज्ञापन से आई विज़िट में पूछताछ हुई या नहीं। अधूरा छोड़ा फ़ॉर्म हमारे सर्वर पर 30 दिन रहता है, सिर्फ़ फ़ॉर्म ठीक करने के लिए। फ़ाइलें नहीं रखी जातीं। कोई विज्ञापन टार्गेटिंग या रीमार्केटिंग नहीं। देखें:",
-    privacy: "गोपनीयता नीति (अंग्रेज़ी में)",
+      "हर विज़िट पर बिना कुकी वाली पेज गिनती चलती है, और अगर आप हमारे विज्ञापन से आकर आवेदन करते हैं, तो Google Ads को बस यह पता चलता है कि कौन सा क्लिक था (“सिर्फ़ ज़रूरी” चुनने पर यह भी नहीं)। “सब की अनुमति दें” चुनने पर Google Analytics, विज्ञापन की गिनती (रीमार्केटिंग नहीं) और आपकी विज़िट की रिकॉर्डिंग भी चलती है, जिसमें फ़ॉर्म में लिखी बातें भी आती हैं; अधूरा छोड़ा फ़ॉर्म 30 दिन रखा जाता है, सिर्फ़ फ़ॉर्म ठीक करने के लिए।",
+    privacy: "हर एक का ब्योरा (अंग्रेज़ी में)",
     end: "।",
   },
   "hi-Latn-IN": {
@@ -112,8 +116,8 @@ const BANNER = {
     reject: "Sirf zaroori",
     accept: "Sab allow karein",
     details:
-      "Bina cookie wali page ginti aur use ki jaankari har visit par chalti hai. Ismein yeh gina jaata hai ki kaun se link aur form ke step use hue. Aapne kya likha, woh nahi. Agar aap hamare Google ad se aaye aur apply kiya, to hum Google Ads ko batate hain ki kaun sa ad click hua tha. Aapke baare mein kuch nahi. “Sirf zaroori” chunne par yeh band ho jaata hai. “Sab allow karein” chunne par Google Analytics chalu hota hai (aap kahan se aaye, andaazan jagah, phone ki jaankari, site par kya kiya). Aapki visit ki recording bhi hoti hai (Umami, hamare apne server par). Ismein form aur unmein aap jo likhte hain, woh bhi record hota hai. Google Ads yeh bhi ginta hai ki hamare ad se aayi visit mein enquiry hui ya nahi. Adhoora chhoda form hamare server par 30 din rehta hai, sirf form theek karne ke liye. Files nahi rakhi jaatin. Koi ad targeting ya remarketing nahi. Dekhiye:",
-    privacy: "Privacy Policy (English mein)",
+      "Har visit par bina cookie wali page ginti chalti hai, aur agar aap hamare ad se aakar apply karte hain, to Google Ads ko bas yeh pata chalta hai ki kaun sa click tha (“Sirf zaroori” chunne par yeh bhi nahi). “Sab allow karein” chunne par Google Analytics, ad ki ginti (remarketing nahi) aur aapki visit ki recording bhi chalti hai, jismein form mein likhi baatein bhi aati hain; adhoora chhoda form 30 din rakha jaata hai, sirf form theek karne ke liye.",
+    privacy: "Poori jaankari (English mein)",
     end: ".",
   },
 } as const;
@@ -277,7 +281,7 @@ export function Analytics({ gaId }: { gaId: string }) {
           </div>
           <div id={detailsId} hidden={!showDetails} className="mt-1 text-xs leading-relaxed text-white/80">
             {t.details}{" "}
-            <Link href="/privacy" className="text-white underline underline-offset-2 hover:text-gold-400">{t.privacy}</Link>{t.end}
+            <Link href="/privacy#analytics" className="text-white underline underline-offset-2 hover:text-gold-400">{t.privacy}</Link>{t.end}
           </div>
           <div className="mt-2 grid grid-cols-2 gap-2">
             <Button type="button" variant="ghost" onClick={() => choose("rejected")} className="min-h-12 whitespace-normal px-3 text-white/80 hover:bg-white/10 hover:text-white sm:h-10 sm:min-h-10">

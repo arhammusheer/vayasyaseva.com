@@ -1,3 +1,42 @@
+/**
+ * §3 at a glance (/privacy#analytics), rendered as a table where the notice
+ * has its [[insert:analytics-table]] line. The consent banner links here in
+ * place of its old long paragraph; §2 keeps the full detail. Keep the three
+ * in step.
+ */
+export const analyticsSummary = [
+  {
+    what: "Cookie-free page counts (Vercel Web Analytics, and Umami on our own servers)",
+    when: "Every visit",
+    gets: "Pages viewed, referring site, device type, approximate location, and which links and form steps are used. Not what you type.",
+  },
+  {
+    what: "Ad-click report for job applications (Google Ads)",
+    when: "Unless you choose Required Only",
+    gets: "That one of our ad clicks led to an application: the click identifier, time and our reference. Nothing about you.",
+  },
+  {
+    what: "Google Analytics",
+    when: "Only with Allow All",
+    gets: "Pages, traffic sources, approximate location, device details and site actions. It may set cookies.",
+  },
+  {
+    what: "Recordings and heatmaps (Umami, on our own servers)",
+    when: "Only with Allow All",
+    gets: "Your visit as you saw it, including what you type into forms, not file contents. Kept 30 days unless saved to fix a problem.",
+  },
+  {
+    what: "Unfinished forms (Umami, on our own servers)",
+    when: "Only with Allow All",
+    gets: "What you typed in a form you left unsent, used only to fix the forms. Deleted after 30 days.",
+  },
+  {
+    what: "Ad measurement for enquiries and applications (Google Ads)",
+    when: "Only with Allow All",
+    gets: "That a visit from one of our ads ended in an enquiry or application. No form details, no ad targeting and no remarketing.",
+  },
+] as const;
+
 export const privacyContent = `
 # Privacy Policy
 
@@ -5,46 +44,43 @@ export const privacyContent = `
 
 ## 1. Who this notice covers
 
-This notice explains how Vayasya Seva Private Limited ("we", "us") handles information on the public website at www.vayasyaseva.com (the "Site") and when you contact us through it. Other Vayasya Seva applications and subdomains may have their own notices and different data practices. If a separate notice applies, it takes precedence for that service.
+This notice explains how Vayasya Seva Private Limited ("we", "us") handles information on the public website at www.vayasyaseva.com (the "Site") and when you contact us through it. Other Vayasya Seva applications and subdomains may have their own notices, which take precedence for those services.
 
 Our contact details are in Section 11. The Site is intended for businesses and for adults, including adults looking for work; it is not intended for children.
 
 ## 2. Information we handle
 
-**Enquiries you send us.** The business enquiry form (www.vayasyaseva.com/contact) asks first about the requirement: the work the crew will do, the number of workers (as a range), the state and city of the site and, optionally, its PIN code, when the work should start, how long it is expected to last, and, optionally, the shift pattern and any other details. It then asks who we should speak to: your name, company and phone number, and, optionally, your designation and email address. The form also records the page of this Site you came from and, where that page is about a particular area, that area. Enquiries sent in the older format may instead describe the site, industry, headcount, shifts and start date in words. We receive the details you enter and the technical information needed to deliver, protect and respond to the enquiry. Each enquiry also records the version of this notice in force when you sent it. Please do not put sensitive personal information in the free-text field.
+**Enquiries you send us.** The business enquiry form (www.vayasyaseva.com/contact) asks for your requirement (the work, headcount, site, start and duration and, optionally, shifts and other details) and your contact details (name, company and phone number and, optionally, designation and email address). It also records the page you came from, any area that page is about, the technical information needed to deliver and protect the enquiry, and the version of this notice in force. Please do not put sensitive personal information in the free-text field.
 
 **Job applications.** Details you send through the jobs pages are described in Section 10.
 
-**Submissions sent by AI agents.** An AI agent or assistant acting for you may send an enquiry or a job application to us through the routes we publish for that purpose (\`/api/agent/\`). We receive the details the agent sends, the name it gives for itself, and the technical information described below. These submissions are not checked by Turnstile; they are validated and rate limited instead. We mark them as sent by an agent and confirm the details with you when we contact you. Agents must only send details you have given them and should confirm with you first. If an agent sent your details without your agreement, contact us (Section 11) and we will delete them.
+**Submissions sent by AI agents.** An AI agent acting for you may send an enquiry or job application through our agent routes (\`/api/agent/\`). We record what it sends and the name it gives, mark it as sent by an agent and confirm the details with you; if it acted without your agreement, contact us (Section 11) and we will delete them.
 
-**Prefilled links.** An AI assistant or another person may give you a link that fills in our contact or jobs form for you. The details in such a link come after a \`#\`, so your browser does not send them to us, and our usage events do not record them. If you chose "Allow All", the usage recordings described below show the filled-in form and the page address. Otherwise they reach us only if you check the form and send it.
+**Prefilled links.** A link that fills in our contact or jobs form carries the details after a \`#\`, so your browser does not send them to us and our usage events do not record them; with "Allow All", the recordings described below show the filled-in form.
 
-**Site delivery and security.** When your browser requests a page or submits a form, our hosting and security providers may process the request URL, IP address, browser and device information, referring page, date and time, and related logs. This is needed to deliver the Site, prevent abuse, troubleshoot failures and protect the forms. The contact and jobs forms use Cloudflare Turnstile, which checks browser and device signals to keep automated abuse off them. These operational records are separate from the analytics choices below.
+**Site delivery and security.** When your browser requests a page or submits a form, our hosting and security providers may process the request URL, IP address, browser and device information, referring page, time and related logs, to deliver the Site, prevent abuse and fix failures. The contact and jobs forms use Cloudflare Turnstile, which checks browser and device signals to keep automated abuse off them. These records are separate from the analytics choices below.
 
-**Cookie-free site counts.** For every visitor, whatever analytics choice is made, Vercel Web Analytics measures visits and page views for this Site without analytics cookies. The Site removes query strings from the page URL sent in its page-view event and groups unknown paths as \`/other\`. Vercel may process the incoming request to create a visitor hash that changes each day; it reports aggregate page views, referrals, approximate location and device/browser categories. We also run Umami, an open-source analytics tool hosted on our own servers, which measures how the Site is used without cookies. It receives the page path, any campaign tags in the link you followed (\`utm_\` parameters; other query strings are removed), referring site, browser, device type, screen size, language and approximate location derived from your IP address, and groups visits using an identifier calculated from the request that is not stored in your browser and resets periodically. Umami also records usage events with fixed labels: the kind of link or button used and the part of the page it is in (for example a phone link in the header, or a link to another website by its domain), how far a page is scrolled and how long it stays open, which FAQ answers are opened, which form fields are used, filled or left empty, how many characters each field holds (not what they are), which field you were in when you left and whether a form is sent or left unfinished, how long is spent in each form field and how many corrections or pastes are made there, how many digits a phone number field holds (not the number), which checks failed when a form was sent, why an upload failed, the type of any file added, repeated or unresponsive clicks and the part of the page they were on, page speed measurements, the type of any script error, visits to pages that do not exist and the link that led there, the page language, and your analytics choice. Our servers also count each job application and enquiry they receive in Umami, with fixed labels only (for example the form used and the kind of work), so totals stay accurate when a browser blocks analytics. When a business enquiry is sent, its events also carry the answers chosen from lists on the form (the area, the number of workers, how long the work lasts and when it starts) and whether it meets our threshold of 20 or more workers for 3 months or more, never your name, company, phone number, email address or details. Umami data stays on our infrastructure and is not shared with a third party. Unless you choose "Allow All" (see "Usage recordings and heatmaps" and "Unfinished forms" below), we never send what you type in a form, your phone number, file contents, or text you copy to either tool. Neither is used to follow you across websites.
+**Cookie-free site counts.** On every visit, whatever you choose, two tools count how the Site is used without analytics cookies. Vercel Web Analytics reports aggregate page views, referrals, approximate location and device and browser categories, using a visitor hash that changes each day; the Site strips query strings and groups unknown paths as \`/other\`. Umami, an open-source tool on our own servers, receives the page path, any campaign tags (\`utm_\` parameters), the referring site, browser, device, screen size, language and approximate location from your IP address, and groups a visit by an identifier that is not stored in your browser and resets periodically. Umami also records usage events with fixed labels only: which links, buttons, FAQ answers and form fields are used, how far a page is scrolled, how long fields take and whether a form is sent or left, page speed and errors, never what you type. Our servers also count each enquiry and application in Umami, with fixed labels and, for an enquiry, the answers chosen from its lists (area, number of workers, duration and start) and whether it meets our minimum size, never your name, company, phone number, email address or details. Umami data stays on our infrastructure and is not shared. Neither tool follows you across websites.
 
-**Additional site measurement.** If you choose "Allow All", Google Analytics also loads and may set analytics cookies or similar identifiers. It can measure pages viewed, sources of traffic, approximate location, device/browser information and interactions such as scrolls and outbound links. It also receives the usage events described above for Umami, including contact and jobs form steps and successful enquiries. Those events use fixed labels, not the name, phone number, email address, company, message or files you send. Google may receive technical data such as your IP address and page URL when its tag runs. This choice does not authorise advertising personalisation, retargeting, or the transfer of form details to analytics providers.
+**Additional site measurement.** With "Allow All", Google Analytics also loads and may set cookies or similar identifiers. It measures pages viewed, traffic sources, approximate location, device and browser details and the same fixed-label events, and Google may receive your IP address and the page URL. It never receives your name, phone number, email address, company, message or files.
 
-**Usage recordings and heatmaps.** If you choose "Allow All", Umami (described above) also records replayable sessions and heatmaps of clicks, taps, scrolling and page layout. Recordings are not masked: they show the page as you saw it, including the contact form and the job application forms, what you type into them (such as your name, phone number, email address, answers and message), the names of files you add and the confirmation shown after an application. They do not include the contents of files. We use recordings only to see how the Site and its forms are used and to fix problems. Umami does not set cookies for this. Recordings stay on our infrastructure and are not shared with a third party. Microsoft Clarity was used for recordings until 3 October 2026 and no longer loads on the Site.
+**Usage recordings and heatmaps.** With "Allow All", Umami also records replayable sessions and heatmaps of clicks, taps and scrolling. Recordings are not masked: they show the page as you saw it, including the contact and job forms, what you type into them and the names of files you add, but not file contents. We use them only to see how the Site is used and to fix problems; they stay on our infrastructure and are not shared. Microsoft Clarity was used for recordings until 3 October 2026 and no longer loads.
 
-**Unfinished forms.** If you choose "Allow All" and then leave the contact form or the job application form without sending it, Umami records what you had typed so far, such as your name, phone number, email address, company and message, along with whether you added files (and how many). It never records the files themselves. We use these records only to understand why forms are left unfinished and to fix problems with the forms. We do not contact you from them, add them to our enquiry or applicant records, or share them, and they stay on our own infrastructure. They are deleted after 30 days. A form you send is handled as described in Sections 2 and 10, not by this.
+**Unfinished forms.** With "Allow All", if you leave the contact or job form without sending it, Umami records what you had typed so far and whether you added files (never the files). We use these records only to fix the forms: we do not contact you from them, add them to our enquiry or applicant records, or share them. They are deleted after 30 days.
 
-**Advertising measurement.** If you choose "Allow All", the Google tag also tells Google Ads when a visit that began with a click on one of our ads ends in a submitted job application or business enquiry, so we can see which ads bring them. Google Ads may use a cookie or similar identifier for this and receives technical data such as your IP address and page URL. It receives no form details: not your name, phone number, email address, company, files or message. We switch off ad personalisation for this tag, so your visit is not used to target ads at you or to add you to remarketing audiences.
+**Advertising measurement.** With "Allow All", the Google tag tells Google Ads when a visit that began with a click on one of our ads ends in a job application or business enquiry. Google Ads may use a cookie or similar identifier and receives technical data such as your IP address and page URL, but no form details. Ad personalisation is off, so your visit is not used to target ads at you or for remarketing.
 
-**Job applications from our ads.** When you click one of our Google ads, Google adds a click identifier to the link (\`gclid\`, \`gbraid\` or \`wbraid\`). Your browser keeps it for that visit only, in the tab's session storage. If you then send a job application, our server tells Google Ads that this ad click led to an application, with the click identifier, the time and our application reference. Nothing else about you is sent: not your name, phone number, answers or files. This lets us see which ads bring applications, and it runs unless you choose "Required Only", in which case the identifier is not kept or sent.
+**Job applications from our ads.** When you click one of our Google ads, Google adds a click identifier to the link (\`gclid\`, \`gbraid\` or \`wbraid\`), which your browser keeps for that visit only, in session storage. If you then send a job application, our server tells Google Ads that the click led to an application, with the identifier, the time and our reference, and nothing else about you. This runs unless you choose "Required Only", in which case the identifier is not kept or sent.
 
-**Language choice.** Some links (such as www.vayasyaseva.com/jobs) open a page that asks which language you read. If you pick one there, the Site sets a cookie named \`vspl_lang\` in your browser that holds only that language, for one year, so the same page lists it first next time. It is needed only to remember the choice you made. It is not used for measurement or advertising, and it does not change the language of any page by itself. To order that page's choices, the Site also reads your browser's language setting and the approximate region of your connection (for example, the state) on each visit; neither is stored. You can delete the cookie in your browser settings at any time.
+**Language choice.** If you pick a language on a page that asks which language you read (such as www.vayasyaseva.com/jobs), the Site sets a cookie named \`vspl_lang\` that holds only that language, for one year, so that page lists it first next time. It is not used for measurement or advertising and does not change the language of any page by itself. To order the choices, the Site also reads your browser's language setting and the approximate region of your connection on each visit; neither is stored. You can delete the cookie in your browser settings.
 
-## 3. Your analytics choices
+## 3. Your analytics choices {#analytics}
 
-The Site offers two choices for the measurement described above:
+[[insert:analytics-table]]
 
-- **Required Only:** keeps Google Analytics, Umami recordings, unfinished-form records and Google Ads measurement off, including the job application report described under "Job applications from our ads". Essential hosting and security processing and the cookie-free site counts and usage events still occur.
-- **Allow All:** also enables the additional site measurement, the usage recordings and heatmaps, the unfinished-form records and the advertising measurement described in Section 2.
+Before you choose, only the rows marked "Every visit" and "Unless you choose Required Only" run. Essential hosting and security processing runs in every case. You can reopen these choices at any time with "Privacy choices" in the footer. Your choice is stored in your browser's local storage; an "Allow All" choice expires after 180 days and must be renewed. Changing to "Required Only" reloads the page to stop scripts already running, and affects future collection only; it does not erase data a provider has already received.
 
-You can reopen these choices at any time using "Privacy choices" in the footer. Your choice is stored in your browser's local storage so the Site can remember it. An affirmative choice expires after 180 days and must be renewed. Changing from "Allow All" to "Required Only" reloads the page to stop scripts that are already running. Withdrawal affects future collection; it does not erase data already received by a provider. You may also block scripts or storage in your browser.
-
-Only the cookie-free site counts and usage events, and the job application report described under "Job applications from our ads", run until you make a choice; Google Analytics, Umami recordings, unfinished-form records and Google Ads measurement stay off. This choice covers only the purposes and data described here, not ad personalisation, retargeting or other materially different uses. If we add such uses, we will explain them and request a new, separate choice where required. Consent rules for audience measurement vary by jurisdiction; this notice does not remove any rights you have under local law.
+This choice covers only the purposes described here, not ad personalisation, retargeting or other materially different uses. If we add such uses, we will ask for a new, separate choice where required. This notice does not remove any rights you have under local law.
 
 ## 4. Why we use information
 
@@ -60,7 +96,7 @@ The providers that handle job applications are listed in Section 10. These provi
 
 ## 6. How long we keep it
 
-Job applications are kept as described in Section 10. We keep enquiries and the correspondence about them for up to 24 months after our last contact with you, and then delete them. If an enquiry leads to a contract, the records needed for that contract are kept for as long as the contract, any dispute and our legal duties require. Operational logs are retained according to our hosting and security configurations. Vercel says the visitor hash used by Web Analytics is discarded after 24 hours; aggregate reports remain subject to the project's retention settings. Google Analytics data is retained according to the property's configured retention settings. Google Ads conversion data is kept for the periods Google sets for its advertising products. Microsoft Clarity recordings made until 3 October 2026 are kept for the periods Microsoft sets: at the time of writing, about 30 days for recordings we have not saved and up to 13 months for heatmaps and saved recordings. Umami keeps recordings for 30 days unless we save one to investigate a problem. Unfinished-form records are deleted after 30 days. We review these settings and delete or anonymise information when it is no longer needed, subject to legal requirements.
+Job applications are kept as described in Section 10. We keep enquiries and the correspondence about them for up to 24 months after our last contact with you, and then delete them. If an enquiry leads to a contract, the records needed for that contract are kept for as long as the contract, any dispute and our legal duties require. Operational logs are retained according to our hosting and security configurations. Vercel says the visitor hash used by Web Analytics is discarded after 24 hours; aggregate reports remain subject to the project's retention settings. Google Analytics data is retained according to the property's configured retention settings. Google Ads conversion data is kept for the periods Google sets for its advertising products. Microsoft Clarity recordings made until 3 October 2026 are kept for the periods Microsoft sets (about 30 days, and up to 13 months for heatmaps and saved recordings). Umami keeps recordings for 30 days unless we save one to investigate a problem. Unfinished-form records are deleted after 30 days. We review these settings and delete or anonymise information when it is no longer needed, subject to legal requirements.
 
 Your browser keeps an analytics preference until you change it or clear local storage. An affirmative site-measurement choice stops being valid after 180 days, even if the preference entry remains in storage.
 
@@ -81,6 +117,8 @@ We may update this notice when our services or practices change. The date at the
 ## 10. Job seekers
 
 This section applies when you send us your details through the jobs pages of the Site (www.vayasyaseva.com/jobs, /jobs/apply and the other pages under /jobs, in English, Hindi and Hinglish) or when an AI agent applies for you. The jobs pages are for people aged 18 or older. The English version of this notice governs.
+
+[[insert:jobs-privacy]]
 
 **In short.** We keep your details for up to 12 months after you last reply to us. We call when a site in or near your area needs people. We do not share your details with another company. To have them removed, email help@vayasyaseva.com with your mobile number. The rest of this section is the full notice.
 

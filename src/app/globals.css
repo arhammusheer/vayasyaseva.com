@@ -1562,6 +1562,67 @@ a:hover > svg {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+/* §3 of the privacy notice at a glance: a ruled table, stacked on a phone. */
+.legal-table-wrap {
+  margin-top: 16px;
+}
+.legal-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  line-height: 1.55;
+}
+.legal-table th,
+.legal-table td {
+  padding: 12px 12px 12px 0;
+  text-align: left;
+  vertical-align: top;
+  border-top: 1px solid var(--border);
+}
+.legal-table th:last-child,
+.legal-table td:last-child {
+  padding-right: 0;
+}
+.legal-table thead th {
+  border-top: 0;
+  border-bottom: 1px solid var(--foreground);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+.legal-table tbody th {
+  font-weight: 500;
+  color: var(--foreground);
+}
+.legal-table td {
+  color: var(--muted-foreground);
+}
+@media (max-width: 639px) {
+  .legal-table thead {
+    display: none;
+  }
+  .legal-table tr,
+  .legal-table th,
+  .legal-table td {
+    display: block;
+    padding-right: 0;
+  }
+  .legal-table tbody tr {
+    padding-block: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .legal-table tbody th,
+  .legal-table tbody td {
+    border-top: 0;
+    padding-block: 2px;
+  }
+  .legal-table tbody td:nth-child(2) {
+    color: var(--gold-700);
+    font-weight: 500;
+  }
+}
 
 /* Jobs pages (/jobs, role and hub pages, /jobs/apply): a compact top, then the
    quick-apply form (one question at a time, then name and number), and an

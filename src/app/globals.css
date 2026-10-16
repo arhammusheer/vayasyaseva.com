@@ -3920,6 +3920,43 @@ a:hover > svg {
 .dues-table {
   margin-top: 8px;
 }
+/* A row that is not a rate: what is paid and when, right under it. */
+.dues-table tr.has-explain > * {
+  padding-bottom: 6px;
+}
+.dues-table tr.dues-explain td {
+  padding-top: 8px;
+  border-top: 0;
+  font-family: var(--font-hind), sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  white-space: normal;
+  color: var(--muted-foreground);
+}
+.dues-table tr.dues-explain dl {
+  display: grid;
+  gap: 6px;
+  max-width: 760px;
+  margin: 0;
+}
+.dues-table tr.dues-explain dl > div {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: 12px;
+}
+.dues-table tr.dues-explain dt {
+  font-weight: 600;
+  color: var(--foreground);
+}
+.dues-table tr.dues-explain dd {
+  margin: 0;
+}
+@media (max-width: 639px) {
+  .dues-table tr.dues-explain dl > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+}
 .dues-table th[scope="row"] small {
   display: block;
   margin-top: 2px;
@@ -3978,6 +4015,13 @@ a:hover > svg {
   }
   .dues-table td {
     margin-top: 4px;
+  }
+  .dues-table tr.dues-explain {
+    padding-top: 0;
+    border-top: 0;
+  }
+  .dues-table tr.dues-explain td::before {
+    content: none;
   }
   .dues-table td::before {
     content: attr(data-label) ": ";

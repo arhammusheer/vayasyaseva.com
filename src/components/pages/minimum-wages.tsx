@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Link from "@/components/i18n/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
@@ -399,14 +400,30 @@ function Dues({ slug, name }: { slug: WageStateSlug; name: string }) {
           </thead>
           <tbody>
             {dues.rows.map((r) => (
-              <tr key={r.name}>
-                <th scope="row">
-                  {r.name}
-                  <small>{r.applies}</small>
-                </th>
-                <td data-label={x.dues.worker}>{r.worker}</td>
-                <td data-label={x.dues.employer}>{r.employer}</td>
-              </tr>
+              <Fragment key={r.name}>
+                <tr className={r.explain ? "has-explain" : undefined}>
+                  <th scope="row">
+                    {r.name}
+                    <small>{r.applies}</small>
+                  </th>
+                  <td data-label={x.dues.worker}>{r.worker}</td>
+                  <td data-label={x.dues.employer}>{r.employer}</td>
+                </tr>
+                {r.explain && (
+                  <tr className="dues-explain">
+                    <td colSpan={3}>
+                      <dl>
+                        {r.explain.map(([label, text]) => (
+                          <div key={label}>
+                            <dt>{label}</dt>
+                            <dd>{text}</dd>
+                          </div>
+                        ))}
+                      </dl>
+                    </td>
+                  </tr>
+                )}
+              </Fragment>
             ))}
           </tbody>
         </table>

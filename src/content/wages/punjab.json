@@ -6,7 +6,9 @@
   "expected": "2027-03-01",
   "basis": "Until 2025 Punjab adjusted its rates with the consumer price index twice a year, from 1 March and 1 September (the department's own compilation of adjustments, 1995 to 2025). The 1 May 2026 notification under the Code on Wages resets the base rates and leaves later adjustments to 'such intervals and in such manner as prescribed by the Punjab Government' (note 10); the Code on Wages (Punjab) Rules, 2026 were still a draft when checked. 1 March 2027 is the next date on the old cycle; no adjustment from 1 September 2026 was listed on the department's site on 17 October 2026."
  },
- "checked": { "on": "2026-10-17" },
+ "checked": {
+  "on": "2026-10-17"
+ },
  "sources": [
   {
    "id": "pb-2026-05",
@@ -42,20 +44,110 @@
   {
    "id": "all-employments",
    "headline": true,
-   "title": "All employments",
+   "title": "Workers",
    "appliesTo": "Every employment in Punjab under the Code on Wages, 2019: establishments, factories, employees, workers and contract labour. Brick kilns and agriculture have their own rates.",
-   "sources": ["pb-2026-05"],
+   "sources": [
+    "pb-2026-05"
+   ],
    "effectiveFrom": "2026-05-01",
-   "zones": [{ "id": "punjab", "name": "All of Punjab", "areas": "One rate for the whole state." }],
+   "zones": [
+    {
+     "id": "punjab",
+     "name": "All of Punjab",
+     "areas": "One rate for the whole state."
+    }
+   ],
    "daily": "stated",
    "basicLabel": "Basic minimum rate",
    "vdaLabel": "Dearness allowance",
    "vdaNote": "The 1 May 2026 notification fixes one basic rate per category, not split into allowances; it is to be adjusted with the consumer price index at intervals the state will prescribe.",
    "rates": [
-    { "zone": "punjab", "skill": "unskilled", "basic": 13486, "vda": 0, "monthly": 13486, "daily": 518.69 },
-    { "zone": "punjab", "skill": "semi-skilled", "basic": 14383, "vda": 0, "monthly": 14383, "daily": 553.19 },
-    { "zone": "punjab", "skill": "skilled", "basic": 15414, "vda": 0, "monthly": 15414, "daily": 592.84 },
-    { "zone": "punjab", "skill": "highly-skilled", "basic": 16601, "vda": 0, "monthly": 16601, "daily": 638.5 }
+    {
+     "zone": "punjab",
+     "skill": "unskilled",
+     "basic": 13486,
+     "vda": 0,
+     "monthly": 13486,
+     "daily": 518.69
+    },
+    {
+     "zone": "punjab",
+     "skill": "semi-skilled",
+     "basic": 14383,
+     "vda": 0,
+     "monthly": 14383,
+     "daily": 553.19
+    },
+    {
+     "zone": "punjab",
+     "skill": "skilled",
+     "basic": 15414,
+     "vda": 0,
+     "monthly": 15414,
+     "daily": 592.84
+    },
+    {
+     "zone": "punjab",
+     "skill": "highly-skilled",
+     "basic": 16601,
+     "vda": 0,
+     "monthly": 16601,
+     "daily": 638.5
+    }
+   ]
+  },
+  {
+   "id": "office-staff",
+   "title": "Office and staff",
+   "appliesTo": "Staff in every employment, alongside the four skill levels: A postgraduate, MBA or professional degree; B graduate, or undergraduate with a stenography, computer or accountancy diploma, or supervisors who take independent decisions; C above matric but not graduate, including steno typists, data entry operators, timekeepers, salesmen, assistants and storekeepers; D any Class IV employee, casual, through a contractor or on contract.",
+   "sources": [
+    "pb-2026-05"
+   ],
+   "effectiveFrom": "2026-05-01",
+   "zones": [
+    {
+     "id": "punjab",
+     "name": "All of Punjab",
+     "areas": "One rate for the whole state."
+    }
+   ],
+   "daily": "stated",
+   "basicLabel": "Basic minimum rate",
+   "vdaLabel": "Dearness allowance",
+   "vdaNote": "The 1 May 2026 notification fixes one basic rate per category, not split into allowances; it is to be adjusted with the consumer price index at intervals the state will prescribe.",
+   "rates": [
+    {
+     "zone": "punjab",
+     "skill": "staff-a",
+     "basic": 19431,
+     "vda": 0,
+     "monthly": 19431,
+     "daily": 747.34
+    },
+    {
+     "zone": "punjab",
+     "skill": "staff-b",
+     "basic": 17510,
+     "vda": 0,
+     "monthly": 17510,
+     "daily": 673.46
+    },
+    {
+     "zone": "punjab",
+     "skill": "staff-c",
+     "basic": 15786,
+     "vda": 0,
+     "monthly": 15786,
+     "daily": 607.15
+    },
+    {
+     "zone": "punjab",
+     "skill": "staff-d",
+     "basic": 14406,
+     "vda": 0,
+     "monthly": 14406,
+     "daily": 554.07
+    }
    ]
   }
  ],
@@ -66,10 +158,30 @@
    "effectiveTo": "2026-04-30",
    "source": "pb-adjustments-1995-2025",
    "rates": [
-    { "zone": "punjab", "skill": "unskilled", "monthly": 11726.4, "daily": 451.01 },
-    { "zone": "punjab", "skill": "semi-skilled", "monthly": 12506.4, "daily": 481.01 },
-    { "zone": "punjab", "skill": "skilled", "monthly": 13403.4, "daily": 515.51 },
-    { "zone": "punjab", "skill": "highly-skilled", "monthly": 14435.4, "daily": 555.2 }
+    {
+     "zone": "punjab",
+     "skill": "unskilled",
+     "monthly": 11726.4,
+     "daily": 451.01
+    },
+    {
+     "zone": "punjab",
+     "skill": "semi-skilled",
+     "monthly": 12506.4,
+     "daily": 481.01
+    },
+    {
+     "zone": "punjab",
+     "skill": "skilled",
+     "monthly": 13403.4,
+     "daily": 515.51
+    },
+    {
+     "zone": "punjab",
+     "skill": "highly-skilled",
+     "monthly": 14435.4,
+     "daily": 555.2
+    }
    ]
   },
   {
@@ -78,10 +190,30 @@
    "effectiveTo": "2025-08-31",
    "source": "pb-adjustments-1995-2025",
    "rates": [
-    { "zone": "punjab", "skill": "unskilled", "monthly": 11389.64, "daily": 438.06 },
-    { "zone": "punjab", "skill": "semi-skilled", "monthly": 12169.64, "daily": 468.06 },
-    { "zone": "punjab", "skill": "skilled", "monthly": 13066.64, "daily": 502.56 },
-    { "zone": "punjab", "skill": "highly-skilled", "monthly": 14098.64, "daily": 542.25 }
+    {
+     "zone": "punjab",
+     "skill": "unskilled",
+     "monthly": 11389.64,
+     "daily": 438.06
+    },
+    {
+     "zone": "punjab",
+     "skill": "semi-skilled",
+     "monthly": 12169.64,
+     "daily": 468.06
+    },
+    {
+     "zone": "punjab",
+     "skill": "skilled",
+     "monthly": 13066.64,
+     "daily": 502.56
+    },
+    {
+     "zone": "punjab",
+     "skill": "highly-skilled",
+     "monthly": 14098.64,
+     "daily": 542.25
+    }
    ]
   }
  ],
@@ -92,6 +224,8 @@
   "2026-10-17: The notification's daily figures are the monthly rate / 26, mostly rounded to the nearest paisa, but skilled 15414 / 26 = 592.846 is printed 592.84 (truncated). The printed figures are used ('stated').",
   "2026-10-17: Minimum wages rates w.e.f. 1.7.1995 to 1.9.2025-2-1.pdf (112 scanned pages, Punjabi headings, no text layer), page 108 (table 1): from 01.03.2025 unskilled 11389.64 / 438.06 / 54.75, semi-skilled 12169.64 / 468.06 / 58.50, skilled 13066.64 / 502.56 / 62.82, highly skilled 14098.64 / 542.25 / 67.78; from 01.09.2025 11726.40 / 451.01 / 56.37, 12506.40 / 481.01 / 60.12, 13403.40 / 515.51 / 64.43, 14435.40 / 555.20 / 69.40. Read at 150 dpi; the scan is faint, a reviewer should confirm. The compilation has no single number or date; the date given here is its last adjustment.",
   "OPEN QUESTION for the reviewer: when the next adjustment falls. The old cycle was 1 March and 1 September; the 2026 notification leaves the interval to rules, and the Code on Wages (Punjab) Rules, 2026 were published only in draft (29 December 2025, per secondary reports). The Central rules use 1 April and 1 October. nextRevision is set to 1 March 2027 without marking 1 September 2026 as missed.",
-  "NOT INCLUDED: Staff Categories A to D (no matching skill labels on the site yet), agricultural labour, and brick kilns (separate piece-rate notification)."
+  "NOT INCLUDED: Staff Categories A to D (no matching skill labels on the site yet), agricultural labour, and brick kilns (separate piece-rate notification).",
+  "2026-10-17: Staff categories A to D read from the 'Staff wise Categories' table (Gazette p. 2212) and definitions (pp. 2212-2213): A 19,431 / 747.34; B 17,510 / 673.46; C 15,786 / 607.15; D 14,406 / 554.07 a month / a day. They sit alongside the four skill levels and apply in all establishments. Category D covers 'any Class-IV employee (casual, through contractor or on contract basis)', ₹920 a month above unskilled.",
+  "2026-10-17: Labour Welfare Fund amounts. Punjab Act 32 of 2014 (Gazette Extra 15 Dec 2014; Bill 1 of 2014 on punjabassembly.gov.in) set ₹5 worker and ₹20 employer a month. The Vidhan Sabha passed the Punjab Labour Welfare Fund (Amendment) Bill, 2025 on 11 July 2025 to double them to ₹10 and ₹40 (news reports only); no assent, Act number or Gazette notice found on 17 October 2026. The page shows the 2014 amounts and says so."
  ]
 }

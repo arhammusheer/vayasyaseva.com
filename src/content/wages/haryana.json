@@ -3,8 +3,8 @@
  "name": "Haryana",
  "titleName": "Haryana",
  "nextRevision": {
-  "expected": "2026-10-01",
-  "basis": "The 9 April 2026 notification fixes basic rates with full neutralisation of the consumer price index, to be adjusted as the Code on Wages (Haryana) Rules, 2026 prescribe. Those rules are in draft (published 4 May 2026); rule 5 of the draft revises the variable dearness allowance before 1 April and 1 October each year. Before 2026 Haryana revised its rates every 1 January and 1 July. No revision on the new basic rates had been published by 17 October 2026."
+  "expected": "2027-04-01",
+  "basis": "The 9 April 2026 notification leaves adjustments to the Code on Wages (Haryana) Rules, which are still in draft; draft rule 5 revises the VDA before 1 April and 1 October each year. Before 2026 Haryana revised every 1 January and 1 July, a cycle the April 2026 notification ended. No final rules and no VDA order were on the Department's listing on 17 October 2026, so no revision is treated as overdue."
  },
  "checked": {
   "on": "2026-10-17"
@@ -47,7 +47,10 @@
    "headline": true,
    "title": "All employments",
    "appliesTo": "Every employment in Haryana: establishments, factories, employees, workers and contract labour as the Code on Wages, 2019 defines them. Brick kilns are to be notified separately. Trainees get 75% of their category's rate for up to a year, but not less than the unskilled rate.",
-   "sources": ["hr-2026-04", "hr-2026-10-order"],
+   "sources": [
+    "hr-2026-04",
+    "hr-2026-10-order"
+   ],
    "effectiveFrom": "2026-04-01",
    "zones": [
     {
@@ -61,10 +64,38 @@
    "vdaLabel": "VDA",
    "vdaNote": "The notification fixes all-inclusive basic rates that an employer may not split into allowances. Rises in the consumer price index are to be passed on in full as the Code on Wages (Haryana) Rules, 2026 prescribe; no dearness allowance has been notified on these rates yet.",
    "rates": [
-    { "zone": "haryana", "skill": "unskilled", "basic": 15220.71, "vda": 0, "monthly": 15220.71, "daily": 585.41 },
-    { "zone": "haryana", "skill": "semi-skilled", "basic": 16780.74, "vda": 0, "monthly": 16780.74, "daily": 645.41 },
-    { "zone": "haryana", "skill": "skilled", "basic": 18500.81, "vda": 0, "monthly": 18500.81, "daily": 711.56 },
-    { "zone": "haryana", "skill": "highly-skilled", "basic": 19425.85, "vda": 0, "monthly": 19425.85, "daily": 747.14 }
+    {
+     "zone": "haryana",
+     "skill": "unskilled",
+     "basic": 15220.71,
+     "vda": 0,
+     "monthly": 15220.71,
+     "daily": 585.41
+    },
+    {
+     "zone": "haryana",
+     "skill": "semi-skilled",
+     "basic": 16780.74,
+     "vda": 0,
+     "monthly": 16780.74,
+     "daily": 645.41
+    },
+    {
+     "zone": "haryana",
+     "skill": "skilled",
+     "basic": 18500.81,
+     "vda": 0,
+     "monthly": 18500.81,
+     "daily": 711.56
+    },
+    {
+     "zone": "haryana",
+     "skill": "highly-skilled",
+     "basic": 19425.85,
+     "vda": 0,
+     "monthly": 19425.85,
+     "daily": 747.14
+    }
    ]
   }
  ],
@@ -74,6 +105,8 @@
   "2026-10-17: The stated daily rates are the monthly rate divided by 26 and cut (not rounded) to the paisa: 18500.81 / 26 = 711.5696 is printed 711.56, 19425.85 / 26 = 747.148 is printed 747.14. The notification's note 7 sets the 26-day divisor. The printed figures are used.",
   "2026-10-17: The notification has four categories only (unskilled, semi-skilled, skilled, highly skilled). The 2015 scheme's A/B grades and clerical, driver and security-guard rows (Labour Commissioner's letter 5377-522 of 22 February 2024, rates from 1 January 2024: unskilled 10924.24) are not carried over; the reviewer should confirm that clerical and other staff now fall in these four categories.",
   "2026-10-17: Order No. 25744-860 of 5 October 2026 (Labour Commissioner, scanned, read from the page image) directs enforcement in all establishments including petty establishments, because CWP-PIL-255 of 2026 alleges the notification is not being implemented; the High Court hearing is listed for 28 October 2026.",
-  "2026-10-17: OPEN QUESTION for the reviewer: no VDA or dearness revision on the April 2026 rates was found on the listing (checked back to 2024). The draft Code on Wages (Haryana) Rules, 2026 (notification 02/08/2021-2Lab., 4 May 2026) say the VDA is revised before 1 April and 1 October; until the rules are final, whether a revision was due on 1 October 2026 is uncertain. nextRevision.expected is set to 1 October 2026 on that draft rule."
+  "2026-10-17: OPEN QUESTION for the reviewer: no VDA or dearness revision on the April 2026 rates was found on the listing (checked back to 2024). The draft Code on Wages (Haryana) Rules, 2026 (notification 02/08/2021-2Lab., 4 May 2026) say the VDA is revised before 1 April and 1 October; until the rules are final, whether a revision was due on 1 October 2026 is uncertain. nextRevision.expected is set to 1 October 2026 on that draft rule.",
+  "2026-10-17: Next revision. Note 1 of the 9 April 2026 notification (Gazette Ext. No. 51-2026, p. 409): full neutralisation of the consumer price index, 'the adjustment in wages shall be made further as prescribed in Code on Wages Rules, 2026'. The draft rules (No. 02/08/2021-2Lab., Gazette Ext. No. 66-2026, 4 May 2026, rule 5) compute the VDA before 1 April and 1 October. Not final; nothing newer on the listing. Expected set to 2027-04-01 with no missed dates.",
+  "2026-10-17: Clerical and other staff. The notification has four categories and lists no occupations. Schedule A of the draft wage rules (4 May 2026, pp. 771-790) places clerks, typists, data entry operators, store keepers, time keepers and motor vehicle drivers under Skilled, accountants and armed guards under Highly skilled, and peons, helpers, loaders, sweepers and cleaners under Unskilled (watchman appears under both Unskilled and Semi-skilled). Draft, not binding."
  ]
 }

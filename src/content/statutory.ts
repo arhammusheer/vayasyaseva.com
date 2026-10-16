@@ -199,6 +199,7 @@ export const statutorySources: StatutorySource[] = [
     authority: "Government of Punjab",
     url: "https://prsindia.org/files/bills_acts/acts_states/punjab/1965/1965PB17.pdf",
   },
+
   {
     id: "osh-handbook-2026",
     title: "Labour codes compliance handbook (OSH Code, sections 45 to 48: contract labour licence)",
@@ -302,7 +303,7 @@ export const employerDues: Partial<Record<WageStateSlug, StateDues>> = {
     rows: [
       epf,
       esic,
-      { name: "Labour Welfare Fund", applies: "Units with 10+ employees", worker: "0.2% of wages, up to ₹35 a month", employer: "Twice the worker's share, up to ₹70", sources: ["hr-lwf-act", "hr-lwf-2026"] },
+      { name: "Labour Welfare Fund", applies: "Units with 10+ employees", worker: "0.2% of wages, up to ₹35 a month (2026 limit)", employer: "Twice the worker's share, up to ₹70", sources: ["hr-lwf-act", "hr-lwf-2026"] },
     ],
     notLevied: "Professional Tax is not levied in Haryana.",
   },
@@ -311,14 +312,23 @@ export const employerDues: Partial<Record<WageStateSlug, StateDues>> = {
       wages,
       epfEsic,
       { when: "Month end", detail: "of the next month", what: "Development tax, deducted the month before", sources: ["pb-psdt-act", "pb-psdt-rules-2021"] },
-      { when: "Half-yearly", detail: "by 15 Oct and 15 Apr", what: "Labour Welfare Fund, for units with more than 20 persons", sources: ["pb-lwf-act", "pb-lwf-2014"] },
+      { when: "Half-yearly", detail: "before 15 Oct and 15 Apr", what: "Labour Welfare Fund, for factories and other units with more than 20 persons", sources: ["pb-lwf-act", "pb-lwf-2014"] },
       licence("Punjab's rules are still in draft; ask the Labour Department how to apply."),
     ],
     rows: [
       epf,
       esic,
       { name: "Development tax", applies: "Income above the income-tax threshold", worker: "₹200 a month", employer: "Deducts and pays it", sources: ["pb-psdt-act", "pb-psdt-rules-2021"] },
-      { name: "Labour Welfare Fund", applies: "Units with more than 20 persons", worker: "₹5 a month", employer: "₹20 a month", sources: ["pb-lwf-act", "pb-lwf-2014"] },
+      {
+        name: "Labour Welfare Fund",
+        applies: "Factories, bus services and other units with more than 20 persons",
+        worker: "₹5 a month",
+        employer: "₹20 a month",
+        explain: [
+          ["Pending rise", "Punjab's Assembly passed a bill on 11 July 2025 to raise these to ₹10 and ₹40. We have not found it notified, so these are the 2014 amounts; confirm with the Punjab Labour Welfare Board before you pay."],
+        ],
+        sources: ["pb-lwf-act", "pb-lwf-2014"],
+      },
     ],
   },
   "uttar-pradesh": {

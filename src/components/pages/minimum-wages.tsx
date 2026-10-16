@@ -122,52 +122,109 @@ function sourceLine(state: WageState, table: WageTable) {
   return x.table.source(formatDate(table.effectiveFrom), x.sourceKind(s.kind), number);
 }
 
+/**
+ * One table of rates. Zoned tables (UP's categories, Karnataka's zones) are
+ * a matrix: a row per skill, a column per zone, so the zones compare side by
+ * side instead of stacking three tables down the page; the zones' areas are
+ * listed under it. A single-zone table shows the basic + VDA split as quiet
+ * columns on a wide screen (behind "Show breakdown" on a phone).
+ */
 function RateTable({ state, table }: { state: WageState; table: WageTable }) {
   const split = table.rates.some((r) => r.vda > 0);
   const zoned = table.zones.length > 1;
   const skills = [...new Set(table.rates.map((r) => r.skill))];
   const rateOf = (zone: string, skill: Skill) => table.rates.find((r) => r.zone === zone && r.skill === skill)!;
+  const derived = table.daily === "derived";
+  const caption = <caption className="sr-only">{x.table.caption(table.title, state.name, formatDate(table.effectiveFrom))}</caption>;
+  const day = (v: number | null) => (v === null ? <span className="wage-none">{x.table.notSet}</span> : formatRupees(v));
   return (
     <div className="wage-table-block" id={table.id}>
       <h3>{table.title}</h3>
       <div className="wage-table-scroll">
-        <table className="wage-table">
-          <caption className="sr-only">{x.table.caption(table.title, state.name, formatDate(table.effectiveFrom))}</caption>
-          <thead>
-            <tr>
-              <th scope="col">{x.table.skill}</th>
-              <th scope="col">{x.table.month}</th>
-              <th scope="col">{table.daily === "derived" ? x.table.dayDerived : x.table.day}</th>
-            </tr>
-          </thead>
-          {table.zones.map((zone) => (
-            <tbody key={zone.id}>
-              {zoned && (
-                <tr className="zone-row">
-                  <th scope="rowgroup" colSpan={3}>
-                    {zone.name}
-                    <span>{zone.areas}</span>
+        {zoned ? (
+          <table className="wage-table is-matrix">
+            {caption}
+            <thead>
+              <tr>
+                <th scope="col">
+                  {x.table.skill}
+                  <span className="wage-th-unit">{derived ? x.table.unitsDerived : x.table.units}</span>
+                </th>
+                {table.zones.map((z) => (
+                  <th scope="col" key={z.id}>
+                    {z.name}
                   </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {skills.map((skill) => (
+                <tr key={skill} className={skill === "unskilled" ? "is-headline" : undefined}>
+                  <th scope="row">{SKILLS[skill]}</th>
+                  {table.zones.map((z) => {
+                    const r = rateOf(z.id, skill);
+                    return (
+                      <td key={z.id}>
+                        <strong>{formatRupees(r.monthly)}</strong>
+                        <span className="wage-day">{day(r.daily)}</span>
+                      </td>
+                    );
+                  })}
                 </tr>
-              )}
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <table className="wage-table is-flat">
+            {caption}
+            <thead>
+              <tr>
+                <th scope="col">{x.table.skill}</th>
+                <th scope="col">{x.table.month}</th>
+                <th scope="col">{derived ? x.table.dayDerived : x.table.day}</th>
+                {split && (
+                  <>
+                    <th scope="col" className="col-split is-quiet">{table.basicLabel}</th>
+                    <th scope="col" className="col-split is-quiet">{table.vdaLabel}</th>
+                  </>
+                )}
+              </tr>
+            </thead>
+            <tbody>
               {skills.map((skill) => {
-                const r = rateOf(zone.id, skill);
+                const r = rateOf(table.zones[0].id, skill);
                 return (
                   <tr key={skill} className={skill === "unskilled" ? "is-headline" : undefined}>
                     <th scope="row">{SKILLS[skill]}</th>
                     <td>
                       <strong>{formatRupees(r.monthly)}</strong>
                     </td>
-                    <td>{r.daily === null ? <span className="wage-none">{x.table.notSet}</span> : formatRupees(r.daily)}</td>
+                    <td>{day(r.daily)}</td>
+                    {split && (
+                      <>
+                        <td className="col-split is-quiet">{formatRupees(r.basic)}</td>
+                        <td className="col-split is-quiet">{formatRupees(r.vda)}</td>
+                      </>
+                    )}
                   </tr>
                 );
               })}
             </tbody>
-          ))}
-        </table>
+          </table>
+        )}
       </div>
+      {zoned && (
+        <dl className="wage-zones">
+          {table.zones.map((z) => (
+            <div key={z.id}>
+              <dt>{z.name}</dt>
+              <dd>{z.areas}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
       {split && (
-        <details className="wage-more">
+        <details className={zoned ? "wage-more" : "wage-more is-phone-only"}>
           <summary>{x.table.breakdown}</summary>
           <table className="wage-table is-compact">
             <caption className="sr-only">{`${table.title}: ${table.basicLabel} and ${table.vdaLabel}, per month, in rupees`}</caption>
@@ -207,14 +264,18 @@ function RateTable({ state, table }: { state: WageState; table: WageTable }) {
   );
 }
 
-/** "Documents used", in two groups: the wage notifications and the employer dues sources. Title, number and date each. */
+/**
+ * "Sources (n)", in two groups: the wage notifications and the employer dues
+ * sources. Title, number and date each. It closes the questions rather than
+ * standing as a section of its own (one collapsed line did not earn a band).
+ */
 function Documents({ state, slug }: { state: WageState; slug: WageStateSlug }) {
   const groups = [
     { label: x.sections.wageDocs, items: state.sources.map((s) => ({ id: s.id, title: s.title, url: s.url, number: s.number, date: s.date, language: s.language })) },
     { label: x.sections.duesDocs, items: duesSources(slug).map((s) => ({ ...s, language: "en" as const })) },
   ].filter((g) => g.items.length);
   return (
-    <Section id="documents" className="border-t border-border wage-documents">
+    <div id="documents" className="wage-documents">
       <details className="wage-more is-section">
         <summary>
           {x.sections.documents} ({groups.reduce((n, g) => n + g.items.length, 0)})
@@ -241,7 +302,7 @@ function Documents({ state, slug }: { state: WageState; slug: WageStateSlug }) {
           </div>
         ))}
       </details>
-    </Section>
+    </div>
   );
 }
 
@@ -287,9 +348,9 @@ function Doors({ doors }: { doors: WageDoor[] }) {
   );
 }
 
-function Faqs({ faqs, variant = "subtle" }: { faqs: { question: string; answer: string }[]; variant?: "subtle" | "default" }) {
+function Faqs({ faqs, children }: { faqs: { question: string; answer: string }[]; children?: React.ReactNode }) {
   return (
-    <Section id="questions" variant={variant}>
+    <Section id="questions" variant="subtle">
       <div className="wage-split">
         <h2 className="wage-h2">{x.sections.questions}</h2>
         <div className="faq-prose">
@@ -299,6 +360,7 @@ function Faqs({ faqs, variant = "subtle" }: { faqs: { question: string; answer: 
               <p>{f.answer}</p>
             </div>
           ))}
+          {children}
         </div>
       </div>
     </Section>
@@ -314,7 +376,7 @@ function Dues({ slug, name }: { slug: WageStateSlug; name: string }) {
   const dues = employerDues[slug];
   if (!dues) return null;
   return (
-    <Section id="employer-dues" className="border-t border-border">
+    <Section id="employer-dues" className="border-t border-border pt-12 sm:pt-14 lg:pt-16">
       <h2 className="wage-h2">{x.dues.heading(name)}</h2>
       <ol className="dues-strip">
         {dues.deadlines.map((d) => (
@@ -362,21 +424,6 @@ function Dues({ slug, name }: { slug: WageStateSlug; name: string }) {
   );
 }
 
-/** "1 Pay rates · 2 What employers owe · 3 Questions · 4 Sources", under the hero. */
-function JumpList() {
-  return (
-    <nav aria-label={x.jump.label} className="site-shell wage-jump">
-      <ol>
-        {x.jump.items.map(([href, label]) => (
-          <li key={href}>
-            <a href={href}>{label}</a>
-          </li>
-        ))}
-      </ol>
-    </nav>
-  );
-}
-
 /**
  * "Where do you work?" for a state with more than one table: radio buttons
  * that show one table at a time (CSS :has, globals.css "Wage table
@@ -399,14 +446,26 @@ function TableChooser({ state, which }: { state: WageState; which: NonNullable<W
   );
 }
 
+/** The employer door for a state: its region's location page where one is live, else the neutral door. */
+const CREW_REGIONS: Partial<Record<WageStateSlug, [string, string, string]>> = {
+  "uttar-pradesh": ["Noida or Ghaziabad", "We supply crews in Noida, Greater Noida and Ghaziabad.", "/locations/delhi-ncr/noida-greater-noida"],
+  delhi: ["Delhi NCR", "We supply crews in Delhi's industrial areas and across NCR.", "/locations/delhi-ncr"],
+  karnataka: ["Bengaluru", "We supply crews across Bengaluru's industrial belts.", "/locations/bengaluru"],
+};
+function crewDoor(slug: WageStateSlug) {
+  const r = CREW_REGIONS[slug];
+  return r && linkable(r[2], "en-IN") ? wageDoors.crewIn(...r) : wageDoors.neutral;
+}
+
 // ── State page ──────────────────────────────────────────────────────────────
 
 export function WageStatePage({ slug }: { slug: WageStateSlug }) {
   const { state, t } = stateOrThrow(slug);
   const today = todayIso();
   const year = yearOf(state, today);
+  const crew = crewDoor(slug);
   const doors =
-    t.band === "haridwar" ? [wageDoors.jobs, wageDoors.business] : t.band === "bengaluru" ? [wageDoors.jobsBengaluru, wageDoors.neutral] : [wageDoors.paidLess(state.name, t.labourDepartment), wageDoors.neutral];
+    t.band === "haridwar" ? [wageDoors.jobs, wageDoors.business] : t.band === "bengaluru" ? [wageDoors.jobsBengaluru, crew] : [wageDoors.paidLess(state.name, t.labourDepartment), crew];
   return (
     <>
       <JsonLd data={wageStateSchema(state, { name: t.title(year), description: t.description, url: localePath(wageStatePath(slug), "en-IN") })} />
@@ -418,9 +477,9 @@ export function WageStatePage({ slug }: { slug: WageStateSlug }) {
         footnote={<CheckedLine state={state} today={today} />}
         className={HERO_TIGHT}
       />
-      <JumpList />
-      <Section id="rates" className="pt-6 sm:pt-10 lg:pt-12">
-        <h2 className="wage-h2">{x.sections.rates(state.name)}</h2>
+      {/* The rates straight under the answer; the hero already says whose they are. */}
+      <Section id="rates" className="pt-8 pb-12 sm:pt-10 sm:pb-14 lg:pt-12 lg:pb-16">
+        <h2 className="sr-only">{x.sections.rates(state.name)}</h2>
         <div className="wage-picker">
           {t.whichTable && <TableChooser state={state} which={t.whichTable} />}
           <div className="wage-tables">
@@ -439,8 +498,9 @@ export function WageStatePage({ slug }: { slug: WageStateSlug }) {
         )}
       </Section>
       <Dues slug={slug} name={state.name} />
-      <Faqs faqs={t.faqs} />
-      <Documents state={state} slug={slug} />
+      <Faqs faqs={t.faqs}>
+        <Documents state={state} slug={slug} />
+      </Faqs>
       <Doors doors={doors} />
     </>
   );

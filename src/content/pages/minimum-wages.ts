@@ -227,7 +227,18 @@ export const wageDoors = {
     link: department,
     external: true,
   }),
-  /** UP and Delhi: a neutral crew door that promises nothing about that state. */
+  /**
+   * The crew door where a location page covers the state (Delhi NCR for UP
+   * and Delhi, Bengaluru for Karnataka; owner confirmed supply there, 16 Oct
+   * 2026), so an employer reading these rates lands on their own region.
+   */
+  crewIn: (region: string, text: string, href: string): Door => ({
+    eyebrow: "FOR EMPLOYERS",
+    heading: `Hiring in ${region}?`,
+    text,
+    link: { href, label: "Request a crew" },
+  }),
+  /** A neutral crew door, where no location page covers the state. */
   neutral: {
     eyebrow: "FOR EMPLOYERS",
     heading: "Hiring for a unit?",
@@ -252,15 +263,6 @@ export const wageUi = {
     employer: "Employer",
     help: "Behind on any of this? The Vayasya Network of CAs, labour lawyers and compliance consultants can help.",
   },
-  jump: {
-    label: "On this page",
-    items: [
-      ["#rates", "1 Pay rates"],
-      ["#employer-dues", "2 What employers owe"],
-      ["#questions", "3 Questions"],
-      ["#documents", "4 Sources"],
-    ] as [string, string][],
-  },
   inLanguage: { hi: "In Hindi", kn: "In Kannada" } as Record<"hi" | "kn", string>,
   notice: {
     staleStrong: "These rates may have been revised.",
@@ -275,6 +277,9 @@ export const wageUi = {
     month: "Per month",
     day: "Per day",
     dayDerived: "Per day (÷ 26)",
+    /** Under "Skill" in a zoned table: what the two figures in each cell are. */
+    units: "a month, then a day",
+    unitsDerived: "a month, then a day (÷ 26)",
     notSet: "Not set",
     breakdown: "Show breakdown",
     source: (date: string, kind: string, number: string) => `In force from ${date}. ${kind} ${number}.`,

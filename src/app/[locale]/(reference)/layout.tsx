@@ -5,9 +5,10 @@ import { JsonLd, phoneFreeGraphSchema } from "@/lib/structured-data";
 /**
  * Reference pages, read by buyers and workers alike: the privacy notice and
  * terms (every jobs form links the privacy notice), and later the minimum
- * wage pages (PR5) and guides. A neutral header with both doors, a business
- * CTA to /contact and no phone. Like the jobs layout, it cannot import the
- * phone (eslint.config.mjs).
+ * wage pages and guides. The reference header (Minimum wages and both
+ * doors; privacy and terms get the business header without the phone) and
+ * no phone. Like the jobs layout, it cannot import the phone
+ * (eslint.config.mjs).
  */
 export default function ReferenceLayout({ children }: { children: React.ReactNode }) {
   return (

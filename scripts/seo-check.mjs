@@ -5,6 +5,7 @@
 // Also runs check C7 (no business phone on jobs pages): scripts/check-jobs-phone.mjs,
 // and C11 (no published page links to a page outside the sitemap, i.e. a
 // review, paused, draft or missing page; see src/content/registry).
+// Also checks that the jobs menu's #group links exist on /jobs.
 // Also checks every page built in review (the guides awaiting a legal
 // reviewer): it answers 200 for reviewers, is noindex, stays out of the
 // sitemap and llms.txt, and carries no phone where the audience forbids it.
@@ -272,6 +273,19 @@ for (const { path, kind } of hiddenPages) {
   if (isPhoneFree(path)) {
     for (const where of phoneIn(body)) fail(path, `${where} on a phone-free ${kind} page (C7)`);
     if (/"telephone"/.test(body)) fail(path, `JSON-LD "telephone" on a phone-free ${kind} page (C7)`);
+  }
+}
+
+// The jobs menu's work groups link to /jobs#<group>; C11 ignores fragments,
+// so each #id must exist on that page (the menu itself renders on open).
+const { jobGroupLinks } = await importTs("src/components/layout/nav-links.ts");
+for (const locale of Object.keys(localeInfo)) {
+  const links = jobGroupLinks(locale);
+  if (!links.length) continue;
+  const page = links[0].href.split("#")[0];
+  const { body } = await get(base + page);
+  for (const { href } of links) {
+    if (!body.includes(`id="${href.split("#")[1]}"`)) fail(page, `the jobs menu links ${href}, which has no such id`);
   }
 }
 

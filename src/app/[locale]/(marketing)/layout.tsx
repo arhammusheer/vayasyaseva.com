@@ -8,7 +8,7 @@ import { localeOfParams } from "@/lib/i18n";
 /** The business phone: business pages are the only ones that get it. */
 const phone = { display: businessPhone.display, href: businessPhoneHref };
 
-/** Business pages: the Jobs door, the phone, and the site graph with telephone. */
+/** Business pages: the Jobs door, the phone in the header, and the site graph with telephone. */
 export default async function MarketingLayout({
   children,
   params,
@@ -22,7 +22,7 @@ export default async function MarketingLayout({
       <JsonLd data={businessGraphSchema()} />
       <Header door="business" phone={phone} />
       <main id="main-content" tabIndex={-1} className="flex-1">{children}</main>
-      <Footer door="business" phone={phone} locale={locale} />
+      <Footer door="business" locale={locale} />
     </div>
   );
 }

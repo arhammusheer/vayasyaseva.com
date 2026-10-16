@@ -15,13 +15,6 @@ export interface Claim {
   expiresAt?: string; // ISO date
 }
 
-/** Navigation item */
-export interface NavItem {
-  label: string;
-  href: string;
-  children?: NavItem[];
-}
-
 /** Trust strip */
 export interface TrustClient {
   name: string;
@@ -87,7 +80,6 @@ export interface SiteConfig {
   msme: string;
   address: string;
   region: string;
-  linkedin: string;
   /** Public profiles for Organization.sameAs. Add as they are created. */
   sameAs: string[];
   /** City-level coordinates for LocalBusiness.geo. */

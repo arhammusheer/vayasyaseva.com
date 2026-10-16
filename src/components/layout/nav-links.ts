@@ -1,0 +1,140 @@
+import { linkable } from "@/content/registry";
+import { WAGE_HUB_PATH, WAGE_METHOD_PATH, guidePath, wageStatePath } from "@/content/registry/identifiers";
+import { localePath, type Locale } from "@/lib/i18n";
+
+/**
+ * Links shared by the header and footer (one place for each label). Kept
+ * small and free of page content, since the header ships to the browser.
+ * Hindi and Hinglish labels are drafts for native review.
+ */
+
+export type NavLink = { href: string; label: string; lang?: string };
+
+/** The four business pages in the business bar and menu. */
+export const BUSINESS_LINKS: NavLink[] = [
+  { href: "/services", label: "Services" },
+  { href: "/haridwar-sidcul", label: "Haridwar SIDCUL" },
+  { href: "/compliance", label: "Compliance" },
+  { href: "/about", label: "About" },
+];
+
+export const SETU_LOGIN = "https://setu.vayasyaseva.com";
+
+/**
+ * Every jobs door on a business or reference page opens Jobs in Haridwar,
+ * the only place with work: the page's language on a Hindi or Hinglish
+ * page, and the neutral URL (the language picker) from an English one.
+ * Render it with next/link, not the i18n Link, which would add /en-in.
+ */
+export const jobsDoorHref = (locale: Locale) => (locale === "en-IN" ? "/jobs/haridwar" : localePath("/jobs/haridwar", locale));
+
+/** "Looking for work? Jobs": the business menu and footer line. */
+export const WORK_DOOR: Record<Locale, { lead: string; label: string }> = {
+  "en-IN": { lead: "Looking for work?", label: "Jobs" },
+  "hi-IN": { lead: "काम चाहिए?", label: "नौकरी" },
+  "hi-Latn-IN": { lead: "Kaam chahiye?", label: "Jobs" },
+};
+
+/**
+ * Reference pages, listed once published. `long` is the footer's label
+ * where the menu's would be unclear out of context.
+ */
+const REFERENCE: (NavLink & { long?: string })[] = [
+  { href: WAGE_HUB_PATH, label: "Minimum wages" },
+  { href: wageStatePath("uttarakhand"), label: "Uttarakhand" },
+  { href: wageStatePath("uttar-pradesh"), label: "Uttar Pradesh" },
+  { href: wageStatePath("delhi"), label: "Delhi" },
+  { href: WAGE_METHOD_PATH, label: "How we check", long: "How we check these pages" },
+  { href: guidePath("new-labour-codes"), label: "Labour codes guide" },
+];
+export const referenceLinks = (long = false): NavLink[] =>
+  REFERENCE.filter((l) => linkable(l.href, "en-IN")).map((l) => ({ href: l.href, label: long ? (l.long ?? l.label) : l.label }));
+
+/** The jobs header, menu and footer, in the page's language. */
+export const JOBS_NAV: Record<
+  Locale,
+  {
+    business: string; enquiries: string; apply: string; menu: string; sections: string; more: string; openMenu: string; language: string;
+    logo: string; haridwar: string; fee: string; details: string; privacy: string; terms: string; english: string;
+  }
+> = {
+  "en-IN": {
+    business: "For businesses", enquiries: "Business enquiries", apply: "Apply", menu: "Jobs", sections: "Site sections", more: "More",
+    openMenu: "Open navigation", language: "Language", logo: "Vayasya Seva jobs",
+    haridwar: "Jobs in Haridwar", fee: "No fee", details: "Your details", privacy: "Privacy", terms: "Terms", english: "",
+  },
+  "hi-IN": {
+    business: "कंपनियों के लिए", enquiries: "पूछताछ", apply: "आवेदन करें", menu: "नौकरी", sections: "साइट के हिस्से", more: "और",
+    openMenu: "मेन्यू खोलें", language: "भाषा", logo: "Vayasya Seva नौकरी",
+    haridwar: "हरिद्वार में नौकरी", fee: "कोई फ़ीस नहीं", details: "आपकी जानकारी", privacy: "गोपनीयता", terms: "नियम", english: " (English)",
+  },
+  "hi-Latn-IN": {
+    business: "Companies ke liye", enquiries: "Enquiry", apply: "Apply karein", menu: "Jobs", sections: "Site ke hisse", more: "Aur",
+    openMenu: "Menu kholein", language: "Bhasha", logo: "Vayasya Seva jobs",
+    haridwar: "Haridwar mein job", fee: "Koi fee nahi", details: "Aapki jaankari", privacy: "Privacy", terms: "Terms", english: " (English)",
+  },
+};
+
+/**
+ * The four work groups on /jobs (each a #id on that page) and the
+ * qualification hubs, in the jobs menu.
+ */
+const JOB_GROUPS: Record<Locale, { id: string; label: string }[]> = {
+  "en-IN": [
+    { id: "helper", label: "Helper, packing and warehouse" },
+    { id: "machine", label: "Machine and forklift" },
+    { id: "iti", label: "ITI trades" },
+    { id: "office", label: "Office and data entry" },
+  ],
+  "hi-IN": [
+    { id: "helper", label: "हेल्पर, पैकिंग और वेयरहाउस" },
+    { id: "machine", label: "मशीन और फ़ोर्कलिफ़्ट" },
+    { id: "iti", label: "ITI ट्रेड" },
+    { id: "office", label: "ऑफ़िस और डेटा एंट्री" },
+  ],
+  "hi-Latn-IN": [
+    { id: "helper", label: "Helper, packing aur warehouse" },
+    { id: "machine", label: "Machine aur forklift" },
+    { id: "iti", label: "ITI trade" },
+    { id: "office", label: "Office aur data entry" },
+  ],
+};
+
+/**
+ * /jobs lists its roles without the four group sections yet, so the menu
+ * leaves the groups out. TODO(/jobs rebuild): give each group section its
+ * id from JOB_GROUPS, then set this to true; seo:check fails if a group's
+ * #id is missing from /jobs.
+ */
+const JOB_GROUPS_ON_JOBS_PAGE = false;
+export const jobGroupLinks = (locale: Locale): NavLink[] =>
+  JOB_GROUPS_ON_JOBS_PAGE ? JOB_GROUPS[locale].map((g) => ({ href: `${localePath("/jobs", locale)}#${g.id}`, label: g.label })) : [];
+
+export const JOB_HUB_LINKS: Record<Locale, { slug: string; label: string }[]> = {
+  "en-IN": [
+    { slug: "freshers", label: "Freshers" },
+    { slug: "10th-pass", label: "10th pass" },
+    { slug: "12th-pass", label: "12th pass" },
+  ],
+  "hi-IN": [
+    { slug: "freshers", label: "फ़्रेशर" },
+    { slug: "10th-pass", label: "10वीं पास" },
+    { slug: "12th-pass", label: "12वीं पास" },
+  ],
+  "hi-Latn-IN": [
+    { slug: "freshers", label: "Fresher" },
+    { slug: "10th-pass", label: "10th pass" },
+    { slug: "12th-pass", label: "12th pass" },
+  ],
+};
+
+/** The jobs footer's links: Haridwar, the hubs, no fee, and the applicant notice once published. */
+export function jobsFooterLinks(locale: Locale): NavLink[] {
+  const t = JOBS_NAV[locale];
+  return [
+    { href: localePath("/jobs/haridwar", locale), label: t.haridwar },
+    ...JOB_HUB_LINKS[locale].map((h) => ({ href: localePath(`/jobs/${h.slug}`, locale), label: h.label })),
+    { href: localePath("/jobs/fees-and-fraud", locale), label: t.fee },
+    ...(linkable("/jobs/privacy", locale) ? [{ href: localePath("/jobs/privacy", locale), label: t.details }] : []),
+  ];
+}

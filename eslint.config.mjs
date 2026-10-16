@@ -37,7 +37,7 @@ const eslintConfig = defineConfig([
       "src/components/jobs/**",
       "src/components/layout/header.tsx",
       "src/components/layout/footer.tsx",
-      "src/components/layout/footer-jobs-link.tsx",
+      "src/components/layout/nav-links.ts",
       "src/components/pages/{jobs,job-role,job-hub,job-cluster,quick-apply,fees-and-fraud,minimum-wages,guide}.tsx",
       "src/components/sections/paused-notice.tsx",
       "src/content/pages/{jobs,job-roles,job-hubs,job-clusters,quick-apply,fees-and-fraud,minimum-wages,minimum-wages.hi}.ts",

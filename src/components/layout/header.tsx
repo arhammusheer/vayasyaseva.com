@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import NextLink from "next/link";
 import Link from "@/components/i18n/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -10,31 +11,43 @@ import {
   SheetTrigger,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { navigation } from "@/content/site";
 import { FALLBACK_LOCALE, languageLinks, localePath, splitLocalePath, type Locale } from "@/lib/i18n";
+import {
+  BUSINESS_LINKS,
+  JOB_HUB_LINKS,
+  JOBS_NAV,
+  SETU_LOGIN,
+  WORK_DOOR,
+  jobGroupLinks,
+  jobsDoorHref,
+  referenceLinks,
+  type NavLink,
+} from "@/components/layout/nav-links";
 
-/** The jobs link follows the page's language (docs/plan-worker-pipeline.md). */
-const JOBS_LABEL = { "en-IN": "Jobs", "hi-IN": "नौकरी", "hi-Latn-IN": "Jobs" } as const;
-
-/** "Request a crew" on business pages, in the page's language (drafts for native review). */
-const CREW_LABEL: Record<Locale, string> = { "en-IN": "Request a crew", "hi-IN": "कामगार माँगें", "hi-Latn-IN": "Workers maangein" };
+/**
+ * "Request a crew" on business pages, in the page's language. The Hindi and
+ * Hinglish labels name the company, so a seeker does not read them as
+ * "workers wanted" (drafts for native review).
+ */
+const CREW_LABEL: Record<Locale, string> = {
+  "en-IN": "Request a crew",
+  "hi-IN": "कंपनी के लिए कामगार",
+  "hi-Latn-IN": "Company ke liye workers",
+};
 
 /** The quick switch's "More" (languages outside the page's regional set). */
 const MORE_LABEL: Record<Locale, string> = { "en-IN": "More", "hi-IN": "और भाषाएँ", "hi-Latn-IN": "Aur bhasha" };
 
-/** The jobs header, in the page's language. "For businesses" is the door back to the business site. */
-const JOBS_NAV: Record<Locale, { all: string; fraud: string; business: string; apply: string; menu: string; doors: string }> = {
-  "en-IN": { all: "All jobs", fraud: "Fees and fraud", business: "For businesses", apply: "Apply", menu: "Jobs", doors: "Site sections" },
-  "hi-IN": { all: "सभी नौकरियाँ", fraud: "फ़ीस और धोखा", business: "कंपनियों के लिए", apply: "आवेदन करें", menu: "नौकरी", doors: "साइट के हिस्से" },
-  "hi-Latn-IN": { all: "Sabhi jobs", fraud: "Fee aur fraud", business: "Companies ke liye", apply: "Apply karein", menu: "Jobs", doors: "Site ke hisse" },
-};
+/** Legal pages sit in the reference layout (no phone) but take the business header. */
+const LEGAL = new Set(["/privacy", "/terms"]);
 
 /**
- * Which door the page belongs to. Every header shows both doors ("For
- * businesses" and "Jobs") and marks the current one. Business pages add the
- * phone and the Request a crew button; jobs pages add Apply and no phone;
- * reference pages (wages, guides) are under neither door, with Request a
- * crew and no phone.
+ * Which section the page belongs to; each has its own header. Business:
+ * four pages, the Jobs door (in the phone bar too on Hindi and Hinglish
+ * pages), the phone (wide screens) and Request a crew.
+ * Reference (wages, guides): Minimum wages and the two doors, no phone and
+ * no button. Jobs: languages, the "For businesses" door and Apply, and
+ * never a phone.
  */
 export type HeaderDoor = "business" | "jobs" | "reference";
 
@@ -44,6 +57,9 @@ export type HeaderDoor = "business" | "jobs" | "reference";
  * hand it a phone, so it cannot show one there.
  */
 export type HeaderPhone = { display: string; href: string };
+
+/** A menu row: one link, or several on one line, with an optional lead-in. */
+type SheetRow = { links: (NavLink & { neutral?: boolean })[]; lead?: string; lang?: string };
 
 export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?: HeaderPhone }) {
   const pathname = usePathname();
@@ -152,61 +168,73 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
   const languages = languageLinks(pathname);
   const quick = languages.filter((l) => !l.more);
   const more = languages.filter((l) => l.more);
-  // The business header is English; links follow the page's language where
-  // they can. The jobs header is in the page's language.
+  // The business and reference headers are English; links follow the
+  // page's language where they can. The jobs header is in the page's language.
   const split = splitLocalePath(pathname);
   const pageLocale = split.locale ?? FALLBACK_LOCALE;
   const path = split.path;
   const isHome = path === "/";
+  const view: HeaderDoor = door === "reference" && LEGAL.has(path) ? "business" : door;
+  const isJobs = view === "jobs";
   // The number is the business line, and only the business layout passes it.
-  const showPhone = door === "business" && phone;
+  const showPhone = view === "business" && phone;
   const pageLang = pageLocale === "en-IN" ? undefined : pageLocale;
-  type NavLink = { href: string; label: string; lang?: string };
   const t = JOBS_NAV[pageLocale];
-  // The two doors, the same on every page: "For businesses" opens the
-  // business site at the home page, "Jobs" opens the jobs site. Both door
-  // labels follow the page's language, so a Hindi page never shows one
-  // English door beside a Devanagari one.
-  const doors: (NavLink & { id: HeaderDoor })[] = [
-    { id: "business", href: "/", label: t.business, lang: pageLang },
-    { id: "jobs", href: localePath("/jobs", pageLocale), label: JOBS_LABEL[pageLocale], lang: pageLang },
-  ];
-  const nav: { desktop: NavLink[]; sheet: NavLink[]; cta: NavLink } =
-    door === "jobs"
+  // Doors to the other sections. Jobs doors open Jobs in Haridwar
+  // (neutral from English pages); "For businesses" opens the home page.
+  // Reference pages keep them English, as their footer does.
+  const doorLocale = view === "reference" ? FALLBACK_LOCALE : pageLocale;
+  const doorLang = doorLocale === "en-IN" ? undefined : doorLocale;
+  const work = WORK_DOOR[doorLocale];
+  const jobsDoor = { href: jobsDoorHref(doorLocale), label: work.label, lang: doorLang, neutral: true };
+  const businessDoor = { href: "/", label: JOBS_NAV[doorLocale].business, lang: doorLang };
+  const jobsHome = localePath("/jobs", pageLocale);
+  const nav: { bar: NavLink[]; doors: SheetRow["links"]; sheet: SheetRow[]; more: SheetRow[]; cta?: NavLink } =
+    view === "jobs"
       ? {
-          desktop: [
-            { href: localePath("/jobs", pageLocale), label: t.all },
-            { href: localePath("/jobs/fees-and-fraud", pageLocale), label: t.fraud },
-          ],
-          // "All jobs" is the Jobs door at the top of the menu.
+          // "All jobs" is the logo; "No fee" is in the menu, the footer and
+          // the form, not the bar.
+          bar: [],
+          doors: [businessDoor],
           sheet: [
-            { href: localePath("/jobs/apply", pageLocale), label: t.apply },
-            { href: localePath("/jobs/fees-and-fraud", pageLocale), label: t.fraud },
+            { links: [{ href: localePath("/jobs/haridwar", pageLocale), label: t.haridwar }] },
+            ...jobGroupLinks(pageLocale).map((g) => ({ links: [g] })),
+            { links: JOB_HUB_LINKS[pageLocale].map((h) => ({ href: localePath(`/jobs/${h.slug}`, pageLocale), label: h.label })) },
+          ],
+          more: [
+            { links: [{ href: localePath("/jobs/fees-and-fraud", pageLocale), label: t.fee }] },
+            { links: [businessDoor] },
           ],
           cta: { href: localePath("/jobs/apply", pageLocale), label: t.apply },
         }
-      : {
-          desktop: navigation
-            .filter((item) => ["/services", "/industries", "/how-we-operate", "/compliance", "/about"].includes(item.href))
-            .map((item) => ({ href: item.href, label: item.href === "/how-we-operate" ? "Our approach" : item.label })),
-          // /contact is the Request a crew form; Home is the "For businesses" door.
-          sheet: navigation
-            .filter((item) => item.href !== "/")
-            .map((item) => ({
-              href: item.href,
-              label: item.href === "/contact" ? "Request a crew" : item.href === "/how-we-operate" ? "Our approach" : item.label,
-            })),
-          cta: { href: "/contact", label: door === "business" ? CREW_LABEL[pageLocale] : CREW_LABEL["en-IN"], lang: door === "business" ? pageLang : undefined },
-        };
+      : view === "reference"
+        ? {
+            bar: referenceLinks().slice(0, 1),
+            doors: [businessDoor, jobsDoor],
+            sheet: referenceLinks().map((l) => ({ links: [l] })),
+            more: [{ links: [businessDoor] }, { links: [jobsDoor] }],
+          }
+        : {
+            bar: BUSINESS_LINKS,
+            doors: [jobsDoor],
+            sheet: BUSINESS_LINKS.map((l) => ({ links: [l] })),
+            // Setu login stays here for returning clients: the Setu page's
+            // traffic is mostly people looking for it.
+            more: [
+              { lead: work.lead, lang: doorLang, links: [jobsDoor] },
+              { links: [{ href: SETU_LOGIN, label: "Setu login ↗" }] },
+            ],
+            cta: { href: "/contact", label: CREW_LABEL[pageLocale], lang: pageLang },
+          };
   const current = (href: string) => (href === pathname || href === path ? "page" : undefined);
   // Jobs pages: links a job seeker rarely follows are not prefetched, to
   // spare data on patchy 4G (as in the jobs footer).
-  const prefetch = door === "jobs" ? false : undefined;
+  const prefetch = isJobs ? false : undefined;
   // A jobs page with the form on it (#apply, e.g. /jobs/haridwar): Apply
   // scrolls to that form instead of loading /jobs/apply without the page's
   // cluster. Without JavaScript the link still opens /jobs/apply.
   const applyHere = (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (door !== "jobs" || href !== localePath("/jobs/apply", pageLocale)) return;
+    if (!isJobs || href !== localePath("/jobs/apply", pageLocale)) return;
     const form = document.getElementById("apply");
     if (!form) return;
     event.preventDefault();
@@ -214,24 +242,50 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
     form.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "start" });
     form.querySelector<HTMLElement>(".quick-question")?.focus({ preventScroll: true });
   };
+  // One link in the bar or the menu: external, neutral (no locale added),
+  // or an in-site link through the i18n Link.
+  const navLink = (item: NavLink & { neutral?: boolean }, extra: { className?: string; onClick?: () => void } = {}) =>
+    item.href.startsWith("http") ? (
+      <a key={item.href} href={item.href} className={extra.className}>
+        {item.label}
+      </a>
+    ) : item.neutral ? (
+      <NextLink key={item.href} href={item.href} lang={item.lang} prefetch={false} className={extra.className} onClick={extra.onClick}>
+        {item.label}
+      </NextLink>
+    ) : (
+      <Link
+        key={item.href}
+        href={item.href}
+        lang={item.lang}
+        prefetch={prefetch}
+        className={extra.className}
+        onClick={extra.onClick}
+        aria-current={current(item.href)}
+      >
+        {item.label}
+      </Link>
+    );
+  const close = () => setOpen(false);
   return (
     <header
       ref={headerRef}
       className="site-header"
-      lang={door === "jobs" ? pageLocale : "en-IN"}
-      data-door={door}
+      lang={isJobs ? pageLocale : "en-IN"}
+      data-door={view}
+      data-locale={pageLocale}
       data-theme={isHome ? "dark" : "light"}
       data-home={isHome ? "true" : undefined}
       data-clear={isHome ? "true" : undefined}
       data-top="true"
     >
       <a href="#main-content" className="skip-link">
-        {door !== "jobs" || pageLocale === "en-IN" ? "Skip to content" : pageLocale === "hi-IN" ? "सीधे पेज पर जाएँ" : "Seedhe page par jaayein"}
+        {!isJobs || pageLocale === "en-IN" ? "Skip to content" : pageLocale === "hi-IN" ? "सीधे पेज पर जाएँ" : "Seedhe page par jaayein"}
       </a>
       <div className="site-shell header-inner">
         <Link
-          href={door === "jobs" ? localePath("/jobs", pageLocale) : "/"}
-          aria-label={door === "jobs" ? "Vayasya Seva jobs" : "Vayasya Seva home"}
+          href={isJobs ? jobsHome : "/"}
+          aria-label={isJobs ? t.logo : "Vayasya Seva home"}
           className="brand-lockup"
         >
           <Image
@@ -242,122 +296,91 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
             priority
           />
         </Link>
-        <nav aria-label={door === "jobs" ? t.doors : "Site sections"} className="header-doors">
-          {doors.map((d) => (
-            <Link
-              key={d.id}
-              href={d.href}
-              lang={d.lang}
-              prefetch={prefetch}
-              aria-current={d.id === door ? "true" : undefined}
-            >
-              {d.label}
-            </Link>
-          ))}
-        </nav>
-        <nav aria-label="Main navigation" className="desktop-nav">
-          {nav.desktop.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              lang={item.lang}
-              prefetch={prefetch}
-              aria-current={current(item.href)}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-        {showPhone && (
-          <a className="header-phone" href={phone.href}>
-            {phone.display}
-          </a>
+        {nav.bar.length > 0 && (
+          <nav aria-label="Main navigation" className="desktop-nav">
+            {nav.bar.map((item) => navLink(item))}
+          </nav>
         )}
-        {languages.length > 0 && (
-          <nav aria-label="Language" className="header-lang">
-            {quick.map((l) => (
-              <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang} title={l.hint} prefetch={false}>
-                {l.label}
-              </Link>
-            ))}
-            {more.length > 0 && (
-              <details className="header-lang-more" ref={moreRef}>
-                <summary lang={door === "jobs" ? pageLocale : "en-IN"}>{MORE_LABEL[door === "jobs" ? pageLocale : "en-IN"]}</summary>
-                <div>
-                  {more.map((l) => (
-                    <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang} title={l.hint} prefetch={false}>
+        <div className="header-end">
+          {languages.length > 0 && (
+            <nav aria-label={isJobs ? t.language : "Language"} className="header-lang">
+              {quick.map((l) => (
+                <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang} title={l.hint} prefetch={false}>
+                  {l.label}
+                </Link>
+              ))}
+              {more.length > 0 && (
+                <details className="header-lang-more" ref={moreRef}>
+                  <summary lang={isJobs ? pageLocale : "en-IN"}>{MORE_LABEL[isJobs ? pageLocale : "en-IN"]}</summary>
+                  <div>
+                    {more.map((l) => (
+                      <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang} title={l.hint} prefetch={false}>
+                        {l.label}
+                      </Link>
+                    ))}
+                  </div>
+                </details>
+              )}
+            </nav>
+          )}
+          <nav aria-label={isJobs ? t.sections : "Site sections"} className="header-doors">
+            {nav.doors.map((d) => navLink(d))}
+          </nav>
+          {showPhone && (
+            <a className="header-phone" href={phone.href}>
+              {phone.display}
+            </a>
+          )}
+          {nav.cta && (
+            <Link
+              href={nav.cta.href}
+              className="header-contact"
+              lang={nav.cta.lang}
+              prefetch={prefetch}
+              onClick={(event) => applyHere(event, nav.cta!.href)}
+              aria-current={current(nav.cta.href)}
+            >
+              {nav.cta.label} <ArrowUpRight size={17} aria-hidden="true" />
+            </Link>
+          )}
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger className="mobile-menu" aria-label={isJobs ? t.openMenu : "Open navigation"}>
+              <Menu size={24} />
+            </SheetTrigger>
+            <SheetContent className="w-[min(360px,90vw)] p-7" lang={isJobs ? pageLang : "en-IN"}>
+              <SheetTitle className="mt-8 text-2xl">{isJobs ? t.menu : "Vayasya Seva"}</SheetTitle>
+              <nav aria-label={isJobs ? t.menu : "Mobile navigation"} className="sheet-nav">
+                {nav.sheet.map((row) => (
+                  <p key={row.links[0].href} className="sheet-row">
+                    {row.links.map((item) => navLink(item, { onClick: close }))}
+                  </p>
+                ))}
+              </nav>
+              <nav aria-label={isJobs ? t.more : "More"} className="sheet-more">
+                {nav.more.map((row) => (
+                  <p key={row.links[0].href} lang={row.lang}>
+                    {row.lead && <span>{row.lead} </span>}
+                    {row.links.map((item) => navLink(item, { onClick: close }))}
+                  </p>
+                ))}
+              </nav>
+              {!isJobs && languages.length > 0 && (
+                <nav aria-label="Language" className="sheet-lang">
+                  {languages.map((l) => (
+                    <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang} title={l.hint} prefetch={false} onClick={close}>
                       {l.label}
                     </Link>
                   ))}
-                </div>
-              </details>
-            )}
-          </nav>
-        )}
-        <Link
-          href={nav.cta.href}
-          className="header-contact"
-          lang={nav.cta.lang}
-          prefetch={prefetch}
-          onClick={(event) => applyHere(event, nav.cta.href)}
-          aria-current={current(nav.cta.href)}
-        >
-          {nav.cta.label} <ArrowUpRight size={17} aria-hidden="true" />
-        </Link>
-        <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger className="mobile-menu" aria-label="Open navigation">
-            <Menu size={24} />
-          </SheetTrigger>
-          <SheetContent className="w-[min(360px,90vw)] p-7" lang={door === "jobs" ? pageLang : "en-IN"}>
-            <SheetTitle className="mt-8 text-2xl">{door === "jobs" ? t.menu : "Vayasya Seva"}</SheetTitle>
-            <nav aria-label={door === "jobs" ? t.doors : "Site sections"} className="sheet-doors">
-              {doors.map((d) => (
-                <Link
-                  key={d.id}
-                  href={d.href}
-                  lang={d.lang}
-                  prefetch={prefetch}
-                  onClick={() => setOpen(false)}
-                  aria-current={d.id === door ? "true" : undefined}
-                >
-                  {d.label}
-                </Link>
-              ))}
-            </nav>
-            <nav aria-label="Mobile navigation" className="flex flex-col mt-6">
-              {nav.sheet.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  lang={item.lang}
-                  prefetch={prefetch}
-                  onClick={(event) => {
-                    setOpen(false);
-                    applyHere(event, item.href);
-                  }}
-                  aria-current={current(item.href)}
-                  className="border-b py-3 text-lg"
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-            {door !== "jobs" && languages.length > 0 && (
-              <nav aria-label="Language" className="sheet-lang">
-                {languages.map((l) => (
-                  <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang} title={l.hint} prefetch={false} onClick={() => setOpen(false)}>
-                    {l.label}
-                  </Link>
-                ))}
-              </nav>
-            )}
-            {showPhone && (
-              <a href={phone.href} className="mt-6 text-sm">
-                {phone.display}
-              </a>
-            )}
-          </SheetContent>
-        </Sheet>
+                </nav>
+              )}
+              {showPhone && (
+                <a href={phone.href} className="sheet-phone font-data">
+                  {phone.display}
+                </a>
+              )}
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
     </header>
   );

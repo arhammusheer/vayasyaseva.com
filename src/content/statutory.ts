@@ -16,16 +16,24 @@ export const STATUTORY_REVIEW_BY = "2026-11-21";
 
 export type StatutorySource = { id: string; title: string; number: string; date: string; authority: string; url: string };
 
+/** One due date in the strip: when, then what is due. */
+export type Deadline = { when: string; detail: string; what: string; sources: string[] };
+
+/** One row of "Who pays what": the worker's and the employer's share. */
 export type DueRow = {
   name: string;
   /** Who it covers, one short line. */
   applies: string;
   worker: string;
   employer: string;
-  due: string;
   sources: string[];
-  /** Not levied in the state: one line across the worker, employer and due columns. */
-  none?: string;
+};
+
+export type StateDues = {
+  deadlines: Deadline[];
+  rows: DueRow[];
+  /** "Professional Tax is not levied in Uttarakhand." */
+  notLevied: string;
 };
 
 export const statutorySources: StatutorySource[] = [
@@ -111,88 +119,81 @@ export const statutorySources: StatutorySource[] = [
   },
 ];
 
-const wages: DueRow = {
-  name: "Wages",
-  applies: "Every worker",
-  worker: "Gets at least the rate above",
-  employer: "Pays the full wage",
-  due: "By the 7th of the next month",
-  sources: ["cow-2019"],
+const wages: Deadline = { when: "7th", detail: "of the next month", what: "Wages, in full", sources: ["cow-2019"] };
+const epfEsic: Deadline = {
+  when: "15th",
+  detail: "of the next month",
+  what: "EPF (with the ECR) and ESIC",
+  sources: ["epf-faq-2026", "esic-contribution"],
+};
+const licence = (rules: string): Deadline => ({
+  when: "Upfront",
+  detail: "before work starts",
+  what: `Contract labour licence, for contractors with 50+ workers. ${rules}`,
+  sources: ["osh-handbook-2026"],
+});
+const upLwfDeadline: Deadline = {
+  when: "Quarterly",
+  detail: "by 15 Jan, Apr, Jul, Oct",
+  what: "Labour Welfare Fund, for units with 50+ persons",
+  sources: ["up-lwf-rules-1972"],
 };
 
 const epf: DueRow = {
   name: "EPF",
-  applies: "Units with 20+ employees; wages up to ₹25,000 a month",
-  worker: "12% of wages",
-  employer: "12% (8.33% pension, 3.67% PF), plus 0.5% EDLI and 0.5% admin",
-  due: "15th of the next month, with the ECR",
+  applies: "20+ employees; wages up to ₹25,000 a month",
+  worker: "12%",
+  employer: "12% + 0.5% EDLI + 0.5% admin",
   sources: ["css-2020", "epf-ceiling-2026", "epf-faq-2026"],
 };
-
 const esic: DueRow = {
   name: "ESIC",
-  applies: "Units with 10+ employees in a notified area; wages up to ₹21,000 a month",
-  worker: "0.75% of wages",
-  employer: "3.25% of wages",
-  due: "15th of the next month",
+  applies: "10+ employees; wages up to ₹21,000 a month",
+  worker: "0.75%",
+  employer: "3.25%",
   sources: ["css-2020", "ss-central-rules-2026", "esic-contribution"],
 };
-
-const noPt = (state: string): DueRow => ({
-  name: "Professional Tax",
-  applies: "Tax on salaries, set by each state",
-  worker: "",
-  employer: "",
-  due: "",
-  none: `Not levied in ${state}`,
-  sources: [],
-});
-
 const upLwf: DueRow = {
   name: "Labour Welfare Fund",
-  applies: "Units with 50+ persons",
+  applies: "50+ persons",
   worker: "Nil",
-  employer: "Sends fines and unpaid wages to the fund",
-  due: "Quarterly: by 15 Jan, Apr, Jul and Oct",
+  employer: "Fines and unpaid wages",
   sources: ["up-lwf-rules-1972"],
 };
 
-const licence = (rules: string): DueRow => ({
-  name: "Contract labour licence",
-  applies: "Contractors with 50+ contract workers",
-  worker: "–",
-  employer: "Contractor holds a licence, valid 5 years",
-  due: `Before work starts. ${rules}`,
-  sources: ["osh-handbook-2026"],
-});
-
-export const employerDues: Partial<Record<WageStateSlug, DueRow[]>> = {
-  uttarakhand: [wages, epf, esic, noPt("Uttarakhand"), upLwf, licence("State rules are still in draft.")],
-  "uttar-pradesh": [wages, epf, esic, noPt("Uttar Pradesh"), upLwf, licence("Apply online on the UP Labour Department portal.")],
-  delhi: [
-    wages,
-    epf,
-    esic,
-    noPt("Delhi"),
-    {
-      name: "Labour Welfare Fund",
-      applies: "Units with 5+ persons; counted on 30 June and 31 December",
-      worker: "₹0.75 each half-year",
-      employer: "₹2.25 each half-year",
-      due: "By 15 July and 15 January",
-      sources: ["dl-lwf-2004"],
-    },
-    licence("State rules are still in draft."),
-  ],
+export const employerDues: Partial<Record<WageStateSlug, StateDues>> = {
+  uttarakhand: {
+    deadlines: [wages, epfEsic, upLwfDeadline, licence("State rules in draft.")],
+    rows: [epf, esic, upLwf],
+    notLevied: "Professional Tax is not levied in Uttarakhand.",
+  },
+  "uttar-pradesh": {
+    deadlines: [wages, epfEsic, upLwfDeadline, licence("Apply on the UP Labour Department portal.")],
+    rows: [epf, esic, upLwf],
+    notLevied: "Professional Tax is not levied in Uttar Pradesh.",
+  },
+  delhi: {
+    deadlines: [
+      wages,
+      epfEsic,
+      { when: "Half-yearly", detail: "by 15 Jul and 15 Jan", what: "Labour Welfare Fund, for units with 5+ persons", sources: ["dl-lwf-2004"] },
+      licence("State rules in draft."),
+    ],
+    rows: [
+      epf,
+      esic,
+      { name: "Labour Welfare Fund", applies: "5+ persons", worker: "₹0.75 a half-year", employer: "₹2.25 a half-year", sources: ["dl-lwf-2004"] },
+    ],
+    notLevied: "Professional Tax is not levied in Delhi.",
+  },
 };
 
-/** The two lines under the table. */
-export const duesNotes = {
-  late: "Late EPF and ESIC carry 12% a year interest, plus damages.",
-  principal: "If a contractor does not pay EPF or ESIC for its workers, the principal employer must pay and recover it from the contractor.",
-};
+/** The one line under the table. */
+export const duesNote =
+  "Late EPF and ESIC carry 12% a year interest and damages. If your contractor does not pay them, you must, and recover it from them.";
 
 export function duesSources(slug: WageStateSlug) {
-  const ids = new Set((employerDues[slug] ?? []).flatMap((r) => r.sources).concat("interest-2026"));
+  const dues = employerDues[slug];
+  const ids = new Set([...(dues?.deadlines ?? []), ...(dues?.rows ?? [])].flatMap((r) => r.sources).concat("interest-2026"));
   return statutorySources.filter((s) => ids.has(s.id));
 }

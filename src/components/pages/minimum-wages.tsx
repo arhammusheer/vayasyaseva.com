@@ -13,7 +13,6 @@ import {
   formatDate,
   formatRupees,
   formatShortDate,
-  formatSize,
   headlineRate,
   ratesYear,
   sourceById,
@@ -26,10 +25,10 @@ import {
   type WageTable,
 } from "@/content/wages";
 import { EDITORIAL_HREF } from "@/content/editorial";
-import { getWageStateCopy, listDates, wageDoors, wageHubCopy, wageUi as x, type WageDoor } from "@/content/pages/minimum-wages";
+import { getWageStateCopy, listDates, wageDoors, wageHubCopy, wageUi as x, type WageDoor, type WageStateCopy } from "@/content/pages/minimum-wages";
 import { SKILLS_HI, WAGE_HUB_HI, formatDateHi, wageHubHi } from "@/content/pages/minimum-wages.hi";
 import { localePath, type Locale } from "@/lib/i18n";
-import { duesNotes, duesSources, employerDues, type DueRow } from "@/content/statutory";
+import { duesNote, duesSources, employerDues } from "@/content/statutory";
 import { COMPLIANCE_HELP } from "@/content/compliance";
 
 /**
@@ -154,7 +153,7 @@ function RateTable({ state, table }: { state: WageState; table: WageTable }) {
               {skills.map((skill) => {
                 const r = rateOf(zone.id, skill);
                 return (
-                  <tr key={skill}>
+                  <tr key={skill} className={skill === "unskilled" ? "is-headline" : undefined}>
                     <th scope="row">{SKILLS[skill]}</th>
                     <td>
                       <strong>{formatRupees(r.monthly)}</strong>
@@ -208,39 +207,39 @@ function RateTable({ state, table }: { state: WageState; table: WageTable }) {
   );
 }
 
-/** "Documents used": the only place each PDF and legal citation is linked. */
+/** "Documents used", in two groups: the wage notifications and the employer dues sources. Title, number and date each. */
 function Documents({ state, slug }: { state: WageState; slug: WageStateSlug }) {
+  const groups = [
+    { label: x.sections.wageDocs, items: state.sources.map((s) => ({ id: s.id, title: s.title, url: s.url, number: s.number, date: s.date, hindi: s.language === "hi" })) },
+    { label: x.sections.duesDocs, items: duesSources(slug).map((s) => ({ ...s, hindi: false })) },
+  ].filter((g) => g.items.length);
   return (
     <Section id="documents" className="border-t border-border wage-documents">
       <details className="wage-more is-section">
-        <summary>{x.sections.documents}</summary>
-        <ol className="wage-sources">
-          {state.sources.map((s) => (
-            <li key={s.id}>
-              <a href={s.url} lang={s.language === "hi" ? "hi-IN" : "en-IN"}>
-                {s.title}
-              </a>
-              <span>
-                <span className="font-data">
-                  <OrderNumber value={s.number} />
-                </span>
-                , {formatDate(s.date)}. {s.authority}. {x.pdf(s.language === "hi", s.sizeKb ? formatSize(s.sizeKb) : null)}.
-                {s.legalBasis && ` ${s.legalBasis.replace(/([^.])$/, "$1.")}`}
-              </span>
-            </li>
-          ))}
-          {duesSources(slug).map((s) => (
-            <li key={s.id}>
-              <a href={s.url}>{s.title}</a>
-              <span>
-                <span className="font-data">
-                  <OrderNumber value={s.number} />
-                </span>
-                , {formatDate(s.date)}. {s.authority}.
-              </span>
-            </li>
-          ))}
-        </ol>
+        <summary>
+          {x.sections.documents} ({groups.reduce((n, g) => n + g.items.length, 0)})
+        </summary>
+        {groups.map((g) => (
+          <div key={g.label} className="wage-doc-group">
+            <h3>{g.label}</h3>
+            <ol className="wage-sources">
+              {g.items.map((d) => (
+                <li key={d.id}>
+                  <a href={d.url} lang={d.hindi ? "hi-IN" : "en-IN"}>
+                    {d.title}
+                  </a>
+                  <span>
+                    <span className="font-data">
+                      <OrderNumber value={d.number} />
+                    </span>
+                    , {formatDate(d.date)}
+                    {d.hindi ? `. ${x.hindi}` : ""}.
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))}
       </details>
     </Section>
   );
@@ -307,61 +306,96 @@ function Faqs({ faqs, variant = "subtle" }: { faqs: { question: string; answer: 
 }
 
 /**
- * What an employer owes in the state beyond the wage: a ruled table (cards
- * on a phone), two short notes, and the one line on compliance help.
+ * What an employer owes in the state beyond the wage: the due dates as one
+ * strip, then who pays what for the contributions, one note and one line on
+ * compliance help.
  */
 function Dues({ slug, name }: { slug: WageStateSlug; name: string }) {
-  const rows = employerDues[slug];
-  if (!rows) return null;
-  const cols: [keyof DueRow, string][] = [
-    ["worker", x.dues.worker],
-    ["employer", x.dues.employer],
-    ["due", x.dues.due],
-  ];
+  const dues = employerDues[slug];
+  if (!dues) return null;
   return (
     <Section id="employer-dues" className="border-t border-border">
       <h2 className="wage-h2">{x.dues.heading(name)}</h2>
-      <div className="dues-table" role="table" aria-label={x.dues.heading(name)}>
-        <div className="dues-row is-head" role="row">
-          <span role="columnheader">{x.dues.what}</span>
-          {cols.map(([, label]) => (
-            <span key={label} role="columnheader">
-              {label}
-            </span>
-          ))}
-        </div>
-        {rows.map((r) => (
-          <div className="dues-row" role="row" key={r.name}>
-            <span role="rowheader">
-              <strong>{r.name}</strong>
-              <small>{r.applies}</small>
-            </span>
-            {r.none ? (
-              <span role="cell" className="is-none">
-                {r.none}
-              </span>
-            ) : (
-              cols.map(([key, label]) => (
-                <span key={key} role="cell" data-label={label}>
-                  {r[key] as string}
-                </span>
-              ))
-            )}
-          </div>
+      <ol className="dues-strip">
+        {dues.deadlines.map((d) => (
+          <li key={d.what}>
+            <strong>{d.when}</strong>
+            <small>{d.detail}</small>
+            <span>{d.what}</span>
+          </li>
         ))}
+      </ol>
+      <div className="wage-table-scroll">
+        <table className="wage-table dues-table">
+          <caption className="sr-only">{x.dues.caption(name)}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{x.dues.what}</th>
+              <th scope="col">{x.dues.worker}</th>
+              <th scope="col">{x.dues.employer}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {dues.rows.map((r) => (
+              <tr key={r.name}>
+                <th scope="row">
+                  {r.name}
+                  <small>{r.applies}</small>
+                </th>
+                <td data-label={x.dues.worker}>{r.worker}</td>
+                <td data-label={x.dues.employer}>{r.employer}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
       <p className="wage-note">
-        {duesNotes.late} {duesNotes.principal}
+        {dues.notLevied} {duesNote}
       </p>
-      <div className="dues-help">
-        <p>
-          <strong>{x.dues.helpLead}</strong> {x.dues.helpText}
-        </p>
-        <Link href={COMPLIANCE_HELP.href} className="text-link">
-          {COMPLIANCE_HELP.label} <ArrowUpRight size={18} aria-hidden="true" />
+      <p className="wage-note">
+        {x.dues.help}{" "}
+        <Link href={COMPLIANCE_HELP.href} className="wage-inline-link">
+          {COMPLIANCE_HELP.label} <ArrowRight size={16} aria-hidden="true" />
         </Link>
-      </div>
+      </p>
     </Section>
+  );
+}
+
+/** "1 Pay rates · 2 What employers owe · 3 Questions · 4 Sources", under the hero. */
+function JumpList() {
+  return (
+    <nav aria-label={x.jump.label} className="site-shell wage-jump">
+      <ol>
+        {x.jump.items.map(([href, label]) => (
+          <li key={href}>
+            <a href={href}>{label}</a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  );
+}
+
+/**
+ * "Where do you work?" for a state with more than one table: radio buttons
+ * that show one table at a time (CSS :has, globals.css "Wage table
+ * chooser"). Both tables stay in the HTML; without :has both show.
+ */
+function TableChooser({ state, which }: { state: WageState; which: NonNullable<WageStateCopy["whichTable"]> }) {
+  return (
+    <fieldset className="wage-pick">
+      <legend>{x.table.which}</legend>
+      <div>
+        {state.tables.map((table, i) => (
+          <label key={table.id}>
+            <input type="radio" name={`${state.state}-table`} value={table.id} defaultChecked={i === 0} />
+            <span>{which.labels[table.id] ?? table.title}</span>
+          </label>
+        ))}
+      </div>
+      <p>{which.rule}</p>
+    </fieldset>
   );
 }
 
@@ -383,27 +417,16 @@ export function WageStatePage({ slug }: { slug: WageStateSlug }) {
         footnote={<CheckedLine state={state} today={today} />}
         className={HERO_TIGHT}
       />
-      {/* The rates start directly under the hero: the H2 is for the outline only. */}
+      <JumpList />
       <Section id="rates" className="pt-6 sm:pt-10 lg:pt-12">
-        <h2 className="sr-only">{x.sections.rates(state.name)}</h2>
-        {t.whichTable && (
-          <div className="wage-switch">
-            <p>
-              <strong>{x.table.which}</strong> {t.whichTable.rule}
-            </p>
-            <ul>
-              {state.tables.map((table) => (
-                <li key={table.id}>
-                  <a href={`#${table.id}`}>{t.whichTable!.labels[table.id] ?? table.title}</a>
-                </li>
-              ))}
-            </ul>
+        <h2 className="wage-h2">{x.sections.rates(state.name)}</h2>
+        <div className="wage-picker">
+          {t.whichTable && <TableChooser state={state} which={t.whichTable} />}
+          <div className="wage-tables">
+            {state.tables.map((table) => (
+              <RateTable key={table.id} state={state} table={table} />
+            ))}
           </div>
-        )}
-        <div className="wage-tables">
-          {state.tables.map((table) => (
-            <RateTable key={table.id} state={state} table={table} />
-          ))}
         </div>
         {t.note && (
           <p className="wage-note">

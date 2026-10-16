@@ -220,8 +220,8 @@ for (const state of wageStates) {
 {
   const { employerDues, statutorySources, STATUTORY_REVIEW_BY } = await importTs("src/content/statutory.ts");
   const ids = new Set(statutorySources.map((s) => s.id));
-  for (const [slug, rows] of Object.entries(employerDues)) {
-    for (const row of rows) for (const id of row.sources) if (!ids.has(id)) fail(`C8 dues ${slug}: "${row.name}" cites unknown source "${id}"`);
+  for (const [slug, dues] of Object.entries(employerDues)) {
+    for (const row of [...dues.deadlines, ...dues.rows]) for (const id of row.sources) if (!ids.has(id)) fail(`C8 dues ${slug}: "${row.name ?? row.what}" cites unknown source "${id}"`);
   }
   for (const state of wageStates) if (isPublished(wageStatePath(state.state)) && !employerDues[state.state]) fail(`C8 dues: ${state.state} is published with no employer dues in src/content/statutory.ts`);
   if (new Date().toISOString().slice(0, 10) > STATUTORY_REVIEW_BY) warn(`C8 dues: review date ${STATUTORY_REVIEW_BY} has passed; re-check the ESIC due date and the Uttarakhand and Delhi OSH rules`);

@@ -63,8 +63,8 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
       description: `Uttarakhand minimum wage from 1 Apr 2026: ${factory} a month unskilled (notification 289), ${engineering} in engineering units with 50+ workers. ${stamp([s])}.`,
       answer: `From 1 April 2026, an unskilled worker in most Uttarakhand factories must get at least ${factory} a month, or ${formatRupees(unskilled.daily ?? 0)} a day.`,
       whichTable: {
-        rule: "Engineering units with 50 or more workers use the second table. Every other factory uses the first.",
-        labels: { "factories-and-industries": "Most factories", "engineering-50-plus": "Engineering, 50+" },
+        rule: "Pharma, food and packaging units use Most factories, whatever their size.",
+        labels: { "factories-and-industries": "Most factories", "engineering-50-plus": "Engineering unit, 50+ workers" },
       },
       faqs: [
         {
@@ -208,14 +208,23 @@ export const wageUi = {
   checked: (by: string | null, date: string) => (by ? `Checked ${date} by ${by}` : `Updated ${date}`),
   howWeCheck: "How we check",
   dues: {
-    heading: (name: string) => `What employers pay in ${name}`,
-    what: "What",
+    heading: (name: string) => `What employers owe in ${name}`,
+    caption: (name: string) => `Who pays what for EPF, ESIC and the Labour Welfare Fund in ${name}`,
+    what: "Who pays what",
     worker: "Worker",
     employer: "Employer",
-    due: "Due",
-    helpLead: "Behind on any of this?",
-    helpText: "We guide you to put it right and connect you with the CAs, labour lawyers and compliance consultants in the Vayasya Network.",
+    help: "Behind on any of this? The Vayasya Network of CAs, labour lawyers and compliance consultants can help.",
   },
+  jump: {
+    label: "On this page",
+    items: [
+      ["#rates", "1 Pay rates"],
+      ["#employer-dues", "2 What employers owe"],
+      ["#questions", "3 Questions"],
+      ["#documents", "4 Sources"],
+    ] as [string, string][],
+  },
+  hindi: "In Hindi",
   notice: {
     staleStrong: "These rates may have been revised.",
     staleText: "Check the latest notification.",
@@ -233,14 +242,16 @@ export const wageUi = {
     breakdown: "Show breakdown",
     source: (date: string, kind: string, number: string) => `In force from ${date}. ${kind} ${number}.`,
     range: (from: string, to: string) => `${from} to ${to}`,
-    which: "Which table?",
+    which: "Where do you work?",
   },
   sourceKind: (kind: "notification" | "order" | "corrigendum") => (kind === "notification" ? "Notification" : kind === "order" ? "Order" : "Amendment"),
   pdf: (hindi: boolean, size: string | null) => `PDF${hindi ? ", Hindi" : ""}${size ? `, ${size}` : ""}`,
   sections: {
-    rates: (name: string) => `Minimum wage rates in ${name}`,
+    rates: (name: string) => `Pay rates in ${name}`,
     questions: "Questions",
-    documents: "Documents used",
+    documents: "Sources",
+    wageDocs: "Wage rates",
+    duesDocs: "EPF, ESIC, welfare fund and licence",
   },
   hub: {
     state: "State",

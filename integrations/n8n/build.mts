@@ -65,7 +65,6 @@ const CREDENTIALS = {
   postgres: "talent-pg",
   r2: "r2-talent-intake",
   webhook: "vspl-talent-intake-webhook",
-  sarvam: "sarvam-vspl",
   fast2sms: "fast2sms-vspl",
   /** Delete rights on the talent bucket, for erasure only; intake's token stays read-only. */
   r2Erase: "r2-talent-erase",
@@ -76,7 +75,6 @@ const CREDENTIALS = {
 const BUCKET = "vayasya-talent-intake";
 /** Privacy notice §10: details are kept up to 12 months after the person last contacts us. */
 const RETENTION_MONTHS = 12;
-const SARVAM = "https://api.sarvam.ai/speech-to-text/job/v1";
 
 function stableId(...parts: string[]) {
   const h = createHash("sha1").update(parts.join("\u0000")).digest("hex");
@@ -488,180 +486,6 @@ WHERE status = 'sending' AND updated_at < now() - interval '5 minutes';`, grid(1
 }
 
 // ---------------------------------------------------------------------------
-// VSPL talent · transcribe - voice notes through Sarvam saaras:v4.
-// REST first (answers in about a second, audio up to 30 seconds); a longer
-// note gets Sarvam's 400 and goes through the Batch API instead.
-// Verified by hand against the API on 2026-09-26 (see README).
-
-const SARVAM_MODEL = "saaras:v4";
-// One local term only: a longer list made Sarvam substitute place names.
-const SARVAM_KEYTERMS = JSON.stringify(["SIDCUL"]);
-
-function transcribeWorkflow() {
-  const w = new WorkflowBuilder("VSPL talent · transcribe");
-  const claimed = `$('Claim voice notes').item.json`;
-  const job = `$('Sarvam: create job').item.json.job_id`;
-  // hi-IN and hi-Latn-IN pages: Hindi. English page: let Sarvam detect it.
-  // Stored locales are BCP 47 on new rows and short codes on older ones.
-  const language = `['en', 'en-IN'].includes(${claimed}.locale) ? 'unknown' : 'hi-IN'`;
-
-  w.add(everyMinute("Every minute", grid(0)));
-  w.add(
-    sql(
-      "Recover stuck",
-      `
-UPDATE attachments
-SET transcript_status = CASE WHEN transcript_attempts >= 3 THEN 'failed' ELSE 'pending' END,
-    transcript_error = coalesce(transcript_error, 'Timed out waiting for Sarvam'),
-    updated_at = now()
-WHERE transcript_status = 'running' AND updated_at < now() - interval '20 minutes'
-RETURNING id;`,
-      grid(1),
-      undefined,
-      { alwaysOutputData: true, executeOnce: true },
-    ),
-  );
-  w.add(
-    sql(
-      "Claim voice notes",
-      `
-UPDATE attachments a
-SET transcript_status = 'running', transcript_attempts = a.transcript_attempts + 1,
-    transcript_error = NULL, updated_at = now()
-FROM submissions s
-WHERE s.id = a.submission_id
-  AND a.id IN (
-    SELECT id FROM attachments WHERE transcript_status = 'pending'
-    ORDER BY created_at LIMIT 3 FOR UPDATE SKIP LOCKED)
-RETURNING a.id, a.r2_key, a.mime, s.locale,
-  a.id || '.' || CASE split_part(a.mime, ';', 1)
-    WHEN 'audio/webm' THEN 'webm' WHEN 'audio/ogg' THEN 'ogg' WHEN 'audio/mpeg' THEN 'mp3'
-    WHEN 'audio/wav' THEN 'wav' WHEN 'audio/aac' THEN 'aac' ELSE 'm4a' END AS file_name;`,
-      grid(2),
-      undefined,
-      { executeOnce: true },
-    ),
-  );
-  // A Postgres query that returns no rows still outputs one {success: true}
-  // item; stop here unless a voice note was actually claimed.
-  w.add(condition("Claimed any?", "$json.id !== undefined", grid(3)));
-  w.add(download("Download voice note", `={{ ${claimed}.r2_key }}`, grid(4)));
-  w.add(code("Clean audio type", "clean-audio-type.ts", grid(4, -1), true));
-  w.add(
-    http("Sarvam: transcribe", grid(5), {
-      method: "POST",
-      url: "https://api.sarvam.ai/speech-to-text",
-      auth: CREDENTIALS.sarvam,
-      multipart: [
-        { parameterType: "formBinaryData", name: "file", inputDataFieldName: "file" },
-        { parameterType: "formData", name: "model", value: SARVAM_MODEL },
-        { parameterType: "formData", name: "language_code", value: `={{ ${language} }}` },
-        { parameterType: "formData", name: "keyterms", value: SARVAM_KEYTERMS },
-      ],
-      fullResponse: true,
-      retry: true,
-    }),
-  );
-  w.add(condition("Transcribed?", "$json.statusCode === 200", grid(6)));
-  w.add(code("Transcript result", "transcript-result.ts", grid(7, -1), true));
-  w.add(
-    sql(
-      "Save transcript",
-      `
-UPDATE attachments
-SET transcript = $2, transcript_language = $3, sarvam_job_id = $4,
-    transcript_status = 'done', transcript_error = NULL, updated_at = now()
-WHERE id = $1::uuid
-RETURNING id;`,
-      grid(8, -1),
-      "[$json.attachmentId, $json.transcript, $json.language, $json.requestId]",
-    ),
-  );
-  w.add(condition("Too long for REST?", "$json.statusCode === 400 && /30 seconds/.test($json.body?.error?.message ?? '')", grid(7, 1)));
-
-  // Batch route, for notes over 30 seconds.
-  w.add(
-    http("Sarvam: create job", grid(8, 1), {
-      method: "POST",
-      url: SARVAM,
-      auth: CREDENTIALS.sarvam,
-      json: `={{ JSON.stringify({ job_parameters: { model: '${SARVAM_MODEL}', language_code: ${language}, keyterms: ${SARVAM_KEYTERMS} } }) }}`,
-      retry: true,
-    }),
-  );
-  w.add(
-    http("Sarvam: upload URL", grid(9, 1), {
-      method: "POST",
-      url: `${SARVAM}/upload-files`,
-      auth: CREDENTIALS.sarvam,
-      json: `={{ JSON.stringify({ job_id: $json.job_id, files: [${claimed}.file_name] }) }}`,
-      retry: true,
-    }),
-  );
-  // The HTTP nodes above drop the binary, so fetch the note again for the PUT.
-  w.add(download("Download again", `={{ ${claimed}.r2_key }}`, grid(10, 1)));
-  w.add(
-    http("Sarvam: upload audio", grid(11, 1), {
-      method: "PUT",
-      url: `={{ $('Sarvam: upload URL').item.json.upload_urls[${claimed}.file_name].file_url }}`,
-      // Sarvam's upload URLs are Azure blob URLs, which need the blob type.
-      headers: [
-        ["x-ms-blob-type", "BlockBlob"],
-        // Bare type: Sarvam rejects codec parameters ("audio/webm;codecs=opus").
-        ["Content-Type", `={{ ${claimed}.mime.split(';')[0].trim() }}`],
-      ],
-      binaryField: "file",
-      retry: true,
-    }),
-  );
-  w.add(http("Sarvam: start job", grid(12, 1), { method: "POST", url: `=${SARVAM}/{{ ${job} }}/start`, auth: CREDENTIALS.sarvam, retry: true }));
-  w.add({ name: "Wait 10s", type: "n8n-nodes-base.wait", typeVersion: 1.1, position: grid(13, 1), parameters: { resume: "timeInterval", amount: 10, unit: "seconds" } });
-  w.add(http("Sarvam: job status", grid(14, 1), { method: "GET", url: `=${SARVAM}/{{ ${job} }}/status`, auth: CREDENTIALS.sarvam, retry: true }));
-  w.add(condition("Completed?", "$json.job_state === 'Completed' && $json.job_details?.[0]?.state === 'Success'", grid(15, 1)));
-  w.add(
-    http("Sarvam: result URL", grid(16, 0), {
-      method: "POST",
-      url: `${SARVAM}/download-files`,
-      auth: CREDENTIALS.sarvam,
-      json: `={{ JSON.stringify({ job_id: $json.job_id, files: [$json.job_details[0].outputs[0].file_name] }) }}`,
-      retry: true,
-    }),
-  );
-  // Served as application/octet-stream; read it as JSON regardless.
-  w.add(http("Sarvam: fetch transcript", grid(17, 0), { method: "GET", url: `={{ Object.values($json.download_urls)[0].file_url }}`, responseJson: true, retry: true }));
-  w.add(condition("Job failed?", "$json.job_state === 'Failed' || $json.job_state === 'Completed'", grid(16, 2)));
-  // About 13 minutes of polling, inside the 20 minutes "Recover stuck" allows.
-  w.add(condition("Keep waiting?", "$runIndex < 80", grid(17, 3)));
-
-  w.add(
-    sql(
-      "Mark failed",
-      `
-UPDATE attachments
-SET transcript_status = CASE WHEN transcript_attempts >= 3 THEN 'failed' ELSE 'pending' END,
-    transcript_error = left($2, 500), updated_at = now()
-WHERE id = $1::uuid
-RETURNING id;`,
-      grid(18, 2),
-      `[${claimed}.id, $json.body?.error?.message ?? $json.error_message ?? $json.job_details?.[0]?.error_message ?? ('Sarvam answered ' + ($json.statusCode ?? $json.job_state))]`,
-    ),
-  );
-
-  w.chain("Every minute", "Recover stuck", "Claim voice notes", "Claimed any?", "Download voice note", "Clean audio type", "Sarvam: transcribe", "Transcribed?");
-  w.chain("Transcribed?", "Transcript result", "Save transcript");
-  w.connect("Transcribed?", "Too long for REST?", { output: 1 });
-  w.chain("Too long for REST?", "Sarvam: create job", "Sarvam: upload URL", "Download again", "Sarvam: upload audio", "Sarvam: start job");
-  w.connect("Too long for REST?", "Mark failed", { output: 1 });
-  w.chain("Sarvam: start job", "Wait 10s", "Sarvam: job status", "Completed?");
-  w.chain("Completed?", "Sarvam: result URL", "Sarvam: fetch transcript", "Transcript result");
-  w.connect("Completed?", "Job failed?", { output: 1 });
-  w.connect("Job failed?", "Mark failed");
-  w.connect("Job failed?", "Keep waiting?", { output: 1 });
-  w.connect("Keep waiting?", "Wait 10s");
-  return w.build();
-}
-
-// ---------------------------------------------------------------------------
 // VSPL talent · deliver - each submission becomes a Chatwoot conversation:
 // a private note with the message and transcripts, then every file attached.
 // No AI in the middle; staff read the originals.
@@ -825,6 +649,9 @@ function retentionWorkflow() {
     position: grid(0),
     parameters: { rule: { interval: [{ field: "hours", hoursInterval: 1 }] } },
   });
+  // A manual start too: the first run is by hand (README, "Retention and
+  // erasure"), and n8n's CLI `execute` needs a manual trigger to start from.
+  w.add({ name: "Run by hand", type: "n8n-nodes-base.manualTrigger", typeVersion: 1, position: grid(0, 1), parameters: {} });
   w.add({
     name: "Retention settings",
     type: "n8n-nodes-base.set",
@@ -935,6 +762,7 @@ RETURNING id, status, removed_submissions;`,
     ),
   );
   w.chain("Every hour", "Retention settings", "Queue expired and recover", "Claim erasure", "Claimed any?", "Files to delete", "Has file?", "R2: delete file", "Contacts to delete");
+  w.connect("Run by hand", "Retention settings");
   // No file: straight on to the contacts.
   w.connect("Has file?", "Contacts to delete", { output: 1 });
   w.chain("Contacts to delete", "Has contact?", "Chatwoot: delete contact", "Delete rows");
@@ -947,7 +775,6 @@ RETURNING id, status, removed_submissions;`,
 const outputs: Record<string, Workflow> = {
   "vspl-talent-setup.json": setupWorkflow(),
   "vspl-talent-intake.json": intakeWorkflow(),
-  "vspl-talent-transcribe.json": transcribeWorkflow(),
   "vspl-talent-deliver.json": deliverWorkflow(),
   "vspl-talent-acknowledge.json": acknowledgeWorkflow(),
   "vspl-talent-retention.json": retentionWorkflow(),

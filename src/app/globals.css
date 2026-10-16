@@ -2959,7 +2959,7 @@ a:hover > svg {
   text-underline-offset: 3px;
 }
 .wage-h2 {
-  font-size: clamp(32px, 4vw, 48px);
+  font-size: clamp(28px, 3.2vw, 40px);
   font-weight: 500;
   line-height: 1.08;
   letter-spacing: -0.03em;
@@ -3734,27 +3734,89 @@ a:hover > svg {
   }
 }
 
-/* Wage state pages (structure: 1 pay rates, 2 what employers owe,
-   3 questions, 4 sources). The jump list under the hero. */
-.wage-jump ol {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 24px;
-  margin: 0;
-  padding: 14px 0;
-  list-style: none;
-  border-top: 1px solid var(--border);
-  font-size: 15px;
+/* Wage state pages: the rates straight under the hero, what employers owe,
+   then the questions closed by the sources. */
+.wage-table.is-matrix td {
+  white-space: normal;
 }
-.wage-jump a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
+/* Keep the figures near their labels: the skill column takes only what it needs. */
+.wage-table.is-matrix th:first-child,
+.wage-table.is-flat th:first-child {
+  width: 28%;
+}
+.wage-table.is-matrix thead th:not(:first-child) {
+  font-size: 15px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--foreground);
+}
+.wage-day {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
   color: var(--muted-foreground);
 }
-.wage-jump a:hover,
-.wage-jump a:focus-visible {
-  color: var(--gold-700);
+/* Basic and VDA: there for payroll, quieter than the rate itself. */
+.wage-table .is-quiet {
+  color: var(--muted-foreground);
+}
+.wage-table td.is-quiet {
+  font-size: 14px;
+}
+/* Which districts each zone covers, under the matrix. */
+.wage-zones {
+  display: grid;
+  gap: 10px;
+  max-width: 860px;
+  margin: 20px 0 0;
+  font-size: 15px;
+  line-height: 1.55;
+}
+.wage-zones > div {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 16px;
+}
+.wage-zones dt {
+  font-weight: 600;
+}
+.wage-zones dd {
+  margin: 0;
+  color: var(--muted-foreground);
+}
+@media (min-width: 640px) {
+  .wage-more.is-phone-only {
+    display: none;
+  }
+}
+@media (max-width: 639px) {
+  .wage-zones > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+  .wage-table.is-matrix th,
+  .wage-table.is-matrix td {
+    padding-right: 8px;
+  }
+  .wage-table.is-matrix td strong {
+    font-size: 15px;
+  }
+  .wage-day {
+    font-size: 12px;
+  }
+}
+/* The sources close the questions. */
+.faq-prose .wage-documents .wage-more.is-section > summary {
+  font-size: 20px;
+}
+.faq-prose .wage-doc-group h3 {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+/* The due dates line up with the tables' right edge. */
+.dues-strip {
+  max-width: 1040px;
 }
 
 /* Wage table chooser: one table at a time where the browser has :has(),

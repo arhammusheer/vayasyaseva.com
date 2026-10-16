@@ -92,6 +92,57 @@ function pageGroup(url) {
   return "other";
 }
 
+// ── Location pages ───────────────────────────────────────────────────────────
+
+/** The location pages went live on 17 October 2026 (/locations, three hubs, nine areas). */
+const LOCATIONS_LIVE = "2026-10-17";
+const REGION_NAMES = { uttarakhand: "Uttarakhand", bengaluru: "Bengaluru", "delhi-ncr": "Delhi NCR" };
+const regionOf = (url) => url.match(/\/locations\/([a-z-]+)/)?.[1] ?? "index";
+
+/** The location URLs in the live sitemap (the job downloads only scripts/, not the registry). */
+async function locationUrls() {
+  const res = await fetch("https://www.vayasyaseva.com/sitemap.xml");
+  if (!res.ok) return [];
+  return [...(await res.text()).matchAll(/<loc>([^<]*\/locations[^<]*)<\/loc>/g)].map((m) => m[1]);
+}
+
+/** Google's index verdict for one URL (URL Inspection API, read-only). */
+async function indexed(url) {
+  const res = await fetch("https://searchconsole.googleapis.com/v1/urlInspection/index:inspect", {
+    method: "POST",
+    headers: { authorization: `Bearer ${TOKEN}`, "content-type": "application/json" },
+    body: JSON.stringify({ inspectionUrl: url, siteUrl: SITE }),
+  });
+  if (!res.ok) return { url, verdict: "UNKNOWN", state: `HTTP ${res.status}` };
+  const r = (await res.json()).inspectionResult?.indexStatusResult ?? {};
+  return { url, verdict: r.verdict ?? "UNKNOWN", state: r.coverageState ?? "" };
+}
+
+/** Last week's impressions and clicks per region, the top queries reaching them, and index coverage. */
+async function locationReport(week) {
+  const urls = await locationUrls();
+  if (!urls.length) return null;
+  const pageFilter = [{ dimension: "page", operator: "contains", expression: "/locations" }];
+  const byPage = await gsc(week.start, week.end, ["page"], pageFilter);
+  const queries = (await gsc(week.start, week.end, ["query"], pageFilter)).sort((a, b) => b.impressions - a.impressions).slice(0, 5);
+  const status = [];
+  for (const url of urls) status.push(await indexed(url));
+  const regions = {};
+  for (const url of urls) {
+    const id = regionOf(url);
+    regions[id] ??= { impressions: 0, clicks: 0, pages: 0, indexed: 0 };
+    regions[id].pages += 1;
+  }
+  for (const r of byPage) {
+    const id = regionOf(r.keys[0]);
+    regions[id] ??= { impressions: 0, clicks: 0, pages: 0, indexed: 0 };
+    regions[id].impressions += r.impressions;
+    regions[id].clicks += r.clicks;
+  }
+  for (const st of status) if (st.verdict === "PASS") regions[regionOf(st.url)].indexed += 1;
+  return { regions, queries, notIndexed: status.filter((st) => st.verdict !== "PASS") };
+}
+
 // ── The report ───────────────────────────────────────────────────────────────
 
 /** The last four full weeks (Monday to Sunday) with final data (Search Console lags about 3 days). */
@@ -140,11 +191,38 @@ async function buildReport(today) {
         ? { status: "tripped", text: `Haridwar impressions have been more than 30% below the pre-retitle ${base.haridwar.impressions.toFixed(0)} a week for 4 weeks, and /jobs/haridwar and /haridwar-sidcul have not picked them up. PLAN §9.5: restore "Haridwar" in the home title.` }
         : { status: "ok", text: "Haridwar impressions are within 30% of before the retitle, or the Haridwar pages carry them." };
 
-  return { today, weeks: weekly, base, m28, nonBrand28, sidcul, topQueries, rule };
+  const locations = await locationReport(last);
+  return { today, weeks: weekly, base, m28, nonBrand28, sidcul, topQueries, rule, locations };
 }
 
 const n = (x) => Math.round(x).toLocaleString("en-IN");
 const pct = (now, before) => (before ? `${now >= before ? "+" : ""}${Math.round(((now - before) / before) * 100)}%` : "n/a");
+
+function renderLocations(loc, week) {
+  if (!loc) return [];
+  const order = ["index", "uttarakhand", "bengaluru", "delhi-ncr", ...Object.keys(loc.regions).filter((k) => !["index", "uttarakhand", "bengaluru", "delhi-ncr"].includes(k))];
+  const rows = order
+    .filter((k) => loc.regions[k])
+    .map((k) => {
+      const g = loc.regions[k];
+      return `| ${k === "index" ? "/locations" : (REGION_NAMES[k] ?? k)} | ${n(g.impressions)} | ${g.clicks} | ${g.indexed} of ${g.pages} |`;
+    });
+  const total = Object.values(loc.regions).reduce((a, g) => ({ i: a.i + g.indexed, p: a.p + g.pages }), { i: 0, p: 0 });
+  const early = week.end < addDays(LOCATIONS_LIVE, 28) ? ` Live since ${LOCATIONS_LIVE}; expect little before Google indexes them.` : "";
+  const out = [
+    `**Location pages, last week:** ${total.i} of ${total.p} indexed.${early}`,
+    "",
+    "| Region | Impressions | Clicks | Indexed |",
+    "|---|---|---|---|",
+    ...rows,
+    "",
+  ];
+  if (loc.queries.length) out.push("Top queries reaching them:", "", ...loc.queries.map((q) => `- ${q.keys[0]}: ${q.impressions} impressions, ${q.clicks} clicks, position ${q.position.toFixed(1)}`), "");
+  if (loc.notIndexed.length) {
+    out.push(`Not indexed yet (request indexing in Search Console, about 10 a day):`, "", ...loc.notIndexed.map((st) => `- ${st.url.replace("https://www.vayasyaseva.com", "")}: ${st.state || st.verdict}`), "");
+  }
+  return out;
+}
 
 function renderReport(r) {
   const last = r.weeks.at(-1);
@@ -162,6 +240,7 @@ function renderReport(r) {
     "",
     `**Month-3 targets (PLAN §9.5), last 28 days:** non-brand impressions ${n(r.nonBrand28.impressions)} of ${n(KPI_M3.nonBrandImpressionsPerMonth)}; non-brand clicks ${r.nonBrand28.clicks} of ${KPI_M3.organicClicksPerMonth}; "sidcul haridwar" ${r.sidcul ? `position ${r.sidcul.position.toFixed(1)} (${r.sidcul.impressions} impressions)` : "no impressions"}, target top ${KPI_M3.sidculHaridwarPosition}.`,
     "",
+    ...renderLocations(r.locations, last),
     "**Top queries last week** (Search Console hides rare queries):",
     "",
     ...(r.topQueries.length ? r.topQueries.map((q) => `- ${q.keys[0]}: ${q.impressions} impressions, ${q.clicks} clicks, position ${q.position.toFixed(1)}`) : ["- none shown"]),

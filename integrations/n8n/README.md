@@ -68,13 +68,18 @@ pnpm talent:sync-secrets # copy the jobs form's secrets into Vercel (production 
 | `r2-talent-intake` | `TALENT_R2_*` in `growth/n8n-env`: read-only token scoped to `vayasya-talent-intake` |
 | `vspl-talent-intake-webhook` | `TALENT_INTAKE_WEBHOOK_SECRET` in `growth/n8n-env`, sent as `x-vspl-intake-secret` |
 | `fast2sms-vspl` | Header Auth (`Authorization`), `FAST2SMS_API_KEY` in `growth/n8n-env`; encrypted source: infra `apps/n8n/overlays/growth/secrets.sops.yaml` |
-| `sarvam-vspl` | Made by hand in n8n (Header Auth, `api-subscription-key`) |
-| `r2-talent-erase` | Made by hand: an S3 credential with **delete** rights on `vayasya-talent-intake`, used only by the retention workflow (intake's token stays read-only) |
-| `chatwoot-talent-admin` | Made by hand: Header Auth, name `api_access_token`, a Chatwoot agent or admin token that may delete contacts in the account holding "Jobs, website" |
+| `r2-talent-erase` | `TALENT_R2_ERASE_*` in `growth/n8n-env`: an S3 key with **delete** rights on `vayasya-talent-intake`, used only by the retention workflow (intake's key stays read-only). Today a copy of the website's read/write key (infra RUNBOOK) |
+| `chatwoot-talent-admin` | `CHATWOOT_TALENT_ADMIN_TOKEN` in `growth/n8n-env`: Header Auth `api_access_token`, the token of Chatwoot user "Automation (retention)", administrator in account 1 |
+| `sarvam-vspl` | Retired with voice notes (16 October 2026): deploy blanks its key. Revoke the key in Sarvam's dashboard too. |
 
 Chatwoot needs no credential. The deliver workflow uses Chatwoot's public API for the "Jobs, website" API inbox (account 1, inbox 2), which is authorised by the inbox identifier. The deploy script reads that identifier from Chatwoot and fills it into the workflow's **Settings** node, so it is not in git.
 
-## How voice notes are transcribed (checked by hand against Sarvam)
+## How voice notes were transcribed (retired 16 October 2026)
+
+Voice notes ended on 16 October 2026: intake rejects audio, the transcribe
+workflow is no longer built, deploy unpublishes it and blanks the Sarvam key.
+Old transcripts stay in the database and Chatwoot. The notes below are kept
+for reference.
 
 - **Model:** `saaras:v4`. There's no `mode` setting; that exists only on v3. The hi-IN and hi-Latn-IN pages send `language_code: hi-IN`, and the English page sends `unknown`. Auto-detection identified a Hindi clip (0.997) and an English clip (1.0) correctly.
 - **REST first:** `POST /speech-to-text`, multipart. It answers in about 0.6 seconds, but audio longer than **30 seconds** gets HTTP 400: "Audio duration exceeds the maximum limit of 30 seconds…"
@@ -216,14 +221,16 @@ Reply to the person once the request shows `done`.
 
 **Switching it on.** `pnpm n8n:deploy` imports the retention workflow but does not publish it. Before publishing:
 
-1. create the `r2-talent-erase` and `chatwoot-talent-admin` credentials (deploy refuses to run without them), and check `chatwootAccountId` in its **Retention settings** node;
+1. deploy imports the `r2-talent-erase` and `chatwoot-talent-admin` credentials from `n8n-env`; check `chatwootAccountId` in the **Retention settings** node;
 2. run the setup workflow (deploy does) so `people` and `erasure_requests` exist;
-3. queue one test request for a test number, run the workflow once by hand in n8n, and check R2, Chatwoot and the tables;
-4. publish it: `n8n publish:workflow --id=<id>` in the n8n pod, or the toggle in the editor.
+3. queue one test request for a test number and run the workflow once by hand: `kubectl -n growth exec deploy/n8n -- env N8N_RUNNERS_BROKER_PORT=5691 n8n execute --id=<retention id>` (it starts from **Run by hand**), then check R2, Chatwoot and the tables;
+4. publish it: `n8n publish:workflow --id=<id>` in the n8n pod, then restart n8n.
+
+Done on 16 October 2026: a test application (`VS-J-TEST17`, source `web`) was delivered, then erased by a manual run (submission, `people` row and Chatwoot contact removed; it had no files), and retention was published.
 
 If retention later moves to vayasya-infra (a CronJob), keep the same order and link it here.
 
-## Deploy order (16 October 2026 changes)
+## Deploy order (16 October 2026 changes, done the same day)
 
 1. **n8n first** (`pnpm n8n:deploy`, owner): the setup workflow widens the source and locale checks, adds the cluster and page columns, and creates `people` and `erasure_requests`; intake starts accepting source `web`, upserts `people` and rejects audio (voice notes are retired). The transcribe workflow then has nothing new to do; switch it off and remove the Sarvam key when you are ready.
 2. **Then the website.** It keeps sending the legacy sources until `TALENT_INTAKE_WEB_SOURCE=1` is set, so this order is safe either way; set the variable only after step 1.

@@ -7,14 +7,18 @@
  * workflows are imported under fixed ids, so a re-run updates them in place.
  *
  * 1. Reads the secrets from the cluster: the talent database password
- *    (data/pg-main-talent), R2 key, webhook secret and Fast2SMS key (growth/n8n-env).
- *    They are piped into the n8n pod and never printed or written locally.
- * 2. Imports talent-pg, r2-talent-intake, fast2sms-vspl and
- *    vspl-talent-intake-webhook. sarvam-vspl must already exist (made by hand).
- * 3. Imports the six workflows (retention stays unpublished until switched on by hand), linking credentials by name and filling in
- *    the Chatwoot inbox identifier of the "Jobs, website" inbox.
- * 4. Runs "VSPL talent · setup" (schema), publishes intake, transcribe and
- *    deliver and acknowledge, and restarts n8n so the triggers load.
+ *    (data/pg-main-talent), the R2 keys, webhook secret, Fast2SMS key and the
+ *    retention Chatwoot token (growth/n8n-env). They are piped into the n8n
+ *    pod and never printed or written locally.
+ * 2. Imports talent-pg, r2-talent-intake, r2-talent-erase, fast2sms-vspl,
+ *    chatwoot-talent-admin and vspl-talent-intake-webhook.
+ * 3. Imports the five workflows (retention stays unpublished until switched
+ *    on by hand), linking credentials by name and filling in the Chatwoot
+ *    inbox identifier of the "Jobs, website" inbox.
+ * 4. Runs "VSPL talent · setup" (schema), publishes intake, deliver and
+ *    acknowledge, retires the old transcribe workflow (voice notes ended on
+ *    16 October 2026: unpublished, and the Sarvam key blanked), and restarts
+ *    n8n so the triggers load.
  */
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
@@ -58,6 +62,9 @@ const r2KeyId = secretValue("growth", "n8n-env", "TALENT_R2_ACCESS_KEY_ID");
 const r2Secret = secretValue("growth", "n8n-env", "TALENT_R2_SECRET_ACCESS_KEY");
 const webhookSecret = secretValue("growth", "n8n-env", "TALENT_INTAKE_WEBHOOK_SECRET");
 const fast2smsKey = secretValue("growth", "n8n-env", "FAST2SMS_API_KEY");
+const r2EraseKeyId = secretValue("growth", "n8n-env", "TALENT_R2_ERASE_ACCESS_KEY_ID");
+const r2EraseSecret = secretValue("growth", "n8n-env", "TALENT_R2_ERASE_SECRET_ACCESS_KEY");
+const chatwootAdminToken = secretValue("growth", "n8n-env", "CHATWOOT_TALENT_ADMIN_TOKEN");
 const r2Endpoint = `https://3f03827748ac33418f1176adaa436f26.r2.cloudflarestorage.com`;
 
 step(`looking up the "${INBOX_NAME}" inbox identifier in Chatwoot`);
@@ -83,7 +90,9 @@ const existing = JSON.parse(
 
 // 2. Credentials. Ids come from the generated workflows, so links are exact;
 //    an existing credential with the same name keeps its id.
-const workflowFiles = ["vspl-talent-setup", "vspl-talent-intake", "vspl-talent-transcribe", "vspl-talent-deliver", "vspl-talent-acknowledge", "vspl-talent-retention"];
+const workflowFiles = ["vspl-talent-setup", "vspl-talent-intake", "vspl-talent-deliver", "vspl-talent-acknowledge", "vspl-talent-retention"];
+/** Retired 16 October 2026 (voice notes ended): unpublished on deploy, never re-imported. */
+const RETIRED_WORKFLOWS = ["VSPL talent · transcribe"];
 // Imported but not published: retention deletes data, so the owner switches
 // it on by hand after a first manual run (README, "Retention and erasure").
 const MANUAL_PUBLISH = new Set(["vspl-talent-retention"]);
@@ -127,6 +136,19 @@ const credentials = [
     type: "httpHeaderAuth",
     data: { name: "x-vspl-intake-secret", value: webhookSecret },
   },
+  {
+    name: "r2-talent-erase",
+    type: "s3",
+    data: { endpoint: r2Endpoint, region: "auto", accessKeyId: r2EraseKeyId, secretAccessKey: r2EraseSecret, forcePathStyle: true },
+  },
+  {
+    name: "chatwoot-talent-admin",
+    type: "httpHeaderAuth",
+    data: { name: "api_access_token", value: chatwootAdminToken },
+  },
+  // Voice notes ended on 16 October 2026: the Sarvam key is blanked, so the
+  // retired transcribe workflow could not call Sarvam even if republished.
+  ...(existing.some((c) => c.name === "sarvam-vspl") ? [{ name: "sarvam-vspl", type: "httpHeaderAuth", data: { name: "api-subscription-key", value: "retired" } }] : []),
 ].map((c) => ({ ...c, id: idFor(c.name) }));
 
 for (const name of referenced.keys()) {
@@ -174,6 +196,15 @@ for (const [i, w] of workflows.entries()) {
   }
   step(`publishing "${w.name}"`);
   kubectl([...N8N, "n8n", "publish:workflow", `--id=${w.id}`]);
+}
+
+step("listing workflows to retire");
+const listed = kubectl([...N8N, "n8n", "list:workflow"]);
+for (const name of RETIRED_WORKFLOWS) {
+  const id = listed.split("\n").map((l) => l.split("|")).find(([, n]) => n?.trim() === name)?.[0]?.trim();
+  if (!id) continue;
+  step(`unpublishing retired "${name}" (${id})`);
+  kubectl([...N8N, "n8n", "unpublish:workflow", `--id=${id}`]);
 }
 
 step("restarting n8n so the published triggers load");

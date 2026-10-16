@@ -14,7 +14,7 @@ import type { JobsStartResponse } from "@/lib/talent-intake/contract";
  * /api/jobs/start hands out the upload URLs.
  */
 
-export const MAX_FILES = INTAKE_LIMITS.maxAttachments - 1; // one slot is the voice note
+export const MAX_FILES = INTAKE_LIMITS.maxAttachments;
 const EXTENSION_TYPES: Record<string, string> = {
   pdf: "application/pdf",
   doc: "application/msword",

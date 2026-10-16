@@ -14,6 +14,7 @@ import { useSessionDraft } from "@/lib/use-session-draft";
 import { FormDraftNotice } from "@/components/form-draft-notice";
 import { revealFormTarget } from "@/lib/form-navigation";
 import { cn } from "@/lib/utils";
+import { localePath } from "@/lib/i18n";
 import { trackAdsConversion, trackAnalyticsEvent } from "@/lib/analytics";
 import { ENQUIRY_PREFILL_FIELDS, readPrefill } from "@/lib/prefill";
 import { TURNSTILE_SCRIPT_URL } from "@/lib/turnstile";
@@ -629,7 +630,12 @@ export function ContactForm() {
               </>
             )}
           </Button>
-          <p className="mt-4 text-sm text-muted-foreground">Used only to respond to this enquiry.</p>
+          <p className="mt-4 text-sm text-muted-foreground">
+            We use these details to reply to this enquiry.{" "}
+            <a href={localePath("/privacy", "en-IN")} target="_blank" rel="noopener" className="underline underline-offset-4">
+              Privacy Policy
+            </a>
+          </p>
         </div>
       )}
     </form>

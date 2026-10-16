@@ -322,7 +322,7 @@ export function QuickApply({
         questions: active.length,
         files: files.length,
       };
-      trackAnalyticsEvent("job_form_submit", { ...summary, page: formPage(), voice: "no" });
+      trackAnalyticsEvent("job_form_submit", { ...summary, page: formPage() });
       trackAnalyticsEvent("quick_apply_submit", summary);
       trackAdsConversion("jobApplication");
     } catch (error) {
@@ -448,11 +448,12 @@ export function QuickApply({
               <input type="checkbox" name="agree" aria-invalid={visibleChecks.includes("agree") || undefined} aria-describedby={errorFor("agree") ? "quick-agree-error" : undefined} checked={agreed} onChange={(e) => setAgreed(e.target.checked)} disabled={locked} />
               <span>
                 {form.steps.phone.agree}{" "}
-                <a href={localePath("/privacy", "en-IN")} target="_blank" rel="noopener" className="underline underline-offset-4">
+                <a href={`${localePath("/privacy", "en-IN")}#job-seekers`} target="_blank" rel="noopener" className="jobs-check-link underline underline-offset-4">
                   {form.steps.phone.privacyLink}
                 </a>
               </span>
             </label>
+            <p className="jobs-check-note">{form.steps.phone.keepNote}</p>
             {errorFor("agree") && <p id="quick-agree-error" className="jobs-error" role="alert">{errorFor("agree")}</p>}
             {summaryChecks.length > 0 && (
               <ul ref={errorSummary} id="quick-errors" tabIndex={-1} className="jobs-errors form-scroll-target" role="alert">

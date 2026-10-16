@@ -40,7 +40,7 @@ function formFields(form: string) {
  * Where an unfinished form stood, for every visitor: which fields had
  * something in them and how many characters, which were empty, where the
  * cursor was, and which checks failed if Send was pressed. Field names,
- * flags and lengths only, never what was typed. The form marks voice notes, files and failed checks in data-*
+ * flags and lengths only, never what was typed. The form marks files and failed checks in data-*
  * attributes (data-draft-*, data-form-errors).
  */
 export function statusOf(form: string): AnalyticsParams {
@@ -49,7 +49,6 @@ export function statusOf(form: string): AnalyticsParams {
   const { el, fields } = found;
   const filled = fields.filter((f) => f.value).map((f) => f.field);
   const empty = fields.filter((f) => !f.value).map((f) => f.field);
-  if (el.dataset.draftVoiceSeconds) filled.push("voice");
   if (el.dataset.draftFiles) filled.push("files");
   const focused = fields.find((f) => f.input === document.activeElement)?.field;
   // How many digits each phone field holds, never the number itself.
@@ -73,8 +72,8 @@ export function statusOf(form: string): AnalyticsParams {
 
 /**
  * The typed contents of an unfinished form, by field name ("Allow All" only,
- * see trackAbandonedDraft). Files and voice notes are never read: the form
- * marks only their count and length.
+ * see trackAbandonedDraft). Files are never read: the form marks only
+ * their count.
  */
 export function draftOf(form: string): AnalyticsParams | null {
   const found = formFields(form);

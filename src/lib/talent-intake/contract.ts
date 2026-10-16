@@ -179,7 +179,8 @@ export interface JobsSubmitResponse {
 
 // --- Open agent routes (/api/agent/jobs*) -------------------------------------
 // No Turnstile: an AI agent applies on a person's behalf with plain JSON. The
-// agent confirms the person is 18 or older and agreed to be contacted, the
+// agent confirms the person is 18 or older and agreed that we may keep their
+// details and contact them about work, the
 // same two things the jobs form asks the person to tick.
 
 const agentLanguageSchema = z.enum(Object.keys(AGENT_LANGUAGE_SOURCES) as [AgentLanguage, ...AgentLanguage[]]);
@@ -199,7 +200,7 @@ export const agentInfoSchema = z
   .optional();
 
 const agentPageFields = {
-  /** Language the person speaks; picks the team and transcription language. */
+  /** Language the person speaks; picks the team that replies. */
   language: agentLanguageSchema.default("en"),
   role: z.enum(JOB_ROLE_SLUGS).nullish().transform((r) => r ?? null),
   agent: agentInfoSchema,

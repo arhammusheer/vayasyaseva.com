@@ -1001,7 +1001,7 @@
           "consent": {
             "type": "boolean",
             "const": true,
-            "description": "The person agreed to be contacted about work and to the job seeker privacy notice (https://www.vayasyaseva.com/en-in/privacy#job-seekers)."
+            "description": "The person agreed that Vayasya Seva may keep their details and contact them about work, under the job seeker privacy notice (https://www.vayasyaseva.com/en-in/privacy#job-seekers)."
           },
           "text": {
             "type": "string",
@@ -1070,20 +1070,19 @@
                 "kind": {
                   "type": "string",
                   "enum": [
-                    "audio",
                     "image",
                     "document"
                   ]
                 },
                 "mime": {
                   "type": "string",
-                  "description": "audio: audio/webm, ogg, mp4, mpeg, aac, wav or x-m4a. image: image/jpeg, png or webp. document: application/pdf, msword or vnd.openxmlformats-officedocument.wordprocessingml.document.",
+                  "description": "image: image/jpeg, png or webp. document: application/pdf, msword or vnd.openxmlformats-officedocument.wordprocessingml.document.",
                   "example": "application/pdf"
                 },
                 "size": {
                   "type": "integer",
                   "minimum": 1,
-                  "description": "Bytes. At most 10485760 for audio and images, 20971520 for documents."
+                  "description": "Bytes. At most 10485760 for images, 20971520 for documents."
                 },
                 "name": {
                   "type": [
@@ -1168,7 +1167,7 @@
           "consent": {
             "type": "boolean",
             "const": true,
-            "description": "The person agreed to be contacted about work and to the job seeker privacy notice (https://www.vayasyaseva.com/en-in/privacy#job-seekers)."
+            "description": "The person agreed that Vayasya Seva may keep their details and contact them about work, under the job seeker privacy notice (https://www.vayasyaseva.com/en-in/privacy#job-seekers)."
           },
           "text": {
             "type": [

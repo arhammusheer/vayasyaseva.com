@@ -112,7 +112,7 @@ const personFields = {
     type: "boolean",
     const: true,
     description:
-      "The person agreed to be contacted about work and to the job seeker privacy notice (https://www.vayasyaseva.com/en-in/privacy#job-seekers).",
+      "The person agreed that Vayasya Seva may keep their details and contact them about work, under the job seeker privacy notice (https://www.vayasyaseva.com/en-in/privacy#job-seekers).",
   },
 };
 
@@ -177,13 +177,13 @@ function buildAgentJobsSchemas() {
               mime: {
                 type: "string",
                 description:
-                  "audio: audio/webm, ogg, mp4, mpeg, aac, wav or x-m4a. image: image/jpeg, png or webp. document: application/pdf, msword or vnd.openxmlformats-officedocument.wordprocessingml.document.",
+                  "image: image/jpeg, png or webp. document: application/pdf, msword or vnd.openxmlformats-officedocument.wordprocessingml.document.",
                 example: "application/pdf",
               },
               size: {
                 type: "integer",
                 minimum: 1,
-                description: `Bytes. At most ${INTAKE_LIMITS.maxBytes.audio} for audio and images, ${INTAKE_LIMITS.maxBytes.document} for documents.`,
+                description: `Bytes. At most ${INTAKE_LIMITS.maxBytes.image} for images, ${INTAKE_LIMITS.maxBytes.document} for documents.`,
               },
               name: { type: ["string", "null"], maxLength: INTAKE_LIMITS.maxFileNameLength },
             },

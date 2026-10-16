@@ -18,6 +18,14 @@ import {
   type ContactFormData,
 } from "@/lib/contact-contract";
 
+/**
+ * Version of the privacy notice a business enquiry is sent under, shown in
+ * the staff email so each lead record says which notice applied. Earlier
+ * enquiries carry no version and fall under the notice of their date.
+ * 2026-10-16: the requirement fields and 24-month leads retention (PLAN §8.3).
+ */
+export const BUSINESS_NOTICE_VERSION = "2026-10-16";
+
 /** 20 or more workers (owner decision 14, 16 October 2026). */
 const QUALIFYING_HEADCOUNT = new Set(["20-49", "50-99", "100-249", "250+"]);
 /** 3 months or more. */

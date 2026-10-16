@@ -114,7 +114,7 @@ Business enquiry: POST ${baseUrl}/api/agent/contact
   Allowed ids for roles, headcountBand, siteState, startWindow, durationBand and shiftPattern: see the OpenAPI spec
   Answer: 200 with a case ID (AGT-...)
 Job application, text only: POST ${baseUrl}/api/agent/jobs
-  Required fields: phone (10-digit Indian mobile), adult (true: the person is 18 or older), consent (true: they agreed to be contacted), text
+  Required fields: phone (10-digit Indian mobile), adult (true: the person is 18 or older), consent (true: they agreed that Vayasya Seva may keep their details and contact them about work), text
   Optional fields: language (en, hi or hinglish), role, agent.name
   Answer: 202 with a reference (VS-J-...)
 Job application with files: POST ${baseUrl}/api/agent/jobs/start, PUT each file to its upload URL, then POST ${baseUrl}/api/agent/jobs/submit

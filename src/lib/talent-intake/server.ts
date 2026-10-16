@@ -12,8 +12,18 @@ const R2_ENDPOINT = "https://3f03827748ac33418f1176adaa436f26.r2.cloudflarestora
 const R2_BUCKET = "vayasya-talent-intake";
 const WEBHOOK_URL = "https://hooks.vayasyaseva.com/webhook/vspl-talent-intake";
 
-/** Version of the privacy notice a person agrees to on the jobs page. */
-export const TALENT_CONSENT_VERSION = "2026-10-02";
+/**
+ * Version of the privacy notice and consent line a person agrees to on the
+ * jobs pages, stored with each submission. Bump it whenever either changes.
+ * Earlier versions stay valid for the records that carry them (n8n stores
+ * the string as given): 2026-10-02, the first jobs notice; 2026-10-16, the
+ * area, page and language fields, the worker list (the 12 months restart
+ * only when the person speaks with us, replies or confirms; unanswered
+ * outreach does not count), Fast2SMS, sharing with another employer only
+ * with fresh agreement, no audio or Sarvam, and the phone-free withdrawal
+ * route (PLAN §8.3).
+ */
+export const TALENT_CONSENT_VERSION = "2026-10-16";
 
 /** Upload links and tickets are short-lived. */
 const UPLOAD_URL_SECONDS = 15 * 60;
@@ -51,13 +61,6 @@ export function newRef() {
 }
 
 const EXTENSIONS: Record<string, string> = {
-  "audio/webm": "webm",
-  "audio/ogg": "ogg",
-  "audio/mp4": "m4a",
-  "audio/x-m4a": "m4a",
-  "audio/mpeg": "mp3",
-  "audio/aac": "aac",
-  "audio/wav": "wav",
   "image/jpeg": "jpg",
   "image/png": "png",
   "image/webp": "webp",

@@ -2,6 +2,7 @@ import { siteConfig } from "@/content/site";
 import { contactOptionLabel, type ContactFormData } from "@/lib/contact-contract";
 import {
   assessCrewRequest,
+  BUSINESS_NOTICE_VERSION,
   headcountToBand,
   outOfScopeLabel,
   requirementLines,
@@ -331,6 +332,7 @@ function staffFlagLines(data: ContactFormData) {
     ...outOfScope.map((id) => `Possibly out of scope: ${outOfScopeLabel(id)}`),
     ...(data.pageCluster ? [`Page cluster: ${data.pageCluster}`] : []),
     ...(data.sourcePath ? [`Came from: ${data.sourcePath}`] : []),
+    `Privacy notice: ${BUSINESS_NOTICE_VERSION}`,
   ];
 }
 

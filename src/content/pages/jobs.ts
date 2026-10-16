@@ -7,7 +7,7 @@ export interface JobsFormCopy {
   steps: {
     files: { title: string; hint: string; warning: string };
     /** One checkbox: 18 or older, and consent to be contacted. */
-    phone: { title: string; placeholder: string; agree: string; privacyLink: string };
+    phone: { title: string; placeholder: string; agree: string; privacyLink: string; keepNote: string };
   };
   files: { camera: string; choose: string; remove: string; tooLarge: string; wrongType: string; tooMany: string };
   next: string;
@@ -139,8 +139,9 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         phone: {
           title: "Your mobile number",
           placeholder: "98765 43210",
-          agree: "I am 18 or older, and Vayasya Seva may use my details to contact me about work.",
+          agree: "I am 18 or older. Vayasya Seva may keep my details and contact me about work.",
           privacyLink: "Privacy Policy",
+          keepNote: "We keep your details for 12 months after you last reply. We call when a site near you needs people. To remove them, email help@vayasyaseva.com.",
         },
       },
       files: {
@@ -233,8 +234,9 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         phone: {
           title: "आपका मोबाइल नंबर",
           placeholder: "98765 43210",
-          agree: "मेरी उम्र 18 साल या उससे ज़्यादा है, और मैं सहमत हूँ कि Vayasya Seva नौकरी के लिए मुझसे संपर्क करने में मेरी जानकारी इस्तेमाल करे।",
+          agree: "मेरी उम्र 18 साल या उससे ज़्यादा है। Vayasya Seva मेरी जानकारी रख सकती है और काम के लिए मुझसे संपर्क कर सकती है।",
           privacyLink: "गोपनीयता नीति",
+          keepNote: "आपके आख़िरी जवाब के बाद हम आपकी जानकारी 12 महीने तक रखते हैं। पास की साइट पर काम आए तो कॉल करेंगे। हटवानी हो तो help@vayasyaseva.com पर लिखें।",
         },
       },
       files: {
@@ -327,8 +329,9 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         phone: {
           title: "Aapka mobile number",
           placeholder: "98765 43210",
-          agree: "Meri umar 18 saal ya usse zyada hai, aur main sehmat hoon ki Vayasya Seva naukri ke liye mujhse contact karne mein meri jaankari use kare.",
+          agree: "Meri umar 18 saal ya usse zyada hai. Vayasya Seva meri jaankari rakh sakti hai aur kaam ke liye mujhse contact kar sakti hai.",
           privacyLink: "Privacy Policy",
+          keepNote: "Aapke aakhri jawab ke baad hum aapki jaankari 12 mahine tak rakhte hain. Paas ki site par kaam aaye to call karenge. Hatwani ho to help@vayasyaseva.com par likhiye.",
         },
       },
       files: {

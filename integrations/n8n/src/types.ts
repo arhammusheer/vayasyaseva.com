@@ -67,7 +67,8 @@ export interface ClaimedVoiceNote {
 export interface ClaimedAttachment {
   id: string;
   position: number;
-  kind: AttachmentKind;
+  /** "audio" only on rows saved before 16 October 2026; the intake no longer accepts it. */
+  kind: AttachmentKind | "audio";
   key: string;
   mime: string;
   name: string | null;

@@ -133,8 +133,8 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
     const u = rate(s, t, "haryana", "unskilled");
     const from = s.tables[0].effectiveFrom;
     return {
-      title: (year) => `Haryana Minimum Wage${year ? ` ${year}` : ""}: ${formatRupees(u.daily ?? 0)}/day, ${formatRupees(u.monthly)}/month`,
-      description: `Haryana minimum wage from ${formatShortDate(from)}: ${rs(s, t, "haryana", "unskilled")} a month (${formatRupees(u.daily ?? 0)} a day) unskilled, ${rs(s, t, "haryana", "semi-skilled")} semi-skilled, ${rs(s, t, "haryana", "skilled")} skilled. One statewide rate. ${stamp([s])}.`,
+      title: (year) => `Haryana Minimum Wage${year ? ` ${year}` : ""}: ${formatRupees(u.monthly)}/month Unskilled`,
+      description: `Haryana minimum wage from ${formatShortDate(from)}: ${rs(s, t, "haryana", "unskilled")} a month (${formatRupees(u.daily ?? 0)} a day) unskilled, ${rs(s, t, "haryana", "semi-skilled")} semi-skilled, ${rs(s, t, "haryana", "skilled")} skilled. ${stamp([s])}.`,
       answer: `From ${formatDate(from)}, unskilled work anywhere in Haryana pays at least ${formatRupees(u.monthly)} a month, or ${formatRupees(u.daily ?? 0)} a day. One rate covers the whole state.`,
       note: {
         text: "One rate covers all of Haryana, including Gurugram, Manesar, Faridabad and Kundli. Delhi, Noida and Ghaziabad pay their own state's rates.",
@@ -160,7 +160,7 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
     const from = s.tables[0].effectiveFrom;
     return {
       title: (year) => `Punjab Minimum Wage${year ? ` ${year}` : ""}: ${formatRupees(u.daily ?? 0)}/day, ${formatRupees(u.monthly)}/month`,
-      description: `Punjab minimum wage from ${formatShortDate(from)}: ${rs(s, t, "punjab", "unskilled")} a month (${formatRupees(u.daily ?? 0)} a day) unskilled, ${rs(s, t, "punjab", "semi-skilled")} semi-skilled, ${rs(s, t, "punjab", "skilled")} skilled. One statewide rate. ${stamp([s])}.`,
+      description: `Punjab minimum wage from ${formatShortDate(from)}: ${rs(s, t, "punjab", "unskilled")} a month (${formatRupees(u.daily ?? 0)} a day) unskilled, ${rs(s, t, "punjab", "semi-skilled")} semi-skilled, ${rs(s, t, "punjab", "skilled")} skilled, plus staff rates. ${stamp([s])}.`,
       answer: `From ${formatDate(from)}, unskilled work anywhere in Punjab pays at least ${formatRupees(u.monthly)} a month, or ${formatRupees(u.daily ?? 0)} a day. One rate covers the whole state.`,
       faqs: [
         {
@@ -217,10 +217,10 @@ export const listDates = (dates: string[]) => {
 };
 
 export const wageHubCopy = {
-  title: (year: string | null) => `Minimum Wages${year ? ` ${year}` : ""}: Uttarakhand, UP and Delhi`,
+  title: (year: string | null) => `Minimum Wages${year ? ` ${year}` : ""}: Uttarakhand, UP, Delhi, Haryana`,
   /** The oldest date across the states, so the line is true for every one of them. */
   description: () =>
-    `Minimum wage rates for Uttarakhand, Uttar Pradesh and Delhi by skill level, each with its notification number and effective date. ${stamp(wageStates)}.`,
+    `Minimum wage rates for Uttarakhand, UP, Delhi, Haryana and Punjab by skill level, each with its notification number and effective date. ${stamp(wageStates)}.`,
   heading: (year: string | null) => (year ? `Minimum wages in ${year}, by state.` : "Minimum wages by state."),
   /**
    * The answer, first: the hero lede carries what the old one-question FAQ

@@ -1002,6 +1002,18 @@
     "priority": 0.7
   },
   {
+    "url": "https://www.vayasyaseva.com/en-in/minimum-wages/haryana",
+    "lastModified": "2026-10-17T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/minimum-wages/punjab",
+    "lastModified": "2026-10-17T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
     "url": "https://www.vayasyaseva.com/en-in/minimum-wages/how-we-check",
     "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "yearly",

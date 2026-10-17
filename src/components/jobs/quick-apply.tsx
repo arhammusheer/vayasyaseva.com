@@ -14,6 +14,7 @@ import { formPage, trackAdsConversion, trackAnalyticsEvent, type AnalyticsParams
 import { jobsCopy } from "@/content/pages/jobs";
 import { STEP_DEFS, areaOptions, quickApplyCopy, roleFor, type Answers, type AreaSource, type StepDef } from "@/content/pages/quick-apply";
 import { MODEL_VERSION } from "@/lib/intent/model";
+import { reportChoice } from "@/lib/intent/report";
 import { readPrefill } from "@/lib/prefill";
 import { localePath, splitLocalePath, type Locale } from "@/lib/i18n";
 import { clusterById } from "@/content/registry/clusters";
@@ -284,6 +285,9 @@ export function QuickApply({
       if (step.id === "area" && Object.hasOwn(AREA_CLUSTERS, value)) {
         const c = AREA_CLUSTERS[value as keyof typeof AREA_CLUSTERS];
         if (c) noteChoice(c, "answer");
+        // Measures the decision only where it chose the options (or the form asked).
+        // "Somewhere else" names no market: chosen as "other" (after a decision, a correction).
+        if (areaSource === "decision" || areaSource === "ask") reportChoice(c ?? "other", areaSource === "decision" && areaMarket ? [areaMarket] : [], "jobs-form");
       }
       const params: AnalyticsParams = { locale, step: step.id, answer: value };
       if (before && before !== value) params.changed = "yes";

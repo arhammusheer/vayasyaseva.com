@@ -83,6 +83,19 @@ Metrics (computable from these, model `v=2` only):
 
 No report runs these yet; they are Umami event-data queries (`/api/websites/<id>/event-data/values?event=area_nav_click&propertyName=is_decided`, filtered to `v=2`).
 
+## The Umami board "Area intent"
+
+Umami's board tiles count events by name and can't filter on properties, so `src/lib/intent/report.ts` also sends one plainly named event per outcome (Umami only, never GA4 or Meta):
+
+| Board section | Events |
+|---|---|
+| How the site decided (once per decision) | `intent_by_pick`, `intent_by_link` (?cluster=), `intent_by_ad` (UTM), `intent_by_page` (landing, page, views), `intent_by_location` (IP), `intent_none` |
+| What it put first (once per session per market) | `market_shown_<market>` (bengaluru, delhi_ncr, haridwar, jalandhar, punjab, uttarakhand) |
+| What visitors picked | `market_chosen_<market>`, plus `market_chosen_other` for "Somewhere else" |
+| Was the decision right? | `intent_confirmed` (picked a market the site had put first), `intent_corrected` (picked another), `intent_self_chosen` (nothing had been decided) |
+
+Picks counted: labelled market links (header, `/jobs`, `/locations`) and the jobs form's area answer when the form's options came from the decision or the form asked; an answer on a market's own page or a `?cluster=` link isn't a test of the decision. The board's funnels follow confirmed and corrected decisions to an application. Detail stays in the full events (filter by `v=2` in Umami's Events → Properties).
+
 ## Storage and privacy
 
 Session signals live in sessionStorage (gone when the tab closes); only an

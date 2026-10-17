@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { trackAnalyticsEvent } from "@/lib/analytics";
 import { MODEL_VERSION, decideArea, type AreaDecision } from "./model";
 import { currentSignals, notePageView, regionCluster } from "./store";
+import { reportDecision } from "./report";
 import { areaSurfaces, knownCluster, ownCluster } from "./surfaces";
 
 const REPORTED_KEY = "vs-area-reported-v1";
@@ -25,6 +26,7 @@ export function useAreaDecision(path: string): AreaDecision {
       if (!alive) return;
       const d = decideArea(currentSignals(page, cluster, knownCluster), surfaces);
       setDecision(d);
+      reportDecision(d);
       const key = `${d.mode}|${d.business.join("+")}|${d.jobs.join("+")}|${d.basis}`;
       try {
         const seen: string[] = JSON.parse(window.sessionStorage.getItem(REPORTED_KEY) ?? "[]");

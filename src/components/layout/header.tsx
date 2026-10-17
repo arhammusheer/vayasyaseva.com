@@ -29,6 +29,7 @@ import { trackAnalyticsEvent } from "@/lib/analytics";
 import { useAreaDecision } from "@/lib/intent/use-area";
 import { noteChoice } from "@/lib/intent/store";
 import { MODEL_VERSION } from "@/lib/intent/model";
+import { reportChoice } from "@/lib/intent/report";
 import { JOBS_AREA_LABEL, businessLabel, jobsAreaHref, orderedJobMarkets } from "@/lib/intent/surfaces";
 
 /** A header link that names an area: clicking it records the visitor's pick. */
@@ -298,7 +299,10 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
   // An area link remembers the pick and reports it (area_nav_click).
   const picked = (item: AreaLink, then?: () => void) => () => {
     if (item.cluster) {
-      if (item.pick) noteChoice(item.cluster);
+      if (item.pick) {
+        noteChoice(item.cluster);
+        reportChoice(item.cluster, item.surface === "business" ? area.business : area.jobs, item.surface ?? "business");
+      }
       // What the visitor followed, beside what the site had decided, so the
       // decision's accuracy can be measured (docs/area-intent.md).
       const decided = item.surface === "business" ? area.business : area.jobs;

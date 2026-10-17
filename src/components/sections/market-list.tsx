@@ -5,6 +5,7 @@ import { trackAnalyticsEvent } from "@/lib/analytics";
 import { noteChoice } from "@/lib/intent/store";
 import { useAreaDecision } from "@/lib/intent/use-area";
 import { MODEL_VERSION } from "@/lib/intent/model";
+import { reportChoice } from "@/lib/intent/report";
 
 /** One market in a list: its cluster id and its page, with the href already resolved for the page's language. */
 export type MarketItem = { cluster: string; href: string; title: string; text?: string };
@@ -48,6 +49,7 @@ export function MarketList({
             prefetch={false}
             onClick={() => {
               noteChoice(item.cluster);
+              reportChoice(item.cluster, decided, surface);
               trackAnalyticsEvent("area_nav_click", {
                 cluster: item.cluster,
                 surface,

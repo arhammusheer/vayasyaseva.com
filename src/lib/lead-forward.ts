@@ -10,7 +10,7 @@
  */
 import type { ContactFormData } from "@/lib/contact-contract";
 import { assessCrewRequest, requirementLines, siteLine } from "@/lib/crew-request";
-import { SITE_STATE_CLUSTERS } from "@/lib/intent/model";
+import { siteCluster } from "@/lib/intent/model";
 
 const DEFAULT_URL = "https://hooks.vayasyaseva.com/api/r/webhook/vspl-lead";
 const TIMEOUT_MS = 8_000;
@@ -42,8 +42,10 @@ export function buildLeadPayload(
   options: { caseId: string; channel: "web" | "agent"; receivedAt?: Date; note?: string },
 ): LeadPayload {
   const assessment = assessCrewRequest(data);
-  // The site's state names the cluster where the work is; else the page the form was on.
-  const cluster = (data.siteState && SITE_STATE_CLUSTERS[data.siteState]) || data.pageCluster || null;
+  // The market the site is in: a place named in the city, else the page the
+  // form was sent from when its market covers that state, else the state's
+  // market (src/lib/intent/model.ts siteCluster).
+  const cluster = siteCluster(data.siteState, data.siteCity, data.pageCluster);
   const flags = [
     assessment.qualified ? "qualified (20+ workers, a month or more)" : null,
     assessment.soon ? "starts soon" : null,

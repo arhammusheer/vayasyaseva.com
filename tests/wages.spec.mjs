@@ -8,7 +8,7 @@ const { wageStates, wageStatus, wageRecords, dailyFromMonthly, formatRupees, hea
 const { wageStateSchema, wageIntegrityProblems } = await importTs('src/content/wages/schema.ts');
 const { pathAliases, statusOf } = await importTs('src/content/registry/index.ts');
 
-const base = wageStates[0];
+const base = wageStates.find((s) => s.state === 'uttarakhand');
 const withDates = (expected, checkedOn) => ({ ...base, nextRevision: { ...base.nextRevision, expected }, checked: { ...base.checked, on: checkedOn } });
 
 test('every wage file is valid and internally consistent', () => {

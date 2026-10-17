@@ -252,7 +252,8 @@ export const pageEntries: readonly PageEntry[] = [
   // Worker lists for the rest of each state (owner direction, 17 Oct 2026).
   { ...jobsPage(jobsHubPath("uttarakhand"), "jobs-city", 0.7), cluster: "uttarakhand" },
   { ...jobsPage(jobsHubPath("punjab"), "jobs-city", 0.7), locales: WITH_PUNJABI, cluster: "punjab" },
-  { path: HARIDWAR_HUB_PATH, kind: "cluster-hub", audience: "business", locales: ALL, parent: "/", cluster: "haridwar", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.9 },
+  // Filed under Locations like every market's buyer page (17 Oct 2026); it keeps its URL.
+  { path: HARIDWAR_HUB_PATH, kind: "cluster-hub", audience: "business", locales: ALL, parent: LOCATIONS_PATH, cluster: "haridwar", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.8 },
   // Location pages: the index, a hub per region, a page per industrial area.
   // Mixed audience: buyers and job seekers both search estate names, so the
   // (locations) layout has no phone.

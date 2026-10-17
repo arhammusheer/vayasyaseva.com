@@ -43,7 +43,7 @@ try {
     ['/en-in/jobs', 'Factory, Packing and Warehouse Jobs', 'Apply now'],
     ['/en-in/jobs/packing', 'Packing Jobs', 'Packing products into cartons'],
     ['/hi-in/jobs/electrician', 'इलेक्ट्रीशियन', 'वायरमैन'],
-    ['/hi-latn-in/jobs/freshers', 'Freshers', 'fresher'],
+    ['/hi-latn-in/jobs/freshers', 'Fresher Job', 'fresher'],
     ['/en-in/jobs/10th-pass', '10th Pass', 'welder, fitter, electrician'],
     ['/en-in/jobs/12th-pass', '12th Pass', 'computer'],
   ]) {
@@ -271,7 +271,7 @@ try {
   // /api/context answers as for a phone in Kapurthala; a second visitor arrives from the Haridwar ad.
   for (const [label, geo, landing, market, areaLabel] of [
     ['Kapurthala visitor', {country:'IN',region:'PB',city:'Kapurthala'}, '/en-in/jobs', 'jalandhar', 'Kapurthala'],
-    ['Haridwar ad click', {country:'IN',region:null,city:null}, '/en-in/jobs?utm_campaign=search_jobs', 'haridwar', 'Laksar'],
+    ['Haridwar ad click', {country:'IN',region:null,city:null}, '/en-in/jobs?utm_campaign=search_jobs&cluster=haridwar', 'haridwar', 'Laksar'],
     ['Ludhiana visitor', {country:'IN',region:'PB',city:'Ludhiana'}, '/en-in/jobs', 'punjab', 'Ludhiana'],
   ]) {
     const visitor=await browser.newContext({viewport:{width:390,height:844}});

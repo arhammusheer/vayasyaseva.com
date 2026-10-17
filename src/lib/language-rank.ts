@@ -174,7 +174,8 @@ export function urlIntent(search: URLSearchParams): ClusterId | undefined {
   const known = (id: string | null | undefined): id is ClusterId => !!id && Object.hasOwn(CLUSTER_SETS, id) && id !== "other";
   const param = search.get("cluster");
   if (known(param)) return param;
-  return clustersInUtm(["utm_campaign", "utm_term", "utm_content"].map((k) => search.get(k))).find(known);
+  // The same tags the browser reads (src/lib/intent/store.ts notePageView).
+  return clustersInUtm(["utm_campaign", "utm_term", "utm_content", "utm_source"].map((k) => search.get(k))).find(known);
 }
 
 /** The page's languages (`available`) in picker order for one request. */

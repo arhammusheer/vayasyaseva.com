@@ -90,7 +90,9 @@ test("jobs pages without a market of their own take no market's order: the visit
     // Region and intent decide.
     assert.equal(rank.rankSegmentFor(path, { country: "IN", region: "UK" }, none).split("_")[0], "hi-hl-en", `${path} UK`);
     assert.equal(rank.rankSegmentFor(path, { country: "IN", region: "KA" }, none).split("_")[0], "en-hl-hi", `${path} KA`);
-    assert.equal(rank.rankSegmentFor(path, { country: "IN" }, new URLSearchParams("utm_campaign=search_jobs")).split("_")[0], "hi-hl-en", `${path} Haridwar ad`);
+    assert.equal(rank.rankSegmentFor(path, { country: "IN" }, new URLSearchParams("utm_campaign=search_jobs&cluster=haridwar")).split("_")[0], "hi-hl-en", `${path} Haridwar ad`);
+    // A generic campaign name alone says nothing about the market.
+    assert.equal(rank.rankSegmentFor(path, {}, new URLSearchParams("utm_campaign=search_jobs")).split("_")[0], "en-hi-hl", `${path} generic ad`);
   }
   assert.equal(rank.pageCluster("/jobs"), undefined);
   assert.equal(rank.pageCluster("/jobs/haridwar"), "haridwar");

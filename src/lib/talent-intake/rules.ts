@@ -181,6 +181,7 @@ export const QUICK_ANSWERS = {
     "punjab:amritsar": "Amritsar", "punjab:other": "Elsewhere in Punjab", "punjab:outside": "Outside Punjab",
     "market:haridwar": "Haridwar / Roorkee", "market:uttarakhand": "Elsewhere in Uttarakhand", "market:jalandhar": "Jalandhar / Kapurthala",
     "market:punjab": "Elsewhere in Punjab", "market:bengaluru": "Bengaluru", "market:other": "Somewhere else",
+    "haridwar:rest-of-uttarakhand": "Elsewhere in Uttarakhand (Haridwar form)", "jalandhar:rest-of-punjab": "Elsewhere in Punjab (Jalandhar form)",
   },
 } as const;
 export type QuickQuestion = keyof typeof QUICK_ANSWERS;
@@ -222,6 +223,8 @@ export const AREA_CLUSTERS: Record<keyof typeof QUICK_ANSWERS.area, IntakeCluste
   "market:punjab": "punjab",
   "market:bengaluru": "bengaluru",
   "market:other": null,
+  "haridwar:rest-of-uttarakhand": "uttarakhand",
+  "jalandhar:rest-of-punjab": "punjab",
 };
 
 /**

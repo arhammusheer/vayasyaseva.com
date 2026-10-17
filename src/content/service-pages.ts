@@ -30,11 +30,11 @@ export const servicePages: ServiceLandingContent[] = [
     slug: "factory-labour",
     name: "Factory labour",
     summary: "Production helpers, packers, line feeders and material handlers.",
-    metaTitle: "Factory Labour & Production Helpers in Haridwar",
+    metaTitle: "Factory Labour & Production Helpers for Plants",
     description:
-      "Production helpers, packers, line feeders and material handlers for factories in SIDCUL and across Haridwar, planned around your line and shifts.",
-    heading: "Factory labour for SIDCUL plants.",
-    lede: "A supervised shopfloor crew sized to your line and your shifts, in SIDCUL and across Haridwar.",
+      "Production helpers, packers, line feeders and material handlers for factories in Bengaluru, Delhi NCR, Punjab and Uttarakhand, planned around your shifts.",
+    heading: "Factory labour for your plant.",
+    lede: "A supervised shopfloor crew sized to your line and your shifts.",
     jobs: { role: "factory-helper", label: "Factory helper jobs" },
     rolesHeading: "Roles we staff.",
     roles: [
@@ -83,11 +83,11 @@ export const servicePages: ServiceLandingContent[] = [
     slug: "loading-unloading-labour",
     name: "Loading and unloading",
     summary: "Loading, unloading, picking, packing, racking and dispatch crews.",
-    metaTitle: "Loading and Unloading Labour, SIDCUL Haridwar",
+    metaTitle: "Loading and Unloading Labour for Warehouses",
     description:
-      "Loading and unloading labour for warehouses, factory stores and transporters in SIDCUL and across Haridwar: trucks, containers, picking and dispatch.",
+      "Loading and unloading labour for warehouses, factory stores and transporters in Bengaluru, Delhi NCR, Punjab and Uttarakhand: trucks, containers, dispatch.",
     heading: "Loading and unloading labour for warehouses and dispatch.",
-    lede: "Crews sized to the vehicles you handle and the hours your dock runs, in SIDCUL and across Haridwar.",
+    lede: "Crews sized to the vehicles you handle and the hours your dock runs.",
     jobs: { role: "warehouse", label: "Warehouse jobs" },
     rolesHeading: "Work we staff.",
     roles: [
@@ -110,7 +110,7 @@ export const servicePages: ServiceLandingContent[] = [
       {
         question: "Do you supply crews for factory stores as well as warehouses?",
         answer:
-          "Yes. We plan loading and unloading crews for factory stores and dispatch, warehouses and transport yards in SIDCUL and across Haridwar.",
+          "Yes. We plan loading and unloading crews for factory stores and dispatch, warehouses and transport yards in Bengaluru, Delhi NCR, Punjab and Uttarakhand.",
         category: "operations",
       },
       {
@@ -135,11 +135,11 @@ export const servicePages: ServiceLandingContent[] = [
     slug: "housekeeping",
     name: "Housekeeping and grounds",
     summary: "Housekeeping, pantry, washroom and grounds staff.",
-    metaTitle: "Housekeeping Manpower in SIDCUL Haridwar",
+    metaTitle: "Housekeeping Manpower for Plants and Offices",
     description:
-      "Housekeeping, pantry, washroom and grounds staff for plants, offices and campuses in SIDCUL and across Haridwar, with routines set to the premises.",
+      "Housekeeping, pantry, washroom and grounds staff for plants, offices and campuses in Bengaluru, Delhi NCR, Punjab and Uttarakhand, on routines set to the site.",
     heading: "Housekeeping manpower for plants, offices and campuses.",
-    lede: "Housekeeping and grounds teams on a routine set to your premises, in SIDCUL and across Haridwar.",
+    lede: "Housekeeping and grounds teams on a routine set to your premises.",
     jobs: { role: "housekeeping", label: "Housekeeping jobs" },
     rolesHeading: "Roles we staff.",
     roles: [

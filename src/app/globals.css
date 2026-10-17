@@ -3900,6 +3900,15 @@ a:hover > svg {
 .wage-emp-body {
   padding: 0 0 20px;
 }
+.wage-emp-names {
+  max-width: 680px;
+  color: var(--muted-foreground);
+  line-height: 1.6;
+}
+.wage-emp-names + .wage-table-scroll,
+.wage-emp-names + .wage-note {
+  margin-top: 12px;
+}
 .wage-emp-body > .wage-table-scroll .wage-table {
   max-width: 640px;
 }

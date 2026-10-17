@@ -1,112 +1,253 @@
 {
-  "state": "delhi",
-  "name": "Delhi",
-  "titleName": "Delhi",
-  "nextRevision": {
-    "expected": "2026-10-01",
-    "missed": ["2025-10-01", "2026-04-01"],
-    "basis": "The 22 October 2019 notification adds dearness allowance twice a year, on 1 April and 1 October, from the six-monthly average consumer price index. The Labour Department's current-rates page, checked on 16 October 2026, lists no order after the one effective from 1 April 2025, so the revisions due on 1 October 2025, 1 April 2026 and 1 October 2026 had not been published by then."
+ "state": "delhi",
+ "name": "Delhi",
+ "titleName": "Delhi",
+ "nextRevision": {
+  "expected": "2026-10-01",
+  "missed": [
+   "2025-10-01",
+   "2026-04-01"
+  ],
+  "basis": "The 22 October 2019 notification adds dearness allowance twice a year, on 1 April and 1 October, from the six-monthly average consumer price index. The Labour Department's current-rates page, checked on 16 October 2026, lists no order after the one effective from 1 April 2025, so the revisions due on 1 October 2025, 1 April 2026 and 1 October 2026 had not been published by then."
+ },
+ "checked": {
+  "on": "2026-10-17"
+ },
+ "sources": [
+  {
+   "id": "dl-2025-04",
+   "kind": "order",
+   "title": "Order for enhancement of minimum wages with effect from 1 April 2025",
+   "number": "F.No.(142)/02/MW/VII/Part file/211-241",
+   "date": "2025-04-15",
+   "authority": "Office of the Commissioner (Labour), Government of NCT of Delhi",
+   "legalBasis": "Minimum Wages Act, 1948; dearness allowance under notification 12(142)/02/MW/VII/3636 dated 22 October 2019",
+   "url": "https://labour.delhi.gov.in/sites/default/files/Labour/generic_multiple_files/da15april2025.pdf",
+   "listing": "https://labour.delhi.gov.in/labour/current-minimum-wage-rate",
+   "language": "en",
+   "sha256": "ecb24b6d068ee93143b779f758e67c68caec0e46285bcc42fe006f878320cbf6",
+   "sizeKb": 751,
+   "retrievedOn": "2026-10-16"
   },
-  "checked": { "on": "2026-10-16" },
-  "sources": [
+  {
+   "id": "dl-2024-10",
+   "kind": "order",
+   "title": "Order for enhancement of minimum wages with effect from 1 October 2024",
+   "number": "F.No.(142)/02/MW/VII/Part file/3478-3495",
+   "date": "2024-09-26",
+   "authority": "Office of the Commissioner (Labour), Government of NCT of Delhi",
+   "legalBasis": "Minimum Wages Act, 1948; dearness allowance under notification 12(142)/02/MW/VII/3636 dated 22 October 2019",
+   "url": "https://labour.delhi.gov.in/sites/default/files/Labour/generic_multiple_files/da_oct_2024.pdf",
+   "listing": "https://labour.delhi.gov.in/labour/current-minimum-wage-rate",
+   "language": "en",
+   "sha256": "a5816572c0ebcad99724e8675b7502abf25500f4dd018e42bad51dc1788036ed",
+   "sizeKb": 783,
+   "retrievedOn": "2026-10-16"
+  },
+  {
+   "id": "dl-2019-gazette",
+   "kind": "notification",
+   "title": "Revision of minimum rates of wages for the classes of workers in all scheduled employments (Delhi Gazette, Extraordinary)",
+   "number": "F. 13(1)/2018/MW/Lab/3602",
+   "date": "2019-10-22",
+   "authority": "Labour Department, Government of NCT of Delhi",
+   "legalBasis": "Minimum Wages Act, 1948, section 5(2), after the Minimum Wages Advisory Board under section 7, on the Supreme Court's order of 31 October 2018 in SLP 26185-26228 of 2018. Applies to the classes of workers in all the scheduled employments of notification F.12(1)142/11/MW/Lab/2023-2047 of 26 July 2011. DA orders cite the department's order on it as 12(142)/02/MW/VII/3636.",
+   "url": "https://labour.delhi.gov.in/sites/default/files/important-news/gazette_notification.pdf",
+   "listing": "https://labour.delhi.gov.in/labour/gazette-notification-dated-22nd-october-2019-revision-minimum-rates-wages-class",
+   "language": "en",
+   "sha256": "0fcece8175ca4f7430fd8a520650aabc42eef3f912c4d1293f1778e4a58d3675",
+   "sizeKb": 167,
+   "retrievedOn": "2026-10-17"
+  },
+  {
+   "id": "dl-2011-schedules",
+   "kind": "notification",
+   "title": "Minimum wages in Delhi's 25 scheduled employments, notifications 2023 to 2047 of 26 July 2011 (the list of employments; the rates in it are superseded)",
+   "number": "F.12(1)142/11/MW/Lab/2023-2047",
+   "date": "2011-07-26",
+   "authority": "Labour Department, Government of NCT of Delhi",
+   "legalBasis": "Minimum Wages Act, 1948, section 5(2). The department's compiled file of the 25 notifications, one for each scheduled employment, in English and Hindi.",
+   "url": "https://labour.delhi.gov.in/sites/default/files/circulars-orders/notification_minimum_wages.pdf",
+   "listing": "https://labour.delhi.gov.in/labour/notification-regarding-minimum-wages-dated-26072011",
+   "language": "en",
+   "sha256": "4573b194929db75bbbda1974bd2d3edc41b8ecec048303f0c5486e44e6569392",
+   "sizeKb": 861,
+   "retrievedOn": "2026-10-17"
+  }
+ ],
+ "tables": [
+  {
+   "id": "all-scheduled-employments",
+   "headline": true,
+   "title": "All scheduled employments",
+   "appliesTo": "Every scheduled employment in Delhi: unskilled, semi-skilled and skilled workers, and clerical and supervisory staff.",
+   "sources": [
+    "dl-2025-04",
+    "dl-2019-gazette"
+   ],
+   "effectiveFrom": "2025-04-01",
+   "zones": [
     {
-      "id": "dl-2025-04",
-      "kind": "order",
-      "title": "Order for enhancement of minimum wages with effect from 1 April 2025",
-      "number": "F.No.(142)/02/MW/VII/Part file/211-241",
-      "date": "2025-04-15",
-      "authority": "Office of the Commissioner (Labour), Government of NCT of Delhi",
-      "legalBasis": "Minimum Wages Act, 1948; dearness allowance under notification 12(142)/02/MW/VII/3636 dated 22 October 2019",
-      "url": "https://labour.delhi.gov.in/sites/default/files/Labour/generic_multiple_files/da15april2025.pdf",
-      "listing": "https://labour.delhi.gov.in/labour/current-minimum-wage-rate",
-      "language": "en",
-      "sha256": "ecb24b6d068ee93143b779f758e67c68caec0e46285bcc42fe006f878320cbf6",
-      "sizeKb": 751,
-      "retrievedOn": "2026-10-16"
+     "id": "delhi",
+     "name": "All of Delhi",
+     "areas": "One rate for the whole National Capital Territory of Delhi."
+    }
+   ],
+   "daily": "stated",
+   "basicLabel": "Rate fixed on 22 Oct 2019",
+   "vdaLabel": "DA added since",
+   "vdaNote": "Delhi's order gives the rate in force and the DA added at each revision. Here, the base is the rate fixed by the 22 October 2019 notification, and DA is everything added since.",
+   "rates": [
+    {
+     "zone": "delhi",
+     "skill": "unskilled",
+     "basic": 14842,
+     "vda": 3614,
+     "monthly": 18456,
+     "daily": 710
     },
     {
-      "id": "dl-2024-10",
-      "kind": "order",
-      "title": "Order for enhancement of minimum wages with effect from 1 October 2024",
-      "number": "F.No.(142)/02/MW/VII/Part file/3478-3495",
-      "date": "2024-09-26",
-      "authority": "Office of the Commissioner (Labour), Government of NCT of Delhi",
-      "legalBasis": "Minimum Wages Act, 1948; dearness allowance under notification 12(142)/02/MW/VII/3636 dated 22 October 2019",
-      "url": "https://labour.delhi.gov.in/sites/default/files/Labour/generic_multiple_files/da_oct_2024.pdf",
-      "listing": "https://labour.delhi.gov.in/labour/current-minimum-wage-rate",
-      "language": "en",
-      "sha256": "a5816572c0ebcad99724e8675b7502abf25500f4dd018e42bad51dc1788036ed",
-      "sizeKb": 783,
-      "retrievedOn": "2026-10-16"
+     "zone": "delhi",
+     "skill": "semi-skilled",
+     "basic": 16341,
+     "vda": 4030,
+     "monthly": 20371,
+     "daily": 784
     },
     {
-      "id": "dl-2019-10",
-      "kind": "order",
-      "title": "Revised minimum rates of wages in scheduled employments",
-      "number": "F.No.12(142)/02/MW/VII/3636",
-      "date": "2019-10-23",
-      "authority": "Labour Department, Government of NCT of Delhi",
-      "legalBasis": "Minimum Wages Act, 1948, section 5(1)(b), after the Supreme Court's order of 14 October 2019. The document is headed 'Order' and signed on 23 October 2019; its rates apply from the date of notification, 22 October 2019, and later orders cite it as dated 22 October 2019",
-      "url": "https://labour.delhi.gov.in/sites/default/files/Labour/generic_multiple_files/5da.pdf",
-      "listing": "https://labour.delhi.gov.in/labour/current-minimum-wage-rate",
-      "language": "en",
-      "sha256": "58a1a943552bd249af4cbaa9f6ffdb784185af9b5eab3d2009cfcec28aad9637",
-      "sizeKb": 965,
-      "retrievedOn": "2026-10-16"
-    }
-  ],
-  "tables": [
-    {
-      "id": "all-scheduled-employments",
-      "headline": true,
-      "title": "All scheduled employments",
-      "appliesTo": "Every scheduled employment in Delhi: unskilled, semi-skilled and skilled workers, and clerical and supervisory staff.",
-      "sources": ["dl-2025-04", "dl-2019-10"],
-      "effectiveFrom": "2025-04-01",
-      "zones": [{ "id": "delhi", "name": "All of Delhi", "areas": "One rate for the whole National Capital Territory of Delhi." }],
-      "daily": "stated",
-      "basicLabel": "Rate fixed on 22 Oct 2019",
-      "vdaLabel": "DA added since",
-      "vdaNote": "Delhi's order gives the rate in force and the DA added at each revision. Here, the base is the rate fixed by the 22 October 2019 notification, and DA is everything added since.",
-      "rates": [
-        { "zone": "delhi", "skill": "unskilled", "basic": 14806, "vda": 3650, "monthly": 18456, "daily": 710 },
-        { "zone": "delhi", "skill": "semi-skilled", "basic": 16284, "vda": 4087, "monthly": 20371, "daily": 784 },
-        { "zone": "delhi", "skill": "skilled", "basic": 17924, "vda": 4487, "monthly": 22411, "daily": 862 },
-        { "zone": "delhi", "skill": "clerical-non-matric", "basic": 16284, "vda": 4087, "monthly": 20371, "daily": 784 },
-        { "zone": "delhi", "skill": "clerical-matric", "basic": 17924, "vda": 4487, "monthly": 22411, "daily": 862 },
-        { "zone": "delhi", "skill": "clerical-graduate", "basic": 19522, "vda": 4834, "monthly": 24356, "daily": 937 }
-      ]
-    }
-  ],
-  "history": [
-    {
-      "table": "all-scheduled-employments",
-      "effectiveFrom": "2024-10-01",
-      "effectiveTo": "2025-03-31",
-      "source": "dl-2024-10",
-      "rates": [
-        { "zone": "delhi", "skill": "unskilled", "monthly": 18066, "daily": 695 },
-        { "zone": "delhi", "skill": "semi-skilled", "monthly": 19929, "daily": 767 },
-        { "zone": "delhi", "skill": "skilled", "monthly": 21917, "daily": 843 }
-      ]
+     "zone": "delhi",
+     "skill": "skilled",
+     "basic": 17991,
+     "vda": 4420,
+     "monthly": 22411,
+     "daily": 862
     },
     {
-      "table": "all-scheduled-employments",
-      "effectiveFrom": "2024-04-01",
-      "effectiveTo": "2024-09-30",
-      "source": "dl-2024-10",
-      "rates": [
-        { "zone": "delhi", "skill": "unskilled", "monthly": 17988 },
-        { "zone": "delhi", "skill": "semi-skilled", "monthly": 19825 },
-        { "zone": "delhi", "skill": "skilled", "monthly": 21813 }
-      ]
+     "zone": "delhi",
+     "skill": "clerical-non-matric",
+     "basic": 16341,
+     "vda": 4030,
+     "monthly": 20371,
+     "daily": 784
+    },
+    {
+     "zone": "delhi",
+     "skill": "clerical-matric",
+     "basic": 17991,
+     "vda": 4420,
+     "monthly": 22411,
+     "daily": 862
+    },
+    {
+     "zone": "delhi",
+     "skill": "clerical-graduate",
+     "basic": 19572,
+     "vda": 4784,
+     "monthly": 24356,
+     "daily": 937
     }
-  ],
-  "verification": [
-    "2026-10-16: Labour Department, GNCTD, 'Current Minimum Wage Rate' page (labour.delhi.gov.in/labour/current-minimum-wage-rate, page last updated 14/10/2026) lists order F.No.(142)/02/MW/VII/Part file/211-241 dated 15/04/2025, w.e.f. 01/04/2025, as its most recent minimum wage order.",
-    "2026-10-16: da15april2025.pdf (text layer) read in full. Rates from 01.04.2025: unskilled 18456 per month and 710 per day, semi-skilled 20371 and 784, skilled 22411 and 862; clerical non-matriculate 20371 and 784, matriculate not graduate 22411 and 862, graduate and above 24356 and 937. DA added from 01.04.2025: 390, 442, 494 (clerical 442, 494, 520) on rates as on 01.10.2024 of 18066, 19929, 21917 (clerical 19929, 21917, 23836). CPI average July-December 2024: 413.42, an increase of 11.32 points. Signed K.M. Singh, Joint Labour Commissioner (HQ). The order's own number field is blank in the scan; the number is from the department's listing.",
-    "2026-10-16: 5da.pdf (scanned, read by OCR and checked by eye). Headed 'ORDER', number 12(142)/02/MW/VII/3636, signed and dated by hand 23/10/2019; the department's listing gives the date as 23-10-2019. Rates from 22.10.2019 (the date of notification): unskilled 14806 per month and 569 per day, semi-skilled 16284 and 626, skilled 17924 and 689; clerical non-matriculate 16284, matriculate not graduate 17924, graduate and above 19522. DA due on 1 April and 1 October from six-monthly CPI averages.",
-    "2026-10-16: da_oct_2024.pdf (scanned, OCR and checked by eye). Rates as on 01.04.2024: 17988, 19825, 21813. From 01.10.2024: 18066 and 695, 19929 and 767, 21917 and 843; clerical 19929, 21917, 23836. The order itself prints 21,927 for matriculates from 01.10.2024 (a typo in the order, checked at 300 dpi); 21813 + 104 = 21917, and the 15 April 2025 order uses 21917 as the rate on 01.10.2024.",
-    "DA added since 2019 is the rate in force minus the 22 October 2019 rate: 18456 - 14806 = 3650; 20371 - 16284 = 4087; 22411 - 17924 = 4487; 24356 - 19522 = 4834."
+   ]
+  }
+ ],
+ "employments": {
+  "groups": [
+   {
+    "id": "all",
+    "title": "All 25 scheduled employments",
+    "number": "F. 13(1)/2018/MW/Lab/3602",
+    "date": "2019-10-22",
+    "source": "dl-2011-schedules",
+    "table": "all-scheduled-employments",
+    "employments": [
+     "Construction and maintenance of roads, and building operations",
+     "Dal and flour mills",
+     "Stone breaking and stone crushing",
+     "Public motor transport",
+     "Pottery",
+     "Metal working, except foundries and automobile engineering workshops",
+     "Printing presses",
+     "Delhi Transport Corporation",
+     "Textiles, including hosiery, niwar, handloom, lace, thread, name labels, and dyeing and printing",
+     "Chemicals",
+     "Clubs",
+     "Oil mills",
+     "Plastic, rubber and PVC, including cables",
+     "Readymade garments",
+     "Ice factories and cold storage",
+     "Wood working, including saw mills",
+     "Cement working",
+     "Shops and establishments under the Delhi Shops and Establishments Act, 1954, including hotels, restaurants and cinemas, not covered by another employment",
+     "Laundries and dry cleaning",
+     "Agriculture",
+     "Bakery, confectionery, dairy products, fruit and food processing, fruit juices and aerated drinks",
+     "Radio, television, sound equipment, electrical appliances and electronic components",
+     "Every factory not covered by another employment",
+     "Private hospitals and nursing homes",
+     "Private unrecognised teaching institutions"
+    ],
+    "note": "The 2019 notification fixed one set of rates for every employment on Delhi's list of 26 July 2011. Brick kilns, domestic work and sales promotion are not on the list. Work for the central government, such as railways, mines, banks, central public sector companies and cantonments, follows the Centre's minimum wages, not Delhi's."
+   }
   ]
+ },
+ "history": [
+  {
+   "table": "all-scheduled-employments",
+   "effectiveFrom": "2024-10-01",
+   "effectiveTo": "2025-03-31",
+   "source": "dl-2024-10",
+   "rates": [
+    {
+     "zone": "delhi",
+     "skill": "unskilled",
+     "monthly": 18066,
+     "daily": 695
+    },
+    {
+     "zone": "delhi",
+     "skill": "semi-skilled",
+     "monthly": 19929,
+     "daily": 767
+    },
+    {
+     "zone": "delhi",
+     "skill": "skilled",
+     "monthly": 21917,
+     "daily": 843
+    }
+   ]
+  },
+  {
+   "table": "all-scheduled-employments",
+   "effectiveFrom": "2024-04-01",
+   "effectiveTo": "2024-09-30",
+   "source": "dl-2024-10",
+   "rates": [
+    {
+     "zone": "delhi",
+     "skill": "unskilled",
+     "monthly": 17988
+    },
+    {
+     "zone": "delhi",
+     "skill": "semi-skilled",
+     "monthly": 19825
+    },
+    {
+     "zone": "delhi",
+     "skill": "skilled",
+     "monthly": 21813
+    }
+   ]
+  }
+ ],
+ "verification": [
+  "2026-10-16: Labour Department, GNCTD, 'Current Minimum Wage Rate' page (labour.delhi.gov.in/labour/current-minimum-wage-rate, page last updated 14/10/2026) lists order F.No.(142)/02/MW/VII/Part file/211-241 dated 15/04/2025, w.e.f. 01/04/2025, as its most recent minimum wage order.",
+  "2026-10-16: da15april2025.pdf (text layer) read in full. Rates from 01.04.2025: unskilled 18456 per month and 710 per day, semi-skilled 20371 and 784, skilled 22411 and 862; clerical non-matriculate 20371 and 784, matriculate not graduate 22411 and 862, graduate and above 24356 and 937. DA added from 01.04.2025: 390, 442, 494 (clerical 442, 494, 520) on rates as on 01.10.2024 of 18066, 19929, 21917 (clerical 19929, 21917, 23836). CPI average July-December 2024: 413.42, an increase of 11.32 points. Signed K.M. Singh, Joint Labour Commissioner (HQ). The order's own number field is blank in the scan; the number is from the department's listing.",
+  "2026-10-16, corrected 2026-10-17: 5da.pdf (order 12(142)/02/MW/VII/3636, signed 23/10/2019; page 2 read by eye at 100 dpi). Its figures 14806, 16284, 17924 (clerical 16284, 17924, 19522) sit in the column 'Minimum Wages after adding DA w.e.f. 01.10.2019 to 22.10.2019 / date of notification': the 2017 rates plus DA, paid up to the notification. They are not the rates the 22 October 2019 notification fixed, which this file first recorded them as. The order is no longer cited.",
+  "2026-10-16: da_oct_2024.pdf (scanned, OCR and checked by eye). Rates as on 01.04.2024: 17988, 19825, 21813. From 01.10.2024: 18066 and 695, 19929 and 767, 21917 and 843; clerical 19929, 21917, 23836. The order itself prints 21,927 for matriculates from 01.10.2024 (a typo in the order, checked at 300 dpi); 21813 + 104 = 21917, and the 15 April 2025 order uses 21917 as the rate on 01.10.2024.",
+  "DA added since 2019 is the rate in force minus the rate fixed on 22 October 2019: 18456 - 14842 = 3614; 20371 - 16341 = 4030; 22411 - 17991 = 4420; clerical 20371 - 16341 = 4030, 22411 - 17991 = 4420, 24356 - 19572 = 4784.",
+  "2026-10-17: gazette_notification.pdf (Delhi Gazette Extraordinary Part IV No. 285, 22 October 2019, notification F. 13(1)/2018/MW/Lab/3602; English pages 3-4 from the text layer) fixes for 'All Schedule employment': unskilled 14,842 a month and 571 a day, semi-skilled 16,341 and 629, skilled 17,991 and 692; clerical and supervisory: non-matriculates 16,341 and 629, matriculate not graduate 17,991 and 692, graduate and above 19,572 and 753. DA per CPI point 1.35, 1.50, 1.65, 1.50, 1.65, 1.80, adjusted 1 April and 1 October. Order 3786-3809 of 7 December 2020 (4da.pdf) labels its base column 'Rates vide notification dated 22.10.19' with the same figures.",
+  "2026-10-17: the 2019 notification covers the classes of workers 'mentioned in all the Schedule employments as mentioned in earlier notification No. F.12(1)142/11/MW/Lab/2023-2047 dated 26th July'. That is 25 notifications (2023 to 2047), one per employment, compiled in notification_minimum_wages.pdf (214 pages; English pages 1-103 read from the text layer; printing presses, No. 2029, appears twice). Agriculture (2042) and the Delhi Transport Corporation (2030) are on the list. Brick kilns, domestic work and sales promotion are not. No employment added since 2011 was found on the department's site; the Delhi government's gazette search (it.delhigovt.nic.in) returned HTTP 503.",
+  "2026-10-17: labour.delhi.gov.in 'Current Minimum Wage Rate' (last updated 16/10/2026) still lists the order of 15 April 2025 as the newest."
+ ]
 }

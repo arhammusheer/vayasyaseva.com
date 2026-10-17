@@ -99,7 +99,7 @@ test('integrity: each scheduled employment shows its rates one way, with a figur
     ...uk,
     employments: {
       ...uk.employments,
-      groups: [...groups.filter((g) => g.id !== 'shops'), { ...shops, unpublished: true, rows: [{ label: 'Unskilled', basic: [12539] }] }],
+      groups: [...groups.filter((g) => g.id !== 'shops'), { ...shops, unpublished: true, rows: [{ label: 'Unskilled', values: [12539] }] }],
     },
   };
   const problems = wageIntegrityProblems(broken);

@@ -63,6 +63,7 @@ const historySchema = z.strictObject({
 
 const employmentGroupSchema = z.strictObject({
   id: z.string().regex(/^[a-z0-9-]+$/),
+  title: z.string().min(1).optional(),
   number: z.string().min(1),
   date: isoDate,
   employments: z.array(z.string().min(1)).min(1),
@@ -70,7 +71,8 @@ const employmentGroupSchema = z.strictObject({
   table: z.string().min(1).optional(),
   unpublished: z.literal(true).optional(),
   columns: z.array(z.strictObject({ name: z.string().min(1), areas: z.string().min(1).optional() })).min(2).optional(),
-  rows: z.array(z.strictObject({ label: z.string().min(1), group: z.string().min(1).optional(), basic: z.array(rupees).min(1) })).min(1).optional(),
+  rows: z.array(z.strictObject({ label: z.string().min(1), group: z.string().min(1).optional(), values: z.array(rupees).min(1) })).min(1).optional(),
+  unit: z.string().min(1).optional(),
   allowance: z.strictObject({ amount: rupees, label: z.string().min(1), effectiveFrom: isoDate, source: z.string().min(1) }).optional(),
   note: z.string().min(1).optional(),
 });
@@ -85,7 +87,7 @@ export const wageStateSchema = z.strictObject({
   tables: z.array(tableSchema).min(1),
   employments: z
     .strictObject({
-      vda: z.strictObject({ amount: rupees, effectiveFrom: isoDate, source: z.string().min(1) }),
+      vda: z.strictObject({ amount: rupees, effectiveFrom: isoDate, source: z.string().min(1) }).optional(),
       groups: z.array(employmentGroupSchema).min(1),
     })
     .optional(),
@@ -142,8 +144,8 @@ export function wageIntegrityProblems(state: WageState): string[] {
   }
   if (state.employments) {
     const { vda, groups } = state.employments;
-    if (!sourceIds.has(vda.source)) problems.push(`employments: unknown VDA source ${vda.source}`);
-    if (vda.effectiveFrom > state.checked.on) problems.push(`employments: VDA effective ${vda.effectiveFrom} is after the check (${state.checked.on})`);
+    if (vda && !sourceIds.has(vda.source)) problems.push(`employments: unknown VDA source ${vda.source}`);
+    if (vda && vda.effectiveFrom > state.checked.on) problems.push(`employments: VDA effective ${vda.effectiveFrom} is after the check (${state.checked.on})`);
     if (new Set(groups.map((g) => g.id)).size !== groups.length) problems.push("employments: duplicate group id");
     const seen = new Set<string>();
     for (const g of groups) {
@@ -152,10 +154,12 @@ export function wageIntegrityProblems(state: WageState): string[] {
       if ([g.table, g.rows, g.unpublished].filter(Boolean).length !== 1) problems.push(`${where}: needs exactly one of table, rows or unpublished`);
       if (g.table && !tableIds.has(g.table)) problems.push(`${where}: unknown table ${g.table}`);
       if (g.rows && !g.source) problems.push(`${where}: rows need the notification they come from (source)`);
+      // Without a schedule VDA there is nothing to add, so every figure must be the full rate in a stated unit.
+      if (g.rows && !vda && !g.unit) problems.push(`${where}: no schedule VDA, so the rows need their unit`);
       for (const id of [g.source, g.allowance?.source]) if (id && !sourceIds.has(id)) problems.push(`${where}: unknown source ${id}`);
       if (g.allowance && g.allowance.effectiveFrom > state.checked.on) problems.push(`${where}: allowance effective after the check`);
       const width = g.columns?.length ?? 1;
-      for (const r of g.rows ?? []) if (r.basic.length !== width) problems.push(`${where} "${r.label}": ${r.basic.length} figures for ${width} column(s)`);
+      for (const r of g.rows ?? []) if (r.values.length !== width) problems.push(`${where} "${r.label}": ${r.values.length} figures for ${width} column(s)`);
       for (const name of g.employments) {
         if (seen.has(name)) problems.push(`${where}: "${name}" is listed twice`);
         seen.add(name);

@@ -13,6 +13,7 @@ import {
   checkedByLine,
   formatDate,
   formatRupees,
+  formatRupeesAsPrinted,
   formatShortDate,
   formatSize,
   headlineRate,
@@ -23,6 +24,7 @@ import {
   wageStates,
   wageStatus,
   type Skill,
+  type EmploymentGroup,
   type WageState,
   type WageTable,
 } from "@/content/wages";
@@ -321,46 +323,53 @@ function EmploymentSchedule({ state }: { state: WageState }) {
   const schedule = state.employments;
   if (!schedule) return null;
   const s = x.schedule;
-  const vda = formatRupees(schedule.vda.amount);
-  const total = (basic: number) => formatRupees(basic + schedule.vda.amount);
+  const vda = schedule.vda ? formatRupees(schedule.vda.amount) : null;
+  // A group's figures are its basic wage plus the schedule's VDA, unless it states its own unit (a piece or daily rate in full).
+  const addsVda = (g: EmploymentGroup) => Boolean(schedule.vda && !g.unit);
+  const figure = (g: EmploymentGroup, value: number) => (addsVda(g) ? formatRupees(value + schedule.vda!.amount) : formatRupeesAsPrinted(value));
   const count = schedule.groups.reduce((n, g) => n + g.employments.length, 0);
   return (
     <Section id="employments" className="pt-0 pb-12 sm:pb-14 lg:pb-16">
       <div className="wage-split">
         <h2 className="wage-h2">{s.heading}</h2>
         <div>
-          <p className="wage-emp-intro">{s.intro(state.name, count, vda, formatDate(schedule.vda.effectiveFrom))}</p>
+          <p className="wage-emp-intro">{schedule.vda && vda ? s.intro(state.name, count, vda, formatDate(schedule.vda.effectiveFrom)) : s.introOneRate(state.name)}</p>
           <EmploymentFinder label={s.find} hint={s.findHint} noMatch={s.noMatch}>
             <ul className="wage-emp-list">
               {schedule.groups.map((g) => {
                 const table = g.table ? state.tables.find((t) => t.id === g.table) : undefined;
                 const source = g.source ? sourceById(state, g.source) : undefined;
                 const date = formatDate(g.date);
-                const lowest = g.rows ? Math.min(...g.rows.flatMap((r) => r.basic)) : null;
+                const values = g.rows?.flatMap((r) => r.values) ?? [];
+                const lowest = values.length ? Math.min(...values) : null;
                 const summary =
                   lowest !== null
-                    ? s.from(total(lowest))
+                    ? values.length === 1
+                      ? s.only(figure(g, lowest), g.unit)
+                      : s.from(figure(g, lowest), g.unit)
                     : g.allowance
                       ? s.allowance(g.allowance.label, formatRupees(g.allowance.amount))
                       : table
                         ? s.inTable
                         : s.notOnline;
-                const columns = g.columns ?? [{ name: s.perMonth }];
+                const columns = g.columns ?? [{ name: g.unit ?? s.perMonth }];
+                const names = g.employments.join(", ");
                 return (
                   <li key={g.id} data-search={`${g.employments.join(" ")} ${g.rows?.map((r) => r.label).join(" ") ?? ""} ${g.number}`.toLowerCase()}>
                     <details className="wage-emp">
                       <summary>
-                        <span className="wage-emp-name">{g.employments.join(", ")}</span>
+                        <span className="wage-emp-name">{g.title ?? names}</span>
                         <span className={lowest === null && !g.allowance ? "wage-emp-rate is-quiet" : "wage-emp-rate"}>{summary}</span>
                       </summary>
                       <div className="wage-emp-body">
+                        {g.title && <p className="wage-emp-names">{names}.</p>}
                         {g.rows && (
                           <div className="wage-table-scroll">
                             <table className="wage-table is-compact">
-                              <caption className="sr-only">{s.caption(g.employments.join(", "), state.name, vda)}</caption>
+                              <caption className="sr-only">{addsVda(g) && vda ? s.caption(g.title ?? names, state.name, vda) : s.captionStated(g.title ?? names, state.name, g.unit ?? s.perMonth)}</caption>
                               <thead>
                                 <tr>
-                                  <th scope="col">{x.table.skill}</th>
+                                  <th scope="col">{g.unit ? s.work : x.table.skill}</th>
                                   {columns.map((c) => (
                                     <th scope="col" key={c.name}>
                                       {c.name}
@@ -382,8 +391,8 @@ function EmploymentSchedule({ state }: { state: WageState }) {
                                       )}
                                       <tr>
                                         <th scope="row">{r.label}</th>
-                                        {r.basic.map((b, j) => (
-                                          <td key={j}>{total(b)}</td>
+                                        {r.values.map((v, j) => (
+                                          <td key={j}>{figure(g, v)}</td>
                                         ))}
                                       </tr>
                                     </Fragment>
@@ -412,13 +421,14 @@ function EmploymentSchedule({ state }: { state: WageState }) {
                             .
                           </p>
                         )}
-                        {g.unpublished && !g.allowance && <p className="wage-note">{s.unpublished(g.number, date, vda)}</p>}
+                        {g.unpublished && !g.allowance && vda && <p className="wage-note">{s.unpublished(g.number, date, vda)}</p>}
                         {g.note && <p className="wage-note">{g.note}</p>}
                         {g.rows && (
                           <p className="wage-source">
-                            {s.plusVda(vda)} {s.notification(g.number, date)}.{" "}
+                            {addsVda(g) && vda ? `${s.plusVda(vda)} ` : ""}
+                            {s.notification(g.number, date)}.{" "}
                             {source && (
-                              <a href={source.url} lang="hi-IN">
+                              <a href={source.url} lang={source.language === "hi" ? "hi-IN" : "en-IN"}>
                                 {x.pdf(source.language === "hi", source.sizeKb ? formatSize(source.sizeKb) : null)}
                               </a>
                             )}

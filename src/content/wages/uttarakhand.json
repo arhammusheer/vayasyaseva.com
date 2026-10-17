@@ -502,35 +502,35 @@
     "rows": [
      {
       "label": "Unskilled",
-      "basic": [
+      "values": [
        12539,
        12391
       ]
      },
      {
       "label": "Semi-skilled",
-      "basic": [
+      "values": [
        13280,
        13110
       ]
      },
      {
       "label": "Skilled",
-      "basic": [
+      "values": [
        14023,
        13838
       ]
      },
      {
       "label": "Clerical grade I",
-      "basic": [
+      "values": [
        15275,
        15035
       ]
      },
      {
       "label": "Clerical grade II",
-      "basic": [
+      "values": [
        14340,
        14139
       ]
@@ -549,31 +549,31 @@
     "rows": [
      {
       "label": "Unskilled",
-      "basic": [
+      "values": [
        12500
       ]
      },
      {
       "label": "Semi-skilled",
-      "basic": [
+      "values": [
        13226
       ]
      },
      {
       "label": "Skilled",
-      "basic": [
+      "values": [
        13961
       ]
      },
      {
       "label": "Clerical grade I",
-      "basic": [
+      "values": [
        15173
       ]
      },
      {
       "label": "Clerical grade II",
-      "basic": [
+      "values": [
        14265
       ]
      }
@@ -600,31 +600,31 @@
     "rows": [
      {
       "label": "Unskilled",
-      "basic": [
+      "values": [
        12391
       ]
      },
      {
       "label": "Semi-skilled",
-      "basic": [
+      "values": [
        13110
       ]
      },
      {
       "label": "Skilled",
-      "basic": [
+      "values": [
        13838
       ]
      },
      {
       "label": "Clerical grade I",
-      "basic": [
+      "values": [
        15035
       ]
      },
      {
       "label": "Clerical grade II",
-      "basic": [
+      "values": [
        14139
       ]
      }
@@ -674,37 +674,37 @@
     "rows": [
      {
       "label": "Unskilled",
-      "basic": [
+      "values": [
        12391
       ]
      },
      {
       "label": "Semi-skilled",
-      "basic": [
+      "values": [
        13110
       ]
      },
      {
       "label": "Skilled",
-      "basic": [
+      "values": [
        13838
       ]
      },
      {
       "label": "Highly skilled",
-      "basic": [
+      "values": [
        15035
       ]
      },
      {
       "label": "Clerical grade I",
-      "basic": [
+      "values": [
        15035
       ]
      },
      {
       "label": "Clerical grade II",
-      "basic": [
+      "values": [
        14139
       ]
      }
@@ -721,31 +721,31 @@
     "rows": [
      {
       "label": "Unskilled",
-      "basic": [
+      "values": [
        12391
       ]
      },
      {
       "label": "Semi-skilled",
-      "basic": [
+      "values": [
        13110
       ]
      },
      {
       "label": "Skilled",
-      "basic": [
+      "values": [
        13838
       ]
      },
      {
       "label": "Clerical grade I",
-      "basic": [
+      "values": [
        15035
       ]
      },
      {
       "label": "Clerical grade II",
-      "basic": [
+      "values": [
        14139
       ]
      }
@@ -762,37 +762,37 @@
     "rows": [
      {
       "label": "Unskilled",
-      "basic": [
+      "values": [
        12539
       ]
      },
      {
       "label": "Semi-skilled",
-      "basic": [
+      "values": [
        13280
       ]
      },
      {
       "label": "Skilled grade II",
-      "basic": [
+      "values": [
        14023
       ]
      },
      {
       "label": "Skilled grade I",
-      "basic": [
+      "values": [
        14340
       ]
      },
      {
       "label": "Clerical grade I",
-      "basic": [
+      "values": [
        15275
       ]
      },
      {
       "label": "Clerical grade II",
-      "basic": [
+      "values": [
        14340
       ]
      }
@@ -811,31 +811,31 @@
     "rows": [
      {
       "label": "Unskilled",
-      "basic": [
+      "values": [
        12539
       ]
      },
      {
       "label": "Semi-skilled",
-      "basic": [
+      "values": [
        13280
       ]
      },
      {
       "label": "Skilled",
-      "basic": [
+      "values": [
        14023
       ]
      },
      {
       "label": "Clerical grade I",
-      "basic": [
+      "values": [
        15275
       ]
      },
      {
       "label": "Clerical grade II",
-      "basic": [
+      "values": [
        14340
       ]
      }
@@ -860,49 +860,49 @@
     "rows": [
      {
       "label": "Unskilled",
-      "basic": [
+      "values": [
        12539,
        12391
       ]
      },
      {
       "label": "Semi-skilled",
-      "basic": [
+      "values": [
        13280,
        13110
       ]
      },
      {
       "label": "Skilled",
-      "basic": [
+      "values": [
        14023,
        13838
       ]
      },
      {
       "label": "Highly skilled B: rewinder, operator",
-      "basic": [
+      "values": [
        14340,
        14139
       ]
      },
      {
       "label": "Highly skilled A: chief operator",
-      "basic": [
+      "values": [
        15275,
        15035
       ]
      },
      {
       "label": "Clerical grade I",
-      "basic": [
+      "values": [
        15275,
        15035
       ]
      },
      {
       "label": "Clerical grade II",
-      "basic": [
+      "values": [
        14340,
        14139
       ]
@@ -928,21 +928,21 @@
     "rows": [
      {
       "label": "Unskilled",
-      "basic": [
+      "values": [
        12539,
        12391
       ]
      },
      {
       "label": "Semi-skilled",
-      "basic": [
+      "values": [
        13280,
        13110
       ]
      },
      {
       "label": "Skilled",
-      "basic": [
+      "values": [
        14023,
        13838
       ]
@@ -968,35 +968,35 @@
     "rows": [
      {
       "label": "Unskilled",
-      "basic": [
+      "values": [
        12539,
        12384
       ]
      },
      {
       "label": "Semi-skilled",
-      "basic": [
+      "values": [
        13280,
        13110
       ]
      },
      {
       "label": "Skilled",
-      "basic": [
+      "values": [
        14023,
        13838
       ]
      },
      {
       "label": "Clerical grade I",
-      "basic": [
+      "values": [
        15275,
        15035
       ]
      },
      {
       "label": "Clerical grade II",
-      "basic": [
+      "values": [
        14340,
        14139
       ]
@@ -1023,49 +1023,49 @@
     "rows": [
      {
       "label": "Peon, room boy, helper, gardener, kahar, jamadar",
-      "basic": [
+      "values": [
        12500
       ]
      },
      {
       "label": "Labour in-charge, electrician, cook",
-      "basic": [
+      "values": [
        12685
       ]
      },
      {
       "label": "Accountant, munim, cashier, clerk, typist, armed guard: graduate",
-      "basic": [
+      "values": [
        13064
       ]
      },
      {
       "label": "Accountant, munim, cashier, clerk, typist, armed guard: not a graduate",
-      "basic": [
+      "values": [
        12879
       ]
      },
      {
       "label": "Assistant manager, supervisor, head clerk, office assistant: graduate",
-      "basic": [
+      "values": [
        13250
       ]
      },
      {
       "label": "Assistant manager, supervisor, head clerk, office assistant: not a graduate",
-      "basic": [
+      "values": [
        13156
       ]
      },
      {
       "label": "Manager, deputy manager: graduate",
-      "basic": [
+      "values": [
        13443
       ]
      },
      {
       "label": "Manager, deputy manager: not a graduate",
-      "basic": [
+      "values": [
        13350
       ]
      }
@@ -1103,7 +1103,7 @@
      {
       "label": "Unskilled",
       "group": "Fewer than 10 workers",
-      "basic": [
+      "values": [
        12816,
        12159
       ]
@@ -1111,7 +1111,7 @@
      {
       "label": "Semi-skilled",
       "group": "Fewer than 10 workers",
-      "basic": [
+      "values": [
        13071,
        12360
       ]
@@ -1119,7 +1119,7 @@
      {
       "label": "Skilled",
       "group": "Fewer than 10 workers",
-      "basic": [
+      "values": [
        13335,
        12554
       ]
@@ -1127,7 +1127,7 @@
      {
       "label": "Unskilled",
       "group": "10 or more workers",
-      "basic": [
+      "values": [
        13071,
        12423
       ]
@@ -1135,7 +1135,7 @@
      {
       "label": "Semi-skilled",
       "group": "10 or more workers",
-      "basic": [
+      "values": [
        13335,
        12624
       ]
@@ -1143,7 +1143,7 @@
      {
       "label": "Skilled",
       "group": "10 or more workers",
-      "basic": [
+      "values": [
        13605,
        12816
       ]
@@ -1151,7 +1151,7 @@
      {
       "label": "Highly skilled",
       "group": "10 or more workers",
-      "basic": [
+      "values": [
        13991,
        13071
       ]
@@ -1159,7 +1159,7 @@
      {
       "label": "Unskilled",
       "group": "Star hotels",
-      "basic": [
+      "values": [
        13466,
        13071
       ]
@@ -1167,7 +1167,7 @@
      {
       "label": "Semi-skilled",
       "group": "Star hotels",
-      "basic": [
+      "values": [
        14246,
        13605
       ]
@@ -1175,7 +1175,7 @@
      {
       "label": "Skilled",
       "group": "Star hotels",
-      "basic": [
+      "values": [
        15035,
        14123
       ]
@@ -1183,7 +1183,7 @@
      {
       "label": "Highly skilled",
       "group": "Star hotels",
-      "basic": [
+      "values": [
        16071,
        14773
       ]
@@ -1201,49 +1201,49 @@
     "rows": [
      {
       "label": "Peon, rickshaw driver, gardener, cleaner, beldar, aya, bearer, caretaker",
-      "basic": [
+      "values": [
        12391
       ]
      },
      {
       "label": "Daftari, mason, cook",
-      "basic": [
+      "values": [
        12763
       ]
      },
      {
       "label": "Bus or truck driver, carpenter, plumber, electrician, lab assistant, tailor, nurse, compounder, armed guard",
-      "basic": [
+      "values": [
        13110
       ]
      },
      {
       "label": "Clerk or typist, up to intermediate",
-      "basic": [
+      "values": [
        13396
       ]
      },
      {
       "label": "Clerk or typist, graduate",
-      "basic": [
+      "values": [
        13675
       ]
      },
      {
       "label": "Librarian, cashier",
-      "basic": [
+      "values": [
        13960
       ]
      },
      {
       "label": "Junior accountant",
-      "basic": [
+      "values": [
        14254
       ]
      },
      {
       "label": "Senior accountant: B.Com and five years in accounts",
-      "basic": [
+      "values": [
        14819
       ]
      }
@@ -1261,7 +1261,7 @@
     "rows": [
      {
       "label": "Unskilled",
-      "basic": [
+      "values": [
        12391
       ]
      }
@@ -1279,31 +1279,31 @@
     "rows": [
      {
       "label": "Unskilled",
-      "basic": [
+      "values": [
        12716
       ]
      },
      {
       "label": "Semi-skilled",
-      "basic": [
+      "values": [
        12863
       ]
      },
      {
       "label": "Skilled",
-      "basic": [
+      "values": [
        12986
       ]
      },
      {
       "label": "Clerical grade I",
-      "basic": [
+      "values": [
        13195
       ]
      },
      {
       "label": "Clerical grade II",
-      "basic": [
+      "values": [
        13049
       ]
      }

@@ -1,46 +1,13 @@
-import { NextRequest, NextResponse } from "next/server";
-import { agentJobsRequestSchema } from "@/lib/talent-intake/contract";
-import { limitAgentRequest } from "@/lib/talent-intake/agent";
-import { AGENT_LANGUAGE_SOURCES } from "@/lib/talent-intake/rules";
-import { newRef } from "@/lib/talent-intake/server";
-import { forwardSubmission, unavailable } from "@/lib/talent-intake/submit";
+import type { NextRequest } from "next/server";
+import { runSubmission } from "@/server/submissions/pipeline";
+import { agentJobsRoute } from "@/server/submissions/types/job-application";
 
 export const runtime = "nodejs";
 
 /**
- * Open route for AI agents: a text-only job application in one request, no
- * Turnstile. Documented in /openapi/v1.json and /llms.txt. Files go through
- * /api/agent/jobs/start and /api/agent/jobs/submit instead.
+ * Open route for AI agents: a text-only job application in one request, no Turnstile.
+ * A thin adapter: the work is src/server/submissions (agentJobsRoute).
  */
-export async function POST(request: NextRequest) {
-  const parsed = agentJobsRequestSchema.safeParse(await request.json().catch(() => null));
-  if (!parsed.success) {
-    return NextResponse.json(
-      { error: "invalid_request", fields: parsed.error.issues.map((i) => ({ path: i.path.join("."), message: i.message })) },
-      { status: 400 },
-    );
-  }
-  const { language, role, agent, phone, text } = parsed.data;
-
-  const { limited, release } = limitAgentRequest(request, phone);
-  if (limited) return limited;
-
-  try {
-    return await forwardSubmission(
-      {
-        ref: newRef(),
-        source: AGENT_LANGUAGE_SOURCES[language],
-        role,
-        hub: null,
-        channel: "agent",
-        agentName: agent?.name ?? null,
-        files: [],
-      },
-      phone,
-      text,
-    );
-  } catch (error) {
-    release();
-    return unavailable("agent/jobs", error);
-  }
+export function POST(request: NextRequest) {
+  return runSubmission(agentJobsRoute, request);
 }

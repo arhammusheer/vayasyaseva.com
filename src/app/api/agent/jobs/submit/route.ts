@@ -1,31 +1,13 @@
-import { NextRequest, NextResponse } from "next/server";
-import { agentJobsSubmitRequestSchema } from "@/lib/talent-intake/contract";
-import { limitAgentRequest } from "@/lib/talent-intake/agent";
-import { submitWithTicket, unavailable } from "@/lib/talent-intake/submit";
+import type { NextRequest } from "next/server";
+import { runSubmission } from "@/server/submissions/pipeline";
+import { agentJobsSubmitRoute } from "@/server/submissions/types/job-application";
 
 export const runtime = "nodejs";
 
 /**
- * Open route for AI agents, step 2 of an application with files, after every
- * upload to the URLs from /api/agent/jobs/start has finished.
+ * Open route for AI agents, step 2 of an application with files.
+ * A thin adapter: the work is src/server/submissions (agentJobsSubmitRoute).
  */
-export async function POST(request: NextRequest) {
-  const parsed = agentJobsSubmitRequestSchema.safeParse(await request.json().catch(() => null));
-  if (!parsed.success) {
-    return NextResponse.json(
-      { error: "invalid_request", fields: parsed.error.issues.map((i) => ({ path: i.path.join("."), message: i.message })) },
-      { status: 400 },
-    );
-  }
-  const { ticket, phone, text } = parsed.data;
-
-  const { limited, release } = limitAgentRequest(request, phone);
-  if (limited) return limited;
-
-  try {
-    return await submitWithTicket(ticket, phone, text, "agent");
-  } catch (error) {
-    release();
-    return unavailable("agent/jobs/submit", error);
-  }
+export function POST(request: NextRequest) {
+  return runSubmission(agentJobsSubmitRoute, request);
 }

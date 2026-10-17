@@ -6,6 +6,7 @@
 import { NextResponse } from "next/server";
 import { talentIntakeSchema, type JobsSubmitResponse } from "./contract";
 import { trackServerEvent } from "@/lib/server-events";
+import { areaSet } from "@/markets/index";
 import {
   LEGACY_SOURCE_LOCALES,
   WEB_SOURCE,
@@ -47,9 +48,6 @@ const LOCALE_LEGACY_SOURCES = Object.fromEntries(
 export function webSourceEnabled() {
   return process.env.TALENT_INTAKE_WEB_SOURCE === "1";
 }
-
-/** The set an area answer came from: market:*, a market's own ids, or none. */
-const areaSet = (id: string | undefined) => (!id ? "none" : id.includes(":") ? id.split(":")[0] : "haridwar");
 
 /** Builds, validates and forwards one submission; answers 202 with the reference. */
 export async function forwardSubmission(draft: Draft, phone: string, text: string | null, extras: FormExtras = {}) {

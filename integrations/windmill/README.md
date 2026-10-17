@@ -12,8 +12,8 @@ website without the secret (the older routes, kept as adapters):
                   webhook/vspl-lead          → f/leads/intake    (x-vspl-lead-secret)
 
 talent DB         f/talent/dispatch     every minute, and started by intake for the new SMS: the one
-                                        worker for the deliveries table (SMS acknowledgement, Chatwoot
-                                        conversation, Twenty CRM), backoff, caps, dead / unknown;
+                                        worker for the deliveries table (SMS acknowledgement, Twenty CRM,
+                                        files into Twenty, Chatwoot conversation), backoff, caps, dead / unknown;
                                         every 15 minutes also the missing SMS delivery reports
                   f/talent/retention    hourly: the 12-month rule and erasure requests,
                                         across R2, Chatwoot, Twenty CRM and the talent DB
@@ -58,7 +58,8 @@ The Sarvam transcribe workflow is not ported (voice notes ended 16 October 2026)
 | `talent/schema.sql` | The `talent` schema: the n8n copy plus `crm_sync` (a test checks the n8n part is unchanged). |
 | `talent/lib/{twenty,crm}.ts`, `run-sync-crm.ts` | Twenty's REST API, the talent→Twenty mapping and erasure, and the sync step by step. |
 | `leads/scripts/*.ts`, `leads/lib/{lead,run-leads,sql}.ts`, `leads/schema.sql` | The lead inbox: intake checks business_enquiry.v1 and saves the lead, sync_crm files it in Twenty (company, contact, crew request, enquiry), each record found before it is created. |
-| `talent/lib/run-dispatch.ts` | The one dispatcher: claims due `deliveries` rows (SKIP LOCKED, one run at a time by advisory lock) and runs the SMS, Chatwoot and CRM steps. |
+| `talent/lib/run-dispatch.ts` | The one dispatcher: claims due `deliveries` rows (SKIP LOCKED, one run at a time by advisory lock) and runs the SMS, CRM, files and Chatwoot steps. |
+| `talent/lib/run-files.ts` | The files step: an application's R2 files into Twenty as attachments on its Application (`twenty.ts` `twentyFilesClient` for the upload). |
 | `platform/scripts/*.ts`, `platform/lib/*.ts` | The signed envelope route, the Idempotency-Key store and health. `signed.ts` checks `packages/contracts/src/signing.ts`'s HMAC over the raw body. |
 | `notify/` | The notification hub (ntfy pushes, Resend email, daily digest): `docs/notification-hub.md`. Other scripts raise notifications with `notify/lib/emit.ts`. |
 | `test-db.mts` | PGlite (Postgres in WebAssembly) for the tests that run the schemas and queries as SQL. |
@@ -120,7 +121,7 @@ Cron is Windmill's six-field form (seconds first), timezone Asia/Kolkata: acknow
 - **Intake** answers 202 `{ ok: true, ref }` once saved; a replayed reference answers 202 and saves and sends nothing. A wrong or missing secret answers **403**; an invalid payload answers **400** `{ ok: false, error: "Invalid submission: …" }` (n8n threw, which answered 500; the website treats any non-202 the same). The preprocessor passes only `authorized` and the body to `main`, so the secret never appears in job arguments.
 - **SMS**: unchanged rules: `accepted` needs HTTP 200, `return: true` and a request ID; explicit 400/401 rejections are `failed`; 429 retries up to three attempts; everything else, and sends interrupted for five minutes, is `unknown` and never resent automatically. One SMS per run.
 - **Deliver**: one submission per run; contact creation retries (3 × 5 s), messages never retry; a run that fails before "delivered" is recovered after 15 minutes, `failed` after three attempts. A failed attachment does not stop the others.
-- **Retention**: R2 files, then Chatwoot contacts, then the person's Twenty records (communications, applications, person), then rows; any R2, Chatwoot or Twenty failure stops the run before a row is deleted. **Change:** a Chatwoot contact that is already gone (404) counts as deleted; n8n failed the erasure on it.
+- **Retention**: R2 files, then Chatwoot contacts, then the person's Twenty records (each application's attachments, trashed ones too, and communications, then the application; the person's own attachments and the person), then rows; any R2, Chatwoot or Twenty failure stops the run before a row is deleted. The Twenty step and the row delete hold the dispatcher's advisory lock (waiting up to two minutes for a running dispatcher), so no attachment is added mid-erasure; `removed_crm_files` counts the attachments deleted. **Change:** a Chatwoot contact that is already gone (404) counts as deleted; n8n failed the erasure on it.
 - **Connections**: one Postgres connection per run. The `talent` role is capped at 5 connections on pg-main, shared with n8n while both run.
 
 - **CRM sync**: ten submissions a run (Twenty allows the API key 100 requests a minute, shared with the leads route); a 429 ends the run quietly and the rest go next minute. One failing submission is logged by reference and retried next run. A person is matched by phone; staff's worker status (callable, placed) is never downgraded, but a do-not-contact request always wins.
@@ -130,11 +131,22 @@ Cron is Windmill's six-field form (seconds first), timezone Asia/Kolkata: acknow
 
 ## Deliveries and the lead inbox (roadmap 1F)
 
-- **Deliveries.** Each application gets three rows (a trigger on `submissions`): `sms` (3 attempts), `chatwoot` (3), `crm` (8). The dispatcher claims due rows with `FOR UPDATE SKIP LOCKED`; a failure waits 1, 2, 4… minutes (at most an hour), and at the cap the row is `dead`. An SMS whose send was ambiguous or interrupted is `unknown` and is never resent. When the acknowledgement's status changes (accepted, delivered, failed), a trigger reopens the `crm` row so Twenty shows it. The older status columns are kept and still written; the view `delivery_status` shows the old statuses from the deliveries, and setup carried the existing statuses over once.
+- **Deliveries.** Each application gets four rows (a trigger on `submissions`): `sms` (3 attempts), `chatwoot` (3), `crm` (8), `files` (8). A run works them in the order sms, crm, files, chatwoot. The dispatcher claims due rows with `FOR UPDATE SKIP LOCKED`; a failure waits 1, 2, 4… minutes (at most an hour), and at the cap the row is `dead`. An SMS whose send was ambiguous or interrupted is `unknown` and is never resent. When the acknowledgement's status changes (accepted, delivered, failed), a trigger reopens the `crm` row so Twenty shows it. The older status columns are kept and still written; the view `delivery_status` shows the old statuses from the deliveries, and setup carried the existing statuses over once.
 - **Connections.** The talent role has five. At most: one intake per request in flight, the dispatcher (one at a time, advisory lock; intake's targeted run exits at once if the dispatcher holds the lock), retention (hourly), a delivery report. The dispatcher replaced four every-minute schedules.
 - **Lead inbox.** A lead is saved (inbox row and its `crm` delivery, one statement) before the route answers 202, then filed in Twenty by `f/leads/sync_crm`. A Twenty outage no longer loses a lead; it waits and retries.
 - **Signed route.** `x-vspl-timestamp` (Unix seconds) and `x-vspl-signature: v1=<base64url HMAC-SHA256 of "v1:<timestamp>.<raw body>">`; more than five minutes off is refused. The route is created with `raw_string` so the body is checked exactly as signed.
 - **Health.** `POST /api/w/vspl/jobs/run_wait_result/p/f/platform/health` with `{}` answers `{ ok, talent: { dead, unknown, stuck, overdue, erasureFailed }, leads: {…}, errors, notified }`. Each condition is a `platform.*` event in the notification hub when it starts firing and when it clears (`platform/lib/health-notify.ts`), not at every run. The CRM steps raise `application.received` and `lead.received` (`docs/notification-hub.md`, "Producers").
+
+## Applicants' files into Twenty (the `files` target)
+
+Since 18 October 2026 each application's photos and documents are copied from R2 (`vayasya-talent-intake`, where they expire after 90 days) into Twenty as attachments on its Application. Twenty stores files on R2 too (`STORAGE_TYPE=S_3`, bucket `vayasya-twenty`).
+
+- **When.** A `files` row is claimable only once the CRM step has recorded `crm_sync.application_id`; until then it waits without spending attempts (and is not counted overdue: the CRM row is). One application's files per run; a 429 from Twenty (the key's 100 requests a minute are shared) ends the CRM and files work for that run.
+- **How** (Twenty's direct upload, `talent/lib/twenty.ts`): `createFileUpload(filename, size, fileFolder: FilesField, fieldMetadataId)` on `/metadata`, with the attachment object's `file` field id (looked up once per run); `PUT` the bytes to the upload URL, its host swapped for `twenty_base_url` (Twenty builds it from `SERVER_URL`, behind Cloudflare Access), `Content-Type: application/octet-stream`, the body exactly the downloaded blob's size; `completeFileUpload(fileId)`; then `POST /rest/attachments` `{ name, file: [{ fileId, label }], fileCategory, targetApplicationId }`. The API key's role needs the **Upload files** permission (`UPLOAD_FILE`); without it the delivery's error says so.
+- **Labels are neutral:** `VS-J-XXXXXX-<n>.<ext>` (n counts from 1), never the applicant's own file name.
+- **Each file** (`attachments.crm_file_status`): `pending`; `done` (with `twenty_file_id`, `twenty_attachment_id`); `missing` (gone from R2: no retry spent); `skipped` (voice notes, kind `audio`, from before 16 Oct 2026, are not copied). `crm_file_error` keeps the last failure.
+- **Retries.** The run first lists the application's attachments: a label already there is recorded, not attached again. A saved `twenty_file_id` is completed and attached rather than uploaded again (a reserved file whose bytes never arrived is started afresh). Failures back off like every target; at eight attempts the row is `dead`.
+- **Backfill.** Setup queues a `files` row for every earlier application with files, oldest first and two minutes apart (re-running adds only what is missing). The first R2 files expire about 25 December 2026; the queue must drain before then (OPERATIONS.md).
 
 ## Operating it
 

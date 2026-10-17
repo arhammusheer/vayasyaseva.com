@@ -125,7 +125,7 @@ export const SCRIPTS: ScriptSpec[] = [
     name: "dispatch",
     summary: "Talent · dispatch",
     description:
-      "The one worker for every application's deliveries (SMS acknowledgement, Chatwoot, Twenty CRM), on one connection, with backoff and attempt caps; every 15 minutes also looks up missing SMS delivery reports. Started by intake for a new application's SMS.",
+      "The one worker for every application's deliveries (SMS acknowledgement, Twenty CRM, files into Twenty, Chatwoot), on one connection, with backoff and attempt caps; every 15 minutes also looks up missing SMS delivery reports. Started by intake for a new application's SMS.",
     schema: {
       $schema: "https://json-schema.org/draft/2020-12/schema",
       type: "object",

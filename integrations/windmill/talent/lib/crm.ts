@@ -349,17 +349,46 @@ const WORKER_FIELDS_CLEARED = {
 } as const;
 
 /**
- * Erasure (privacy notice §10): the applicant data Twenty holds for a phone
- * number, its applications and their communications first. A person who is
- * also a client contact (a lead's point of contact, or typed so by the leads
- * intake) keeps the person and the enquiry history, which leads retention
- * covers; only the worker side goes. Anyone else is removed. Nothing to
- * remove is success. Returns how many people had applicant data erased.
+ * Every attachment on a record (`field` is targetApplicationId or
+ * targetPersonId), the trashed ones too: a filter on deletedAt is how
+ * Twenty's API returns soft-deleted records.
  */
-export async function erasePerson(crm: Twenty, phone: string): Promise<number> {
+async function attachmentsOf(crm: Twenty, field: string, id: string): Promise<TwentyRecord[]> {
+  const live = await crm.find("attachments", eq(field, id));
+  const trashed = await crm.find("attachments", `and(${eq(field, id)},deletedAt[is]:NOT_NULL)`);
+  return [...new Map([...live, ...trashed].map((r) => [r.id, r])).values()];
+}
+
+/** Hard-deletes a record's attachments (and so their files); returns how many. */
+async function removeAttachments(crm: Twenty, field: string, id: string): Promise<number> {
+  let removed = 0;
+  for (const a of await attachmentsOf(crm, field, id)) if (await crm.remove("attachments", a.id)) removed++;
+  return removed;
+}
+
+export interface ErasedCrm {
+  /** People who had applicant data erased. */
+  people: number;
+  /** Attachments (applicants' files) deleted. */
+  files: number;
+}
+
+/**
+ * Erasure (privacy notice §10): the applicant data Twenty holds for a phone
+ * number, its applications (their attachments, trashed ones too, then their
+ * communications) first: deleting an application only unlinks its
+ * attachments, so their files would stay. A person who is also a client
+ * contact (a lead's point of contact, or typed so by the leads intake) keeps
+ * the person and the enquiry history, which leads retention covers; only the
+ * worker side goes. Anyone else is removed, with their own attachments.
+ * Nothing to remove is success.
+ */
+export async function erasePerson(crm: Twenty, phone: string): Promise<ErasedCrm> {
   const people = await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(phone)));
+  let files = 0;
   for (const person of people) {
     for (const app of await crm.find("applications", eq("personId", person.id))) {
+      files += await removeAttachments(crm, "targetApplicationId", app.id);
       for (const comm of await crm.find("communications", eq("applicationId", app.id))) await crm.remove("communications", comm.id);
       await crm.remove("applications", app.id);
     }
@@ -369,7 +398,10 @@ export async function erasePerson(crm: Twenty, phone: string): Promise<number> {
       if (!clientContact || !comm.opportunityId) await crm.remove("communications", comm.id);
     }
     if (clientContact) await crm.update("people", person.id, WORKER_FIELDS_CLEARED);
-    else await crm.remove("people", person.id);
+    else {
+      files += await removeAttachments(crm, "targetPersonId", person.id);
+      await crm.remove("people", person.id);
+    }
   }
-  return people.length;
+  return { people: people.length, files };
 }

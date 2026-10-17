@@ -168,7 +168,7 @@ SELECT c.id, c.phone, c.reason,
   coalesce((SELECT jsonb_agg(DISTINCT s.chatwoot_contact_id) FROM submissions s WHERE s.phone = c.phone AND s.chatwoot_contact_id IS NOT NULL), '[]'::jsonb) AS contacts
 FROM claimed c;`;
 
-/** $1 request id, $2 phone, $3 files removed, $4 contacts removed. Keeps counts only: phone and ref are cleared. */
+/** $1 request id, $2 phone, $3 files removed, $4 contacts removed, $5 Twenty attachments removed. Keeps counts only: phone and ref are cleared. */
 export const DELETE_ROWS = `
 WITH gone AS (
   DELETE FROM submissions WHERE phone = $2 RETURNING id
@@ -178,7 +178,7 @@ WITH gone AS (
 UPDATE erasure_requests
 SET status = 'done', processed_at = now(), updated_at = now(),
     removed_submissions = (SELECT count(*) FROM gone), removed_files = $3::int, removed_contacts = $4::int,
-    phone = NULL, ref = NULL
+    removed_crm_files = $5::int, phone = NULL, ref = NULL
 WHERE id = $1::uuid AND status = 'running'
 RETURNING id, status, removed_submissions;`;
 
@@ -269,12 +269,18 @@ SET status = CASE WHEN target = 'sms' THEN 'unknown' WHEN attempts >= max_attemp
 WHERE status = 'running' AND updated_at < now() - interval '15 minutes'
 RETURNING submission_id, target, status;`;
 
-/** $1 target, $2 submission id or null. The oldest due delivery, claimed. */
+/**
+ * $1 target, $2 submission id or null. The oldest due delivery, claimed. A
+ * files delivery waits, without spending attempts, until the CRM step has
+ * made the Twenty application (crm_sync.application_id).
+ */
 export const CLAIM_DELIVERY = `
 WITH c AS (
-  SELECT submission_id, target FROM deliveries
+  SELECT submission_id, target FROM deliveries d
   WHERE target = $1 AND status = 'pending' AND next_attempt_at <= now()
     AND ($2::uuid IS NULL OR submission_id = $2::uuid)
+    AND ($1 <> 'files' OR EXISTS (
+      SELECT 1 FROM crm_sync cs WHERE cs.submission_id = d.submission_id AND cs.application_id IS NOT NULL))
   ORDER BY next_attempt_at, created_at LIMIT 1 FOR UPDATE SKIP LOCKED
 )
 UPDATE deliveries d SET status = 'running', attempts = d.attempts + 1, updated_at = now()
@@ -319,3 +325,39 @@ export const SYNC_CANDIDATE_FOR = SYNC_CANDIDATES.replace(
   "WHERE s.id = $1::uuid;",
 );
 
+// --- files into Twenty (the files target, talent/lib/run-files.ts) -------------
+
+/**
+ * Erasure holds the dispatcher's lock (DISPATCH_LOCK's key) around its
+ * Twenty step and the row delete, so no dispatch run adds an attachment
+ * mid-erasure. A dispatcher that finds it held skips its run.
+ */
+export const ERASURE_DISPATCH_LOCK = DISPATCH_LOCK;
+export const ERASURE_DISPATCH_UNLOCK = `SELECT pg_advisory_unlock(hashtext('talent:dispatch')) AS unlocked;`;
+
+/** $1 submission: its reference and Twenty application. */
+export const FILES_SUBMISSION = `
+SELECT s.id, s.ref, c.application_id
+FROM submissions s LEFT JOIN crm_sync c ON c.submission_id = s.id
+WHERE s.id = $1::uuid;`;
+
+/** $1 submission: its files, in order, with what Twenty has of each. */
+export const FILES_FOR = `
+SELECT id, position, kind, r2_key, mime, size_bytes, twenty_file_id, twenty_attachment_id, crm_file_status
+FROM attachments WHERE submission_id = $1::uuid ORDER BY position;`;
+
+/** $1 attachment, $2 Twenty file id: saved as soon as createFileUpload answers, so a retry completes it rather than uploading again. */
+export const SAVE_FILE_ID = `UPDATE attachments SET twenty_file_id = $2::uuid, crm_file_error = NULL, updated_at = now() WHERE id = $1::uuid;`;
+
+/** $1 attachment, $2 status (done, missing, skipped), $3 Twenty attachment id or null, $4 Twenty file id or null, $5 note. */
+export const SETTLE_FILE = `
+UPDATE attachments
+SET crm_file_status = $2, twenty_attachment_id = coalesce($3::uuid, twenty_attachment_id),
+    twenty_file_id = coalesce($4::uuid, twenty_file_id), crm_file_error = $5, crm_file_at = now(), updated_at = now()
+WHERE id = $1::uuid;`;
+
+/** $1 attachment, $2 error: it stays pending for the delivery's retry. */
+export const FILE_ERROR = `UPDATE attachments SET crm_file_error = $2, updated_at = now() WHERE id = $1::uuid;`;
+
+/** $1 attachment: its Twenty file could not be completed (never uploaded); the retry starts again. */
+export const CLEAR_FILE_ID = `UPDATE attachments SET twenty_file_id = NULL, updated_at = now() WHERE id = $1::uuid;`;

@@ -98,6 +98,8 @@ const RESTRUCTURE = "2026-10-16";
 /** The jobs pages rebuilt in the restructure, and the new applicant notice. */
 const JOBS_RESTRUCTURE = "2026-10-16";
 const TERMS_PHONE_FREE = PHONE_FREE_JOBS;
+/** Recordings and heatmaps kept one year (privacy notice §2, §3, §6; consent v8). */
+const RECORDINGS_ONE_YEAR = "2026-10-17";
 
 /**
  * The sitemap date of each state's wage page: the later of its check date and
@@ -321,7 +323,7 @@ export const pageEntries: readonly PageEntry[] = [
   ),
   // For press and printers: linked from About and the footer, kept out of search.
   { path: "/brand", kind: "static", audience: "business", locales: EN, parent: "/about", noindex: true, updated: RESTRUCTURE, changeFrequency: "yearly", priority: 0.3 },
-  { path: "/privacy", kind: "legal", audience: "mixed", locales: EN, parent: "/", updated: PHONE_FREE_JOBS, changeFrequency: "yearly", priority: 0.3 },
+  { path: "/privacy", kind: "legal", audience: "mixed", locales: EN, parent: "/", updated: RECORDINGS_ONE_YEAR, changeFrequency: "yearly", priority: 0.3 },
   { path: "/terms", kind: "legal", audience: "mixed", locales: EN, parent: "/", updated: TERMS_PHONE_FREE, changeFrequency: "yearly", priority: 0.3 },
 ];
 

@@ -41,7 +41,7 @@ const downloads = [
   {
     href: "/brand/downloads/vayasya-seva-fonts.zip",
     label: "Font pack",
-    meta: "ZIP · Anek Latin, Hind, JetBrains Mono · TTF · SIL OFL",
+    meta: "ZIP · Anek and Hind (Latin, Devanagari, Kannada, Gurmukhi), JetBrains Mono · TTF · SIL OFL",
   },
   {
     href: "/vayasya-seva-company-profile.pdf",
@@ -58,8 +58,8 @@ const logoRules = [
 ];
 
 const specimens = [
-  { meta: "Anek Latin · display · 500–700", className: "font-display text-5xl font-medium leading-none tracking-[-0.03em] sm:text-6xl", text: "Workforce. With care." },
-  { meta: "Hind · body and interface · 400–700", className: "max-w-xl text-lg leading-relaxed", text: "Supervised crews for factories, warehouses and facilities, with the records kept for every shift." },
+  { meta: "Anek · display · 500–700 · Latin, Devanagari, Kannada, Gurmukhi", className: "font-display text-5xl font-medium leading-none tracking-[-0.03em] sm:text-6xl", text: "Workforce. With care." },
+  { meta: "Hind · body and interface · 400–700 · Hind Mysuru (Kannada), Hind Jalandhar (Gurmukhi)", className: "max-w-xl text-lg leading-relaxed", text: "Supervised crews for factories, warehouses and facilities, with the records kept for every shift." },
   { meta: "JetBrains Mono · data · 400–500", className: "font-data text-base", text: "GSTIN 05AAJCV4562E1ZB · Shift 06:00–14:00 · 24 loaders" },
 ];
 

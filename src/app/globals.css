@@ -14,11 +14,28 @@
  *   forest, slate) are for charts, templates and theme options only.
  */
 
+/* Brand font stacks, one cut per script (src/lib/fonts.ts). Each Indic file
+   declares its unicode-range, so a page downloads only the scripts it shows.
+   The danda (U+0964-0965) is in both the Devanagari and Gurmukhi ranges:
+   Punjabi pages put Gurmukhi first, so they fetch no Devanagari font for it.
+   On body, not :root: next/font sets the --font-* variables on body, and a
+   custom property resolves the variables it names where it is declared. */
+body {
+  --stack-display: var(--font-anek), var(--font-anek-deva), var(--font-anek-knda), var(--font-anek-guru);
+  --stack-body: var(--font-hind), var(--font-hind-deva), var(--font-hind-knda), var(--font-hind-guru);
+}
+body:lang(pa) {
+  --stack-display: var(--font-anek), var(--font-anek-guru), var(--font-anek-deva), var(--font-anek-knda);
+  --stack-body: var(--font-hind), var(--font-hind-guru), var(--font-hind-deva), var(--font-hind-knda);
+}
+
 @theme inline {
-  /* Fonts — Anek Latin display, Hind body, JetBrains Mono data; Devanagari cuts fill in Hindi text */
-  --font-display: var(--font-anek), var(--font-hind-deva);
-  --font-serif: var(--font-hind), var(--font-hind-deva);
-  --font-sans: var(--font-hind), var(--font-hind-deva);
+  /* Fonts — Anek display, Hind body, JetBrains Mono data, each script in its own cut
+     (src/lib/fonts.ts). The stacks are runtime variables (body, above) so
+     Punjabi pages can put Gurmukhi before Devanagari. */
+  --font-display: var(--stack-display);
+  --font-serif: var(--stack-body);
+  --font-sans: var(--stack-body);
   --font-mono: var(--font-jetbrains);
   --font-data: var(--font-jetbrains);
 
@@ -829,7 +846,7 @@ a:hover > svg {
   justify-content: space-between;
   gap: 30px;
   padding: 27px 0;
-  font-family: var(--font-anek), var(--font-hind-deva);
+  font-family: var(--stack-display);
   font-size: 28px;
   line-height: 1.2;
 }
@@ -838,7 +855,7 @@ a:hover > svg {
 }
 .detail-list summary::after {
   content: "+";
-  font-family: var(--font-hind), var(--font-hind-deva);
+  font-family: var(--stack-body);
   font-size: 25px;
   font-weight: 400;
   color: var(--gold-700);
@@ -1142,10 +1159,9 @@ a:hover > svg {
   letter-spacing: 0;
   line-height: 1.3;
 }
-/* Gurmukhi (pa-IN) and Kannada (kn-IN): no web font. Anek and Hind have neither script, so the
-   phone's own (Noto Sans Gurmukhi on Android) draws it, glyph by glyph,
-   and nothing extra downloads. Like Devanagari, it breaks apart under
-   letter-spacing and needs taller lines. */
+/* Gurmukhi (pa-IN) and Kannada (kn-IN): Anek Gurmukhi and Anek Kannada for
+   headings, Hind Jalandhar and Hind Mysuru for body. Like Devanagari, they
+   break apart under letter-spacing and need taller lines. */
 .eyebrow:is(:lang(pa), :lang(kn)) {
   font-size: 13px;
   letter-spacing: 0;
@@ -1279,7 +1295,7 @@ a:hover > svg {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  font-family: var(--font-anek), var(--font-hind-deva);
+  font-family: var(--stack-display);
   font-weight: 500;
   font-size: 26px;
   line-height: 1;
@@ -1749,7 +1765,7 @@ a:hover > svg {
   border-top: 1px solid var(--border);
 }
 .jobs-work h3 {
-  font-family: var(--font-anek), var(--font-hind-deva);
+  font-family: var(--stack-display);
   font-size: 24px;
   font-weight: 500;
 }
@@ -1802,7 +1818,7 @@ a:hover > svg {
 }
 .jobs-title {
   margin-top: 12px;
-  font-family: var(--font-anek), var(--font-hind-deva);
+  font-family: var(--stack-display);
   font-size: clamp(34px, 7vw, 56px);
   font-weight: 500;
   line-height: 1.08;
@@ -1839,13 +1855,13 @@ a:hover > svg {
   border-top: 1px solid var(--border);
 }
 .jobs-step-number {
-  font-family: var(--font-anek), var(--font-hind-deva);
+  font-family: var(--stack-display);
   font-size: 32px;
   line-height: 1;
   color: var(--gold-700);
 }
 .jobs-step-title {
-  font-family: var(--font-anek), var(--font-hind-deva);
+  font-family: var(--stack-display);
   font-size: 22px;
   font-weight: 500;
   line-height: 1.2;
@@ -1925,7 +1941,7 @@ a:hover > svg {
   gap: 0 28px;
 }
 .jobs-group .jobs-work-link {
-  font-family: var(--font-anek), var(--font-hind-deva);
+  font-family: var(--stack-display);
   font-size: 24px;
   font-weight: 500;
 }
@@ -2002,7 +2018,7 @@ a:hover > svg {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  font-family: var(--font-anek), var(--font-hind-deva);
+  font-family: var(--stack-display);
   font-size: clamp(22px, 3vw, 30px);
   font-weight: 500;
   line-height: 1.2;
@@ -2070,9 +2086,10 @@ a:hover > svg {
 .language-picker-inner {
   width: min(100%, 480px);
 }
-/* Devanagari on the picker uses the phone's own font: a page whose only job
-   is "tap your language" should not download three Hind Devanagari weights. */
-.language-picker :lang(hi):not(:lang(hi-Latn)) {
+/* Indic labels on the picker use the phone's own font: a page whose only job
+   is "tap your language" should not download a font per script to draw one
+   word in each. */
+.language-picker :is(:lang(hi):not(:lang(hi-Latn)), :lang(pa), :lang(kn)) {
   font-family: system-ui, sans-serif;
   letter-spacing: 0;
 }
@@ -2178,7 +2195,7 @@ a:hover > svg {
 }
 .quick-title {
   margin-top: 12px;
-  font-family: var(--font-anek), var(--font-hind-deva);
+  font-family: var(--stack-display);
   font-size: clamp(32px, 6.5vw, 52px);
   font-weight: 500;
   line-height: 1.08;
@@ -2383,7 +2400,7 @@ a:hover > svg {
    Optional parts sit after a quiet "skip" line. */
 .crew-intro-title {
   margin-top: 16px;
-  font-family: var(--font-anek), var(--font-hind-deva);
+  font-family: var(--stack-display);
   font-size: clamp(44px, 9vw, 72px);
   font-weight: 500;
   line-height: 1.02;
@@ -2405,7 +2422,7 @@ a:hover > svg {
 }
 .crew-step-title {
   margin-top: 6px;
-  font-family: var(--font-anek), var(--font-hind-deva);
+  font-family: var(--stack-display);
   font-size: clamp(28px, 5vw, 36px);
   font-weight: 500;
   line-height: 1.12;
@@ -2512,7 +2529,7 @@ a:hover > svg {
    one report button beside it, then two ruled checks with gold numerals. */
 .fraud-title {
   margin-top: 12px;
-  font-family: var(--font-anek), var(--font-hind-deva);
+  font-family: var(--stack-display);
   font-size: clamp(40px, 9vw, 84px);
   font-weight: 500;
   line-height: 1.02;
@@ -2711,7 +2728,7 @@ a:hover > svg {
   border-top: 1px solid var(--border);
 }
 .tracked-list li > span {
-  font-family: var(--font-anek), var(--font-hind-deva);
+  font-family: var(--stack-display);
   font-size: 34px;
   font-weight: 500;
   line-height: 1;
@@ -2778,7 +2795,7 @@ a:hover > svg {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  font-family: var(--font-anek), var(--font-hind-deva);
+  font-family: var(--stack-display);
   font-size: clamp(26px, 2.6vw, 36px);
   font-weight: 500;
   letter-spacing: -0.02em;
@@ -3084,7 +3101,7 @@ a:hover > svg {
 }
 .wage-table .zone-row th {
   padding-top: 32px;
-  font-family: var(--font-anek), var(--font-hind-deva);
+  font-family: var(--stack-display);
   font-size: 22px;
   font-weight: 500;
   border-top: 1px solid var(--foreground);
@@ -3103,7 +3120,7 @@ a:hover > svg {
   padding-block: 10px;
 }
 .wage-table.is-index tbody th {
-  font-family: var(--font-anek), var(--font-hind-deva);
+  font-family: var(--stack-display);
   font-size: 24px;
 }
 .wage-row-link {
@@ -3206,7 +3223,7 @@ a:hover > svg {
   justify-content: space-between;
   gap: 16px;
   min-height: 56px;
-  font-family: var(--font-anek), var(--font-hind-deva);
+  font-family: var(--stack-display);
   font-size: 22px;
 }
 .wage-state-links.is-plain a {
@@ -3324,7 +3341,7 @@ a:hover > svg {
   border-top: 1px solid var(--border);
 }
 .wage-more.is-section > summary {
-  font-family: var(--font-anek), var(--font-hind-deva);
+  font-family: var(--stack-display);
   font-size: 24px;
   font-weight: 500;
   text-decoration: none;
@@ -3382,7 +3399,7 @@ a:hover > svg {
   border-top: 1px solid var(--border);
 }
 .method-rows h2 {
-  font-family: var(--font-anek), var(--font-hind-deva);
+  font-family: var(--stack-display);
   font-size: clamp(26px, 2.6vw, 32px);
   font-weight: 500;
   line-height: 1.15;
@@ -3514,7 +3531,7 @@ a:hover > svg {
 .guide-rows h3,
 .guide-rows h4 {
   margin-top: 0;
-  font-family: var(--font-anek), var(--font-hind-deva);
+  font-family: var(--stack-display);
   font-size: 21px;
   font-weight: 500;
   line-height: 1.25;
@@ -3557,7 +3574,7 @@ a:hover > svg {
   border-top: 0;
 }
 .guide-table tbody th {
-  font-family: var(--font-anek), var(--font-hind-deva);
+  font-family: var(--stack-display);
   font-size: 19px;
   font-weight: 500;
   line-height: 1.25;
@@ -3637,7 +3654,7 @@ a:hover > svg {
   max-width: 40rem;
 }
 .paused-notice-heading {
-  font-family: var(--font-anek), var(--font-hind-deva);
+  font-family: var(--stack-display);
   font-size: 24px;
   font-weight: 500;
   line-height: 1.25;

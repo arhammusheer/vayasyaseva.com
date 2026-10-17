@@ -3,7 +3,7 @@
 import Link from "@/components/i18n/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { brandDisplay, brandMono, brandSerif } from "@/lib/fonts";
+import { brandFontVariables } from "@/lib/fonts";
 
 export default function GlobalError({
   reset,
@@ -14,7 +14,7 @@ export default function GlobalError({
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <body
-        className={`${brandDisplay.variable} ${brandSerif.variable} ${brandMono.variable} font-serif antialiased`}
+        className={`${brandFontVariables} font-serif antialiased`}
       >
         <div className="mx-auto flex min-h-screen w-full max-w-2xl flex-col items-start justify-center bg-background px-6 sm:px-12">
           <Link href="/">

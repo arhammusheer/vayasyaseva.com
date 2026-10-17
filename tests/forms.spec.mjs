@@ -43,7 +43,7 @@ try {
     ['/en-in/jobs', 'Factory, Packing and Warehouse Jobs', 'Apply now'],
     ['/en-in/jobs/packing', 'Packing Jobs', 'Packing products into cartons'],
     ['/hi-in/jobs/electrician', 'इलेक्ट्रीशियन', 'वायरमैन'],
-    ['/hi-latn-in/jobs/freshers', 'Freshers', 'fresher'],
+    ['/hi-latn-in/jobs/freshers', 'Fresher Job', 'fresher'],
     ['/en-in/jobs/10th-pass', '10th Pass', 'welder, fitter, electrician'],
     ['/en-in/jobs/12th-pass', '12th Pass', 'computer'],
   ]) {

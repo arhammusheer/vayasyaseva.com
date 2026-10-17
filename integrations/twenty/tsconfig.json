@@ -1,0 +1,17 @@
+{
+  // The Twenty setup scripts (run with node). Separate from the website's
+  // tsconfig, like integrations/windmill: they import .ts/.mts paths directly.
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2023", "DOM"],
+    "types": ["node"],
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "erasableSyntaxOnly": true,
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true
+  },
+  "include": ["*.mts", "../windmill/talent/lib/*.ts"]
+}

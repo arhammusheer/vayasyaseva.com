@@ -203,7 +203,7 @@ const { REF_PATTERN, INTAKE_SOURCES, WEB_SOURCE, isSubmissionSource, INTAKE_LOCA
   function isSubmissionSource(value) {
       return value === WEB_SOURCE || (typeof value === "string" && Object.hasOwn(INTAKE_SOURCES, value));
   }
-  const INTAKE_LOCALES = ["en-IN", "hi-IN", "hi-Latn-IN", "pa-IN"];
+  const INTAKE_LOCALES = ["en-IN", "hi-IN", "hi-Latn-IN", "pa-IN", "kn-IN"];
   function isIntakeLocale(value) {
       return typeof value === "string" && INTAKE_LOCALES.includes(value);
   }
@@ -383,6 +383,7 @@ const { composeNote, filesToAttach, conversationAttributes } = (() => {
       "hi-IN": "हिंदी jobs page (hi-IN)",
       "hi-Latn-IN": "Hindi jobs page, Latin script (hi-Latn-IN)",
       "pa-IN": "ਪੰਜਾਬੀ jobs page (pa-IN)",
+      "kn-IN": "ಕನ್ನಡ jobs page (kn-IN)",
       en: "English jobs page (en-IN)",
       hi: "हिंदी jobs page (hi-IN)",
       hinglish: "Hindi jobs page, Latin script (hi-Latn-IN)",
@@ -392,6 +393,7 @@ const { composeNote, filesToAttach, conversationAttributes } = (() => {
       "hi-IN": "Hindi",
       "hi-Latn-IN": "Hindi, Latin script",
       "pa-IN": "Punjabi",
+      "kn-IN": "Kannada",
       en: "English",
       hi: "Hindi",
       hinglish: "Hindi, Latin script",

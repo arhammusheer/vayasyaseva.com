@@ -26,6 +26,11 @@ const COPY = {
       text: "Aap hamare main form par apply kar sakte hain. Hum aapki jaankari rakhte hain aur kaam aane par phone karte hain.",
       link: "Main form par apply karein",
     },
+    "kn-IN": {
+      heading: "ಈಗ ನಾವು ಈ ಪ್ರದೇಶಕ್ಕೆ ಅರ್ಜಿಗಳನ್ನು ಸ್ವೀಕರಿಸುತ್ತಿಲ್ಲ.",
+      text: "ನೀವು ನಮ್ಮ ಮುಖ್ಯ ಫಾರ್ಮ್‌ನಲ್ಲಿ ಅರ್ಜಿ ಸಲ್ಲಿಸಬಹುದು. ನಿಮ್ಮ ಮಾಹಿತಿಯನ್ನು ನಾವು ಇಟ್ಟುಕೊಂಡು, ಕೆಲಸ ಬಂದಾಗ ಕರೆ ಮಾಡುತ್ತೇವೆ.",
+      link: "ಮುಖ್ಯ ಫಾರ್ಮ್‌ನಲ್ಲಿ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ",
+    },
     "pa-IN": {
       heading: "ਹੁਣ ਅਸੀਂ ਇਸ ਇਲਾਕੇ ਲਈ ਅਰਜ਼ੀਆਂ ਨਹੀਂ ਲੈ ਰਹੇ।",
       text: "ਤੁਸੀਂ ਸਾਡੇ ਮੁੱਖ ਫ਼ਾਰਮ 'ਤੇ ਅਪਲਾਈ ਕਰ ਸਕਦੇ ਹੋ। ਅਸੀਂ ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ ਰੱਖਦੇ ਹਾਂ ਅਤੇ ਕੰਮ ਆਉਣ 'ਤੇ ਫ਼ੋਨ ਕਰਦੇ ਹਾਂ।",
@@ -47,6 +52,11 @@ const COPY = {
       heading: "Abhi hum is area mein naya kaam nahi le rahe hain.",
       text: "Kahin aur, ya baad mein? Site bataiye. Hum saaf batayenge ki hum workers de sakte hain ya nahi.",
       link: "Workers maangein",
+    },
+    "kn-IN": {
+      heading: "ಈಗ ನಾವು ಈ ಪ್ರದೇಶದಲ್ಲಿ ಹೊಸ ಕೆಲಸ ತೆಗೆದುಕೊಳ್ಳುತ್ತಿಲ್ಲ.",
+      text: "ಬೇರೆಡೆ, ಅಥವಾ ನಂತರ? ಸೈಟ್ ತಿಳಿಸಿ. ನಾವು ಕಾರ್ಮಿಕರನ್ನು ಒದಗಿಸಬಹುದೇ ಎಂದು ಸ್ಪಷ್ಟವಾಗಿ ಹೇಳುತ್ತೇವೆ.",
+      link: "ಕಾರ್ಮಿಕರನ್ನು ಕೇಳಿ",
     },
     "pa-IN": {
       heading: "ਹੁਣ ਅਸੀਂ ਇਸ ਇਲਾਕੇ ਵਿੱਚ ਨਵਾਂ ਕੰਮ ਨਹੀਂ ਲੈ ਰਹੇ।",

@@ -110,7 +110,7 @@ const MODEL: ObjectSpec[] = [
       { name: "clusters", label: "Clusters", type: "MULTI_SELECT", icon: "IconMapPin", options: CLUSTERS },
       { name: "workRoles", label: "Roles", type: "MULTI_SELECT", icon: "IconTool", options: ROLES },
       { name: "homeArea", label: "Home area", type: "TEXT", icon: "IconHome" },
-      { name: "language", label: "Language", type: "SELECT", icon: "IconLanguage", options: options([["EN", "English"], ["HI", "Hindi"], ["HI_LATN", "Hinglish"], ["PA", "Punjabi"]]) },
+      { name: "language", label: "Language", type: "SELECT", icon: "IconLanguage", options: options([["EN", "English"], ["HI", "Hindi"], ["HI_LATN", "Hinglish"], ["PA", "Punjabi"], ["KN", "Kannada"]]) },
       { name: "consentVersion", label: "Consent version", type: "TEXT", icon: "IconShieldCheck" },
       { name: "consentedAt", label: "Consented at", type: "DATE_TIME", icon: "IconShieldCheck" },
       { name: "lastAppliedAt", label: "Last applied", type: "DATE_TIME", icon: "IconCalendar" },

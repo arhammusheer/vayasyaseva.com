@@ -38,6 +38,7 @@ export const WORK_DOOR: Record<Locale, { lead: string; label: string }> = {
   "hi-IN": { lead: "काम चाहिए?", label: "नौकरी" },
   "hi-Latn-IN": { lead: "Kaam chahiye?", label: "Jobs" },
   "pa-IN": { lead: "ਕੰਮ ਚਾਹੀਦਾ ਹੈ?", label: "ਨੌਕਰੀਆਂ" },
+  "kn-IN": { lead: "ಕೆಲಸ ಬೇಕೇ?", label: "ಉದ್ಯೋಗಗಳು" },
 };
 
 /**
@@ -87,6 +88,11 @@ export const JOBS_NAV: Record<
     openMenu: "ਮੀਨੂ ਖੋਲ੍ਹੋ", language: "ਭਾਸ਼ਾ", logo: "Vayasya Seva ਨੌਕਰੀਆਂ",
     haridwar: "ਹਰਿਦੁਆਰ ਵਿੱਚ ਨੌਕਰੀ", fee: "ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ", details: "ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ", privacy: "ਨਿੱਜਤਾ", terms: "ਨਿਯਮ", english: " (English)",
   },
+  "kn-IN": {
+    business: "ಕಂಪನಿಗಳಿಗೆ", enquiries: "ವಿಚಾರಣೆಗಳು", apply: "ಅರ್ಜಿ ಸಲ್ಲಿಸಿ", menu: "ಉದ್ಯೋಗಗಳು", sections: "ಸೈಟ್‌ನ ವಿಭಾಗಗಳು", more: "ಇನ್ನಷ್ಟು",
+    openMenu: "ಮೆನು ತೆರೆಯಿರಿ", language: "ಭಾಷೆ", logo: "Vayasya Seva ಉದ್ಯೋಗಗಳು",
+    haridwar: "ಹರಿದ್ವಾರದಲ್ಲಿ ಉದ್ಯೋಗ", fee: "ಯಾವುದೇ ಶುಲ್ಕವಿಲ್ಲ", details: "ನಿಮ್ಮ ಮಾಹಿತಿ", privacy: "ಗೌಪ್ಯತೆ", terms: "ನಿಯಮಗಳು", english: " (English)",
+  },
 };
 
 /**
@@ -118,6 +124,12 @@ export const JOB_GROUPS: Record<Locale, { id: JobGroupId; label: string }[]> = {
     { id: "iti", label: "ITI ਟ੍ਰੇਡ" },
     { id: "office", label: "ਦਫ਼ਤਰ ਅਤੇ ਡਾਟਾ ਐਂਟਰੀ" },
   ],
+  "kn-IN": [
+    { id: "helper", label: "ಹೆಲ್ಪರ್, ಪ್ಯಾಕಿಂಗ್ ಮತ್ತು ವೇರ್‌ಹೌಸ್" },
+    { id: "machine", label: "ಮೆಷಿನ್ ಮತ್ತು ಫೋರ್ಕ್‌ಲಿಫ್ಟ್" },
+    { id: "iti", label: "ITI ಟ್ರೇಡ್‌ಗಳು" },
+    { id: "office", label: "ಆಫೀಸ್ ಮತ್ತು ಡೇಟಾ ಎಂಟ್ರಿ" },
+  ],
 };
 
 /** The jobs menu's group links; seo:check fails if a group's #id is missing from /jobs. */
@@ -144,6 +156,11 @@ export const JOB_HUB_LINKS: Record<Locale, { slug: string; label: string }[]> = 
     { slug: "freshers", label: "ਫ਼ਰੈਸ਼ਰ" },
     { slug: "10th-pass", label: "10ਵੀਂ ਪਾਸ" },
     { slug: "12th-pass", label: "12ਵੀਂ ਪਾਸ" },
+  ],
+  "kn-IN": [
+    { slug: "freshers", label: "ಫ್ರೆಷರ್ಸ್" },
+    { slug: "10th-pass", label: "10ನೇ ತರಗತಿ ಪಾಸ್" },
+    { slug: "12th-pass", label: "12ನೇ ತರಗತಿ / PUC ಪಾಸ್" },
   ],
 };
 

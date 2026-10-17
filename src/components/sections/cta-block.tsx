@@ -25,6 +25,11 @@ const copy = {
     aria: "Vayasya Seva se workers maangein",
     link: "Workers maangein",
   },
+  "kn-IN": {
+    heading: ["ನಿಮ್ಮ ಸೈಟ್‌ನಲ್ಲಿ", "ಕಾರ್ಮಿಕರು ಬೇಕೇ?"],
+    aria: "Vayasya Seva ಇಂದ ಕಾರ್ಮಿಕರನ್ನು ಕೇಳಿ",
+    link: "ಕಾರ್ಮಿಕರನ್ನು ಕೇಳಿ",
+  },
   "pa-IN": {
     heading: ["ਆਪਣੀ ਸਾਈਟ 'ਤੇ", "ਕਾਮੇ ਚਾਹੀਦੇ ਹਨ?"],
     aria: "Vayasya Seva ਤੋਂ ਕਾਮੇ ਮੰਗੋ",

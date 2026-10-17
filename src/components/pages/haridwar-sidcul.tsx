@@ -20,7 +20,7 @@ import { PausedNotice } from "@/components/sections/paused-notice";
 
 const PATH = "/haridwar-sidcul";
 const CREW_HREF = "/contact#location=haridwar";
-const AND: Record<Locale, string> = { "en-IN": "and", "hi-IN": "और", "hi-Latn-IN": "aur", "pa-IN": "ਅਤੇ" };
+const AND: Record<Locale, string> = { "en-IN": "and", "hi-IN": "और", "hi-Latn-IN": "aur", "pa-IN": "ਅਤੇ", "kn-IN": "ಮತ್ತು" };
 
 export function haridwarMetadata(locale: Locale) {
   const t = copyIn(haridwarCopy, locale, PATH);

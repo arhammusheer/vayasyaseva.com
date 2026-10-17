@@ -29,6 +29,7 @@ export const jobHubLabels: Record<Locale, { rolesHeading: string }> = {
   "hi-IN": { rolesHeading: "आप कहाँ से शुरू कर सकते हैं।" },
   "hi-Latn-IN": { rolesHeading: "Aap kahan se shuru kar sakte hain." },
   "pa-IN": { rolesHeading: "ਤੁਸੀਂ ਕਿੱਥੋਂ ਸ਼ੁਰੂ ਕਰ ਸਕਦੇ ਹੋ।" },
+  "kn-IN": { rolesHeading: "ನೀವು ಎಲ್ಲಿಂದ ಪ್ರಾರಂಭಿಸಬಹುದು." },
 };
 
 /** The age question, asked once on the jobs side: each market hub's FAQ. */
@@ -54,6 +55,11 @@ export const AGE_FAQ: Record<Locale, FaqItem> = {
   "pa-IN": {
     question: "ਕੀ ਉਮਰ ਦੀ ਕੋਈ ਹੱਦ ਹੈ?",
     answer: "ਅਪਲਾਈ ਕਰਨ ਲਈ ਤੁਹਾਡੀ ਉਮਰ 18 ਸਾਲ ਜਾਂ ਵੱਧ ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ। ਸਰੀਰਕ ਕੰਮ ਲਈ ਕੁਝ ਸਾਈਟਾਂ ਆਪਣੀ ਵੱਧ ਤੋਂ ਵੱਧ ਉਮਰ ਤੈਅ ਕਰਦੀਆਂ ਹਨ।",
+    category: "operations",
+  },
+  "kn-IN": {
+    question: "ವಯಸ್ಸಿನ ಮಿತಿ ಇದೆಯೇ?",
+    answer: "ಅರ್ಜಿ ಸಲ್ಲಿಸಲು ನಿಮಗೆ 18 ವರ್ಷ ಅಥವಾ ಹೆಚ್ಚು ಆಗಿರಬೇಕು. ದೈಹಿಕ ಕೆಲಸಕ್ಕೆ ಕೆಲವು ಸೈಟ್‌ಗಳು ತಮ್ಮದೇ ಆದ ಗರಿಷ್ಠ ವಯಸ್ಸನ್ನು ನಿಗದಿಪಡಿಸುತ್ತವೆ.",
     category: "operations",
   },
 };

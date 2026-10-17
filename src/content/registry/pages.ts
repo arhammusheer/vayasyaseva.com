@@ -182,14 +182,17 @@ const LOCATIONS_UPDATED = "2026-10-16";
 /** Regions added after the first set, by the day they went up. */
 const LOCATION_ADDED: Partial<Record<LocationCluster, string>> = { jalandhar: "2026-10-17" };
 
-/** The three languages of every multi-language page (Punjabi is per page: WITH_PUNJABI). */
+/** The three languages of every multi-language page (Punjabi and Kannada are per page: WITH_*). */
 const ALL = { "en-IN": "published", "hi-IN": "published", "hi-Latn-IN": "published" } as const satisfies Partial<Record<LocaleTag, PageStatus>>;
 /**
- * The Jalandhar region's jobs funnel also in Punjabi (owner direction,
- * 17 Oct 2026): its hub, the guided form, and the two pages the form links
- * (no fee, your details). Drafts pending native review, like hi-IN.
+ * Regional languages, per page (owner direction, 17 Oct 2026): Punjabi on
+ * the Punjab markets' hubs, Kannada on Bengaluru's, and both on the pages
+ * every jobs visitor can reach (/jobs, the guided form, no fee, your
+ * details). Drafts pending native review, like hi-IN.
  */
 const WITH_PUNJABI = { ...ALL, "pa-IN": "published" } as const satisfies Partial<Record<LocaleTag, PageStatus>>;
+const WITH_KANNADA = { ...ALL, "kn-IN": "published" } as const satisfies Partial<Record<LocaleTag, PageStatus>>;
+const WITH_REGIONAL = { ...ALL, "pa-IN": "published", "kn-IN": "published" } as const satisfies Partial<Record<LocaleTag, PageStatus>>;
 const EN = { "en-IN": "published" } as const;
 /** Retired in the three languages it had (it never had Punjabi). */
 const RETIRED_ALL = { "en-IN": "retired", "hi-IN": "retired", "hi-Latn-IN": "retired" } as const;
@@ -232,21 +235,21 @@ export const pageEntries: readonly PageEntry[] = [
         priority: 0.8,
       }) satisfies PageEntry,
   ),
-  jobsPage("/jobs", "jobs-index", 0.8),
+  { ...jobsPage("/jobs", "jobs-index", 0.8), locales: WITH_REGIONAL },
   // Focused guided application, also used by ads and direct application links.
   // A form, not a search landing page: the role and cluster pages rank instead.
-  { ...jobsPage("/jobs/apply", "jobs-apply", 0.8), locales: WITH_PUNJABI, noindex: true },
+  { ...jobsPage("/jobs/apply", "jobs-apply", 0.8), locales: WITH_REGIONAL, noindex: true },
   // No fee, and how to report anyone who asks for money in our name.
-  { ...jobsPage("/jobs/fees-and-fraud", "static", 0.5, "yearly"), locales: WITH_PUNJABI },
+  { ...jobsPage("/jobs/fees-and-fraud", "static", 0.5, "yearly"), locales: WITH_REGIONAL },
   // What happens to an applicant's details, in plain words; the form's checkbox links here.
-  { ...jobsPage("/jobs/privacy", "static", 0.4, "yearly"), locales: WITH_PUNJABI },
+  { ...jobsPage("/jobs/privacy", "static", 0.4, "yearly"), locales: WITH_REGIONAL },
   ...JOB_ROLE_SLUGS.map((slug) => jobsPage(`/jobs/${slug}`, "job-role", 0.8)),
   // Candidate categories (freshers, 10th, 12th pass), linked from the jobs overview.
   ...JOB_HUB_SLUGS.map((slug) => jobsPage(`/jobs/${slug}`, "job-hub", 0.7)),
   // Cluster jobs hubs (PLAN §5.3): /jobs/<cluster>, linked from /jobs and the cluster's buyer hub.
   { ...jobsPage(jobsHubPath("haridwar"), "jobs-city", 0.8), cluster: "haridwar" },
   // Jobs only: a worker list, no buyer hub yet (clusters.ts).
-  { ...jobsPage(jobsHubPath("bengaluru"), "jobs-city", 0.7), cluster: "bengaluru" },
+  { ...jobsPage(jobsHubPath("bengaluru"), "jobs-city", 0.7), locales: WITH_KANNADA, cluster: "bengaluru" },
   // Open work (Kapurthala packing), so priced like Haridwar's.
   { ...jobsPage(jobsHubPath("jalandhar"), "jobs-city", 0.8), locales: WITH_PUNJABI, cluster: "jalandhar" },
   // Worker lists for the rest of each state (owner direction, 17 Oct 2026).

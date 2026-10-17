@@ -84,6 +84,8 @@ export function languageValue(locale: string | null | undefined): string | null 
       return "HI_LATN";
     case "pa-IN":
       return "PA";
+    case "kn-IN":
+      return "KN";
     default:
       return null;
   }

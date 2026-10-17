@@ -47,6 +47,16 @@ export const locales = {
     hint: "ਇਹ ਪੰਨਾ ਪੰਜਾਬੀ ਵਿੱਚ ਪੜ੍ਹੋ",
     published: true,
   },
+  // Kannada (owner direction, 17 Oct 2026): the jobs pages for Bengaluru
+  // and /jobs. Drafts pending native review, like pa-IN.
+  "kn-IN": {
+    segment: "kn-in",
+    hreflang: "kn-IN",
+    ogLocale: "kn_IN",
+    label: "ಕನ್ನಡ",
+    hint: "ಈ ಪುಟವನ್ನು ಕನ್ನಡದಲ್ಲಿ ಓದಿ",
+    published: true,
+  },
 } as const satisfies Record<LocaleTag, unknown>;
 
 export type Locale = keyof typeof locales;
@@ -56,7 +66,7 @@ export const allLocales = Object.keys(locales) as Locale[];
  * The languages every multi-language page is written in. Punjabi covers only
  * the pages that list it in the registry (the Jalandhar region's jobs pages).
  */
-export type CoreLocale = Exclude<Locale, "pa-IN">;
+export type CoreLocale = Exclude<Locale, "pa-IN" | "kn-IN">;
 /** Copy for pages not written in every language: the core three, and others where a page has them. */
 export type CopyIn<T> = Record<CoreLocale, T> & Partial<Record<Locale, T>>;
 /** A page's copy in one language. Throws if the registry builds a page in a language it has no copy for. */
@@ -198,9 +208,9 @@ export function localeOfParams(params: { locale?: string }): Locale {
 /**
  * Where a reader goes for a page not written in their language, before the
  * page's default: Punjabi readers to Hinglish (the Punjab picker's next
- * choice), not straight to English.
+ * choice), Kannada readers to English (Karnataka's next choice).
  */
-const NEAREST: Partial<Record<Locale, Locale>> = { "pa-IN": "hi-Latn-IN" };
+const NEAREST: Partial<Record<Locale, Locale>> = { "pa-IN": "hi-Latn-IN", "kn-IN": "en-IN" };
 
 /**
  * A page's URL for a reader of `locale`: in that language when the page is

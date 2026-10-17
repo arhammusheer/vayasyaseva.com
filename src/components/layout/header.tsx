@@ -27,6 +27,7 @@ import { clusterById } from "@/content/registry";
 import { LOCATIONS_PATH, jobsHubPath, type ClusterId } from "@/content/registry/identifiers";
 import { trackAnalyticsEvent } from "@/lib/analytics";
 import { useAreaDecision } from "@/lib/intent/use-area";
+import { splitLanguages, useLanguageOrder } from "@/lib/language-order";
 import { noteChoice } from "@/lib/intent/store";
 import { MODEL_VERSION } from "@/lib/intent/model";
 import { reportChoice } from "@/lib/intent/report";
@@ -50,10 +51,11 @@ const CREW_LABEL: Record<Locale, string> = {
   "hi-IN": "कंपनी के लिए कामगार",
   "hi-Latn-IN": "Company ke liye workers",
   "pa-IN": "ਕੰਪਨੀ ਲਈ ਕਾਮੇ",
+  "kn-IN": "ಕಂಪನಿಗಾಗಿ ಕಾರ್ಮಿಕರು",
 };
 
 /** The quick switch's "More" (languages outside the page's regional set). */
-const MORE_LABEL: Record<Locale, string> = { "en-IN": "More", "hi-IN": "और भाषाएँ", "hi-Latn-IN": "Aur bhasha", "pa-IN": "ਹੋਰ ਭਾਸ਼ਾਵਾਂ" };
+const MORE_LABEL: Record<Locale, string> = { "en-IN": "More", "hi-IN": "और भाषाएँ", "hi-Latn-IN": "Aur bhasha", "pa-IN": "ਹੋਰ ਭਾਸ਼ਾਵਾਂ", "kn-IN": "ಇನ್ನಷ್ಟು ಭಾಷೆಗಳು" };
 
 /** Legal pages sit in the reference layout (no phone) but take the business header. */
 const LEGAL = new Set(["/privacy", "/terms"]);
@@ -180,11 +182,10 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
       window.removeEventListener("resize", schedule);
     };
   }, [pathname]);
-  // The page's regional languages in the bar; any others under "More"
-  // (the menu on phones lists them all).
+  // The page's other languages: the bar holds as many as its regional set,
+  // reordered for the visitor after load (src/lib/language-order.ts); the
+  // rest under "More" (the menu on phones lists them all).
   const languages = languageLinks(pathname);
-  const quick = languages.filter((l) => !l.more);
-  const more = languages.filter((l) => l.more);
   // The business and reference headers are English; links follow the
   // page's language where they can. The jobs header is in the page's language.
   const split = splitLocalePath(pathname);
@@ -194,6 +195,8 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
   // the page has loaded, then the visitor's intent, or both when their
   // region and intent disagree with no clear winner.
   const area = useAreaDecision(path);
+  const languageOrder = useLanguageOrder(path, area);
+  const { quick, more } = splitLanguages(languages, languageOrder, pageLocale);
   const isHome = path === "/";
   const view: HeaderDoor = door === "reference" && LEGAL.has(path) ? "business" : door;
   const isJobs = view === "jobs";
@@ -355,7 +358,7 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
       data-top="true"
     >
       <a href="#main-content" className="skip-link">
-        {!isJobs || pageLocale === "en-IN" ? "Skip to content" : pageLocale === "hi-IN" ? "सीधे पेज पर जाएँ" : pageLocale === "pa-IN" ? "ਸਿੱਧੇ ਪੰਨੇ 'ਤੇ ਜਾਓ" : "Seedhe page par jaayein"}
+        {!isJobs || pageLocale === "en-IN" ? "Skip to content" : pageLocale === "hi-IN" ? "सीधे पेज पर जाएँ" : pageLocale === "pa-IN" ? "ਸਿੱਧੇ ਪੰਨੇ 'ਤੇ ਜਾਓ" : pageLocale === "kn-IN" ? "ನೇರವಾಗಿ ಪುಟಕ್ಕೆ ಹೋಗಿ" : "Seedhe page par jaayein"}
       </a>
       <div className="site-shell header-inner">
         <Link

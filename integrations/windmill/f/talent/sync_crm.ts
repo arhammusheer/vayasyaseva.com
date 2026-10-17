@@ -158,6 +158,8 @@ const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneD
               return "HI_LATN";
           case "pa-IN":
               return "PA";
+          case "kn-IN":
+              return "KN";
           default:
               return null;
       }

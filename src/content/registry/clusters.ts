@@ -124,9 +124,8 @@ export const clusters: readonly Cluster[] = [
     publishable: true,
     name: { "en-IN": "Bengaluru", "hi-IN": "बेंगलुरु", "hi-Latn-IN": "Bengaluru" },
     states: ["karnataka"],
-    // Karnataka (PLAN §6.4) is English · ಕನ್ನಡ · Hinglish; until kn-IN is
-    // published it falls through to English · Hinglish · हिंदी.
-    quickSwitch: ["en-IN", "hi-Latn-IN", "hi-IN"],
+    // Karnataka: ಕನ್ನಡ (published 17 Oct 2026) · English · Hinglish.
+    quickSwitch: ["kn-IN", "en-IN", "hi-Latn-IN"],
     buyerHub: "/locations/bengaluru",
     claims: [],
     registrations: [],

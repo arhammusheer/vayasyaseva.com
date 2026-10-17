@@ -15,7 +15,7 @@ and how they arrived, then where they are (`src/lib/intent/`).
 | Current page | 5 | The cluster of the page being viewed |
 | UTM tags | 4 | Place words in `utm_campaign`, `utm_term`, `utm_content`, `utm_source` (`search_jobs` means Haridwar) |
 | Pages viewed | 1 each, up to 3 | Cluster pages seen this session |
-| Region | 3 | The visitor's state from the IP (`/api/context`, Vercel geo headers; no permission asked, nothing stored server-side). UK/UT → Haridwar, KA → Bengaluru, DL/HR → Delhi NCR |
+| Region | 3 | The visitor's state from the IP (`/api/context`, Vercel geo headers; no permission asked, nothing stored server-side). UK/UT → Haridwar, KA → Bengaluru, DL/HR → Delhi NCR, PB → Jalandhar–Kapurthala |
 
 The strongest non-region cluster is the intent. It wins outright when it
 agrees with the region, when there is no region, or when it scores at least

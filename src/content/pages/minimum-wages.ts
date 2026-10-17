@@ -50,7 +50,7 @@ export type WageStateCopy = {
    * "elsewhere" (the Labour Department as official source and a crew door: no jobs door,
    * and nothing that implies we staff sites in that state).
    */
-  band: "haridwar" | "bengaluru" | "elsewhere";
+  band: "haridwar" | "bengaluru" | "jalandhar" | "elsewhere";
 };
 
 const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined> = {
@@ -174,7 +174,7 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
         },
       ],
       labourDepartment: { href: "https://pblabour.gov.in/", label: "Labour Department, Punjab" },
-      band: "elsewhere",
+      band: "jalandhar",
     };
   },
   karnataka: (s) => {
@@ -251,7 +251,7 @@ export const wageDoors = {
   jobsAll: {
     eyebrow: "LOOKING FOR WORK",
     heading: "Factory and warehouse jobs.",
-    text: "In Haridwar and Bengaluru. Full 8-hour shifts. There is no fee to apply.",
+    text: "In Haridwar, Jalandhar–Kapurthala and Bengaluru. Full 8-hour shifts. There is no fee to apply.",
     link: { href: "/jobs", label: "See jobs" },
   } satisfies Door,
   business: {
@@ -266,6 +266,13 @@ export const wageDoors = {
     heading: "Factory and warehouse work in Bengaluru.",
     text: "Join our worker list. Full 8-hour shifts. There is no fee.",
     link: { href: "/jobs/bengaluru", label: "Jobs in Bengaluru" },
+  } satisfies Door,
+  /** Punjab: the Jalandhar–Kapurthala jobs hub. */
+  jobsJalandhar: {
+    eyebrow: "LOOKING FOR WORK",
+    heading: "Packing and factory jobs in Kapurthala and Jalandhar.",
+    text: "Full 8-hour shifts. There is no fee to apply.",
+    link: { href: "/jobs/jalandhar", label: "Jobs in Jalandhar and Kapurthala" },
   } satisfies Door,
   /**
    * UP and Delhi: the state's Labour Department as the official source, not

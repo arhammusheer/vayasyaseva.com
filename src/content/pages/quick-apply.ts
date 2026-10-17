@@ -28,10 +28,13 @@ export interface StepDef {
 
 const picked = (a: Answers, step: string, value: string) => a[step]?.includes(value) ?? false;
 
-/** "Where do you live?" answers per cluster: Bengaluru's on /jobs/bengaluru, Haridwar's everywhere else. */
+/** "Where do you live?" answers per cluster: each hub's own on its page (and ?cluster=), Haridwar's everywhere else. */
 const HARIDWAR_AREAS = ["sidcul-bahadrabad", "haridwar-jwalapur", "roorkee-bhagwanpur", "laksar", "outside"] as const;
-const BENGALURU_AREAS = ["bengaluru:north", "bengaluru:south", "bengaluru:east", "bengaluru:west", "bengaluru:outside"] as const;
-export const areaOptions = (cluster: string | null | undefined): readonly string[] => (cluster === "bengaluru" ? BENGALURU_AREAS : HARIDWAR_AREAS);
+const CLUSTER_AREAS: Readonly<Record<string, readonly string[]>> = {
+  bengaluru: ["bengaluru:north", "bengaluru:south", "bengaluru:east", "bengaluru:west", "bengaluru:outside"],
+  jalandhar: ["jalandhar:kapurthala", "jalandhar:city", "jalandhar:phagwara-goraya", "jalandhar:outside"],
+};
+export const areaOptions = (cluster: string | null | undefined): readonly string[] => (cluster && CLUSTER_AREAS[cluster]) || HARIDWAR_AREAS;
 
 /** The questions, in order. Follow-ups appear only for the work chosen. */
 export const STEP_DEFS: StepDef[] = [
@@ -70,6 +73,11 @@ export interface QuickApplyCopy {
   breadcrumb: string;
   heading: string;
   lede: string;
+  /**
+   * The H1 and title when ?cluster=<id> names another cluster's hub (ads
+   * landing on /jobs/apply for that cluster); Haridwar's are the defaults.
+   */
+  inCluster: Partial<Record<"bengaluru" | "jalandhar", { title: string; heading: string }>>;
   next: string;
   questions: Record<string, { question: string; hint?: string }>;
   labels: Record<string, string>;
@@ -99,6 +107,10 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
     breadcrumb: "Quick application",
     heading: "Looking for work in SIDCUL Haridwar?",
     lede: "Tap a few answers, then your name and number.",
+    inCluster: {
+      bengaluru: { title: "Apply for Work in Bengaluru: Quick Form", heading: "Looking for work in Bengaluru?" },
+      jalandhar: { title: "Apply for Work in Kapurthala and Jalandhar: Quick Form", heading: "Looking for work in Kapurthala or Jalandhar?" },
+    },
     next: "Next",
     questions: {
       work: { question: "What work are you looking for?" },
@@ -128,6 +140,8 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       laksar: "Laksar", outside: "Outside Haridwar",
       "bengaluru:north": "North / Peenya", "bengaluru:south": "South / Electronic City", "bengaluru:east": "East / Whitefield", "bengaluru:west": "West / Kengeri",
       "bengaluru:outside": "Outside Bengaluru",
+      "jalandhar:kapurthala": "Kapurthala", "jalandhar:city": "Jalandhar city", "jalandhar:phagwara-goraya": "Phagwara / Goraya",
+      "jalandhar:outside": "Somewhere else",
     },
     details: {
       question: "Last step: how do we reach you?",
@@ -149,6 +163,10 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
     breadcrumb: "जल्दी आवेदन",
     heading: "सिडकुल हरिद्वार में काम चाहिए?",
     lede: "कुछ जवाब चुनिए, फिर अपना नाम और नंबर।",
+    inCluster: {
+      bengaluru: { title: "बेंगलुरु में काम के लिए अप्लाई करें: छोटा फ़ॉर्म", heading: "बेंगलुरु में काम चाहिए?" },
+      jalandhar: { title: "कपूरथला और जालंधर में काम के लिए अप्लाई करें: छोटा फ़ॉर्म", heading: "कपूरथला या जालंधर में काम चाहिए?" },
+    },
     next: "आगे",
     questions: {
       work: { question: "आपको कौन-सा काम चाहिए?" },
@@ -178,6 +196,8 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       laksar: "लक्सर", outside: "हरिद्वार से बाहर",
       "bengaluru:north": "नॉर्थ / पीन्या", "bengaluru:south": "साउथ / इलेक्ट्रॉनिक सिटी", "bengaluru:east": "ईस्ट / व्हाइटफ़ील्ड", "bengaluru:west": "वेस्ट / केंगेरी",
       "bengaluru:outside": "बेंगलुरु से बाहर",
+      "jalandhar:kapurthala": "कपूरथला", "jalandhar:city": "जालंधर शहर", "jalandhar:phagwara-goraya": "फगवाड़ा / गुराया",
+      "jalandhar:outside": "कहीं और",
     },
     details: {
       question: "आख़िरी कदम: आपसे संपर्क कैसे करें?",
@@ -199,6 +219,10 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
     breadcrumb: "Jaldi apply",
     heading: "SIDCUL Haridwar mein kaam chahiye?",
     lede: "Kuch jawab tap kijiye, phir apna naam aur number.",
+    inCluster: {
+      bengaluru: { title: "Bengaluru Job: Apply Karein, Chhota Form", heading: "Bengaluru mein kaam chahiye?" },
+      jalandhar: { title: "Kapurthala, Jalandhar Job: Apply Karein, Chhota Form", heading: "Kapurthala ya Jalandhar mein kaam chahiye?" },
+    },
     next: "Aage",
     questions: {
       work: { question: "Aapko kaun-sa kaam chahiye?" },
@@ -228,6 +252,8 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       laksar: "Laksar", outside: "Haridwar se bahar",
       "bengaluru:north": "North / Peenya", "bengaluru:south": "South / Electronic City", "bengaluru:east": "East / Whitefield", "bengaluru:west": "West / Kengeri",
       "bengaluru:outside": "Bengaluru se bahar",
+      "jalandhar:kapurthala": "Kapurthala", "jalandhar:city": "Jalandhar shehar", "jalandhar:phagwara-goraya": "Phagwara / Goraya",
+      "jalandhar:outside": "Kahin aur",
     },
     details: {
       question: "Aakhri step: aapse sampark kaise karein?",

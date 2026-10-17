@@ -175,6 +175,10 @@ export const ANSWER_OPTIONS = {
     "bengaluru:east": ["BENGALURU_EAST", "Bengaluru East / Whitefield"],
     "bengaluru:west": ["BENGALURU_WEST", "Bengaluru West / Kengeri"],
     "bengaluru:outside": ["OUTSIDE_BENGALURU", "Outside Bengaluru"],
+    "jalandhar:kapurthala": ["KAPURTHALA", "Kapurthala"],
+    "jalandhar:city": ["JALANDHAR_CITY", "Jalandhar city"],
+    "jalandhar:phagwara-goraya": ["PHAGWARA_GORAYA", "Phagwara / Goraya"],
+    "jalandhar:outside": ["OUTSIDE_JALANDHAR", "Outside Jalandhar and Kapurthala"],
   },
 } as const satisfies Record<string, Record<string, readonly [string, string]>>;
 

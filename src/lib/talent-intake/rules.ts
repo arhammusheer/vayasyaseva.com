@@ -172,6 +172,8 @@ export const QUICK_ANSWERS = {
     laksar: "Laksar", outside: "Outside Haridwar",
     "bengaluru:north": "Bengaluru North / Peenya", "bengaluru:south": "Bengaluru South / Electronic City", "bengaluru:east": "Bengaluru East / Whitefield",
     "bengaluru:west": "Bengaluru West / Kengeri", "bengaluru:outside": "Outside Bengaluru",
+    "jalandhar:kapurthala": "Kapurthala", "jalandhar:city": "Jalandhar city", "jalandhar:phagwara-goraya": "Phagwara / Goraya",
+    "jalandhar:outside": "Outside Jalandhar and Kapurthala",
   },
 } as const;
 export type QuickQuestion = keyof typeof QUICK_ANSWERS;
@@ -192,6 +194,10 @@ export const AREA_CLUSTERS: Record<keyof typeof QUICK_ANSWERS.area, IntakeCluste
   "bengaluru:east": "bengaluru",
   "bengaluru:west": "bengaluru",
   "bengaluru:outside": null,
+  "jalandhar:kapurthala": "jalandhar",
+  "jalandhar:city": "jalandhar",
+  "jalandhar:phagwara-goraya": "jalandhar",
+  "jalandhar:outside": null,
 };
 
 /**

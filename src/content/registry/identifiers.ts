@@ -61,6 +61,7 @@ export const LOCATION_ESTATES = {
   uttarakhand: ["selaqui"],
   bengaluru: ["peenya", "bommasandra-jigani-attibele", "electronic-city-whitefield", "hoskote-narasapura"],
   "delhi-ncr": ["gurugram-manesar", "noida-greater-noida", "faridabad-ghaziabad", "delhi-industrial-areas"],
+  jalandhar: ["kapurthala", "jalandhar-focal-point", "phagwara-goraya"],
 } as const satisfies Partial<Record<ClusterId, readonly string[]>>;
 export type LocationCluster = keyof typeof LOCATION_ESTATES;
 export const LOCATION_CLUSTERS = Object.keys(LOCATION_ESTATES) as LocationCluster[];
@@ -106,3 +107,5 @@ export const guidePath = (slug: GuideSlug) => `/guides/${slug}`;
 export const HARIDWAR_AREA_IDS = ["sidcul-bahadrabad", "haridwar-jwalapur", "roorkee-bhagwanpur", "laksar", "outside"] as const;
 /** Bengaluru's (jobs hub published 16 Oct 2026): the four directions and outside the city. Append-only too. */
 export const BENGALURU_AREA_IDS = ["bengaluru:north", "bengaluru:south", "bengaluru:east", "bengaluru:west", "bengaluru:outside"] as const;
+/** Jalandhar–Kapurthala's (jobs hub published 17 Oct 2026). Append-only too. */
+export const JALANDHAR_AREA_IDS = ["jalandhar:kapurthala", "jalandhar:city", "jalandhar:phagwara-goraya", "jalandhar:outside"] as const;

@@ -33,7 +33,11 @@ export function JobsPage({ locale }: { locale: Locale }) {
   const t = jobsCopy[locale];
   const url = localePath(PATH, locale);
   const haridwar = getJobCluster("haridwar", locale)!;
-  const bengaluru = getJobCluster("bengaluru", locale);
+  // The other hubs, each as a quiet line under Apply.
+  const others = (["jalandhar", "bengaluru"] as const).flatMap((slug) => {
+    const hub = getJobCluster(slug, locale);
+    return hub ? [{ hub, line: t[slug] }] : [];
+  });
   const title = (role: string) => t.work.find((w) => w.role === role)?.title ?? role;
   return (
     <>
@@ -51,14 +55,14 @@ export function JobsPage({ locale }: { locale: Locale }) {
             <Link href={localePath(`/jobs/${haridwar.slug}`, locale)} className="jobs-submit">
               {t.apply} <ArrowRight size={20} aria-hidden="true" />
             </Link>
-            {bengaluru && (
-              <p className="jobs-also">
-                {t.bengaluru}{" "}
-                <Link href={localePath(`/jobs/${bengaluru.slug}`, locale)} className="text-link mt-0">
-                  {bengaluru.linkLabel} <ArrowRight size={18} aria-hidden="true" />
+            {others.map(({ hub, line }) => (
+              <p key={hub.slug} className="jobs-also">
+                {line}{" "}
+                <Link href={localePath(`/jobs/${hub.slug}`, locale)} className="text-link mt-0">
+                  {hub.linkLabel} <ArrowRight size={18} aria-hidden="true" />
                 </Link>
               </p>
-            )}
+            ))}
           </div>
         </div>
       </section>

@@ -364,6 +364,8 @@ const { REF_PATTERN, INTAKE_SOURCES, WEB_SOURCE, isSubmissionSource, INTAKE_LOCA
           laksar: "Laksar", outside: "Outside Haridwar",
           "bengaluru:north": "Bengaluru North / Peenya", "bengaluru:south": "Bengaluru South / Electronic City", "bengaluru:east": "Bengaluru East / Whitefield",
           "bengaluru:west": "Bengaluru West / Kengeri", "bengaluru:outside": "Outside Bengaluru",
+          "jalandhar:kapurthala": "Kapurthala", "jalandhar:city": "Jalandhar city", "jalandhar:phagwara-goraya": "Phagwara / Goraya",
+          "jalandhar:outside": "Outside Jalandhar and Kapurthala",
       },
   };
   const AREA_CLUSTERS = {
@@ -377,6 +379,10 @@ const { REF_PATTERN, INTAKE_SOURCES, WEB_SOURCE, isSubmissionSource, INTAKE_LOCA
       "bengaluru:east": "bengaluru",
       "bengaluru:west": "bengaluru",
       "bengaluru:outside": null,
+      "jalandhar:kapurthala": "jalandhar",
+      "jalandhar:city": "jalandhar",
+      "jalandhar:phagwara-goraya": "jalandhar",
+      "jalandhar:outside": null,
   };
   function submissionCluster(pageCluster, answers) {
       const area = answers?.area?.[0];

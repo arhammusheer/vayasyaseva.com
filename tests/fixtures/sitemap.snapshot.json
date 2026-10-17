@@ -828,6 +828,48 @@
     }
   },
   {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/jalandhar",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/jalandhar",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/jalandhar",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/jalandhar",
+        "x-default": "https://www.vayasyaseva.com/jobs/jalandhar"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/jalandhar",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/jalandhar",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/jalandhar",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/jalandhar",
+        "x-default": "https://www.vayasyaseva.com/jobs/jalandhar"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/jalandhar",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/jalandhar",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/jalandhar",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/jalandhar",
+        "x-default": "https://www.vayasyaseva.com/jobs/jalandhar"
+      }
+    }
+  },
+  {
     "url": "https://www.vayasyaseva.com/en-in/haridwar-sidcul",
     "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "monthly",
@@ -944,6 +986,30 @@
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/delhi-industrial-areas",
     "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/jalandhar",
+    "lastModified": "2026-10-17T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/jalandhar/kapurthala",
+    "lastModified": "2026-10-17T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/jalandhar/jalandhar-focal-point",
+    "lastModified": "2026-10-17T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/jalandhar/phagwara-goraya",
+    "lastModified": "2026-10-17T00:00:00.000Z",
     "changeFrequency": "monthly",
     "priority": 0.7
   },

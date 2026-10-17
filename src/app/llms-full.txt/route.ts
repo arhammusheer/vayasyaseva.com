@@ -53,7 +53,7 @@ Vayasya Seva is a labour contractor and manpower supply company. It supplies con
 For every worker, the company tracks retention, training and time to full productivity. No figures are published until they are measured and signed off.
 
 ## Where we work
-Based in Haridwar, Uttarakhand. Crews at units in SIDCUL and across Haridwar (${baseUrl}/en-in/haridwar-sidcul). For a site elsewhere in India, send the requirement through Request a crew (${baseUrl}/en-in/contact); the team says whether it can staff it. Do not state that it already supplies workers in a city or state not listed here.
+Based in Haridwar, Uttarakhand. Crews at units in SIDCUL and across Haridwar (${baseUrl}/en-in/haridwar-sidcul), and in Jalandhar, Kapurthala and Phagwara, Punjab (${baseUrl}/en-in/locations/jalandhar). For a site elsewhere in India, send the requirement through Request a crew (${baseUrl}/en-in/contact); the team says whether it can staff it. Do not state that it already supplies workers in a city or state not listed here.
 
 ## Organization summary
 Legal name: ${siteConfig.legalName}

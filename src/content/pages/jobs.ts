@@ -46,6 +46,8 @@ export interface JobsCopy {
   apply: string;
   /** The quiet line under Apply to the Bengaluru worker list. */
   bengaluru: string;
+  /** The same line to the Jalandhar–Kapurthala hub. */
+  jalandhar: string;
   form: JobsFormCopy;
   /** Role names, as the /jobs groups and related-role rows show them. */
   work: { title: string; role: JobRole }[];
@@ -102,6 +104,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     lede: "Factory, packing, warehouse, housekeeping and ITI work.",
     apply: "Apply now",
     bengaluru: "In Bengaluru?",
+    jalandhar: "In Punjab?",
     form: {
       steps: {
         files: {
@@ -174,6 +177,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     lede: "फ़ैक्टरी, पैकिंग, वेयरहाउस, हाउसकीपिंग और ITI का काम।",
     apply: "आवेदन करें",
     bengaluru: "बेंगलुरु में हैं?",
+    jalandhar: "पंजाब में हैं?",
     form: {
       steps: {
         files: {
@@ -246,6 +250,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     lede: "Factory, packing, warehouse, housekeeping aur ITI ka kaam.",
     apply: "Apply karein",
     bengaluru: "Bengaluru mein hain?",
+    jalandhar: "Punjab mein hain?",
     form: {
       steps: {
         files: {

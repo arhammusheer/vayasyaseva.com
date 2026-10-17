@@ -10,11 +10,12 @@ type Props = { params: Promise<{ locale: string }>; searchParams: Promise<Record
 export async function generateMetadata({ params, searchParams }: Props) {
   const query = await searchParams;
   const value = (key: string) => typeof query[key] === "string" ? query[key] as string : undefined;
-  return quickApplyMetadata(localeOfParams(await params), { role: value("role"), hub: value("hub"), work: value("work") });
+  return quickApplyMetadata(localeOfParams(await params), { role: value("role"), hub: value("hub"), work: value("work"), cluster: value("cluster") });
 }
 
 export default async function QuickApplyRoute({ params, searchParams }: Props) {
   const query = await searchParams;
-  const prefillKey = JSON.stringify(Object.fromEntries(["role", "hub", ...Object.keys(QUICK_ANSWERS)].map((key) => [key, query[key] ?? null])));
-  return <QuickApplyPage locale={localeOfParams(await params)} prefillKey={prefillKey} />;
+  const prefillKey = JSON.stringify(Object.fromEntries(["role", "hub", "cluster", ...Object.keys(QUICK_ANSWERS)].map((key) => [key, query[key] ?? null])));
+  const cluster = typeof query.cluster === "string" ? query.cluster : undefined;
+  return <QuickApplyPage locale={localeOfParams(await params)} prefillKey={prefillKey} cluster={cluster} />;
 }

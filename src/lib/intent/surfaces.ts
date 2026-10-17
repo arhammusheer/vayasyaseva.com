@@ -30,9 +30,9 @@ export const businessLabel = (id: string) => clusters.find((c) => c.id === id)?.
 
 /** The jobs door and menu label for a cluster's jobs hub, in a language. */
 export const JOBS_AREA_LABEL: Record<Locale, Record<string, string>> = {
-  "en-IN": { haridwar: "Jobs in Haridwar", bengaluru: "Jobs in Bengaluru" },
-  "hi-IN": { haridwar: "हरिद्वार में नौकरी", bengaluru: "बेंगलुरु में नौकरी" },
-  "hi-Latn-IN": { haridwar: "Haridwar mein job", bengaluru: "Bengaluru mein job" },
+  "en-IN": { haridwar: "Jobs in Haridwar", bengaluru: "Jobs in Bengaluru", jalandhar: "Jobs in Jalandhar and Kapurthala" },
+  "hi-IN": { haridwar: "हरिद्वार में नौकरी", bengaluru: "बेंगलुरु में नौकरी", jalandhar: "जालंधर और कपूरथला में नौकरी" },
+  "hi-Latn-IN": { haridwar: "Haridwar mein job", bengaluru: "Bengaluru mein job", jalandhar: "Jalandhar aur Kapurthala mein job" },
 };
 export const jobsAreaHref = (id: string, locale: Locale) => {
   const path = jobsHubPath(id as Exclude<ClusterId, "other">);

@@ -4,8 +4,8 @@ import type { ClusterId } from "@/content/registry/identifiers";
 import { AGE_FAQ } from "./job-hubs";
 
 /**
- * Jobs hubs for one cluster, under /jobs/<cluster> (PLAN §5.3): Haridwar,
- * and Bengaluru as a worker list (no openings named, no estates, no
+ * Jobs hubs for one cluster, under /jobs/<cluster> (PLAN §5.3): Haridwar and
+ * Jalandhar–Kapurthala with open work, and Bengaluru as a worker list (no openings named, no estates, no
  * "vacancy" in the title, PLAN §5.3 "hubs where no roles are open now"). A
  * cluster gets one only once it is in src/content/registry/clusters.ts and
  * its page is in pages.ts.
@@ -19,7 +19,7 @@ import { AGE_FAQ } from "./job-hubs";
  * pending native review.
  */
 export interface JobClusterCopy {
-  slug: Extract<ClusterId, "haridwar" | "bengaluru">;
+  slug: Extract<ClusterId, "haridwar" | "bengaluru" | "jalandhar">;
   /** Short name for breadcrumbs. */
   name: string;
   /** How other jobs pages link here. */
@@ -98,6 +98,35 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
         },
       ],
     },
+    {
+      // Open work: the lede's "now" is the Kapurthala packing requirement of
+      // October 2026. Change it to plain area names once that is filled.
+      slug: "jalandhar",
+      name: "Jalandhar–Kapurthala",
+      linkLabel: "Jobs in Jalandhar and Kapurthala",
+      metaTitle: "Jalandhar Job Vacancy: Kapurthala Packing, Factory Jobs",
+      description:
+        "Job vacancy in Jalandhar, Kapurthala and Phagwara. No fee. Full 8-hour shifts. Packing, factory and warehouse work. Apply online, a few short questions.",
+      eyebrow: "JOBS · JALANDHAR–KAPURTHALA",
+      heading: "Packing and factory jobs in Kapurthala and Jalandhar.",
+      lede: "Packing work in Kapurthala now. Factory and warehouse work across Jalandhar and Phagwara.",
+      after: { label: "After you apply", steps: ["SMS from VAYSPL", "We call if the work fits", "You decide"] },
+      faqTitle: "Questions.",
+      faqs: [
+        {
+          question: "What documents do I need?",
+          answer:
+            "Your 10th or 12th marksheet. Your ITI certificate, if you have one. The ID the site asks for at joining. We tell you what to bring before you join. Don't send Aadhaar or bank papers in the form.",
+          category: "operations",
+        },
+        AGE_FAQ["en-IN"],
+        {
+          question: "Who pays me?",
+          answer: "We do, with EPF and ESIC where they apply.",
+          category: "operations",
+        },
+      ],
+    },
   ],
   "hi-IN": [
     {
@@ -159,6 +188,33 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
         },
       ],
     },
+    {
+      slug: "jalandhar",
+      name: "जालंधर–कपूरथला",
+      linkLabel: "जालंधर और कपूरथला में नौकरी",
+      metaTitle: "जालंधर जॉब वैकेंसी: कपूरथला में पैकिंग और फ़ैक्टरी का काम",
+      description:
+        "जालंधर, कपूरथला और फगवाड़ा में नौकरी की वैकेंसी। कोई फ़ीस नहीं। पूरी 8 घंटे की शिफ्ट। पैकिंग, फ़ैक्टरी और वेयरहाउस का काम। कुछ आसान सवाल, ऑनलाइन आवेदन।",
+      eyebrow: "नौकरी · जालंधर–कपूरथला",
+      heading: "कपूरथला और जालंधर में पैकिंग और फ़ैक्टरी की नौकरी।",
+      lede: "कपूरथला में अभी पैकिंग का काम है। जालंधर और फगवाड़ा में फ़ैक्टरी और वेयरहाउस का काम।",
+      after: { label: "आवेदन के बाद", steps: ["VAYSPL से SMS", "काम लायक हुआ तो हम कॉल करते हैं", "फ़ैसला आपका"] },
+      faqTitle: "सवाल।",
+      faqs: [
+        {
+          question: "कौन-से कागज़ चाहिए?",
+          answer:
+            "10वीं या 12वीं की मार्कशीट। ITI सर्टिफ़िकेट, अगर है। जॉइनिंग पर साइट जो ID माँगे। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।",
+          category: "operations",
+        },
+        AGE_FAQ["hi-IN"],
+        {
+          question: "वेतन कौन देता है?",
+          answer: "हम देते हैं, लागू होने पर EPF और ESIC के साथ।",
+          category: "operations",
+        },
+      ],
+    },
   ],
   "hi-Latn-IN": [
     {
@@ -206,6 +262,33 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
           answer: "Har hafte nahi. Aap hamari list mein judte hain, aur Bengaluru ki kisi site ko aapke jaise kaam ki zaroorat hone par hum call karte hain.",
           category: "operations",
         },
+        {
+          question: "Kaun-se documents chahiye?",
+          answer:
+            "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.",
+          category: "operations",
+        },
+        AGE_FAQ["hi-Latn-IN"],
+        {
+          question: "Salary kaun deta hai?",
+          answer: "Hum dete hain, laagu hone par EPF aur ESIC ke saath.",
+          category: "operations",
+        },
+      ],
+    },
+    {
+      slug: "jalandhar",
+      name: "Jalandhar–Kapurthala",
+      linkLabel: "Jalandhar aur Kapurthala mein job",
+      metaTitle: "Jalandhar Job Vacancy: Kapurthala Packing ka Kaam",
+      description:
+        "Jalandhar, Kapurthala aur Phagwara mein job vacancy. Koi fee nahi. Poori 8 ghante ki shift. Packing, factory aur warehouse ka kaam. Online apply karein.",
+      eyebrow: "Jobs · Jalandhar–Kapurthala",
+      heading: "Kapurthala aur Jalandhar mein packing aur factory ki job.",
+      lede: "Kapurthala mein abhi packing ka kaam hai. Jalandhar aur Phagwara mein factory aur warehouse ka kaam.",
+      after: { label: "Apply ke baad", steps: ["VAYSPL se SMS", "Kaam laayak hua to hum call karte hain", "Faisla aapka"] },
+      faqTitle: "Sawaal.",
+      faqs: [
         {
           question: "Kaun-se documents chahiye?",
           answer:

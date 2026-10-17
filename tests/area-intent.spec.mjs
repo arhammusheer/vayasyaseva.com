@@ -57,3 +57,11 @@ test("UTM tags name clusters; views are capped", () => {
   const { intent } = scoreSignals({ views: { haridwar: 10 } });
   assert.equal(intent.haridwar, WEIGHTS.viewCap * WEIGHTS.view);
 });
+
+test("Punjab: the region, place words and the Punjab campaign's UTM name Jalandhar–Kapurthala", async () => {
+  const { REGION_CLUSTERS } = await importTs("src/lib/intent/model.ts");
+  assert.equal(REGION_CLUSTERS.PB, "jalandhar");
+  assert.deepEqual(clustersInUtm(["jobs_punjab", "kapurthala job", "phagwara vacancy"]), ["jalandhar"]);
+  const d = decideArea({ geo: "jalandhar" }, { ...surfaces, jalandhar: { business: "/locations/jalandhar", jobs: "/jobs/jalandhar" } });
+  assert.deepEqual([d.mode, d.business, d.jobs], ["single", ["jalandhar"], ["jalandhar"]]);
+});

@@ -131,6 +131,25 @@ export const clusters: readonly Cluster[] = [
     claims: [],
     registrations: [],
   },
+  {
+    // Jalandhar–Kapurthala, Punjab (owner direction, 17 Oct 2026): parity
+    // with SIDCUL Haridwar, a jobs hub with open work and business pages,
+    // on a live requirement in Kapurthala and the owner's confirmation that
+    // VSPL is the employer of record nationally. The id stays "jalandhar"
+    // (a stored value since PLAN §1a, and where the search is: "jalandhar
+    // job" ~5,400 a month against "kapurthala job" ~260). No Punjabi until
+    // there is a native reviewer and someone who can reply in it.
+    id: "jalandhar",
+    publishable: true,
+    name: { "en-IN": "Jalandhar and Kapurthala", "hi-IN": "जालंधर और कपूरथला", "hi-Latn-IN": "Jalandhar aur Kapurthala" },
+    navLabel: "Jalandhar–Kapurthala",
+    states: ["punjab"],
+    // Punjab (PLAN §6.4): Hinglish · English · हिंदी.
+    quickSwitch: ["hi-Latn-IN", "en-IN", "hi-IN"],
+    buyerHub: "/locations/jalandhar",
+    claims: [],
+    registrations: [],
+  },
 ];
 
 export function clusterById(id: string) {

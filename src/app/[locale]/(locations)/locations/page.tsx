@@ -8,7 +8,7 @@ export const generateStaticParams = localeParams(LOCATIONS_PATH);
 
 export const metadata = pageMetadata({
   title: "Locations: Labour Contractor in Uttarakhand, NCR",
-  description: "Where Vayasya Seva supplies supervised contract labour crews: SIDCUL Haridwar and Selaqui in Uttarakhand, Bengaluru's industrial areas and Delhi NCR.",
+  description: "Where Vayasya Seva supplies supervised contract labour crews: Uttarakhand, Delhi NCR, Jalandhar and Kapurthala in Punjab, and Bengaluru.",
   alternates: { canonical: LOCATIONS_PATH },
 });
 

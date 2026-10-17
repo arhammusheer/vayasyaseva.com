@@ -33,15 +33,16 @@ export type AreaSignals = {
 export const WEIGHTS = { chosen: 12, param: 7, landing: 6, page: 5, utm: 4, view: 1, viewCap: 3, geo: 3 } as const;
 
 /** A visitor's region (ISO 3166-2:IN, without "IN-") to the cluster serving it, where there is one. */
-export const REGION_CLUSTERS: Readonly<Record<string, string>> = { UK: "haridwar", UT: "haridwar", KA: "bengaluru", DL: "delhi-ncr", HR: "delhi-ncr" };
+export const REGION_CLUSTERS: Readonly<Record<string, string>> = { UK: "haridwar", UT: "haridwar", KA: "bengaluru", DL: "delhi-ncr", HR: "delhi-ncr", PB: "jalandhar" };
 
 /** A site state picked on the crew form (STATE_OPTIONS codes) to the cluster that serves it. */
-export const SITE_STATE_CLUSTERS: Readonly<Record<string, string>> = { UK: "uttarakhand", KA: "bengaluru", DL: "delhi-ncr", HR: "delhi-ncr" };
+export const SITE_STATE_CLUSTERS: Readonly<Record<string, string>> = { UK: "uttarakhand", KA: "bengaluru", DL: "delhi-ncr", HR: "delhi-ncr", PB: "jalandhar" };
 
 /** Place words in UTM tags and campaign names, to the cluster they mean. */
 const UTM_WORDS: readonly [RegExp, string][] = [
   [/haridwar|sidcul|roorkee|bahadrabad|bhagwanpur|search_jobs/i, "haridwar"],
   [/bengaluru|bangalore|blr|peenya|bommasandra|whitefield/i, "bengaluru"],
+  [/jalandhar|kapurthala|phagwara|goraya|punjab/i, "jalandhar"],
 ];
 export const clustersInUtm = (values: (string | null | undefined)[]) => {
   const found = new Set<string>();

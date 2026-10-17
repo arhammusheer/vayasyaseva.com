@@ -622,6 +622,7 @@ const CREW_REGIONS: Partial<Record<WageStateSlug, [string, string, string]>> = {
   delhi: ["Delhi NCR", "We supply crews in Delhi's industrial areas and across NCR.", "/locations/delhi-ncr"],
   haryana: ["Gurugram or Manesar", "We supply crews in IMT Manesar, Gurugram and Faridabad.", "/locations/delhi-ncr/gurugram-manesar"],
   karnataka: ["Bengaluru", "We supply crews across Bengaluru's industrial belts.", "/locations/bengaluru"],
+  punjab: ["Jalandhar or Kapurthala", "We supply crews in Jalandhar, Kapurthala and Phagwara.", "/locations/jalandhar"],
 };
 function crewDoor(slug: WageStateSlug) {
   const r = CREW_REGIONS[slug];
@@ -636,7 +637,13 @@ export function WageStatePage({ slug }: { slug: WageStateSlug }) {
   const year = yearOf(state, today);
   const crew = crewDoor(slug);
   const doors =
-    t.band === "haridwar" ? [wageDoors.jobs, wageDoors.business] : t.band === "bengaluru" ? [wageDoors.jobsBengaluru, crew] : [wageDoors.officialSource(state.name, t.labourDepartment), crew];
+    t.band === "haridwar"
+      ? [wageDoors.jobs, wageDoors.business]
+      : t.band === "bengaluru"
+        ? [wageDoors.jobsBengaluru, crew]
+        : t.band === "jalandhar"
+          ? [wageDoors.jobsJalandhar, crew]
+          : [wageDoors.officialSource(state.name, t.labourDepartment), crew];
   return (
     <>
       <JsonLd data={wageStateSchema(state, { name: t.title(year), description: t.description, url: localePath(wageStatePath(slug), "en-IN") })} />

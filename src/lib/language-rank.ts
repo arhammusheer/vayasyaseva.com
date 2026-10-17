@@ -71,7 +71,7 @@ const CLUSTER_SETS: Readonly<Record<ClusterId, RankSet | undefined>> = {
  * opening is in SIDCUL Haridwar and the role pages stay Haridwar-first (PLAN
  * §5.3), so a visitor whose region is missing or misread (mobile CGNAT often
  * places a phone in a gateway state) still gets the Hindi-belt order there.
- * Other hubs (Bengaluru, a worker list) keep their own order on their page.
+ * Other hubs (Bengaluru, Jalandhar–Kapurthala) keep their own order on their page.
  * Without Haridwar, the one published hub if there is exactly one.
  */
 const JOBS_CLUSTER: ClusterId | undefined = (() => {

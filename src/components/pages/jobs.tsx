@@ -5,6 +5,7 @@ import { Section } from "@/components/layout/section";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { JOB_GROUPS, JOB_HUB_LINKS } from "@/components/layout/nav-links";
 import { getJobCluster } from "@/content/pages/job-clusters";
+import { jobsLinkLabel } from "@/markets/labels";
 import { JsonLd, webPageSchema } from "@/lib/structured-data";
 import { JOB_GROUP_ROLES, jobsCopy } from "@/content/pages/jobs";
 import { jobRolePath } from "@/components/pages/job-role";
@@ -38,7 +39,7 @@ export function JobsPage({ locale }: { locale: Locale }) {
   // Every market's hub in MARKET_ORDER; MarketList reorders after load.
   const markets: MarketItem[] = orderedJobMarkets().flatMap((id) => {
     const hub = getJobCluster(id, locale);
-    return hub ? [{ cluster: id, href: nearestLocalePath(`/jobs/${id}`, locale), title: hub.linkLabel }] : [];
+    return hub ? [{ cluster: id, href: nearestLocalePath(`/jobs/${id}`, locale), title: jobsLinkLabel(id, locale) ?? hub.name }] : [];
   });
   const hubs = Object.fromEntries(markets.map((m) => [m.cluster, m.href]));
   const title = (role: string) => t.work.find((w) => w.role === role)?.title ?? role;

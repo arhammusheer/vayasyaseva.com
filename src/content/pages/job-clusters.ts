@@ -23,8 +23,6 @@ export interface JobClusterCopy {
   slug: Extract<ClusterId, "haridwar" | "bengaluru" | "jalandhar" | "uttarakhand" | "punjab">;
   /** Short name for breadcrumbs. */
   name: string;
-  /** How other jobs pages link here. */
-  linkLabel: string;
   metaTitle: string;
   description: string;
   /** The share image's label only: the page itself has no eyebrow. */
@@ -43,7 +41,6 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "haridwar",
       name: "Haridwar",
-      linkLabel: "Jobs in Haridwar",
       metaTitle: "Haridwar Job Vacancy: SIDCUL Factory and Warehouse Jobs",
       description:
         "Haridwar job vacancy in SIDCUL and Roorkee. No fee. Full 8-hour shifts. Factory, packing, warehouse and housekeeping work. Apply online, a few short questions.",
@@ -70,7 +67,6 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "bengaluru",
       name: "Bengaluru",
-      linkLabel: "Jobs in Bengaluru",
       metaTitle: "Factory Jobs in Bengaluru (Bangalore): Join Our List",
       description:
         "Factory, warehouse and housekeeping work in Bengaluru (Bangalore). Join our worker list: no fee, full 8-hour shifts. We call when a site needs your work.",
@@ -104,7 +100,6 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       // October 2026. Change it to plain area names once that is filled.
       slug: "jalandhar",
       name: "Jalandhar–Kapurthala",
-      linkLabel: "Jobs in Jalandhar and Kapurthala",
       metaTitle: "Jalandhar Job Vacancy: Kapurthala Packing, Factory Jobs",
       description:
         "Job vacancy in Jalandhar, Kapurthala and Phagwara. No fee. Full 8-hour shifts. Packing, factory and warehouse work. Apply online, a few short questions.",
@@ -131,7 +126,6 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "uttarakhand",
       name: "Uttarakhand",
-      linkLabel: "Jobs across Uttarakhand",
       metaTitle: "Factory Jobs in Uttarakhand: Join Our Worker List",
       description:
         "Factory, warehouse and housekeeping work across Uttarakhand. Join our worker list: no fee, full 8-hour shifts. We call when a site needs your work.",
@@ -152,7 +146,6 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       // 2026 packing requirement: drop it once that is filled.
       slug: "punjab",
       name: "Punjab",
-      linkLabel: "Jobs across Punjab",
       metaTitle: "Factory Jobs in Punjab: Join Our Worker List",
       description:
         "Factory, packing and warehouse work across Punjab. Join our worker list: no fee, full 8-hour shifts. We call when a site near you needs your work.",
@@ -173,7 +166,6 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "haridwar",
       name: "हरिद्वार",
-      linkLabel: "हरिद्वार में नौकरी",
       metaTitle: "हरिद्वार जॉब वैकेंसी: सिडकुल फ़ैक्टरी और वेयरहाउस का काम",
       description:
         "सिडकुल हरिद्वार और रुड़की में फ़ैक्टरी, वेयरहाउस की वैकेंसी। कोई फ़ीस नहीं। पूरी 8 घंटे की शिफ्ट। कुछ आसान सवाल, ऑनलाइन आवेदन।",
@@ -200,7 +192,6 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "bengaluru",
       name: "बेंगलुरु",
-      linkLabel: "बेंगलुरु में नौकरी",
       metaTitle: "बेंगलुरु (बैंगलोर) में फ़ैक्टरी का काम: हमारी लिस्ट में जुड़ें",
       description:
         "बेंगलुरु (बैंगलोर) में फ़ैक्टरी, वेयरहाउस और हाउसकीपिंग का काम। हमारी वर्कर लिस्ट में जुड़ें: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट। साइट पर ज़रूरत होने पर हम कॉल करते हैं।",
@@ -232,7 +223,6 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "jalandhar",
       name: "जालंधर–कपूरथला",
-      linkLabel: "जालंधर और कपूरथला में नौकरी",
       metaTitle: "जालंधर जॉब वैकेंसी: कपूरथला में पैकिंग और फ़ैक्टरी का काम",
       description:
         "जालंधर, कपूरथला और फगवाड़ा में नौकरी की वैकेंसी। कोई फ़ीस नहीं। पूरी 8 घंटे की शिफ्ट। पैकिंग, फ़ैक्टरी और वेयरहाउस का काम। कुछ आसान सवाल, ऑनलाइन आवेदन।",
@@ -259,7 +249,6 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "uttarakhand",
       name: "उत्तराखंड",
-      linkLabel: "पूरे उत्तराखंड में नौकरी",
       metaTitle: "उत्तराखंड में फ़ैक्टरी का काम: हमारी वर्कर लिस्ट में जुड़ें",
       description:
         "पूरे उत्तराखंड में फ़ैक्टरी, वेयरहाउस और हाउसकीपिंग का काम। हमारी वर्कर लिस्ट में जुड़ें: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट। साइट पर ज़रूरत होने पर हम कॉल करते हैं।",
@@ -278,7 +267,6 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "punjab",
       name: "पंजाब",
-      linkLabel: "पूरे पंजाब में नौकरी",
       metaTitle: "पंजाब में फ़ैक्टरी का काम: हमारी वर्कर लिस्ट में जुड़ें",
       description:
         "पूरे पंजाब में फ़ैक्टरी, पैकिंग और वेयरहाउस का काम। हमारी वर्कर लिस्ट में जुड़ें: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट। साइट पर ज़रूरत होने पर हम कॉल करते हैं।",
@@ -299,7 +287,6 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "haridwar",
       name: "Haridwar",
-      linkLabel: "Haridwar mein job",
       metaTitle: "Haridwar Job Vacancy: SIDCUL Factory, Warehouse ka Kaam",
       description:
         "Haridwar job vacancy SIDCUL aur Roorkee mein. Koi fee nahi. Poori 8 ghante ki shift. Factory, packing, warehouse aur housekeeping. Online apply karein.",
@@ -326,7 +313,6 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "bengaluru",
       name: "Bengaluru",
-      linkLabel: "Bengaluru mein job",
       metaTitle: "Bengaluru (Bangalore) Factory Job: List mein Judein",
       description:
         "Bengaluru (Bangalore) mein factory, warehouse, housekeeping ka kaam. Worker list mein judein: koi fee nahi, 8 ghante ki shift. Zaroorat par hum call karenge.",
@@ -358,7 +344,6 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "jalandhar",
       name: "Jalandhar–Kapurthala",
-      linkLabel: "Jalandhar aur Kapurthala mein job",
       metaTitle: "Jalandhar Job Vacancy: Kapurthala Packing ka Kaam",
       description:
         "Jalandhar, Kapurthala aur Phagwara mein job vacancy. Koi fee nahi. Poori 8 ghante ki shift. Packing, factory aur warehouse ka kaam. Online apply karein.",
@@ -385,7 +370,6 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "uttarakhand",
       name: "Uttarakhand",
-      linkLabel: "Poore Uttarakhand mein job",
       metaTitle: "Uttarakhand Factory Job: Worker List mein Judein",
       description:
         "Poore Uttarakhand mein factory, warehouse aur housekeeping ka kaam. Worker list mein judein: koi fee nahi, 8 ghante ki shift. Zaroorat par hum call karenge.",
@@ -404,7 +388,6 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "punjab",
       name: "Punjab",
-      linkLabel: "Poore Punjab mein job",
       metaTitle: "Punjab Factory Job: Worker List mein Judein",
       description:
         "Poore Punjab mein factory, packing aur warehouse ka kaam. Worker list mein judein: koi fee nahi, 8 ghante ki shift. Zaroorat par hum call karenge.",
@@ -426,7 +409,6 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "jalandhar",
       name: "ਜਲੰਧਰ–ਕਪੂਰਥਲਾ",
-      linkLabel: "ਜਲੰਧਰ ਅਤੇ ਕਪੂਰਥਲਾ ਵਿੱਚ ਨੌਕਰੀ",
       metaTitle: "ਜਲੰਧਰ ਜੌਬ ਵੈਕੈਂਸੀ: ਕਪੂਰਥਲਾ ਵਿੱਚ ਪੈਕਿੰਗ, ਫ਼ੈਕਟਰੀ ਦਾ ਕੰਮ",
       description:
         "ਜਲੰਧਰ, ਕਪੂਰਥਲਾ ਅਤੇ ਫਗਵਾੜਾ ਵਿੱਚ ਨੌਕਰੀ ਦੀ ਵੈਕੈਂਸੀ। ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ। ਪੂਰੀ 8 ਘੰਟੇ ਦੀ ਸ਼ਿਫ਼ਟ। ਪੈਕਿੰਗ, ਫ਼ੈਕਟਰੀ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ। ਕੁਝ ਸੌਖੇ ਸਵਾਲ, ਆਨਲਾਈਨ ਅਪਲਾਈ।",
@@ -453,7 +435,6 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "punjab",
       name: "ਪੰਜਾਬ",
-      linkLabel: "ਪੂਰੇ ਪੰਜਾਬ ਵਿੱਚ ਨੌਕਰੀ",
       metaTitle: "ਪੰਜਾਬ ਵਿੱਚ ਫ਼ੈਕਟਰੀ ਦਾ ਕੰਮ: ਸਾਡੀ ਵਰਕਰ ਲਿਸਟ ਵਿੱਚ ਜੁੜੋ",
       description:
         "ਪੂਰੇ ਪੰਜਾਬ ਵਿੱਚ ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ। ਸਾਡੀ ਵਰਕਰ ਲਿਸਟ ਵਿੱਚ ਜੁੜੋ: ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ, ਪੂਰੀ 8 ਘੰਟੇ ਦੀ ਸ਼ਿਫ਼ਟ। ਸਾਈਟ ਨੂੰ ਲੋੜ ਹੋਣ 'ਤੇ ਅਸੀਂ ਕਾਲ ਕਰਦੇ ਹਾਂ।",
@@ -475,7 +456,6 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "bengaluru",
       name: "ಬೆಂಗಳೂರು",
-      linkLabel: "ಬೆಂಗಳೂರಿನಲ್ಲಿ ಉದ್ಯೋಗ",
       metaTitle: "ಬೆಂಗಳೂರಿನಲ್ಲಿ ಫ್ಯಾಕ್ಟರಿ ಕೆಲಸ: ನಮ್ಮ ಪಟ್ಟಿಗೆ ಸೇರಿ",
       description:
         "ಬೆಂಗಳೂರಿನಲ್ಲಿ ಫ್ಯಾಕ್ಟರಿ, ವೇರ್‌ಹೌಸ್ ಮತ್ತು ಹೌಸ್‌ಕೀಪಿಂಗ್ ಕೆಲಸ. ನಮ್ಮ ಕಾರ್ಮಿಕರ ಪಟ್ಟಿಗೆ ಸೇರಿ: ಯಾವುದೇ ಶುಲ್ಕವಿಲ್ಲ, 8 ಗಂಟೆಗಳ ಶಿಫ್ಟ್. ಬೇಕಾದಾಗ ನಾವು ಕರೆ ಮಾಡುತ್ತೇವೆ.",

@@ -23,6 +23,7 @@ export async function marketBehaviour() {
   const surfaces = await importTs("src/lib/intent/surfaces.ts");
   const { clusters } = await importTs("src/content/registry/index.ts");
   const markets = await importTs("src/markets/index.ts");
+  const { MARKET_LABELS } = await importTs("src/markets/labels.ts");
   const { CLUSTER_IDS, LOCALE_TAGS } = await importTs("src/content/registry/identifiers.ts");
 
   const words = [...new Set(model.PLACES.flatMap((p) => p.words))].sort();
@@ -74,7 +75,7 @@ export async function marketBehaviour() {
     labels: {
       businessLabel: Object.fromEntries(clusters.map((c) => [c.id, surfaces.businessLabel(c.id)])),
       JOBS_AREA_LABEL: surfaces.JOBS_AREA_LABEL,
-      clusterNames: Object.fromEntries(clusters.map((c) => [c.id, c.name])),
+      clusterNames: Object.fromEntries(clusters.map((c) => [c.id, MARKET_LABELS[c.id].name])),
       quickSwitch: Object.fromEntries(clusters.map((c) => [c.id, markets.quickSwitchFor(c.id)])),
     },
     orderedJobMarkets: surfaces.orderedJobMarkets(),

@@ -5,8 +5,9 @@
  * reasoning and keyword evidence never go here (content:check enforces part
  * of this).
  *
- * Market knowledge that is not page content (places, regions, ad words, the
- * language picker and header switch order) lives in src/markets.
+ * Market knowledge that is not page content (names and link labels, places,
+ * regions, ad words, the language picker and header switch order) lives in
+ * src/markets.
  */
 import type { ClusterId, LocaleTag, WageStateSlug } from "./identifiers";
 
@@ -49,9 +50,6 @@ export type Cluster = {
   id: ClusterId;
   /** Passed the readiness check. A cluster that hasn't is left out instead. */
   publishable: true;
-  name: Partial<Record<LocaleTag, string>>;
-  /** The business header's label for the buyer page, when it differs from the English name. */
-  navLabel?: string;
   /** States the cluster's sites are in (links to wage pages once they exist). */
   states: readonly WageStateSlug[];
   /**
@@ -74,7 +72,6 @@ export const clusters: readonly Cluster[] = [
   {
     id: "haridwar",
     publishable: true,
-    name: { "en-IN": "Haridwar", "hi-IN": "हरिद्वार", "hi-Latn-IN": "Haridwar" },
     states: ["uttarakhand"],
     buyerHub: "/locations/haridwar",
     // None signed off yet; the page copy carries no claim block.
@@ -89,7 +86,6 @@ export const clusters: readonly Cluster[] = [
     // rest of the state (Selaqui).
     id: "uttarakhand",
     publishable: true,
-    name: { "en-IN": "Uttarakhand", "hi-IN": "उत्तराखंड", "hi-Latn-IN": "Uttarakhand" },
     states: ["uttarakhand"],
     buyerHub: "/locations/uttarakhand",
     claims: [],
@@ -101,7 +97,6 @@ export const clusters: readonly Cluster[] = [
     // and UP). No jobs hub yet.
     id: "delhi-ncr",
     publishable: true,
-    name: { "en-IN": "Delhi NCR", "hi-IN": "दिल्ली NCR", "hi-Latn-IN": "Delhi NCR" },
     states: ["delhi", "uttar-pradesh", "haryana"],
     buyerHub: "/locations/delhi-ncr",
     claims: [],
@@ -115,7 +110,6 @@ export const clusters: readonly Cluster[] = [
     // in it.
     id: "bengaluru",
     publishable: true,
-    name: { "en-IN": "Bengaluru", "hi-IN": "बेंगलुरु", "hi-Latn-IN": "Bengaluru" },
     states: ["karnataka"],
     buyerHub: "/locations/bengaluru",
     claims: [],
@@ -131,8 +125,6 @@ export const clusters: readonly Cluster[] = [
     // there is a native reviewer and someone who can reply in it.
     id: "jalandhar",
     publishable: true,
-    name: { "en-IN": "Jalandhar and Kapurthala", "hi-IN": "जालंधर और कपूरथला", "hi-Latn-IN": "Jalandhar aur Kapurthala" },
-    navLabel: "Jalandhar–Kapurthala",
     states: ["punjab"],
     buyerHub: "/locations/jalandhar",
     claims: [],
@@ -144,7 +136,6 @@ export const clusters: readonly Cluster[] = [
     // Jalandhar region's carries Punjab's business side.
     id: "punjab",
     publishable: true,
-    name: { "en-IN": "Punjab", "hi-IN": "पंजाब", "hi-Latn-IN": "Punjab", "pa-IN": "ਪੰਜਾਬ" },
     states: ["punjab"],
     claims: [],
     registrations: [],

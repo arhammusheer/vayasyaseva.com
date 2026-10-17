@@ -1,7 +1,7 @@
 /**
  * Job seeker intake rules shared by the website (API route, Zod contract)
- * and the n8n intake workflow, which inlines this file at build time
- * (integrations/n8n/build.mts). Keep it dependency-free: no imports.
+ * and the Windmill intake scripts, which inline this file at build time
+ * (integrations/windmill/build.mts). Keep it dependency-free: no imports.
  */
 
 /** Submission reference shown to the person, e.g. VS-J-7K2M9Q. */
@@ -9,7 +9,7 @@ export const REF_PATTERN = /^VS-J-[A-Z0-9]{6}$/;
 
 /**
  * Legacy sources: which jobs page a submission came from, and the short
- * locale it implies. Stored values (integrations/n8n/schema.sql): web_hinglish
+ * locale it implies. Stored values (integrations/windmill/talent/schema.sql): web_hinglish
  * is the hi-Latn-IN page. Old rows keep them, the agent routes still send
  * them, and tickets issued before WEB_SOURCE may carry them. Never rename one.
  */
@@ -35,7 +35,7 @@ export function isSubmissionSource(value: unknown): value is SubmissionSource {
 /**
  * Page languages a submission can carry (BCP 47). Same list as LOCALE_TAGS in
  * src/content/registry/identifiers.ts (content:check compares them); repeated
- * here because n8n inlines this file and it must stay import-free.
+ * here because the Windmill build inlines this file and it must stay import-free.
  */
 export const INTAKE_LOCALES = ["en-IN", "hi-IN", "hi-Latn-IN", "pa-IN", "kn-IN"] as const;
 export type IntakeLocale = (typeof INTAKE_LOCALES)[number];

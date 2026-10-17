@@ -9,7 +9,7 @@ export const runtime = "nodejs";
  * Step 2 of a jobs submission, after the browser has uploaded every file:
  * checks the ticket from /api/jobs/start, confirms each upload exists and
  * matches what was declared, validates the whole payload against the
- * contract and forwards it to n8n.
+ * contract and forwards it to the Windmill intake route.
  */
 export async function POST(request: NextRequest) {
   const parsed = jobsSubmitRequestSchema.safeParse(await request.json().catch(() => null));

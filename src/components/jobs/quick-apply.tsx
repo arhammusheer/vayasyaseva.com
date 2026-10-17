@@ -327,7 +327,7 @@ export function QuickApply({
     }
 
     const role = roleFor(answers);
-    // Only the questions that applied: n8n stores them as data.
+    // Only the questions that applied: the intake stores them as data.
     const sent = cleanQuickAnswers(Object.fromEntries(active.map((s) => [s.id, answers[s.id] ?? []])));
 
     const declared = declareFiles(files);

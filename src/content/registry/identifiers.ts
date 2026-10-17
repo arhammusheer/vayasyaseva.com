@@ -1,6 +1,6 @@
 /**
  * Canonical identifiers. Each value here is stored somewhere else too
- * (quick-form answers, n8n, Chatwoot labels, Umami events, search rankings),
+ * (quick-form answers, the talent database, Twenty, Chatwoot labels, Umami events, search rankings),
  * so changing one later breaks data or loses rankings. Add values; never
  * rename or remove one.
  *

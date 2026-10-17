@@ -1,6 +1,6 @@
 /**
- * The Fast2SMS application acknowledgement (integrations/n8n/README.md,
- * "SMS acknowledgement"): approved DLT sender VAYSPL, Fast2SMS message
+ * The Fast2SMS application acknowledgement (integrations/windmill/OPERATIONS.md,
+ * "SMS acknowledgement (Fast2SMS)"): approved DLT sender VAYSPL, Fast2SMS message
  * 227115, the reference as the only variable. Acceptance is not handset
  * delivery, and an ambiguous outcome is never automatically resent.
  */

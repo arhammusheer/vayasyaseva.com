@@ -27,7 +27,7 @@ import {
 /**
  * The job seeker intake contract: what the website's /api/jobs/intake route
  * forwards to the Windmill intake route (hooks.vayasyaseva.com/api/r/webhook/vspl-talent-intake).
- * The n8n validation node is type-checked against `TalentIntakePayload` and
+ * Windmill's intake validation (integrations/windmill/talent/lib/validate.ts)
  * enforces the same rules from ./rules at runtime.
  */
 

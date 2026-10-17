@@ -1,7 +1,7 @@
 /**
  * Server-side pieces of the jobs intake (/api/jobs/start and /submit).
  * Secrets come from Vercel env (pnpm talent:sync-secrets); see
- * integrations/n8n/README.md for where each one lives.
+ * integrations/windmill/README.md for where each one lives.
  */
 import { createHmac, randomInt, timingSafeEqual } from "node:crypto";
 import { AwsClient } from "aws4fetch";
@@ -12,8 +12,8 @@ const R2_ENDPOINT = "https://3f03827748ac33418f1176adaa436f26.r2.cloudflarestora
 const R2_BUCKET = "vayasya-talent-intake";
 /**
  * Windmill's intake route (integrations/windmill, f/talent/intake). Set
- * TALENT_INTAKE_WEBHOOK_URL to point elsewhere, e.g. n8n's old
- * https://hooks.vayasyaseva.com/webhook/vspl-talent-intake to roll back.
+ * TALENT_INTAKE_WEBHOOK_URL to point elsewhere (the n8n route it replaced,
+ * /webhook/vspl-talent-intake, is scaled to zero and due for removal).
  */
 const WEBHOOK_URL = process.env.TALENT_INTAKE_WEBHOOK_URL?.trim() || "https://hooks.vayasyaseva.com/api/r/webhook/vspl-talent-intake";
 

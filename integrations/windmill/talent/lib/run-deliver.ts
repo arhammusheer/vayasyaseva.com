@@ -1,6 +1,6 @@
 /**
  * What the deliver script does, step by step, with its outside world injected so the tests can
- * run every path. The order of steps is the n8n workflow's (integrations/n8n/build.mts).
+ * run every path. The order of steps is the retired n8n workflow's (removed 17 Oct 2026; in git history).
  */
 import { composeNote, conversationAttributes, filesToAttach } from "./note.ts";
 import { CLAIM_SUBMISSION, MARK_DELIVERED, RECORD_CONVERSATION, RECOVER_STUCK_DELIVERIES } from "./sql.ts";

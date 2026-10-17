@@ -1,7 +1,7 @@
 /**
  * Shapes of the rows and values the talent scripts pass around. Row types
  * mirror talent/schema.sql; the claim queries in sql.ts select exactly
- * these columns (ported from integrations/n8n/src/types.ts).
+ * these columns (ported from the retired n8n types).
  */
 import type {
   AttachmentKind,

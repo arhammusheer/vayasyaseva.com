@@ -48,12 +48,6 @@ jobs:
       - name: Type check
         run: pnpm type-check
 
-      - name: Verify n8n workflows are generated
-        run: pnpm n8n:build --check
-
-      - name: n8n Code-node tests (intake, acknowledgement, retention)
-        run: pnpm n8n:test
-
       - name: Verify Windmill scripts are generated
         run: pnpm windmill:build --check
 

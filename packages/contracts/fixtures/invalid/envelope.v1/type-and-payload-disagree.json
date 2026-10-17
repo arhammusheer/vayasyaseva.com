@@ -1,0 +1,34 @@
+{
+  "schema": "canonical",
+  "note": "A lead labelled as a job application.",
+  "data": {
+    "v": 1,
+    "sentAt": "2026-10-17T09:30:01.000Z",
+    "idempotencyKey": "4f9c2a8e-1b7d-4c3e-9a6f-2d8b7e1c0a95",
+    "type": "job_application.v1",
+    "id": "VS-J-7K2M9Q",
+    "payload": {
+      "caseId": "REQ-20261017-1A2B3C4D",
+      "receivedAt": "2026-10-17T09:30:00.000Z",
+      "channel": "web",
+      "name": "Asha Rawat",
+      "company": "Acme Foods",
+      "jobTitle": "Plant HR",
+      "phone": "+91 98765 43210",
+      "email": "asha@acme.example",
+      "services": [
+        "packing",
+        "loading-unloading"
+      ],
+      "headcount": null,
+      "headcountBand": "50-99",
+      "site": "SIDCUL Haridwar, Uttarakhand",
+      "cluster": "haridwar",
+      "startWindow": "2-4-weeks",
+      "targetStartDate": null,
+      "requestType": "crew",
+      "enquiry": "Case REQ-20261017-1A2B3C4D\nRoles: Packing, Loading and unloading\nHeadcount: 50-99",
+      "sourcePath": "/contact"
+    }
+  }
+}

@@ -11,31 +11,14 @@
 import type { ContactFormData } from "@/lib/contact-contract";
 import { assessCrewRequest, requirementLines, siteLine } from "@/lib/crew-request";
 import { siteMarket } from "@/markets/index";
+import { LEAD_LIMITS, type LeadCanonical } from "@vspl/contracts/business-enquiry";
+import { isIntakeCluster } from "@/lib/talent-intake/rules";
 
 const DEFAULT_URL = "https://hooks.vayasyaseva.com/api/r/webhook/vspl-lead";
 const TIMEOUT_MS = 8_000;
 
-/** What f/leads/intake accepts (integrations/windmill/leads/lib/lead.ts). */
-export interface LeadPayload {
-  caseId: string;
-  receivedAt: string;
-  channel: "web" | "agent";
-  name: string;
-  company: string | null;
-  jobTitle: string | null;
-  phone: string;
-  email: string | null;
-  services: string[];
-  headcount: string | null;
-  headcountBand: string | null;
-  site: string | null;
-  cluster: string | null;
-  startWindow: string | null;
-  targetStartDate: string | null;
-  requestType: string | null;
-  enquiry: string;
-  sourcePath: string | null;
-}
+/** What f/leads/intake accepts: business_enquiry.v1 canonical (packages/contracts). */
+export type LeadPayload = LeadCanonical;
 
 export function buildLeadPayload(
   data: ContactFormData,
@@ -62,25 +45,31 @@ export function buildLeadPayload(
   ]
     .filter(Boolean)
     .join("\n");
+  // Cut to the lengths f/leads/intake keeps (LEAD_LIMITS), as it used to do itself.
+  const cut = (value: string | null | undefined, max: number) => {
+    const t = value?.trim();
+    return t ? t.slice(0, max) : null;
+  };
   return {
     caseId: options.caseId,
     receivedAt: (options.receivedAt ?? new Date()).toISOString(),
     channel: options.channel,
-    name: data.name,
-    company: data.company ?? null,
-    jobTitle: data.role ?? null,
-    phone: data.phone,
-    email: data.email ?? null,
-    services: data.roles ?? [],
-    headcount: data.headcount ?? null,
-    headcountBand: assessment.headcountBand ?? null,
-    site: siteLine(data) ?? null,
-    cluster,
-    startWindow: data.startWindow ?? null,
-    targetStartDate: data.targetStartDate ?? null,
-    requestType: data.requestType ?? null,
-    enquiry,
-    sourcePath: data.sourcePath ?? null,
+    name: cut(data.name, LEAD_LIMITS.name) ?? "",
+    company: cut(data.company, LEAD_LIMITS.company),
+    jobTitle: cut(data.role, LEAD_LIMITS.jobTitle),
+    phone: cut(data.phone, LEAD_LIMITS.phone) ?? "",
+    email: cut(data.email, LEAD_LIMITS.email),
+    services: (data.roles ?? []).slice(0, LEAD_LIMITS.services).map((r) => r.slice(0, LEAD_LIMITS.service)),
+    headcount: cut(data.headcount, LEAD_LIMITS.headcount),
+    headcountBand: cut(assessment.headcountBand, LEAD_LIMITS.headcountBand),
+    site: cut(siteLine(data), LEAD_LIMITS.site),
+    // Only clusters Twenty knows; another market id only tagged the lead.
+    cluster: isIntakeCluster(cluster) ? cluster : null,
+    startWindow: cut(data.startWindow, LEAD_LIMITS.startWindow),
+    targetStartDate: cut(data.targetStartDate, LEAD_LIMITS.targetStartDate),
+    requestType: cut(data.requestType, LEAD_LIMITS.requestType),
+    enquiry: enquiry.slice(0, LEAD_LIMITS.enquiry),
+    sourcePath: cut(data.sourcePath, LEAD_LIMITS.sourcePath),
   };
 }
 

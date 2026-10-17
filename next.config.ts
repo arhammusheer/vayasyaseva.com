@@ -10,6 +10,8 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // The contracts workspace package (packages/contracts) ships TypeScript source.
+  transpilePackages: ["@vspl/contracts"],
   env: {
     // Build-time flag (src/content/registry/index.ts): inlined so the server,
     // the browser and the proxy agree on which drafts exist.

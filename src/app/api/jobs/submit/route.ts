@@ -1,33 +1,13 @@
-import { NextRequest, NextResponse } from "next/server";
-import { jobsSubmitRequestSchema, type JobsSubmitResponse } from "@/lib/talent-intake/contract";
-import { submitWithTicket, unavailable } from "@/lib/talent-intake/submit";
-import { adClickToReport, reportAdClickConversion } from "@/lib/measurement/server";
+import type { NextRequest } from "next/server";
+import { runSubmission } from "@/server/submissions/pipeline";
+import { jobsSubmitRoute } from "@/server/submissions/types/job-application";
 
 export const runtime = "nodejs";
 
 /**
- * Step 2 of a jobs submission, after the browser has uploaded every file:
- * checks the ticket from /api/jobs/start, confirms each upload exists and
- * matches what was declared, validates the whole payload against the
- * contract and forwards it to the Windmill intake route.
+ * Step 2 of a jobs submission, after every upload: the ticket, the uploads, the contract, then Windmill.
+ * A thin adapter: the work is src/server/submissions (jobsSubmitRoute).
  */
-export async function POST(request: NextRequest) {
-  const parsed = jobsSubmitRequestSchema.safeParse(await request.json().catch(() => null));
-  if (!parsed.success) {
-    return NextResponse.json({ error: "invalid_request", fields: parsed.error.issues.map((i) => i.path.join(".")) }, { status: 400 });
-  }
-  const { ticket, phone, text, form, name, answers } = parsed.data;
-  const click = adClickToReport(parsed.data);
-
-  try {
-    const response = await submitWithTicket(ticket, phone, text, "web", { form, applicantName: name, answers });
-    // From an ad: tell Google Ads which click led to this application.
-    if (response.ok && click) {
-      const { ref } = (await response.clone().json()) as JobsSubmitResponse;
-      reportAdClickConversion(click, ref);
-    }
-    return response;
-  } catch (error) {
-    return unavailable("jobs/submit", error);
-  }
+export function POST(request: NextRequest) {
+  return runSubmission(jobsSubmitRoute, request);
 }

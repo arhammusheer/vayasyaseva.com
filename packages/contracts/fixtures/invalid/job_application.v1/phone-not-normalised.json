@@ -1,0 +1,39 @@
+{
+  "schema": "canonical",
+  "note": "The site sends +91XXXXXXXXXX.",
+  "data": {
+    "ref": "VS-J-7K2M9Q",
+    "source": "web",
+    "locale": "en-IN",
+    "cluster": "haridwar",
+    "pageCluster": "haridwar",
+    "pagePath": "/jobs/haridwar",
+    "role": "packing",
+    "hub": null,
+    "channel": "web",
+    "agentName": null,
+    "phone": "98765 43210",
+    "adult": true,
+    "consent": {
+      "version": "2026-10-16-v7",
+      "at": "2026-10-17T09:30:00.000Z"
+    },
+    "text": "Two years in a packing unit.",
+    "attachments": [
+      {
+        "kind": "image",
+        "key": "intake/2026/10/VS-J-7K2M9Q/0.jpg",
+        "mime": "image/jpeg",
+        "size": 245000,
+        "name": "cv.jpg"
+      }
+    ],
+    "form": "long",
+    "applicantName": null,
+    "answers": null
+  },
+  "handPort": {
+    "verdict": "accepts",
+    "why": "validate.ts normalised any Indian mobile; the site always sends the E.164 form (talentIntakeSchema)."
+  }
+}

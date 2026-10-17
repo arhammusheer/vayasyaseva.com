@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useTurnstile } from "@/lib/use-turnstile";
 import { useSessionDraft } from "@/lib/use-session-draft";
+import { forgetIdempotencyKey, idempotencyKeyFor } from "@/lib/idempotency-key";
 import { FormDraftNotice } from "@/components/form-draft-notice";
 import { revealFormTarget } from "@/lib/form-navigation";
 import { cn } from "@/lib/utils";
@@ -414,6 +415,8 @@ export function ContactForm() {
         "x-turnstile-token": turnstileToken,
       };
       if (honeypot.trim().length > 0) headers["x-contact-form-honeypot"] = honeypot;
+      // The same key for the same enquiry: a retry after a lost answer gets the first case ID back.
+      headers["idempotency-key"] = await idempotencyKeyFor(`${DRAFT_KEYS[mode]}:idempotency`, body);
       const response = await fetch("/api/contact", { method: "POST", headers, body: JSON.stringify(body) });
       resetTurnstile(); // tokens are single-use
       const result = await response.json().catch(() => ({}));
@@ -425,6 +428,7 @@ export function ContactForm() {
         return;
       }
       draft.clear();
+      forgetIdempotencyKey(`${DRAFT_KEYS[mode]}:idempotency`);
       if (typeof result.caseId === "string" && /^[A-Z]{3}-[0-9A-Z-]{6,40}$/.test(result.caseId)) setReference(result.caseId);
       setSubmitted(true);
       trackConversion("businessEnquiry");

@@ -1,0 +1,12 @@
+{
+  "schema": "AgentJobsRequest",
+  "note": "The agent routes are closed.",
+  "data": {
+    "language": "hi",
+    "phone": "98765 43210",
+    "adult": true,
+    "consent": true,
+    "text": "Naam Ravi. Packing ka kaam chahiye.",
+    "aadhaar": "1234"
+  }
+}

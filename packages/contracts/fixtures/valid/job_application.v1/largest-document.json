@@ -1,0 +1,35 @@
+{
+  "schema": "canonical",
+  "note": "A 20 MB PDF, the most a document may be.",
+  "data": {
+    "ref": "VS-J-DOCMAX",
+    "source": "web",
+    "locale": "en-IN",
+    "cluster": "haridwar",
+    "pageCluster": "haridwar",
+    "pagePath": "/jobs/haridwar",
+    "role": "packing",
+    "hub": null,
+    "channel": "web",
+    "agentName": null,
+    "phone": "+919876543210",
+    "adult": true,
+    "consent": {
+      "version": "2026-10-16-v7",
+      "at": "2026-10-17T09:30:00.000Z"
+    },
+    "text": null,
+    "attachments": [
+      {
+        "kind": "document",
+        "key": "intake/2026/10/VS-J-DOCMAX/0.pdf",
+        "mime": "application/pdf",
+        "size": 20971520,
+        "name": null
+      }
+    ],
+    "form": "long",
+    "applicantName": null,
+    "answers": null
+  }
+}

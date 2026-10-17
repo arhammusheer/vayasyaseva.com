@@ -1,0 +1,42 @@
+{
+  "schema": "canonical",
+  "note": "A job application in its envelope.",
+  "data": {
+    "v": 1,
+    "sentAt": "2026-10-17T09:30:01.000Z",
+    "idempotencyKey": "4f9c2a8e-1b7d-4c3e-9a6f-2d8b7e1c0a95",
+    "type": "job_application.v1",
+    "id": "VS-J-7K2M9Q",
+    "payload": {
+      "ref": "VS-J-7K2M9Q",
+      "source": "web",
+      "locale": "en-IN",
+      "cluster": "haridwar",
+      "pageCluster": "haridwar",
+      "pagePath": "/jobs/haridwar",
+      "role": "packing",
+      "hub": null,
+      "channel": "web",
+      "agentName": null,
+      "phone": "+919876543210",
+      "adult": true,
+      "consent": {
+        "version": "2026-10-16-v7",
+        "at": "2026-10-17T09:30:00.000Z"
+      },
+      "text": "Two years in a packing unit.",
+      "attachments": [
+        {
+          "kind": "image",
+          "key": "intake/2026/10/VS-J-7K2M9Q/0.jpg",
+          "mime": "image/jpeg",
+          "size": 245000,
+          "name": "cv.jpg"
+        }
+      ],
+      "form": "long",
+      "applicantName": null,
+      "answers": null
+    }
+  }
+}

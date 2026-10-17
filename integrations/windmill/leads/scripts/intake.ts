@@ -12,7 +12,7 @@ import { timingSafeEqual } from "node:crypto";
 import { config } from "../../talent/lib/config.ts";
 import { respond } from "../../talent/lib/response.ts";
 import { twentyFromConfig } from "../../talent/lib/twenty.ts";
-import { recordLead, validateLead } from "../lib/lead.ts";
+import { checkLead, recordLead } from "../lib/lead.ts";
 
 export const SECRET_HEADER = "x-vspl-lead-secret";
 
@@ -36,7 +36,7 @@ export async function preprocessor(event: HttpEvent) {
 
 export async function main(authorized: boolean, body: unknown) {
   if (!authorized) return respond(403, { ok: false, error: "Forbidden" });
-  const checked = validateLead(body);
+  const checked = checkLead(body);
   if (!checked.ok) return respond(400, { ok: false, error: `Invalid lead: ${checked.errors.join(", ")}` });
   try {
     const crm = await twentyFromConfig();

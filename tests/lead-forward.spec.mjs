@@ -86,3 +86,16 @@ test('forwarding posts with the secret, is true only on 202, and never throws', 
     process.env = saved;
   }
 });
+
+test('the lead is business_enquiry.v1 canonical: long values are cut, an unknown market is not sent', async () => {
+  const { leadCanonicalSchema, LEAD_LIMITS } = await import('@vspl/contracts/business-enquiry');
+  const opts = { caseId: 'REQ-20261017-0A1B2C3D', channel: 'web' };
+  assert.ok(leadCanonicalSchema.safeParse(buildLeadPayload(data, opts)).success);
+  const long = buildLeadPayload({ ...data, name: 'A'.repeat(500), company: 'B'.repeat(500), details: 'x'.repeat(10_000) }, opts);
+  assert.equal(long.name.length, LEAD_LIMITS.name);
+  assert.equal(long.company.length, LEAD_LIMITS.company);
+  assert.equal(long.enquiry.length, LEAD_LIMITS.enquiry);
+  assert.ok(leadCanonicalSchema.safeParse(long).success);
+  const minimal = buildLeadPayload({ name: 'Asha', phone: '9876543210', details: 'Need 30 packers.' }, { caseId: 'AGT-20261017-0A1B2C3D', channel: 'agent' });
+  assert.ok(leadCanonicalSchema.safeParse(minimal).success, JSON.stringify(leadCanonicalSchema.safeParse(minimal).error?.issues));
+});

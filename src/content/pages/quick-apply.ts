@@ -1,5 +1,5 @@
 import type { Locale } from "@/lib/i18n";
-import { QUICK_ANSWERS, type JobRole, type QuickQuestion } from "@/lib/talent-intake/rules";
+import { AREA_CLUSTERS, QUICK_ANSWERS, type JobRole, type QuickQuestion } from "@/lib/talent-intake/rules";
 import { NO_FEE, SHIFTS_LINE } from "@/content/pages/jobs";
 
 /**
@@ -29,19 +29,39 @@ export interface StepDef {
 const picked = (a: Answers, step: string, value: string) => a[step]?.includes(value) ?? false;
 
 /**
- * "Where do you live?" answers per market: a hub's own on its page (and with
- * ?cluster=, or once the visitor's market is decided); with no market, which
- * market they live in (no market is the default, owner direction 17 Oct 2026).
+ * "Where do you live?" answers (no market is the default, owner direction
+ * 17 Oct 2026), by where the form's market came from (AreaSource):
+ * - "page" or "link": the market's own areas, ending with the rest of its
+ *   state where that is another market, and "outside", which files under
+ *   the page's market (rules.ts submissionCluster).
+ * - "decision": the decided market's areas, then every other market in
+ *   place of "outside", so a wrong guess never files the person as "other".
+ * - "ask": which market, in MARKET_ORDER, "Somewhere else" last.
  */
-const MARKET_AREAS = ["market:haridwar", "market:uttarakhand", "market:jalandhar", "market:punjab", "market:bengaluru", "market:other"] as const;
+export type AreaSource = "page" | "link" | "decision" | "ask";
+const MARKET_AREAS = ["market:bengaluru", "market:haridwar", "market:jalandhar", "market:punjab", "market:uttarakhand", "market:other"] as const;
 const CLUSTER_AREAS: Readonly<Record<string, readonly string[]>> = {
-  haridwar: ["sidcul-bahadrabad", "haridwar-jwalapur", "roorkee-bhagwanpur", "laksar", "outside"],
+  haridwar: ["sidcul-bahadrabad", "haridwar-jwalapur", "roorkee-bhagwanpur", "laksar", "haridwar:rest-of-uttarakhand", "outside"],
   uttarakhand: ["uttarakhand:haridwar", "uttarakhand:dehradun-selaqui", "uttarakhand:udham-singh-nagar", "uttarakhand:other", "uttarakhand:outside"],
-  jalandhar: ["jalandhar:kapurthala", "jalandhar:city", "jalandhar:phagwara-goraya", "jalandhar:outside"],
+  jalandhar: ["jalandhar:kapurthala", "jalandhar:city", "jalandhar:phagwara-goraya", "jalandhar:rest-of-punjab", "jalandhar:outside"],
   punjab: ["punjab:jalandhar-kapurthala", "punjab:ludhiana", "punjab:mohali", "punjab:amritsar", "punjab:other", "punjab:outside"],
   bengaluru: ["bengaluru:north", "bengaluru:south", "bengaluru:east", "bengaluru:west", "bengaluru:outside"],
 };
-export const areaOptions = (cluster: string | null | undefined): readonly string[] => (cluster && CLUSTER_AREAS[cluster]) || MARKET_AREAS;
+/** Each set's "outside" answer: the last one. */
+const isOutside = (id: string, set: readonly string[]) => id === set[set.length - 1];
+
+export function areaOptions(cluster: string | null | undefined, source: AreaSource = cluster ? "page" : "ask"): readonly string[] {
+  const own = cluster ? CLUSTER_AREAS[cluster] : undefined;
+  if (!own || source === "ask") return MARKET_AREAS;
+  if (source !== "decision") return own;
+  const local = own.filter((id) => !isOutside(id, own));
+  const covered = new Set(local.map((id) => AREA_CLUSTERS[id as keyof typeof AREA_CLUSTERS]));
+  const others = MARKET_AREAS.filter((id) => {
+    const market = AREA_CLUSTERS[id as keyof typeof AREA_CLUSTERS];
+    return market === null || !covered.has(market);
+  });
+  return [...local, ...others];
+}
 
 /** The questions, in order. Follow-ups appear only for the work chosen. */
 export const STEP_DEFS: StepDef[] = [
@@ -159,6 +179,7 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       "punjab:amritsar": "Amritsar", "punjab:other": "Elsewhere in Punjab", "punjab:outside": "Outside Punjab",
       "market:haridwar": "Haridwar / Roorkee", "market:uttarakhand": "Elsewhere in Uttarakhand", "market:jalandhar": "Jalandhar / Kapurthala",
       "market:punjab": "Elsewhere in Punjab", "market:bengaluru": "Bengaluru", "market:other": "Somewhere else",
+      "haridwar:rest-of-uttarakhand": "Elsewhere in Uttarakhand", "jalandhar:rest-of-punjab": "Elsewhere in Punjab",
     },
     details: {
       question: "Last step: how do we reach you?",
@@ -225,6 +246,7 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       "punjab:amritsar": "अमृतसर", "punjab:other": "पंजाब में कहीं और", "punjab:outside": "पंजाब से बाहर",
       "market:haridwar": "हरिद्वार / रुड़की", "market:uttarakhand": "उत्तराखंड में कहीं और", "market:jalandhar": "जालंधर / कपूरथला",
       "market:punjab": "पंजाब में कहीं और", "market:bengaluru": "बेंगलुरु", "market:other": "कहीं और",
+      "haridwar:rest-of-uttarakhand": "उत्तराखंड में कहीं और", "jalandhar:rest-of-punjab": "पंजाब में कहीं और",
     },
     details: {
       question: "आख़िरी कदम: आपसे संपर्क कैसे करें?",
@@ -291,6 +313,7 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       "punjab:amritsar": "Amritsar", "punjab:other": "Punjab mein kahin aur", "punjab:outside": "Punjab se bahar",
       "market:haridwar": "Haridwar / Roorkee", "market:uttarakhand": "Uttarakhand mein kahin aur", "market:jalandhar": "Jalandhar / Kapurthala",
       "market:punjab": "Punjab mein kahin aur", "market:bengaluru": "Bengaluru", "market:other": "Kahin aur",
+      "haridwar:rest-of-uttarakhand": "Uttarakhand mein kahin aur", "jalandhar:rest-of-punjab": "Punjab mein kahin aur",
     },
     details: {
       question: "Aakhri step: aapse sampark kaise karein?",
@@ -357,6 +380,7 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       "punjab:amritsar": "ਅੰਮ੍ਰਿਤਸਰ", "punjab:other": "ਪੰਜਾਬ ਵਿੱਚ ਕਿਤੇ ਹੋਰ", "punjab:outside": "ਪੰਜਾਬ ਤੋਂ ਬਾਹਰ",
       "market:haridwar": "ਹਰਿਦੁਆਰ / ਰੁੜਕੀ", "market:uttarakhand": "ਉੱਤਰਾਖੰਡ ਵਿੱਚ ਕਿਤੇ ਹੋਰ", "market:jalandhar": "ਜਲੰਧਰ / ਕਪੂਰਥਲਾ",
       "market:punjab": "ਪੰਜਾਬ ਵਿੱਚ ਕਿਤੇ ਹੋਰ", "market:bengaluru": "ਬੈਂਗਲੁਰੂ", "market:other": "ਕਿਤੇ ਹੋਰ",
+      "haridwar:rest-of-uttarakhand": "ਉੱਤਰਾਖੰਡ ਵਿੱਚ ਕਿਤੇ ਹੋਰ", "jalandhar:rest-of-punjab": "ਪੰਜਾਬ ਵਿੱਚ ਕਿਤੇ ਹੋਰ",
     },
     details: {
       question: "ਆਖ਼ਰੀ ਕਦਮ: ਤੁਹਾਡੇ ਨਾਲ ਸੰਪਰਕ ਕਿਵੇਂ ਕਰੀਏ?",

@@ -48,6 +48,9 @@ export function webSourceEnabled() {
   return process.env.TALENT_INTAKE_WEB_SOURCE === "1";
 }
 
+/** The set an area answer came from: market:*, a market's own ids, or none. */
+const areaSet = (id: string | undefined) => (!id ? "none" : id.includes(":") ? id.split(":")[0] : "haridwar");
+
 /** Builds, validates and forwards one submission; answers 202 with the reference. */
 export async function forwardSubmission(draft: Draft, phone: string, text: string | null, extras: FormExtras = {}) {
   const channel = draft.channel ?? "web";
@@ -90,6 +93,10 @@ export async function forwardSubmission(draft: Draft, phone: string, text: strin
     source: payload.data.source,
     locale: payload.data.locale ?? "none",
     cluster: payload.data.cluster ?? "none",
+    // The page's own market and the area answer's set (its id prefix, or
+    // "haridwar" for Haridwar's unprefixed ids), to see how filing happened.
+    page_cluster: payload.data.pageCluster ?? "none",
+    area: areaSet(payload.data.answers?.area?.[0]),
     files: payload.data.attachments.length,
   });
   const body: JobsSubmitResponse = { ref: draft.ref };

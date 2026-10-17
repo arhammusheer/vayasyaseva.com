@@ -13,7 +13,7 @@ export const generateStaticParams = localeParams("/about");
 // The search phrase stays in the title; the page itself is who we are: one
 // sentence, then the facts. The contractor point stays on home and the
 // records on /compliance.
-const TITLE = "About Us: Labour Contractor in Haridwar";
+const TITLE = "About Us: Labour Contractor and Manpower Supplier";
 const DESCRIPTION =
   "Vayasya Seva Private Limited is a contract labour company incorporated in Haridwar, Uttarakhand, in 2023. The company's CIN, GSTIN and Udyam numbers.";
 
@@ -51,7 +51,7 @@ export default function AboutPage() {
             around the work.
           </>
         }
-        lede="Incorporated in Haridwar in 2023, we supply supervised crews to factories, warehouses and facilities in SIDCUL and across Haridwar."
+        lede="Incorporated in Haridwar in 2023, we supply supervised crews to factories, warehouses and facilities in Bengaluru, Delhi NCR, Punjab and Uttarakhand."
       />
       <Section variant="subtle">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
@@ -62,8 +62,8 @@ export default function AboutPage() {
               <br />
               Private Limited
             </h2>
-            <Link href="/haridwar-sidcul" className="text-link">
-              Our work in SIDCUL Haridwar <ArrowUpRight size={18} aria-hidden="true" />
+            <Link href="/locations" className="text-link">
+              Where we supply crews <ArrowUpRight size={18} aria-hidden="true" />
             </Link>
           </div>
           <div>

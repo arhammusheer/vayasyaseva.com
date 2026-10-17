@@ -13,5 +13,11 @@ export const dynamic = "force-dynamic";
 
 export function GET(request: Request) {
   const { country, region } = visitorRegion(request.headers);
-  return Response.json({ country: country ?? null, region: region ?? null, city: visitorCity(request.headers) ?? null }, { headers: { "cache-control": "private, no-store" } });
+  // Region codes repeat across countries (PB is also Pakistan's Punjab, UT a US
+  // state): state and city only for visitors in India.
+  const india = country === "IN";
+  return Response.json(
+    { country: country ?? null, region: india ? (region ?? null) : null, city: india ? (visitorCity(request.headers) ?? null) : null },
+    { headers: { "cache-control": "private, no-store" } },
+  );
 }

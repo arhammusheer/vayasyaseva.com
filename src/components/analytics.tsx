@@ -54,7 +54,7 @@ function campaignTags() {
   const tags: Record<string, string> = {};
   try {
     const params = new URLSearchParams(window.location.search);
-    for (const key of ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"]) {
+    for (const key of ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "cluster"]) {
       const value = params.get(key);
       if (value) tags[key] = value.slice(0, 100);
     }

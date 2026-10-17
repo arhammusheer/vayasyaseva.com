@@ -29,8 +29,10 @@ import {
   type ContactFormData,
 } from "@/lib/contact-contract";
 import { assessCrewRequest, crewPrefill, requirementLines } from "@/lib/crew-request";
-import { SITE_STATE_CLUSTERS } from "@/lib/intent/model";
-import { noteChoice } from "@/lib/intent/store";
+// A site state is where the business's site is, not a market the visitor
+// picked, so it doesn't steer the area decision (src/lib/intent).
+import { CLUSTER_STATES } from "@/lib/intent/model";
+import { clusters } from "@/content/registry/clusters";
 
 /**
  * "Request a crew" (PLAN §8.1): step 1 the requirement, step 2 who to talk
@@ -113,8 +115,14 @@ const STEP_2 = z.object({
   email: contactFieldSchema("email"),
 });
 /** Fields in page order, for focusing the first problem. */
-/** States listed first in the picker: where we run crews or have wage pages. */
-const FIRST_STATES: string[] = ["UK", "UP", "DL"];
+/**
+ * States listed first in the picker: every state with a published market's
+ * business page (src/content/registry/clusters.ts), alphabetically by name,
+ * so no market comes first (owner direction, 17 Oct 2026).
+ */
+const FIRST_STATES: string[] = [...new Set(clusters.filter((c) => c.buyerHub).flatMap((c) => CLUSTER_STATES[c.id] ?? []))]
+  .filter((code) => code in STATE_OPTIONS)
+  .sort((a, b) => STATE_OPTIONS[a].localeCompare(STATE_OPTIONS[b]));
 
 const STEP_1_ORDER: Field[] = ["roles", "headcountBand", "siteState", "siteCity", "sitePincode", "startWindow", "durationBand", "shiftPattern", "details"];
 const STEP_1_COMPLIANCE_ORDER: Field[] = ["needs", "siteState", "headcountBand", "details"];
@@ -213,7 +221,7 @@ function StateSelect({ value, error, onChange }: { value: string; error?: string
       className={cn(field, "crew-select w-full border", !value && "text-neutral-400", error && "border-destructive")}
     >
       <option value="" disabled>Choose a state</option>
-      <optgroup label="Uttarakhand, UP and Delhi">
+      <optgroup label="Where we supply crews">
         {FIRST_STATES.map((code) => (
           <option key={code} value={code} className="text-foreground">{STATE_OPTIONS[code]}</option>
         ))}
@@ -566,7 +574,7 @@ export function ContactForm() {
             <p className="quick-hint">The rules and rates differ by state.</p>
             <div className="crew-site">
               <div>
-                <StateSelect value={values.siteState} error={errors.siteState} onChange={(value) => { set("siteState", value); if (SITE_STATE_CLUSTERS[value]) noteChoice(SITE_STATE_CLUSTERS[value]); }} />
+                <StateSelect value={values.siteState} error={errors.siteState} onChange={(value) => set("siteState", value)} />
                 <FieldError id="siteState" error={errors.siteState} />
               </div>
             </div>
@@ -622,7 +630,7 @@ export function ContactForm() {
             <div className="crew-site">
               <div>
                 <Label htmlFor="siteState" className="text-sm font-medium">State</Label>
-                <StateSelect value={values.siteState} error={errors.siteState} onChange={(value) => { set("siteState", value); if (SITE_STATE_CLUSTERS[value]) noteChoice(SITE_STATE_CLUSTERS[value]); }} />
+                <StateSelect value={values.siteState} error={errors.siteState} onChange={(value) => set("siteState", value)} />
                 <FieldError id="siteState" error={errors.siteState} />
               </div>
               <div>
@@ -635,7 +643,7 @@ export function ContactForm() {
                   aria-describedby={describedBy("siteCity")}
                   enterKeyHint="next"
                   autoComplete="address-level2"
-                  placeholder="e.g. SIDCUL Haridwar"
+                  placeholder="Town or industrial area"
                   maxLength={120}
                   onChange={(event) => set("siteCity", event.target.value)}
                   className={cn(field, errors.siteCity && "border-destructive")}

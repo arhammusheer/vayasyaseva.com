@@ -2,6 +2,8 @@ import type { FaqItem } from "@/content/types";
 import type { ServiceLandingContent } from "@/content/service-pages";
 import { siteConfig } from "@/content/site";
 import { localizeHref } from "@/lib/i18n";
+import { clusters, linkable } from "@/content/registry";
+import { MARKET_ORDER } from "@/lib/intent/model";
 import { formatDate, type WageSource, type WageState } from "@/content/wages";
 import type { Guide } from "@/content/guides";
 import type { GuideSource } from "@/content/guides/sources";
@@ -32,36 +34,30 @@ const postalAddress = {
   addressCountry: "IN",
 };
 
-const HARIDWAR = {
-  "@type": "City",
-  name: "Haridwar",
-  containedInPlace: { "@type": "State", name: "Uttarakhand" },
+/** The place each market's buyer page serves, for areaServed (schema.org types). */
+const MARKET_PLACES: Readonly<Record<string, object>> = {
+  bengaluru: { "@type": "City", name: "Bengaluru", containedInPlace: { "@type": "State", name: "Karnataka" } },
+  "delhi-ncr": { "@type": "Place", name: "Delhi NCR", alternateName: "National Capital Region" },
+  haridwar: {
+    "@type": "City",
+    name: "Haridwar",
+    alternateName: ["SIDCUL Haridwar", "Integrated Industrial Estate (IIE) Haridwar"],
+    containedInPlace: { "@type": "State", name: "Uttarakhand" },
+  },
+  jalandhar: { "@type": "Place", name: "Jalandhar and Kapurthala", containedInPlace: { "@type": "State", name: "Punjab" } },
+  uttarakhand: { "@type": "State", name: "Uttarakhand" },
 };
 
 /**
- * Primary region and the industrial areas around it; not an exclusive
- * boundary. SIDCUL Haridwar is the State's Integrated Industrial Estate
- * inside Haridwar (Ranipur / BHEL area), so it is modelled as part of the
- * city, not beside it.
+ * Where we supply crews: every market with a published buyer page
+ * (src/content/registry/clusters.ts), in MARKET_ORDER, so no market is the
+ * company's only or first area (owner direction, 17 Oct 2026). The
+ * registered office stays in `address`.
  */
 export function areaServed() {
-  return [
-    HARIDWAR,
-    {
-      "@type": "Place",
-      name: "SIDCUL Haridwar",
-      alternateName: [
-        "SIDCUL Industrial Area, Haridwar",
-        "Integrated Industrial Estate (IIE) Haridwar",
-        "SIIDCUL Haridwar",
-      ],
-      containedInPlace: HARIDWAR,
-    },
-    { "@type": "City", name: "Roorkee" },
-    { "@type": "Place", name: "Bahadrabad" },
-    { "@type": "Place", name: "Bhagwanpur" },
-    { "@type": "State", name: "Uttarakhand" },
-  ];
+  return MARKET_ORDER.filter((id) => clusters.some((c) => c.id === id && c.buyerHub && linkable(c.buyerHub, "en-IN")))
+    .map((id) => MARKET_PLACES[id])
+    .filter(Boolean);
 }
 
 export const knowsAbout = [
@@ -74,7 +70,6 @@ export const knowsAbout = [
   "Fabrication and installation",
   "Machinery maintenance",
   "EPF and ESIC compliance for contract workers",
-  "SIDCUL Haridwar (Integrated Industrial Estate)",
 ];
 
 /** Which door a page belongs to; it decides what the site graph may carry. */

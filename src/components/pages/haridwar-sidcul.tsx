@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { CtaBlock } from "@/components/sections/cta-block";
 import { ClientStrip } from "@/components/sections/client-strip";
 import { FaqSection } from "@/components/sections/faq-section";
-import { faqHref } from "@/content/faq";
+import { FAQ_PATH } from "@/content/faq";
 import { JsonLd, webPageSchema } from "@/lib/structured-data";
 import { haridwarCopy } from "@/content/pages/haridwar-sidcul";
 import { jobsAreaHref } from "@/lib/intent/surfaces";
@@ -137,7 +137,7 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
           </div>
         </div>
       </Section>
-      <FaqSection title={t.faqHeading} variant="subtle" items={t.faqs} open more={{ href: faqHref("haridwar-sidcul"), label: t.moreFaqs }} />
+      <FaqSection title={t.faqHeading} variant="subtle" items={t.faqs} open more={{ href: FAQ_PATH, label: t.moreFaqs }} />
       <CtaBlock locale={locale} href={CREW_HREF} />
     </>
   );

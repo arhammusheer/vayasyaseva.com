@@ -198,6 +198,8 @@ export const ANSWER_OPTIONS = {
     "market:punjab": ["MARKET_PUNJAB", "Elsewhere in Punjab (market)"],
     "market:bengaluru": ["MARKET_BENGALURU", "Bengaluru (market)"],
     "market:other": ["MARKET_OTHER", "Somewhere else"],
+    "haridwar:rest-of-uttarakhand": ["HW_REST_OF_UTTARAKHAND", "Elsewhere in Uttarakhand (Haridwar form)"],
+    "jalandhar:rest-of-punjab": ["JL_REST_OF_PUNJAB", "Elsewhere in Punjab (Jalandhar form)"],
   },
 } as const satisfies Record<string, Record<string, readonly [string, string]>>;
 

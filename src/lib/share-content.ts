@@ -7,19 +7,20 @@ import { getJobCluster, jobClusters } from "@/content/pages/job-clusters";
 import { feesAndFraudCopy } from "@/content/pages/fees-and-fraud";
 import { JOB_ROLE_SLUGS, JOB_HUB_SLUGS, isJobRole, type JobRole } from "./talent-intake/rules";
 import { haridwarCopy } from "@/content/pages/haridwar-sidcul";
+import { locationPages } from "@/content/locations";
 import { servicePages } from "@/content/service-pages";
 
 export type ShareContent = { key: string; path: string; locale: Locale; variant: string; heading: string; description: string; eyebrow: string };
 export const shareKey = (path: string, locale: Locale, variant = "") => `${locale}:${path}:${variant}`;
 
 const COMMON: Record<string, { heading: string; description: string }> = {
-  "/": { heading: "Workforce.\nWith care.", description: "Contract labour and industrial services for SIDCUL and across Haridwar." },
+  "/": { heading: "Workforce.\nWith care.", description: "Contract labour and industrial services, with the workers on our payroll." },
   "/services": { heading: "Contract labour for factories,\nwarehouses and facilities.", description: "Factory, loading and unloading, and housekeeping crews, and how an engagement runs." },
-  "/about": { heading: "People at the heart\nof work.", description: "Meet Vayasya Seva: a Haridwar-based contract labour and industrial services company." },
+  "/about": { heading: "People at the heart\nof work.", description: "Meet Vayasya Seva: a contract labour and industrial services company." },
   "/faq": { heading: "Questions,\nanswered.", description: "Pricing, crews, payroll and compliance: what buyers ask us most." },
   "/compliance": { heading: "Labour compliance:\nthe records we keep.", description: "Registers, payroll, EPF, ESIC, PT and LWF for every worker on your site." },
   "/vayasya-setu": { heading: "Vayasya Setu.", description: "Attendance, wage and challan records for your site, each month." },
-  "/contact": { heading: "Let’s discuss\nyour requirement.", description: "Talk to our Haridwar team about workforce, site services or a project." },
+  "/contact": { heading: "Let’s discuss\nyour requirement.", description: "Talk to our team about workforce, site services or a project." },
   "/brand": { heading: "The Vayasya Seva\nbrand.", description: "Our identity, typography, colours and official brand resources." },
   "/privacy": { heading: "Your information.\nHandled with care.", description: "How Vayasya Seva uses information shared through this website." },
   "/terms": { heading: "Using the\nVayasya Seva website.", description: "Terms of use, public information and access to our website." },
@@ -28,14 +29,18 @@ const COMMON: Record<string, { heading: string; description: string }> = {
   "/minimum-wages/uttar-pradesh": { heading: "Minimum wages\nin Uttar Pradesh.", description: "Rates by district category and skill level, basic wage and VDA." },
   "/minimum-wages/how-we-check": { heading: "How we check\nminimum wages.", description: "Where the rates come from, when we check them, and how to report an error." },
   "/minimum-wages/delhi": { heading: "Minimum wages\nin Delhi.", description: "Monthly and daily rates by skill level, from the Labour Department's order." },
+  "/minimum-wages/haryana": { heading: "Minimum wages\nin Haryana.", description: "Monthly and daily rates by skill level, from the state's notification." },
+  "/minimum-wages/punjab": { heading: "Minimum wages\nin Punjab.", description: "Monthly and daily rates by skill level, from the state's notification." },
+  "/locations": { heading: "Where we\nsupply crews.", description: "Bengaluru, Delhi NCR, Punjab and Uttarakhand, each with its own page." },
 };
 
 export { quickShareVariant } from "./share-variant";
 
 export function getShareContent(path: string, locale: Locale = "en-IN", variant = ""): ShareContent {
   let heading = COMMON[path]?.heading ?? "Vayasya Seva";
-  let description = COMMON[path]?.description ?? "Workforce and industrial services in Haridwar.";
-  let eyebrow = path.startsWith("/minimum-wages") ? "MINIMUM WAGES · REFERENCE" : "VAYASYA SEVA · HARIDWAR";
+  // No place in the defaults: a page with no card of its own names no market.
+  let description = COMMON[path]?.description ?? "Contract labour and industrial services.";
+  let eyebrow = path.startsWith("/minimum-wages") ? "MINIMUM WAGES · REFERENCE" : "VAYASYA SEVA";
   if (path === "/jobs") {
     const t = jobsCopy[locale]; heading = t.heading; description = t.lede; eyebrow = t.eyebrow;
   } else if (path === "/jobs/fees-and-fraud") {
@@ -54,13 +59,15 @@ export function getShareContent(path: string, locale: Locale = "en-IN", variant 
     const hub = variant.startsWith("hub-") ? getJobHub(variant.slice(4), locale) : undefined;
     if (role) { heading = role.heading; description = t.lede; }
     if (hub) { heading = hub.heading; description = t.lede; }
+  } else if (locationPages.has(path)) {
+    const p = locationPages.get(path)!; heading = p.heading; description = p.lede; eyebrow = `LOCATIONS · ${p.name.toUpperCase()}`;
   } else if (path === "/haridwar-sidcul") {
     const t = copyIn(haridwarCopy, locale, "/haridwar-sidcul"); heading = t.hero.join(" "); description = t.description; eyebrow = t.breadcrumb;
   } else if (path.startsWith("/services/")) {
     const t = servicePages.find((s) => path === `/services/${s.slug}`);
     if (t) { heading = t.heading; description = t.description; eyebrow = t.name; }
   } else if (path === "/contact" && variant === "assessment") {
-    heading = "Let’s understand\nyour site."; description = "Share your roles, headcount, shifts and timing to discuss a site assessment."; eyebrow = "SITE ASSESSMENT · HARIDWAR";
+    heading = "Let’s understand\nyour site."; description = "Share your roles, headcount, shifts and timing to discuss a site assessment."; eyebrow = "SITE ASSESSMENT";
   } else if (path === "/contact" && variant === "compliance") {
     heading = "Get compliance\nhelp."; description = "EPF, ESIC, PT, LWF, licences and registers: we guide you and connect you with CAs and labour lawyers."; eyebrow = "COMPLIANCE HELP · VAYASYA SEVA";
   }
@@ -68,7 +75,7 @@ export function getShareContent(path: string, locale: Locale = "en-IN", variant 
 }
 
 export function allShareContent(): ShareContent[] {
-  const paths = [...Object.keys(COMMON), "/jobs", "/jobs/apply", "/jobs/fees-and-fraud", ...[...JOB_ROLE_SLUGS, ...JOB_HUB_SLUGS, ...jobClusters["en-IN"].map((c) => c.slug)].map((slug) => `/jobs/${slug}`), "/haridwar-sidcul", ...servicePages.map((s) => `/services/${s.slug}`)];
+  const paths = [...Object.keys(COMMON), "/jobs", "/jobs/apply", "/jobs/fees-and-fraud", ...[...JOB_ROLE_SLUGS, ...JOB_HUB_SLUGS, ...jobClusters["en-IN"].map((c) => c.slug)].map((slug) => `/jobs/${slug}`), "/haridwar-sidcul", ...servicePages.map((s) => `/services/${s.slug}`), ...locationPages.keys()];
   const entries = [...new Set(paths)].flatMap((path) => localesOf(path).map((locale) => getShareContent(path, locale)));
   for (const locale of allLocales) {
     for (const role of JOB_ROLE_SLUGS) entries.push(getShareContent("/jobs/apply", locale, `role-${role}`));

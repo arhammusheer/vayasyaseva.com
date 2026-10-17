@@ -219,10 +219,10 @@ export const listDates = (dates: string[]) => {
 };
 
 export const wageHubCopy = {
-  title: (year: string | null) => `Minimum Wages${year ? ` ${year}` : ""}: Uttarakhand, UP, Delhi, Haryana`,
+  title: (year: string | null) => `Minimum Wages${year ? ` ${year}` : ""} by State: Rates by Skill Level`,
   /** The oldest date across the states, so the line is true for every one of them. */
   description: () =>
-    `Minimum wage rates for Uttarakhand, UP, Delhi, Haryana and Punjab by skill level, each with its notification number and effective date. ${stamp(wageStates)}.`,
+    `Minimum wage rates for Delhi, Haryana, Punjab, UP and Uttarakhand by skill level, each with its notification number and effective date. ${stamp(wageStates)}.`,
   heading: (year: string | null) => (year ? `Minimum wages in ${year}, by state.` : "Minimum wages by state."),
   /**
    * The answer, first: the hero lede carries what the old one-question FAQ
@@ -303,7 +303,7 @@ export const wageDoors = {
   neutral: {
     eyebrow: "FOR EMPLOYERS",
     heading: "Hiring for a unit?",
-    text: "We supply crews in SIDCUL and across Haridwar.",
+    text: "Tell us where your site is, and we'll say plainly whether we can staff it.",
     link: { href: "/contact", label: "Request a crew" },
   } satisfies Door,
 };

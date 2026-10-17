@@ -28,10 +28,17 @@ import { LOCATIONS_PATH, jobsHubPath, type ClusterId } from "@/content/registry/
 import { trackAnalyticsEvent } from "@/lib/analytics";
 import { useAreaDecision } from "@/lib/intent/use-area";
 import { noteChoice } from "@/lib/intent/store";
+import { MODEL_VERSION } from "@/lib/intent/model";
+import { reportChoice } from "@/lib/intent/report";
 import { JOBS_AREA_LABEL, businessLabel, jobsAreaHref, orderedJobMarkets } from "@/lib/intent/surfaces";
 
 /** A header link that names an area: clicking it records the visitor's pick. */
-type AreaLink = NavLink & { neutral?: boolean; cluster?: string; surface?: "business" | "jobs" };
+/**
+ * A link to one market. `pick`: its label names the market, so following it
+ * is an explicit pick (remembered, src/lib/intent/store.ts). An unlabelled
+ * door ("Jobs") is not; it is still reported, as surface "jobs-door".
+ */
+type AreaLink = NavLink & { neutral?: boolean; cluster?: string; surface?: "business" | "jobs" | "jobs-door"; pick?: boolean; position?: number };
 
 /**
  * "Request a crew" on business pages, in the page's language. The Hindi and
@@ -208,7 +215,8 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
         lang: doorLang,
         neutral: true,
         cluster: id,
-        surface: "jobs" as const,
+        surface: area.jobs.length > 1 ? ("jobs" as const) : ("jobs-door" as const),
+        pick: area.jobs.length > 1,
       }))
     : [{ href: jobsDoorHref(doorLocale), label: work.label, lang: doorLang, neutral: true }];
   // The business bar's area slot: the buyer page(s) of the decided area, or
@@ -216,14 +224,16 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
   const areaLinks: AreaLink[] = area.business
     .map((id) => ({ id, hub: clusterById(id)?.buyerHub }))
     .filter((a): a is { id: string; hub: string } => Boolean(a.hub))
-    .map(({ id, hub }) => ({ href: hub, label: businessLabel(id), cluster: id, surface: "business" as const }));
+    .map(({ id, hub }, i) => ({ href: hub, label: businessLabel(id), cluster: id, surface: "business" as const, pick: true, position: i + 1 }));
   const businessLinks: AreaLink[] = BUSINESS_LINKS.flatMap((l) => (l.href === LOCATIONS_PATH && areaLinks.length ? areaLinks : [l]));
   // Every market's jobs hub in the jobs menu, the decided ones first.
-  const jobsHubs = orderedJobMarkets(area.jobs).map((id) => ({
+  const jobsHubs = orderedJobMarkets(area.jobs).map((id, i) => ({
     href: nearestLocalePath(jobsHubPath(id as Exclude<ClusterId, "other">), pageLocale),
-    label: JOBS_AREA_LABEL[pageLocale][id] ?? t.haridwar,
+    label: JOBS_AREA_LABEL[pageLocale][id] ?? clusterById(id)?.name[pageLocale] ?? clusterById(id)?.name["en-IN"] ?? id,
     cluster: id,
     surface: "jobs" as const,
+    pick: true,
+    position: i + 1,
   }));
   // Apply: the decided market's hub (its form), else the form that asks
   // which market (/jobs/apply).
@@ -289,8 +299,23 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
   // An area link remembers the pick and reports it (area_nav_click).
   const picked = (item: AreaLink, then?: () => void) => () => {
     if (item.cluster) {
-      noteChoice(item.cluster);
-      trackAnalyticsEvent("area_nav_click", { cluster: item.cluster, surface: item.surface ?? "business", mode: area.mode });
+      if (item.pick) {
+        noteChoice(item.cluster);
+        reportChoice(item.cluster, item.surface === "business" ? area.business : area.jobs, item.surface ?? "business");
+      }
+      // What the visitor followed, beside what the site had decided, so the
+      // decision's accuracy can be measured (docs/area-intent.md).
+      const decided = item.surface === "business" ? area.business : area.jobs;
+      trackAnalyticsEvent("area_nav_click", {
+        cluster: item.cluster,
+        surface: item.surface ?? "business",
+        mode: area.mode,
+        decided: decided.join("+") || "none",
+        is_decided: decided.includes(item.cluster) ? "yes" : "no",
+        position: item.position ?? 0,
+        explicit: item.pick ? "yes" : "no",
+        v: MODEL_VERSION,
+      });
     }
     then?.();
   };

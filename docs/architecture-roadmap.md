@@ -1,6 +1,6 @@
 # Architecture roadmap
 
-Started 17 October 2026 from four read-only planning passes over this repo, vayasya-infra and nevaehfirstsource.com. Each system gets one module with one job, dependencies point one way, and every refactor is pinned by tests first, so it changes nothing users or data see.
+Started 17 October 2026 (status updated 18 October 2026) from four read-only planning passes over this repo, vayasya-infra and nevaehfirstsource.com. Each system gets one module with one job, dependencies point one way, and every refactor is pinned by tests first, so it changes nothing users or data see.
 
 | Module | Its one job |
 |---|---|
@@ -17,23 +17,29 @@ Started 17 October 2026 from four read-only planning passes over this repo, vaya
 | 0 | Erasure keeps client contacts; a replayed lead completes an interrupted write; lead forwarding retries; pa-in and kn-in in every locale pattern; Delhi and Haryana towns | #53 |
 | 0 | Recordings and heatmaps kept one year, purged nightly; purge-failure alert | infra #112 |
 | 0 | Privacy notice says one year; consent v8 | #54 |
-| 1A | Stored-id lock (content check C2b), market behaviour snapshot, consent matrix and golden payloads (`pnpm measurement:check`) | #55 |
+| 1A | Stored-id lock, market behaviour snapshot, consent matrix and golden payloads | #55 |
 | 1B | One market module | #57 |
+| — | Approved market changes: one vocabulary, UT→UK, no Saharanpur intent, multi-word ad tags; `MODEL_VERSION` 3 | #60 |
 | 1C | One consent and measurement module | #58 |
-| 1E | Windmill owns its secrets (`windmill-talent`, `windmill-nfss`) and the hooks certificate; `integrations/n8n` removed | infra #113, #56 |
+| 1D | `@vspl/contracts` (versioned Zod contracts → JSON Schema and OpenAPI; Windmill validates with them); one edge pipeline; Idempotency-Key; rate-limiter interface; separate ticket key; a lead is forwarded even when the staff email fails | #61, #64 |
+| 1E | Windmill owns its secrets and the hooks certificate; `integrations/n8n` removed | infra #113, #56 |
+| 1F | Lead inbox (`leads` database) and idempotent CRM sync; `deliveries` with backoff and dead letters; one dispatcher `f/talent/dispatch`; signed route `webhook/vspl-submission`; `f/platform/health` | #63, infra #115 |
+| Hub A | Notification hub `f/notify/*` (outbox, dispatch, digest, ingest, Alertmanager adapter); ntfy at `ntfy.vayasyaseva.com` (deny-all; users `owner` read-only and `windmill` write-only); `notify` database; Resend fallback with the shared Vayasya key. Test events reached all three topics, 18 Oct 2026 | #62, infra #114, #116 |
+| — | Vercel WAF: one rate-limit rule on the eight form and agent POST paths, 15 per 60 s per IP, **log only** (Hobby allows one rate-limit rule) | Vercel firewall |
 
 ## In progress
 
-- **1D, submission contracts and edge:** versioned Zod contracts generating JSON Schema and OpenAPI; Windmill validates with them; one edge pipeline (legacy URLs as adapters); idempotency keys; a rate-limiter interface (Vercel WAF rules for the owner); a separate ticket-signing key.
-- **1F, delivery platform:** a durable lead inbox and idempotent CRM sync (infra: a `leads` database); one signed envelope route; inbox and deliveries with backoff and dead letters; `f/platform/health` returns dead and stuck counts for the notification hub.
-- **Market changes** (owner approved, 17 Oct 2026): one vocabulary for place and ad words; UT treated as UK; Saharanpur no longer steers the language picker; multi-word ad tags match. `MODEL_VERSION` 3.
-- **Notification hub** (owner request, 17 Oct 2026; design in review): one way to be told about new applications, leads, SEO watch, compliance and wage-monitor alerts, platform health and Prometheus alerts, so Chatwoot can go.
+- **Hub phase B:** applications (name, phone, Call), leads, lead failures, SEO watch, compliance and wage monitors, platform health, Windmill job failures, Alertmanager (plus Windmill and Twenty down alerts, and the weekly seo-watch alert fix), and GitHub pipeline failures into the hub.
+- **Applicants' files into Twenty:** design in progress; then a delivery target that copies R2 files to attachments on the Twenty application.
 
 ## Next
 
-1. **Retire Chatwoot** (owner approved): after the notification hub. Take stock of what uses it (deliver, retention's contact deletion, monitors, any WhatsApp inbox, the shared account); decide how staff see applicants' files in Twenty; run a dual period; stop delivery; erase and drop; update the privacy notice.
-2. **Delete the n8n app (N6)** (owner approved): a couple of days after Windmill has run stably, earliest 20 October 2026. Check Windmill runs and errors and that `hooks.vayasyaseva.com/webhook/*` has no hits; take a final `pg_dump`; delete `apps/n8n` in vayasya-infra; drop its role and database; revoke `N8N_SMTP_PASS`. Before that, the NFSS deploy reads `windmill-nfss` (`integrations/windmill/deploy.mts` `appSecrets` in nevaehfirstsource.com, once `feat/twenty-crm` lands).
-3. **Rotate the secrets exposed on 17 October 2026** (a shell error printed them into a session transcript): TALENT_R2 read and erase keys, CHATWOOT_TALENT_ADMIN_TOKEN, FAST2SMS_API_KEY, RESEND_NFSS_API_KEY, TALENT_INTAKE_WEBHOOK_SECRET and NFSS_INTAKE_WEBHOOK_SECRET (the talent one signs job tickets: one coordinated change across Vercel and Windmill). N8N_SMTP_PASS, DB_POSTGRESDB_PASSWORD and N8N_ENCRYPTION_KEY go with N6. New values go into `windmill-talent` and `windmill-nfss`, then `pnpm windmill:deploy` and `pnpm talent:sync-secrets`.
+1. **Site onto the signed route:** add `SUBMISSION_SIGNING_SECRET` to Vercel and redeploy, with one owner-watched test application and enquiry.
+2. **Retire Chatwoot** (owner approved): after hub phase B and the file move. Run both for 1–2 weeks; stop Chatwoot delivery; take Chatwoot out of erasure and deploy; remove it in infra; update the privacy notice. First check the Chatwoot UI for a WhatsApp inbox and FurblowCraft's account.
+3. **Delete the n8n app (N6):** from 20 October 2026, after checking Windmill's health and that `/webhook/*` has no hits. The NFSS deploy reads `windmill-nfss` first.
+4. **Rotate the secrets exposed on 17 October 2026.** The Vayasya Resend key (`N8N_SMTP_PASS`) is now used by Alertmanager, Chatwoot, Twenty, n8n and the hub; update all five.
+5. **WAF:** review the log-only rule's hits (`vercel.com/<team>/vayasyaseva-com/firewall/traffic`), then switch it to `rate_limit`. Indian mobile carrier NAT shares addresses, so check before enforcing.
+6. **Health:** one SMS from about 11 Oct is `unknown`; check Fast2SMS history before any resend.
 
 ## Work in progress, owner to decide
 

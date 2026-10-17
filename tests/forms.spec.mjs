@@ -257,8 +257,13 @@ try {
   await page.locator('#name').fill('Hub Test');await page.locator('#company').fill('Hub Company');await page.locator('#phone').fill('9999900001');
   await page.locator('button[type=submit]').click();await visible('[role=status] h2');
   assert.equal(contactBodies.at(-1).pageCluster,'haridwar');assert.equal(contactBodies.at(-1).siteState,'UK');
-  // Job seekers who land here get one quiet line to /jobs (every market; neutral: the language picker first).
-  await open('/en-in/contact');assert.equal(await page.locator('main a[href="/jobs"]').count(),1);
+  // Job seekers who land here get one quiet line to /jobs (every market), in the language they last
+  // picked, else English: never the neutral picker URL, which the client router cannot enter.
+  await open('/en-in/contact');assert.equal(await page.locator('main a[href="/en-in/jobs"]').count(),1);
+  await context.addCookies([{name:'vspl_lang',value:'hi-IN',url:origin}]);
+  await open('/en-in/contact');await page.locator('main a[href="/hi-in/jobs"]').waitFor();
+  assert.equal(await page.locator('a[href="/jobs"]').count(),0);
+  await context.clearCookies({name:'vspl_lang'});
   console.log('Request a crew: two steps, drafts stay separate, prefills from links and the Haridwar hub, no lead flags on the page');
   // Image metadata varies with public page/role data, never personal prefills.
   const image=await page.goto(origin+'/en-in/jobs/apply?role=packing&name=PrivateName&phone=9999900001');await page.locator('meta[property="og:image"]').waitFor({state:'attached'});

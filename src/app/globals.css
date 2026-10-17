@@ -490,6 +490,39 @@ body {
   top: 10px;
   z-index: 100;
 }
+/* Navigation progress (components/navigation-progress.tsx): creeps
+   towards 90% while a click loads, fills and fades when the page lands. */
+.nav-progress {
+  position: fixed;
+  inset: 0 auto auto 0;
+  z-index: 200;
+  height: 3px;
+  width: 100%;
+  background: var(--gold-500);
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+  pointer-events: none;
+}
+.nav-progress[data-state="loading"] {
+  opacity: 1;
+  transform: scaleX(0.9);
+  transition: transform 8s cubic-bezier(0.1, 0.7, 0.2, 1);
+}
+.nav-progress[data-state="done"] {
+  opacity: 0;
+  transform: scaleX(1);
+  transition: transform 150ms ease-out, opacity 200ms ease-out 100ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-progress[data-state="loading"] {
+    transform: scaleX(1);
+    transition: none;
+  }
+  .nav-progress[data-state="done"] {
+    transition: none;
+  }
+}
 .eyebrow {
   font-size: 11px;
   letter-spacing: 0.15em;

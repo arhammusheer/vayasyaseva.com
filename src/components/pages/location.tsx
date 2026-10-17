@@ -1,4 +1,3 @@
-import NextLink from "next/link";
 import Link from "@/components/i18n/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
@@ -12,9 +11,10 @@ import { FaqSection } from "@/components/sections/faq-section";
 import { FAQ_PATH } from "@/content/faq";
 import { isPaused, linkable } from "@/content/registry";
 import { JsonLd, pageUrl, webPageSchema } from "@/lib/structured-data";
-import { JOBS_AREA_LABEL, areaSurfaces, jobsAreaHref } from "@/lib/intent/surfaces";
+import { JOBS_AREA_LABEL, areaSurfaces } from "@/lib/intent/surfaces";
 import { locationCopyIn, locationPages, type LocationCopy } from "@/content/locations";
-import { LOCATIONS_PATH, estatePath, locationPath } from "@/content/registry/identifiers";
+import { LOCATIONS_PATH, estatePath, jobsHubPath, locationPath } from "@/content/registry/identifiers";
+import { JobsLink } from "@/components/i18n/jobs-link";
 import { localePath, localizeHref, locales, type Locale } from "@/lib/i18n";
 import { MARKET_IDS as MARKET_ORDER } from "@/markets/index";
 import { MarketList, type MarketItem } from "@/components/sections/market-list";
@@ -108,9 +108,9 @@ export function LocationPage({ page: source, locale = "en-IN" }: { page: Locatio
           jobsFirst ? (
             <div className="flex flex-wrap gap-3 pt-2">
               <Button asChild size="lg">
-                <NextLink href={jobsAreaHref(page.cluster, locale)} prefetch={false}>
+                <JobsLink path={jobsHubPath(page.cluster)} locale={locale}>
                   {jobsLabel} <ArrowRight aria-hidden="true" />
-                </NextLink>
+                </JobsLink>
               </Button>
               {crewButton}
             </div>
@@ -120,9 +120,9 @@ export function LocationPage({ page: source, locale = "en-IN" }: { page: Locatio
               {jobsHub && (
                 <p className="seeker-line">
                   {ui.seeker}{" "}
-                  <NextLink href={jobsAreaHref(page.cluster, locale)} className="text-link mt-0" prefetch={false}>
+                  <JobsLink path={jobsHubPath(page.cluster)} locale={locale} className="text-link mt-0">
                     {jobsLabel} <ArrowRight size={18} aria-hidden="true" />
-                  </NextLink>
+                  </JobsLink>
                 </p>
               )}
             </div>

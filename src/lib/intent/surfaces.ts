@@ -34,10 +34,8 @@ export { businessLabel };
 export const JOBS_AREA_LABEL: Record<Locale, Record<string, string>> = Object.fromEntries(
   LOCALE_TAGS.map((l) => [l, Object.fromEntries(Object.entries(JOBS_LINK_LABELS).map(([id, labels]) => [id, labels[l]]))]),
 ) as Record<Locale, Record<string, string>>;
-export const jobsAreaHref = (id: string, locale: Locale) => {
-  const path = jobsHubPath(id as Exclude<ClusterId, "other">);
-  return locale === "en-IN" ? path : nearestLocalePath(path, locale);
-};
+/** A market's jobs hub in `locale` (never the neutral picker URL; see jobsDoorHref). */
+export const jobsAreaHref = (id: string, locale: Locale) => nearestLocalePath(jobsHubPath(id as Exclude<ClusterId, "other">), locale);
 
 /**
  * Markets with a published jobs hub: the decided ones first, the rest in

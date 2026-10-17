@@ -1,5 +1,6 @@
 import "../globals.css";
 import { Analytics } from "@/components/analytics";
+import { NavigationProgress } from "@/components/navigation-progress";
 import { gaId } from "@/lib/measurement/config";
 import { allLocales, locales, localeOfParams } from "@/lib/i18n";
 import { fontClassName, siteMetadata } from "@/lib/site-metadata";
@@ -27,6 +28,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} data-scroll-behavior="smooth">
       <body className={fontClassName}>
+        <NavigationProgress />
         {children}
         {gaId && <Analytics gaId={gaId} />}
       </body>

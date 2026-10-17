@@ -3,10 +3,10 @@ import Link from "@/components/i18n/link";
 import { siteConfig } from "@/content/site";
 import { linkable } from "@/content/registry";
 import { AnalyticsPreferencesButton } from "@/components/analytics";
-import NextLink from "next/link";
+import { JobsLink } from "@/components/i18n/jobs-link";
 import { FALLBACK_LOCALE, nearestLocalePath, type Locale } from "@/lib/i18n";
 import type { HeaderDoor } from "@/components/layout/header";
-import { JOBS_NAV, SETU_LOGIN, WORK_DOOR, jobsDoorHref, jobsFooterLinks, referenceLinks, type NavLink } from "@/components/layout/nav-links";
+import { JOBS_NAV, SETU_LOGIN, WORK_DOOR, jobsFooterLinks, referenceLinks, type NavLink } from "@/components/layout/nav-links";
 
 type Column = { label: string; links: NavLink[] };
 
@@ -95,13 +95,13 @@ export function Footer({
                 <address lang="en-IN">
                   <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
                 </address>
-                {/* The one jobs link in this footer: /jobs, every market
-                    (neutral from English pages, so not the i18n Link). */}
+                {/* The one jobs link in this footer: /jobs, every market, in
+                    the reader's language (JobsLink). */}
                 <p className="footer-jobs-door" lang={workLocale}>
                   {work.lead}{" "}
-                  <NextLink href={jobsDoorHref(workLocale)} prefetch={false}>
+                  <JobsLink path="/jobs" locale={workLocale}>
                     {work.label} →
-                  </NextLink>
+                  </JobsLink>
                 </p>
               </>
             )}
@@ -110,8 +110,7 @@ export function Footer({
             <nav key={c.label} aria-label={c.label}>
               <p className="footer-label">{c.label}</p>
               {c.links.map(({ href, label }) => (
-                // Jobs footers: no viewport prefetch, to spare data on patchy 4G.
-                <Link key={href} href={href} prefetch={isJobs ? false : undefined}>
+                <Link key={href} href={href}>
                   {label}
                 </Link>
               ))}

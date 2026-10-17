@@ -32,7 +32,7 @@ const tofuOutput = (name: string) =>
 const secrets: [name: string, read: () => string][] = [
   ["TALENT_R2_ACCESS_KEY_ID", () => sopsValue("TALENT_R2_ACCESS_KEY_ID")],
   ["TALENT_R2_SECRET_ACCESS_KEY", () => sopsValue("TALENT_R2_SECRET_ACCESS_KEY")],
-  ["TALENT_INTAKE_WEBHOOK_SECRET", () => clusterValue("growth", "n8n-env", "TALENT_INTAKE_WEBHOOK_SECRET")],
+  ["TALENT_INTAKE_WEBHOOK_SECRET", () => clusterValue("growth", "windmill-talent", "TALENT_INTAKE_WEBHOOK_SECRET")],
   ["TURNSTILE_SECRET_KEY", () => tofuOutput("vayasyaseva_jobs_turnstile_secret")],
 ];
 

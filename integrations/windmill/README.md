@@ -1,6 +1,6 @@
 # Job seeker intake: Windmill scripts
 
-The VSPL talent pipeline, ported from n8n (`integrations/n8n`, which stays live until cutover) to the growth cluster's Windmill CE (v1.822.0), workspace **`vspl`**. Same SQL, same claims and retries, same retention order; the website does not change.
+The VSPL talent pipeline, ported from n8n (retired 17 October 2026; the workflows are in git history) to the growth cluster's Windmill CE (v1.822.0), workspace **`vspl`**. Same SQL, same claims and retries, same retention order; the website does not change.
 
 ```
 website ──POST──► hooks.vayasyaseva.com/webhook/vspl-talent-intake
@@ -40,7 +40,7 @@ The Sarvam transcribe workflow is not ported (voice notes ended 16 October 2026)
 |---|---|
 | `talent/scripts/*.ts` | Script entries: `main` (and intake's `preprocessor`). Thin: they wire the real database, Fast2SMS, Chatwoot and R2 into `talent/lib/run-*.ts`. |
 | `talent/lib/run-*.ts` | What each script does, step by step, with its outside world injected (the tests drive these). |
-| `talent/lib/sql.ts` | Every query, copied verbatim from `integrations/n8n/build.mts`. |
+| `talent/lib/sql.ts` | Every query, copied verbatim from the n8n workflows when they were ported. |
 | `talent/lib/{validate,sms,note,erasure,mask}.ts` | The n8n Code nodes, as plain functions. Validation reuses the website's `src/lib/talent-intake/rules.ts`. |
 | `talent/lib/{config,db,r2,chatwoot}.ts` | Windmill variables, Postgres (`postgres` npm, one connection per run), R2 (`aws4fetch`), Chatwoot. |
 | `talent/lib/response.ts` | How a sync HTTP route answers: `{ wm_status_code, result }` (the body is `result` only). |
@@ -113,7 +113,7 @@ Cron is Windmill's six-field form (seconds first), timezone Asia/Kolkata: acknow
 
 ## Operating it
 
-The SQL in `integrations/n8n/README.md` ("Operating it", "SMS acknowledgement", "Retention and erasure") applies unchanged: same tables and statuses. Run history and errors are in Windmill (Runs, filter by `f/talent/`); job arguments include applicants' phone numbers, so keep Windmill's job retention short (instance setting).
+The SQL for stuck work, SMS acknowledgements, the worker list, retention and erasure, and the DLT templates is in [OPERATIONS.md](OPERATIONS.md). Run history and errors are in Windmill (Runs, filter by `f/talent/`); job arguments include applicants' phone numbers, so keep Windmill's job retention short (instance setting).
 
 Run a script by hand: Windmill UI, or `POST /api/w/vspl/jobs/run_wait_result/p/f/talent/<name>` with `{}`.
 
@@ -123,4 +123,4 @@ Run a script by hand: Windmill UI, or `POST /api/w/vspl/jobs/run_wait_result/p/f
 2. Point Traefik's `hooks.vayasyaseva.com/webhook/vspl-talent-intake` at Windmill's `/api/r/webhook/vspl-talent-intake` (vayasya-infra, n8n webhook ingress). The website does not change.
 3. Unpublish n8n's acknowledge and deliver, then `pnpm windmill:deploy --enable-schedules`. (Running both at once is safe for duplicates, since every claim is `SKIP LOCKED`, but shares the 5 talent connections.)
 4. Hand-run retention once (queue a test request first), then `--enable-retention` and unpublish n8n's retention.
-5. Remove `integrations/n8n` and its CI steps; move the secrets to `windmill-env` and deploy with `--secrets-from=windmill-env`.
+5. Done 17 October 2026: the talent secrets moved to `growth/windmill-talent` (vayasya-infra `apps/windmill/overlays/growth/secrets-talent.sops.yaml`, the deploy default) and `integrations/n8n` and its CI steps were removed. Deleting the n8n app itself (its database, `n8n-env`, the old webhook ingress) is the owner's step, after the rollback window.

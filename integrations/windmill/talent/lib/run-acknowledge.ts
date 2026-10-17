@@ -1,6 +1,6 @@
 /**
  * What the acknowledge script does, step by step, with its outside world injected so the tests can
- * run every path. The order of steps is the n8n workflow's (integrations/n8n/build.mts).
+ * run every path. The order of steps is the retired n8n workflow's (removed 17 Oct 2026; in git history).
  */
 import { classifyAcknowledgement } from "./sms.ts";
 import { CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT } from "./sql.ts";

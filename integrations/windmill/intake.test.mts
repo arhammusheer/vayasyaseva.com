@@ -1,4 +1,4 @@
-// Intake and the staff note (ported from integrations/n8n/intake.test.mjs):
+// Intake and the staff note (ported from the retired n8n intake.test.mjs):
 // old and new payload shapes, the secret check, the HTTP answers, and the
 // SMS acknowledgement started after saving.
 import assert from "node:assert/strict";

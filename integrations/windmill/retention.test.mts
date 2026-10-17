@@ -1,4 +1,4 @@
-// Retention and erasure (ported from integrations/n8n/retention.test.mjs):
+// Retention and erasure (ported from the retired n8n retention.test.mjs):
 // the 12-month rule, the erasure order (R2, then Chatwoot, then Twenty CRM, then rows),
 // stop-on-failure, and the worker-list upsert in intake.
 import assert from "node:assert/strict";

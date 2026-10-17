@@ -1,7 +1,7 @@
 /**
  * The shared tail of a jobs submission: /api/jobs/submit (the form) and the
  * open agent routes under /api/agent/jobs end here. Validates the payload
- * against the contract and forwards it to n8n.
+ * against the contract and forwards it to the Windmill intake route.
  */
 import { NextResponse } from "next/server";
 import { talentIntakeSchema, type JobsSubmitResponse } from "./contract";

@@ -11,7 +11,7 @@ import { NO_FEE, SHIFTS_LINE } from "@/content/pages/jobs";
  * staff, the same in every language. hi-IN and hi-Latn-IN are drafts pending
  * native review, like the other jobs pages.
  */
-/** Answer ids per question, from the shared rules (also read by n8n). */
+/** Answer ids per question, from the shared rules (also read by the Windmill intake). */
 const ids = (q: QuickQuestion) => Object.keys(QUICK_ANSWERS[q]);
 export const WORK_OPTIONS = Object.keys(QUICK_ANSWERS.work) as (keyof typeof QUICK_ANSWERS.work)[];
 export type WorkOption = keyof typeof QUICK_ANSWERS.work;

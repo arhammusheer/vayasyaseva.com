@@ -1,6 +1,6 @@
 /**
  * Every query the talent scripts run, copied verbatim from the n8n
- * workflows (integrations/n8n/build.mts) so behaviour is unchanged:
+ * workflows (retired 17 Oct 2026; in git history) so behaviour is unchanged:
  * atomic claims with FOR UPDATE SKIP LOCKED, recovery of stuck rows,
  * attempt caps and the retention order. Parameters are $1..$n.
  */

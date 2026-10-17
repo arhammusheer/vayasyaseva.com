@@ -10,7 +10,8 @@
  *
  * 1. Reads the secrets from the cluster: the talent database password
  *    (data/pg-main-talent), the R2 keys, webhook secret, Fast2SMS key and
- *    retention Chatwoot token (growth/n8n-env until cutover; --secrets-from
+ *    retention Chatwoot token (growth/windmill-talent, vayasya-infra
+ *    apps/windmill/overlays/growth/secrets-talent.sops.yaml; --secrets-from
  *    to read another Secret with the same keys), and the "Jobs, website"
  *    inbox identifier from Chatwoot. The API token is SUPERADMIN_SECRET in
  *    growth/windmill-env (Windmill accepts it as a bearer token).
@@ -57,7 +58,7 @@ const args = process.argv.slice(2);
 const DRY_RUN = args.includes("--dry-run");
 const ENABLE_SCHEDULES = args.includes("--enable-schedules");
 const ENABLE_RETENTION = args.includes("--enable-retention");
-const SECRETS_FROM = args.find((a) => a.startsWith("--secrets-from="))?.split("=")[1] ?? "n8n-env";
+const SECRETS_FROM = args.find((a) => a.startsWith("--secrets-from="))?.split("=")[1] ?? "windmill-talent";
 const BASE_URL_ARG = args.find((a) => a.startsWith("--base-url="))?.split("=")[1];
 
 const CHATWOOT = ["-n", "growth", "exec", "deploy/chatwoot", "--"];

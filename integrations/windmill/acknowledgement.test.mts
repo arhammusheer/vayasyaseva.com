@@ -1,4 +1,4 @@
-// The Fast2SMS acknowledgement (ported from integrations/n8n/acknowledgement.test.mjs):
+// The Fast2SMS acknowledgement (ported from the retired n8n acknowledgement.test.mjs):
 // acceptance, rejection, rate limits and ambiguity, and the run around them.
 import assert from "node:assert/strict";
 import test from "node:test";

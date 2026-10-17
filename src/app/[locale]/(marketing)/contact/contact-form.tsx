@@ -313,7 +313,7 @@ export function ContactForm() {
   }, [formType]);
 
   // Prefilled link (#roles=packing&headcount=50-99&location=haridwar&…), e.g.
-  // from /haridwar-sidcul or an AI assistant. Values only fill fields.
+  // from a location page or an AI assistant. Values only fill fields.
   useEffect(() => {
     // Reads the browser once on mount: the referrer and the link's fragment.
     /* eslint-disable react-hooks/set-state-in-effect */

@@ -93,7 +93,7 @@ if (errors.length === 0) {
   }
 
   // Search sitemap lists marketing pages; machine discovery remains in llms.txt.
-  const sitemapChecks = ["/services", "/compliance", "/haridwar-sidcul", "/contact"];
+  const sitemapChecks = ["/services", "/compliance", "/locations", "/contact"];
   for (const endpoint of sitemapChecks) {
     if (!sitemapPaths.includes(endpoint)) {
       errors.push(`sitemap is missing endpoint: ${endpoint} (src/content/registry/pages.ts)`);

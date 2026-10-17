@@ -1,4 +1,4 @@
-import { allLocales, copyIn, localePath, localesOf, type Locale } from "./i18n";
+import { allLocales, localePath, localesOf, type Locale } from "./i18n";
 import { quickApplyCopy } from "@/content/pages/quick-apply";
 import { jobsCopy } from "@/content/pages/jobs";
 import { getJobRole } from "@/content/pages/job-roles";
@@ -6,8 +6,7 @@ import { getJobHub } from "@/content/pages/job-hubs";
 import { getJobCluster, jobClusters } from "@/content/pages/job-clusters";
 import { feesAndFraudCopy } from "@/content/pages/fees-and-fraud";
 import { JOB_ROLE_SLUGS, JOB_HUB_SLUGS, isJobRole, type JobRole } from "./talent-intake/rules";
-import { haridwarCopy } from "@/content/pages/haridwar-sidcul";
-import { locationPages } from "@/content/locations";
+import { locationCopyIn, locationPages } from "@/content/locations";
 import { servicePages } from "@/content/service-pages";
 
 export type ShareContent = { key: string; path: string; locale: Locale; variant: string; heading: string; description: string; eyebrow: string };
@@ -60,9 +59,7 @@ export function getShareContent(path: string, locale: Locale = "en-IN", variant 
     if (role) { heading = role.heading; description = t.lede; }
     if (hub) { heading = hub.heading; description = t.lede; }
   } else if (locationPages.has(path)) {
-    const p = locationPages.get(path)!; heading = p.heading; description = p.lede; eyebrow = `LOCATIONS · ${p.name.toUpperCase()}`;
-  } else if (path === "/haridwar-sidcul") {
-    const t = copyIn(haridwarCopy, locale, "/haridwar-sidcul"); heading = t.hero.join(" "); description = t.description; eyebrow = t.breadcrumb;
+    const p = locationCopyIn(locationPages.get(path)!, locale); heading = p.heading; description = p.lede; eyebrow = locale === "en-IN" ? `LOCATIONS · ${p.name.toUpperCase()}` : p.name;
   } else if (path.startsWith("/services/")) {
     const t = servicePages.find((s) => path === `/services/${s.slug}`);
     if (t) { heading = t.heading; description = t.description; eyebrow = t.name; }
@@ -75,7 +72,7 @@ export function getShareContent(path: string, locale: Locale = "en-IN", variant 
 }
 
 export function allShareContent(): ShareContent[] {
-  const paths = [...Object.keys(COMMON), "/jobs", "/jobs/apply", "/jobs/fees-and-fraud", ...[...JOB_ROLE_SLUGS, ...JOB_HUB_SLUGS, ...jobClusters["en-IN"].map((c) => c.slug)].map((slug) => `/jobs/${slug}`), "/haridwar-sidcul", ...servicePages.map((s) => `/services/${s.slug}`), ...locationPages.keys()];
+  const paths = [...Object.keys(COMMON), "/jobs", "/jobs/apply", "/jobs/fees-and-fraud", ...[...JOB_ROLE_SLUGS, ...JOB_HUB_SLUGS, ...jobClusters["en-IN"].map((c) => c.slug)].map((slug) => `/jobs/${slug}`), ...servicePages.map((s) => `/services/${s.slug}`), ...locationPages.keys()];
   const entries = [...new Set(paths)].flatMap((path) => localesOf(path).map((locale) => getShareContent(path, locale)));
   for (const locale of allLocales) {
     for (const role of JOB_ROLE_SLUGS) entries.push(getShareContent("/jobs/apply", locale, `role-${role}`));

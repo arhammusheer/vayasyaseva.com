@@ -88,7 +88,7 @@ function pageGroup(url) {
   const path = url.replace(/^https:\/\/www\.vayasyaseva\.com/, "").replace(/^\/(en-in|hi-in|hi-latn-in)(?=\/|$)/, "") || "/";
   if (path === "/") return "home";
   if (path.startsWith("/jobs/haridwar")) return "jobsHaridwar";
-  if (path.startsWith("/haridwar-sidcul")) return "haridwarHub";
+  if (path.startsWith("/haridwar-sidcul") || path.startsWith("/locations/haridwar")) return "haridwarHub";
   return "other";
 }
 
@@ -96,7 +96,7 @@ function pageGroup(url) {
 
 /** The location pages went live on 17 October 2026 (/locations, three hubs, nine areas). */
 const LOCATIONS_LIVE = "2026-10-17";
-const REGION_NAMES = { uttarakhand: "Uttarakhand", bengaluru: "Bengaluru", "delhi-ncr": "Delhi NCR", jalandhar: "Jalandhar–Kapurthala" };
+const REGION_NAMES = { haridwar: "Haridwar", uttarakhand: "Uttarakhand", bengaluru: "Bengaluru", "delhi-ncr": "Delhi NCR", jalandhar: "Jalandhar–Kapurthala" };
 const regionOf = (url) => url.match(/\/locations\/([a-z-]+)/)?.[1] ?? "index";
 
 /** The location URLs in the live sitemap (the job downloads only scripts/, not the registry). */
@@ -188,7 +188,7 @@ async function buildReport(today) {
     : after.length < 4
       ? { status: "counting", text: `${after.length} of 4 full weeks since the retitle so far.` }
       : allBelow && !hubsPickedUp
-        ? { status: "tripped", text: `Haridwar impressions have been more than 30% below the pre-retitle ${base.haridwar.impressions.toFixed(0)} a week for 4 weeks, and /jobs/haridwar and /haridwar-sidcul have not picked them up. PLAN §9.5: restore "Haridwar" in the home title.` }
+        ? { status: "tripped", text: `Haridwar impressions have been more than 30% below the pre-retitle ${base.haridwar.impressions.toFixed(0)} a week for 4 weeks, and /jobs/haridwar and /locations/haridwar have not picked them up. PLAN §9.5: restore "Haridwar" in the home title.` }
         : { status: "ok", text: "Haridwar impressions are within 30% of before the retitle, or the Haridwar pages carry them." };
 
   const locations = await locationReport(last);

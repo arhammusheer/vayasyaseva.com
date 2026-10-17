@@ -9,7 +9,7 @@ export const JOB_PREFILL_FIELDS = ["name", "phone", "work", "experience", "locat
  * "Request a crew" (/contact). Ids as in contact.contract.json: roles
  * (comma-separated), headcount (a band such as 50-99, or a number), state
  * (ISO code such as UK, or the name), city, pincode, start, duration, shifts.
- * location takes a place id (haridwar, bhagwanpur, bahadrabad, roorkee) or
+ * location takes a place id (a location page's placeId, e.g. peenya, kapurthala, haridwar) or
  * free text; cluster tags the page. Mapping: crewPrefill in crew-request.ts.
  */
 export const ENQUIRY_PREFILL_FIELDS = [

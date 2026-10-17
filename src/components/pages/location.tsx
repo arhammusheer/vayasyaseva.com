@@ -10,57 +10,83 @@ import { CtaBlock } from "@/components/sections/cta-block";
 import { ClientStrip } from "@/components/sections/client-strip";
 import { FaqSection } from "@/components/sections/faq-section";
 import { FAQ_PATH } from "@/content/faq";
-import { linkable } from "@/content/registry";
+import { isPaused, linkable } from "@/content/registry";
 import { JsonLd, pageUrl, webPageSchema } from "@/lib/structured-data";
-import { areaSurfaces, jobsAreaHref } from "@/lib/intent/surfaces";
-import { locationPages, type LocationCopy } from "@/content/locations";
+import { JOBS_AREA_LABEL, areaSurfaces, jobsAreaHref } from "@/lib/intent/surfaces";
+import { locationCopyIn, locationPages, type LocationCopy } from "@/content/locations";
 import { LOCATIONS_PATH, estatePath, locationPath } from "@/content/registry/identifiers";
-import { localizeHref } from "@/lib/i18n";
+import { localePath, localizeHref, locales, type Locale } from "@/lib/i18n";
 import { MARKET_ORDER } from "@/lib/intent/model";
 import { MarketList, type MarketItem } from "@/components/sections/market-list";
+import { PausedNotice } from "@/components/sections/paused-notice";
 
 const pathOf = (p: LocationCopy) => (p.estate ? estatePath(p.cluster, p.estate) : locationPath(p.cluster));
 
-/** The three crews, as on /haridwar-sidcul. */
-const SERVICES = [
-  { href: "/services/factory-labour", label: "Factory labour" },
-  { href: "/services/loading-unloading-labour", label: "Loading and unloading" },
-  { href: "/services/housekeeping", label: "Housekeeping and grounds" },
-];
+const SERVICE_HREFS = ["/services/factory-labour", "/services/loading-unloading-labour", "/services/housekeeping"] as const;
 
-export function locationMetadata(p: LocationCopy) {
-  return pageMetadata({ title: p.metaTitle, description: p.description, alternates: { canonical: pathOf(p) } });
+/**
+ * The page's own words in each language a location page can have. The
+ * service landings and /faq are English, so their links say so elsewhere.
+ */
+const UI: Partial<Record<Locale, { crew: string; seeker: string; clients: string; servicesLabel: string; services: readonly [string, string, string]; faqHeading: string; moreFaqs: string; and: string }>> = {
+  "en-IN": { crew: "Request a crew", seeker: "Looking for work?", clients: "Our experience includes work with", servicesLabel: "Crews we supply", services: ["Factory labour", "Loading and unloading", "Housekeeping and grounds"], faqHeading: "Questions.", moreFaqs: "More questions", and: "and" },
+  "hi-IN": { crew: "कामगार माँगें", seeker: "काम चाहिए?", clients: "हमारे अनुभव में इनके साथ काम शामिल है", servicesLabel: "हमारी टीमें (अंग्रेज़ी में)", services: ["फ़ैक्टरी लेबर", "लोडिंग और अनलोडिंग", "हाउसकीपिंग और ग्राउंड्स"], faqHeading: "सवाल।", moreFaqs: "और सवाल (English)", and: "और" },
+  "hi-Latn-IN": { crew: "Workers maangein", seeker: "Kaam chahiye?", clients: "Hamare experience mein inke saath kaam", servicesLabel: "Hamari teams (English mein)", services: ["Factory labour", "Loading aur unloading", "Housekeeping aur grounds"], faqHeading: "Sawaal.", moreFaqs: "Aur sawaal (English)", and: "aur" },
+};
+const uiIn = (locale: Locale) => UI[locale] ?? UI["en-IN"]!;
+
+export function locationMetadata(p: LocationCopy, locale: Locale = "en-IN") {
+  const t = locationCopyIn(p, locale);
+  return pageMetadata({ title: t.metaTitle, description: t.description, alternates: { canonical: localePath(pathOf(p), locale) }, locale });
 }
 
-/** "A, B and C", each a link, at the paragraph's {areas}. */
-function Areas({ areas }: { areas: { href: string; name: string }[] }) {
-  const live = areas.filter((a) => linkable(a.href, "en-IN"));
-  return live.map((a, i) => (
-    <span key={a.href}>
-      {i > 0 && (i === live.length - 1 ? " and " : ", ")}
-      <Link href={a.href} className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700">
-        {a.name}
-      </Link>
+/** "A, B and C" at the paragraph's {areas}: a link where the area has a page, else its name. */
+function Areas({ areas, and }: { areas: NonNullable<LocationCopy["areas"]>; and: string }) {
+  const shown = areas.filter((a) => !a.href || linkable(a.href, "en-IN"));
+  return shown.map((a, i) => (
+    <span key={a.href ?? a.name}>
+      {i > 0 && (i === shown.length - 1 ? ` ${and} ` : ", ")}
+      {a.href ? (
+        <Link href={a.href} className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700">
+          {a.name}
+        </Link>
+      ) : (
+        a.name
+      )}
     </span>
   ));
 }
 
 /**
- * A location page on the /haridwar-sidcul structure (owner direction,
- * 17 Oct 2026): the hero with Request a crew (prefilled with the place) and
- * a quiet jobs line where the cluster has a jobs hub; the client strip; one
- * paragraph on the place with its areas and the crews we supply; four
- * questions; the crew band. No phone (the (locations) layout).
+ * Every market's location page (owner direction, 17 Oct 2026): the hero
+ * with Request a crew (prefilled with the place) and a quiet jobs line where
+ * the cluster has a jobs hub; the client strip; one paragraph on the place
+ * with its areas and the crews we supply; four questions; the crew band. No
+ * phone (the (locations) layout). In Hindi the jobs door comes first, as a
+ * button: most hi-IN visitors to a place page are job seekers.
  */
-export function LocationPage({ page }: { page: LocationCopy }) {
-  const url = pathOf(page);
-  const hub = locationPages.get(locationPath(page.cluster));
+export function LocationPage({ page: source, locale = "en-IN" }: { page: LocationCopy; locale?: Locale }) {
+  const page = locationCopyIn(source, locale);
+  const ui = uiIn(locale);
+  const path = pathOf(page);
+  const url = localePath(path, locale);
   const crewHref = `/contact#location=${page.placeId}`;
   const jobsHub = areaSurfaces()[page.cluster]?.jobs;
+  const hub = locationPages.get(locationPath(page.cluster));
+  const jobsLabel = JOBS_AREA_LABEL[locale]?.[page.cluster] ?? `Jobs in ${hub ? locationCopyIn(hub, locale).name : page.name}`;
+  const jobsFirst = locale === "hi-IN" && Boolean(jobsHub);
+  const englishOnly = locale === "en-IN" ? undefined : "en-IN";
   const [before, after] = page.areas ? page.paragraph.split("{areas}") : [page.paragraph, ""];
+  const crewButton = (
+    <Button asChild size="lg" variant={jobsFirst ? "outline" : "default"}>
+      <Link href={crewHref}>
+        {ui.crew} <ArrowUpRight aria-hidden="true" />
+      </Link>
+    </Button>
+  );
   return (
     <>
-      <JsonLd data={webPageSchema({ name: page.metaTitle, description: page.description, url })} />
+      <JsonLd data={webPageSchema({ name: page.metaTitle, description: page.description, url, inLanguage: locales[locale].hreflang })} />
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -75,44 +101,56 @@ export function LocationPage({ page }: { page: LocationCopy }) {
         }}
       />
       <PageHero
-        crumbs={<Breadcrumbs path={url} locale="en-IN" name={page.name} />}
+        crumbs={<Breadcrumbs path={path} locale={locale} name={page.name} />}
         title={page.heading}
         lede={page.lede}
         footnote={
-          <div className="flex flex-wrap items-center gap-x-8 gap-y-4 pt-2">
-            <Button asChild size="lg">
-              <Link href={crewHref}>
-                Request a crew <ArrowUpRight aria-hidden="true" />
-              </Link>
-            </Button>
-            {jobsHub && (
-              <p className="seeker-line">
-                Looking for work?{" "}
-                <NextLink href={jobsAreaHref(page.cluster, "en-IN")} className="text-link mt-0" prefetch={false}>
-                  Jobs in {hub?.name ?? page.name} <ArrowRight size={18} aria-hidden="true" />
+          jobsFirst ? (
+            <div className="flex flex-wrap gap-3 pt-2">
+              <Button asChild size="lg">
+                <NextLink href={jobsAreaHref(page.cluster, locale)} prefetch={false}>
+                  {jobsLabel} <ArrowRight aria-hidden="true" />
                 </NextLink>
-              </p>
-            )}
-          </div>
+              </Button>
+              {crewButton}
+            </div>
+          ) : (
+            <div className="flex flex-wrap items-center gap-x-8 gap-y-4 pt-2">
+              {crewButton}
+              {jobsHub && (
+                <p className="seeker-line">
+                  {ui.seeker}{" "}
+                  <NextLink href={jobsAreaHref(page.cluster, locale)} className="text-link mt-0" prefetch={false}>
+                    {jobsLabel} <ArrowRight size={18} aria-hidden="true" />
+                  </NextLink>
+                </p>
+              )}
+            </div>
+          )
         }
       />
-      <ClientStrip label="Our experience includes work with" afterRule />
+      <ClientStrip label={ui.clients} afterRule />
+      {isPaused(path, locale) && (
+        <div className="site-shell pb-10">
+          <PausedNotice kind="business" locale={locale} />
+        </div>
+      )}
       <Section className="border-t border-border">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.6fr]">
-          <p className="eyebrow text-gold-700">{page.name.toUpperCase()}</p>
+          <p className="eyebrow text-gold-700">{locale === "en-IN" ? page.name.toUpperCase() : page.name}</p>
           <div>
             <p className="text-xl leading-relaxed sm:text-2xl">
               {before}
-              {page.areas && <Areas areas={page.areas} />}
+              {page.areas && <Areas areas={page.areas} and={ui.and} />}
               {after}
             </p>
-            <nav aria-label="Crews we supply" className="mt-10">
-              <p className="text-sm text-muted-foreground">Crews we supply</p>
+            <nav aria-label={ui.servicesLabel} className="mt-10">
+              <p className="text-sm text-muted-foreground">{ui.servicesLabel}</p>
               <ul className="link-row mt-2">
-                {SERVICES.map((s) => (
-                  <li key={s.href}>
-                    <Link href={s.href} className="text-link">
-                      {s.label} <ArrowUpRight size={18} aria-hidden="true" />
+                {SERVICE_HREFS.map((href, i) => (
+                  <li key={href}>
+                    <Link href={href} className="text-link" hrefLang={englishOnly}>
+                      {ui.services[i]} <ArrowUpRight size={18} aria-hidden="true" />
                     </Link>
                   </li>
                 ))}
@@ -121,8 +159,8 @@ export function LocationPage({ page }: { page: LocationCopy }) {
           </div>
         </div>
       </Section>
-      <FaqSection title="Questions." variant="subtle" items={page.faqs} open more={{ href: FAQ_PATH, label: "More questions" }} />
-      <CtaBlock href={crewHref} />
+      <FaqSection title={ui.faqHeading} variant="subtle" items={page.faqs} open more={{ href: FAQ_PATH, label: ui.moreFaqs }} />
+      <CtaBlock locale={locale} href={crewHref} />
     </>
   );
 }
@@ -137,10 +175,6 @@ export function LocationsIndex() {
     [...locationPages.values()].filter((p) => !p.estate && linkable(pathOf(p), "en-IN")).map((p) => [p.cluster as string, p]),
   );
   const items: MarketItem[] = MARKET_ORDER.flatMap((id) => {
-    if (id === "haridwar")
-      return linkable("/haridwar-sidcul", "en-IN")
-        ? [{ cluster: id, href: localizeHref("/haridwar-sidcul", "en-IN"), title: "SIDCUL Haridwar", text: "Our home base: SIDCUL, Bahadrabad, Bhagwanpur and Roorkee." }]
-        : [];
     const h = hubs.get(id);
     return h ? [{ cluster: id, href: localizeHref(pathOf(h), "en-IN"), title: h.name, text: h.lede }] : [];
   });

@@ -251,7 +251,7 @@
         "maxLength": 200,
         "pattern": "^/[A-Za-z0-9/_-]*$",
         "description": "Set by the website: the page the person came from. Agents leave it out.",
-        "example": "/haridwar-sidcul"
+        "example": "/locations/haridwar"
       },
       "details": {
         "type": "string",

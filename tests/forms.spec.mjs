@@ -242,14 +242,14 @@ try {
     for(const key of ['roles','siteCity','startWindow','durationBand','shiftPattern']) assert.equal(key in body,false,key);
   }
   console.log('Get compliance help: own questions and draft, sent as compliance-help with a Help with: line');
-  // Prefilled links: #location= from /haridwar-sidcul (in-app navigation) and from AI assistants.
+  // Prefilled links: #location= from a location page (in-app navigation) and from AI assistants.
   await page.evaluate(()=>sessionStorage.clear());
   await open('/en-in/contact#location=haridwar&roles=packing,warehouse&headcount=60&start=within-1-week&name=Prefill%20Test');
   await page.waitForFunction(()=>document.querySelector('#siteCity')?.value==='Haridwar');assert.equal(await page.locator('#siteState').inputValue(),'UK');
   assert.equal(await pill('roles','Warehouse').getAttribute('aria-pressed'),'true');assert.equal(await pill('headcountBand','50 to 99').getAttribute('aria-pressed'),'true');
   assert.equal(new URL(page.url()).hash,'');
   await page.evaluate(()=>sessionStorage.clear());
-  await open('/en-in/haridwar-sidcul');
+  await open('/en-in/locations/haridwar');
   await page.locator('main a[href="/en-in/contact#location=haridwar"]').first().click();await page.waitForURL('**/en-in/contact');
   await page.locator('#siteCity').waitFor();await page.waitForFunction(()=>document.querySelector('#siteCity')?.value==='Haridwar');
   await pill('roles','Packing').click();await pill('headcountBand','20 to 49').click();await pill('startWindow','Just planning').click();await pill('durationBand','3 to 12').click();

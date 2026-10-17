@@ -10,7 +10,7 @@ const PATH = "/jobs/apply";
 
 /**
  * The guided application page: noindex and out of the sitemap, but the
- * Google Ads, SMS and header Apply landing. Role, hub and Haridwar pages
+ * Google Ads, SMS and header Apply landing. Role, hub and market pages
  * embed the same guided form.
  */
 /** The heading and title for ?cluster=<id>, when that cluster has its own (quick-apply.ts inCluster). */

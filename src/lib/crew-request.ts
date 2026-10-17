@@ -17,6 +17,7 @@ import {
   STATE_OPTIONS,
   type ContactFormData,
 } from "@/lib/contact-contract";
+import { placeState } from "@/lib/intent/model";
 
 /**
  * Version of the privacy notice a business enquiry is sent under, shown in
@@ -152,18 +153,18 @@ export function requirementLines(data: ContactFormData) {
 type Place = { state: string; city: string; cluster: string };
 
 /**
- * Places a link may name in `#location=`: cluster ids and Haridwar's
- * industrial areas (the sections of /haridwar-sidcul). Anything else is
- * taken as the city as typed.
+ * Places a link may name in `#location=`: one id per location page (hub
+ * and estate, src/content/locations) plus a few industrial areas named on
+ * them. Anything else is taken as the city as typed.
  */
 const KNOWN_PLACES: Record<string, Place> = {
+  // The location pages (src/content/locations): one id per hub and estate.
   haridwar: { state: "UK", city: "Haridwar", cluster: "haridwar" },
   sidcul: { state: "UK", city: "SIDCUL Haridwar", cluster: "haridwar" },
   "sidcul-haridwar": { state: "UK", city: "SIDCUL Haridwar", cluster: "haridwar" },
   bhagwanpur: { state: "UK", city: "Bhagwanpur, Haridwar", cluster: "haridwar" },
   bahadrabad: { state: "UK", city: "Bahadrabad, Haridwar", cluster: "haridwar" },
   roorkee: { state: "UK", city: "Roorkee, Haridwar", cluster: "haridwar" },
-  // The location pages (src/content/locations): one id per hub and estate.
   uttarakhand: { state: "UK", city: "", cluster: "uttarakhand" },
   selaqui: { state: "UK", city: "Selaqui, Dehradun", cluster: "uttarakhand" },
   bengaluru: { state: "KA", city: "Bengaluru", cluster: "bengaluru" },
@@ -181,9 +182,6 @@ const KNOWN_PLACES: Record<string, Place> = {
   "phagwara-goraya": { state: "PB", city: "Phagwara / Goraya", cluster: "jalandhar" },
   "jalandhar-focal-point": { state: "PB", city: "Focal Point, Jalandhar", cluster: "jalandhar" },
 };
-
-/** Words in free text that place a site in Uttarakhand's Haridwar district. */
-const HARIDWAR_WORDS = /\b(haridwar|sidcul|bhagwanpur|bahadrabad|roorkee|ranipur|jwalapur|laksar)\b/i;
 
 const STATE_BY_NAME = Object.fromEntries(
   Object.entries(STATE_OPTIONS).map(([code, name]) => [name.toLowerCase(), code])
@@ -229,7 +227,7 @@ export function crewPrefill(values: Partial<Record<string, string>>): CrewPrefil
   if (cluster) fields.pageCluster = cluster;
   const city = values.city?.trim() || place?.city || (place ? undefined : location);
   if (city) fields.siteCity = city.slice(0, 120);
-  const state = stateCode(values.state) ?? (place?.state || undefined) ?? (city && HARIDWAR_WORDS.test(city) ? "UK" : undefined);
+  const state = stateCode(values.state) ?? (place?.state || undefined) ?? placeState(city);
   if (state) fields.siteState = state;
   if (values.pincode && /^[1-9][0-9]{5}$/.test(values.pincode.trim())) fields.sitePincode = values.pincode.trim();
 

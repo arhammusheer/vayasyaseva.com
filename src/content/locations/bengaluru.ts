@@ -2,7 +2,7 @@ import type { FaqItem } from "../types";
 import type { LocationCopy } from "./types";
 
 /**
- * Bengaluru: the hub and four industrial areas, on the /haridwar-sidcul
+ * Bengaluru: the hub and four industrial areas, on the location page
  * structure (owner direction, 17 Oct 2026). Facts from the research of 16 and
  * 17 Oct 2026, each cited in `sources`. Peenya (a Special Investment Region)
  * and Electronic City (an industrial township) are asked to confirm their

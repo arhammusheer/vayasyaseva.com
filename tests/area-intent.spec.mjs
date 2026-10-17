@@ -6,7 +6,7 @@ import { importTs } from "../scripts/lib/register-ts.mjs";
 const { decideArea, clustersInUtm, scoreSignals, WEIGHTS } = await importTs("src/lib/intent/model.ts");
 
 const surfaces = {
-  haridwar: { business: "/haridwar-sidcul", jobs: "/jobs/haridwar" },
+  haridwar: { business: "/locations/haridwar", jobs: "/jobs/haridwar" },
   bengaluru: { business: "/locations/bengaluru", jobs: "/jobs/bengaluru" },
   "delhi-ncr": { business: "/locations/delhi-ncr" },
 };

@@ -4,7 +4,7 @@
  *
  * Signals are weighted and summed per cluster. What the visitor did beats how
  * they arrived, and both beat where their IP says they are: a buyer in
- * Mumbai who lands on /haridwar-sidcul from an Uttarakhand ad sees
+ * Mumbai who lands on /locations/haridwar from an Uttarakhand ad sees
  * Haridwar, not Mumbai. When the visitor's region points at one cluster and
  * their intent at another and neither clearly wins, both show. A market's
  * own page always leads on its own side, whatever else the visitor did.
@@ -99,6 +99,15 @@ const plain = (s: string) =>
 const hasWord = (text: string, word: string) => ` ${text} `.includes(` ${word} `);
 
 /**
+ * The state a typed city is in, when it names a place in PLACES ("Roorkee"
+ * → UK, "Peenya" → KA, "Noida" → UP), for every market alike.
+ */
+export function placeState(city: string | null | undefined): string | undefined {
+  const text = city ? plain(city) : "";
+  return text ? PLACES.find((p) => p.words.some((w) => hasWord(text, w)))?.region[0] : undefined;
+}
+
+/**
  * The market for a visitor's region and city: the city's market when it is
  * one inside that state, else the state's. A city outside its state's list
  * (or a mismatched region) is ignored.
@@ -124,7 +133,7 @@ export const SITE_STATE_CLUSTERS: Readonly<Record<string, string>> = { UK: "utta
  * The market a business site is in: a place named in the city ("SIDCUL
  * Haridwar", "Kapurthala") inside the state, else the page the form was sent
  * from when its market covers that state (a Haridwar enquiry from
- * /haridwar-sidcul), else the state's market. Null when the state is
+ * /locations/haridwar), else the state's market. Null when the state is
  * covered by none (a UP site outside NCR) or unknown.
  */
 export function siteCluster(state: string | null | undefined, city: string | null | undefined, pageCluster?: string | null): string | null {

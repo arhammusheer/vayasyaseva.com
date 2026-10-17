@@ -284,8 +284,8 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
   // Jobs pages: links a job seeker rarely follows are not prefetched, to
   // spare data on patchy 4G (as in the jobs footer).
   const prefetch = isJobs ? false : undefined;
-  // Apply opens /jobs/haridwar, the one form page. A jobs page with the
-  // form on it (#apply: /jobs/haridwar, role and hub pages) scrolls to that
+  // Apply opens the decided market's jobs hub, else /jobs/apply. A jobs page
+  // with the form on it (#apply: market, role and hub pages) scrolls to that
   // form instead, keeping the role it pre-selects. /jobs/apply is left for
   // agent and legacy links.
   const applyHere = (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {

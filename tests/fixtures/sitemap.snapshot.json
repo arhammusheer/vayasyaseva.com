@@ -1122,48 +1122,6 @@
     }
   },
   {
-    "url": "https://www.vayasyaseva.com/en-in/haridwar-sidcul",
-    "lastModified": "2026-10-16T00:00:00.000Z",
-    "changeFrequency": "monthly",
-    "priority": 0.8,
-    "alternates": {
-      "languages": {
-        "en-IN": "https://www.vayasyaseva.com/en-in/haridwar-sidcul",
-        "hi-IN": "https://www.vayasyaseva.com/hi-in/haridwar-sidcul",
-        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/haridwar-sidcul",
-        "x-default": "https://www.vayasyaseva.com/en-in/haridwar-sidcul"
-      }
-    }
-  },
-  {
-    "url": "https://www.vayasyaseva.com/hi-in/haridwar-sidcul",
-    "lastModified": "2026-10-16T00:00:00.000Z",
-    "changeFrequency": "monthly",
-    "priority": 0.8,
-    "alternates": {
-      "languages": {
-        "en-IN": "https://www.vayasyaseva.com/en-in/haridwar-sidcul",
-        "hi-IN": "https://www.vayasyaseva.com/hi-in/haridwar-sidcul",
-        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/haridwar-sidcul",
-        "x-default": "https://www.vayasyaseva.com/en-in/haridwar-sidcul"
-      }
-    }
-  },
-  {
-    "url": "https://www.vayasyaseva.com/hi-latn-in/haridwar-sidcul",
-    "lastModified": "2026-10-16T00:00:00.000Z",
-    "changeFrequency": "monthly",
-    "priority": 0.8,
-    "alternates": {
-      "languages": {
-        "en-IN": "https://www.vayasyaseva.com/en-in/haridwar-sidcul",
-        "hi-IN": "https://www.vayasyaseva.com/hi-in/haridwar-sidcul",
-        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/haridwar-sidcul",
-        "x-default": "https://www.vayasyaseva.com/en-in/haridwar-sidcul"
-      }
-    }
-  },
-  {
     "url": "https://www.vayasyaseva.com/en-in/locations",
     "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "monthly",
@@ -1264,6 +1222,48 @@
     "lastModified": "2026-10-17T00:00:00.000Z",
     "changeFrequency": "monthly",
     "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/haridwar",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/haridwar",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/haridwar",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/haridwar",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/haridwar"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/locations/haridwar",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/haridwar",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/haridwar",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/haridwar",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/haridwar"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/locations/haridwar",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/haridwar",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/haridwar",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/haridwar",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/haridwar"
+      }
+    }
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/compliance",

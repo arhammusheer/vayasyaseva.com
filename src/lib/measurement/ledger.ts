@@ -9,7 +9,7 @@
  * is added here; whether that entry also bumps the version (and so re-asks
  * everyone) is the owner's call, with counsel where the wording changes.
  */
-export const CONSENT_VERSION = 8;
+export { CONSENT_VERSION } from "./version";
 
 export type LedgerEntry = {
   v: number;

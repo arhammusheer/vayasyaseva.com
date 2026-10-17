@@ -72,6 +72,23 @@ test("the server decides the ad-click report from the browser's claim as the bro
   assert.deepEqual(policy.dataManagerConsent(), { adPersonalization: "CONSENT_DENIED" });
 });
 
+test("the jobs submit route reports the click as today, and follows the claim when there is one", async () => {
+  const { adClickToReport } = await importTs("src/lib/measurement/server.ts");
+  const { jobsSubmitRequestSchema } = await importTs("src/lib/talent-intake/contract.ts");
+  const click = { type: "gclid", id: "TeStClIcK-0123456789abcdef" };
+  assert.equal(adClickToReport({}), null, "no click, nothing to report");
+  assert.deepEqual(adClickToReport({ adClick: click }), click, "no claim: today's rule, report when the click is sent");
+  assert.deepEqual(adClickToReport({ adClick: click, measurement: null }), click);
+  assert.deepEqual(adClickToReport({ adClick: click, measurement: { v: 8, choice: "all", legacyRefused: false } }), click);
+  assert.deepEqual(adClickToReport({ adClick: click, measurement: { v: 8, choice: "none", legacyRefused: false } }), click);
+  assert.equal(adClickToReport({ adClick: click, measurement: { v: 8, choice: "required", legacyRefused: true } }), null);
+  assert.equal(adClickToReport({ adClick: click, measurement: { v: 8, choice: "all", legacyRefused: true } }), null, "an old refusal still stops it");
+  const body = { ticket: "t", phone: "9999900001", adult: true, consent: true, text: null, adClick: click };
+  assert.equal(jobsSubmitRequestSchema.parse(body).measurement, undefined, "the field is optional");
+  assert.equal(jobsSubmitRequestSchema.parse({ ...body, measurement: { v: "x" } }).measurement, null, "a malformed claim is dropped, not a 400");
+  assert.deepEqual(jobsSubmitRequestSchema.parse({ ...body, measurement: { v: 8, choice: "all", legacyRefused: false } }).measurement, { v: 8, choice: "all", legacyRefused: false });
+});
+
 test("the Consent Mode default equals today's literal, key order included", () => {
   const accepted = state(fresh);
   const defaults = policy.googleConsentDefault((id) => policy.consentAllows(id, accepted));
@@ -177,7 +194,7 @@ test("every event name sent from src/ is in the catalogue", () => {
   };
   walk(join(root, "src"));
   const sent = new Set();
-  const CALL = /\b(?:track|trackServerEvent|reportServerCount|once)\(\s*(?:`[^`]*`\s*,\s*)?["']([a-z_]+)["']/g;
+  const CALL = /\b(?:track|reportServerCount|once)\(\s*(?:`[^`]*`\s*,\s*)?["']([a-z_]+)["']/g;
   const LINK = /\["([a-z_]+)", \{/g;
   for (const file of files) {
     const text = readFileSync(file, "utf8");

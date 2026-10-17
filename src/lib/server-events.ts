@@ -1,7 +1,8 @@
 import { after } from "next/server";
 
 /**
- * Server-side counts in Umami: one event per application or enquiry the
+ * Server-side counts in Umami (called only through
+ * src/lib/measurement/server.ts, reportServerCount): one event per application or enquiry the
  * server accepts, whatever the visitor's consent, ad blocker or channel
  * (form or AI agent). Sent to a separate Umami website so these requests
  * don't count as visitors on www.vayasyaseva.com. Fixed labels only; no

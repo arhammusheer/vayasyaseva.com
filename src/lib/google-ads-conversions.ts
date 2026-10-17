@@ -3,7 +3,8 @@ import { after } from "next/server";
 import type { AdClick } from "@/lib/talent-intake/contract";
 
 /**
- * Server-side Google Ads conversions: when an application the server accepted
+ * Server-side Google Ads conversions (called only through
+ * src/lib/measurement/server.ts, reportAdClickConversion): when an application the server accepted
  * came from an ad click, tell Google Ads which click (the gclid, gbraid or
  * wbraid Google added to the landing URL). Nothing else about the applicant
  * is sent. The browser leaves the click out after "Required Only"
@@ -49,7 +50,7 @@ async function accessToken(key: ServiceAccountKey) {
 }
 
 /** After the response: upload one job application conversion for this ad click. */
-export function uploadJobApplicationConversion(click: AdClick, ref: string) {
+export function uploadJobApplicationConversion(click: AdClick, ref: string, consent: { adPersonalization: "CONSENT_DENIED" }) {
   const raw = process.env.GOOGLE_ADS_SERVICE_ACCOUNT_KEY;
   const action = process.env.GOOGLE_ADS_JOB_CONVERSION_ACTION_ID;
   if (!raw || !action || process.env.VERCEL_ENV !== "production") return;
@@ -78,8 +79,8 @@ export function uploadJobApplicationConversion(click: AdClick, ref: string) {
             },
           ],
           encoding: "HEX",
-          // Measurement only: never used for ad personalisation.
-          consent: { adPersonalization: "CONSENT_DENIED" },
+          // Measurement only: never used for ad personalisation (policy.ts dataManagerConsent).
+          consent,
         }),
         signal: AbortSignal.timeout(8000),
       });

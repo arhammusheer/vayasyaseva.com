@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse, after } from "next/server";
-import { trackServerEvent } from "@/lib/server-events";
+import { reportServerCount } from "@/lib/measurement/server";
 import { contactContract, parseContactRequest } from "@/lib/contact-contract";
 import { assessCrewRequest } from "@/lib/crew-request";
 import { createContactCaseId, sendInternalContactEmail } from "@/lib/msg91";
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
       agent: agent?.name ?? null,
       messageId: delivery.messageId,
     });
-    trackServerEvent("enquiry_received", "/api/agent/contact", {
+    reportServerCount("enquiry_received", "/api/agent/contact", {
       channel: "agent",
       cluster: "none",
       qualified: assessCrewRequest(data).qualified ? "yes" : "no",

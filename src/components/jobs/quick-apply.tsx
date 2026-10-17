@@ -10,7 +10,7 @@ import { useSessionDraft } from "@/lib/use-session-draft";
 import { FormDraftNotice } from "@/components/form-draft-notice";
 import { revealFormTarget } from "@/lib/form-navigation";
 import { cn } from "@/lib/utils";
-import { currentAdClick, formPage, track, trackConversion, type AnalyticsParams } from "@/lib/measurement/gateway";
+import { currentAdClick, formPage, measurementClaim, track, trackConversion, type AnalyticsParams } from "@/lib/measurement/gateway";
 import { jobsCopy } from "@/content/pages/jobs";
 import { STEP_DEFS, areaOptions, quickApplyCopy, roleFor, type Answers, type AreaSource, type StepDef } from "@/content/pages/quick-apply";
 import { MODEL_VERSION } from "@/lib/intent/model";
@@ -337,7 +337,7 @@ export function QuickApply({
     try {
       const ref = await submission.send({
         start: { source: WEB_SOURCE, locale, pageCluster: cluster, pagePath, role, hub, turnstileToken: turnstileToken ?? "", files: declared },
-        payload: { phone, adult: true, consent: true, text: null, form: "quick", name: name.trim().slice(0, MAX_APPLICANT_NAME_LENGTH), answers: sent, adClick: currentAdClick() },
+        payload: { phone, adult: true, consent: true, text: null, form: "quick", name: name.trim().slice(0, MAX_APPLICANT_NAME_LENGTH), answers: sent, adClick: currentAdClick(), measurement: measurementClaim() },
         resetVerification: resetTurnstile,
         upload: async (uploads) => {
           await uploadAll(uploads, files.map((f) => f.file), declared.map((d) => d.kind), locale, (n, total, percent) => setPhase({ name: "sending", message: form.sendingFile(n, total, percent) }));

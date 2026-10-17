@@ -136,11 +136,7 @@ const MODEL: ObjectSpec[] = [
         label: "Status",
         type: "SELECT",
         icon: "IconProgressCheck",
-        description: "New: not called yet. No answer: called, try again. Screened: spoke, checking fit. Callable: in the pool for work. Placed: on a site. Archived: not suitable or not interested.",
-        options: options(
-          [["NEW", "New"], ["NO_ANSWER", "No answer"], ["SCREENED", "Screened"], ["CALLABLE", "Callable"], ["PLACED", "Placed"], ["ARCHIVED", "Archived"]],
-          ["sky", "orange", "yellow", "green", "purple", "gray"],
-        ),
+        options: options([["NEW", "New"], ["SCREENED", "Screened"], ["CALLABLE", "Callable"], ["PLACED", "Placed"], ["ARCHIVED", "Archived"]], ["sky", "yellow", "green", "purple", "gray"]),
       },
       { name: "phone", label: "Phone", type: "PHONES", icon: "IconPhone", description: "The applicant's mobile, to call from the list or board." },
       { name: "workWanted", label: "Work wanted", type: "MULTI_SELECT", icon: "IconTool", options: ROLES, description: "Every kind of work the quick form ticked." },

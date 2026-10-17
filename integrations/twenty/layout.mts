@@ -1,11 +1,14 @@
 /**
- * How staff see the CRM, as code: the lists and boards (views), the record
- * pages' field order, the Jobs dashboard and the sidebar. Run by setup.mts.
+ * How the CRM reads, as code. Applications are a log, not a pipeline: the
+ * default list is every application newest first, with a calendar and a
+ * time-series dashboard beside it. Also the record pages' field order and
+ * the sidebar. Run by setup.mts.
  *
  * A view that does not exist is created; one that exists is left alone (staff
  * may have adjusted it) unless --reset-layout, which puts back its columns,
  * sort and filters. Columns are listed in order; every other field is hidden.
- * The dashboard is created once; --reset-layout rebuilds it.
+ * The dashboard is created once; --reset-layout rebuilds it. Views in
+ * RETIRED (an earlier, pipeline-style layout) are removed.
  */
 import { randomUUID } from "node:crypto";
 import type { Gql, MetaObject } from "./lib.mts";
@@ -28,9 +31,11 @@ type ViewSpec = {
   name: string;
   /** Earlier names: such a view is renamed rather than duplicated. */
   was?: string[];
-  type: "TABLE" | "KANBAN" | "FIELDS_WIDGET";
+  type: "TABLE" | "KANBAN" | "CALENDAR" | "FIELDS_WIDGET";
   icon?: string;
   groupBy?: string;
+  /** CALENDAR: the date field records sit on (month layout). */
+  calendarBy?: string;
   columns: Column[];
   sort?: [string, "ASC" | "DESC"];
   filters?: Filter[];
@@ -38,91 +43,56 @@ type ViewSpec = {
 
 /** Twenty's relative date filter: last N days, in India time, weeks from Monday. */
 const pastDays = (n: number) => `PAST_${n}_DAY;;Asia/Kolkata;;MONDAY;;`;
-const ACTIVE = ["NEW", "NO_ANSWER", "SCREENED", "CALLABLE"];
-
-const APPLICATION_CARD: Column[] = ["name", "person", "phone", "jobRole", "area", "experience", "canStart", "submittedAt"];
+/** The log's columns: when, who, what work, where, and the screening answers. */
+const LOG_COLUMNS: Column[] = [
+  ["name", 130], ["submittedAt", 160], ["person", 170], ["phone", 150], ["jobRole", 150], ["area", 190], "experience", "canStart",
+  ["workWanted", 220], ["shifts", 150], "education", ["skills", 220], "source", ["message", 300],
+];
 const WORKER_COLUMNS: Column[] = [
-  ["name", 180], ["phones", 150], "workerStatus", ["workRoles", 220], ["clusters", 160], ["homeArea", 170], "language", ["lastAppliedAt", 150], ["applications", 180], ["lastContactAt", 150],
+  ["name", 180], ["phones", 150], ["lastAppliedAt", 160], ["workRoles", 220], ["clusters", 160], ["homeArea", 170], "language", ["applications", 180],
+];
+
+/** Views of the earlier pipeline layout (17 Oct 2026), removed: the owner wants a log, not recruitment management. */
+const RETIRED: [string, string][] = [
+  ["application", "To call"], ["application", "Pipeline"], ["application", "By status"], ["application", "Callable pool"],
+  ["application", "By role"], ["application", "By area"], ["person", "Callable workers"], ["person", "Workers by status"],
 ];
 
 export const VIEWS: ViewSpec[] = [
-  // Applications: the work queue first.
-  {
-    object: "application",
-    name: "To call",
-    type: "TABLE",
-    icon: "IconPhoneCall",
-    columns: [["name", 130], ["person", 170], ["phone", 150], "status", ["jobRole", 150], ["area", 190], "canStart", "experience", ["submittedAt", 150], ["message", 280]],
-    sort: ["submittedAt", "ASC"],
-    filters: [{ field: "status", operand: "IS", values: ["NEW", "NO_ANSWER"] }],
-  },
-  {
-    object: "application",
-    name: "Pipeline",
-    was: ["By status"],
-    type: "KANBAN",
-    icon: "IconLayoutKanban",
-    groupBy: "status",
-    columns: APPLICATION_CARD,
-    sort: ["submittedAt", "DESC"],
-  },
+  // Applications: a log, newest first.
   {
     object: "application",
     index: true,
-    name: "All applications",
+    name: "Applications log",
     type: "TABLE",
     icon: "IconFileText",
-    columns: [
-      ["name", 130], ["person", 170], ["phone", 150], "status", ["jobRole", 150], ["area", 190], "experience", "canStart", ["workWanted", 220],
-      ["shifts", 150], "education", ["skills", 220], ["submittedAt", 150], "source", ["message", 280],
-    ],
+    columns: LOG_COLUMNS,
     sort: ["submittedAt", "DESC"],
-  },
-  {
-    object: "application",
-    name: "Callable pool",
-    type: "TABLE",
-    icon: "IconUserCheck",
-    columns: [["name", 130], ["person", 170], ["phone", 150], ["jobRole", 150], ["workWanted", 220], ["area", 190], "experience", "education", ["shifts", 150], "canStart", ["skills", 220]],
-    sort: ["submittedAt", "DESC"],
-    filters: [{ field: "status", operand: "IS", values: ["CALLABLE"] }],
-  },
-  {
-    object: "application",
-    name: "By role",
-    type: "KANBAN",
-    icon: "IconTool",
-    groupBy: "jobRole",
-    columns: ["name", "person", "phone", "status", "area", "experience", "canStart"],
-    sort: ["submittedAt", "DESC"],
-    filters: [{ field: "status", operand: "IS", values: ACTIVE }],
-  },
-  {
-    object: "application",
-    name: "By area",
-    type: "KANBAN",
-    icon: "IconMapPin",
-    groupBy: "area",
-    columns: ["name", "person", "phone", "status", "jobRole", "experience", "canStart"],
-    sort: ["submittedAt", "DESC"],
-    filters: [{ field: "status", operand: "IS", values: ACTIVE }],
   },
   {
     object: "application",
     name: "Last 7 days",
     type: "TABLE",
     icon: "IconCalendarWeek",
-    columns: [["name", 130], ["person", 170], ["phone", 150], "status", ["jobRole", 150], ["area", 190], "experience", "canStart", ["submittedAt", 150], "source"],
+    columns: LOG_COLUMNS,
     sort: ["submittedAt", "DESC"],
     filters: [{ field: "submittedAt", operand: "IS_RELATIVE", value: pastDays(7) }],
+  },
+  {
+    object: "application",
+    name: "Calendar",
+    type: "CALENDAR",
+    icon: "IconCalendar",
+    calendarBy: "submittedAt",
+    columns: ["name", "person", "jobRole", "area"],
   },
   {
     object: "application",
     name: "Application Record Page Fields",
     type: "FIELDS_WIDGET",
     columns: [
-      "person", "phone", "status", "jobRole", "workWanted", "area", "experience", "education", "canStart", "shifts", "skills", "message",
-      "submittedAt", "source", "cluster", "pagePath", "communications",
+      "submittedAt", "person", "phone", "jobRole", "workWanted", "area", "experience", "education", "canStart", "shifts", "skills", "message",
+      "source", "cluster", "pagePath", "communications",
     ],
   },
 
@@ -133,28 +103,6 @@ export const VIEWS: ViewSpec[] = [
     type: "TABLE",
     icon: "IconUsers",
     columns: WORKER_COLUMNS,
-    sort: ["lastAppliedAt", "DESC"],
-    filters: [{ field: "personType", operand: "IS", values: ["WORKER"] }],
-  },
-  {
-    object: "person",
-    name: "Callable workers",
-    type: "TABLE",
-    icon: "IconUserCheck",
-    columns: WORKER_COLUMNS,
-    sort: ["lastAppliedAt", "DESC"],
-    filters: [
-      { field: "personType", operand: "IS", values: ["WORKER"] },
-      { field: "workerStatus", operand: "IS", values: ["CALLABLE"] },
-    ],
-  },
-  {
-    object: "person",
-    name: "Workers by status",
-    type: "KANBAN",
-    icon: "IconLayoutKanban",
-    groupBy: "workerStatus",
-    columns: ["name", "phones", "workRoles", "clusters", "homeArea", "lastAppliedAt"],
     sort: ["lastAppliedAt", "DESC"],
     filters: [{ field: "personType", operand: "IS", values: ["WORKER"] }],
   },
@@ -172,7 +120,7 @@ export const VIEWS: ViewSpec[] = [
     index: true,
     name: "All People",
     type: "TABLE",
-    columns: [["name", 180], ["phones", 150], "personType", "workerStatus", ["workRoles", 200], ["clusters", 160], ["company", 170], ["emails", 200], ["lastContactAt", 150]],
+    columns: [["name", 180], ["phones", 150], "personType", ["workRoles", 200], ["clusters", 160], ["company", 170], ["emails", 200], ["lastContactAt", 150]],
     sort: ["createdAt", "DESC"],
   },
   {
@@ -180,7 +128,7 @@ export const VIEWS: ViewSpec[] = [
     name: "Person Record Page Fields",
     type: "FIELDS_WIDGET",
     columns: [
-      "phones", "personType", "workerStatus", "workRoles", "clusters", "homeArea", "language", "lastAppliedAt", "lastContactAt", "applications",
+      "phones", "personType", "lastAppliedAt", "applications", "workRoles", "clusters", "homeArea", "language", "lastContactAt",
       "communications", "company", "jobTitle", "emails", "pointOfContactForOpportunities", "consentVersion", "consentedAt",
     ],
   },
@@ -296,12 +244,13 @@ async function ensureView(gql: Gql, objects: MetaObject[], spec: ViewSpec, o: Op
           position: views.length,
           visibility: "WORKSPACE",
           ...(spec.groupBy ? { mainGroupByFieldMetadataId: fieldId(spec.groupBy) } : {}),
+          ...(spec.calendarBy ? { calendarFieldMetadataId: fieldId(spec.calendarBy), calendarLayout: "MONTH" } : {}),
         },
       },
     );
     view = { id: createView.id, name: spec.name, key: null, type: spec.type, viewFields: [], viewSorts: [], viewFilters: [] };
     apply = true;
-  } else if (view.name !== spec.name && !spec.index) {
+  } else if (view.name !== spec.name) {
     o.step(`renaming view ${spec.object} "${view.name}" to "${spec.name}"`);
     if (!o.dryRun) await gql("/metadata", `mutation($id: String!, $input: UpdateViewInput!) { updateView(id: $id, input: $input) { id } }`, { id: view.id, input: { name: spec.name } });
   }
@@ -354,7 +303,9 @@ async function ensureView(gql: Gql, objects: MetaObject[], spec: ViewSpec, o: Op
 
 // --- the Jobs dashboard ---------------------------------------------------------
 
-const DASHBOARD_TITLE = "Jobs";
+const DASHBOARD_TITLE = "Job applications";
+/** Earlier titles, rebuilt under the new one. */
+const DASHBOARD_WAS = ["Jobs"];
 const TIMEZONE = "Asia/Kolkata";
 const MONDAY = 1;
 
@@ -367,76 +318,51 @@ type WidgetSpec = {
     | { kind: "count"; filters?: Filter[] }
     | { kind: "sum"; field: string; filters?: Filter[] }
     | { kind: "pie"; by: string; filters?: Filter[]; color: string }
-    | { kind: "bar"; by: string; filters?: Filter[]; color: string; horizontal?: boolean; byDay?: boolean; sumOf?: string }
+    | { kind: "bar"; by: string; filters?: Filter[]; color: string; horizontal?: boolean; byDay?: boolean; byWeek?: boolean; stackBy?: string; sumOf?: string }
+    | { kind: "line"; by: string; filters?: Filter[]; color: string; cumulative?: boolean; byWeek?: boolean }
     | { kind: "table"; view: string; columns: Column[]; sort: [string, "ASC" | "DESC"]; filters?: Filter[] };
 };
 type TabSpec = { title: string; widgets: WidgetSpec[] };
 
 const g = (row: number, column: number, rowSpan: number, columnSpan: number): Grid => ({ row, column, rowSpan, columnSpan });
-const TO_CALL: Filter[] = [{ field: "status", operand: "IS", values: ["NEW", "NO_ANSWER"] }];
-const WORKERS: Filter[] = [{ field: "personType", operand: "IS", values: ["WORKER"] }];
+const days = (n: number): Filter[] => [{ field: "submittedAt", operand: "IS_RELATIVE", value: pastDays(n) }];
 
+/** One tab: counts, then the time series, then what came in, then the log itself. */
 export const DASHBOARD: TabSpec[] = [
   {
     title: "Applications",
     widgets: [
-      { title: "To call", object: "application", grid: g(0, 0, 2, 3), chart: { kind: "count", filters: TO_CALL } },
-      { title: "Applied, last 7 days", object: "application", grid: g(0, 3, 2, 3), chart: { kind: "count", filters: [{ field: "submittedAt", operand: "IS_RELATIVE", value: pastDays(7) }] } },
-      { title: "Callable pool", object: "application", grid: g(0, 6, 2, 3), chart: { kind: "count", filters: [{ field: "status", operand: "IS", values: ["CALLABLE"] }] } },
-      { title: "Placed", object: "application", grid: g(0, 9, 2, 3), chart: { kind: "count", filters: [{ field: "status", operand: "IS", values: ["PLACED"] }] } },
+      { title: "Today", object: "application", grid: g(0, 0, 2, 3), chart: { kind: "count", filters: days(1) } },
+      { title: "Last 7 days", object: "application", grid: g(0, 3, 2, 3), chart: { kind: "count", filters: days(7) } },
+      { title: "Last 30 days", object: "application", grid: g(0, 6, 2, 3), chart: { kind: "count", filters: days(30) } },
+      { title: "All time", object: "application", grid: g(0, 9, 2, 3), chart: { kind: "count" } },
       {
-        title: "Applications per day, last 30 days",
+        title: "Applications per day, by role (last 30 days)",
         object: "application",
-        grid: g(2, 0, 6, 8),
-        chart: { kind: "bar", by: "submittedAt", byDay: true, color: "blue", filters: [{ field: "submittedAt", operand: "IS_RELATIVE", value: pastDays(30) }] },
+        grid: g(2, 0, 7, 12),
+        chart: { kind: "bar", by: "submittedAt", byDay: true, stackBy: "jobRole", color: "blue", filters: days(30) },
       },
-      { title: "Where applications are", object: "application", grid: g(2, 8, 6, 4), chart: { kind: "pie", by: "status", color: "sky" } },
-      { title: "Open applications by role", object: "application", grid: g(8, 0, 7, 6), chart: { kind: "bar", by: "jobRole", horizontal: true, color: "orange", filters: [{ field: "status", operand: "IS", values: ACTIVE }] } },
-      { title: "Open applications by area", object: "application", grid: g(8, 6, 7, 6), chart: { kind: "bar", by: "area", horizontal: true, color: "turquoise", filters: [{ field: "status", operand: "IS", values: ACTIVE }] } },
-      { title: "Experience", object: "application", grid: g(15, 0, 6, 4), chart: { kind: "pie", by: "experience", color: "blue" } },
-      { title: "Can start", object: "application", grid: g(15, 4, 6, 4), chart: { kind: "pie", by: "canStart", color: "green" } },
-      { title: "Source", object: "application", grid: g(15, 8, 6, 4), chart: { kind: "pie", by: "source", color: "purple" } },
+      { title: "Applications per week", object: "application", grid: g(9, 0, 6, 6), chart: { kind: "bar", by: "submittedAt", byWeek: true, color: "sky" } },
+      { title: "All applications over time", object: "application", grid: g(9, 6, 6, 6), chart: { kind: "line", by: "submittedAt", byWeek: true, cumulative: true, color: "green" } },
+      { title: "Role, last 30 days", object: "application", grid: g(15, 0, 7, 6), chart: { kind: "bar", by: "jobRole", horizontal: true, color: "orange", filters: days(30) } },
+      { title: "Area, last 30 days", object: "application", grid: g(15, 6, 7, 6), chart: { kind: "bar", by: "area", horizontal: true, color: "turquoise", filters: days(30) } },
       {
-        title: "To call, oldest first",
+        title: "Latest applications",
         object: "application",
-        grid: g(21, 0, 9, 12),
+        grid: g(22, 0, 10, 12),
         chart: {
           kind: "table",
-          view: "Dashboard · to call",
-          columns: [["name", 130], ["person", 170], ["phone", 150], "status", ["jobRole", 150], ["area", 190], "canStart", "experience", ["submittedAt", 150]],
-          sort: ["submittedAt", "ASC"],
-          filters: TO_CALL,
+          view: "Dashboard · latest applications",
+          columns: [["name", 130], ["submittedAt", 160], ["person", 170], ["phone", 150], ["jobRole", 150], ["area", 190], "experience", "canStart", ["message", 280]],
+          sort: ["submittedAt", "DESC"],
         },
       },
     ],
   },
-  {
-    title: "Workers and SMS",
-    widgets: [
-      { title: "Workers", object: "person", grid: g(0, 0, 2, 3), chart: { kind: "count", filters: WORKERS } },
-      { title: "Callable workers", object: "person", grid: g(0, 3, 2, 3), chart: { kind: "count", filters: [...WORKERS, { field: "workerStatus", operand: "IS", values: ["CALLABLE"] }] } },
-      {
-        title: "SMS delivered, last 7 days",
-        object: "communication",
-        grid: g(0, 6, 2, 3),
-        chart: { kind: "count", filters: [{ field: "deliveryStatus", operand: "IS", values: ["DELIVERED"] }, { field: "statusAt", operand: "IS_RELATIVE", value: pastDays(7) }] },
-      },
-      { title: "SMS needing attention", object: "communication", grid: g(0, 9, 2, 3), chart: { kind: "count", filters: [{ field: "deliveryStatus", operand: "IS", values: ["FAILED", "UNKNOWN"] }] } },
-      { title: "Workers by status", object: "person", grid: g(2, 0, 6, 6), chart: { kind: "pie", by: "workerStatus", color: "green", filters: WORKERS } },
-      { title: "SMS delivery", object: "communication", grid: g(2, 6, 6, 6), chart: { kind: "pie", by: "deliveryStatus", color: "sky", filters: [{ field: "channel", operand: "IS", values: ["SMS"] }] } },
-    ],
-  },
-  {
-    title: "Crew requests",
-    widgets: [
-      { title: "Open crew requests", object: "opportunity", grid: g(0, 0, 2, 4), chart: { kind: "count", filters: [{ field: "stage", operand: "IS", values: ["NEW", "CONTACTED", "SITE_VISIT", "QUOTED"] }] } },
-      { title: "Workers asked for, open requests", object: "opportunity", grid: g(0, 4, 2, 4), chart: { kind: "sum", field: "crewSize", filters: [{ field: "stage", operand: "IS", values: ["NEW", "CONTACTED", "SITE_VISIT", "QUOTED"] }] } },
-      { title: "Won", object: "opportunity", grid: g(0, 8, 2, 4), chart: { kind: "count", filters: [{ field: "stage", operand: "IS", values: ["WON"] }] } },
-      { title: "Crew requests by stage", object: "opportunity", grid: g(2, 0, 6, 6), chart: { kind: "bar", by: "stage", color: "purple" } },
-      { title: "Workers asked for, by cluster", object: "opportunity", grid: g(2, 6, 6, 6), chart: { kind: "bar", by: "cluster", sumOf: "crewSize", color: "orange" } },
-    ],
-  },
 ];
+
+/** Dashboard-backing views of earlier dashboards, removed with them. */
+const RETIRED_WIDGET_VIEWS = ["Dashboard · to call"];
 
 function chartFilter(obj: MetaObject, filters: Filter[] | undefined) {
   if (!filters?.length) return undefined;
@@ -502,16 +428,31 @@ async function widgetInput(gql: Gql, objects: MetaObject[], w: WidgetSpec) {
       color: c.color,
       ...common,
     };
+  } else if (c.kind === "line") {
+    configuration = {
+      configurationType: "LINE_CHART",
+      ...count,
+      primaryAxisGroupByFieldMetadataId: fieldId(c.by),
+      primaryAxisDateGranularity: c.byWeek ? "WEEK" : "DAY",
+      primaryAxisOrderBy: "FIELD_ASC",
+      axisNameDisplay: "NONE",
+      displayDataLabel: false,
+      displayLegend: false,
+      color: c.color,
+      isCumulative: Boolean(c.cumulative),
+      ...common,
+    };
   } else {
     configuration = {
       configurationType: "BAR_CHART",
       ...(c.sumOf ? { aggregateFieldMetadataId: fieldId(c.sumOf), aggregateOperation: "SUM" } : count),
       primaryAxisGroupByFieldMetadataId: fieldId(c.by),
-      primaryAxisOrderBy: c.byDay ? "FIELD_ASC" : c.horizontal ? "VALUE_DESC" : "FIELD_POSITION_ASC",
-      ...(c.byDay ? { primaryAxisDateGranularity: "DAY" } : {}),
+      primaryAxisOrderBy: c.byDay || c.byWeek ? "FIELD_ASC" : c.horizontal ? "VALUE_DESC" : "FIELD_POSITION_ASC",
+      ...(c.byDay || c.byWeek ? { primaryAxisDateGranularity: c.byWeek ? "WEEK" : "DAY" } : {}),
+      ...(c.stackBy ? { secondaryAxisGroupByFieldMetadataId: fieldId(c.stackBy), secondaryAxisOrderBy: "FIELD_POSITION_ASC" } : {}),
       axisNameDisplay: "NONE",
-      displayDataLabel: true,
-      displayLegend: false,
+      displayDataLabel: !c.stackBy,
+      displayLegend: Boolean(c.stackBy),
       color: c.color,
       layout: c.horizontal ? "HORIZONTAL" : "VERTICAL",
       isCumulative: false,
@@ -527,10 +468,12 @@ type DashboardRow = { id: string; title: string; pageLayoutId: string | null };
 async function ensureDashboard(gql: Gql, objects: MetaObject[], o: Options): Promise<string | null> {
   const existing = (
     await gql<{ dashboards: { edges: { node: DashboardRow }[] } }>("/graphql", `{ dashboards(first: 50) { edges { node { id title pageLayoutId } } } }`)
-  ).dashboards.edges.map((e) => e.node).filter((d) => d.title === DASHBOARD_TITLE);
-  if (existing.length && !o.reset) return existing[0].id;
+  ).dashboards.edges.map((e) => e.node).filter((d) => d.title === DASHBOARD_TITLE || DASHBOARD_WAS.includes(d.title));
+  if (existing.length && !o.reset && existing.every((d) => d.title === DASHBOARD_TITLE)) return existing[0].id;
   o.step(`${existing.length ? "rebuilding" : "creating"} the "${DASHBOARD_TITLE}" dashboard (${DASHBOARD.map((t) => t.title).join(", ")})`);
   if (o.dryRun) return existing[0]?.id ?? null;
+  const appViews = (await gql<{ getViews: ViewRow[] }>("/metadata", VIEW_QUERY, { id: objects.find((x) => x.nameSingular === "application")!.id })).getViews;
+  for (const v of appViews.filter((v) => RETIRED_WIDGET_VIEWS.includes(v.name))) await gql("/metadata", `mutation($id: String!) { destroyView(id: $id) }`, { id: v.id });
   for (const d of existing) {
     await gql("/graphql", `mutation($id: UUID!) { deleteDashboard(id: $id) { id } }`, { id: d.id });
     await gql("/graphql", `mutation($id: UUID!) { destroyDashboard(id: $id) { id } }`, { id: d.id });
@@ -593,13 +536,12 @@ async function ensureLabels(gql: Gql, o: Options) {
 type NavItem = { id: string; type: string; name: string | null; viewId: string | null; targetObjectMetadataId: string | null; targetRecordId: string | null; folderId: string | null; position: number; userWorkspaceId: string | null };
 
 /**
- * The workspace sidebar, top to bottom: the Jobs dashboard, the To call
- * queue, then the objects in the order staff use them. Items not listed
+ * The workspace sidebar, top to bottom: the Job applications dashboard,
+ * then the objects in the order they are used. Items not listed
  * (Workflows, staff's own favourites) keep their place after these.
  */
 const SIDEBAR: ({ dashboard: true } | { view: [string, string] } | { object: string })[] = [
   { dashboard: true },
-  { view: ["application", "To call"] },
   { object: "application" },
   { object: "person" },
   { object: "communication" },
@@ -664,8 +606,24 @@ async function ensureSidebar(gql: Gql, dashboardId: string | null, o: Options) {
   }
 }
 
+async function retireViews(gql: Gql, objects: MetaObject[], o: Options) {
+  const nav = (await gql<{ navigationMenuItems: NavItem[] }>("/metadata", `{ navigationMenuItems { id type name viewId targetObjectMetadataId targetRecordId folderId position userWorkspaceId } }`)).navigationMenuItems;
+  for (const object of new Set(RETIRED.map(([obj]) => obj))) {
+    const obj = objects.find((x) => x.nameSingular === object);
+    if (!obj) continue;
+    const views = (await gql<{ getViews: ViewRow[] }>("/metadata", VIEW_QUERY, { id: obj.id })).getViews;
+    for (const v of views.filter((v) => v.key !== "INDEX" && RETIRED.some(([ob, name]) => ob === object && name === v.name))) {
+      o.step(`removing view ${object} "${v.name}"`);
+      if (o.dryRun) continue;
+      for (const item of nav.filter((i) => i.viewId === v.id)) await gql("/metadata", `mutation($id: UUID!) { deleteNavigationMenuItem(id: $id) { id } }`, { id: item.id });
+      await gql("/metadata", `mutation($id: String!) { destroyView(id: $id) }`, { id: v.id });
+    }
+  }
+}
+
 export async function applyLayout(gql: Gql, objects: MetaObject[], o: Options) {
   await ensureLabels(gql, o);
+  await retireViews(gql, objects, o);
   for (const spec of VIEWS) await ensureView(gql, objects, spec, o);
   const dashboardId = await ensureDashboard(gql, objects, o);
   await ensureSidebar(gql, dashboardId, o);

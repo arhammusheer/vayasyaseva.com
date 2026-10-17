@@ -637,12 +637,12 @@ export function WageStatePage({ slug }: { slug: WageStateSlug }) {
   const year = yearOf(state, today);
   const crew = crewDoor(slug);
   const doors =
-    t.band === "haridwar"
+    t.band === "uttarakhand"
       ? [wageDoors.jobs, wageDoors.business]
       : t.band === "bengaluru"
         ? [wageDoors.jobsBengaluru, crew]
-        : t.band === "jalandhar"
-          ? [wageDoors.jobsJalandhar, crew]
+        : t.band === "punjab"
+          ? [wageDoors.jobsPunjab, crew]
           : [wageDoors.officialSource(state.name, t.labourDepartment), crew];
   return (
     <>

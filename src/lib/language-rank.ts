@@ -25,7 +25,7 @@
  * Nothing here redirects or changes a locale URL: /hi-in/jobs is always Hindi.
  * Imported by the proxy: keep it light.
  */
-import { pageEntries, pageEntry } from "@/content/registry";
+import { pageEntry } from "@/content/registry";
 import type { ClusterId } from "@/content/registry/identifiers";
 import { clustersInUtm } from "./intent/model";
 import { quickShareVariant, QUICK_SHARE_VARIANTS } from "./share-variant";
@@ -73,33 +73,20 @@ const CLUSTER_SETS: Readonly<Record<ClusterId, RankSet | undefined>> = {
   "delhi-ncr": "hindi",
   saharanpur: "hindi",
   jalandhar: "punjab",
+  punjab: "punjab",
   bengaluru: "karnataka",
   other: undefined,
 };
 
 /**
- * The cluster of a jobs page without one of its own (/jobs, /jobs/apply,
- * the role pages and hubs). Haridwar while its jobs hub is published: every
- * opening is in SIDCUL Haridwar and the role pages stay Haridwar-first (PLAN
- * §5.3), so a visitor whose region is missing or misread (mobile CGNAT often
- * places a phone in a gateway state) still gets the Hindi-belt order there.
- * Other hubs (Bengaluru, Jalandhar–Kapurthala) keep their own order on their page.
- * Without Haridwar, the one published hub if there is exactly one.
+ * The cluster that fills gaps in a page's order: the page's own, and nothing
+ * else. Pages without a market of their own (/jobs, /jobs/apply, the role
+ * and qualification pages) take no market's order by default (owner
+ * direction, 17 Oct 2026: no market is the default; the visitor's signals
+ * decide).
  */
-const JOBS_CLUSTER: ClusterId | undefined = (() => {
-  const hubs = new Set(
-    pageEntries
-      .filter((p) => p.kind === "jobs-city" && p.cluster && Object.values(p.locales).includes("published"))
-      .map((p) => p.cluster!),
-  );
-  if (hubs.has("haridwar")) return "haridwar";
-  return hubs.size === 1 ? [...hubs][0] : undefined;
-})();
-
-/** The cluster that fills gaps in a page's order: its own, else the jobs cluster for jobs pages. */
 export function pageCluster(path: string): ClusterId | undefined {
-  const entry = pageEntry(path);
-  return entry?.cluster ?? (entry?.audience === "jobs" ? JOBS_CLUSTER : undefined);
+  return pageEntry(path)?.cluster;
 }
 
 export type VisitorRegion = { country?: string; region?: string };
@@ -122,6 +109,23 @@ export function visitorRegion(headers: Headers): VisitorRegion {
     country: country && /^[A-Z]{2}$/.test(country) && country !== "XX" && country !== "T1" ? country : undefined,
     region: region && /^[A-Z0-9]{1,3}$/.test(region) ? region : undefined,
   };
+}
+
+/**
+ * The visitor's city from the request (x-vercel-ip-city, URL-encoded; or
+ * Cloudflare's cf-ipcity), for area intent only. Read per request, never stored.
+ */
+export function visitorCity(headers: Headers): string | undefined {
+  const raw = headers.get("x-vercel-ip-city") ?? headers.get("cf-ipcity");
+  if (!raw) return undefined;
+  let city = raw;
+  try {
+    city = decodeURIComponent(raw);
+  } catch {
+    // Not URL-encoded: use as sent.
+  }
+  city = city.trim();
+  return city && city.length <= 60 && /^[\p{L} .'-]+$/u.test(city) ? city : undefined;
 }
 
 /**

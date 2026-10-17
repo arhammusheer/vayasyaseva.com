@@ -113,13 +113,13 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] lg:grid-rows-[auto_1fr] lg:gap-x-20 lg:gap-y-0">
           <div className="lg:col-start-1 lg:row-start-1">
             {/* One quiet line for job seekers, a full thumb target (48px), to
-                Jobs in Haridwar (neutral, so not the i18n Link). */}
+                /jobs, every market (neutral, so not the i18n Link). */}
             <NextLink
               href={jobsDoorHref("en-IN")}
               prefetch={false}
               className="mb-4 inline-flex min-h-12 items-center text-sm leading-relaxed text-muted-foreground hover:text-gold-700"
             >
-              Looking for work?&nbsp;<span className="text-gold-700 underline underline-offset-4">Jobs in Haridwar →</span>
+              Looking for work?&nbsp;<span className="text-gold-700 underline underline-offset-4">Jobs →</span>
             </NextLink>
             <p className="eyebrow text-gold-700">FOR BUSINESSES</p>
             <h1 className="crew-intro-title">{HEADINGS[mode]}</h1>

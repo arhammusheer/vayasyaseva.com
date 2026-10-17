@@ -66,13 +66,11 @@ function pageSummary(path: string): { title: string; text?: string } {
 
 /**
  * What each choice opens, in its own language: a short page name, never the
- * meta title and description. /jobs names "Haridwar jobs", where all the
- * work is, and opens that page (the form) rather than the jobs index: an
- * SMS or search link reaches the first question in one tap.
+ * meta title and description. /jobs opens the jobs index, which lists every
+ * market (no market is the default, owner direction 17 Oct 2026).
  */
 function pageName(path: string, locale: Locale): { title: string; href?: string } {
-  const haridwar = getJobCluster("haridwar", locale);
-  if (path === "/jobs" && haridwar) return { title: haridwar.linkLabel, href: localePath(`/jobs/${haridwar.slug}`, locale) };
+  if (path === "/jobs") return { title: jobsCopy[locale].heading };
   if (path === "/jobs/apply") return { title: quickApplyCopy[locale].breadcrumb };
   if (path === "/jobs/fees-and-fraud") return { title: feesAndFraudCopy[locale].breadcrumb };
   if (path === "/jobs/privacy") return { title: jobsPrivacyCopy[locale].breadcrumb };

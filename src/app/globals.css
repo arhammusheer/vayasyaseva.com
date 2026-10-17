@@ -4146,11 +4146,17 @@ a:hover > svg {
   }
 }
 
-/* /jobs: the quiet line under Apply to the other cities' worker lists. */
-.jobs-also {
-  margin-top: 16px;
+/* /jobs: every market under Apply, the visitor's first once decided. */
+.jobs-markets-label {
+  margin-top: 28px;
   color: var(--muted-foreground);
   font-size: 15px;
+}
+.jobs-markets {
+  margin-top: 4px;
+}
+.jobs-markets strong {
+  font-size: 18px;
 }
 
 /* /locations: the region list. */

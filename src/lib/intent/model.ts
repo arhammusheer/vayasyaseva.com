@@ -7,6 +7,12 @@
  * Haridwar, not Mumbai. When the visitor's region points at one cluster and
  * their intent at another and neither clearly wins, the header shows both.
  *
+ * No market is the default (owner direction, 17 Oct 2026): with no signal
+ * the decision is empty and the site shows every market on equal terms
+ * (MARKET_ORDER). Markets: Haridwar, Uttarakhand outside Haridwar,
+ * Jalandhar–Kapurthala, Punjab outside it, Bengaluru (jobs and business),
+ * and Delhi NCR (business only).
+ *
  * Pure and dependency-free: the header (client), the tests and analytics
  * all use it. The server always renders the default, so search engines see
  * the same page as a visitor with no signals; only the header adapts.
@@ -32,8 +38,37 @@ export type AreaSignals = {
 /** How much each signal counts. Tuned from the area_intent events (docs/area-intent.md). */
 export const WEIGHTS = { chosen: 12, param: 7, landing: 6, page: 5, utm: 4, view: 1, viewCap: 3, geo: 3 } as const;
 
-/** A visitor's region (ISO 3166-2:IN, without "IN-") to the cluster serving it, where there is one. */
-export const REGION_CLUSTERS: Readonly<Record<string, string>> = { UK: "haridwar", UT: "haridwar", KA: "bengaluru", DL: "delhi-ncr", HR: "delhi-ncr", PB: "jalandhar" };
+/** A visitor's region (ISO 3166-2:IN, without "IN-") to the market covering the state. */
+export const REGION_CLUSTERS: Readonly<Record<string, string>> = { UK: "uttarakhand", UT: "uttarakhand", KA: "bengaluru", DL: "delhi-ncr", HR: "delhi-ncr", PB: "punjab" };
+
+/**
+ * Cities (the IP's, lower case) that narrow a state to the market inside it.
+ * IP cities in India are rough (mobile networks often report a gateway city),
+ * so this only refines the region's low-weight signal.
+ */
+const CITY_CLUSTERS: readonly { city: RegExp; region: readonly string[]; cluster: string }[] = [
+  { city: /^(haridwar|roorkee|laksar|bhagwanpur|bahadrabad|jwalapur|ranipur|manglaur|jhabrera)$/, region: ["UK", "UT"], cluster: "haridwar" },
+  { city: /^(jalandhar|kapurthala|phagwara|goraya|kartarpur|phillaur|nakodar|sultanpur lodhi|adampur|bholath)$/, region: ["PB"], cluster: "jalandhar" },
+];
+
+/**
+ * The market for a visitor's region and city: the city's market when it is
+ * one inside that state, else the state's. A city outside its state's list
+ * (or a mismatched region) is ignored.
+ */
+export function geoCluster(region: string | null | undefined, city?: string | null): string | undefined {
+  if (!region) return undefined;
+  const place = city?.trim().toLowerCase();
+  const narrowed = place ? CITY_CLUSTERS.find((c) => c.region.includes(region) && c.city.test(place)) : undefined;
+  return narrowed?.cluster ?? REGION_CLUSTERS[region];
+}
+
+/**
+ * The order markets are listed in when nothing is known about the visitor
+ * (owner direction, 17 Oct 2026: no market comes first by default):
+ * alphabetical by English name. A decision moves its market(s) to the front.
+ */
+export const MARKET_ORDER: readonly string[] = ["bengaluru", "delhi-ncr", "haridwar", "jalandhar", "punjab", "uttarakhand"];
 
 /** A site state picked on the crew form (STATE_OPTIONS codes) to the cluster that serves it. */
 export const SITE_STATE_CLUSTERS: Readonly<Record<string, string>> = { UK: "uttarakhand", KA: "bengaluru", DL: "delhi-ncr", HR: "delhi-ncr", PB: "jalandhar" };
@@ -42,7 +77,9 @@ export const SITE_STATE_CLUSTERS: Readonly<Record<string, string>> = { UK: "utta
 const UTM_WORDS: readonly [RegExp, string][] = [
   [/haridwar|sidcul|roorkee|bahadrabad|bhagwanpur|search_jobs/i, "haridwar"],
   [/bengaluru|bangalore|blr|peenya|bommasandra|whitefield/i, "bengaluru"],
-  [/jalandhar|kapurthala|phagwara|goraya|punjab/i, "jalandhar"],
+  [/jalandhar|kapurthala|phagwara|goraya/i, "jalandhar"],
+  [/punjab|ludhiana|mohali|kharar|amritsar|patiala/i, "punjab"],
+  [/uttarakhand|dehradun|selaqui|rudrapur|kashipur|sitarganj|pantnagar/i, "uttarakhand"],
 ];
 export const clustersInUtm = (values: (string | null | undefined)[]) => {
   const found = new Set<string>();
@@ -88,11 +125,11 @@ export function scoreSignals(s: AreaSignals) {
 }
 
 /**
- * The decision for one visitor. `fallback` is shown with no signal (Haridwar,
- * where the work is). A side only shows clusters that have a page there; a
- * cluster without one falls back.
+ * The decision for one visitor. With no signal it is empty ("default"): no
+ * market is preferred. A side only shows clusters that have a page there; a
+ * side left with none is empty, and the site shows every market there.
  */
-export function decideArea(s: AreaSignals, surfaces: AreaSurfaces, fallback = "haridwar"): AreaDecision {
+export function decideArea(s: AreaSignals, surfaces: AreaSurfaces): AreaDecision {
   const { intent, scores } = scoreSignals(s);
   const ranked = Object.entries(intent).sort((a, b) => b[1] - a[1]);
   const top = ranked[0]?.[0];
@@ -107,7 +144,7 @@ export function decideArea(s: AreaSignals, surfaces: AreaSurfaces, fallback = "h
     order = [s.chosen];
     mode = "single";
   } else if (!top && !geo) {
-    order = [fallback];
+    order = [];
     mode = "default";
   } else if (!top) {
     order = [geo!];
@@ -122,16 +159,13 @@ export function decideArea(s: AreaSignals, surfaces: AreaSurfaces, fallback = "h
     mode = "both";
   }
 
-  const side = (key: "business" | "jobs") => {
-    const shown = order.filter((id) => surfaces[id]?.[key]);
-    return shown.length ? shown : surfaces[fallback]?.[key] ? [fallback] : [];
-  };
+  const side = (key: "business" | "jobs") => order.filter((id) => surfaces[id]?.[key]);
   const business = side("business");
   const jobs = side("jobs");
   return {
     business,
     jobs,
-    mode: mode === "both" && business.length < 2 && jobs.length < 2 ? "single" : mode,
+    mode: !business.length && !jobs.length ? "default" : mode === "both" && business.length < 2 && jobs.length < 2 ? "single" : mode,
     intent: top,
     geo,
     confidence: total ? Math.round(((scores[order[0]] ?? 0) / total) * 100) / 100 : 0,

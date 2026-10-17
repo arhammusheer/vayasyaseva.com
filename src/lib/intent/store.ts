@@ -6,11 +6,12 @@
  * browser except the anonymous decision sent to analytics. Every read and
  * write tolerates blocked storage.
  */
-import { REGION_CLUSTERS, clustersInUtm, type AreaSignals } from "./model";
+import { clustersInUtm, geoCluster, type AreaSignals } from "./model";
 
 const SESSION_KEY = "vs-area-session-v1";
 const CHOICE_KEY = "vs-area-choice-v1";
-const REGION_KEY = "vs-area-region-v1";
+/** v2: the cached answer carries the IP city too. */
+const REGION_KEY = "vs-area-region-v2";
 /** An explicit pick is remembered for 90 days. */
 const CHOICE_DAYS = 90;
 
@@ -59,20 +60,20 @@ function choice() {
   return c && Date.now() - c.at < CHOICE_DAYS * 864e5 ? c.cluster : undefined;
 }
 
-/** The visitor's region, asked of /api/context once per session. */
+/** The visitor's region and city, asked of /api/context once per session; the city stays in this tab. */
 export async function regionCluster(): Promise<{ region?: string; cluster?: string }> {
-  let cached = read<{ region: string | null }>(session, REGION_KEY);
+  let cached = read<{ region: string | null; city?: string | null }>(session, REGION_KEY);
   if (!cached) {
     try {
       const res = await fetch("/api/context", { cache: "no-store" });
-      cached = res.ok ? ((await res.json()) as { region: string | null }) : { region: null };
+      cached = res.ok ? ((await res.json()) as { region: string | null; city: string | null }) : { region: null };
     } catch {
       cached = { region: null };
     }
     write(session, REGION_KEY, cached);
   }
   const region = cached.region ?? undefined;
-  return { region, cluster: region ? REGION_CLUSTERS[region] : undefined };
+  return { region, cluster: geoCluster(region, cached.city) };
 }
 
 /** Everything the model needs, for the page being viewed. */

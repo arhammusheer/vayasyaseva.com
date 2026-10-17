@@ -24,11 +24,11 @@ import {
   type NavLink,
 } from "@/components/layout/nav-links";
 import { clusterById } from "@/content/registry";
-import { jobsHubPath, type ClusterId } from "@/content/registry/identifiers";
+import { LOCATIONS_PATH, jobsHubPath, type ClusterId } from "@/content/registry/identifiers";
 import { trackAnalyticsEvent } from "@/lib/analytics";
 import { useAreaDecision } from "@/lib/intent/use-area";
 import { noteChoice } from "@/lib/intent/store";
-import { JOBS_AREA_LABEL, businessLabel, jobsAreaHref } from "@/lib/intent/surfaces";
+import { JOBS_AREA_LABEL, businessLabel, jobsAreaHref, orderedJobMarkets } from "@/lib/intent/surfaces";
 
 /** A header link that names an area: clicking it records the visitor's pick. */
 type AreaLink = NavLink & { neutral?: boolean; cluster?: string; surface?: "business" | "jobs" };
@@ -194,8 +194,9 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
   const showPhone = view === "business" && phone;
   const pageLang = pageLocale === "en-IN" ? undefined : pageLocale;
   const t = JOBS_NAV[pageLocale];
-  // Doors to the other sections. Jobs doors open Jobs in Haridwar
-  // (neutral from English pages); "For businesses" opens the home page.
+  // Doors to the other sections. A jobs door opens the decided market's
+  // hub, or /jobs (every market) when nothing is decided; neutral from
+  // English pages. "For businesses" opens the home page.
   // Reference pages keep them English, as their footer does.
   const doorLocale = view === "reference" ? FALLBACK_LOCALE : pageLocale;
   const doorLang = doorLocale === "en-IN" ? undefined : doorLocale;
@@ -210,20 +211,23 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
         surface: "jobs" as const,
       }))
     : [{ href: jobsDoorHref(doorLocale), label: work.label, lang: doorLang, neutral: true }];
-  // The business bar's area slot: the buyer page(s) of the decided area.
+  // The business bar's area slot: the buyer page(s) of the decided area, or
+  // Locations (every market) when nothing is decided.
   const areaLinks: AreaLink[] = area.business
     .map((id) => ({ id, hub: clusterById(id)?.buyerHub }))
     .filter((a): a is { id: string; hub: string } => Boolean(a.hub))
     .map(({ id, hub }) => ({ href: hub, label: businessLabel(id), cluster: id, surface: "business" as const }));
-  const businessLinks: AreaLink[] = BUSINESS_LINKS.flatMap((l) => (l.href === "/haridwar-sidcul" && areaLinks.length ? areaLinks : [l]));
-  // Jobs hubs on the jobs side, the decided ones first.
-  const jobsHubs = area.jobs.map((id) => ({
+  const businessLinks: AreaLink[] = BUSINESS_LINKS.flatMap((l) => (l.href === LOCATIONS_PATH && areaLinks.length ? areaLinks : [l]));
+  // Every market's jobs hub in the jobs menu, the decided ones first.
+  const jobsHubs = orderedJobMarkets(area.jobs).map((id) => ({
     href: nearestLocalePath(jobsHubPath(id as Exclude<ClusterId, "other">), pageLocale),
     label: JOBS_AREA_LABEL[pageLocale][id] ?? t.haridwar,
     cluster: id,
     surface: "jobs" as const,
   }));
-  const applyHref = jobsHubs[0]?.href ?? nearestLocalePath("/jobs/haridwar", pageLocale);
+  // Apply: the decided market's hub (its form), else the form that asks
+  // which market (/jobs/apply).
+  const applyHref = area.jobs.length ? jobsHubs[0].href : nearestLocalePath("/jobs/apply", pageLocale);
   const businessDoor = { href: "/", label: JOBS_NAV[doorLocale].business, lang: doorLang };
   const jobsHome = nearestLocalePath("/jobs", pageLocale);
   const nav: { bar: NavLink[]; doors: SheetRow["links"]; sheet: SheetRow[]; more: SheetRow[]; cta?: NavLink } =
@@ -234,7 +238,7 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
           bar: [],
           doors: [businessDoor],
           sheet: [
-            { links: jobsHubs.length ? jobsHubs : [{ href: nearestLocalePath("/jobs/haridwar", pageLocale), label: t.haridwar }] },
+            { links: jobsHubs },
             ...jobGroupLinks(pageLocale).map((g) => ({ links: [g] })),
             { links: JOB_HUB_LINKS[pageLocale].map((h) => ({ href: nearestLocalePath(`/jobs/${h.slug}`, pageLocale), label: h.label })) },
           ],
@@ -326,7 +330,7 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
       data-top="true"
     >
       <a href="#main-content" className="skip-link">
-        {!isJobs || pageLocale === "en-IN" ? "Skip to content" : pageLocale === "hi-IN" ? "सीधे पेज पर जाएँ" : "Seedhe page par jaayein"}
+        {!isJobs || pageLocale === "en-IN" ? "Skip to content" : pageLocale === "hi-IN" ? "सीधे पेज पर जाएँ" : pageLocale === "pa-IN" ? "ਸਿੱਧੇ ਪੰਨੇ 'ਤੇ ਜਾਓ" : "Seedhe page par jaayein"}
       </a>
       <div className="site-shell header-inner">
         <Link

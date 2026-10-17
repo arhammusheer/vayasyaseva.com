@@ -20,7 +20,7 @@ export type LocaleTag = (typeof LOCALE_TAGS)[number];
  * (/jobs/<cluster>, /locations/<cluster>), with no state suffix. A cluster
  * gets pages only once it is in clusters.ts.
  */
-export const CLUSTER_IDS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other"] as const;
+export const CLUSTER_IDS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other", "punjab"] as const;
 export type ClusterId = (typeof CLUSTER_IDS)[number];
 
 /**
@@ -109,3 +109,12 @@ export const HARIDWAR_AREA_IDS = ["sidcul-bahadrabad", "haridwar-jwalapur", "roo
 export const BENGALURU_AREA_IDS = ["bengaluru:north", "bengaluru:south", "bengaluru:east", "bengaluru:west", "bengaluru:outside"] as const;
 /** Jalandhar–Kapurthala's (jobs hub published 17 Oct 2026). Append-only too. */
 export const JALANDHAR_AREA_IDS = ["jalandhar:kapurthala", "jalandhar:city", "jalandhar:phagwara-goraya", "jalandhar:outside"] as const;
+/**
+ * Uttarakhand outside Haridwar and Punjab outside Jalandhar–Kapurthala (jobs
+ * hubs published 17 Oct 2026), each with an answer that files under the
+ * nearer market (uttarakhand:haridwar → haridwar). Append-only too.
+ */
+export const UTTARAKHAND_AREA_IDS = ["uttarakhand:haridwar", "uttarakhand:dehradun-selaqui", "uttarakhand:udham-singh-nagar", "uttarakhand:other", "uttarakhand:outside"] as const;
+export const PUNJAB_AREA_IDS = ["punjab:jalandhar-kapurthala", "punjab:ludhiana", "punjab:mohali", "punjab:amritsar", "punjab:other", "punjab:outside"] as const;
+/** The form with no market of its own (no signal yet): which market the person lives in. Append-only too. */
+export const MARKET_AREA_IDS = ["market:haridwar", "market:uttarakhand", "market:jalandhar", "market:punjab", "market:bengaluru", "market:other"] as const;

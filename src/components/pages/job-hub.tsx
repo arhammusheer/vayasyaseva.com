@@ -8,7 +8,6 @@ import { JsonLd, webPageSchema } from "@/lib/structured-data";
 import { getJobHub, jobHubLabels } from "@/content/pages/job-hubs";
 import { getJobRole } from "@/content/pages/job-roles";
 import { jobsCopy } from "@/content/pages/jobs";
-import { getJobCluster } from "@/content/pages/job-clusters";
 import { localePath, locales, localesOf, type Locale } from "@/lib/i18n";
 import { JOB_HUB_SLUGS } from "@/lib/talent-intake/rules";
 import { jobRolePath } from "@/components/pages/job-role";
@@ -36,12 +35,11 @@ export function jobHubMetadata(slug: string, locale: Locale) {
 /**
  * Who is searching (freshers, 10th or 12th pass): the jobs form on top, then
  * the role pages that take you, each with its note for this qualification.
- * No FAQ: the rows are the page. Ends with Jobs in Haridwar.
+ * No FAQ: the rows are the page. Ends with the jobs index (every market).
  */
 export function JobHubPage({ slug, locale }: { slug: string; locale: Locale }) {
   const hub = hubOrThrow(slug, locale);
   const t = jobHubLabels[locale];
-  const haridwar = getJobCluster("haridwar", locale)!;
   const url = localePath(`/jobs/${hub.slug}`, locale);
   return (
     <>
@@ -76,8 +74,8 @@ export function JobHubPage({ slug, locale }: { slug: string; locale: Locale }) {
                 </li>
               ))}
             </ul>
-            <Link href={localePath(`/jobs/${haridwar.slug}`, locale)} className="text-link mt-10">
-              {haridwar.linkLabel} <ArrowRight size={18} aria-hidden="true" />
+            <Link href={localePath("/jobs", locale)} className="text-link mt-10">
+              {jobsCopy[locale].heading} <ArrowRight size={18} aria-hidden="true" />
             </Link>
           </div>
         </div>

@@ -81,18 +81,19 @@ test("picker variants: every order is prerendered and parses back; /jobs/apply a
   assert.equal(rank.isRankSegment("en-hi"), true);
 });
 
-test("jobs pages without a cluster use the jobs cluster (every opening is in SIDCUL Haridwar)", () => {
+test("jobs pages without a market of their own take no market's order: the visitor's signals decide", () => {
   const none = new URLSearchParams();
   for (const path of ["/jobs", "/jobs/apply", "/jobs/12th-pass", "/jobs/freshers", "/jobs/packing"]) {
-    // No geo (Cloudflare without the location transform) and a misread region (CGNAT gateway state).
-    assert.equal(rank.rankSegmentFor(path, {}, none).split("_")[0], "hi-hl-en", `${path} {}`);
-    assert.equal(rank.rankSegmentFor(path, { country: "IN" }, none).split("_")[0], "hi-hl-en", `${path} IN`);
-    assert.equal(rank.rankSegmentFor(path, { country: "IN", region: "MH" }, none).split("_")[0], "hi-hl-en", `${path} MH`);
-    // A mapped region and visitors outside India still win.
+    // No signal: the default set, not Haridwar's (owner direction, 17 Oct 2026).
+    assert.equal(rank.rankSegmentFor(path, {}, none).split("_")[0], "en-hi-hl", `${path} {}`);
+    assert.equal(rank.rankSegmentFor(path, { country: "IN", region: "MH" }, none).split("_")[0], "en-hi-hl", `${path} MH`);
+    // Region and intent decide.
+    assert.equal(rank.rankSegmentFor(path, { country: "IN", region: "UK" }, none).split("_")[0], "hi-hl-en", `${path} UK`);
     assert.equal(rank.rankSegmentFor(path, { country: "IN", region: "KA" }, none).split("_")[0], "en-hl-hi", `${path} KA`);
-    assert.equal(rank.rankSegmentFor(path, { country: "US" }, none).split("_")[0], "en-hi-hl", `${path} US`);
+    assert.equal(rank.rankSegmentFor(path, { country: "IN" }, new URLSearchParams("utm_campaign=search_jobs")).split("_")[0], "hi-hl-en", `${path} Haridwar ad`);
   }
-  assert.equal(rank.pageCluster("/jobs"), "haridwar");
+  assert.equal(rank.pageCluster("/jobs"), undefined);
+  assert.equal(rank.pageCluster("/jobs/haridwar"), "haridwar");
   assert.equal(rank.pageCluster("/about"), undefined);
 });
 
@@ -121,13 +122,14 @@ test("Punjabi: first for a visitor in Punjab and for a request that names the Ja
   assert.deepEqual(order({ country: "IN", region: "PB" }), ["hi-Latn-IN", "en-IN", "hi-IN"]);
 });
 
-test("urlIntent reads ?cluster= and the Punjab campaign's UTM tags", () => {
+test("urlIntent reads ?cluster= and the Punjab campaigns' UTM tags", () => {
   assert.equal(rank.urlIntent(new URLSearchParams("cluster=jalandhar")), "jalandhar");
-  assert.equal(rank.urlIntent(new URLSearchParams("utm_campaign=jobs_punjab&utm_term=packing%20job")), "jalandhar");
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_campaign=jobs_jalandhar&utm_term=packing%20job")), "jalandhar");
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_term=ludhiana%20job")), "punjab");
   assert.equal(rank.urlIntent(new URLSearchParams("utm_term=kapurthala%20job")), "jalandhar");
   assert.equal(rank.urlIntent(new URLSearchParams("cluster=nowhere")), undefined);
   // A Punjab ad landing on the neutral /jobs/apply gets the Punjabi-first picker.
-  const seg = rank.rankSegmentFor("/jobs/apply", { country: "IN", region: "UP" }, new URLSearchParams("utm_campaign=jobs_punjab"));
+  const seg = rank.rankSegmentFor("/jobs/apply", { country: "IN", region: "UP" }, new URLSearchParams("utm_campaign=jobs_jalandhar"));
   assert.ok(seg.startsWith("pa-"), seg);
   assert.ok(rank.rankSegments("/jobs/apply").includes(seg));
 });
@@ -137,4 +139,11 @@ test("Punjabi readers fall back to Hinglish on pages without Punjabi", () => {
   assert.equal(i18n.nearestLocalePath("/jobs/haridwar", "pa-IN"), "/hi-latn-in/jobs/haridwar");
   assert.equal(i18n.localizeHref("/jobs/packing", "pa-IN"), "/hi-latn-in/jobs/packing");
   assert.equal(i18n.localizeHref("/jobs/privacy", "pa-IN"), "/pa-in/jobs/privacy");
+});
+
+test("visitorCity reads Vercel's URL-encoded city or Cloudflare's, and rejects junk", () => {
+  assert.equal(rank.visitorCity(new Headers({ "x-vercel-ip-city": "Sultanpur%20Lodhi" })), "Sultanpur Lodhi");
+  assert.equal(rank.visitorCity(new Headers({ "cf-ipcity": "Kapurthala" })), "Kapurthala");
+  assert.equal(rank.visitorCity(new Headers({ "x-vercel-ip-city": "%3Cscript%3E" })), undefined);
+  assert.equal(rank.visitorCity(new Headers({})), undefined);
 });

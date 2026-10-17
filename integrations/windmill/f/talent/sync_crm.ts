@@ -126,7 +126,7 @@ const { eq, twentyClient, twentyFromConfig } = (() => {
 
 // integrations/windmill/talent/lib/crm.ts
 const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, erasePerson } = (() => {
-  const CLUSTER_VALUES = new Set(["HARIDWAR", "UTTARAKHAND", "DELHI_NCR", "BENGALURU", "JALANDHAR", "SAHARANPUR", "OTHER"]);
+  const CLUSTER_VALUES = new Set(["HARIDWAR", "UTTARAKHAND", "DELHI_NCR", "BENGALURU", "JALANDHAR", "SAHARANPUR", "OTHER", "PUNJAB"]);
   const ROLE_VALUES = new Set([
       "FACTORY_HELPER", "PACKING", "MACHINE_OPERATOR", "WAREHOUSE", "FORKLIFT_OPERATOR", "DATA_ENTRY_OPERATOR",
       "HOUSEKEEPING", "ITI_TRADES", "ELECTRICIAN", "WELDER", "FITTER", "ANY",
@@ -250,6 +250,23 @@ const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneD
           "jalandhar:city": ["JALANDHAR_CITY", "Jalandhar city"],
           "jalandhar:phagwara-goraya": ["PHAGWARA_GORAYA", "Phagwara / Goraya"],
           "jalandhar:outside": ["OUTSIDE_JALANDHAR", "Outside Jalandhar and Kapurthala"],
+          "uttarakhand:haridwar": ["UK_HARIDWAR_ROORKEE", "Haridwar / Roorkee (Uttarakhand form)"],
+          "uttarakhand:dehradun-selaqui": ["DEHRADUN_SELAQUI", "Dehradun / Selaqui"],
+          "uttarakhand:udham-singh-nagar": ["UDHAM_SINGH_NAGAR", "Rudrapur / Kashipur / Sitarganj"],
+          "uttarakhand:other": ["ELSEWHERE_UTTARAKHAND", "Elsewhere in Uttarakhand"],
+          "uttarakhand:outside": ["OUTSIDE_UTTARAKHAND", "Outside Uttarakhand"],
+          "punjab:jalandhar-kapurthala": ["PB_JALANDHAR_KAPURTHALA", "Jalandhar / Kapurthala (Punjab form)"],
+          "punjab:ludhiana": ["LUDHIANA", "Ludhiana"],
+          "punjab:mohali": ["MOHALI_KHARAR", "Mohali / Kharar"],
+          "punjab:amritsar": ["AMRITSAR", "Amritsar"],
+          "punjab:other": ["ELSEWHERE_PUNJAB", "Elsewhere in Punjab"],
+          "punjab:outside": ["OUTSIDE_PUNJAB", "Outside Punjab"],
+          "market:haridwar": ["MARKET_HARIDWAR", "Haridwar / Roorkee (market)"],
+          "market:uttarakhand": ["MARKET_UTTARAKHAND", "Elsewhere in Uttarakhand (market)"],
+          "market:jalandhar": ["MARKET_JALANDHAR", "Jalandhar / Kapurthala (market)"],
+          "market:punjab": ["MARKET_PUNJAB", "Elsewhere in Punjab (market)"],
+          "market:bengaluru": ["MARKET_BENGALURU", "Bengaluru (market)"],
+          "market:other": ["MARKET_OTHER", "Somewhere else"],
       },
   };
   const SKILL_LABELS = {

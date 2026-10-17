@@ -17,6 +17,8 @@ import { readPrefill } from "@/lib/prefill";
 import { localePath, splitLocalePath, type Locale } from "@/lib/i18n";
 import { clusterById } from "@/content/registry/clusters";
 import { noteChoice } from "@/lib/intent/store";
+import { useAreaDecision } from "@/lib/intent/use-area";
+import { usePathname } from "next/navigation";
 import { AREA_CLUSTERS, MAX_APPLICANT_NAME_LENGTH, WEB_SOURCE, cleanQuickAnswers, isJobRole, isJobHub, isPagePath, normaliseIndianMobile, type IntakeCluster, type JobHub, type JobRole } from "@/lib/talent-intake/rules";
 import { JobSubmissionFailure, useJobSubmission } from "@/lib/use-job-submission";
 import { TURNSTILE_SCRIPT_URL } from "@/lib/turnstile";
@@ -31,8 +33,7 @@ function linkCluster(params: URLSearchParams): IntakeCluster | null {
   const id = params.get("cluster");
   return id && clusterById(id) ? (id as IntakeCluster) : null;
 }
-/** A language written for one region's pages: its forms default to that cluster (Punjabi: Jalandhar). */
-const LOCALE_CLUSTER: Partial<Record<Locale, IntakeCluster>> = { "pa-IN": "jalandhar" };
+
 /**
  * Answers kept in this browser tab only (sessionStorage), so switching
  * language or going back does not clear them. Never sent anywhere; cleared
@@ -127,6 +128,11 @@ export function QuickApply({
 }) {
   const t = quickApplyCopy[locale];
   const form = jobsCopy[locale].form;
+  // Where no market is the page's own (or the link's), the visitor's decided
+  // market (src/lib/intent) gives the area answers; undecided or torn
+  // between two, the form asks which market. Only the options follow the
+  // decision: pageCluster stays the page's own.
+  const area = useAreaDecision(splitLocalePath(usePathname()).path);
   const [answers, setAnswers] = useState<Answers>({});
   // Multi-choice questions count as answered once Next is pressed.
   const [confirmed, setConfirmed] = useState<string[]>([]);
@@ -139,7 +145,7 @@ export function QuickApply({
   const started = useRef(false);
   const linkAnswers = useRef<Answers>({});
   const [hub, setHub] = useState<JobHub | null>(null);
-  const [cluster, setCluster] = useState<IntakeCluster | null>(pageCluster ?? LOCALE_CLUSTER[locale] ?? null);
+  const [cluster, setCluster] = useState<IntakeCluster | null>(pageCluster ?? null);
   const entry = useRef<"preset" | "fresh" | "restored">("fresh");
   const [missingFiles, setMissingFiles] = useState(false);
   const submission = useJobSubmission("vayasya-quick-submission");
@@ -187,7 +193,7 @@ export function QuickApply({
     // over conflicting draft choices; the remaining saved fields survive.
     /* eslint-disable react-hooks/set-state-in-effect */
     setHub(pageHub ?? (isJobHub(params.get("hub")) ? params.get("hub") as JobHub : null));
-    setCluster(pageCluster ?? linkCluster(params) ?? LOCALE_CLUSTER[locale] ?? null);
+    setCluster(pageCluster ?? linkCluster(params));
     if (preset) {
       entry.current = "preset";
       setAnswers(preset as Answers);
@@ -196,7 +202,7 @@ export function QuickApply({
     if (hash?.name) setName(hash.name.slice(0, MAX_APPLICANT_NAME_LENGTH));
     if (hash?.phone) setPhone(hash.phone);
     /* eslint-enable react-hooks/set-state-in-effect */
-  }, [pageRole, pageHub, pageCluster, locale]);
+  }, [pageRole, pageHub, pageCluster]);
 
   const restoreDraft = useCallback((saved: Saved) => {
     entry.current = "restored";
@@ -388,7 +394,7 @@ export function QuickApply({
             {q.hint && <p className="quick-hint">{q.hint}</p>}
             <Pills
               labelledBy={`quick-q-${step.id}`}
-              options={step.id === "area" ? areaOptions(cluster) : step.options}
+              options={step.id === "area" ? areaOptions(cluster ?? (area.jobs.length === 1 ? area.jobs[0] : null)) : step.options}
               labels={t.labels}
               multi={step.kind === "multi"}
               disabled={locked}

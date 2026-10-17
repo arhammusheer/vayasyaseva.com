@@ -59,7 +59,7 @@ export function JobsPrivacyPage({ locale }: { locale: Locale }) {
               ))}
             </ul>
             <div className="mt-10 flex flex-col items-start gap-6">
-              <BackToApply href={localePath(locale === "pa-IN" ? "/jobs/jalandhar" : "/jobs/haridwar", locale)} label={t.back} />
+              <BackToApply href={localePath("/jobs/apply", locale)} label={t.back} />
               <Link href={`${localePath("/privacy", "en-IN")}#job-seekers`} hrefLang="en-IN" className="text-link mt-0">
                 {t.full} <ArrowUpRight size={18} aria-hidden="true" />
               </Link>

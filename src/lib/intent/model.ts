@@ -15,11 +15,25 @@
  * Jalandhar–Kapurthala, Punjab outside it, Bengaluru (jobs and business),
  * and Delhi NCR (business only).
  *
- * Pure and dependency-free: the header, the market lists and the jobs form
- * (client), the tests and analytics all use it. The server always renders
+ * Pure: the header, the market lists and the jobs form (client), the tests
+ * and analytics all use it. Market knowledge (places, regions, ad words,
+ * stand-ins) comes from src/markets; this file holds the weighing. The server always renders
  * the no-signal page, so search engines see the same page as a visitor with
  * no signals; only the order and the area links adapt after load.
  */
+
+import {
+  MARKET_IDS,
+  MARKET_STATES,
+  PLACE_GROUPS,
+  REGION_MARKETS,
+  SITE_STATE_MARKETS,
+  geoMarket,
+  marketsInAdTags,
+  siteMarket,
+  standInFor,
+  stateForPlace,
+} from "@/markets/index";
 
 /** Bumped when the decision rules change, so analytics can tell the models' data apart. */
 export const MODEL_VERSION = 2;
@@ -50,89 +64,50 @@ export type AreaSignals = {
 /** How much each signal counts. Tuned from the area_intent events (docs/area-intent.md). */
 export const WEIGHTS = { chosenFresh: 20, chosen: 12, param: 7, landing: 6, page: 5, utm: 4, view: 1, viewCap: 3, geo: 3 } as const;
 
+/*
+ * The market tables below are derived from src/markets (one record per
+ * market); edit them there. They stay here as aliases because the tests,
+ * the header and the forms import them by these names.
+ */
+
 /** A visitor's region (ISO 3166-2:IN, without "IN-") to the market covering the state. UP has none: only its NCR cities do. */
-export const REGION_CLUSTERS: Readonly<Record<string, string>> = { UK: "uttarakhand", UT: "uttarakhand", KA: "bengaluru", DL: "delhi-ncr", HR: "delhi-ncr", PB: "punjab" };
+export const REGION_CLUSTERS: Readonly<Record<string, string>> = REGION_MARKETS;
 
 /** The states each market's sites are in (ISO 3166-2:IN codes). */
-export const CLUSTER_STATES: Readonly<Record<string, readonly string[]>> = {
-  haridwar: ["UK", "UT"],
-  uttarakhand: ["UK", "UT"],
-  jalandhar: ["PB"],
-  punjab: ["PB"],
-  bengaluru: ["KA"],
-  "delhi-ncr": ["DL", "HR", "UP"],
-};
+export const CLUSTER_STATES: Readonly<Record<string, readonly string[]>> = MARKET_STATES;
 
 /**
- * Places that narrow a state to the market inside it: for the IP's city, and
- * for the city typed on the crew form. Spellings include the old and
- * transliterated ones geo databases and people use. IP cities in India are
- * rough (mobile networks often report a gateway city), so for geo this only
- * refines the region's low-weight signal.
+ * Places that narrow a state to the market inside it, in match order (first
+ * match wins): src/markets/data.ts placeGroups, by rank.
  */
-export const PLACES: readonly { words: readonly string[]; region: readonly string[]; cluster: string }[] = [
-  {
-    words: ["haridwar", "hardwar", "sidcul", "roorkee", "rurki", "laksar", "bhagwanpur", "bahadrabad", "jwalapur", "ranipur", "manglaur", "jhabrera"],
-    region: ["UK", "UT"],
-    cluster: "haridwar",
-  },
-  {
-    words: ["jalandhar", "jullundur", "kapurthala", "phagwara", "goraya", "kartarpur", "phillaur", "nakodar", "sultanpur lodhi", "adampur", "bholath"],
-    region: ["PB"],
-    cluster: "jalandhar",
-  },
-  { words: ["noida", "greater noida", "ghaziabad", "gautam buddha nagar"], region: ["UP"], cluster: "delhi-ncr" },
-  // The rest of each state, so a typed city names its market even on another market's page.
-  { words: ["dehradun", "selaqui", "rudrapur", "kashipur", "sitarganj", "pantnagar", "haldwani", "kotdwar", "rishikesh"], region: ["UK", "UT"], cluster: "uttarakhand" },
-  { words: ["ludhiana", "mohali", "kharar", "amritsar", "patiala", "rajpura", "bathinda", "zirakpur", "dera bassi"], region: ["PB"], cluster: "punjab" },
-  { words: ["bengaluru", "bangalore", "peenya", "bommasandra", "jigani", "attibele", "hoskote", "whitefield", "electronic city", "narasapura"], region: ["KA"], cluster: "bengaluru" },
-  // Delhi NCR's Delhi and Haryana sides, one state each, so a typed town names
-  // its state (placeState). Last: a "Delhi Road" in another state's town
-  // matches that town first. Same market as the region alone, so no decision changes.
-  { words: ["delhi", "new delhi", "okhla", "bawana", "narela", "mayapuri", "naraina", "wazirpur", "patparganj", "mundka"], region: ["DL"], cluster: "delhi-ncr" },
-  { words: ["gurugram", "gurgaon", "manesar", "faridabad", "ballabgarh", "sonipat", "kundli", "bahadurgarh"], region: ["HR"], cluster: "delhi-ncr" },
-];
-
-/** Lower case, accents stripped (Haridwār → haridwar), spaces collapsed. */
-const plain = (s: string) =>
-  s
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z]+/g, " ")
-    .trim();
-const hasWord = (text: string, word: string) => ` ${text} `.includes(` ${word} `);
+export const PLACES: readonly { words: readonly string[]; region: readonly string[]; cluster: string }[] = PLACE_GROUPS.map((g) => ({
+  words: g.words,
+  region: g.region,
+  cluster: g.market,
+}));
 
 /**
  * The state a typed city is in, when it names a place in PLACES ("Roorkee"
  * → UK, "Peenya" → KA, "Noida" → UP), for every market alike.
  */
-export function placeState(city: string | null | undefined): string | undefined {
-  const text = city ? plain(city) : "";
-  return text ? PLACES.find((p) => p.words.some((w) => hasWord(text, w)))?.region[0] : undefined;
-}
+export const placeState = (city: string | null | undefined): string | undefined => stateForPlace(city);
 
 /**
  * The market for a visitor's region and city: the city's market when it is
  * one inside that state, else the state's. A city outside its state's list
  * (or a mismatched region) is ignored.
  */
-export function geoCluster(region: string | null | undefined, city?: string | null): string | undefined {
-  if (!region) return undefined;
-  const place = city ? plain(city) : "";
-  const narrowed = place ? PLACES.find((p) => p.region.includes(region) && p.words.includes(place)) : undefined;
-  return narrowed?.cluster ?? REGION_CLUSTERS[region];
-}
+export const geoCluster = (region: string | null | undefined, city?: string | null): string | undefined => geoMarket(region, city);
 
 /**
  * The order markets are listed in when nothing is known about the visitor
  * (owner direction, 17 Oct 2026: no market comes first by default):
  * alphabetical by English name. A decision moves its market(s) to the front.
  */
-export const MARKET_ORDER: readonly string[] = ["bengaluru", "delhi-ncr", "haridwar", "jalandhar", "punjab", "uttarakhand"];
+export const MARKET_ORDER: readonly string[] = MARKET_IDS;
 
 /** A site state picked on the crew form to the market covering it, when nothing narrower is known. */
-export const SITE_STATE_CLUSTERS: Readonly<Record<string, string>> = { UK: "uttarakhand", KA: "bengaluru", DL: "delhi-ncr", HR: "delhi-ncr", PB: "punjab" };
+export const SITE_STATE_CLUSTERS: Readonly<Record<string, string>> = SITE_STATE_MARKETS;
 
 /**
  * The market a business site is in: a place named in the city ("SIDCUL
@@ -141,46 +116,19 @@ export const SITE_STATE_CLUSTERS: Readonly<Record<string, string>> = { UK: "utta
  * /locations/haridwar), else the state's market. Null when the state is
  * covered by none (a UP site outside NCR) or unknown.
  */
-export function siteCluster(state: string | null | undefined, city: string | null | undefined, pageCluster?: string | null): string | null {
-  if (!state) return pageCluster ?? null;
-  const text = city ? plain(city) : "";
-  const named = text ? PLACES.find((p) => p.region.includes(state) && p.words.some((w) => hasWord(text, w))) : undefined;
-  if (named) return named.cluster;
-  if (pageCluster && CLUSTER_STATES[pageCluster]?.includes(state)) return pageCluster;
-  return SITE_STATE_CLUSTERS[state] ?? null;
-}
+export const siteCluster = (state: string | null | undefined, city: string | null | undefined, pageCluster?: string | null): string | null =>
+  siteMarket(state, city, pageCluster);
 
 /**
- * Place words in UTM tags and campaign names, to the cluster they mean, as
- * whole words (letters on either side don't match: "punjabi" isn't Punjab).
- * Campaigns say which market they are for with ?cluster= or a place word
- * (jobs_jalandhar), never a generic name (search_jobs means no market).
+ * Markets named by place words in UTM tags and campaign names, as whole
+ * words (src/markets/data.ts adWords). Campaigns say which market they are
+ * for with ?cluster= or a place word (jobs_jalandhar), never a generic name
+ * (search_jobs means no market).
  */
-const UTM_WORDS: readonly [RegExp, string][] = (
-  [
-    ["haridwar|hardwar|sidcul|roorkee|bahadrabad|bhagwanpur", "haridwar"],
-    ["bengaluru|bangalore|blr|peenya|bommasandra|whitefield|jigani", "bengaluru"],
-    ["jalandhar|kapurthala|phagwara|goraya", "jalandhar"],
-    ["punjab|ludhiana|mohali|kharar|amritsar|patiala", "punjab"],
-    ["uttarakhand|dehradun|selaqui|rudrapur|kashipur|sitarganj|pantnagar", "uttarakhand"],
-    ["delhi|ncr|noida|gurugram|gurgaon|manesar|faridabad|ghaziabad|bawana|narela", "delhi-ncr"],
-  ] as const
-).map(([words, id]) => [new RegExp(`(?<![a-z])(${words})(?![a-z])`, "i"), id]);
-export const clustersInUtm = (values: (string | null | undefined)[]) => {
-  const found = new Set<string>();
-  for (const v of values) for (const [re, id] of UTM_WORDS) if (v && re.test(v)) found.add(id);
-  return [...found];
-};
+export const clustersInUtm = (values: (string | null | undefined)[]): string[] => marketsInAdTags(values);
 
 /** What a cluster has on each side of the site; only these can be shown. */
 export type AreaSurfaces = Readonly<Record<string, { business?: string; jobs?: string }>>;
-
-/**
- * A market with no page on a side, and the market whose page stands in for
- * it there: Punjab outside Jalandhar–Kapurthala has no buyer page, and the
- * Jalandhar region's covers Punjab's buyers.
- */
-const STAND_IN: Readonly<Record<string, Partial<Record<"business" | "jobs", string>>>> = { punjab: { business: "jalandhar" } };
 
 export type AreaDecision = {
   /** Clusters to show in the business header's area slot, in order (one, or two). */
@@ -267,7 +215,7 @@ export function decideArea(s: AreaSignals, surfaces: AreaSurfaces): AreaDecision
     if (s.page) push(s.page);
     for (const id of order) {
       push(id);
-      push(STAND_IN[id]?.[key]);
+      push(standInFor(id, key));
     }
     if (!out.length) for (const id of byScore) push(id);
     return out.slice(0, 2);

@@ -1,0 +1,568 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.vayasyaseva.com/contracts/job_application.v1.requests.schema.json",
+  "title": "job_application.v1 (wire requests)",
+  "$defs": {
+    "JobsStartRequest": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "anyOf": [
+            {
+              "type": "string",
+              "const": "web"
+            },
+            {
+              "type": "string",
+              "enum": [
+                "web_en",
+                "web_hi",
+                "web_hinglish"
+              ]
+            }
+          ]
+        },
+        "locale": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "en-IN",
+                "hi-IN",
+                "hi-Latn-IN",
+                "pa-IN",
+                "kn-IN"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pageCluster": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "haridwar",
+                "uttarakhand",
+                "delhi-ncr",
+                "bengaluru",
+                "jalandhar",
+                "saharanpur",
+                "other",
+                "punjab"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pagePath": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 200,
+              "pattern": "^\\/([a-z0-9]+(-[a-z0-9]+)*(\\/[a-z0-9]+(-[a-z0-9]+)*)*)?$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "role": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "factory-helper",
+                "packing",
+                "machine-operator",
+                "warehouse",
+                "forklift-operator",
+                "data-entry-operator",
+                "housekeeping",
+                "iti-trades",
+                "electrician",
+                "welder",
+                "fitter"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "hub": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "freshers",
+                "10th-pass",
+                "12th-pass"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "turnstileToken": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "files": {
+          "maxItems": 8,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "image",
+                  "document"
+                ]
+              },
+              "mime": {
+                "type": "string",
+                "minLength": 1
+              },
+              "size": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991
+              },
+              "name": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "kind",
+              "mime",
+              "size",
+              "name"
+            ]
+          }
+        }
+      },
+      "required": [
+        "source",
+        "turnstileToken",
+        "files"
+      ],
+      "if": {
+        "properties": {
+          "source": {
+            "const": "web"
+          }
+        },
+        "required": [
+          "source"
+        ]
+      },
+      "then": {
+        "required": [
+          "locale"
+        ],
+        "properties": {
+          "locale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "JobsSubmitRequest": {
+      "type": "object",
+      "properties": {
+        "ticket": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        },
+        "phone": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20
+        },
+        "adult": {
+          "type": "boolean",
+          "const": true
+        },
+        "consent": {
+          "type": "boolean",
+          "const": true
+        },
+        "text": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 4000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "form": {
+          "type": "string",
+          "enum": [
+            "long",
+            "quick"
+          ]
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 80
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "answers": {
+          "anyOf": [
+            {
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "maxItems": 12,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 40
+                }
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "adClick": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "gclid",
+                    "gbraid",
+                    "wbraid"
+                  ]
+                },
+                "id": {
+                  "type": "string",
+                  "pattern": "^[\\w-]{10,300}$"
+                }
+              },
+              "required": [
+                "type",
+                "id"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "measurement": {
+          "default": null,
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "v": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000
+                },
+                "choice": {
+                  "type": "string",
+                  "enum": [
+                    "all",
+                    "required",
+                    "none"
+                  ]
+                },
+                "legacyRefused": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "v",
+                "choice",
+                "legacyRefused"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "ticket",
+        "phone",
+        "adult",
+        "consent",
+        "text"
+      ]
+    },
+    "AgentJobsRequest": {
+      "type": "object",
+      "properties": {
+        "language": {
+          "default": "en",
+          "description": "Language the person speaks: en (English), hi (Hindi), hinglish (Hindi written in Latin script).",
+          "type": "string",
+          "enum": [
+            "en",
+            "hi",
+            "hinglish"
+          ]
+        },
+        "role": {
+          "description": "The kind of work, if the person named one that matches. Leave it out otherwise.",
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "factory-helper",
+                "packing",
+                "machine-operator",
+                "warehouse",
+                "forklift-operator",
+                "data-entry-operator",
+                "housekeeping",
+                "iti-trades",
+                "electrician",
+                "welder",
+                "fitter"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "agent": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100,
+              "pattern": "^[\\p{L}\\p{N} .,_+()/:-]+$",
+              "example": "Example Assistant"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "additionalProperties": false,
+          "description": "Who is sending. Optional, shown to our team with the submission."
+        },
+        "phone": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20,
+          "description": "The job seeker's 10-digit Indian mobile number. +91 or a leading 0 is accepted.",
+          "example": "98765 43210"
+        },
+        "adult": {
+          "type": "boolean",
+          "const": true,
+          "description": "The person told you they are 18 or older. Jobs are for adults only."
+        },
+        "consent": {
+          "type": "boolean",
+          "const": true,
+          "description": "The person agreed that Vayasya Seva may keep their details and contact them about work, under the job seeker privacy notice (https://www.vayasyaseva.com/en-in/privacy#job-seekers; in plain words, in their language: https://www.vayasyaseva.com/en-in/jobs/privacy)."
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "description": "About the person in their own words: name, work wanted, experience, where they live, when they can start. Never include Aadhaar, PAN or bank details.",
+          "example": "Name: Ravi Kumar. Wants packing or warehouse work. 2 years in a packing unit. Lives in Bahadrabad. Can start next week."
+        }
+      },
+      "required": [
+        "phone",
+        "adult",
+        "consent",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "AgentJobsStartRequest": {
+      "type": "object",
+      "properties": {
+        "language": {
+          "default": "en",
+          "description": "Language the person speaks: en (English), hi (Hindi), hinglish (Hindi written in Latin script).",
+          "type": "string",
+          "enum": [
+            "en",
+            "hi",
+            "hinglish"
+          ]
+        },
+        "role": {
+          "description": "The kind of work, if the person named one that matches. Leave it out otherwise.",
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "factory-helper",
+                "packing",
+                "machine-operator",
+                "warehouse",
+                "forklift-operator",
+                "data-entry-operator",
+                "housekeeping",
+                "iti-trades",
+                "electrician",
+                "welder",
+                "fitter"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "agent": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100,
+              "pattern": "^[\\p{L}\\p{N} .,_+()/:-]+$",
+              "example": "Example Assistant"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "additionalProperties": false,
+          "description": "Who is sending. Optional, shown to our team with the submission."
+        },
+        "files": {
+          "minItems": 1,
+          "maxItems": 8,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "image",
+                  "document"
+                ]
+              },
+              "mime": {
+                "type": "string",
+                "minLength": 1,
+                "description": "image: image/jpeg, png or webp. document: application/pdf, msword or vnd.openxmlformats-officedocument.wordprocessingml.document.",
+                "example": "application/pdf"
+              },
+              "size": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991,
+                "description": "Bytes. At most 10485760 for images, 20971520 for documents."
+              },
+              "name": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "kind",
+              "mime",
+              "size",
+              "name"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "files"
+      ],
+      "additionalProperties": false
+    },
+    "AgentJobsSubmitRequest": {
+      "type": "object",
+      "properties": {
+        "ticket": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        },
+        "phone": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20,
+          "description": "The job seeker's 10-digit Indian mobile number. +91 or a leading 0 is accepted.",
+          "example": "98765 43210"
+        },
+        "adult": {
+          "type": "boolean",
+          "const": true,
+          "description": "The person told you they are 18 or older. Jobs are for adults only."
+        },
+        "consent": {
+          "type": "boolean",
+          "const": true,
+          "description": "The person agreed that Vayasya Seva may keep their details and contact them about work, under the job seeker privacy notice (https://www.vayasyaseva.com/en-in/privacy#job-seekers; in plain words, in their language: https://www.vayasyaseva.com/en-in/jobs/privacy)."
+        },
+        "text": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 4000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "ticket",
+        "phone",
+        "adult",
+        "consent"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

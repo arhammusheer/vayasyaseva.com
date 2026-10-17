@@ -1,0 +1,24 @@
+{
+  "schema": "canonical",
+  "note": "/api/agent/contact with free-text details only.",
+  "data": {
+    "caseId": "AGT-20261017-0F0F0F0F",
+    "receivedAt": "2026-10-17T09:30:00.000Z",
+    "channel": "agent",
+    "name": "Asha Rawat",
+    "company": null,
+    "jobTitle": null,
+    "phone": "+91 98765 43210",
+    "email": null,
+    "services": [],
+    "headcount": null,
+    "headcountBand": null,
+    "site": null,
+    "cluster": null,
+    "startWindow": null,
+    "targetStartDate": null,
+    "requestType": null,
+    "enquiry": "Case AGT-20261017-0F0F0F0F\nNeed 30 packers.",
+    "sourcePath": null
+  }
+}

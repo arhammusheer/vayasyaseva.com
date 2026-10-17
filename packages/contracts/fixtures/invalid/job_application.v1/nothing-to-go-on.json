@@ -1,0 +1,27 @@
+{
+  "schema": "canonical",
+  "note": "No message, no file, no answers.",
+  "data": {
+    "ref": "VS-J-7K2M9Q",
+    "source": "web",
+    "locale": "en-IN",
+    "cluster": "haridwar",
+    "pageCluster": "haridwar",
+    "pagePath": "/jobs/haridwar",
+    "role": "packing",
+    "hub": null,
+    "channel": "web",
+    "agentName": null,
+    "phone": "+919876543210",
+    "adult": true,
+    "consent": {
+      "version": "2026-10-16-v7",
+      "at": "2026-10-17T09:30:00.000Z"
+    },
+    "text": null,
+    "attachments": [],
+    "form": "long",
+    "applicantName": null,
+    "answers": null
+  }
+}

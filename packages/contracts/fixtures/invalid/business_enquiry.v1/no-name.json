@@ -1,0 +1,27 @@
+{
+  "schema": "canonical",
+  "note": "A lead needs a name.",
+  "data": {
+    "caseId": "REQ-20261017-1A2B3C4D",
+    "receivedAt": "2026-10-17T09:30:00.000Z",
+    "channel": "web",
+    "name": "",
+    "company": "Acme Foods",
+    "jobTitle": "Plant HR",
+    "phone": "+91 98765 43210",
+    "email": "asha@acme.example",
+    "services": [
+      "packing",
+      "loading-unloading"
+    ],
+    "headcount": null,
+    "headcountBand": "50-99",
+    "site": "SIDCUL Haridwar, Uttarakhand",
+    "cluster": "haridwar",
+    "startWindow": "2-4-weeks",
+    "targetStartDate": null,
+    "requestType": "crew",
+    "enquiry": "Case REQ-20261017-1A2B3C4D\nRoles: Packing, Loading and unloading\nHeadcount: 50-99",
+    "sourcePath": "/contact"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "canonical",
+  "note": "Names are kept to 120 characters.",
+  "data": {
+    "caseId": "REQ-20261017-1A2B3C4D",
+    "receivedAt": "2026-10-17T09:30:00.000Z",
+    "channel": "web",
+    "name": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "company": "Acme Foods",
+    "jobTitle": "Plant HR",
+    "phone": "+91 98765 43210",
+    "email": "asha@acme.example",
+    "services": [
+      "packing",
+      "loading-unloading"
+    ],
+    "headcount": null,
+    "headcountBand": "50-99",
+    "site": "SIDCUL Haridwar, Uttarakhand",
+    "cluster": "haridwar",
+    "startWindow": "2-4-weeks",
+    "targetStartDate": null,
+    "requestType": "crew",
+    "enquiry": "Case REQ-20261017-1A2B3C4D\nRoles: Packing, Loading and unloading\nHeadcount: 50-99",
+    "sourcePath": "/contact"
+  },
+  "handPort": {
+    "verdict": "accepts",
+    "why": "leads/lib/lead.ts cut long values; buildLeadPayload now cuts them before sending."
+  }
+}

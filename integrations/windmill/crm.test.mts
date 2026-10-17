@@ -25,7 +25,7 @@ import { twentyClient, type Twenty, type TwentyRecord } from "./talent/lib/twent
 import { crewSize, opportunityName, recordLead, serviceValues, validateLead } from "./leads/lib/lead.ts";
 import { main as leadMain } from "./leads/scripts/intake.ts";
 import { SCRIPTS } from "./scripts.mts";
-import { INTAKE_CLUSTERS, JOB_ROLE_SLUGS, QUICK_ANSWERS } from "../../src/lib/talent-intake/rules.ts";
+import { INTAKE_CLUSTERS, JOB_ROLE_SLUGS, QUICK_ANSWERS } from "../../packages/contracts/src/rules.ts";
 
 function fakeTwenty() {
   const store: Record<string, TwentyRecord[]> = { people: [], applications: [], communications: [], companies: [], opportunities: [] };

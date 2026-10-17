@@ -1,0 +1,9 @@
+{
+  "schema": "ContactInquiryRequest",
+  "note": "Older senders: free text.",
+  "data": {
+    "name": "Asha Rawat",
+    "phone": "9876543210",
+    "details": "Need 30 packers in Haridwar."
+  }
+}

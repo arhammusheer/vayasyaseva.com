@@ -1,0 +1,9 @@
+{
+  "schema": "JobsStartRequest",
+  "note": "Source web needs the locale.",
+  "data": {
+    "source": "web",
+    "turnstileToken": "token",
+    "files": []
+  }
+}

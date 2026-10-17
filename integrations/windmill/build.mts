@@ -2,7 +2,7 @@
  * Generates the Windmill scripts in f/talent/ from talent/scripts/*.ts.
  * Windmill runs each script as one Bun file and resolves npm imports
  * itself, but cannot reach files outside the workspace (talent/lib, the
- * website's src/lib/talent-intake/rules.ts). So each entry is compiled
+ * contracts package, packages/contracts/src/rules.ts). So each entry is compiled
  * with TypeScript and its relative imports are inlined, each module in its
  * own scope; npm and node: imports stay as imports at the top.
  *

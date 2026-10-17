@@ -1,0 +1,11 @@
+{
+  "schema": "AgentJobsRequest",
+  "note": "/api/agent/jobs.",
+  "data": {
+    "language": "hi",
+    "phone": "98765 43210",
+    "adult": true,
+    "consent": true,
+    "text": "Naam Ravi. Packing ka kaam chahiye."
+  }
+}

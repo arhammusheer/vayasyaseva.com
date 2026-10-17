@@ -4,7 +4,7 @@
  * SAVE_SUBMISSION. Ported unchanged from the n8n "Validate submission" node;
  * where that node threw, this returns the error list (the route answers 400).
  */
-import type { TalentIntakePayload } from "../../../../src/lib/talent-intake/contract.ts";
+import type { TalentIntakePayload } from "../../../../packages/contracts/src/job-application.v1.ts";
 import {
   ATTACHMENT_MIME,
   INTAKE_LIMITS,
@@ -23,7 +23,7 @@ import {
   isAttachmentKeyFor,
   normaliseIndianMobile,
   type AttachmentKind,
-} from "../../../../src/lib/talent-intake/rules.ts";
+} from "../../../../packages/contracts/src/rules.ts";
 import { maskIds } from "./mask.ts";
 import type { ValidatedSubmission } from "./types.ts";
 

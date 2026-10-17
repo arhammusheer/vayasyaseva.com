@@ -1,0 +1,8 @@
+{
+  "schema": "ContactInquiryRequest",
+  "note": "Neither details nor the requirement.",
+  "data": {
+    "name": "Asha Rawat",
+    "phone": "9876543210"
+  }
+}

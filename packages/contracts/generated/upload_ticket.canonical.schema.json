@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.vayasyaseva.com/contracts/upload_ticket.canonical.schema.json",
+  "type": "object",
+  "properties": {
+    "ref": {
+      "type": "string",
+      "pattern": "^VS-J-[A-Z0-9]{6}$"
+    },
+    "source": {
+      "anyOf": [
+        {
+          "type": "string",
+          "const": "web"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "web_en",
+            "web_hi",
+            "web_hinglish"
+          ]
+        }
+      ]
+    },
+    "locale": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "en-IN",
+            "hi-IN",
+            "hi-Latn-IN",
+            "pa-IN",
+            "kn-IN"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "pageCluster": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "haridwar",
+            "uttarakhand",
+            "delhi-ncr",
+            "bengaluru",
+            "jalandhar",
+            "saharanpur",
+            "other",
+            "punjab"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "pagePath": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "role": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "factory-helper",
+            "packing",
+            "machine-operator",
+            "warehouse",
+            "forklift-operator",
+            "data-entry-operator",
+            "housekeeping",
+            "iti-trades",
+            "electrician",
+            "welder",
+            "fitter"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "hub": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "freshers",
+            "10th-pass",
+            "12th-pass"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "channel": {
+      "type": "string",
+      "enum": [
+        "web",
+        "agent"
+      ]
+    },
+    "agentName": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 100
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "image",
+              "document"
+            ]
+          },
+          "mime": {
+            "type": "string",
+            "minLength": 1
+          },
+          "size": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "key",
+          "kind",
+          "mime",
+          "size",
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "exp": {
+      "type": "integer",
+      "minimum": -9007199254740991,
+      "maximum": 9007199254740991
+    }
+  },
+  "required": [
+    "ref",
+    "source",
+    "files",
+    "exp"
+  ],
+  "additionalProperties": false,
+  "title": "upload_ticket",
+  "description": "The signed ticket from the jobs start routes (its base64url JSON body)."
+}

@@ -1,0 +1,28 @@
+{
+  "name": "@vspl/contracts",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Submission contracts (Zod 4) shared by vayasyaseva.com, its tests and the Windmill scripts.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./rules": "./src/rules.ts",
+    "./job-application": "./src/job-application.v1.ts",
+    "./business-enquiry": "./src/business-enquiry.v1.ts",
+    "./envelope": "./src/envelope.v1.ts",
+    "./upload-ticket": "./src/upload-ticket.ts",
+    "./generated/*": "./generated/*",
+    "./fixtures/*": "./fixtures/*"
+  },
+  "scripts": {
+    "generate": "node scripts/generate.mjs",
+    "check": "node scripts/generate.mjs --check",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "ajv": "8.17.1"
+  }
+}

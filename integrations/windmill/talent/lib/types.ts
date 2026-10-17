@@ -14,7 +14,7 @@ import type {
   LegacyLocale,
   QuickAnswers,
   SubmissionSource,
-} from "../../../../src/lib/talent-intake/rules.ts";
+} from "../../../../packages/contracts/src/rules.ts";
 
 /** Stored values: a BCP 47 tag on new rows, the legacy short code on older ones ("hinglish" is hi-Latn-IN). */
 export type Locale = IntakeLocale | LegacyLocale;

@@ -1,0 +1,7 @@
+{
+  "schema": "AgentJobsStartRequest",
+  "note": "The start route needs at least one file.",
+  "data": {
+    "files": []
+  }
+}

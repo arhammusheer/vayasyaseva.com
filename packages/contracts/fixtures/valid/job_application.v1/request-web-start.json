@@ -1,0 +1,14 @@
+{
+  "schema": "JobsStartRequest",
+  "note": "The jobs form.",
+  "data": {
+    "source": "web",
+    "locale": "en-IN",
+    "pageCluster": "haridwar",
+    "pagePath": "/jobs/haridwar",
+    "role": null,
+    "hub": null,
+    "turnstileToken": "token",
+    "files": []
+  }
+}

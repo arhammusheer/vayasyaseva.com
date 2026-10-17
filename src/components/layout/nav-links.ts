@@ -46,11 +46,13 @@ export const WORK_DOOR: Record<Locale, { lead: string; label: string }> = {
  */
 const REFERENCE: (NavLink & { long?: string })[] = [
   { href: WAGE_HUB_PATH, label: "Minimum wages" },
-  { href: wageStatePath("uttarakhand"), label: "Uttarakhand" },
-  { href: wageStatePath("uttar-pradesh"), label: "Uttar Pradesh" },
+  // States alphabetically: no state's market first (17 Oct 2026).
   { href: wageStatePath("delhi"), label: "Delhi" },
   { href: wageStatePath("haryana"), label: "Haryana" },
+  { href: wageStatePath("karnataka"), label: "Karnataka" },
   { href: wageStatePath("punjab"), label: "Punjab" },
+  { href: wageStatePath("uttar-pradesh"), label: "Uttar Pradesh" },
+  { href: wageStatePath("uttarakhand"), label: "Uttarakhand" },
   { href: WAGE_METHOD_PATH, label: "How we check", long: "How we check minimum wages" },
   { href: guidePath("new-labour-codes"), label: "Labour codes guide" },
 ];

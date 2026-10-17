@@ -165,7 +165,8 @@ export type WageState = {
 };
 
 /** Hub order: home state first, then the NCR neighbours, then the rest. */
-export const wageStates = [uttarakhand, uttarPradesh, delhi, haryana, punjab, karnataka] as unknown as readonly WageState[];
+/** Alphabetical by name, so no state's market is listed first (owner direction, 17 Oct 2026). */
+export const wageStates = [delhi, haryana, karnataka, punjab, uttarPradesh, uttarakhand] as unknown as readonly WageState[];
 
 export function getWageState(slug: string): WageState | undefined {
   return wageStates.find((s) => s.state === slug);

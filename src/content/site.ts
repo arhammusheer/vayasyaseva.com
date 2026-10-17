@@ -10,7 +10,7 @@ export const siteConfig: SiteConfig = {
   cin: "U01619UT2023PTC015814",
   msme: "UDYAM-UK-06-0029670",
   address: "Haridwar, Uttarakhand",
-  region: "SIDCUL Haridwar",
+  region: "Bengaluru, Delhi NCR, Punjab and Uttarakhand",
   sameAs: [
     "https://www.linkedin.com/company/vayasya-seva/",
     // Google Business Profile

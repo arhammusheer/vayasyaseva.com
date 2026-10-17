@@ -618,6 +618,7 @@ function TableChooser({ state, which }: { state: WageState; which: NonNullable<W
 
 /** The employer door for a state: its region's location page where one is live, else the neutral door. */
 const CREW_REGIONS: Partial<Record<WageStateSlug, [string, string, string]>> = {
+  uttarakhand: ["Uttarakhand", "We supply crews in SIDCUL Haridwar and across Uttarakhand.", "/locations/uttarakhand"],
   "uttar-pradesh": ["Noida or Ghaziabad", "We supply crews in Noida, Greater Noida and Ghaziabad.", "/locations/delhi-ncr/noida-greater-noida"],
   delhi: ["Delhi NCR", "We supply crews in Delhi's industrial areas and across NCR.", "/locations/delhi-ncr"],
   haryana: ["Gurugram or Manesar", "We supply crews in IMT Manesar, Gurugram and Faridabad.", "/locations/delhi-ncr/gurugram-manesar"],
@@ -638,7 +639,7 @@ export function WageStatePage({ slug }: { slug: WageStateSlug }) {
   const crew = crewDoor(slug);
   const doors =
     t.band === "uttarakhand"
-      ? [wageDoors.jobs, wageDoors.business]
+      ? [wageDoors.jobs, crew]
       : t.band === "bengaluru"
         ? [wageDoors.jobsBengaluru, crew]
         : t.band === "punjab"

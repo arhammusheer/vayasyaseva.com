@@ -1,7 +1,7 @@
 "use client";
 
 import { sendGAEvent } from "@next/third-parties/google";
-import { adsConversions, googleAdsId } from "@/lib/analytics-config";
+import { adsConversions, googleAdsId } from "@/lib/measurement/config";
 import { safeAnalyticsPath } from "@/lib/analytics-pages";
 
 export const analyticsConsentKey = "vayasya-site-measurement-v8";

@@ -1,6 +1,6 @@
 import "../globals.css";
 import { Analytics } from "@/components/analytics";
-import { gaId } from "@/lib/analytics-config";
+import { gaId } from "@/lib/measurement/config";
 import { fontClassName, siteMetadata } from "@/lib/site-metadata";
 
 export const metadata = siteMetadata;

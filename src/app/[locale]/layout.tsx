@@ -1,6 +1,6 @@
 import "../globals.css";
 import { Analytics } from "@/components/analytics";
-import { gaId } from "@/lib/analytics-config";
+import { gaId } from "@/lib/measurement/config";
 import { allLocales, locales, localeOfParams } from "@/lib/i18n";
 import { fontClassName, siteMetadata } from "@/lib/site-metadata";
 

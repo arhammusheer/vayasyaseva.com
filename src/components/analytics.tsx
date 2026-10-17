@@ -17,7 +17,7 @@ import {
 } from "@/lib/analytics";
 import { safeAnalyticsPath } from "@/lib/analytics-pages";
 import { AnalyticsTracker, pageLocale } from "@/components/analytics-tracker";
-import { gaId, googleAdsId, metaPixelId, umamiWebsiteId } from "@/lib/analytics-config";
+import { gaId, googleAdsId, metaPixelId, umamiWebsiteId } from "@/lib/measurement/config";
 import { MetaPixel } from "@/components/meta-pixel";
 import { Button } from "@/components/ui/button";
 

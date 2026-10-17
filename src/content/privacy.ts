@@ -1,41 +1,14 @@
+import { noticeRows } from "@/lib/measurement/notice";
+
 /**
  * §3 at a glance (/privacy#analytics), rendered as a table where the notice
  * has its [[insert:analytics-table]] line. The consent banner links here in
- * place of its old long paragraph; §2 keeps the full detail. Keep the three
- * in step.
+ * place of its old long paragraph; §2 keeps the full detail. The rows come
+ * from the purpose registry (src/lib/measurement/purposes.ts, notice.row);
+ * each purpose's notice.lead names its §2 paragraph below, and
+ * tests/measurement-policy.spec.mjs checks every lead is still here.
  */
-export const analyticsSummary = [
-  {
-    what: "Cookie-free page counts (Vercel Web Analytics, and Umami on our own servers)",
-    when: "Every visit",
-    gets: "Pages viewed, referring site, device type, approximate location, and which links and form steps are used. Not what you type.",
-  },
-  {
-    what: "Ad-click report for job applications (Google Ads)",
-    when: "Unless you choose Required Only",
-    gets: "That one of our ad clicks led to an application: the click identifier, time and our reference. Nothing about you.",
-  },
-  {
-    what: "Google Analytics",
-    when: "Only with Allow All",
-    gets: "Pages, traffic sources, approximate location, device details and site actions. It may set cookies.",
-  },
-  {
-    what: "Recordings and heatmaps (Umami, on our own servers)",
-    when: "Only with Allow All",
-    gets: "Your visit as you saw it, including what you type into forms, not file contents. Kept one year unless saved to fix a problem.",
-  },
-  {
-    what: "Unfinished forms (Umami, on our own servers)",
-    when: "Only with Allow All",
-    gets: "What you typed in a form you left unsent, used only to fix the forms. Deleted after 30 days.",
-  },
-  {
-    what: "Ad measurement for enquiries and applications (Google Ads)",
-    when: "Only with Allow All",
-    gets: "That a visit from one of our ads ended in an enquiry or application. No form details, no ad targeting and no remarketing.",
-  },
-] as const;
+export const analyticsSummary = noticeRows();
 
 export const privacyContent = `
 # Privacy Policy

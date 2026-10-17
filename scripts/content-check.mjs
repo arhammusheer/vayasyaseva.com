@@ -26,6 +26,8 @@
 //       (PLAN §6.6). Its key lines name places and units by hand, so it also
 //       records a hash of each state's tables and zones (HUB_HI_SOURCE_HASH):
 //       a changed district list or category fails until the Hindi is checked.
+//   C14 every retention period in the privacy notice matches the retention
+//       registry (src/lib/measurement/retention.ts, check-privacy-retention.mjs).
 // Claim expiry is a warning, not a failure: an expired claim hides itself
 // and the page stays live (PLAN §12), so CI never breaks on a date.
 import { readdirSync, readFileSync, statSync, existsSync } from "node:fs";
@@ -444,6 +446,16 @@ if (denylist.length) {
     if (WAGE_DATA.test(readFileSync(file, "utf8"))) fail(`C12 ${rel(file)} carries wage dataset content; keep src/content/wages out of client imports (WAGE_STATE_UPDATED in src/content/registry/pages.ts)`);
   }
   if (chunks.length) console.log(`Client chunks: ${chunks.length} checked for wage data`);
+}
+
+// ── C14: the privacy notice's retention periods match the registry ─────────
+// src/lib/measurement/retention.ts declares each store's period; every day,
+// month and year count in src/content/privacy.ts must be one of them.
+{
+  const { privacyRetentionProblems } = await import("./check-privacy-retention.mjs");
+  const { problems, periods } = await privacyRetentionProblems();
+  for (const problem of problems) fail(`C14 ${problem}`);
+  console.log(`Privacy retention: ${periods.length} period(s) checked against src/lib/measurement/retention.ts`);
 }
 
 if (warnings.length) console.warn(`Content check warnings (${warnings.length}):\n- ${warnings.join("\n- ")}`);

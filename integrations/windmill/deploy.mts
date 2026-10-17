@@ -30,8 +30,9 @@
  * 6. Creates or updates the schedules and the HTTP routes. Schedules are
  *    created disabled: --enable-schedules turns f/talent/dispatch and
  *    f/leads/sync_crm on, --enable-retention turns retention on (after a
- *    hand-run check, as with n8n), --enable-notify turns f/notify/dispatch and
- *    digest on (after the owner has set NTFY_TOKEN and RESEND_NOTIFY_API_KEY;
+ *    hand-run check, as with n8n), --enable-notify turns f/notify/dispatch,
+ *    digest and f/platform/health (every 15 minutes, into the hub) on (after
+ *    the owner has set NTFY_TOKEN and RESEND_NOTIFY_API_KEY;
  *    --enable-schedules never turns them on). A re-run without the flags
  *    leaves them as they are. The schedules the dispatcher replaced
  *    (acknowledge, deliver, sync_crm, delivery_check) are turned off; the
@@ -416,7 +417,7 @@ async function schedule(w: Api, exists: (path: string) => Promise<boolean>, spec
   if (!spec.schedule) return;
   // Notify schedules only with --enable-notify: never --enable-schedules, never the dispatcher swap.
   const enable =
-    spec.folder === "notify"
+    spec.folder === "notify" || spec.notifySchedule
       ? ENABLE_NOTIFY
       : spec.name === "retention"
         ? ENABLE_RETENTION

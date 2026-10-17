@@ -34,6 +34,7 @@ import {
 import type { ClaimedAcknowledgement, Fast2SmsResponse } from "./types.ts";
 import type { Twenty } from "./twenty.ts";
 import type { Query } from "./db.ts";
+import type { Notify } from "../../notify/lib/emit.ts";
 
 export type Target = "sms" | "chatwoot" | "crm";
 export type Outcome = { kind: "done" | "retry" | "unknown" | "dead"; error?: string | null };
@@ -46,6 +47,8 @@ export interface DispatchDeps {
   crm: Twenty | null;
   lookupReport: (requestId: string) => Promise<DeliveryReport | null>;
   log?: (message: string) => void;
+  /** The notification hub: application.received from the CRM step (syncOne). */
+  notify?: Notify;
 }
 
 export interface DispatchOptions {
@@ -129,7 +132,7 @@ async function crm(deps: DispatchDeps, submissionId: string): Promise<Outcome> {
   // Already there, with this acknowledgement state: nothing to write.
   if (c.synced && c.person_id && c.application_id && c.synced_ack_status === ackSyncState(c)) return { kind: "done" };
   try {
-    await syncOne({ query: deps.query, crm: deps.crm }, c);
+    await syncOne({ query: deps.query, crm: deps.crm, notify: deps.notify }, c);
     return { kind: "done" };
   } catch (err) {
     if (/HTTP 429/.test(message(err))) throw new RateLimited(message(err));

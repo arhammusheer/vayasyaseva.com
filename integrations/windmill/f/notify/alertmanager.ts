@@ -41,7 +41,7 @@ const { NOTIFY_VARIABLES, notifyVariablePath, setNotifyConfigForTests, notifyCon
 })();
 
 // integrations/windmill/notify/lib/db.ts
-const { withNotifyDb, NOTIFY_INSERT_EVENT, NOTIFY_CLAIM_UNROUTED, NOTIFY_ENSURE_KEY, NOTIFY_LOCK_KEY, NOTIFY_SAVE_KEY, NOTIFY_MARK_ROUTED, NOTIFY_ADD_DELIVERY, NOTIFY_CLAIM_SWEEP, NOTIFY_CLAIM_DIGEST, NOTIFY_MARK_DIGESTED, NOTIFY_RECOVER_STUCK, NOTIFY_CLAIM_DELIVERIES, NOTIFY_FINISH_DELIVERY, NOTIFY_RELEASE_PII, NOTIFY_CLEAR_PII_BEFORE, NOTIFY_PURGE_BEFORE, toStoredEvent, insertEventWith, pgNotifyStore, notifySchemaStatements } = (() => {
+const { withNotifyDb, NOTIFY_INSERT_EVENT, NOTIFY_KEY_STATUSES, NOTIFY_CLAIM_UNROUTED, NOTIFY_ENSURE_KEY, NOTIFY_LOCK_KEY, NOTIFY_SAVE_KEY, NOTIFY_MARK_ROUTED, NOTIFY_ADD_DELIVERY, NOTIFY_CLAIM_SWEEP, NOTIFY_CLAIM_DIGEST, NOTIFY_MARK_DIGESTED, NOTIFY_RECOVER_STUCK, NOTIFY_CLAIM_DELIVERIES, NOTIFY_FINISH_DELIVERY, NOTIFY_RELEASE_PII, NOTIFY_CLEAR_PII_BEFORE, NOTIFY_PURGE_BEFORE, toStoredEvent, insertEventWith, pgNotifyStore, notifySchemaStatements } = (() => {
   async function withNotifyDb(fn) {
       const sql = postgres(await notifyConfig("notify_pg_url"), {
           max: 1,
@@ -61,6 +61,15 @@ const { withNotifyDb, NOTIFY_INSERT_EVENT, NOTIFY_CLAIM_UNROUTED, NOTIFY_ENSURE_
   INSERT INTO notify_events (v, source, type, severity, dedupe_key, status, occurred_at, title, summary, body, link, pii, received_at)
   VALUES (1, $1, $2, $3, $4, $5, $6::timestamptz, $7, $8, $9, $10::jsonb, $11::jsonb, $12::timestamptz)
   RETURNING id::text AS id;`;
+  const NOTIFY_KEY_STATUSES = `
+  WITH k AS (
+    SELECT dedupe_key, status FROM notify_keys WHERE left(dedupe_key, length($1)) = $1 AND status IS NOT NULL
+  ), p AS (
+    SELECT DISTINCT ON (dedupe_key) dedupe_key, status FROM notify_events
+    WHERE routed_at IS NULL AND status IS NOT NULL AND left(dedupe_key, length($1)) = $1
+    ORDER BY dedupe_key, id DESC
+  )
+  SELECT dedupe_key, coalesce(p.status, k.status) AS status FROM k FULL JOIN p USING (dedupe_key);`;
   const EVENT_COLUMNS = `e.id::text AS id, e.source, e.type, e.severity, e.dedupe_key, e.status, e.occurred_at, e.received_at, e.title, e.summary, e.body, e.link, e.pii`;
   const NOTIFY_CLAIM_UNROUTED = `
   SELECT ${EVENT_COLUMNS} FROM notify_events e
@@ -200,6 +209,7 @@ const { withNotifyDb, NOTIFY_INSERT_EVENT, NOTIFY_CLAIM_UNROUTED, NOTIFY_ENSURE_
       return {
           transaction: async (fn) => (await sql.begin((t) => fn(txOn(execOn(t))))),
           insertEvent: insertEventWith(exec),
+          keyStatuses: async (prefix) => Object.fromEntries((await exec(NOTIFY_KEY_STATUSES, [prefix])).map((r) => [String(r.dedupe_key), r.status])),
           recoverStuck: async (now, maxAttempts) => (await exec(NOTIFY_RECOVER_STUCK, [now, maxAttempts])).length,
           claimDeliveries: async (now, limit, maxAttempts) => (await exec(NOTIFY_CLAIM_DELIVERIES, [now, limit, maxAttempts])).map((r) => ({
               id: String(r.delivery_id),
@@ -221,7 +231,7 @@ const { withNotifyDb, NOTIFY_INSERT_EVENT, NOTIFY_CLAIM_UNROUTED, NOTIFY_ENSURE_
       };
   }
   const notifySchemaStatements = (schema) => schema.replace(/^--.*\n/gm, "");
-  return { withNotifyDb, NOTIFY_INSERT_EVENT, NOTIFY_CLAIM_UNROUTED, NOTIFY_ENSURE_KEY, NOTIFY_LOCK_KEY, NOTIFY_SAVE_KEY, NOTIFY_MARK_ROUTED, NOTIFY_ADD_DELIVERY, NOTIFY_CLAIM_SWEEP, NOTIFY_CLAIM_DIGEST, NOTIFY_MARK_DIGESTED, NOTIFY_RECOVER_STUCK, NOTIFY_CLAIM_DELIVERIES, NOTIFY_FINISH_DELIVERY, NOTIFY_RELEASE_PII, NOTIFY_CLEAR_PII_BEFORE, NOTIFY_PURGE_BEFORE, toStoredEvent, insertEventWith, pgNotifyStore, notifySchemaStatements };
+  return { withNotifyDb, NOTIFY_INSERT_EVENT, NOTIFY_KEY_STATUSES, NOTIFY_CLAIM_UNROUTED, NOTIFY_ENSURE_KEY, NOTIFY_LOCK_KEY, NOTIFY_SAVE_KEY, NOTIFY_MARK_ROUTED, NOTIFY_ADD_DELIVERY, NOTIFY_CLAIM_SWEEP, NOTIFY_CLAIM_DIGEST, NOTIFY_MARK_DIGESTED, NOTIFY_RECOVER_STUCK, NOTIFY_CLAIM_DELIVERIES, NOTIFY_FINISH_DELIVERY, NOTIFY_RELEASE_PII, NOTIFY_CLEAR_PII_BEFORE, NOTIFY_PURGE_BEFORE, toStoredEvent, insertEventWith, pgNotifyStore, notifySchemaStatements };
 })();
 
 // integrations/windmill/notify/lib/alertmanager.ts

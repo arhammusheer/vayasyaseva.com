@@ -40,6 +40,13 @@ export class InvalidEventError extends Error {
   }
 }
 
+/**
+ * How a producer is handed the hub: tryEmit in a Windmill script, a capture
+ * in tests. Producers take it as a dependency so their own tests need no
+ * notify database.
+ */
+export type Notify = (input: EmitInput) => Promise<boolean>;
+
 /** Queues one event; returns its id. */
 export async function emit(input: EmitInput, options: EmitOptions = {}): Promise<string> {
   const now = options.now ?? new Date();

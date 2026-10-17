@@ -29,7 +29,7 @@ Started 17 October 2026 (status updated 18 October 2026) from four read-only pla
 
 ## In progress
 
-- **Hub phase B:** applications (name, phone, Call), leads, lead failures, SEO watch, compliance and wage monitors, platform health, Windmill job failures, Alertmanager (plus Windmill and Twenty down alerts, and the weekly seo-watch alert fix), and GitHub pipeline failures into the hub.
+- **Hub phase B** (`docs/notification-hub.md`, "Producers"; built, in review with its owner steps): applications (name, phone, Call) and leads from the CRM steps, `lead.forward_failed`, `lead.email_failed` from the site, `f/platform/health` every 15 minutes (the 11 Oct SMS `unknown` fires once), the compliance monitor and SEO watch dual-writing Chatwoot and the hub, the GitHub workflows' failures, and Alertmanager into the hub with Windmill and Twenty down alerts and the weekly seo-watch alert fix (infra PR). `windmill.job_failed` is not possible on Windmill CE v1.822 (its workspace error handler runs from enterprise code only); the Windmill pod alerts and health cover it.
 - **Applicants' files into Twenty:** design in progress; then a delivery target that copies R2 files to attachments on the Twenty application.
 
 ## Next

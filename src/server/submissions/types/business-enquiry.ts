@@ -24,8 +24,24 @@ import { duplicateKey, formAbuseReason } from "../policies/abuse";
 import { agentContactLimits, contactFormLimits, takeAll } from "../policies/rate-limit";
 import { checkTurnstile } from "../policies/turnstile";
 import { transport } from "../transport";
+import { notifyHub, type WebsiteEvent } from "@/server/notify";
 
 const responses = contactContract.responses;
+
+/**
+ * lead.email_failed for the notification hub: the case ID and the route,
+ * never the person or the error text (which may quote the enquiry).
+ */
+export function emailFailedEvent(caseId: string, route: string): WebsiteEvent {
+  return {
+    type: "lead.email_failed",
+    severity: "warning",
+    dedupeKey: `lead-email:${caseId}`,
+    title: `Enquiry email not sent: ${caseId}`,
+    summary: `The staff email for ${caseId} (${route}) failed, so the shared inbox does not have it. The lead still goes to Twenty; the person was asked to try again or call. Check MSG91.`,
+    link: { label: "Leads in Twenty", url: "https://crm.vayasyaseva.com/objects/opportunities" },
+  };
+}
 
 /**
  * Sends the staff email, then hands the lead to the transport after the
@@ -37,6 +53,7 @@ async function emailThenLead(
   lead: ReturnType<typeof buildLeadPayload>,
   ctx: SubmissionContext,
   caseId: string,
+  route: string,
 ) {
   let delivery: Awaited<ReturnType<typeof sendInternalContactEmail>> | undefined;
   let emailError: unknown;
@@ -52,6 +69,9 @@ async function emailThenLead(
       caseId,
       error: emailError instanceof Error ? emailError.message : "Unknown error",
     });
+    // The shared inbox did not get it: tell the hub (after the response; no-op without NOTIFY_*).
+    // A retry with the same case ID that fails again is one notification (the dedupeKey).
+    ctx.defer(() => notifyHub(emailFailedEvent(caseId, route)));
     throw emailError;
   }
   return delivery!;
@@ -117,7 +137,7 @@ export const contactFormRoute: SubmissionRoute<ContactFormData> = {
     // starts soon, out of scope), which never reach the buyer.
     const assessment = assessCrewRequest(data);
     const lead = buildLeadPayload(data, { caseId, channel: "web", receivedAt: new Date(now) });
-    const sharedInboxDelivery = await emailThenLead(data, lead, ctx, caseId);
+    const sharedInboxDelivery = await emailThenLead(data, lead, ctx, caseId, "/api/contact");
 
     console.info("[CONTACT SUBMISSION DELIVERED]", {
       timestamp: new Date().toISOString(),
@@ -235,7 +255,7 @@ export const agentContactRoute: SubmissionRoute<AgentEnquiry> = {
     ctx.keep({ caseId });
     const note = `[Sent by an AI agent${agent ? ` (${agent.name})` : ""} on the person's behalf through /api/agent/contact. Confirm the details with them when you reply.]`;
     const lead = buildLeadPayload(data, { caseId, channel: "agent", note });
-    const delivery = await emailThenLead({ ...data, details: [note, data.details].filter(Boolean).join("\n\n") }, lead, ctx, caseId);
+    const delivery = await emailThenLead({ ...data, details: [note, data.details].filter(Boolean).join("\n\n") }, lead, ctx, caseId, "/api/agent/contact");
     console.info("[AGENT CONTACT DELIVERED]", { caseId, ip: ctx.ip ?? "unknown", agent: agent?.name ?? null, messageId: delivery.messageId });
     reportServerCount("enquiry_received", "/api/agent/contact", {
       channel: "agent",

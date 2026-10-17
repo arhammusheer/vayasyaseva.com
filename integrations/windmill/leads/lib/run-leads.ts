@@ -6,9 +6,13 @@
  *                 before the route answers 202; a replayed case ID saves nothing
  *   runLeadsSync  f/leads/sync_crm: due CRM deliveries into Twenty (recordLead,
  *                 where each record is found before it is created, so a retry
- *                 never files twice), with backoff and a cap
+ *                 never files twice), with backoff and a cap; raises
+ *                 lead.received once the crew request is in Twenty and
+ *                 lead.forward_failed when a lead hits the cap (lead-notify.ts)
  */
-import { recordLead, type Lead } from "./lead.ts";
+import { recordLead, type Lead, type LeadResult } from "./lead.ts";
+import { leadForwardFailedEvent, leadReceivedEvent } from "./lead-notify.ts";
+import type { Notify } from "../../notify/lib/emit.ts";
 import { LEADS_CLAIM, LEADS_FINISH, LEADS_RECOVER_STUCK, LEADS_SAVE, LEADS_SYNC_LOCK } from "./sql.ts";
 import type { Twenty } from "../../talent/lib/twenty.ts";
 import type { Query } from "../../talent/lib/db.ts";
@@ -35,6 +39,8 @@ export interface LeadsSyncDeps {
   query: Query;
   crm: Twenty;
   log?: (message: string) => void;
+  /** The notification hub (tryEmit in the script). Unset: no notifications. */
+  notify?: Notify;
 }
 
 export interface LeadsSyncResult {
@@ -63,7 +69,7 @@ export async function runLeadsSync(deps: LeadsSyncDeps, options: { leadId?: stri
     if (!claim) break;
     let outcome: "done" | "retry" = "done";
     let error: string | null = null;
-    let written: unknown = null;
+    let written: LeadResult | null = null;
     try {
       written = await recordLead(deps.crm, claim.payload);
     } catch (err) {
@@ -80,6 +86,10 @@ export async function runLeadsSync(deps: LeadsSyncDeps, options: { leadId?: stri
     if (finished?.status === "done") result.done++;
     else if (finished?.status === "dead") result.dead++;
     else result.retried++;
+    // After the outcome is saved: the hub's dedupeKey (lead:<caseId>) sends it once, even when a
+    // replay finds the opportunity already there. tryEmit never throws.
+    if (deps.notify && written) await deps.notify(leadReceivedEvent(claim.payload, written.opportunityId));
+    if (deps.notify && finished?.status === "dead") await deps.notify(leadForwardFailedEvent(claim.case_id, claim.attempts, error));
     if (error && /HTTP 429/.test(error)) {
       result.rateLimited = true;
       break;

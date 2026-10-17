@@ -27,7 +27,7 @@ const { issueTicket } = await importTs('src/lib/talent-intake/server.ts');
 
 // --- The outside world -------------------------------------------------------------
 
-const world = { emails: 0, emailFails: false, uploads: new Map(), deleted: [], applications: [], leads: [], applicationFails: false };
+const world = { emails: 0, emailFails: false, uploads: new Map(), deleted: [], applications: [], leads: [], applicationFails: false, notified: [] };
 const deferred = [];
 setDeferForTests((task) => deferred.push(task));
 setTransport({
@@ -45,6 +45,10 @@ globalThis.fetch = async (input, init = {}) => {
   const method = init.method ?? (input instanceof Request ? input.method : 'GET');
   if (url.startsWith('https://challenges.cloudflare.com/')) {
     return Response.json({ success: new URLSearchParams(String(init.body)).get('response') === 'pass' });
+  }
+  if (url === 'https://hooks.test/api/r/webhook/vspl-notify') {
+    world.notified.push({ secret: init.headers['x-vspl-notify-secret'], event: JSON.parse(String(init.body)) });
+    return new Response(JSON.stringify({ ok: true }), { status: 202 });
   }
   if (url.startsWith('https://control.msg91.com/')) {
     world.emails++;
@@ -81,7 +85,7 @@ async function post(route, { body, headers = {}, ip = freshIp(), raw } = {}) {
 }
 
 function reset() {
-  Object.assign(world, { emails: 0, emailFails: false, deleted: [], applications: [], leads: [], applicationFails: false });
+  Object.assign(world, { emails: 0, emailFails: false, deleted: [], applications: [], leads: [], applicationFails: false, notified: [] });
   world.uploads.clear();
   deferred.length = 0;
   setIdempotencyStore(memoryIdempotencyStore());
@@ -156,6 +160,7 @@ test('contact form: when the staff email fails the answer is still 500, but the 
   await drain();
   assert.equal(world.leads.length, 1, 'forwardLead still runs');
   const firstCase = world.leads[0].payload.caseId;
+  assert.equal(world.notified.length, 0, 'no hub configured: nothing sent');
   // The slot was given back, and the retry with the same key keeps the case ID (Windmill files it once).
   world.emailFails = false;
   const retry = await post(routes.contactFormRoute, { body: enquiry, headers: formHeaders({ 'idempotency-key': key }), ip });
@@ -186,6 +191,44 @@ test('contact form: an Idempotency-Key replays the first answer; reused for anot
   const bad = await post(routes.contactFormRoute, { body: enquiry, headers: formHeaders({ 'idempotency-key': 'x' }) });
   assert.equal(bad.status, 400);
   assert.deepEqual(bad.json, { error: 'invalid_idempotency_key' });
+});
+
+test('contact routes: a failed staff email tells the notification hub after the response, without personal data', async () => {
+  reset();
+  process.env.NOTIFY_URL = 'https://hooks.test/api/r/webhook/vspl-notify';
+  process.env.NOTIFY_INGEST_SECRET = 'unit-notify-secret';
+  try {
+    world.emailFails = true;
+    const r = await post(routes.contactFormRoute, { body: enquiry, headers: formHeaders() });
+    assert.equal(r.status, 500);
+    assert.equal(world.notified.length, 0, 'waits for after()');
+    await drain();
+    assert.equal(world.notified.length, 1);
+    const { secret, event } = world.notified[0];
+    assert.equal(secret, 'unit-notify-secret');
+    assert.equal(event.v, 1);
+    assert.equal(event.source, 'website');
+    assert.equal(event.type, 'lead.email_failed');
+    assert.equal(event.dedupeKey, `lead-email:${world.leads[0].payload.caseId}`);
+    assert.equal(event.pii, undefined);
+    assert.doesNotMatch(JSON.stringify(event), /Asha|Rawat|Acme|98765|asha@/);
+    assert.match(event.summary, /\/api\/contact/);
+    // The agent route too; a delivered email sends nothing.
+    world.notified.length = 0;
+    const agent = await post(routes.agentContactRoute, { body: enquiry });
+    assert.equal(agent.status, 500);
+    await drain();
+    assert.equal(world.notified[0]?.event.type, 'lead.email_failed');
+    assert.match(world.notified[0].event.summary, /\/api\/agent\/contact/);
+    reset();
+    process.env.NOTIFY_URL = 'https://hooks.test/api/r/webhook/vspl-notify';
+    assert.equal((await post(routes.contactFormRoute, { body: enquiry, headers: formHeaders() })).status, 200);
+    await drain();
+    assert.equal(world.notified.length, 0);
+  } finally {
+    delete process.env.NOTIFY_URL;
+    delete process.env.NOTIFY_INGEST_SECRET;
+  }
 });
 
 // --- /api/agent/contact (no Turnstile) --------------------------------------------------

@@ -34,8 +34,9 @@ Fast2SMS delivery reports ──POST──► hooks.vayasyaseva.com/api/r/webhoo
 site Idempotency-Key store ──POST, HMAC──► webhook/vspl-idempotency
                   f/platform/idempotency  begin / complete / abandon; jobs keys in the talent DB,
                                         contact keys in the lead inbox, kept a day
-                  f/platform/health     on demand: dead, unknown, stuck and overdue counts per
-                                        database and target; sends nothing (the notification hub reads it)
+                  f/platform/health     every 15 minutes (with --enable-notify) and on demand: dead,
+                                        unknown, stuck and overdue counts per database and target;
+                                        each condition to the notification hub when it starts and clears
 ```
 
 Twenty's side (the model, views, setup) is `integrations/twenty/README.md`.
@@ -133,7 +134,7 @@ Cron is Windmill's six-field form (seconds first), timezone Asia/Kolkata: acknow
 - **Connections.** The talent role has five. At most: one intake per request in flight, the dispatcher (one at a time, advisory lock; intake's targeted run exits at once if the dispatcher holds the lock), retention (hourly), a delivery report. The dispatcher replaced four every-minute schedules.
 - **Lead inbox.** A lead is saved (inbox row and its `crm` delivery, one statement) before the route answers 202, then filed in Twenty by `f/leads/sync_crm`. A Twenty outage no longer loses a lead; it waits and retries.
 - **Signed route.** `x-vspl-timestamp` (Unix seconds) and `x-vspl-signature: v1=<base64url HMAC-SHA256 of "v1:<timestamp>.<raw body>">`; more than five minutes off is refused. The route is created with `raw_string` so the body is checked exactly as signed.
-- **Health.** `POST /api/w/vspl/jobs/run_wait_result/p/f/platform/health` with `{}` answers `{ ok, talent: { dead, unknown, stuck, overdue, erasureFailed }, leads: {…}, errors }`. It notifies nobody.
+- **Health.** `POST /api/w/vspl/jobs/run_wait_result/p/f/platform/health` with `{}` answers `{ ok, talent: { dead, unknown, stuck, overdue, erasureFailed }, leads: {…}, errors, notified }`. Each condition is a `platform.*` event in the notification hub when it starts firing and when it clears (`platform/lib/health-notify.ts`), not at every run. The CRM steps raise `application.received` and `lead.received` (`docs/notification-hub.md`, "Producers").
 
 ## Operating it
 

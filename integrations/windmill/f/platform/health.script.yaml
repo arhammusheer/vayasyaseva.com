@@ -1,6 +1,6 @@
 {
   "summary": "Platform · health",
-  "description": "Counts of dead, unknown (SMS), stuck and overdue deliveries in the talent database and the lead inbox, and failed erasures. Sends nothing: the notification hub reads it.",
+  "description": "Counts of dead, unknown (SMS), stuck and overdue deliveries in the talent database and the lead inbox, and failed erasures. Every 15 minutes; each condition goes to the notification hub (platform.*) when it starts and when it clears.",
   "lock": "",
   "kind": "script",
   "language": "bun",

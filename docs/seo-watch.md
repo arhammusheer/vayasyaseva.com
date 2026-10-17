@@ -44,8 +44,16 @@ that one Kubernetes service account) for a 15-minute token of
 `scripts/search-console/setup-gcp.mjs` sets it up; re-run it if the cluster's
 signing key changes (it reads `google/cluster-jwks.json` from vayasya-infra).
 
-Search data goes to Chatwoot only. The logs say "sent" and the rule's status,
-never queries or figures: this repository and its Actions are public.
+Search data goes to Chatwoot and the notification hub's email body only. The
+logs say "sent" and the rule's status, never queries or figures: this
+repository and its Actions are public.
+
+`--notify chatwoot,hub` (the cluster's flags until Chatwoot is retired; the
+default is `chatwoot`) also posts to the notification hub
+(`docs/notification-hub.md`, needs `NOTIFY_URL` and `NOTIFY_INGEST_SECRET`):
+`seo.weekly_report` by email only, `seo.rule_tripped` as a push and an email
+when the rule trips, `seo.watch_failed` when the run fails. Their titles and
+summaries carry the week and the rule's status, never a figure.
 
 ## Running it
 

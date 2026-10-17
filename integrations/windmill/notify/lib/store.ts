@@ -4,7 +4,7 @@
  * and for trying a policy. Every method that depends on the time takes it,
  * so a test can move the clock.
  */
-import type { NotifyEvent } from "./event.ts";
+import type { EventStatus, NotifyEvent } from "./event.ts";
 import type { DeliveryKind, KeyState } from "./policy.ts";
 
 export interface StoredEvent extends NotifyEvent {
@@ -56,6 +56,13 @@ export interface NotifyTx {
 export interface NotifyStore {
   transaction<T>(fn: (tx: NotifyTx) => Promise<T>): Promise<T>;
   insertEvent(event: NotifyEvent, now: Date): Promise<string>;
+  /**
+   * firing or resolved, per dedupeKey starting with `prefix`, as the hub will
+   * see it: the latest event not routed yet, else the key's state. For
+   * producers that report a condition on a schedule (f/platform/health), so
+   * they send a change, not every check.
+   */
+  keyStatuses(prefix: string): Promise<Record<string, EventStatus>>;
   /** Sends interrupted mid-way (a crashed run) go back to pending, or fail once out of tries. */
   recoverStuck(now: Date, maxAttempts: number): Promise<number>;
   /** Due pending deliveries, marked sending with attempts + 1 (FOR UPDATE SKIP LOCKED, committed). */

@@ -12,6 +12,7 @@ import { downloadObject } from "../lib/r2.ts";
 import { runDispatch } from "../lib/run-dispatch.ts";
 import { sendAcknowledgement } from "../lib/sms.ts";
 import { twentyFromConfig } from "../lib/twenty.ts";
+import { tryEmit } from "../../notify/lib/emit.ts";
 
 export async function main(submission_id?: string | null) {
   const apiKey = await config("fast2sms_api_key");
@@ -25,6 +26,7 @@ export async function main(submission_id?: string | null) {
         chatwoot: { createContact, createConversation, postMessage, download: downloadObject, attachFile },
         crm,
         lookupReport: (id) => lookupReport(id, apiKey),
+        notify: tryEmit,
       },
       { submissionId: submission_id || null, deliveryCheck },
     ),

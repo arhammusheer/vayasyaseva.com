@@ -3,6 +3,7 @@
 // cluster) or GitHub issues (one open issue per state, label
 // `wage-monitor`). Clients are passed in; with none (dry run) the planned
 // messages are returned and nothing is sent.
+import { createHash } from "node:crypto";
 import { TOPICS, fingerprint } from "./monitor.mjs";
 
 export const LABEL = "wage-monitor";
@@ -275,6 +276,90 @@ export async function reportToChatwoot(events, { chatwoot, state, today }) {
   const cutoff = new Date(Date.parse(`${today}T00:00:00Z`) - 400 * 864e5).toISOString().slice(0, 10);
   for (const [fp, day] of Object.entries(state.reported)) if (day < cutoff) delete state.reported[fp];
   return actions;
+}
+
+// ── Notification hub ─────────────────────────────────────────────────────────
+
+/**
+ * One hub event per state and topic, as for Chatwoot: compliance.source_changed
+ * when a source changed (an instant push and email), else
+ * compliance.source_unreachable or compliance.source_recovered (the digest).
+ * The dedupeKey hashes the events' fingerprints, so a retried run is one
+ * notification. Title and summary name the state, the topic and a count; the
+ * Markdown detail goes in the body (email only).
+ */
+export function hubEvents(events, { today }) {
+  const groups = new Map();
+  for (const e of events) {
+    const key = `${e.state}:${e.topic ?? "wages"}`;
+    groups.set(key, [...(groups.get(key) ?? []), e]);
+  }
+  const out = [];
+  for (const [key, group] of groups) {
+    const [slug, topic] = key.split(":");
+    const stateName = group[0].stateName;
+    const title = chatwootTitle(topic, stateName);
+    const changed = group.filter((e) => e.type !== "unreachable" && e.type !== "recovered");
+    const kind = changed.length ? "changed" : group.some((e) => e.type === "unreachable") ? "unreachable" : "recovered";
+    const fingerprints = group.map((e) => fingerprint(e)).sort();
+    const first = (changed[0] ?? group[0]).url;
+    out.push({
+      state: slug,
+      stateName,
+      fingerprints,
+      event: {
+        source: "compliance",
+        type: kind === "changed" ? "compliance.source_changed" : kind === "unreachable" ? "compliance.source_unreachable" : "compliance.source_recovered",
+        severity: kind === "changed" ? "notice" : "info",
+        dedupeKey: `compliance:${slug}:${topic}:${createHash("sha256").update(fingerprints.join(",")).digest("hex").slice(0, 16)}`,
+        title: kind === "changed" ? `${title}: a source changed` : kind === "unreachable" ? `${title}: a source does not load` : `${title}: a source loads again`,
+        summary:
+          kind === "changed"
+            ? `${plural(changed.length, "change")} in the primary sources on ${longDate(today)}. The email has the detail; update ${fileFor(topic, slug)} if the figures changed.`
+            : kind === "unreachable"
+              ? `${plural(group.length, "source")} failing for days; it may have moved. Update scripts/wage-monitor/sources.json.`
+              : `${plural(group.length, "source")} loading again.`,
+        body: renderChatwootMessage({ topic, slug, stateName, events: group, today }),
+        ...(/^https?:\/\//.test(first ?? "") ? { link: { label: "The source", url: href(first) } } : {}),
+      },
+    });
+  }
+  return out;
+}
+
+/**
+ * Sends the alerts to the hub. `state` is the snapshot about to be saved;
+ * fingerprints sent to the hub are kept under state.hub.reported, apart from
+ * Chatwoot's, so each destination reports each change once. A recovery alone
+ * is sent only once the hub has heard from this monitor. hub null: dry run.
+ */
+export async function reportToHub(events, { hub, state, today }) {
+  state.hub ??= {};
+  state.hub.reported ??= {};
+  const reported = state.hub.reported;
+  const heard = Object.keys(reported).length > 0;
+  const fresh = events.filter((e) => !reported[fingerprint(e)] && (e.type !== "recovered" || heard));
+  const planned = hubEvents(fresh, { today });
+  const actions = planned.map((p) => ({ state: p.state, stateName: p.stateName, action: hub ? "hub" : "hub (dry run)", title: p.event.title, ...(hub ? {} : { body: p.event.body }) }));
+  if (!hub || !planned.length) return actions;
+  await hub.send(planned.map((p) => p.event));
+  for (const p of planned) for (const fp of p.fingerprints) reported[fp] = today;
+  const cutoff = new Date(Date.parse(`${today}T00:00:00Z`) - 400 * 864e5).toISOString().slice(0, 10);
+  for (const [fp, day] of Object.entries(reported)) if (day < cutoff) delete reported[fp];
+  return actions;
+}
+
+/** compliance.monitor_failed: one a day (the dedupeKey), the error's first lines in the email body. */
+export function monitorFailedEvent(error, today) {
+  return {
+    source: "compliance",
+    type: "compliance.monitor_failed",
+    severity: "warning",
+    dedupeKey: `compliance:monitor_failed:${today}`,
+    title: "Compliance monitor failed",
+    summary: "No sources were checked or no alerts were sent today. Check the CronJob's logs (growth, compliance-monitor).",
+    body: String(error?.message ?? error).split("\n").slice(0, 12).join("\n"),
+  };
 }
 
 /**

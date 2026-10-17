@@ -108,6 +108,12 @@ export function memoryStore() {
       events.push({ ...structuredClone(e), id, receivedAt: now.toISOString(), routedAt: null, rule: null, duplicate: false, digest: false, digestedAt: null });
       return id;
     },
+    async keyStatuses(prefix) {
+      const out: Record<string, "firing" | "resolved"> = {};
+      for (const [key, k] of keys) if (key.startsWith(prefix) && k.state.status) out[key] = k.state.status;
+      for (const e of events) if (!e.routedAt && e.status && e.dedupeKey.startsWith(prefix)) out[e.dedupeKey] = e.status;
+      return out;
+    },
     async recoverStuck(now, maxAttempts) {
       let n = 0;
       for (const d of deliveries) {

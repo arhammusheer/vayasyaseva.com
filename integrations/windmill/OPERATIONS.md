@@ -12,7 +12,7 @@ minutes (at most an hour); at its cap (SMS 3, Chatwoot 3, CRM 8) the row is
 never sent again automatically. The older columns (`submissions.status`,
 `sms_acknowledgements.status`, `crm_sync`) are still written by each step;
 the view `delivery_status` shows the old statuses from the deliveries.
-`f/platform/health` counts what needs a person (it sends nothing).
+`f/platform/health` counts what needs a person and, every 15 minutes, tells the notification hub when a count starts or stops (one push, then a daily reminder while it lasts).
 
 ```sql
 -- In the talent database: everything that needs a person

@@ -1142,22 +1142,22 @@ a:hover > svg {
   letter-spacing: 0;
   line-height: 1.3;
 }
-/* Gurmukhi (pa-IN): no web font. Anek and Hind have no Gurmukhi, so the
+/* Gurmukhi (pa-IN) and Kannada (kn-IN): no web font. Anek and Hind have neither script, so the
    phone's own (Noto Sans Gurmukhi on Android) draws it, glyph by glyph,
    and nothing extra downloads. Like Devanagari, it breaks apart under
    letter-spacing and needs taller lines. */
-.eyebrow:lang(pa) {
+.eyebrow:is(:lang(pa), :lang(kn)) {
   font-size: 13px;
   letter-spacing: 0;
 }
-:is(h1, h2, h3, summary):lang(pa),
-.jobs-title:lang(pa),
-.quick-title:lang(pa) {
+:is(h1, h2, h3, summary):is(:lang(pa), :lang(kn)),
+.jobs-title:is(:lang(pa), :lang(kn)),
+.quick-title:is(:lang(pa), :lang(kn)) {
   letter-spacing: 0;
   line-height: 1.3;
 }
-.language-picker :lang(pa),
-.header-lang a:lang(pa) {
+.language-picker :is(:lang(pa), :lang(kn)),
+.header-lang a:is(:lang(pa), :lang(kn)) {
   letter-spacing: 0;
 }
 /* Buttons: 8px radius, weight 600, hover darkens with a slight lift, press settles. */

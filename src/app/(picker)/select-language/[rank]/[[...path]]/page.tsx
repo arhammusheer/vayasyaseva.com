@@ -89,6 +89,7 @@ const PROMPT: Record<Locale, string> = {
   "hi-IN": "अपनी भाषा चुनें",
   "hi-Latn-IN": "Apni bhasha chunein",
   "pa-IN": "ਆਪਣੀ ਭਾਸ਼ਾ ਚੁਣੋ",
+  "kn-IN": "ನಿಮ್ಮ ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

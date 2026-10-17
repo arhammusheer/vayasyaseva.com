@@ -33,21 +33,26 @@ import { allLocales, preferredLocales, type Locale } from "./i18n";
 
 export { LANGUAGE_COOKIE } from "./language-cookie";
 
-/** How many languages the picker shows as large choices; the rest go under "More languages". */
+/**
+ * How many languages the picker shows as large choices; the rest go under
+ * "More languages". English is always one of them (owner direction, 17 Oct
+ * 2026); the other two follow the visitor's language, intent and location.
+ */
 export const PICKER_TOP = 3;
+const ALWAYS: Locale = "en-IN";
 
 /** Short codes for the order key in the picker variant's URL ("hi-hl-en"). */
-const KEY_CODES = { "en-IN": "en", "hi-IN": "hi", "hi-Latn-IN": "hl", "pa-IN": "pa" } as const satisfies Record<Locale, string>;
+const KEY_CODES = { "en-IN": "en", "hi-IN": "hi", "hi-Latn-IN": "hl", "pa-IN": "pa", "kn-IN": "kn" } as const satisfies Record<Locale, string>;
 const CODE_LOCALES = Object.fromEntries(Object.entries(KEY_CODES).map(([l, c]) => [c, l])) as Record<string, Locale>;
 
 /**
  * Picker orders per region (PLAN §6.4). Maharashtra gets a set only if it is
  * promoted (with mr-IN); until then it falls to the default. Karnataka puts
- * kn-IN first once it is published; until then it reads English · Hinglish · हिंदी.
+ * ಕನ್ನಡ first (published 17 Oct 2026), then English · Hinglish · हिंदी.
  */
 const RANK_SETS = {
   hindi: ["hi-IN", "hi-Latn-IN", "en-IN"],
-  karnataka: ["en-IN", "hi-Latn-IN", "hi-IN"],
+  karnataka: ["kn-IN", "en-IN", "hi-Latn-IN", "hi-IN"],
   // Punjabi first (owner direction, 17 Oct 2026), then PLAN §6.4's Punjab
   // order: Hinglish · English · हिंदी (workers from the Hindi belt read Hinglish).
   punjab: ["pa-IN", "hi-Latn-IN", "en-IN", "hi-IN"],
@@ -202,21 +207,32 @@ export function rankLocales(available: readonly Locale[], input: RankInput): Loc
   return order;
 }
 
+/**
+ * The large choices for an order: its first PICKER_TOP, with English always
+ * among them (it takes the last place when the order ranks it lower).
+ */
+export function topChoices(order: readonly Locale[]): Locale[] {
+  const top = order.slice(0, PICKER_TOP);
+  if (!order.includes(ALWAYS) || top.includes(ALWAYS)) return top;
+  return [...top.slice(0, PICKER_TOP - 1), ALWAYS];
+}
+
 /** "hi-hl-en": the top choices of an order, as one URL segment. */
 export function orderKey(order: readonly Locale[]) {
-  return order
-    .slice(0, PICKER_TOP)
+  return topChoices(order)
     .map((l) => KEY_CODES[l])
     .join("-");
 }
 
-/** Every top-choice order a page can show: one prerendered picker variant each. */
+/** Every top-choice order a page can show (English always among them): one prerendered picker variant each. */
 export function orderKeys(path: string): string[] {
   const available = preferredLocales(path);
   const size = Math.min(PICKER_TOP, available.length);
   const build = (prefix: Locale[]): Locale[][] =>
     prefix.length === size ? [prefix] : available.filter((l) => !prefix.includes(l)).flatMap((l) => build([...prefix, l]));
-  return build([]).map(orderKey);
+  return build([])
+    .filter((top) => !available.includes(ALWAYS) || top.includes(ALWAYS))
+    .map(orderKey);
 }
 
 /** Paths whose picker carries a share-image variant (?role=, ?hub=, ?work=). */

@@ -4,7 +4,7 @@ import type { Locale } from "@/lib/i18n";
 import { JsonLd, breadcrumbSchema } from "@/lib/structured-data";
 import { cn } from "@/lib/utils";
 
-const LABEL: Record<Locale, string> = { "en-IN": "Breadcrumb", "hi-IN": "आप यहाँ हैं", "hi-Latn-IN": "Aap yahan hain", "pa-IN": "ਤੁਸੀਂ ਇੱਥੇ ਹੋ" };
+const LABEL: Record<Locale, string> = { "en-IN": "Breadcrumb", "hi-IN": "आप यहाँ हैं", "hi-Latn-IN": "Aap yahan hain", "pa-IN": "ਤੁਸੀਂ ਇੱਥੇ ਹੋ", "kn-IN": "ನೀವು ಇಲ್ಲಿದ್ದೀರಿ" };
 
 /**
  * The page's place on the site, from the registry's parent chain

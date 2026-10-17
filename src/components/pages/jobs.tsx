@@ -69,7 +69,7 @@ export function JobsPage({ locale }: { locale: Locale }) {
               <ul>
                 {JOB_GROUP_ROLES[group.id].map((role) => (
                   <li key={role}>
-                    <Link href={localePath(jobRolePath(role), locale)} className="jobs-work-link">
+                    <Link href={nearestLocalePath(jobRolePath(role), locale)} className="jobs-work-link">
                       {title(role)} <ArrowUpRight size={20} aria-hidden="true" />
                     </Link>
                   </li>
@@ -83,7 +83,7 @@ export function JobsPage({ locale }: { locale: Locale }) {
             <dt>{t.who}</dt>
             <dd>
               {JOB_HUB_LINKS[locale].map((hub) => (
-                <Link key={hub.slug} href={localePath(`/jobs/${hub.slug}`, locale)} className="text-link mt-0">
+                <Link key={hub.slug} href={nearestLocalePath(`/jobs/${hub.slug}`, locale)} className="text-link mt-0">
                   {hub.label} <ArrowRight size={18} aria-hidden="true" />
                 </Link>
               ))}

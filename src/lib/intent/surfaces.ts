@@ -33,6 +33,7 @@ export const JOBS_AREA_LABEL: Record<Locale, Record<string, string>> = {
   "en-IN": { haridwar: "Jobs in Haridwar", bengaluru: "Jobs in Bengaluru", jalandhar: "Jobs in Jalandhar and Kapurthala", uttarakhand: "Jobs across Uttarakhand", punjab: "Jobs across Punjab" },
   "hi-IN": { haridwar: "हरिद्वार में नौकरी", bengaluru: "बेंगलुरु में नौकरी", jalandhar: "जालंधर और कपूरथला में नौकरी", uttarakhand: "पूरे उत्तराखंड में नौकरी", punjab: "पूरे पंजाब में नौकरी" },
   "hi-Latn-IN": { haridwar: "Haridwar mein job", bengaluru: "Bengaluru mein job", jalandhar: "Jalandhar aur Kapurthala mein job", uttarakhand: "Poore Uttarakhand mein job", punjab: "Poore Punjab mein job" },
+  "kn-IN": { haridwar: "ಹರಿದ್ವಾರದಲ್ಲಿ ಉದ್ಯೋಗ", bengaluru: "ಬೆಂಗಳೂರಿನಲ್ಲಿ ಉದ್ಯೋಗ", jalandhar: "ಜಲಂಧರ್ ಮತ್ತು ಕಪೂರ್ಥಲಾದಲ್ಲಿ ಉದ್ಯೋಗ", uttarakhand: "ಉತ್ತರಾಖಂಡದಾದ್ಯಂತ ಉದ್ಯೋಗ", punjab: "ಪಂಜಾಬ್‌ನಾದ್ಯಂತ ಉದ್ಯೋಗ" },
   "pa-IN": { haridwar: "ਹਰਿਦੁਆਰ ਵਿੱਚ ਨੌਕਰੀ", bengaluru: "ਬੈਂਗਲੁਰੂ ਵਿੱਚ ਨੌਕਰੀ", jalandhar: "ਜਲੰਧਰ ਅਤੇ ਕਪੂਰਥਲਾ ਵਿੱਚ ਨੌਕਰੀ", uttarakhand: "ਪੂਰੇ ਉੱਤਰਾਖੰਡ ਵਿੱਚ ਨੌਕਰੀ", punjab: "ਪੂਰੇ ਪੰਜਾਬ ਵਿੱਚ ਨੌਕਰੀ" },
 };
 export const jobsAreaHref = (id: string, locale: Locale) => {

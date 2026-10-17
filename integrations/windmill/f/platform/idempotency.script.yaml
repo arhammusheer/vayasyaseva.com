@@ -1,0 +1,26 @@
+{
+  "summary": "Platform · Idempotency-Key store",
+  "description": "The site's durable Idempotency-Key store (POST /webhook/vspl-idempotency, signed): begin, complete and abandon a key; jobs keys in the talent database, contact keys in the lead inbox.",
+  "lock": "",
+  "kind": "script",
+  "language": "bun",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "authorized": {
+        "type": "boolean",
+        "description": "Set by the preprocessor: the signature matched."
+      },
+      "body": {
+        "type": "object",
+        "description": "{ op, scope, key, fingerprint | answer | carry }"
+      }
+    },
+    "required": [
+      "authorized",
+      "body"
+    ]
+  },
+  "has_preprocessor": true
+}

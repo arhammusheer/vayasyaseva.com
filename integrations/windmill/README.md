@@ -3,31 +3,39 @@
 The VSPL talent pipeline, ported from n8n (retired 17 October 2026; the workflows are in git history) to the growth cluster's Windmill CE (v1.822.0), workspace **`vspl`**. Same SQL, same claims and retries, same retention order; the website does not change.
 
 ```
-website ──POST──► hooks.vayasyaseva.com/webhook/vspl-talent-intake
-                  (Traefik → Windmill /api/r/webhook/vspl-talent-intake)
-                  f/talent/intake       checks x-vspl-intake-secret, validates, saves (talent DB),
-                                        answers 202 { ok, ref }, starts the SMS acknowledgement
-                  f/talent/acknowledge  started by intake for that submission; every minute for
-                                        anything due, after flagging interrupted sends "unknown"
-                  f/talent/deliver      every minute: Chatwoot contact + conversation in the
-                                        "Jobs, website" inbox, the note, then each file
+website (SUBMISSION_SIGNING_SECRET set) ──POST envelope.v1, HMAC──► hooks.vayasyaseva.com/api/r/webhook/vspl-submission
+                  f/platform/submission  checks the signature (timestamp + raw body, 5 min skew),
+                                        saves a job application (talent DB) or a lead (lead inbox),
+                                        answers 202
+website without the secret (the older routes, kept as adapters):
+                  webhook/vspl-talent-intake → f/talent/intake   (x-vspl-intake-secret)
+                  webhook/vspl-lead          → f/leads/intake    (x-vspl-lead-secret)
+
+talent DB         f/talent/dispatch     every minute, and started by intake for the new SMS: the one
+                                        worker for the deliveries table (SMS acknowledgement, Chatwoot
+                                        conversation, Twenty CRM), backoff, caps, dead / unknown;
+                                        every 15 minutes also the missing SMS delivery reports
                   f/talent/retention    hourly: the 12-month rule and erasure requests,
                                         across R2, Chatwoot, Twenty CRM and the talent DB
-                  f/talent/sync_crm     every minute (second 30): new applications into Twenty CRM
-                                        as person + application + SMS acknowledgement; changed
-                                        acknowledgements updated (crm_sync table)
                   f/talent/setup        the schema (talent/schema.sql), run by every deploy
+                  f/talent/acknowledge, deliver, sync_crm, delivery_check
+                                        the steps the dispatcher runs; their schedules are off
+                                        (deploy turns them off), kept for hand runs
+
+lead inbox (leads DB)
+                  f/leads/sync_crm      every minute, and started by intake: due leads into Twenty
+                                        (company, contact, crew request, enquiry), backoff, cap 8
+                  f/leads/setup         the schema (leads/schema.sql), run by every deploy
 
 Fast2SMS delivery reports ──POST──► hooks.vayasyaseva.com/api/r/webhook/fast2sms-dlr
                   f/talent/delivery_report  checks x-vspl-dlr-secret (or ?key=), marks the
-                                        acknowledgement delivered / failed; sync_crm carries it
-                  f/talent/delivery_check   every 15 minutes: looks up (DLR API) reports that
-                                        never came, ten minutes to 7 days after acceptance
+                                        acknowledgement delivered / failed; the CRM delivery reruns
 
-website /api/contact, /api/agent/contact ──POST (after the response)──►
-                  hooks.vayasyaseva.com/api/r/webhook/vspl-lead
-                  f/leads/intake        checks x-vspl-lead-secret, files the company, client
-                                        contact, crew request and enquiry in Twenty, answers 202
+site Idempotency-Key store ──POST, HMAC──► webhook/vspl-idempotency
+                  f/platform/idempotency  begin / complete / abandon; jobs keys in the talent DB,
+                                        contact keys in the lead inbox, kept a day
+                  f/platform/health     on demand: dead, unknown, stuck and overdue counts per
+                                        database and target; sends nothing (the notification hub reads it)
 ```
 
 Twenty's side (the model, views, setup) is `integrations/twenty/README.md`.
@@ -48,7 +56,10 @@ The Sarvam transcribe workflow is not ported (voice notes ended 16 October 2026)
 | `talent/lib/response.ts` | How a sync HTTP route answers: `{ wm_status_code, result }` (the body is `result` only). |
 | `talent/schema.sql` | The `talent` schema: the n8n copy plus `crm_sync` (a test checks the n8n part is unchanged). |
 | `talent/lib/{twenty,crm}.ts`, `run-sync-crm.ts` | Twenty's REST API, the talent→Twenty mapping and erasure, and the sync step by step. |
-| `leads/scripts/intake.ts`, `leads/lib/lead.ts` | The website's leads into Twenty (checked against business_enquiry.v1; company, contact, crew request, enquiry). |
+| `leads/scripts/*.ts`, `leads/lib/{lead,run-leads,sql}.ts`, `leads/schema.sql` | The lead inbox: intake checks business_enquiry.v1 and saves the lead, sync_crm files it in Twenty (company, contact, crew request, enquiry), each record found before it is created. |
+| `talent/lib/run-dispatch.ts` | The one dispatcher: claims due `deliveries` rows (SKIP LOCKED, one run at a time by advisory lock) and runs the SMS, Chatwoot and CRM steps. |
+| `platform/scripts/*.ts`, `platform/lib/*.ts` | The signed envelope route, the Idempotency-Key store and health. `signed.ts` checks `packages/contracts/src/signing.ts`'s HMAC over the raw body. |
+| `test-db.mts` | PGlite (Postgres in WebAssembly) for the tests that run the schemas and queries as SQL. |
 | `scripts.mts` | The scripts: summary, argument schema, schedule, HTTP route. Shared by build and deploy. |
 | `build.mts` | Generates `f/talent/<name>.ts` (one self-contained Bun file: relative imports inlined, npm imports kept) and `<name>.script.yaml`. |
 | `f/talent/*`, `f/leads/*` | **Generated.** Never edit by hand. |
@@ -56,7 +67,7 @@ The Sarvam transcribe workflow is not ported (voice notes ended 16 October 2026)
 
 ```bash
 pnpm windmill:check            # type-check the sources (part of pnpm type-check)
-pnpm windmill:test             # intake, acknowledgement, deliver, retention, generated files
+pnpm windmill:test             # intake, acknowledgement, deliver, retention, dispatch, lead inbox, signed route, generated files
 pnpm windmill:build            # regenerate f/talent/*
 pnpm windmill:build --check    # CI: fail if f/ is stale
 pnpm windmill:deploy --dry-run # what deploy would change
@@ -80,6 +91,8 @@ Scripts read `f/talent/<name>` with `wmill.getVariable` (`talent/lib/config.ts`)
 | `twenty_api_key` | yes | `TWENTY_API_KEY` in `growth/twenty-api` (the workspace key "Windmill (automation)") |
 | `twenty_base_url` | no | `http://twenty.growth.svc.cluster.local` |
 | `lead_webhook_secret` | yes | `LEAD_WEBHOOK_SECRET` in `growth/windmill-leads`; the website has the same value as Vercel `LEAD_WEBHOOK_SECRET` |
+| `leads_pg_url` | yes | `data/pg-main-leads` password (vayasya-infra, RUNBOOK "Leads inbox"), as `postgres://leads:…@pg-main-rw.data.svc.cluster.local:5432/leads` |
+| `submission_signing_secret` | yes | `SUBMISSION_SIGNING_SECRET` in `growth/windmill-submission`; Vercel has the same value. Until that Secret exists, deploy sets a random value nobody knows, so the signed routes refuse everything |
 | `fast2sms_dlr_secret` | yes | `FAST2SMS_DLR_SECRET` in `growth/windmill-fast2sms`; the `x-vspl-dlr-secret` header of the Fast2SMS webhook |
 
 The `TALENT_*`, `FAST2SMS_*` and `CHATWOOT_*` keys are read from `growth/n8n-env` until n8n is retired; `--secrets-from=<secret>` reads another Secret in `growth` with the same keys. The API token is `SUPERADMIN_SECRET` in `growth/windmill-env`.
@@ -112,6 +125,14 @@ Cron is Windmill's six-field form (seconds first), timezone Asia/Kolkata: acknow
 - **Delivery reports** (new, no n8n equivalent): `sms_acknowledgements.delivery_status` is `delivered`, `failed` or `pending`, with Fast2SMS's own status and text in `delivery_detail`; a late or repeated report never turns delivered back. Only accepted acknowledgements are touched; reports for other messages answer 200 `matched: 0` so Fast2SMS stops retrying. The preprocessor keeps only the request ID, status, text and time, so no phone number lands in job arguments. In Twenty the Communication's Delivery becomes **Delivered** or **Failed** (with the reason in Error). Fast2SMS keeps reports about 7 days: acknowledgements from before 11 October 2026 stay Sent.
 - **The webhook** is made once in the Fast2SMS dashboard (its API answers 401 to creating one): `node integrations/windmill/fast2sms-webhook.mts` prints the values and confirms it exists; `--copy-secret` puts the header value on the clipboard.
 - **Leads**: a replayed case ID answers 202 and changes nothing; errors answer a bare 500. The website posts in `after()`, so a slow or failing route never touches the form, and the email to the shared inbox stays the primary path.
+
+## Deliveries and the lead inbox (roadmap 1F)
+
+- **Deliveries.** Each application gets three rows (a trigger on `submissions`): `sms` (3 attempts), `chatwoot` (3), `crm` (8). The dispatcher claims due rows with `FOR UPDATE SKIP LOCKED`; a failure waits 1, 2, 4… minutes (at most an hour), and at the cap the row is `dead`. An SMS whose send was ambiguous or interrupted is `unknown` and is never resent. When the acknowledgement's status changes (accepted, delivered, failed), a trigger reopens the `crm` row so Twenty shows it. The older status columns are kept and still written; the view `delivery_status` shows the old statuses from the deliveries, and setup carried the existing statuses over once.
+- **Connections.** The talent role has five. At most: one intake per request in flight, the dispatcher (one at a time, advisory lock; intake's targeted run exits at once if the dispatcher holds the lock), retention (hourly), a delivery report. The dispatcher replaced four every-minute schedules.
+- **Lead inbox.** A lead is saved (inbox row and its `crm` delivery, one statement) before the route answers 202, then filed in Twenty by `f/leads/sync_crm`. A Twenty outage no longer loses a lead; it waits and retries.
+- **Signed route.** `x-vspl-timestamp` (Unix seconds) and `x-vspl-signature: v1=<base64url HMAC-SHA256 of "v1:<timestamp>.<raw body>">`; more than five minutes off is refused. The route is created with `raw_string` so the body is checked exactly as signed.
+- **Health.** `POST /api/w/vspl/jobs/run_wait_result/p/f/platform/health` with `{}` answers `{ ok, talent: { dead, unknown, stuck, overdue, erasureFailed }, leads: {…}, errors }`. It notifies nobody.
 
 ## Operating it
 

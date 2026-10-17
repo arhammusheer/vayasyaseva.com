@@ -3,7 +3,7 @@
  * run every path. The order of steps is the retired n8n workflow's (removed 17 Oct 2026; in git history).
  */
 import { composeNote, conversationAttributes, filesToAttach } from "./note.ts";
-import { CLAIM_SUBMISSION, MARK_DELIVERED, RECORD_CONVERSATION, RECOVER_STUCK_DELIVERIES } from "./sql.ts";
+import { CLAIM_SUBMISSION, CLAIM_SUBMISSION_FOR, MARK_DELIVERED, RECORD_CONVERSATION, RECOVER_STUCK_DELIVERIES } from "./sql.ts";
 import type { ClaimedSubmission } from "./types.ts";
 import type { Query } from "./db.ts";
 
@@ -28,11 +28,15 @@ export interface DeliverResult {
 /**
  * One submission per run becomes a Chatwoot conversation: the note, then
  * every file. A failure before "delivered" leaves the row "delivering";
- * RECOVER_STUCK_DELIVERIES puts it back after 15 minutes (3 attempts).
+ * RECOVER_STUCK_DELIVERIES puts it back after 15 minutes (3 attempts), or
+ * the dispatcher at once (RELEASE_SUBMISSION). With `submissionId` (the
+ * dispatcher), that submission only.
  */
-export async function runDeliver(deps: DeliverDeps): Promise<DeliverResult | null> {
+export async function runDeliver(deps: DeliverDeps, submissionId: string | null = null): Promise<DeliverResult | null> {
   await deps.query(RECOVER_STUCK_DELIVERIES);
-  const [s] = await deps.query<ClaimedSubmission>(CLAIM_SUBMISSION);
+  const [s] = submissionId
+    ? await deps.query<ClaimedSubmission>(CLAIM_SUBMISSION_FOR, [submissionId])
+    : await deps.query<ClaimedSubmission>(CLAIM_SUBMISSION);
   if (!s?.id) return null;
   const { contactName, note } = composeNote(s);
   const contact = await deps.createContact(s.phone, contactName);

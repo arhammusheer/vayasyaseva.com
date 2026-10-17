@@ -33,6 +33,13 @@ export const VARIABLES = {
   lead_webhook_secret: { secret: true },
   /** The x-vspl-dlr-secret header Fast2SMS sends with delivery reports (Secret growth/windmill-fast2sms). */
   fast2sms_dlr_secret: { secret: true },
+  /** postgres://leads:…@pg-main-rw.data.svc.cluster.local:5432/leads: the lead inbox (vayasya-infra pg-main-leads). */
+  leads_pg_url: { secret: true },
+  /**
+   * SUBMISSION_SIGNING_SECRET (Secret growth/windmill-submission; Vercel has the same value): the HMAC key of
+   * the signed routes webhook/vspl-submission and webhook/vspl-idempotency (packages/contracts/src/signing.ts).
+   */
+  submission_signing_secret: { secret: true },
 } as const;
 
 export type ConfigName = keyof typeof VARIABLES;

@@ -1,0 +1,13 @@
+{
+  "summary": "Platform · health",
+  "description": "Counts of dead, unknown (SMS), stuck and overdue deliveries in the talent database and the lead inbox, and failed erasures. Sends nothing: the notification hub reads it.",
+  "lock": "",
+  "kind": "script",
+  "language": "bun",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {},
+    "required": []
+  }
+}

@@ -14,15 +14,21 @@ export interface ScriptSpec {
   /** File name in <folder>/scripts and f/<folder>; the Windmill path is f/<folder>/<name>. */
   name: string;
   /** Windmill folder (and source directory). Default talent. */
-  folder?: "talent" | "leads";
+  folder?: "talent" | "leads" | "platform";
   summary: string;
   description: string;
   /** JSON Schema of main's arguments (Windmill shows and validates it). */
   schema: Record<string, unknown>;
   hasPreprocessor?: boolean;
   schedule?: { cron: string; summary: string };
-  /** Served at /api/r/<path> (workspaced_route false), so Traefik maps hooks.vayasyaseva.com/<path> straight to it. */
-  route?: { path: string; method: "post"; secretHeader: string };
+  /**
+   * Served at /api/r/<path> (workspaced_route false), so Traefik maps hooks.vayasyaseva.com/<path> straight to it.
+   * `secretHeader` is what the deploy warm-up sends a wrong value in (expecting 403); `rawBody` passes the
+   * body unparsed as `raw_string` (the signed routes check the HMAC over it).
+   */
+  route?: { path: string; method: "post"; secretHeader: string; rawBody?: boolean };
+  /** Had a schedule before the dispatcher (roadmap 1F): deploy turns that schedule off; the script stays runnable by hand. */
+  retiredSchedule?: true;
 }
 
 const noArgs = { $schema: "https://json-schema.org/draft/2020-12/schema", type: "object", properties: {}, required: [] };
@@ -62,14 +68,14 @@ export const SCRIPTS: ScriptSpec[] = [
       properties: { submission_id: { type: "string", description: "Only this submission (from intake). Empty: the oldest due one." } },
       required: [],
     },
-    schedule: { cron: "0 * * * * *", summary: "Every minute: due and interrupted acknowledgements" },
+    retiredSchedule: true,
   },
   {
     name: "deliver",
     summary: "Talent · deliver",
     description: "One submission per run becomes a conversation in Chatwoot's \"Jobs, website\" inbox: the note, then every file.",
     schema: noArgs,
-    schedule: { cron: "0 * * * * *", summary: "Every minute: deliver to Chatwoot" },
+    retiredSchedule: true,
   },
   {
     name: "retention",
@@ -84,7 +90,7 @@ export const SCRIPTS: ScriptSpec[] = [
     description:
       "Writes new applications into Twenty (crm.vayasyaseva.com): the person by phone, the application and the SMS acknowledgement; updates acknowledgements whose status changed. Tracks what it wrote in crm_sync.",
     schema: noArgs,
-    schedule: { cron: "30 * * * * *", summary: "Every minute: applications into Twenty CRM" },
+    retiredSchedule: true,
   },
   {
     name: "delivery_report",
@@ -109,14 +115,34 @@ export const SCRIPTS: ScriptSpec[] = [
     description:
       "Looks up, with Fast2SMS's DLR API, accepted acknowledgements whose delivery report has not come after ten minutes (each at most hourly, for the 7 days Fast2SMS keeps them).",
     schema: noArgs,
-    schedule: { cron: "0 */15 * * * *", summary: "Every 15 minutes: delivery reports that never came" },
+    retiredSchedule: true,
+  },
+  {
+    name: "dispatch",
+    summary: "Talent · dispatch",
+    description:
+      "The one worker for every application's deliveries (SMS acknowledgement, Chatwoot, Twenty CRM), on one connection, with backoff and attempt caps; every 15 minutes also looks up missing SMS delivery reports. Started by intake for a new application's SMS.",
+    schema: {
+      $schema: "https://json-schema.org/draft/2020-12/schema",
+      type: "object",
+      properties: { submission_id: { type: "string", description: "Only this application's SMS (from intake). Empty: everything due." } },
+      required: [],
+    },
+    schedule: { cron: "0 * * * * *", summary: "Every minute: SMS, Chatwoot and Twenty deliveries" },
+  },
+  {
+    name: "setup",
+    folder: "leads",
+    summary: "Leads · setup",
+    description: "Applies the lead inbox schema (leads/schema.sql) to the leads database. Safe to re-run; deploy runs it first.",
+    schema: noArgs,
   },
   {
     name: "intake",
     folder: "leads",
     summary: "Leads · intake",
     description:
-      "The website's crew requests (POST /webhook/vspl-lead, from /api/contact and /api/agent/contact): checks x-vspl-lead-secret, writes the company, contact, crew request and enquiry into Twenty CRM, answers 202.",
+      "The website's business enquiries (POST /webhook/vspl-lead, from /api/contact and /api/agent/contact): checks x-vspl-lead-secret, validates (business_enquiry.v1), saves the lead in the inbox and answers 202; f/leads/sync_crm files it in Twenty.",
     schema: {
       $schema: "https://json-schema.org/draft/2020-12/schema",
       type: "object",
@@ -129,9 +155,65 @@ export const SCRIPTS: ScriptSpec[] = [
     hasPreprocessor: true,
     route: { path: "webhook/vspl-lead", method: "post", secretHeader: "x-vspl-lead-secret" },
   },
+  {
+    name: "sync_crm",
+    folder: "leads",
+    summary: "Leads · sync to Twenty CRM",
+    description:
+      "Files the inbox's due leads in Twenty (company, contact, crew request, enquiry; each found before it is created), with backoff and an attempt cap. Started by intake for a new lead.",
+    schema: {
+      $schema: "https://json-schema.org/draft/2020-12/schema",
+      type: "object",
+      properties: { lead_id: { type: "string", description: "Only this lead (from intake). Empty: everything due." } },
+      required: [],
+    },
+    schedule: { cron: "15 * * * * *", summary: "Every minute: leads into Twenty CRM" },
+  },
+  {
+    name: "submission",
+    folder: "platform",
+    summary: "Platform · submission",
+    description:
+      "One signed route for every submission (POST /webhook/vspl-submission, envelope.v1): checks the HMAC over timestamp and raw body (five minutes of skew), saves a job application (talent) or a lead (inbox), answers 202.",
+    schema: {
+      $schema: "https://json-schema.org/draft/2020-12/schema",
+      type: "object",
+      properties: {
+        authorized: { type: "boolean", description: "Set by the preprocessor: the signature matched." },
+        body: { type: "object", description: "The envelope (packages/contracts envelope.v1)." },
+      },
+      required: ["authorized", "body"],
+    },
+    hasPreprocessor: true,
+    route: { path: "webhook/vspl-submission", method: "post", secretHeader: "x-vspl-signature", rawBody: true },
+  },
+  {
+    name: "idempotency",
+    folder: "platform",
+    summary: "Platform · Idempotency-Key store",
+    description:
+      "The site's durable Idempotency-Key store (POST /webhook/vspl-idempotency, signed): begin, complete and abandon a key; jobs keys in the talent database, contact keys in the lead inbox.",
+    schema: {
+      $schema: "https://json-schema.org/draft/2020-12/schema",
+      type: "object",
+      properties: {
+        authorized: { type: "boolean", description: "Set by the preprocessor: the signature matched." },
+        body: { type: "object", description: "{ op, scope, key, fingerprint | answer | carry }" },
+      },
+      required: ["authorized", "body"],
+    },
+    hasPreprocessor: true,
+    route: { path: "webhook/vspl-idempotency", method: "post", secretHeader: "x-vspl-signature", rawBody: true },
+  },
+  {
+    name: "health",
+    folder: "platform",
+    summary: "Platform · health",
+    description:
+      "Counts of dead, unknown (SMS), stuck and overdue deliveries in the talent database and the lead inbox, and failed erasures. Sends nothing: the notification hub reads it.",
+    schema: noArgs,
+  },
 ];
-
-
 
 /** Every folder the scripts live in. */
 export const FOLDERS = [...new Set(SCRIPTS.map((s) => s.folder ?? FOLDER))];

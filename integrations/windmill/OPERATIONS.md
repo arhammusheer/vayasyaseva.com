@@ -2,26 +2,54 @@
 
 The SQL and rules for running `f/talent/*` (see README.md for the layout and deploy). Moved here from the n8n README when `integrations/n8n` was removed (17 October 2026); the tables and statuses are the ones the n8n workflows used.
 
-## Stuck or failed work
+## Deliveries: stuck, dead and unknown work
+
+Since roadmap 1F every application has three rows in `deliveries`, one per
+target (`sms`, `chatwoot`, `crm`), and one worker, `f/talent/dispatch`,
+runs them every minute on one connection. A failed attempt waits 1, 2, 4…
+minutes (at most an hour); at its cap (SMS 3, Chatwoot 3, CRM 8) the row is
+`dead`. An SMS whose send was ambiguous or interrupted is `unknown` and is
+never sent again automatically. The older columns (`submissions.status`,
+`sms_acknowledgements.status`, `crm_sync`) are still written by each step;
+the view `delivery_status` shows the old statuses from the deliveries.
+`f/platform/health` counts what needs a person (it sends nothing).
 
 ```sql
--- In the talent database: anything stuck or failed
-SELECT ref, status, attempts, last_error, created_at FROM submissions
-WHERE status IN ('failed', 'delivering') ORDER BY created_at DESC;
+-- In the talent database: everything that needs a person
+SELECT ref, target, status, attempts, last_error, reason FROM deliveries_attention ORDER BY updated_at;
 
--- Retry a failed delivery
+-- One application, every target, in the old words
+SELECT * FROM delivery_status WHERE ref = 'VS-J-XXXXXX';
+
+-- Retry a dead Chatwoot delivery (after fixing the cause)
 UPDATE submissions SET status = 'received', attempts = 0, last_error = NULL WHERE ref = 'VS-J-XXXXXX';
+UPDATE deliveries SET status = 'pending', attempts = 0, next_attempt_at = now(), last_error = NULL, updated_at = now()
+WHERE target = 'chatwoot' AND submission_id = (SELECT id FROM submissions WHERE ref = 'VS-J-XXXXXX');
+
+-- Settle a row by hand (done elsewhere, or not to be retried): it leaves the health counts
+UPDATE deliveries SET status = 'done', last_error = 'Settled by hand: <why>', done_at = now(), updated_at = now()
+WHERE target = 'sms' AND submission_id = (SELECT id FROM submissions WHERE ref = 'VS-J-XXXXXX');
 ```
 
-Run history and errors are in Windmill (Runs, filter by `f/talent/`). Each stage retries up to three times, through its recover-stuck step. Chatwoot can save a message and still answer 500, so the steps that create messages don't retry.
+Run history and errors are in Windmill (Runs, filter by `f/talent/dispatch`). Chatwoot can save a message and still answer 500, so a delivery that got as far as "delivered" is never posted again.
+
+The lead inbox (the `leads` database) has the same shape: `leads` and
+`deliveries` (target `crm`, eight attempts), worked by `f/leads/sync_crm`.
+
+```sql
+-- In the leads database
+SELECT case_id, status, attempts, last_error, reason FROM deliveries_attention ORDER BY updated_at;
+UPDATE deliveries SET status = 'pending', attempts = 0, next_attempt_at = now(), last_error = NULL, updated_at = now()
+WHERE lead_id = (SELECT id FROM leads WHERE case_id = 'REQ-…');
+```
 
 ## SMS acknowledgement (Fast2SMS)
 
 Every newly saved application, including quick/long forms and agent submissions,
 queues one row in `sms_acknowledgements` in the same database statement as the
-application. After answering HTTP 202, intake claims and sends it immediately;
-the scheduled `f/talent/acknowledge` script picks up pending rows if intake
-stops before sending. Chatwoot delivery does not wait for SMS. Setup does not queue historical applications.
+application. After answering HTTP 202, intake starts `f/talent/dispatch` for that
+application's SMS; the every-minute dispatcher picks up pending rows if that
+run does not get to it. Chatwoot delivery does not wait for SMS. Setup does not queue historical applications.
 
 The account's existing approved DLT sender **VAYSPL** and Fast2SMS message ID
 **227115** are used with the reference as the only variable:
@@ -54,6 +82,8 @@ UPDATE sms_acknowledgements SET status = 'pending', attempts = 0,
   next_attempt_at = now(), last_error = NULL, updated_at = now()
 WHERE submission_id = (SELECT id FROM submissions WHERE ref = 'VS-J-XXXXXX')
   AND status IN ('failed', 'unknown');
+UPDATE deliveries SET status = 'pending', attempts = 0, next_attempt_at = now(), last_error = NULL, updated_at = now()
+WHERE target = 'sms' AND submission_id = (SELECT id FROM submissions WHERE ref = 'VS-J-XXXXXX');
 ```
 
 Fast2SMS's DLT Manager API can list templates and import an already approved DLT

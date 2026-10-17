@@ -12,7 +12,7 @@
  * The .script.yaml files are JSON (valid YAML), in the wmill CLI's layout,
  * so `wmill sync` could read the folder too; deploy.mts uses the API.
  */
-import { readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, relative, resolve } from "node:path";
 import ts from "typescript";
 import { FOLDER, SCRIPTS, specPath } from "./scripts.mts";
@@ -29,6 +29,9 @@ interface CompiledModule {
 }
 
 const cache = new Map<string, CompiledModule>();
+
+/** Schema files inlined where a setup script names their placeholder (scripts/globals.d.ts). */
+const SCHEMAS: Record<string, string> = { __TALENT_SCHEMA__: "talent/schema.sql", __LEADS_SCHEMA__: "leads/schema.sql" };
 
 function compile(path: string, isEntry = false): CompiledModule {
   const hit = cache.get(path);
@@ -110,10 +113,11 @@ export function bundle(entry: string): string {
     main.code,
     "",
   ].join("\n\n");
-  if (out.includes("__TALENT_SCHEMA__")) {
+  for (const [placeholder, file] of Object.entries(SCHEMAS)) {
+    if (!out.includes(placeholder)) continue;
     // A function replacer: a string one would read "$$" in the SQL as an escaped "$".
-    const schemaLiteral = JSON.stringify(readFileSync(resolve(here, "talent/schema.sql"), "utf8"));
-    out = out.replaceAll("__TALENT_SCHEMA__", () => schemaLiteral);
+    const schemaLiteral = JSON.stringify(readFileSync(resolve(here, file), "utf8"));
+    out = out.replaceAll(placeholder, () => schemaLiteral);
   }
   return out;
 }
@@ -177,6 +181,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
         stale++;
       }
     } else {
+      mkdirSync(dirname(path), { recursive: true });
       writeFileSync(path, content);
       console.log(`wrote ${relative(repoRoot, path)}`);
     }

@@ -1,0 +1,251 @@
+// The deliveries model (roadmap 1F) on a real Postgres (test-db.mts): the
+// migration of the existing statuses, the views, and the one dispatcher's
+// SMS, Chatwoot and CRM steps with backoff, caps, dead and unknown.
+import assert from "node:assert/strict";
+import test from "node:test";
+import { LEADS_SCHEMA, TALENT_SCHEMA, testDb } from "./test-db.mts";
+import { BUDGET, backoffSeconds, runDispatch, type DispatchDeps } from "./talent/lib/run-dispatch.ts";
+import { checkSubmission, saveSubmissionParams } from "./talent/lib/intake-payload.ts";
+import { CLAIM_SUBMISSION, CLAIM_SUBMISSION_FOR, SAVE_SUBMISSION, SYNC_CANDIDATES, SYNC_CANDIDATE_FOR } from "./talent/lib/sql.ts";
+import { runHealth } from "./platform/lib/run-health.ts";
+import type { Fast2SmsResponse } from "./talent/lib/types.ts";
+import type { Twenty } from "./talent/lib/twenty.ts";
+import type { Query } from "./talent/lib/db.ts";
+
+const application = (ref: string) => ({
+  ref,
+  source: "web",
+  locale: "en-IN",
+  cluster: "haridwar",
+  pageCluster: "haridwar",
+  pagePath: "/jobs/haridwar",
+  role: "packing",
+  hub: null,
+  channel: "web",
+  agentName: null,
+  phone: "+919876543210",
+  adult: true,
+  consent: { version: "2026-10-16-v7", at: "2026-10-17T09:30:00.000Z" },
+  text: "Two years packing.",
+  attachments: [],
+  form: "long",
+  applicantName: null,
+  answers: null,
+});
+
+async function save(query: Query, ref: string): Promise<string> {
+  const checked = checkSubmission(application(ref));
+  assert.ok(checked.ok);
+  const [row] = await query<{ submission_id: string }>(SAVE_SUBMISSION, saveSubmissionParams(checked.value));
+  return row.submission_id;
+}
+
+const deliveries = async (query: Query, id: string) =>
+  Object.fromEntries((await query<{ target: string; status: string; attempts: number }>(`SELECT target, status, attempts FROM deliveries WHERE submission_id = $1::uuid`, [id])).map((r) => [r.target, `${r.status}/${r.attempts}`]));
+
+/** A Twenty that remembers what was written. */
+function fakeTwenty(fail?: () => Error | null): Twenty {
+  const rows: Record<string, { id: string; [k: string]: unknown }[]> = {};
+  let n = 0;
+  return {
+    async find(plural: string) {
+      const err = fail?.();
+      if (err) throw err;
+      return rows[plural] ?? [];
+    },
+    async create(plural: string, _singular: string, body: Record<string, unknown>) {
+      const row = { id: `00000000-0000-4000-8000-${String(++n).padStart(12, "0")}`, ...body };
+      (rows[plural] ??= []).push(row);
+      return row;
+    },
+    async update(plural: string, id: string, patch: Record<string, unknown>) {
+      const row = rows[plural]?.find((r) => r.id === id);
+      if (row) Object.assign(row, patch);
+      return row ?? { id };
+    },
+    async remove() {
+      return true;
+    },
+  } as unknown as Twenty;
+}
+
+function deps(query: Query, over: Partial<DispatchDeps> = {}): DispatchDeps & { sent: string[] } {
+  const sent: string[] = [];
+  return {
+    sent,
+    query,
+    sendSms: async (claim) => (sent.push(claim.ref), { statusCode: 200, body: { return: true, request_id: `req-${claim.ref}` } }),
+    chatwoot: {
+      createContact: async () => ({ id: 7, source_id: "src" }),
+      createConversation: async () => ({ id: 70 }),
+      postMessage: async () => {},
+      download: async () => ({ data: new Blob(["x"]) }),
+      attachFile: async () => true,
+    },
+    crm: fakeTwenty(),
+    lookupReport: async () => null,
+    log: () => {},
+    ...over,
+  };
+}
+
+test("the targeted queries are the scheduled ones narrowed to one submission", () => {
+  assert.notEqual(CLAIM_SUBMISSION_FOR, CLAIM_SUBMISSION);
+  assert.match(CLAIM_SUBMISSION_FOR, /c\.id = \$1::uuid/);
+  assert.notEqual(SYNC_CANDIDATE_FOR, SYNC_CANDIDATES);
+  assert.match(SYNC_CANDIDATE_FOR, /WHERE s\.id = \$1::uuid;$/);
+});
+
+test("migration: existing statuses become deliveries, the old columns stay, and the view shows them", async () => {
+  const marker = "  -- Roadmap 1F:";
+  const before = TALENT_SCHEMA.slice(0, TALENT_SCHEMA.indexOf(marker)) + "END\n$$;\n";
+  const { query, exec } = await testDb(before);
+  const sent = await save(query, "VS-J-OLD001");
+  const failed = await save(query, "VS-J-OLD002");
+  await query(`UPDATE sms_acknowledgements SET status = 'accepted', accepted_at = now() WHERE submission_id = $1::uuid`, [sent]);
+  await query(`UPDATE submissions SET status = 'delivered' WHERE id = $1::uuid`, [sent]);
+  await query(`INSERT INTO crm_sync (submission_id, ack_status) VALUES ($1::uuid, 'accepted')`, [sent]);
+  await query(`UPDATE sms_acknowledgements SET status = 'unknown' WHERE submission_id = $1::uuid`, [failed]);
+  await query(`UPDATE submissions SET status = 'failed', attempts = 3 WHERE id = $1::uuid`, [failed]);
+  await exec(TALENT_SCHEMA);
+  await exec(TALENT_SCHEMA); // setup re-runs on every deploy
+  assert.deepEqual(await deliveries(query, sent), { sms: "done/0", chatwoot: "done/0", crm: "done/0" });
+  assert.deepEqual(await deliveries(query, failed), { sms: "unknown/0", chatwoot: "dead/3", crm: "pending/0" });
+  const [view] = await query<{ chatwoot_status: string; sms_status: string; crm_synced: boolean }>(`SELECT * FROM delivery_status WHERE ref = 'VS-J-OLD002'`);
+  assert.deepEqual([view.chatwoot_status, view.sms_status, view.crm_synced], ["failed", "unknown", false]);
+  // The old columns are still there and still read.
+  const [old] = await query<{ status: string }>(`SELECT status FROM submissions WHERE ref = 'VS-J-OLD001'`);
+  assert.equal(old.status, "delivered");
+});
+
+test("a new application gets its three deliveries; one dispatcher run does them all", async () => {
+  const { query } = await testDb(TALENT_SCHEMA);
+  const id = await save(query, "VS-J-NEW001");
+  assert.deepEqual(await deliveries(query, id), { sms: "pending/0", chatwoot: "pending/0", crm: "pending/0" });
+  const d = deps(query);
+  const result = await runDispatch(d);
+  assert.deepEqual(result.done, { sms: 1, chatwoot: 1, crm: 1 });
+  assert.deepEqual(await deliveries(query, id), { sms: "done/1", chatwoot: "done/1", crm: "done/1" });
+  const [old] = await query<{ status: string; sms: string }>(`SELECT s.status, a.status AS sms FROM submissions s JOIN sms_acknowledgements a ON a.submission_id = s.id`);
+  assert.deepEqual([old.status, old.sms], ["delivered", "accepted"], "each step still writes its own status");
+  // Nothing left: a second run sends nothing.
+  await runDispatch(d);
+  assert.deepEqual(d.sent, ["VS-J-NEW001"]);
+});
+
+test("intake's targeted run sends only that application's SMS", async () => {
+  const { query } = await testDb(TALENT_SCHEMA);
+  const a = await save(query, "VS-J-TGT001");
+  const b = await save(query, "VS-J-TGT002");
+  const d = deps(query);
+  await runDispatch(d, { submissionId: b });
+  assert.deepEqual(d.sent, ["VS-J-TGT002"]);
+  assert.equal((await deliveries(query, a)).sms, "pending/0");
+  assert.equal((await deliveries(query, b)).chatwoot, "pending/0");
+});
+
+test("SMS: a rate limit retries with backoff and is dead at three; an ambiguous send is unknown and never resent", async () => {
+  const { query } = await testDb(TALENT_SCHEMA);
+  const id = await save(query, "VS-J-SMS001");
+  const limited = deps(query, { sendSms: async () => ({ statusCode: 429 }) as Fast2SmsResponse });
+  await runDispatch(limited, { submissionId: id });
+  assert.equal((await deliveries(query, id)).sms, "pending/1");
+  const [wait] = await query<{ seconds: number }>(`SELECT extract(epoch FROM next_attempt_at - now())::int AS seconds FROM deliveries WHERE submission_id = $1::uuid AND target = 'sms'`, [id]);
+  assert.ok(wait.seconds > 50 && wait.seconds <= 60, `waits a minute (${wait.seconds}s)`);
+  for (let i = 0; i < 2; i++) {
+    await query(`UPDATE deliveries SET next_attempt_at = now() WHERE target = 'sms'`);
+    await query(`UPDATE sms_acknowledgements SET next_attempt_at = now()`);
+    await runDispatch(limited, { submissionId: id });
+  }
+  assert.equal((await deliveries(query, id)).sms, "dead/3");
+
+  const other = await save(query, "VS-J-SMS002");
+  const ambiguous = deps(query, { sendSms: async () => ({ error: "timeout" }) });
+  await runDispatch(ambiguous, { submissionId: other });
+  assert.equal((await deliveries(query, other)).sms, "unknown/1");
+  await query(`UPDATE deliveries SET next_attempt_at = now() - interval '1 hour'`);
+  const again = deps(query);
+  await runDispatch(again, { submissionId: other });
+  assert.deepEqual(again.sent, [], "unknown is never sent again");
+  assert.equal(backoffSeconds(1), 60);
+  assert.equal(backoffSeconds(3), 240);
+  assert.equal(backoffSeconds(20), 3600);
+});
+
+test("Chatwoot: a failure releases the submission and retries; three failures are dead", async () => {
+  const { query } = await testDb(TALENT_SCHEMA);
+  const id = await save(query, "VS-J-CW0001");
+  const down = deps(query, {
+    chatwoot: { ...deps(query).chatwoot, createContact: async () => { throw new Error("Chatwoot 502"); } },
+  });
+  await runDispatch(down);
+  assert.equal((await deliveries(query, id)).chatwoot, "pending/1");
+  const [s] = await query<{ status: string; last_error: string }>(`SELECT status, last_error FROM submissions WHERE id = $1::uuid`, [id]);
+  assert.deepEqual([s.status, s.last_error], ["received", "Chatwoot 502"]);
+  for (let i = 0; i < 2; i++) {
+    await query(`UPDATE deliveries SET next_attempt_at = now()`);
+    await runDispatch(down);
+  }
+  assert.equal((await deliveries(query, id)).chatwoot, "dead/3");
+  const [after] = await query<{ status: string }>(`SELECT status FROM submissions WHERE id = $1::uuid`, [id]);
+  assert.equal(after.status, "failed");
+});
+
+test("CRM: Twenty's rate limit stops the run; a changed acknowledgement reopens the delivery", async () => {
+  const { query } = await testDb(TALENT_SCHEMA);
+  const id = await save(query, "VS-J-CRM001");
+  let limited = true;
+  const d = deps(query, { crm: fakeTwenty(() => (limited ? new Error("Twenty GET /people: HTTP 429") : null)) });
+  await runDispatch(d);
+  assert.equal((await deliveries(query, id)).crm, "pending/1");
+  limited = false;
+  await query(`UPDATE deliveries SET next_attempt_at = now()`);
+  await runDispatch(d);
+  assert.equal((await deliveries(query, id)).crm, "done/2");
+  // Fast2SMS reports delivery: Twenty must show it, so the CRM delivery runs again.
+  await query(`UPDATE sms_acknowledgements SET delivery_status = 'delivered' WHERE submission_id = $1::uuid`, [id]);
+  assert.equal((await deliveries(query, id)).crm, "pending/0");
+  await runDispatch(d);
+  assert.equal((await deliveries(query, id)).crm, "done/1");
+  assert.equal(BUDGET.chatwoot, 1);
+});
+
+test("a run interrupted for 15 minutes: SMS unknown, the rest back to pending", async () => {
+  const { query } = await testDb(TALENT_SCHEMA);
+  const id = await save(query, "VS-J-STK001");
+  await query(`UPDATE deliveries SET status = 'running', attempts = 1, updated_at = now() - interval '20 minutes' WHERE submission_id = $1::uuid AND target IN ('sms', 'crm')`, [id]);
+  const d = deps(query, { crm: null });
+  const result = await runDispatch(d);
+  assert.equal(result.recovered, 2);
+  const now = await deliveries(query, id);
+  assert.equal(now.sms, "unknown/1");
+  assert.equal(now.crm, "pending/2", "picked up again, and waits for Twenty");
+});
+
+test("another dispatcher running: this run does nothing", async () => {
+  const query = (async (text: string) => (/pg_try_advisory_lock/.test(text) ? [{ locked: false }] : assert.fail(`ran ${text.slice(0, 40)}`))) as Query;
+  const result = await runDispatch(deps(query));
+  assert.equal(result.skipped, "another dispatcher is running");
+});
+
+test("health counts dead, unknown and stuck work, and says when a database could not be read", async () => {
+  const { query } = await testDb(TALENT_SCHEMA);
+  const id = await save(query, "VS-J-HLT001");
+  await query(`UPDATE deliveries SET status = 'dead' WHERE submission_id = $1::uuid AND target = 'chatwoot'`, [id]);
+  await query(`UPDATE deliveries SET status = 'unknown' WHERE submission_id = $1::uuid AND target = 'sms'`, [id]);
+  const health = await runHealth({
+    talent: (fn) => fn(query),
+    leads: async () => {
+      throw new Error("connection refused");
+    },
+  });
+  assert.equal(health.ok, false);
+  assert.deepEqual(health.talent?.dead, { chatwoot: 1 });
+  assert.deepEqual(health.talent?.unknown, { sms: 1 });
+  assert.equal(health.talent?.erasureFailed, 0);
+  assert.deepEqual(health.errors, ["leads: connection refused"]);
+  const clean = await testDb(TALENT_SCHEMA);
+  const leads = await testDb(LEADS_SCHEMA);
+  const ok = await runHealth({ talent: (fn) => fn(clean.query), leads: (fn) => fn(leads.query) });
+  assert.deepEqual([ok.ok, ok.errors], [true, []]);
+});

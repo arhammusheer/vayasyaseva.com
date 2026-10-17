@@ -1,0 +1,18 @@
+{
+  "summary": "Leads · sync to Twenty CRM",
+  "description": "Files the inbox's due leads in Twenty (company, contact, crew request, enquiry; each found before it is created), with backoff and an attempt cap. Started by intake for a new lead.",
+  "lock": "",
+  "kind": "script",
+  "language": "bun",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "lead_id": {
+        "type": "string",
+        "description": "Only this lead (from intake). Empty: everything due."
+      }
+    },
+    "required": []
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "summary": "Leads · setup",
+  "description": "Applies the lead inbox schema (leads/schema.sql) to the leads database. Safe to re-run; deploy runs it first.",
+  "lock": "",
+  "kind": "script",
+  "language": "bun",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {},
+    "required": []
+  }
+}

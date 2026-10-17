@@ -279,8 +279,11 @@ test("the REST client: filters quoted, 404 on delete is 'already gone', errors n
   await assert.rejects(client.create("people", "Person", { phones: "9876543210" }), (e: Error) => /HTTP 400 A duplicate entry/.test(e.message) && !e.message.includes("9876543210"));
 });
 
-test("sync runs every minute, after the minute's acknowledgements", () => {
-  assert.equal(SCRIPTS.find((s) => s.name === "sync_crm")?.schedule?.cron, "30 * * * * *");
+test("the CRM sync runs inside the dispatcher every minute; its own schedule is retired", () => {
+  const sync = SCRIPTS.find((s) => s.name === "sync_crm" && (s.folder ?? "talent") === "talent");
+  assert.equal(sync?.schedule, undefined);
+  assert.equal(sync?.retiredSchedule, true);
+  assert.equal(SCRIPTS.find((s) => s.name === "dispatch")?.schedule?.cron, "0 * * * * *");
 });
 
 // --- leads ---------------------------------------------------------------------------

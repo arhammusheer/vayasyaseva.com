@@ -28,6 +28,8 @@ const { VARIABLES, variablePath, setConfigForTests, config } = (() => {
       twenty_api_key: { secret: true },
       lead_webhook_secret: { secret: true },
       fast2sms_dlr_secret: { secret: true },
+      leads_pg_url: { secret: true },
+      submission_signing_secret: { secret: true },
   };
   const variablePath = (name) => `f/talent/${name}`;
   let override = null;
@@ -50,7 +52,7 @@ const { VARIABLES, variablePath, setConfigForTests, config } = (() => {
 })();
 
 // integrations/windmill/talent/lib/db.ts
-const { withTalentDb, queryWith } = (() => {
+const { withTalentDb, withDatabase, queryWith } = (() => {
   const passThroughJson = (oid) => ({
       to: oid,
       from: [oid],
@@ -58,7 +60,10 @@ const { withTalentDb, queryWith } = (() => {
       parse: (value) => JSON.parse(value),
   });
   async function withTalentDb(fn) {
-      const sql = postgres(await config("talent_pg_url"), {
+      return withDatabase("talent_pg_url", fn);
+  }
+  async function withDatabase(url, fn) {
+      const sql = postgres(await config(url), {
           max: 1,
           connect_timeout: 10,
           idle_timeout: 5,
@@ -74,7 +79,7 @@ const { withTalentDb, queryWith } = (() => {
       }
   }
   const queryWith = (sql) => async (text, params = []) => (await sql.unsafe(text, params));
-  return { withTalentDb, queryWith };
+  return { withTalentDb, withDatabase, queryWith };
 })();
 
 // integrations/windmill/talent/lib/response.ts
@@ -90,7 +95,7 @@ const { respond, accepted, forbidden, invalid, failed } = (() => {
 })();
 
 // integrations/windmill/talent/lib/sql.ts
-const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED } = (() => {
+const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR } = (() => {
   const RETENTION_MONTHS = 12;
   const SAVE_SUBMISSION = `
   WITH s AS (
@@ -279,7 +284,47 @@ const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLE
   ORDER BY accepted_at
   LIMIT $1;`;
   const MARK_DELIVERY_CHECKED = `UPDATE sms_acknowledgements SET delivery_checked_at = now() WHERE submission_id = $1::uuid;`;
-  return { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED };
+  const DISPATCH_LOCK = `SELECT pg_try_advisory_lock(hashtext('talent:dispatch')) AS locked;`;
+  const RECOVER_STUCK_DISPATCH = `
+  UPDATE deliveries
+  SET status = CASE WHEN target = 'sms' THEN 'unknown' WHEN attempts >= max_attempts THEN 'dead' ELSE 'pending' END,
+      last_error = coalesce(last_error, 'Interrupted; picked up again by the dispatcher'),
+      next_attempt_at = now(), updated_at = now()
+  WHERE status = 'running' AND updated_at < now() - interval '15 minutes'
+  RETURNING submission_id, target, status;`;
+  const CLAIM_DELIVERY = `
+  WITH c AS (
+    SELECT submission_id, target FROM deliveries
+    WHERE target = $1 AND status = 'pending' AND next_attempt_at <= now()
+      AND ($2::uuid IS NULL OR submission_id = $2::uuid)
+    ORDER BY next_attempt_at, created_at LIMIT 1 FOR UPDATE SKIP LOCKED
+  )
+  UPDATE deliveries d SET status = 'running', attempts = d.attempts + 1, updated_at = now()
+  FROM c WHERE d.submission_id = c.submission_id AND d.target = c.target
+  RETURNING d.submission_id, d.target, d.attempts, d.max_attempts;`;
+  const FINISH_DELIVERY = `
+  UPDATE deliveries
+  SET status = CASE WHEN $3 = 'retry' THEN (CASE WHEN attempts >= max_attempts THEN 'dead' ELSE 'pending' END) ELSE $3 END,
+      next_attempt_at = CASE WHEN $3 = 'retry' THEN now() + make_interval(secs => $5::int) ELSE next_attempt_at END,
+      last_error = $4,
+      done_at = CASE WHEN $3 = 'done' THEN now() ELSE done_at END,
+      updated_at = now()
+  WHERE submission_id = $1::uuid AND target = $2 AND status = 'running'
+  RETURNING status;`;
+  const LEGACY_STATUS = `
+  SELECT s.status AS chatwoot, a.status AS sms, a.attempts AS sms_attempts, (c.submission_id IS NOT NULL) AS crm_synced
+  FROM submissions s
+  LEFT JOIN sms_acknowledgements a ON a.submission_id = s.id
+  LEFT JOIN crm_sync c ON c.submission_id = s.id
+  WHERE s.id = $1::uuid;`;
+  const CLAIM_SUBMISSION_FOR = CLAIM_SUBMISSION.replace("WHERE c.status = 'received'", "WHERE c.status = 'received' AND c.id = $1::uuid");
+  const RELEASE_SUBMISSION = `
+  UPDATE submissions
+  SET status = CASE WHEN attempts >= 3 THEN 'failed' ELSE 'received' END, last_error = $2, updated_at = now()
+  WHERE id = $1::uuid AND status = 'delivering'
+  RETURNING status;`;
+  const SYNC_CANDIDATE_FOR = SYNC_CANDIDATES.replace(/WHERE c\.submission_id IS NULL\n {3}OR c\.ack_status IS DISTINCT FROM \(CASE WHEN a\.delivery_status IS NULL THEN a\.status ELSE a\.status \|\| ':' \|\| a\.delivery_status END\)\nORDER BY s\.created_at\nLIMIT \$1;/, "WHERE s.id = $1::uuid;");
+  return { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR };
 })();
 
 // packages/contracts/src/rules.ts
@@ -627,7 +672,7 @@ export async function main(authorized, body) {
         return await withTalentDb((query) => runIntake(authorized, body, {
             query,
             startAcknowledgement: async (submissionId) => {
-                await wmill.runScriptByPathAsync("f/talent/acknowledge", { submission_id: submissionId });
+                await wmill.runScriptByPathAsync("f/talent/dispatch", { submission_id: submissionId });
             },
         }));
     }

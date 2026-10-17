@@ -52,7 +52,7 @@ The homepage and every business-facing page stay English. Translate a page only 
 | Page | Languages | Neutral URL | Reason |
 |------|-----------|-------------|--------|
 | `/`, `/services`, `/services/factory-labour`, `/services/loading-unloading-labour`, `/services/housekeeping`, `/about`, `/vayasya-setu`, `/compliance`, `/contact`, `/brand`, `/privacy`, `/terms` | en-IN | English | Business buyers; legal text in one reviewed version. Business pages are English only since 16 Oct 2026: the Hinglish service landings 308 to English |
-| `/haridwar-sidcul` | en-IN, hi-IN, hi-Latn-IN | English | Core local search terms in every script; the one business page kept in three languages |
+| `/locations/haridwar` (was `/haridwar-sidcul`) | en-IN, hi-IN, hi-Latn-IN | English | Core local search terms in every script; the one location page with translations so far (any Hindi-belt hub may join: `LOCATION_HUB_LOCALES`) |
 | `/jobs`, `/jobs/<role>` | en-IN, hi-IN, hi-Latn-IN; hi-IN first | Language picker | Workers read हिंदी and type in Latin script; skilled roles use English. The link is often shared on a call |
 
 Later: `/privacy` in hi-IN, so worker applicants can read the data notice (DPDP). Latin-script Hindi is too loose for legal text.

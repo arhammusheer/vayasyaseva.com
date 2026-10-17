@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { clusterById } from "@/content/registry/clusters";
 import { jobsHubPath, type ClusterId } from "@/content/registry/identifiers";
 import { getJobCluster } from "@/content/pages/job-clusters";
-import { haridwarCopy } from "@/content/pages/haridwar-sidcul";
 import { locationPages } from "@/content/locations";
 import { MARKET_ORDER } from "@/lib/intent/model";
 import { orderedJobMarkets } from "@/lib/intent/surfaces";
@@ -61,10 +60,8 @@ const roleLinksInline = jobRoles["en-IN"].map((r) => `[${r.name}](${baseUrl}/en-
 const businessMarkets = MARKET_ORDER.flatMap((id) => {
   const hub = clusterById(id)?.buyerHub;
   if (!hub || !linkable(hub, "en-IN")) return [];
-  const copy = hub === "/haridwar-sidcul" ? { name: "SIDCUL Haridwar", text: haridwarCopy["en-IN"].description } : locationPages.get(hub);
-  const name = copy && "name" in copy ? copy.name : id;
-  const text = copy && "text" in copy ? copy.text : copy && "description" in copy ? copy.description : "";
-  return [{ id, hub, name, text }];
+  const copy = locationPages.get(hub);
+  return [{ id, hub, name: copy?.name ?? id, text: copy?.description ?? "" }];
 });
 const marketNames = businessMarkets.map((m) => m.name).join(", ");
 const businessLines = businessMarkets.map((m) => `- [${m.name}](${baseUrl}/en-in${m.hub}): ${m.text}`).join("\n");

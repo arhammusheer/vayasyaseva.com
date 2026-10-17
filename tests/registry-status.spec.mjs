@@ -79,14 +79,17 @@ test("linkable() guard: published pages may not link to unpublished ones", () =>
 });
 
 test("aliases and retired pages redirect once, to the target page", () => {
-  assert.equal(pathAliases["/locations/haridwar"], "/haridwar-sidcul");
-  assert.equal(registry.redirectTarget("/locations/haridwar"), "/haridwar-sidcul");
+  // Haridwar's buyer page moved under /locations (17 Oct 2026): one hop, in the language asked for.
+  assert.equal(pathAliases["/locations/haridwar"], undefined);
+  assert.equal(registry.redirectTarget("/haridwar-sidcul"), "/locations/haridwar");
   assert.equal(registry.redirectTarget("/test-retired"), "/about");
   assert.equal(registry.redirectTarget("/about"), undefined);
   // The proxy keeps the language asked for only where the target is published.
   assert.equal(i18n.movedPathname("/test-alias", "hi-Latn-IN"), "/hi-latn-in/test-mixed");
   assert.equal(i18n.movedPathname("/test-alias", "hi-IN"), "/en-in/test-mixed");
-  assert.equal(i18n.movedPathname("/locations/haridwar", "hi-IN"), "/hi-in/haridwar-sidcul");
+  assert.equal(i18n.movedPathname("/haridwar-sidcul", "hi-IN"), "/hi-in/locations/haridwar");
+  assert.equal(i18n.movedPathname("/haridwar-sidcul", "hi-Latn-IN"), "/hi-latn-in/locations/haridwar");
+  assert.equal(i18n.movedPathname("/locations/haridwar", "hi-IN"), undefined);
   assert.equal(i18n.movedPathname("/test-retired", "en-IN"), "/en-in/about");
   assert.equal(i18n.movedPathname("/about", "en-IN"), undefined);
 });

@@ -3,7 +3,7 @@ import { trustClients } from "@/content/home";
 
 /**
  * Client logos, straight under the hero: proof within the first screen.
- * On the home page and /haridwar-sidcul (the logos are SIDCUL plants).
+ * On the home page and every location page (the logos are SIDCUL Haridwar plants).
  */
 export function ClientStrip({ label = "Our experience includes work with", afterRule = false }: { label?: string; afterRule?: boolean }) {
   return (

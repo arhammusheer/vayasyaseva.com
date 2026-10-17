@@ -164,6 +164,11 @@ test('prefilled links: free text is kept, never dropped', () => {
   assert.equal(fields.sitePincode, undefined);
   assert.deepEqual(extraLines, ['Target start: next Monday', 'Shifts: 12 hours', 'Industry: Pharma']);
   assert.equal(crewPrefill({ city: 'Roorkee' }).fields.siteState, 'UK');
+  // A typed place names its state for every market alike, not only Haridwar's.
+  assert.equal(crewPrefill({ city: 'Peenya' }).fields.siteState, 'KA');
+  assert.equal(crewPrefill({ city: 'Phagwara' }).fields.siteState, 'PB');
+  assert.equal(crewPrefill({ city: 'Greater Noida' }).fields.siteState, 'UP');
+  assert.equal(crewPrefill({ city: 'Mumbai' }).fields.siteState, undefined);
   assert.equal(crewPrefill({ cluster: 'mumbai' }).fields.pageCluster, undefined);
   assert.equal(crewPrefill({ cluster: 'uttarakhand' }).fields.pageCluster, 'uttarakhand');
 });
@@ -185,7 +190,7 @@ test('lead flags reach the staff email only, never the buyer copy', async () => 
   globalThis.fetch = async (url, init) => { sent.push(JSON.parse(init.body)); return new Response(JSON.stringify({ status: 'success', data: { message_id: 'm1' } }), { status: 200 }); };
   console.info = () => {};
   try {
-    const data = { ...person, company: 'Acme', email: 'buyer@example.test', ...requirement, details: 'Also need 2 security guards', pageCluster: 'haridwar', sourcePath: '/haridwar-sidcul' };
+    const data = { ...person, company: 'Acme', email: 'buyer@example.test', ...requirement, details: 'Also need 2 security guards', pageCluster: 'haridwar', sourcePath: '/locations/haridwar' };
     await sendInternalContactEmail(data, { caseId: 'REQ-UNIT' });
     await sendContactAutoReply(data, { caseId: 'REQ-UNIT' });
   } finally {
@@ -197,7 +202,7 @@ test('lead flags reach the staff email only, never the buyer copy', async () => 
   assert.match(staffDetails, /Qualified \(20\+ workers, 3\+ months\): YES/);
   assert.match(staffDetails, /Starts within 4 weeks: yes/);
   assert.match(staffDetails, /Possibly out of scope: Security guards/);
-  assert.match(staffDetails, /Came from: \/haridwar-sidcul/);
+  assert.match(staffDetails, /Came from: \/locations\/haridwar/);
   const buyerVariables = JSON.stringify(buyer.recipients[0].variables);
   assert.doesNotMatch(buyerVariables, /Qualified|out of scope|Starts within|Page cluster|Came from/i);
   assert.match(buyer.recipients[0].variables.details, /Work: Packing, Loading and unloading/);

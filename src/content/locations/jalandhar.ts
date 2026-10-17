@@ -4,7 +4,7 @@ import type { LocationCopy } from "./types";
 /**
  * The Jalandhar region, Punjab: the hub and three industrial clusters, with
  * Kapurthala as a cluster of its own (owner direction, 17 Oct 2026), on the
- * /haridwar-sidcul structure. Facts from the research of 17 Oct 2026, each
+ * location page structure. Facts from the research of 17 Oct 2026, each
  * cited in `sources`; MSME-DI district profiles carry 2010–11 data, so their
  * figures are named as theirs. Road distances not in a source are left out.
  * No tenant names (the Rail Coach Factory, the mills and the focal point's

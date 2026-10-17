@@ -654,7 +654,7 @@
             "description": "Set by the website: the page the person came from. Agents leave it out.",
             "maxLength": 200,
             "pattern": "^/[A-Za-z0-9/_-]*$",
-            "example": "/haridwar-sidcul"
+            "example": "/locations/haridwar"
           },
           "details": {
             "type": "string",

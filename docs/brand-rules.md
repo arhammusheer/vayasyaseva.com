@@ -6,7 +6,7 @@
 
 ## 1. Position
 
-A labour contractor and manpower supply company for factories, warehouses and facilities. The workers are on our payroll. Based in Haridwar, with crews in SIDCUL and across Haridwar; a site elsewhere in India is taken on only once we've checked we can recruit, pay and supervise people there. Home page title and H1 since 16 October 2026: "Labour Contractor and Manpower Supply Company" / "Contract labour for factories, warehouses and facilities". Haridwar search terms live on `/haridwar-sidcul` and `/jobs/haridwar`.
+A labour contractor and manpower supply company for factories, warehouses and facilities. The workers are on our payroll. Registered office in Haridwar; crews in every market listed under `/locations` (Bengaluru, Delhi NCR, Haridwar, Jalandhar–Kapurthala, Uttarakhand), none of them first or default (owner direction, 17 Oct 2026). A site elsewhere in India is taken on only once we've checked we can recruit, pay and supervise people there. Home page title and H1 since 16 October 2026: "Labour Contractor and Manpower Supply Company" / "Contract labour for factories, warehouses and facilities". Each market's place terms live on its own `/locations/<market>` and `/jobs/<market>` pages.
 
 ---
 
@@ -34,7 +34,7 @@ Vayasya Seva supplies the workforce. Workers are on our rolls: we pay wages, dep
 
 Say it the same way each time: **"We're a manpower contractor, not a placement agency: the workers are on our payroll, and we manage attendance, wages, EPF and ESIC."**
 
-Since 16 October 2026 the contractor point has one home: the home page, as benefit 3 ("Our payroll, our paperwork.") and the agency FAQ below. The agency FAQ appears on the home page only (`src/content/agency-faq.ts`); service landings, `/haridwar-sidcul`, `/services` and `/compliance` carry no agency FAQ and no payroll paragraph. Other pages get at most one line that mentions the payroll, where the page needs it (the `/services` engagement steps), and never repeat the agency answer. The agency FAQ:
+Since 16 October 2026 the contractor point has one home: the home page, as benefit 3 ("Our payroll, our paperwork.") and the agency FAQ below. The agency FAQ appears on the home page only (`src/content/agency-faq.ts`); service landings, the location pages, `/services` and `/compliance` carry no agency FAQ and no payroll paragraph. Other pages get at most one line that mentions the payroll, where the page needs it (the `/services` engagement steps), and never repeat the agency answer. The agency FAQ:
 
 > **Are you a manpower agency or a staffing company?**
 > We’re a manpower contractor. An agency sends you candidates to hire. We supply the workers, keep them on our payroll, supervise them on site, replace absentees and handle wages, EPF and ESIC. You get a working crew and one invoice.
@@ -59,7 +59,7 @@ SIDCUL Haridwar is the State's Integrated Industrial Estate, inside Haridwar cit
 | Coverage in running text | in SIDCUL and across Haridwar | सिडकुल और पूरे हरिद्वार में | SIDCUL aur poore Haridwar mein |
 | First mention on the local page | SIDCUL Haridwar, the State's Integrated Industrial Estate in the Ranipur and BHEL area | सिडकुल हरिद्वार, रानीपुर और BHEL क्षेत्र का एकीकृत औद्योगिक क्षेत्र | same as English |
 
-Both words are search terms in their own right: keep "SIDCUL" and "Haridwar" together in titles. The `/haridwar-sidcul` URL stays as it is (indexed, and it holds both words). Schema models SIDCUL Haridwar as a `Place` with `containedInPlace` Haridwar.
+Both words are search terms in their own right: keep "SIDCUL" and "Haridwar" together in titles. Haridwar's page is `/locations/haridwar` like every market's (17 Oct 2026; `/haridwar-sidcul` 308s to it in each language); its title and H1 keep both words. Schema models SIDCUL Haridwar as a `Place` with `containedInPlace` Haridwar.
 
 ---
 

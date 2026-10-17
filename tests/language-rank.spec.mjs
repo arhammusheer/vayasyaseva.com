@@ -113,7 +113,7 @@ test("header quick switch: the page's regional set, fixed per page", () => {
   // /jobs: English · हिंदी · Hinglish in the bar (the default set), Punjabi and Kannada under More.
   assert.deepEqual(i18n.languageLinks("/hi-in/jobs").map((l) => [l.lang, l.more]), [["en-IN", false], ["hi-Latn-IN", false], ["pa-IN", true], ["kn-IN", true]]);
   assert.deepEqual(i18n.languageLinks("/en-in/jobs/haridwar").map((l) => l.lang), ["hi-IN", "hi-Latn-IN"]);
-  assert.deepEqual(i18n.languageLinks("/hi-latn-in/haridwar-sidcul").map((l) => l.lang), ["en-IN", "hi-IN"]);
+  assert.deepEqual(i18n.languageLinks("/hi-latn-in/locations/haridwar").map((l) => l.lang), ["en-IN", "hi-IN"]);
   assert.deepEqual(i18n.languageLinks("/en-in/about"), []);
   assert.ok(i18n.languageLinks("/en-in/jobs").every((l) => l.hint));
 });

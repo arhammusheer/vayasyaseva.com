@@ -15,18 +15,18 @@ export const uttarakhandPages: LocationCopy[] = [
     description:
       "Supervised contract labour crews for factories and warehouses across Uttarakhand's SIIDCUL estates, from SIDCUL Haridwar to Selaqui in Dehradun.",
     heading: "Labour contractor in Uttarakhand.",
-    lede: "Supervised crews for factories, warehouses and facilities, from our base in SIDCUL Haridwar to Selaqui in Dehradun.",
+    lede: "Supervised crews for factories, warehouses and facilities, from SIDCUL Haridwar to Selaqui in Dehradun.",
     paragraph:
       "Most of Uttarakhand's factories sit in integrated industrial estates run by SIIDCUL, the state's industrial development corporation: Haridwar, Pantnagar, Sitarganj, Kashipur, Kotdwar and Selaqui. Pharma, auto components, electronics, plastics and packaging lead. We take requirements from units in {areas}.",
     areas: [
-      { href: "/haridwar-sidcul", name: "SIDCUL Haridwar" },
+      { href: "/locations/haridwar", name: "SIDCUL Haridwar" },
       { href: "/locations/uttarakhand/selaqui", name: "Selaqui" },
     ],
     faqs: [
       {
         question: "Do you supply contract labour across Uttarakhand?",
         answer:
-          "Yes, mostly in SIDCUL Haridwar and the areas around it, and in Selaqui. Crews for production, packing, loading and dispatch, and housekeeping, run by our supervisor.",
+          "Yes, in SIDCUL Haridwar, Selaqui and the areas around them. Crews for production, packing, loading and dispatch, and housekeeping, run by our supervisor.",
         category: "operations",
       },
       {
@@ -85,7 +85,7 @@ export const uttarakhandPages: LocationCopy[] = [
         category: "operations",
       },
       {
-        question: "Is the minimum wage in Selaqui different from Haridwar?",
+        question: "Is the minimum wage in Selaqui different from the rest of the state?",
         answer:
           "No. Uttarakhand has one rate for the whole state, by skill and type of work. There is no Professional Tax, and the state's OSH Code rules are still in draft.",
         link: { href: "/minimum-wages/uttarakhand", label: "Uttarakhand minimum wages" },

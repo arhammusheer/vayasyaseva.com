@@ -13,8 +13,8 @@ import { localeParams } from "@/lib/i18n";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/");
 
-// National contractor terms (PLAN §5.2, owner decision 7). The Haridwar
-// terms live on /haridwar-sidcul and /jobs/haridwar. The search snapshot
+// National contractor terms (PLAN §5.2, owner decision 7). Place terms live
+// on each market's /locations and /jobs pages. The search snapshot
 // taken before this retitle is kept outside the repo, with the rollback rule
 // in PLAN §9.5. Keep the title, the H1 and the three capability rows.
 const TITLE = "Labour Contractor and Manpower Supply Company";
@@ -95,7 +95,7 @@ export default function HomePage() {
             for years.
           </p>
           {/* The two doors (PLAN §5.2): buyers to the form, job seekers to
-              Jobs in Haridwar (neutral, so not the i18n Link). */}
+              /jobs (neutral, so not the i18n Link). */}
           <div className="hero-doors rise rise-3">
             <Link href="/contact" className="light-link">
               Request a crew <ArrowUpRight size={20} aria-hidden="true" />

@@ -11,7 +11,7 @@ The report covers:
   the home retitle (15 July to 13 October 2026): impressions, clicks,
   non-brand impressions (all minus branded queries, since filtering on "not
   brand" also drops anonymised queries), and Haridwar-query impressions split
-  by page (home, `/jobs/haridwar`, `/haridwar-sidcul`, other);
+  by page (home, `/jobs/haridwar`, the Haridwar hub at `/locations/haridwar`, formerly `/haridwar-sidcul`, other);
 - the month-3 targets of PLAN §9.5 over the last 28 days;
 - the location pages (live since 17 October 2026): last week's impressions
   and clicks per region (/locations, Uttarakhand, Bengaluru, Delhi NCR), how
@@ -24,7 +24,7 @@ The report covers:
 
 The home page dropped "Haridwar" from its title on 16 October 2026. If
 Haridwar job or buyer impressions to the site fall more than 30% for four
-weeks and `/jobs/haridwar` and `/haridwar-sidcul` haven't picked them up,
+weeks and `/jobs/haridwar` and `/locations/haridwar` haven't picked them up,
 restore "Haridwar" in the home title.
 
 The watch checks it each week, but only judges it when there is enough data:

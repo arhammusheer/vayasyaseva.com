@@ -68,7 +68,7 @@ MSME: ${siteConfig.msme}
 ## Primary routes
 - ${baseUrl}/en-in
 - ${baseUrl}/en-in/services
-- ${baseUrl}/en-in/haridwar-sidcul
+- ${baseUrl}/en-in/locations
 - ${baseUrl}/en-in/compliance
 - ${baseUrl}/en-in/vayasya-setu
 - ${baseUrl}/en-in/about

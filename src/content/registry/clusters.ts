@@ -78,11 +78,10 @@ export const clusters: readonly Cluster[] = [
     id: "haridwar",
     publishable: true,
     name: { "en-IN": "Haridwar", "hi-IN": "हरिद्वार", "hi-Latn-IN": "Haridwar" },
-    navLabel: "Haridwar SIDCUL",
     states: ["uttarakhand"],
     // Hindi belt (PLAN §6.4): English · हिंदी · Hinglish.
     quickSwitch: ["en-IN", "hi-IN", "hi-Latn-IN"],
-    buyerHub: "/haridwar-sidcul",
+    buyerHub: "/locations/haridwar",
     // None signed off yet; the page copy carries no claim block.
     claims: [],
     // Waiting for the state registration list (PLAN §12, decision 3).
@@ -90,8 +89,9 @@ export const clusters: readonly Cluster[] = [
   },
   {
     // The Uttarakhand business page (owner direction 16-17 Oct 2026: publish
-    // as normal; VSPL confirmed it can supply crews here). Haridwar keeps its
-    // own cluster and page; this one carries the rest of the state (Selaqui).
+    // as normal; VSPL confirmed it can supply crews here). Haridwar is its
+    // own market, like Jalandhar–Kapurthala in Punjab; this one carries the
+    // rest of the state (Selaqui).
     id: "uttarakhand",
     publishable: true,
     name: { "en-IN": "Uttarakhand", "hi-IN": "उत्तराखंड", "hi-Latn-IN": "Uttarakhand" },

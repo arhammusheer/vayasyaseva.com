@@ -45,7 +45,7 @@ const setuCopy: BandCopy = {
 };
 
 /**
- * `href` lets a location page keep its prefill, e.g. "/contact#location=haridwar".
+ * `href` lets a location page keep its prefill, e.g. "/contact#location=peenya".
  * `variant="setu"` swaps the crew request for the Setu enquiry (English only).
  */
 export function CtaBlock({

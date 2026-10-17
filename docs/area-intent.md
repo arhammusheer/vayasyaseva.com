@@ -8,7 +8,7 @@ markets:
 |---|---|---|
 | Bengaluru (`bengaluru`) | `/jobs/bengaluru`, worker list | `/locations/bengaluru` |
 | Delhi NCR (`delhi-ncr`) | none | `/locations/delhi-ncr` |
-| Haridwar (`haridwar`) | `/jobs/haridwar` | `/haridwar-sidcul` |
+| Haridwar (`haridwar`) | `/jobs/haridwar` | `/locations/haridwar` |
 | Jalandhar–Kapurthala (`jalandhar`) | `/jobs/jalandhar` | `/locations/jalandhar` |
 | Punjab outside it (`punjab`) | `/jobs/punjab`, worker list | none (Jalandhar's page) |
 | Uttarakhand outside Haridwar (`uttarakhand`) | `/jobs/uttarakhand`, worker list | `/locations/uttarakhand` |

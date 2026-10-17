@@ -3,7 +3,7 @@ import { LocationPage, locationMetadata } from "@/components/pages/location";
 import { locationPages } from "@/content/locations";
 import { builtLocales } from "@/content/registry";
 import { LOCATION_CLUSTERS, locationPath, type LocationCluster } from "@/content/registry/identifiers";
-import { locales } from "@/lib/i18n";
+import { localeOfParams, locales } from "@/lib/i18n";
 
 export const dynamicParams = false;
 
@@ -17,13 +17,15 @@ type Props = { params: Promise<{ locale: string; cluster: string }> };
 const pageFor = (cluster: string) => ((LOCATION_CLUSTERS as string[]).includes(cluster) ? locationPages.get(locationPath(cluster as LocationCluster)) : undefined);
 
 export async function generateMetadata({ params }: Props) {
-  const page = pageFor((await params).cluster);
+  const { cluster, ...rest } = await params;
+  const page = pageFor(cluster);
   if (!page) notFound();
-  return locationMetadata(page);
+  return locationMetadata(page, localeOfParams(rest));
 }
 
 export default async function LocationHubPage({ params }: Props) {
-  const page = pageFor((await params).cluster);
+  const { cluster, ...rest } = await params;
+  const page = pageFor(cluster);
   if (!page) notFound();
-  return <LocationPage page={page} />;
+  return <LocationPage page={page} locale={localeOfParams(rest)} />;
 }

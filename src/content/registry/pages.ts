@@ -12,7 +12,6 @@
  */
 import { JOB_HUB_SLUGS, JOB_ROLE_SLUGS } from "@/lib/talent-intake/rules";
 import {
-  HARIDWAR_HUB_PATH,
   LOCATIONS_PATH,
   LOCATION_CLUSTERS,
   LOCATION_ESTATES,
@@ -175,7 +174,8 @@ const WAGE_HI_STATUS: PageStatus = "review";
 /**
  * Location pages (owner direction, 16 Oct 2026, publish as normal): drafts
  * until their copy in src/content/locations is written and checked; then
- * published, English only like the other business pages.
+ * published, English only like the other business pages unless the region's
+ * copy carries reviewed translations (LOCATION_HUB_LOCALES).
  */
 const LOCATIONS_STATUS: PageStatus = "published";
 const LOCATIONS_UPDATED = "2026-10-16";
@@ -198,6 +198,13 @@ const EN = { "en-IN": "published" } as const;
 const RETIRED_ALL = { "en-IN": "retired", "hi-IN": "retired", "hi-Latn-IN": "retired" } as const;
 const RETIRED_EN = { "en-IN": "retired" } as const;
 const RETIRED_EN_HINGLISH = { "en-IN": "retired", "hi-Latn-IN": "retired" } as const;
+
+/**
+ * Hubs whose copy has translations (src/content/locations/<region>.ts),
+ * drafts pending native review like the other hi-IN pages. Estates stay
+ * English. Any Hindi-belt hub can join once its translation is written.
+ */
+const LOCATION_HUB_LOCALES: Partial<Record<LocationCluster, Partial<Record<LocaleTag, PageStatus>>>> = { haridwar: ALL };
 
 const jobsPage = (path: string, kind: PageKind, priority: number, changeFrequency: PageEntry["changeFrequency"] = "monthly"): PageEntry =>
   ({
@@ -255,14 +262,15 @@ export const pageEntries: readonly PageEntry[] = [
   // Worker lists for the rest of each state (owner direction, 17 Oct 2026).
   { ...jobsPage(jobsHubPath("uttarakhand"), "jobs-city", 0.7), cluster: "uttarakhand" },
   { ...jobsPage(jobsHubPath("punjab"), "jobs-city", 0.7), locales: WITH_PUNJABI, cluster: "punjab" },
-  // Filed under Locations like every market's buyer page (17 Oct 2026); it keeps its URL.
-  { path: HARIDWAR_HUB_PATH, kind: "cluster-hub", audience: "business", locales: ALL, parent: LOCATIONS_PATH, cluster: "haridwar", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.8 },
+  // Haridwar's buyer page moved under /locations like every other market's
+  // (owner direction, 17 Oct 2026); each language keeps its own on the hop.
+  { path: "/haridwar-sidcul", kind: "cluster-hub", audience: "business", locales: RETIRED_ALL, parent: LOCATIONS_PATH, retiredTo: locationPath("haridwar"), updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.8 },
   // Location pages: the index, a hub per region, a page per industrial area.
   // Mixed audience: buyers and job seekers both search estate names, so the
   // (locations) layout has no phone.
   { path: LOCATIONS_PATH, kind: "static", audience: "mixed", locales: { "en-IN": LOCATIONS_STATUS }, parent: "/", updated: LOCATIONS_UPDATED, changeFrequency: "monthly", priority: 0.6 },
   ...LOCATION_CLUSTERS.flatMap((cluster) => [
-    { path: locationPath(cluster), kind: "cluster-hub", audience: "mixed", locales: { "en-IN": LOCATIONS_STATUS }, parent: LOCATIONS_PATH, cluster, updated: LOCATION_ADDED[cluster] ?? LOCATIONS_UPDATED, changeFrequency: "monthly", priority: 0.8 } satisfies PageEntry,
+    { path: locationPath(cluster), kind: "cluster-hub", audience: "mixed", locales: LOCATION_HUB_LOCALES[cluster] ?? { "en-IN": LOCATIONS_STATUS }, parent: LOCATIONS_PATH, cluster, updated: LOCATION_ADDED[cluster] ?? LOCATIONS_UPDATED, changeFrequency: "monthly", priority: 0.8 } satisfies PageEntry,
     ...LOCATION_ESTATES[cluster].map(
       (estate) =>
         ({ path: estatePath(cluster, estate), kind: "estate", audience: "mixed", locales: { "en-IN": LOCATIONS_STATUS }, parent: locationPath(cluster), cluster, updated: LOCATION_ADDED[cluster] ?? LOCATIONS_UPDATED, changeFrequency: "monthly", priority: 0.7 }) satisfies PageEntry,
@@ -275,7 +283,7 @@ export const pageEntries: readonly PageEntry[] = [
   { path: "/vayasya-setu", kind: "static", audience: "business", locales: EN, parent: "/about", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.7 },
   { path: "/about", kind: "static", audience: "business", locales: EN, parent: "/", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.7 },
   // Every buyer question, grouped; home, the service landings and the
-  // Haridwar hub show their own few and link to /faq#<group>.
+  // location pages show their own few and link to /faq#<group>.
   { path: "/faq", kind: "static", audience: "business", locales: EN, parent: "/", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.6 },
   { path: "/contact", kind: "static", audience: "business", locales: EN, parent: "/", updated: CONTACT_CREW_FORM, changeFrequency: "yearly", priority: 0.9 },
   { path: WAGE_HUB_PATH, kind: "wage-hub", audience: "mixed", locales: { ...EN, "hi-IN": WAGE_HI_STATUS }, parent: "/", updated: WAGE_HUB_UPDATED(), changeFrequency: "monthly", priority: 0.7 },
@@ -322,7 +330,6 @@ export const pageEntries: readonly PageEntry[] = [
  * keeps the locale it was asked in when the target has it.
  */
 export const pathAliases: Readonly<Record<string, string>> = {
-  "/locations/haridwar": HARIDWAR_HUB_PATH,
   // Short state codes (/minimum-wages/up) for the published state pages.
   ...Object.fromEntries(
     Object.entries(WAGE_STATE_CODES)

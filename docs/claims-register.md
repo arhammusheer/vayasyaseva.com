@@ -27,7 +27,7 @@ Last compiled: 16 October 2026, for the national phase 1 pull request; business 
 | We typically call within a few days when there is suitable work | /jobs FAQ, confirmation screen (3 languages) | A | Practice; becomes B once callback times are measured | | 16 Apr 2027 |
 | SMS with the reference comes from VAYSPL (may show as VM-VAYSPL); references start with VS-J- | Confirmation screen, /jobs/fees-and-fraud | C | DLT sender and template 227115 | | On any template change |
 | We tell you the site and the shift before you join | Jobs FAQ, /jobs/fees-and-fraud | A | Practice | | 16 Oct 2027 |
-| "Most of our work is here" / "some of our work is around Roorkee, Bhagwanpur and Bahadrabad" | /jobs/haridwar, /jobs FAQ. /haridwar-sidcul now says only "We also take requirements from units in Bhagwanpur, Bahadrabad and Roorkee"; home no longer says it | A | Owner to confirm current work in all three areas | | 16 Apr 2027 |
+| "Most of our work is here" / "some of our work is around Roorkee, Bhagwanpur and Bahadrabad" | /jobs/haridwar, /jobs FAQ. /locations/haridwar now says only "We also take requirements from units in Bhagwanpur, Bahadrabad and Roorkee"; home no longer says it | A | Owner to confirm current work in all three areas | | 16 Apr 2027 |
 | You are on our payroll; we pay your PF and ESIC where they apply | Role and hub pages (3 languages) | C | As the payroll line above | | 16 Oct 2027 |
 | We track each worker’s training and how long they stay (no figures) | Home benefit 2, contract labour explainer (review) | A | Owner positioning note; any figure is B and needs data | | 16 Oct 2027 |
 
@@ -46,7 +46,7 @@ Last compiled: 16 October 2026, for the national phase 1 pull request; business 
 | The crew checks loads against the challan and reports shortages | /services/loading-unloading-labour FAQ | A | Owner confirmed | Owner, 16 Oct 2026 | 16 Oct 2027 |
 | We supply certified forklift operators | Loading and unloading roles and FAQ | C | Owner correction, 16 Oct 2026 | Owner, 16 Oct 2026 | 16 Oct 2027 |
 | A cleaning routine agreed per area, checked by our supervisor through the shift | /services/housekeeping FAQ | A | Owner confirmed | Owner, 16 Oct 2026 | 16 Oct 2027 |
-| A site visit before a crew starts | /haridwar-sidcul FAQ (3 languages), /faq | A | Owner confirmed | Owner, 16 Oct 2026 | 16 Oct 2027 |
+| A site visit before a crew starts | /locations/haridwar and Selaqui FAQs (Haridwar in 3 languages), /faq | A | Owner confirmed | Owner, 16 Oct 2026 | 16 Oct 2027 |
 | Crew size, supervisor and rate agreed before anyone starts; workers inducted to your site before day one; a supervisor on site | /services engagement steps | A | Practice; owner to confirm | | 16 Oct 2027 |
 | We staff manufacturing plants, warehouses and logistics hubs, FMCG and consumer goods lines, offices and campuses, and hospitality-linked sites | /services#sectors (moved from /industries) | A | Owner to confirm current work in each sector | | 16 Oct 2027 |
 | Setu keeps attendance, payroll inputs and EPF and ESIC records, with reports in a format agreed with the client | /vayasya-setu | A | Practice | | 16 Oct 2027 |

@@ -31,7 +31,7 @@ export function pageType(path: string) {
   if (path.startsWith("/jobs/")) return "job_role";
   if (path === "/services") return "services";
   if (path.startsWith("/services/")) return "service";
-  if (path === "/haridwar-sidcul" || path === "/locations" || path.startsWith("/locations/")) return "local";
+  if (path === "/locations" || path.startsWith("/locations/")) return "local";
   if (path === "/contact") return "contact";
   if (path === "/privacy" || path === "/terms") return "legal";
   return safeAnalyticsPath(path) === "/other" ? "other" : "company";

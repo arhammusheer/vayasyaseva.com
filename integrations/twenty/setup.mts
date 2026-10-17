@@ -3,7 +3,7 @@
  * creates what is missing, updates select options, never deletes data
  * except the demo records with --remove-demo.
  *
- *   node integrations/twenty/setup.mts [--dry-run] [--remove-demo]
+ *   node integrations/twenty/setup.mts [--dry-run] [--remove-demo] [--reset-layout]
  *
  * Reaches Twenty through `kubectl port-forward svc/twenty` (it has no public
  * API route; the UI is behind Access) with the workspace API key in
@@ -18,14 +18,16 @@
  *                  optionally an application or opportunity, with delivery status
  *   company + opportunity  leads: the client and its crew request pipeline
  */
-import { execFileSync, spawn } from "node:child_process";
+import { ANSWER_OPTIONS } from "../windmill/talent/lib/crm.ts";
+import { applyLayout } from "./layout.mts";
+import { client, loadObjects, portForward, secret, type Gql, type MetaField, type Option } from "./lib.mts";
 
 const DRY_RUN = process.argv.includes("--dry-run");
 const REMOVE_DEMO = process.argv.includes("--remove-demo");
+const RESET_LAYOUT = process.argv.includes("--reset-layout");
 
 // --- the model ----------------------------------------------------------------
 
-type Option = { value: string; label: string; color: string };
 const COLORS = ["blue", "green", "orange", "purple", "turquoise", "sky", "yellow", "pink", "red", "gray"];
 const options = (pairs: [string, string][], colors?: string[]): Option[] =>
   pairs.map(([value, label], i) => ({ value, label, color: colors?.[i] ?? COLORS[i % COLORS.length] }));
@@ -55,10 +57,15 @@ const ROLES = options([
   ["ANY", "Any work"],
 ]);
 
+/** A select built from the quick form's answers (ANSWER_OPTIONS in the sync's crm.ts), in the form's order. */
+function answerOptions(question: keyof typeof ANSWER_OPTIONS, colors?: string[]): Option[] {
+  return options(Object.values(ANSWER_OPTIONS[question] as Record<string, readonly [string, string]>).map(([v, l]) => [v, l]), colors);
+}
+
 type Field = {
   name: string;
   label: string;
-  type: "TEXT" | "SELECT" | "MULTI_SELECT" | "DATE_TIME" | "DATE" | "NUMBER" | "RAW_JSON" | "BOOLEAN";
+  type: "TEXT" | "SELECT" | "MULTI_SELECT" | "DATE_TIME" | "DATE" | "NUMBER" | "RAW_JSON" | "BOOLEAN" | "PHONES";
   icon?: string;
   description?: string;
   options?: Option[];
@@ -129,8 +136,20 @@ const MODEL: ObjectSpec[] = [
         label: "Status",
         type: "SELECT",
         icon: "IconProgressCheck",
-        options: options([["NEW", "New"], ["SCREENED", "Screened"], ["CALLABLE", "Callable"], ["PLACED", "Placed"], ["ARCHIVED", "Archived"]], ["sky", "yellow", "green", "purple", "gray"]),
+        description: "New: not called yet. No answer: called, try again. Screened: spoke, checking fit. Callable: in the pool for work. Placed: on a site. Archived: not suitable or not interested.",
+        options: options(
+          [["NEW", "New"], ["NO_ANSWER", "No answer"], ["SCREENED", "Screened"], ["CALLABLE", "Callable"], ["PLACED", "Placed"], ["ARCHIVED", "Archived"]],
+          ["sky", "orange", "yellow", "green", "purple", "gray"],
+        ),
       },
+      { name: "phone", label: "Phone", type: "PHONES", icon: "IconPhone", description: "The applicant's mobile, to call from the list or board." },
+      { name: "workWanted", label: "Work wanted", type: "MULTI_SELECT", icon: "IconTool", options: ROLES, description: "Every kind of work the quick form ticked." },
+      { name: "area", label: "Area", type: "SELECT", icon: "IconMapPin", options: answerOptions("area") },
+      { name: "experience", label: "Experience", type: "SELECT", icon: "IconBriefcase", options: answerOptions("experience", ["gray", "sky", "blue", "green"]) },
+      { name: "education", label: "Education", type: "SELECT", icon: "IconSchool", options: answerOptions("education", ["gray", "sky", "blue", "purple", "green"]) },
+      { name: "canStart", label: "Can start", type: "SELECT", icon: "IconCalendarEvent", options: answerOptions("start", ["green", "yellow", "orange"]) },
+      { name: "shifts", label: "Shifts", type: "MULTI_SELECT", icon: "IconClock", options: answerOptions("shift", ["yellow", "purple", "sky"]) },
+      { name: "skills", label: "Skills", type: "TEXT", icon: "IconCertificate", description: "ITI, trade, machines, forklift and computer answers, in words." },
       { name: "source", label: "Source", type: "SELECT", icon: "IconWorld", options: options([["WEBSITE", "Website"], ["AGENT", "AI agent"], ["WHATSAPP", "WhatsApp"], ["PHONE", "Phone"], ["WALK_IN", "Walk-in"], ["OTHER", "Other"]]) },
       { name: "jobRole", label: "Role", type: "SELECT", icon: "IconTool", options: ROLES },
       { name: "cluster", label: "Cluster", type: "SELECT", icon: "IconMapPin", options: CLUSTERS },
@@ -205,60 +224,13 @@ const OPPORTUNITY_STAGES = options(
   ["sky", "blue", "purple", "orange", "green", "red"],
 );
 
-// --- Twenty API ---------------------------------------------------------------
-
-function secret(): string {
-  const b64 = execFileSync("kubectl", ["-n", "growth", "get", "secret", "twenty-api", "-o", "jsonpath={.data.TWENTY_API_KEY}"], { encoding: "utf8" });
-  return Buffer.from(b64, "base64").toString("utf8").trim();
-}
-
-async function portForward(): Promise<{ base: string; stop: () => void }> {
-  if (process.env.TWENTY_URL) return { base: process.env.TWENTY_URL.replace(/\/$/, ""), stop: () => {} };
-  const port = 13_000 + Math.floor(Math.random() * 1000);
-  const child = spawn("kubectl", ["-n", "growth", "port-forward", "svc/twenty", `${port}:80`], { stdio: "ignore" });
-  const base = `http://127.0.0.1:${port}`;
-  for (let i = 0; i < 60; i++) {
-    try {
-      if ((await fetch(`${base}/healthz`)).ok) return { base, stop: () => child.kill() };
-    } catch {}
-    await new Promise((r) => setTimeout(r, 500));
-  }
-  child.kill();
-  throw new Error("could not reach Twenty through kubectl port-forward");
-}
-
-function client(base: string, key: string) {
-  return async function gql<T>(endpoint: "/metadata" | "/graphql", query: string, variables: Record<string, unknown> = {}): Promise<T> {
-    const res = await fetch(`${base}${endpoint}`, {
-      method: "POST",
-      headers: { authorization: `Bearer ${key}`, "content-type": "application/json" },
-      body: JSON.stringify({ query, variables }),
-      signal: AbortSignal.timeout(60_000),
-    });
-    const body = (await res.json()) as { data?: T; errors?: { message: string; extensions?: unknown }[] };
-    // The extensions carry Twenty's per-field validation messages (no secrets).
-    if (body.errors?.length) throw new Error(`${endpoint}: ${body.errors.map((e) => `${e.message} ${JSON.stringify(e.extensions ?? {}).slice(0, 800)}`).join("; ")}`);
-    return body.data as T;
-  };
-}
-
-type MetaField = { id: string; name: string; type: string; options: Option[] | null; isActive: boolean };
-type MetaObject = { id: string; nameSingular: string; fields: { edges: { node: MetaField }[] } };
-
 const step = (s: string) => console.log(`${DRY_RUN ? "[dry run] " : ""}- ${s}`);
 
 async function main() {
   const { base, stop } = await portForward();
   try {
     const gql = client(base, secret());
-    const load = async () =>
-      (
-        await gql<{ objects: { edges: { node: MetaObject }[] } }>(
-          "/metadata",
-          `{ objects(paging:{first:500}) { edges { node { id nameSingular fields(paging:{first:500}) { edges { node { id name type options isActive } } } } } } }`,
-        )
-      ).objects.edges.map((e) => e.node);
-
+    const load = () => loadObjects(gql);
     let objects = await load();
     const byName = (n: string) => objects.find((o) => o.nameSingular === n);
 
@@ -348,9 +320,9 @@ async function main() {
       if (!DRY_RUN) await updateOptions(gql, stage, OPPORTUNITY_STAGES, "NEW");
     }
 
-    // 4. Views
+    // 4. Views, record pages, the Jobs dashboard and the sidebar (layout.mts)
     if (!DRY_RUN) objects = await load();
-    for (const v of VIEWS) await ensureView(gql, objects, v);
+    await applyLayout(gql, objects, { dryRun: DRY_RUN, reset: RESET_LAYOUT, step });
 
     // 5. Demo records (Twenty's seed for a new workspace)
     if (REMOVE_DEMO) await removeDemo(gql);
@@ -360,74 +332,6 @@ async function main() {
   }
 }
 
-type Gql = ReturnType<typeof client>;
-
-/**
- * Saved views: the lists staff open. Each copies the visible columns of the
- * object's default list (the INDEX view) and adds a filter or a grouping.
- * Matched by name; an existing view is left as people may have adjusted it.
- */
-type ViewSpec = {
-  object: string;
-  name: string;
-  icon: string;
-  type: "TABLE" | "KANBAN";
-  groupBy?: string;
-  filter?: { field: string; operand: "IS" | "IS_NOT"; values: string[] };
-};
-const VIEWS: ViewSpec[] = [
-  { object: "person", name: "Workers", icon: "IconUsers", type: "TABLE", filter: { field: "personType", operand: "IS", values: ["WORKER"] } },
-  { object: "person", name: "Client contacts", icon: "IconBuildingSkyscraper", type: "TABLE", filter: { field: "personType", operand: "IS", values: ["CLIENT_CONTACT"] } },
-  { object: "application", name: "By status", icon: "IconLayoutKanban", type: "KANBAN", groupBy: "status" },
-  { object: "communication", name: "Needs attention", icon: "IconAlertTriangle", type: "TABLE", filter: { field: "deliveryStatus", operand: "IS", values: ["FAILED", "UNKNOWN"] } },
-];
-
-type MetaView = { id: string; name: string; key: string | null; type: string; viewFields: { fieldMetadataId: string; isVisible: boolean; position: number; size: number }[] };
-
-async function ensureView(gql: Gql, objects: MetaObject[], spec: ViewSpec) {
-  const obj = objects.find((o) => o.nameSingular === spec.object);
-  if (!obj) return;
-  const views = (
-    await gql<{ getViews: MetaView[] }>(
-      "/metadata",
-      `query($id: String!) { getViews(objectMetadataId: $id) { id name key type viewFields { fieldMetadataId isVisible position size } } }`,
-      { id: obj.id },
-    )
-  ).getViews;
-  if (views.some((v) => v.name === spec.name)) return;
-  const index = views.find((v) => v.key === "INDEX");
-  const fieldId = (name: string) => obj.fields.edges.find((e) => e.node.name === name)?.node.id;
-  step(`creating view ${spec.object} "${spec.name}"`);
-  if (DRY_RUN) return;
-  const created = await gql<{ createView: { id: string } }>(
-    "/metadata",
-    `mutation($input: CreateViewInput!) { createView(input: $input) { id } }`,
-    {
-      input: {
-        name: spec.name,
-        objectMetadataId: obj.id,
-        type: spec.type,
-        icon: spec.icon,
-        position: views.length,
-        visibility: "WORKSPACE",
-        ...(spec.groupBy ? { mainGroupByFieldMetadataId: fieldId(spec.groupBy) } : {}),
-      },
-    },
-  );
-  const viewId = created.createView.id;
-  const columns = (index?.viewFields ?? []).filter((f) => f.isVisible).sort((a, b) => a.position - b.position);
-  if (columns.length) {
-    await gql("/metadata", `mutation($inputs: [CreateViewFieldInput!]!) { createManyViewFields(inputs: $inputs) { id } }`, {
-      inputs: columns.map((c, position) => ({ viewId, fieldMetadataId: c.fieldMetadataId, isVisible: true, position, size: c.size })),
-    });
-  }
-  if (spec.filter) {
-    await gql("/metadata", `mutation($input: CreateViewFilterInput!) { createViewFilter(input: $input) { id } }`, {
-      input: { viewId, fieldMetadataId: fieldId(spec.filter.field), operand: spec.filter.operand, value: spec.filter.values },
-    });
-  }
-  // Kanban columns: Twenty creates them itself from mainGroupByFieldMetadataId.
-}
 
 /** Replaces a select's options. Records holding a dropped value are moved to `fallback` first. */
 async function updateOptions(gql: Gql, field: MetaField, wanted: Option[], fallback?: string) {

@@ -7,12 +7,19 @@ VSPL's back office: job seekers as people with their applications and every mess
 | Object | What | Fields we added |
 |---|---|---|
 | **Person** | Workers and client contacts, one per phone number | Type (Worker / Client contact), Worker status (New, Callable, Placed, Not available, Do not contact), Clusters, Roles (`workRoles`; "roles" is reserved), Home area, Language, Consent version/at, Last applied, Last contact (the retention clock) |
-| **Application** (custom) | A job application; name = its reference VS-J-XXXXXX | Status (New → Screened → Callable → Placed → Archived), Source, Role (`jobRole`), Cluster, Message, Answers, Submitted, Consent version, Page, Talent DB id (unique sync key); → Person |
+| **Application** (custom) | A job application; name = its reference VS-J-XXXXXX | Status (New → No answer → Screened → Callable → Placed → Archived), Phone, Source, Role (`jobRole`), Work wanted, Area, Experience, Education, Can start, Shifts, Skills (the quick form's answers as real fields), Cluster, Message, Answers (raw), Submitted, Consent version, Page, Talent DB id (unique sync key); → Person |
 | **Communication** (custom) | Every SMS, WhatsApp, call or email, with delivery status | Channel, Direction, Delivery (Queued, Sent, Delivered, Read, Failed, Unknown), Template, Message, Provider, Provider ID, Status at, Error, Sync key (unique); → Person, Application, Crew request |
 | **Company** | Client companies | (standard) |
-| **Opportunity** | A crew request | Stage replaced with New → Contacted → Site visit → Quoted → Won / Lost; Crew size, Services, Site, Cluster, Start, Lead source, Enquiry, Case ID (unique sync key) |
+| **Opportunity**, labelled **Crew request** | A crew request | Stage replaced with New → Contacted → Site visit → Quoted → Won / Lost; Crew size, Services, Site, Cluster, Start, Lead source, Enquiry, Case ID (unique sync key) |
 
-Saved views: **Workers** and **Client contacts** (people by type), **By status** (applications as a board), **Needs attention** (communications that failed or are unknown). Opportunities keep Twenty's **By Stage** board.
+## How it is laid out (`layout.mts`)
+
+- **Sidebar**: Jobs dashboard, To call, Applications, People, Communications, Crew requests, Companies, Tasks, Notes, Dashboards; Workflows after.
+- **Applications**: **To call** (New and No answer, oldest first: the work queue), **Pipeline** (board by status), **All applications**, **Callable pool**, **By role** and **By area** (boards of open applications), **Last 7 days**. Each list shows the person, phone, role, area, experience and start date first; the raw answers, sync key and consent stay on the record only.
+- **People**: **Workers** (newest applicant first), **Callable workers**, **Workers by status** (board), **Client contacts**.
+- **Communications**: newest first; **Needs attention** (failed or unknown). **Crew requests**: the list and the **By Stage** board, with crew size, cluster, site and start.
+- **Record pages**: the fields in working order (phone, status, role, screening answers, message), the bookkeeping last.
+- **Jobs dashboard**, three tabs: *Applications* (to call, last 7 days, callable, placed; applications per day; status; open applications by role and area; experience, can start, source; the to-call table), *Workers and SMS* (worker counts and statuses, SMS delivered and needing attention), *Crew requests* (open requests, workers asked for, won, by stage and cluster).
 
 Option values are UPPER_SNAKE (`DELHI_NCR`, `FACTORY_HELPER`); the site's slugs map onto them (`integrations/windmill/talent/lib/crm.ts`).
 
@@ -20,9 +27,11 @@ Option values are UPPER_SNAKE (`DELHI_NCR`, `FACTORY_HELPER`); the site's slugs 
 node integrations/twenty/setup.mts --dry-run       # what it would add
 node integrations/twenty/setup.mts                 # add missing objects, fields, options, views
 node integrations/twenty/setup.mts --remove-demo   # also remove Twenty's sample records (done once, 17 Oct 2026)
+node integrations/twenty/setup.mts --reset-layout  # put every view, record page, the dashboard and the sidebar back as layout.mts says
+node integrations/twenty/backfill-applications.mts # fill new application fields from Answers (done once, 17 Oct 2026)
 ```
 
-Idempotent: it creates what is missing and updates select options; it never deletes data (apart from `--remove-demo`), and leaves an existing view as staff may have changed it. It reaches Twenty through `kubectl port-forward svc/twenty` with the key in Secret `growth/twenty-api` and prints neither.
+Idempotent: it creates what is missing and updates select options; it never deletes data (apart from `--remove-demo`), and leaves an existing view and the dashboard as staff may have changed them (`--reset-layout` overrides). Calls are spaced under Twenty's 100-a-minute key limit, so a reset takes a few minutes. It reaches Twenty through `kubectl port-forward svc/twenty` with the key in Secret `growth/twenty-api` and prints neither.
 
 ## How data gets in
 

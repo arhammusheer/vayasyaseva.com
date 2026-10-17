@@ -14,6 +14,7 @@ import {
   personFields,
   phoneDigits,
   roleValue,
+  screeningFields,
   sourceValue,
   type SyncCandidate,
 } from "./talent/lib/crm.ts";
@@ -142,6 +143,8 @@ test("the application and the acknowledgement carry the submission's facts and s
   assert.equal(a.jobRole, "PACKING");
   assert.equal(a.source, "WEBSITE");
   assert.equal(a.personId, "p1");
+  assert.deepEqual(a.phone, { primaryPhoneNumber: "9876543210", primaryPhoneCountryCode: "IN", primaryPhoneCallingCode: "+91" });
+  assert.deepEqual(a.workWanted, ["PACKING", "WAREHOUSE"]);
   const c = ackFields(candidate(), "p1", "a1");
   assert.equal(c.externalKey, "sms-ack:sub-1");
   assert.equal(c.deliveryStatus, "SENT");
@@ -365,4 +368,22 @@ test("sync: a failed delivery shows Fast2SMS's reason", () => {
   const c = ackFields(candidate({ delivery_status: "failed", delivery_detail: "Undelivered: DND number" }), "p", "a");
   assert.equal(c.deliveryStatus, "FAILED");
   assert.equal(c.error, "Undelivered: DND number");
+});
+
+test("screening answers become the application's own fields; unknown answers are dropped", () => {
+  const f = screeningFields({
+    work: ["iti-trades", "nope"], trade: ["fitter"], iti: ["iti-pass"], machines: ["cnc-vmc"],
+    experience: ["1-3"], education: ["iti-diploma"], shift: ["day", "night", "x"], start: ["now"], area: ["outside"],
+  });
+  assert.deepEqual(f, {
+    experience: "YEARS_1_TO_3",
+    education: "ITI_DIPLOMA",
+    canStart: "NOW",
+    area: "OUTSIDE_HARIDWAR",
+    shifts: ["DAY", "NIGHT"],
+    workWanted: ["ITI_TRADES"],
+    skills: "ITI passed · Fitter · CNC / VMC",
+  });
+  assert.deepEqual(screeningFields(null), { experience: null, education: null, canStart: null, area: null, shifts: [], workWanted: [], skills: "" });
+  assert.equal(screeningFields({ area: ["bengaluru:east"] }).area, "BENGALURU_EAST");
 });

@@ -18,6 +18,12 @@ website ──POST──► hooks.vayasyaseva.com/webhook/vspl-talent-intake
                                         acknowledgements updated (crm_sync table)
                   f/talent/setup        the schema (talent/schema.sql), run by every deploy
 
+Fast2SMS delivery reports ──POST──► hooks.vayasyaseva.com/api/r/webhook/fast2sms-dlr
+                  f/talent/delivery_report  checks x-vspl-dlr-secret (or ?key=), marks the
+                                        acknowledgement delivered / failed; sync_crm carries it
+                  f/talent/delivery_check   every 15 minutes: looks up (DLR API) reports that
+                                        never came, ten minutes to 7 days after acceptance
+
 website /api/contact, /api/agent/contact ──POST (after the response)──►
                   hooks.vayasyaseva.com/api/r/webhook/vspl-lead
                   f/leads/intake        checks x-vspl-lead-secret, files the company, client
@@ -72,6 +78,7 @@ Scripts read `f/talent/<name>` with `wmill.getVariable` (`talent/lib/config.ts`)
 | `twenty_api_key` | yes | `TWENTY_API_KEY` in `growth/twenty-api` (the workspace key "Windmill (automation)") |
 | `twenty_base_url` | no | `http://twenty.growth.svc.cluster.local` |
 | `lead_webhook_secret` | yes | `LEAD_WEBHOOK_SECRET` in `growth/windmill-leads`; the website has the same value as Vercel `LEAD_WEBHOOK_SECRET` |
+| `fast2sms_dlr_secret` | yes | `FAST2SMS_DLR_SECRET` in `growth/windmill-fast2sms`; the `x-vspl-dlr-secret` header of the Fast2SMS webhook |
 
 The `TALENT_*`, `FAST2SMS_*` and `CHATWOOT_*` keys are read from `growth/n8n-env` until n8n is retired; `--secrets-from=<secret>` reads another Secret in `growth` with the same keys. The API token is `SUPERADMIN_SECRET` in `growth/windmill-env`.
 
@@ -87,9 +94,9 @@ The `TALENT_*`, `FAST2SMS_*` and `CHATWOOT_*` keys are read from `growth/n8n-env
 6. creates or updates the schedules and the route `/api/r/webhook/vspl-talent-intake` (sync, no Windmill auth: the script checks the secret);
 7. warms the route with a wrong secret and expects 403 (the first call after a new version installs dependencies, ~7.5 s).
 
-**Schedules are created disabled.** `--enable-schedules` turns on acknowledge, deliver and sync_crm; `--enable-retention` turns on retention (after a hand-run check, as with n8n). A later deploy without the flags leaves each schedule as it is.
+**Schedules are created disabled.** `--enable-schedules` turns on acknowledge, deliver, sync_crm and delivery_check; `--enable-retention` turns on retention (after a hand-run check, as with n8n). A later deploy without the flags leaves each schedule as it is.
 
-Cron is Windmill's six-field form (seconds first), timezone Asia/Kolkata: acknowledge and deliver `0 * * * * *`, sync_crm `30 * * * * *`, retention `0 0 * * * *`.
+Cron is Windmill's six-field form (seconds first), timezone Asia/Kolkata: acknowledge and deliver `0 * * * * *`, sync_crm `30 * * * * *`, delivery_check `0 */15 * * * *`, retention `0 0 * * * *`.
 
 ## Behaviour (unchanged from n8n unless noted)
 
@@ -100,6 +107,8 @@ Cron is Windmill's six-field form (seconds first), timezone Asia/Kolkata: acknow
 - **Connections**: one Postgres connection per run. The `talent` role is capped at 5 connections on pg-main, shared with n8n while both run.
 
 - **CRM sync**: ten submissions a run (Twenty allows the API key 100 requests a minute, shared with the leads route); a 429 ends the run quietly and the rest go next minute. One failing submission is logged by reference and retried next run. A person is matched by phone; staff's worker status (callable, placed) is never downgraded, but a do-not-contact request always wins.
+- **Delivery reports** (new, no n8n equivalent): `sms_acknowledgements.delivery_status` is `delivered`, `failed` or `pending`, with Fast2SMS's own status and text in `delivery_detail`; a late or repeated report never turns delivered back. Only accepted acknowledgements are touched; reports for other messages answer 200 `matched: 0` so Fast2SMS stops retrying. The preprocessor keeps only the request ID, status, text and time, so no phone number lands in job arguments. In Twenty the Communication's Delivery becomes **Delivered** or **Failed** (with the reason in Error). Fast2SMS keeps reports about 7 days: acknowledgements from before 11 October 2026 stay Sent.
+- **The webhook** is made once in the Fast2SMS dashboard (its API answers 401 to creating one): `node integrations/windmill/fast2sms-webhook.mts` prints the values and confirms it exists; `--copy-secret` puts the header value on the clipboard.
 - **Leads**: a replayed case ID answers 202 and changes nothing; errors answer a bare 500. The website posts in `after()`, so a slow or failing route never touches the form, and the email to the shared inbox stays the primary path.
 
 ## Operating it

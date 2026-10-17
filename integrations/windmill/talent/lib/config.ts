@@ -31,6 +31,8 @@ export const VARIABLES = {
   twenty_api_key: { secret: true },
   /** The x-vspl-lead-secret header the website sends to f/leads/intake (Secret growth/windmill-leads). */
   lead_webhook_secret: { secret: true },
+  /** The x-vspl-dlr-secret header Fast2SMS sends with delivery reports (Secret growth/windmill-fast2sms). */
+  fast2sms_dlr_secret: { secret: true },
 } as const;
 
 export type ConfigName = keyof typeof VARIABLES;

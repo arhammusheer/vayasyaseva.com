@@ -87,6 +87,31 @@ export const SCRIPTS: ScriptSpec[] = [
     schedule: { cron: "30 * * * * *", summary: "Every minute: applications into Twenty CRM" },
   },
   {
+    name: "delivery_report",
+    summary: "Talent · SMS delivery report",
+    description:
+      "Fast2SMS's delivery reports (POST /webhook/fast2sms-dlr): checks x-vspl-dlr-secret and marks the acknowledgement delivered or failed; sync_crm carries it to Twenty.",
+    schema: {
+      $schema: "https://json-schema.org/draft/2020-12/schema",
+      type: "object",
+      properties: {
+        authorized: { type: "boolean", description: "Set by the preprocessor: the secret header matched." },
+        body: { type: "object", description: "The report's request id, status and times (no phone number)." },
+      },
+      required: ["authorized", "body"],
+    },
+    hasPreprocessor: true,
+    route: { path: "webhook/fast2sms-dlr", method: "post", secretHeader: "x-vspl-dlr-secret" },
+  },
+  {
+    name: "delivery_check",
+    summary: "Talent · SMS delivery check",
+    description:
+      "Looks up, with Fast2SMS's DLR API, accepted acknowledgements whose delivery report has not come after ten minutes (each at most hourly, for the 7 days Fast2SMS keeps them).",
+    schema: noArgs,
+    schedule: { cron: "0 */15 * * * *", summary: "Every 15 minutes: delivery reports that never came" },
+  },
+  {
     name: "intake",
     folder: "leads",
     summary: "Leads · intake",

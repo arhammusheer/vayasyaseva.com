@@ -20,9 +20,9 @@
  *    or metadata changed (parent_hash = the current version's hash).
  * 5. Runs f/talent/setup (schema) and waits for it.
  * 6. Creates or updates the schedules and the HTTP route. Schedules are
- *    created disabled: --enable-schedules turns acknowledge, deliver and sync_crm on
- *    (cutover), --enable-retention turns retention on (after a hand-run
- *    check, as with n8n). A re-run without the flags leaves them as they are.
+ *    created disabled: --enable-schedules turns acknowledge, deliver,
+ *    sync_crm and delivery_check on (cutover), --enable-retention turns
+ *    retention on (after a hand-run check, as with n8n). A re-run without the flags leaves them as they are.
  * 7. Warms the route (the first call after a new version installs
  *    dependencies, ~7.5 s) with a wrong secret, expecting 403.
  *
@@ -112,6 +112,7 @@ function readValues(): Record<ConfigName, string> {
     twenty_base_url: "http://twenty.growth.svc.cluster.local",
     twenty_api_key: secretValue("growth", "twenty-api", "TWENTY_API_KEY"),
     lead_webhook_secret: secretValue("growth", "windmill-leads", "LEAD_WEBHOOK_SECRET"),
+    fast2sms_dlr_secret: secretValue("growth", "windmill-fast2sms", "FAST2SMS_DLR_SECRET"),
   };
 }
 

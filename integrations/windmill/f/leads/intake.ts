@@ -23,6 +23,7 @@ const { VARIABLES, variablePath, setConfigForTests, config } = (() => {
       twenty_base_url: { secret: false },
       twenty_api_key: { secret: true },
       lead_webhook_secret: { secret: true },
+      fast2sms_dlr_secret: { secret: true },
   };
   const variablePath = (name) => `f/talent/${name}`;
   let override = null;
@@ -108,7 +109,7 @@ const { eq, twentyClient, twentyFromConfig } = (() => {
 })();
 
 // integrations/windmill/talent/lib/crm.ts
-const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, erasePerson } = (() => {
+const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, erasePerson } = (() => {
   const CLUSTER_VALUES = new Set(["HARIDWAR", "UTTARAKHAND", "DELHI_NCR", "BENGALURU", "JALANDHAR", "SAHARANPUR", "OTHER"]);
   const ROLE_VALUES = new Set([
       "FACTORY_HELPER", "PACKING", "MACHINE_OPERATOR", "WAREHOUSE", "FORKLIFT_OPERATOR", "DATA_ENTRY_OPERATOR",
@@ -218,7 +219,11 @@ const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneD
   }
   const ACK_TEMPLATE = "Job application received (DLT 1677100000000394062)";
   const ackText = (ref) => `Vayasya Seva received your job application. Ref ${ref}. We will contact you on this number about work.`;
-  function deliveryStatus(ackStatus) {
+  function deliveryStatus(ackStatus, delivery = null) {
+      if (ackStatus === "accepted" && delivery === "delivered")
+          return "DELIVERED";
+      if (ackStatus === "accepted" && delivery === "failed")
+          return "FAILED";
       switch (ackStatus) {
           case "accepted":
               return "SENT";
@@ -230,19 +235,20 @@ const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneD
               return "QUEUED";
       }
   }
+  const ackSyncState = (c) => c.ack_status && c.delivery_status ? `${c.ack_status}:${c.delivery_status}` : c.ack_status;
   const ackKey = (submissionId) => `sms-ack:${submissionId}`;
   function ackFields(c, personId, applicationId) {
       return {
           name: `SMS · application received · ${c.ref}`,
           channel: "SMS",
           direction: "OUTBOUND",
-          deliveryStatus: deliveryStatus(c.ack_status),
+          deliveryStatus: deliveryStatus(c.ack_status, c.delivery_status),
           template: ACK_TEMPLATE,
           body: ackText(c.ref),
           provider: "Fast2SMS",
           providerId: c.request_id ?? "",
-          statusAt: iso(c.accepted_at ?? c.ack_updated_at),
-          error: c.ack_error ?? "",
+          statusAt: iso(c.delivered_at ?? c.accepted_at ?? c.ack_updated_at),
+          error: c.delivery_status === "failed" ? (c.delivery_detail ?? "") : (c.ack_error ?? ""),
           externalKey: ackKey(c.id),
           personId,
           applicationId,
@@ -285,7 +291,7 @@ const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneD
       }
       return people.length;
   }
-  return { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, erasePerson };
+  return { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, erasePerson };
 })();
 
 // integrations/windmill/leads/lib/lead.ts

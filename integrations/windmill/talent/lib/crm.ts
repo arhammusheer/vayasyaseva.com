@@ -37,6 +37,10 @@ export interface SyncCandidate {
   ack_error: string | null;
   accepted_at: string | Date | null;
   ack_updated_at: string | Date | null;
+  /** Handset delivery (delivery.ts): delivered, failed, pending, or null before any report. */
+  delivery_status: string | null;
+  delivery_detail: string | null;
+  delivered_at: string | Date | null;
   person_id: string | null;
   application_id: string | null;
   synced_ack_status: string | null;
@@ -160,7 +164,10 @@ export function applicationFields(c: SyncCandidate, personId: string): Record<st
 export const ACK_TEMPLATE = "Job application received (DLT 1677100000000394062)";
 export const ackText = (ref: string) => `Vayasya Seva received your job application. Ref ${ref}. We will contact you on this number about work.`;
 
-export function deliveryStatus(ackStatus: string | null): string {
+/** The Communication's Delivery: the handset report once Fast2SMS has one, else the send's outcome. */
+export function deliveryStatus(ackStatus: string | null, delivery: string | null = null): string {
+  if (ackStatus === "accepted" && delivery === "delivered") return "DELIVERED";
+  if (ackStatus === "accepted" && delivery === "failed") return "FAILED";
   switch (ackStatus) {
     case "accepted":
       return "SENT";
@@ -173,6 +180,10 @@ export function deliveryStatus(ackStatus: string | null): string {
   }
 }
 
+/** What crm_sync remembers writing ("accepted", "accepted:delivered"…): SYNC_CANDIDATES builds the same. */
+export const ackSyncState = (c: Pick<SyncCandidate, "ack_status" | "delivery_status">) =>
+  c.ack_status && c.delivery_status ? `${c.ack_status}:${c.delivery_status}` : c.ack_status;
+
 export const ackKey = (submissionId: string) => `sms-ack:${submissionId}`;
 
 export function ackFields(c: SyncCandidate, personId: string, applicationId: string): Record<string, unknown> {
@@ -180,13 +191,13 @@ export function ackFields(c: SyncCandidate, personId: string, applicationId: str
     name: `SMS · application received · ${c.ref}`,
     channel: "SMS",
     direction: "OUTBOUND",
-    deliveryStatus: deliveryStatus(c.ack_status),
+    deliveryStatus: deliveryStatus(c.ack_status, c.delivery_status),
     template: ACK_TEMPLATE,
     body: ackText(c.ref),
     provider: "Fast2SMS",
     providerId: c.request_id ?? "",
-    statusAt: iso(c.accepted_at ?? c.ack_updated_at),
-    error: c.ack_error ?? "",
+    statusAt: iso(c.delivered_at ?? c.accepted_at ?? c.ack_updated_at),
+    error: c.delivery_status === "failed" ? (c.delivery_detail ?? "") : (c.ack_error ?? ""),
     externalKey: ackKey(c.id),
     personId,
     applicationId,

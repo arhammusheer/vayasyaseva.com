@@ -166,5 +166,18 @@ BEGIN
     ack_status     text,
     synced_at      timestamptz NOT NULL DEFAULT now()
   );
+
+  -- Handset delivery of an accepted acknowledgement: Fast2SMS's delivery
+  -- report (f/talent/delivery_report), or its lookup API when no report came
+  -- (f/talent/delivery_check). delivery_status is the outcome (delivered,
+  -- failed, pending); delivery_detail is Fast2SMS's own status and text.
+  ALTER TABLE sms_acknowledgements ADD COLUMN IF NOT EXISTS delivery_status text;
+  ALTER TABLE sms_acknowledgements DROP CONSTRAINT IF EXISTS sms_acknowledgements_delivery_status_check;
+  ALTER TABLE sms_acknowledgements ADD CONSTRAINT sms_acknowledgements_delivery_status_check
+    CHECK (delivery_status IN ('delivered', 'failed', 'pending'));
+  ALTER TABLE sms_acknowledgements ADD COLUMN IF NOT EXISTS delivery_detail text;
+  ALTER TABLE sms_acknowledgements ADD COLUMN IF NOT EXISTS delivered_at timestamptz;
+  ALTER TABLE sms_acknowledgements ADD COLUMN IF NOT EXISTS delivery_checked_at timestamptz;
+  CREATE INDEX IF NOT EXISTS sms_acknowledgements_request_idx ON sms_acknowledgements (request_id);
 END
 $$;

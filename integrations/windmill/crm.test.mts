@@ -5,6 +5,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   ackFields,
+  ackSyncState,
   applicationFields,
   clusterValue,
   deliveryStatus,
@@ -86,6 +87,9 @@ const candidate = (over: Partial<SyncCandidate> = {}): SyncCandidate => ({
   ack_error: null,
   accepted_at: "2026-10-16T10:00:05Z",
   ack_updated_at: "2026-10-16T10:00:05Z",
+  delivery_status: null,
+  delivery_detail: null,
+  delivered_at: null,
   person_id: null,
   application_id: null,
   synced_ack_status: null,
@@ -105,7 +109,7 @@ test("site and database slugs become Twenty option values; unknown ones are drop
   assert.equal(sourceValue({ source: "web_hi", channel: "web" }), "WEBSITE");
   assert.equal(sourceValue({ source: "web", channel: "agent" }), "AGENT");
   assert.equal(phoneDigits("+919876543210"), "9876543210");
-  assert.deepEqual(["pending", "sending", "accepted", "failed", "unknown"].map(deliveryStatus), ["QUEUED", "QUEUED", "SENT", "FAILED", "UNKNOWN"]);
+  assert.deepEqual(["pending", "sending", "accepted", "failed", "unknown"].map((s) => deliveryStatus(s)), ["QUEUED", "QUEUED", "SENT", "FAILED", "UNKNOWN"]);
 });
 
 test("a new worker: phone as Twenty keeps it, type worker, status new, roles and clusters merged", () => {
@@ -333,4 +337,32 @@ test("the lead route: 403 without the secret, 400 for a bad lead, never error de
   const bad = await leadMain(true, { caseId: "x" });
   assert.equal(bad.wm_status_code, 400);
   assert.match(String((bad.result as { error: string }).error), /^Invalid lead: /);
+});
+
+test("sync: a delivery report turns Sent into Delivered, and the state recorded carries it", async () => {
+  assert.equal(deliveryStatus("accepted", "delivered"), "DELIVERED");
+  assert.equal(deliveryStatus("accepted", "failed"), "FAILED");
+  assert.equal(deliveryStatus("accepted", "pending"), "SENT");
+  assert.equal(ackSyncState(candidate()), "accepted");
+  const t = fakeTwenty();
+  await runSyncCrm({ query: syncDb([candidate()]).query, crm: t.crm });
+  const [personId, appId] = [t.store.people[0].id, t.store.applications[0].id];
+  t.calls.length = 0;
+  const delivered = candidate({
+    synced: true, person_id: personId, application_id: appId, synced_ack_status: "accepted",
+    delivery_status: "delivered", delivery_detail: "Delivered: Delivered successfully", delivered_at: "2026-10-16T10:00:08Z",
+  });
+  const db = syncDb([delivered]);
+  await runSyncCrm({ query: db.query, crm: t.crm });
+  assert.deepEqual(t.calls, ["update communications"]);
+  assert.equal(t.store.communications[0].deliveryStatus, "DELIVERED");
+  assert.equal(t.store.communications[0].statusAt, "2026-10-16T10:00:08.000Z");
+  assert.equal(t.store.communications[0].error, "");
+  assert.equal(db.recorded[0][3], "accepted:delivered");
+});
+
+test("sync: a failed delivery shows Fast2SMS's reason", () => {
+  const c = ackFields(candidate({ delivery_status: "failed", delivery_detail: "Undelivered: DND number" }), "p", "a");
+  assert.equal(c.deliveryStatus, "FAILED");
+  assert.equal(c.error, "Undelivered: DND number");
 });

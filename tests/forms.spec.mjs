@@ -271,7 +271,7 @@ try {
   // /api/context answers as for a phone in Kapurthala; a second visitor arrives from the Haridwar ad.
   for (const [label, geo, landing, market, areaLabel] of [
     ['Kapurthala visitor', {country:'IN',region:'PB',city:'Kapurthala'}, '/en-in/jobs', 'jalandhar', 'Kapurthala'],
-    ['Haridwar ad click', {country:'IN',region:null,city:null}, '/en-in/jobs?utm_campaign=search_jobs', 'haridwar', 'Laksar'],
+    ['Haridwar ad click', {country:'IN',region:null,city:null}, '/en-in/jobs?utm_campaign=search_jobs&cluster=haridwar', 'haridwar', 'Laksar'],
     ['Ludhiana visitor', {country:'IN',region:'PB',city:'Ludhiana'}, '/en-in/jobs', 'punjab', 'Ludhiana'],
   ]) {
     const visitor=await browser.newContext({viewport:{width:390,height:844}});

@@ -30,3 +30,20 @@ test("their descriptions list every job market, alphabetically, or none", () => 
     assert.deepEqual([...at].sort((a, b) => a - b), at, `${p.locale} ${p.slug}: markets in order`);
   }
 });
+
+test("the jobs form's area answers: markets alphabetically when asking; another market, never 'other', after a decision", async () => {
+  const { areaOptions } = await importTs("src/content/pages/quick-apply.ts");
+  const { AREA_CLUSTERS } = await importTs("src/lib/talent-intake/rules.ts");
+  assert.deepEqual(areaOptions(null), ["market:bengaluru", "market:haridwar", "market:jalandhar", "market:punjab", "market:uttarakhand", "market:other"]);
+  // Decided Haridwar on a neutral page: Haridwar's areas, then every other market; no "Outside Haridwar".
+  const decided = areaOptions("haridwar", "decision");
+  assert.ok(!decided.includes("outside"));
+  assert.ok(decided.includes("haridwar:rest-of-uttarakhand") && !decided.includes("market:uttarakhand"));
+  assert.ok(["market:bengaluru", "market:jalandhar", "market:punjab", "market:other"].every((id) => decided.includes(id)));
+  // On a market's own page every answer that names a market files there, and the rest of the state files under the state.
+  assert.equal(AREA_CLUSTERS["haridwar:rest-of-uttarakhand"], "uttarakhand");
+  assert.equal(AREA_CLUSTERS["jalandhar:rest-of-punjab"], "punjab");
+  for (const market of ["haridwar", "uttarakhand", "jalandhar", "punjab", "bengaluru"]) {
+    for (const id of areaOptions(market, "decision")) assert.ok(Object.hasOwn(AREA_CLUSTERS, id), id);
+  }
+});

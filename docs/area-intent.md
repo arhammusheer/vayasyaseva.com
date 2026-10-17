@@ -33,23 +33,28 @@ they arrived, then where they are (`src/lib/intent/`).
 With no signal, every list is in `MARKET_ORDER` (alphabetical), the header
 shows "Locations" and "Jobs", and the form asks which market.
 
-## Signals and weights (`model.ts`)
+## Signals and weights (`model.ts`, model version 2)
 
 | Signal | Weight | From |
 |---|---|---|
-| Explicit pick | decides | An area link in the header, a tap on the `/jobs` or `/locations` list, the jobs form's "Where do you live?", the crew form's site state. Kept 90 days in localStorage. |
+| Pick, this session | 20 | A labelled market link (header area link or menu item, a `/jobs` or `/locations` list item; 90 days in localStorage), or the jobs form's "Where do you live?" (this session only). |
+| Pick, earlier session | 12 | The same localStorage pick, made before this session began. |
 | `?cluster=<id>` | 7 | Any URL this session: ads, SMS, shared links |
 | Landing page | 6 | The cluster of the session's first page |
 | Current page | 5 | The cluster of the page being viewed |
-| UTM tags | 4 | Place words in `utm_campaign`, `utm_term`, `utm_content`, `utm_source` (`search_jobs` is the Haridwar campaign; `jobs_jalandhar` the Jalandhar–Kapurthala one) |
-| Pages viewed | 1 each, up to 3 | Cluster pages seen this session |
-| Region | 3 | The visitor's state and city from the IP (`/api/context`, Vercel or Cloudflare geo headers; no permission asked, nothing stored server-side). The state gives its market (UK/UT → Uttarakhand, PB → Punjab, KA → Bengaluru, DL/HR → Delhi NCR); a city inside a narrower market narrows it (Roorkee → Haridwar, Kapurthala → Jalandhar–Kapurthala; `geoCluster`). IP cities in India are rough, hence the low weight. |
+| UTM tags | 4 | Place words, as whole words, in `utm_campaign`, `utm_term`, `utm_content`, `utm_source`. A generic campaign name (`search_jobs`) names no market: campaigns carry `cluster=` or a place word (`jobs_jalandhar`). |
+| Pages viewed | 1 each, up to 3 | Cluster pages seen this session (by neutral path: one page in two languages counts once) |
+| Region | 3 | Indian visitors only (`/api/context` checks the country; PB, UT and KA are codes elsewhere too). The state's market (UK/UT → Uttarakhand, PB → Punjab, KA → Bengaluru, DL/HR → Delhi NCR; UP has none), narrowed by the IP city or a typed place (`geoCluster`, `siteCluster`: accents stripped, old spellings such as Hardwar and Jullundur, Noida and Ghaziabad → Delhi NCR). IP cities in India are rough, hence the low weight. |
 
-The strongest non-region cluster is the intent. It wins outright when it
-agrees with the region, when there is no region, or when it scores at least
-twice the region's cluster. Otherwise both show, intent first (for example a
-visitor in Bengaluru who opened one Haridwar page). A side only shows markets
-that have a page there; with none, that side shows every market.
+Not picks: the unlabelled jobs door ("Jobs"), and the crew form's site state (where the business's site is, not what the visitor wants to see).
+
+A **session** ends after 30 minutes without a page view, or when a URL arrives with new ad or link tags (`gclid`, `gbraid`, `wbraid`, `utm_campaign`, `utm_source`, `cluster`): mobile browsers keep tabs for weeks.
+
+The strongest non-region cluster is the intent. It wins outright unless the region's market or a second intent (an old pick against a fresh ad) has at least half its points; then both show, intent first. Each side then lists up to two markets with a page there: **the page's own market first** (on `/jobs/bengaluru` Bengaluru leads, whatever else happened), then the decision, then a **stand-in** for a market with no page on that side (Punjab's business side is Jalandhar–Kapurthala's page), else the next market by score.
+
+The jobs form's area answers follow the same rules (`areaOptions` in `quick-apply.ts`): the page's or link's market shows its own areas (Haridwar's and Jalandhar's now include the rest of their state, filed under Uttarakhand or Punjab); a decided market shows its areas and **every other market instead of "Outside X"**, so a wrong guess can't file someone as `other`; with nothing decided the form asks which market (alphabetical, "Somewhere else" last). A saved answer stays among the options if the decision moves.
+
+Business leads are filed by `siteCluster`: a place named in the site city, else the sending page's market when it covers the site's state, else the state's market.
 
 ## Search engines
 
@@ -59,17 +64,24 @@ load. Canonicals never change, and `?cluster=` never creates an indexed URL.
 
 ## Measurement
 
-- `area_intent`, once per session per distinct decision: `mode` (default,
-  single, both), `intent`, `geo`, `region`, `business`, `jobs`, `confidence`.
-- `area_nav_click`: `cluster`, `surface` (business, jobs, jobs-index,
-  locations-index), `mode`.
-- The jobs form's area answer, stored with each application (`answers.area`,
-  and the filed `cluster`).
+Events (Umami for every visitor; Google Analytics only with Allow All, about 7% of visitors, so use Umami and the talent database):
 
-Umami records the events for every visitor; Google Analytics only with Allow
-All. Tune `WEIGHTS` from them: for example, if "both" headers mostly get
-clicks on the region's link, the region is under-weighted; if the first item
-on `/jobs` is rarely tapped, the decision is wrong more often than it looks.
+- `area_intent`, once per session per distinct decision: `mode`, `intent`, `geo`, `country`, `region` (Indian visitors only), `basis` (the signal that gave the leading market most of its points: chosen, param, landing, page, utm, views, geo, none), `chosen` (yes/no), `business`, `jobs`, `confidence`, `v` (model version; production before this change sent no `v`).
+- `area_nav_click`: `cluster`, `surface` (business, jobs, jobs-door, jobs-index, locations-index), `mode`, `decided` (what the site had put first on that side), `is_decided`, `position` (1 = first in the list), `explicit` (yes for labelled market links), `v`.
+- `quick_step` with `step=area`: `answer`, `area_source` (page, link, decision, ask), `decided`, `v`.
+- `job_form_submit` / `quick_apply_submit`: also `cluster` (the market the application files under) and `area_source`.
+- Server `application_received`: also `page_cluster` and `area` (the answer's set: market, haridwar, jalandhar…).
+- Page views keep `?cluster=` beside the UTM tags.
+
+Metrics (computable from these, model `v=2` only):
+
+- **Decision accuracy**: of `area_nav_click` with `explicit=yes` and `decided≠none`, the share with `is_decided=yes`. Low means the decision is wrong more often than it looks.
+- **First-position tap rate** on `/jobs` and `/locations`: `area_nav_click` with surface jobs-index/locations-index and `position=1`, over all taps there.
+- **Form correction rate**: `quick_step` area answers with `area_source=decision` whose answer is a `market:*` id (the person picked another market than the decided one).
+- **Basis mix**: `area_intent` by `basis`; weights are tuned where a basis's decisions are often corrected.
+- **Demand per market**: `application_received` by `cluster`, or `SELECT cluster, count(*) FROM submissions … GROUP BY 1`.
+
+No report runs these yet; they are Umami event-data queries (`/api/websites/<id>/event-data/values?event=area_nav_click&propertyName=is_decided`, filtered to `v=2`).
 
 ## Storage and privacy
 

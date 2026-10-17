@@ -4,6 +4,7 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { trackAnalyticsEvent } from "@/lib/analytics";
 import { noteChoice } from "@/lib/intent/store";
 import { useAreaDecision } from "@/lib/intent/use-area";
+import { MODEL_VERSION } from "@/lib/intent/model";
 
 /** One market in a list: its cluster id and its page, with the href already resolved for the page's language. */
 export type MarketItem = { cluster: string; href: string; title: string; text?: string };
@@ -40,14 +41,23 @@ export function MarketList({
   ];
   return (
     <ul className={className} data-decided={decided.join(" ") || undefined}>
-      {ordered.map((item) => (
+      {ordered.map((item, i) => (
         <li key={item.cluster} data-market={item.cluster}>
           <NextLink
             href={item.href}
             prefetch={false}
             onClick={() => {
               noteChoice(item.cluster);
-              trackAnalyticsEvent("area_nav_click", { cluster: item.cluster, surface, mode: area.mode });
+              trackAnalyticsEvent("area_nav_click", {
+                cluster: item.cluster,
+                surface,
+                mode: area.mode,
+                decided: decided.join("+") || "none",
+                is_decided: decided.includes(item.cluster) ? "yes" : "no",
+                position: i + 1,
+                explicit: "yes",
+                v: MODEL_VERSION,
+              });
             }}
           >
             <strong>

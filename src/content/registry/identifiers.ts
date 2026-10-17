@@ -118,3 +118,5 @@ export const UTTARAKHAND_AREA_IDS = ["uttarakhand:haridwar", "uttarakhand:dehrad
 export const PUNJAB_AREA_IDS = ["punjab:jalandhar-kapurthala", "punjab:ludhiana", "punjab:mohali", "punjab:amritsar", "punjab:other", "punjab:outside"] as const;
 /** The form with no market of its own (no signal yet): which market the person lives in. Append-only too. */
 export const MARKET_AREA_IDS = ["market:haridwar", "market:uttarakhand", "market:jalandhar", "market:punjab", "market:bengaluru", "market:other"] as const;
+/** The rest of the state on the Haridwar and Jalandhar forms, filed under the state's market (17 Oct 2026). Append-only too. */
+export const REST_OF_STATE_AREA_IDS = ["haridwar:rest-of-uttarakhand", "jalandhar:rest-of-punjab"] as const;

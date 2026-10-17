@@ -1,8 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
 import { trackServerEvent } from "@/lib/server-events";
 import { contactContract, parseContactRequest } from "@/lib/contact-contract";
 import { assessCrewRequest } from "@/lib/crew-request";
 import { createContactCaseId, sendInternalContactEmail } from "@/lib/msg91";
+import { buildLeadPayload, forwardLead } from "@/lib/lead-forward";
 import { clientIp, createRateLimiter } from "@/lib/rate-limit";
 import { agentInfoSchema } from "@/lib/talent-intake/contract";
 import { normaliseIndianMobile } from "@/lib/talent-intake/rules";
@@ -57,6 +58,9 @@ export async function POST(request: NextRequest) {
 
   try {
     const delivery = await sendInternalContactEmail({ ...data, details: [note, data.details].filter(Boolean).join("\n\n") }, { caseId });
+    // Into Twenty CRM too, after the response: never delays or fails the request.
+    const lead = buildLeadPayload(data, { caseId, channel: "agent", note });
+    after(() => forwardLead(lead));
     console.info("[AGENT CONTACT DELIVERED]", {
       caseId,
       ip,

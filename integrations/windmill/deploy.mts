@@ -20,7 +20,7 @@
  *    or metadata changed (parent_hash = the current version's hash).
  * 5. Runs f/talent/setup (schema) and waits for it.
  * 6. Creates or updates the schedules and the HTTP route. Schedules are
- *    created disabled: --enable-schedules turns acknowledge and deliver on
+ *    created disabled: --enable-schedules turns acknowledge, deliver and sync_crm on
  *    (cutover), --enable-retention turns retention on (after a hand-run
  *    check, as with n8n). A re-run without the flags leaves them as they are.
  * 7. Warms the route (the first call after a new version installs
@@ -48,7 +48,7 @@ import { randomBytes } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { createServer } from "node:net";
 import { dirname, resolve } from "node:path";
-import { SCRIPTS, TIMEZONE, WORKSPACE, FOLDER, scriptPath, type ScriptSpec } from "./scripts.mts";
+import { FOLDERS, SCRIPTS, TIMEZONE, WORKSPACE, scriptPath, specPath, type ScriptSpec } from "./scripts.mts";
 import { VARIABLES, variablePath, type ConfigName } from "./talent/lib/config.ts";
 import { metadata } from "./build.mts";
 
@@ -109,6 +109,9 @@ function readValues(): Record<ConfigName, string> {
     chatwoot_account_id: String(ACCOUNT_ID),
     r2_endpoint: R2_ENDPOINT,
     r2_bucket: R2_BUCKET,
+    twenty_base_url: "http://twenty.growth.svc.cluster.local",
+    twenty_api_key: secretValue("growth", "twenty-api", "TWENTY_API_KEY"),
+    lead_webhook_secret: secretValue("growth", "windmill-leads", "LEAD_WEBHOOK_SECRET"),
   };
 }
 
@@ -189,8 +192,10 @@ async function main() {
     }
     const wsReady = !DRY_RUN || (await w.exists("/workspaces/exists", { id: WORKSPACE.id }));
     const exists = async (path: string) => (wsReady ? w.exists(path) : false);
-    if (!(await exists(`/w/{ws}/folders/exists/${FOLDER}`))) {
-      await w.write("/w/{ws}/folders/create", { name: FOLDER, owners: [], extra_perms: {} }, `creating folder ${FOLDER}`);
+    for (const folder of FOLDERS) {
+      if (!(await exists(`/w/{ws}/folders/exists/${folder}`))) {
+        await w.write("/w/{ws}/folders/create", { name: folder, owners: [], extra_perms: {} }, `creating folder ${folder}`);
+      }
     }
 
     // Service user (see SERVICE_USER)
@@ -230,7 +235,7 @@ async function main() {
 
     // 4. Scripts
     for (const spec of SCRIPTS) {
-      const path = scriptPath(spec.name);
+      const path = specPath(spec);
       const content = readFileSync(resolve(here, `${path}.ts`), "utf8");
       const meta = metadata(spec);
       let parent: { hash: string; content: string; summary: string; description?: string; schema?: unknown } | null = null;
@@ -279,7 +284,7 @@ async function main() {
       for (let i = 0; i < 30; i++) {
         res = await fetch(`${base}/api/r/${spec.route!.path}`, {
           method: "POST",
-          headers: { "content-type": "application/json", "x-vspl-intake-secret": "deploy-warm-up" },
+          headers: { "content-type": "application/json", [spec.route!.secretHeader]: "deploy-warm-up" },
           body: "{}",
           signal: AbortSignal.timeout(120_000),
         });
@@ -298,7 +303,7 @@ type Api = ReturnType<typeof api>;
 
 async function schedule(w: Api, exists: (path: string) => Promise<boolean>, spec: ScriptSpec) {
   if (!spec.schedule) return;
-  const path = scriptPath(spec.name);
+  const path = specPath(spec);
   const enable = spec.name === "retention" ? ENABLE_RETENTION : ENABLE_SCHEDULES;
   const body = { schedule: spec.schedule.cron, timezone: TIMEZONE, args: {}, summary: spec.schedule.summary };
   if (await exists(`/w/{ws}/schedules/exists/${path}`)) {
@@ -315,7 +320,7 @@ async function schedule(w: Api, exists: (path: string) => Promise<boolean>, spec
 
 async function route(w: Api, exists: (path: string) => Promise<boolean>, spec: ScriptSpec) {
   if (!spec.route) return;
-  const path = scriptPath(spec.name);
+  const path = specPath(spec);
   const body = {
     path,
     script_path: path,

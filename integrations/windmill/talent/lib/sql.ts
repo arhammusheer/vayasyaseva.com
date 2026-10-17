@@ -184,3 +184,31 @@ RETURNING id, status, removed_submissions;`;
 
 /** Strips whole-line comments, as the n8n setup workflow did before running the schema. */
 export const schemaStatements = (schema: string) => schema.replace(/^--.*\n/gm, "");
+
+// --- CRM sync (f/talent/sync_crm) -------------------------------------------------
+
+/** Held for the run's connection: one sync at a time (the schedule can overlap a slow run). */
+export const CRM_SYNC_LOCK = `SELECT pg_try_advisory_lock(hashtext('talent:crm_sync')) AS locked;`;
+
+/** $1 batch size. Submissions not yet in Twenty, and synced ones whose SMS acknowledgement changed since. */
+export const SYNC_CANDIDATES = `
+SELECT s.id, s.ref, s.source, s.channel, s.locale, s.phone, s.consent_version, s.consented_at, s.text, s.role,
+       s.cluster, s.answers, s.page_path, s.applicant_name, s.created_at,
+       p.name AS person_name, p.clusters AS person_clusters, p.roles AS person_roles, p.home_area,
+       p.locale AS person_locale, p.status AS person_status, p.last_applied_at, p.last_contact_at, p.last_confirmed_at,
+       a.status AS ack_status, a.request_id, a.last_error AS ack_error, a.accepted_at, a.updated_at AS ack_updated_at,
+       c.person_id, c.application_id, c.ack_status AS synced_ack_status, (c.submission_id IS NOT NULL) AS synced
+FROM submissions s
+LEFT JOIN people p ON p.phone = s.phone
+LEFT JOIN sms_acknowledgements a ON a.submission_id = s.id
+LEFT JOIN crm_sync c ON c.submission_id = s.id
+WHERE c.submission_id IS NULL OR c.ack_status IS DISTINCT FROM a.status
+ORDER BY s.created_at
+LIMIT $1;`;
+
+/** $1 submission, $2 person, $3 application, $4 the acknowledgement status written. */
+export const RECORD_CRM_SYNC = `
+INSERT INTO crm_sync (submission_id, person_id, application_id, ack_status, synced_at)
+VALUES ($1::uuid, $2::uuid, $3::uuid, $4, now())
+ON CONFLICT (submission_id) DO UPDATE
+SET person_id = EXCLUDED.person_id, application_id = EXCLUDED.application_id, ack_status = EXCLUDED.ack_status, synced_at = now();`;

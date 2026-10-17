@@ -26,6 +26,11 @@ export const VARIABLES = {
   chatwoot_account_id: { secret: false },
   r2_endpoint: { secret: false },
   r2_bucket: { secret: false },
+  /** Twenty CRM (crm.vayasyaseva.com): its in-cluster URL and the workspace API key (Secret growth/twenty-api). */
+  twenty_base_url: { secret: false },
+  twenty_api_key: { secret: true },
+  /** The x-vspl-lead-secret header the website sends to f/leads/intake (Secret growth/windmill-leads). */
+  lead_webhook_secret: { secret: true },
 } as const;
 
 export type ConfigName = keyof typeof VARIABLES;

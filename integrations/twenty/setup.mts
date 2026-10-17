@@ -426,12 +426,7 @@ async function ensureView(gql: Gql, objects: MetaObject[], spec: ViewSpec) {
       input: { viewId, fieldMetadataId: fieldId(spec.filter.field), operand: spec.filter.operand, value: spec.filter.values },
     });
   }
-  if (spec.groupBy) {
-    const options = obj.fields.edges.find((e) => e.node.name === spec.groupBy)?.node.options ?? [];
-    await gql("/metadata", `mutation($inputs: [CreateViewGroupInput!]!) { createManyViewGroups(inputs: $inputs) { id } }`, {
-      inputs: options.map((o, position) => ({ viewId, fieldValue: o.value, isVisible: true, position })),
-    });
-  }
+  // Kanban columns: Twenty creates them itself from mainGroupByFieldMetadataId.
 }
 
 /** Replaces a select's options. Records holding a dropped value are moved to `fallback` first. */
@@ -471,9 +466,9 @@ async function removeDemo(gql: Gql) {
     await gql("/graphql", `mutation($filter: ${type}FilterInput!) { destroy${Plural}(filter: { and: [$filter, { deletedAt: { is: NOT_NULL } }] }) { id } }`, { filter });
   }
   // Workflows and dashboards don't take a name filter in mutations: find their ids first.
-  for (const [plural, type, label, names] of [
-    ["workflows", "Workflow", "name", demoWorkflows],
-    ["dashboards", "Dashboard", "title", demoDashboards],
+  for (const [plural, label, names] of [
+    ["workflows", "name", demoWorkflows],
+    ["dashboards", "title", demoDashboards],
   ] as const) {
     const Plural = plural[0].toUpperCase() + plural.slice(1);
     const found = await gql<Record<string, { edges: { node: { id: string } & Record<string, string> }[] }>>(

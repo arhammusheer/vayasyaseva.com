@@ -35,10 +35,19 @@ jobs:
         with:
           ref: ${{ github.event.deployment.sha || github.sha }}
 
+      # The scripts import site modules, which import the workspace package
+      # @vspl/contracts and its dependencies.
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       # Deployment URLs are behind Vercel protection, so pages are read from the
       # public domain; give the production alias a moment to point at this deploy.
@@ -61,10 +70,19 @@ jobs:
         with:
           ref: ${{ github.event.deployment.sha || github.sha }}
 
+      # The scripts import site modules, which import the workspace package
+      # @vspl/contracts and its dependencies.
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       # Fingerprints are an artifact of the last successful run (actions/cache
       # does not work on deployment_status, which has no branch ref); with none
@@ -105,10 +123,19 @@ jobs:
         with:
           ref: ${{ github.event.deployment.sha || github.sha }}
 
+      # The scripts import site modules, which import the workspace package
+      # @vspl/contracts and its dependencies.
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       # Keyless: GitHub's OIDC token is exchanged for a one-hour access token
       # of a service account with no project roles, usable only by this
@@ -138,10 +165,19 @@ jobs:
         with:
           ref: ${{ github.event.deployment.sha || github.sha }}
 
+      # The scripts import site modules, which import the workspace package
+      # @vspl/contracts and its dependencies.
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Submit the sitemap to Bing
         env:

@@ -14,6 +14,7 @@ import {
   formatDate,
   formatRupees,
   formatShortDate,
+  formatSize,
   headlineRate,
   ratesYear,
   sourceById,
@@ -31,6 +32,7 @@ import { SKILLS_HI, WAGE_HUB_HI, formatDateHi, wageHubHi } from "@/content/pages
 import { localePath, type Locale } from "@/lib/i18n";
 import { duesNote, duesSources, employerDues } from "@/content/statutory";
 import { COMPLIANCE_HELP } from "@/content/compliance";
+import { EmploymentFinder } from "@/components/pages/employment-finder";
 
 /**
  * The minimum wage pages: lean English answer pages (the hub and one page
@@ -308,6 +310,133 @@ function Documents({ state, slug }: { state: WageState; slug: WageStateSlug }) {
   );
 }
 
+/**
+ * Every scheduled employment, one closed row per notification: the work it
+ * covers and the lowest rate it sets, opening to its full table. The main
+ * tables above answer most readers; this answers "what about my work?".
+ * Notifications the state cites but has not published say so instead of
+ * guessing a figure.
+ */
+function EmploymentSchedule({ state }: { state: WageState }) {
+  const schedule = state.employments;
+  if (!schedule) return null;
+  const s = x.schedule;
+  const vda = formatRupees(schedule.vda.amount);
+  const total = (basic: number) => formatRupees(basic + schedule.vda.amount);
+  const count = schedule.groups.reduce((n, g) => n + g.employments.length, 0);
+  return (
+    <Section id="employments" className="pt-0 pb-12 sm:pb-14 lg:pb-16">
+      <div className="wage-split">
+        <h2 className="wage-h2">{s.heading}</h2>
+        <div>
+          <p className="wage-emp-intro">{s.intro(state.name, count, vda, formatDate(schedule.vda.effectiveFrom))}</p>
+          <EmploymentFinder label={s.find} hint={s.findHint} noMatch={s.noMatch}>
+            <ul className="wage-emp-list">
+              {schedule.groups.map((g) => {
+                const table = g.table ? state.tables.find((t) => t.id === g.table) : undefined;
+                const source = g.source ? sourceById(state, g.source) : undefined;
+                const date = formatDate(g.date);
+                const lowest = g.rows ? Math.min(...g.rows.flatMap((r) => r.basic)) : null;
+                const summary =
+                  lowest !== null
+                    ? s.from(total(lowest))
+                    : g.allowance
+                      ? s.allowance(g.allowance.label, formatRupees(g.allowance.amount))
+                      : table
+                        ? s.inTable
+                        : s.notOnline;
+                const columns = g.columns ?? [{ name: s.perMonth }];
+                return (
+                  <li key={g.id} data-search={`${g.employments.join(" ")} ${g.rows?.map((r) => r.label).join(" ") ?? ""} ${g.number}`.toLowerCase()}>
+                    <details className="wage-emp">
+                      <summary>
+                        <span className="wage-emp-name">{g.employments.join(", ")}</span>
+                        <span className={lowest === null && !g.allowance ? "wage-emp-rate is-quiet" : "wage-emp-rate"}>{summary}</span>
+                      </summary>
+                      <div className="wage-emp-body">
+                        {g.rows && (
+                          <div className="wage-table-scroll">
+                            <table className="wage-table is-compact">
+                              <caption className="sr-only">{s.caption(g.employments.join(", "), state.name, vda)}</caption>
+                              <thead>
+                                <tr>
+                                  <th scope="col">{x.table.skill}</th>
+                                  {columns.map((c) => (
+                                    <th scope="col" key={c.name}>
+                                      {c.name}
+                                    </th>
+                                  ))}
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {g.rows.map((r, i) => {
+                                  const heading = r.group && r.group !== g.rows?.[i - 1]?.group ? r.group : null;
+                                  return (
+                                    <Fragment key={i}>
+                                      {heading && (
+                                        <tr className="zone-row">
+                                          <th scope="rowgroup" colSpan={columns.length + 1}>
+                                            {heading}
+                                          </th>
+                                        </tr>
+                                      )}
+                                      <tr>
+                                        <th scope="row">{r.label}</th>
+                                        {r.basic.map((b, j) => (
+                                          <td key={j}>{total(b)}</td>
+                                        ))}
+                                      </tr>
+                                    </Fragment>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
+                          </div>
+                        )}
+                        {g.columns?.some((c) => c.areas) && (
+                          <dl className="wage-zones">
+                            {g.columns.map((c) => (
+                              <div key={c.name}>
+                                <dt>{c.name}</dt>
+                                <dd>{c.areas}</dd>
+                              </div>
+                            ))}
+                          </dl>
+                        )}
+                        {table && (
+                          <p className="wage-note">
+                            {s.seeTable}{" "}
+                            <a href={`#${table.id}`} className="wage-inline-link">
+                              {table.title}
+                            </a>
+                            .
+                          </p>
+                        )}
+                        {g.unpublished && !g.allowance && <p className="wage-note">{s.unpublished(g.number, date, vda)}</p>}
+                        {g.note && <p className="wage-note">{g.note}</p>}
+                        {g.rows && (
+                          <p className="wage-source">
+                            {s.plusVda(vda)} {s.notification(g.number, date)}.{" "}
+                            {source && (
+                              <a href={source.url} lang="hi-IN">
+                                {x.pdf(source.language === "hi", source.sizeKb ? formatSize(source.sizeKb) : null)}
+                              </a>
+                            )}
+                          </p>
+                        )}
+                      </div>
+                    </details>
+                  </li>
+                );
+              })}
+            </ul>
+          </EmploymentFinder>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
 /** An order number that breaks only after a slash, never at a hyphen, so it is copied whole. */
 function OrderNumber({ value }: { value: string }) {
   const parts = value.split("/");
@@ -516,6 +645,7 @@ export function WageStatePage({ slug }: { slug: WageStateSlug }) {
           </p>
         )}
       </Section>
+      <EmploymentSchedule state={state} />
       <Dues slug={slug} name={state.name} />
       <Faqs faqs={t.faqs}>
         <Documents state={state} slug={slug} />

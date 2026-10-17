@@ -91,6 +91,22 @@ test('integrity: the next revision must follow the newest rates', () => {
   assert.ok(wageIntegrityProblems(s).some((p) => p.includes('nextRevision.expected')));
 });
 
+test('integrity: each scheduled employment shows its rates one way, with a figure per column', () => {
+  const uk = wageStates.find((s) => s.state === 'uttarakhand');
+  const groups = uk.employments.groups;
+  const shops = groups.find((g) => g.id === 'shops');
+  const broken = {
+    ...uk,
+    employments: {
+      ...uk.employments,
+      groups: [...groups.filter((g) => g.id !== 'shops'), { ...shops, unpublished: true, rows: [{ label: 'Unskilled', basic: [12539] }] }],
+    },
+  };
+  const problems = wageIntegrityProblems(broken);
+  assert.ok(problems.some((p) => p.includes('exactly one of table, rows or unpublished')));
+  assert.ok(problems.some((p) => p.includes('1 figures for 2 column(s)')));
+});
+
 test('file sizes read as KB or MB', () => {
   assert.equal(formatSize(751), '751 KB');
   assert.equal(formatSize(2368), '2.3 MB');

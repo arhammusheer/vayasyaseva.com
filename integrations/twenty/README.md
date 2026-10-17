@@ -7,19 +7,22 @@ VSPL's back office: job seekers as people with their applications and every mess
 | Object | What | Fields we added |
 |---|---|---|
 | **Person** | Workers and client contacts, one per phone number | Type (Worker / Client contact), Worker status (New, Callable, Placed, Not available, Do not contact), Clusters, Roles (`workRoles`; "roles" is reserved), Home area, Language, Consent version/at, Last applied, Last contact (the retention clock) |
-| **Application** (custom) | A job application; name = its reference VS-J-XXXXXX | Status (New → No answer → Screened → Callable → Placed → Archived), Phone, Source, Role (`jobRole`), Work wanted, Area, Experience, Education, Can start, Shifts, Skills (the quick form's answers as real fields), Cluster, Message, Answers (raw), Submitted, Consent version, Page, Talent DB id (unique sync key); → Person |
+| **Application** (custom) | A job application; name = its reference VS-J-XXXXXX | Phone, Source, Role (`jobRole`), Work wanted, Area, Experience, Education, Can start, Shifts, Skills (the quick form's answers as real fields), Cluster, Message, Answers (raw), Submitted, Consent version, Page, Talent DB id (unique sync key); → Person |
 | **Communication** (custom) | Every SMS, WhatsApp, call or email, with delivery status | Channel, Direction, Delivery (Queued, Sent, Delivered, Read, Failed, Unknown), Template, Message, Provider, Provider ID, Status at, Error, Sync key (unique); → Person, Application, Crew request |
 | **Company** | Client companies | (standard) |
 | **Opportunity**, labelled **Crew request** | A crew request | Stage replaced with New → Contacted → Site visit → Quoted → Won / Lost; Crew size, Services, Site, Cluster, Start, Lead source, Enquiry, Case ID (unique sync key) |
 
 ## How it is laid out (`layout.mts`)
 
-- **Sidebar**: Jobs dashboard, To call, Applications, People, Communications, Crew requests, Companies, Tasks, Notes, Dashboards; Workflows after.
-- **Applications**: **To call** (New and No answer, oldest first: the work queue), **Pipeline** (board by status), **All applications**, **Callable pool**, **By role** and **By area** (boards of open applications), **Last 7 days**. Each list shows the person, phone, role, area, experience and start date first; the raw answers, sync key and consent stay on the record only.
-- **People**: **Workers** (newest applicant first), **Callable workers**, **Workers by status** (board), **Client contacts**.
-- **Communications**: newest first; **Needs attention** (failed or unknown). **Crew requests**: the list and the **By Stage** board, with crew size, cluster, site and start.
-- **Record pages**: the fields in working order (phone, status, role, screening answers, message), the bookkeeping last.
-- **Jobs dashboard**, three tabs: *Applications* (to call, last 7 days, callable, placed; applications per day; status; open applications by role and area; experience, can start, source; the to-call table), *Workers and SMS* (worker counts and statuses, SMS delivered and needing attention), *Crew requests* (open requests, workers asked for, won, by stage and cluster).
+Applications read as a **log, not a pipeline** (owner, 17 Oct 2026): nothing asks staff to move cards or work a queue.
+
+- **Sidebar**: Job applications dashboard, Applications, People, Communications, Crew requests, Companies, Tasks, Notes, Dashboards; Workflows after.
+- **Applications**: **Applications log** (every application newest first: reference, submitted, person, phone, role, area, experience, can start, work wanted, shifts, education, skills, source, message), **Last 7 days**, **Calendar** (by submitted date). Raw answers, sync key and consent stay on the record only.
+- **People**: **Workers** (newest applicant first), **Client contacts**. **Communications**: newest first; **Needs attention** (failed or unknown SMS). **Crew requests**: the list and the **By Stage** board.
+- **Record pages**: submitted, person, phone and the answers first; bookkeeping last.
+- **Job applications dashboard**: today / 7 days / 30 days / all-time counts; applications per day by role (30 days); per week; cumulative over time; role and area for the last 30 days; the latest applications, newest first.
+
+The status field is kept but not shown in lists. Views of the earlier pipeline layout are listed in `RETIRED` and removed by setup.
 
 Option values are UPPER_SNAKE (`DELHI_NCR`, `FACTORY_HELPER`); the site's slugs map onto them (`integrations/windmill/talent/lib/crm.ts`).
 

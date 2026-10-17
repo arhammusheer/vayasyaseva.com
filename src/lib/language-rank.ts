@@ -17,6 +17,13 @@
  * 5. the page's cluster;
  * 6. the default set.
  *
+ * With no signal (no cookie, no intent), location weighs more (owner
+ * direction, 17 Oct 2026): an Indian region's set comes before the
+ * browser's languages, since most Indian phones list Hindi or English
+ * whatever the person reads, and a visitor in Karnataka or Punjab should see
+ * ಕನ್ನಡ or ਪੰਜਾਬੀ first. Outside India, or with no region, the browser's
+ * languages still lead.
+ *
  * Punjabi: a visitor in Punjab, or one whose request names the Jalandhar
  * region, gets ਪੰਜਾਬੀ first wherever a page has it. The picker's
  * language_choice events (choice, position, order key) show whether that
@@ -190,16 +197,15 @@ export function rankLocales(available: readonly Locale[], input: RankInput): Loc
     if (available.includes(locale) && !order.includes(locale)) order.push(locale);
   };
   const chosen = allLocales.find((l) => l === input.chosen);
-  if (chosen) add(chosen);
-  acceptLanguageLocales(input.acceptLanguage).forEach(add);
   const intentSet = input.intent ? CLUSTER_SETS[input.intent] : undefined;
+  const regionSet = input.country === "IN" && input.region ? REGION_SETS[input.region] : undefined;
+  if (chosen) add(chosen);
+  // No signal: location first, then the browser's languages.
+  if (!chosen && !intentSet && regionSet) RANK_SETS[regionSet].forEach(add);
+  acceptLanguageLocales(input.acceptLanguage).forEach(add);
   if (intentSet) RANK_SETS[intentSet].forEach(add);
-  if (input.country === "IN") {
-    const set = input.region ? REGION_SETS[input.region] : undefined;
-    if (set) RANK_SETS[set].forEach(add);
-  } else if (input.country) {
-    RANK_SETS.default.forEach(add);
-  }
+  if (regionSet) RANK_SETS[regionSet].forEach(add);
+  else if (input.country && input.country !== "IN") RANK_SETS.default.forEach(add);
   const clusterSet = input.cluster ? CLUSTER_SETS[input.cluster] : undefined;
   if (clusterSet) RANK_SETS[clusterSet].forEach(add);
   RANK_SETS.default.forEach(add);

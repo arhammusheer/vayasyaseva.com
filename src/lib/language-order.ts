@@ -25,7 +25,10 @@ const cookie = (name: string) => {
 
 export function useLanguageOrder(path: string, area: AreaDecision): Locale[] | null {
   const [order, setOrder] = useState<Locale[] | null>(null);
-  const intent = (area.jobs[0] ?? area.business[0]) as ClusterId | undefined;
+  // Intent only when the decision rests on something the visitor did or
+  // how they arrived: a decision from location alone is the region below,
+  // and with no signal location leads (rankLocales).
+  const intent = (area.basis === "geo" || area.basis === "none" ? undefined : (area.jobs[0] ?? area.business[0])) as ClusterId | undefined;
   useEffect(() => {
     let alive = true;
     regionCluster().then(({ country, region }) => {

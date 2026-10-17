@@ -29,11 +29,16 @@ test("Hindi belt by region: हिंदी · Hinglish · English, old and new 
   assert.deepEqual(order({ country: "IN", region: "TN", cluster: "haridwar" }), ["hi-IN", "hi-Latn-IN", "en-IN"]);
 });
 
-test("Accept-Language: non-English tags by q-value; English never pushes others down", () => {
+test("Accept-Language: non-English tags by q-value; English never pushes others down; with no signal an Indian region leads", () => {
   assert.deepEqual(order({ acceptLanguage: "en-IN,en;q=0.9,hi;q=0.8", country: "US" }), ["hi-IN", "hi-Latn-IN", "en-IN"]);
-  assert.deepEqual(order({ acceptLanguage: "hi-Latn-IN", country: "IN", region: "UP" }), ["hi-Latn-IN", "hi-IN", "en-IN"]);
+  // No cookie, no intent: location weighs more than the browser's list (owner direction, 17 Oct 2026).
+  assert.deepEqual(order({ acceptLanguage: "hi-Latn-IN", country: "IN", region: "UP" }), ["hi-IN", "hi-Latn-IN", "en-IN"]);
   assert.deepEqual(order({ acceptLanguage: "hi;q=0", country: "US" }), ["en-IN", "hi-IN", "hi-Latn-IN"]);
-  assert.deepEqual(order({ acceptLanguage: "kn-IN,hi;q=0.5", country: "IN", region: "KA" }), ["hi-IN", "hi-Latn-IN", "en-IN"]);
+  assert.deepEqual(order({ acceptLanguage: "kn-IN,hi;q=0.5", country: "IN", region: "KA" }), ["en-IN", "hi-Latn-IN", "hi-IN"]);
+  // With intent in the request, the browser's languages come before the region again.
+  assert.deepEqual(order({ acceptLanguage: "hi-Latn-IN", country: "IN", region: "UP", intent: "haridwar" }), ["hi-Latn-IN", "hi-IN", "en-IN"]);
+  // An Indian visitor with no region known: the browser's list leads.
+  assert.deepEqual(order({ acceptLanguage: "hi-Latn-IN", country: "IN" }), ["hi-Latn-IN", "hi-IN", "en-IN"]);
   assert.deepEqual(rank.acceptLanguageLocales("garbage;;q=x, *"), []);
 });
 
@@ -119,8 +124,10 @@ test("Punjabi: first for a visitor in Punjab and for a request that names the Ja
   assert.deepEqual(order({ country: "IN", region: "PB" }, WITH_PA), ["pa-IN", "hi-Latn-IN", "en-IN", "hi-IN"]);
   // Intent the request carries (?cluster=, UTM tags) beats a region elsewhere in India...
   assert.deepEqual(order({ country: "IN", region: "UP", intent: "jalandhar" }, WITH_PA).slice(0, 2), ["pa-IN", "hi-Latn-IN"]);
-  // ...but not a language the browser asks for.
-  assert.equal(order({ country: "IN", region: "PB", acceptLanguage: "hi-IN,hi;q=0.9" }, WITH_PA)[0], "hi-IN");
+  // With no signal, a visitor in Punjab gets Punjabi even if the phone lists Hindi...
+  assert.equal(order({ country: "IN", region: "PB", acceptLanguage: "hi-IN,hi;q=0.9" }, WITH_PA)[0], "pa-IN");
+  // ...but a picked language (the cookie) still wins.
+  assert.equal(order({ country: "IN", region: "PB", chosen: "hi-IN" }, WITH_PA)[0], "hi-IN");
   assert.equal(order({ acceptLanguage: "pa-IN,pa;q=0.9,en;q=0.8" }, WITH_PA)[0], "pa-IN");
   // The page's cluster fills gaps: the Jalandhar hub puts Punjabi first for an unknown region.
   assert.equal(order({ country: "IN", cluster: "jalandhar" }, WITH_PA)[0], "pa-IN");

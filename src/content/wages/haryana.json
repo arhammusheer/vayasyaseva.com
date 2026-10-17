@@ -39,6 +39,21 @@
    "sha256": "4d2c6c61d64e51018c431deb2e110ae8c724db3581279824b48a1a4e2a91fe85",
    "sizeKb": 226,
    "retrievedOn": "2026-10-17"
+  },
+  {
+   "id": "hr-2015-schedule",
+   "kind": "notification",
+   "title": "List of 50 scheduled employments (Minimum Wages Act notification of 21 October 2015; its rates are superseded)",
+   "number": "3/42/83-3 Lab.",
+   "date": "2015-10-21",
+   "authority": "Labour Department, Government of Haryana",
+   "legalBasis": "Minimum Wages Act, 1948, section 5(2). Haryana Government Gazette (Extraordinary) No. 185-2015/Ext., 21 October 2015, pages 2549-2556, in Hindi and English.",
+   "url": "https://storage.hrylabour.gov.in/uploads/labour_laws/Y2016/Dec/W1/D02/NotificationMW21.10.15.PDF",
+   "listing": "https://hrylabour.gov.in/home/readmore?cat_id=51&status=1",
+   "language": "en",
+   "sha256": "ec4ced274f6fabca3b1f0815e42ad30a1b9400210db751626372dc3e1f055306",
+   "sizeKb": 543,
+   "retrievedOn": "2026-10-17"
   }
  ],
  "tables": [
@@ -99,6 +114,79 @@
    ]
   }
  ],
+ "employments": {
+  "groups": [
+   {
+    "id": "all",
+    "title": "Every employment",
+    "number": "2/25/26-2 Lab.",
+    "date": "2026-04-09",
+    "source": "hr-2015-schedule",
+    "table": "all-employments",
+    "employments": [
+     "Agricultural implements, machine tools and general engineering, including cycles and electrical goods",
+     "Cinemas",
+     "Saw mills and timber trade",
+     "Cotton ginning and pressing",
+     "Textiles",
+     "Glass",
+     "Public motor transport",
+     "Tanneries and leather",
+     "Rice, flour and dal mills",
+     "Rubber",
+     "Local authorities",
+     "Tubewell operation",
+     "Woollen carpet and shawl weaving on powerloom or handloom",
+     "Shops and commercial establishments",
+     "Tailoring, stitching and embroidery",
+     "Public Works Department, irrigation",
+     "Oil mills",
+     "Khandsari, gur and shakkar",
+     "Private printing presses",
+     "Non-ferrous metal rolling and re-rolling; brass, copper and aluminium utensils",
+     "Scientific instruments",
+     "Chemicals and distilleries",
+     "Contractors and establishments of the Forest Department",
+     "Electroplating, buffing and polishing",
+     "Ferrous metal rolling and re-rolling",
+     "Road construction and maintenance, building operations, stone breaking and crushing; Public Works Department, public health",
+     "Ayurvedic and Unani pharmaceuticals",
+     "Potteries, ceramics and refractories",
+     "Automobile repair workshops",
+     "Paper, cardboard and typewriter ribbons",
+     "Asbestos cement and cement products",
+     "Petrol and diesel pumps",
+     "Foundries",
+     "Readymade garments",
+     "Food, dairy, grain mill and bakery products",
+     "Soap, detergents and cosmetics",
+     "Co-operative credit and service societies and mini banks",
+     "Forestry and related development work",
+     "Packing",
+     "Agriculture",
+     "Rag cleaning and sorting",
+     "Any manufacturing process under the Factories Act, 1948",
+     "Private coaching classes, schools including nursery schools, and technical institutions",
+     "Any other shop or commercial establishment",
+     "Hospitals and nursing homes",
+     "Electronics",
+     "Plastics",
+     "Domestic workers"
+    ],
+    "note": "The 2026 notification covers all employments without a list: every establishment and factory, including contract labour. These names are the 2015 schedule's, to help you find your work."
+   },
+   {
+    "id": "brick-kilns",
+    "number": "2/25/26-2 Lab.",
+    "date": "2026-04-09",
+    "unpublished": true,
+    "employments": [
+     "Brick kilns"
+    ],
+    "note": "The April 2026 notification says brick-kiln rates will be notified separately. No such notification is on the labour department's website yet, and the last brick-kiln piece rates it published date from January 2024, so none are shown here."
+   }
+  ]
+ },
  "history": [],
  "verification": [
   "2026-10-17: The Labour Department's 'News & Notifications' listing (hrylabour.gov.in, cat_id 46) links 'Revise Basic Minimum wages Notification dated 09-04-2026 w.e.f. 01-04-2026 in the State of Haryana' (storage.hrylabour.gov.in ... 1775725409.pdf). It is the Haryana Government Gazette (Extraordinary) No. 51-2026/Ext. of 9 April 2026, notification No. 2/25/26-2 Lab., with a text layer; figures read from it: per month 15220.71 / 16780.74 / 18500.81 / 19425.85, per day 585.41 / 645.41 / 711.56 / 747.14.",
@@ -107,6 +195,8 @@
   "2026-10-17: Order No. 25744-860 of 5 October 2026 (Labour Commissioner, scanned, read from the page image) directs enforcement in all establishments including petty establishments, because CWP-PIL-255 of 2026 alleges the notification is not being implemented; the High Court hearing is listed for 28 October 2026.",
   "2026-10-17: OPEN QUESTION for the reviewer: no VDA or dearness revision on the April 2026 rates was found on the listing (checked back to 2024). The draft Code on Wages (Haryana) Rules, 2026 (notification 02/08/2021-2Lab., 4 May 2026) say the VDA is revised before 1 April and 1 October; until the rules are final, whether a revision was due on 1 October 2026 is uncertain. nextRevision.expected is set to 1 October 2026 on that draft rule.",
   "2026-10-17: Next revision. Note 1 of the 9 April 2026 notification (Gazette Ext. No. 51-2026, p. 409): full neutralisation of the consumer price index, 'the adjustment in wages shall be made further as prescribed in Code on Wages Rules, 2026'. The draft rules (No. 02/08/2021-2Lab., Gazette Ext. No. 66-2026, 4 May 2026, rule 5) compute the VDA before 1 April and 1 October. Not final; nothing newer on the listing. Expected set to 2027-04-01 with no missed dates.",
-  "2026-10-17: Clerical and other staff. The notification has four categories and lists no occupations. Schedule A of the draft wage rules (4 May 2026, pp. 771-790) places clerks, typists, data entry operators, store keepers, time keepers and motor vehicle drivers under Skilled, accountants and armed guards under Highly skilled, and peons, helpers, loaders, sweepers and cleaners under Unskilled (watchman appears under both Unskilled and Semi-skilled). Draft, not binding."
+  "2026-10-17: Clerical and other staff. The notification has four categories and lists no occupations. Schedule A of the draft wage rules (4 May 2026, pp. 771-790) places clerks, typists, data entry operators, store keepers, time keepers and motor vehicle drivers under Skilled, accountants and armed guards under Highly skilled, and peons, helpers, loaders, sweepers and cleaners under Unskilled (watchman appears under both Unskilled and Semi-skilled). Draft, not binding.",
+  "2026-10-17: the 9 April 2026 notification fixes rates 'in respect of all the employments' and lists none; its one exception: 'The rate of wages applicable on brick kilns will be notified separately.' The last list of employments is the Schedule of notification 3/42/83-3 Lab. of 21 October 2015 (Gazette Ext. 185-2015, pages 2553-2554, English, read by eye): 50 employments, including 40 Agriculture, 48 Brick Kiln, 49 Domestic worker and 50 Safai Karamchari. The page lists 48 of them as names to find one's work by, leaving out brick kilns and safai karamcharis (struck from the schedule by the High Court in CWP 25328 of 2015, as the Labour Commissioner's letter 5377-522 of 22 February 2024 records).",
+  "2026-10-17: no brick-kiln notification under the Code on Wages on hrylabour.gov.in (listings cat_id 46 to August 2024 and its archive, 51 and 70, searched for brick, kiln, bhatta, wage, minimum). The last brick-kiln figures the department published are in letter 5377-522 of 22 February 2024 (piece rates from 1 January 2024, on the 2015 notification); no later CPI letter is online, so the page shows no brick-kiln figures. The Haryana e-Gazette search needs a captcha and was not searched."
  ]
 }

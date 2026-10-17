@@ -100,6 +100,8 @@ export type WageHistory = {
  */
 export type EmploymentGroup = {
   id: string;
+  /** A short name for a long list ("All 74 scheduled employments"); the names then show when the row opens. */
+  title?: string;
   /** The notification's number as the state cites it ("286"). */
   number: string;
   date: string;
@@ -113,16 +115,22 @@ export type EmploymentGroup = {
   unpublished?: boolean;
   /** Areas or kinds of unit with their own rate; one column when absent. */
   columns?: { name: string; areas?: string }[];
-  /** basic: one figure per column, in rupees a month. group: a sub-heading (hotels' unit sizes). */
-  rows?: { label: string; group?: string; basic: number[] }[];
+  /**
+   * values: one figure per column, in rupees: the basic wage where the
+   * schedule adds its VDA, else the full rate in `unit`. group: a
+   * sub-heading (hotels' unit sizes).
+   */
+  rows?: { label: string; group?: string; values: number[] }[];
+  /** The figures are the full rate as stated, with no schedule VDA added, in this unit ("Per 1,000 bricks"). */
+  unit?: string;
   /** An allowance of the employment's own, in place of the schedule's VDA (agriculture). */
   allowance?: { amount: number; label: string; effectiveFrom: string; source: string };
   note?: string;
 };
 
 export type EmploymentSchedule = {
-  /** The VDA every listed notification adds to its basic wage. */
-  vda: { amount: number; effectiveFrom: string; source: string };
+  /** The VDA every listed notification adds to its basic wage; absent where the main tables already carry it. */
+  vda?: { amount: number; effectiveFrom: string; source: string };
   groups: EmploymentGroup[];
 };
 
@@ -237,6 +245,9 @@ const rupees = new Intl.NumberFormat("en-IN", { maximumFractionDigits: 2, minimu
 const paise = new Intl.NumberFormat("en-IN", { maximumFractionDigits: 2, minimumFractionDigits: 2 });
 /** ₹13,690 or ₹526.54: whole rupees without decimals, paise with two digits. */
 export const formatRupees = (value: number) => `₹${Number.isInteger(value) ? rupees.format(value) : paise.format(value)}`;
+const exact = new Intl.NumberFormat("en-IN", { maximumFractionDigits: 3, minimumFractionDigits: 2 });
+/** As printed, to three decimals where the instrument gives them (Punjab's ₹486.588 a day); never rounded. */
+export const formatRupeesAsPrinted = (value: number) => (Number.isInteger(value) ? formatRupees(value) : `₹${exact.format(value)}`);
 
 /**
  * Who signed the figures off: "<name>, <role>", or "a director of Vayasya

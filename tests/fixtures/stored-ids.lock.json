@@ -1,0 +1,364 @@
+{
+  "identifiers.LOCALE_TAGS": [
+    "en-IN",
+    "hi-IN",
+    "hi-Latn-IN",
+    "pa-IN",
+    "kn-IN"
+  ],
+  "identifiers.CLUSTER_IDS": [
+    "haridwar",
+    "uttarakhand",
+    "delhi-ncr",
+    "bengaluru",
+    "jalandhar",
+    "saharanpur",
+    "other",
+    "punjab"
+  ],
+  "identifiers.PAGE_STATUSES": [
+    "draft",
+    "review",
+    "published",
+    "paused",
+    "retired"
+  ],
+  "identifiers.AUDIENCES": [
+    "business",
+    "jobs",
+    "mixed"
+  ],
+  "identifiers.WAGE_STATE_SLUGS": [
+    "uttarakhand",
+    "uttar-pradesh",
+    "delhi",
+    "haryana",
+    "punjab",
+    "karnataka"
+  ],
+  "identifiers.WAGE_STATE_CODES": [
+    "up=uttar-pradesh",
+    "dl=delhi",
+    "uk=uttarakhand"
+  ],
+  "identifiers.GUIDE_SLUGS": [
+    "new-labour-codes",
+    "what-is-contract-labour",
+    "contract-labour-act"
+  ],
+  "identifiers.LOCATION_CLUSTERS": [
+    "uttarakhand",
+    "bengaluru",
+    "delhi-ncr",
+    "jalandhar",
+    "haridwar"
+  ],
+  "identifiers.HARIDWAR_AREA_IDS": [
+    "sidcul-bahadrabad",
+    "haridwar-jwalapur",
+    "roorkee-bhagwanpur",
+    "laksar",
+    "outside"
+  ],
+  "identifiers.BENGALURU_AREA_IDS": [
+    "bengaluru:north",
+    "bengaluru:south",
+    "bengaluru:east",
+    "bengaluru:west",
+    "bengaluru:outside"
+  ],
+  "identifiers.JALANDHAR_AREA_IDS": [
+    "jalandhar:kapurthala",
+    "jalandhar:city",
+    "jalandhar:phagwara-goraya",
+    "jalandhar:outside"
+  ],
+  "identifiers.UTTARAKHAND_AREA_IDS": [
+    "uttarakhand:haridwar",
+    "uttarakhand:dehradun-selaqui",
+    "uttarakhand:udham-singh-nagar",
+    "uttarakhand:other",
+    "uttarakhand:outside"
+  ],
+  "identifiers.PUNJAB_AREA_IDS": [
+    "punjab:jalandhar-kapurthala",
+    "punjab:ludhiana",
+    "punjab:mohali",
+    "punjab:amritsar",
+    "punjab:other",
+    "punjab:outside"
+  ],
+  "identifiers.MARKET_AREA_IDS": [
+    "market:haridwar",
+    "market:uttarakhand",
+    "market:jalandhar",
+    "market:punjab",
+    "market:bengaluru",
+    "market:other"
+  ],
+  "identifiers.REST_OF_STATE_AREA_IDS": [
+    "haridwar:rest-of-uttarakhand",
+    "jalandhar:rest-of-punjab"
+  ],
+  "rules.INTAKE_SOURCES": [
+    "web_en",
+    "web_hi",
+    "web_hinglish"
+  ],
+  "rules.LEGACY_SOURCE_LOCALES": [
+    "web_en",
+    "web_hi",
+    "web_hinglish"
+  ],
+  "rules.INTAKE_CHANNELS": [
+    "web",
+    "agent"
+  ],
+  "rules.JOB_ROLE_SLUGS": [
+    "factory-helper",
+    "packing",
+    "machine-operator",
+    "warehouse",
+    "forklift-operator",
+    "data-entry-operator",
+    "housekeeping",
+    "iti-trades",
+    "electrician",
+    "welder",
+    "fitter"
+  ],
+  "rules.JOB_HUB_SLUGS": [
+    "freshers",
+    "10th-pass",
+    "12th-pass"
+  ],
+  "rules.INTAKE_FORM_KEYS": [
+    "long",
+    "quick"
+  ],
+  "rules.ATTACHMENT_KINDS": [
+    "image",
+    "document"
+  ],
+  "crew-request.KNOWN_PLACES": [
+    "haridwar",
+    "sidcul",
+    "sidcul-haridwar",
+    "bhagwanpur",
+    "bahadrabad",
+    "roorkee",
+    "uttarakhand",
+    "selaqui",
+    "bengaluru",
+    "peenya",
+    "bommasandra-jigani-attibele",
+    "electronic-city-whitefield",
+    "hoskote-narasapura",
+    "delhi-ncr",
+    "gurugram-manesar",
+    "noida-greater-noida",
+    "faridabad-ghaziabad",
+    "delhi-industrial-areas",
+    "jalandhar",
+    "kapurthala",
+    "phagwara-goraya",
+    "jalandhar-focal-point"
+  ],
+  "locations.placeId": [
+    "uttarakhand",
+    "selaqui",
+    "delhi-ncr",
+    "gurugram-manesar",
+    "noida-greater-noida",
+    "faridabad-ghaziabad",
+    "delhi-industrial-areas",
+    "jalandhar",
+    "kapurthala",
+    "jalandhar-focal-point",
+    "phagwara-goraya",
+    "bengaluru",
+    "peenya",
+    "bommasandra-jigani-attibele",
+    "electronic-city-whitefield",
+    "hoskote-narasapura",
+    "haridwar"
+  ],
+  "identifiers.LOCATION_ESTATES.uttarakhand": [
+    "selaqui"
+  ],
+  "identifiers.LOCATION_ESTATES.bengaluru": [
+    "peenya",
+    "bommasandra-jigani-attibele",
+    "electronic-city-whitefield",
+    "hoskote-narasapura"
+  ],
+  "identifiers.LOCATION_ESTATES.delhi-ncr": [
+    "gurugram-manesar",
+    "noida-greater-noida",
+    "faridabad-ghaziabad",
+    "delhi-industrial-areas"
+  ],
+  "identifiers.LOCATION_ESTATES.jalandhar": [
+    "kapurthala",
+    "jalandhar-focal-point",
+    "phagwara-goraya"
+  ],
+  "identifiers.LOCATION_ESTATES.haridwar": [],
+  "rules.QUICK_ANSWERS.work": [
+    "factory-helper",
+    "packing",
+    "warehouse",
+    "machine-operator",
+    "iti-trades",
+    "housekeeping",
+    "data-entry-operator",
+    "forklift-operator",
+    "any"
+  ],
+  "rules.QUICK_ANSWERS.trade": [
+    "electrician",
+    "welder",
+    "fitter",
+    "machinist",
+    "other-trade"
+  ],
+  "rules.QUICK_ANSWERS.iti": [
+    "iti-pass",
+    "iti-pursuing",
+    "no-iti"
+  ],
+  "rules.QUICK_ANSWERS.machines": [
+    "packing-machine",
+    "moulding",
+    "press",
+    "cnc-vmc",
+    "other-machine"
+  ],
+  "rules.QUICK_ANSWERS.forklift": [
+    "licence-experience",
+    "experience-only",
+    "want-to-learn"
+  ],
+  "rules.QUICK_ANSWERS.computer": [
+    "typing",
+    "excel",
+    "tally",
+    "sap-erp"
+  ],
+  "rules.QUICK_ANSWERS.experience": [
+    "fresher",
+    "under-1",
+    "1-3",
+    "3-plus"
+  ],
+  "rules.QUICK_ANSWERS.education": [
+    "below-10th",
+    "10th",
+    "12th",
+    "iti-diploma",
+    "graduate"
+  ],
+  "rules.QUICK_ANSWERS.shift": [
+    "day",
+    "night",
+    "rotating"
+  ],
+  "rules.QUICK_ANSWERS.start": [
+    "now",
+    "week",
+    "month"
+  ],
+  "rules.QUICK_ANSWERS.area": [
+    "sidcul-bahadrabad",
+    "haridwar-jwalapur",
+    "roorkee-bhagwanpur",
+    "laksar",
+    "outside",
+    "bengaluru:north",
+    "bengaluru:south",
+    "bengaluru:east",
+    "bengaluru:west",
+    "bengaluru:outside",
+    "jalandhar:kapurthala",
+    "jalandhar:city",
+    "jalandhar:phagwara-goraya",
+    "jalandhar:outside",
+    "uttarakhand:haridwar",
+    "uttarakhand:dehradun-selaqui",
+    "uttarakhand:udham-singh-nagar",
+    "uttarakhand:other",
+    "uttarakhand:outside",
+    "punjab:jalandhar-kapurthala",
+    "punjab:ludhiana",
+    "punjab:mohali",
+    "punjab:amritsar",
+    "punjab:other",
+    "punjab:outside",
+    "market:haridwar",
+    "market:uttarakhand",
+    "market:jalandhar",
+    "market:punjab",
+    "market:bengaluru",
+    "market:other",
+    "haridwar:rest-of-uttarakhand",
+    "jalandhar:rest-of-punjab"
+  ],
+  "crm.ANSWER_OPTIONS.experience": [
+    "fresher=FRESHER",
+    "under-1=UNDER_1_YEAR",
+    "1-3=YEARS_1_TO_3",
+    "3-plus=YEARS_3_PLUS"
+  ],
+  "crm.ANSWER_OPTIONS.education": [
+    "below-10th=BELOW_CLASS_10",
+    "10th=CLASS_10",
+    "12th=CLASS_12",
+    "iti-diploma=ITI_DIPLOMA",
+    "graduate=GRADUATE"
+  ],
+  "crm.ANSWER_OPTIONS.start": [
+    "now=NOW",
+    "week=WITHIN_WEEK",
+    "month=WITHIN_MONTH"
+  ],
+  "crm.ANSWER_OPTIONS.shift": [
+    "day=DAY",
+    "night=NIGHT",
+    "rotating=ROTATING"
+  ],
+  "crm.ANSWER_OPTIONS.area": [
+    "sidcul-bahadrabad=SIDCUL_BAHADRABAD",
+    "haridwar-jwalapur=HARIDWAR_JWALAPUR",
+    "roorkee-bhagwanpur=ROORKEE_BHAGWANPUR",
+    "laksar=LAKSAR",
+    "outside=OUTSIDE_HARIDWAR",
+    "bengaluru:north=BENGALURU_NORTH",
+    "bengaluru:south=BENGALURU_SOUTH",
+    "bengaluru:east=BENGALURU_EAST",
+    "bengaluru:west=BENGALURU_WEST",
+    "bengaluru:outside=OUTSIDE_BENGALURU",
+    "jalandhar:kapurthala=KAPURTHALA",
+    "jalandhar:city=JALANDHAR_CITY",
+    "jalandhar:phagwara-goraya=PHAGWARA_GORAYA",
+    "jalandhar:outside=OUTSIDE_JALANDHAR",
+    "uttarakhand:haridwar=UK_HARIDWAR_ROORKEE",
+    "uttarakhand:dehradun-selaqui=DEHRADUN_SELAQUI",
+    "uttarakhand:udham-singh-nagar=UDHAM_SINGH_NAGAR",
+    "uttarakhand:other=ELSEWHERE_UTTARAKHAND",
+    "uttarakhand:outside=OUTSIDE_UTTARAKHAND",
+    "punjab:jalandhar-kapurthala=PB_JALANDHAR_KAPURTHALA",
+    "punjab:ludhiana=LUDHIANA",
+    "punjab:mohali=MOHALI_KHARAR",
+    "punjab:amritsar=AMRITSAR",
+    "punjab:other=ELSEWHERE_PUNJAB",
+    "punjab:outside=OUTSIDE_PUNJAB",
+    "market:haridwar=MARKET_HARIDWAR",
+    "market:uttarakhand=MARKET_UTTARAKHAND",
+    "market:jalandhar=MARKET_JALANDHAR",
+    "market:punjab=MARKET_PUNJAB",
+    "market:bengaluru=MARKET_BENGALURU",
+    "market:other=MARKET_OTHER",
+    "haridwar:rest-of-uttarakhand=HW_REST_OF_UTTARAKHAND",
+    "jalandhar:rest-of-punjab=JL_REST_OF_PUNJAB"
+  ]
+}

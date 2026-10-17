@@ -70,7 +70,7 @@ export const CLUSTER_STATES: Readonly<Record<string, readonly string[]>> = {
  * rough (mobile networks often report a gateway city), so for geo this only
  * refines the region's low-weight signal.
  */
-const PLACES: readonly { words: readonly string[]; region: readonly string[]; cluster: string }[] = [
+export const PLACES: readonly { words: readonly string[]; region: readonly string[]; cluster: string }[] = [
   {
     words: ["haridwar", "hardwar", "sidcul", "roorkee", "rurki", "laksar", "bhagwanpur", "bahadrabad", "jwalapur", "ranipur", "manglaur", "jhabrera"],
     region: ["UK", "UT"],

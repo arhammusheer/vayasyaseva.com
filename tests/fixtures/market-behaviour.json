@@ -1,0 +1,4871 @@
+{
+  "tables": {
+    "MARKET_ORDER": [
+      "bengaluru",
+      "delhi-ncr",
+      "haridwar",
+      "jalandhar",
+      "punjab",
+      "uttarakhand"
+    ],
+    "REGION_CLUSTERS": {
+      "UK": "uttarakhand",
+      "UT": "uttarakhand",
+      "KA": "bengaluru",
+      "DL": "delhi-ncr",
+      "HR": "delhi-ncr",
+      "PB": "punjab"
+    },
+    "SITE_STATE_CLUSTERS": {
+      "UK": "uttarakhand",
+      "KA": "bengaluru",
+      "DL": "delhi-ncr",
+      "HR": "delhi-ncr",
+      "PB": "punjab"
+    },
+    "CLUSTER_STATES": {
+      "haridwar": [
+        "UK",
+        "UT"
+      ],
+      "uttarakhand": [
+        "UK",
+        "UT"
+      ],
+      "jalandhar": [
+        "PB"
+      ],
+      "punjab": [
+        "PB"
+      ],
+      "bengaluru": [
+        "KA"
+      ],
+      "delhi-ncr": [
+        "DL",
+        "HR",
+        "UP"
+      ]
+    }
+  },
+  "placeState": {
+    "adampur": "PB",
+    "amritsar": "PB",
+    "attibele": "KA",
+    "bahadrabad": "UK",
+    "bahadurgarh": "HR",
+    "ballabgarh": "HR",
+    "bangalore": "KA",
+    "bathinda": "PB",
+    "bawana": "DL",
+    "bengaluru": "KA",
+    "bhagwanpur": "UK",
+    "bholath": "PB",
+    "bommasandra": "KA",
+    "dehradun": "UK",
+    "delhi": "DL",
+    "dera bassi": "PB",
+    "electronic city": "KA",
+    "faridabad": "HR",
+    "gautam buddha nagar": "UP",
+    "ghaziabad": "UP",
+    "goraya": "PB",
+    "greater noida": "UP",
+    "gurgaon": "HR",
+    "gurugram": "HR",
+    "haldwani": "UK",
+    "hardwar": "UK",
+    "haridwar": "UK",
+    "hoskote": "KA",
+    "jalandhar": "PB",
+    "jhabrera": "UK",
+    "jigani": "KA",
+    "jullundur": "PB",
+    "jwalapur": "UK",
+    "kapurthala": "PB",
+    "kartarpur": "PB",
+    "kashipur": "UK",
+    "kharar": "PB",
+    "kotdwar": "UK",
+    "kundli": "HR",
+    "laksar": "UK",
+    "ludhiana": "PB",
+    "manesar": "HR",
+    "manglaur": "UK",
+    "mayapuri": "DL",
+    "mohali": "PB",
+    "mundka": "DL",
+    "nakodar": "PB",
+    "naraina": "DL",
+    "narasapura": "KA",
+    "narela": "DL",
+    "new delhi": "DL",
+    "noida": "UP",
+    "okhla": "DL",
+    "pantnagar": "UK",
+    "patiala": "PB",
+    "patparganj": "DL",
+    "peenya": "KA",
+    "phagwara": "PB",
+    "phillaur": "PB",
+    "rajpura": "PB",
+    "ranipur": "UK",
+    "rishikesh": "UK",
+    "roorkee": "UK",
+    "rudrapur": "UK",
+    "rurki": "UK",
+    "selaqui": "UK",
+    "sidcul": "UK",
+    "sitarganj": "UK",
+    "sonipat": "HR",
+    "sultanpur lodhi": "PB",
+    "wazirpur": "DL",
+    "whitefield": "KA",
+    "zirakpur": "PB"
+  },
+  "geoCluster": {
+    "UK|": "uttarakhand",
+    "UK|adampur": "uttarakhand",
+    "UK|amritsar": "uttarakhand",
+    "UK|attibele": "uttarakhand",
+    "UK|bahadrabad": "haridwar",
+    "UK|bahadurgarh": "uttarakhand",
+    "UK|ballabgarh": "uttarakhand",
+    "UK|bangalore": "uttarakhand",
+    "UK|bathinda": "uttarakhand",
+    "UK|bawana": "uttarakhand",
+    "UK|bengaluru": "uttarakhand",
+    "UK|bhagwanpur": "haridwar",
+    "UK|bholath": "uttarakhand",
+    "UK|bommasandra": "uttarakhand",
+    "UK|dehradun": "uttarakhand",
+    "UK|delhi": "uttarakhand",
+    "UK|dera bassi": "uttarakhand",
+    "UK|electronic city": "uttarakhand",
+    "UK|faridabad": "uttarakhand",
+    "UK|gautam buddha nagar": "uttarakhand",
+    "UK|ghaziabad": "uttarakhand",
+    "UK|goraya": "uttarakhand",
+    "UK|greater noida": "uttarakhand",
+    "UK|gurgaon": "uttarakhand",
+    "UK|gurugram": "uttarakhand",
+    "UK|haldwani": "uttarakhand",
+    "UK|hardwar": "haridwar",
+    "UK|haridwar": "haridwar",
+    "UK|hoskote": "uttarakhand",
+    "UK|jalandhar": "uttarakhand",
+    "UK|jhabrera": "haridwar",
+    "UK|jigani": "uttarakhand",
+    "UK|jullundur": "uttarakhand",
+    "UK|jwalapur": "haridwar",
+    "UK|kapurthala": "uttarakhand",
+    "UK|kartarpur": "uttarakhand",
+    "UK|kashipur": "uttarakhand",
+    "UK|kharar": "uttarakhand",
+    "UK|kotdwar": "uttarakhand",
+    "UK|kundli": "uttarakhand",
+    "UK|laksar": "haridwar",
+    "UK|ludhiana": "uttarakhand",
+    "UK|manesar": "uttarakhand",
+    "UK|manglaur": "haridwar",
+    "UK|mayapuri": "uttarakhand",
+    "UK|mohali": "uttarakhand",
+    "UK|mundka": "uttarakhand",
+    "UK|nakodar": "uttarakhand",
+    "UK|naraina": "uttarakhand",
+    "UK|narasapura": "uttarakhand",
+    "UK|narela": "uttarakhand",
+    "UK|new delhi": "uttarakhand",
+    "UK|noida": "uttarakhand",
+    "UK|okhla": "uttarakhand",
+    "UK|pantnagar": "uttarakhand",
+    "UK|patiala": "uttarakhand",
+    "UK|patparganj": "uttarakhand",
+    "UK|peenya": "uttarakhand",
+    "UK|phagwara": "uttarakhand",
+    "UK|phillaur": "uttarakhand",
+    "UK|rajpura": "uttarakhand",
+    "UK|ranipur": "haridwar",
+    "UK|rishikesh": "uttarakhand",
+    "UK|roorkee": "haridwar",
+    "UK|rudrapur": "uttarakhand",
+    "UK|rurki": "haridwar",
+    "UK|selaqui": "uttarakhand",
+    "UK|sidcul": "haridwar",
+    "UK|sitarganj": "uttarakhand",
+    "UK|sonipat": "uttarakhand",
+    "UK|sultanpur lodhi": "uttarakhand",
+    "UK|wazirpur": "uttarakhand",
+    "UK|whitefield": "uttarakhand",
+    "UK|zirakpur": "uttarakhand",
+    "UT|": "uttarakhand",
+    "UT|adampur": "uttarakhand",
+    "UT|amritsar": "uttarakhand",
+    "UT|attibele": "uttarakhand",
+    "UT|bahadrabad": "haridwar",
+    "UT|bahadurgarh": "uttarakhand",
+    "UT|ballabgarh": "uttarakhand",
+    "UT|bangalore": "uttarakhand",
+    "UT|bathinda": "uttarakhand",
+    "UT|bawana": "uttarakhand",
+    "UT|bengaluru": "uttarakhand",
+    "UT|bhagwanpur": "haridwar",
+    "UT|bholath": "uttarakhand",
+    "UT|bommasandra": "uttarakhand",
+    "UT|dehradun": "uttarakhand",
+    "UT|delhi": "uttarakhand",
+    "UT|dera bassi": "uttarakhand",
+    "UT|electronic city": "uttarakhand",
+    "UT|faridabad": "uttarakhand",
+    "UT|gautam buddha nagar": "uttarakhand",
+    "UT|ghaziabad": "uttarakhand",
+    "UT|goraya": "uttarakhand",
+    "UT|greater noida": "uttarakhand",
+    "UT|gurgaon": "uttarakhand",
+    "UT|gurugram": "uttarakhand",
+    "UT|haldwani": "uttarakhand",
+    "UT|hardwar": "haridwar",
+    "UT|haridwar": "haridwar",
+    "UT|hoskote": "uttarakhand",
+    "UT|jalandhar": "uttarakhand",
+    "UT|jhabrera": "haridwar",
+    "UT|jigani": "uttarakhand",
+    "UT|jullundur": "uttarakhand",
+    "UT|jwalapur": "haridwar",
+    "UT|kapurthala": "uttarakhand",
+    "UT|kartarpur": "uttarakhand",
+    "UT|kashipur": "uttarakhand",
+    "UT|kharar": "uttarakhand",
+    "UT|kotdwar": "uttarakhand",
+    "UT|kundli": "uttarakhand",
+    "UT|laksar": "haridwar",
+    "UT|ludhiana": "uttarakhand",
+    "UT|manesar": "uttarakhand",
+    "UT|manglaur": "haridwar",
+    "UT|mayapuri": "uttarakhand",
+    "UT|mohali": "uttarakhand",
+    "UT|mundka": "uttarakhand",
+    "UT|nakodar": "uttarakhand",
+    "UT|naraina": "uttarakhand",
+    "UT|narasapura": "uttarakhand",
+    "UT|narela": "uttarakhand",
+    "UT|new delhi": "uttarakhand",
+    "UT|noida": "uttarakhand",
+    "UT|okhla": "uttarakhand",
+    "UT|pantnagar": "uttarakhand",
+    "UT|patiala": "uttarakhand",
+    "UT|patparganj": "uttarakhand",
+    "UT|peenya": "uttarakhand",
+    "UT|phagwara": "uttarakhand",
+    "UT|phillaur": "uttarakhand",
+    "UT|rajpura": "uttarakhand",
+    "UT|ranipur": "haridwar",
+    "UT|rishikesh": "uttarakhand",
+    "UT|roorkee": "haridwar",
+    "UT|rudrapur": "uttarakhand",
+    "UT|rurki": "haridwar",
+    "UT|selaqui": "uttarakhand",
+    "UT|sidcul": "haridwar",
+    "UT|sitarganj": "uttarakhand",
+    "UT|sonipat": "uttarakhand",
+    "UT|sultanpur lodhi": "uttarakhand",
+    "UT|wazirpur": "uttarakhand",
+    "UT|whitefield": "uttarakhand",
+    "UT|zirakpur": "uttarakhand",
+    "PB|": "punjab",
+    "PB|adampur": "jalandhar",
+    "PB|amritsar": "punjab",
+    "PB|attibele": "punjab",
+    "PB|bahadrabad": "punjab",
+    "PB|bahadurgarh": "punjab",
+    "PB|ballabgarh": "punjab",
+    "PB|bangalore": "punjab",
+    "PB|bathinda": "punjab",
+    "PB|bawana": "punjab",
+    "PB|bengaluru": "punjab",
+    "PB|bhagwanpur": "punjab",
+    "PB|bholath": "jalandhar",
+    "PB|bommasandra": "punjab",
+    "PB|dehradun": "punjab",
+    "PB|delhi": "punjab",
+    "PB|dera bassi": "punjab",
+    "PB|electronic city": "punjab",
+    "PB|faridabad": "punjab",
+    "PB|gautam buddha nagar": "punjab",
+    "PB|ghaziabad": "punjab",
+    "PB|goraya": "jalandhar",
+    "PB|greater noida": "punjab",
+    "PB|gurgaon": "punjab",
+    "PB|gurugram": "punjab",
+    "PB|haldwani": "punjab",
+    "PB|hardwar": "punjab",
+    "PB|haridwar": "punjab",
+    "PB|hoskote": "punjab",
+    "PB|jalandhar": "jalandhar",
+    "PB|jhabrera": "punjab",
+    "PB|jigani": "punjab",
+    "PB|jullundur": "jalandhar",
+    "PB|jwalapur": "punjab",
+    "PB|kapurthala": "jalandhar",
+    "PB|kartarpur": "jalandhar",
+    "PB|kashipur": "punjab",
+    "PB|kharar": "punjab",
+    "PB|kotdwar": "punjab",
+    "PB|kundli": "punjab",
+    "PB|laksar": "punjab",
+    "PB|ludhiana": "punjab",
+    "PB|manesar": "punjab",
+    "PB|manglaur": "punjab",
+    "PB|mayapuri": "punjab",
+    "PB|mohali": "punjab",
+    "PB|mundka": "punjab",
+    "PB|nakodar": "jalandhar",
+    "PB|naraina": "punjab",
+    "PB|narasapura": "punjab",
+    "PB|narela": "punjab",
+    "PB|new delhi": "punjab",
+    "PB|noida": "punjab",
+    "PB|okhla": "punjab",
+    "PB|pantnagar": "punjab",
+    "PB|patiala": "punjab",
+    "PB|patparganj": "punjab",
+    "PB|peenya": "punjab",
+    "PB|phagwara": "jalandhar",
+    "PB|phillaur": "jalandhar",
+    "PB|rajpura": "punjab",
+    "PB|ranipur": "punjab",
+    "PB|rishikesh": "punjab",
+    "PB|roorkee": "punjab",
+    "PB|rudrapur": "punjab",
+    "PB|rurki": "punjab",
+    "PB|selaqui": "punjab",
+    "PB|sidcul": "punjab",
+    "PB|sitarganj": "punjab",
+    "PB|sonipat": "punjab",
+    "PB|sultanpur lodhi": "jalandhar",
+    "PB|wazirpur": "punjab",
+    "PB|whitefield": "punjab",
+    "PB|zirakpur": "punjab",
+    "KA|": "bengaluru",
+    "KA|adampur": "bengaluru",
+    "KA|amritsar": "bengaluru",
+    "KA|attibele": "bengaluru",
+    "KA|bahadrabad": "bengaluru",
+    "KA|bahadurgarh": "bengaluru",
+    "KA|ballabgarh": "bengaluru",
+    "KA|bangalore": "bengaluru",
+    "KA|bathinda": "bengaluru",
+    "KA|bawana": "bengaluru",
+    "KA|bengaluru": "bengaluru",
+    "KA|bhagwanpur": "bengaluru",
+    "KA|bholath": "bengaluru",
+    "KA|bommasandra": "bengaluru",
+    "KA|dehradun": "bengaluru",
+    "KA|delhi": "bengaluru",
+    "KA|dera bassi": "bengaluru",
+    "KA|electronic city": "bengaluru",
+    "KA|faridabad": "bengaluru",
+    "KA|gautam buddha nagar": "bengaluru",
+    "KA|ghaziabad": "bengaluru",
+    "KA|goraya": "bengaluru",
+    "KA|greater noida": "bengaluru",
+    "KA|gurgaon": "bengaluru",
+    "KA|gurugram": "bengaluru",
+    "KA|haldwani": "bengaluru",
+    "KA|hardwar": "bengaluru",
+    "KA|haridwar": "bengaluru",
+    "KA|hoskote": "bengaluru",
+    "KA|jalandhar": "bengaluru",
+    "KA|jhabrera": "bengaluru",
+    "KA|jigani": "bengaluru",
+    "KA|jullundur": "bengaluru",
+    "KA|jwalapur": "bengaluru",
+    "KA|kapurthala": "bengaluru",
+    "KA|kartarpur": "bengaluru",
+    "KA|kashipur": "bengaluru",
+    "KA|kharar": "bengaluru",
+    "KA|kotdwar": "bengaluru",
+    "KA|kundli": "bengaluru",
+    "KA|laksar": "bengaluru",
+    "KA|ludhiana": "bengaluru",
+    "KA|manesar": "bengaluru",
+    "KA|manglaur": "bengaluru",
+    "KA|mayapuri": "bengaluru",
+    "KA|mohali": "bengaluru",
+    "KA|mundka": "bengaluru",
+    "KA|nakodar": "bengaluru",
+    "KA|naraina": "bengaluru",
+    "KA|narasapura": "bengaluru",
+    "KA|narela": "bengaluru",
+    "KA|new delhi": "bengaluru",
+    "KA|noida": "bengaluru",
+    "KA|okhla": "bengaluru",
+    "KA|pantnagar": "bengaluru",
+    "KA|patiala": "bengaluru",
+    "KA|patparganj": "bengaluru",
+    "KA|peenya": "bengaluru",
+    "KA|phagwara": "bengaluru",
+    "KA|phillaur": "bengaluru",
+    "KA|rajpura": "bengaluru",
+    "KA|ranipur": "bengaluru",
+    "KA|rishikesh": "bengaluru",
+    "KA|roorkee": "bengaluru",
+    "KA|rudrapur": "bengaluru",
+    "KA|rurki": "bengaluru",
+    "KA|selaqui": "bengaluru",
+    "KA|sidcul": "bengaluru",
+    "KA|sitarganj": "bengaluru",
+    "KA|sonipat": "bengaluru",
+    "KA|sultanpur lodhi": "bengaluru",
+    "KA|wazirpur": "bengaluru",
+    "KA|whitefield": "bengaluru",
+    "KA|zirakpur": "bengaluru",
+    "DL|": "delhi-ncr",
+    "DL|adampur": "delhi-ncr",
+    "DL|amritsar": "delhi-ncr",
+    "DL|attibele": "delhi-ncr",
+    "DL|bahadrabad": "delhi-ncr",
+    "DL|bahadurgarh": "delhi-ncr",
+    "DL|ballabgarh": "delhi-ncr",
+    "DL|bangalore": "delhi-ncr",
+    "DL|bathinda": "delhi-ncr",
+    "DL|bawana": "delhi-ncr",
+    "DL|bengaluru": "delhi-ncr",
+    "DL|bhagwanpur": "delhi-ncr",
+    "DL|bholath": "delhi-ncr",
+    "DL|bommasandra": "delhi-ncr",
+    "DL|dehradun": "delhi-ncr",
+    "DL|delhi": "delhi-ncr",
+    "DL|dera bassi": "delhi-ncr",
+    "DL|electronic city": "delhi-ncr",
+    "DL|faridabad": "delhi-ncr",
+    "DL|gautam buddha nagar": "delhi-ncr",
+    "DL|ghaziabad": "delhi-ncr",
+    "DL|goraya": "delhi-ncr",
+    "DL|greater noida": "delhi-ncr",
+    "DL|gurgaon": "delhi-ncr",
+    "DL|gurugram": "delhi-ncr",
+    "DL|haldwani": "delhi-ncr",
+    "DL|hardwar": "delhi-ncr",
+    "DL|haridwar": "delhi-ncr",
+    "DL|hoskote": "delhi-ncr",
+    "DL|jalandhar": "delhi-ncr",
+    "DL|jhabrera": "delhi-ncr",
+    "DL|jigani": "delhi-ncr",
+    "DL|jullundur": "delhi-ncr",
+    "DL|jwalapur": "delhi-ncr",
+    "DL|kapurthala": "delhi-ncr",
+    "DL|kartarpur": "delhi-ncr",
+    "DL|kashipur": "delhi-ncr",
+    "DL|kharar": "delhi-ncr",
+    "DL|kotdwar": "delhi-ncr",
+    "DL|kundli": "delhi-ncr",
+    "DL|laksar": "delhi-ncr",
+    "DL|ludhiana": "delhi-ncr",
+    "DL|manesar": "delhi-ncr",
+    "DL|manglaur": "delhi-ncr",
+    "DL|mayapuri": "delhi-ncr",
+    "DL|mohali": "delhi-ncr",
+    "DL|mundka": "delhi-ncr",
+    "DL|nakodar": "delhi-ncr",
+    "DL|naraina": "delhi-ncr",
+    "DL|narasapura": "delhi-ncr",
+    "DL|narela": "delhi-ncr",
+    "DL|new delhi": "delhi-ncr",
+    "DL|noida": "delhi-ncr",
+    "DL|okhla": "delhi-ncr",
+    "DL|pantnagar": "delhi-ncr",
+    "DL|patiala": "delhi-ncr",
+    "DL|patparganj": "delhi-ncr",
+    "DL|peenya": "delhi-ncr",
+    "DL|phagwara": "delhi-ncr",
+    "DL|phillaur": "delhi-ncr",
+    "DL|rajpura": "delhi-ncr",
+    "DL|ranipur": "delhi-ncr",
+    "DL|rishikesh": "delhi-ncr",
+    "DL|roorkee": "delhi-ncr",
+    "DL|rudrapur": "delhi-ncr",
+    "DL|rurki": "delhi-ncr",
+    "DL|selaqui": "delhi-ncr",
+    "DL|sidcul": "delhi-ncr",
+    "DL|sitarganj": "delhi-ncr",
+    "DL|sonipat": "delhi-ncr",
+    "DL|sultanpur lodhi": "delhi-ncr",
+    "DL|wazirpur": "delhi-ncr",
+    "DL|whitefield": "delhi-ncr",
+    "DL|zirakpur": "delhi-ncr",
+    "HR|": "delhi-ncr",
+    "HR|adampur": "delhi-ncr",
+    "HR|amritsar": "delhi-ncr",
+    "HR|attibele": "delhi-ncr",
+    "HR|bahadrabad": "delhi-ncr",
+    "HR|bahadurgarh": "delhi-ncr",
+    "HR|ballabgarh": "delhi-ncr",
+    "HR|bangalore": "delhi-ncr",
+    "HR|bathinda": "delhi-ncr",
+    "HR|bawana": "delhi-ncr",
+    "HR|bengaluru": "delhi-ncr",
+    "HR|bhagwanpur": "delhi-ncr",
+    "HR|bholath": "delhi-ncr",
+    "HR|bommasandra": "delhi-ncr",
+    "HR|dehradun": "delhi-ncr",
+    "HR|delhi": "delhi-ncr",
+    "HR|dera bassi": "delhi-ncr",
+    "HR|electronic city": "delhi-ncr",
+    "HR|faridabad": "delhi-ncr",
+    "HR|gautam buddha nagar": "delhi-ncr",
+    "HR|ghaziabad": "delhi-ncr",
+    "HR|goraya": "delhi-ncr",
+    "HR|greater noida": "delhi-ncr",
+    "HR|gurgaon": "delhi-ncr",
+    "HR|gurugram": "delhi-ncr",
+    "HR|haldwani": "delhi-ncr",
+    "HR|hardwar": "delhi-ncr",
+    "HR|haridwar": "delhi-ncr",
+    "HR|hoskote": "delhi-ncr",
+    "HR|jalandhar": "delhi-ncr",
+    "HR|jhabrera": "delhi-ncr",
+    "HR|jigani": "delhi-ncr",
+    "HR|jullundur": "delhi-ncr",
+    "HR|jwalapur": "delhi-ncr",
+    "HR|kapurthala": "delhi-ncr",
+    "HR|kartarpur": "delhi-ncr",
+    "HR|kashipur": "delhi-ncr",
+    "HR|kharar": "delhi-ncr",
+    "HR|kotdwar": "delhi-ncr",
+    "HR|kundli": "delhi-ncr",
+    "HR|laksar": "delhi-ncr",
+    "HR|ludhiana": "delhi-ncr",
+    "HR|manesar": "delhi-ncr",
+    "HR|manglaur": "delhi-ncr",
+    "HR|mayapuri": "delhi-ncr",
+    "HR|mohali": "delhi-ncr",
+    "HR|mundka": "delhi-ncr",
+    "HR|nakodar": "delhi-ncr",
+    "HR|naraina": "delhi-ncr",
+    "HR|narasapura": "delhi-ncr",
+    "HR|narela": "delhi-ncr",
+    "HR|new delhi": "delhi-ncr",
+    "HR|noida": "delhi-ncr",
+    "HR|okhla": "delhi-ncr",
+    "HR|pantnagar": "delhi-ncr",
+    "HR|patiala": "delhi-ncr",
+    "HR|patparganj": "delhi-ncr",
+    "HR|peenya": "delhi-ncr",
+    "HR|phagwara": "delhi-ncr",
+    "HR|phillaur": "delhi-ncr",
+    "HR|rajpura": "delhi-ncr",
+    "HR|ranipur": "delhi-ncr",
+    "HR|rishikesh": "delhi-ncr",
+    "HR|roorkee": "delhi-ncr",
+    "HR|rudrapur": "delhi-ncr",
+    "HR|rurki": "delhi-ncr",
+    "HR|selaqui": "delhi-ncr",
+    "HR|sidcul": "delhi-ncr",
+    "HR|sitarganj": "delhi-ncr",
+    "HR|sonipat": "delhi-ncr",
+    "HR|sultanpur lodhi": "delhi-ncr",
+    "HR|wazirpur": "delhi-ncr",
+    "HR|whitefield": "delhi-ncr",
+    "HR|zirakpur": "delhi-ncr",
+    "UP|": null,
+    "UP|adampur": null,
+    "UP|amritsar": null,
+    "UP|attibele": null,
+    "UP|bahadrabad": null,
+    "UP|bahadurgarh": null,
+    "UP|ballabgarh": null,
+    "UP|bangalore": null,
+    "UP|bathinda": null,
+    "UP|bawana": null,
+    "UP|bengaluru": null,
+    "UP|bhagwanpur": null,
+    "UP|bholath": null,
+    "UP|bommasandra": null,
+    "UP|dehradun": null,
+    "UP|delhi": null,
+    "UP|dera bassi": null,
+    "UP|electronic city": null,
+    "UP|faridabad": null,
+    "UP|gautam buddha nagar": "delhi-ncr",
+    "UP|ghaziabad": "delhi-ncr",
+    "UP|goraya": null,
+    "UP|greater noida": "delhi-ncr",
+    "UP|gurgaon": null,
+    "UP|gurugram": null,
+    "UP|haldwani": null,
+    "UP|hardwar": null,
+    "UP|haridwar": null,
+    "UP|hoskote": null,
+    "UP|jalandhar": null,
+    "UP|jhabrera": null,
+    "UP|jigani": null,
+    "UP|jullundur": null,
+    "UP|jwalapur": null,
+    "UP|kapurthala": null,
+    "UP|kartarpur": null,
+    "UP|kashipur": null,
+    "UP|kharar": null,
+    "UP|kotdwar": null,
+    "UP|kundli": null,
+    "UP|laksar": null,
+    "UP|ludhiana": null,
+    "UP|manesar": null,
+    "UP|manglaur": null,
+    "UP|mayapuri": null,
+    "UP|mohali": null,
+    "UP|mundka": null,
+    "UP|nakodar": null,
+    "UP|naraina": null,
+    "UP|narasapura": null,
+    "UP|narela": null,
+    "UP|new delhi": null,
+    "UP|noida": "delhi-ncr",
+    "UP|okhla": null,
+    "UP|pantnagar": null,
+    "UP|patiala": null,
+    "UP|patparganj": null,
+    "UP|peenya": null,
+    "UP|phagwara": null,
+    "UP|phillaur": null,
+    "UP|rajpura": null,
+    "UP|ranipur": null,
+    "UP|rishikesh": null,
+    "UP|roorkee": null,
+    "UP|rudrapur": null,
+    "UP|rurki": null,
+    "UP|selaqui": null,
+    "UP|sidcul": null,
+    "UP|sitarganj": null,
+    "UP|sonipat": null,
+    "UP|sultanpur lodhi": null,
+    "UP|wazirpur": null,
+    "UP|whitefield": null,
+    "UP|zirakpur": null,
+    "MH|": null,
+    "MH|adampur": null,
+    "MH|amritsar": null,
+    "MH|attibele": null,
+    "MH|bahadrabad": null,
+    "MH|bahadurgarh": null,
+    "MH|ballabgarh": null,
+    "MH|bangalore": null,
+    "MH|bathinda": null,
+    "MH|bawana": null,
+    "MH|bengaluru": null,
+    "MH|bhagwanpur": null,
+    "MH|bholath": null,
+    "MH|bommasandra": null,
+    "MH|dehradun": null,
+    "MH|delhi": null,
+    "MH|dera bassi": null,
+    "MH|electronic city": null,
+    "MH|faridabad": null,
+    "MH|gautam buddha nagar": null,
+    "MH|ghaziabad": null,
+    "MH|goraya": null,
+    "MH|greater noida": null,
+    "MH|gurgaon": null,
+    "MH|gurugram": null,
+    "MH|haldwani": null,
+    "MH|hardwar": null,
+    "MH|haridwar": null,
+    "MH|hoskote": null,
+    "MH|jalandhar": null,
+    "MH|jhabrera": null,
+    "MH|jigani": null,
+    "MH|jullundur": null,
+    "MH|jwalapur": null,
+    "MH|kapurthala": null,
+    "MH|kartarpur": null,
+    "MH|kashipur": null,
+    "MH|kharar": null,
+    "MH|kotdwar": null,
+    "MH|kundli": null,
+    "MH|laksar": null,
+    "MH|ludhiana": null,
+    "MH|manesar": null,
+    "MH|manglaur": null,
+    "MH|mayapuri": null,
+    "MH|mohali": null,
+    "MH|mundka": null,
+    "MH|nakodar": null,
+    "MH|naraina": null,
+    "MH|narasapura": null,
+    "MH|narela": null,
+    "MH|new delhi": null,
+    "MH|noida": null,
+    "MH|okhla": null,
+    "MH|pantnagar": null,
+    "MH|patiala": null,
+    "MH|patparganj": null,
+    "MH|peenya": null,
+    "MH|phagwara": null,
+    "MH|phillaur": null,
+    "MH|rajpura": null,
+    "MH|ranipur": null,
+    "MH|rishikesh": null,
+    "MH|roorkee": null,
+    "MH|rudrapur": null,
+    "MH|rurki": null,
+    "MH|selaqui": null,
+    "MH|sidcul": null,
+    "MH|sitarganj": null,
+    "MH|sonipat": null,
+    "MH|sultanpur lodhi": null,
+    "MH|wazirpur": null,
+    "MH|whitefield": null,
+    "MH|zirakpur": null,
+    "null|": null,
+    "null|adampur": null,
+    "null|amritsar": null,
+    "null|attibele": null,
+    "null|bahadrabad": null,
+    "null|bahadurgarh": null,
+    "null|ballabgarh": null,
+    "null|bangalore": null,
+    "null|bathinda": null,
+    "null|bawana": null,
+    "null|bengaluru": null,
+    "null|bhagwanpur": null,
+    "null|bholath": null,
+    "null|bommasandra": null,
+    "null|dehradun": null,
+    "null|delhi": null,
+    "null|dera bassi": null,
+    "null|electronic city": null,
+    "null|faridabad": null,
+    "null|gautam buddha nagar": null,
+    "null|ghaziabad": null,
+    "null|goraya": null,
+    "null|greater noida": null,
+    "null|gurgaon": null,
+    "null|gurugram": null,
+    "null|haldwani": null,
+    "null|hardwar": null,
+    "null|haridwar": null,
+    "null|hoskote": null,
+    "null|jalandhar": null,
+    "null|jhabrera": null,
+    "null|jigani": null,
+    "null|jullundur": null,
+    "null|jwalapur": null,
+    "null|kapurthala": null,
+    "null|kartarpur": null,
+    "null|kashipur": null,
+    "null|kharar": null,
+    "null|kotdwar": null,
+    "null|kundli": null,
+    "null|laksar": null,
+    "null|ludhiana": null,
+    "null|manesar": null,
+    "null|manglaur": null,
+    "null|mayapuri": null,
+    "null|mohali": null,
+    "null|mundka": null,
+    "null|nakodar": null,
+    "null|naraina": null,
+    "null|narasapura": null,
+    "null|narela": null,
+    "null|new delhi": null,
+    "null|noida": null,
+    "null|okhla": null,
+    "null|pantnagar": null,
+    "null|patiala": null,
+    "null|patparganj": null,
+    "null|peenya": null,
+    "null|phagwara": null,
+    "null|phillaur": null,
+    "null|rajpura": null,
+    "null|ranipur": null,
+    "null|rishikesh": null,
+    "null|roorkee": null,
+    "null|rudrapur": null,
+    "null|rurki": null,
+    "null|selaqui": null,
+    "null|sidcul": null,
+    "null|sitarganj": null,
+    "null|sonipat": null,
+    "null|sultanpur lodhi": null,
+    "null|wazirpur": null,
+    "null|whitefield": null,
+    "null|zirakpur": null
+  },
+  "siteCluster": {
+    "UK|adampur|": "uttarakhand",
+    "UK|amritsar|": "uttarakhand",
+    "UK|attibele|": "uttarakhand",
+    "UK|bahadrabad|": "haridwar",
+    "UK|bahadurgarh|": "uttarakhand",
+    "UK|ballabgarh|": "uttarakhand",
+    "UK|bangalore|": "uttarakhand",
+    "UK|bathinda|": "uttarakhand",
+    "UK|bawana|": "uttarakhand",
+    "UK|bengaluru|": "uttarakhand",
+    "UK|bhagwanpur|": "haridwar",
+    "UK|bholath|": "uttarakhand",
+    "UK|bommasandra|": "uttarakhand",
+    "UK|dehradun|": "uttarakhand",
+    "UK|delhi|": "uttarakhand",
+    "UK|dera bassi|": "uttarakhand",
+    "UK|electronic city|": "uttarakhand",
+    "UK|faridabad|": "uttarakhand",
+    "UK|gautam buddha nagar|": "uttarakhand",
+    "UK|ghaziabad|": "uttarakhand",
+    "UK|goraya|": "uttarakhand",
+    "UK|greater noida|": "uttarakhand",
+    "UK|gurgaon|": "uttarakhand",
+    "UK|gurugram|": "uttarakhand",
+    "UK|haldwani|": "uttarakhand",
+    "UK|hardwar|": "haridwar",
+    "UK|haridwar|": "haridwar",
+    "UK|hoskote|": "uttarakhand",
+    "UK|jalandhar|": "uttarakhand",
+    "UK|jhabrera|": "haridwar",
+    "UK|jigani|": "uttarakhand",
+    "UK|jullundur|": "uttarakhand",
+    "UK|jwalapur|": "haridwar",
+    "UK|kapurthala|": "uttarakhand",
+    "UK|kartarpur|": "uttarakhand",
+    "UK|kashipur|": "uttarakhand",
+    "UK|kharar|": "uttarakhand",
+    "UK|kotdwar|": "uttarakhand",
+    "UK|kundli|": "uttarakhand",
+    "UK|laksar|": "haridwar",
+    "UK|ludhiana|": "uttarakhand",
+    "UK|manesar|": "uttarakhand",
+    "UK|manglaur|": "haridwar",
+    "UK|mayapuri|": "uttarakhand",
+    "UK|mohali|": "uttarakhand",
+    "UK|mundka|": "uttarakhand",
+    "UK|nakodar|": "uttarakhand",
+    "UK|naraina|": "uttarakhand",
+    "UK|narasapura|": "uttarakhand",
+    "UK|narela|": "uttarakhand",
+    "UK|new delhi|": "uttarakhand",
+    "UK|noida|": "uttarakhand",
+    "UK|okhla|": "uttarakhand",
+    "UK|pantnagar|": "uttarakhand",
+    "UK|patiala|": "uttarakhand",
+    "UK|patparganj|": "uttarakhand",
+    "UK|peenya|": "uttarakhand",
+    "UK|phagwara|": "uttarakhand",
+    "UK|phillaur|": "uttarakhand",
+    "UK|rajpura|": "uttarakhand",
+    "UK|ranipur|": "haridwar",
+    "UK|rishikesh|": "uttarakhand",
+    "UK|roorkee|": "haridwar",
+    "UK|rudrapur|": "uttarakhand",
+    "UK|rurki|": "haridwar",
+    "UK|selaqui|": "uttarakhand",
+    "UK|sidcul|": "haridwar",
+    "UK|sitarganj|": "uttarakhand",
+    "UK|sonipat|": "uttarakhand",
+    "UK|sultanpur lodhi|": "uttarakhand",
+    "UK|wazirpur|": "uttarakhand",
+    "UK|whitefield|": "uttarakhand",
+    "UK|zirakpur|": "uttarakhand",
+    "UT|adampur|": null,
+    "UT|amritsar|": null,
+    "UT|attibele|": null,
+    "UT|bahadrabad|": "haridwar",
+    "UT|bahadurgarh|": null,
+    "UT|ballabgarh|": null,
+    "UT|bangalore|": null,
+    "UT|bathinda|": null,
+    "UT|bawana|": null,
+    "UT|bengaluru|": null,
+    "UT|bhagwanpur|": "haridwar",
+    "UT|bholath|": null,
+    "UT|bommasandra|": null,
+    "UT|dehradun|": "uttarakhand",
+    "UT|delhi|": null,
+    "UT|dera bassi|": null,
+    "UT|electronic city|": null,
+    "UT|faridabad|": null,
+    "UT|gautam buddha nagar|": null,
+    "UT|ghaziabad|": null,
+    "UT|goraya|": null,
+    "UT|greater noida|": null,
+    "UT|gurgaon|": null,
+    "UT|gurugram|": null,
+    "UT|haldwani|": "uttarakhand",
+    "UT|hardwar|": "haridwar",
+    "UT|haridwar|": "haridwar",
+    "UT|hoskote|": null,
+    "UT|jalandhar|": null,
+    "UT|jhabrera|": "haridwar",
+    "UT|jigani|": null,
+    "UT|jullundur|": null,
+    "UT|jwalapur|": "haridwar",
+    "UT|kapurthala|": null,
+    "UT|kartarpur|": null,
+    "UT|kashipur|": "uttarakhand",
+    "UT|kharar|": null,
+    "UT|kotdwar|": "uttarakhand",
+    "UT|kundli|": null,
+    "UT|laksar|": "haridwar",
+    "UT|ludhiana|": null,
+    "UT|manesar|": null,
+    "UT|manglaur|": "haridwar",
+    "UT|mayapuri|": null,
+    "UT|mohali|": null,
+    "UT|mundka|": null,
+    "UT|nakodar|": null,
+    "UT|naraina|": null,
+    "UT|narasapura|": null,
+    "UT|narela|": null,
+    "UT|new delhi|": null,
+    "UT|noida|": null,
+    "UT|okhla|": null,
+    "UT|pantnagar|": "uttarakhand",
+    "UT|patiala|": null,
+    "UT|patparganj|": null,
+    "UT|peenya|": null,
+    "UT|phagwara|": null,
+    "UT|phillaur|": null,
+    "UT|rajpura|": null,
+    "UT|ranipur|": "haridwar",
+    "UT|rishikesh|": "uttarakhand",
+    "UT|roorkee|": "haridwar",
+    "UT|rudrapur|": "uttarakhand",
+    "UT|rurki|": "haridwar",
+    "UT|selaqui|": "uttarakhand",
+    "UT|sidcul|": "haridwar",
+    "UT|sitarganj|": "uttarakhand",
+    "UT|sonipat|": null,
+    "UT|sultanpur lodhi|": null,
+    "UT|wazirpur|": null,
+    "UT|whitefield|": null,
+    "UT|zirakpur|": null,
+    "PB|adampur|": "jalandhar",
+    "PB|amritsar|": "punjab",
+    "PB|attibele|": "punjab",
+    "PB|bahadrabad|": "punjab",
+    "PB|bahadurgarh|": "punjab",
+    "PB|ballabgarh|": "punjab",
+    "PB|bangalore|": "punjab",
+    "PB|bathinda|": "punjab",
+    "PB|bawana|": "punjab",
+    "PB|bengaluru|": "punjab",
+    "PB|bhagwanpur|": "punjab",
+    "PB|bholath|": "jalandhar",
+    "PB|bommasandra|": "punjab",
+    "PB|dehradun|": "punjab",
+    "PB|delhi|": "punjab",
+    "PB|dera bassi|": "punjab",
+    "PB|electronic city|": "punjab",
+    "PB|faridabad|": "punjab",
+    "PB|gautam buddha nagar|": "punjab",
+    "PB|ghaziabad|": "punjab",
+    "PB|goraya|": "jalandhar",
+    "PB|greater noida|": "punjab",
+    "PB|gurgaon|": "punjab",
+    "PB|gurugram|": "punjab",
+    "PB|haldwani|": "punjab",
+    "PB|hardwar|": "punjab",
+    "PB|haridwar|": "punjab",
+    "PB|hoskote|": "punjab",
+    "PB|jalandhar|": "jalandhar",
+    "PB|jhabrera|": "punjab",
+    "PB|jigani|": "punjab",
+    "PB|jullundur|": "jalandhar",
+    "PB|jwalapur|": "punjab",
+    "PB|kapurthala|": "jalandhar",
+    "PB|kartarpur|": "jalandhar",
+    "PB|kashipur|": "punjab",
+    "PB|kharar|": "punjab",
+    "PB|kotdwar|": "punjab",
+    "PB|kundli|": "punjab",
+    "PB|laksar|": "punjab",
+    "PB|ludhiana|": "punjab",
+    "PB|manesar|": "punjab",
+    "PB|manglaur|": "punjab",
+    "PB|mayapuri|": "punjab",
+    "PB|mohali|": "punjab",
+    "PB|mundka|": "punjab",
+    "PB|nakodar|": "jalandhar",
+    "PB|naraina|": "punjab",
+    "PB|narasapura|": "punjab",
+    "PB|narela|": "punjab",
+    "PB|new delhi|": "punjab",
+    "PB|noida|": "punjab",
+    "PB|okhla|": "punjab",
+    "PB|pantnagar|": "punjab",
+    "PB|patiala|": "punjab",
+    "PB|patparganj|": "punjab",
+    "PB|peenya|": "punjab",
+    "PB|phagwara|": "jalandhar",
+    "PB|phillaur|": "jalandhar",
+    "PB|rajpura|": "punjab",
+    "PB|ranipur|": "punjab",
+    "PB|rishikesh|": "punjab",
+    "PB|roorkee|": "punjab",
+    "PB|rudrapur|": "punjab",
+    "PB|rurki|": "punjab",
+    "PB|selaqui|": "punjab",
+    "PB|sidcul|": "punjab",
+    "PB|sitarganj|": "punjab",
+    "PB|sonipat|": "punjab",
+    "PB|sultanpur lodhi|": "jalandhar",
+    "PB|wazirpur|": "punjab",
+    "PB|whitefield|": "punjab",
+    "PB|zirakpur|": "punjab",
+    "KA|adampur|": "bengaluru",
+    "KA|amritsar|": "bengaluru",
+    "KA|attibele|": "bengaluru",
+    "KA|bahadrabad|": "bengaluru",
+    "KA|bahadurgarh|": "bengaluru",
+    "KA|ballabgarh|": "bengaluru",
+    "KA|bangalore|": "bengaluru",
+    "KA|bathinda|": "bengaluru",
+    "KA|bawana|": "bengaluru",
+    "KA|bengaluru|": "bengaluru",
+    "KA|bhagwanpur|": "bengaluru",
+    "KA|bholath|": "bengaluru",
+    "KA|bommasandra|": "bengaluru",
+    "KA|dehradun|": "bengaluru",
+    "KA|delhi|": "bengaluru",
+    "KA|dera bassi|": "bengaluru",
+    "KA|electronic city|": "bengaluru",
+    "KA|faridabad|": "bengaluru",
+    "KA|gautam buddha nagar|": "bengaluru",
+    "KA|ghaziabad|": "bengaluru",
+    "KA|goraya|": "bengaluru",
+    "KA|greater noida|": "bengaluru",
+    "KA|gurgaon|": "bengaluru",
+    "KA|gurugram|": "bengaluru",
+    "KA|haldwani|": "bengaluru",
+    "KA|hardwar|": "bengaluru",
+    "KA|haridwar|": "bengaluru",
+    "KA|hoskote|": "bengaluru",
+    "KA|jalandhar|": "bengaluru",
+    "KA|jhabrera|": "bengaluru",
+    "KA|jigani|": "bengaluru",
+    "KA|jullundur|": "bengaluru",
+    "KA|jwalapur|": "bengaluru",
+    "KA|kapurthala|": "bengaluru",
+    "KA|kartarpur|": "bengaluru",
+    "KA|kashipur|": "bengaluru",
+    "KA|kharar|": "bengaluru",
+    "KA|kotdwar|": "bengaluru",
+    "KA|kundli|": "bengaluru",
+    "KA|laksar|": "bengaluru",
+    "KA|ludhiana|": "bengaluru",
+    "KA|manesar|": "bengaluru",
+    "KA|manglaur|": "bengaluru",
+    "KA|mayapuri|": "bengaluru",
+    "KA|mohali|": "bengaluru",
+    "KA|mundka|": "bengaluru",
+    "KA|nakodar|": "bengaluru",
+    "KA|naraina|": "bengaluru",
+    "KA|narasapura|": "bengaluru",
+    "KA|narela|": "bengaluru",
+    "KA|new delhi|": "bengaluru",
+    "KA|noida|": "bengaluru",
+    "KA|okhla|": "bengaluru",
+    "KA|pantnagar|": "bengaluru",
+    "KA|patiala|": "bengaluru",
+    "KA|patparganj|": "bengaluru",
+    "KA|peenya|": "bengaluru",
+    "KA|phagwara|": "bengaluru",
+    "KA|phillaur|": "bengaluru",
+    "KA|rajpura|": "bengaluru",
+    "KA|ranipur|": "bengaluru",
+    "KA|rishikesh|": "bengaluru",
+    "KA|roorkee|": "bengaluru",
+    "KA|rudrapur|": "bengaluru",
+    "KA|rurki|": "bengaluru",
+    "KA|selaqui|": "bengaluru",
+    "KA|sidcul|": "bengaluru",
+    "KA|sitarganj|": "bengaluru",
+    "KA|sonipat|": "bengaluru",
+    "KA|sultanpur lodhi|": "bengaluru",
+    "KA|wazirpur|": "bengaluru",
+    "KA|whitefield|": "bengaluru",
+    "KA|zirakpur|": "bengaluru",
+    "DL|adampur|": "delhi-ncr",
+    "DL|amritsar|": "delhi-ncr",
+    "DL|attibele|": "delhi-ncr",
+    "DL|bahadrabad|": "delhi-ncr",
+    "DL|bahadurgarh|": "delhi-ncr",
+    "DL|ballabgarh|": "delhi-ncr",
+    "DL|bangalore|": "delhi-ncr",
+    "DL|bathinda|": "delhi-ncr",
+    "DL|bawana|": "delhi-ncr",
+    "DL|bengaluru|": "delhi-ncr",
+    "DL|bhagwanpur|": "delhi-ncr",
+    "DL|bholath|": "delhi-ncr",
+    "DL|bommasandra|": "delhi-ncr",
+    "DL|dehradun|": "delhi-ncr",
+    "DL|delhi|": "delhi-ncr",
+    "DL|dera bassi|": "delhi-ncr",
+    "DL|electronic city|": "delhi-ncr",
+    "DL|faridabad|": "delhi-ncr",
+    "DL|gautam buddha nagar|": "delhi-ncr",
+    "DL|ghaziabad|": "delhi-ncr",
+    "DL|goraya|": "delhi-ncr",
+    "DL|greater noida|": "delhi-ncr",
+    "DL|gurgaon|": "delhi-ncr",
+    "DL|gurugram|": "delhi-ncr",
+    "DL|haldwani|": "delhi-ncr",
+    "DL|hardwar|": "delhi-ncr",
+    "DL|haridwar|": "delhi-ncr",
+    "DL|hoskote|": "delhi-ncr",
+    "DL|jalandhar|": "delhi-ncr",
+    "DL|jhabrera|": "delhi-ncr",
+    "DL|jigani|": "delhi-ncr",
+    "DL|jullundur|": "delhi-ncr",
+    "DL|jwalapur|": "delhi-ncr",
+    "DL|kapurthala|": "delhi-ncr",
+    "DL|kartarpur|": "delhi-ncr",
+    "DL|kashipur|": "delhi-ncr",
+    "DL|kharar|": "delhi-ncr",
+    "DL|kotdwar|": "delhi-ncr",
+    "DL|kundli|": "delhi-ncr",
+    "DL|laksar|": "delhi-ncr",
+    "DL|ludhiana|": "delhi-ncr",
+    "DL|manesar|": "delhi-ncr",
+    "DL|manglaur|": "delhi-ncr",
+    "DL|mayapuri|": "delhi-ncr",
+    "DL|mohali|": "delhi-ncr",
+    "DL|mundka|": "delhi-ncr",
+    "DL|nakodar|": "delhi-ncr",
+    "DL|naraina|": "delhi-ncr",
+    "DL|narasapura|": "delhi-ncr",
+    "DL|narela|": "delhi-ncr",
+    "DL|new delhi|": "delhi-ncr",
+    "DL|noida|": "delhi-ncr",
+    "DL|okhla|": "delhi-ncr",
+    "DL|pantnagar|": "delhi-ncr",
+    "DL|patiala|": "delhi-ncr",
+    "DL|patparganj|": "delhi-ncr",
+    "DL|peenya|": "delhi-ncr",
+    "DL|phagwara|": "delhi-ncr",
+    "DL|phillaur|": "delhi-ncr",
+    "DL|rajpura|": "delhi-ncr",
+    "DL|ranipur|": "delhi-ncr",
+    "DL|rishikesh|": "delhi-ncr",
+    "DL|roorkee|": "delhi-ncr",
+    "DL|rudrapur|": "delhi-ncr",
+    "DL|rurki|": "delhi-ncr",
+    "DL|selaqui|": "delhi-ncr",
+    "DL|sidcul|": "delhi-ncr",
+    "DL|sitarganj|": "delhi-ncr",
+    "DL|sonipat|": "delhi-ncr",
+    "DL|sultanpur lodhi|": "delhi-ncr",
+    "DL|wazirpur|": "delhi-ncr",
+    "DL|whitefield|": "delhi-ncr",
+    "DL|zirakpur|": "delhi-ncr",
+    "HR|adampur|": "delhi-ncr",
+    "HR|amritsar|": "delhi-ncr",
+    "HR|attibele|": "delhi-ncr",
+    "HR|bahadrabad|": "delhi-ncr",
+    "HR|bahadurgarh|": "delhi-ncr",
+    "HR|ballabgarh|": "delhi-ncr",
+    "HR|bangalore|": "delhi-ncr",
+    "HR|bathinda|": "delhi-ncr",
+    "HR|bawana|": "delhi-ncr",
+    "HR|bengaluru|": "delhi-ncr",
+    "HR|bhagwanpur|": "delhi-ncr",
+    "HR|bholath|": "delhi-ncr",
+    "HR|bommasandra|": "delhi-ncr",
+    "HR|dehradun|": "delhi-ncr",
+    "HR|delhi|": "delhi-ncr",
+    "HR|dera bassi|": "delhi-ncr",
+    "HR|electronic city|": "delhi-ncr",
+    "HR|faridabad|": "delhi-ncr",
+    "HR|gautam buddha nagar|": "delhi-ncr",
+    "HR|ghaziabad|": "delhi-ncr",
+    "HR|goraya|": "delhi-ncr",
+    "HR|greater noida|": "delhi-ncr",
+    "HR|gurgaon|": "delhi-ncr",
+    "HR|gurugram|": "delhi-ncr",
+    "HR|haldwani|": "delhi-ncr",
+    "HR|hardwar|": "delhi-ncr",
+    "HR|haridwar|": "delhi-ncr",
+    "HR|hoskote|": "delhi-ncr",
+    "HR|jalandhar|": "delhi-ncr",
+    "HR|jhabrera|": "delhi-ncr",
+    "HR|jigani|": "delhi-ncr",
+    "HR|jullundur|": "delhi-ncr",
+    "HR|jwalapur|": "delhi-ncr",
+    "HR|kapurthala|": "delhi-ncr",
+    "HR|kartarpur|": "delhi-ncr",
+    "HR|kashipur|": "delhi-ncr",
+    "HR|kharar|": "delhi-ncr",
+    "HR|kotdwar|": "delhi-ncr",
+    "HR|kundli|": "delhi-ncr",
+    "HR|laksar|": "delhi-ncr",
+    "HR|ludhiana|": "delhi-ncr",
+    "HR|manesar|": "delhi-ncr",
+    "HR|manglaur|": "delhi-ncr",
+    "HR|mayapuri|": "delhi-ncr",
+    "HR|mohali|": "delhi-ncr",
+    "HR|mundka|": "delhi-ncr",
+    "HR|nakodar|": "delhi-ncr",
+    "HR|naraina|": "delhi-ncr",
+    "HR|narasapura|": "delhi-ncr",
+    "HR|narela|": "delhi-ncr",
+    "HR|new delhi|": "delhi-ncr",
+    "HR|noida|": "delhi-ncr",
+    "HR|okhla|": "delhi-ncr",
+    "HR|pantnagar|": "delhi-ncr",
+    "HR|patiala|": "delhi-ncr",
+    "HR|patparganj|": "delhi-ncr",
+    "HR|peenya|": "delhi-ncr",
+    "HR|phagwara|": "delhi-ncr",
+    "HR|phillaur|": "delhi-ncr",
+    "HR|rajpura|": "delhi-ncr",
+    "HR|ranipur|": "delhi-ncr",
+    "HR|rishikesh|": "delhi-ncr",
+    "HR|roorkee|": "delhi-ncr",
+    "HR|rudrapur|": "delhi-ncr",
+    "HR|rurki|": "delhi-ncr",
+    "HR|selaqui|": "delhi-ncr",
+    "HR|sidcul|": "delhi-ncr",
+    "HR|sitarganj|": "delhi-ncr",
+    "HR|sonipat|": "delhi-ncr",
+    "HR|sultanpur lodhi|": "delhi-ncr",
+    "HR|wazirpur|": "delhi-ncr",
+    "HR|whitefield|": "delhi-ncr",
+    "HR|zirakpur|": "delhi-ncr",
+    "UP|adampur|": null,
+    "UP|amritsar|": null,
+    "UP|attibele|": null,
+    "UP|bahadrabad|": null,
+    "UP|bahadurgarh|": null,
+    "UP|ballabgarh|": null,
+    "UP|bangalore|": null,
+    "UP|bathinda|": null,
+    "UP|bawana|": null,
+    "UP|bengaluru|": null,
+    "UP|bhagwanpur|": null,
+    "UP|bholath|": null,
+    "UP|bommasandra|": null,
+    "UP|dehradun|": null,
+    "UP|delhi|": null,
+    "UP|dera bassi|": null,
+    "UP|electronic city|": null,
+    "UP|faridabad|": null,
+    "UP|gautam buddha nagar|": "delhi-ncr",
+    "UP|ghaziabad|": "delhi-ncr",
+    "UP|goraya|": null,
+    "UP|greater noida|": "delhi-ncr",
+    "UP|gurgaon|": null,
+    "UP|gurugram|": null,
+    "UP|haldwani|": null,
+    "UP|hardwar|": null,
+    "UP|haridwar|": null,
+    "UP|hoskote|": null,
+    "UP|jalandhar|": null,
+    "UP|jhabrera|": null,
+    "UP|jigani|": null,
+    "UP|jullundur|": null,
+    "UP|jwalapur|": null,
+    "UP|kapurthala|": null,
+    "UP|kartarpur|": null,
+    "UP|kashipur|": null,
+    "UP|kharar|": null,
+    "UP|kotdwar|": null,
+    "UP|kundli|": null,
+    "UP|laksar|": null,
+    "UP|ludhiana|": null,
+    "UP|manesar|": null,
+    "UP|manglaur|": null,
+    "UP|mayapuri|": null,
+    "UP|mohali|": null,
+    "UP|mundka|": null,
+    "UP|nakodar|": null,
+    "UP|naraina|": null,
+    "UP|narasapura|": null,
+    "UP|narela|": null,
+    "UP|new delhi|": null,
+    "UP|noida|": "delhi-ncr",
+    "UP|okhla|": null,
+    "UP|pantnagar|": null,
+    "UP|patiala|": null,
+    "UP|patparganj|": null,
+    "UP|peenya|": null,
+    "UP|phagwara|": null,
+    "UP|phillaur|": null,
+    "UP|rajpura|": null,
+    "UP|ranipur|": null,
+    "UP|rishikesh|": null,
+    "UP|roorkee|": null,
+    "UP|rudrapur|": null,
+    "UP|rurki|": null,
+    "UP|selaqui|": null,
+    "UP|sidcul|": null,
+    "UP|sitarganj|": null,
+    "UP|sonipat|": null,
+    "UP|sultanpur lodhi|": null,
+    "UP|wazirpur|": null,
+    "UP|whitefield|": null,
+    "UP|zirakpur|": null,
+    "MH|adampur|": null,
+    "MH|amritsar|": null,
+    "MH|attibele|": null,
+    "MH|bahadrabad|": null,
+    "MH|bahadurgarh|": null,
+    "MH|ballabgarh|": null,
+    "MH|bangalore|": null,
+    "MH|bathinda|": null,
+    "MH|bawana|": null,
+    "MH|bengaluru|": null,
+    "MH|bhagwanpur|": null,
+    "MH|bholath|": null,
+    "MH|bommasandra|": null,
+    "MH|dehradun|": null,
+    "MH|delhi|": null,
+    "MH|dera bassi|": null,
+    "MH|electronic city|": null,
+    "MH|faridabad|": null,
+    "MH|gautam buddha nagar|": null,
+    "MH|ghaziabad|": null,
+    "MH|goraya|": null,
+    "MH|greater noida|": null,
+    "MH|gurgaon|": null,
+    "MH|gurugram|": null,
+    "MH|haldwani|": null,
+    "MH|hardwar|": null,
+    "MH|haridwar|": null,
+    "MH|hoskote|": null,
+    "MH|jalandhar|": null,
+    "MH|jhabrera|": null,
+    "MH|jigani|": null,
+    "MH|jullundur|": null,
+    "MH|jwalapur|": null,
+    "MH|kapurthala|": null,
+    "MH|kartarpur|": null,
+    "MH|kashipur|": null,
+    "MH|kharar|": null,
+    "MH|kotdwar|": null,
+    "MH|kundli|": null,
+    "MH|laksar|": null,
+    "MH|ludhiana|": null,
+    "MH|manesar|": null,
+    "MH|manglaur|": null,
+    "MH|mayapuri|": null,
+    "MH|mohali|": null,
+    "MH|mundka|": null,
+    "MH|nakodar|": null,
+    "MH|naraina|": null,
+    "MH|narasapura|": null,
+    "MH|narela|": null,
+    "MH|new delhi|": null,
+    "MH|noida|": null,
+    "MH|okhla|": null,
+    "MH|pantnagar|": null,
+    "MH|patiala|": null,
+    "MH|patparganj|": null,
+    "MH|peenya|": null,
+    "MH|phagwara|": null,
+    "MH|phillaur|": null,
+    "MH|rajpura|": null,
+    "MH|ranipur|": null,
+    "MH|rishikesh|": null,
+    "MH|roorkee|": null,
+    "MH|rudrapur|": null,
+    "MH|rurki|": null,
+    "MH|selaqui|": null,
+    "MH|sidcul|": null,
+    "MH|sitarganj|": null,
+    "MH|sonipat|": null,
+    "MH|sultanpur lodhi|": null,
+    "MH|wazirpur|": null,
+    "MH|whitefield|": null,
+    "MH|zirakpur|": null,
+    "null|adampur|": null,
+    "null|amritsar|": null,
+    "null|attibele|": null,
+    "null|bahadrabad|": null,
+    "null|bahadurgarh|": null,
+    "null|ballabgarh|": null,
+    "null|bangalore|": null,
+    "null|bathinda|": null,
+    "null|bawana|": null,
+    "null|bengaluru|": null,
+    "null|bhagwanpur|": null,
+    "null|bholath|": null,
+    "null|bommasandra|": null,
+    "null|dehradun|": null,
+    "null|delhi|": null,
+    "null|dera bassi|": null,
+    "null|electronic city|": null,
+    "null|faridabad|": null,
+    "null|gautam buddha nagar|": null,
+    "null|ghaziabad|": null,
+    "null|goraya|": null,
+    "null|greater noida|": null,
+    "null|gurgaon|": null,
+    "null|gurugram|": null,
+    "null|haldwani|": null,
+    "null|hardwar|": null,
+    "null|haridwar|": null,
+    "null|hoskote|": null,
+    "null|jalandhar|": null,
+    "null|jhabrera|": null,
+    "null|jigani|": null,
+    "null|jullundur|": null,
+    "null|jwalapur|": null,
+    "null|kapurthala|": null,
+    "null|kartarpur|": null,
+    "null|kashipur|": null,
+    "null|kharar|": null,
+    "null|kotdwar|": null,
+    "null|kundli|": null,
+    "null|laksar|": null,
+    "null|ludhiana|": null,
+    "null|manesar|": null,
+    "null|manglaur|": null,
+    "null|mayapuri|": null,
+    "null|mohali|": null,
+    "null|mundka|": null,
+    "null|nakodar|": null,
+    "null|naraina|": null,
+    "null|narasapura|": null,
+    "null|narela|": null,
+    "null|new delhi|": null,
+    "null|noida|": null,
+    "null|okhla|": null,
+    "null|pantnagar|": null,
+    "null|patiala|": null,
+    "null|patparganj|": null,
+    "null|peenya|": null,
+    "null|phagwara|": null,
+    "null|phillaur|": null,
+    "null|rajpura|": null,
+    "null|ranipur|": null,
+    "null|rishikesh|": null,
+    "null|roorkee|": null,
+    "null|rudrapur|": null,
+    "null|rurki|": null,
+    "null|selaqui|": null,
+    "null|sidcul|": null,
+    "null|sitarganj|": null,
+    "null|sonipat|": null,
+    "null|sultanpur lodhi|": null,
+    "null|wazirpur|": null,
+    "null|whitefield|": null,
+    "null|zirakpur|": null,
+    "UK||null": "uttarakhand",
+    "UK||haridwar": "haridwar",
+    "UK||uttarakhand": "uttarakhand",
+    "UK||delhi-ncr": "uttarakhand",
+    "UK||bengaluru": "uttarakhand",
+    "UK||jalandhar": "uttarakhand",
+    "UK||punjab": "uttarakhand",
+    "UK||saharanpur": "uttarakhand",
+    "UK||other": "uttarakhand",
+    "UT||null": null,
+    "UT||haridwar": "haridwar",
+    "UT||uttarakhand": "uttarakhand",
+    "UT||delhi-ncr": null,
+    "UT||bengaluru": null,
+    "UT||jalandhar": null,
+    "UT||punjab": null,
+    "UT||saharanpur": null,
+    "UT||other": null,
+    "PB||null": "punjab",
+    "PB||haridwar": "punjab",
+    "PB||uttarakhand": "punjab",
+    "PB||delhi-ncr": "punjab",
+    "PB||bengaluru": "punjab",
+    "PB||jalandhar": "jalandhar",
+    "PB||punjab": "punjab",
+    "PB||saharanpur": "punjab",
+    "PB||other": "punjab",
+    "KA||null": "bengaluru",
+    "KA||haridwar": "bengaluru",
+    "KA||uttarakhand": "bengaluru",
+    "KA||delhi-ncr": "bengaluru",
+    "KA||bengaluru": "bengaluru",
+    "KA||jalandhar": "bengaluru",
+    "KA||punjab": "bengaluru",
+    "KA||saharanpur": "bengaluru",
+    "KA||other": "bengaluru",
+    "DL||null": "delhi-ncr",
+    "DL||haridwar": "delhi-ncr",
+    "DL||uttarakhand": "delhi-ncr",
+    "DL||delhi-ncr": "delhi-ncr",
+    "DL||bengaluru": "delhi-ncr",
+    "DL||jalandhar": "delhi-ncr",
+    "DL||punjab": "delhi-ncr",
+    "DL||saharanpur": "delhi-ncr",
+    "DL||other": "delhi-ncr",
+    "HR||null": "delhi-ncr",
+    "HR||haridwar": "delhi-ncr",
+    "HR||uttarakhand": "delhi-ncr",
+    "HR||delhi-ncr": "delhi-ncr",
+    "HR||bengaluru": "delhi-ncr",
+    "HR||jalandhar": "delhi-ncr",
+    "HR||punjab": "delhi-ncr",
+    "HR||saharanpur": "delhi-ncr",
+    "HR||other": "delhi-ncr",
+    "UP||null": null,
+    "UP||haridwar": null,
+    "UP||uttarakhand": null,
+    "UP||delhi-ncr": "delhi-ncr",
+    "UP||bengaluru": null,
+    "UP||jalandhar": null,
+    "UP||punjab": null,
+    "UP||saharanpur": null,
+    "UP||other": null,
+    "MH||null": null,
+    "MH||haridwar": null,
+    "MH||uttarakhand": null,
+    "MH||delhi-ncr": null,
+    "MH||bengaluru": null,
+    "MH||jalandhar": null,
+    "MH||punjab": null,
+    "MH||saharanpur": null,
+    "MH||other": null,
+    "null||null": null,
+    "null||haridwar": "haridwar",
+    "null||uttarakhand": "uttarakhand",
+    "null||delhi-ncr": "delhi-ncr",
+    "null||bengaluru": "bengaluru",
+    "null||jalandhar": "jalandhar",
+    "null||punjab": "punjab",
+    "null||saharanpur": "saharanpur",
+    "null||other": "other"
+  },
+  "clustersInUtm": {
+    "adampur": [],
+    "amritsar": [
+      "punjab"
+    ],
+    "attibele": [],
+    "bahadrabad": [
+      "haridwar"
+    ],
+    "bahadurgarh": [],
+    "ballabgarh": [],
+    "bangalore": [
+      "bengaluru"
+    ],
+    "bathinda": [],
+    "bawana": [
+      "delhi-ncr"
+    ],
+    "bengaluru": [
+      "bengaluru"
+    ],
+    "bhagwanpur": [
+      "haridwar"
+    ],
+    "bholath": [],
+    "bommasandra": [
+      "bengaluru"
+    ],
+    "dehradun": [
+      "uttarakhand"
+    ],
+    "delhi": [
+      "delhi-ncr"
+    ],
+    "dera bassi": [],
+    "electronic city": [],
+    "faridabad": [
+      "delhi-ncr"
+    ],
+    "gautam buddha nagar": [],
+    "ghaziabad": [
+      "delhi-ncr"
+    ],
+    "goraya": [
+      "jalandhar"
+    ],
+    "greater noida": [
+      "delhi-ncr"
+    ],
+    "gurgaon": [
+      "delhi-ncr"
+    ],
+    "gurugram": [
+      "delhi-ncr"
+    ],
+    "haldwani": [],
+    "hardwar": [
+      "haridwar"
+    ],
+    "haridwar": [
+      "haridwar"
+    ],
+    "hoskote": [],
+    "jalandhar": [
+      "jalandhar"
+    ],
+    "jhabrera": [],
+    "jigani": [
+      "bengaluru"
+    ],
+    "jullundur": [],
+    "jwalapur": [],
+    "kapurthala": [
+      "jalandhar"
+    ],
+    "kartarpur": [],
+    "kashipur": [
+      "uttarakhand"
+    ],
+    "kharar": [
+      "punjab"
+    ],
+    "kotdwar": [],
+    "kundli": [],
+    "laksar": [],
+    "ludhiana": [
+      "punjab"
+    ],
+    "manesar": [
+      "delhi-ncr"
+    ],
+    "manglaur": [],
+    "mayapuri": [],
+    "mohali": [
+      "punjab"
+    ],
+    "mundka": [],
+    "nakodar": [],
+    "naraina": [],
+    "narasapura": [],
+    "narela": [
+      "delhi-ncr"
+    ],
+    "new delhi": [
+      "delhi-ncr"
+    ],
+    "noida": [
+      "delhi-ncr"
+    ],
+    "okhla": [],
+    "pantnagar": [
+      "uttarakhand"
+    ],
+    "patiala": [
+      "punjab"
+    ],
+    "patparganj": [],
+    "peenya": [
+      "bengaluru"
+    ],
+    "phagwara": [
+      "jalandhar"
+    ],
+    "phillaur": [],
+    "rajpura": [],
+    "ranipur": [],
+    "rishikesh": [],
+    "roorkee": [
+      "haridwar"
+    ],
+    "rudrapur": [
+      "uttarakhand"
+    ],
+    "rurki": [],
+    "selaqui": [
+      "uttarakhand"
+    ],
+    "sidcul": [
+      "haridwar"
+    ],
+    "sitarganj": [
+      "uttarakhand"
+    ],
+    "sonipat": [],
+    "sultanpur lodhi": [],
+    "wazirpur": [],
+    "whitefield": [
+      "bengaluru"
+    ],
+    "zirakpur": [],
+    "jobs_adampur": [],
+    "jobs_amritsar": [
+      "punjab"
+    ],
+    "jobs_attibele": [],
+    "jobs_bahadrabad": [
+      "haridwar"
+    ],
+    "jobs_bahadurgarh": [],
+    "jobs_ballabgarh": [],
+    "jobs_bangalore": [
+      "bengaluru"
+    ],
+    "jobs_bathinda": [],
+    "jobs_bawana": [
+      "delhi-ncr"
+    ],
+    "jobs_bengaluru": [
+      "bengaluru"
+    ],
+    "jobs_bhagwanpur": [
+      "haridwar"
+    ],
+    "jobs_bholath": [],
+    "jobs_bommasandra": [
+      "bengaluru"
+    ],
+    "jobs_dehradun": [
+      "uttarakhand"
+    ],
+    "jobs_delhi": [
+      "delhi-ncr"
+    ],
+    "jobs_dera_bassi": [],
+    "jobs_electronic_city": [],
+    "jobs_faridabad": [
+      "delhi-ncr"
+    ],
+    "jobs_gautam_buddha_nagar": [],
+    "jobs_ghaziabad": [
+      "delhi-ncr"
+    ],
+    "jobs_goraya": [
+      "jalandhar"
+    ],
+    "jobs_greater_noida": [
+      "delhi-ncr"
+    ],
+    "jobs_gurgaon": [
+      "delhi-ncr"
+    ],
+    "jobs_gurugram": [
+      "delhi-ncr"
+    ],
+    "jobs_haldwani": [],
+    "jobs_hardwar": [
+      "haridwar"
+    ],
+    "jobs_haridwar": [
+      "haridwar"
+    ],
+    "jobs_hoskote": [],
+    "jobs_jalandhar": [
+      "jalandhar"
+    ],
+    "jobs_jhabrera": [],
+    "jobs_jigani": [
+      "bengaluru"
+    ],
+    "jobs_jullundur": [],
+    "jobs_jwalapur": [],
+    "jobs_kapurthala": [
+      "jalandhar"
+    ],
+    "jobs_kartarpur": [],
+    "jobs_kashipur": [
+      "uttarakhand"
+    ],
+    "jobs_kharar": [
+      "punjab"
+    ],
+    "jobs_kotdwar": [],
+    "jobs_kundli": [],
+    "jobs_laksar": [],
+    "jobs_ludhiana": [
+      "punjab"
+    ],
+    "jobs_manesar": [
+      "delhi-ncr"
+    ],
+    "jobs_manglaur": [],
+    "jobs_mayapuri": [],
+    "jobs_mohali": [
+      "punjab"
+    ],
+    "jobs_mundka": [],
+    "jobs_nakodar": [],
+    "jobs_naraina": [],
+    "jobs_narasapura": [],
+    "jobs_narela": [
+      "delhi-ncr"
+    ],
+    "jobs_new_delhi": [
+      "delhi-ncr"
+    ],
+    "jobs_noida": [
+      "delhi-ncr"
+    ],
+    "jobs_okhla": [],
+    "jobs_pantnagar": [
+      "uttarakhand"
+    ],
+    "jobs_patiala": [
+      "punjab"
+    ],
+    "jobs_patparganj": [],
+    "jobs_peenya": [
+      "bengaluru"
+    ],
+    "jobs_phagwara": [
+      "jalandhar"
+    ],
+    "jobs_phillaur": [],
+    "jobs_rajpura": [],
+    "jobs_ranipur": [],
+    "jobs_rishikesh": [],
+    "jobs_roorkee": [
+      "haridwar"
+    ],
+    "jobs_rudrapur": [
+      "uttarakhand"
+    ],
+    "jobs_rurki": [],
+    "jobs_selaqui": [
+      "uttarakhand"
+    ],
+    "jobs_sidcul": [
+      "haridwar"
+    ],
+    "jobs_sitarganj": [
+      "uttarakhand"
+    ],
+    "jobs_sonipat": [],
+    "jobs_sultanpur_lodhi": [],
+    "jobs_wazirpur": [],
+    "jobs_whitefield": [
+      "bengaluru"
+    ],
+    "jobs_zirakpur": [],
+    "uttarakhand": [
+      "uttarakhand"
+    ],
+    "punjab": [
+      "punjab"
+    ],
+    "ncr": [
+      "delhi-ncr"
+    ],
+    "blr": [
+      "bengaluru"
+    ],
+    "search_jobs": [],
+    "punjabi_jobs": [],
+    "jobs_jalandhar_and_ludhiana": [
+      "jalandhar",
+      "punjab"
+    ]
+  },
+  "urlIntent": {
+    "?cluster=haridwar": "haridwar",
+    "?cluster=uttarakhand": "uttarakhand",
+    "?cluster=delhi-ncr": "delhi-ncr",
+    "?cluster=bengaluru": "bengaluru",
+    "?cluster=jalandhar": "jalandhar",
+    "?cluster=saharanpur": "saharanpur",
+    "?cluster=other": null,
+    "?cluster=punjab": "punjab",
+    "?cluster=mumbai": null,
+    "?utm_campaign=adampur": null,
+    "?utm_campaign=amritsar": "punjab",
+    "?utm_campaign=attibele": null,
+    "?utm_campaign=bahadrabad": "haridwar",
+    "?utm_campaign=bahadurgarh": null,
+    "?utm_campaign=ballabgarh": null,
+    "?utm_campaign=bangalore": "bengaluru",
+    "?utm_campaign=bathinda": null,
+    "?utm_campaign=bawana": "delhi-ncr",
+    "?utm_campaign=bengaluru": "bengaluru",
+    "?utm_campaign=bhagwanpur": "haridwar",
+    "?utm_campaign=bholath": null,
+    "?utm_campaign=bommasandra": "bengaluru",
+    "?utm_campaign=dehradun": "uttarakhand",
+    "?utm_campaign=delhi": "delhi-ncr",
+    "?utm_campaign=dera bassi": null,
+    "?utm_campaign=electronic city": null,
+    "?utm_campaign=faridabad": "delhi-ncr",
+    "?utm_campaign=gautam buddha nagar": null,
+    "?utm_campaign=ghaziabad": "delhi-ncr",
+    "?utm_campaign=goraya": "jalandhar",
+    "?utm_campaign=greater noida": "delhi-ncr",
+    "?utm_campaign=gurgaon": "delhi-ncr",
+    "?utm_campaign=gurugram": "delhi-ncr",
+    "?utm_campaign=haldwani": null,
+    "?utm_campaign=hardwar": "haridwar",
+    "?utm_campaign=haridwar": "haridwar",
+    "?utm_campaign=hoskote": null,
+    "?utm_campaign=jalandhar": "jalandhar",
+    "?utm_campaign=jhabrera": null,
+    "?utm_campaign=jigani": "bengaluru",
+    "?utm_campaign=jullundur": null,
+    "?utm_campaign=jwalapur": null,
+    "?utm_campaign=kapurthala": "jalandhar",
+    "?utm_campaign=kartarpur": null,
+    "?utm_campaign=kashipur": "uttarakhand",
+    "?utm_campaign=kharar": "punjab",
+    "?utm_campaign=kotdwar": null,
+    "?utm_campaign=kundli": null,
+    "?utm_campaign=laksar": null,
+    "?utm_campaign=ludhiana": "punjab",
+    "?utm_campaign=manesar": "delhi-ncr",
+    "?utm_campaign=manglaur": null,
+    "?utm_campaign=mayapuri": null,
+    "?utm_campaign=mohali": "punjab",
+    "?utm_campaign=mundka": null,
+    "?utm_campaign=nakodar": null,
+    "?utm_campaign=naraina": null,
+    "?utm_campaign=narasapura": null,
+    "?utm_campaign=narela": "delhi-ncr",
+    "?utm_campaign=new delhi": "delhi-ncr",
+    "?utm_campaign=noida": "delhi-ncr",
+    "?utm_campaign=okhla": null,
+    "?utm_campaign=pantnagar": "uttarakhand",
+    "?utm_campaign=patiala": "punjab",
+    "?utm_campaign=patparganj": null,
+    "?utm_campaign=peenya": "bengaluru",
+    "?utm_campaign=phagwara": "jalandhar",
+    "?utm_campaign=phillaur": null,
+    "?utm_campaign=rajpura": null,
+    "?utm_campaign=ranipur": null,
+    "?utm_campaign=rishikesh": null,
+    "?utm_campaign=roorkee": "haridwar",
+    "?utm_campaign=rudrapur": "uttarakhand",
+    "?utm_campaign=rurki": null,
+    "?utm_campaign=selaqui": "uttarakhand",
+    "?utm_campaign=sidcul": "haridwar",
+    "?utm_campaign=sitarganj": "uttarakhand",
+    "?utm_campaign=sonipat": null,
+    "?utm_campaign=sultanpur lodhi": null,
+    "?utm_campaign=wazirpur": null,
+    "?utm_campaign=whitefield": "bengaluru",
+    "?utm_campaign=zirakpur": null,
+    "?utm_campaign=jobs_adampur": null,
+    "?utm_campaign=jobs_amritsar": "punjab",
+    "?utm_campaign=jobs_attibele": null,
+    "?utm_campaign=jobs_bahadrabad": "haridwar",
+    "?utm_campaign=jobs_bahadurgarh": null,
+    "?utm_campaign=jobs_ballabgarh": null,
+    "?utm_campaign=jobs_bangalore": "bengaluru",
+    "?utm_campaign=jobs_bathinda": null,
+    "?utm_campaign=jobs_bawana": "delhi-ncr",
+    "?utm_campaign=jobs_bengaluru": "bengaluru",
+    "?utm_campaign=jobs_bhagwanpur": "haridwar",
+    "?utm_campaign=jobs_bholath": null,
+    "?utm_campaign=jobs_bommasandra": "bengaluru",
+    "?utm_campaign=jobs_dehradun": "uttarakhand",
+    "?utm_campaign=jobs_delhi": "delhi-ncr",
+    "?utm_campaign=jobs_dera_bassi": null,
+    "?utm_campaign=jobs_electronic_city": null,
+    "?utm_campaign=jobs_faridabad": "delhi-ncr",
+    "?utm_campaign=jobs_gautam_buddha_nagar": null,
+    "?utm_campaign=jobs_ghaziabad": "delhi-ncr",
+    "?utm_campaign=jobs_goraya": "jalandhar",
+    "?utm_campaign=jobs_greater_noida": "delhi-ncr",
+    "?utm_campaign=jobs_gurgaon": "delhi-ncr",
+    "?utm_campaign=jobs_gurugram": "delhi-ncr",
+    "?utm_campaign=jobs_haldwani": null,
+    "?utm_campaign=jobs_hardwar": "haridwar",
+    "?utm_campaign=jobs_haridwar": "haridwar",
+    "?utm_campaign=jobs_hoskote": null,
+    "?utm_campaign=jobs_jalandhar": "jalandhar",
+    "?utm_campaign=jobs_jhabrera": null,
+    "?utm_campaign=jobs_jigani": "bengaluru",
+    "?utm_campaign=jobs_jullundur": null,
+    "?utm_campaign=jobs_jwalapur": null,
+    "?utm_campaign=jobs_kapurthala": "jalandhar",
+    "?utm_campaign=jobs_kartarpur": null,
+    "?utm_campaign=jobs_kashipur": "uttarakhand",
+    "?utm_campaign=jobs_kharar": "punjab",
+    "?utm_campaign=jobs_kotdwar": null,
+    "?utm_campaign=jobs_kundli": null,
+    "?utm_campaign=jobs_laksar": null,
+    "?utm_campaign=jobs_ludhiana": "punjab",
+    "?utm_campaign=jobs_manesar": "delhi-ncr",
+    "?utm_campaign=jobs_manglaur": null,
+    "?utm_campaign=jobs_mayapuri": null,
+    "?utm_campaign=jobs_mohali": "punjab",
+    "?utm_campaign=jobs_mundka": null,
+    "?utm_campaign=jobs_nakodar": null,
+    "?utm_campaign=jobs_naraina": null,
+    "?utm_campaign=jobs_narasapura": null,
+    "?utm_campaign=jobs_narela": "delhi-ncr",
+    "?utm_campaign=jobs_new_delhi": "delhi-ncr",
+    "?utm_campaign=jobs_noida": "delhi-ncr",
+    "?utm_campaign=jobs_okhla": null,
+    "?utm_campaign=jobs_pantnagar": "uttarakhand",
+    "?utm_campaign=jobs_patiala": "punjab",
+    "?utm_campaign=jobs_patparganj": null,
+    "?utm_campaign=jobs_peenya": "bengaluru",
+    "?utm_campaign=jobs_phagwara": "jalandhar",
+    "?utm_campaign=jobs_phillaur": null,
+    "?utm_campaign=jobs_rajpura": null,
+    "?utm_campaign=jobs_ranipur": null,
+    "?utm_campaign=jobs_rishikesh": null,
+    "?utm_campaign=jobs_roorkee": "haridwar",
+    "?utm_campaign=jobs_rudrapur": "uttarakhand",
+    "?utm_campaign=jobs_rurki": null,
+    "?utm_campaign=jobs_selaqui": "uttarakhand",
+    "?utm_campaign=jobs_sidcul": "haridwar",
+    "?utm_campaign=jobs_sitarganj": "uttarakhand",
+    "?utm_campaign=jobs_sonipat": null,
+    "?utm_campaign=jobs_sultanpur_lodhi": null,
+    "?utm_campaign=jobs_wazirpur": null,
+    "?utm_campaign=jobs_whitefield": "bengaluru",
+    "?utm_campaign=jobs_zirakpur": null,
+    "?utm_campaign=uttarakhand": "uttarakhand",
+    "?utm_campaign=punjab": "punjab",
+    "?utm_campaign=ncr": "delhi-ncr",
+    "?utm_campaign=blr": "bengaluru",
+    "?utm_campaign=search_jobs": null,
+    "?utm_campaign=punjabi_jobs": null,
+    "?utm_campaign=jobs_jalandhar_and_ludhiana": "jalandhar"
+  },
+  "rankLocales": {
+    "cluster=haridwar|region=UK|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=haridwar|region=UK|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=haridwar|region=UK|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=haridwar|region=UK|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=haridwar|region=UT|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=haridwar|region=UT|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=haridwar|region=UT|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=haridwar|region=UT|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=haridwar|region=PB|accept=null": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=haridwar|region=PB|accept=hi": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=haridwar|region=PB|accept=kn": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=haridwar|region=PB|accept=pa": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=haridwar|region=KA|accept=null": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=haridwar|region=KA|accept=hi": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=haridwar|region=KA|accept=kn": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=haridwar|region=KA|accept=pa": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=haridwar|region=DL|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=haridwar|region=DL|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=haridwar|region=DL|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=haridwar|region=DL|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=haridwar|region=HR|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=haridwar|region=HR|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=haridwar|region=HR|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=haridwar|region=HR|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=haridwar|region=UP|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=haridwar|region=UP|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=haridwar|region=UP|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=haridwar|region=UP|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=haridwar|region=MH|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=haridwar|region=MH|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=haridwar|region=MH|accept=kn": [
+      "kn-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN"
+    ],
+    "cluster=haridwar|region=MH|accept=pa": [
+      "pa-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN"
+    ],
+    "cluster=haridwar|region=null|accept=null": [
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=haridwar|region=null|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=haridwar|region=null|accept=kn": [
+      "kn-IN",
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN"
+    ],
+    "cluster=haridwar|region=null|accept=pa": [
+      "pa-IN",
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=UK|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=UK|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=UK|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=uttarakhand|region=UK|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=UT|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=UT|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=UT|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=uttarakhand|region=UT|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=PB|accept=null": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=PB|accept=hi": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=PB|accept=kn": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=PB|accept=pa": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=KA|accept=null": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=uttarakhand|region=KA|accept=hi": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=uttarakhand|region=KA|accept=kn": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=uttarakhand|region=KA|accept=pa": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=uttarakhand|region=DL|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=DL|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=DL|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=uttarakhand|region=DL|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=HR|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=HR|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=HR|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=uttarakhand|region=HR|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=UP|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=UP|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=UP|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=uttarakhand|region=UP|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=MH|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=MH|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=MH|accept=kn": [
+      "kn-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN"
+    ],
+    "cluster=uttarakhand|region=MH|accept=pa": [
+      "pa-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=null|accept=null": [
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=null|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=uttarakhand|region=null|accept=kn": [
+      "kn-IN",
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN"
+    ],
+    "cluster=uttarakhand|region=null|accept=pa": [
+      "pa-IN",
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=UK|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=UK|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=UK|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=delhi-ncr|region=UK|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=UT|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=UT|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=UT|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=delhi-ncr|region=UT|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=PB|accept=null": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=PB|accept=hi": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=PB|accept=kn": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=PB|accept=pa": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=KA|accept=null": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=delhi-ncr|region=KA|accept=hi": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=delhi-ncr|region=KA|accept=kn": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=delhi-ncr|region=KA|accept=pa": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=delhi-ncr|region=DL|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=DL|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=DL|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=delhi-ncr|region=DL|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=HR|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=HR|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=HR|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=delhi-ncr|region=HR|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=UP|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=UP|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=UP|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=delhi-ncr|region=UP|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=MH|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=MH|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=MH|accept=kn": [
+      "kn-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN"
+    ],
+    "cluster=delhi-ncr|region=MH|accept=pa": [
+      "pa-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=null|accept=null": [
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=null|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=delhi-ncr|region=null|accept=kn": [
+      "kn-IN",
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN"
+    ],
+    "cluster=delhi-ncr|region=null|accept=pa": [
+      "pa-IN",
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "kn-IN"
+    ],
+    "cluster=bengaluru|region=UK|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=UK|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=UK|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=UK|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=bengaluru|region=UT|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=UT|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=UT|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=UT|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=bengaluru|region=PB|accept=null": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=bengaluru|region=PB|accept=hi": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=bengaluru|region=PB|accept=kn": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=bengaluru|region=PB|accept=pa": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=bengaluru|region=KA|accept=null": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=KA|accept=hi": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=KA|accept=kn": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=KA|accept=pa": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=DL|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=DL|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=DL|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=DL|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=bengaluru|region=HR|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=HR|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=HR|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=HR|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=bengaluru|region=UP|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=UP|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=UP|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=UP|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=bengaluru|region=MH|accept=null": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=MH|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "kn-IN",
+      "en-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=MH|accept=kn": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=MH|accept=pa": [
+      "pa-IN",
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN"
+    ],
+    "cluster=bengaluru|region=null|accept=null": [
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=null|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=null|accept=kn": [
+      "kn-IN",
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN"
+    ],
+    "cluster=bengaluru|region=null|accept=pa": [
+      "pa-IN",
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=UK|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=UK|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=UK|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=jalandhar|region=UK|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=UT|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=UT|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=UT|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=jalandhar|region=UT|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=PB|accept=null": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=PB|accept=hi": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=PB|accept=kn": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=PB|accept=pa": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=KA|accept=null": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=jalandhar|region=KA|accept=hi": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=jalandhar|region=KA|accept=kn": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=jalandhar|region=KA|accept=pa": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=jalandhar|region=DL|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=DL|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=DL|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=jalandhar|region=DL|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=HR|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=HR|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=HR|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=jalandhar|region=HR|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=UP|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=UP|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=UP|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=jalandhar|region=UP|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=MH|accept=null": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=MH|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN",
+      "en-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=MH|accept=kn": [
+      "kn-IN",
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN"
+    ],
+    "cluster=jalandhar|region=MH|accept=pa": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=null|accept=null": [
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=null|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=jalandhar|region=null|accept=kn": [
+      "kn-IN",
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN"
+    ],
+    "cluster=jalandhar|region=null|accept=pa": [
+      "pa-IN",
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=UK|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=UK|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=UK|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=saharanpur|region=UK|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=UT|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=UT|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=UT|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=saharanpur|region=UT|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=PB|accept=null": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=PB|accept=hi": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=PB|accept=kn": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=PB|accept=pa": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=KA|accept=null": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=saharanpur|region=KA|accept=hi": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=saharanpur|region=KA|accept=kn": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=saharanpur|region=KA|accept=pa": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=saharanpur|region=DL|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=DL|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=DL|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=saharanpur|region=DL|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=HR|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=HR|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=HR|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=saharanpur|region=HR|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=UP|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=UP|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=UP|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=saharanpur|region=UP|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=MH|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=MH|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=MH|accept=kn": [
+      "kn-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN"
+    ],
+    "cluster=saharanpur|region=MH|accept=pa": [
+      "pa-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=null|accept=null": [
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=null|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=saharanpur|region=null|accept=kn": [
+      "kn-IN",
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN"
+    ],
+    "cluster=saharanpur|region=null|accept=pa": [
+      "pa-IN",
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=UK|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=UK|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=UK|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=other|region=UK|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=UT|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=UT|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=UT|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=other|region=UT|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=PB|accept=null": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=PB|accept=hi": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=PB|accept=kn": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=PB|accept=pa": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=KA|accept=null": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=other|region=KA|accept=hi": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=other|region=KA|accept=kn": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=other|region=KA|accept=pa": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=other|region=DL|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=DL|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=DL|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=other|region=DL|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=HR|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=HR|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=HR|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=other|region=HR|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=UP|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=UP|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=UP|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=other|region=UP|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=MH|accept=null": [
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=MH|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=MH|accept=kn": [
+      "kn-IN",
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN"
+    ],
+    "cluster=other|region=MH|accept=pa": [
+      "pa-IN",
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=null|accept=null": [
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=null|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=other|region=null|accept=kn": [
+      "kn-IN",
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN"
+    ],
+    "cluster=other|region=null|accept=pa": [
+      "pa-IN",
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=UK|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=UK|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=UK|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=punjab|region=UK|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=UT|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=UT|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=UT|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=punjab|region=UT|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=PB|accept=null": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=PB|accept=hi": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=PB|accept=kn": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=PB|accept=pa": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=KA|accept=null": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=punjab|region=KA|accept=hi": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=punjab|region=KA|accept=kn": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=punjab|region=KA|accept=pa": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=punjab|region=DL|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=DL|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=DL|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=punjab|region=DL|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=HR|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=HR|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=HR|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=punjab|region=HR|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=UP|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=UP|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=UP|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=punjab|region=UP|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=MH|accept=null": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=MH|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN",
+      "en-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=MH|accept=kn": [
+      "kn-IN",
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN"
+    ],
+    "cluster=punjab|region=MH|accept=pa": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=null|accept=null": [
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=null|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=punjab|region=null|accept=kn": [
+      "kn-IN",
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN"
+    ],
+    "cluster=punjab|region=null|accept=pa": [
+      "pa-IN",
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=UK|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=UK|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=UK|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=null|region=UK|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=UT|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=UT|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=UT|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=null|region=UT|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=PB|accept=null": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=PB|accept=hi": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=PB|accept=kn": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=PB|accept=pa": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=KA|accept=null": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=null|region=KA|accept=hi": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=null|region=KA|accept=kn": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=null|region=KA|accept=pa": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=null|region=DL|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=DL|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=DL|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=null|region=DL|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=HR|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=HR|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=HR|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=null|region=HR|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=UP|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=UP|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=UP|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=null|region=UP|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=MH|accept=null": [
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=MH|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=MH|accept=kn": [
+      "kn-IN",
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN"
+    ],
+    "cluster=null|region=MH|accept=pa": [
+      "pa-IN",
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=null|accept=null": [
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=null|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=null|region=null|accept=kn": [
+      "kn-IN",
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN"
+    ],
+    "cluster=null|region=null|accept=pa": [
+      "pa-IN",
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "kn-IN"
+    ]
+  },
+  "rankLocalesByIntent": {
+    "haridwar": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "uttarakhand": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "delhi-ncr": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "bengaluru": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "jalandhar": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "saharanpur": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "other": [
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "punjab": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ]
+  },
+  "areaOptions": {
+    "null|page": [
+      "market:bengaluru",
+      "market:haridwar",
+      "market:jalandhar",
+      "market:punjab",
+      "market:uttarakhand",
+      "market:other"
+    ],
+    "null|link": [
+      "market:bengaluru",
+      "market:haridwar",
+      "market:jalandhar",
+      "market:punjab",
+      "market:uttarakhand",
+      "market:other"
+    ],
+    "null|decision": [
+      "market:bengaluru",
+      "market:haridwar",
+      "market:jalandhar",
+      "market:punjab",
+      "market:uttarakhand",
+      "market:other"
+    ],
+    "null|ask": [
+      "market:bengaluru",
+      "market:haridwar",
+      "market:jalandhar",
+      "market:punjab",
+      "market:uttarakhand",
+      "market:other"
+    ],
+    "haridwar|page": [
+      "sidcul-bahadrabad",
+      "haridwar-jwalapur",
+      "roorkee-bhagwanpur",
+      "laksar",
+      "haridwar:rest-of-uttarakhand",
+      "outside"
+    ],
+    "haridwar|link": [
+      "sidcul-bahadrabad",
+      "haridwar-jwalapur",
+      "roorkee-bhagwanpur",
+      "laksar",
+      "haridwar:rest-of-uttarakhand",
+      "outside"
+    ],
+    "haridwar|decision": [
+      "sidcul-bahadrabad",
+      "haridwar-jwalapur",
+      "roorkee-bhagwanpur",
+      "laksar",
+      "haridwar:rest-of-uttarakhand",
+      "market:bengaluru",
+      "market:jalandhar",
+      "market:punjab",
+      "market:other"
+    ],
+    "haridwar|ask": [
+      "market:bengaluru",
+      "market:haridwar",
+      "market:jalandhar",
+      "market:punjab",
+      "market:uttarakhand",
+      "market:other"
+    ],
+    "uttarakhand|page": [
+      "uttarakhand:haridwar",
+      "uttarakhand:dehradun-selaqui",
+      "uttarakhand:udham-singh-nagar",
+      "uttarakhand:other",
+      "uttarakhand:outside"
+    ],
+    "uttarakhand|link": [
+      "uttarakhand:haridwar",
+      "uttarakhand:dehradun-selaqui",
+      "uttarakhand:udham-singh-nagar",
+      "uttarakhand:other",
+      "uttarakhand:outside"
+    ],
+    "uttarakhand|decision": [
+      "uttarakhand:haridwar",
+      "uttarakhand:dehradun-selaqui",
+      "uttarakhand:udham-singh-nagar",
+      "uttarakhand:other",
+      "market:bengaluru",
+      "market:jalandhar",
+      "market:punjab",
+      "market:other"
+    ],
+    "uttarakhand|ask": [
+      "market:bengaluru",
+      "market:haridwar",
+      "market:jalandhar",
+      "market:punjab",
+      "market:uttarakhand",
+      "market:other"
+    ],
+    "delhi-ncr|page": [
+      "market:bengaluru",
+      "market:haridwar",
+      "market:jalandhar",
+      "market:punjab",
+      "market:uttarakhand",
+      "market:other"
+    ],
+    "delhi-ncr|link": [
+      "market:bengaluru",
+      "market:haridwar",
+      "market:jalandhar",
+      "market:punjab",
+      "market:uttarakhand",
+      "market:other"
+    ],
+    "delhi-ncr|decision": [
+      "market:bengaluru",
+      "market:haridwar",
+      "market:jalandhar",
+      "market:punjab",
+      "market:uttarakhand",
+      "market:other"
+    ],
+    "delhi-ncr|ask": [
+      "market:bengaluru",
+      "market:haridwar",
+      "market:jalandhar",
+      "market:punjab",
+      "market:uttarakhand",
+      "market:other"
+    ],
+    "bengaluru|page": [
+      "bengaluru:north",
+      "bengaluru:south",
+      "bengaluru:east",
+      "bengaluru:west",
+      "bengaluru:outside"
+    ],
+    "bengaluru|link": [
+      "bengaluru:north",
+      "bengaluru:south",
+      "bengaluru:east",
+      "bengaluru:west",
+      "bengaluru:outside"
+    ],
+    "bengaluru|decision": [
+      "bengaluru:north",
+      "bengaluru:south",
+      "bengaluru:east",
+      "bengaluru:west",
+      "market:haridwar",
+      "market:jalandhar",
+      "market:punjab",
+      "market:uttarakhand",
+      "market:other"
+    ],
+    "bengaluru|ask": [
+      "market:bengaluru",
+      "market:haridwar",
+      "market:jalandhar",
+      "market:punjab",
+      "market:uttarakhand",
+      "market:other"
+    ],
+    "jalandhar|page": [
+      "jalandhar:kapurthala",
+      "jalandhar:city",
+      "jalandhar:phagwara-goraya",
+      "jalandhar:rest-of-punjab",
+      "jalandhar:outside"
+    ],
+    "jalandhar|link": [
+      "jalandhar:kapurthala",
+      "jalandhar:city",
+      "jalandhar:phagwara-goraya",
+      "jalandhar:rest-of-punjab",
+      "jalandhar:outside"
+    ],
+    "jalandhar|decision": [
+      "jalandhar:kapurthala",
+      "jalandhar:city",
+      "jalandhar:phagwara-goraya",
+      "jalandhar:rest-of-punjab",
+      "market:bengaluru",
+      "market:haridwar",
+      "market:uttarakhand",
+      "market:other"
+    ],
+    "jalandhar|ask": [
+      "market:bengaluru",
+      "market:haridwar",
+      "market:jalandhar",
+      "market:punjab",
+      "market:uttarakhand",
+      "market:other"
+    ],
+    "saharanpur|page": [
+      "market:bengaluru",
+      "market:haridwar",
+      "market:jalandhar",
+      "market:punjab",
+      "market:uttarakhand",
+      "market:other"
+    ],
+    "saharanpur|link": [
+      "market:bengaluru",
+      "market:haridwar",
+      "market:jalandhar",
+      "market:punjab",
+      "market:uttarakhand",
+      "market:other"
+    ],
+    "saharanpur|decision": [
+      "market:bengaluru",
+      "market:haridwar",
+      "market:jalandhar",
+      "market:punjab",
+      "market:uttarakhand",
+      "market:other"
+    ],
+    "saharanpur|ask": [
+      "market:bengaluru",
+      "market:haridwar",
+      "market:jalandhar",
+      "market:punjab",
+      "market:uttarakhand",
+      "market:other"
+    ],
+    "other|page": [
+      "market:bengaluru",
+      "market:haridwar",
+      "market:jalandhar",
+      "market:punjab",
+      "market:uttarakhand",
+      "market:other"
+    ],
+    "other|link": [
+      "market:bengaluru",
+      "market:haridwar",
+      "market:jalandhar",
+      "market:punjab",
+      "market:uttarakhand",
+      "market:other"
+    ],
+    "other|decision": [
+      "market:bengaluru",
+      "market:haridwar",
+      "market:jalandhar",
+      "market:punjab",
+      "market:uttarakhand",
+      "market:other"
+    ],
+    "other|ask": [
+      "market:bengaluru",
+      "market:haridwar",
+      "market:jalandhar",
+      "market:punjab",
+      "market:uttarakhand",
+      "market:other"
+    ],
+    "punjab|page": [
+      "punjab:jalandhar-kapurthala",
+      "punjab:ludhiana",
+      "punjab:mohali",
+      "punjab:amritsar",
+      "punjab:other",
+      "punjab:outside"
+    ],
+    "punjab|link": [
+      "punjab:jalandhar-kapurthala",
+      "punjab:ludhiana",
+      "punjab:mohali",
+      "punjab:amritsar",
+      "punjab:other",
+      "punjab:outside"
+    ],
+    "punjab|decision": [
+      "punjab:jalandhar-kapurthala",
+      "punjab:ludhiana",
+      "punjab:mohali",
+      "punjab:amritsar",
+      "punjab:other",
+      "market:bengaluru",
+      "market:haridwar",
+      "market:uttarakhand",
+      "market:other"
+    ],
+    "punjab|ask": [
+      "market:bengaluru",
+      "market:haridwar",
+      "market:jalandhar",
+      "market:punjab",
+      "market:uttarakhand",
+      "market:other"
+    ]
+  },
+  "crewPrefill": {
+    "haridwar": {
+      "pageCluster": "haridwar",
+      "siteCity": "Haridwar",
+      "siteState": "UK"
+    },
+    "sidcul": {
+      "pageCluster": "haridwar",
+      "siteCity": "SIDCUL Haridwar",
+      "siteState": "UK"
+    },
+    "sidcul-haridwar": {
+      "pageCluster": "haridwar",
+      "siteCity": "SIDCUL Haridwar",
+      "siteState": "UK"
+    },
+    "bhagwanpur": {
+      "pageCluster": "haridwar",
+      "siteCity": "Bhagwanpur, Haridwar",
+      "siteState": "UK"
+    },
+    "bahadrabad": {
+      "pageCluster": "haridwar",
+      "siteCity": "Bahadrabad, Haridwar",
+      "siteState": "UK"
+    },
+    "roorkee": {
+      "pageCluster": "haridwar",
+      "siteCity": "Roorkee, Haridwar",
+      "siteState": "UK"
+    },
+    "uttarakhand": {
+      "pageCluster": "uttarakhand",
+      "siteState": "UK"
+    },
+    "selaqui": {
+      "pageCluster": "uttarakhand",
+      "siteCity": "Selaqui, Dehradun",
+      "siteState": "UK"
+    },
+    "bengaluru": {
+      "pageCluster": "bengaluru",
+      "siteCity": "Bengaluru",
+      "siteState": "KA"
+    },
+    "peenya": {
+      "pageCluster": "bengaluru",
+      "siteCity": "Peenya, Bengaluru",
+      "siteState": "KA"
+    },
+    "bommasandra-jigani-attibele": {
+      "pageCluster": "bengaluru",
+      "siteCity": "Bommasandra / Jigani / Attibele",
+      "siteState": "KA"
+    },
+    "electronic-city-whitefield": {
+      "pageCluster": "bengaluru",
+      "siteCity": "Electronic City / Whitefield, Bengaluru",
+      "siteState": "KA"
+    },
+    "hoskote-narasapura": {
+      "pageCluster": "bengaluru",
+      "siteCity": "Hoskote / Narasapura",
+      "siteState": "KA"
+    },
+    "delhi-ncr": {
+      "pageCluster": "delhi-ncr",
+      "siteCity": "Delhi NCR",
+      "siteState": "DL"
+    },
+    "gurugram-manesar": {
+      "pageCluster": "delhi-ncr",
+      "siteCity": "Gurugram / Manesar",
+      "siteState": "HR"
+    },
+    "noida-greater-noida": {
+      "pageCluster": "delhi-ncr",
+      "siteCity": "Noida / Greater Noida",
+      "siteState": "UP"
+    },
+    "faridabad-ghaziabad": {
+      "pageCluster": "delhi-ncr",
+      "siteCity": "Faridabad / Ghaziabad",
+      "siteState": "UP"
+    },
+    "delhi-industrial-areas": {
+      "pageCluster": "delhi-ncr",
+      "siteCity": "Delhi",
+      "siteState": "DL"
+    },
+    "jalandhar": {
+      "pageCluster": "jalandhar",
+      "siteCity": "Jalandhar / Kapurthala",
+      "siteState": "PB"
+    },
+    "kapurthala": {
+      "pageCluster": "jalandhar",
+      "siteCity": "Kapurthala",
+      "siteState": "PB"
+    },
+    "phagwara-goraya": {
+      "pageCluster": "jalandhar",
+      "siteCity": "Phagwara / Goraya",
+      "siteState": "PB"
+    },
+    "jalandhar-focal-point": {
+      "pageCluster": "jalandhar",
+      "siteCity": "Focal Point, Jalandhar",
+      "siteState": "PB"
+    }
+  },
+  "labels": {
+    "businessLabel": {
+      "haridwar": "Haridwar",
+      "uttarakhand": "Uttarakhand",
+      "delhi-ncr": "Delhi NCR",
+      "bengaluru": "Bengaluru",
+      "jalandhar": "Jalandhar–Kapurthala",
+      "punjab": "Punjab"
+    },
+    "JOBS_AREA_LABEL": {
+      "en-IN": {
+        "haridwar": "Jobs in Haridwar",
+        "bengaluru": "Jobs in Bengaluru",
+        "jalandhar": "Jobs in Jalandhar and Kapurthala",
+        "uttarakhand": "Jobs across Uttarakhand",
+        "punjab": "Jobs across Punjab"
+      },
+      "hi-IN": {
+        "haridwar": "हरिद्वार में नौकरी",
+        "bengaluru": "बेंगलुरु में नौकरी",
+        "jalandhar": "जालंधर और कपूरथला में नौकरी",
+        "uttarakhand": "पूरे उत्तराखंड में नौकरी",
+        "punjab": "पूरे पंजाब में नौकरी"
+      },
+      "hi-Latn-IN": {
+        "haridwar": "Haridwar mein job",
+        "bengaluru": "Bengaluru mein job",
+        "jalandhar": "Jalandhar aur Kapurthala mein job",
+        "uttarakhand": "Poore Uttarakhand mein job",
+        "punjab": "Poore Punjab mein job"
+      },
+      "kn-IN": {
+        "haridwar": "ಹರಿದ್ವಾರದಲ್ಲಿ ಉದ್ಯೋಗ",
+        "bengaluru": "ಬೆಂಗಳೂರಿನಲ್ಲಿ ಉದ್ಯೋಗ",
+        "jalandhar": "ಜಲಂಧರ್ ಮತ್ತು ಕಪೂರ್ಥಲಾದಲ್ಲಿ ಉದ್ಯೋಗ",
+        "uttarakhand": "ಉತ್ತರಾಖಂಡದಾದ್ಯಂತ ಉದ್ಯೋಗ",
+        "punjab": "ಪಂಜಾಬ್‌ನಾದ್ಯಂತ ಉದ್ಯೋಗ"
+      },
+      "pa-IN": {
+        "haridwar": "ਹਰਿਦੁਆਰ ਵਿੱਚ ਨੌਕਰੀ",
+        "bengaluru": "ਬੈਂਗਲੁਰੂ ਵਿੱਚ ਨੌਕਰੀ",
+        "jalandhar": "ਜਲੰਧਰ ਅਤੇ ਕਪੂਰਥਲਾ ਵਿੱਚ ਨੌਕਰੀ",
+        "uttarakhand": "ਪੂਰੇ ਉੱਤਰਾਖੰਡ ਵਿੱਚ ਨੌਕਰੀ",
+        "punjab": "ਪੂਰੇ ਪੰਜਾਬ ਵਿੱਚ ਨੌਕਰੀ"
+      }
+    },
+    "clusterNames": {
+      "haridwar": {
+        "en-IN": "Haridwar",
+        "hi-IN": "हरिद्वार",
+        "hi-Latn-IN": "Haridwar"
+      },
+      "uttarakhand": {
+        "en-IN": "Uttarakhand",
+        "hi-IN": "उत्तराखंड",
+        "hi-Latn-IN": "Uttarakhand"
+      },
+      "delhi-ncr": {
+        "en-IN": "Delhi NCR",
+        "hi-IN": "दिल्ली NCR",
+        "hi-Latn-IN": "Delhi NCR"
+      },
+      "bengaluru": {
+        "en-IN": "Bengaluru",
+        "hi-IN": "बेंगलुरु",
+        "hi-Latn-IN": "Bengaluru"
+      },
+      "jalandhar": {
+        "en-IN": "Jalandhar and Kapurthala",
+        "hi-IN": "जालंधर और कपूरथला",
+        "hi-Latn-IN": "Jalandhar aur Kapurthala"
+      },
+      "punjab": {
+        "en-IN": "Punjab",
+        "hi-IN": "पंजाब",
+        "hi-Latn-IN": "Punjab",
+        "pa-IN": "ਪੰਜਾਬ"
+      }
+    },
+    "quickSwitch": {
+      "haridwar": [
+        "en-IN",
+        "hi-IN",
+        "hi-Latn-IN"
+      ],
+      "uttarakhand": [
+        "en-IN",
+        "hi-IN",
+        "hi-Latn-IN"
+      ],
+      "delhi-ncr": [
+        "en-IN",
+        "hi-IN",
+        "hi-Latn-IN"
+      ],
+      "bengaluru": [
+        "kn-IN",
+        "en-IN",
+        "hi-Latn-IN"
+      ],
+      "jalandhar": [
+        "pa-IN",
+        "hi-Latn-IN",
+        "en-IN"
+      ],
+      "punjab": [
+        "pa-IN",
+        "hi-Latn-IN",
+        "en-IN"
+      ]
+    }
+  },
+  "orderedJobMarkets": [
+    "bengaluru",
+    "haridwar",
+    "jalandhar",
+    "punjab",
+    "uttarakhand"
+  ]
+}

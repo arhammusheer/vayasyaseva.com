@@ -109,7 +109,7 @@ The `TALENT_*`, `FAST2SMS_*` and `CHATWOOT_*` keys are read from `growth/n8n-env
 6. creates or updates the schedules and the route `/api/r/webhook/vspl-talent-intake` (sync, no Windmill auth: the script checks the secret);
 7. warms the route with a wrong secret and expects 403 (the first call after a new version installs dependencies, ~7.5 s).
 
-**Schedules are created disabled.** `--enable-schedules` turns on acknowledge, deliver, sync_crm and delivery_check; `--enable-retention` turns on retention (after a hand-run check, as with n8n). A later deploy without the flags leaves each schedule as it is.
+**Schedules are created disabled.** `--enable-schedules` turns on `f/talent/dispatch` and `f/leads/sync_crm`; `--enable-retention` turns on retention (after a hand-run check, as with n8n). A later deploy without the flags leaves each schedule as it is. The schedules the dispatcher replaced (acknowledge, deliver, sync_crm, delivery_check) are turned off by every deploy; if any of them was on, the dispatcher and the lead sync are turned on in the same deploy, so deliveries never stop in between.
 
 Cron is Windmill's six-field form (seconds first), timezone Asia/Kolkata: acknowledge and deliver `0 * * * * *`, sync_crm `30 * * * * *`, delivery_check `0 */15 * * * *`, retention `0 0 * * * *`.
 

@@ -51,7 +51,7 @@ import { randomBytes } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { createServer } from "node:net";
 import { dirname, resolve } from "node:path";
-import { FOLDERS, SCRIPTS, TIMEZONE, WORKSPACE, scriptPath, specPath, type ScriptSpec } from "./scripts.mts";
+import { FOLDER, FOLDERS, SCRIPTS, TIMEZONE, WORKSPACE, specPath, type ScriptSpec } from "./scripts.mts";
 import { VARIABLES, variablePath, type ConfigName } from "./talent/lib/config.ts";
 import { metadata } from "./build.mts";
 
@@ -297,7 +297,11 @@ async function main() {
     }
 
     // 6. Schedules and the HTTP route
-    for (const spec of SCRIPTS) await schedule(asService, exists, spec);
+    // The dispatcher and the lead sync take over from the schedules they replace: if those were on,
+    // the new ones are turned on in the same deploy, so deliveries never stop in between.
+    const replacedWereOn = await anyEnabled(w, exists, SCRIPTS.filter((spec) => spec.retiredSchedule));
+    if (replacedWereOn) step("the replaced schedules were on: f/talent/dispatch and f/leads/sync_crm will be on too");
+    for (const spec of SCRIPTS) await schedule(asService, exists, spec, replacedWereOn);
     for (const spec of SCRIPTS) await route(asService, exists, spec);
 
     // 7. Warm the route: a wrong secret must answer 403
@@ -326,7 +330,21 @@ async function main() {
 
 type Api = ReturnType<typeof api>;
 
-async function schedule(w: Api, exists: (path: string) => Promise<boolean>, spec: ScriptSpec) {
+/** Whether any of these scripts' schedules exists and is enabled. */
+async function anyEnabled(w: Api, exists: (path: string) => Promise<boolean>, specs: ScriptSpec[]): Promise<boolean> {
+  for (const spec of specs) {
+    const path = specPath(spec);
+    if (!(await exists(`/w/{ws}/schedules/exists/${path}`))) continue;
+    const current = JSON.parse(await w.call("GET", `/w/{ws}/schedules/get/${path}`)) as { enabled?: boolean };
+    if (current.enabled) return true;
+  }
+  return false;
+}
+
+/** The schedules that replace the retired ones (roadmap 1F). */
+const REPLACEMENTS = new Set(["talent/dispatch", "leads/sync_crm"]);
+
+async function schedule(w: Api, exists: (path: string) => Promise<boolean>, spec: ScriptSpec, replacedWereOn = false) {
   const path = specPath(spec);
   if (spec.retiredSchedule) {
     // The dispatcher does this work now: turn the old schedule off (kept, so it can be turned back on by hand).
@@ -336,7 +354,8 @@ async function schedule(w: Api, exists: (path: string) => Promise<boolean>, spec
     return;
   }
   if (!spec.schedule) return;
-  const enable = spec.name === "retention" ? ENABLE_RETENTION : ENABLE_SCHEDULES;
+  const enable =
+    spec.name === "retention" ? ENABLE_RETENTION : ENABLE_SCHEDULES || (replacedWereOn && REPLACEMENTS.has(`${spec.folder ?? FOLDER}/${spec.name}`));
   const body = { schedule: spec.schedule.cron, timezone: TIMEZONE, args: {}, summary: spec.schedule.summary };
   if (await exists(`/w/{ws}/schedules/exists/${path}`)) {
     await w.write(`/w/{ws}/schedules/update/${path}`, body, `updating schedule ${path} (${spec.schedule.cron})`);

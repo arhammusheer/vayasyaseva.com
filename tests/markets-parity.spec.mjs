@@ -8,7 +8,6 @@ const markets = await importTs("src/markets/index.ts");
 const model = await importTs("src/lib/intent/model.ts");
 const { clusters } = await importTs("src/content/registry/index.ts");
 const { CLUSTER_IDS } = await importTs("src/content/registry/identifiers.ts");
-const { KNOWN_PLACES } = await importTs("src/lib/crew-request.ts");
 const { areaOptions } = await importTs("src/content/pages/quick-apply.ts");
 
 const plainObject = (o) => JSON.parse(JSON.stringify(o));
@@ -40,13 +39,6 @@ test("language sets, quick switch and stand-ins", () => {
   for (const id of CLUSTER_IDS) for (const side of ["business", "jobs"]) {
     assert.equal(markets.standInFor(id, side), id === "punjab" && side === "business" ? "jalandhar" : undefined, `${id} ${side}`);
   }
-});
-
-test("place ids", () => {
-  assert.deepEqual(
-    plainObject(Object.fromEntries(Object.entries(markets.PLACES_BY_ID).map(([id, p]) => [id, { state: p.state, city: p.city, cluster: p.market }]))),
-    plainObject(KNOWN_PLACES),
-  );
 });
 
 test("form areas, and outside = files under no market", () => {

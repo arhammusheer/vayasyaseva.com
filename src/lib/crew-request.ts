@@ -17,7 +17,7 @@ import {
   STATE_OPTIONS,
   type ContactFormData,
 } from "@/lib/contact-contract";
-import { placeState } from "@/lib/intent/model";
+import { PLACES_BY_ID, placeById, stateForPlace } from "@/markets/index";
 
 /**
  * Version of the privacy notice a business enquiry is sent under, shown in
@@ -150,38 +150,12 @@ export function requirementLines(data: ContactFormData) {
 
 /* ---------- Prefilled links (#roles=…&headcount=…&state=…&city=…) ---------- */
 
-type Place = { state: string; city: string; cluster: string };
-
 /**
  * Places a link may name in `#location=`: one id per location page (hub
  * and estate, src/content/locations) plus a few industrial areas named on
- * them. Anything else is taken as the city as typed.
+ * them (src/markets/places.ts). Anything else is taken as the city as typed.
  */
-export const KNOWN_PLACES: Record<string, Place> = {
-  // The location pages (src/content/locations): one id per hub and estate.
-  haridwar: { state: "UK", city: "Haridwar", cluster: "haridwar" },
-  sidcul: { state: "UK", city: "SIDCUL Haridwar", cluster: "haridwar" },
-  "sidcul-haridwar": { state: "UK", city: "SIDCUL Haridwar", cluster: "haridwar" },
-  bhagwanpur: { state: "UK", city: "Bhagwanpur, Haridwar", cluster: "haridwar" },
-  bahadrabad: { state: "UK", city: "Bahadrabad, Haridwar", cluster: "haridwar" },
-  roorkee: { state: "UK", city: "Roorkee, Haridwar", cluster: "haridwar" },
-  uttarakhand: { state: "UK", city: "", cluster: "uttarakhand" },
-  selaqui: { state: "UK", city: "Selaqui, Dehradun", cluster: "uttarakhand" },
-  bengaluru: { state: "KA", city: "Bengaluru", cluster: "bengaluru" },
-  peenya: { state: "KA", city: "Peenya, Bengaluru", cluster: "bengaluru" },
-  "bommasandra-jigani-attibele": { state: "KA", city: "Bommasandra / Jigani / Attibele", cluster: "bengaluru" },
-  "electronic-city-whitefield": { state: "KA", city: "Electronic City / Whitefield, Bengaluru", cluster: "bengaluru" },
-  "hoskote-narasapura": { state: "KA", city: "Hoskote / Narasapura", cluster: "bengaluru" },
-  "delhi-ncr": { state: "", city: "Delhi NCR", cluster: "delhi-ncr" },
-  "gurugram-manesar": { state: "HR", city: "Gurugram / Manesar", cluster: "delhi-ncr" },
-  "noida-greater-noida": { state: "UP", city: "Noida / Greater Noida", cluster: "delhi-ncr" },
-  "faridabad-ghaziabad": { state: "", city: "Faridabad / Ghaziabad", cluster: "delhi-ncr" },
-  "delhi-industrial-areas": { state: "DL", city: "Delhi", cluster: "delhi-ncr" },
-  jalandhar: { state: "PB", city: "Jalandhar / Kapurthala", cluster: "jalandhar" },
-  kapurthala: { state: "PB", city: "Kapurthala", cluster: "jalandhar" },
-  "phagwara-goraya": { state: "PB", city: "Phagwara / Goraya", cluster: "jalandhar" },
-  "jalandhar-focal-point": { state: "PB", city: "Focal Point, Jalandhar", cluster: "jalandhar" },
-};
+export const KNOWN_PLACES = PLACES_BY_ID;
 
 const STATE_BY_NAME = Object.fromEntries(
   Object.entries(STATE_OPTIONS).map(([code, name]) => [name.toLowerCase(), code])
@@ -222,12 +196,12 @@ export function crewPrefill(values: Partial<Record<string, string>>): CrewPrefil
   else if (values.headcount) extraLines.push(`Workers: ${values.headcount}`);
 
   const location = values.location?.trim();
-  const place = location ? KNOWN_PLACES[location.toLowerCase()] : undefined;
-  const cluster = knownCluster(values.cluster) ?? place?.cluster;
+  const place = location ? placeById(location.toLowerCase()) : undefined;
+  const cluster = knownCluster(values.cluster) ?? place?.market;
   if (cluster) fields.pageCluster = cluster;
   const city = values.city?.trim() || place?.city || (place ? undefined : location);
   if (city) fields.siteCity = city.slice(0, 120);
-  const state = stateCode(values.state) ?? (place?.state || undefined) ?? placeState(city);
+  const state = stateCode(values.state) ?? (place?.state || undefined) ?? stateForPlace(city);
   if (state) fields.siteState = state;
   if (values.pincode && /^[1-9][0-9]{5}$/.test(values.pincode.trim())) fields.sitePincode = values.pincode.trim();
 

@@ -1,5 +1,6 @@
 import type { FaqItem } from "../types";
 import type { LocaleTag, LocationCluster } from "@/content/registry/identifiers";
+import type { PlaceId } from "@/markets/places";
 
 /**
  * One location page (owner direction, 17 Oct 2026): a hero with Request a
@@ -17,8 +18,8 @@ export type LocationCopy = {
   estate?: string;
   /** Short name for breadcrumbs, the section label and links ("Peenya", "Delhi NCR"). */
   name: string;
-  /** The #location= id the Request a crew link prefills (src/lib/crew-request.ts KNOWN_PLACES). */
-  placeId: string;
+  /** The #location= id the Request a crew link prefills (src/markets/places.ts). */
+  placeId: PlaceId;
   /** Up to 55 characters before " | Vayasya Seva". */
   metaTitle: string;
   /** 140 to 160 characters. */

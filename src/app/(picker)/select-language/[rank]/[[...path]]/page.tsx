@@ -5,6 +5,7 @@ import { jobsCopy } from "@/content/pages/jobs";
 import { getJobRole } from "@/content/pages/job-roles";
 import { getJobHub } from "@/content/pages/job-hubs";
 import { getJobCluster } from "@/content/pages/job-clusters";
+import { jobsLinkLabel } from "@/markets/labels";
 import { quickApplyCopy } from "@/content/pages/quick-apply";
 import { feesAndFraudCopy } from "@/content/pages/fees-and-fraud";
 import { jobsPrivacyCopy } from "@/content/pages/jobs-privacy";
@@ -76,8 +77,7 @@ function pageName(path: string, locale: Locale): { title: string; href?: string 
   if (path === "/jobs/privacy") return { title: jobsPrivacyCopy[locale].breadcrumb };
   const slug = /^\/jobs\/([^/]+)$/.exec(path)?.[1];
   if (slug) {
-    const cluster = getJobCluster(slug, locale);
-    const name = cluster?.linkLabel ?? getJobRole(slug, locale)?.name ?? getJobHub(slug, locale)?.name;
+    const name = (getJobCluster(slug, locale) ? jobsLinkLabel(slug, locale) : undefined) ?? getJobRole(slug, locale)?.name ?? getJobHub(slug, locale)?.name;
     if (name) return { title: name };
   }
   return { title: locales[locale].hint };

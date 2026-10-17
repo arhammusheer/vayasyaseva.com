@@ -1,5 +1,6 @@
 import type { Locale } from "@/lib/i18n";
-import { AREA_CLUSTERS, QUICK_ANSWERS, type JobRole, type QuickQuestion } from "@/lib/talent-intake/rules";
+import { QUICK_ANSWERS, type JobRole, type QuickQuestion } from "@/lib/talent-intake/rules";
+import { areaFilesUnder, formAreas, marketAreaAnswers, type JobsMarketId } from "@/markets/index";
 import { NO_FEE, SHIFTS_LINE } from "@/content/pages/jobs";
 
 /**
@@ -39,25 +40,18 @@ const picked = (a: Answers, step: string, value: string) => a[step]?.includes(va
  * - "ask": which market, in MARKET_ORDER, "Somewhere else" last.
  */
 export type AreaSource = "page" | "link" | "decision" | "ask";
-const MARKET_AREAS = ["market:bengaluru", "market:haridwar", "market:jalandhar", "market:punjab", "market:uttarakhand", "market:other"] as const;
-const CLUSTER_AREAS: Readonly<Record<string, readonly string[]>> = {
-  haridwar: ["sidcul-bahadrabad", "haridwar-jwalapur", "roorkee-bhagwanpur", "laksar", "haridwar:rest-of-uttarakhand", "outside"],
-  uttarakhand: ["uttarakhand:haridwar", "uttarakhand:dehradun-selaqui", "uttarakhand:udham-singh-nagar", "uttarakhand:other", "uttarakhand:outside"],
-  jalandhar: ["jalandhar:kapurthala", "jalandhar:city", "jalandhar:phagwara-goraya", "jalandhar:rest-of-punjab", "jalandhar:outside"],
-  punjab: ["punjab:jalandhar-kapurthala", "punjab:ludhiana", "punjab:mohali", "punjab:amritsar", "punjab:other", "punjab:outside"],
-  bengaluru: ["bengaluru:north", "bengaluru:south", "bengaluru:east", "bengaluru:west", "bengaluru:outside"],
-};
-/** Each set's "outside" answer: the last one. */
-const isOutside = (id: string, set: readonly string[]) => id === set[set.length - 1];
+// The answers and their order: src/markets/areas.ts (from rules' AREA_CLUSTERS).
+const MARKET_AREAS = marketAreaAnswers();
 
 export function areaOptions(cluster: string | null | undefined, source: AreaSource = cluster ? "page" : "ask"): readonly string[] {
-  const own = cluster ? CLUSTER_AREAS[cluster] : undefined;
+  const own = formAreas(cluster);
   if (!own || source === "ask") return MARKET_AREAS;
   if (source !== "decision") return own;
-  const local = own.filter((id) => !isOutside(id, own));
-  const covered = new Set(local.map((id) => AREA_CLUSTERS[id as keyof typeof AREA_CLUSTERS]));
+  // Every answer but "outside" (one that files under no market).
+  const local = own.filter((id) => areaFilesUnder(id) !== null);
+  const covered = new Set(local.map(areaFilesUnder));
   const others = MARKET_AREAS.filter((id) => {
-    const market = AREA_CLUSTERS[id as keyof typeof AREA_CLUSTERS];
+    const market = areaFilesUnder(id);
     return market === null || !covered.has(market);
   });
   return [...local, ...others];
@@ -104,7 +98,7 @@ export interface QuickApplyCopy {
    * The H1 and title when ?cluster=<id> names a market (ads landing on
    * /jobs/apply for it); the defaults name no market.
    */
-  inCluster: Partial<Record<"haridwar" | "uttarakhand" | "jalandhar" | "punjab" | "bengaluru", { title: string; heading: string }>>;
+  inCluster: Record<JobsMarketId, { title: string; heading: string }>;
   next: string;
   questions: Record<string, { question: string; hint?: string }>;
   labels: Record<string, string>;

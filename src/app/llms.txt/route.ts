@@ -3,8 +3,9 @@ import { clusterById } from "@/content/registry/clusters";
 import { jobsHubPath, type ClusterId } from "@/content/registry/identifiers";
 import { getJobCluster } from "@/content/pages/job-clusters";
 import { locationPages } from "@/content/locations";
-import { MARKET_ORDER } from "@/lib/intent/model";
+import { MARKET_IDS as MARKET_ORDER } from "@/markets/index";
 import { orderedJobMarkets } from "@/lib/intent/surfaces";
+import { jobsLinkLabel } from "@/markets/labels";
 import { localePath, localesOf, type Locale } from "@/lib/i18n";
 import { jobRoles } from "@/content/pages/job-roles";
 import { QUICK_ANSWERS } from "@/lib/talent-intake/rules";
@@ -74,7 +75,7 @@ const jobsLines = orderedJobMarkets()
     const others = localesOf(path)
       .filter((l): l is Exclude<Locale, "en-IN"> => l !== "en-IN" && linkable(path, l))
       .map((l) => `${LANGUAGE_NOTE[l]} (${baseUrl}${localePath(path, l)})`);
-    return [`- [${hub.linkLabel}](${baseUrl}/en-in${path}): ${hub.description}${others.length ? ` Also in ${others.join(", ")}.` : ""}`];
+    return [`- [${jobsLinkLabel(id, "en-IN")}](${baseUrl}/en-in${path}): ${hub.description}${others.length ? ` Also in ${others.join(", ")}.` : ""}`];
   })
   .join("\n");
 /** The pages in one language other than English: every jobs market and business page built in it. */
@@ -85,7 +86,7 @@ const languageLines = (locale: Exclude<Locale, "en-IN">, suffix: string) =>
     ...orderedJobMarkets().flatMap((id) => {
       const path = jobsHubPath(id as Exclude<ClusterId, "other">);
       const hub = getJobCluster(id, "en-IN");
-      return hub && linkable(path, locale) ? [`- [${hub.linkLabel}${suffix}](${baseUrl}${localePath(path, locale)})`] : [];
+      return hub && linkable(path, locale) ? [`- [${jobsLinkLabel(id, "en-IN")}${suffix}](${baseUrl}${localePath(path, locale)})`] : [];
     }),
   ].join("\n");
 

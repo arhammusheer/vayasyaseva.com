@@ -106,8 +106,34 @@ privacy notice's description of browser storage covers it.
 
 ## Adding a market
 
-Add the cluster to `src/content/registry/clusters.ts` and its pages to the
-registry; the header, `/jobs`, `/locations` and the footer pick it up. Add it
-to `MARKET_ORDER`, its state or cities to `REGION_CLUSTERS` / `geoCluster`,
-its form state to `SITE_STATE_CLUSTERS`, its place words to `UTM_WORDS`, and
-its area answers (append-only ids) to rules.ts and quick-apply.ts.
+Market knowledge lives in one module, `src/markets` (roadmap 1B):
+
+1. **`src/markets/data.ts`**: add the id to `MARKET_IDS` (alphabetical; it
+   must already be a stored cluster id in `identifiers.ts`, append-only) and
+   one record to `MARKETS`: its `states`, the regions it covers by default
+   (`defaultFor.region` for the IP, `defaultFor.siteState` for the crew
+   form), its `placeGroups` (city spellings, each group with its region and
+   a global `rank`: narrow markets before the rest of their state), its
+   `adWords` and `adRank` (UTM and campaign words), its `languageSet` and
+   `quickSwitch`, its `sides` and any `standIn`. TypeScript fails until the
+   record is complete.
+2. **`src/markets/labels.ts`**: its name per language (and `short` if the
+   header label differs), and its jobs link label in every language if it
+   has a jobs side.
+3. **`src/markets/schema-org.ts`**: its schema.org place, if it has a
+   business side (required by the type).
+4. **`src/markets/places.ts`**: a place id per location page, if it has
+   them (stored values, append-only).
+5. **Its area answers**: append-only ids `<market>:<area>` to rules.ts
+   (`QUICK_ANSWERS.area`, `AREA_CLUSTERS`) and `identifiers.ts`; the form
+   order (places in id order, "outside" last) follows from them.
+
+Then add its cluster to `src/content/registry/clusters.ts` and its pages to
+the registry; the header, `/jobs`, `/locations` and the footer pick it up.
+`tests/markets.spec.mjs` will fail, because a new market moves decisions:
+check each moved decision in the diff, then rewrite the snapshot on purpose
+(`node scripts/write-behaviour-snapshots.mjs`).
+
+`src/markets/index.ts` holds the queries and is imported by the proxy and
+every client bundle: keep labels and schema.org out of it, and never import
+the registry, i18n, React or page content into `src/markets`.

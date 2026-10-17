@@ -32,6 +32,7 @@ import { noteChoice } from "@/lib/intent/store";
 import { MODEL_VERSION } from "@/lib/intent/model";
 import { reportChoice } from "@/lib/intent/report";
 import { JOBS_AREA_LABEL, businessLabel, jobsAreaHref, orderedJobMarkets } from "@/lib/intent/surfaces";
+import { marketName } from "@/markets/labels";
 
 /** A header link that names an area: clicking it records the visitor's pick. */
 /**
@@ -232,7 +233,7 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
   // Every market's jobs hub in the jobs menu, the decided ones first.
   const jobsHubs = orderedJobMarkets(area.jobs).map((id, i) => ({
     href: nearestLocalePath(jobsHubPath(id as Exclude<ClusterId, "other">), pageLocale),
-    label: JOBS_AREA_LABEL[pageLocale][id] ?? clusterById(id)?.name[pageLocale] ?? clusterById(id)?.name["en-IN"] ?? id,
+    label: JOBS_AREA_LABEL[pageLocale][id] ?? marketName(id, pageLocale) ?? id,
     cluster: id,
     surface: "jobs" as const,
     pick: true,

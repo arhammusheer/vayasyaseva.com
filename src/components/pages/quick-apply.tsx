@@ -5,6 +5,7 @@ import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { JsonLd, webPageSchema } from "@/lib/structured-data";
 import { quickApplyCopy } from "@/content/pages/quick-apply";
 import { localePath, locales, type Locale } from "@/lib/i18n";
+import type { JobsMarketId } from "@/markets/index";
 
 const PATH = "/jobs/apply";
 
@@ -15,7 +16,7 @@ const PATH = "/jobs/apply";
  */
 /** The heading and title for ?cluster=<id>, when that cluster has its own (quick-apply.ts inCluster). */
 const inCluster = (locale: Locale, cluster?: string) =>
-  cluster && Object.hasOwn(quickApplyCopy[locale].inCluster, cluster) ? quickApplyCopy[locale].inCluster[cluster as "jalandhar"] : undefined;
+  cluster && Object.hasOwn(quickApplyCopy[locale].inCluster, cluster) ? quickApplyCopy[locale].inCluster[cluster as JobsMarketId] : undefined;
 
 export function quickApplyMetadata(locale: Locale, query: { role?: string; hub?: string; work?: string; cluster?: string } = {}) {
   const t = quickApplyCopy[locale];

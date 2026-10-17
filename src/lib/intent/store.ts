@@ -6,7 +6,8 @@
  * except the anonymous decision sent to analytics. Every read and write
  * tolerates blocked storage.
  */
-import { clustersInUtm, geoCluster, type AreaSignals } from "./model";
+import { geoMarket, marketsInAdTags } from "@/markets/index";
+import type { AreaSignals } from "./model";
 
 /** v2: sessions carry their start and last-seen times and the form's area answer. */
 const SESSION_KEY = "vs-area-session-v2";
@@ -78,7 +79,7 @@ export function notePageView(pageCluster: string | undefined, url: URL, known: (
   if (s.landing === undefined) s.landing = pageCluster ?? "";
   const param = url.searchParams.get("cluster");
   if (param && known(param)) s.param = param;
-  const utm = clustersInUtm(["utm_campaign", "utm_term", "utm_content", "utm_source"].map((k) => url.searchParams.get(k))).filter(known);
+  const utm = marketsInAdTags(["utm_campaign", "utm_term", "utm_content", "utm_source"].map((k) => url.searchParams.get(k))).filter(known);
   if (utm.length) s.utm = [...new Set([...(s.utm ?? []), ...utm])];
   write(session, SESSION_KEY, s);
 }
@@ -131,7 +132,7 @@ export async function regionCluster(): Promise<{ country?: string; region?: stri
   }
   const country = cached?.country ?? undefined;
   const region = country === "IN" ? (cached?.region ?? undefined) : undefined;
-  return { country, region, cluster: geoCluster(region, cached?.city) };
+  return { country, region, cluster: geoMarket(region, cached?.city) };
 }
 
 /** Everything the model needs, for the page being viewed. */

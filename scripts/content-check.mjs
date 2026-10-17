@@ -2,6 +2,9 @@
 //   C1  the page and cluster registry (src/content/registry) is valid and
 //       matches the app routes;
 //   C2  nothing collides in the /jobs/<slug> namespace, and stored ids agree;
+//       C2c: every cluster has a market record (src/markets), its sides
+//       match its buyer and jobs hubs, and every location page's place id
+//       is a known place in the page's own market;
 //   C8  every minimum wage file (src/content/wages) is valid: its shape, every
 //       monthly rate is basic + VDA, daily rates follow the state's rule,
 //       every rate cites a source, and every built wage page has a file.
@@ -225,6 +228,23 @@ if (Object.keys(AREA_CLUSTERS).join() !== areaIds.join()) fail("C2 AREA_CLUSTERS
 {
   const { currentStoredIds, readLock, lockProblems } = await import("./lib/stored-ids.mjs");
   for (const problem of lockProblems(readLock(), await currentStoredIds())) fail(`C2b ${problem}`);
+}
+
+// ── C2c: markets (src/markets) agree with the registry and location pages ──
+{
+  const { isMarketId, isPlaceId, placeById, hasSide } = await importTs("src/markets/index.ts");
+  const { locationPages } = await importTs("src/content/locations/index.ts");
+  for (const cluster of clusters) {
+    if (!isMarketId(cluster.id)) fail(`C2c cluster ${cluster.id} is in clusters.ts but has no market record in src/markets/data.ts`);
+    else if (cluster.buyerHub && !hasSide(cluster.id, "business")) fail(`C2c cluster ${cluster.id} has a buyer hub, but its market's sides in src/markets/data.ts leave out "business"`);
+  }
+  for (const entry of pageEntries) {
+    if (entry.kind === "jobs-city" && entry.cluster && !hasSide(entry.cluster, "jobs")) fail(`C2c page ${entry.path} is a jobs hub, but market ${entry.cluster} has no "jobs" side in src/markets/data.ts`);
+  }
+  for (const [path, page] of locationPages) {
+    if (!isPlaceId(page.placeId)) fail(`C2c location ${path}: placeId "${page.placeId}" is not in src/markets/places.ts`);
+    else if (placeById(page.placeId).market !== page.cluster) fail(`C2c location ${path}: placeId "${page.placeId}" is in market ${placeById(page.placeId).market}, not the page's ${page.cluster}`);
+  }
 }
 
 // ── C8: the minimum wage dataset ───────────────────────────────────────────

@@ -10,8 +10,8 @@
  * 1. the vspl_lang cookie, set only when someone picks a language on the picker;
  * 2. non-English Accept-Language tags, by q-value (hi pulls Hinglish in after it);
  * 3. area intent the request itself carries: ?cluster=<id>, or a place in
- *    its UTM tags (an ad for Kapurthala jobs), by the area-intent model's
- *    words (src/lib/intent/model.ts). The rest of area intent stays in the
+ *    its UTM tags (an ad for Kapurthala jobs), by the markets' ad words
+ *    (src/markets/data.ts). The rest of area intent stays in the
  *    browser by design (docs/area-intent.md), so the proxy never sees it;
  * 4. the visitor's state, from the request's geo headers (visitorRegion);
  * 5. the page's cluster;
@@ -34,7 +34,7 @@
  */
 import { pageEntry } from "@/content/registry";
 import type { ClusterId } from "@/content/registry/identifiers";
-import { clustersInUtm } from "./intent/model";
+import { isClusterId, languageSetFor, marketsInAdTags, type LanguageSetName } from "@/markets/index";
 import { quickShareVariant, QUICK_SHARE_VARIANTS } from "./share-variant";
 import { allLocales, preferredLocales, type Locale } from "./i18n";
 
@@ -64,7 +64,7 @@ const RANK_SETS = {
   // order: Hinglish · English · हिंदी (workers from the Hindi belt read Hinglish).
   punjab: ["pa-IN", "hi-Latn-IN", "en-IN", "hi-IN"],
   default: ["en-IN", "hi-IN", "hi-Latn-IN"],
-} as const satisfies Record<string, readonly Locale[]>;
+} as const satisfies Record<LanguageSetName | "default", readonly Locale[]>;
 type RankSet = keyof typeof RANK_SETS;
 
 /**
@@ -78,17 +78,12 @@ const REGION_SETS: Readonly<Record<string, RankSet>> = {
   PB: "punjab",
 };
 
-/** A page's cluster fills gaps only: the path says where the job is, not what the reader reads. */
-const CLUSTER_SETS: Readonly<Record<ClusterId, RankSet | undefined>> = {
-  haridwar: "hindi",
-  uttarakhand: "hindi",
-  "delhi-ncr": "hindi",
-  saharanpur: "hindi",
-  jalandhar: "punjab",
-  punjab: "punjab",
-  bengaluru: "karnataka",
-  other: undefined,
-};
+/**
+ * A page's or request's cluster fills gaps only: the path says where the job
+ * is, not what the reader reads. Each market's set is in src/markets/data.ts
+ * (languageSet); Saharanpur takes the Hindi set, "other" none.
+ */
+const clusterSet = (id: ClusterId | undefined): RankSet | undefined => languageSetFor(id);
 
 /**
  * The cluster that fills gaps in a page's order: the page's own, and nothing
@@ -183,11 +178,11 @@ export type RankInput = VisitorRegion & {
 
 /** The cluster a request's URL names: ?cluster=<id>, else the first place in its UTM tags. */
 export function urlIntent(search: URLSearchParams): ClusterId | undefined {
-  const known = (id: string | null | undefined): id is ClusterId => !!id && Object.hasOwn(CLUSTER_SETS, id) && id !== "other";
+  const known = (id: string | null | undefined): id is ClusterId => isClusterId(id) && id !== "other";
   const param = search.get("cluster");
   if (known(param)) return param;
   // The same tags the browser reads (src/lib/intent/store.ts notePageView).
-  return clustersInUtm(["utm_campaign", "utm_term", "utm_content", "utm_source"].map((k) => search.get(k))).find(known);
+  return marketsInAdTags(["utm_campaign", "utm_term", "utm_content", "utm_source"].map((k) => search.get(k))).find(known);
 }
 
 /** The page's languages (`available`) in picker order for one request. */
@@ -197,7 +192,7 @@ export function rankLocales(available: readonly Locale[], input: RankInput): Loc
     if (available.includes(locale) && !order.includes(locale)) order.push(locale);
   };
   const chosen = allLocales.find((l) => l === input.chosen);
-  const intentSet = input.intent ? CLUSTER_SETS[input.intent] : undefined;
+  const intentSet = clusterSet(input.intent);
   const regionSet = input.country === "IN" && input.region ? REGION_SETS[input.region] : undefined;
   if (chosen) add(chosen);
   // No signal: location first, then the browser's languages.
@@ -206,8 +201,8 @@ export function rankLocales(available: readonly Locale[], input: RankInput): Loc
   if (intentSet) RANK_SETS[intentSet].forEach(add);
   if (regionSet) RANK_SETS[regionSet].forEach(add);
   else if (input.country && input.country !== "IN") RANK_SETS.default.forEach(add);
-  const clusterSet = input.cluster ? CLUSTER_SETS[input.cluster] : undefined;
-  if (clusterSet) RANK_SETS[clusterSet].forEach(add);
+  const pageSet = clusterSet(input.cluster);
+  if (pageSet) RANK_SETS[pageSet].forEach(add);
   RANK_SETS.default.forEach(add);
   available.forEach(add);
   return order;

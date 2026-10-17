@@ -17,6 +17,7 @@
  *   when nothing had been decided.
  */
 import { trackUmamiEvent } from "@/lib/analytics";
+import { eventKey } from "@/markets/index";
 import { MODEL_VERSION, type AreaDecision } from "./model";
 
 const REPORTED_KEY = "vs-area-board-v1";
@@ -33,7 +34,7 @@ const BASIS_EVENT: Record<AreaDecision["basis"], string> = {
 };
 
 /** Event-safe market id (delhi-ncr → delhi_ncr). */
-const marketKey = (id: string) => id.replace(/[^a-z0-9]+/g, "_");
+const marketKey = eventKey;
 
 /** Sends each key once per tab session; true if this call should send. */
 function once(key: string) {

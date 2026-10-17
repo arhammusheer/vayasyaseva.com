@@ -31,7 +31,7 @@ import {
 import { assessCrewRequest, crewPrefill, requirementLines } from "@/lib/crew-request";
 // A site state is where the business's site is, not a market the visitor
 // picked, so it doesn't steer the area decision (src/lib/intent).
-import { CLUSTER_STATES } from "@/lib/intent/model";
+import { statesOf } from "@/markets/index";
 import { clusters } from "@/content/registry/clusters";
 
 /**
@@ -120,7 +120,7 @@ const STEP_2 = z.object({
  * business page (src/content/registry/clusters.ts), alphabetically by name,
  * so no market comes first (owner direction, 17 Oct 2026).
  */
-const FIRST_STATES: string[] = [...new Set(clusters.filter((c) => c.buyerHub).flatMap((c) => CLUSTER_STATES[c.id] ?? []))]
+const FIRST_STATES: string[] = [...new Set(clusters.filter((c) => c.buyerHub).flatMap((c) => statesOf(c.id)))]
   .filter((code) => code in STATE_OPTIONS)
   .sort((a, b) => STATE_OPTIONS[a].localeCompare(STATE_OPTIONS[b]));
 

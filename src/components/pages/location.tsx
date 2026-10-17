@@ -16,7 +16,7 @@ import { JOBS_AREA_LABEL, areaSurfaces, jobsAreaHref } from "@/lib/intent/surfac
 import { locationCopyIn, locationPages, type LocationCopy } from "@/content/locations";
 import { LOCATIONS_PATH, estatePath, locationPath } from "@/content/registry/identifiers";
 import { localePath, localizeHref, locales, type Locale } from "@/lib/i18n";
-import { MARKET_ORDER } from "@/lib/intent/model";
+import { MARKET_IDS as MARKET_ORDER } from "@/markets/index";
 import { MarketList, type MarketItem } from "@/components/sections/market-list";
 import { PausedNotice } from "@/components/sections/paused-notice";
 

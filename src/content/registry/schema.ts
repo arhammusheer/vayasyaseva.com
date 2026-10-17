@@ -69,10 +69,7 @@ const publicRegistrationSchema = z
 export const clusterSchema = z.strictObject({
   id: z.enum(CLUSTER_IDS),
   publishable: z.literal(true),
-  name: z.strictObject(perLocale(z.string().min(1))),
-  navLabel: z.string().min(1).optional(),
   states: z.array(z.enum(WAGE_STATE_SLUGS)).min(1),
-  quickSwitch: z.array(z.enum(LOCALE_TAGS)).min(1),
   buyerHub: neutralPath.optional(),
   claims: z.array(publicClaimSchema),
   registrations: z.array(publicRegistrationSchema),

@@ -3,7 +3,8 @@ import type { ServiceLandingContent } from "@/content/service-pages";
 import { siteConfig } from "@/content/site";
 import { localizeHref } from "@/lib/i18n";
 import { clusters, linkable } from "@/content/registry";
-import { MARKET_ORDER } from "@/lib/intent/model";
+import { MARKET_IDS as MARKET_ORDER } from "@/markets/index";
+import { MARKET_PLACES, type SchemaPlace } from "@/markets/schema-org";
 import { formatDate, type WageSource, type WageState } from "@/content/wages";
 import type { Guide } from "@/content/guides";
 import type { GuideSource } from "@/content/guides/sources";
@@ -34,20 +35,6 @@ const postalAddress = {
   addressCountry: "IN",
 };
 
-/** The place each market's buyer page serves, for areaServed (schema.org types). */
-const MARKET_PLACES: Readonly<Record<string, object>> = {
-  bengaluru: { "@type": "City", name: "Bengaluru", containedInPlace: { "@type": "State", name: "Karnataka" } },
-  "delhi-ncr": { "@type": "Place", name: "Delhi NCR", alternateName: "National Capital Region" },
-  haridwar: {
-    "@type": "City",
-    name: "Haridwar",
-    alternateName: ["SIDCUL Haridwar", "Integrated Industrial Estate (IIE) Haridwar"],
-    containedInPlace: { "@type": "State", name: "Uttarakhand" },
-  },
-  jalandhar: { "@type": "Place", name: "Jalandhar and Kapurthala", containedInPlace: { "@type": "State", name: "Punjab" } },
-  uttarakhand: { "@type": "State", name: "Uttarakhand" },
-};
-
 /**
  * Where we supply crews: every market with a published buyer page
  * (src/content/registry/clusters.ts), in MARKET_ORDER, so no market is the
@@ -56,7 +43,7 @@ const MARKET_PLACES: Readonly<Record<string, object>> = {
  */
 export function areaServed() {
   return MARKET_ORDER.filter((id) => clusters.some((c) => c.id === id && c.buyerHub && linkable(c.buyerHub, "en-IN")))
-    .map((id) => MARKET_PLACES[id])
+    .map((id) => (MARKET_PLACES as Partial<Record<string, SchemaPlace>>)[id])
     .filter(Boolean);
 }
 

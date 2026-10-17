@@ -1,7 +1,7 @@
 // What the market tables decide today, as one table of inputs and outputs
 // (tests/fixtures/market-behaviour.json, pinned by tests/markets.spec.mjs).
-// The market module refactor (roadmap 1B) must leave it unchanged; a change
-// that means to move a decision rewrites it on purpose:
+// A refactor must leave it unchanged; a change that means to move a decision
+// (and bumps MODEL_VERSION in src/lib/intent/model.ts) rewrites it on purpose:
 //   node scripts/write-behaviour-snapshots.mjs
 import { join } from "node:path";
 import { importTs, root } from "./register-ts.mjs";
@@ -27,12 +27,16 @@ export async function marketBehaviour() {
   const { CLUSTER_IDS, LOCALE_TAGS } = await importTs("src/content/registry/identifiers.ts");
 
   const words = [...new Set(model.PLACES.flatMap((p) => p.words))].sort();
-  // Ad-tag spellings: the place words, campaign-style variants, and words
-  // only the UTM list has today.
+  // Ad-tag spellings: the words (one vocabulary for places and tags since
+  // model v3), campaign-style variants, multi-word words written with `_`
+  // and `-`, and tags that must name no market or several.
+  const multiWord = words.filter((w) => w.includes(" "));
   const adTags = [
     ...words,
     ...words.map((w) => `jobs_${w.replace(/ /g, "_")}`),
+    ...multiWord.flatMap((w) => [w.replace(/ /g, "_"), w.replace(/ /g, "-"), `jobs-${w.replace(/ /g, "-")}`]),
     "uttarakhand", "punjab", "delhi", "ncr", "blr", "search_jobs", "punjabi_jobs", "jobs_jalandhar_and_ludhiana",
+    "jobs_saharanpur", "jobs_delhi_ncr", "Jobs-Haridwar-2026", "uttarakhand_haridwar_jobs", "noida_bangalore",
   ];
 
   const table = {

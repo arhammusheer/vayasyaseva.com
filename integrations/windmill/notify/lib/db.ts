@@ -30,6 +30,17 @@ INSERT INTO notify_events (v, source, type, severity, dedupe_key, status, occurr
 VALUES (1, $1, $2, $3, $4, $5, $6::timestamptz, $7, $8, $9, $10::jsonb, $11::jsonb, $12::timestamptz)
 RETURNING id::text AS id;`;
 
+/** $1 the key prefix: the status of each key under it, an unrouted event's over the key's state. */
+export const NOTIFY_KEY_STATUSES = `
+WITH k AS (
+  SELECT dedupe_key, status FROM notify_keys WHERE left(dedupe_key, length($1)) = $1 AND status IS NOT NULL
+), p AS (
+  SELECT DISTINCT ON (dedupe_key) dedupe_key, status FROM notify_events
+  WHERE routed_at IS NULL AND status IS NOT NULL AND left(dedupe_key, length($1)) = $1
+  ORDER BY dedupe_key, id DESC
+)
+SELECT dedupe_key, coalesce(p.status, k.status) AS status FROM k FULL JOIN p USING (dedupe_key);`;
+
 const EVENT_COLUMNS = `e.id::text AS id, e.source, e.type, e.severity, e.dedupe_key, e.status, e.occurred_at, e.received_at, e.title, e.summary, e.body, e.link, e.pii`;
 
 export const NOTIFY_CLAIM_UNROUTED = `
@@ -201,6 +212,8 @@ export function pgNotifyStore(sql: postgres.Sql): NotifyStore {
   return {
     transaction: async (fn) => (await sql.begin((t) => fn(txOn(execOn(t))))) as never,
     insertEvent: insertEventWith(exec),
+    keyStatuses: async (prefix) =>
+      Object.fromEntries((await exec(NOTIFY_KEY_STATUSES, [prefix])).map((r) => [String(r.dedupe_key), r.status as "firing" | "resolved"])),
     recoverStuck: async (now, maxAttempts) => (await exec(NOTIFY_RECOVER_STUCK, [now, maxAttempts])).length,
     claimDeliveries: async (now, limit, maxAttempts) =>
       (await exec(NOTIFY_CLAIM_DELIVERIES, [now, limit, maxAttempts])).map(

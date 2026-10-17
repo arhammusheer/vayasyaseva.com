@@ -11,6 +11,7 @@ import { runHealth } from "./platform/lib/run-health.ts";
 import type { Fast2SmsResponse } from "./talent/lib/types.ts";
 import type { Twenty } from "./talent/lib/twenty.ts";
 import type { Query } from "./talent/lib/db.ts";
+import type { EmitInput } from "./notify/lib/emit.ts";
 
 const application = (ref: string) => ({
   ref,
@@ -208,6 +209,31 @@ test("CRM: Twenty's rate limit stops the run; a changed acknowledgement reopens 
   await runDispatch(d);
   assert.equal((await deliveries(query, id)).crm, "done/1");
   assert.equal(BUDGET.chatwoot, 1);
+});
+
+test("CRM: application.received is raised once the Twenty person exists, again on a retry, not on an acknowledgement update", async () => {
+  const { query } = await testDb(TALENT_SCHEMA);
+  const id = await save(query, "VS-J-NTF001");
+  const raised: EmitInput[] = [];
+  const notify = async (e: EmitInput) => (raised.push(e), true);
+  // Twenty writes the person and application, then fails before crm_sync is recorded: the retry raises it again.
+  let creates = 0;
+  const base = fakeTwenty();
+  const flaky = { ...base, create: async (p: string, s: string, b: Record<string, unknown>) => (p === "communications" && ++creates === 1 ? Promise.reject(new Error("Twenty POST /communications: HTTP 503")) : base.create(p, s, b)) } as Twenty;
+  const d = deps(query, { crm: flaky, notify });
+  await runDispatch(d);
+  assert.equal((await deliveries(query, id)).crm, "pending/1");
+  await query(`UPDATE deliveries SET next_attempt_at = now()`);
+  await runDispatch(d);
+  assert.equal((await deliveries(query, id)).crm, "done/2");
+  assert.deepEqual(raised.map((e) => e.dedupeKey), ["application:VS-J-NTF001", "application:VS-J-NTF001"], "the hub's dedupeKey makes it one push");
+  assert.equal(raised[0].pii?.phone, "+919876543210");
+  assert.match(raised[0].link!.url, /^https:\/\/crm\.vayasyaseva\.com\/object\/person\/[0-9a-f-]+$/);
+  assert.doesNotMatch(`${raised[0].title} ${raised[0].summary}`, /Two years packing|9876543210/, "never the applicant's text or number");
+  // The acknowledgement's delivery report reruns the CRM step: no new notification.
+  await query(`UPDATE sms_acknowledgements SET delivery_status = 'delivered' WHERE submission_id = $1::uuid`, [id]);
+  await runDispatch(d);
+  assert.equal(raised.length, 2);
 });
 
 test("a run interrupted for 15 minutes: SMS unknown, the rest back to pending", async () => {

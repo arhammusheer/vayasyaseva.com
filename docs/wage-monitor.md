@@ -115,6 +115,15 @@ new.
 `Wage monitor: <State> sources changed`, label `wage-monitor`, with hidden
 fingerprints. The manual **Wage monitor** workflow uses this.
 
+**The notification hub** (`--notify hub`, or `chatwoot,hub` as the cluster
+runs it until Chatwoot is retired): one event per state and topic,
+`compliance.source_changed` (a push and an email with the same Markdown as
+the Chatwoot message), or `compliance.source_unreachable` /
+`compliance.source_recovered` (the morning digest). A failed run is
+`compliance.monitor_failed`. It needs `NOTIFY_URL` and `NOTIFY_INGEST_SECRET`;
+the hub's fingerprints are kept in the snapshot apart from Chatwoot's. See
+`docs/notification-hub.md`.
+
 ## Running it
 
 ```sh

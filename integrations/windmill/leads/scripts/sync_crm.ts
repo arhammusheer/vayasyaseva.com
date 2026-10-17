@@ -7,8 +7,9 @@
 import { withDatabase } from "../../talent/lib/db.ts";
 import { twentyFromConfig } from "../../talent/lib/twenty.ts";
 import { runLeadsSync } from "../lib/run-leads.ts";
+import { tryEmit } from "../../notify/lib/emit.ts";
 
 export async function main(lead_id?: string | null) {
   const crm = await twentyFromConfig();
-  return withDatabase("leads_pg_url", (query) => runLeadsSync({ query, crm }, { leadId: lead_id || null }));
+  return withDatabase("leads_pg_url", (query) => runLeadsSync({ query, crm, notify: tryEmit }, { leadId: lead_id || null }));
 }

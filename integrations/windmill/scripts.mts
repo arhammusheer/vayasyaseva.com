@@ -31,6 +31,8 @@ export interface ScriptSpec {
   route?: { path: string; method: "post"; secretHeader: string; rawBody?: boolean };
   /** Had a schedule before the dispatcher (roadmap 1F): deploy turns that schedule off; the script stays runnable by hand. */
   retiredSchedule?: true;
+  /** A schedule that raises notifications: turned on with --enable-notify, like the notify folder's own. */
+  notifySchedule?: true;
 }
 
 const noArgs = { $schema: "https://json-schema.org/draft/2020-12/schema", type: "object", properties: {}, required: [] };
@@ -212,8 +214,10 @@ export const SCRIPTS: ScriptSpec[] = [
     folder: "platform",
     summary: "Platform · health",
     description:
-      "Counts of dead, unknown (SMS), stuck and overdue deliveries in the talent database and the lead inbox, and failed erasures. Sends nothing: the notification hub reads it.",
+      "Counts of dead, unknown (SMS), stuck and overdue deliveries in the talent database and the lead inbox, and failed erasures. Every 15 minutes; each condition goes to the notification hub (platform.*) when it starts and when it clears.",
     schema: noArgs,
+    schedule: { cron: "0 */15 * * * *", summary: "Every 15 minutes: dead and stuck work into the notification hub" },
+    notifySchedule: true,
   },
   {
     name: "setup",

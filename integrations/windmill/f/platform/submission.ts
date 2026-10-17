@@ -581,6 +581,321 @@ const { checkLead, serviceValues, crewSize, opportunityName, recordLead } = (() 
   return { checkLead, serviceValues, crewSize, opportunityName, recordLead };
 })();
 
+// packages/contracts/src/rules.ts
+const { REF_PATTERN, INTAKE_SOURCES, WEB_SOURCE, isSubmissionSource, INTAKE_LOCALES, isIntakeLocale, LEGACY_SOURCE_LOCALES, INTAKE_CLUSTERS, isIntakeCluster, PAGE_PATH_PATTERN, MAX_PAGE_PATH_LENGTH, isPagePath, INTAKE_CHANNELS, AGENT_LANGUAGE_SOURCES, MAX_AGENT_NAME_LENGTH, JOB_ROLES, JOB_ROLE_SLUGS, isJobRole, JOB_HUBS, JOB_HUB_SLUGS, isJobHub, INTAKE_FORMS, INTAKE_FORM_KEYS, MAX_APPLICANT_NAME_LENGTH, QUICK_ANSWERS, AREA_CLUSTERS, submissionCluster, QUICK_QUESTIONS, cleanQuickAnswers, ATTACHMENT_KINDS, ATTACHMENT_MIME, INTAKE_LIMITS, attachmentKeyPrefix, isAttachmentKeyFor, normaliseIndianMobile } = (() => {
+  const REF_PATTERN = /^VS-J-[A-Z0-9]{6}$/;
+  const INTAKE_SOURCES = {
+      web_en: "en",
+      web_hi: "hi",
+      web_hinglish: "hinglish",
+  };
+  const WEB_SOURCE = "web";
+  function isSubmissionSource(value) {
+      return value === WEB_SOURCE || (typeof value === "string" && Object.hasOwn(INTAKE_SOURCES, value));
+  }
+  const INTAKE_LOCALES = ["en-IN", "hi-IN", "hi-Latn-IN", "pa-IN", "kn-IN"];
+  function isIntakeLocale(value) {
+      return typeof value === "string" && INTAKE_LOCALES.includes(value);
+  }
+  const LEGACY_SOURCE_LOCALES = { web_en: "en-IN", web_hi: "hi-IN", web_hinglish: "hi-Latn-IN" };
+  const INTAKE_CLUSTERS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other", "punjab"];
+  function isIntakeCluster(value) {
+      return typeof value === "string" && INTAKE_CLUSTERS.includes(value);
+  }
+  const PAGE_PATH_PATTERN = /^\/([a-z0-9]+(-[a-z0-9]+)*(\/[a-z0-9]+(-[a-z0-9]+)*)*)?$/;
+  const MAX_PAGE_PATH_LENGTH = 200;
+  function isPagePath(value) {
+      return typeof value === "string" && value.length <= MAX_PAGE_PATH_LENGTH && PAGE_PATH_PATTERN.test(value);
+  }
+  const INTAKE_CHANNELS = ["web", "agent"];
+  const AGENT_LANGUAGE_SOURCES = { en: "web_en", hi: "web_hi", hinglish: "web_hinglish" };
+  const MAX_AGENT_NAME_LENGTH = 100;
+  const JOB_ROLES = {
+      "factory-helper": "Factory helper",
+      packing: "Packing",
+      "machine-operator": "Machine operator",
+      warehouse: "Warehouse: loading, picking, packing",
+      "forklift-operator": "Forklift operator",
+      "data-entry-operator": "Data entry operator",
+      housekeeping: "Housekeeping",
+      "iti-trades": "ITI trades: welder, fitter, electrician",
+      electrician: "Electrician",
+      welder: "Welder",
+      fitter: "Fitter",
+  };
+  const JOB_ROLE_SLUGS = Object.keys(JOB_ROLES);
+  function isJobRole(value) {
+      return typeof value === "string" && Object.hasOwn(JOB_ROLES, value);
+  }
+  const JOB_HUBS = {
+      freshers: "Freshers page",
+      "10th-pass": "10th pass page",
+      "12th-pass": "12th pass page",
+  };
+  const JOB_HUB_SLUGS = Object.keys(JOB_HUBS);
+  function isJobHub(value) {
+      return typeof value === "string" && Object.hasOwn(JOB_HUBS, value);
+  }
+  const INTAKE_FORMS = {
+      long: "Long form (/jobs and role pages)",
+      quick: "Quick apply (/jobs/apply)",
+  };
+  const INTAKE_FORM_KEYS = Object.keys(INTAKE_FORMS);
+  const MAX_APPLICANT_NAME_LENGTH = 80;
+  const QUICK_ANSWERS = {
+      work: {
+          "factory-helper": "Factory helper", packing: "Packing", warehouse: "Warehouse / loading", "machine-operator": "Machine operator",
+          "iti-trades": "ITI trade", housekeeping: "Housekeeping", "data-entry-operator": "Data entry", "forklift-operator": "Forklift operator",
+          any: "Any work",
+      },
+      trade: { electrician: "Electrician", welder: "Welder", fitter: "Fitter", machinist: "Machinist / turner", "other-trade": "Other trade" },
+      iti: { "iti-pass": "ITI passed", "iti-pursuing": "Studying / apprentice", "no-iti": "Experience, no ITI" },
+      machines: {
+          "packing-machine": "Packing machines", moulding: "Injection moulding", press: "Press / sheet metal", "cnc-vmc": "CNC / VMC",
+          "other-machine": "Other machines",
+      },
+      forklift: { "licence-experience": "Licence and experience", "experience-only": "Experience, no licence", "want-to-learn": "Wants to learn" },
+      computer: { typing: "Typing", excel: "Excel", tally: "Tally", "sap-erp": "SAP / ERP" },
+      experience: { fresher: "Fresher", "under-1": "Under 1 year", "1-3": "1 to 3 years", "3-plus": "3+ years" },
+      education: { "below-10th": "Below 10th", "10th": "10th pass", "12th": "12th pass", "iti-diploma": "ITI / diploma", graduate: "Graduate" },
+      shift: { day: "Day", night: "Night", rotating: "Rotating / any" },
+      start: { now: "Immediately", week: "Within a week", month: "Within a month" },
+      area: {
+          "sidcul-bahadrabad": "SIDCUL / Bahadrabad", "haridwar-jwalapur": "Haridwar city / Jwalapur", "roorkee-bhagwanpur": "Roorkee / Bhagwanpur",
+          laksar: "Laksar", outside: "Outside Haridwar",
+          "bengaluru:north": "Bengaluru North / Peenya", "bengaluru:south": "Bengaluru South / Electronic City", "bengaluru:east": "Bengaluru East / Whitefield",
+          "bengaluru:west": "Bengaluru West / Kengeri", "bengaluru:outside": "Outside Bengaluru",
+          "jalandhar:kapurthala": "Kapurthala", "jalandhar:city": "Jalandhar city", "jalandhar:phagwara-goraya": "Phagwara / Goraya",
+          "jalandhar:outside": "Outside Jalandhar and Kapurthala",
+          "uttarakhand:haridwar": "Haridwar / Roorkee", "uttarakhand:dehradun-selaqui": "Dehradun / Selaqui",
+          "uttarakhand:udham-singh-nagar": "Rudrapur / Kashipur / Sitarganj", "uttarakhand:other": "Elsewhere in Uttarakhand",
+          "uttarakhand:outside": "Outside Uttarakhand",
+          "punjab:jalandhar-kapurthala": "Jalandhar / Kapurthala", "punjab:ludhiana": "Ludhiana", "punjab:mohali": "Mohali / Kharar",
+          "punjab:amritsar": "Amritsar", "punjab:other": "Elsewhere in Punjab", "punjab:outside": "Outside Punjab",
+          "market:haridwar": "Haridwar / Roorkee", "market:uttarakhand": "Elsewhere in Uttarakhand", "market:jalandhar": "Jalandhar / Kapurthala",
+          "market:punjab": "Elsewhere in Punjab", "market:bengaluru": "Bengaluru", "market:other": "Somewhere else",
+          "haridwar:rest-of-uttarakhand": "Elsewhere in Uttarakhand (Haridwar form)", "jalandhar:rest-of-punjab": "Elsewhere in Punjab (Jalandhar form)",
+      },
+  };
+  const AREA_CLUSTERS = {
+      "sidcul-bahadrabad": "haridwar",
+      "haridwar-jwalapur": "haridwar",
+      "roorkee-bhagwanpur": "haridwar",
+      laksar: "haridwar",
+      outside: null,
+      "bengaluru:north": "bengaluru",
+      "bengaluru:south": "bengaluru",
+      "bengaluru:east": "bengaluru",
+      "bengaluru:west": "bengaluru",
+      "bengaluru:outside": null,
+      "jalandhar:kapurthala": "jalandhar",
+      "jalandhar:city": "jalandhar",
+      "jalandhar:phagwara-goraya": "jalandhar",
+      "jalandhar:outside": null,
+      "uttarakhand:haridwar": "haridwar",
+      "uttarakhand:dehradun-selaqui": "uttarakhand",
+      "uttarakhand:udham-singh-nagar": "uttarakhand",
+      "uttarakhand:other": "uttarakhand",
+      "uttarakhand:outside": null,
+      "punjab:jalandhar-kapurthala": "jalandhar",
+      "punjab:ludhiana": "punjab",
+      "punjab:mohali": "punjab",
+      "punjab:amritsar": "punjab",
+      "punjab:other": "punjab",
+      "punjab:outside": null,
+      "market:haridwar": "haridwar",
+      "market:uttarakhand": "uttarakhand",
+      "market:jalandhar": "jalandhar",
+      "market:punjab": "punjab",
+      "market:bengaluru": "bengaluru",
+      "market:other": null,
+      "haridwar:rest-of-uttarakhand": "uttarakhand",
+      "jalandhar:rest-of-punjab": "punjab",
+  };
+  function submissionCluster(pageCluster, answers) {
+      const area = answers?.area?.[0];
+      const fromArea = area && Object.hasOwn(AREA_CLUSTERS, area) ? AREA_CLUSTERS[area] : null;
+      return fromArea ?? pageCluster ?? "other";
+  }
+  const QUICK_QUESTIONS = {
+      work: "Work", trade: "ITI trade", iti: "ITI", machines: "Machines", forklift: "Forklift", computer: "Computer skills",
+      experience: "Experience", education: "Education", shift: "Shifts", start: "Can start", area: "Area",
+  };
+  function cleanQuickAnswers(raw) {
+      if (!raw || typeof raw !== "object")
+          return null;
+      const out = {};
+      for (const [question, options] of Object.entries(QUICK_ANSWERS)) {
+          const values = raw[question];
+          if (!Array.isArray(values))
+              continue;
+          const kept = [...new Set(values.filter((v) => typeof v === "string" && Object.hasOwn(options, v)))];
+          if (kept.length)
+              out[question] = kept;
+      }
+      return Object.keys(out).length ? out : null;
+  }
+  const ATTACHMENT_KINDS = ["image", "document"];
+  const ATTACHMENT_MIME = {
+      image: /^image\/(jpeg|png|webp)$/,
+      document: /^application\/(pdf|msword|vnd\.openxmlformats-officedocument\.wordprocessingml\.document)$/,
+  };
+  const INTAKE_LIMITS = {
+      maxAttachments: 8,
+      maxTextLength: 4000,
+      maxFileNameLength: 200,
+      maxBytes: { image: 10 * 1024 * 1024, document: 20 * 1024 * 1024 },
+  };
+  function attachmentKeyPrefix(ref, at) {
+      const month = String(at.getUTCMonth() + 1).padStart(2, "0");
+      return `intake/${at.getUTCFullYear()}/${month}/${ref}/`;
+  }
+  function isAttachmentKeyFor(key, ref) {
+      return key.startsWith("intake/") && key.includes(`/${ref}/`);
+  }
+  function normaliseIndianMobile(input) {
+      const digits = input.replace(/\D/g, "");
+      if (/^[6-9]\d{9}$/.test(digits))
+          return `+91${digits}`;
+      if (/^91[6-9]\d{9}$/.test(digits))
+          return `+${digits}`;
+      if (/^0[6-9]\d{9}$/.test(digits))
+          return `+91${digits.slice(1)}`;
+      return null;
+  }
+  return { REF_PATTERN, INTAKE_SOURCES, WEB_SOURCE, isSubmissionSource, INTAKE_LOCALES, isIntakeLocale, LEGACY_SOURCE_LOCALES, INTAKE_CLUSTERS, isIntakeCluster, PAGE_PATH_PATTERN, MAX_PAGE_PATH_LENGTH, isPagePath, INTAKE_CHANNELS, AGENT_LANGUAGE_SOURCES, MAX_AGENT_NAME_LENGTH, JOB_ROLES, JOB_ROLE_SLUGS, isJobRole, JOB_HUBS, JOB_HUB_SLUGS, isJobHub, INTAKE_FORMS, INTAKE_FORM_KEYS, MAX_APPLICANT_NAME_LENGTH, QUICK_ANSWERS, AREA_CLUSTERS, submissionCluster, QUICK_QUESTIONS, cleanQuickAnswers, ATTACHMENT_KINDS, ATTACHMENT_MIME, INTAKE_LIMITS, attachmentKeyPrefix, isAttachmentKeyFor, normaliseIndianMobile };
+})();
+
+// integrations/windmill/talent/lib/notify-application.ts
+const { TWENTY_APP_URL, CLUSTER_LABELS, roleLabel, areaLabel, clusterLabel, applicationEvent } = (() => {
+  const TWENTY_APP_URL = "https://crm.vayasyaseva.com";
+  const CLUSTER_LABELS = {
+      haridwar: "Haridwar",
+      uttarakhand: "Uttarakhand",
+      "delhi-ncr": "Delhi NCR",
+      bengaluru: "Bengaluru",
+      jalandhar: "Jalandhar",
+      saharanpur: "Saharanpur",
+      punjab: "Punjab",
+      other: "other area",
+  };
+  const LANGUAGE_LABELS = {
+      en: "English",
+      "en-IN": "English",
+      hi: "Hindi",
+      "hi-IN": "Hindi",
+      hinglish: "Hinglish",
+      "hi-Latn-IN": "Hinglish",
+      "pa-IN": "Punjabi",
+      "kn-IN": "Kannada",
+  };
+  const has = (table, key) => typeof key === "string" && Object.hasOwn(table, key);
+  const firstAnswer = (c, question) => {
+      const value = c.answers?.[question];
+      return Array.isArray(value) && typeof value[0] === "string" ? value[0] : null;
+  };
+  function roleLabel(c) {
+      if (has(JOB_ROLES, c.role))
+          return JOB_ROLES[c.role];
+      const work = firstAnswer(c, "work");
+      if (has(QUICK_ANSWERS.work, work))
+          return QUICK_ANSWERS.work[work];
+      return "any work";
+  }
+  function areaLabel(c) {
+      const area = firstAnswer(c, "area");
+      return has(QUICK_ANSWERS.area, area) ? QUICK_ANSWERS.area[area] : null;
+  }
+  const clusterLabel = (cluster) => (cluster && has(CLUSTER_LABELS, cluster) ? CLUSTER_LABELS[cluster] : "no area");
+  function formLabel(c) {
+      if (c.channel === "agent")
+          return "AI agent";
+      if (c.answers && Object.keys(c.answers).length)
+          return "quick form";
+      if (c.source === "web" || c.source.startsWith("web_"))
+          return "website form";
+      return c.source;
+  }
+  function applicationEvent(c, personId) {
+      const role = roleLabel(c);
+      const cluster = clusterLabel(c.cluster);
+      const area = areaLabel(c);
+      const language = LANGUAGE_LABELS[c.person_locale ?? c.locale] ?? LANGUAGE_LABELS[c.locale] ?? c.locale;
+      const name = (c.applicant_name ?? c.person_name ?? "").trim();
+      return {
+          source: "talent",
+          type: "application.received",
+          severity: "info",
+          dedupeKey: `application:${c.ref}`,
+          title: `New job application: ${role}, ${cluster}`,
+          summary: [c.ref, role, area, cluster, formLabel(c), language].filter(Boolean).join(" · "),
+          link: { label: "View in Twenty", url: `${TWENTY_APP_URL}/object/person/${encodeURIComponent(personId)}` },
+          pii: { ...(name ? { name } : {}), phone: c.phone },
+      };
+  }
+  return { TWENTY_APP_URL, CLUSTER_LABELS, roleLabel, areaLabel, clusterLabel, applicationEvent };
+})();
+
+// integrations/windmill/leads/lib/lead-notify.ts
+const { WINDMILL_APP_URL, isQualified, crewSummary, leadReceivedEvent, leadForwardFailedEvent } = (() => {
+  const WINDMILL_APP_URL = "https://windmill.vayasyaseva.com";
+  function isQualified(lead) {
+      const header = lead.enquiry.split(/\n\s*\n/)[0] ?? "";
+      return /^Flags: (?:.*; )?qualified\b/m.test(header);
+  }
+  const SERVICE_WORDS = {
+      "loading-unloading": "loaders",
+      warehouse: "warehouse staff",
+      forklift: "forklift operators",
+      housekeeping: "housekeeping",
+      gardening: "gardeners",
+      "factory-helpers": "factory helpers",
+      packing: "packers",
+      "machine-operators": "machine operators",
+      "iti-trades": "ITI trades",
+      maintenance: "maintenance staff",
+      "fabrication-civil": "fabrication and civil",
+      "data-entry": "data entry",
+  };
+  function crewSummary(lead) {
+      if (lead.requestType === "compliance-help")
+          return `compliance help${lead.cluster ? `, ${clusterLabel(lead.cluster)}` : ""}`;
+      const size = /^[\d+\s-]{1,12}$/.test(lead.headcountBand ?? "") ? lead.headcountBand : /^\d{1,5}$/.test(lead.headcount?.trim() ?? "") ? lead.headcount.trim() : null;
+      const first = lead.services[0];
+      const what = first ? (SERVICE_WORDS[first] ?? "workers") + (lead.services.length > 1 ? ` +${lead.services.length - 1}` : "") : "workers";
+      const kind = lead.requestType === "site-assessment" ? "site assessment: " : "";
+      return `${kind}${size ? `${size} ` : ""}${what}${lead.cluster ? `, ${clusterLabel(lead.cluster)}` : ""}`;
+  }
+  const requestWord = (lead) => (lead.requestType === "compliance-help" ? "compliance help request" : "crew request");
+  function leadReceivedEvent(lead, opportunityId) {
+      const qualified = isQualified(lead);
+      const from = lead.channel === "agent" ? "AI agent" : (lead.sourcePath ?? "/contact");
+      return {
+          source: "leads",
+          type: "lead.received",
+          severity: qualified ? "notice" : "info",
+          dedupeKey: `lead:${lead.caseId}`,
+          title: `New ${requestWord(lead)}${qualified ? " (qualified)" : ""}: ${crewSummary(lead)}`,
+          summary: `${lead.caseId} · from ${from}`,
+          link: { label: "View in Twenty", url: `${TWENTY_APP_URL}/object/opportunity/${encodeURIComponent(opportunityId)}` },
+          pii: { name: lead.name, ...(lead.company ? { company: lead.company } : {}), phone: lead.phone },
+      };
+  }
+  const errorKind = (error) => error?.match(/HTTP \d{3}/)?.[0] ?? (error ? "an error" : "no answer");
+  function leadForwardFailedEvent(caseId, attempts, error) {
+      return {
+          source: "leads",
+          type: "lead.forward_failed",
+          severity: "warning",
+          dedupeKey: `lead-dead:${caseId}`,
+          title: `Lead not filed in Twenty: ${caseId}`,
+          summary: `${caseId} stopped after ${attempts} attempts (last: ${errorKind(error)}). It is safe in the lead inbox; fix the cause, then reset its delivery (OPERATIONS.md, lead inbox).`,
+          link: { label: "Windmill runs", url: `${WINDMILL_APP_URL}/runs/f/leads/sync_crm?workspace=vspl` },
+      };
+  }
+  return { WINDMILL_APP_URL, isQualified, crewSummary, leadReceivedEvent, leadForwardFailedEvent };
+})();
+
 // integrations/windmill/leads/lib/sql.ts
 const { LEADS_SAVE, LEADS_SYNC_LOCK, LEADS_RECOVER_STUCK, LEADS_CLAIM, LEADS_FINISH } = (() => {
   const LEADS_SAVE = `
@@ -674,6 +989,10 @@ const { saveLead, LEADS_BATCH, leadBackoffSeconds, runLeadsSync } = (() => {
               result.dead++;
           else
               result.retried++;
+          if (deps.notify && written)
+              await deps.notify(leadReceivedEvent(claim.payload, written.opportunityId));
+          if (deps.notify && finished?.status === "dead")
+              await deps.notify(leadForwardFailedEvent(claim.case_id, claim.attempts, error));
           if (error && /HTTP 429/.test(error)) {
               result.rateLimited = true;
               break;
@@ -929,191 +1248,6 @@ const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLE
   RETURNING status;`;
   const SYNC_CANDIDATE_FOR = SYNC_CANDIDATES.replace(/WHERE c\.submission_id IS NULL\n {3}OR c\.ack_status IS DISTINCT FROM \(CASE WHEN a\.delivery_status IS NULL THEN a\.status ELSE a\.status \|\| ':' \|\| a\.delivery_status END\)\nORDER BY s\.created_at\nLIMIT \$1;/, "WHERE s.id = $1::uuid;");
   return { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR };
-})();
-
-// packages/contracts/src/rules.ts
-const { REF_PATTERN, INTAKE_SOURCES, WEB_SOURCE, isSubmissionSource, INTAKE_LOCALES, isIntakeLocale, LEGACY_SOURCE_LOCALES, INTAKE_CLUSTERS, isIntakeCluster, PAGE_PATH_PATTERN, MAX_PAGE_PATH_LENGTH, isPagePath, INTAKE_CHANNELS, AGENT_LANGUAGE_SOURCES, MAX_AGENT_NAME_LENGTH, JOB_ROLES, JOB_ROLE_SLUGS, isJobRole, JOB_HUBS, JOB_HUB_SLUGS, isJobHub, INTAKE_FORMS, INTAKE_FORM_KEYS, MAX_APPLICANT_NAME_LENGTH, QUICK_ANSWERS, AREA_CLUSTERS, submissionCluster, QUICK_QUESTIONS, cleanQuickAnswers, ATTACHMENT_KINDS, ATTACHMENT_MIME, INTAKE_LIMITS, attachmentKeyPrefix, isAttachmentKeyFor, normaliseIndianMobile } = (() => {
-  const REF_PATTERN = /^VS-J-[A-Z0-9]{6}$/;
-  const INTAKE_SOURCES = {
-      web_en: "en",
-      web_hi: "hi",
-      web_hinglish: "hinglish",
-  };
-  const WEB_SOURCE = "web";
-  function isSubmissionSource(value) {
-      return value === WEB_SOURCE || (typeof value === "string" && Object.hasOwn(INTAKE_SOURCES, value));
-  }
-  const INTAKE_LOCALES = ["en-IN", "hi-IN", "hi-Latn-IN", "pa-IN", "kn-IN"];
-  function isIntakeLocale(value) {
-      return typeof value === "string" && INTAKE_LOCALES.includes(value);
-  }
-  const LEGACY_SOURCE_LOCALES = { web_en: "en-IN", web_hi: "hi-IN", web_hinglish: "hi-Latn-IN" };
-  const INTAKE_CLUSTERS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other", "punjab"];
-  function isIntakeCluster(value) {
-      return typeof value === "string" && INTAKE_CLUSTERS.includes(value);
-  }
-  const PAGE_PATH_PATTERN = /^\/([a-z0-9]+(-[a-z0-9]+)*(\/[a-z0-9]+(-[a-z0-9]+)*)*)?$/;
-  const MAX_PAGE_PATH_LENGTH = 200;
-  function isPagePath(value) {
-      return typeof value === "string" && value.length <= MAX_PAGE_PATH_LENGTH && PAGE_PATH_PATTERN.test(value);
-  }
-  const INTAKE_CHANNELS = ["web", "agent"];
-  const AGENT_LANGUAGE_SOURCES = { en: "web_en", hi: "web_hi", hinglish: "web_hinglish" };
-  const MAX_AGENT_NAME_LENGTH = 100;
-  const JOB_ROLES = {
-      "factory-helper": "Factory helper",
-      packing: "Packing",
-      "machine-operator": "Machine operator",
-      warehouse: "Warehouse: loading, picking, packing",
-      "forklift-operator": "Forklift operator",
-      "data-entry-operator": "Data entry operator",
-      housekeeping: "Housekeeping",
-      "iti-trades": "ITI trades: welder, fitter, electrician",
-      electrician: "Electrician",
-      welder: "Welder",
-      fitter: "Fitter",
-  };
-  const JOB_ROLE_SLUGS = Object.keys(JOB_ROLES);
-  function isJobRole(value) {
-      return typeof value === "string" && Object.hasOwn(JOB_ROLES, value);
-  }
-  const JOB_HUBS = {
-      freshers: "Freshers page",
-      "10th-pass": "10th pass page",
-      "12th-pass": "12th pass page",
-  };
-  const JOB_HUB_SLUGS = Object.keys(JOB_HUBS);
-  function isJobHub(value) {
-      return typeof value === "string" && Object.hasOwn(JOB_HUBS, value);
-  }
-  const INTAKE_FORMS = {
-      long: "Long form (/jobs and role pages)",
-      quick: "Quick apply (/jobs/apply)",
-  };
-  const INTAKE_FORM_KEYS = Object.keys(INTAKE_FORMS);
-  const MAX_APPLICANT_NAME_LENGTH = 80;
-  const QUICK_ANSWERS = {
-      work: {
-          "factory-helper": "Factory helper", packing: "Packing", warehouse: "Warehouse / loading", "machine-operator": "Machine operator",
-          "iti-trades": "ITI trade", housekeeping: "Housekeeping", "data-entry-operator": "Data entry", "forklift-operator": "Forklift operator",
-          any: "Any work",
-      },
-      trade: { electrician: "Electrician", welder: "Welder", fitter: "Fitter", machinist: "Machinist / turner", "other-trade": "Other trade" },
-      iti: { "iti-pass": "ITI passed", "iti-pursuing": "Studying / apprentice", "no-iti": "Experience, no ITI" },
-      machines: {
-          "packing-machine": "Packing machines", moulding: "Injection moulding", press: "Press / sheet metal", "cnc-vmc": "CNC / VMC",
-          "other-machine": "Other machines",
-      },
-      forklift: { "licence-experience": "Licence and experience", "experience-only": "Experience, no licence", "want-to-learn": "Wants to learn" },
-      computer: { typing: "Typing", excel: "Excel", tally: "Tally", "sap-erp": "SAP / ERP" },
-      experience: { fresher: "Fresher", "under-1": "Under 1 year", "1-3": "1 to 3 years", "3-plus": "3+ years" },
-      education: { "below-10th": "Below 10th", "10th": "10th pass", "12th": "12th pass", "iti-diploma": "ITI / diploma", graduate: "Graduate" },
-      shift: { day: "Day", night: "Night", rotating: "Rotating / any" },
-      start: { now: "Immediately", week: "Within a week", month: "Within a month" },
-      area: {
-          "sidcul-bahadrabad": "SIDCUL / Bahadrabad", "haridwar-jwalapur": "Haridwar city / Jwalapur", "roorkee-bhagwanpur": "Roorkee / Bhagwanpur",
-          laksar: "Laksar", outside: "Outside Haridwar",
-          "bengaluru:north": "Bengaluru North / Peenya", "bengaluru:south": "Bengaluru South / Electronic City", "bengaluru:east": "Bengaluru East / Whitefield",
-          "bengaluru:west": "Bengaluru West / Kengeri", "bengaluru:outside": "Outside Bengaluru",
-          "jalandhar:kapurthala": "Kapurthala", "jalandhar:city": "Jalandhar city", "jalandhar:phagwara-goraya": "Phagwara / Goraya",
-          "jalandhar:outside": "Outside Jalandhar and Kapurthala",
-          "uttarakhand:haridwar": "Haridwar / Roorkee", "uttarakhand:dehradun-selaqui": "Dehradun / Selaqui",
-          "uttarakhand:udham-singh-nagar": "Rudrapur / Kashipur / Sitarganj", "uttarakhand:other": "Elsewhere in Uttarakhand",
-          "uttarakhand:outside": "Outside Uttarakhand",
-          "punjab:jalandhar-kapurthala": "Jalandhar / Kapurthala", "punjab:ludhiana": "Ludhiana", "punjab:mohali": "Mohali / Kharar",
-          "punjab:amritsar": "Amritsar", "punjab:other": "Elsewhere in Punjab", "punjab:outside": "Outside Punjab",
-          "market:haridwar": "Haridwar / Roorkee", "market:uttarakhand": "Elsewhere in Uttarakhand", "market:jalandhar": "Jalandhar / Kapurthala",
-          "market:punjab": "Elsewhere in Punjab", "market:bengaluru": "Bengaluru", "market:other": "Somewhere else",
-          "haridwar:rest-of-uttarakhand": "Elsewhere in Uttarakhand (Haridwar form)", "jalandhar:rest-of-punjab": "Elsewhere in Punjab (Jalandhar form)",
-      },
-  };
-  const AREA_CLUSTERS = {
-      "sidcul-bahadrabad": "haridwar",
-      "haridwar-jwalapur": "haridwar",
-      "roorkee-bhagwanpur": "haridwar",
-      laksar: "haridwar",
-      outside: null,
-      "bengaluru:north": "bengaluru",
-      "bengaluru:south": "bengaluru",
-      "bengaluru:east": "bengaluru",
-      "bengaluru:west": "bengaluru",
-      "bengaluru:outside": null,
-      "jalandhar:kapurthala": "jalandhar",
-      "jalandhar:city": "jalandhar",
-      "jalandhar:phagwara-goraya": "jalandhar",
-      "jalandhar:outside": null,
-      "uttarakhand:haridwar": "haridwar",
-      "uttarakhand:dehradun-selaqui": "uttarakhand",
-      "uttarakhand:udham-singh-nagar": "uttarakhand",
-      "uttarakhand:other": "uttarakhand",
-      "uttarakhand:outside": null,
-      "punjab:jalandhar-kapurthala": "jalandhar",
-      "punjab:ludhiana": "punjab",
-      "punjab:mohali": "punjab",
-      "punjab:amritsar": "punjab",
-      "punjab:other": "punjab",
-      "punjab:outside": null,
-      "market:haridwar": "haridwar",
-      "market:uttarakhand": "uttarakhand",
-      "market:jalandhar": "jalandhar",
-      "market:punjab": "punjab",
-      "market:bengaluru": "bengaluru",
-      "market:other": null,
-      "haridwar:rest-of-uttarakhand": "uttarakhand",
-      "jalandhar:rest-of-punjab": "punjab",
-  };
-  function submissionCluster(pageCluster, answers) {
-      const area = answers?.area?.[0];
-      const fromArea = area && Object.hasOwn(AREA_CLUSTERS, area) ? AREA_CLUSTERS[area] : null;
-      return fromArea ?? pageCluster ?? "other";
-  }
-  const QUICK_QUESTIONS = {
-      work: "Work", trade: "ITI trade", iti: "ITI", machines: "Machines", forklift: "Forklift", computer: "Computer skills",
-      experience: "Experience", education: "Education", shift: "Shifts", start: "Can start", area: "Area",
-  };
-  function cleanQuickAnswers(raw) {
-      if (!raw || typeof raw !== "object")
-          return null;
-      const out = {};
-      for (const [question, options] of Object.entries(QUICK_ANSWERS)) {
-          const values = raw[question];
-          if (!Array.isArray(values))
-              continue;
-          const kept = [...new Set(values.filter((v) => typeof v === "string" && Object.hasOwn(options, v)))];
-          if (kept.length)
-              out[question] = kept;
-      }
-      return Object.keys(out).length ? out : null;
-  }
-  const ATTACHMENT_KINDS = ["image", "document"];
-  const ATTACHMENT_MIME = {
-      image: /^image\/(jpeg|png|webp)$/,
-      document: /^application\/(pdf|msword|vnd\.openxmlformats-officedocument\.wordprocessingml\.document)$/,
-  };
-  const INTAKE_LIMITS = {
-      maxAttachments: 8,
-      maxTextLength: 4000,
-      maxFileNameLength: 200,
-      maxBytes: { image: 10 * 1024 * 1024, document: 20 * 1024 * 1024 },
-  };
-  function attachmentKeyPrefix(ref, at) {
-      const month = String(at.getUTCMonth() + 1).padStart(2, "0");
-      return `intake/${at.getUTCFullYear()}/${month}/${ref}/`;
-  }
-  function isAttachmentKeyFor(key, ref) {
-      return key.startsWith("intake/") && key.includes(`/${ref}/`);
-  }
-  function normaliseIndianMobile(input) {
-      const digits = input.replace(/\D/g, "");
-      if (/^[6-9]\d{9}$/.test(digits))
-          return `+91${digits}`;
-      if (/^91[6-9]\d{9}$/.test(digits))
-          return `+${digits}`;
-      if (/^0[6-9]\d{9}$/.test(digits))
-          return `+91${digits.slice(1)}`;
-      return null;
-  }
-  return { REF_PATTERN, INTAKE_SOURCES, WEB_SOURCE, isSubmissionSource, INTAKE_LOCALES, isIntakeLocale, LEGACY_SOURCE_LOCALES, INTAKE_CLUSTERS, isIntakeCluster, PAGE_PATH_PATTERN, MAX_PAGE_PATH_LENGTH, isPagePath, INTAKE_CHANNELS, AGENT_LANGUAGE_SOURCES, MAX_AGENT_NAME_LENGTH, JOB_ROLES, JOB_ROLE_SLUGS, isJobRole, JOB_HUBS, JOB_HUB_SLUGS, isJobHub, INTAKE_FORMS, INTAKE_FORM_KEYS, MAX_APPLICANT_NAME_LENGTH, QUICK_ANSWERS, AREA_CLUSTERS, submissionCluster, QUICK_QUESTIONS, cleanQuickAnswers, ATTACHMENT_KINDS, ATTACHMENT_MIME, INTAKE_LIMITS, attachmentKeyPrefix, isAttachmentKeyFor, normaliseIndianMobile };
 })();
 
 // integrations/windmill/talent/lib/mask.ts

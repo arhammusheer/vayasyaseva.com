@@ -151,9 +151,11 @@ test("emails, resolutions, reminders and the digest never show pii", () => {
   assert.doesNotMatch(digest.text, /Test Applicant|9876543210/);
 });
 
-test("a one-line push is the summary's first line; critical events always email", () => {
+test("the SEO weekly report is email only; a one-line push is the summary's first line; critical events always email", () => {
   const report = event({ source: "seo-watch", type: "seo.weekly_report", dedupeKey: "seo:2026-W42", summary: "Clicks 412 (+8%), impressions 31k\nmore lines", body: "full report", pii: undefined });
-  const route = resolveRoute(DEFAULT_POLICY, report);
+  assert.deepEqual(Object.values((({ push, email }) => ({ push, email }))(resolveRoute(DEFAULT_POLICY, report))), ["none", "instant"], "search data stays off the lock screen");
+  const oneLine = { ...DEFAULT_POLICY, rules: [{ name: "one line", match: { type: "seo.weekly_report" }, push: { mode: "one_line" as const }, email: "instant" as const }, ...DEFAULT_POLICY.rules] };
+  const route = resolveRoute(oneLine, report);
   assert.deepEqual([route.push, route.email], ["one_line", "instant"]);
   assert.equal(renderPush(report, route, { kind: "event", count: 1 }).message, "Clicks 412 (+8%), impressions 31k");
   assert.match(renderEmail(report, "event").text, /full report/);

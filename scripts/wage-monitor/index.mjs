@@ -12,15 +12,20 @@
 //   --only <slug>    one state, e.g. --only delhi
 //   --json           print the result as JSON instead of Markdown
 //   --save-state     with --dry-run, still save the snapshot (to try changes locally)
-//   --notify <to>    chatwoot | github (default: chatwoot when CHATWOOT_BASE_URL is set, else github)
+//   --notify <to>    chatwoot | github | hub, or a comma list such as chatwoot,hub
+//                    (default: chatwoot when CHATWOOT_BASE_URL is set, else github)
 //
 // Host-neutral: a Kubernetes CronJob runs it daily and notifies Chatwoot
 // (vayasya-infra apps/compliance-monitor; CHATWOOT_BASE_URL and
 // CHATWOOT_INBOX_IDENTIFIER), and the same command runs from a laptop or
 // GitHub Actions with GitHub issues (GITHUB_TOKEN and GITHUB_REPOSITORY).
+// `hub` posts to the notification hub (NOTIFY_URL, NOTIFY_INGEST_SECRET;
+// docs/notification-hub.md); during the move off Chatwoot the CronJob runs
+// --notify chatwoot,hub. The hub goes first: its dedupeKey makes a retried
+// run one notification, so a later destination's failure never doubles it.
 // Exit 0 when the run completed, 2 when the monitor itself failed (it then
-// tells Chatwoot too, when it can); the snapshot is saved only after every
-// alert was sent, so a failed run reports again next time.
+// tells Chatwoot and the hub too, when it can); the snapshot is saved only
+// after every alert was sent, so a failed run reports again next time.
 import { mkdirSync, readFileSync, readdirSync, renameSync, writeFileSync } from "node:fs";
 import tls from "node:tls";
 import { dirname, resolve } from "node:path";
@@ -29,7 +34,10 @@ import { importTs, root } from "../lib/register-ts.mjs";
 import { archiveNote, archivingFetcher } from "./archive.mjs";
 import { buildTargets, fetchSource, istDate, registryProblems, runMonitor } from "./monitor.mjs";
 import { r2FromEnv } from "./r2.mjs";
-import { chatwootClient, githubClient, renderSummary, reportEvents, reportToChatwoot } from "./report.mjs";
+import { chatwootClient, githubClient, monitorFailedEvent, renderSummary, reportEvents, reportToChatwoot, reportToHub } from "./report.mjs";
+import { hubFromEnv, parseNotify } from "../lib/notify-hub.mjs";
+
+const DESTINATIONS = ["chatwoot", "github", "hub"];
 import { coverageProblems } from "./monitor.mjs";
 
 function readState(path) {
@@ -73,8 +81,7 @@ async function main() {
     },
   });
   const env = process.env;
-  const notify = values.notify ?? (env.CHATWOOT_BASE_URL ? "chatwoot" : "github");
-  if (!["chatwoot", "github"].includes(notify)) throw new Error(`--notify must be chatwoot or github, not ${notify}`);
+  const notify = parseNotify(values.notify ?? (env.CHATWOOT_BASE_URL ? "chatwoot" : "github"), DESTINATIONS);
   const dryRun = values["dry-run"];
   const statePath = resolve(root, values.state);
   const { wageStates } = await importTs("src/content/wages/index.ts");
@@ -87,9 +94,10 @@ async function main() {
   const states = values.only ? wageStates.filter((s) => s.state === values.only) : wageStates;
   if (!states.length) throw new Error(`No wage dataset for ${values.only}`);
 
-  const github = notify !== "github" || dryRun ? null : env.GITHUB_TOKEN && env.GITHUB_REPOSITORY ? githubClient({ token: env.GITHUB_TOKEN, repo: env.GITHUB_REPOSITORY }) : undefined;
+  const github = !notify.includes("github") || dryRun ? null : env.GITHUB_TOKEN && env.GITHUB_REPOSITORY ? githubClient({ token: env.GITHUB_TOKEN, repo: env.GITHUB_REPOSITORY }) : undefined;
   if (github === undefined) throw new Error("Set GITHUB_TOKEN and GITHUB_REPOSITORY to report to GitHub, or pass --dry-run.");
-  const chatwoot = notify !== "chatwoot" || dryRun ? null : chatwootFromEnv(env);
+  const chatwoot = !notify.includes("chatwoot") || dryRun ? null : chatwootFromEnv(env);
+  const hub = !notify.includes("hub") || dryRun ? null : hubFromEnv(env);
 
   const previous = readState(statePath);
   const notes = [];
@@ -109,10 +117,14 @@ async function main() {
   notes.push(archive ? archiveNote(archive.log) : "Archive: not configured (R2_ARCHIVE_* unset); originals were not stored.");
   // Keep other states' snapshots when only one was checked.
   const nextState = values.only && previous ? { ...run.state, sources: { ...previous.sources, ...run.state.sources } } : run.state;
-  const actions = notify === "chatwoot" ? await reportToChatwoot(run.events, { chatwoot, state: nextState, today }) : await reportEvents(run.events, { github, today });
+  const actions = [];
+  if (notify.includes("hub")) actions.push(...(await reportToHub(run.events, { hub, state: nextState, today })));
+  if (notify.includes("chatwoot")) actions.push(...(await reportToChatwoot(run.events, { chatwoot, state: nextState, today })));
+  if (notify.includes("github")) actions.push(...(await reportEvents(run.events, { github, today })));
   const save = !dryRun || values["save-state"];
   if (save) writeState(statePath, nextState);
-  if (dryRun) notes.push(`Dry run: nothing was sent to ${notify === "chatwoot" ? "Chatwoot" : "GitHub"}${save ? "" : " and the snapshot was not saved"}.`);
+  const names = { chatwoot: "Chatwoot", github: "GitHub", hub: "the notification hub" };
+  if (dryRun) notes.push(`Dry run: nothing was sent to ${notify.map((d) => names[d]).join(" or ")}${save ? "" : " and the snapshot was not saved"}.`);
 
   if (values.json) {
     console.log(JSON.stringify({ today, dryRun, events: run.events, actions, results: run.results.map((r) => ({ state: r.target.state, url: r.target.url, kind: r.target.kind, outcome: r.outcome, detail: r.detail })) }, null, 2));
@@ -127,10 +139,30 @@ function chatwootFromEnv(env) {
   return chatwootClient({ baseUrl: env.CHATWOOT_BASE_URL, inboxIdentifier: env.CHATWOOT_INBOX_IDENTIFIER });
 }
 
-/** A run that fails tells Chatwoot, in its own conversation, so a broken monitor is not silent. */
+/** The --notify list as given (default chatwoot), for the failure path; a bad list reports nowhere. */
+function notifyArg(argv = process.argv) {
+  const at = argv.findIndex((a) => a === "--notify" || a.startsWith("--notify="));
+  const raw = at < 0 ? "chatwoot" : argv[at].includes("=") ? argv[at].split("=")[1] : argv[at + 1];
+  try {
+    return parseNotify(raw, DESTINATIONS);
+  } catch {
+    return [];
+  }
+}
+
+/** A run that fails tells the hub (compliance.monitor_failed) and Chatwoot, so a broken monitor is not silent. */
 async function reportFailure(error) {
   const env = process.env;
-  if (process.argv.includes("--dry-run") || !env.CHATWOOT_BASE_URL || !env.CHATWOOT_INBOX_IDENTIFIER) return;
+  if (process.argv.includes("--dry-run")) return;
+  const notify = notifyArg();
+  if (notify.includes("hub") && env.NOTIFY_URL && env.NOTIFY_INGEST_SECRET) {
+    try {
+      await hubFromEnv(env).send([monitorFailedEvent(error, istDate())]);
+    } catch (notifyError) {
+      console.error(`could not tell the notification hub: ${notifyError?.message ?? notifyError}`);
+    }
+  }
+  if (!notify.includes("chatwoot") || !env.CHATWOOT_BASE_URL || !env.CHATWOOT_INBOX_IDENTIFIER) return;
   try {
     const chatwoot = chatwootFromEnv(env);
     const contact = (await chatwoot.createContact()).source_id;

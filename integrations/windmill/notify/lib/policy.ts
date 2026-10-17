@@ -94,7 +94,7 @@ export const DEFAULT_POLICY: Policy = {
       push: { mode: "instant", topic: "vspl-leads", priority: { info: 4, notice: 4, warning: 4 } },
       email: "instant",
     },
-    { name: "SEO weekly report", match: { type: "seo.weekly_report" }, push: { mode: "one_line" }, email: "instant" },
+    { name: "SEO weekly report: email only (search data stays off the lock screen)", match: { type: "seo.weekly_report" }, push: { mode: "none" }, email: "instant" },
     { name: "SEO rule tripped", match: { type: "seo.rule_tripped" }, push: { mode: "instant" }, email: "instant" },
     { name: "Compliance source changed (GitHub issue)", match: { type: "compliance.source_changed" }, push: { mode: "instant" }, email: "instant" },
     {

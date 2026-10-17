@@ -9,7 +9,9 @@ import { importTs, root } from '../scripts/lib/register-ts.mjs';
 import { describeDocument, diffLines, documentLinks, htmlText, sha256 } from '../scripts/wage-monitor/extract.mjs';
 import { buildTargets, coverageProblems, fetchSource, fingerprint, istDate, pageLines, registryProblems, runMonitor, targetKey } from '../scripts/wage-monitor/monitor.mjs';
 import { extractPdfText, parseCMap } from '../scripts/wage-monitor/pdf-text.mjs';
-import { chatwootClient, issueTitle, renderChatwootMessage, reportEvents, reportToChatwoot, safe } from '../scripts/wage-monitor/report.mjs';
+import { chatwootClient, issueTitle, monitorFailedEvent, renderChatwootMessage, reportEvents, reportToChatwoot, reportToHub, safe } from '../scripts/wage-monitor/report.mjs';
+import { hubClient, hubFromEnv, parseNotify } from '../scripts/lib/notify-hub.mjs';
+import { seoEvents, seoFailedEvent } from '../scripts/seo-watch/hub.mjs';
 
 const { wageStates } = await importTs('src/content/wages/index.ts');
 const registry = JSON.parse(readFileSync(`${root}/scripts/wage-monitor/sources.json`, 'utf8'));
@@ -509,6 +511,91 @@ test('chatwootClient posts to the public API of one inbox, with no token', async
   assert.equal(seen[0][0], 'http://chatwoot.growth.svc/public/api/v1/inboxes/abc/contacts');
   assert.equal(seen[1][0], 'http://chatwoot.growth.svc/public/api/v1/inboxes/abc/contacts/s/conversations/5/messages');
   assert.ok(!('api_access_token' in seen[0][2]));
+});
+
+// ---------------------------------------------------------------- notification hub
+
+function fakeHub({ status = 202, rejected = [] } = {}) {
+  const posts = [];
+  const fetchImpl = async (url, init) => {
+    posts.push({ url, secret: init.headers['x-vspl-notify-secret'], body: JSON.parse(init.body) });
+    return new Response(JSON.stringify({ ok: status === 202, ids: ['1'], rejected, piiDropped: 0 }), { status });
+  };
+  return { posts, hub: hubClient({ url: 'http://windmill.test/api/r/webhook/vspl-notify', secret: 'unit-hub-secret', fetchImpl }) };
+}
+
+test('--notify takes a comma list of known destinations', () => {
+  assert.deepEqual(parseNotify('chatwoot,hub', ['chatwoot', 'github', 'hub']), ['chatwoot', 'hub']);
+  assert.deepEqual(parseNotify(' hub , hub ', ['chatwoot', 'hub']), ['hub']);
+  assert.throws(() => parseNotify('chatwoot,slack', ['chatwoot', 'hub']), /--notify must be one or more of chatwoot, hub/);
+  assert.throws(() => parseNotify('', ['chatwoot']), /--notify/);
+  assert.throws(() => hubFromEnv({}), /NOTIFY_URL and NOTIFY_INGEST_SECRET/);
+});
+
+test('hub: one event per state and topic, source_changed for a change, the detail in the body only, never the same change twice', async () => {
+  const { posts, hub } = fakeHub();
+  const state = {};
+  const first = await reportToHub([ukEvent, epfEvent], { hub, state, today: '2026-10-17' });
+  assert.deepEqual(first.map((a) => a.action), ['hub', 'hub']);
+  assert.equal(posts.length, 1, 'one request for the run');
+  assert.equal(posts[0].secret, 'unit-hub-secret');
+  const [uk, epf] = posts[0].body.events;
+  assert.deepEqual([uk.v, uk.source, uk.type, uk.severity], [1, 'compliance', 'compliance.source_changed', 'notice']);
+  assert.equal(uk.title, `Minimum wages · ${ukEvent.stateName}: a source changed`);
+  assert.match(uk.dedupeKey, new RegExp(`^compliance:${ukEvent.state}:wages:[0-9a-f]{16}$`));
+  assert.equal(epf.title, 'EPF · all states: a source changed');
+  assert.match(epf.summary, /^1 change in the primary sources on 17 October 2026/);
+  assert.doesNotMatch(`${epf.title} ${epf.summary}`, /Ceiling/, 'the figures are in the email body, not the push');
+  assert.match(epf.body, /Ceiling 30,000/);
+  assert.equal(epf.link.url, 'https://epfo.example.gov.in/rates');
+  assert.equal(epf.pii, undefined);
+  // Chatwoot keeps its own record: dual-writing reports each change once to each.
+  await reportToChatwoot([ukEvent, epfEvent], { chatwoot: fakeChatwoot(), state, today: '2026-10-17' });
+  assert.deepEqual(await reportToHub([ukEvent, epfEvent], { hub, state, today: '2026-10-18' }), []);
+  assert.equal(posts.length, 1);
+  // The same changes in another run (the snapshot was lost) get the same dedupeKey, which the hub sends once.
+  const again = fakeHub();
+  await reportToHub([epfEvent], { hub: again.hub, state: {}, today: '2026-10-18' });
+  assert.equal(again.posts[0].body.events[0].dedupeKey, epf.dedupeKey);
+});
+
+test('hub: an unreachable source goes to the digest; a recovery alone is sent only once the hub has heard from the monitor; a refusal fails the run', async () => {
+  const unreachable = { type: 'unreachable', state: 'delhi', stateName: 'Delhi', topic: 'lwf', url: 'https://x.example/lwf', name: 'LWF', since: '2026-10-10', days: 3, error: 'HTTP 503' };
+  const recovered = { ...unreachable, type: 'recovered' };
+  const { posts, hub } = fakeHub();
+  assert.deepEqual(await reportToHub([recovered], { hub, state: {}, today: '2026-10-17' }), []);
+  const state = {};
+  await reportToHub([unreachable], { hub, state, today: '2026-10-17' });
+  assert.equal(posts[0].body.events[0].type, 'compliance.source_unreachable');
+  assert.equal(posts[0].body.events[0].severity, 'info');
+  await reportToHub([recovered], { hub, state, today: '2026-10-20' });
+  assert.equal(posts[1].body.events[0].type, 'compliance.source_recovered');
+  const refused = fakeHub({ status: 403 });
+  const s2 = {};
+  await assert.rejects(reportToHub([ukEvent], { hub: refused.hub, state: s2, today: '2026-10-17' }), /notification hub: HTTP 403/);
+  assert.deepEqual(s2.hub.reported, {}, 'nothing recorded, so the next run reports it again');
+  await assert.rejects(fakeHub({ rejected: [{ index: 0, errors: ['x'] }] }).hub.send([{}]), /rejected 1 of 1/);
+  const planned = await reportToHub([ukEvent], { hub: null, state: {}, today: '2026-10-17' });
+  assert.equal(planned[0].action, 'hub (dry run)');
+});
+
+test('hub: a failed monitor is compliance.monitor_failed, once a day', () => {
+  const e = monitorFailedEvent(new Error('Source registry problems:\n- one\n- two'), '2026-10-17');
+  assert.deepEqual([e.type, e.severity, e.dedupeKey], ['compliance.monitor_failed', 'warning', 'compliance:monitor_failed:2026-10-17']);
+  assert.match(e.body, /Source registry problems/);
+});
+
+test('seo-watch: the weekly report is email only with no search data in title or summary; a tripped rule is pushed; a failure is seo.watch_failed', () => {
+  const message = '**SEO weekly** | 1,234 impressions | top query: sidcul jobs';
+  const [weekly] = seoEvents({ weekEnd: '2026-10-11', ruleStatus: 'counting', message });
+  assert.deepEqual([weekly.type, weekly.dedupeKey], ['seo.weekly_report', 'seo:weekly:2026-10-11']);
+  assert.equal(weekly.body, message);
+  assert.doesNotMatch(`${weekly.title} ${weekly.summary}`, /1,234|sidcul/);
+  const tripped = seoEvents({ weekEnd: '2026-10-11', ruleStatus: 'tripped', message });
+  assert.deepEqual(tripped.map((e) => e.type), ['seo.weekly_report', 'seo.rule_tripped']);
+  assert.doesNotMatch(`${tripped[1].title} ${tripped[1].summary}`, /1,234|sidcul/);
+  const failed = seoFailedEvent(new Error('Search Console query: HTTP 403'), '2026-10-19');
+  assert.deepEqual([failed.type, failed.dedupeKey], ['seo.watch_failed', 'seo:watch_failed:2026-10-19']);
 });
 
 test('renderChatwootMessage names the state file for wages and statutory.ts otherwise', () => {

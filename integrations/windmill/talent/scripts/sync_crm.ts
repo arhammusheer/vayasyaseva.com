@@ -7,8 +7,9 @@
 import { withTalentDb } from "../lib/db.ts";
 import { runSyncCrm } from "../lib/run-sync-crm.ts";
 import { twentyFromConfig } from "../lib/twenty.ts";
+import { tryEmit } from "../../notify/lib/emit.ts";
 
 export async function main() {
   const crm = await twentyFromConfig();
-  return withTalentDb((query) => runSyncCrm({ query, crm }));
+  return withTalentDb((query) => runSyncCrm({ query, crm, notify: tryEmit }));
 }

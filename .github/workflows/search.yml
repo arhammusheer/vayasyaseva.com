@@ -185,3 +185,34 @@ jobs:
         run: |
           set -o pipefail
           node scripts/search-console/bing-submit.mjs --sitemap "$SITE/sitemap.xml" | tee -a "$GITHUB_STEP_SUMMARY"
+
+  # Tells the notification hub (docs/notification-hub.md) when this run failed:
+  # an instant push with the run as its link. Needs the repository secret
+  # NOTIFY_INGEST_SECRET (an owner step); without it the job does nothing.
+  notify-failure:
+    needs: [check, indexnow, search-console, bing]
+    if: failure()
+    runs-on: ubuntu-latest
+    permissions: {}
+    timeout-minutes: 5
+    steps:
+      - name: Tell the notification hub
+        env:
+          NOTIFY_INGEST_SECRET: ${{ secrets.NOTIFY_INGEST_SECRET }}
+          NOTIFY_URL: https://hooks.vayasyaseva.com/api/r/webhook/vspl-notify
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          DEDUPE_KEY: search:pipeline_failed:${{ github.run_id }}:${{ github.run_attempt }}
+        run: |
+          if [ -z "$NOTIFY_INGEST_SECRET" ]; then
+            echo "NOTIFY_INGEST_SECRET is not set: not notifying"
+            exit 0
+          fi
+          body=$(jq -n --arg key "$DEDUPE_KEY" --arg url "$RUN_URL" '{
+            v: 1, source: "github", type: "search.pipeline_failed", severity: "warning", dedupeKey: $key,
+            title: "Search pipeline failed",
+            summary: "A job of the Search workflow (SEO check, IndexNow, Search Console or Bing) failed after a deploy. Open the run for the step.",
+            link: { label: "GitHub run", url: $url }
+          }')
+          status=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 -X POST "$NOTIFY_URL" \
+            -H "content-type: application/json" -H "x-vspl-notify-secret: $NOTIFY_INGEST_SECRET" -d "$body")
+          echo "notification hub answered $status"

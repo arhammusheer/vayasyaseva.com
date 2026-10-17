@@ -1,6 +1,6 @@
 # Notification hub
 
-One place that decides who hears about what, and how: new job applications and business leads as instant pushes, problems as pushes with email for the serious ones, everything else in one morning digest. Owner decisions of 18 October 2026; phase A (this document) builds the hub. Wiring the producers is phase B.
+One place that decides who hears about what, and how: new job applications and business leads as instant pushes, problems as pushes with email for the serious ones, everything else in one morning digest. Owner decisions of 18 October 2026. Phase A built the hub (deployed and checked live on 18 October); phase B connects the real producers ("Producers" below).
 
 ```
 producers                                   hub (Windmill, workspace vspl, folder f/notify)          out
@@ -63,12 +63,12 @@ The policy is the Windmill variable **`f/notify/policy`** (JSON). `deploy.mts` c
 | `application.received` | instant, name and **full phone**, **Call** (`tel:`) and "View in Twenty", topic `vspl-jobs`, priority 4 | digest |
 | `lead.received` | instant, name, company, **masked phone** (`+91 XXXXXX3210`), "View in Twenty", topic `vspl-leads`; priority 3, or 4 for a qualified lead (send `severity: "notice"`) | none (the MSG91 shared-inbox mail stays) |
 | `lead.forward_failed`, `lead.email_failed` | instant | instant |
-| `seo.weekly_report` | one line (the summary's first line) | instant, full body |
+| `seo.weekly_report` | none (search data stays off the lock screen) | instant, full body |
 | `seo.rule_tripped` | instant | instant, full body |
-| `compliance.source_changed` | instant; `link` is the GitHub issue | instant, with the detail |
+| `compliance.source_changed` | instant; `link` is the changed source | instant, with the detail |
 | `compliance.monitor_failed`, `seo.watch_failed` | instant | instant |
 | `platform.*` | when firing starts, then a reminder every 24 h while it fires; resolved | digest |
-| `windmill.job_failed` | the first now, then at most one "N times" summary per hour per `dedupeKey` (use one key per script) | digest |
+| `windmill.job_failed` | the first now, then at most one "N times" summary per hour per `dedupeKey` (use one key per script). No producer yet: see "Windmill job failures" | digest |
 | Alertmanager, critical | instant; resolved | instant |
 | Alertmanager, warning and below | instant; resolved | digest |
 | `search.pipeline_failed` | instant | none |
@@ -164,7 +164,7 @@ await fetch("http://windmill.growth.svc.cluster.local:8000/api/r/webhook/vspl-no
 
 The same route is public as `https://hooks.vayasyaseva.com/api/r/webhook/vspl-notify`, with the same header. Keep the secret in the caller's secret store (GitHub Actions secret, Vercel env). Never send `pii` here, because it is dropped.
 
-### Alertmanager (phase B)
+### Alertmanager
 
 The receiver URL is `http://windmill.growth.svc.cluster.local:8000/api/r/internal/vspl-alertmanager`. It is in the cluster only: the public ingress routes only `/api/r/webhook/`. The receiver authenticates with `Authorization: Bearer $NOTIFY_ALERTMANAGER_SECRET`, sent through `http_config.authorization.credentials_file`.
 
@@ -174,7 +174,7 @@ The receiver URL is `http://windmill.growth.svc.cluster.local:8000/api/r/interna
 - `Watchdog` and `InfoInhibitor` are ignored.
 - Alertmanager re-sends a firing group every `repeat_interval`, and the hub drops those as duplicates.
 
-The vayasya-infra PR carries the exact receiver and route snippet. Alertmanager routing is unchanged until phase B.
+Routing (vayasya-infra `infrastructure/kube-prometheus-stack/values.yaml`): every alert goes to the receiver `hub` with `continue: true`. Critical alerts, `NtfyNoRunningPods`, `PgMain*` and `Windmill*` also go straight to email from Alertmanager, so the alerts that mean the hub cannot deliver never depend on it. `Watchdog` stays on `null` until there is an external dead-man's switch. The token is the Secret `monitoring/alertmanager-notify` (`extra-manifests/secrets-notify.sops.yaml`), the same value as `NOTIFY_ALERTMANAGER_SECRET`.
 
 ## Owner setup
 
@@ -235,11 +235,44 @@ In order:
 
 The repo is public, so no personal data, phone numbers or real addresses appear in code, tests (made-up data only) or docs. The recipient address lives in the cluster Secret.
 
-## Phase B (not built yet)
+## Producers (phase B)
 
-- Talent: `tryEmit` for `application.received` after Twenty sync (so the "View in Twenty" link exists).
-- Leads: `tryEmit` for `lead.received`, plus `lead.forward_failed` and `lead.email_failed` from the website's side.
-- seo-watch and compliance-monitor: POST their reports and failures to ingest, adding `NOTIFY_INGEST_SECRET` to their Secrets. This replaces their Chatwoot posts once trusted.
-- Alertmanager: the receiver and route from the infra PR, plus a `monitoring` Secret holding `NOTIFY_ALERTMANAGER_SECRET`.
-- `windmill.job_failed`: a workspace error handler that emits per script.
-- GitHub: `search.pipeline_failed` from `search.yml`.
+| Event | Raised by | When | Shown |
+|---|---|---|---|
+| `application.received` | `talent/lib/run-sync-crm.ts` `syncOne` (the CRM step of `f/talent/dispatch`, and `f/talent/sync_crm`); text in `talent/lib/notify-application.ts` | once the Twenty person and application exist, before `crm_sync` is written, so a retry raises it again and the dedupeKey `application:<ref>` sends it once; an acknowledgement update raises nothing | title and summary: ref, role, area answer, cluster, form, language (fixed lists only); `pii { name, phone }`; "View in Twenty" opens the person |
+| `lead.received` | `leads/lib/run-leads.ts` `runLeadsSync` (`f/leads/sync_crm`); text in `leads/lib/lead-notify.ts` | once the crew request (opportunity) is in Twenty; `lead:<caseId>` | crew size, first service, cluster, case ID, source page; `pii { name, company, phone }`; `notice` when the site flagged it qualified (the enquiry's Flags line), else `info` |
+| `lead.forward_failed` | the same, `lead-dead:<caseId>` | when the lead's delivery hits its cap (eight attempts) | the case ID and the error's HTTP status only |
+| `lead.email_failed` | the website, `src/server/submissions/types/business-enquiry.ts` through `src/server/notify.ts` (ingest, from `after()`) | when the MSG91 staff email throws; `lead-email:<caseId>` | the case ID and the route, no personal data |
+| `platform.sms_unknown`, `platform.deliveries_dead`, `…_stuck`, `…_overdue`, `platform.erasure_failed`, `platform.db_unreadable` | `f/platform/health`, every 15 minutes (`platform/lib/health-notify.ts`) | firing when a condition starts and resolved when it clears, keyed `platform:health:<database>:<reason>[:<target>]`; health reads the hub's key states, so a condition that stays (the 11 October SMS `unknown`) is one push, then the routing table's daily reminder | counts and the oldest item's time; overdue and an unreadable database are critical (instant email too) |
+| `compliance.source_changed`, `compliance.source_unreachable`, `compliance.source_recovered` | `scripts/wage-monitor` with `--notify hub` (`reportToHub` in `report.mjs`) | one per state and topic per run, keyed on the hash of the changes' fingerprints, and recorded in the snapshot (`state.hub.reported`) apart from Chatwoot's | state, topic and a count; the Chatwoot Markdown in the email body |
+| `compliance.monitor_failed` | the same, on a failed run (once a day); and `.github/workflows/wage-monitor.yml`'s `notify-failure` job | | the error's first lines in the email only |
+| `seo.weekly_report`, `seo.rule_tripped`, `seo.watch_failed` | `scripts/seo-watch` with `--notify hub` (`scripts/seo-watch/hub.mjs`) | weekly, keyed per week (failure per day) | the week and the rule's status; Search Console figures only in the email body |
+| `search.pipeline_failed` | `.github/workflows/search.yml`'s `notify-failure` job | when any job of the run failed; the run is the link | |
+| `alert.<alertname>` | Alertmanager | see "Alertmanager" | |
+
+The monitors take `--notify` as a comma list. In the cluster they run `--notify chatwoot,hub` until Chatwoot is retired. The hub goes first: if Chatwoot then fails, the run fails without saving the snapshot, and the retry's hub events carry the same dedupeKeys, so the hub sends them once.
+
+The GitHub jobs post to the public route with the repository secret `NOTIFY_INGEST_SECRET`. Without the secret they print a line and succeed.
+
+### Windmill job failures
+
+`windmill.job_failed` would come from a workspace error handler (`f/notify/on_error`). Windmill CE v1.822 does not run one: the workspace error handler is called from Windmill's enterprise code only (`windmill-queue/src/jobs.rs` at v1.822.0: `apply_completed_job_error_handlers` and the schedule handlers are behind `#[cfg(all(feature = "enterprise", feature = "private"))]`; `send_error_to_workspace_handler` has no caller in the open-source code). CE calls the handler only when it cannot push a schedule's next run. So none is set up, and `deploy.mts` does not set one. What covers failures instead:
+
+- the producers' own outcomes: dead and stuck deliveries through `f/platform/health`, `lead.forward_failed`;
+- `WindmillServerNoRunningPods` and `WindmillWorkerNoRunningPods` (Alertmanager, by email);
+- Windmill's Runs page (filter by failed).
+
+If job failures need their own pushes later, a scheduled script can read the failed runs from Windmill's API (`GET /api/w/vspl/jobs/completed/list?success=false`), keyed per script and collapsed hourly by the existing rule. It must emit the path and run link only, never the job's arguments.
+
+## Phase B owner steps
+
+In order. The cluster CronJobs download the website's `main`, so the website PR goes first: the CronJobs' new `--notify chatwoot,hub` would fail on the old scripts.
+
+1. **Merge the website PR** ("Notifications: phase B, every source into the hub"). Vercel deploys the site.
+2. **Vercel env** (Production): `NOTIFY_URL=https://hooks.vayasyaseva.com/api/r/webhook/vspl-notify` and `NOTIFY_INGEST_SECRET` (the value in `growth/windmill-notify`), then redeploy. Until then `lead.email_failed` is not sent; nothing else changes.
+3. **Deploy Windmill**: `pnpm windmill:build && pnpm windmill:deploy --enable-notify`. It pushes the talent, leads and health scripts and turns on `f/platform/health`'s 15-minute schedule (only with `--enable-notify`).
+4. **The policy variable**: the weekly SEO report is now email only in `DEFAULT_POLICY`. The live `f/notify/policy` keeps the old rule (one-line push) until you change it: either `pnpm windmill:deploy --reset-notify-policy` (if you have not edited it) or edit the `seo.weekly_report` rule's push mode to `none` in the Windmill UI.
+5. **Merge the vayasya-infra PR** ("Notifications: Alertmanager into the hub, Windmill/Twenty alerts, monitors dual-write"). Argo syncs Alertmanager's new routing and Secret, the new PrometheusRules and the CronJobs.
+6. **GitHub secret**: add the repository secret `NOTIFY_INGEST_SECRET` (the same value) for the `notify-failure` jobs of `search.yml` and `wage-monitor.yml`.
+7. **Check**: a test application and a test lead each give one push (with the right phone shown); `f/platform/health` gives one push for the old SMS `unknown` and none at the next checks; the infra RUNBOOK's `amtool alert add` test gives a push on `vspl-ops`; the next compliance monitor run's log ends without errors.
+8. **Later**: an external dead-man's switch for `Watchdog` (for example a free heartbeat service), then route `Watchdog` to it instead of `null`. Retire the monitors' Chatwoot path once the hub is trusted (`--notify hub`).

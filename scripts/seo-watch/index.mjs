@@ -10,12 +10,22 @@
 // pod's projected service account token is exchanged through workload
 // identity federation (GOOGLE_WIF_AUDIENCE) for an access token of
 // GOOGLE_SERVICE_ACCOUNT. Chatwoot as for the compliance monitor
-// (CHATWOOT_BASE_URL, CHATWOOT_INBOX_IDENTIFIER). Search data goes to
-// Chatwoot only, never to logs: the repository and its CI are public.
+// (CHATWOOT_BASE_URL, CHATWOOT_INBOX_IDENTIFIER).
+//
+//   --notify <to>   chatwoot | hub, or chatwoot,hub (default chatwoot). hub
+//                   posts to the notification hub (NOTIFY_URL,
+//                   NOTIFY_INGEST_SECRET): the weekly report by email only, a
+//                   tripped rule as a push too (scripts/seo-watch/hub.mjs). The
+//                   hub goes first; its per-week dedupeKey keeps a rerun to one.
+//
+// Search data goes to Chatwoot and the hub's email body only, never to logs
+// or a push: the repository and its CI are public.
 import { mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { parseArgs } from "node:util";
 import { chatwootClient } from "../wage-monitor/report.mjs";
+import { hubFromEnv, parseNotify } from "../lib/notify-hub.mjs";
+import { seoEvents, seoFailedEvent } from "./hub.mjs";
 
 const SITE = "sc-domain:vayasyaseva.com";
 /** The home page was retitled to national terms on 16 October 2026 (PLAN §5.2, decision 7). */
@@ -28,7 +38,10 @@ const MIN_BASELINE_PER_WEEK = 20;
 /** PLAN §9.5 KPIs at month 3. */
 const KPI_M3 = { nonBrandImpressionsPerMonth: 2000, organicClicksPerMonth: 60, sidculHaridwarPosition: 10 };
 
-const { values } = parseArgs({ options: { "dry-run": { type: "boolean", default: false }, state: { type: "string", default: ".seo-watch/state.json" }, today: { type: "string" } } });
+const { values } = parseArgs({
+  options: { "dry-run": { type: "boolean", default: false }, state: { type: "string", default: ".seo-watch/state.json" }, today: { type: "string" }, notify: { type: "string", default: "chatwoot" } },
+});
+const NOTIFY = parseNotify(values.notify, ["chatwoot", "hub"]);
 const day = (d) => d.toISOString().slice(0, 10);
 const addDays = (iso, n) => day(new Date(Date.parse(`${iso}T00:00:00Z`) + n * 864e5));
 
@@ -268,6 +281,11 @@ async function main() {
     return;
   }
   const env = process.env;
+  if (NOTIFY.includes("hub")) await hubFromEnv(env).send(seoEvents({ weekEnd: report.weeks.at(-1).end, ruleStatus: report.rule.status, message }));
+  if (!NOTIFY.includes("chatwoot")) {
+    console.log(`seo watch: sent to the hub (${report.rule.status}) for the week ending ${report.weeks.at(-1).end}`);
+    return;
+  }
   const chatwoot = chatwootClient({ baseUrl: env.CHATWOOT_BASE_URL, inboxIdentifier: env.CHATWOOT_INBOX_IDENTIFIER });
   const state = readState(values.state);
   state.contact ??= (await chatwoot.createContact()).source_id;
@@ -290,7 +308,14 @@ async function main() {
   console.log(`seo watch: sent (${report.rule.status}) for the week ending ${report.weeks.at(-1).end}`);
 }
 
-main().catch((error) => {
+main().catch(async (error) => {
   console.error(`seo watch failed: ${error?.message ?? error}`);
+  if (NOTIFY.includes("hub") && !values["dry-run"] && process.env.NOTIFY_URL && process.env.NOTIFY_INGEST_SECRET) {
+    try {
+      await hubFromEnv().send([seoFailedEvent(error, day(new Date(Date.now() + 5.5 * 36e5)))]);
+    } catch (notifyError) {
+      console.error(`could not tell the notification hub: ${notifyError?.message ?? notifyError}`);
+    }
+  }
   process.exit(2);
 });

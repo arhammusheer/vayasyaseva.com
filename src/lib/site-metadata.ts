@@ -9,7 +9,7 @@ import {
 
 /** Shared by both root layouts: app/[locale] (the site) and app/(picker). */
 const appDescription =
-  "Contract labour, workforce management and industrial services from Vayasya Seva in Haridwar. People and operations supported by careful labour compliance.";
+  "Contract labour, workforce management and industrial services from Vayasya Seva. People and operations supported by careful labour compliance.";
 
 export const siteMetadata: Metadata = {
   title: {
@@ -36,12 +36,9 @@ export const siteMetadata: Metadata = {
     // Bing Webmaster Tools (also feeds ChatGPT search and Copilot)
     other: { "msvalidate.01": "2876603236738BF23E39FA2A9813FFC1" },
   },
-  other: {
-    "geo.region": "IN-UK",
-    "geo.placename": "Haridwar",
-    "geo.position": "29.9457;78.1642",
-    ICBM: "29.9457, 78.1642",
-  },
+  // No geo.* or ICBM tags: they would mark every page, including other
+  // markets' location pages, as Haridwar (owner direction, 17 Oct 2026: no
+  // default market). The registered office is in the Organization JSON-LD.
   openGraph: {
     type: "website",
     locale: "en_IN",

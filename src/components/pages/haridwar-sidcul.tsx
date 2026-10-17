@@ -9,10 +9,10 @@ import { Button } from "@/components/ui/button";
 import { CtaBlock } from "@/components/sections/cta-block";
 import { ClientStrip } from "@/components/sections/client-strip";
 import { FaqSection } from "@/components/sections/faq-section";
-import { faqHref } from "@/content/faq";
+import { FAQ_PATH } from "@/content/faq";
 import { JsonLd, webPageSchema } from "@/lib/structured-data";
 import { haridwarCopy } from "@/content/pages/haridwar-sidcul";
-import { jobsDoorHref } from "@/components/layout/nav-links";
+import { jobsAreaHref } from "@/lib/intent/surfaces";
 import { HARIDWAR_SECTION_ANCHORS } from "@/content/registry/identifiers";
 import { copyIn, localePath, locales, type Locale } from "@/lib/i18n";
 import { isPaused } from "@/content/registry";
@@ -86,7 +86,7 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
           jobsFirst ? (
             <div className="flex flex-wrap gap-3 pt-2">
               <Button asChild size="lg">
-                <NextLink href={jobsDoorHref(locale)} prefetch={false}>
+                <NextLink href={jobsAreaHref("haridwar", locale)} prefetch={false}>
                   {t.jobs.label} <ArrowRight aria-hidden="true" />
                 </NextLink>
               </Button>
@@ -99,7 +99,7 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
               {crewButton}
               <p className="seeker-line">
                 {t.jobs.text}{" "}
-                <NextLink href={jobsDoorHref(locale)} className="text-link mt-0" prefetch={false}>
+                <NextLink href={jobsAreaHref("haridwar", locale)} className="text-link mt-0" prefetch={false}>
                   {t.jobs.label} <ArrowRight size={18} aria-hidden="true" />
                 </NextLink>
               </p>
@@ -137,7 +137,7 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
           </div>
         </div>
       </Section>
-      <FaqSection title={t.faqHeading} variant="subtle" items={t.faqs} open more={{ href: faqHref("haridwar-sidcul"), label: t.moreFaqs }} />
+      <FaqSection title={t.faqHeading} variant="subtle" items={t.faqs} open more={{ href: FAQ_PATH, label: t.moreFaqs }} />
       <CtaBlock locale={locale} href={CREW_HREF} />
     </>
   );

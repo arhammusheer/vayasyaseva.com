@@ -1,8 +1,9 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import { trackAnalyticsEvent } from "@/lib/analytics";
-import { decideArea, type AreaDecision } from "./model";
+import { MODEL_VERSION, decideArea, type AreaDecision } from "./model";
 import { currentSignals, notePageView, regionCluster } from "./store";
+import { reportDecision } from "./report";
 import { areaSurfaces, knownCluster, ownCluster } from "./surfaces";
 
 const REPORTED_KEY = "vs-area-reported-v1";
@@ -21,11 +22,12 @@ export function useAreaDecision(path: string): AreaDecision {
     let alive = true;
     const page = ownCluster(path);
     notePageView(page, new URL(window.location.href), knownCluster);
-    regionCluster().then(({ region, cluster }) => {
+    regionCluster().then(({ country, region, cluster }) => {
       if (!alive) return;
-      const d = decideArea(currentSignals(page, cluster), surfaces);
+      const d = decideArea(currentSignals(page, cluster, knownCluster), surfaces);
       setDecision(d);
-      const key = `${d.mode}|${d.business.join("+")}|${d.jobs.join("+")}`;
+      reportDecision(d);
+      const key = `${d.mode}|${d.business.join("+")}|${d.jobs.join("+")}|${d.basis}`;
       try {
         const seen: string[] = JSON.parse(window.sessionStorage.getItem(REPORTED_KEY) ?? "[]");
         if (seen.includes(key)) return;
@@ -37,7 +39,12 @@ export function useAreaDecision(path: string): AreaDecision {
         mode: d.mode,
         intent: d.intent ?? "none",
         geo: d.geo ?? "none",
+        // Region only for Indian visitors (country is checked); country for everyone.
+        country: country ?? "none",
         region: region ?? "none",
+        basis: d.basis,
+        chosen: d.chosen ? "yes" : "no",
+        v: MODEL_VERSION,
         business: d.business.join("+"),
         jobs: d.jobs.join("+"),
         confidence: d.confidence,

@@ -924,10 +924,112 @@
     }
   },
   {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/uttarakhand",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/uttarakhand",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/uttarakhand",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/uttarakhand",
+        "x-default": "https://www.vayasyaseva.com/jobs/uttarakhand"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/uttarakhand",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/uttarakhand",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/uttarakhand",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/uttarakhand",
+        "x-default": "https://www.vayasyaseva.com/jobs/uttarakhand"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/uttarakhand",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/uttarakhand",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/uttarakhand",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/uttarakhand",
+        "x-default": "https://www.vayasyaseva.com/jobs/uttarakhand"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/punjab",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/punjab",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/punjab",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/punjab",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/jobs/punjab",
+        "x-default": "https://www.vayasyaseva.com/jobs/punjab"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/punjab",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/punjab",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/punjab",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/punjab",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/jobs/punjab",
+        "x-default": "https://www.vayasyaseva.com/jobs/punjab"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/punjab",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/punjab",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/punjab",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/punjab",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/jobs/punjab",
+        "x-default": "https://www.vayasyaseva.com/jobs/punjab"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/pa-in/jobs/punjab",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/punjab",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/punjab",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/punjab",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/jobs/punjab",
+        "x-default": "https://www.vayasyaseva.com/jobs/punjab"
+      }
+    }
+  },
+  {
     "url": "https://www.vayasyaseva.com/en-in/haridwar-sidcul",
     "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.9,
+    "priority": 0.8,
     "alternates": {
       "languages": {
         "en-IN": "https://www.vayasyaseva.com/en-in/haridwar-sidcul",
@@ -941,7 +1043,7 @@
     "url": "https://www.vayasyaseva.com/hi-in/haridwar-sidcul",
     "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.9,
+    "priority": 0.8,
     "alternates": {
       "languages": {
         "en-IN": "https://www.vayasyaseva.com/en-in/haridwar-sidcul",
@@ -955,7 +1057,7 @@
     "url": "https://www.vayasyaseva.com/hi-latn-in/haridwar-sidcul",
     "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.9,
+    "priority": 0.8,
     "alternates": {
       "languages": {
         "en-IN": "https://www.vayasyaseva.com/en-in/haridwar-sidcul",

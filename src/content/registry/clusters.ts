@@ -151,6 +151,18 @@ export const clusters: readonly Cluster[] = [
     claims: [],
     registrations: [],
   },
+  {
+    // Punjab outside Jalandhar–Kapurthala (owner direction, 17 Oct 2026):
+    // a jobs-only market, a worker list like Bengaluru's. No buyer page; the
+    // Jalandhar region's carries Punjab's business side.
+    id: "punjab",
+    publishable: true,
+    name: { "en-IN": "Punjab", "hi-IN": "पंजाब", "hi-Latn-IN": "Punjab", "pa-IN": "ਪੰਜਾਬ" },
+    states: ["punjab"],
+    quickSwitch: ["pa-IN", "hi-Latn-IN", "en-IN"],
+    claims: [],
+    registrations: [],
+  },
 ];
 
 export function clusterById(id: string) {

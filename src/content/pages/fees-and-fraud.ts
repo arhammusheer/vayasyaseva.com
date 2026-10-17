@@ -38,7 +38,7 @@ export const feesAndFraudCopy: Record<Locale, FeesAndFraudCopy> = {
   "en-IN": {
     title: "No Fee to Apply: Job Fraud Warning",
     description:
-      "There is no fee to apply for work with Vayasya Seva in SIDCUL Haridwar. See how our SMS looks, and how to report anyone who asks you for money in our name.",
+      "There is no fee to apply for work with Vayasya Seva, anywhere. See how our SMS looks, and how to report anyone who asks you for money in our name.",
     breadcrumb: "No fee",
     eyebrow: "JOBS · NO FEE",
     heading: "There is no fee to apply.",
@@ -64,7 +64,7 @@ export const feesAndFraudCopy: Record<Locale, FeesAndFraudCopy> = {
   "hi-IN": {
     title: "आवेदन की कोई फ़ीस नहीं: नौकरी के धोखे से बचें",
     description:
-      "सिडकुल हरिद्वार में Vayasya Seva के काम के लिए आवेदन की कोई फ़ीस नहीं है। देखिए हमारा SMS कैसा दिखता है, और हमारे नाम पर पैसे माँगने वालों की शिकायत कैसे करें।",
+      "Vayasya Seva में काम के लिए आवेदन की कोई फ़ीस नहीं है। देखिए हमारा SMS कैसा दिखता है, और हमारे नाम पर पैसे माँगने वालों की शिकायत कैसे करें।",
     breadcrumb: "कोई फ़ीस नहीं",
     eyebrow: "नौकरी · कोई फ़ीस नहीं",
     heading: "आवेदन की कोई फ़ीस नहीं है।",

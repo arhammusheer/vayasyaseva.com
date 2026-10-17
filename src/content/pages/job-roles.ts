@@ -11,7 +11,10 @@ import type { JobRole } from "@/lib/talent-intake/rules";
  * One job per page: a one-sentence lede that says who the work suits, the
  * form, the duties, two or three questions about this work only, and three
  * related roles. Fees, shifts and pay each have one home elsewhere (the
- * form's lines, /jobs/fees-and-fraud and the /jobs/haridwar FAQ).
+ * form's lines, /jobs/fees-and-fraud and the market hubs' FAQ). No market
+ * is named first (owner direction, 17 Oct 2026): titles and headings name the
+ * work, descriptions list the markets alphabetically, and the form asks the
+ * visitor's market (src/lib/intent).
  *
  * Claims discipline: no pay figures, no promised call-back times, no
  * guarantee of work. hi-IN and hi-Latn-IN are drafts pending native review;
@@ -64,9 +67,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "factory-helper",
       name: "Factory helper",
-      metaTitle: "Factory Helper Jobs in SIDCUL Haridwar",
-      description: "Factory helper and production helper jobs in SIDCUL and across Haridwar: line work, material handling and packing. Apply online. There is no fee to apply.",
-      heading: "Factory helper jobs in SIDCUL Haridwar.",
+      metaTitle: "Factory Helper Jobs: Line and Production Helper Work",
+      description: "Factory helper and production helper jobs: line work, material handling and packing. In Bengaluru, Haridwar, Punjab and Uttarakhand. Apply online, no fee.",
+      heading: "Factory helper jobs.",
       lede: "Production helper work on the factory line, open to freshers and to anyone who has worked on a line.",
       work: [
         "Feeding and assisting on production lines",
@@ -90,9 +93,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "packing",
       name: "Packing jobs",
-      metaTitle: "Packing Jobs in SIDCUL Haridwar: Pharma and FMCG",
-      description: "Packing jobs in SIDCUL and across Haridwar: line packing, cartons, labelling and checks at pharma and FMCG plants. Apply online. There is no fee to apply.",
-      heading: "Packing jobs in SIDCUL Haridwar.",
+      metaTitle: "Packing Jobs: Pharma and FMCG Line Packing",
+      description: "Packing jobs at pharma and FMCG plants: line packing, cartons, labelling and checks. In Bengaluru, Haridwar, Punjab and Uttarakhand. Apply online, no fee.",
+      heading: "Packing jobs.",
       lede: "Packing, labelling and checks on factory lines, open to freshers and to people with packing experience.",
       work: [
         "Packing products into cartons, cases and pouches on the line",
@@ -122,9 +125,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "machine-operator",
       name: "Machine operator",
-      metaTitle: "Machine Operator Jobs in SIDCUL Haridwar",
-      description: "Machine operator jobs in SIDCUL and across Haridwar: packing, moulding, press and production machines at plants. Apply online. There is no fee to apply.",
-      heading: "Machine operator jobs in SIDCUL Haridwar.",
+      metaTitle: "Machine Operator Jobs: Packing, Moulding, Press",
+      description: "Machine operator jobs: packing, moulding, press and production machines at plants. In Bengaluru, Haridwar, Punjab and Uttarakhand. Apply online, no fee.",
+      heading: "Machine operator jobs.",
       lede: "Running production and packing machines, for people who have run a machine or helped an operator.",
       work: [
         "Running packing machines: blister, filling, sealing and cartoning",
@@ -154,9 +157,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "warehouse",
       name: "Warehouse jobs",
-      metaTitle: "Warehouse Jobs in SIDCUL Haridwar: Loading, Picking",
-      description: "Warehouse jobs in SIDCUL and across Haridwar: loading, unloading, picking, packing, stacking and dispatch. Apply online. There is no fee to apply.",
-      heading: "Warehouse jobs in SIDCUL Haridwar.",
+      metaTitle: "Warehouse Jobs: Loading, Picking and Dispatch",
+      description: "Warehouse jobs: loading, unloading, picking, packing, stacking and dispatch. In Bengaluru, Haridwar, Punjab and Uttarakhand. No fee to apply.",
+      heading: "Warehouse jobs.",
       lede: "Loading, unloading, picking and dispatch, for freshers fit for physical work and people with store experience.",
       work: [
         "Loading and unloading trucks",
@@ -181,9 +184,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "forklift-operator",
       name: "Forklift operator",
-      metaTitle: "Forklift Operator Jobs in SIDCUL Haridwar",
-      description: "Forklift operator jobs in SIDCUL and across Haridwar: loading and stacking in warehouses and plants, for experienced operators. There is no fee to apply.",
-      heading: "Forklift operator jobs in SIDCUL Haridwar.",
+      metaTitle: "Forklift Operator Jobs: Warehouses and Plants",
+      description: "Forklift operator jobs: loading and stacking in warehouses and plants, for experienced operators. In Bengaluru, Haridwar, Punjab and Uttarakhand. No fee.",
+      heading: "Forklift operator jobs.",
       lede: "Loading and stacking by forklift in warehouses and plants, for operators with experience and a driving licence.",
       work: [
         "Loading and unloading trucks by forklift",
@@ -208,9 +211,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "data-entry-operator",
       name: "Data entry operator",
-      metaTitle: "Data Entry Operator Jobs in Haridwar (ERP, SAP)",
-      description: "Data entry operator (DEO) jobs in SIDCUL and across Haridwar: computer entry in ERP systems such as SAP for stores, dispatch and production. No fee.",
-      heading: "Data entry operator jobs in Haridwar.",
+      metaTitle: "Data Entry Operator Jobs (ERP, SAP)",
+      description: "Data entry operator (DEO) jobs: ERP and SAP entry for stores, dispatch and production. In Bengaluru, Haridwar, Punjab and Uttarakhand. No fee to apply.",
+      heading: "Data entry operator jobs.",
       lede: "Computer entries in ERP systems such as SAP at factories and warehouses, for 12th pass or graduates who can type and use Excel.",
       work: [
         "Stores and inventory entries: receipts, issues, stock",
@@ -239,9 +242,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "housekeeping",
       name: "Housekeeping",
-      metaTitle: "Housekeeping Jobs in SIDCUL Haridwar",
-      description: "Housekeeping jobs in SIDCUL and across Haridwar: factories, offices, canteens and campuses. For men and women. Apply online. There is no fee to apply.",
-      heading: "Housekeeping jobs in SIDCUL Haridwar.",
+      metaTitle: "Housekeeping Jobs: Factories, Offices, Campuses",
+      description: "Housekeeping jobs in factories, offices, canteens and campuses, for men and women. In Bengaluru, Haridwar, Punjab and Uttarakhand. Apply online, no fee.",
+      heading: "Housekeeping jobs.",
       lede: "Housekeeping at factories, offices, canteens and campuses, for men and women, freshers or experienced.",
       work: [
         "Cleaning shopfloors, offices and common areas",
@@ -265,9 +268,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "iti-trades",
       name: "ITI trades",
-      metaTitle: "SIDCUL Haridwar ITI Jobs: Welder, Fitter, Electrician",
-      description: "Jobs for ITI welders, fitters and electricians in SIDCUL and across Haridwar: fabrication, installation and maintenance work. Apply online. No fee.",
-      heading: "ITI jobs in SIDCUL Haridwar: welder, fitter, electrician.",
+      metaTitle: "ITI Jobs: Welder, Fitter, Electrician",
+      description: "Jobs for ITI welders, fitters and electricians: fabrication, installation and maintenance work. In Bengaluru, Haridwar, Punjab and Uttarakhand. No fee to apply.",
+      heading: "ITI jobs: welder, fitter, electrician.",
       lede: "Fabrication, installation and maintenance work at plants, for ITI pass in welder, fitter, electrician or a related trade.",
       work: [
         "Welding and gas cutting for fabrication (MS and SS)",
@@ -296,9 +299,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "electrician",
       name: "Electrician",
-      metaTitle: "Electrician Jobs in SIDCUL Haridwar: ITI Electrician",
-      description: "Electrician jobs in SIDCUL and across Haridwar: plant maintenance, wiring, motors and panels for ITI electricians. Apply online. There is no fee to apply.",
-      heading: "Electrician jobs in SIDCUL Haridwar.",
+      metaTitle: "Electrician Jobs: ITI Electrician, Plant Maintenance",
+      description: "Electrician jobs: plant maintenance, wiring, motors and panels for ITI electricians. In Bengaluru, Haridwar, Punjab and Uttarakhand. Apply online, no fee.",
+      heading: "Electrician jobs.",
       lede: "Maintenance and wiring at plants, for ITI electricians and wiremen, with or without plant experience.",
       work: [
         "Preventive and breakdown maintenance on plant equipment",
@@ -328,9 +331,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "welder",
       name: "Welder",
-      metaTitle: "Welder Jobs in SIDCUL Haridwar: Arc, MIG, TIG Welding",
-      description: "Welder jobs in SIDCUL and across Haridwar: arc, MIG and TIG welding and gas cutting for fabrication and repair. Apply online. There is no fee to apply.",
-      heading: "Welder jobs in SIDCUL Haridwar.",
+      metaTitle: "Welder Jobs: Arc, MIG and TIG Welding",
+      description: "Welder jobs: arc, MIG and TIG welding and gas cutting for fabrication and repair. In Bengaluru, Haridwar, Punjab and Uttarakhand. Apply online, no fee.",
+      heading: "Welder jobs.",
       lede: "Fabrication and maintenance welding, for ITI welders and experienced welders who can show their work.",
       work: [
         "Arc, MIG and TIG welding on MS and SS",
@@ -355,9 +358,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "fitter",
       name: "Fitter",
-      metaTitle: "Fitter Jobs in SIDCUL Haridwar: Maintenance Fitter",
-      description: "Fitter jobs in SIDCUL and across Haridwar: maintenance, machine fitting and installation for ITI fitters. Apply online. There is no fee to apply.",
-      heading: "Fitter jobs in SIDCUL Haridwar.",
+      metaTitle: "Fitter Jobs: Maintenance and Machine Fitter",
+      description: "Fitter jobs: maintenance, machine fitting and installation for ITI fitters. In Bengaluru, Haridwar, Punjab and Uttarakhand. No fee to apply.",
+      heading: "Fitter jobs.",
       lede: "Mechanical maintenance and fitting at plants, for ITI fitters and maintenance helpers ready to move up.",
       work: [
         "Mechanical maintenance of machines and conveyors",
@@ -389,9 +392,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "factory-helper",
       name: "फ़ैक्टरी हेल्पर",
-      metaTitle: "सिडकुल हरिद्वार में फ़ैक्टरी हेल्पर की नौकरी",
-      description: "सिडकुल और पूरे हरिद्वार में फ़ैक्टरी हेल्पर और प्रोडक्शन हेल्पर की नौकरी: लाइन का काम, माल उठाना-रखना और पैकिंग। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
-      heading: "सिडकुल हरिद्वार में फ़ैक्टरी हेल्पर की नौकरी।",
+      metaTitle: "फ़ैक्टरी हेल्पर की नौकरी",
+      description: "फ़ैक्टरी हेल्पर और प्रोडक्शन हेल्पर की नौकरी: लाइन का काम, माल उठाना-रखना और पैकिंग। बेंगलुरु, हरिद्वार, पंजाब और उत्तराखंड में। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
+      heading: "फ़ैक्टरी हेल्पर की नौकरी।",
       lede: "फ़ैक्टरी की लाइन पर प्रोडक्शन हेल्पर का काम, फ़्रेशर और लाइन पर काम कर चुके लोगों के लिए।",
       work: [
         "प्रोडक्शन लाइन पर माल डालना और मदद करना",
@@ -415,9 +418,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "packing",
       name: "पैकिंग की नौकरी",
-      metaTitle: "सिडकुल हरिद्वार में पैकिंग की नौकरी: फ़ार्मा, FMCG और लाइन पैकिंग",
-      description: "सिडकुल और पूरे हरिद्वार में पैकिंग की नौकरी: फ़ार्मा, FMCG और दूसरी फ़ैक्टरियों में लाइन पैकिंग, कार्टन, लेबलिंग और चेकिंग। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
-      heading: "सिडकुल हरिद्वार में पैकिंग की नौकरी।",
+      metaTitle: "पैकिंग की नौकरी: फ़ार्मा, FMCG और लाइन पैकिंग",
+      description: "पैकिंग की नौकरी: फ़ार्मा, FMCG और दूसरी फ़ैक्टरियों में लाइन पैकिंग, कार्टन, लेबलिंग और चेकिंग। बेंगलुरु, हरिद्वार, पंजाब और उत्तराखंड में। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
+      heading: "पैकिंग की नौकरी।",
       lede: "फ़ैक्टरी की लाइन पर पैकिंग, लेबलिंग और चेकिंग, फ़्रेशर और पैकिंग का अनुभव रखने वालों के लिए।",
       work: [
         "लाइन पर माल को कार्टन, केस और पाउच में पैक करना",
@@ -447,9 +450,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "machine-operator",
       name: "मशीन ऑपरेटर",
-      metaTitle: "सिडकुल हरिद्वार में मशीन ऑपरेटर की नौकरी",
-      description: "सिडकुल और पूरे हरिद्वार में मशीन ऑपरेटर की नौकरी: प्लांट में पैकिंग, मोल्डिंग, प्रेस और प्रोडक्शन मशीनें। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
-      heading: "सिडकुल हरिद्वार में मशीन ऑपरेटर की नौकरी।",
+      metaTitle: "मशीन ऑपरेटर की नौकरी",
+      description: "मशीन ऑपरेटर की नौकरी: प्लांट में पैकिंग, मोल्डिंग, प्रेस और प्रोडक्शन मशीनें। बेंगलुरु, हरिद्वार, पंजाब और उत्तराखंड में। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
+      heading: "मशीन ऑपरेटर की नौकरी।",
       lede: "प्रोडक्शन और पैकिंग मशीनें चलाना, उनके लिए जिन्होंने मशीन चलाई है या ऑपरेटर की मदद की है।",
       work: [
         "पैकिंग मशीनें चलाना: ब्लिस्टर, फ़िलिंग, सीलिंग और कार्टनिंग",
@@ -479,9 +482,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "warehouse",
       name: "वेयरहाउस की नौकरी",
-      metaTitle: "सिडकुल हरिद्वार में वेयरहाउस की नौकरी: लोडिंग, पिकिंग, पैकिंग",
-      description: "सिडकुल और पूरे हरिद्वार में वेयरहाउस की नौकरी: लोडिंग, अनलोडिंग, पिकिंग, पैकिंग, स्टैकिंग और डिस्पैच। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
-      heading: "सिडकुल हरिद्वार में वेयरहाउस की नौकरी।",
+      metaTitle: "वेयरहाउस की नौकरी: लोडिंग, पिकिंग, पैकिंग",
+      description: "वेयरहाउस की नौकरी: लोडिंग, अनलोडिंग, पिकिंग, पैकिंग, स्टैकिंग और डिस्पैच। बेंगलुरु, हरिद्वार, पंजाब और उत्तराखंड में। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
+      heading: "वेयरहाउस की नौकरी।",
       lede: "लोडिंग, अनलोडिंग, पिकिंग और डिस्पैच, मेहनत का काम कर सकने वाले फ़्रेशर और स्टोर का अनुभव रखने वालों के लिए।",
       work: [
         "ट्रक में माल चढ़ाना और उतारना",
@@ -506,9 +509,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "forklift-operator",
       name: "फ़ोर्कलिफ़्ट ऑपरेटर",
-      metaTitle: "सिडकुल हरिद्वार में फ़ोर्कलिफ़्ट ऑपरेटर की नौकरी",
-      description: "सिडकुल और पूरे हरिद्वार में फ़ोर्कलिफ़्ट ऑपरेटर की नौकरी: वेयरहाउस और प्लांट में माल की लोडिंग, स्टैकिंग और ढुलाई। अनुभवी ऑपरेटरों के लिए। कोई फ़ीस नहीं।",
-      heading: "सिडकुल हरिद्वार में फ़ोर्कलिफ़्ट ऑपरेटर की नौकरी।",
+      metaTitle: "फ़ोर्कलिफ़्ट ऑपरेटर की नौकरी",
+      description: "फ़ोर्कलिफ़्ट ऑपरेटर की नौकरी: वेयरहाउस और प्लांट में माल की लोडिंग, स्टैकिंग और ढुलाई। अनुभवी ऑपरेटरों के लिए। बेंगलुरु, हरिद्वार, पंजाब और उत्तराखंड में। कोई फ़ीस नहीं।",
+      heading: "फ़ोर्कलिफ़्ट ऑपरेटर की नौकरी।",
       lede: "वेयरहाउस और प्लांट में फ़ोर्कलिफ़्ट से लोडिंग और स्टैकिंग, अनुभव और ड्राइविंग लाइसेंस वाले ऑपरेटरों के लिए।",
       work: [
         "फ़ोर्कलिफ़्ट से ट्रक की लोडिंग और अनलोडिंग",
@@ -533,9 +536,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "data-entry-operator",
       name: "डेटा एंट्री ऑपरेटर",
-      metaTitle: "हरिद्वार में डेटा एंट्री ऑपरेटर की नौकरी (ERP, SAP)",
-      description: "सिडकुल और पूरे हरिद्वार में डेटा एंट्री ऑपरेटर (DEO) की नौकरी: स्टोर, डिस्पैच और प्रोडक्शन के लिए SAP जैसे ERP में कंप्यूटर एंट्री। कोई फ़ीस नहीं।",
-      heading: "हरिद्वार में डेटा एंट्री ऑपरेटर की नौकरी।",
+      metaTitle: "डेटा एंट्री ऑपरेटर की नौकरी (ERP, SAP)",
+      description: "डेटा एंट्री ऑपरेटर (DEO) की नौकरी: स्टोर, डिस्पैच और प्रोडक्शन के लिए SAP जैसे ERP में कंप्यूटर एंट्री। बेंगलुरु, हरिद्वार, पंजाब और उत्तराखंड में। कोई फ़ीस नहीं।",
+      heading: "डेटा एंट्री ऑपरेटर की नौकरी।",
       lede: "फ़ैक्टरी और वेयरहाउस में SAP जैसे ERP पर कंप्यूटर एंट्री, टाइपिंग और Excel जानने वाले 12वीं पास या ग्रेजुएट के लिए।",
       work: [
         "स्टोर और इन्वेंटरी की एंट्री: माल आना, जाना, स्टॉक",
@@ -564,9 +567,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "housekeeping",
       name: "हाउसकीपिंग",
-      metaTitle: "सिडकुल हरिद्वार में हाउसकीपिंग की नौकरी",
-      description: "सिडकुल और पूरे हरिद्वार में हाउसकीपिंग की नौकरी: फ़ैक्टरी, ऑफ़िस, कैंटीन और कैंपस। पुरुष और महिलाएँ दोनों। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
-      heading: "सिडकुल हरिद्वार में हाउसकीपिंग की नौकरी।",
+      metaTitle: "हाउसकीपिंग की नौकरी",
+      description: "हाउसकीपिंग की नौकरी: फ़ैक्टरी, ऑफ़िस, कैंटीन और कैंपस। पुरुष और महिलाएँ दोनों। बेंगलुरु, हरिद्वार, पंजाब और उत्तराखंड में। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
+      heading: "हाउसकीपिंग की नौकरी।",
       lede: "फ़ैक्टरी, ऑफ़िस, कैंटीन और कैंपस में हाउसकीपिंग, पुरुषों और महिलाओं के लिए, फ़्रेशर हों या अनुभवी।",
       work: [
         "शॉपफ़्लोर, ऑफ़िस और कॉमन एरिया की सफ़ाई",
@@ -590,9 +593,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "iti-trades",
       name: "ITI ट्रेड",
-      metaTitle: "सिडकुल हरिद्वार में ITI की नौकरी: वेल्डर, फ़िटर, इलेक्ट्रीशियन",
-      description: "सिडकुल और पूरे हरिद्वार में ITI वेल्डर, फ़िटर और इलेक्ट्रीशियन की नौकरी: फ़ैब्रिकेशन, इंस्टॉलेशन और मेंटेनेंस। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
-      heading: "सिडकुल हरिद्वार में ITI की नौकरी: वेल्डर, फ़िटर, इलेक्ट्रीशियन।",
+      metaTitle: "ITI की नौकरी: वेल्डर, फ़िटर, इलेक्ट्रीशियन",
+      description: "ITI वेल्डर, फ़िटर और इलेक्ट्रीशियन की नौकरी: फ़ैब्रिकेशन, इंस्टॉलेशन और मेंटेनेंस। बेंगलुरु, हरिद्वार, पंजाब और उत्तराखंड में। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
+      heading: "ITI की नौकरी: वेल्डर, फ़िटर, इलेक्ट्रीशियन।",
       lede: "प्लांट में फ़ैब्रिकेशन, इंस्टॉलेशन और मेंटेनेंस का काम, वेल्डर, फ़िटर, इलेक्ट्रीशियन या मिलते-जुलते ट्रेड में ITI पास के लिए।",
       work: [
         "फ़ैब्रिकेशन के लिए वेल्डिंग और गैस कटिंग (MS और SS)",
@@ -621,9 +624,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "electrician",
       name: "इलेक्ट्रीशियन",
-      metaTitle: "सिडकुल हरिद्वार में इलेक्ट्रीशियन की नौकरी: ITI इलेक्ट्रीशियन वैकेंसी",
-      description: "सिडकुल और पूरे हरिद्वार में इलेक्ट्रीशियन की नौकरी: ITI इलेक्ट्रीशियन के लिए प्लांट मेंटेनेंस, वायरिंग, मोटर और पैनल का काम। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
-      heading: "सिडकुल हरिद्वार में इलेक्ट्रीशियन की नौकरी।",
+      metaTitle: "इलेक्ट्रीशियन की नौकरी: ITI इलेक्ट्रीशियन वैकेंसी",
+      description: "इलेक्ट्रीशियन की नौकरी: ITI इलेक्ट्रीशियन के लिए प्लांट मेंटेनेंस, वायरिंग, मोटर और पैनल का काम। बेंगलुरु, हरिद्वार, पंजाब और उत्तराखंड में। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
+      heading: "इलेक्ट्रीशियन की नौकरी।",
       lede: "प्लांट में मेंटेनेंस और वायरिंग का काम, ITI इलेक्ट्रीशियन और वायरमैन के लिए, प्लांट के अनुभव के साथ या बिना।",
       work: [
         "प्लांट की मशीनों का रूटीन और ब्रेकडाउन मेंटेनेंस",
@@ -653,9 +656,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "welder",
       name: "वेल्डर",
-      metaTitle: "सिडकुल हरिद्वार में वेल्डर की नौकरी: आर्क, MIG, TIG और गैस कटिंग",
-      description: "सिडकुल और पूरे हरिद्वार में वेल्डर की नौकरी: फ़ैब्रिकेशन और मेंटेनेंस के लिए आर्क, MIG और TIG वेल्डिंग और गैस कटिंग। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
-      heading: "सिडकुल हरिद्वार में वेल्डर की नौकरी।",
+      metaTitle: "वेल्डर की नौकरी: आर्क, MIG, TIG और गैस कटिंग",
+      description: "वेल्डर की नौकरी: फ़ैब्रिकेशन और मेंटेनेंस के लिए आर्क, MIG और TIG वेल्डिंग और गैस कटिंग। बेंगलुरु, हरिद्वार, पंजाब और उत्तराखंड में। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
+      heading: "वेल्डर की नौकरी।",
       lede: "फ़ैब्रिकेशन और मेंटेनेंस की वेल्डिंग, ITI वेल्डर और अपना काम दिखा सकने वाले अनुभवी वेल्डरों के लिए।",
       work: [
         "MS और SS पर आर्क, MIG और TIG वेल्डिंग",
@@ -680,9 +683,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "fitter",
       name: "फ़िटर",
-      metaTitle: "सिडकुल हरिद्वार में फ़िटर की नौकरी: मेंटेनेंस और मैकेनिकल फ़िटर",
-      description: "सिडकुल और पूरे हरिद्वार में फ़िटर की नौकरी: ITI फ़िटर के लिए मैकेनिकल मेंटेनेंस, मशीन फ़िटिंग और इंस्टॉलेशन। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
-      heading: "सिडकुल हरिद्वार में फ़िटर की नौकरी।",
+      metaTitle: "फ़िटर की नौकरी: मेंटेनेंस और मैकेनिकल फ़िटर",
+      description: "फ़िटर की नौकरी: ITI फ़िटर के लिए मैकेनिकल मेंटेनेंस, मशीन फ़िटिंग और इंस्टॉलेशन। बेंगलुरु, हरिद्वार, पंजाब और उत्तराखंड में। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
+      heading: "फ़िटर की नौकरी।",
       lede: "प्लांट में मैकेनिकल मेंटेनेंस और फ़िटिंग, ITI फ़िटर और आगे बढ़ना चाहने वाले मेंटेनेंस हेल्पर के लिए।",
       work: [
         "मशीनों और कन्वेयर का मैकेनिकल मेंटेनेंस",
@@ -714,9 +717,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "factory-helper",
       name: "Factory helper",
-      metaTitle: "SIDCUL Haridwar mein Factory Helper Job",
-      description: "SIDCUL aur poore Haridwar mein factory helper aur production helper ki naukri: line ka kaam, maal uthana-rakhna aur packing. Online apply karein. Koi fee nahi.",
-      heading: "SIDCUL Haridwar mein factory helper ki naukri.",
+      metaTitle: "Factory Helper Job",
+      description: "Factory helper aur production helper ki naukri: line ka kaam, maal uthana-rakhna aur packing. Bengaluru, Haridwar, Punjab aur Uttarakhand mein. Koi fee nahi.",
+      heading: "Factory helper ki naukri.",
       lede: "Factory ki line par production helper ka kaam, fresher aur line par kaam kar chuke logon ke liye.",
       work: [
         "Production line par maal daalna aur madad karna",
@@ -740,9 +743,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "packing",
       name: "Packing job",
-      metaTitle: "SIDCUL Haridwar mein Packing Job: Pharma aur FMCG",
-      description: "Packing job SIDCUL Haridwar mein. Koi fee nahi. Poori 8 ghante ki shift. Pharma, FMCG factories mein line packing, carton, labelling. Online apply karein.",
-      heading: "SIDCUL Haridwar mein packing ki naukri.",
+      metaTitle: "Packing Job: Pharma aur FMCG",
+      description: "Packing job Bengaluru, Haridwar, Punjab aur Uttarakhand mein. Koi fee nahi. Pharma, FMCG factories mein line packing, carton, labelling, checking.",
+      heading: "Packing ki naukri.",
       lede: "Factory ki line par packing, labelling aur checking, fresher aur packing ka experience rakhne walon ke liye.",
       work: [
         "Line par maal ko carton, case aur pouch mein pack karna",
@@ -772,9 +775,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "machine-operator",
       name: "Machine operator",
-      metaTitle: "SIDCUL Haridwar mein Machine Operator Job",
-      description: "SIDCUL aur poore Haridwar mein machine operator ki naukri: plants mein packing, moulding, press aur production machines. Online apply karein. Koi fee nahi.",
-      heading: "SIDCUL Haridwar mein machine operator ki naukri.",
+      metaTitle: "Machine Operator Job",
+      description: "Machine operator ki naukri: plants mein packing, moulding, press aur production machines. Bengaluru, Haridwar, Punjab aur Uttarakhand mein. Koi fee nahi.",
+      heading: "Machine operator ki naukri.",
       lede: "Production aur packing machines chalana, unke liye jinhone machine chalayi hai ya operator ki madad ki hai.",
       work: [
         "Packing machines chalana: blister, filling, sealing aur cartoning",
@@ -804,9 +807,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "warehouse",
       name: "Warehouse job",
-      metaTitle: "SIDCUL Haridwar mein Warehouse Job: Loading, Picking",
-      description: "SIDCUL aur poore Haridwar mein warehouse ki naukri: loading, unloading, picking, packing, stacking aur dispatch. Online apply karein. Koi fee nahi.",
-      heading: "SIDCUL Haridwar mein warehouse ki naukri.",
+      metaTitle: "Warehouse Job: Loading, Picking",
+      description: "Warehouse ki naukri: loading, unloading, picking, packing, stacking aur dispatch. Bengaluru, Haridwar, Punjab aur Uttarakhand mein. Koi fee nahi.",
+      heading: "Warehouse ki naukri.",
       lede: "Loading, unloading, picking aur dispatch, mehnat ka kaam kar sakne wale fresher aur store ka experience rakhne walon ke liye.",
       work: [
         "Truck mein maal chadhana aur utaarna",
@@ -831,9 +834,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "forklift-operator",
       name: "Forklift operator",
-      metaTitle: "SIDCUL Haridwar mein Forklift Operator Job",
-      description: "Forklift operator job SIDCUL Haridwar mein. Koi fee nahi. Poori 8 ghante ki shift. Warehouse aur plant mein loading, stacking. Experienced operators ke liye.",
-      heading: "SIDCUL Haridwar mein forklift operator ki naukri.",
+      metaTitle: "Forklift Operator Job",
+      description: "Forklift operator job Bengaluru, Haridwar, Punjab aur Uttarakhand mein. Koi fee nahi. Warehouse aur plant mein loading, stacking. Experienced operators ke liye.",
+      heading: "Forklift operator ki naukri.",
       lede: "Warehouse aur plant mein forklift se loading aur stacking, experience aur driving licence wale operators ke liye.",
       work: [
         "Forklift se truck ki loading aur unloading",
@@ -858,9 +861,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "data-entry-operator",
       name: "Data entry operator",
-      metaTitle: "Haridwar mein Data Entry Operator Job (ERP, SAP)",
-      description: "SIDCUL aur poore Haridwar mein data entry operator (DEO) ki naukri: stores, dispatch aur production ke liye SAP jaise ERP mein computer entry. Koi fee nahi.",
-      heading: "Haridwar mein data entry operator ki naukri.",
+      metaTitle: "Data Entry Operator Job (ERP, SAP)",
+      description: "Data entry operator (DEO) ki naukri: stores, dispatch, production ke liye ERP, SAP entry. Bengaluru, Haridwar, Punjab aur Uttarakhand mein. Koi fee nahi.",
+      heading: "Data entry operator ki naukri.",
       lede: "Factory aur warehouse mein SAP jaise ERP par computer entry, typing aur Excel jaanne wale 12th pass ya graduate ke liye.",
       work: [
         "Stores aur inventory ki entry: maal aana, jaana, stock",
@@ -889,9 +892,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "housekeeping",
       name: "Housekeeping",
-      metaTitle: "SIDCUL Haridwar mein Housekeeping Job",
-      description: "SIDCUL aur poore Haridwar mein housekeeping ki naukri: factory, office, canteen aur campus. Purush aur mahilaayein dono. Online apply karein. Koi fee nahi.",
-      heading: "SIDCUL Haridwar mein housekeeping ki naukri.",
+      metaTitle: "Housekeeping Job",
+      description: "Housekeeping ki naukri: factory, office, canteen aur campus. Purush aur mahilaayein dono. Bengaluru, Haridwar, Punjab aur Uttarakhand mein. Koi fee nahi.",
+      heading: "Housekeeping ki naukri.",
       lede: "Factory, office, canteen aur campus mein housekeeping, purushon aur mahilaon ke liye, fresher hon ya experienced.",
       work: [
         "Shopfloor, office aur common area ki safai",
@@ -915,9 +918,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "iti-trades",
       name: "ITI trades",
-      metaTitle: "SIDCUL Haridwar ITI Job: Welder, Fitter, Electrician",
-      description: "SIDCUL aur poore Haridwar mein ITI welder, fitter aur electrician ki naukri: fabrication, installation aur maintenance. Online apply karein. Koi fee nahi.",
-      heading: "SIDCUL Haridwar mein ITI ki naukri: welder, fitter, electrician.",
+      metaTitle: "ITI Job: Welder, Fitter, Electrician",
+      description: "ITI welder, fitter aur electrician ki naukri: fabrication, installation aur maintenance. Bengaluru, Haridwar, Punjab aur Uttarakhand mein. Koi fee nahi.",
+      heading: "ITI ki naukri: welder, fitter, electrician.",
       lede: "Plants mein fabrication, installation aur maintenance ka kaam, welder, fitter, electrician ya milte-julte trade mein ITI pass ke liye.",
       work: [
         "Fabrication ke liye welding aur gas cutting (MS aur SS)",
@@ -946,9 +949,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "electrician",
       name: "Electrician",
-      metaTitle: "SIDCUL Haridwar mein Electrician Job: ITI Electrician",
-      description: "ITI electrician job SIDCUL Haridwar mein. Koi fee nahi. Poori 8 ghante ki shift. Plant maintenance, wiring, motor aur panel ka kaam. Online apply karein.",
-      heading: "SIDCUL Haridwar mein electrician ki naukri.",
+      metaTitle: "Electrician Job: ITI Electrician",
+      description: "ITI electrician job Bengaluru, Haridwar, Punjab aur Uttarakhand mein. Koi fee nahi. Poori 8 ghante ki shift. Plant maintenance, wiring, motor aur panel ka kaam.",
+      heading: "Electrician ki naukri.",
       lede: "Plants mein maintenance aur wiring ka kaam, ITI electrician aur wireman ke liye, plant ke experience ke saath ya bina.",
       work: [
         "Plant ki machines ka routine aur breakdown maintenance",
@@ -978,9 +981,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "welder",
       name: "Welder",
-      metaTitle: "SIDCUL Haridwar mein Welder Job: Arc, MIG, TIG Welding",
-      description: "Welder job SIDCUL Haridwar mein. Koi fee nahi. Poori 8 ghante ki shift. Fabrication aur maintenance: arc, MIG, TIG welding aur gas cutting. Online apply.",
-      heading: "SIDCUL Haridwar mein welder ki naukri.",
+      metaTitle: "Welder Job: Arc, MIG, TIG Welding",
+      description: "Welder job Bengaluru, Haridwar, Punjab aur Uttarakhand mein. Koi fee nahi. Fabrication aur maintenance: arc, MIG, TIG welding aur gas cutting.",
+      heading: "Welder ki naukri.",
       lede: "Fabrication aur maintenance ki welding, ITI welder aur apna kaam dikha sakne wale experienced welders ke liye.",
       work: [
         "MS aur SS par arc, MIG aur TIG welding",
@@ -1005,9 +1008,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "fitter",
       name: "Fitter",
-      metaTitle: "SIDCUL Haridwar mein Fitter Job: Maintenance Fitter",
-      description: "SIDCUL aur poore Haridwar mein fitter ki naukri: ITI fitter ke liye mechanical maintenance, machine fitting aur installation. Online apply karein. Koi fee nahi.",
-      heading: "SIDCUL Haridwar mein fitter ki naukri.",
+      metaTitle: "Fitter Job: Maintenance Fitter",
+      description: "Fitter ki naukri: ITI fitter ke liye mechanical maintenance, machine fitting aur installation. Bengaluru, Haridwar, Punjab aur Uttarakhand mein. Koi fee nahi.",
+      heading: "Fitter ki naukri.",
       lede: "Plants mein mechanical maintenance aur fitting, ITI fitter aur aage badhna chahne wale maintenance helper ke liye.",
       work: [
         "Machines aur conveyor ka mechanical maintenance",

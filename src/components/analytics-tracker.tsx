@@ -22,7 +22,8 @@ const SCROLL_MARKS = [50, 90];
 const TIME_MARKS = [10, 30, 60, 180];
 const MAX_ERRORS = 3;
 const MAX_CLICK_SIGNALS = 5; // rage and dead clicks, each, per page view
-const CAMPAIGN_PARAMS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
+/** Campaign tags kept on page views, and ?cluster= (the market a link names), for the area-intent funnel. */
+const CAMPAIGN_PARAMS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "cluster"];
 
 export function pageType(path: string) {
   if (path === "/") return "home";
@@ -30,13 +31,13 @@ export function pageType(path: string) {
   if (path.startsWith("/jobs/")) return "job_role";
   if (path === "/services") return "services";
   if (path.startsWith("/services/")) return "service";
-  if (path === "/haridwar-sidcul") return "local";
+  if (path === "/haridwar-sidcul" || path === "/locations" || path.startsWith("/locations/")) return "local";
   if (path === "/contact") return "contact";
   if (path === "/privacy" || path === "/terms") return "legal";
   return safeAnalyticsPath(path) === "/other" ? "other" : "company";
 }
 
-/** The page path for analytics, keeping only campaign tags (utm_*). */
+/** The page path for analytics, keeping only campaign tags (utm_*) and ?cluster=. */
 function pageViewUrl(pathname: string) {
   const params = new URLSearchParams(window.location.search);
   const kept = new URLSearchParams();

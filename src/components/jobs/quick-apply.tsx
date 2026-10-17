@@ -10,14 +10,18 @@ import { useSessionDraft } from "@/lib/use-session-draft";
 import { FormDraftNotice } from "@/components/form-draft-notice";
 import { revealFormTarget } from "@/lib/form-navigation";
 import { cn } from "@/lib/utils";
-import { formPage, trackAdsConversion, trackAnalyticsEvent } from "@/lib/analytics";
+import { formPage, trackAdsConversion, trackAnalyticsEvent, type AnalyticsParams } from "@/lib/analytics";
 import { jobsCopy } from "@/content/pages/jobs";
-import { STEP_DEFS, areaOptions, quickApplyCopy, roleFor, type Answers, type StepDef } from "@/content/pages/quick-apply";
+import { STEP_DEFS, areaOptions, quickApplyCopy, roleFor, type Answers, type AreaSource, type StepDef } from "@/content/pages/quick-apply";
+import { MODEL_VERSION } from "@/lib/intent/model";
+import { reportChoice } from "@/lib/intent/report";
 import { readPrefill } from "@/lib/prefill";
 import { localePath, splitLocalePath, type Locale } from "@/lib/i18n";
 import { clusterById } from "@/content/registry/clusters";
 import { noteChoice } from "@/lib/intent/store";
-import { AREA_CLUSTERS, MAX_APPLICANT_NAME_LENGTH, WEB_SOURCE, cleanQuickAnswers, isJobRole, isJobHub, isPagePath, normaliseIndianMobile, type IntakeCluster, type JobHub, type JobRole } from "@/lib/talent-intake/rules";
+import { useAreaDecision } from "@/lib/intent/use-area";
+import { usePathname } from "next/navigation";
+import { AREA_CLUSTERS, submissionCluster, type QuickAnswers, MAX_APPLICANT_NAME_LENGTH, WEB_SOURCE, cleanQuickAnswers, isJobRole, isJobHub, isPagePath, normaliseIndianMobile, type IntakeCluster, type JobHub, type JobRole } from "@/lib/talent-intake/rules";
 import { JobSubmissionFailure, useJobSubmission } from "@/lib/use-job-submission";
 import { TURNSTILE_SCRIPT_URL } from "@/lib/turnstile";
 import { adClick } from "@/lib/ad-click";
@@ -27,12 +31,15 @@ import { JobFilePicker, declareFiles, uploadAll, useJobFiles } from "@/component
  * The page's cluster: the hub's own (/jobs/haridwar), or ?cluster=<id> on
  * /jobs/apply from an ad, when that cluster has public pages. Never asked.
  */
+/** The area answers, keeping a saved answer the current options lack (a restored draft, a decision that moved). */
+const areaChoices = (options: readonly string[], saved: string | undefined) =>
+  saved && !options.includes(saved) && Object.hasOwn(AREA_CLUSTERS, saved) ? [...options, saved] : options;
+
 function linkCluster(params: URLSearchParams): IntakeCluster | null {
   const id = params.get("cluster");
   return id && clusterById(id) ? (id as IntakeCluster) : null;
 }
-/** A language written for one region's pages: its forms default to that cluster (Punjabi: Jalandhar). */
-const LOCALE_CLUSTER: Partial<Record<Locale, IntakeCluster>> = { "pa-IN": "jalandhar" };
+
 /**
  * Answers kept in this browser tab only (sessionStorage), so switching
  * language or going back does not clear them. Never sent anywhere; cleared
@@ -127,6 +134,12 @@ export function QuickApply({
 }) {
   const t = quickApplyCopy[locale];
   const form = jobsCopy[locale].form;
+  // Where no market is the page's own (or the link's), the visitor's decided
+  // market (src/lib/intent) gives the area answers; undecided or torn
+  // between two, the form asks which market. Only the options follow the
+  // decision: pageCluster stays the page's own.
+  const area = useAreaDecision(splitLocalePath(usePathname()).path);
+  const decidedMarket = area.jobs.length === 1 ? area.jobs[0] : null;
   const [answers, setAnswers] = useState<Answers>({});
   // Multi-choice questions count as answered once Next is pressed.
   const [confirmed, setConfirmed] = useState<string[]>([]);
@@ -139,7 +152,11 @@ export function QuickApply({
   const started = useRef(false);
   const linkAnswers = useRef<Answers>({});
   const [hub, setHub] = useState<JobHub | null>(null);
-  const [cluster, setCluster] = useState<IntakeCluster | null>(pageCluster ?? LOCALE_CLUSTER[locale] ?? null);
+  const [cluster, setCluster] = useState<IntakeCluster | null>(pageCluster ?? null);
+  // Where the area answers come from (quick-apply.ts areaOptions): the
+  // page's market, the link's ?cluster=, the decided market, or ask.
+  const areaSource: AreaSource = pageCluster ? "page" : cluster ? "link" : decidedMarket ? "decision" : "ask";
+  const areaMarket = cluster ?? decidedMarket;
   const entry = useRef<"preset" | "fresh" | "restored">("fresh");
   const [missingFiles, setMissingFiles] = useState(false);
   const submission = useJobSubmission("vayasya-quick-submission");
@@ -187,7 +204,7 @@ export function QuickApply({
     // over conflicting draft choices; the remaining saved fields survive.
     /* eslint-disable react-hooks/set-state-in-effect */
     setHub(pageHub ?? (isJobHub(params.get("hub")) ? params.get("hub") as JobHub : null));
-    setCluster(pageCluster ?? linkCluster(params) ?? LOCALE_CLUSTER[locale] ?? null);
+    setCluster(pageCluster ?? linkCluster(params));
     if (preset) {
       entry.current = "preset";
       setAnswers(preset as Answers);
@@ -196,7 +213,7 @@ export function QuickApply({
     if (hash?.name) setName(hash.name.slice(0, MAX_APPLICANT_NAME_LENGTH));
     if (hash?.phone) setPhone(hash.phone);
     /* eslint-enable react-hooks/set-state-in-effect */
-  }, [pageRole, pageHub, pageCluster, locale]);
+  }, [pageRole, pageHub, pageCluster]);
 
   const restoreDraft = useCallback((saved: Saved) => {
     entry.current = "restored";
@@ -263,12 +280,19 @@ export function QuickApply({
       pendingStep.current = step.id;
       const before = answers[step.id]?.[0];
       setAnswers((a) => ({ ...a, [step.id]: [value] }));
-      // An area that names a cluster is an explicit pick for the header (src/lib/intent).
+      // Where the person lives is a strong hint for this session, not a
+      // standing pick (src/lib/intent/store.ts noteChoice).
       if (step.id === "area" && Object.hasOwn(AREA_CLUSTERS, value)) {
         const c = AREA_CLUSTERS[value as keyof typeof AREA_CLUSTERS];
-        if (c) noteChoice(c);
+        if (c) noteChoice(c, "answer");
+        // Measures the decision only where it chose the options (or the form asked).
+        // "Somewhere else" names no market: chosen as "other" (after a decision, a correction).
+        if (areaSource === "decision" || areaSource === "ask") reportChoice(c ?? "other", areaSource === "decision" && areaMarket ? [areaMarket] : [], "jobs-form");
       }
-      trackAnalyticsEvent("quick_step", { locale, step: step.id, answer: value, ...(before && before !== value ? { changed: "yes" } : {}) });
+      const params: AnalyticsParams = { locale, step: step.id, answer: value };
+      if (before && before !== value) params.changed = "yes";
+      if (step.id === "area") Object.assign(params, { area_source: areaSource, decided: areaMarket ?? "none", v: MODEL_VERSION });
+      trackAnalyticsEvent("quick_step", params);
       return;
     }
     if (confirmed.includes(step.id)) trackAnalyticsEvent("quick_step", { locale, step: step.id, answer: value, changed: "yes" });
@@ -331,6 +355,9 @@ export function QuickApply({
         experience: answers.experience?.[0] ?? "none",
         questions: active.length,
         files: files.length,
+        // The market the application files under, and where the area answers came from.
+        cluster: submissionCluster(cluster, answers as QuickAnswers),
+        area_source: areaSource,
       };
       trackAnalyticsEvent("job_form_submit", { ...summary, page: formPage() });
       trackAnalyticsEvent("quick_apply_submit", summary);
@@ -388,7 +415,7 @@ export function QuickApply({
             {q.hint && <p className="quick-hint">{q.hint}</p>}
             <Pills
               labelledBy={`quick-q-${step.id}`}
-              options={step.id === "area" ? areaOptions(cluster) : step.options}
+              options={step.id === "area" ? areaChoices(areaOptions(areaMarket, areaSource), answers.area?.[0]) : step.options}
               labels={t.labels}
               multi={step.kind === "multi"}
               disabled={locked}

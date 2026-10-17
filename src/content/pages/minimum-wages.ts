@@ -46,11 +46,12 @@ export type WageStateCopy = {
   /** The state Labour Department's site, shown as the official source. */
   labourDepartment: LinkItem;
   /**
-   * The doors band: "haridwar" (jobs and a crew, where we work) or
-   * "elsewhere" (the Labour Department as official source and a crew door: no jobs door,
-   * and nothing that implies we staff sites in that state).
+   * The doors band: a state with a jobs market ("uttarakhand", "punjab",
+   * "bengaluru" for Karnataka: its jobs hub and a crew door) or "elsewhere"
+   * (the Labour Department as official source and a crew door: no jobs
+   * door, and nothing that implies we staff sites in that state).
    */
-  band: "haridwar" | "bengaluru" | "jalandhar" | "elsewhere";
+  band: "uttarakhand" | "bengaluru" | "punjab" | "elsewhere";
 };
 
 const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined> = {
@@ -78,7 +79,7 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
         },
       ],
       labourDepartment: { href: "https://labour.uk.gov.in/", label: "Labour Department, Uttarakhand" },
-      band: "haridwar",
+      band: "uttarakhand",
     };
   },
   "uttar-pradesh": (s) => {
@@ -174,7 +175,7 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
         },
       ],
       labourDepartment: { href: "https://pblabour.gov.in/", label: "Labour Department, Punjab" },
-      band: "jalandhar",
+      band: "punjab",
     };
   },
   karnataka: (s) => {
@@ -218,10 +219,10 @@ export const listDates = (dates: string[]) => {
 };
 
 export const wageHubCopy = {
-  title: (year: string | null) => `Minimum Wages${year ? ` ${year}` : ""}: Uttarakhand, UP, Delhi, Haryana`,
+  title: (year: string | null) => `Minimum Wages${year ? ` ${year}` : ""} by State: Rates by Skill Level`,
   /** The oldest date across the states, so the line is true for every one of them. */
   description: () =>
-    `Minimum wage rates for Uttarakhand, UP, Delhi, Haryana and Punjab by skill level, each with its notification number and effective date. ${stamp(wageStates)}.`,
+    `Minimum wage rates for Delhi, Haryana, Punjab, UP and Uttarakhand by skill level, each with its notification number and effective date. ${stamp(wageStates)}.`,
   heading: (year: string | null) => (year ? `Minimum wages in ${year}, by state.` : "Minimum wages by state."),
   /**
    * The answer, first: the hero lede carries what the old one-question FAQ
@@ -241,17 +242,18 @@ type Door = { eyebrow: string; heading: string; text: string; link: LinkItem; ex
 
 /** The doors band at the foot of each wage page (PLAN §5.5): no phone. */
 export const wageDoors = {
+  /** Uttarakhand: the state's market, whose form also files Haridwar applicants under Haridwar. */
   jobs: {
     eyebrow: "LOOKING FOR WORK",
-    heading: "Factory and warehouse jobs in SIDCUL and across Haridwar.",
-    text: "Full 8-hour shifts. There is no fee to apply.",
-    link: { href: "/jobs/haridwar", label: "Jobs in Haridwar" },
+    heading: "Factory and warehouse jobs across Uttarakhand.",
+    text: "Haridwar and the rest of the state. Full 8-hour shifts. There is no fee to apply.",
+    link: { href: "/jobs/uttarakhand", label: "Jobs across Uttarakhand" },
   } satisfies Door,
   /** The hub covers several states, so its jobs door is the national jobs page, not one city's. */
   jobsAll: {
     eyebrow: "LOOKING FOR WORK",
     heading: "Factory and warehouse jobs.",
-    text: "In Haridwar, Jalandhar–Kapurthala and Bengaluru. Full 8-hour shifts. There is no fee to apply.",
+    text: "In Bengaluru, Haridwar, Jalandhar–Kapurthala, Punjab and Uttarakhand. Full 8-hour shifts. There is no fee to apply.",
     link: { href: "/jobs", label: "See jobs" },
   } satisfies Door,
   business: {
@@ -267,12 +269,12 @@ export const wageDoors = {
     text: "Join our worker list. Full 8-hour shifts. There is no fee.",
     link: { href: "/jobs/bengaluru", label: "Jobs in Bengaluru" },
   } satisfies Door,
-  /** Punjab: the Jalandhar–Kapurthala jobs hub. */
-  jobsJalandhar: {
+  /** Punjab: the state's market, whose form also files Jalandhar–Kapurthala applicants there. */
+  jobsPunjab: {
     eyebrow: "LOOKING FOR WORK",
-    heading: "Packing and factory jobs in Kapurthala and Jalandhar.",
-    text: "Full 8-hour shifts. There is no fee to apply.",
-    link: { href: "/jobs/jalandhar", label: "Jobs in Jalandhar and Kapurthala" },
+    heading: "Factory and packing jobs across Punjab.",
+    text: "Jalandhar, Kapurthala and the rest of the state. Full 8-hour shifts. There is no fee to apply.",
+    link: { href: "/jobs/punjab", label: "Jobs across Punjab" },
   } satisfies Door,
   /**
    * UP and Delhi: the state's Labour Department as the official source, not
@@ -301,7 +303,7 @@ export const wageDoors = {
   neutral: {
     eyebrow: "FOR EMPLOYERS",
     heading: "Hiring for a unit?",
-    text: "We supply crews in SIDCUL and across Haridwar.",
+    text: "Tell us where your site is, and we'll say plainly whether we can staff it.",
     link: { href: "/contact", label: "Request a crew" },
   } satisfies Door,
 };

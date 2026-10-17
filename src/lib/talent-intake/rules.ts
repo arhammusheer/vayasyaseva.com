@@ -54,7 +54,7 @@ export const LEGACY_SOURCE_LOCALES = { web_en: "en-IN", web_hi: "hi-IN", web_hin
  * Cluster ids (PLAN §1a). Same list as CLUSTER_IDS in
  * src/content/registry/identifiers.ts (content:check compares them).
  */
-export const INTAKE_CLUSTERS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other"] as const;
+export const INTAKE_CLUSTERS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other", "punjab"] as const;
 export type IntakeCluster = (typeof INTAKE_CLUSTERS)[number];
 
 export function isIntakeCluster(value: unknown): value is IntakeCluster {
@@ -174,6 +174,14 @@ export const QUICK_ANSWERS = {
     "bengaluru:west": "Bengaluru West / Kengeri", "bengaluru:outside": "Outside Bengaluru",
     "jalandhar:kapurthala": "Kapurthala", "jalandhar:city": "Jalandhar city", "jalandhar:phagwara-goraya": "Phagwara / Goraya",
     "jalandhar:outside": "Outside Jalandhar and Kapurthala",
+    "uttarakhand:haridwar": "Haridwar / Roorkee", "uttarakhand:dehradun-selaqui": "Dehradun / Selaqui",
+    "uttarakhand:udham-singh-nagar": "Rudrapur / Kashipur / Sitarganj", "uttarakhand:other": "Elsewhere in Uttarakhand",
+    "uttarakhand:outside": "Outside Uttarakhand",
+    "punjab:jalandhar-kapurthala": "Jalandhar / Kapurthala", "punjab:ludhiana": "Ludhiana", "punjab:mohali": "Mohali / Kharar",
+    "punjab:amritsar": "Amritsar", "punjab:other": "Elsewhere in Punjab", "punjab:outside": "Outside Punjab",
+    "market:haridwar": "Haridwar / Roorkee", "market:uttarakhand": "Elsewhere in Uttarakhand", "market:jalandhar": "Jalandhar / Kapurthala",
+    "market:punjab": "Elsewhere in Punjab", "market:bengaluru": "Bengaluru", "market:other": "Somewhere else",
+    "haridwar:rest-of-uttarakhand": "Elsewhere in Uttarakhand (Haridwar form)", "jalandhar:rest-of-punjab": "Elsewhere in Punjab (Jalandhar form)",
   },
 } as const;
 export type QuickQuestion = keyof typeof QUICK_ANSWERS;
@@ -198,6 +206,25 @@ export const AREA_CLUSTERS: Record<keyof typeof QUICK_ANSWERS.area, IntakeCluste
   "jalandhar:city": "jalandhar",
   "jalandhar:phagwara-goraya": "jalandhar",
   "jalandhar:outside": null,
+  "uttarakhand:haridwar": "haridwar",
+  "uttarakhand:dehradun-selaqui": "uttarakhand",
+  "uttarakhand:udham-singh-nagar": "uttarakhand",
+  "uttarakhand:other": "uttarakhand",
+  "uttarakhand:outside": null,
+  "punjab:jalandhar-kapurthala": "jalandhar",
+  "punjab:ludhiana": "punjab",
+  "punjab:mohali": "punjab",
+  "punjab:amritsar": "punjab",
+  "punjab:other": "punjab",
+  "punjab:outside": null,
+  "market:haridwar": "haridwar",
+  "market:uttarakhand": "uttarakhand",
+  "market:jalandhar": "jalandhar",
+  "market:punjab": "punjab",
+  "market:bengaluru": "bengaluru",
+  "market:other": null,
+  "haridwar:rest-of-uttarakhand": "uttarakhand",
+  "jalandhar:rest-of-punjab": "punjab",
 };
 
 /**
@@ -206,7 +233,9 @@ export const AREA_CLUSTERS: Record<keyof typeof QUICK_ANSWERS.area, IntakeCluste
  * else "other", which is a real cluster, not an error. So "Outside Haridwar"
  * on /jobs/haridwar files under haridwar (the page), and the same answer on
  * /jobs/apply files under other. The page's own cluster is stored separately
- * (page_cluster).
+ * (page_cluster). The market answers (market:*) and the cross-market ones
+ * (uttarakhand:haridwar, punjab:jalandhar-kapurthala) file under the market
+ * the person named, whatever page they were on.
  */
 export function submissionCluster(pageCluster: IntakeCluster | null | undefined, answers: QuickAnswers | null | undefined): IntakeCluster {
   const area = answers?.area?.[0];

@@ -32,7 +32,7 @@ export interface Lead {
 }
 
 const CASE_ID = /^(REQ|AGT)-\d{8}-[0-9A-F]{8}$/;
-const CLUSTERS = new Set(["HARIDWAR", "UTTARAKHAND", "DELHI_NCR", "BENGALURU", "JALANDHAR", "SAHARANPUR", "OTHER"]);
+const CLUSTERS = new Set(["HARIDWAR", "UTTARAKHAND", "DELHI_NCR", "BENGALURU", "JALANDHAR", "SAHARANPUR", "OTHER", "PUNJAB"]);
 
 const str = (v: unknown, max: number): string | null => {
   if (typeof v !== "string") return null;

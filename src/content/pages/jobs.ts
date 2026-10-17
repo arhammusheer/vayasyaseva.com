@@ -44,10 +44,8 @@ export interface JobsCopy {
   heading: string;
   lede: string;
   apply: string;
-  /** The quiet line under Apply to the Bengaluru worker list. */
-  bengaluru: string;
-  /** The same line to the Jalandhar–Kapurthala hub. */
-  jalandhar: string;
+  /** The label over the list of markets (every jobs hub, the visitor's first). */
+  markets: string;
   form: JobsFormCopy;
   /** Role names, as the /jobs groups and related-role rows show them. */
   work: { title: string; role: JobRole }[];
@@ -89,9 +87,10 @@ export const SHIFTS_LINE: Record<Locale, string> = {
 
 /**
  * /jobs in every locale, and the jobs form's strings. /jobs is a router:
- * Apply (to /jobs/haridwar), the four work groups and Who can apply. Its H1 and title
- * stay as they are until /jobs/haridwar is indexed (the restructure's SEO
- * order). hi-IN is the page most job seekers use; en-IN and hi-Latn-IN
+ * Apply (to the visitor's market, else /jobs/apply), every market, the four
+ * work groups and Who can apply. No market is named first (owner direction,
+ * 17 Oct 2026); the title and description list them alphabetically. It had
+ * about 60 search impressions a month before the change. hi-IN is the page most job seekers use; en-IN and hi-Latn-IN
  * mirror it. hi-IN, hi-Latn-IN and pa-IN are drafts pending native review;
  * /jobs itself is not built in pa-IN, but its form strings are used on the
  * Punjabi jobs pages.
@@ -99,16 +98,15 @@ export const SHIFTS_LINE: Record<Locale, string> = {
  */
 export const jobsCopy: Record<Locale, JobsCopy> = {
   "en-IN": {
-    title: "SIDCUL Haridwar Vacancy: Factory, Warehouse, ITI Jobs",
+    title: "Factory, Packing and Warehouse Jobs: No Fee to Apply",
     description:
-      "SIDCUL Haridwar jobs. No fee to apply. Full 8-hour shifts. Factory, packing, warehouse, housekeeping and ITI work. Apply online with a few short answers.",
+      "Factory, packing and warehouse work in Bengaluru, Haridwar, Jalandhar–Kapurthala, Punjab and Uttarakhand. No fee, full 8-hour shifts. Apply online.",
     breadcrumb: "Jobs",
-    eyebrow: "JOBS · SIDCUL HARIDWAR",
-    heading: "Find work in SIDCUL Haridwar.",
+    eyebrow: "JOBS",
+    heading: "Find factory and warehouse work.",
     lede: "Factory, packing, warehouse, housekeeping and ITI work.",
     apply: "Apply now",
-    bengaluru: "In Bengaluru?",
-    jalandhar: "In Punjab?",
+    markets: "Where do you want to work?",
     form: {
       steps: {
         files: {
@@ -172,16 +170,15 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     who: "Who can apply",
   },
   "hi-IN": {
-    title: "सिडकुल हरिद्वार वैकेंसी: फ़ैक्टरी, वेयरहाउस और ITI की नौकरी",
+    title: "फ़ैक्टरी, पैकिंग और वेयरहाउस की नौकरी: आवेदन की कोई फ़ीस नहीं",
     description:
-      "सिडकुल हरिद्वार में नौकरी। आवेदन की कोई फ़ीस नहीं। पूरी 8 घंटे की शिफ्ट। फ़ैक्टरी, पैकिंग, वेयरहाउस, हाउसकीपिंग और ITI का काम। कुछ आसान सवालों से ऑनलाइन आवेदन करें।",
+      "बेंगलुरु, हरिद्वार, जालंधर–कपूरथला, पंजाब और उत्तराखंड में फ़ैक्टरी, पैकिंग और वेयरहाउस का काम। कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट। ऑनलाइन आवेदन करें।",
     breadcrumb: "नौकरी",
-    eyebrow: "नौकरी · सिडकुल हरिद्वार",
-    heading: "सिडकुल हरिद्वार में काम ढूँढें।",
+    eyebrow: "नौकरी",
+    heading: "फ़ैक्टरी और वेयरहाउस का काम ढूँढें।",
     lede: "फ़ैक्टरी, पैकिंग, वेयरहाउस, हाउसकीपिंग और ITI का काम।",
     apply: "आवेदन करें",
-    bengaluru: "बेंगलुरु में हैं?",
-    jalandhar: "पंजाब में हैं?",
+    markets: "आप कहाँ काम करना चाहते हैं?",
     form: {
       steps: {
         files: {
@@ -245,16 +242,15 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     who: "कौन आवेदन कर सकता है",
   },
   "hi-Latn-IN": {
-    title: "SIDCUL Haridwar Vacancy: Factory, Warehouse, ITI Naukri",
+    title: "Factory, Packing, Warehouse Job: Apply ki Koi Fee Nahi",
     description:
-      "SIDCUL Haridwar job. Koi fee nahi. Poori 8 ghante ki shift. Factory, packing, warehouse, housekeeping aur ITI ka kaam. Kuch aasaan sawaal, phir online apply.",
+      "Bengaluru, Haridwar, Jalandhar–Kapurthala, Punjab aur Uttarakhand mein factory, packing aur warehouse ka kaam. Koi fee nahi, 8 ghante ki shift. Online apply.",
     breadcrumb: "Jobs",
-    eyebrow: "Jobs · SIDCUL Haridwar",
-    heading: "SIDCUL Haridwar mein kaam dhoondhein.",
+    eyebrow: "Jobs",
+    heading: "Factory aur warehouse ka kaam dhoondhein.",
     lede: "Factory, packing, warehouse, housekeeping aur ITI ka kaam.",
     apply: "Apply karein",
-    bengaluru: "Bengaluru mein hain?",
-    jalandhar: "Punjab mein hain?",
+    markets: "Aap kahan kaam karna chahte hain?",
     form: {
       steps: {
         files: {
@@ -318,16 +314,15 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     who: "Kaun apply kar sakta hai",
   },
   "pa-IN": {
-    title: "ਸਿਡਕੁਲ ਹਰਿਦੁਆਰ ਵੈਕੈਂਸੀ: ਫ਼ੈਕਟਰੀ, ਵੇਅਰਹਾਊਸ ਅਤੇ ITI ਦੀ ਨੌਕਰੀ",
+    title: "ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦੀ ਨੌਕਰੀ: ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ",
     description:
-      "ਸਿਡਕੁਲ ਹਰਿਦੁਆਰ ਵਿੱਚ ਨੌਕਰੀ। ਅਪਲਾਈ ਕਰਨ ਦੀ ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ। ਪੂਰੀ 8 ਘੰਟੇ ਦੀ ਸ਼ਿਫ਼ਟ। ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ, ਵੇਅਰਹਾਊਸ, ਹਾਊਸਕੀਪਿੰਗ ਅਤੇ ITI ਦਾ ਕੰਮ। ਕੁਝ ਸੌਖੇ ਸਵਾਲਾਂ ਨਾਲ ਆਨਲਾਈਨ ਅਪਲਾਈ ਕਰੋ।",
+      "ਬੈਂਗਲੁਰੂ, ਹਰਿਦੁਆਰ, ਜਲੰਧਰ–ਕਪੂਰਥਲਾ, ਪੰਜਾਬ ਅਤੇ ਉੱਤਰਾਖੰਡ ਵਿੱਚ ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ। ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ, ਪੂਰੀ 8 ਘੰਟੇ ਦੀ ਸ਼ਿਫ਼ਟ। ਆਨਲਾਈਨ ਅਪਲਾਈ ਕਰੋ।",
     breadcrumb: "ਨੌਕਰੀਆਂ",
-    eyebrow: "ਨੌਕਰੀ · ਸਿਡਕੁਲ ਹਰਿਦੁਆਰ",
-    heading: "ਸਿਡਕੁਲ ਹਰਿਦੁਆਰ ਵਿੱਚ ਕੰਮ ਲੱਭੋ।",
+    eyebrow: "ਨੌਕਰੀ",
+    heading: "ਫ਼ੈਕਟਰੀ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ ਲੱਭੋ।",
     lede: "ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ, ਵੇਅਰਹਾਊਸ, ਹਾਊਸਕੀਪਿੰਗ ਅਤੇ ITI ਦਾ ਕੰਮ।",
     apply: "ਅਪਲਾਈ ਕਰੋ",
-    bengaluru: "ਬੈਂਗਲੁਰੂ ਵਿੱਚ ਹੋ?",
-    jalandhar: "ਪੰਜਾਬ ਵਿੱਚ ਹੋ?",
+    markets: "ਤੁਸੀਂ ਕਿੱਥੇ ਕੰਮ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?",
     form: {
       steps: {
         files: {

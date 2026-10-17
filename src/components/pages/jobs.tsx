@@ -8,7 +8,9 @@ import { getJobCluster } from "@/content/pages/job-clusters";
 import { JsonLd, webPageSchema } from "@/lib/structured-data";
 import { JOB_GROUP_ROLES, jobsCopy } from "@/content/pages/jobs";
 import { jobRolePath } from "@/components/pages/job-role";
-import { localePath, locales, type Locale } from "@/lib/i18n";
+import { localePath, locales, nearestLocalePath, type Locale } from "@/lib/i18n";
+import { orderedJobMarkets } from "@/lib/intent/surfaces";
+import { DecidedApplyLink, MarketList, type MarketItem } from "@/components/sections/market-list";
 
 const PATH = "/jobs";
 
@@ -23,21 +25,22 @@ export function jobsMetadata(locale: Locale) {
 }
 
 /**
- * A router, not a second Haridwar landing (no form, no shifts line: those
- * are on /jobs/haridwar, where Apply goes): Apply, or pick your work (four
- * groups, names only, each a #id the jobs menu links to) or your
- * qualification. No FAQ: the form pages and /jobs/fees-and-fraud carry the
- * rest.
+ * A router, not a market's landing (no form, no shifts line: those are on
+ * the hubs and /jobs/apply). Apply opens the visitor's market (src/lib/intent),
+ * else /jobs/apply; then every market, the visitor's first once decided
+ * (alphabetical before that); then pick your work (four groups, names only,
+ * each a #id the jobs menu links to) or your qualification. No FAQ: the form
+ * pages and /jobs/fees-and-fraud carry the rest.
  */
 export function JobsPage({ locale }: { locale: Locale }) {
   const t = jobsCopy[locale];
   const url = localePath(PATH, locale);
-  const haridwar = getJobCluster("haridwar", locale)!;
-  // The other hubs, each as a quiet line under Apply.
-  const others = (["jalandhar", "bengaluru"] as const).flatMap((slug) => {
-    const hub = getJobCluster(slug, locale);
-    return hub ? [{ hub, line: t[slug] }] : [];
+  // Every market's hub in MARKET_ORDER; MarketList reorders after load.
+  const markets: MarketItem[] = orderedJobMarkets().flatMap((id) => {
+    const hub = getJobCluster(id, locale);
+    return hub ? [{ cluster: id, href: nearestLocalePath(`/jobs/${id}`, locale), title: hub.linkLabel }] : [];
   });
+  const hubs = Object.fromEntries(markets.map((m) => [m.cluster, m.href]));
   const title = (role: string) => t.work.find((w) => w.role === role)?.title ?? role;
   return (
     <>
@@ -52,17 +55,9 @@ export function JobsPage({ locale }: { locale: Locale }) {
             <p className="jobs-lede">{t.lede}</p>
           </div>
           <div>
-            <Link href={localePath(`/jobs/${haridwar.slug}`, locale)} className="jobs-submit">
-              {t.apply} <ArrowRight size={20} aria-hidden="true" />
-            </Link>
-            {others.map(({ hub, line }) => (
-              <p key={hub.slug} className="jobs-also">
-                {line}{" "}
-                <Link href={localePath(`/jobs/${hub.slug}`, locale)} className="text-link mt-0">
-                  {hub.linkLabel} <ArrowRight size={18} aria-hidden="true" />
-                </Link>
-              </p>
-            ))}
+            <DecidedApplyLink path={PATH} hubs={hubs} fallback={localePath("/jobs/apply", locale)} label={t.apply} className="jobs-submit" />
+            <p className="jobs-markets-label">{t.markets}</p>
+            <MarketList items={markets} path={PATH} side="jobs" surface="jobs-index" className="location-areas jobs-markets" />
           </div>
         </div>
       </section>

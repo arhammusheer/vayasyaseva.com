@@ -1,5 +1,5 @@
 import type { FaqItem } from "../types";
-import type { Locale } from "@/lib/i18n";
+import type { CopyIn, Locale } from "@/lib/i18n";
 import type { JobRole } from "@/lib/talent-intake/rules";
 
 /**
@@ -38,7 +38,7 @@ export interface JobRoleLabels {
   faqTitle: string;
 }
 
-export const jobRoleLabels: Record<Locale, JobRoleLabels> = {
+export const jobRoleLabels: CopyIn<JobRoleLabels> = {
   "en-IN": { workHeading: "The work.", related: "Related work", allJobs: "All jobs", faqTitle: "Questions." },
   "hi-IN": { workHeading: "काम क्या है।", related: "मिलते-जुलते काम", allJobs: "सभी नौकरियाँ", faqTitle: "सवाल।" },
   "hi-Latn-IN": { workHeading: "Kaam kya hai.", related: "Milte-julte kaam", allJobs: "Saari naukriyan", faqTitle: "Sawaal." },
@@ -59,7 +59,7 @@ export const RELATED_ROLES: Record<JobRole, [JobRole, JobRole, JobRole]> = {
   fitter: ["welder", "electrician", "machine-operator"],
 };
 
-export const jobRoles: Record<Locale, JobRoleCopy[]> = {
+export const jobRoles: CopyIn<JobRoleCopy[]> = {
   "en-IN": [
     {
       slug: "factory-helper",
@@ -1038,5 +1038,5 @@ export const jobRoles: Record<Locale, JobRoleCopy[]> = {
 };
 
 export function getJobRole(slug: string, locale: Locale) {
-  return jobRoles[locale].find((r) => r.slug === slug);
+  return jobRoles[locale]?.find((r) => r.slug === slug);
 }

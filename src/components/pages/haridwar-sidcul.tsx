@@ -14,16 +14,16 @@ import { JsonLd, webPageSchema } from "@/lib/structured-data";
 import { haridwarCopy } from "@/content/pages/haridwar-sidcul";
 import { jobsDoorHref } from "@/components/layout/nav-links";
 import { HARIDWAR_SECTION_ANCHORS } from "@/content/registry/identifiers";
-import { localePath, locales, type Locale } from "@/lib/i18n";
+import { copyIn, localePath, locales, type Locale } from "@/lib/i18n";
 import { isPaused } from "@/content/registry";
 import { PausedNotice } from "@/components/sections/paused-notice";
 
 const PATH = "/haridwar-sidcul";
 const CREW_HREF = "/contact#location=haridwar";
-const AND: Record<Locale, string> = { "en-IN": "and", "hi-IN": "और", "hi-Latn-IN": "aur" };
+const AND: Record<Locale, string> = { "en-IN": "and", "hi-IN": "और", "hi-Latn-IN": "aur", "pa-IN": "ਅਤੇ" };
 
 export function haridwarMetadata(locale: Locale) {
-  const t = haridwarCopy[locale];
+  const t = copyIn(haridwarCopy, locale, PATH);
   return pageMetadata({
     title: t.title,
     description: t.description,
@@ -34,7 +34,7 @@ export function haridwarMetadata(locale: Locale) {
 
 /** "A, B and C", each area name carrying its anchor (/haridwar-sidcul#bhagwanpur). */
 function Areas({ locale }: { locale: Locale }) {
-  const names = haridwarCopy[locale].areas;
+  const names = copyIn(haridwarCopy, locale, PATH).areas;
   return HARIDWAR_SECTION_ANCHORS.map((id, i) => (
     <span key={id}>
       {i > 0 && (i === HARIDWAR_SECTION_ANCHORS.length - 1 ? ` ${AND[locale]} ` : ", ")}
@@ -52,7 +52,7 @@ function Areas({ locale }: { locale: Locale }) {
  * so there the jobs door is a button first, with Request a crew beside it.
  */
 export function HaridwarPage({ locale }: { locale: Locale }) {
-  const t = haridwarCopy[locale];
+  const t = copyIn(haridwarCopy, locale, PATH);
   const url = localePath(PATH, locale);
   const [before, after] = t.sidcul.split("{areas}");
   const jobsFirst = locale === "hi-IN";

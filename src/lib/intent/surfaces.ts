@@ -5,7 +5,7 @@
  */
 import { clusters, linkable, pageEntry } from "@/content/registry";
 import { jobsHubPath, type ClusterId } from "@/content/registry/identifiers";
-import { localePath, type Locale } from "@/lib/i18n";
+import { nearestLocalePath, type Locale } from "@/lib/i18n";
 import type { AreaSurfaces } from "./model";
 
 export function areaSurfaces(): AreaSurfaces {
@@ -33,8 +33,9 @@ export const JOBS_AREA_LABEL: Record<Locale, Record<string, string>> = {
   "en-IN": { haridwar: "Jobs in Haridwar", bengaluru: "Jobs in Bengaluru", jalandhar: "Jobs in Jalandhar and Kapurthala" },
   "hi-IN": { haridwar: "हरिद्वार में नौकरी", bengaluru: "बेंगलुरु में नौकरी", jalandhar: "जालंधर और कपूरथला में नौकरी" },
   "hi-Latn-IN": { haridwar: "Haridwar mein job", bengaluru: "Bengaluru mein job", jalandhar: "Jalandhar aur Kapurthala mein job" },
+  "pa-IN": { haridwar: "ਹਰਿਦੁਆਰ ਵਿੱਚ ਨੌਕਰੀ", bengaluru: "ਬੈਂਗਲੁਰੂ ਵਿੱਚ ਨੌਕਰੀ", jalandhar: "ਜਲੰਧਰ ਅਤੇ ਕਪੂਰਥਲਾ ਵਿੱਚ ਨੌਕਰੀ" },
 };
 export const jobsAreaHref = (id: string, locale: Locale) => {
   const path = jobsHubPath(id as Exclude<ClusterId, "other">);
-  return locale === "en-IN" ? path : localePath(path, locale);
+  return locale === "en-IN" ? path : nearestLocalePath(path, locale);
 };

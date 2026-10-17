@@ -144,8 +144,9 @@ export const clusters: readonly Cluster[] = [
     name: { "en-IN": "Jalandhar and Kapurthala", "hi-IN": "जालंधर और कपूरथला", "hi-Latn-IN": "Jalandhar aur Kapurthala" },
     navLabel: "Jalandhar–Kapurthala",
     states: ["punjab"],
-    // Punjab (PLAN §6.4): Hinglish · English · हिंदी.
-    quickSwitch: ["hi-Latn-IN", "en-IN", "hi-IN"],
+    // Punjabi first where a page has it (owner direction, 17 Oct 2026), then
+    // PLAN §6.4's Punjab order: Hinglish · English · हिंदी.
+    quickSwitch: ["pa-IN", "hi-Latn-IN", "en-IN"],
     buyerHub: "/locations/jalandhar",
     claims: [],
     registrations: [],

@@ -103,3 +103,38 @@ test("header quick switch: the page's regional set, fixed per page", () => {
   assert.deepEqual(i18n.languageLinks("/en-in/about"), []);
   assert.ok(i18n.languageLinks("/en-in/jobs").every((l) => l.hint));
 });
+
+const WITH_PA = [...ALL, "pa-IN"];
+
+test("Punjabi: first for a visitor in Punjab and for a request that names the Jalandhar region", () => {
+  assert.deepEqual(order({ country: "IN", region: "PB" }, WITH_PA), ["pa-IN", "hi-Latn-IN", "en-IN", "hi-IN"]);
+  // Intent the request carries (?cluster=, UTM tags) beats a region elsewhere in India...
+  assert.deepEqual(order({ country: "IN", region: "UP", intent: "jalandhar" }, WITH_PA).slice(0, 2), ["pa-IN", "hi-Latn-IN"]);
+  // ...but not a language the browser asks for.
+  assert.equal(order({ country: "IN", region: "PB", acceptLanguage: "hi-IN,hi;q=0.9" }, WITH_PA)[0], "hi-IN");
+  assert.equal(order({ acceptLanguage: "pa-IN,pa;q=0.9,en;q=0.8" }, WITH_PA)[0], "pa-IN");
+  // The page's cluster fills gaps: the Jalandhar hub puts Punjabi first for an unknown region.
+  assert.equal(order({ country: "IN", cluster: "jalandhar" }, WITH_PA)[0], "pa-IN");
+  // A Hindi-belt visitor with no Punjab signal keeps the Hindi order; Punjabi comes last.
+  assert.deepEqual(order({ country: "IN", region: "UP" }, WITH_PA), ["hi-IN", "hi-Latn-IN", "en-IN", "pa-IN"]);
+  // Pages without Punjabi are unchanged.
+  assert.deepEqual(order({ country: "IN", region: "PB" }), ["hi-Latn-IN", "en-IN", "hi-IN"]);
+});
+
+test("urlIntent reads ?cluster= and the Punjab campaign's UTM tags", () => {
+  assert.equal(rank.urlIntent(new URLSearchParams("cluster=jalandhar")), "jalandhar");
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_campaign=jobs_punjab&utm_term=packing%20job")), "jalandhar");
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_term=kapurthala%20job")), "jalandhar");
+  assert.equal(rank.urlIntent(new URLSearchParams("cluster=nowhere")), undefined);
+  // A Punjab ad landing on the neutral /jobs/apply gets the Punjabi-first picker.
+  const seg = rank.rankSegmentFor("/jobs/apply", { country: "IN", region: "UP" }, new URLSearchParams("utm_campaign=jobs_punjab"));
+  assert.ok(seg.startsWith("pa-"), seg);
+  assert.ok(rank.rankSegments("/jobs/apply").includes(seg));
+});
+
+test("Punjabi readers fall back to Hinglish on pages without Punjabi", () => {
+  assert.equal(i18n.nearestLocalePath("/jobs/jalandhar", "pa-IN"), "/pa-in/jobs/jalandhar");
+  assert.equal(i18n.nearestLocalePath("/jobs/haridwar", "pa-IN"), "/hi-latn-in/jobs/haridwar");
+  assert.equal(i18n.localizeHref("/jobs/packing", "pa-IN"), "/hi-latn-in/jobs/packing");
+  assert.equal(i18n.localizeHref("/jobs/privacy", "pa-IN"), "/pa-in/jobs/privacy");
+});

@@ -81,6 +81,7 @@
         "en-IN": "https://www.vayasyaseva.com/en-in/jobs/fees-and-fraud",
         "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/fees-and-fraud",
         "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/fees-and-fraud",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/jobs/fees-and-fraud",
         "x-default": "https://www.vayasyaseva.com/jobs/fees-and-fraud"
       }
     }
@@ -95,6 +96,7 @@
         "en-IN": "https://www.vayasyaseva.com/en-in/jobs/fees-and-fraud",
         "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/fees-and-fraud",
         "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/fees-and-fraud",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/jobs/fees-and-fraud",
         "x-default": "https://www.vayasyaseva.com/jobs/fees-and-fraud"
       }
     }
@@ -109,6 +111,22 @@
         "en-IN": "https://www.vayasyaseva.com/en-in/jobs/fees-and-fraud",
         "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/fees-and-fraud",
         "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/fees-and-fraud",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/jobs/fees-and-fraud",
+        "x-default": "https://www.vayasyaseva.com/jobs/fees-and-fraud"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/pa-in/jobs/fees-and-fraud",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "yearly",
+    "priority": 0.5,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/fees-and-fraud",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/fees-and-fraud",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/fees-and-fraud",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/jobs/fees-and-fraud",
         "x-default": "https://www.vayasyaseva.com/jobs/fees-and-fraud"
       }
     }
@@ -123,6 +141,7 @@
         "en-IN": "https://www.vayasyaseva.com/en-in/jobs/privacy",
         "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/privacy",
         "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/privacy",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/jobs/privacy",
         "x-default": "https://www.vayasyaseva.com/jobs/privacy"
       }
     }
@@ -137,6 +156,7 @@
         "en-IN": "https://www.vayasyaseva.com/en-in/jobs/privacy",
         "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/privacy",
         "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/privacy",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/jobs/privacy",
         "x-default": "https://www.vayasyaseva.com/jobs/privacy"
       }
     }
@@ -151,6 +171,22 @@
         "en-IN": "https://www.vayasyaseva.com/en-in/jobs/privacy",
         "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/privacy",
         "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/privacy",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/jobs/privacy",
+        "x-default": "https://www.vayasyaseva.com/jobs/privacy"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/pa-in/jobs/privacy",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "yearly",
+    "priority": 0.4,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/privacy",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/privacy",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/privacy",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/jobs/privacy",
         "x-default": "https://www.vayasyaseva.com/jobs/privacy"
       }
     }
@@ -837,6 +873,7 @@
         "en-IN": "https://www.vayasyaseva.com/en-in/jobs/jalandhar",
         "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/jalandhar",
         "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/jalandhar",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/jobs/jalandhar",
         "x-default": "https://www.vayasyaseva.com/jobs/jalandhar"
       }
     }
@@ -851,6 +888,7 @@
         "en-IN": "https://www.vayasyaseva.com/en-in/jobs/jalandhar",
         "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/jalandhar",
         "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/jalandhar",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/jobs/jalandhar",
         "x-default": "https://www.vayasyaseva.com/jobs/jalandhar"
       }
     }
@@ -865,6 +903,22 @@
         "en-IN": "https://www.vayasyaseva.com/en-in/jobs/jalandhar",
         "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/jalandhar",
         "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/jalandhar",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/jobs/jalandhar",
+        "x-default": "https://www.vayasyaseva.com/jobs/jalandhar"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/pa-in/jobs/jalandhar",
+    "lastModified": "2026-10-16T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/jalandhar",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/jalandhar",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/jalandhar",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/jobs/jalandhar",
         "x-default": "https://www.vayasyaseva.com/jobs/jalandhar"
       }
     }

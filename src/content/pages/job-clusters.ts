@@ -304,6 +304,36 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       ],
     },
   ],
+  // Punjabi: the Jalandhar region's hub only (draft pending native review).
+  "pa-IN": [
+    {
+      slug: "jalandhar",
+      name: "ਜਲੰਧਰ–ਕਪੂਰਥਲਾ",
+      linkLabel: "ਜਲੰਧਰ ਅਤੇ ਕਪੂਰਥਲਾ ਵਿੱਚ ਨੌਕਰੀ",
+      metaTitle: "ਜਲੰਧਰ ਜੌਬ ਵੈਕੈਂਸੀ: ਕਪੂਰਥਲਾ ਵਿੱਚ ਪੈਕਿੰਗ, ਫ਼ੈਕਟਰੀ ਦਾ ਕੰਮ",
+      description:
+        "ਜਲੰਧਰ, ਕਪੂਰਥਲਾ ਅਤੇ ਫਗਵਾੜਾ ਵਿੱਚ ਨੌਕਰੀ ਦੀ ਵੈਕੈਂਸੀ। ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ। ਪੂਰੀ 8 ਘੰਟੇ ਦੀ ਸ਼ਿਫ਼ਟ। ਪੈਕਿੰਗ, ਫ਼ੈਕਟਰੀ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ। ਕੁਝ ਸੌਖੇ ਸਵਾਲ, ਆਨਲਾਈਨ ਅਪਲਾਈ।",
+      eyebrow: "ਨੌਕਰੀ · ਜਲੰਧਰ–ਕਪੂਰਥਲਾ",
+      heading: "ਕਪੂਰਥਲਾ ਅਤੇ ਜਲੰਧਰ ਵਿੱਚ ਪੈਕਿੰਗ ਅਤੇ ਫ਼ੈਕਟਰੀ ਦੀ ਨੌਕਰੀ।",
+      lede: "ਕਪੂਰਥਲਾ ਵਿੱਚ ਹੁਣ ਪੈਕਿੰਗ ਦਾ ਕੰਮ ਹੈ। ਜਲੰਧਰ ਅਤੇ ਫਗਵਾੜਾ ਵਿੱਚ ਫ਼ੈਕਟਰੀ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ।",
+      after: { label: "ਅਪਲਾਈ ਕਰਨ ਤੋਂ ਬਾਅਦ", steps: ["VAYSPL ਤੋਂ SMS", "ਕੰਮ ਲਾਇਕ ਹੋਇਆ ਤਾਂ ਅਸੀਂ ਕਾਲ ਕਰਦੇ ਹਾਂ", "ਫ਼ੈਸਲਾ ਤੁਹਾਡਾ"] },
+      faqTitle: "ਸਵਾਲ।",
+      faqs: [
+        {
+          question: "ਕਿਹੜੇ ਕਾਗਜ਼ ਚਾਹੀਦੇ ਹਨ?",
+          answer:
+            "10ਵੀਂ ਜਾਂ 12ਵੀਂ ਦੀ ਮਾਰਕਸ਼ੀਟ। ITI ਸਰਟੀਫ਼ਿਕੇਟ, ਜੇ ਹੈ। ਜੁਆਇਨਿੰਗ 'ਤੇ ਸਾਈਟ ਜੋ ID ਮੰਗੇ। ਕੀ ਲਿਆਉਣਾ ਹੈ, ਜੁਆਇਨ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਅਸੀਂ ਦੱਸਦੇ ਹਾਂ। ਫ਼ਾਰਮ ਵਿੱਚ ਆਧਾਰ ਜਾਂ ਬੈਂਕ ਦੇ ਕਾਗਜ਼ ਨਾ ਭੇਜੋ।",
+          category: "operations",
+        },
+        AGE_FAQ["pa-IN"],
+        {
+          question: "ਤਨਖ਼ਾਹ ਕੌਣ ਦਿੰਦਾ ਹੈ?",
+          answer: "ਅਸੀਂ ਦਿੰਦੇ ਹਾਂ, ਲਾਗੂ ਹੋਣ 'ਤੇ EPF ਅਤੇ ESIC ਦੇ ਨਾਲ।",
+          category: "operations",
+        },
+      ],
+    },
+  ],
 };
 
 export function getJobCluster(slug: string, locale: Locale) {

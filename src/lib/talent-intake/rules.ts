@@ -37,7 +37,7 @@ export function isSubmissionSource(value: unknown): value is SubmissionSource {
  * src/content/registry/identifiers.ts (content:check compares them); repeated
  * here because n8n inlines this file and it must stay import-free.
  */
-export const INTAKE_LOCALES = ["en-IN", "hi-IN", "hi-Latn-IN"] as const;
+export const INTAKE_LOCALES = ["en-IN", "hi-IN", "hi-Latn-IN", "pa-IN"] as const;
 export type IntakeLocale = (typeof INTAKE_LOCALES)[number];
 
 export function isIntakeLocale(value: unknown): value is IntakeLocale {

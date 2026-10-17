@@ -12,7 +12,7 @@
  * and publish flags. Latin-script variants exist only for Hindi, the one
  * language people often search in Latin letters.
  */
-export const LOCALE_TAGS = ["en-IN", "hi-IN", "hi-Latn-IN"] as const;
+export const LOCALE_TAGS = ["en-IN", "hi-IN", "hi-Latn-IN", "pa-IN"] as const;
 export type LocaleTag = (typeof LOCALE_TAGS)[number];
 
 /**

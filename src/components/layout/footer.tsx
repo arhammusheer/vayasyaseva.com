@@ -4,7 +4,7 @@ import { siteConfig } from "@/content/site";
 import { linkable } from "@/content/registry";
 import { AnalyticsPreferencesButton } from "@/components/analytics";
 import NextLink from "next/link";
-import { FALLBACK_LOCALE, localePath, type Locale } from "@/lib/i18n";
+import { FALLBACK_LOCALE, nearestLocalePath, type Locale } from "@/lib/i18n";
 import type { HeaderDoor } from "@/components/layout/header";
 import { JOBS_NAV, SETU_LOGIN, WORK_DOOR, jobsDoorHref, jobsFooterLinks, referenceLinks, type NavLink } from "@/components/layout/nav-links";
 
@@ -78,7 +78,7 @@ export function Footer({
         <div className="footer-main">
           <div className="footer-about">
             <Link
-              href={isJobs ? localePath("/jobs", locale) : "/"}
+              href={isJobs ? nearestLocalePath("/jobs", locale) : "/"}
               className="footer-brand"
               aria-label={isJobs ? t.logo : "Vayasya Seva home"}
             >

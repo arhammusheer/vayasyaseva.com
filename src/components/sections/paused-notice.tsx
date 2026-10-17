@@ -26,6 +26,11 @@ const COPY = {
       text: "Aap hamare main form par apply kar sakte hain. Hum aapki jaankari rakhte hain aur kaam aane par phone karte hain.",
       link: "Main form par apply karein",
     },
+    "pa-IN": {
+      heading: "ਹੁਣ ਅਸੀਂ ਇਸ ਇਲਾਕੇ ਲਈ ਅਰਜ਼ੀਆਂ ਨਹੀਂ ਲੈ ਰਹੇ।",
+      text: "ਤੁਸੀਂ ਸਾਡੇ ਮੁੱਖ ਫ਼ਾਰਮ 'ਤੇ ਅਪਲਾਈ ਕਰ ਸਕਦੇ ਹੋ। ਅਸੀਂ ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ ਰੱਖਦੇ ਹਾਂ ਅਤੇ ਕੰਮ ਆਉਣ 'ਤੇ ਫ਼ੋਨ ਕਰਦੇ ਹਾਂ।",
+      link: "ਮੁੱਖ ਫ਼ਾਰਮ 'ਤੇ ਅਪਲਾਈ ਕਰੋ",
+    },
   },
   business: {
     "en-IN": {
@@ -42,6 +47,11 @@ const COPY = {
       heading: "Abhi hum is area mein naya kaam nahi le rahe hain.",
       text: "Kahin aur, ya baad mein? Site bataiye. Hum saaf batayenge ki hum workers de sakte hain ya nahi.",
       link: "Workers maangein",
+    },
+    "pa-IN": {
+      heading: "ਹੁਣ ਅਸੀਂ ਇਸ ਇਲਾਕੇ ਵਿੱਚ ਨਵਾਂ ਕੰਮ ਨਹੀਂ ਲੈ ਰਹੇ।",
+      text: "ਕਿਤੇ ਹੋਰ, ਜਾਂ ਬਾਅਦ ਵਿੱਚ? ਸਾਈਟ ਦੱਸੋ। ਅਸੀਂ ਸਾਫ਼ ਦੱਸਾਂਗੇ ਕਿ ਅਸੀਂ ਕਾਮੇ ਦੇ ਸਕਦੇ ਹਾਂ ਜਾਂ ਨਹੀਂ।",
+      link: "ਕਾਮੇ ਮੰਗੋ",
     },
   },
 } satisfies Record<"jobs" | "business", Record<Locale, { heading: string; text: string; link: string }>>;

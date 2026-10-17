@@ -292,7 +292,7 @@ const { REF_PATTERN, INTAKE_SOURCES, WEB_SOURCE, isSubmissionSource, INTAKE_LOCA
   function isSubmissionSource(value) {
       return value === WEB_SOURCE || (typeof value === "string" && Object.hasOwn(INTAKE_SOURCES, value));
   }
-  const INTAKE_LOCALES = ["en-IN", "hi-IN", "hi-Latn-IN"];
+  const INTAKE_LOCALES = ["en-IN", "hi-IN", "hi-Latn-IN", "pa-IN"];
   function isIntakeLocale(value) {
       return typeof value === "string" && INTAKE_LOCALES.includes(value);
   }

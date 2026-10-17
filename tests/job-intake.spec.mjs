@@ -88,6 +88,11 @@ test('until n8n accepts "web", web applications keep the legacy source', async (
       assert.equal(body.locale, locale);
       assert.equal(body.cluster, 'haridwar');
     }
+    // Punjabi came after "web" and has no legacy source: it always sends "web".
+    const punjabi = await forwarded({ source: 'web', locale: 'pa-IN', pageCluster: 'jalandhar', pagePath: '/jobs/jalandhar' }, { form: 'quick', answers: { area: ['jalandhar:kapurthala'] } });
+    assert.equal(punjabi.source, 'web');
+    assert.equal(punjabi.locale, 'pa-IN');
+    assert.equal(punjabi.cluster, 'jalandhar');
     const older = await forwarded({ source: 'web_hi' }, { form: 'quick', answers: { work: ['packing'] } });
     assert.equal(older.source, 'web_hi');
     const agent = await forwarded({ source: 'web_en', channel: 'agent', agentName: 'Helper' }, {}, 'Packing work');

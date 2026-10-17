@@ -11,7 +11,7 @@ import {
   SheetTrigger,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { FALLBACK_LOCALE, languageLinks, localePath, splitLocalePath, type Locale } from "@/lib/i18n";
+import { FALLBACK_LOCALE, languageLinks, nearestLocalePath, splitLocalePath, type Locale } from "@/lib/i18n";
 import {
   BUSINESS_LINKS,
   JOB_HUB_LINKS,
@@ -42,10 +42,11 @@ const CREW_LABEL: Record<Locale, string> = {
   "en-IN": "Request a crew",
   "hi-IN": "कंपनी के लिए कामगार",
   "hi-Latn-IN": "Company ke liye workers",
+  "pa-IN": "ਕੰਪਨੀ ਲਈ ਕਾਮੇ",
 };
 
 /** The quick switch's "More" (languages outside the page's regional set). */
-const MORE_LABEL: Record<Locale, string> = { "en-IN": "More", "hi-IN": "और भाषाएँ", "hi-Latn-IN": "Aur bhasha" };
+const MORE_LABEL: Record<Locale, string> = { "en-IN": "More", "hi-IN": "और भाषाएँ", "hi-Latn-IN": "Aur bhasha", "pa-IN": "ਹੋਰ ਭਾਸ਼ਾਵਾਂ" };
 
 /** Legal pages sit in the reference layout (no phone) but take the business header. */
 const LEGAL = new Set(["/privacy", "/terms"]);
@@ -217,14 +218,14 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
   const businessLinks: AreaLink[] = BUSINESS_LINKS.flatMap((l) => (l.href === "/haridwar-sidcul" && areaLinks.length ? areaLinks : [l]));
   // Jobs hubs on the jobs side, the decided ones first.
   const jobsHubs = area.jobs.map((id) => ({
-    href: localePath(jobsHubPath(id as Exclude<ClusterId, "other">), pageLocale),
+    href: nearestLocalePath(jobsHubPath(id as Exclude<ClusterId, "other">), pageLocale),
     label: JOBS_AREA_LABEL[pageLocale][id] ?? t.haridwar,
     cluster: id,
     surface: "jobs" as const,
   }));
-  const applyHref = jobsHubs[0]?.href ?? localePath("/jobs/haridwar", pageLocale);
+  const applyHref = jobsHubs[0]?.href ?? nearestLocalePath("/jobs/haridwar", pageLocale);
   const businessDoor = { href: "/", label: JOBS_NAV[doorLocale].business, lang: doorLang };
-  const jobsHome = localePath("/jobs", pageLocale);
+  const jobsHome = nearestLocalePath("/jobs", pageLocale);
   const nav: { bar: NavLink[]; doors: SheetRow["links"]; sheet: SheetRow[]; more: SheetRow[]; cta?: NavLink } =
     view === "jobs"
       ? {
@@ -233,12 +234,12 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
           bar: [],
           doors: [businessDoor],
           sheet: [
-            { links: jobsHubs.length ? jobsHubs : [{ href: localePath("/jobs/haridwar", pageLocale), label: t.haridwar }] },
+            { links: jobsHubs.length ? jobsHubs : [{ href: nearestLocalePath("/jobs/haridwar", pageLocale), label: t.haridwar }] },
             ...jobGroupLinks(pageLocale).map((g) => ({ links: [g] })),
-            { links: JOB_HUB_LINKS[pageLocale].map((h) => ({ href: localePath(`/jobs/${h.slug}`, pageLocale), label: h.label })) },
+            { links: JOB_HUB_LINKS[pageLocale].map((h) => ({ href: nearestLocalePath(`/jobs/${h.slug}`, pageLocale), label: h.label })) },
           ],
           more: [
-            { links: [{ href: localePath("/jobs/fees-and-fraud", pageLocale), label: t.fee }] },
+            { links: [{ href: nearestLocalePath("/jobs/fees-and-fraud", pageLocale), label: t.fee }] },
             { links: [businessDoor] },
           ],
           cta: { href: applyHref, label: t.apply },

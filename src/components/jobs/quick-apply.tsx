@@ -31,6 +31,8 @@ function linkCluster(params: URLSearchParams): IntakeCluster | null {
   const id = params.get("cluster");
   return id && clusterById(id) ? (id as IntakeCluster) : null;
 }
+/** A language written for one region's pages: its forms default to that cluster (Punjabi: Jalandhar). */
+const LOCALE_CLUSTER: Partial<Record<Locale, IntakeCluster>> = { "pa-IN": "jalandhar" };
 /**
  * Answers kept in this browser tab only (sessionStorage), so switching
  * language or going back does not clear them. Never sent anywhere; cleared
@@ -137,7 +139,7 @@ export function QuickApply({
   const started = useRef(false);
   const linkAnswers = useRef<Answers>({});
   const [hub, setHub] = useState<JobHub | null>(null);
-  const [cluster, setCluster] = useState<IntakeCluster | null>(pageCluster ?? null);
+  const [cluster, setCluster] = useState<IntakeCluster | null>(pageCluster ?? LOCALE_CLUSTER[locale] ?? null);
   const entry = useRef<"preset" | "fresh" | "restored">("fresh");
   const [missingFiles, setMissingFiles] = useState(false);
   const submission = useJobSubmission("vayasya-quick-submission");
@@ -185,7 +187,7 @@ export function QuickApply({
     // over conflicting draft choices; the remaining saved fields survive.
     /* eslint-disable react-hooks/set-state-in-effect */
     setHub(pageHub ?? (isJobHub(params.get("hub")) ? params.get("hub") as JobHub : null));
-    setCluster(pageCluster ?? linkCluster(params));
+    setCluster(pageCluster ?? linkCluster(params) ?? LOCALE_CLUSTER[locale] ?? null);
     if (preset) {
       entry.current = "preset";
       setAnswers(preset as Answers);
@@ -194,7 +196,7 @@ export function QuickApply({
     if (hash?.name) setName(hash.name.slice(0, MAX_APPLICANT_NAME_LENGTH));
     if (hash?.phone) setPhone(hash.phone);
     /* eslint-enable react-hooks/set-state-in-effect */
-  }, [pageRole, pageHub, pageCluster]);
+  }, [pageRole, pageHub, pageCluster, locale]);
 
   const restoreDraft = useCallback((saved: Saved) => {
     entry.current = "restored";

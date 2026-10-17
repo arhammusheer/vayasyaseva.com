@@ -33,7 +33,7 @@ export type FormExtras = { form?: IntakeForm; applicantName?: string | null; ans
 /** The legacy page source for each locale: what n8n accepted before "web". */
 const LOCALE_LEGACY_SOURCES = Object.fromEntries(
   Object.entries(LEGACY_SOURCE_LOCALES).map(([source, locale]) => [locale, source]),
-) as Record<IntakeLocale, IntakeSource>;
+) as Partial<Record<IntakeLocale, IntakeSource>>;
 
 /**
  * Whether web submissions go to n8n as source "web" (PLAN §1a). Off until
@@ -58,7 +58,8 @@ export async function forwardSubmission(draft: Draft, phone: string, text: strin
   const pageCluster = draft.pageCluster ?? null;
   const payload = talentIntakeSchema.safeParse({
     ref: draft.ref,
-    source: channel !== "web" ? draft.source : webSourceEnabled() || !locale ? WEB_SOURCE : LOCALE_LEGACY_SOURCES[locale],
+    // A locale with no legacy source (pa-IN, added after "web") always sends "web".
+    source: channel !== "web" ? draft.source : webSourceEnabled() || !locale ? WEB_SOURCE : (LOCALE_LEGACY_SOURCES[locale] ?? WEB_SOURCE),
     locale,
     cluster: submissionCluster(pageCluster, extras.answers),
     pageCluster,

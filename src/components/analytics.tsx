@@ -120,6 +120,19 @@ const BANNER = {
     privacy: "Poori jaankari (English mein)",
     end: ".",
   },
+  // Same points as the Hindi text, sentence for sentence (draft for native review).
+  "pa-IN": {
+    label: "ਨਿੱਜਤਾ ਦੇ ਵਿਕਲਪ",
+    question: "ਹੋਰ ਐਨਾਲਿਟਿਕਸ ਚਾਲੂ ਕਰੀਏ?",
+    more: "ਹੋਰ ਜਾਣੋ",
+    less: "ਘੱਟ ਵਿਖਾਓ",
+    reject: "ਸਿਰਫ਼ ਜ਼ਰੂਰੀ",
+    accept: "ਸਭ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ",
+    details:
+      "ਹਰ ਵਿਜ਼ਿਟ 'ਤੇ ਬਿਨਾਂ ਕੁਕੀ ਵਾਲੀ ਪੇਜ ਗਿਣਤੀ ਚੱਲਦੀ ਹੈ, ਅਤੇ ਜੇ ਤੁਸੀਂ ਸਾਡੇ ਇਸ਼ਤਿਹਾਰ ਤੋਂ ਆ ਕੇ ਅਪਲਾਈ ਕਰਦੇ ਹੋ, ਤਾਂ Google Ads ਨੂੰ ਬੱਸ ਇਹ ਪਤਾ ਲੱਗਦਾ ਹੈ ਕਿ ਕਿਹੜਾ ਕਲਿੱਕ ਸੀ (“ਸਿਰਫ਼ ਜ਼ਰੂਰੀ” ਚੁਣਨ 'ਤੇ ਇਹ ਵੀ ਨਹੀਂ)। “ਸਭ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ” ਚੁਣਨ 'ਤੇ Google Analytics, ਇਸ਼ਤਿਹਾਰ ਦੀ ਗਿਣਤੀ (ਰੀਮਾਰਕੀਟਿੰਗ ਨਹੀਂ) ਅਤੇ ਤੁਹਾਡੀ ਵਿਜ਼ਿਟ ਦੀ ਰਿਕਾਰਡਿੰਗ ਵੀ ਚੱਲਦੀ ਹੈ, ਜਿਸ ਵਿੱਚ ਫ਼ਾਰਮ ਵਿੱਚ ਲਿਖੀਆਂ ਗੱਲਾਂ ਵੀ ਆਉਂਦੀਆਂ ਹਨ; ਅਧੂਰਾ ਛੱਡਿਆ ਫ਼ਾਰਮ 30 ਦਿਨ ਰੱਖਿਆ ਜਾਂਦਾ ਹੈ, ਸਿਰਫ਼ ਫ਼ਾਰਮ ਠੀਕ ਕਰਨ ਲਈ।",
+    privacy: "ਹਰ ਇੱਕ ਦਾ ਵੇਰਵਾ (ਅੰਗਰੇਜ਼ੀ ਵਿੱਚ)",
+    end: "।",
+  },
 } as const;
 
 export function Analytics({ gaId }: { gaId: string }) {

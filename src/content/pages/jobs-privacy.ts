@@ -8,7 +8,7 @@ import { FRAUD_REPORT_EMAIL } from "./fees-and-fraud";
  * tab, so the form stays put), and this is the one place on the jobs side
  * that talks about data. The English notice (/privacy#job-seekers) keeps
  * the full terms and governs; this page must not promise more than it does.
- * hi-IN and hi-Latn-IN are drafts pending native review.
+ * hi-IN, hi-Latn-IN and pa-IN are drafts pending native review.
  */
 export interface JobsPrivacyCopy {
   title: string;
@@ -115,5 +115,35 @@ export const jobsPrivacyCopy: Record<Locale, JobsPrivacyCopy> = {
     ],
     full: "Poori privacy policy (English mein)",
     back: "Apply par wapas jaayein",
+  },
+  "pa-IN": {
+    title: "ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ ਦਾ ਕੀ ਹੁੰਦਾ ਹੈ: ਨੌਕਰੀ ਦੀ ਅਰਜ਼ੀ",
+    description: "ਨੌਕਰੀ ਦੀ ਅਰਜ਼ੀ ਵਿੱਚ ਅਸੀਂ ਕੀ ਰੱਖਦੇ ਹਾਂ, ਕੌਣ ਵੇਖਦਾ ਹੈ, ਕਿੰਨੇ ਸਮੇਂ ਤੱਕ ਰੱਖਦੇ ਹਾਂ ਅਤੇ ਇਸ ਨੂੰ ਕਿਵੇਂ ਹਟਵਾਈਏ।",
+    breadcrumb: "ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ",
+    heading: "ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ ਦਾ ਕੀ ਹੁੰਦਾ ਹੈ।",
+    shortLabel: "ਥੋੜ੍ਹੇ ਵਿੱਚ",
+    short: [
+      { label: "ਅਸੀਂ ਕੀ ਰੱਖਦੇ ਹਾਂ", text: "ਤੁਹਾਡਾ ਨਾਮ, ਮੋਬਾਈਲ ਨੰਬਰ, ਤੁਹਾਡੇ ਜਵਾਬ, ਅਤੇ ਜੋ ਫ਼ੋਟੋ ਜਾਂ ਕਾਗਜ਼ ਤੁਸੀਂ ਭੇਜੋ।" },
+      { label: "ਕੌਣ ਵੇਖਦਾ ਹੈ", text: "ਸਾਡੀ ਟੀਮ, ਅਤੇ ਉਹ ਸੇਵਾਵਾਂ ਜਿਨ੍ਹਾਂ 'ਤੇ ਇਹ ਸਾਈਟ, ਸਾਡੀਆਂ ਫ਼ਾਈਲਾਂ ਅਤੇ SMS ਚੱਲਦੇ ਹਨ।" },
+      { label: "ਕਦੋਂ ਤੱਕ", text: "ਤੁਹਾਡੇ ਆਖ਼ਰੀ ਜਵਾਬ ਤੋਂ ਬਾਅਦ 12 ਮਹੀਨੇ ਤੱਕ। ਫਿਰ ਅਸੀਂ ਇਸ ਨੂੰ ਹਟਾ ਦਿੰਦੇ ਹਾਂ।" },
+      { label: "ਹਟਵਾਉਣਾ ਹੋਵੇ ਤਾਂ", text: `ਆਪਣੇ ਮੋਬਾਈਲ ਨੰਬਰ ਦੇ ਨਾਲ ${EMAIL} 'ਤੇ ਈਮੇਲ ਕਰੋ, ਜਾਂ ਜਦੋਂ ਅਸੀਂ ਕਾਲ ਕਰੀਏ ਤਾਂ ਦੱਸ ਦਿਓ।` },
+    ],
+    detailsLabel: "ਹੋਰ ਜਾਣਕਾਰੀ",
+    details: [
+      {
+        title: "ਕੀ ਨਾ ਭੇਜੋ",
+        text: "ਆਧਾਰ, PAN ਜਾਂ ਬੈਂਕ ਦੀ ਜਾਣਕਾਰੀ। ਅਪਲਾਈ ਕਰਨ ਲਈ ਇਨ੍ਹਾਂ ਦੀ ਲੋੜ ਨਹੀਂ। ਮੈਸੇਜ ਵਿੱਚ ਲਿਖੇ ਨੰਬਰ ਲੁਕਾ ਦਿੱਤੇ ਜਾਂਦੇ ਹਨ; ਫ਼ਾਈਲਾਂ ਜਿਵੇਂ ਭੇਜੋ, ਉਵੇਂ ਹੀ ਰਹਿੰਦੀਆਂ ਹਨ।",
+      },
+      {
+        title: "ਮਸ਼ੀਨ ਨਾਲ ਜਾਂਚ",
+        text: "ਹਰ ਅਰਜ਼ੀ ਸਾਡੀ ਟੀਮ ਦਾ ਕੋਈ ਵਿਅਕਤੀ ਪੜ੍ਹਦਾ ਹੈ; ਕੋਈ ਫ਼ੈਸਲਾ ਆਪਣੇ-ਆਪ ਨਹੀਂ ਹੁੰਦਾ। ਬ੍ਰਾਊਜ਼ਰ ਦੀ ਇੱਕ ਜਾਂਚ (Cloudflare Turnstile) ਫ਼ਾਰਮ ਨੂੰ ਰੋਬੋਟਾਂ ਤੋਂ ਬਚਾਉਂਦੀ ਹੈ।",
+      },
+      {
+        title: "ਹੋਰ ਕਿਸ ਨੂੰ ਮਿਲਦੀ ਹੈ",
+        text: "ਅਸੀਂ ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ ਵੇਚਦੇ ਨਹੀਂ ਅਤੇ ਕਿਸੇ ਹੋਰ ਕੰਪਨੀ ਨੂੰ ਨਹੀਂ ਦਿੰਦੇ। ਜੇ ਤੁਹਾਡੀ ਮਨਪਸੰਦ ਨੌਕਰੀ ਲਈ ਕਦੇ ਇਹ ਬਦਲੇ, ਤਾਂ ਅਸੀਂ ਪਹਿਲਾਂ ਤੁਹਾਨੂੰ ਪੁੱਛਾਂਗੇ। ਜੇ ਤੁਸੀਂ ਸਾਡੇ Google ਇਸ਼ਤਿਹਾਰ ਤੋਂ ਆਏ ਹੋ, ਤਾਂ Google ਨੂੰ ਸਿਰਫ਼ ਇਹ ਪਤਾ ਲੱਗਦਾ ਹੈ ਕਿ ਕਲਿੱਕ ਤੋਂ ਅਰਜ਼ੀ ਆਈ।",
+      },
+    ],
+    full: "ਪੂਰਾ ਪ੍ਰਾਈਵੇਸੀ ਨੋਟਿਸ (English)",
+    back: "ਅਪਲਾਈ 'ਤੇ ਵਾਪਸ",
   },
 };

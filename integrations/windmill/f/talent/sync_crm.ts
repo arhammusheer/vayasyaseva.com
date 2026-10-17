@@ -156,6 +156,8 @@ const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneD
           case "hinglish":
           case "hi-Latn-IN":
               return "HI_LATN";
+          case "pa-IN":
+              return "PA";
           default:
               return null;
       }

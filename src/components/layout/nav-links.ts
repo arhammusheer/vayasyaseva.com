@@ -1,6 +1,6 @@
 import { linkable } from "@/content/registry";
 import { WAGE_HUB_PATH, WAGE_METHOD_PATH, guidePath, wageStatePath } from "@/content/registry/identifiers";
-import { localePath, type Locale } from "@/lib/i18n";
+import { localePath, nearestLocalePath, type Locale } from "@/lib/i18n";
 import type { JobGroupId } from "@/content/pages/jobs";
 
 /**
@@ -27,13 +27,14 @@ export const SETU_LOGIN = "https://setu.vayasyaseva.com";
  * page, and the neutral URL (the language picker) from an English one.
  * Render it with next/link, not the i18n Link, which would add /en-in.
  */
-export const jobsDoorHref = (locale: Locale) => (locale === "en-IN" ? "/jobs/haridwar" : localePath("/jobs/haridwar", locale));
+export const jobsDoorHref = (locale: Locale) => (locale === "en-IN" ? "/jobs/haridwar" : nearestLocalePath("/jobs/haridwar", locale));
 
 /** "Looking for work? Jobs": the business menu and footer line. */
 export const WORK_DOOR: Record<Locale, { lead: string; label: string }> = {
   "en-IN": { lead: "Looking for work?", label: "Jobs" },
   "hi-IN": { lead: "काम चाहिए?", label: "नौकरी" },
   "hi-Latn-IN": { lead: "Kaam chahiye?", label: "Jobs" },
+  "pa-IN": { lead: "ਕੰਮ ਚਾਹੀਦਾ ਹੈ?", label: "ਨੌਕਰੀਆਂ" },
 };
 
 /**
@@ -76,6 +77,11 @@ export const JOBS_NAV: Record<
     openMenu: "Menu kholein", language: "Bhasha", logo: "Vayasya Seva jobs",
     haridwar: "Haridwar mein job", fee: "Koi fee nahi", details: "Aapki jaankari", privacy: "Privacy", terms: "Terms", english: " (English)",
   },
+  "pa-IN": {
+    business: "ਕੰਪਨੀਆਂ ਲਈ", enquiries: "ਪੁੱਛਗਿੱਛ", apply: "ਅਪਲਾਈ ਕਰੋ", menu: "ਨੌਕਰੀਆਂ", sections: "ਸਾਈਟ ਦੇ ਹਿੱਸੇ", more: "ਹੋਰ",
+    openMenu: "ਮੀਨੂ ਖੋਲ੍ਹੋ", language: "ਭਾਸ਼ਾ", logo: "Vayasya Seva ਨੌਕਰੀਆਂ",
+    haridwar: "ਹਰਿਦੁਆਰ ਵਿੱਚ ਨੌਕਰੀ", fee: "ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ", details: "ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ", privacy: "ਨਿੱਜਤਾ", terms: "ਨਿਯਮ", english: " (English)",
+  },
 };
 
 /**
@@ -101,11 +107,17 @@ export const JOB_GROUPS: Record<Locale, { id: JobGroupId; label: string }[]> = {
     { id: "iti", label: "ITI trade" },
     { id: "office", label: "Office aur data entry" },
   ],
+  "pa-IN": [
+    { id: "helper", label: "ਹੈਲਪਰ, ਪੈਕਿੰਗ ਅਤੇ ਵੇਅਰਹਾਊਸ" },
+    { id: "machine", label: "ਮਸ਼ੀਨ ਅਤੇ ਫ਼ੋਰਕਲਿਫ਼ਟ" },
+    { id: "iti", label: "ITI ਟ੍ਰੇਡ" },
+    { id: "office", label: "ਦਫ਼ਤਰ ਅਤੇ ਡਾਟਾ ਐਂਟਰੀ" },
+  ],
 };
 
 /** The jobs menu's group links; seo:check fails if a group's #id is missing from /jobs. */
 export const jobGroupLinks = (locale: Locale): NavLink[] =>
-  JOB_GROUPS[locale].map((g) => ({ href: `${localePath("/jobs", locale)}#${g.id}`, label: g.label }));
+  JOB_GROUPS[locale].map((g) => ({ href: `${nearestLocalePath("/jobs", locale)}#${g.id}`, label: g.label }));
 
 export const JOB_HUB_LINKS: Record<Locale, { slug: string; label: string }[]> = {
   "en-IN": [
@@ -123,15 +135,20 @@ export const JOB_HUB_LINKS: Record<Locale, { slug: string; label: string }[]> = 
     { slug: "10th-pass", label: "10th pass" },
     { slug: "12th-pass", label: "12th pass" },
   ],
+  "pa-IN": [
+    { slug: "freshers", label: "ਫ਼ਰੈਸ਼ਰ" },
+    { slug: "10th-pass", label: "10ਵੀਂ ਪਾਸ" },
+    { slug: "12th-pass", label: "12ਵੀਂ ਪਾਸ" },
+  ],
 };
 
 /** The jobs footer's links: Haridwar, the hubs, no fee, and the applicant notice once published. */
 export function jobsFooterLinks(locale: Locale): NavLink[] {
   const t = JOBS_NAV[locale];
   return [
-    { href: localePath("/jobs/haridwar", locale), label: t.haridwar },
-    ...JOB_HUB_LINKS[locale].map((h) => ({ href: localePath(`/jobs/${h.slug}`, locale), label: h.label })),
-    { href: localePath("/jobs/fees-and-fraud", locale), label: t.fee },
+    { href: nearestLocalePath("/jobs/haridwar", locale), label: t.haridwar },
+    ...JOB_HUB_LINKS[locale].map((h) => ({ href: nearestLocalePath(`/jobs/${h.slug}`, locale), label: h.label })),
+    { href: nearestLocalePath("/jobs/fees-and-fraud", locale), label: t.fee },
     ...(linkable("/jobs/privacy", locale) ? [{ href: localePath("/jobs/privacy", locale), label: t.details }] : []),
   ];
 }

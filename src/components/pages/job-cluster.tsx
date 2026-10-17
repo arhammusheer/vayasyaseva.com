@@ -8,7 +8,7 @@ import { jobsCopy } from "@/content/pages/jobs";
 import { getJobCluster } from "@/content/pages/job-clusters";
 import { isPaused, pageEntries } from "@/content/registry";
 import { PausedNotice } from "@/components/sections/paused-notice";
-import { localePath, locales, localesOf, type Locale } from "@/lib/i18n";
+import { localePath, locales, localesOf, nearestLocalePath, type Locale } from "@/lib/i18n";
 import { jobRolePath } from "@/components/pages/job-role";
 
 const clusterPath = (slug: string) => `/jobs/${slug}`;
@@ -61,7 +61,7 @@ export function JobClusterPage({ slug, locale }: { slug: string; locale: Locale 
               "@type": "ListItem",
               position: i + 1,
               name: w.title,
-              url: pageUrl(localePath(jobRolePath(w.role), locale)),
+              url: pageUrl(nearestLocalePath(jobRolePath(w.role), locale)),
             })),
           },
         }}

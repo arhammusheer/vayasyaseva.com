@@ -1,5 +1,5 @@
 import type { FaqItem } from "../types";
-import type { Locale } from "@/lib/i18n";
+import type { CopyIn, Locale } from "@/lib/i18n";
 import type { JobHub, JobRole } from "@/lib/talent-intake/rules";
 
 /**
@@ -28,6 +28,7 @@ export const jobHubLabels: Record<Locale, { rolesHeading: string }> = {
   "en-IN": { rolesHeading: "Where you can start." },
   "hi-IN": { rolesHeading: "आप कहाँ से शुरू कर सकते हैं।" },
   "hi-Latn-IN": { rolesHeading: "Aap kahan se shuru kar sakte hain." },
+  "pa-IN": { rolesHeading: "ਤੁਸੀਂ ਕਿੱਥੋਂ ਸ਼ੁਰੂ ਕਰ ਸਕਦੇ ਹੋ।" },
 };
 
 /** The age question, asked once on the jobs side: the /jobs/haridwar FAQ. */
@@ -50,9 +51,14 @@ export const AGE_FAQ: Record<Locale, FaqItem> = {
       "Apply karne ke liye aapki umar 18 saal ya zyada honi chahiye. Mehnat wale kaam ke liye kuch sites apni upar ki seema rakhti hain.",
     category: "operations",
   },
+  "pa-IN": {
+    question: "ਕੀ ਉਮਰ ਦੀ ਕੋਈ ਹੱਦ ਹੈ?",
+    answer: "ਅਪਲਾਈ ਕਰਨ ਲਈ ਤੁਹਾਡੀ ਉਮਰ 18 ਸਾਲ ਜਾਂ ਵੱਧ ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ। ਸਰੀਰਕ ਕੰਮ ਲਈ ਕੁਝ ਸਾਈਟਾਂ ਆਪਣੀ ਵੱਧ ਤੋਂ ਵੱਧ ਉਮਰ ਤੈਅ ਕਰਦੀਆਂ ਹਨ।",
+    category: "operations",
+  },
 };
 
-export const jobHubs: Record<Locale, JobHubCopy[]> = {
+export const jobHubs: CopyIn<JobHubCopy[]> = {
   "en-IN": [
     {
       slug: "freshers",
@@ -203,5 +209,5 @@ export const jobHubs: Record<Locale, JobHubCopy[]> = {
 };
 
 export function getJobHub(slug: string, locale: Locale) {
-  return jobHubs[locale].find((h) => h.slug === slug);
+  return jobHubs[locale]?.find((h) => h.slug === slug);
 }

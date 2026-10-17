@@ -161,6 +161,17 @@ try {
   await page.evaluate(()=>sessionStorage.clear());await open('/en-in/jobs/apply'+complete+'&cluster=mumbai');
   await fill();await send();await visible('.jobs-done h2');assert.equal(startedBodies.at(-1).pageCluster,null);
   console.log('The Haridwar jobs hub and ?cluster= tag applications with source, locale, cluster and page');
+  // Jalandhar–Kapurthala: its own area answers; Punjabi pages default to the region, even on /jobs/apply.
+  const punjab=complete.replace('area=laksar','area=jalandhar:kapurthala');
+  for (const [path, tag, label] of [['/en-in/jobs/jalandhar','en-IN','Kapurthala'],['/pa-in/jobs/jalandhar','pa-IN','ਕਪੂਰਥਲਾ'],['/pa-in/jobs/apply','pa-IN','ਕਪੂਰਥਲਾ']]) {
+    await page.evaluate(()=>sessionStorage.clear());await open(path+punjab);
+    assert.ok((await page.locator('[data-step=area] .is-selected').textContent()).includes(label), path);
+    assert.equal(await page.locator('[data-step=area]').getByText('SIDCUL', {exact:false}).count(),0, path);
+    await fill();await send();await visible('.jobs-done h2');
+    const body=startedBodies.at(-1);
+    assert.equal(body.source,'web');assert.equal(body.locale,tag);assert.equal(body.pageCluster,'jalandhar');
+  }
+  console.log('Jalandhar–Kapurthala and Punjabi: region areas, pa-IN locale and the jalandhar cluster on every application');
   console.log('Role prefills override conflicting saved choices; multilingual drafts restore');
   await page.evaluate(()=>sessionStorage.clear());
   // Request a crew: step 1 the requirement, step 2 who to talk to.

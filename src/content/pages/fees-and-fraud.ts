@@ -113,4 +113,30 @@ export const feesAndFraudCopy: Record<Locale, FeesAndFraudCopy> = {
       body: ["Kis number se phone ya message aaya:", "Usne kya naam bataya:", "Usne kya maanga:", "Tareekh:", "Mera reference (agar apply kiya hai): VS-J-"],
     },
   },
+  "pa-IN": {
+    title: "ਅਪਲਾਈ ਕਰਨ ਦੀ ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ: ਨੌਕਰੀ ਦੇ ਧੋਖੇ ਤੋਂ ਬਚੋ",
+    description:
+      "Vayasya Seva ਵਿੱਚ ਕੰਮ ਲਈ ਅਪਲਾਈ ਕਰਨ ਦੀ ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ ਹੈ। ਵੇਖੋ ਸਾਡਾ SMS ਕਿਹੋ ਜਿਹਾ ਹੁੰਦਾ ਹੈ, ਅਤੇ ਸਾਡੇ ਨਾਮ 'ਤੇ ਪੈਸੇ ਮੰਗਣ ਵਾਲਿਆਂ ਦੀ ਸ਼ਿਕਾਇਤ ਕਿਵੇਂ ਕਰੀਏ।",
+    breadcrumb: "ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ",
+    eyebrow: "ਨੌਕਰੀ · ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ",
+    heading: "ਅਪਲਾਈ ਕਰਨ ਦੀ ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ ਹੈ।",
+    lede: "ਜੇ ਕੋਈ ਸਾਡੇ ਨਾਮ 'ਤੇ ਪੈਸੇ ਮੰਗੇ, ਤਾਂ ਨਾ ਦਿਓ। ਸਾਨੂੰ ਦੱਸੋ।",
+    report: "ਪੈਸੇ ਮੰਗਣ ਦੀ ਸ਼ਿਕਾਇਤ ਕਰੋ",
+    note: "ਕਿਸ ਨੰਬਰ ਤੋਂ ਫ਼ੋਨ ਆਇਆ ਅਤੇ ਕੀ ਮੰਗਿਆ, ਲਿਖ ਲਓ।",
+    checkHeading: "ਕਿਵੇਂ ਜਾਣੀਏ ਕਿ ਇਹ ਅਸੀਂ ਹਾਂ।",
+    checks: [
+      {
+        title: "ਸਾਡਾ SMS VAYSPL ਤੋਂ ਆਉਂਦਾ ਹੈ",
+        text: "ਇਸ ਵਿੱਚ ਤੁਹਾਡਾ ਰੈਫ਼ਰੈਂਸ ਨੰਬਰ ਹੁੰਦਾ ਹੈ, ਜੋ VS-J- ਨਾਲ ਸ਼ੁਰੂ ਹੁੰਦਾ ਹੈ।",
+      },
+      {
+        title: "ਅਸੀਂ ਅਰਜ਼ੀਆਂ ਸਿਰਫ਼ vayasyaseva.com 'ਤੇ ਲੈਂਦੇ ਹਾਂ",
+        text: "ਕਿਸੇ ਹੋਰ ਨੂੰ ਪੈਸੇ ਜਾਂ ਕਾਗਜ਼ ਨਾ ਭੇਜੋ।",
+      },
+    ],
+    mail: {
+      subject: "Vayasya Seva ਦੇ ਨਾਮ 'ਤੇ ਪੈਸੇ ਦੀ ਮੰਗ",
+      body: ["ਜਿਸ ਨੰਬਰ ਤੋਂ ਫ਼ੋਨ ਜਾਂ ਮੈਸੇਜ ਆਇਆ:", "ਉਸ ਨੇ ਕੀ ਨਾਮ ਦੱਸਿਆ:", "ਕੀ ਮੰਗਿਆ:", "ਤਾਰੀਖ਼:", "ਮੇਰਾ ਰੈਫ਼ਰੈਂਸ (ਜੇ ਅਪਲਾਈ ਕੀਤਾ ਸੀ): VS-J-"],
+    },
+  },
 };

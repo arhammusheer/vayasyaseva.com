@@ -125,7 +125,7 @@ const { eq, twentyClient, twentyFromConfig } = (() => {
 })();
 
 // integrations/windmill/talent/lib/crm.ts
-const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, erasePerson } = (() => {
+const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, erasePerson } = (() => {
   const CLUSTER_VALUES = new Set(["HARIDWAR", "UTTARAKHAND", "DELHI_NCR", "BENGALURU", "JALANDHAR", "SAHARANPUR", "OTHER"]);
   const ROLE_VALUES = new Set([
       "FACTORY_HELPER", "PACKING", "MACHINE_OPERATOR", "WAREHOUSE", "FORKLIFT_OPERATOR", "DATA_ENTRY_OPERATOR",
@@ -211,14 +211,78 @@ const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneD
       if (name && !currentName?.firstName && !currentName?.lastName)
           fields.name = { firstName: name, lastName: "" };
       if (!existing) {
-          fields.phones = { primaryPhoneNumber: phoneDigits(c.phone), primaryPhoneCountryCode: "IN", primaryPhoneCallingCode: "+91" };
+          fields.phones = phoneValue(c.phone);
           if (!fields.name)
               fields.name = { firstName: `Applicant ${c.ref}`, lastName: "" };
       }
       return fields;
   }
+  const ANSWER_OPTIONS = {
+      experience: {
+          fresher: ["FRESHER", "Fresher"],
+          "under-1": ["UNDER_1_YEAR", "Under 1 year"],
+          "1-3": ["YEARS_1_TO_3", "1 to 3 years"],
+          "3-plus": ["YEARS_3_PLUS", "3+ years"],
+      },
+      education: {
+          "below-10th": ["BELOW_CLASS_10", "Below 10th"],
+          "10th": ["CLASS_10", "10th pass"],
+          "12th": ["CLASS_12", "12th pass"],
+          "iti-diploma": ["ITI_DIPLOMA", "ITI / diploma"],
+          graduate: ["GRADUATE", "Graduate"],
+      },
+      start: { now: ["NOW", "Immediately"], week: ["WITHIN_WEEK", "Within a week"], month: ["WITHIN_MONTH", "Within a month"] },
+      shift: { day: ["DAY", "Day"], night: ["NIGHT", "Night"], rotating: ["ROTATING", "Rotating / any"] },
+      area: {
+          "sidcul-bahadrabad": ["SIDCUL_BAHADRABAD", "SIDCUL / Bahadrabad"],
+          "haridwar-jwalapur": ["HARIDWAR_JWALAPUR", "Haridwar city / Jwalapur"],
+          "roorkee-bhagwanpur": ["ROORKEE_BHAGWANPUR", "Roorkee / Bhagwanpur"],
+          laksar: ["LAKSAR", "Laksar"],
+          outside: ["OUTSIDE_HARIDWAR", "Outside Haridwar"],
+          "bengaluru:north": ["BENGALURU_NORTH", "Bengaluru North / Peenya"],
+          "bengaluru:south": ["BENGALURU_SOUTH", "Bengaluru South / Electronic City"],
+          "bengaluru:east": ["BENGALURU_EAST", "Bengaluru East / Whitefield"],
+          "bengaluru:west": ["BENGALURU_WEST", "Bengaluru West / Kengeri"],
+          "bengaluru:outside": ["OUTSIDE_BENGALURU", "Outside Bengaluru"],
+      },
+  };
+  const SKILL_LABELS = {
+      iti: { "iti-pass": "ITI passed", "iti-pursuing": "ITI studying / apprentice", "no-iti": "Experience, no ITI" },
+      trade: { electrician: "Electrician", welder: "Welder", fitter: "Fitter", machinist: "Machinist / turner", "other-trade": "Other trade" },
+      machines: {
+          "packing-machine": "Packing machines", moulding: "Injection moulding", press: "Press / sheet metal", "cnc-vmc": "CNC / VMC",
+          "other-machine": "Other machines",
+      },
+      forklift: { "licence-experience": "Forklift licence and experience", "experience-only": "Forklift experience, no licence", "want-to-learn": "Wants to learn forklift" },
+      computer: { typing: "Typing", excel: "Excel", tally: "Tally", "sap-erp": "SAP / ERP" },
+  };
+  const answerList = (answers, question) => {
+      const v = answers?.[question];
+      return Array.isArray(v) ? v.filter((x) => typeof x === "string") : [];
+  };
+  function answerOption(answers, question) {
+      const options = ANSWER_OPTIONS[question];
+      const id = answerList(answers, question).find((a) => Object.hasOwn(options, a));
+      return id ? options[id][0] : null;
+  }
+  function screeningFields(answers) {
+      const shifts = ANSWER_OPTIONS.shift;
+      const skills = Object.entries(SKILL_LABELS).flatMap(([q, labels]) => answerList(answers, q).map((a) => labels[a]).filter(Boolean));
+      return {
+          experience: answerOption(answers, "experience"),
+          education: answerOption(answers, "education"),
+          canStart: answerOption(answers, "start"),
+          area: answerOption(answers, "area"),
+          shifts: unique(answerList(answers, "shift").map((a) => shifts[a]?.[0] ?? null)),
+          workWanted: unique(answerList(answers, "work").map(roleValue)),
+          skills: skills.join(" · "),
+      };
+  }
+  const phoneValue = (phone) => ({ primaryPhoneNumber: phoneDigits(phone), primaryPhoneCountryCode: "IN", primaryPhoneCallingCode: "+91" });
   function applicationFields(c, personId) {
       return {
+          ...screeningFields(c.answers),
+          phone: phoneValue(c.phone),
           name: c.ref,
           status: "NEW",
           source: sourceValue(c),
@@ -307,7 +371,7 @@ const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneD
       }
       return people.length;
   }
-  return { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, erasePerson };
+  return { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, erasePerson };
 })();
 
 // integrations/windmill/talent/lib/sql.ts

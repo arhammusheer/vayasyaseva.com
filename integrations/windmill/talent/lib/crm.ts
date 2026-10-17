@@ -137,14 +137,92 @@ export function personFields(c: SyncCandidate, existing: TwentyRecord | null): R
   const currentName = existing?.name as { firstName?: string; lastName?: string } | undefined;
   if (name && !currentName?.firstName && !currentName?.lastName) fields.name = { firstName: name, lastName: "" };
   if (!existing) {
-    fields.phones = { primaryPhoneNumber: phoneDigits(c.phone), primaryPhoneCountryCode: "IN", primaryPhoneCallingCode: "+91" };
+    fields.phones = phoneValue(c.phone);
     if (!fields.name) fields.name = { firstName: `Applicant ${c.ref}`, lastName: "" };
   }
   return fields;
 }
 
+/**
+ * The quick form's answers (src/lib/talent-intake/rules.ts QUICK_ANSWERS) as
+ * Twenty select options: answer id -> [option value, label]. Append-only, as
+ * the answer ids are; integrations/twenty/setup.mts builds the fields from it.
+ */
+export const ANSWER_OPTIONS = {
+  experience: {
+    fresher: ["FRESHER", "Fresher"],
+    "under-1": ["UNDER_1_YEAR", "Under 1 year"],
+    "1-3": ["YEARS_1_TO_3", "1 to 3 years"],
+    "3-plus": ["YEARS_3_PLUS", "3+ years"],
+  },
+  education: {
+    "below-10th": ["BELOW_CLASS_10", "Below 10th"],
+    "10th": ["CLASS_10", "10th pass"],
+    "12th": ["CLASS_12", "12th pass"],
+    "iti-diploma": ["ITI_DIPLOMA", "ITI / diploma"],
+    graduate: ["GRADUATE", "Graduate"],
+  },
+  start: { now: ["NOW", "Immediately"], week: ["WITHIN_WEEK", "Within a week"], month: ["WITHIN_MONTH", "Within a month"] },
+  shift: { day: ["DAY", "Day"], night: ["NIGHT", "Night"], rotating: ["ROTATING", "Rotating / any"] },
+  area: {
+    "sidcul-bahadrabad": ["SIDCUL_BAHADRABAD", "SIDCUL / Bahadrabad"],
+    "haridwar-jwalapur": ["HARIDWAR_JWALAPUR", "Haridwar city / Jwalapur"],
+    "roorkee-bhagwanpur": ["ROORKEE_BHAGWANPUR", "Roorkee / Bhagwanpur"],
+    laksar: ["LAKSAR", "Laksar"],
+    outside: ["OUTSIDE_HARIDWAR", "Outside Haridwar"],
+    "bengaluru:north": ["BENGALURU_NORTH", "Bengaluru North / Peenya"],
+    "bengaluru:south": ["BENGALURU_SOUTH", "Bengaluru South / Electronic City"],
+    "bengaluru:east": ["BENGALURU_EAST", "Bengaluru East / Whitefield"],
+    "bengaluru:west": ["BENGALURU_WEST", "Bengaluru West / Kengeri"],
+    "bengaluru:outside": ["OUTSIDE_BENGALURU", "Outside Bengaluru"],
+  },
+} as const satisfies Record<string, Record<string, readonly [string, string]>>;
+
+/** Labels of the skill answers (rules.ts QUICK_ANSWERS), summarised into one Skills line. */
+const SKILL_LABELS: Record<string, Record<string, string>> = {
+  iti: { "iti-pass": "ITI passed", "iti-pursuing": "ITI studying / apprentice", "no-iti": "Experience, no ITI" },
+  trade: { electrician: "Electrician", welder: "Welder", fitter: "Fitter", machinist: "Machinist / turner", "other-trade": "Other trade" },
+  machines: {
+    "packing-machine": "Packing machines", moulding: "Injection moulding", press: "Press / sheet metal", "cnc-vmc": "CNC / VMC",
+    "other-machine": "Other machines",
+  },
+  forklift: { "licence-experience": "Forklift licence and experience", "experience-only": "Forklift experience, no licence", "want-to-learn": "Wants to learn forklift" },
+  computer: { typing: "Typing", excel: "Excel", tally: "Tally", "sap-erp": "SAP / ERP" },
+};
+
+const answerList = (answers: Record<string, unknown> | null | undefined, question: string): string[] => {
+  const v = answers?.[question];
+  return Array.isArray(v) ? v.filter((x): x is string => typeof x === "string") : [];
+};
+
+function answerOption(answers: Record<string, unknown> | null | undefined, question: keyof typeof ANSWER_OPTIONS): string | null {
+  const options = ANSWER_OPTIONS[question] as Record<string, readonly [string, string]>;
+  const id = answerList(answers, question).find((a) => Object.hasOwn(options, a));
+  return id ? options[id][0] : null;
+}
+
+/** The screening answers as the application's own fields, so staff can sort, filter and group by them. */
+export function screeningFields(answers: Record<string, unknown> | null | undefined): Record<string, unknown> {
+  const shifts = ANSWER_OPTIONS.shift as Record<string, readonly [string, string]>;
+  const skills = Object.entries(SKILL_LABELS).flatMap(([q, labels]) => answerList(answers, q).map((a) => labels[a]).filter(Boolean));
+  return {
+    experience: answerOption(answers, "experience"),
+    education: answerOption(answers, "education"),
+    canStart: answerOption(answers, "start"),
+    area: answerOption(answers, "area"),
+    shifts: unique(answerList(answers, "shift").map((a) => shifts[a]?.[0] ?? null)),
+    workWanted: unique(answerList(answers, "work").map(roleValue)),
+    skills: skills.join(" · "),
+  };
+}
+
+/** Twenty's PHONES value for an Indian mobile. */
+export const phoneValue = (phone: string) => ({ primaryPhoneNumber: phoneDigits(phone), primaryPhoneCountryCode: "IN", primaryPhoneCallingCode: "+91" });
+
 export function applicationFields(c: SyncCandidate, personId: string): Record<string, unknown> {
   return {
+    ...screeningFields(c.answers),
+    phone: phoneValue(c.phone),
     name: c.ref,
     status: "NEW",
     source: sourceValue(c),

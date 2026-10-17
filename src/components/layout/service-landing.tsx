@@ -1,4 +1,4 @@
-import NextLink from "next/link";
+import { JobsLink } from "@/components/i18n/jobs-link";
 import Link from "@/components/i18n/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
@@ -39,9 +39,9 @@ export function ServiceLanding({ page }: { page: ServiceLandingContent }) {
         footnote={
           <p className="seeker-line">
             Looking for work?{" "}
-            <NextLink href={`/jobs/${page.jobs.role}`} className="text-link" prefetch={false}>
+            <JobsLink path={`/jobs/${page.jobs.role}`} locale="en-IN" className="text-link">
               {page.jobs.label} <ArrowRight size={18} aria-hidden="true" />
-            </NextLink>
+            </JobsLink>
           </p>
         }
       />

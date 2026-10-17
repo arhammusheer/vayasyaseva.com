@@ -43,7 +43,7 @@ export function Breadcrumbs({
                 </li>
               ) : (
                 <li key={crumb.href}>
-                  <Link href={crumb.href} prefetch={false}>
+                  <Link href={crumb.href}>
                     {crumb.name}
                   </Link>
                 </li>

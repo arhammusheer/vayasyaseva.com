@@ -46,7 +46,6 @@ export function MarketList({
         <li key={item.cluster} data-market={item.cluster}>
           <NextLink
             href={item.href}
-            prefetch={false}
             onClick={() => {
               noteChoice(item.cluster);
               reportChoice(item.cluster, decided, surface);
@@ -95,7 +94,7 @@ export function DecidedApplyLink({
   const area = useAreaDecision(path);
   const decided = area.jobs.find((id) => hubs[id]);
   return (
-    <NextLink href={decided ? hubs[decided] : fallback} prefetch={false} className={className} data-market={decided}>
+    <NextLink href={decided ? hubs[decided] : fallback} className={className} data-market={decided}>
       {label} <ArrowRight size={20} aria-hidden="true" />
     </NextLink>
   );

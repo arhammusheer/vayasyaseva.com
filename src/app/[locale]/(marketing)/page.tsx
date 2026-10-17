@@ -1,6 +1,5 @@
 import { pageMetadata } from "@/lib/metadata";
 import Image from "next/image";
-import NextLink from "next/link";
 import Link from "@/components/i18n/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { CtaBlock } from "@/components/sections/cta-block";
@@ -8,7 +7,7 @@ import { JsonLd, faqSchema, webPageSchema } from "@/lib/structured-data";
 import { homeFaqs, FAQ_PATH } from "@/content/faq";
 import { ClientStrip } from "@/components/sections/client-strip";
 import { servicePages } from "@/content/service-pages";
-import { jobsDoorHref } from "@/components/layout/nav-links";
+import { JobsLink } from "@/components/i18n/jobs-link";
 import { localeParams } from "@/lib/i18n";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/");
@@ -95,16 +94,16 @@ export default function HomePage() {
             for years.
           </p>
           {/* The two doors (PLAN §5.2): buyers to the form, job seekers to
-              /jobs (neutral, so not the i18n Link). */}
+              /jobs in their saved language, else English (JobsLink). */}
           <div className="hero-doors rise rise-3">
             <Link href="/contact" className="light-link">
               Request a crew <ArrowUpRight size={20} aria-hidden="true" />
             </Link>
             <p className="hero-seeker">
               Looking for work?
-              <NextLink href={jobsDoorHref("en-IN")} prefetch={false}>
+              <JobsLink path="/jobs" locale="en-IN">
                 See jobs <ArrowRight size={18} aria-hidden="true" />
-              </NextLink>
+              </JobsLink>
             </p>
           </div>
         </div>

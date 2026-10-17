@@ -1,5 +1,6 @@
 import "../globals.css";
 import { Analytics } from "@/components/analytics";
+import { NavigationProgress } from "@/components/navigation-progress";
 import { gaId } from "@/lib/measurement/config";
 import { fontClassName, siteMetadata } from "@/lib/site-metadata";
 
@@ -15,6 +16,7 @@ export default function PickerLayout({ children }: Readonly<{ children: React.Re
   return (
     <html lang="en-IN">
       <body className={fontClassName}>
+        <NavigationProgress />
         {children}
         {gaId && <Analytics gaId={gaId} />}
       </body>

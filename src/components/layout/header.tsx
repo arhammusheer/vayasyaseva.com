@@ -1,6 +1,8 @@
 "use client";
 import Image from "next/image";
 import NextLink from "next/link";
+import { useJobsLocale } from "@/components/i18n/jobs-link";
+import { stayOnPage } from "@/components/navigation-progress";
 import Link from "@/components/i18n/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -206,15 +208,17 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
   const pageLang = pageLocale === "en-IN" ? undefined : pageLocale;
   const t = JOBS_NAV[pageLocale];
   // Doors to the other sections. A jobs door opens the decided market's
-  // hub, or /jobs (every market) when nothing is decided; neutral from
-  // English pages. "For businesses" opens the home page.
-  // Reference pages keep them English, as their footer does.
+  // hub, or /jobs (every market) when nothing is decided, in the reader's
+  // language (useJobsLocale: on English pages, the language they last
+  // picked, else English). "For businesses" opens the home page.
+  // Reference pages keep the labels English, as their footer does.
   const doorLocale = view === "reference" ? FALLBACK_LOCALE : pageLocale;
+  const jobsLocale = useJobsLocale(doorLocale);
   const doorLang = doorLocale === "en-IN" ? undefined : doorLocale;
   const work = WORK_DOOR[doorLocale];
   const jobsDoors: AreaLink[] = area.jobs.length
     ? area.jobs.map((id) => ({
-        href: jobsAreaHref(id, doorLocale),
+        href: jobsAreaHref(id, jobsLocale),
         label: area.jobs.length > 1 ? (JOBS_AREA_LABEL[doorLocale][id] ?? work.label) : work.label,
         lang: doorLang,
         neutral: true,
@@ -222,7 +226,7 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
         surface: area.jobs.length > 1 ? ("jobs" as const) : ("jobs-door" as const),
         pick: area.jobs.length > 1,
       }))
-    : [{ href: jobsDoorHref(doorLocale), label: work.label, lang: doorLang, neutral: true }];
+    : [{ href: jobsDoorHref(jobsLocale), label: work.label, lang: doorLang, neutral: true }];
   // The business bar's area slot: the buyer page(s) of the decided area, or
   // Locations (every market) when nothing is decided.
   const areaLinks: AreaLink[] = area.business
@@ -282,9 +286,6 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
             cta: { href: "/contact", label: CREW_LABEL[pageLocale], lang: pageLang },
           };
   const current = (href: string) => (href === pathname || href === path ? "page" : undefined);
-  // Jobs pages: links a job seeker rarely follows are not prefetched, to
-  // spare data on patchy 4G (as in the jobs footer).
-  const prefetch = isJobs ? false : undefined;
   // Apply opens the decided market's jobs hub, else /jobs/apply. A jobs page
   // with the form on it (#apply: market, role and hub pages) scrolls to that
   // form instead, keeping the role it pre-selects. /jobs/apply is left for
@@ -293,13 +294,13 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
     if (!isJobs || href !== applyHref) return;
     const form = document.getElementById("apply");
     if (!form) return;
-    event.preventDefault();
+    stayOnPage(event);
     setOpen(false);
     form.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "start" });
     form.querySelector<HTMLElement>(".quick-question")?.focus({ preventScroll: true });
   };
-  // One link in the bar or the menu: external, neutral (no locale added),
-  // or an in-site link through the i18n Link.
+  // One link in the bar or the menu: external, neutral (href already
+  // localized, so no locale added), or an in-site link through the i18n Link.
   // An area link remembers the pick and reports it (area_nav_click).
   const picked = (item: AreaLink, then?: () => void) => () => {
     if (item.cluster) {
@@ -329,7 +330,7 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
         {item.label}
       </a>
     ) : item.neutral ? (
-      <NextLink key={item.href} href={item.href} lang={item.lang} prefetch={false} className={extra.className} onClick={picked(item, extra.onClick)}>
+      <NextLink key={item.href} href={item.href} lang={item.lang} className={extra.className} onClick={picked(item, extra.onClick)}>
         {item.label}
       </NextLink>
     ) : (
@@ -337,7 +338,6 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
         key={item.href}
         href={item.href}
         lang={item.lang}
-        prefetch={prefetch}
         className={extra.className}
         onClick={picked(item, extra.onClick)}
         aria-current={current(item.href)}
@@ -384,7 +384,7 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
           {languages.length > 0 && (
             <nav aria-label={isJobs ? t.language : "Language"} className="header-lang">
               {quick.map((l) => (
-                <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang} title={l.hint} prefetch={false}>
+                <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang} title={l.hint}>
                   {l.label}
                 </Link>
               ))}
@@ -393,7 +393,7 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
                   <summary lang={isJobs ? pageLocale : "en-IN"}>{MORE_LABEL[isJobs ? pageLocale : "en-IN"]}</summary>
                   <div>
                     {more.map((l) => (
-                      <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang} title={l.hint} prefetch={false}>
+                      <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang} title={l.hint}>
                         {l.label}
                       </Link>
                     ))}
@@ -415,7 +415,6 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
               href={nav.cta.href}
               className="header-contact"
               lang={nav.cta.lang}
-              prefetch={prefetch}
               onClick={(event) => applyHere(event, nav.cta!.href)}
               aria-current={current(nav.cta.href)}
             >
@@ -446,7 +445,7 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
               {!isJobs && languages.length > 0 && (
                 <nav aria-label="Language" className="sheet-lang">
                   {languages.map((l) => (
-                    <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang} title={l.hint} prefetch={false} onClick={close}>
+                    <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang} title={l.hint} onClick={close}>
                       {l.label}
                     </Link>
                   ))}

@@ -25,12 +25,14 @@ export const SETU_LOGIN = "https://setu.vayasyaseva.com";
 
 /**
  * The jobs door when no market is decided: /jobs, which lists every market
- * (no market is the default, owner direction 17 Oct 2026). The page's
- * language on a non-English page, and the neutral URL (the language picker)
- * from an English one. Render it with next/link, not the i18n Link, which
- * would add /en-in. A decided market's door is jobsAreaHref instead.
+ * (no market is the default, owner direction 17 Oct 2026), in `locale`.
+ * Never the neutral URL: that is the language picker, outside the site's
+ * root layout, so the client router could not enter it (a full reload, and
+ * sometimes a click that did nothing). On English pages, pass the reader's
+ * saved language (useJobsLocale, components/i18n/jobs-link.tsx).
+ * A decided market's door is jobsAreaHref instead.
  */
-export const jobsDoorHref = (locale: Locale) => (locale === "en-IN" ? "/jobs" : nearestLocalePath("/jobs", locale));
+export const jobsDoorHref = (locale: Locale) => nearestLocalePath("/jobs", locale);
 
 /** "Looking for work? Jobs": the business menu and footer line. */
 export const WORK_DOOR: Record<Locale, { lead: string; label: string }> = {

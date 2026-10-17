@@ -7,7 +7,8 @@ import { clusters, linkable, pageEntry } from "@/content/registry";
 import { LOCALE_TAGS, jobsHubPath, type ClusterId } from "@/content/registry/identifiers";
 import { JOBS_LINK_LABELS, businessLabel } from "@/markets/labels";
 import { nearestLocalePath, type Locale } from "@/lib/i18n";
-import { MARKET_ORDER, type AreaSurfaces } from "./model";
+import { MARKET_IDS as MARKET_ORDER } from "@/markets/index";
+import type { AreaSurfaces } from "./model";
 
 export function areaSurfaces(): AreaSurfaces {
   const out: Record<string, { business?: string; jobs?: string }> = {};
@@ -44,6 +45,6 @@ export const jobsAreaHref = (id: string, locale: Locale) => {
  */
 export function orderedJobMarkets(decided: readonly string[] = []): string[] {
   const surfaces = areaSurfaces();
-  const all = MARKET_ORDER.filter((id) => surfaces[id]?.jobs);
+  const all: string[] = MARKET_ORDER.filter((id) => surfaces[id]?.jobs);
   return [...decided.filter((id) => all.includes(id)), ...all.filter((id) => !decided.includes(id))];
 }

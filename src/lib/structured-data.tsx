@@ -3,7 +3,7 @@ import type { ServiceLandingContent } from "@/content/service-pages";
 import { siteConfig } from "@/content/site";
 import { localizeHref } from "@/lib/i18n";
 import { clusters, linkable } from "@/content/registry";
-import { MARKET_ORDER } from "@/lib/intent/model";
+import { MARKET_IDS as MARKET_ORDER } from "@/markets/index";
 import { MARKET_PLACES, type SchemaPlace } from "@/markets/schema-org";
 import { formatDate, type WageSource, type WageState } from "@/content/wages";
 import type { Guide } from "@/content/guides";

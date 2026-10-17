@@ -42,6 +42,8 @@ export const marketForRegion = (region: string | null | undefined): MarketId | u
   region && Object.hasOwn(REGION_MARKETS, region) ? REGION_MARKETS[region] : undefined;
 export const marketForSiteState = (state: string | null | undefined): MarketId | undefined =>
   state && Object.hasOwn(SITE_STATE_MARKETS, state) ? SITE_STATE_MARKETS[state] : undefined;
+/** The states a cluster's sites are in; none for a cluster that is not a market. */
+export const statesOf = (id: string): readonly RegionCode[] => (isMarketId(id) ? RECORDS[id].states : []);
 /** The markets whose sites are in a state, in MARKET_IDS order. */
 export const marketsForState = (state: string | null | undefined): MarketId[] => (state ? MARKET_IDS.filter((id) => RECORDS[id].states.includes(state)) : []);
 /** Whether a market's sites are in a state (false for a cluster that is not a market). */

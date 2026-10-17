@@ -14,7 +14,7 @@
     "type-check": "tsc --noEmit && pnpm n8n:check && pnpm windmill:check && pnpm twenty:check",
     "forms:unit": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test tests/job-resume.spec.mjs tests/job-intake.spec.mjs tests/registry.spec.mjs tests/crew-request.spec.mjs tests/lead-forward.spec.mjs",
     "content:check": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/content-check.mjs",
-    "content:unit": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test tests/sitemap-snapshot.spec.mjs tests/registry-status.spec.mjs tests/legacy-redirects.spec.mjs tests/wages.spec.mjs tests/wage-monitor.spec.mjs tests/language-rank.spec.mjs tests/area-intent.spec.mjs tests/neutral-pages.spec.mjs tests/stored-ids.spec.mjs tests/markets.spec.mjs tests/markets-parity.spec.mjs",
+    "content:unit": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test tests/sitemap-snapshot.spec.mjs tests/registry-status.spec.mjs tests/legacy-redirects.spec.mjs tests/wages.spec.mjs tests/wage-monitor.spec.mjs tests/language-rank.spec.mjs tests/area-intent.spec.mjs tests/neutral-pages.spec.mjs tests/stored-ids.spec.mjs tests/markets.spec.mjs",
     "wages:monitor": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/wage-monitor/index.mjs",
     "forms:check": "node tests/forms.spec.mjs",
     "measurement:check": "node tests/measurement.spec.mjs",

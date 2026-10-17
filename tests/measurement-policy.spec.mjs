@@ -177,7 +177,7 @@ test("every event name sent from src/ is in the catalogue", () => {
   };
   walk(join(root, "src"));
   const sent = new Set();
-  const CALL = /\b(?:track|trackAnalyticsEvent|trackUmamiEvent|trackServerEvent|reportServerCount|once)\(\s*(?:`[^`]*`\s*,\s*)?["']([a-z_]+)["']/g;
+  const CALL = /\b(?:track|trackServerEvent|reportServerCount|once)\(\s*(?:`[^`]*`\s*,\s*)?["']([a-z_]+)["']/g;
   const LINK = /\["([a-z_]+)", \{/g;
   for (const file of files) {
     const text = readFileSync(file, "utf8");

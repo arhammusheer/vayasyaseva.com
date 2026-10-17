@@ -1,7 +1,7 @@
 "use client";
 import NextLink from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { trackAnalyticsEvent } from "@/lib/analytics";
+import { track } from "@/lib/measurement/gateway";
 import { noteChoice } from "@/lib/intent/store";
 import { useAreaDecision } from "@/lib/intent/use-area";
 import { MODEL_VERSION } from "@/lib/intent/model";
@@ -50,7 +50,7 @@ export function MarketList({
             onClick={() => {
               noteChoice(item.cluster);
               reportChoice(item.cluster, decided, surface);
-              trackAnalyticsEvent("area_nav_click", {
+              track("area_nav_click", {
                 cluster: item.cluster,
                 surface,
                 mode: area.mode,

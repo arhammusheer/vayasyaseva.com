@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { trackAnalyticsEvent } from "@/lib/analytics";
+import { track } from "@/lib/measurement/gateway";
 import { safeAnalyticsPath } from "@/lib/analytics-pages";
 
 /**
@@ -26,7 +26,7 @@ export function NotFoundEvent() {
     } catch {
       // Unparseable referrer: leave it as direct.
     }
-    trackAnalyticsEvent("not_found", {
+    track("not_found", {
       path: /^[a-z0-9/._-]{1,80}$/i.test(path) ? path : "other",
       from,
       ...(source && { source }),

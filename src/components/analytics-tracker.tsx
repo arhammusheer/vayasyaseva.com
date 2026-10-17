@@ -2,19 +2,18 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { FORM_DONE_EVENT, trackAbandonedDraft, trackAnalyticsEvent, trackPageView, type AnalyticsParams } from "@/lib/analytics";
+import { FORM_DONE_EVENT, rememberAdClick, track, trackDraft, trackPage, type AnalyticsParams } from "@/lib/measurement/gateway";
 import { safeAnalyticsPath } from "@/lib/analytics-pages";
 import { createFormWatch, createRageDetector, describeTarget, draftOf, fieldOf, isDeadClick, statusOf } from "@/lib/form-analytics";
 import { FALLBACK_LOCALE, splitLocalePath } from "@/lib/i18n";
-import { rememberAdClick } from "@/lib/ad-click";
 
 /**
- * Automatic interaction events, sent through trackAnalyticsEvent: Umami for
+ * Automatic interaction events, sent through the measurement gateway: Umami for
  * every visitor, plus Google Analytics with "Allow All". Page speed
  * comes from Umami's own performance tracking (data-performance on the tracker). Every
  * value is a fixed label, a known page path or a number. No link text and no
  * full external URLs. The one exception is draftOf: with "Allow All", what an
- * unfinished form held goes to Umami only (trackAbandonedDraft).
+ * unfinished form held goes to Umami only (trackDraft).
  */
 
 // Half-way and the end: enough to see whether the lower page is read.
@@ -89,14 +88,14 @@ export function AnalyticsTracker() {
   // Everything below is per page view: thresholds and counters reset on navigation.
   useEffect(() => {
     const page = pageType(splitLocalePath(pathname).path);
-    trackPageView(pageViewUrl(pathname));
+    trackPage(pageViewUrl(pathname));
     rememberAdClick();
 
     const fired = new Set<string>();
     const once = (key: string, name: string, params: AnalyticsParams) => {
       if (fired.has(key)) return;
       fired.add(key);
-      trackAnalyticsEvent(name, params);
+      track(name, params);
     };
 
     // Clicks: links by kind and page area; rage clicks (three quick clicks in
@@ -108,19 +107,19 @@ export function AnalyticsTracker() {
       if (!(event.target instanceof Element)) return;
       const zone = zoneOf(event.target);
       if (rage(event.clientX, event.clientY) && rageClicks++ < MAX_CLICK_SIGNALS) {
-        trackAnalyticsEvent("rage_click", { target: describeTarget(event.target), zone, page });
+        track("rage_click", { target: describeTarget(event.target), zone, page });
       }
       if (isDeadClick(event.target) && deadClicks++ < MAX_CLICK_SIGNALS) {
-        trackAnalyticsEvent("dead_click", { target: describeTarget(event.target), zone, page });
+        track("dead_click", { target: describeTarget(event.target), zone, page });
       }
       const link = event.target.closest<HTMLAnchorElement>("a[href]");
       if (link) {
         const tracked = linkEvent(link, page);
-        if (tracked) trackAnalyticsEvent(...tracked);
+        if (tracked) track(...tracked);
         return;
       }
       const button = event.target.closest<HTMLButtonElement>("button[data-analytics]");
-      if (button?.dataset.analytics) trackAnalyticsEvent("button_click", { button: button.dataset.analytics, page });
+      if (button?.dataset.analytics) track("button_click", { button: button.dataset.analytics, page });
     };
 
     // Scroll depth.
@@ -182,7 +181,7 @@ export function AnalyticsTracker() {
     const onDone = (event: Event) => {
       const form = (event as CustomEvent<string>).detail;
       // The same timing for forms that were sent, to compare with abandoned ones.
-      trackAnalyticsEvent("form_complete", { form, page, ...watch.stats(form) });
+      track("form_complete", { form, page, ...watch.stats(form) });
       watch.reset(form);
       touched.delete(form);
     };
@@ -191,7 +190,7 @@ export function AnalyticsTracker() {
         if (fired.has(`abandon:${form}`)) continue;
         once(`abandon:${form}`, "form_abandon", { form, last_field, page, ...statusOf(form), ...watch.stats(form) });
         const draft = draftOf(form);
-        if (draft && Object.keys(draft).length) trackAbandonedDraft({ form, last_field, page, ...draft });
+        if (draft && Object.keys(draft).length) trackDraft({ form, last_field, page, ...draft });
       }
     };
 
@@ -203,7 +202,7 @@ export function AnalyticsTracker() {
     // Script errors, by kind only.
     let errors = 0;
     const onError = (kind: string, name: string) => {
-      if (errors++ < MAX_ERRORS) trackAnalyticsEvent("js_error", { kind, name: name.slice(0, 40), page });
+      if (errors++ < MAX_ERRORS) track("js_error", { kind, name: name.slice(0, 40), page });
     };
     const onWindowError = (event: ErrorEvent) => onError("error", event.error?.name ?? "Error");
     const onRejection = (event: PromiseRejectionEvent) => onError("rejection", event.reason?.name ?? "Rejection");

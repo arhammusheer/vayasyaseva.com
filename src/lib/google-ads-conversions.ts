@@ -7,7 +7,7 @@ import type { AdClick } from "@/lib/talent-intake/contract";
  * came from an ad click, tell Google Ads which click (the gclid, gbraid or
  * wbraid Google added to the landing URL). Nothing else about the applicant
  * is sent. The browser leaves the click out after "Required Only"
- * (src/lib/ad-click.ts); the privacy notice describes this.
+ * (src/lib/measurement/gateway.ts, currentAdClick); the privacy notice describes this.
  *
  * Counts into the "Job application (server)" click-import conversion action,
  * the primary one for bidding. The browser tag's conversion ("Job Application

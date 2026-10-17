@@ -151,7 +151,7 @@ export interface JobsStartResponse {
 }
 
 /** Browser → POST /api/jobs/submit, after every upload has finished. */
-/** The Google Ads click a web application came from (src/lib/ad-click.ts). */
+/** The Google Ads click a web application came from (src/lib/measurement/gateway.ts, currentAdClick). */
 export const adClickSchema = z.object({
   type: z.enum(["gclid", "gbraid", "wbraid"]),
   id: z.string().regex(/^[\w-]{10,300}$/),

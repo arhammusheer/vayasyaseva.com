@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { formPage, trackAnalyticsEvent } from "./analytics";
+import { formPage, track } from "@/lib/measurement/gateway";
 import { TURNSTILE_SITE_KEY } from "./turnstile";
 
 /** Own the widget with its DOM container, including replacement forms. */
@@ -20,7 +20,7 @@ export function useTurnstile(action: string, form: string, language = "en") {
       callback: (value: string) => { if (active) setToken(value); },
       "expired-callback": () => { if (active) setToken(null); },
       "error-callback": () => { if (active) setToken(null); },
-      "before-interactive-callback": () => trackAnalyticsEvent("verification_shown", { form, page: formPage() }),
+      "before-interactive-callback": () => track("verification_shown", { form, page: formPage() }),
     });
     // The public reset handler uses state so callers never read refs during render.
     // eslint-disable-next-line react-hooks/set-state-in-effect

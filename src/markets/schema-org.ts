@@ -1,0 +1,26 @@
+/**
+ * The place each market's buyer page serves, as schema.org types, for
+ * areaServed (src/lib/structured-data.tsx). Layer 1b: a separate entry point
+ * from ./index.ts, imported by structured data only.
+ */
+import type { BusinessMarketId } from "./data";
+
+export type SchemaPlace = {
+  "@type": "City" | "State" | "Place";
+  name: string;
+  alternateName?: string | readonly string[];
+  containedInPlace?: { "@type": "State"; name: string };
+};
+
+export const MARKET_PLACES = {
+  bengaluru: { "@type": "City", name: "Bengaluru", containedInPlace: { "@type": "State", name: "Karnataka" } },
+  "delhi-ncr": { "@type": "Place", name: "Delhi NCR", alternateName: "National Capital Region" },
+  haridwar: {
+    "@type": "City",
+    name: "Haridwar",
+    alternateName: ["SIDCUL Haridwar", "Integrated Industrial Estate (IIE) Haridwar"],
+    containedInPlace: { "@type": "State", name: "Uttarakhand" },
+  },
+  jalandhar: { "@type": "Place", name: "Jalandhar and Kapurthala", containedInPlace: { "@type": "State", name: "Punjab" } },
+  uttarakhand: { "@type": "State", name: "Uttarakhand" },
+} as const satisfies Record<BusinessMarketId, SchemaPlace>;

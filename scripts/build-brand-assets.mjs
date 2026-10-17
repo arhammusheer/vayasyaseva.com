@@ -83,6 +83,18 @@ const fonts = {
     ["aneklatin/AnekLatin[wdth,wght].ttf", "AnekLatin-Variable.ttf"],
     ["aneklatin/OFL.txt", "OFL.txt"],
   ],
+  "Anek Devanagari": [
+    ["anekdevanagari/AnekDevanagari[wdth,wght].ttf", "AnekDevanagari-Variable.ttf"],
+    ["anekdevanagari/OFL.txt", "OFL.txt"],
+  ],
+  "Anek Kannada": [
+    ["anekkannada/AnekKannada[wdth,wght].ttf", "AnekKannada-Variable.ttf"],
+    ["anekkannada/OFL.txt", "OFL.txt"],
+  ],
+  "Anek Gurmukhi": [
+    ["anekgurmukhi/AnekGurmukhi[wdth,wght].ttf", "AnekGurmukhi-Variable.ttf"],
+    ["anekgurmukhi/OFL.txt", "OFL.txt"],
+  ],
   Hind: [
     ["hind/Hind-Light.ttf", "Hind-Light.ttf"],
     ["hind/Hind-Regular.ttf", "Hind-Regular.ttf"],
@@ -90,6 +102,22 @@ const fonts = {
     ["hind/Hind-SemiBold.ttf", "Hind-SemiBold.ttf"],
     ["hind/Hind-Bold.ttf", "Hind-Bold.ttf"],
     ["hind/OFL.txt", "OFL.txt"],
+  ],
+  "Hind Mysuru": [
+    ["hindmysuru/HindMysuru-Light.ttf", "HindMysuru-Light.ttf"],
+    ["hindmysuru/HindMysuru-Regular.ttf", "HindMysuru-Regular.ttf"],
+    ["hindmysuru/HindMysuru-Medium.ttf", "HindMysuru-Medium.ttf"],
+    ["hindmysuru/HindMysuru-SemiBold.ttf", "HindMysuru-SemiBold.ttf"],
+    ["hindmysuru/HindMysuru-Bold.ttf", "HindMysuru-Bold.ttf"],
+    ["hindmysuru/OFL.txt", "OFL.txt"],
+  ],
+  "Hind Jalandhar": [
+    ["hindjalandhar/HindJalandhar-Light.ttf", "HindJalandhar-Light.ttf"],
+    ["hindjalandhar/HindJalandhar-Regular.ttf", "HindJalandhar-Regular.ttf"],
+    ["hindjalandhar/HindJalandhar-Medium.ttf", "HindJalandhar-Medium.ttf"],
+    ["hindjalandhar/HindJalandhar-SemiBold.ttf", "HindJalandhar-SemiBold.ttf"],
+    ["hindjalandhar/HindJalandhar-Bold.ttf", "HindJalandhar-Bold.ttf"],
+    ["hindjalandhar/OFL.txt", "OFL.txt"],
   ],
   "JetBrains Mono": [
     ["jetbrainsmono/JetBrainsMono[wght].ttf", "JetBrainsMono-Variable.ttf"],
@@ -110,19 +138,25 @@ await writeFile(
   path.join(tmp, "fonts/README.txt"),
   `Vayasya Seva – font pack
 
-Anek Latin        Display: headings and high-emphasis hierarchy (500–700)
-Hind              Body and UI: reading, labels, interface copy (400–700)
+Every script the brand writes in has its own cut of the same two families:
+
+                Display (headings, 500–700)   Body and UI (400–700)
+  Latin         Anek Latin                    Hind
+  Devanagari    Anek Devanagari               Hind (includes Devanagari)
+  Kannada       Anek Kannada                  Hind Mysuru
+  Gurmukhi      Anek Gurmukhi                 Hind Jalandhar
+
 JetBrains Mono    Data: identifiers, tables and aligned values (400–500)
 
 Install
   Windows  Select the .ttf files, right-click, "Install for all users".
   macOS    Open the .ttf files and click "Install Font", or drop them into Font Book.
 
-Variable fonts (AnekLatin-Variable, JetBrainsMono-Variable) expose every weight
-from one file. Hind ships as five static weights.
+The Anek fonts and JetBrains Mono are variable: one file holds every weight.
+Hind, Hind Mysuru and Hind Jalandhar ship as five static weights.
 
-All three families are published under the SIL Open Font License; the OFL.txt
-in each folder is the licence. Fonts are unchanged from their Google Fonts release.
+All families are published under the SIL Open Font License; the OFL.txt in
+each folder is the licence. Fonts are unchanged from the google/fonts release.
 
 https://www.vayasyaseva.com/brand
 `,

@@ -1,11 +1,6 @@
 import { shareImageUrl } from "@/lib/share-images";
 import type { Metadata } from "next";
-import {
-  brandDisplay,
-  brandMono,
-  brandSerif,
-  brandSerifDevanagari,
-} from "@/lib/fonts";
+import { brandFontVariables } from "@/lib/fonts";
 
 /** Shared by both root layouts: app/[locale] (the site) and app/(picker). */
 const appDescription =
@@ -63,4 +58,4 @@ export const siteMetadata: Metadata = {
   },
 };
 
-export const fontClassName = `${brandDisplay.variable} ${brandSerif.variable} ${brandMono.variable} ${brandSerifDevanagari.variable} font-serif antialiased`;
+export const fontClassName = `${brandFontVariables} font-serif antialiased`;

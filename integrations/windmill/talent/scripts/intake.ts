@@ -41,7 +41,8 @@ export async function main(authorized: boolean, body: unknown) {
       runIntake(authorized, body, {
         query,
         startAcknowledgement: async (submissionId) => {
-          await wmill.runScriptByPathAsync("f/talent/acknowledge", { submission_id: submissionId });
+          // The dispatcher sends the SMS now; if another run holds it, that run (or the next minute) does.
+          await wmill.runScriptByPathAsync("f/talent/dispatch", { submission_id: submissionId });
         },
       }),
     );

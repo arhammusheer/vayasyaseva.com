@@ -252,3 +252,70 @@ LIMIT $1;`;
 
 /** $1 submission: looked up, nothing new. */
 export const MARK_DELIVERY_CHECKED = `UPDATE sms_acknowledgements SET delivery_checked_at = now() WHERE submission_id = $1::uuid;`;
+
+// --- dispatch (f/talent/dispatch, roadmap 1F) -----------------------------------
+// The deliveries table schedules the work; each step still writes its own
+// status columns (sms_acknowledgements, submissions, crm_sync) as before.
+
+/** Held for the run's connection: one dispatcher at a time (the 5-connection cap). */
+export const DISPATCH_LOCK = `SELECT pg_try_advisory_lock(hashtext('talent:dispatch')) AS locked;`;
+
+/** Runs stuck for 15 minutes: an SMS becomes unknown (never resent); the rest retry, or are dead at their cap. */
+export const RECOVER_STUCK_DISPATCH = `
+UPDATE deliveries
+SET status = CASE WHEN target = 'sms' THEN 'unknown' WHEN attempts >= max_attempts THEN 'dead' ELSE 'pending' END,
+    last_error = coalesce(last_error, 'Interrupted; picked up again by the dispatcher'),
+    next_attempt_at = now(), updated_at = now()
+WHERE status = 'running' AND updated_at < now() - interval '15 minutes'
+RETURNING submission_id, target, status;`;
+
+/** $1 target, $2 submission id or null. The oldest due delivery, claimed. */
+export const CLAIM_DELIVERY = `
+WITH c AS (
+  SELECT submission_id, target FROM deliveries
+  WHERE target = $1 AND status = 'pending' AND next_attempt_at <= now()
+    AND ($2::uuid IS NULL OR submission_id = $2::uuid)
+  ORDER BY next_attempt_at, created_at LIMIT 1 FOR UPDATE SKIP LOCKED
+)
+UPDATE deliveries d SET status = 'running', attempts = d.attempts + 1, updated_at = now()
+FROM c WHERE d.submission_id = c.submission_id AND d.target = c.target
+RETURNING d.submission_id, d.target, d.attempts, d.max_attempts;`;
+
+/**
+ * $1 submission, $2 target, $3 outcome (done, retry, unknown, dead), $4
+ * error, $5 seconds to wait before a retry. A retry at the cap is dead.
+ */
+export const FINISH_DELIVERY = `
+UPDATE deliveries
+SET status = CASE WHEN $3 = 'retry' THEN (CASE WHEN attempts >= max_attempts THEN 'dead' ELSE 'pending' END) ELSE $3 END,
+    next_attempt_at = CASE WHEN $3 = 'retry' THEN now() + make_interval(secs => $5::int) ELSE next_attempt_at END,
+    last_error = $4,
+    done_at = CASE WHEN $3 = 'done' THEN now() ELSE done_at END,
+    updated_at = now()
+WHERE submission_id = $1::uuid AND target = $2 AND status = 'running'
+RETURNING status;`;
+
+/** $1 submission. Where the older status columns stand (to reconcile a step that found nothing to claim). */
+export const LEGACY_STATUS = `
+SELECT s.status AS chatwoot, a.status AS sms, a.attempts AS sms_attempts, (c.submission_id IS NOT NULL) AS crm_synced
+FROM submissions s
+LEFT JOIN sms_acknowledgements a ON a.submission_id = s.id
+LEFT JOIN crm_sync c ON c.submission_id = s.id
+WHERE s.id = $1::uuid;`;
+
+/** $1 submission: one submission's Chatwoot claim (CLAIM_SUBMISSION for that id). */
+export const CLAIM_SUBMISSION_FOR = CLAIM_SUBMISSION.replace("WHERE c.status = 'received'", "WHERE c.status = 'received' AND c.id = $1::uuid");
+
+/** $1 submission, $2 error. A delivery run that failed before "delivered": back to received, or failed at three attempts. */
+export const RELEASE_SUBMISSION = `
+UPDATE submissions
+SET status = CASE WHEN attempts >= 3 THEN 'failed' ELSE 'received' END, last_error = $2, updated_at = now()
+WHERE id = $1::uuid AND status = 'delivering'
+RETURNING status;`;
+
+/** $1 submission: SYNC_CANDIDATES' columns for one submission, synced or not. */
+export const SYNC_CANDIDATE_FOR = SYNC_CANDIDATES.replace(
+  /WHERE c\.submission_id IS NULL\n {3}OR c\.ack_status IS DISTINCT FROM \(CASE WHEN a\.delivery_status IS NULL THEN a\.status ELSE a\.status \|\| ':' \|\| a\.delivery_status END\)\nORDER BY s\.created_at\nLIMIT \$1;/,
+  "WHERE s.id = $1::uuid;",
+);
+

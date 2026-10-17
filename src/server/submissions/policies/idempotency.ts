@@ -15,12 +15,14 @@
  * leave a note for that retry (`carry`), e.g. the case ID it had issued, so
  * the retry files under the same one.
  *
- * The store sits behind an interface: in this instance's memory for now
- * (a retry that reaches another Vercel instance runs again, as before); a
- * durable store comes with the Windmill submission inbox.
+ * The store sits behind an interface: Windmill's durable store
+ * (windmillIdempotencyStore) once the site has SUBMISSION_SIGNING_SECRET,
+ * else this instance's memory (a retry that reaches another Vercel instance
+ * then runs again, as it did before keys existed).
  */
 import { createHash } from "node:crypto";
 import { IDEMPOTENCY_KEY_PATTERN } from "@vspl/contracts/envelope";
+import { signRequest } from "@vspl/contracts/signing";
 
 export const IDEMPOTENCY_HEADER = "idempotency-key";
 export const REPLAYED_HEADER = "idempotent-replayed";
@@ -90,13 +92,68 @@ export function memoryIdempotencyStore({ now = () => Date.now() } = {}): Idempot
   };
 }
 
-let store: IdempotencyStore = memoryIdempotencyStore();
+const IDEMPOTENCY_URL = "https://hooks.vayasyaseva.com/api/r/webhook/vspl-idempotency";
+const DURABLE_TIMEOUT_MS = 2_500;
 
-export const idempotencyStore = () => store;
+/**
+ * The durable store: Windmill's f/platform/idempotency (signed like the
+ * envelope route), which keeps the jobs routes' keys in the talent database
+ * and the contact routes' keys in the lead inbox, so a retry that reaches
+ * another Vercel instance still gets the first answer. If Windmill does not
+ * answer in time, this instance's memory takes over for that call: a
+ * submission is never refused because the store is down.
+ */
+export function windmillIdempotencyStore(fallback: IdempotencyStore, fetchImpl: typeof fetch = fetch): IdempotencyStore {
+  async function call(body: Record<string, unknown>): Promise<Record<string, unknown>> {
+    const secret = process.env.SUBMISSION_SIGNING_SECRET?.trim();
+    if (!secret) throw new Error("SUBMISSION_SIGNING_SECRET is not set");
+    const raw = JSON.stringify(body);
+    const res = await fetchImpl(process.env.SUBMISSION_IDEMPOTENCY_URL?.trim() || IDEMPOTENCY_URL, {
+      method: "POST",
+      headers: { "content-type": "application/json", ...signRequest(secret, raw) },
+      body: raw,
+      signal: AbortSignal.timeout(DURABLE_TIMEOUT_MS),
+    });
+    if (!res.ok) throw new Error(`idempotency store answered ${res.status}`);
+    return (await res.json()) as Record<string, unknown>;
+  }
+  const warn = (op: string, error: unknown) =>
+    console.warn("[IDEMPOTENCY STORE FALLBACK]", { op, error: error instanceof Error ? error.message : "unknown" });
+  return {
+    async begin(scope, key, fingerprint) {
+      try {
+        const r = await call({ op: "begin", scope, key, fingerprint });
+        if (r.state === "replay" && r.answer && typeof r.answer === "object") return { state: "replay", answer: r.answer as StoredAnswer };
+        if (r.state === "in_progress" || r.state === "mismatch") return { state: r.state };
+        if (r.state === "new") return r.carry && typeof r.carry === "object" ? { state: "new", carry: r.carry as Record<string, string> } : { state: "new" };
+        throw new Error(`unexpected answer ${String(r.state)}`);
+      } catch (error) {
+        warn("begin", error);
+        return fallback.begin(scope, key, fingerprint);
+      }
+    },
+    async complete(scope, key, answer) {
+      await fallback.complete(scope, key, answer);
+      await call({ op: "complete", scope, key, answer }).catch((error) => warn("complete", error));
+    },
+    async abandon(scope, key, carry) {
+      await fallback.abandon(scope, key, carry);
+      await call({ op: "abandon", scope, key, carry: carry ?? null }).catch((error) => warn("abandon", error));
+    },
+  };
+}
 
-/** Tests, and the durable store when it lands. */
-export function setIdempotencyStore(next: IdempotencyStore) {
-  store = next;
+const memory = memoryIdempotencyStore();
+const durable = windmillIdempotencyStore(memory);
+let override: IdempotencyStore | null = null;
+
+/** Windmill's store once the site has SUBMISSION_SIGNING_SECRET; this instance's memory until then. */
+export const idempotencyStore = (): IdempotencyStore =>
+  override ?? (process.env.SUBMISSION_SIGNING_SECRET?.trim() ? durable : memory);
+
+/** Tests only. */
+export function setIdempotencyStore(next: IdempotencyStore | null) {
+  override = next;
 }
 
 /** The header's key; null when absent, "invalid" when malformed. */

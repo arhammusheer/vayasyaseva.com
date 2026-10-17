@@ -19,11 +19,13 @@
  * 3. Upserts the f/talent/* variables (config.ts VARIABLES: which are secret).
  * 4. Pushes each script in f/talent/ as a new version only if its content
  *    or metadata changed (parent_hash = the current version's hash).
- * 5. Runs f/talent/setup (schema) and waits for it.
- * 6. Creates or updates the schedules and the HTTP route. Schedules are
- *    created disabled: --enable-schedules turns acknowledge, deliver,
- *    sync_crm and delivery_check on (cutover), --enable-retention turns
- *    retention on (after a hand-run check, as with n8n). A re-run without the flags leaves them as they are.
+ * 5. Runs f/talent/setup and f/leads/setup (schemas) and waits for them.
+ * 6. Creates or updates the schedules and the HTTP routes. Schedules are
+ *    created disabled: --enable-schedules turns f/talent/dispatch and
+ *    f/leads/sync_crm on, --enable-retention turns retention on (after a
+ *    hand-run check, as with n8n). A re-run without the flags leaves them as
+ *    they are. The schedules the dispatcher replaced (acknowledge, deliver,
+ *    sync_crm, delivery_check) are turned off; the scripts stay, for hand runs.
  * 7. Warms the route (the first call after a new version installs
  *    dependencies, ~7.5 s) with a wrong secret, expecting 403.
  *
@@ -49,7 +51,7 @@ import { randomBytes } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { createServer } from "node:net";
 import { dirname, resolve } from "node:path";
-import { FOLDERS, SCRIPTS, TIMEZONE, WORKSPACE, scriptPath, specPath, type ScriptSpec } from "./scripts.mts";
+import { FOLDER, FOLDERS, SCRIPTS, TIMEZONE, WORKSPACE, specPath, type ScriptSpec } from "./scripts.mts";
 import { VARIABLES, variablePath, type ConfigName } from "./talent/lib/config.ts";
 import { metadata } from "./build.mts";
 
@@ -87,6 +89,8 @@ function secretValue(namespace: string, secret: string, key: string): string {
 function readValues(): Record<ConfigName, string> {
   step("reading secrets from the cluster");
   const talentPassword = secretValue("data", "pg-main-talent", "password");
+  // The lead inbox (vayasya-infra apps/pg-main, role leads): needed before this deploy.
+  const leadsPassword = secretValue("data", "pg-main-leads", "password");
   const fromEnv = (key: string) => secretValue("growth", SECRETS_FROM, key);
   step(`looking up the "${INBOX_NAME}" inbox identifier in Chatwoot`);
   const out = kubectl([
@@ -114,7 +118,24 @@ function readValues(): Record<ConfigName, string> {
     twenty_api_key: secretValue("growth", "twenty-api", "TWENTY_API_KEY"),
     lead_webhook_secret: secretValue("growth", "windmill-leads", "LEAD_WEBHOOK_SECRET"),
     fast2sms_dlr_secret: secretValue("growth", "windmill-fast2sms", "FAST2SMS_DLR_SECRET"),
+    leads_pg_url: `postgres://leads:${encodeURIComponent(leadsPassword)}@${TALENT_DB_HOST}:5432/leads`,
+    submission_signing_secret: signingSecret(),
   };
+}
+
+/**
+ * SUBMISSION_SIGNING_SECRET in growth/windmill-submission (the site has the
+ * same value in Vercel). Until the owner creates that Secret, a random value
+ * nobody knows: the signed routes then refuse every request, and the site
+ * keeps using the older routes (it switches only when it has the secret).
+ */
+function signingSecret(): string {
+  try {
+    return secretValue("growth", "windmill-submission", "SUBMISSION_SIGNING_SECRET");
+  } catch {
+    step("growth/windmill-submission not found: the signed routes will refuse everything until it exists");
+    return randomBytes(32).toString("base64url");
+  }
 }
 
 // --- Windmill API ----------------------------------------------------------------
@@ -266,15 +287,21 @@ async function main() {
       );
     }
 
-    // 5. Schema
-    step(`running ${scriptPath("setup")}`);
-    if (!DRY_RUN) {
-      const out = await w.call("POST", `/w/{ws}/jobs/run_wait_result/p/${scriptPath("setup")}`, {});
-      if (!/"ok"\s*:\s*true/.test(out)) throw new Error(`setup did not report ok: ${out.slice(0, 300)}`);
+    // 5. Schemas: the talent database and the lead inbox
+    for (const spec of SCRIPTS.filter((s) => s.name === "setup")) {
+      const path = specPath(spec);
+      step(`running ${path}`);
+      if (DRY_RUN) continue;
+      const out = await w.call("POST", `/w/{ws}/jobs/run_wait_result/p/${path}`, {});
+      if (!/"ok"\s*:\s*true/.test(out)) throw new Error(`${path} did not report ok: ${out.slice(0, 300)}`);
     }
 
     // 6. Schedules and the HTTP route
-    for (const spec of SCRIPTS) await schedule(asService, exists, spec);
+    // The dispatcher and the lead sync take over from the schedules they replace: if those were on,
+    // the new ones are turned on in the same deploy, so deliveries never stop in between.
+    const replacedWereOn = await anyEnabled(w, exists, SCRIPTS.filter((spec) => spec.retiredSchedule));
+    if (replacedWereOn) step("the replaced schedules were on: f/talent/dispatch and f/leads/sync_crm will be on too");
+    for (const spec of SCRIPTS) await schedule(asService, exists, spec, replacedWereOn);
     for (const spec of SCRIPTS) await route(asService, exists, spec);
 
     // 7. Warm the route: a wrong secret must answer 403
@@ -303,10 +330,32 @@ async function main() {
 
 type Api = ReturnType<typeof api>;
 
-async function schedule(w: Api, exists: (path: string) => Promise<boolean>, spec: ScriptSpec) {
-  if (!spec.schedule) return;
+/** Whether any of these scripts' schedules exists and is enabled. */
+async function anyEnabled(w: Api, exists: (path: string) => Promise<boolean>, specs: ScriptSpec[]): Promise<boolean> {
+  for (const spec of specs) {
+    const path = specPath(spec);
+    if (!(await exists(`/w/{ws}/schedules/exists/${path}`))) continue;
+    const current = JSON.parse(await w.call("GET", `/w/{ws}/schedules/get/${path}`)) as { enabled?: boolean };
+    if (current.enabled) return true;
+  }
+  return false;
+}
+
+/** The schedules that replace the retired ones (roadmap 1F). */
+const REPLACEMENTS = new Set(["talent/dispatch", "leads/sync_crm"]);
+
+async function schedule(w: Api, exists: (path: string) => Promise<boolean>, spec: ScriptSpec, replacedWereOn = false) {
   const path = specPath(spec);
-  const enable = spec.name === "retention" ? ENABLE_RETENTION : ENABLE_SCHEDULES;
+  if (spec.retiredSchedule) {
+    // The dispatcher does this work now: turn the old schedule off (kept, so it can be turned back on by hand).
+    if (await exists(`/w/{ws}/schedules/exists/${path}`)) {
+      await w.write(`/w/{ws}/schedules/setenabled/${path}`, { enabled: false }, `disabling schedule ${path} (replaced by the dispatcher)`);
+    }
+    return;
+  }
+  if (!spec.schedule) return;
+  const enable =
+    spec.name === "retention" ? ENABLE_RETENTION : ENABLE_SCHEDULES || (replacedWereOn && REPLACEMENTS.has(`${spec.folder ?? FOLDER}/${spec.name}`));
   const body = { schedule: spec.schedule.cron, timezone: TIMEZONE, args: {}, summary: spec.schedule.summary };
   if (await exists(`/w/{ws}/schedules/exists/${path}`)) {
     await w.write(`/w/{ws}/schedules/update/${path}`, body, `updating schedule ${path} (${spec.schedule.cron})`);
@@ -334,7 +383,7 @@ async function route(w: Api, exists: (path: string) => Promise<boolean>, spec: S
     authentication_method: "none",
     is_static_website: false,
     wrap_body: false,
-    raw_string: false,
+    raw_string: spec.route.rawBody ?? false,
     summary: spec.summary,
   };
   if (await exists(`/w/{ws}/http_triggers/exists/${path}`)) {

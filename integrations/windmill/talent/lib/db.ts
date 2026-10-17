@@ -4,7 +4,7 @@
  * apps/pg-main/base/cluster.yaml), so each run holds at most one.
  */
 import postgres from "postgres";
-import { config } from "./config.ts";
+import { config, type ConfigName } from "./config.ts";
 
 export type Sql = postgres.Sql;
 
@@ -22,7 +22,12 @@ const passThroughJson = (oid: number) => ({
 });
 
 export async function withTalentDb<T>(fn: (query: Query) => Promise<T>): Promise<T> {
-  const sql = postgres(await config("talent_pg_url"), {
+  return withDatabase("talent_pg_url", fn);
+}
+
+/** The same, for the database whose URL is the Windmill variable `url` (leads_pg_url: the lead inbox). */
+export async function withDatabase<T>(url: ConfigName, fn: (query: Query) => Promise<T>): Promise<T> {
+  const sql = postgres(await config(url), {
     max: 1,
     connect_timeout: 10,
     idle_timeout: 5,

@@ -2,6 +2,8 @@
 
 import * as wmill from "windmill-client";
 
+import postgres from "postgres";
+
 import { Ajv2020 } from "ajv/dist/2020.js";
 
 import { timingSafeEqual } from "node:crypto";
@@ -26,6 +28,8 @@ const { VARIABLES, variablePath, setConfigForTests, config } = (() => {
       twenty_api_key: { secret: true },
       lead_webhook_secret: { secret: true },
       fast2sms_dlr_secret: { secret: true },
+      leads_pg_url: { secret: true },
+      submission_signing_secret: { secret: true },
   };
   const variablePath = (name) => `f/talent/${name}`;
   let override = null;
@@ -45,6 +49,37 @@ const { VARIABLES, variablePath, setConfigForTests, config } = (() => {
       return value;
   }
   return { VARIABLES, variablePath, setConfigForTests, config };
+})();
+
+// integrations/windmill/talent/lib/db.ts
+const { withTalentDb, withDatabase, queryWith } = (() => {
+  const passThroughJson = (oid) => ({
+      to: oid,
+      from: [oid],
+      serialize: (value) => (typeof value === "string" ? value : JSON.stringify(value)),
+      parse: (value) => JSON.parse(value),
+  });
+  async function withTalentDb(fn) {
+      return withDatabase("talent_pg_url", fn);
+  }
+  async function withDatabase(url, fn) {
+      const sql = postgres(await config(url), {
+          max: 1,
+          connect_timeout: 10,
+          idle_timeout: 5,
+          prepare: false,
+          types: { json: passThroughJson(114), jsonb: passThroughJson(3802) },
+          onnotice: () => { },
+      });
+      try {
+          return await fn(queryWith(sql));
+      }
+      finally {
+          await sql.end({ timeout: 5 });
+      }
+  }
+  const queryWith = (sql) => async (text, params = []) => (await sql.unsafe(text, params));
+  return { withTalentDb, withDatabase, queryWith };
 })();
 
 // integrations/windmill/talent/lib/response.ts
@@ -558,6 +593,111 @@ const { checkLead, serviceValues, crewSize, opportunityName, recordLead } = (() 
   return { checkLead, serviceValues, crewSize, opportunityName, recordLead };
 })();
 
+// integrations/windmill/leads/lib/sql.ts
+const { LEADS_SAVE, LEADS_SYNC_LOCK, LEADS_RECOVER_STUCK, LEADS_CLAIM, LEADS_FINISH } = (() => {
+  const LEADS_SAVE = `
+  WITH l AS (
+    INSERT INTO leads (case_id, type, channel, payload, idempotency_key, received_at)
+    VALUES ($1, $2, $3, $4::jsonb, $5, $6::timestamptz)
+    ON CONFLICT (case_id) DO NOTHING
+    RETURNING id
+  ), d AS (
+    INSERT INTO deliveries (lead_id, target) SELECT id, 'crm' FROM l RETURNING 1
+  )
+  SELECT (SELECT id FROM l) AS lead_id, (SELECT count(*) FROM d) AS deliveries;`;
+  const LEADS_SYNC_LOCK = `SELECT pg_try_advisory_lock(hashtext('leads:sync_crm')) AS locked;`;
+  const LEADS_RECOVER_STUCK = `
+  UPDATE deliveries
+  SET status = CASE WHEN attempts >= max_attempts THEN 'dead' ELSE 'pending' END,
+      last_error = coalesce(last_error, 'Interrupted; picked up again'), next_attempt_at = now(), updated_at = now()
+  WHERE status = 'running' AND updated_at < now() - interval '15 minutes'
+  RETURNING lead_id;`;
+  const LEADS_CLAIM = `
+  WITH c AS (
+    SELECT lead_id FROM deliveries
+    WHERE target = 'crm' AND status = 'pending' AND next_attempt_at <= now() AND ($1::uuid IS NULL OR lead_id = $1::uuid)
+    ORDER BY next_attempt_at, created_at LIMIT 1 FOR UPDATE SKIP LOCKED
+  ), claimed AS (
+    UPDATE deliveries d SET status = 'running', attempts = d.attempts + 1, updated_at = now()
+    FROM c WHERE d.lead_id = c.lead_id AND d.target = 'crm'
+    RETURNING d.lead_id, d.attempts
+  )
+  SELECT claimed.lead_id, claimed.attempts, l.case_id, l.payload
+  FROM claimed JOIN leads l ON l.id = claimed.lead_id;`;
+  const LEADS_FINISH = `
+  UPDATE deliveries
+  SET status = CASE WHEN $2 = 'retry' THEN (CASE WHEN attempts >= max_attempts THEN 'dead' ELSE 'pending' END) ELSE $2 END,
+      next_attempt_at = CASE WHEN $2 = 'retry' THEN now() + make_interval(secs => $4::int) ELSE next_attempt_at END,
+      last_error = $3, result = coalesce($5::jsonb, result),
+      done_at = CASE WHEN $2 = 'done' THEN now() ELSE done_at END, updated_at = now()
+  WHERE lead_id = $1::uuid AND target = 'crm' AND status = 'running'
+  RETURNING status;`;
+  return { LEADS_SAVE, LEADS_SYNC_LOCK, LEADS_RECOVER_STUCK, LEADS_CLAIM, LEADS_FINISH };
+})();
+
+// integrations/windmill/leads/lib/run-leads.ts
+const { saveLead, LEADS_BATCH, leadBackoffSeconds, runLeadsSync } = (() => {
+  async function saveLead(query, lead, idempotencyKey = null) {
+      const type = lead.requestType === "compliance-help" ? "compliance_help.v1" : "business_enquiry.v1";
+      const [row] = await query(LEADS_SAVE, [
+          lead.caseId,
+          type,
+          lead.channel,
+          JSON.stringify(lead),
+          idempotencyKey,
+          lead.receivedAt,
+      ]);
+      return { leadId: row?.lead_id ?? null, created: Boolean(row?.lead_id) };
+  }
+  const LEADS_BATCH = 5;
+  const leadBackoffSeconds = (attempts) => Math.min(60 * 2 ** Math.max(0, attempts - 1), 3600);
+  async function runLeadsSync(deps, options = {}) {
+      const log = deps.log ?? ((m) => console.error(m));
+      const result = { recovered: 0, done: 0, retried: 0, dead: 0 };
+      const [lock] = await deps.query(LEADS_SYNC_LOCK);
+      if (!lock?.locked)
+          return { ...result, skipped: "another sync is running" };
+      result.recovered = (await deps.query(LEADS_RECOVER_STUCK)).length;
+      const batch = options.leadId ? 1 : (options.batch ?? LEADS_BATCH);
+      for (let n = 0; n < batch; n++) {
+          const [claim] = await deps.query(LEADS_CLAIM, [options.leadId ?? null]);
+          if (!claim)
+              break;
+          let outcome = "done";
+          let error = null;
+          let written = null;
+          try {
+              written = await recordLead(deps.crm, claim.payload);
+          }
+          catch (err) {
+              outcome = "retry";
+              error = (err instanceof Error ? err.message : "unknown error").slice(0, 500);
+          }
+          const [finished] = await deps.query(LEADS_FINISH, [
+              claim.lead_id,
+              outcome,
+              error,
+              leadBackoffSeconds(claim.attempts),
+              written === null ? null : JSON.stringify(written),
+          ]);
+          if (finished?.status === "done")
+              result.done++;
+          else if (finished?.status === "dead")
+              result.dead++;
+          else
+              result.retried++;
+          if (error && /HTTP 429/.test(error)) {
+              result.rateLimited = true;
+              break;
+          }
+          if (error)
+              log(`lead ${claim.case_id} not in Twenty yet: ${error}`);
+      }
+      return result;
+  }
+  return { saveLead, LEADS_BATCH, leadBackoffSeconds, runLeadsSync };
+})();
+
 export const SECRET_HEADER = "x-vspl-lead-secret";
 export function secretMatches(given, expected) {
     if (!given || !expected)
@@ -578,9 +718,11 @@ export async function main(authorized, body) {
     if (!checked.ok)
         return respond(400, { ok: false, error: `Invalid lead: ${checked.errors.join(", ")}` });
     try {
-        const crm = await twentyFromConfig();
-        const result = await recordLead(crm, checked.lead);
-        return respond(202, { ok: true, caseId: checked.lead.caseId, created: result.created });
+        const saved = await withDatabase("leads_pg_url", (query) => saveLead(query, checked.lead));
+        if (saved.leadId) {
+            await wmill.runScriptByPathAsync("f/leads/sync_crm", { lead_id: saved.leadId }).catch(() => { });
+        }
+        return respond(202, { ok: true, caseId: checked.lead.caseId, created: saved.created });
     }
     catch (err) {
         console.error("lead intake failed:", checked.lead.caseId, err instanceof Error ? `${err.name}: ${err.message}` : "unknown error");

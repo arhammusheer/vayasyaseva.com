@@ -1,6 +1,6 @@
 {
   "summary": "Leads · intake",
-  "description": "The website's crew requests (POST /webhook/vspl-lead, from /api/contact and /api/agent/contact): checks x-vspl-lead-secret, writes the company, contact, crew request and enquiry into Twenty CRM, answers 202.",
+  "description": "The website's business enquiries (POST /webhook/vspl-lead, from /api/contact and /api/agent/contact): checks x-vspl-lead-secret, validates (business_enquiry.v1), saves the lead in the inbox and answers 202; f/leads/sync_crm files it in Twenty.",
   "lock": "",
   "kind": "script",
   "language": "bun",

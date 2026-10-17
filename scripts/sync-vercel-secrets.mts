@@ -38,8 +38,11 @@ const secrets: [name: string, read: () => string][] = [
   // vercel/vayasyaseva.com.sops.yaml. Until then the site derives it from the
   // webhook secret, as before, so a missing value is skipped, not an error.
   ["TICKET_SIGNING_KEY", () => sopsValue("TICKET_SIGNING_KEY")],
+  // The signed Windmill routes' key (webhook/vspl-submission, webhook/vspl-idempotency), once the owner
+  // has created growth/windmill-submission. With it the site switches to the envelope route.
+  ["SUBMISSION_SIGNING_SECRET", () => clusterValue("growth", "windmill-submission", "SUBMISSION_SIGNING_SECRET")],
 ];
-const optional = new Set(["TICKET_SIGNING_KEY"]);
+const optional = new Set(["TICKET_SIGNING_KEY", "SUBMISSION_SIGNING_SECRET"]);
 
 for (const [name, read] of secrets) {
   let value: string;

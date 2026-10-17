@@ -1,0 +1,26 @@
+{
+  "summary": "Platform · submission",
+  "description": "One signed route for every submission (POST /webhook/vspl-submission, envelope.v1): checks the HMAC over timestamp and raw body (five minutes of skew), saves a job application (talent) or a lead (inbox), answers 202.",
+  "lock": "",
+  "kind": "script",
+  "language": "bun",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "authorized": {
+        "type": "boolean",
+        "description": "Set by the preprocessor: the signature matched."
+      },
+      "body": {
+        "type": "object",
+        "description": "The envelope (packages/contracts envelope.v1)."
+      }
+    },
+    "required": [
+      "authorized",
+      "body"
+    ]
+  },
+  "has_preprocessor": true
+}

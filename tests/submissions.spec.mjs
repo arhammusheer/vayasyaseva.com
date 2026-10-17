@@ -388,3 +388,78 @@ test('tickets: without TICKET_SIGNING_KEY they are signed as before; with it, ol
   delete process.env.TICKET_SIGNING_KEY;
   assert.equal(readTicket(keyed), null);
 });
+
+// --- The signed envelope route and the durable store (1F) ---------------------------
+
+test('envelope transport: signed envelope.v1 to webhook/vspl-submission; the older routes until the secret is set', async (t) => {
+  t.mock.method(console, 'info', () => {});
+  t.mock.method(console, 'error', () => {});
+  const { envelopeTransport, transport, webhookTransport, setTransport: set } = await importTs('src/server/submissions/transport.ts');
+  const { checkSignature } = await import('@vspl/contracts/signing');
+  const { talentIntakeSchema } = await importTs('src/lib/talent-intake/contract.ts');
+  const { buildLeadPayload } = await importTs('src/lib/lead-forward.ts');
+  set(null);
+  try {
+    delete process.env.SUBMISSION_SIGNING_SECRET;
+    assert.equal(transport(), webhookTransport);
+    process.env.SUBMISSION_SIGNING_SECRET = 'unit-signing';
+    assert.notEqual(transport(), webhookTransport);
+    const sent = [];
+    let answer = 202;
+    const fetchImpl = async (url, init) => (sent.push({ url, init }), new Response('{}', { status: answer }));
+    const payload = talentIntakeSchema.parse({
+      ref: 'VS-J-ENVLP1', source: 'web', locale: 'en-IN', cluster: 'haridwar', pageCluster: 'haridwar', pagePath: '/jobs/haridwar', role: null, hub: null,
+      channel: 'web', agentName: null, phone: '9876543210', adult: true, consent: { version: 'v', at: '2026-10-18T05:00:00.000Z' },
+      text: 'Packing.', attachments: [], form: 'long', applicantName: null, answers: null,
+    });
+    const envelope = envelopeTransport(fetchImpl, [0, 0]);
+    await envelope.application(payload, { idempotencyKey: 'key-0000-0001' });
+    const { url, init } = sent[0];
+    assert.equal(url, 'https://hooks.vayasyaseva.com/api/r/webhook/vspl-submission');
+    assert.equal(checkSignature('unit-signing', init.headers, init.body), 'ok');
+    const body = JSON.parse(init.body);
+    assert.deepEqual([body.v, body.type, body.id, body.idempotencyKey, body.payload.phone], [1, 'job_application.v1', 'VS-J-ENVLP1', 'key-0000-0001', '+919876543210']);
+    answer = 500;
+    await assert.rejects(envelope.application(payload, { idempotencyKey: null }), /answered 500/);
+    // A compliance help lead: its own type; a 503 then 202 is delivered on the second try.
+    sent.length = 0;
+    let tries = 0;
+    const flaky = envelopeTransport(async (u, i) => (sent.push({ u, i }), new Response('{}', { status: ++tries < 2 ? 503 : 202 })), [0, 0]);
+    const lead = buildLeadPayload({ name: 'Asha', phone: '9876543210', details: 'Help with PF.', requestType: 'compliance-help' }, { caseId: 'REQ-20261018-0A1B2C3D', channel: 'web' });
+    assert.equal(await flaky.lead(lead, { idempotencyKey: null }), true);
+    assert.equal(tries, 2);
+    assert.equal(JSON.parse(sent[0].i.body).type, 'compliance_help.v1');
+    // A lead the contract refuses is never sent, and never retried.
+    assert.equal(await flaky.lead({ ...lead, caseId: 'nope' }, { idempotencyKey: null }), false);
+    assert.equal(tries, 2);
+  } finally {
+    delete process.env.SUBMISSION_SIGNING_SECRET;
+  }
+});
+
+test('durable Idempotency-Key store: Windmill answers; when it cannot, this instance remembers', async (t) => {
+  t.mock.method(console, 'warn', () => {});
+  const { windmillIdempotencyStore, memoryIdempotencyStore: memoryStore } = await importTs('src/server/submissions/policies/idempotency.ts');
+  const { checkSignature } = await import('@vspl/contracts/signing');
+  process.env.SUBMISSION_SIGNING_SECRET = 'unit-signing';
+  try {
+    const calls = [];
+    let up = true;
+    const fetchImpl = async (url, init) => {
+      calls.push(JSON.parse(init.body));
+      assert.equal(checkSignature('unit-signing', init.headers, init.body), 'ok');
+      if (!up) throw new Error('connect ECONNREFUSED');
+      const op = JSON.parse(init.body).op;
+      return Response.json(op === 'begin' ? { state: 'replay', answer: { status: 202, body: { ref: 'VS-J-REPLAY' } } } : { ok: true });
+    };
+    const store = windmillIdempotencyStore(memoryStore(), fetchImpl);
+    assert.deepEqual(await store.begin('/api/agent/jobs', 'key-0000-0001', 'fp'), { state: 'replay', answer: { status: 202, body: { ref: 'VS-J-REPLAY' } } });
+    assert.equal(calls[0].op, 'begin');
+    up = false;
+    assert.deepEqual(await store.begin('/api/agent/jobs', 'key-0000-0002', 'fp'), { state: 'new' }, 'falls back to memory');
+    await store.complete('/api/agent/jobs', 'key-0000-0002', { status: 202, body: { ref: 'VS-J-MEMORY' } });
+    assert.equal((await store.begin('/api/agent/jobs', 'key-0000-0002', 'fp')).state, 'replay', 'memory kept the answer');
+  } finally {
+    delete process.env.SUBMISSION_SIGNING_SECRET;
+  }
+});

@@ -47,14 +47,24 @@ shared checks, `transport.ts` the delivery to Windmill.
 hash of the request (`src/lib/idempotency-key.ts`); agents may send one
 (8 to 128 of `A-Z a-z 0-9 _ . : -`). A replay answers the first 2xx again,
 with `idempotent-replayed: true`. A failed run is forgotten, but keeps the
-case ID or reference it issued for a retry with the same key. The store is
-in memory per Vercel instance (`policies/idempotency.ts`), so a retry that
-lands on another instance runs again, as it did before; the durable store
-comes with the Windmill submission inbox.
+case ID or reference it issued for a retry with the same key. With
+`SUBMISSION_SIGNING_SECRET` set the store is Windmill's
+(`f/platform/idempotency`: jobs keys in the talent database, contact keys in
+the lead inbox), so a retry on another Vercel instance still replays; if
+Windmill does not answer within 2.5 s, this instance's memory takes over for
+that call. Without the secret, memory only.
 
 **A failed staff email** (MSG91) no longer loses the lead: the lead goes to
-Windmill after the response either way. The person still sees the error
+Windmill after the response either way, and Windmill saves it in the lead
+inbox before it answers 202 (roadmap 1F). The person still sees the error
 (500) and is asked to try again or call, as before.
+
+**Transport.** With `SUBMISSION_SIGNING_SECRET` set, every submission goes
+as `envelope.v1` to the one signed route `webhook/vspl-submission` (HMAC over
+the timestamp and raw body, five minutes of skew; `packages/contracts/src/signing.ts`).
+Without it, the older routes (`vspl-talent-intake`, `vspl-lead`), which stay
+as adapters. The switch is the secret: add it to Windmill (deploy) first,
+then to Vercel.
 
 **Tickets.** `TICKET_SIGNING_KEY` signs the jobs tickets. Without it they
 are signed with a key derived from `TALENT_INTAKE_WEBHOOK_SECRET`, as

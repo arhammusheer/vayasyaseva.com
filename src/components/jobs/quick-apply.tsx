@@ -10,7 +10,7 @@ import { useSessionDraft } from "@/lib/use-session-draft";
 import { FormDraftNotice } from "@/components/form-draft-notice";
 import { revealFormTarget } from "@/lib/form-navigation";
 import { cn } from "@/lib/utils";
-import { formPage, trackAdsConversion, trackAnalyticsEvent, type AnalyticsParams } from "@/lib/analytics";
+import { currentAdClick, formPage, measurementClaim, track, trackConversion, type AnalyticsParams } from "@/lib/measurement/gateway";
 import { jobsCopy } from "@/content/pages/jobs";
 import { STEP_DEFS, areaOptions, quickApplyCopy, roleFor, type Answers, type AreaSource, type StepDef } from "@/content/pages/quick-apply";
 import { MODEL_VERSION } from "@/lib/intent/model";
@@ -24,7 +24,6 @@ import { usePathname } from "next/navigation";
 import { AREA_CLUSTERS, submissionCluster, type QuickAnswers, MAX_APPLICANT_NAME_LENGTH, WEB_SOURCE, cleanQuickAnswers, isJobRole, isJobHub, isPagePath, normaliseIndianMobile, type IntakeCluster, type JobHub, type JobRole } from "@/lib/talent-intake/rules";
 import { JobSubmissionFailure, useJobSubmission } from "@/lib/use-job-submission";
 import { TURNSTILE_SCRIPT_URL } from "@/lib/turnstile";
-import { adClick } from "@/lib/ad-click";
 import { JobFilePicker, declareFiles, uploadAll, useJobFiles } from "@/components/jobs/job-files";
 
 /**
@@ -176,8 +175,8 @@ export function QuickApply({
   const markStarted = () => {
     if (started.current) return;
     started.current = true;
-    trackAnalyticsEvent("job_form_start", { locale, variant: "quick", page: formPage() });
-    trackAnalyticsEvent("quick_apply_start", { locale, entry: entry.current });
+    track("job_form_start", { locale, variant: "quick", page: formPage() });
+    track("quick_apply_start", { locale, entry: entry.current });
   };
   const filePicker = useJobFiles(locale, markStarted);
   const { files } = filePicker;
@@ -292,10 +291,10 @@ export function QuickApply({
       const params: AnalyticsParams = { locale, step: step.id, answer: value };
       if (before && before !== value) params.changed = "yes";
       if (step.id === "area") Object.assign(params, { area_source: areaSource, decided: areaMarket ?? "none", v: MODEL_VERSION });
-      trackAnalyticsEvent("quick_step", params);
+      track("quick_step", params);
       return;
     }
-    if (confirmed.includes(step.id)) trackAnalyticsEvent("quick_step", { locale, step: step.id, answer: value, changed: "yes" });
+    if (confirmed.includes(step.id)) track("quick_step", { locale, step: step.id, answer: value, changed: "yes" });
     setAnswers((a) => {
       const current = a[step.id] ?? [];
       let next = current.includes(value) ? current.filter((v) => v !== value) : [...current, value];
@@ -308,7 +307,7 @@ export function QuickApply({
   function confirm(step: StepDef) {
     pendingStep.current = step.id;
     setConfirmed((c) => [...c.filter((id) => id !== step.id), step.id]);
-    trackAnalyticsEvent("quick_step", { locale, step: step.id, answer: (answers[step.id] ?? []).join(",").slice(0, 200) });
+    track("quick_step", { locale, step: step.id, answer: (answers[step.id] ?? []).join(",").slice(0, 200) });
   }
 
   async function submit(event: React.FormEvent) {
@@ -322,7 +321,7 @@ export function QuickApply({
     if (!failed.length && !turnstileToken && !submission.attempt) failed.push("verification");
     setFailedChecks(failed);
     if (failed.length) {
-      trackAnalyticsEvent("job_form_error", { locale, variant: "quick", page: formPage(), reason: "validation", checks: failed.join(",") });
+      track("job_form_error", { locale, variant: "quick", page: formPage(), reason: "validation", checks: failed.join(",") });
       return;
     }
 
@@ -338,7 +337,7 @@ export function QuickApply({
     try {
       const ref = await submission.send({
         start: { source: WEB_SOURCE, locale, pageCluster: cluster, pagePath, role, hub, turnstileToken: turnstileToken ?? "", files: declared },
-        payload: { phone, adult: true, consent: true, text: null, form: "quick", name: name.trim().slice(0, MAX_APPLICANT_NAME_LENGTH), answers: sent, adClick: adClick() },
+        payload: { phone, adult: true, consent: true, text: null, form: "quick", name: name.trim().slice(0, MAX_APPLICANT_NAME_LENGTH), answers: sent, adClick: currentAdClick(), measurement: measurementClaim() },
         resetVerification: resetTurnstile,
         upload: async (uploads) => {
           await uploadAll(uploads, files.map((f) => f.file), declared.map((d) => d.kind), locale, (n, total, percent) => setPhase({ name: "sending", message: form.sendingFile(n, total, percent) }));
@@ -359,14 +358,14 @@ export function QuickApply({
         cluster: submissionCluster(cluster, answers as QuickAnswers),
         area_source: areaSource,
       };
-      trackAnalyticsEvent("job_form_submit", { ...summary, page: formPage() });
-      trackAnalyticsEvent("quick_apply_submit", summary);
-      trackAdsConversion("jobApplication");
+      track("job_form_submit", { ...summary, page: formPage() });
+      track("quick_apply_submit", summary);
+      trackConversion("jobApplication");
     } catch (error) {
       const key = error instanceof JobSubmissionFailure ? error.reason : "network";
       setFailedChecks([key]);
       setPhase({ name: "form" });
-      trackAnalyticsEvent("job_form_error", { locale, variant: "quick", page: formPage(), reason: key });
+      track("job_form_error", { locale, variant: "quick", page: formPage(), reason: key });
     }
   }
 

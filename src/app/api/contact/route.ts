@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse, after } from "next/server";
-import { trackServerEvent } from "@/lib/server-events";
+import { reportServerCount } from "@/lib/measurement/server";
 import { contactContract, parseContactRequest } from "@/lib/contact-contract";
 import { BUSINESS_NOTICE_VERSION, assessCrewRequest } from "@/lib/crew-request";
 import {
@@ -229,7 +229,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    trackServerEvent("enquiry_received", "/api/contact", {
+    reportServerCount("enquiry_received", "/api/contact", {
       channel: "web",
       cluster: data.pageCluster ?? "none",
       qualified: assessment.qualified ? "yes" : "no",

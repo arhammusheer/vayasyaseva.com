@@ -2,7 +2,7 @@
 
 import { useId, useState } from "react";
 import { FileText, ImageIcon, Paperclip, X } from "lucide-react";
-import { trackAnalyticsEvent } from "@/lib/analytics";
+import { track } from "@/lib/measurement/gateway";
 import { jobsCopy } from "@/content/pages/jobs";
 import type { Locale } from "@/lib/i18n";
 import { ATTACHMENT_MIME, INTAKE_LIMITS, type AttachmentKind } from "@/lib/talent-intake/rules";
@@ -80,7 +80,7 @@ export async function uploadAll(
       await upload(target.url, target.headers, bodies[i], (percent) => onProgress(i + 1, uploads.length, percent));
     } catch (error) {
       const reason = error instanceof Error ? error.message.replace(/\s+/g, "_").slice(0, 20) : "unknown";
-      trackAnalyticsEvent("upload_error", { locale, kind: kinds[i] ?? "unknown", size_mb: Math.ceil(bodies[i].size / 1048576), reason });
+      track("upload_error", { locale, kind: kinds[i] ?? "unknown", size_mb: Math.ceil(bodies[i].size / 1048576), reason });
       throw error;
     }
   }
@@ -101,8 +101,8 @@ export function useJobFiles(locale: Locale, onAdd?: () => void) {
     for (const file of Array.from(list)) {
       const picked = classify(file);
       const reject = !picked ? "wrong_type" : file.size > INTAKE_LIMITS.maxBytes[picked.kind] ? "too_large" : next.length >= MAX_FILES ? "too_many" : null;
-      if (reject) trackAnalyticsEvent("file_rejected", { locale, reason: reject });
-      else trackAnalyticsEvent("file_added", { locale, kind: picked!.kind });
+      if (reject) track("file_rejected", { locale, reason: reject });
+      else track("file_added", { locale, kind: picked!.kind });
       if (!picked) problems.push(`${file.name} ${t.files.wrongType}`);
       else if (file.size > INTAKE_LIMITS.maxBytes[picked.kind]) problems.push(`${file.name} ${t.files.tooLarge}`);
       else if (next.length >= MAX_FILES) problems.push(t.files.tooMany);

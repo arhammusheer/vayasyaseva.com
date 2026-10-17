@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { jobsSubmitRequestSchema, type JobsSubmitResponse } from "@/lib/talent-intake/contract";
 import { submitWithTicket, unavailable } from "@/lib/talent-intake/submit";
-import { uploadJobApplicationConversion } from "@/lib/google-ads-conversions";
+import { adClickToReport, reportAdClickConversion } from "@/lib/measurement/server";
 
 export const runtime = "nodejs";
 
@@ -16,14 +16,15 @@ export async function POST(request: NextRequest) {
   if (!parsed.success) {
     return NextResponse.json({ error: "invalid_request", fields: parsed.error.issues.map((i) => i.path.join(".")) }, { status: 400 });
   }
-  const { ticket, phone, text, form, name, answers, adClick } = parsed.data;
+  const { ticket, phone, text, form, name, answers } = parsed.data;
+  const click = adClickToReport(parsed.data);
 
   try {
     const response = await submitWithTicket(ticket, phone, text, "web", { form, applicantName: name, answers });
     // From an ad: tell Google Ads which click led to this application.
-    if (response.ok && adClick) {
+    if (response.ok && click) {
       const { ref } = (await response.clone().json()) as JobsSubmitResponse;
-      uploadJobApplicationConversion(adClick, ref);
+      reportAdClickConversion(click, ref);
     }
     return response;
   } catch (error) {

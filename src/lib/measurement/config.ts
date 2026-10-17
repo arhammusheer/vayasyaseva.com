@@ -1,3 +1,7 @@
+/**
+ * Build-time measurement settings (pure: no window, no server-only). The
+ * NEXT_PUBLIC_ values are inlined into the client bundle by Next.js.
+ */
 export const gaId =
   process.env.NEXT_PUBLIC_GA_ID ||
   (process.env.NODE_ENV === "production" ? "G-80VCZT0V6G" : undefined);
@@ -15,6 +19,7 @@ export const adsConversions = {
   // Secondary in Google Ads: recorded, not used for bidding on the jobs campaigns.
   businessEnquiry: "hotZCK2HrY4dEO_X_-lE",
 } as const;
+export type AdsConversion = keyof typeof adsConversions;
 
 // Meta Pixel, after "Allow All" only. Dormant until NEXT_PUBLIC_META_PIXEL_ID is
 // set: the privacy notice and the consent version must be updated first
@@ -23,3 +28,22 @@ export const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID || undefined;
 
 // Umami runs on our own infrastructure; the tag is proxied through /_t (next.config.ts).
 export const umamiWebsiteId = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID;
+
+/** What a purpose's `enabled(env)` reads: which tools this build or server can run at all. */
+export type MeasurementEnv = {
+  /** NODE_ENV is production. */
+  production: boolean;
+  gaId?: string;
+  googleAdsId?: string;
+  metaPixelId?: string;
+  umamiWebsiteId?: string;
+};
+
+/** This build's settings, as `enabled(env)` reads them. */
+export const measurementEnv: MeasurementEnv = {
+  production: process.env.NODE_ENV === "production",
+  gaId,
+  googleAdsId,
+  metaPixelId,
+  umamiWebsiteId,
+};

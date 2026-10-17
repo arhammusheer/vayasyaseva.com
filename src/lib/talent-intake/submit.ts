@@ -5,7 +5,7 @@
  */
 import { NextResponse } from "next/server";
 import { talentIntakeSchema, type JobsSubmitResponse } from "./contract";
-import { trackServerEvent } from "@/lib/server-events";
+import { reportServerCount } from "@/lib/measurement/server";
 import { areaSet } from "@/markets/index";
 import {
   LEGACY_SOURCE_LOCALES,
@@ -83,7 +83,7 @@ export async function forwardSubmission(draft: Draft, phone: string, text: strin
   }
 
   await forwardToIntake(payload.data);
-  trackServerEvent("application_received", channel === "agent" ? "/api/agent/jobs" : "/api/jobs/submit", {
+  reportServerCount("application_received", channel === "agent" ? "/api/agent/jobs" : "/api/jobs/submit", {
     channel,
     form: payload.data.form ?? "agent",
     role: payload.data.role ?? "none",

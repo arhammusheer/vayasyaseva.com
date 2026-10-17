@@ -16,11 +16,13 @@
  *   what was shown: intent_confirmed, intent_corrected, or intent_self_chosen
  *   when nothing had been decided.
  */
-import { trackUmamiEvent } from "@/lib/analytics";
+import { track } from "@/lib/measurement/gateway";
 import { eventKey } from "@/markets/index";
 import { MODEL_VERSION, type AreaDecision } from "./model";
 
 const REPORTED_KEY = "vs-area-board-v1";
+/** The board events mean nothing outside the board: Umami only, never GA4 or Meta. */
+const UMAMI_ONLY = { umamiOnly: true } as const;
 
 const BASIS_EVENT: Record<AreaDecision["basis"], string> = {
   chosen: "intent_by_pick",
@@ -55,9 +57,9 @@ export const shownMarkets = (d: Pick<AreaDecision, "business" | "jobs">) => [...
 export function reportDecision(d: AreaDecision) {
   const shown = shownMarkets(d);
   if (once(`decision|${d.basis}|${shown.join("+")}`)) {
-    trackUmamiEvent(BASIS_EVENT[d.basis], { markets: shown.join("+") || "none", mode: d.mode, v: MODEL_VERSION });
+    track(BASIS_EVENT[d.basis], { markets: shown.join("+") || "none", mode: d.mode, v: MODEL_VERSION }, UMAMI_ONLY);
   }
-  for (const id of shown) if (once(`shown|${id}`)) trackUmamiEvent(`market_shown_${marketKey(id)}`, { mode: d.mode, v: MODEL_VERSION });
+  for (const id of shown) if (once(`shown|${id}`)) track(`market_shown_${marketKey(id)}`, { mode: d.mode, v: MODEL_VERSION }, UMAMI_ONLY);
 }
 
 /**
@@ -68,6 +70,6 @@ export function reportDecision(d: AreaDecision) {
 export function reportChoice(cluster: string, decided: readonly string[], surface: string) {
   const outcome = !decided.length ? "intent_self_chosen" : decided.includes(cluster) ? "intent_confirmed" : "intent_corrected";
   const params = { market: cluster, decided: decided.join("+") || "none", surface, v: MODEL_VERSION };
-  trackUmamiEvent(`market_chosen_${marketKey(cluster)}`, params);
-  trackUmamiEvent(outcome, params);
+  track(`market_chosen_${marketKey(cluster)}`, params, UMAMI_ONLY);
+  track(outcome, params, UMAMI_ONLY);
 }

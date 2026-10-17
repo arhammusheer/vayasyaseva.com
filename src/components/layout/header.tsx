@@ -25,7 +25,7 @@ import {
 } from "@/components/layout/nav-links";
 import { clusterById } from "@/content/registry";
 import { LOCATIONS_PATH, jobsHubPath, type ClusterId } from "@/content/registry/identifiers";
-import { trackAnalyticsEvent } from "@/lib/analytics";
+import { track } from "@/lib/measurement/gateway";
 import { useAreaDecision } from "@/lib/intent/use-area";
 import { splitLanguages, useLanguageOrder } from "@/lib/language-order";
 import { noteChoice } from "@/lib/intent/store";
@@ -310,7 +310,7 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
       // What the visitor followed, beside what the site had decided, so the
       // decision's accuracy can be measured (docs/area-intent.md).
       const decided = item.surface === "business" ? area.business : area.jobs;
-      trackAnalyticsEvent("area_nav_click", {
+      track("area_nav_click", {
         cluster: item.cluster,
         surface: item.surface ?? "business",
         mode: area.mode,

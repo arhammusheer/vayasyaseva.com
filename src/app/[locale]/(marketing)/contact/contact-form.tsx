@@ -15,7 +15,7 @@ import { FormDraftNotice } from "@/components/form-draft-notice";
 import { revealFormTarget } from "@/lib/form-navigation";
 import { cn } from "@/lib/utils";
 import { localePath } from "@/lib/i18n";
-import { trackAdsConversion, trackAnalyticsEvent } from "@/lib/analytics";
+import { track, trackConversion } from "@/lib/measurement/gateway";
 import { ENQUIRY_PREFILL_FIELDS, readPrefill } from "@/lib/prefill";
 import { TURNSTILE_SCRIPT_URL } from "@/lib/turnstile";
 import {
@@ -309,7 +309,7 @@ export function ContactForm() {
   const markStarted = useCallback(() => {
     if (trackedStart.current) return;
     trackedStart.current = true;
-    trackAnalyticsEvent("contact_form_start", { form_type: formType });
+    track("contact_form_start", { form_type: formType });
   }, [formType]);
 
   // Prefilled link (#roles=packing&headcount=50-99&location=haridwar&…), e.g.
@@ -328,7 +328,7 @@ export function ContactForm() {
       return next;
     });
     /* eslint-enable react-hooks/set-state-in-effect */
-    trackAnalyticsEvent("form_prefilled", { form: "contact", fields: Object.keys(prefill).length });
+    track("form_prefilled", { form: "contact", fields: Object.keys(prefill).length });
   }, []);
 
   const hasDraft = values.roles.length > 0 || values.needs.length > 0 || TEXT_FIELDS.some((key) => key !== "pageCluster" && values[key]);
@@ -363,7 +363,7 @@ export function ContactForm() {
     movedStep.current = true;
     setStep(next);
     setError(null);
-    trackAnalyticsEvent("contact_form_step", {
+    track("contact_form_step", {
       form_type: formType,
       step: next === 2 ? "contact" : "requirement",
       ...(next === 2 &&
@@ -379,7 +379,7 @@ export function ContactForm() {
     const found = errorsOf(isCompliance ? STEP_1_COMPLIANCE : STEP_1, values);
     setErrors(found);
     if (Object.keys(found).length) {
-      trackAnalyticsEvent("contact_form_error", { form_type: formType, reason: "validation", step: "requirement", checks: Object.keys(found).join(",") });
+      track("contact_form_error", { form_type: formType, reason: "validation", step: "requirement", checks: Object.keys(found).join(",") });
       focusFirst(found, isCompliance ? STEP_1_COMPLIANCE_ORDER : STEP_1_ORDER);
       return;
     }
@@ -395,13 +395,13 @@ export function ContactForm() {
     const found = errorsOf(STEP_2, values);
     setErrors(found);
     if (Object.keys(found).length) {
-      trackAnalyticsEvent("contact_form_error", { form_type: formType, reason: "validation", step: "contact", checks: Object.keys(found).join(",") });
+      track("contact_form_error", { form_type: formType, reason: "validation", step: "contact", checks: Object.keys(found).join(",") });
       focusFirst(found, STEP_2_ORDER);
       return;
     }
     if (!turnstileToken) {
       setSendFailure("verification");
-      trackAnalyticsEvent("contact_form_error", { form_type: formType, reason: "verification" });
+      track("contact_form_error", { form_type: formType, reason: "verification" });
       setError("Please wait a moment while we check this browser, then send again.");
       return;
     }
@@ -420,16 +420,16 @@ export function ContactForm() {
       if (!response.ok) {
         const reason = response.status === 429 ? "rate_limit" : response.status === 403 ? "verification" : "server";
         setSendFailure(reason);
-        trackAnalyticsEvent("contact_form_error", { form_type: formType, reason });
+        track("contact_form_error", { form_type: formType, reason });
         setError(result.error ?? "Submission failed. Please try again.");
         return;
       }
       draft.clear();
       if (typeof result.caseId === "string" && /^[A-Z]{3}-[0-9A-Z-]{6,40}$/.test(result.caseId)) setReference(result.caseId);
       setSubmitted(true);
-      trackAdsConversion("businessEnquiry");
+      trackConversion("businessEnquiry");
       const { qualified } = assessCrewRequest(body);
-      trackAnalyticsEvent(
+      track(
         "generate_lead",
         isCompliance
           ? {
@@ -454,7 +454,7 @@ export function ContactForm() {
       // The server may have used the token before the connection dropped.
       resetTurnstile();
       setSendFailure("network");
-      trackAnalyticsEvent("contact_form_error", { form_type: formType, reason: "network" });
+      track("contact_form_error", { form_type: formType, reason: "network" });
       setError(`${isCompliance ? "Your request" : "The requirement"} could not be sent. Please try again, or call us.`);
     } finally {
       setSubmitting(false);

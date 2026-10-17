@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { ArrowRight } from "lucide-react";
-import { trackAnalyticsEvent } from "@/lib/analytics";
+import { track } from "@/lib/measurement/gateway";
 import { LANGUAGE_COOKIE, LANGUAGE_COOKIE_MAX_AGE } from "@/lib/language-cookie";
 
 export type LanguageChoice = {
@@ -45,7 +45,7 @@ export function LanguageChoices({ choices, more, orderKey }: { choices: Language
   const target = (c: LanguageChoice) => `${c.href}${suffix}`;
   const choose = (c: LanguageChoice, position: number | "more") => {
     rememberChoice(c.locale);
-    trackAnalyticsEvent("language_choice", { locale: c.locale, page: c.href, position, order_key: orderKey });
+    track("language_choice", { locale: c.locale, page: c.href, position, order_key: orderKey });
   };
   return (
     <>

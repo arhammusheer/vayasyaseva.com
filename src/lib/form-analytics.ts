@@ -1,10 +1,10 @@
-import type { AnalyticsParams } from "@/lib/analytics";
+import type { AnalyticsParams } from "@/lib/measurement/types";
 
 /**
  * Reading tracked forms for analytics (src/components/analytics-tracker.tsx).
  * Forms opt in with data-analytics-form="<name>". statusOf reports field
  * names and flags only; draftOf reads typed values and is sent with
- * "Allow All" only (trackAbandonedDraft).
+ * "Allow All" only (the gateway's trackDraft).
  */
 
 /** Forms opt in with data-analytics-form="<name>"; fields report by name, never value. */
@@ -72,7 +72,7 @@ export function statusOf(form: string): AnalyticsParams {
 
 /**
  * The typed contents of an unfinished form, by field name ("Allow All" only,
- * see trackAbandonedDraft). Files are never read: the form marks only
+ * see the gateway's trackDraft). Files are never read: the form marks only
  * their count.
  */
 export function draftOf(form: string): AnalyticsParams | null {

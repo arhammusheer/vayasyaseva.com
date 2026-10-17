@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
-import { trackAnalyticsEvent } from "@/lib/analytics";
+import { track } from "@/lib/measurement/gateway";
 import { MODEL_VERSION, decideArea, type AreaDecision } from "./model";
 import { currentSignals, notePageView, regionCluster } from "./store";
 import { reportDecision } from "./report";
@@ -35,7 +35,7 @@ export function useAreaDecision(path: string): AreaDecision {
       } catch {
         // Blocked storage: report anyway.
       }
-      trackAnalyticsEvent("area_intent", {
+      track("area_intent", {
         mode: d.mode,
         intent: d.intent ?? "none",
         geo: d.geo ?? "none",

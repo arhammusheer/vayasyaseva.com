@@ -27,9 +27,42 @@ const businessOnly = {
   ],
 };
 
+/**
+ * Measurement goes through src/lib/measurement (docs/marketing-stack.md):
+ * call sites use the gateway (browser) or server.ts (server); only its
+ * vendors/ files load a vendor's library or touch its globals, and only its
+ * store reads or writes the consent keys.
+ */
+const MEASUREMENT = "Measurement goes through src/lib/measurement: the gateway in the browser, server.ts on the server.";
+const measurementOnly = {
+  paths: [
+    { name: "@next/third-parties/google", message: MEASUREMENT },
+    { name: "@vercel/analytics", message: MEASUREMENT },
+    { name: "@/lib/server-events", message: `${MEASUREMENT} Use reportServerCount.` },
+    { name: "@/lib/google-ads-conversions", message: `${MEASUREMENT} Use reportAdClickConversion.` },
+  ],
+  patterns: [{ group: ["@vercel/analytics/*"], message: MEASUREMENT }],
+};
+const CONSENT_KEYS = "The consent keys belong to src/lib/measurement/store.ts. Use allowed() or useAllowed().";
+const measurementSyntax = [
+  { selector: "MemberExpression[object.name='window'][property.name='umami']", message: `${MEASUREMENT} Umami is vendors/umami.ts.` },
+  { selector: "MemberExpression[object.name='window'][property.name='fbq']", message: `${MEASUREMENT} Meta is vendors/meta.ts.` },
+  { selector: "Identifier[name='dataLayer']", message: `${MEASUREMENT} The Google tag is vendors/ga4.ts and vendors/google-ads.ts.` },
+  { selector: "Literal[value=/^vayasya-site-measurement/]", message: CONSENT_KEYS },
+  { selector: "TemplateElement[value.raw=/^vayasya-site-measurement/]", message: CONSENT_KEYS },
+];
+
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  {
+    files: ["src/**/*.{ts,tsx,js,jsx,mjs}"],
+    ignores: ["src/lib/measurement/**"],
+    rules: {
+      "no-restricted-imports": ["error", measurementOnly],
+      "no-restricted-syntax": ["error", ...measurementSyntax],
+    },
+  },
   {
     files: [
       "src/app/\\[locale\\]/(jobs)/**",
@@ -47,7 +80,11 @@ const eslintConfig = defineConfig([
       "src/app/(picker)/**",
     ],
     rules: {
-      "no-restricted-imports": ["error", businessOnly],
+      // Both lists: a later config's options replace an earlier one's for the same rule.
+      "no-restricted-imports": [
+        "error",
+        { paths: [...businessOnly.paths, ...measurementOnly.paths], patterns: [...businessOnly.patterns, ...measurementOnly.patterns] },
+      ],
     },
   },
   // Override default ignores of eslint-config-next.

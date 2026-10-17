@@ -151,12 +151,23 @@ export interface JobsStartResponse {
 }
 
 /** Browser → POST /api/jobs/submit, after every upload has finished. */
-/** The Google Ads click a web application came from (src/lib/ad-click.ts). */
+/** The Google Ads click a web application came from (src/lib/measurement/gateway.ts, currentAdClick). */
 export const adClickSchema = z.object({
   type: z.enum(["gclid", "gbraid", "wbraid"]),
   id: z.string().regex(/^[\w-]{10,300}$/),
 });
 export type AdClick = z.infer<typeof adClickSchema>;
+
+/**
+ * The browser's consent choice, sent with a web application so the server
+ * decides the ad-click report the same way (src/lib/measurement/policy.ts).
+ * A malformed claim is dropped, never a reason to refuse the application.
+ */
+export const measurementClaimSchema = z.object({
+  v: z.number().int().min(1).max(1000),
+  choice: z.enum(["all", "required", "none"]),
+  legacyRefused: z.boolean(),
+});
 
 export const jobsSubmitRequestSchema = z.object({
   ticket: z.string().min(1).max(8192),
@@ -170,6 +181,8 @@ export const jobsSubmitRequestSchema = z.object({
   answers: quickAnswersSchema.nullish(),
   /** Reported to Google Ads by the server, then dropped; never stored with the application. */
   adClick: adClickSchema.nullish(),
+  /** Missing (pages built before it): the click is reported whenever it is sent. */
+  measurement: measurementClaimSchema.nullish().catch(null),
 });
 export type JobsSubmitRequest = z.infer<typeof jobsSubmitRequestSchema>;
 

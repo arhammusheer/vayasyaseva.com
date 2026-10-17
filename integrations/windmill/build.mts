@@ -1,5 +1,6 @@
 /**
- * Generates the Windmill scripts in f/talent/ from talent/scripts/*.ts.
+ * Generates the Windmill scripts in f/<folder>/ from <folder>/scripts/*.ts
+ * (talent, leads, notify).
  * Windmill runs each script as one Bun file and resolves npm imports
  * itself, but cannot reach files outside the workspace (talent/lib, the
  * website's src/lib/talent-intake/rules.ts). So each entry is compiled
@@ -29,6 +30,12 @@ interface CompiledModule {
 }
 
 const cache = new Map<string, CompiledModule>();
+
+/** Schema files inlined where a setup script names their placeholder (declared in <folder>/scripts/globals.d.ts). */
+const SCHEMAS: [string, string][] = [
+  ["__TALENT_SCHEMA__", "talent/schema.sql"],
+  ["__NOTIFY_SCHEMA__", "notify/schema.sql"],
+];
 
 function compile(path: string, isEntry = false): CompiledModule {
   const hit = cache.get(path);
@@ -105,10 +112,11 @@ export function bundle(entry: string): string {
     main.code,
     "",
   ].join("\n\n");
-  if (out.includes("__TALENT_SCHEMA__")) {
+  for (const [placeholder, file] of SCHEMAS) {
+    if (!out.includes(placeholder)) continue;
     // A function replacer: a string one would read "$$" in the SQL as an escaped "$".
-    const schemaLiteral = JSON.stringify(readFileSync(resolve(here, "talent/schema.sql"), "utf8"));
-    out = out.replaceAll("__TALENT_SCHEMA__", () => schemaLiteral);
+    const schemaLiteral = JSON.stringify(readFileSync(resolve(here, file), "utf8"));
+    out = out.replaceAll(placeholder, () => schemaLiteral);
   }
   return out;
 }

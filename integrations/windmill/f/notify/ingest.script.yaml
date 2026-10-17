@@ -1,0 +1,30 @@
+{
+  "summary": "Notify · ingest",
+  "description": "Events from outside Windmill (POST /webhook/vspl-notify: CronJobs, GitHub Actions, the website): checks x-vspl-notify-secret, drops any pii, validates (schema v1) and queues them, answers 202.",
+  "lock": "",
+  "kind": "script",
+  "language": "bun",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "authorized": {
+        "type": "boolean",
+        "description": "Set by the preprocessor: the secret header matched."
+      },
+      "events": {
+        "type": "array",
+        "description": "The events, without pii (the preprocessor drops it)."
+      },
+      "pii_dropped": {
+        "type": "integer",
+        "description": "How many events carried pii that was dropped."
+      }
+    },
+    "required": [
+      "authorized",
+      "events"
+    ]
+  },
+  "has_preprocessor": true
+}

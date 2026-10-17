@@ -14,14 +14,18 @@ export interface ScriptSpec {
   /** File name in <folder>/scripts and f/<folder>; the Windmill path is f/<folder>/<name>. */
   name: string;
   /** Windmill folder (and source directory). Default talent. */
-  folder?: "talent" | "leads";
+  folder?: "talent" | "leads" | "notify";
   summary: string;
   description: string;
   /** JSON Schema of main's arguments (Windmill shows and validates it). */
   schema: Record<string, unknown>;
   hasPreprocessor?: boolean;
   schedule?: { cron: string; summary: string };
-  /** Served at /api/r/<path> (workspaced_route false), so Traefik maps hooks.vayasyaseva.com/<path> straight to it. */
+  /**
+   * Served at /api/r/<path> (workspaced_route false). Traefik maps
+   * hooks.vayasyaseva.com/api/r/webhook/* to them; any other path (internal/…)
+   * is reachable in the cluster only.
+   */
   route?: { path: string; method: "post"; secretHeader: string };
 }
 
@@ -128,6 +132,67 @@ export const SCRIPTS: ScriptSpec[] = [
     },
     hasPreprocessor: true,
     route: { path: "webhook/vspl-lead", method: "post", secretHeader: "x-vspl-lead-secret" },
+  },
+  {
+    name: "setup",
+    folder: "notify",
+    summary: "Notify · setup",
+    description: "Applies the notify database schema (notify/schema.sql): events, keys, the delivery outbox. Safe to re-run; deploy runs it.",
+    schema: noArgs,
+  },
+  {
+    name: "dispatch",
+    folder: "notify",
+    summary: "Notify · dispatch",
+    description:
+      "Routes new events by f/notify/policy (dedupe, firing/resolved, hourly collapsing, daily reminders) and sends the outbox: ntfy pushes and Resend emails, four tries each, critical pushes falling back to email. Clears personal data once sent.",
+    schema: noArgs,
+    schedule: { cron: "0 * * * * *", summary: "Every minute: route and send notifications" },
+  },
+  {
+    name: "digest",
+    folder: "notify",
+    summary: "Notify · daily digest",
+    description: "08:00 IST: one email with the day's digest events, grouped by source and type; deletes events older than 90 days.",
+    schema: noArgs,
+    schedule: { cron: "0 0 8 * * *", summary: "08:00 IST: the daily notification digest" },
+  },
+  {
+    name: "ingest",
+    folder: "notify",
+    summary: "Notify · ingest",
+    description:
+      "Events from outside Windmill (POST /webhook/vspl-notify: CronJobs, GitHub Actions, the website): checks x-vspl-notify-secret, drops any pii, validates (schema v1) and queues them, answers 202.",
+    schema: {
+      $schema: "https://json-schema.org/draft/2020-12/schema",
+      type: "object",
+      properties: {
+        authorized: { type: "boolean", description: "Set by the preprocessor: the secret header matched." },
+        events: { type: "array", description: "The events, without pii (the preprocessor drops it)." },
+        pii_dropped: { type: "integer", description: "How many events carried pii that was dropped." },
+      },
+      required: ["authorized", "events"],
+    },
+    hasPreprocessor: true,
+    route: { path: "webhook/vspl-notify", method: "post", secretHeader: "x-vspl-notify-secret" },
+  },
+  {
+    name: "alertmanager",
+    folder: "notify",
+    summary: "Notify · Alertmanager",
+    description:
+      "Alertmanager's webhook (v4), in the cluster only (POST /api/r/internal/vspl-alertmanager, Authorization: Bearer): one event per alert, dedupeKey am:<fingerprint>, firing and resolved.",
+    schema: {
+      $schema: "https://json-schema.org/draft/2020-12/schema",
+      type: "object",
+      properties: {
+        authorized: { type: "boolean", description: "Set by the preprocessor: the bearer token matched." },
+        body: { type: "object", description: "Alertmanager's webhook payload, version 4." },
+      },
+      required: ["authorized", "body"],
+    },
+    hasPreprocessor: true,
+    route: { path: "internal/vspl-alertmanager", method: "post", secretHeader: "authorization" },
   },
 ];
 

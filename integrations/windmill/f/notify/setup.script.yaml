@@ -1,0 +1,13 @@
+{
+  "summary": "Notify · setup",
+  "description": "Applies the notify database schema (notify/schema.sql): events, keys, the delivery outbox. Safe to re-run; deploy runs it.",
+  "lock": "",
+  "kind": "script",
+  "language": "bun",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {},
+    "required": []
+  }
+}

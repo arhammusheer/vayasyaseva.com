@@ -15,5 +15,5 @@
     "noEmit": true,
     "skipLibCheck": true
   },
-  "include": ["talent/**/*.ts", "leads/**/*.ts", "*.mts"]
+  "include": ["talent/**/*.ts", "leads/**/*.ts", "notify/**/*.ts", "*.mts"]
 }

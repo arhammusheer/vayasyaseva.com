@@ -47,6 +47,7 @@ The Sarvam transcribe workflow is not ported (voice notes ended 16 October 2026)
 | `talent/schema.sql` | The `talent` schema: the n8n copy plus `crm_sync` (a test checks the n8n part is unchanged). |
 | `talent/lib/{twenty,crm}.ts`, `run-sync-crm.ts` | Twenty's REST API, the talent→Twenty mapping and erasure, and the sync step by step. |
 | `leads/scripts/intake.ts`, `leads/lib/lead.ts` | The website's leads into Twenty (validation, company, contact, crew request, enquiry). |
+| `notify/` | The notification hub (ntfy pushes, Resend email, daily digest): `docs/notification-hub.md`. Other scripts raise notifications with `notify/lib/emit.ts`. |
 | `scripts.mts` | The scripts: summary, argument schema, schedule, HTTP route. Shared by build and deploy. |
 | `build.mts` | Generates `f/talent/<name>.ts` (one self-contained Bun file: relative imports inlined, npm imports kept) and `<name>.script.yaml`. |
 | `f/talent/*`, `f/leads/*` | **Generated.** Never edit by hand. |

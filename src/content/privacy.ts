@@ -23,7 +23,7 @@ export const analyticsSummary = [
   {
     what: "Recordings and heatmaps (Umami, on our own servers)",
     when: "Only with Allow All",
-    gets: "Your visit as you saw it, including what you type into forms, not file contents. Kept 30 days unless saved to fix a problem.",
+    gets: "Your visit as you saw it, including what you type into forms, not file contents. Kept one year unless saved to fix a problem.",
   },
   {
     what: "Unfinished forms (Umami, on our own servers)",
@@ -40,7 +40,7 @@ export const analyticsSummary = [
 export const privacyContent = `
 # Privacy Policy
 
-*Last updated: 16 October 2026*
+*Last updated: 17 October 2026*
 
 ## 1. Who this notice covers
 
@@ -64,7 +64,7 @@ Our contact details are in Section 11. The Site is intended for businesses and f
 
 **Additional site measurement.** With "Allow All", Google Analytics also loads and may set cookies or similar identifiers. It measures pages viewed, traffic sources, approximate location, device and browser details and the same fixed-label events, and Google may receive your IP address and the page URL. It never receives your name, phone number, email address, company, message or files.
 
-**Usage recordings and heatmaps.** With "Allow All", Umami also records replayable sessions and heatmaps of clicks, taps and scrolling. Recordings are not masked: they show the page as you saw it, including the contact and job forms, what you type into them and the names of files you add, but not file contents. We use them only to see how the Site is used and to fix problems; they stay on our infrastructure and are not shared. Microsoft Clarity was used for recordings until 3 October 2026 and no longer loads.
+**Usage recordings and heatmaps.** With "Allow All", Umami also records replayable sessions and heatmaps of clicks, taps and scrolling. Recordings are not masked: they show the page as you saw it, including the contact and job forms, what you type into them and the names of files you add, but not file contents. We use them only to see how the Site is used and to fix problems; they stay on our infrastructure and are not shared, and we keep them for one year (Section 6). Microsoft Clarity was used for recordings until 3 October 2026 and no longer loads.
 
 **Unfinished forms.** With "Allow All", if you leave the contact or job form without sending it, Umami records what you had typed so far and whether you added files (never the files). We use these records only to fix the forms: we do not contact you from them, add them to our enquiry or applicant records, or share them. They are deleted after 30 days.
 
@@ -96,7 +96,7 @@ The providers that handle job applications are listed in Section 10. These provi
 
 ## 6. How long we keep it
 
-Job applications are kept as described in Section 10. We keep enquiries and the correspondence about them for up to 24 months after our last contact with you, and then delete them. If an enquiry leads to a contract, the records needed for that contract are kept for as long as the contract, any dispute and our legal duties require. Operational logs are retained according to our hosting and security configurations. Vercel says the visitor hash used by Web Analytics is discarded after 24 hours; aggregate reports remain subject to the project's retention settings. Google Analytics data is retained according to the property's configured retention settings. Google Ads conversion data is kept for the periods Google sets for its advertising products. Microsoft Clarity recordings made until 3 October 2026 are kept for the periods Microsoft sets (about 30 days, and up to 13 months for heatmaps and saved recordings). Umami keeps recordings for 30 days unless we save one to investigate a problem. Unfinished-form records are deleted after 30 days. We review these settings and delete or anonymise information when it is no longer needed, subject to legal requirements.
+Job applications are kept as described in Section 10. We keep enquiries and the correspondence about them for up to 24 months after our last contact with you, and then delete them. If an enquiry leads to a contract, the records needed for that contract are kept for as long as the contract, any dispute and our legal duties require. Operational logs are retained according to our hosting and security configurations. Vercel says the visitor hash used by Web Analytics is discarded after 24 hours; aggregate reports remain subject to the project's retention settings. Google Analytics data is retained according to the property's configured retention settings. Google Ads conversion data is kept for the periods Google sets for its advertising products. Microsoft Clarity recordings made until 3 October 2026 are kept for the periods Microsoft sets (about 30 days, and up to 13 months for heatmaps and saved recordings). Umami keeps recordings and heatmaps for one year, unless we save a recording to investigate a problem; a nightly job deletes older ones. Unfinished-form records are deleted after 30 days. We review these settings and delete or anonymise information when it is no longer needed, subject to legal requirements.
 
 Your browser keeps an analytics preference until you change it or clear local storage. An affirmative site-measurement choice stops being valid after 180 days, even if the preference entry remains in storage.
 

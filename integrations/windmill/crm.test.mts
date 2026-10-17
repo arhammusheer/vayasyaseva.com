@@ -4,6 +4,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  ANSWER_OPTIONS,
   ackFields,
   ackSyncState,
   applicationFields,
@@ -24,6 +25,7 @@ import { twentyClient, type Twenty, type TwentyRecord } from "./talent/lib/twent
 import { crewSize, opportunityName, recordLead, serviceValues, validateLead } from "./leads/lib/lead.ts";
 import { main as leadMain } from "./leads/scripts/intake.ts";
 import { SCRIPTS } from "./scripts.mts";
+import { INTAKE_CLUSTERS, JOB_ROLE_SLUGS, QUICK_ANSWERS } from "../../src/lib/talent-intake/rules.ts";
 
 function fakeTwenty() {
   const store: Record<string, TwentyRecord[]> = { people: [], applications: [], communications: [], companies: [], opportunities: [] };
@@ -422,4 +424,18 @@ test("screening answers become the application's own fields; unknown answers are
   });
   assert.deepEqual(screeningFields(null), { experience: null, education: null, canStart: null, area: null, shifts: [], workWanted: [], skills: "" });
   assert.equal(screeningFields({ area: ["bengaluru:east"] }).area, "BENGALURU_EAST");
+});
+
+// Twenty's select options are stored values built from these maps
+// (integrations/twenty/setup.mts). The website's rules.ts is the source of
+// the ids; nothing else ties the two, so a new id with no option would be
+// filed as null without a word.
+test("every cluster, role and quick answer the website can send has a Twenty option", () => {
+  for (const id of INTAKE_CLUSTERS) assert.notEqual(clusterValue(id), null, `cluster ${id}`);
+  for (const id of [...JOB_ROLE_SLUGS, ...Object.keys(QUICK_ANSWERS.work)]) assert.notEqual(roleValue(id), null, `role ${id}`);
+  for (const [group, options] of Object.entries(ANSWER_OPTIONS)) {
+    const answers = QUICK_ANSWERS[group as keyof typeof QUICK_ANSWERS];
+    assert.ok(answers, `ANSWER_OPTIONS.${group} has no QUICK_ANSWERS group`);
+    assert.deepEqual(Object.keys(options).sort(), Object.keys(answers).sort(), `ANSWER_OPTIONS.${group} vs QUICK_ANSWERS.${group}`);
+  }
 });

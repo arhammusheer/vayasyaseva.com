@@ -157,7 +157,7 @@ type Place = { state: string; city: string; cluster: string };
  * and estate, src/content/locations) plus a few industrial areas named on
  * them. Anything else is taken as the city as typed.
  */
-const KNOWN_PLACES: Record<string, Place> = {
+export const KNOWN_PLACES: Record<string, Place> = {
   // The location pages (src/content/locations): one id per hub and estate.
   haridwar: { state: "UK", city: "Haridwar", cluster: "haridwar" },
   sidcul: { state: "UK", city: "SIDCUL Haridwar", cluster: "haridwar" },

@@ -40,6 +40,22 @@ if (process.argv.includes("--write-sitemap-snapshot")) {
   process.exit(0);
 }
 
+// --update-stored-ids: record today's stored ids as the lock (C2b). Only
+// for an intended addition; a removal or rename is never intended.
+if (process.argv.includes("--update-stored-ids")) {
+  const { currentStoredIds, readLock, writeLock, lockProblems, LOCK_PATH } = await import("./lib/stored-ids.mjs");
+  const { existsSync: exists } = await import("node:fs");
+  const current = await currentStoredIds();
+  const removed = exists(LOCK_PATH) ? lockProblems(readLock(), current).filter((p) => !p.includes("not in the lock")) : [];
+  if (removed.length) {
+    console.error(`Not updating the lock: stored ids would be removed.\n- ${removed.join("\n- ")}`);
+    process.exit(1);
+  }
+  writeLock(current);
+  console.log(`Wrote ${relative(root, LOCK_PATH)}`);
+  process.exit(0);
+}
+
 const errors = [];
 const fail = (message) => errors.push(message);
 const warnings = [];
@@ -204,6 +220,12 @@ if (areaIds.join() !== AREA_IDS.join()) fail(`C2 QUICK_ANSWERS.area (${areaIds.j
 if (INTAKE_LOCALES.join() !== LOCALE_TAGS.join()) fail(`C2 INTAKE_LOCALES in rules.ts (${INTAKE_LOCALES.join(", ")}) differs from LOCALE_TAGS`);
 if (INTAKE_CLUSTERS.join() !== CLUSTER_IDS.join()) fail(`C2 INTAKE_CLUSTERS in rules.ts (${INTAKE_CLUSTERS.join(", ")}) differs from CLUSTER_IDS`);
 if (Object.keys(AREA_CLUSTERS).join() !== areaIds.join()) fail("C2 AREA_CLUSTERS in rules.ts must give a cluster (or null) for every area answer");
+
+// ── C2b: stored ids are append-only (tests/fixtures/stored-ids.lock.json) ──
+{
+  const { currentStoredIds, readLock, lockProblems } = await import("./lib/stored-ids.mjs");
+  for (const problem of lockProblems(readLock(), await currentStoredIds())) fail(`C2b ${problem}`);
+}
 
 // ── C8: the minimum wage dataset ───────────────────────────────────────────
 const { wageStates, wageStatus } = await importTs("src/content/wages/index.ts");

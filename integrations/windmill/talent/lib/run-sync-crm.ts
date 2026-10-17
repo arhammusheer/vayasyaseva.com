@@ -2,10 +2,11 @@
  * What f/talent/sync_crm does, with Twenty and the database injected so the
  * tests can drive every path. Each new submission becomes, in Twenty, its
  * person (found by phone), its application and its SMS acknowledgement; a
- * synced submission whose acknowledgement changed only has that updated.
+ * synced submission whose acknowledgement or its delivery changed only has
+ * that updated.
  * One failing submission is logged and left for the next run; the rest go on.
  */
-import { ensureApplication, upsertAcknowledgement, upsertPerson, type SyncCandidate } from "./crm.ts";
+import { ackSyncState, ensureApplication, upsertAcknowledgement, upsertPerson, type SyncCandidate } from "./crm.ts";
 import { CRM_SYNC_LOCK, RECORD_CRM_SYNC, SYNC_CANDIDATES } from "./sql.ts";
 import type { Twenty } from "./twenty.ts";
 import type { Query } from "./db.ts";
@@ -47,7 +48,7 @@ export async function runSyncCrm(deps: SyncCrmDeps, batch = SYNC_BATCH): Promise
         applicationId = await ensureApplication(deps.crm, c, personId);
       }
       if (c.ack_status) await upsertAcknowledgement(deps.crm, c, personId, applicationId);
-      await deps.query(RECORD_CRM_SYNC, [c.id, personId, applicationId, c.ack_status]);
+      await deps.query(RECORD_CRM_SYNC, [c.id, personId, applicationId, ackSyncState(c)]);
       if (c.synced) result.updated++;
       else result.created++;
     } catch (err) {

@@ -23,6 +23,7 @@ const { VARIABLES, variablePath, setConfigForTests, config } = (() => {
       twenty_base_url: { secret: false },
       twenty_api_key: { secret: true },
       lead_webhook_secret: { secret: true },
+      fast2sms_dlr_secret: { secret: true },
   };
   const variablePath = (name) => `f/talent/${name}`;
   let override = null;
@@ -132,7 +133,7 @@ const { FAST2SMS_URL, FAST2SMS_TIMEOUT_MS, MAX_ATTEMPTS, acknowledgementRequest,
 })();
 
 // integrations/windmill/talent/lib/sql.ts
-const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC } = (() => {
+const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED } = (() => {
   const RETENTION_MONTHS = 12;
   const SAVE_SUBMISSION = `
   WITH s AS (
@@ -287,12 +288,14 @@ const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLE
          p.name AS person_name, p.clusters AS person_clusters, p.roles AS person_roles, p.home_area,
          p.locale AS person_locale, p.status AS person_status, p.last_applied_at, p.last_contact_at, p.last_confirmed_at,
          a.status AS ack_status, a.request_id, a.last_error AS ack_error, a.accepted_at, a.updated_at AS ack_updated_at,
+         a.delivery_status, a.delivery_detail, a.delivered_at,
          c.person_id, c.application_id, c.ack_status AS synced_ack_status, (c.submission_id IS NOT NULL) AS synced
   FROM submissions s
   LEFT JOIN people p ON p.phone = s.phone
   LEFT JOIN sms_acknowledgements a ON a.submission_id = s.id
   LEFT JOIN crm_sync c ON c.submission_id = s.id
-  WHERE c.submission_id IS NULL OR c.ack_status IS DISTINCT FROM a.status
+  WHERE c.submission_id IS NULL
+     OR c.ack_status IS DISTINCT FROM (CASE WHEN a.delivery_status IS NULL THEN a.status ELSE a.status || ':' || a.delivery_status END)
   ORDER BY s.created_at
   LIMIT $1;`;
   const RECORD_CRM_SYNC = `
@@ -300,7 +303,26 @@ const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLE
   VALUES ($1::uuid, $2::uuid, $3::uuid, $4, now())
   ON CONFLICT (submission_id) DO UPDATE
   SET person_id = EXCLUDED.person_id, application_id = EXCLUDED.application_id, ack_status = EXCLUDED.ack_status, synced_at = now();`;
-  return { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC };
+  const SAVE_DELIVERY_REPORT = `
+  UPDATE sms_acknowledgements
+  SET delivery_status = $2, delivery_detail = $3,
+      delivered_at = CASE WHEN $2 = 'delivered' THEN coalesce($4::timestamptz, delivered_at, now()) ELSE delivered_at END,
+      delivery_checked_at = now(), updated_at = now()
+  WHERE request_id = $1 AND status = 'accepted'
+    AND (delivery_status IS DISTINCT FROM 'delivered' OR $2 = 'delivered')
+  RETURNING submission_id;`;
+  const DELIVERY_CHECK_DUE = `
+  SELECT submission_id, request_id
+  FROM sms_acknowledgements
+  WHERE status = 'accepted' AND request_id IS NOT NULL
+    AND (delivery_status IS NULL OR delivery_status = 'pending')
+    AND accepted_at < now() - interval '10 minutes'
+    AND accepted_at > now() - interval '7 days'
+    AND (delivery_checked_at IS NULL OR delivery_checked_at < now() - interval '1 hour')
+  ORDER BY accepted_at
+  LIMIT $1;`;
+  const MARK_DELIVERY_CHECKED = `UPDATE sms_acknowledgements SET delivery_checked_at = now() WHERE submission_id = $1::uuid;`;
+  return { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED };
 })();
 
 // integrations/windmill/talent/lib/run-acknowledge.ts

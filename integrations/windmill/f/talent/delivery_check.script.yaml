@@ -1,0 +1,13 @@
+{
+  "summary": "Talent · SMS delivery check",
+  "description": "Looks up, with Fast2SMS's DLR API, accepted acknowledgements whose delivery report has not come after ten minutes (each at most hourly, for the 7 days Fast2SMS keeps them).",
+  "lock": "",
+  "kind": "script",
+  "language": "bun",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {},
+    "required": []
+  }
+}

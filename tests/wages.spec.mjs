@@ -121,3 +121,23 @@ test('the registry sitemap dates match the wage datasets', async () => {
     assert.equal(WAGE_STATE_UPDATED[state.state], expected, `${state.state}: set WAGE_STATE_UPDATED to ${expected} in src/content/registry/pages.ts`);
   }
 });
+
+test('rupee figures quoted outside the wage pages are current rates (no drift after a revision)', async () => {
+  const { readFileSync, readdirSync } = await import('node:fs');
+  const { root } = await import('../scripts/lib/register-ts.mjs');
+  const norm = (s) => Number(s.replace(/,/g, ''));
+  const current = new Set();
+  for (const s of wageStates) {
+    for (const t of s.tables) for (const r of t.rates) for (const v of [r.monthly, r.daily, r.basic, r.vda]) if (v != null) current.add(v);
+    const vda = s.employments?.vda?.amount ?? 0;
+    for (const g of s.employments?.groups ?? []) for (const r of g.rows ?? []) for (const v of r.values) current.add(g.unit || !vda ? v : v + vda);
+  }
+  // Employer dues: every figure in statutory.ts (PT slabs, LWF, ceilings) is current by definition.
+  for (const m of readFileSync(`${root}/src/content/statutory.ts`, 'utf8').matchAll(/\b\d[\d,]*(?:\.\d+)?\b/g)) current.add(norm(m[0]));
+  const dir = `${root}/src/content/locations`;
+  const stale = [];
+  for (const file of readdirSync(dir).filter((f) => f.endsWith('.ts'))) {
+    for (const m of readFileSync(`${dir}/${file}`, 'utf8').matchAll(/₹\s?(\d[\d,]*(?:\.\d+)?)/g)) if (!current.has(norm(m[1]))) stale.push(`${file}: ₹${m[1]}`);
+  }
+  assert.deepEqual(stale, [], 'update these figures to the current dataset rates');
+});

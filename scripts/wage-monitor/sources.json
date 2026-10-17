@@ -44,6 +44,20 @@
           "name": "U.P. Labour Welfare Fund Rules, 1972",
           "topic": "lwf"
         }
+      ],
+      "pages": [
+        {
+          "url": "https://www.sgcms.com/regulatory-updates/category/minimum-wages/",
+          "name": "Lead: SGCMS (a compliance firm) minimum wage posts on Uttarakhand. Firms often post an order before the state does; confirm against the order itself.",
+          "match": "uttarakhand",
+          "allowEmpty": true
+        },
+        {
+          "url": "https://ascent-hr.com/notification/",
+          "name": "Lead: AscentHR (a compliance firm) notifications on Uttarakhand. Firms often post an order before the state does; confirm against the order itself.",
+          "match": "uttarakhand",
+          "allowEmpty": true
+        }
       ]
     },
     "uttar-pradesh": {
@@ -81,6 +95,20 @@
           "url": "https://cdnbbsr.s3waas.gov.in/s36547884cea64550284728eb26b0947ef/uploads/2025/04/2025041461612759.pdf",
           "name": "U.P. Labour Welfare Fund Rules, 1972",
           "topic": "lwf"
+        }
+      ],
+      "pages": [
+        {
+          "url": "https://www.sgcms.com/regulatory-updates/category/minimum-wages/",
+          "name": "Lead: SGCMS (a compliance firm) minimum wage posts on Uttar Pradesh. Firms often post an order before the state does; confirm against the order itself.",
+          "match": "uttar pradesh",
+          "allowEmpty": true
+        },
+        {
+          "url": "https://ascent-hr.com/notification/",
+          "name": "Lead: AscentHR (a compliance firm) notifications on Uttar Pradesh. Firms often post an order before the state does; confirm against the order itself.",
+          "match": "uttar pradesh",
+          "allowEmpty": true
         }
       ]
     },
@@ -122,6 +150,18 @@
           "name": "Delhi Labour Welfare Fund: contribution notification",
           "topic": "lwf",
           "match": "contribut|paise|rupee|₹|Rs\\.?|half.?year|june|december"
+        },
+        {
+          "url": "https://www.sgcms.com/regulatory-updates/category/minimum-wages/",
+          "name": "Lead: SGCMS (a compliance firm) minimum wage posts on Delhi. Firms often post an order before the state does; confirm against the order itself.",
+          "match": "\\bdelhi\\b",
+          "allowEmpty": true
+        },
+        {
+          "url": "https://ascent-hr.com/notification/",
+          "name": "Lead: AscentHR (a compliance firm) notifications on Delhi. Firms often post an order before the state does; confirm against the order itself.",
+          "match": "\\bdelhi\\b",
+          "allowEmpty": true
         }
       ]
     },
@@ -131,6 +171,10 @@
           "url": "https://hrylabour.gov.in/home/readmore?cat_id=46&status=1",
           "name": "Labour Department, Haryana: news and notifications",
           "match": "wage|dearness|वेतन|मजदूरी|महंगाई"
+        },
+        {
+          "url": "https://hrylabour.gov.in/home/readmore?cat_id=53&status=1",
+          "name": "Labour Department, Haryana: minimum wages (CPI letters, brick kilns)"
         },
         {
           "url": "https://hrylabour.gov.in/home/readmore?cat_id=51&status=1",
@@ -172,6 +216,20 @@
           "name": "Haryana OSH Rules, 2026: draft",
           "topic": "licence"
         }
+      ],
+      "pages": [
+        {
+          "url": "https://www.sgcms.com/regulatory-updates/category/minimum-wages/",
+          "name": "Lead: SGCMS (a compliance firm) minimum wage posts on Haryana. Firms often post an order before the state does; confirm against the order itself.",
+          "match": "haryana",
+          "allowEmpty": true
+        },
+        {
+          "url": "https://ascent-hr.com/notification/",
+          "name": "Lead: AscentHR (a compliance firm) notifications on Haryana. Firms often post an order before the state does; confirm against the order itself.",
+          "match": "haryana",
+          "allowEmpty": true
+        }
       ]
     },
     "punjab": {
@@ -206,6 +264,18 @@
           "name": "Labour Department, Punjab: contract labour licence",
           "topic": "licence",
           "match": "licen|twenty|fifty|fee"
+        },
+        {
+          "url": "https://www.sgcms.com/regulatory-updates/category/minimum-wages/",
+          "name": "Lead: SGCMS (a compliance firm) minimum wage posts on Punjab. Firms often post an order before the state does; confirm against the order itself.",
+          "match": "punjab",
+          "allowEmpty": true
+        },
+        {
+          "url": "https://ascent-hr.com/notification/",
+          "name": "Lead: AscentHR (a compliance firm) notifications on Punjab. Firms often post an order before the state does; confirm against the order itself.",
+          "match": "punjab",
+          "allowEmpty": true
         }
       ],
       "documents": [
@@ -287,6 +357,20 @@
           "url": "https://karmikaspandana.karnataka.gov.in/uploads/media_to_upload1769512711.pdf",
           "name": "OSH (Karnataka) Rules, 2026: draft",
           "topic": "licence"
+        }
+      ],
+      "pages": [
+        {
+          "url": "https://www.sgcms.com/regulatory-updates/category/minimum-wages/",
+          "name": "Lead: SGCMS (a compliance firm) minimum wage posts on Karnataka. Firms often post an order before the state does; confirm against the order itself.",
+          "match": "karnataka",
+          "allowEmpty": true
+        },
+        {
+          "url": "https://ascent-hr.com/notification/",
+          "name": "Lead: AscentHR (a compliance firm) notifications on Karnataka. Firms often post an order before the state does; confirm against the order itself.",
+          "match": "karnataka",
+          "allowEmpty": true
         }
       ]
     }

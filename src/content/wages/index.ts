@@ -52,6 +52,15 @@ export type WageSource = {
   /** File size, shown in the link text so data-conscious readers know before they tap. */
   sizeKb?: number;
   retrievedOn: string;
+  /**
+   * Where the state does not publish the document itself: who did, in a
+   * sentence. `url` and `listing` then point at that copy, and the monitor
+   * watches the file but not the third party's page.
+   */
+  via?: string;
+  /** Our own compressed copy (cdn.vayasyaseva.com/sources/), linked in place of `url`; the original bytes are kept beside it. */
+  copy?: string;
+  copyKb?: number;
 };
 
 export type WageRate = {

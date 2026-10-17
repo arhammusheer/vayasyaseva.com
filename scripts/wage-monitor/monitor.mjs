@@ -33,7 +33,11 @@ export const NATIONAL = { state: "national", stateName: "All states" };
  * snapshot format before topics); other topics prefix it, so one page
  * watched for two topics with two patterns has two entries.
  */
-export const targetKey = (t) => (!t.topic || t.topic === "wages" ? t.url : `${t.topic}:${t.url}`);
+export const targetKey = (t) => {
+  // A shared lead page (one compliance firm's post list, watched for each state's lines) is one target per state.
+  const url = t.allowEmpty ? `${t.state}:${t.url}` : t.url;
+  return !t.topic || t.topic === "wages" ? url : `${t.topic}:${url}`;
+};
 
 /** The lines of a page's text that match its pattern, de-duplicated and sorted (pages that reorder their text are stable). */
 export const pageLines = (html, match) => [...new Set(htmlText(html).split("\n").map((l) => l.trim()).filter((l) => l && match.test(l)))].sort();
@@ -125,7 +129,7 @@ function registryTargets(entry, scope) {
   const out = [];
   for (const d of entry?.documents ?? []) out.push({ ...scope, kind: "document", url: d.url, name: d.name, topic: d.topic ?? "wages", sourceIds: d.sourceIds ?? [], listings: [] });
   for (const l of entry?.listings ?? []) out.push({ ...scope, kind: "listing", url: l.url, name: l.name, match: l.match, topic: l.topic ?? "wages" });
-  for (const pg of entry?.pages ?? []) out.push({ ...scope, kind: "page", url: pg.url, name: pg.name, match: pg.match, topic: pg.topic ?? "wages" });
+  for (const pg of entry?.pages ?? []) out.push({ ...scope, kind: "page", url: pg.url, name: pg.name, match: pg.match, topic: pg.topic ?? "wages", allowEmpty: Boolean(pg.allowEmpty) });
   return out;
 }
 
@@ -158,7 +162,8 @@ export function buildTargets(wageStates, registry) {
     const extra = registryTargets(registry.states?.[state.state], scope);
     extra.filter((t) => t.kind === "document").forEach(add);
     extra.filter((t) => t.kind !== "document" && t.topic === "wages").forEach(add);
-    for (const source of state.sources) add({ ...scope, kind: "listing", topic: "wages", url: source.listing, name: `Listing for ${source.title}` });
+    // A copy found on a third party's site (source.via): its file is watched, not the page around it.
+    for (const source of state.sources.filter((x) => !x.via)) add({ ...scope, kind: "listing", topic: "wages", url: source.listing, name: `Listing for ${source.title}` });
     extra.filter((t) => t.kind !== "document" && t.topic !== "wages").forEach(add);
   }
   if (registry.national) registryTargets(registry.national, NATIONAL).forEach(add);
@@ -209,7 +214,7 @@ export function registryProblems(wageStates, registry) {
       continue;
     }
     const urls = new Set(entry.listings.filter((l) => !l.topic || l.topic === "wages").map((l) => l.url));
-    for (const source of state.sources) if (!urls.has(source.listing)) problems.push(`${state.state}: listing ${source.listing} (cited by ${source.id}) is missing from the registry`);
+    for (const source of state.sources.filter((x) => !x.via)) if (!urls.has(source.listing)) problems.push(`${state.state}: listing ${source.listing} (cited by ${source.id}) is missing from the registry`);
     for (const l of [...entry.listings, ...(entry.pages ?? []), ...(entry.documents ?? [])]) {
       if (!/^https:\/\//.test(l.url)) problems.push(`${state.state}: ${l.url} is not https`);
       if (!l.name) problems.push(`${state.state}: ${l.url} has no name`);
@@ -272,7 +277,8 @@ export async function runMonitor({ targets, previous, fetcher, now = new Date(),
     if (res.ok) {
       if (target.kind === "page") {
         lines = pageLines(res.body.toString("utf8"), new RegExp(target.match, "i"));
-        if (!lines.length) bogus = prev?.lines?.length ? "none of the watched lines are on the page any more" : "no lines match the pattern";
+        // A lead page (allowEmpty: a compliance firm's latest posts) may have nothing on a state this week.
+        if (!lines.length && !target.allowEmpty) bogus = prev?.lines?.length ? "none of the watched lines are on the page any more" : "no lines match the pattern";
       }
       if (target.kind === "listing") {
         html = res.body.toString("utf8");

@@ -1,0 +1,26 @@
+{
+  "summary": "Leads · intake",
+  "description": "The website's crew requests (POST /webhook/vspl-lead, from /api/contact and /api/agent/contact): checks x-vspl-lead-secret, writes the company, contact, crew request and enquiry into Twenty CRM, answers 202.",
+  "lock": "",
+  "kind": "script",
+  "language": "bun",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "authorized": {
+        "type": "boolean",
+        "description": "Set by the preprocessor: the secret header matched."
+      },
+      "body": {
+        "type": "object",
+        "description": "The lead, as src/lib/lead-forward.ts builds it."
+      }
+    },
+    "required": [
+      "authorized",
+      "body"
+    ]
+  },
+  "has_preprocessor": true
+}

@@ -15,7 +15,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, relative, resolve } from "node:path";
 import ts from "typescript";
-import { SCRIPTS, scriptPath } from "./scripts.mts";
+import { FOLDER, SCRIPTS, specPath } from "./scripts.mts";
 
 const here = dirname(new URL(import.meta.url).pathname);
 const repoRoot = resolve(here, "../..");
@@ -147,12 +147,12 @@ export function metadata(spec: (typeof SCRIPTS)[number]) {
 export function generated(): Record<string, string> {
   const files: Record<string, string> = {};
   for (const spec of SCRIPTS) {
-    const code = bundle(resolve(here, "talent/scripts", `${spec.name}.ts`));
+    const code = bundle(resolve(here, spec.folder ?? FOLDER, "scripts", `${spec.name}.ts`));
     // Syntax check of the output, as Bun will read it (ES module).
     const diag = ts.transpileModule(code, { reportDiagnostics: true, compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).diagnostics;
     if (diag?.length) throw new Error(`${spec.name}: generated code does not parse: ${ts.flattenDiagnosticMessageText(diag[0].messageText, "\n")}`);
-    files[`${scriptPath(spec.name)}.ts`] = code;
-    files[`${scriptPath(spec.name)}.script.yaml`] = `${JSON.stringify(metadata(spec), null, 2)}\n`;
+    files[`${specPath(spec)}.ts`] = code;
+    files[`${specPath(spec)}.script.yaml`] = `${JSON.stringify(metadata(spec), null, 2)}\n`;
   }
   return files;
 }

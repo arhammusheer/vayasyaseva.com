@@ -79,7 +79,9 @@ test("the generated Windmill scripts are up to date and self-contained", () => {
   }
 });
 
-test("the schema is the n8n schema until n8n is retired (only the header differs)", () => {
+test("the schema starts as the n8n schema (n8n is retired) and adds crm_sync", () => {
   const body = (path: string) => readFileSync(new URL(path, import.meta.url), "utf8").split("\n").slice(3).join("\n");
-  assert.equal(body("talent/schema.sql"), body("../n8n/schema.sql"));
+  const n8n = body("../n8n/schema.sql").replace(/END\n\$\$;\n?$/, "");
+  assert.ok(body("talent/schema.sql").startsWith(n8n), "the n8n part is unchanged");
+  assert.match(body("talent/schema.sql"), /CREATE TABLE IF NOT EXISTS crm_sync/);
 });

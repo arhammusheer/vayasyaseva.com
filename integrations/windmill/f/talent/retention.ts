@@ -22,6 +22,9 @@ const { VARIABLES, variablePath, setConfigForTests, config } = (() => {
       chatwoot_account_id: { secret: false },
       r2_endpoint: { secret: false },
       r2_bucket: { secret: false },
+      twenty_base_url: { secret: false },
+      twenty_api_key: { secret: true },
+      lead_webhook_secret: { secret: true },
   };
   const variablePath = (name) => `f/talent/${name}`;
   let override = null;
@@ -199,7 +202,7 @@ const { filesToDelete, contactsToDelete } = (() => {
 })();
 
 // integrations/windmill/talent/lib/sql.ts
-const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements } = (() => {
+const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC } = (() => {
   const RETENTION_MONTHS = 12;
   const SAVE_SUBMISSION = `
   WITH s AS (
@@ -347,7 +350,27 @@ const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLE
   WHERE id = $1::uuid AND status = 'running'
   RETURNING id, status, removed_submissions;`;
   const schemaStatements = (schema) => schema.replace(/^--.*\n/gm, "");
-  return { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements };
+  const CRM_SYNC_LOCK = `SELECT pg_try_advisory_lock(hashtext('talent:crm_sync')) AS locked;`;
+  const SYNC_CANDIDATES = `
+  SELECT s.id, s.ref, s.source, s.channel, s.locale, s.phone, s.consent_version, s.consented_at, s.text, s.role,
+         s.cluster, s.answers, s.page_path, s.applicant_name, s.created_at,
+         p.name AS person_name, p.clusters AS person_clusters, p.roles AS person_roles, p.home_area,
+         p.locale AS person_locale, p.status AS person_status, p.last_applied_at, p.last_contact_at, p.last_confirmed_at,
+         a.status AS ack_status, a.request_id, a.last_error AS ack_error, a.accepted_at, a.updated_at AS ack_updated_at,
+         c.person_id, c.application_id, c.ack_status AS synced_ack_status, (c.submission_id IS NOT NULL) AS synced
+  FROM submissions s
+  LEFT JOIN people p ON p.phone = s.phone
+  LEFT JOIN sms_acknowledgements a ON a.submission_id = s.id
+  LEFT JOIN crm_sync c ON c.submission_id = s.id
+  WHERE c.submission_id IS NULL OR c.ack_status IS DISTINCT FROM a.status
+  ORDER BY s.created_at
+  LIMIT $1;`;
+  const RECORD_CRM_SYNC = `
+  INSERT INTO crm_sync (submission_id, person_id, application_id, ack_status, synced_at)
+  VALUES ($1::uuid, $2::uuid, $3::uuid, $4, now())
+  ON CONFLICT (submission_id) DO UPDATE
+  SET person_id = EXCLUDED.person_id, application_id = EXCLUDED.application_id, ack_status = EXCLUDED.ack_status, synced_at = now();`;
+  return { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC };
 })();
 
 // integrations/windmill/talent/lib/run-retention.ts
@@ -362,14 +385,248 @@ const { runRetention } = (() => {
           await deps.deleteFile(key);
       for (const id of contactsToDelete(claimed))
           await deps.deleteContact(id);
+      const crmPeople = await deps.eraseCrmPerson(claimed.phone);
       await deps.query(DELETE_ROWS, [claimed.id, claimed.phone, claimed.files.length, claimed.contacts.length]);
-      result.erased = { requestId: claimed.id, files: claimed.files.length, contacts: claimed.contacts.length };
+      result.erased = { requestId: claimed.id, files: claimed.files.length, contacts: claimed.contacts.length, crmPeople };
       return result;
   }
   return { runRetention };
 })();
 
+// integrations/windmill/talent/lib/twenty.ts
+const { eq, twentyClient, twentyFromConfig } = (() => {
+  const eq = (field, value) => `${field}[eq]:${JSON.stringify(value)}`;
+  function twentyClient(baseUrl, apiKey, fetchImpl = fetch) {
+      const base = baseUrl.replace(/\/$/, "");
+      async function call(method, path, body) {
+          const res = await fetchImpl(`${base}/rest${path}`, {
+              method,
+              headers: { authorization: `Bearer ${apiKey}`, ...(body === undefined ? {} : { "content-type": "application/json" }) },
+              body: body === undefined ? undefined : JSON.stringify(body),
+              signal: AbortSignal.timeout(30_000),
+          });
+          const text = await res.text();
+          let json = null;
+          try {
+              json = text ? JSON.parse(text) : null;
+          }
+          catch { }
+          if (!res.ok && !(method === "DELETE" && res.status === 404)) {
+              const messages = json?.messages?.join("; ") ?? text.slice(0, 200);
+              throw new Error(`Twenty ${method} ${path.split("?")[0]}: HTTP ${res.status} ${messages}`);
+          }
+          return { status: res.status, json };
+      }
+      return {
+          async find(plural, filter) {
+              const { json } = await call("GET", `/${plural}?limit=60&filter=${encodeURIComponent(filter)}`);
+              return (json.data[plural] ?? []);
+          },
+          async create(plural, singular, body) {
+              const { json } = await call("POST", `/${plural}`, body);
+              const created = json.data[`create${singular}`];
+              if (!created?.id)
+                  throw new Error(`Twenty POST /${plural}: no record in the answer`);
+              return created;
+          },
+          async update(plural, id, body) {
+              await call("PATCH", `/${plural}/${id}`, body);
+          },
+          async remove(plural, id) {
+              const { status } = await call("DELETE", `/${plural}/${id}`);
+              return status !== 404;
+          },
+      };
+  }
+  async function twentyFromConfig() {
+      return twentyClient(await config("twenty_base_url"), await config("twenty_api_key"));
+  }
+  return { eq, twentyClient, twentyFromConfig };
+})();
+
+// integrations/windmill/talent/lib/crm.ts
+const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, erasePerson } = (() => {
+  const CLUSTER_VALUES = new Set(["HARIDWAR", "UTTARAKHAND", "DELHI_NCR", "BENGALURU", "JALANDHAR", "SAHARANPUR", "OTHER"]);
+  const ROLE_VALUES = new Set([
+      "FACTORY_HELPER", "PACKING", "MACHINE_OPERATOR", "WAREHOUSE", "FORKLIFT_OPERATOR", "DATA_ENTRY_OPERATOR",
+      "HOUSEKEEPING", "ITI_TRADES", "ELECTRICIAN", "WELDER", "FITTER", "ANY",
+  ]);
+  const optionValue = (slug) => slug.trim().toUpperCase().replace(/[^A-Z0-9]+/g, "_");
+  function clusterValue(slug) {
+      if (!slug)
+          return null;
+      const v = optionValue(slug);
+      return CLUSTER_VALUES.has(v) ? v : null;
+  }
+  function roleValue(slug) {
+      if (!slug)
+          return null;
+      const v = optionValue(slug);
+      return ROLE_VALUES.has(v) ? v : null;
+  }
+  const unique = (values) => [...new Set(values.filter((v) => Boolean(v)))];
+  function languageValue(locale) {
+      switch (locale) {
+          case "en":
+          case "en-IN":
+              return "EN";
+          case "hi":
+          case "hi-IN":
+              return "HI";
+          case "hinglish":
+          case "hi-Latn-IN":
+              return "HI_LATN";
+          default:
+              return null;
+      }
+  }
+  function sourceValue(c) {
+      if (c.channel === "agent")
+          return "AGENT";
+      if (c.source === "web" || c.source.startsWith("web_"))
+          return "WEBSITE";
+      if (c.source === "whatsapp")
+          return "WHATSAPP";
+      if (c.source === "phone")
+          return "PHONE";
+      return "OTHER";
+  }
+  function phoneDigits(phone) {
+      const digits = phone.replace(/\D/g, "");
+      return digits.length > 10 ? digits.slice(-10) : digits;
+  }
+  const iso = (value) => (value ? new Date(value).toISOString() : null);
+  function workRoles(c) {
+      const work = Array.isArray(c.answers?.work) ? c.answers.work : [];
+      return unique([...(c.person_roles ?? []), c.role, ...work].map(roleValue));
+  }
+  function clusters(c) {
+      return unique([...(c.person_clusters ?? []), c.cluster].map(clusterValue));
+  }
+  function personFields(c, existing) {
+      const has = (field) => existing && existing[field] !== null && existing[field] !== undefined && existing[field] !== "";
+      const existingList = (field) => (Array.isArray(existing?.[field]) ? existing[field] : []);
+      const name = c.person_name ?? c.applicant_name;
+      const lastContact = [c.last_contact_at, c.last_confirmed_at].filter(Boolean).map((d) => new Date(d).getTime());
+      const fields = {
+          clusters: unique([...existingList("clusters"), ...clusters(c)]),
+          workRoles: unique([...existingList("workRoles"), ...workRoles(c)]),
+          lastAppliedAt: iso(c.last_applied_at ?? c.created_at),
+          lastContactAt: lastContact.length ? new Date(Math.max(...lastContact)).toISOString() : iso(c.created_at),
+          consentVersion: c.consent_version,
+          consentedAt: iso(c.consented_at),
+      };
+      const language = languageValue(c.person_locale ?? c.locale);
+      if (language)
+          fields.language = language;
+      if (c.home_area)
+          fields.homeArea = c.home_area;
+      if (!has("personType"))
+          fields.personType = "WORKER";
+      if (c.person_status === "do-not-contact")
+          fields.workerStatus = "DO_NOT_CONTACT";
+      else if (!has("workerStatus"))
+          fields.workerStatus = "NEW";
+      const currentName = existing?.name;
+      if (name && !currentName?.firstName && !currentName?.lastName)
+          fields.name = { firstName: name, lastName: "" };
+      if (!existing) {
+          fields.phones = { primaryPhoneNumber: phoneDigits(c.phone), primaryPhoneCountryCode: "IN", primaryPhoneCallingCode: "+91" };
+          if (!fields.name)
+              fields.name = { firstName: `Applicant ${c.ref}`, lastName: "" };
+      }
+      return fields;
+  }
+  function applicationFields(c, personId) {
+      return {
+          name: c.ref,
+          status: "NEW",
+          source: sourceValue(c),
+          jobRole: roleValue(c.role),
+          cluster: clusterValue(c.cluster),
+          message: c.text ?? "",
+          answers: c.answers ?? null,
+          submittedAt: iso(c.created_at),
+          consentVersion: c.consent_version,
+          pagePath: c.page_path ?? "",
+          talentSubmissionId: c.id,
+          personId,
+      };
+  }
+  const ACK_TEMPLATE = "Job application received (DLT 1677100000000394062)";
+  const ackText = (ref) => `Vayasya Seva received your job application. Ref ${ref}. We will contact you on this number about work.`;
+  function deliveryStatus(ackStatus) {
+      switch (ackStatus) {
+          case "accepted":
+              return "SENT";
+          case "failed":
+              return "FAILED";
+          case "unknown":
+              return "UNKNOWN";
+          default:
+              return "QUEUED";
+      }
+  }
+  const ackKey = (submissionId) => `sms-ack:${submissionId}`;
+  function ackFields(c, personId, applicationId) {
+      return {
+          name: `SMS · application received · ${c.ref}`,
+          channel: "SMS",
+          direction: "OUTBOUND",
+          deliveryStatus: deliveryStatus(c.ack_status),
+          template: ACK_TEMPLATE,
+          body: ackText(c.ref),
+          provider: "Fast2SMS",
+          providerId: c.request_id ?? "",
+          statusAt: iso(c.accepted_at ?? c.ack_updated_at),
+          error: c.ack_error ?? "",
+          externalKey: ackKey(c.id),
+          personId,
+          applicationId,
+      };
+  }
+  async function upsertPerson(crm, c) {
+      const [existing] = await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(c.phone)));
+      const fields = personFields(c, existing ?? null);
+      if (existing) {
+          await crm.update("people", existing.id, fields);
+          return existing.id;
+      }
+      return (await crm.create("people", "Person", fields)).id;
+  }
+  async function ensureApplication(crm, c, personId) {
+      const [existing] = await crm.find("applications", eq("talentSubmissionId", c.id));
+      if (existing)
+          return existing.id;
+      return (await crm.create("applications", "Application", applicationFields(c, personId))).id;
+  }
+  async function upsertAcknowledgement(crm, c, personId, applicationId) {
+      const fields = ackFields(c, personId, applicationId);
+      const [existing] = await crm.find("communications", eq("externalKey", ackKey(c.id)));
+      if (existing)
+          await crm.update("communications", existing.id, fields);
+      else
+          await crm.create("communications", "Communication", fields);
+  }
+  async function erasePerson(crm, phone) {
+      const people = await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(phone)));
+      for (const person of people) {
+          for (const comm of await crm.find("communications", eq("personId", person.id)))
+              await crm.remove("communications", comm.id);
+          for (const app of await crm.find("applications", eq("personId", person.id))) {
+              for (const comm of await crm.find("communications", eq("applicationId", app.id)))
+                  await crm.remove("communications", comm.id);
+              await crm.remove("applications", app.id);
+          }
+          await crm.remove("people", person.id);
+      }
+      return people.length;
+  }
+  return { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, erasePerson };
+})();
+
 export async function main() {
-    return withTalentDb((query) => runRetention({ query, deleteFile: deleteObject, deleteContact }));
+    const crm = await twentyFromConfig();
+    return withTalentDb((query) => runRetention({ query, deleteFile: deleteObject, deleteContact, eraseCrmPerson: (phone) => erasePerson(crm, phone) }));
 }
 

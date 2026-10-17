@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
 import { trackServerEvent } from "@/lib/server-events";
 import { contactContract, parseContactRequest } from "@/lib/contact-contract";
 import { BUSINESS_NOTICE_VERSION, assessCrewRequest } from "@/lib/crew-request";
@@ -9,6 +9,7 @@ import {
   sendInternalContactEmail,
 } from "@/lib/msg91";
 import { clientIp } from "@/lib/rate-limit";
+import { buildLeadPayload, forwardLead } from "@/lib/lead-forward";
 import { TurnstileNotConfigured, verifyTurnstile } from "@/lib/turnstile";
 
 const RATE_LIMIT_WINDOW_MS = 60_000;
@@ -192,6 +193,9 @@ export async function POST(request: NextRequest) {
     // starts soon, out of scope), which never reach the buyer.
     const assessment = assessCrewRequest(data);
     const sharedInboxDelivery = await sendInternalContactEmail(data, { caseId });
+    // Into Twenty CRM too, after the response: never delays or fails the form.
+    const lead = buildLeadPayload(data, { caseId, channel: "web", receivedAt: new Date(now) });
+    after(() => forwardLead(lead));
 
     console.info("[CONTACT SUBMISSION DELIVERED]", {
       timestamp: new Date().toISOString(),

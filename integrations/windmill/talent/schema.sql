@@ -155,5 +155,16 @@ BEGIN
   );
   CREATE INDEX IF NOT EXISTS erasure_requests_pending_idx ON erasure_requests (status, requested_at);
   CREATE UNIQUE INDEX IF NOT EXISTS erasure_requests_open_phone_idx ON erasure_requests (phone) WHERE status IN ('pending', 'running');
+
+  -- What f/talent/sync_crm has written to Twenty (crm.vayasyaseva.com) for
+  -- each submission, and the SMS status it last wrote, so it syncs each
+  -- application once and the acknowledgement again only when it changes.
+  CREATE TABLE IF NOT EXISTS crm_sync (
+    submission_id  uuid PRIMARY KEY REFERENCES submissions (id) ON DELETE CASCADE,
+    person_id      uuid,
+    application_id uuid,
+    ack_status     text,
+    synced_at      timestamptz NOT NULL DEFAULT now()
+  );
 END
 $$;

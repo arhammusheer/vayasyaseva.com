@@ -1,0 +1,237 @@
+/**
+ * The talent database's records as Twenty CRM records (the model is
+ * integrations/twenty/setup.mts; option values are UPPER_SNAKE there). Pure
+ * mapping, plus the person upsert and the erasure, against an injected
+ * Twenty client so the tests can drive every path.
+ */
+import { eq, type Twenty, type TwentyRecord } from "./twenty.ts";
+
+/** One submission joined with its people row, SMS acknowledgement and sync state (SYNC_CANDIDATES). */
+export interface SyncCandidate {
+  id: string;
+  ref: string;
+  source: string;
+  channel: string | null;
+  locale: string;
+  phone: string;
+  consent_version: string;
+  consented_at: string | Date;
+  text: string | null;
+  role: string | null;
+  cluster: string | null;
+  answers: Record<string, unknown> | null;
+  page_path: string | null;
+  applicant_name: string | null;
+  created_at: string | Date;
+  person_name: string | null;
+  person_clusters: string[] | null;
+  person_roles: string[] | null;
+  home_area: string | null;
+  person_locale: string | null;
+  person_status: string | null;
+  last_applied_at: string | Date | null;
+  last_contact_at: string | Date | null;
+  last_confirmed_at: string | Date | null;
+  ack_status: string | null;
+  request_id: string | null;
+  ack_error: string | null;
+  accepted_at: string | Date | null;
+  ack_updated_at: string | Date | null;
+  person_id: string | null;
+  application_id: string | null;
+  synced_ack_status: string | null;
+  synced: boolean;
+}
+
+const CLUSTER_VALUES = new Set(["HARIDWAR", "UTTARAKHAND", "DELHI_NCR", "BENGALURU", "JALANDHAR", "SAHARANPUR", "OTHER"]);
+const ROLE_VALUES = new Set([
+  "FACTORY_HELPER", "PACKING", "MACHINE_OPERATOR", "WAREHOUSE", "FORKLIFT_OPERATOR", "DATA_ENTRY_OPERATOR",
+  "HOUSEKEEPING", "ITI_TRADES", "ELECTRICIAN", "WELDER", "FITTER", "ANY",
+]);
+
+/** "delhi-ncr" -> "DELHI_NCR": the slugs of the site and the database as Twenty option values. */
+export const optionValue = (slug: string) => slug.trim().toUpperCase().replace(/[^A-Z0-9]+/g, "_");
+
+export function clusterValue(slug: string | null | undefined): string | null {
+  if (!slug) return null;
+  const v = optionValue(slug);
+  return CLUSTER_VALUES.has(v) ? v : null;
+}
+
+export function roleValue(slug: string | null | undefined): string | null {
+  if (!slug) return null;
+  const v = optionValue(slug);
+  return ROLE_VALUES.has(v) ? v : null;
+}
+
+const unique = (values: (string | null)[]) => [...new Set(values.filter((v): v is string => Boolean(v)))];
+
+/** Languages: the BCP 47 tags of new submissions and the legacy short forms. */
+export function languageValue(locale: string | null | undefined): string | null {
+  switch (locale) {
+    case "en":
+    case "en-IN":
+      return "EN";
+    case "hi":
+    case "hi-IN":
+      return "HI";
+    case "hinglish":
+    case "hi-Latn-IN":
+      return "HI_LATN";
+    default:
+      return null;
+  }
+}
+
+export function sourceValue(c: Pick<SyncCandidate, "source" | "channel">): string {
+  if (c.channel === "agent") return "AGENT";
+  if (c.source === "web" || c.source.startsWith("web_")) return "WEBSITE";
+  if (c.source === "whatsapp") return "WHATSAPP";
+  if (c.source === "phone") return "PHONE";
+  return "OTHER";
+}
+
+/** "+91XXXXXXXXXX" -> the 10 digits Twenty keeps as primaryPhoneNumber (+91 is its calling code). */
+export function phoneDigits(phone: string): string {
+  const digits = phone.replace(/\D/g, "");
+  return digits.length > 10 ? digits.slice(-10) : digits;
+}
+
+const iso = (value: string | Date | null | undefined) => (value ? new Date(value).toISOString() : null);
+
+/** The roles a person said they do: their people row, the role page, and the quick form's work answers. */
+export function workRoles(c: SyncCandidate): string[] {
+  const work = Array.isArray(c.answers?.work) ? (c.answers.work as string[]) : [];
+  return unique([...(c.person_roles ?? []), c.role, ...work].map(roleValue));
+}
+
+export function clusters(c: SyncCandidate): string[] {
+  return unique([...(c.person_clusters ?? []), c.cluster].map(clusterValue));
+}
+
+/** The worker fields, merged into what Twenty already has (lists union; staff's status kept). */
+export function personFields(c: SyncCandidate, existing: TwentyRecord | null): Record<string, unknown> {
+  const has = (field: string) => existing && existing[field] !== null && existing[field] !== undefined && existing[field] !== "";
+  const existingList = (field: string) => (Array.isArray(existing?.[field]) ? (existing![field] as string[]) : []);
+  const name = c.person_name ?? c.applicant_name;
+  const lastContact = [c.last_contact_at, c.last_confirmed_at].filter(Boolean).map((d) => new Date(d!).getTime());
+  const fields: Record<string, unknown> = {
+    clusters: unique([...existingList("clusters"), ...clusters(c)]),
+    workRoles: unique([...existingList("workRoles"), ...workRoles(c)]),
+    lastAppliedAt: iso(c.last_applied_at ?? c.created_at),
+    lastContactAt: lastContact.length ? new Date(Math.max(...lastContact)).toISOString() : iso(c.created_at),
+    consentVersion: c.consent_version,
+    consentedAt: iso(c.consented_at),
+  };
+  const language = languageValue(c.person_locale ?? c.locale);
+  if (language) fields.language = language;
+  if (c.home_area) fields.homeArea = c.home_area;
+  if (!has("personType")) fields.personType = "WORKER";
+  // A do-not-contact request always wins; otherwise staff's status (callable, placed...) stays.
+  if (c.person_status === "do-not-contact") fields.workerStatus = "DO_NOT_CONTACT";
+  else if (!has("workerStatus")) fields.workerStatus = "NEW";
+  const currentName = existing?.name as { firstName?: string; lastName?: string } | undefined;
+  if (name && !currentName?.firstName && !currentName?.lastName) fields.name = { firstName: name, lastName: "" };
+  if (!existing) {
+    fields.phones = { primaryPhoneNumber: phoneDigits(c.phone), primaryPhoneCountryCode: "IN", primaryPhoneCallingCode: "+91" };
+    if (!fields.name) fields.name = { firstName: `Applicant ${c.ref}`, lastName: "" };
+  }
+  return fields;
+}
+
+export function applicationFields(c: SyncCandidate, personId: string): Record<string, unknown> {
+  return {
+    name: c.ref,
+    status: "NEW",
+    source: sourceValue(c),
+    jobRole: roleValue(c.role),
+    cluster: clusterValue(c.cluster),
+    message: c.text ?? "",
+    answers: c.answers ?? null,
+    submittedAt: iso(c.created_at),
+    consentVersion: c.consent_version,
+    pagePath: c.page_path ?? "",
+    talentSubmissionId: c.id,
+    personId,
+  };
+}
+
+/** The approved DLT acknowledgement (Fast2SMS message 227115, integrations/windmill README). */
+export const ACK_TEMPLATE = "Job application received (DLT 1677100000000394062)";
+export const ackText = (ref: string) => `Vayasya Seva received your job application. Ref ${ref}. We will contact you on this number about work.`;
+
+export function deliveryStatus(ackStatus: string | null): string {
+  switch (ackStatus) {
+    case "accepted":
+      return "SENT";
+    case "failed":
+      return "FAILED";
+    case "unknown":
+      return "UNKNOWN";
+    default:
+      return "QUEUED";
+  }
+}
+
+export const ackKey = (submissionId: string) => `sms-ack:${submissionId}`;
+
+export function ackFields(c: SyncCandidate, personId: string, applicationId: string): Record<string, unknown> {
+  return {
+    name: `SMS · application received · ${c.ref}`,
+    channel: "SMS",
+    direction: "OUTBOUND",
+    deliveryStatus: deliveryStatus(c.ack_status),
+    template: ACK_TEMPLATE,
+    body: ackText(c.ref),
+    provider: "Fast2SMS",
+    providerId: c.request_id ?? "",
+    statusAt: iso(c.accepted_at ?? c.ack_updated_at),
+    error: c.ack_error ?? "",
+    externalKey: ackKey(c.id),
+    personId,
+    applicationId,
+  };
+}
+
+/** Finds the person by phone and creates or updates them. Returns their id. */
+export async function upsertPerson(crm: Twenty, c: SyncCandidate): Promise<string> {
+  const [existing] = await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(c.phone)));
+  const fields = personFields(c, existing ?? null);
+  if (existing) {
+    await crm.update("people", existing.id, fields);
+    return existing.id;
+  }
+  return (await crm.create("people", "Person", fields)).id;
+}
+
+/** The application for this submission: the existing one (an earlier run stopped after creating it), else a new one. */
+export async function ensureApplication(crm: Twenty, c: SyncCandidate, personId: string): Promise<string> {
+  const [existing] = await crm.find("applications", eq("talentSubmissionId", c.id));
+  if (existing) return existing.id;
+  return (await crm.create("applications", "Application", applicationFields(c, personId))).id;
+}
+
+export async function upsertAcknowledgement(crm: Twenty, c: SyncCandidate, personId: string, applicationId: string): Promise<void> {
+  const fields = ackFields(c, personId, applicationId);
+  const [existing] = await crm.find("communications", eq("externalKey", ackKey(c.id)));
+  if (existing) await crm.update("communications", existing.id, fields);
+  else await crm.create("communications", "Communication", fields);
+}
+
+/**
+ * Erasure (privacy notice §10): everything Twenty holds for a phone number,
+ * its communications and applications first, then the person. Nothing to
+ * remove is success. Returns how many people were removed.
+ */
+export async function erasePerson(crm: Twenty, phone: string): Promise<number> {
+  const people = await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(phone)));
+  for (const person of people) {
+    for (const comm of await crm.find("communications", eq("personId", person.id))) await crm.remove("communications", comm.id);
+    for (const app of await crm.find("applications", eq("personId", person.id))) {
+      for (const comm of await crm.find("communications", eq("applicationId", app.id))) await crm.remove("communications", comm.id);
+      await crm.remove("applications", app.id);
+    }
+    await crm.remove("people", person.id);
+  }
+  return people.length;
+}

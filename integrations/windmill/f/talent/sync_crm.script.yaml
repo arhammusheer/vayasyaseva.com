@@ -1,0 +1,13 @@
+{
+  "summary": "Talent · sync to Twenty CRM",
+  "description": "Writes new applications into Twenty (crm.vayasyaseva.com): the person by phone, the application and the SMS acknowledgement; updates acknowledgements whose status changed. Tracks what it wrote in crm_sync.",
+  "lock": "",
+  "kind": "script",
+  "language": "bun",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {},
+    "required": []
+  }
+}

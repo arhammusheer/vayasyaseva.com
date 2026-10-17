@@ -36,6 +36,8 @@ export const TALENT_CONSENT_VERSION = "2026-10-16-v7";
 /** Upload links and tickets are short-lived. */
 const UPLOAD_URL_SECONDS = 15 * 60;
 const TICKET_SECONDS = 60 * 60;
+/** Instances' clocks differ a little. */
+const CLOCK_SLACK_SECONDS = 5 * 60;
 
 export class IntakeNotConfigured extends Error {}
 
@@ -113,24 +115,50 @@ export interface Ticket {
   exp: number;
 }
 
-// Its own key, derived from the webhook secret so there is no fifth secret.
-const ticketKey = () => createHmac("sha256", env("TALENT_INTAKE_WEBHOOK_SECRET")).update("jobs-ticket-v1").digest();
-const sign = (body: string) => createHmac("sha256", ticketKey()).update(body).digest("base64url");
+/**
+ * Ticket keys. TICKET_SIGNING_KEY (Vercel env, the site's alone) signs new
+ * tickets. Until the owner sets it, tickets are signed as before, with a key
+ * derived from the webhook secret, so nothing changes on deploy. Once it is
+ * set, tickets signed the old way are still accepted until they expire (an
+ * hour at most), so applications that were open at the switch go through.
+ */
+const legacyTicketKey = () => {
+  const secret = process.env.TALENT_INTAKE_WEBHOOK_SECRET;
+  return secret ? createHmac("sha256", secret).update("jobs-ticket-v1").digest() : null;
+};
+const ticketSigningKey = () => {
+  const key = process.env.TICKET_SIGNING_KEY?.trim();
+  if (key) return Buffer.from(key, "utf8");
+  const legacy = legacyTicketKey();
+  if (!legacy) throw new IntakeNotConfigured("TICKET_SIGNING_KEY (or TALENT_INTAKE_WEBHOOK_SECRET) is not set");
+  return legacy;
+};
+const signWith = (key: Buffer, body: string) => createHmac("sha256", key).update(body).digest("base64url");
+
+function signatureMatches(key: Buffer, body: string, signature: string) {
+  const expected = Buffer.from(signWith(key, body));
+  const given = Buffer.from(signature);
+  return expected.length === given.length && timingSafeEqual(expected, given);
+}
 
 export function issueTicket(ticket: Omit<Ticket, "exp">): string {
   const body = Buffer.from(JSON.stringify({ ...ticket, exp: Math.floor(Date.now() / 1000) + TICKET_SECONDS })).toString("base64url");
-  return `${body}.${sign(body)}`;
+  return `${body}.${signWith(ticketSigningKey(), body)}`;
 }
 
 export function readTicket(value: string): Ticket | null {
   const [body, signature] = value.split(".");
   if (!body || !signature) return null;
-  const expected = Buffer.from(sign(body));
-  const given = Buffer.from(signature);
-  if (expected.length !== given.length || !timingSafeEqual(expected, given)) return null;
+  let signed = signatureMatches(ticketSigningKey(), body, signature);
+  // The changeover: a ticket from before TICKET_SIGNING_KEY was set.
+  const legacy = !signed && process.env.TICKET_SIGNING_KEY?.trim() ? legacyTicketKey() : null;
+  if (legacy) signed = signatureMatches(legacy, body, signature);
+  if (!signed) return null;
   try {
     const ticket = JSON.parse(Buffer.from(body, "base64url").toString("utf8")) as Ticket;
-    return ticket.exp > Date.now() / 1000 ? ticket : null;
+    const now = Date.now() / 1000;
+    // Never longer than a ticket's own hour, whichever key signed it.
+    return ticket.exp > now && ticket.exp <= now + TICKET_SECONDS + CLOCK_SLACK_SECONDS ? ticket : null;
   } catch {
     return null;
   }

@@ -355,3 +355,36 @@ test('agent jobs with files: start 200, submit 202; a form ticket on the agent r
   const noFiles = await post(routes.agentJobsStartRoute, { body: { language: 'en', files: [] } });
   assert.equal(noFiles.status, 400);
 });
+
+// --- Ticket keys (TICKET_SIGNING_KEY) ------------------------------------------------
+
+test('tickets: without TICKET_SIGNING_KEY they are signed as before; with it, old tickets work until they expire', async () => {
+  const { readTicket } = await importTs('src/lib/talent-intake/server.ts');
+  const { createHmac } = await import('node:crypto');
+  const draft = { ref: 'VS-J-TICKT1', source: 'web', locale: 'en-IN', files: [] };
+  delete process.env.TICKET_SIGNING_KEY;
+  const legacy = issueTicket(draft);
+  const [body, signature] = legacy.split('.');
+  const derived = createHmac('sha256', createHmac('sha256', 'unit-webhook-secret').update('jobs-ticket-v1').digest()).update(body).digest('base64url');
+  assert.equal(signature, derived, 'the old derivation, unchanged');
+  assert.equal(readTicket(legacy).ref, 'VS-J-TICKT1');
+  process.env.TICKET_SIGNING_KEY = 'unit-ticket-key';
+  try {
+    const fresh = issueTicket(draft);
+    assert.notEqual(fresh.split('.')[1], derived);
+    assert.equal(readTicket(fresh).ref, 'VS-J-TICKT1');
+    assert.equal(readTicket(legacy).ref, 'VS-J-TICKT1', 'a ticket from before the key still works');
+    // Never longer than a ticket's hour, whichever key signed it.
+    const longBody = Buffer.from(JSON.stringify({ ...draft, exp: Math.floor(Date.now() / 1000) + 3 * 3600 })).toString('base64url');
+    const longLegacy = `${longBody}.${createHmac('sha256', createHmac('sha256', 'unit-webhook-secret').update('jobs-ticket-v1').digest()).update(longBody).digest('base64url')}`;
+    assert.equal(readTicket(longLegacy), null);
+    assert.equal(readTicket(`${body}.${'A'.repeat(signature.length)}`), null);
+  } finally {
+    delete process.env.TICKET_SIGNING_KEY;
+  }
+  // A ticket signed with the new key does not pass once the key is gone.
+  process.env.TICKET_SIGNING_KEY = 'unit-ticket-key';
+  const keyed = issueTicket(draft);
+  delete process.env.TICKET_SIGNING_KEY;
+  assert.equal(readTicket(keyed), null);
+});

@@ -1,5 +1,6 @@
 /**
- * Generates the Windmill scripts in f/talent/ from talent/scripts/*.ts.
+ * Generates the Windmill scripts in f/<folder>/ from <folder>/scripts/*.ts
+ * (talent, leads, platform, notify).
  * Windmill runs each script as one Bun file and resolves npm imports
  * itself, but cannot reach files outside the workspace (talent/lib, the
  * contracts package, packages/contracts/src/rules.ts). So each entry is compiled
@@ -30,8 +31,12 @@ interface CompiledModule {
 
 const cache = new Map<string, CompiledModule>();
 
-/** Schema files inlined where a setup script names their placeholder (scripts/globals.d.ts). */
-const SCHEMAS: Record<string, string> = { __TALENT_SCHEMA__: "talent/schema.sql", __LEADS_SCHEMA__: "leads/schema.sql" };
+/** Schema files inlined where a setup script names their placeholder (<folder>/scripts/globals.d.ts). */
+const SCHEMAS: Record<string, string> = {
+  __TALENT_SCHEMA__: "talent/schema.sql",
+  __LEADS_SCHEMA__: "leads/schema.sql",
+  __NOTIFY_SCHEMA__: "notify/schema.sql",
+};
 
 function compile(path: string, isEntry = false): CompiledModule {
   const hit = cache.get(path);

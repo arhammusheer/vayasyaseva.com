@@ -1,0 +1,13 @@
+{
+  "summary": "Notify · dispatch",
+  "description": "Routes new events by f/notify/policy (dedupe, firing/resolved, hourly collapsing, daily reminders) and sends the outbox: ntfy pushes and Resend emails, four tries each, critical pushes falling back to email. Clears personal data once sent.",
+  "lock": "",
+  "kind": "script",
+  "language": "bun",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {},
+    "required": []
+  }
+}

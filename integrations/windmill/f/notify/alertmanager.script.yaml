@@ -1,0 +1,26 @@
+{
+  "summary": "Notify · Alertmanager",
+  "description": "Alertmanager's webhook (v4), in the cluster only (POST /api/r/internal/vspl-alertmanager, Authorization: Bearer): one event per alert, dedupeKey am:<fingerprint>, firing and resolved.",
+  "lock": "",
+  "kind": "script",
+  "language": "bun",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "authorized": {
+        "type": "boolean",
+        "description": "Set by the preprocessor: the bearer token matched."
+      },
+      "body": {
+        "type": "object",
+        "description": "Alertmanager's webhook payload, version 4."
+      }
+    },
+    "required": [
+      "authorized",
+      "body"
+    ]
+  },
+  "has_preprocessor": true
+}

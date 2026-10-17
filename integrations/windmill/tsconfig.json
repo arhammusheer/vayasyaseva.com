@@ -16,5 +16,5 @@
     "skipLibCheck": true,
     "resolveJsonModule": true
   },
-  "include": ["talent/**/*.ts", "leads/**/*.ts", "contracts/**/*.ts", "platform/**/*.ts", "*.mts"]
+  "include": ["talent/**/*.ts", "leads/**/*.ts", "contracts/**/*.ts", "platform/**/*.ts", "notify/**/*.ts", "*.mts"]
 }

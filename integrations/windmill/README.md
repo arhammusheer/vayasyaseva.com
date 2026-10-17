@@ -59,6 +59,7 @@ The Sarvam transcribe workflow is not ported (voice notes ended 16 October 2026)
 | `leads/scripts/*.ts`, `leads/lib/{lead,run-leads,sql}.ts`, `leads/schema.sql` | The lead inbox: intake checks business_enquiry.v1 and saves the lead, sync_crm files it in Twenty (company, contact, crew request, enquiry), each record found before it is created. |
 | `talent/lib/run-dispatch.ts` | The one dispatcher: claims due `deliveries` rows (SKIP LOCKED, one run at a time by advisory lock) and runs the SMS, Chatwoot and CRM steps. |
 | `platform/scripts/*.ts`, `platform/lib/*.ts` | The signed envelope route, the Idempotency-Key store and health. `signed.ts` checks `packages/contracts/src/signing.ts`'s HMAC over the raw body. |
+| `notify/` | The notification hub (ntfy pushes, Resend email, daily digest): `docs/notification-hub.md`. Other scripts raise notifications with `notify/lib/emit.ts`. |
 | `test-db.mts` | PGlite (Postgres in WebAssembly) for the tests that run the schemas and queries as SQL. |
 | `scripts.mts` | The scripts: summary, argument schema, schedule, HTTP route. Shared by build and deploy. |
 | `build.mts` | Generates `f/talent/<name>.ts` (one self-contained Bun file: relative imports inlined, npm imports kept) and `<name>.script.yaml`. |

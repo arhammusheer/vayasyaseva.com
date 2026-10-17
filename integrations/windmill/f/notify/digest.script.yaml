@@ -1,0 +1,13 @@
+{
+  "summary": "Notify · daily digest",
+  "description": "08:00 IST: one email with the day's digest events, grouped by source and type; deletes events older than 90 days.",
+  "lock": "",
+  "kind": "script",
+  "language": "bun",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {},
+    "required": []
+  }
+}

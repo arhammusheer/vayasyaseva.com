@@ -3,6 +3,7 @@
  * `vspl`), over its API through a kubectl port-forward.
  *
  *   pnpm windmill:build && pnpm windmill:deploy [--dry-run] [--enable-schedules] [--enable-retention]
+ *                                               [--enable-notify] [--reset-notify-policy]
  *
  * Needs kubectl access to the cluster (WARP on). Idempotent; a re-run
  * updates in place. Nothing secret is printed or written locally: secrets
@@ -15,17 +16,26 @@
  *    to read another Secret with the same keys), and the "Jobs, website"
  *    inbox identifier from Chatwoot. The API token is SUPERADMIN_SECRET in
  *    growth/windmill-env (Windmill accepts it as a bearer token).
- * 2. Ensures the workspace `vspl` and folder `talent`.
- * 3. Upserts the f/talent/* variables (config.ts VARIABLES: which are secret).
+ *    The notification hub's (docs/notification-hub.md): the notify database
+ *    password (data/pg-main-notify) and growth/windmill-notify
+ *    (vayasya-infra apps/windmill/overlays/growth/secrets-notify.sops.yaml).
+ * 2. Ensures the workspace `vspl` and folders `talent`, `leads`, `platform`, `notify`.
+ * 3. Upserts the f/talent/* variables (config.ts VARIABLES: which are secret)
+ *    and the f/notify/* ones (notify/lib/config.ts). f/notify/policy is
+ *    created from DEFAULT_POLICY once and then left to hand edits;
+ *    --reset-notify-policy writes the default again.
  * 4. Pushes each script in f/talent/ as a new version only if its content
  *    or metadata changed (parent_hash = the current version's hash).
- * 5. Runs f/talent/setup and f/leads/setup (schemas) and waits for them.
+ * 5. Runs f/talent/setup, f/leads/setup and f/notify/setup (schemas) and waits for them.
  * 6. Creates or updates the schedules and the HTTP routes. Schedules are
  *    created disabled: --enable-schedules turns f/talent/dispatch and
  *    f/leads/sync_crm on, --enable-retention turns retention on (after a
- *    hand-run check, as with n8n). A re-run without the flags leaves them as
- *    they are. The schedules the dispatcher replaced (acknowledge, deliver,
- *    sync_crm, delivery_check) are turned off; the scripts stay, for hand runs.
+ *    hand-run check, as with n8n), --enable-notify turns f/notify/dispatch and
+ *    digest on (after the owner has set NTFY_TOKEN and RESEND_NOTIFY_API_KEY;
+ *    --enable-schedules never turns them on). A re-run without the flags
+ *    leaves them as they are. The schedules the dispatcher replaced
+ *    (acknowledge, deliver, sync_crm, delivery_check) are turned off; the
+ *    scripts stay, for hand runs.
  * 7. Warms the route (the first call after a new version installs
  *    dependencies, ~7.5 s) with a wrong secret, expecting 403.
  *
@@ -53,6 +63,8 @@ import { createServer } from "node:net";
 import { dirname, resolve } from "node:path";
 import { FOLDER, FOLDERS, SCRIPTS, TIMEZONE, WORKSPACE, specPath, type ScriptSpec } from "./scripts.mts";
 import { VARIABLES, variablePath, type ConfigName } from "./talent/lib/config.ts";
+import { NOTIFY_VARIABLES, OWNER_PLACEHOLDER, notifyVariablePath, type NotifyConfigName } from "./notify/lib/config.ts";
+import { DEFAULT_POLICY } from "./notify/lib/policy.ts";
 import { metadata } from "./build.mts";
 
 const here = dirname(new URL(import.meta.url).pathname);
@@ -60,6 +72,8 @@ const args = process.argv.slice(2);
 const DRY_RUN = args.includes("--dry-run");
 const ENABLE_SCHEDULES = args.includes("--enable-schedules");
 const ENABLE_RETENTION = args.includes("--enable-retention");
+const ENABLE_NOTIFY = args.includes("--enable-notify");
+const RESET_NOTIFY_POLICY = args.includes("--reset-notify-policy");
 const SECRETS_FROM = args.find((a) => a.startsWith("--secrets-from="))?.split("=")[1] ?? "windmill-talent";
 const BASE_URL_ARG = args.find((a) => a.startsWith("--base-url="))?.split("=")[1];
 
@@ -69,6 +83,9 @@ const ACCOUNT_ID = 1;
 const R2_ENDPOINT = "https://3f03827748ac33418f1176adaa436f26.r2.cloudflarestorage.com";
 const R2_BUCKET = "vayasya-talent-intake";
 const TALENT_DB_HOST = "pg-main-rw.data.svc.cluster.local";
+const NOTIFY_SECRET = "windmill-notify";
+const NTFY_BASE_URL = "http://ntfy.growth.svc.cluster.local";
+const NOTIFY_EMAIL_FROM = "VSPL notifications <notify@notify.vayasyaseva.com>";
 
 function step(message: string) {
   console.log(`${DRY_RUN ? "[dry run] " : ""}- ${message}`);
@@ -138,6 +155,27 @@ function signingSecret(): string {
   }
 }
 
+/** The hub's variables, except the policy (deploy creates it once; see step 3). */
+function readNotifyValues(): Record<Exclude<NotifyConfigName, "policy">, string> {
+  step(`reading the notification hub's secrets (data/pg-main-notify, growth/${NOTIFY_SECRET})`);
+  const fromNotify = (key: string) => secretValue("growth", NOTIFY_SECRET, key);
+  const values = {
+    notify_pg_url: `postgres://notify:${encodeURIComponent(secretValue("data", "pg-main-notify", "password"))}@${TALENT_DB_HOST}:5432/notify`,
+    ingest_secret: fromNotify("NOTIFY_INGEST_SECRET"),
+    alertmanager_secret: fromNotify("NOTIFY_ALERTMANAGER_SECRET"),
+    ntfy_token: fromNotify("NTFY_TOKEN"),
+    ntfy_base_url: NTFY_BASE_URL,
+    resend_api_key: fromNotify("RESEND_NOTIFY_API_KEY"),
+    email_from: NOTIFY_EMAIL_FROM,
+    email_to: fromNotify("NOTIFY_EMAIL_TO"),
+  };
+  // Names only, never values.
+  for (const [name, value] of Object.entries(values)) {
+    if (value === OWNER_PLACEHOLDER) step(`WARNING: ${name} is still "${OWNER_PLACEHOLDER}": dispatch refuses to run until the owner sets it (sops edit, then deploy again)`);
+  }
+  return values;
+}
+
 // --- Windmill API ----------------------------------------------------------------
 
 async function freePort(): Promise<number> {
@@ -201,6 +239,7 @@ const SERVICE_USER = "automation@vayasyaseva.com";
 
 async function main() {
   const values = readValues();
+  const notifyValues = readNotifyValues();
   const token = secretValue("growth", "windmill-env", "SUPERADMIN_SECRET");
   const { base, stop } = await portForward();
   try {
@@ -256,6 +295,27 @@ async function main() {
       }
     }
 
+    for (const [name, { secret }] of Object.entries(NOTIFY_VARIABLES) as [NotifyConfigName, { secret: boolean }][]) {
+      const path = notifyVariablePath(name);
+      const present = await exists(`/w/{ws}/variables/exists/${path}`);
+      if (name === "policy") {
+        // Editable without code: created once; only --reset-notify-policy overwrites it.
+        const value = JSON.stringify(DEFAULT_POLICY, null, 2);
+        const description = "Notification routing policy, JSON (integrations/windmill/notify/lib/policy.ts, docs/notification-hub.md). Edit here; an invalid policy falls back to the default.";
+        if (!present) await w.write("/w/{ws}/variables/create", { path, value, is_secret: false, description }, `creating variable ${path} (default policy)`);
+        else if (RESET_NOTIFY_POLICY) await w.write(`/w/{ws}/variables/update/${path}`, { value, is_secret: false, description }, `resetting variable ${path} to the default policy`);
+        else step(`variable ${path} kept (hand edits stay; --reset-notify-policy replaces it)`);
+        continue;
+      }
+      const value = notifyValues[name];
+      const description = `Notification hub (integrations/windmill/notify). Set by deploy.mts${secret ? "; secret" : ""}.`;
+      if (present) {
+        await w.write(`/w/{ws}/variables/update/${path}`, { value, is_secret: secret, description }, `updating variable ${path}`);
+      } else {
+        await w.write("/w/{ws}/variables/create", { path, value, is_secret: secret, description }, `creating variable ${path}`);
+      }
+    }
+
     // 4. Scripts
     for (const spec of SCRIPTS) {
       const path = specPath(spec);
@@ -287,7 +347,7 @@ async function main() {
       );
     }
 
-    // 5. Schemas: the talent database and the lead inbox
+    // 5. Schemas: the talent database, the lead inbox and the notify database
     for (const spec of SCRIPTS.filter((s) => s.name === "setup")) {
       const path = specPath(spec);
       step(`running ${path}`);
@@ -354,8 +414,13 @@ async function schedule(w: Api, exists: (path: string) => Promise<boolean>, spec
     return;
   }
   if (!spec.schedule) return;
+  // Notify schedules only with --enable-notify: never --enable-schedules, never the dispatcher swap.
   const enable =
-    spec.name === "retention" ? ENABLE_RETENTION : ENABLE_SCHEDULES || (replacedWereOn && REPLACEMENTS.has(`${spec.folder ?? FOLDER}/${spec.name}`));
+    spec.folder === "notify"
+      ? ENABLE_NOTIFY
+      : spec.name === "retention"
+        ? ENABLE_RETENTION
+        : ENABLE_SCHEDULES || (replacedWereOn && REPLACEMENTS.has(`${spec.folder ?? FOLDER}/${spec.name}`));
   const body = { schedule: spec.schedule.cron, timezone: TIMEZONE, args: {}, summary: spec.schedule.summary };
   if (await exists(`/w/{ws}/schedules/exists/${path}`)) {
     await w.write(`/w/{ws}/schedules/update/${path}`, body, `updating schedule ${path} (${spec.schedule.cron})`);

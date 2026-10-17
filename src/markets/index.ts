@@ -127,8 +127,9 @@ export function marketsInAdTags(values: readonly (string | null | undefined)[]):
 /* ---------- Languages and sides ---------- */
 
 /** The picker's language order for a cluster (a market's, or Saharanpur's Hindi). */
-export function languageSetFor(cluster: ClusterId): LanguageSetName | undefined {
-  return isMarketId(cluster) ? RECORDS[cluster].languageSet : NON_MARKET_CLUSTERS[cluster].languageSet;
+export function languageSetFor(cluster: string | null | undefined): LanguageSetName | undefined {
+  if (isMarketId(cluster)) return RECORDS[cluster].languageSet;
+  return cluster && Object.hasOwn(NON_MARKET_CLUSTERS, cluster) ? NON_MARKET_CLUSTERS[cluster as keyof typeof NON_MARKET_CLUSTERS].languageSet : undefined;
 }
 
 /** The header language switch for a market's pages; undefined for a cluster that is not a market. */

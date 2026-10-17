@@ -4,6 +4,9 @@
  * simply absent, with no placeholder. Who delivers the work, routing, tier
  * reasoning and keyword evidence never go here (content:check enforces part
  * of this).
+ *
+ * Market knowledge that is not page content (places, regions, ad words, the
+ * language picker and header switch order) lives in src/markets.
  */
 import type { ClusterId, LocaleTag, WageStateSlug } from "./identifiers";
 
@@ -52,12 +55,6 @@ export type Cluster = {
   /** States the cluster's sites are in (links to wage pages once they exist). */
   states: readonly WageStateSlug[];
   /**
-   * The header language switch on this cluster's pages, in order (PLAN §6.4:
-   * Hindi belt English · हिंदी · Hinglish; Karnataka English · ಕನ್ನಡ · Hinglish;
-   * Punjab English · Hinglish · हिंदी). A page's other languages go under "More".
-   */
-  quickSwitch: readonly LocaleTag[];
-  /**
    * The buyer page for this cluster. Absent for a jobs-only cluster: one
    * whose jobs side passed readiness (a recruiter calls back, VSPL is the
    * employer of record) but whose buyer side has not (PLAN §3.2), so it gets
@@ -79,8 +76,6 @@ export const clusters: readonly Cluster[] = [
     publishable: true,
     name: { "en-IN": "Haridwar", "hi-IN": "हरिद्वार", "hi-Latn-IN": "Haridwar" },
     states: ["uttarakhand"],
-    // Hindi belt (PLAN §6.4): English · हिंदी · Hinglish.
-    quickSwitch: ["en-IN", "hi-IN", "hi-Latn-IN"],
     buyerHub: "/locations/haridwar",
     // None signed off yet; the page copy carries no claim block.
     claims: [],
@@ -96,7 +91,6 @@ export const clusters: readonly Cluster[] = [
     publishable: true,
     name: { "en-IN": "Uttarakhand", "hi-IN": "उत्तराखंड", "hi-Latn-IN": "Uttarakhand" },
     states: ["uttarakhand"],
-    quickSwitch: ["en-IN", "hi-IN", "hi-Latn-IN"],
     buyerHub: "/locations/uttarakhand",
     claims: [],
     registrations: [],
@@ -109,7 +103,6 @@ export const clusters: readonly Cluster[] = [
     publishable: true,
     name: { "en-IN": "Delhi NCR", "hi-IN": "दिल्ली NCR", "hi-Latn-IN": "Delhi NCR" },
     states: ["delhi", "uttar-pradesh", "haryana"],
-    quickSwitch: ["en-IN", "hi-IN", "hi-Latn-IN"],
     buyerHub: "/locations/delhi-ncr",
     claims: [],
     registrations: [],
@@ -124,8 +117,6 @@ export const clusters: readonly Cluster[] = [
     publishable: true,
     name: { "en-IN": "Bengaluru", "hi-IN": "बेंगलुरु", "hi-Latn-IN": "Bengaluru" },
     states: ["karnataka"],
-    // Karnataka: ಕನ್ನಡ (published 17 Oct 2026) · English · Hinglish.
-    quickSwitch: ["kn-IN", "en-IN", "hi-Latn-IN"],
     buyerHub: "/locations/bengaluru",
     claims: [],
     registrations: [],
@@ -143,9 +134,6 @@ export const clusters: readonly Cluster[] = [
     name: { "en-IN": "Jalandhar and Kapurthala", "hi-IN": "जालंधर और कपूरथला", "hi-Latn-IN": "Jalandhar aur Kapurthala" },
     navLabel: "Jalandhar–Kapurthala",
     states: ["punjab"],
-    // Punjabi first where a page has it (owner direction, 17 Oct 2026), then
-    // PLAN §6.4's Punjab order: Hinglish · English · हिंदी.
-    quickSwitch: ["pa-IN", "hi-Latn-IN", "en-IN"],
     buyerHub: "/locations/jalandhar",
     claims: [],
     registrations: [],
@@ -158,7 +146,6 @@ export const clusters: readonly Cluster[] = [
     publishable: true,
     name: { "en-IN": "Punjab", "hi-IN": "पंजाब", "hi-Latn-IN": "Punjab", "pa-IN": "ਪੰਜਾਬ" },
     states: ["punjab"],
-    quickSwitch: ["pa-IN", "hi-Latn-IN", "en-IN"],
     claims: [],
     registrations: [],
   },

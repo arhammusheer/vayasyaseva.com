@@ -37,7 +37,6 @@ test("ad words decide as UTM_WORDS does", () => {
 test("language sets, quick switch and stand-ins", () => {
   const CLUSTER_SETS = { haridwar: "hindi", uttarakhand: "hindi", "delhi-ncr": "hindi", saharanpur: "hindi", jalandhar: "punjab", punjab: "punjab", bengaluru: "karnataka", other: undefined };
   for (const id of CLUSTER_IDS) assert.equal(markets.languageSetFor(id), CLUSTER_SETS[id], id);
-  for (const c of clusters) assert.deepEqual([...markets.quickSwitchFor(c.id)], [...c.quickSwitch], c.id);
   for (const id of CLUSTER_IDS) for (const side of ["business", "jobs"]) {
     assert.equal(markets.standInFor(id, side), id === "punjab" && side === "business" ? "jalandhar" : undefined, `${id} ${side}`);
   }

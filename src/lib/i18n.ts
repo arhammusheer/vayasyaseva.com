@@ -9,7 +9,8 @@
  * entry or header link from published pages. Flip `published` once a native
  * speaker has reviewed the copy.
  */
-import { builtLocales, builtPages, clusterById, isNoindex, isPaused, pageEntry, publishedLocales, redirectTarget } from "@/content/registry";
+import { builtLocales, builtPages, isNoindex, isPaused, pageEntry, publishedLocales, redirectTarget } from "@/content/registry";
+import { quickSwitchFor } from "@/markets/index";
 import type { LocaleTag } from "@/content/registry/identifiers";
 
 export const locales = {
@@ -293,8 +294,8 @@ export function languageAlternates(path: string) {
 
 /**
  * The header quick switch on pages without a cluster (PLAN §6.4, default and
- * Hindi belt): English · हिंदी · Hinglish. A cluster page uses its cluster's
- * `quickSwitch` (src/content/registry/clusters.ts). Fixed per page, never
+ * Hindi belt): English · हिंदी · Hinglish. A market's page uses its market's
+ * `quickSwitch` (src/markets/data.ts). Fixed per page, never
  * per visitor, so the switch stays in the static HTML.
  */
 export const DEFAULT_QUICK_SWITCH: readonly Locale[] = ["en-IN", "hi-IN", "hi-Latn-IN"];
@@ -302,7 +303,7 @@ export const DEFAULT_QUICK_SWITCH: readonly Locale[] = ["en-IN", "hi-IN", "hi-La
 /** The quick-switch order for a page: its cluster's set, else the default. */
 export function quickSwitchOf(path: string): readonly Locale[] {
   const cluster = pageEntry(path)?.cluster;
-  return (cluster && clusterById(cluster)?.quickSwitch) || DEFAULT_QUICK_SWITCH;
+  return quickSwitchFor(cluster) || DEFAULT_QUICK_SWITCH;
 }
 
 /**

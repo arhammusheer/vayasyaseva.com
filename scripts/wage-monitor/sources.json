@@ -91,6 +91,14 @@
           "name": "Labour Department, Delhi: current minimum wage rates"
         },
         {
+          "url": "https://labour.delhi.gov.in/labour/gazette-notification-dated-22nd-october-2019-revision-minimum-rates-wages-class",
+          "name": "Labour Department, Delhi: 22 October 2019 wage notification page"
+        },
+        {
+          "url": "https://labour.delhi.gov.in/labour/notification-regarding-minimum-wages-dated-26072011",
+          "name": "Labour Department, Delhi: 2011 scheduled employment notifications page"
+        },
+        {
           "url": "https://dlwb.delhi.gov.in/circulars-orders",
           "name": "Delhi Labour Welfare Board: circulars and orders",
           "topic": "lwf"
@@ -123,6 +131,11 @@
           "url": "https://hrylabour.gov.in/home/readmore?cat_id=46&status=1",
           "name": "Labour Department, Haryana: news and notifications",
           "match": "wage|dearness|वेतन|मजदूरी|महंगाई"
+        },
+        {
+          "url": "https://hrylabour.gov.in/home/readmore?cat_id=51&status=1",
+          "name": "Labour Department, Haryana: notifications (wages and brick kilns)",
+          "match": "wage|brick|kiln|bhatta|ईंट|भट्ठा|वेतन|मजदूरी"
         },
         {
           "url": "https://hrylabour.gov.in/home/readmore?cat_id=46&status=1",

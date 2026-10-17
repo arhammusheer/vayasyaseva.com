@@ -1,109 +1,364 @@
 {
-  "state": "uttar-pradesh",
-  "name": "Uttar Pradesh",
-  "titleName": "UP",
-  "nextRevision": {
-    "expected": "2026-10-01",
-    "basis": "Uttar Pradesh adjusts the variable dearness allowance for the 74 scheduled employments every 1 April and 1 October, from the six-monthly average consumer price index. The 17 April 2026 order sets interim rates while the Uttar Pradesh Code on Wages Rules, 2026 are being notified, so new rates may also come under the Code."
+ "state": "uttar-pradesh",
+ "name": "Uttar Pradesh",
+ "titleName": "UP",
+ "nextRevision": {
+  "expected": "2026-10-01",
+  "basis": "Uttar Pradesh adjusts the variable dearness allowance for the 74 scheduled employments every 1 April and 1 October, from the six-monthly average consumer price index. The 17 April 2026 order sets interim rates while the Uttar Pradesh Code on Wages Rules, 2026 are being notified, so new rates may also come under the Code."
+ },
+ "checked": {
+  "on": "2026-10-17"
+ },
+ "sources": [
+  {
+   "id": "up-2026-04",
+   "kind": "order",
+   "title": "Interim minimum wages in three categories of districts, with effect from 1 April 2026 (English translation)",
+   "number": "374/36-2-2026-2041256",
+   "date": "2026-04-17",
+   "authority": "Shram Anubhag-2, Government of Uttar Pradesh",
+   "legalBasis": "Section 3(b), United Provinces Industrial Disputes Act, 1947, read with section 21, Uttar Pradesh General Clauses Act, 1904. Supersedes Labour Commissioner's order 1477-84 (M.W.)/15 dated 25 March 2026, except piece-rate wages in brick kilns.",
+   "url": "https://uplabour.gov.in/MediaGallery/TickerScrolls/document-34.pdf",
+   "listing": "https://uplabour.gov.in/",
+   "language": "en",
+   "sha256": "547a96259729094536a671ab1421a185c8012fc40c69d7b1125c727573f43d17",
+   "sizeKb": 110,
+   "retrievedOn": "2026-10-16"
   },
-  "checked": { "on": "2026-10-16" },
-  "sources": [
+  {
+   "id": "up-2026-04-hi",
+   "kind": "order",
+   "title": "अंतरिम न्यूनतम मजदूरी, दिनांक 01-04-2026 से प्रभावी (हिंदी मूल)",
+   "number": "374/36-2-2026-2041256",
+   "date": "2026-04-17",
+   "authority": "Shram Anubhag-2, Government of Uttar Pradesh",
+   "url": "https://uplabour.gov.in/MediaGallery/TickerScrolls/document-33.pdf",
+   "listing": "https://uplabour.gov.in/",
+   "language": "hi",
+   "sha256": "2d0871c9219ce6fe39d26d1037952b223549bd692e2d58fb84837b0776ff46bb",
+   "sizeKb": 197,
+   "retrievedOn": "2026-10-16"
+  },
+  {
+   "id": "up-vda-2024-10",
+   "kind": "order",
+   "title": "Variable dearness allowance in 74 scheduled employments, 1 October 2024 to 31 March 2025",
+   "number": "801-07 Pravartan-(M.W.)/15",
+   "date": "2024-10-01",
+   "authority": "Office of the Labour Commissioner, Uttar Pradesh, Kanpur",
+   "legalBasis": "Minimum Wages Act, 1948; notifications 194/36-3-2014-07(MW)/4 dated 28 January 2014 and 850/36-03-2019-931(MW)/06 dated 30 September 2019",
+   "url": "https://uplabour.gov.in/MediaGallery/Circulars/VDAin74niyojan011024.pdf",
+   "listing": "https://uplabour.gov.in/Pages/MWA.aspx",
+   "language": "hi",
+   "sha256": "691185923cab8522becb3f695153781d888e3884581e2552c3dd52ff53a5dcb3",
+   "sizeKb": 965,
+   "retrievedOn": "2026-10-16"
+  }
+ ],
+ "tables": [
+  {
+   "id": "scheduled-employments",
+   "headline": true,
+   "title": "Scheduled employments",
+   "appliesTo": "Workers in every employment where minimum wages are fixed under the Minimum Wages Act, 1948 (the state's 74 scheduled employments). Piece-rate wages in brick kilns stay under the earlier order.",
+   "sources": [
+    "up-2026-04",
+    "up-2026-04-hi"
+   ],
+   "effectiveFrom": "2026-04-01",
+   "zones": [
     {
-      "id": "up-2026-04",
-      "kind": "order",
-      "title": "Interim minimum wages in three categories of districts, with effect from 1 April 2026 (English translation)",
-      "number": "374/36-2-2026-2041256",
-      "date": "2026-04-17",
-      "authority": "Shram Anubhag-2, Government of Uttar Pradesh",
-      "legalBasis": "Section 3(b), United Provinces Industrial Disputes Act, 1947, read with section 21, Uttar Pradesh General Clauses Act, 1904. Supersedes Labour Commissioner's order 1477-84 (M.W.)/15 dated 25 March 2026, except piece-rate wages in brick kilns.",
-      "url": "https://uplabour.gov.in/MediaGallery/TickerScrolls/document-34.pdf",
-      "listing": "https://uplabour.gov.in/",
-      "language": "en",
-      "sha256": "547a96259729094536a671ab1421a185c8012fc40c69d7b1125c727573f43d17",
-      "sizeKb": 110,
-      "retrievedOn": "2026-10-16"
+     "id": "category-1",
+     "name": "Category I",
+     "areas": "Gautam Buddha Nagar (Noida, Greater Noida) and Ghaziabad districts."
     },
     {
-      "id": "up-2026-04-hi",
-      "kind": "order",
-      "title": "अंतरिम न्यूनतम मजदूरी, दिनांक 01-04-2026 से प्रभावी (हिंदी मूल)",
-      "number": "374/36-2-2026-2041256",
-      "date": "2026-04-17",
-      "authority": "Shram Anubhag-2, Government of Uttar Pradesh",
-      "url": "https://uplabour.gov.in/MediaGallery/TickerScrolls/document-33.pdf",
-      "listing": "https://uplabour.gov.in/",
-      "language": "hi",
-      "sha256": "2d0871c9219ce6fe39d26d1037952b223549bd692e2d58fb84837b0776ff46bb",
-      "sizeKb": 197,
-      "retrievedOn": "2026-10-16"
+     "id": "category-2",
+     "name": "Category II",
+     "areas": "Districts with a Nagar Nigam (municipal corporation): Agra, Aligarh, Ayodhya, Bareilly, Firozabad, Gorakhpur, Jhansi, Kanpur Nagar, Lucknow, Mathura, Meerut, Moradabad, Prayagraj, Saharanpur, Shahjahanpur and Varanasi."
     },
     {
-      "id": "up-vda-2024-10",
-      "kind": "order",
-      "title": "Variable dearness allowance in 74 scheduled employments, 1 October 2024 to 31 March 2025",
-      "number": "801-07 Pravartan-(M.W.)/15",
-      "date": "2024-10-01",
-      "authority": "Office of the Labour Commissioner, Uttar Pradesh, Kanpur",
-      "legalBasis": "Minimum Wages Act, 1948; notifications 194/36-3-2014-07(MW)/4 dated 28 January 2014 and 850/36-03-2019-931(MW)/06 dated 30 September 2019",
-      "url": "https://uplabour.gov.in/MediaGallery/Circulars/VDAin74niyojan011024.pdf",
-      "listing": "https://uplabour.gov.in/Pages/MWA.aspx",
-      "language": "hi",
-      "sha256": "691185923cab8522becb3f695153781d888e3884581e2552c3dd52ff53a5dcb3",
-      "sizeKb": 965,
-      "retrievedOn": "2026-10-16"
+     "id": "category-3",
+     "name": "Category III",
+     "areas": "All remaining districts."
     }
-  ],
-  "tables": [
+   ],
+   "daily": "derived",
+   "dailyRule": "The April 2026 order fixes monthly rates. The 74-employment notifications set the daily rate at no less than 1/26 of basic wage plus VDA, so the daily figures here are the monthly total divided by 26, rounded up to the paisa.",
+   "basicLabel": "Basic",
+   "vdaLabel": "VDA",
+   "rates": [
     {
-      "id": "scheduled-employments",
-      "headline": true,
-      "title": "Scheduled employments",
-      "appliesTo": "Workers in every employment where minimum wages are fixed under the Minimum Wages Act, 1948 (the state's 74 scheduled employments). Piece-rate wages in brick kilns stay under the earlier order.",
-      "sources": ["up-2026-04", "up-2026-04-hi"],
-      "effectiveFrom": "2026-04-01",
-      "zones": [
-        { "id": "category-1", "name": "Category I", "areas": "Gautam Buddha Nagar (Noida, Greater Noida) and Ghaziabad districts." },
-        { "id": "category-2", "name": "Category II", "areas": "Districts with a Nagar Nigam (municipal corporation): Agra, Aligarh, Ayodhya, Bareilly, Firozabad, Gorakhpur, Jhansi, Kanpur Nagar, Lucknow, Mathura, Meerut, Moradabad, Prayagraj, Saharanpur, Shahjahanpur and Varanasi." },
-        { "id": "category-3", "name": "Category III", "areas": "All remaining districts." }
-      ],
-      "daily": "derived",
-      "dailyRule": "The April 2026 order fixes monthly rates. The 74-employment notifications set the daily rate at no less than 1/26 of basic wage plus VDA, so the daily figures here are the monthly total divided by 26, rounded up to the paisa.",
-      "basicLabel": "Basic",
-      "vdaLabel": "VDA",
-      "rates": [
-        { "zone": "category-1", "skill": "unskilled", "basic": 12885, "vda": 805, "monthly": 13690, "daily": 526.54 },
-        { "zone": "category-1", "skill": "semi-skilled", "basic": 14173, "vda": 886, "monthly": 15059, "daily": 579.2 },
-        { "zone": "category-1", "skill": "skilled", "basic": 15876, "vda": 992, "monthly": 16868, "daily": 648.77 },
-        { "zone": "category-2", "skill": "unskilled", "basic": 12241, "vda": 765, "monthly": 13006, "daily": 500.24 },
-        { "zone": "category-2", "skill": "semi-skilled", "basic": 13464, "vda": 842, "monthly": 14306, "daily": 550.24 },
-        { "zone": "category-2", "skill": "skilled", "basic": 15082, "vda": 943, "monthly": 16025, "daily": 616.35 },
-        { "zone": "category-3", "skill": "unskilled", "basic": 11629, "vda": 727, "monthly": 12356, "daily": 475.24 },
-        { "zone": "category-3", "skill": "semi-skilled", "basic": 12791, "vda": 799, "monthly": 13590, "daily": 522.7 },
-        { "zone": "category-3", "skill": "skilled", "basic": 14328, "vda": 896, "monthly": 15224, "daily": 585.54 }
-      ]
-    }
-  ],
-  "history": [
+     "zone": "category-1",
+     "skill": "unskilled",
+     "basic": 12885,
+     "vda": 805,
+     "monthly": 13690,
+     "daily": 526.54
+    },
     {
-      "table": "scheduled-employments",
-      "effectiveFrom": "2024-10-01",
-      "effectiveTo": "2025-03-31",
-      "source": "up-vda-2024-10",
-      "note": "One statewide rate, before the April 2026 split into three categories. The orders in between are not on the Labour Department's site.",
-      "rates": [
-        { "skill": "unskilled", "monthly": 10701, "daily": 412 },
-        { "skill": "semi-skilled", "monthly": 11772, "daily": 453 },
-        { "skill": "skilled", "monthly": 13186, "daily": 507 }
-      ]
+     "zone": "category-1",
+     "skill": "semi-skilled",
+     "basic": 14173,
+     "vda": 886,
+     "monthly": 15059,
+     "daily": 579.2
+    },
+    {
+     "zone": "category-1",
+     "skill": "skilled",
+     "basic": 15876,
+     "vda": 992,
+     "monthly": 16868,
+     "daily": 648.77
+    },
+    {
+     "zone": "category-2",
+     "skill": "unskilled",
+     "basic": 12241,
+     "vda": 765,
+     "monthly": 13006,
+     "daily": 500.24
+    },
+    {
+     "zone": "category-2",
+     "skill": "semi-skilled",
+     "basic": 13464,
+     "vda": 842,
+     "monthly": 14306,
+     "daily": 550.24
+    },
+    {
+     "zone": "category-2",
+     "skill": "skilled",
+     "basic": 15082,
+     "vda": 943,
+     "monthly": 16025,
+     "daily": 616.35
+    },
+    {
+     "zone": "category-3",
+     "skill": "unskilled",
+     "basic": 11629,
+     "vda": 727,
+     "monthly": 12356,
+     "daily": 475.24
+    },
+    {
+     "zone": "category-3",
+     "skill": "semi-skilled",
+     "basic": 12791,
+     "vda": 799,
+     "monthly": 13590,
+     "daily": 522.7
+    },
+    {
+     "zone": "category-3",
+     "skill": "skilled",
+     "basic": 14328,
+     "vda": 896,
+     "monthly": 15224,
+     "daily": 585.54
     }
-  ],
-  "verification": [
-    "2026-10-16: uplabour.gov.in home page news ticker links 'Revised minimum wages basic rates with VDA in 74 scheduled employment, effective from 01/04/2026' (document-34.pdf, English) and the Hindi original (document-33.pdf). Both PDFs carry a text layer, created 17 April 2026.",
-    "2026-10-16: document-34.pdf read in full. Order No. 374/36-2-2026-2041256, Lucknow, 17-04-2026, signed Dr. M.K. Shanmuga Sundaram, Principal Secretary. Category I (Gautam Buddha Nagar and Ghaziabad): unskilled 12885 + 805 = 13690; semi-skilled 14173 + 886 = 15059; skilled 15876 + 992 = 16868. Category II (districts having Nagar Nigam, other than those two): 12241 + 765 = 13006; 13464 + 842 = 14306; 15082 + 943 = 16025. Category III (other districts): 11629 + 727 = 12356; 12791 + 799 = 13590; 14328 + 896 = 15224. Effective from 01-04-2026.",
-    "2026-10-16, re-read: document-34.pdf preamble. Para 1 cites the outcome of talks 'arising out of the labour unrest in Noida and Greater Noida in Gautam Buddha Nagar district'. The classification para: 'keeping in view the geographical diversification of Uttar Pradesh, status of industries, urban infrastructure and cost of living, the Department of Labour has proposed classification of the State into three categories ... This proposal has been agreed upon by both employers and workers'. The operative para supersedes Labour Commissioner's order 1477-84 (M.W.)/15 dated 25.03.2026, 'except in respect of employment in brick kilns where wages are fixed on piece-rate basis', and applies 'in those employments where minimum wages are otherwise fixed under the Minimum Wages Act, 1948'. The order names no districts beyond Category I and has no annexure.",
-    "2026-10-16: Category II districts are the districts (जनपद) of the 17 Nagar Nigams listed by the Directorate of Local Bodies, Uttar Pradesh (localbodies.up.nic.in/listnn.htm, mayors elected in 2023), less Ghaziabad: Ayodhya, Aligarh, Agra, Kanpur Nagar, Gorakhpur, Jhansi, Prayagraj, Firozabad, Bareilly, Mathura (Mathura-Vrindavan), Meerut, Moradabad, Lucknow, Varanasi, Shahjahanpur, Saharanpur. Gautam Buddha Nagar has no Nagar Nigam; the order names it in Category I.",
-    "2026-10-16: document-33.pdf (Hindi) tables match the English translation figure for figure.",
-    "2026-10-16: VDAin74niyojan011024.pdf (scanned, read by eye). Daily rate no less than 1/26 of basic plus VDA, hourly no less than 1/6 of daily. From 1.10.2024 to 31.3.2025: unskilled 10701 per month and 412 per day, semi-skilled 11772 and 453, skilled 13186 and 507. Issued as 801-07 Pravartan-(M.W.)/15 dated 01/10/2024 by the Office of the Labour Commissioner, Kanpur.",
-    "Daily rates for April 2026 are derived: monthly total / 26, rounded up to the paisa (e.g. 13690 / 26 = 526.538 -> 526.54)."
+   ]
+  }
+ ],
+ "employments": {
+  "groups": [
+   {
+    "id": "all",
+    "title": "All 74 scheduled employments",
+    "number": "374/36-2-2026-2041256",
+    "date": "2026-04-17",
+    "source": "up-vda-2024-10",
+    "table": "scheduled-employments",
+    "employments": [
+     "Rubber and rubber products, including tyres and tubes",
+     "Plastics and plastic products",
+     "Sweets",
+     "Aerated drinks",
+     "Fruit juice units",
+     "Plywood",
+     "Petrol and diesel pumps",
+     "Dairies and milk dairies",
+     "Readymade garment units",
+     "Dams, embankments, irrigation projects, wells and ponds",
+     "Every registered factory not named elsewhere",
+     "Private hospitals and nursing homes, private clinics and medical stores",
+     "Foundries",
+     "Metal industry",
+     "Tin plate shaping and tin printing",
+     "Engineering units with fewer than 50 workers",
+     "Tanneries and leather manufacturing",
+     "Leather goods",
+     "Hosiery",
+     "Private libraries",
+     "Woodwork and furniture",
+     "Private coaching classes and private schools, including nursery schools and technical institutions",
+     "Tobacco manufacture",
+     "Dharamshalas",
+     "Forestry, logging and timber work, including collecting forest produce and carrying it to market",
+     "Shops",
+     "Commercial establishments",
+     "Rice, atta and dal mills",
+     "Oil mills",
+     "Public motor transport",
+     "Mechanical transport workshops",
+     "Automobile repair workshops",
+     "Road construction and maintenance, and building operations",
+     "Stone breaking and stone crushing",
+     "Chikan work",
+     "Match industry",
+     "Ice candy and ice cream units",
+     "Bakeries and biscuit units",
+     "Ice factories",
+     "Asbestos cement and other cement product units",
+     "Laundries",
+     "Bookbinding",
+     "Cold storage",
+     "Pottery, ceramics and refractories",
+     "Private printing presses",
+     "Cinemas",
+     "Cloth printing",
+     "Tailoring",
+     "Allopathic, Ayurvedic and Unani pharmacies",
+     "Clubs",
+     "Silk sari weaving on handloom and zari work",
+     "Washing and toilet soap, silicate, soap powder and detergent",
+     "Woollen blanket units",
+     "Khandsari",
+     "Handloom",
+     "Powerloom",
+     "Miniature bulbs and glass products",
+     "Paper, cardboard and paper board",
+     "Brick kilns: time-rated workers",
+     "Lock industry",
+     "Brass utensils and brass products",
+     "Security guards of private security agencies, armed or unarmed",
+     "Sweeping and cleaning",
+     "Domestic workers",
+     "Computer hardware and services",
+     "LPG distribution",
+     "Taxis, autorickshaws, tempos and travel agencies",
+     "Cable operators",
+     "Non-government organisations",
+     "Sales promotion",
+     "Hair-cutting salons and beauty parlours",
+     "Corporate offices",
+     "Call centres, IT and telecalling",
+     "Any establishment not covered by another scheduled employment"
+    ],
+    "note": "The April 2026 order covers the state's 74 scheduled employments. The list is the one in the Labour Commissioner's VDA order of 1 October 2024, the latest on the department's site. Brick-kiln workers on time rates use these rates; piece rates are below. Sweeping and cleaning excludes work banned under the Manual Scavengers Act, 1993."
+   },
+   {
+    "id": "brick-kiln-piece-rates",
+    "number": "1477-84 (M.W.)/15",
+    "date": "2026-03-25",
+    "unpublished": true,
+    "employments": [
+     "Brick kilns: piece rates for pathera, bharaiwala and nikasi wala"
+    ],
+    "note": "The April 2026 order leaves piece-rated brick-kiln work under the Labour Commissioner's order of 25 March 2026, which is not on the department's website. The last piece rates it published ran to 31 March 2025, so none are shown here."
+   },
+   {
+    "id": "agriculture",
+    "number": "02/2024/707/36-03-2024-1619905",
+    "date": "2024-07-09",
+    "unpublished": true,
+    "employments": [
+     "Agriculture, including farm forestry, dairy farming, livestock, beekeeping and poultry"
+    ],
+    "note": "Agriculture has its own all-inclusive rate, outside the 74 employments. The latest notification on the department's site set it from 1 April 2024; a later revision has been reported but is not on the site, so no rate is shown here."
+   },
+   {
+    "id": "hotels",
+    "number": "513/36-1-2016-1075(ST)/85",
+    "date": "2016-04-18",
+    "unpublished": true,
+    "employments": [
+     "Hotels, restaurants and dhabas"
+    ],
+    "note": "Hotels and restaurants have their own rates, by unit size and for star hotels, with VDA revised each April and October. The last order on the department's website ran to 31 March 2025."
+   },
+   {
+    "id": "carpets",
+    "number": "801/36-3-2013-79(MW)/07",
+    "date": "2013-07-25",
+    "unpublished": true,
+    "employments": [
+     "Carpet weaving, for workers not on piece rates"
+    ],
+    "note": "Carpets have their own rates with VDA. The last order on the department's website ran to 31 March 2025."
+   },
+   {
+    "id": "glass-bangles",
+    "number": "778/36-3-2011",
+    "date": "2011-08-18",
+    "unpublished": true,
+    "employments": [
+     "Glass bangles, for workers not on piece rates"
+    ],
+    "note": "Glass bangles have their own rates with VDA. The last order on the department's website ran to 31 March 2025."
+   },
+   {
+    "id": "bidi",
+    "number": "1139/36-1-13-11(ST)/05",
+    "date": "2013-08-30",
+    "unpublished": true,
+    "employments": [
+     "Bidi making"
+    ],
+    "note": "Bidi work has its own time rates with VDA and its own piece rates. The last orders on the department's website ran to March and August 2025."
+   },
+   {
+    "id": "engineering-sugar",
+    "number": "4/2016/873/36-1-2016-549(ST)/8",
+    "date": "2016-09-14",
+    "unpublished": true,
+    "employments": [
+     "Engineering factories with 50 or more workers",
+     "Vacuum pan sugar mills"
+    ],
+    "note": "These are paid under separate government wage settlements with their own DA, not under the minimum wage orders. The department's memos give only the price index, not rate tables."
+   }
   ]
+ },
+ "history": [
+  {
+   "table": "scheduled-employments",
+   "effectiveFrom": "2024-10-01",
+   "effectiveTo": "2025-03-31",
+   "source": "up-vda-2024-10",
+   "note": "One statewide rate, before the April 2026 split into three categories. The orders in between are not on the Labour Department's site.",
+   "rates": [
+    {
+     "skill": "unskilled",
+     "monthly": 10701,
+     "daily": 412
+    },
+    {
+     "skill": "semi-skilled",
+     "monthly": 11772,
+     "daily": 453
+    },
+    {
+     "skill": "skilled",
+     "monthly": 13186,
+     "daily": 507
+    }
+   ]
+  }
+ ],
+ "verification": [
+  "2026-10-16: uplabour.gov.in home page news ticker links 'Revised minimum wages basic rates with VDA in 74 scheduled employment, effective from 01/04/2026' (document-34.pdf, English) and the Hindi original (document-33.pdf). Both PDFs carry a text layer, created 17 April 2026.",
+  "2026-10-16: document-34.pdf read in full. Order No. 374/36-2-2026-2041256, Lucknow, 17-04-2026, signed Dr. M.K. Shanmuga Sundaram, Principal Secretary. Category I (Gautam Buddha Nagar and Ghaziabad): unskilled 12885 + 805 = 13690; semi-skilled 14173 + 886 = 15059; skilled 15876 + 992 = 16868. Category II (districts having Nagar Nigam, other than those two): 12241 + 765 = 13006; 13464 + 842 = 14306; 15082 + 943 = 16025. Category III (other districts): 11629 + 727 = 12356; 12791 + 799 = 13590; 14328 + 896 = 15224. Effective from 01-04-2026.",
+  "2026-10-16, re-read: document-34.pdf preamble. Para 1 cites the outcome of talks 'arising out of the labour unrest in Noida and Greater Noida in Gautam Buddha Nagar district'. The classification para: 'keeping in view the geographical diversification of Uttar Pradesh, status of industries, urban infrastructure and cost of living, the Department of Labour has proposed classification of the State into three categories ... This proposal has been agreed upon by both employers and workers'. The operative para supersedes Labour Commissioner's order 1477-84 (M.W.)/15 dated 25.03.2026, 'except in respect of employment in brick kilns where wages are fixed on piece-rate basis', and applies 'in those employments where minimum wages are otherwise fixed under the Minimum Wages Act, 1948'. The order names no districts beyond Category I and has no annexure.",
+  "2026-10-16: Category II districts are the districts (जनपद) of the 17 Nagar Nigams listed by the Directorate of Local Bodies, Uttar Pradesh (localbodies.up.nic.in/listnn.htm, mayors elected in 2023), less Ghaziabad: Ayodhya, Aligarh, Agra, Kanpur Nagar, Gorakhpur, Jhansi, Prayagraj, Firozabad, Bareilly, Mathura (Mathura-Vrindavan), Meerut, Moradabad, Lucknow, Varanasi, Shahjahanpur, Saharanpur. Gautam Buddha Nagar has no Nagar Nigam; the order names it in Category I.",
+  "2026-10-16: document-33.pdf (Hindi) tables match the English translation figure for figure.",
+  "2026-10-16: VDAin74niyojan011024.pdf (scanned, read by eye). Daily rate no less than 1/26 of basic plus VDA, hourly no less than 1/6 of daily. From 1.10.2024 to 31.3.2025: unskilled 10701 per month and 412 per day, semi-skilled 11772 and 453, skilled 13186 and 507. Issued as 801-07 Pravartan-(M.W.)/15 dated 01/10/2024 by the Office of the Labour Commissioner, Kanpur.",
+  "Daily rates for April 2026 are derived: monthly total / 26, rounded up to the paisa (e.g. 13690 / 26 = 526.538 -> 526.54).",
+  "2026-10-17: VDAin74niyojan011024.pdf (order 801-07 Pravartan-(M.W.)/15 of 1 October 2024, Hindi scan, pages 1-2 read by eye at 200 dpi) lists the 74 scheduled employments (1-24 on page 1, 25-74 on page 2); the page names them in plain English. Order 374/36-2-2026-2041256 is titled for the 74 scheduled employments and supersedes the 74-employment order 1477-84 (M.W.)/15 of 25 March 2026, which is not online, so the 2024 list is the latest official one. Its operative words ('those employments where minimum wages are otherwise fixed under the Minimum Wages Act') are read as the 74; separately notified employments have their own orders. In the 2024 order's brick-kiln table, time-rated unskilled and skilled kiln workers get the general rates.",
+  "2026-10-17: uplabour.gov.in/Pages/MWA.aspx lists 33 VDA circulars, newest 19/02/2025. The latest separate orders online for hotels and restaurants (2075-81, 16 October 2024), carpets (815-21), glass bangles (822-28) and bidi (808-14, piece rates to 29 August 2025) all ran to 31 March 2025; no later orders are posted, so the page shows no figures for them. Agriculture: Page/GO.aspx has notification 02/2024/707/36-03-2024-1619905 of 9 July 2024 (all-inclusive, from 1 April 2024); a July 2025 notification (02/2025/8181/36-03-2025-1619905) is listed by third parties but not on the site, so no agriculture figure is shown. Engineering factories with 50+ workers and vacuum pan sugar mills are paid DA under government settlement notifications (4/2016/873/36-1-2016-549(ST)/8 of 14 September 2016; 1305/36-2-2022-8/2004-TC of 29 June 2022); the memos online give only the index point.",
+  "2026-10-17: no wage order newer than 17 April 2026 on the home ticker, the LatestUpdates feed (2025-26, 2026-27), MWA.aspx or the GO list. No October 2026 VDA order is posted."
+ ]
 }

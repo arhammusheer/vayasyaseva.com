@@ -38,6 +38,21 @@
    "sha256": "b882338975251411e787dc4a32a29795450946dd5d5c2b8dd33b888c0dc5b815",
    "sizeKb": 14681,
    "retrievedOn": "2026-10-17"
+  },
+  {
+   "id": "pb-2026-05-brick-kilns",
+   "kind": "notification",
+   "title": "Minimum piece rates for brick kiln workers from 1 May 2026",
+   "number": "Labour-Lab0MIWA/1/2021-4L(260032)/209",
+   "date": "2026-05-25",
+   "authority": "Labour Department (Labour Branch), Government of Punjab",
+   "legalBasis": "Code on Wages, 2019, section 8(3), after the Punjab Minimum Wages Advisory Board. Adds to and amends notification /166 of 1 May 2026. The copy online is headed '(to be substituted bearing same number and date)'.",
+   "url": "https://pblabour.gov.in/pbLabourStaticSiteAdmin/uploads/632e34be-6b51-4321-8ebd-56b5c1f52c5b_MINIMUM%20PIECE%20RATES%20FOR%20BRICK%20KILN%20WORKERS.pdf",
+   "listing": "https://pblabour.gov.in/",
+   "language": "en",
+   "sha256": "1c194dae19eb67d103d46a79acfb08ef9993a0442c2a0323825df0f6d4642035",
+   "sizeKb": 98,
+   "retrievedOn": "2026-10-17"
   }
  ],
  "tables": [
@@ -151,6 +166,158 @@
    ]
   }
  ],
+ "employments": {
+  "groups": [
+   {
+    "id": "all",
+    "title": "Every employment",
+    "number": "Labour-Lab0MIWA/1/2021-4L (260032)/166",
+    "date": "2026-05-01",
+    "table": "all-employments",
+    "employments": [
+     "All employments in Punjab: every establishment and factory, including contract labour"
+    ],
+    "note": "The 2026 notification covers all employments without a list. Anyone whose work it does not name is paid the rate of the category they most accurately fit. Office staff use the staff table."
+   },
+   {
+    "id": "meals-and-lodging",
+    "title": "Hotels, eateries and domestic work",
+    "number": "Labour-Lab0MIWA/1/2021-4L (260032)/166",
+    "date": "2026-05-01",
+    "table": "all-employments",
+    "employments": [
+     "Hotels, restaurants, tea stalls and halwais",
+     "Ahatas and taverns attached to wine and liquor shops",
+     "Domestic workers"
+    ],
+    "note": "These use the main tables, less 30 per cent where the employer gives two meals, tea twice and lodging, or less 10 per cent with two meals and tea twice but no lodging."
+   },
+   {
+    "id": "agriculture-attached",
+    "number": "Labour-Lab0MIWA/1/2021-4L (260032)/166",
+    "date": "2026-05-01",
+    "source": "pb-2026-05",
+    "unit": "A year, with meals",
+    "employments": [
+     "Attached agricultural labour"
+    ],
+    "rows": [
+     {
+      "label": "Unskilled, consolidated with meals or food grains",
+      "values": [
+       90973.28
+      ]
+     }
+    ]
+   },
+   {
+    "id": "agriculture-other",
+    "number": "Labour-Lab0MIWA/1/2021-4L (260032)/166",
+    "date": "2026-05-01",
+    "source": "pb-2026-05",
+    "unit": "A day",
+    "columns": [
+     {
+      "name": "With meals"
+     },
+     {
+      "name": "Without meals"
+     }
+    ],
+    "employments": [
+     "Other agricultural labour"
+    ],
+    "rows": [
+     {
+      "label": "Agricultural labour",
+      "values": [
+       486.588,
+       540.983
+      ]
+     }
+    ]
+   },
+   {
+    "id": "brick-kilns",
+    "number": "Labour-Lab0MIWA/1/2021-4L(260032)/209",
+    "date": "2026-05-25",
+    "source": "pb-2026-05-brick-kilns",
+    "unit": "Per 1,000 bricks or tiles",
+    "employments": [
+     "Brick kilns"
+    ],
+    "rows": [
+     {
+      "label": "Pathera with jamadari commission: bricks",
+      "values": [
+       1112
+      ]
+     },
+     {
+      "label": "Pathera with jamadari commission: tiles",
+      "values": [
+       1238
+      ]
+     },
+     {
+      "label": "Pathera without jamadari commission: bricks",
+      "values": [
+       1047
+      ]
+     },
+     {
+      "label": "Pathera without jamadari commission: tiles",
+      "values": [
+       1178
+      ]
+     },
+     {
+      "label": "Bharaiwala, animal driven, up to 400 m (₹31 more for each further 100 m)",
+      "values": [
+       414
+      ]
+     },
+     {
+      "label": "Bharaiwala, tempo or truck, up to 1,000 m (₹25 more for each further 400 m)",
+      "values": [
+       360
+      ]
+     },
+     {
+      "label": "Truck or trolley loading and unloading, pucca bricks",
+      "values": [
+       307
+      ]
+     },
+     {
+      "label": "Chennai wala: placing bricks in the kiln",
+      "values": [
+       84
+      ]
+     },
+     {
+      "label": "Keri wala",
+      "values": [
+       70
+      ]
+     },
+     {
+      "label": "Nikasi wala: taking bricks out of the kiln",
+      "values": [
+       265
+      ]
+     },
+     {
+      "label": "Mistri: per 1,000 bricks burnt by a batch of four; the mistri gets ₹112 a day more",
+      "values": [
+       206
+      ]
+     }
+    ],
+    "note": "In force from 1 May 2026. A jamadar or pathera on a monthly wage gets no jamadari commission."
+   }
+  ]
+ },
  "history": [
   {
    "table": "all-employments",
@@ -226,6 +393,8 @@
   "OPEN QUESTION for the reviewer: when the next adjustment falls. The old cycle was 1 March and 1 September; the 2026 notification leaves the interval to rules, and the Code on Wages (Punjab) Rules, 2026 were published only in draft (29 December 2025, per secondary reports). The Central rules use 1 April and 1 October. nextRevision is set to 1 March 2027 without marking 1 September 2026 as missed.",
   "NOT INCLUDED: Staff Categories A to D (no matching skill labels on the site yet), agricultural labour, and brick kilns (separate piece-rate notification).",
   "2026-10-17: Staff categories A to D read from the 'Staff wise Categories' table (Gazette p. 2212) and definitions (pp. 2212-2213): A 19,431 / 747.34; B 17,510 / 673.46; C 15,786 / 607.15; D 14,406 / 554.07 a month / a day. They sit alongside the four skill levels and apply in all establishments. Category D covers 'any Class-IV employee (casual, through contractor or on contract basis)', ₹920 a month above unskilled.",
-  "2026-10-17: Labour Welfare Fund amounts. Punjab Act 32 of 2014 (Gazette Extra 15 Dec 2014; Bill 1 of 2014 on punjabassembly.gov.in) set ₹5 worker and ₹20 employer a month. The Vidhan Sabha passed the Punjab Labour Welfare Fund (Amendment) Bill, 2025 on 11 July 2025 to double them to ₹10 and ₹40 (news reports only); no assent, Act number or Gazette notice found on 17 October 2026. The page shows the 2014 amounts and says so."
+  "2026-10-17: Labour Welfare Fund amounts. Punjab Act 32 of 2014 (Gazette Extra 15 Dec 2014; Bill 1 of 2014 on punjabassembly.gov.in) set ₹5 worker and ₹20 employer a month. The Vidhan Sabha passed the Punjab Labour Welfare Fund (Amendment) Bill, 2025 on 11 July 2025 to double them to ₹10 and ₹40 (news reports only); no assent, Act number or Gazette notice found on 17 October 2026. The page shows the 2014 amounts and says so.",
+  "2026-10-17: the 1 May 2026 notification fixes rates 'in respect of all employments in the State of Punjab' (establishments, factories, employees, workers and contract labour under the Code on Wages) and lists none; note 14 places anyone not named in the category they most accurately fit. Its exceptions: agricultural labour (gazette page 2213, tables are images, re-read at 400 dpi: attached labour in agriculture, unskilled, consolidated per annum with meals or food grains, 90973.28 a year; other agriculture labour 486.588 a day with meals, 540.983 without), brick kilns ('will be notified separately'), and note 13: in hotels, restaurants, tea stalls, halwais, ahatas and taverns attached to wine and liquor shops, and for domestic workers, the minimum is 30 per cent less where two meals, tea twice and lodging are given, and 10 per cent less with two meals and tea twice but no lodging.",
+  "2026-10-17: brick-kiln notification /209 of 25 May 2026 (2 pages, text layer, page 1 checked by eye), effective 1 May 2026, per 1000 bricks or tiles: pathera with jamadari commission 1112 bricks, 1238 tiles; without 1047 and 1178; bharaiwala, animal driven, 414 up to 400 m plus 31 for each further 100 m or part; bharaiwala, tempo or truck, 360 up to 1000 m plus 25 for each further 400 m or part; truck trolley loading and unloading (pucca bricks) 307; chennai wala 84; keri wala 70; nikasi wala 265; mistri 206 per 1000 bricks burnt by a batch of four, the mistri getting 112 a day more than the rest. No DA or CPI link stated ('subject to revision as per the provisions of the Code on Wages'). The home page lists it under the number /166 by mistake; the document prints /209."
  ]
 }

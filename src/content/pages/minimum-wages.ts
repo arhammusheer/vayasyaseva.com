@@ -337,6 +337,26 @@ export const wageUi = {
     range: (from: string, to: string) => `${from} to ${to}`,
     which: "Where do you work?",
   },
+  /** The full list of scheduled employments under the main tables (Uttarakhand). */
+  schedule: {
+    heading: "Every scheduled employment",
+    intro: (name: string, count: number, vda: string, date: string) =>
+      `${name} sets a minimum wage for ${count} kinds of work, each in its notification. Every figure below is the notification's basic wage plus the VDA of ${vda} from ${date}, a month.`,
+    find: "Find your work",
+    findHint: "For example hotel, bakery or school",
+    noMatch: "Nothing matches. Try another word, or clear the box to see the full list.",
+    from: (amount: string) => `From ${amount}`,
+    allowance: (label: string, amount: string) => `${label} ${amount}`,
+    inTable: "In the table above",
+    notOnline: "Rates not online",
+    seeTable: "These rates are in the table above:",
+    unpublished: (number: string, date: string, vda: string) =>
+      `The labour department cites notification ${number} of ${date} for this work but has not put it on its website; the 2019 notification it replaced is the one still listed there. The minimum is the basic wage in notification ${number} plus the VDA of ${vda}.`,
+    notification: (number: string, date: string) => `Notification ${number} of ${date}`,
+    perMonth: "A month",
+    plusVda: (vda: string) => `Basic wage plus VDA of ${vda}.`,
+    caption: (work: string, name: string, vda: string) => `${work}: minimum wages in ${name}, in rupees a month, basic wage plus VDA of ${vda}`,
+  },
   sourceKind: (kind: "notification" | "order" | "corrigendum") => (kind === "notification" ? "Notification" : kind === "order" ? "Order" : "Amendment"),
   pdf: (hindi: boolean, size: string | null) => `PDF${hindi ? ", Hindi" : ""}${size ? `, ${size}` : ""}`,
   sections: {

@@ -3823,6 +3823,92 @@ a:hover > svg {
   max-width: 1040px;
 }
 
+/* Every scheduled employment (Uttarakhand): one ruled row per notification,
+   opening to its table, with a search box over the list. */
+.wage-emp-intro {
+  max-width: 680px;
+  color: var(--muted-foreground);
+  font-size: 17px;
+  line-height: 1.6;
+}
+.wage-emp-finder {
+  margin-top: 24px;
+}
+.wage-emp-finder > label {
+  display: block;
+  font-weight: 600;
+}
+.wage-emp-finder > input {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  min-height: 44px;
+  margin-top: 8px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 16px;
+}
+.wage-emp-finder > input:focus-visible {
+  outline: 2px solid var(--gold-500);
+  outline-offset: 2px;
+}
+.wage-emp-list {
+  margin-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.wage-emp-list > li {
+  border-bottom: 1px solid var(--border);
+}
+.wage-emp > summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 24px;
+  align-items: baseline;
+  padding: 14px 0;
+  cursor: pointer;
+  list-style: none;
+}
+.wage-emp > summary::-webkit-details-marker {
+  display: none;
+}
+.wage-emp > summary:focus-visible {
+  outline: 2px solid var(--gold-500);
+  outline-offset: 2px;
+}
+.wage-emp-name {
+  line-height: 1.45;
+}
+.wage-emp-name::after {
+  content: " +";
+  color: var(--gold-700);
+}
+.wage-emp[open] .wage-emp-name::after {
+  content: " \2212";
+}
+.wage-emp-rate {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.wage-emp-rate.is-quiet {
+  font-weight: 400;
+  color: var(--muted-foreground);
+}
+.wage-emp-body {
+  padding: 0 0 20px;
+}
+.wage-emp-body > .wage-table-scroll .wage-table {
+  max-width: 640px;
+}
+@media (max-width: 520px) {
+  .wage-emp > summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 /* Wage table chooser: one table at a time where the browser has :has(),
    both tables otherwise. */
 .wage-pick {

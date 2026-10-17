@@ -61,6 +61,20 @@ const historySchema = z.strictObject({
   rates: z.array(z.strictObject({ zone: z.string().optional(), skill, monthly: rupees, daily: rupees.optional() })).min(1),
 });
 
+const employmentGroupSchema = z.strictObject({
+  id: z.string().regex(/^[a-z0-9-]+$/),
+  number: z.string().min(1),
+  date: isoDate,
+  employments: z.array(z.string().min(1)).min(1),
+  source: z.string().min(1).optional(),
+  table: z.string().min(1).optional(),
+  unpublished: z.literal(true).optional(),
+  columns: z.array(z.strictObject({ name: z.string().min(1), areas: z.string().min(1).optional() })).min(2).optional(),
+  rows: z.array(z.strictObject({ label: z.string().min(1), group: z.string().min(1).optional(), basic: z.array(rupees).min(1) })).min(1).optional(),
+  allowance: z.strictObject({ amount: rupees, label: z.string().min(1), effectiveFrom: isoDate, source: z.string().min(1) }).optional(),
+  note: z.string().min(1).optional(),
+});
+
 export const wageStateSchema = z.strictObject({
   state: z.enum(WAGE_STATE_SLUGS),
   name: z.string().min(1),
@@ -69,6 +83,12 @@ export const wageStateSchema = z.strictObject({
   checked: z.strictObject({ on: isoDate, by: z.strictObject({ name: z.string().min(1).optional(), role: z.string().min(1) }).optional() }),
   sources: z.array(sourceSchema).min(1),
   tables: z.array(tableSchema).min(1),
+  employments: z
+    .strictObject({
+      vda: z.strictObject({ amount: rupees, effectiveFrom: isoDate, source: z.string().min(1) }),
+      groups: z.array(employmentGroupSchema).min(1),
+    })
+    .optional(),
   history: z.array(historySchema),
   verification: z.array(z.string().min(1)).min(1),
 });
@@ -119,6 +139,28 @@ export function wageIntegrityProblems(state: WageState): string[] {
     }
     const skills = new Set(table.rates.map((r) => r.skill));
     for (const zone of zoneIds) for (const s of skills) if (!seen.has(`${zone}/${s}`)) problems.push(`${where}: ${zone} has no ${s} rate`);
+  }
+  if (state.employments) {
+    const { vda, groups } = state.employments;
+    if (!sourceIds.has(vda.source)) problems.push(`employments: unknown VDA source ${vda.source}`);
+    if (vda.effectiveFrom > state.checked.on) problems.push(`employments: VDA effective ${vda.effectiveFrom} is after the check (${state.checked.on})`);
+    if (new Set(groups.map((g) => g.id)).size !== groups.length) problems.push("employments: duplicate group id");
+    const seen = new Set<string>();
+    for (const g of groups) {
+      const where = `employments ${g.id}`;
+      // Exactly one way to show the rates: a main table, the group's own rows, or a note that the state has not published them.
+      if ([g.table, g.rows, g.unpublished].filter(Boolean).length !== 1) problems.push(`${where}: needs exactly one of table, rows or unpublished`);
+      if (g.table && !tableIds.has(g.table)) problems.push(`${where}: unknown table ${g.table}`);
+      if (g.rows && !g.source) problems.push(`${where}: rows need the notification they come from (source)`);
+      for (const id of [g.source, g.allowance?.source]) if (id && !sourceIds.has(id)) problems.push(`${where}: unknown source ${id}`);
+      if (g.allowance && g.allowance.effectiveFrom > state.checked.on) problems.push(`${where}: allowance effective after the check`);
+      const width = g.columns?.length ?? 1;
+      for (const r of g.rows ?? []) if (r.basic.length !== width) problems.push(`${where} "${r.label}": ${r.basic.length} figures for ${width} column(s)`);
+      for (const name of g.employments) {
+        if (seen.has(name)) problems.push(`${where}: "${name}" is listed twice`);
+        seen.add(name);
+      }
+    }
   }
   for (const h of state.history) {
     if (!tableIds.has(h.table)) problems.push(`history ${h.effectiveFrom}: unknown table ${h.table}`);

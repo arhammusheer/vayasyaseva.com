@@ -92,6 +92,40 @@ export type WageHistory = {
   rates: { zone?: string; skill: Skill; monthly: number; daily?: number }[];
 };
 
+/**
+ * One notification in the state's full list of scheduled employments. The
+ * main tables carry the figures most readers need; this list answers "what
+ * about my employment?" for every other one. Rows hold the notification's
+ * basic wage as printed; the page adds the schedule's VDA.
+ */
+export type EmploymentGroup = {
+  id: string;
+  /** The notification's number as the state cites it ("286"). */
+  number: string;
+  date: string;
+  /** The employments as the state names them, in plain English. */
+  employments: string[];
+  /** The notification, where the state publishes it. */
+  source?: string;
+  /** The rates are a main table on the page (by table id). */
+  table?: string;
+  /** The state cites the notification but has not published it, so there are no rates to show. */
+  unpublished?: boolean;
+  /** Areas or kinds of unit with their own rate; one column when absent. */
+  columns?: { name: string; areas?: string }[];
+  /** basic: one figure per column, in rupees a month. group: a sub-heading (hotels' unit sizes). */
+  rows?: { label: string; group?: string; basic: number[] }[];
+  /** An allowance of the employment's own, in place of the schedule's VDA (agriculture). */
+  allowance?: { amount: number; label: string; effectiveFrom: string; source: string };
+  note?: string;
+};
+
+export type EmploymentSchedule = {
+  /** The VDA every listed notification adds to its basic wage. */
+  vda: { amount: number; effectiveFrom: string; source: string };
+  groups: EmploymentGroup[];
+};
+
 export type WageState = {
   state: WageStateSlug;
   name: string;
@@ -106,6 +140,8 @@ export type WageState = {
   checked: { on: string; by?: { name?: string; role: string } };
   sources: WageSource[];
   tables: WageTable[];
+  /** Every scheduled employment, where the state's list has been entered (Uttarakhand). */
+  employments?: EmploymentSchedule;
   history: WageHistory[];
   /** What was read, how, and what it said. Not rendered; kept for review. */
   verification: string[];

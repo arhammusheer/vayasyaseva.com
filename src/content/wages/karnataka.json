@@ -23,7 +23,9 @@
    "language": "kn",
    "sha256": "d3e6eb89818706317a9537815462c0b2fccfe84b3314f83950a4ec9b5e44a33e",
    "sizeKb": 1549,
-   "retrievedOn": "2026-10-16"
+   "retrievedOn": "2026-10-16",
+   "copy": "https://cdn.vayasyaseva.com/sources/karnataka/ka-2026-05-d3e6eb89.pdf",
+   "copyKb": 426
   },
   {
    "id": "ka-2026-05-sheet",
@@ -37,7 +39,9 @@
    "language": "en",
    "sha256": "88d717c05f77324904e8a787ce9e858c155f971fb6e2ee172a30e59fa8dd2330",
    "sizeKb": 482,
-   "retrievedOn": "2026-10-16"
+   "retrievedOn": "2026-10-16",
+   "copy": "https://cdn.vayasyaseva.com/sources/karnataka/ka-2026-05-sheet-88d717c0.pdf",
+   "copyKb": 106
   }
  ],
  "tables": [

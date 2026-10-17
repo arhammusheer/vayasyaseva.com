@@ -277,8 +277,11 @@ function RateTable({ state, table }: { state: WageState; table: WageTable }) {
  */
 function Documents({ state, slug }: { state: WageState; slug: WageStateSlug }) {
   const groups = [
-    { label: x.sections.wageDocs, items: state.sources.map((s) => ({ id: s.id, title: s.title, url: s.url, number: s.number, date: s.date, language: s.language })) },
-    { label: x.sections.duesDocs, items: duesSources(slug).map((s) => ({ ...s, language: "en" as const })) },
+    {
+      label: x.sections.wageDocs,
+      items: state.sources.map((s) => ({ id: s.id, title: s.title, url: s.url, copy: s.copy, via: s.via, number: s.number, date: s.date, language: s.language })),
+    },
+    { label: x.sections.duesDocs, items: duesSources(slug).map((s) => ({ ...s, copy: undefined, via: undefined, language: "en" as const })) },
   ].filter((g) => g.items.length);
   return (
     <div id="documents" className="wage-documents">
@@ -292,7 +295,8 @@ function Documents({ state, slug }: { state: WageState; slug: WageStateSlug }) {
             <ol className="wage-sources">
               {g.items.map((d) => (
                 <li key={d.id}>
-                  <a href={d.url} lang={d.language === "hi" ? "hi-IN" : d.language === "kn" ? "kn-IN" : "en-IN"}>
+                  {/* Our copy first: government portals move and drop files. */}
+                  <a href={d.copy ?? d.url} lang={d.language === "hi" ? "hi-IN" : d.language === "kn" ? "kn-IN" : "en-IN"}>
                     {d.title}
                   </a>
                   <span>
@@ -301,6 +305,13 @@ function Documents({ state, slug }: { state: WageState; slug: WageStateSlug }) {
                     </span>
                     , {formatDate(d.date)}
                     {d.language !== "en" ? `. ${x.inLanguage[d.language]}` : ""}.
+                    {d.copy && (
+                      <>
+                        {" "}
+                        <a href={d.url}>{x.original(hostOf(d.url))}</a>.
+                      </>
+                    )}
+                    {d.via && ` ${d.via}`}
                   </span>
                 </li>
               ))}
@@ -428,8 +439,8 @@ function EmploymentSchedule({ state }: { state: WageState }) {
                             {addsVda(g) && vda ? `${s.plusVda(vda)} ` : ""}
                             {s.notification(g.number, date)}.{" "}
                             {source && (
-                              <a href={source.url} lang={source.language === "hi" ? "hi-IN" : "en-IN"}>
-                                {x.pdf(source.language === "hi", source.sizeKb ? formatSize(source.sizeKb) : null)}
+                              <a href={source.copy ?? source.url} lang={source.language === "hi" ? "hi-IN" : "en-IN"}>
+                                {x.pdf(source.language === "hi", source.copyKb ? formatSize(source.copyKb) : source.sizeKb ? formatSize(source.sizeKb) : null)}
                               </a>
                             )}
                           </p>
@@ -446,6 +457,8 @@ function EmploymentSchedule({ state }: { state: WageState }) {
     </Section>
   );
 }
+
+const hostOf = (url: string) => new URL(url).host.replace(/^www\./, "");
 
 /** An order number that breaks only after a slash, never at a hyphen, so it is copied whole. */
 function OrderNumber({ value }: { value: string }) {

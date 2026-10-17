@@ -362,6 +362,8 @@ export const wageUi = {
     caption: (work: string, name: string, vda: string) => `${work}: minimum wages in ${name}, in rupees a month, basic wage plus VDA of ${vda}`,
   },
   sourceKind: (kind: "notification" | "order" | "corrigendum") => (kind === "notification" ? "Notification" : kind === "order" ? "Order" : "Amendment"),
+  /** After a document we host: the link to where the state (or a third party) publishes it. */
+  original: (host: string) => `Original on ${host}`,
   pdf: (hindi: boolean, size: string | null) => `PDF${hindi ? ", Hindi" : ""}${size ? `, ${size}` : ""}`,
   sections: {
     rates: (name: string) => `Pay rates in ${name}`,

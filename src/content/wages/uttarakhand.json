@@ -23,7 +23,9 @@
    "language": "hi",
    "sha256": "e572c82d98287738b5bdf5b0053218c72aa492d32768cfd77854b47042c0bf35",
    "sizeKb": 2368,
-   "retrievedOn": "2026-10-16"
+   "retrievedOn": "2026-10-16",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-eng-2026-04-e572c82d.pdf",
+   "copyKb": 572
   },
   {
    "id": "uk-eng-2026-04-amendment",
@@ -37,7 +39,9 @@
    "language": "hi",
    "sha256": "e572c82d98287738b5bdf5b0053218c72aa492d32768cfd77854b47042c0bf35",
    "sizeKb": 2368,
-   "retrievedOn": "2026-10-16"
+   "retrievedOn": "2026-10-16",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-eng-2026-04-e572c82d.pdf",
+   "copyKb": 572
   },
   {
    "id": "uk-289-2024",
@@ -52,7 +56,9 @@
    "language": "hi",
    "sha256": "94e561be0be455d206946f5e817f37bfd1b6677e143fb80914102df7eba69d27",
    "sizeKb": 5863,
-   "retrievedOn": "2026-10-16"
+   "retrievedOn": "2026-10-16",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-289-2024-94e561be.pdf",
+   "copyKb": 595
   },
   {
    "id": "uk-vda-2026-04",
@@ -67,7 +73,9 @@
    "language": "hi",
    "sha256": "d19c003deaf1958976f9ce6fe3324d491b1d478dc86ad13686f74513b91c739b",
    "sizeKb": 4299,
-   "retrievedOn": "2026-10-16"
+   "retrievedOn": "2026-10-16",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-vda-2026-04-d19c003d.pdf",
+   "copyKb": 525
   },
   {
    "id": "uk-vda-2025-10",
@@ -81,7 +89,9 @@
    "language": "hi",
    "sha256": "23785a5c91ba558f84692a22c7de76b1869bb0464680815928958f9c428aa61f",
    "sizeKb": 3917,
-   "retrievedOn": "2026-10-16"
+   "retrievedOn": "2026-10-16",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-vda-2025-10-23785a5c.pdf",
+   "copyKb": 515
   },
   {
    "id": "uk-code-rules-2026",
@@ -96,7 +106,9 @@
    "language": "hi",
    "sha256": "f8ea9330286b4df9032fa7a1145fea5beed5f4c8013d4f7e4ae24362f24ebd87",
    "sizeKb": 8071,
-   "retrievedOn": "2026-10-16"
+   "retrievedOn": "2026-10-16",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-code-rules-2026-f8ea9330.pdf",
+   "copyKb": 6592
   },
   {
    "id": "uk-eng-da-2026-10",
@@ -111,7 +123,9 @@
    "language": "hi",
    "sha256": "a15db4a844b072b52dfe657d3b197c6aba490c6d229580dc6b5ea5b39835ba0a",
    "sizeKb": 292,
-   "retrievedOn": "2026-10-17"
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-eng-da-2026-10-a15db4a8.pdf",
+   "copyKb": 105
   },
   {
    "id": "uk-286-2024",
@@ -126,7 +140,9 @@
    "language": "hi",
    "sha256": "8bd8fcb299a5ca721d2441c5884e69ec4fe652708ca623fd552c98c270df0b32",
    "sizeKb": 3149,
-   "retrievedOn": "2026-10-17"
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-286-2024-8bd8fcb2.pdf",
+   "copyKb": 335
   },
   {
    "id": "uk-287-2024",
@@ -141,7 +157,9 @@
    "language": "hi",
    "sha256": "a3993cbe6b2c1c5f351b6460bc60f8cd2e2a936d82816853d7dd2d037ab81a4b",
    "sizeKb": 3370,
-   "retrievedOn": "2026-10-17"
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-287-2024-a3993cbe.pdf",
+   "copyKb": 371
   },
   {
    "id": "uk-288-2024",
@@ -156,7 +174,9 @@
    "language": "hi",
    "sha256": "40dc7fd98a2cb576b56ae33238eb155f5262ae2aba4e8ed271ed80c06431cc09",
    "sizeKb": 5995,
-   "retrievedOn": "2026-10-17"
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-288-2024-40dc7fd9.pdf",
+   "copyKb": 607
   },
   {
    "id": "uk-290-2024",
@@ -171,7 +191,9 @@
    "language": "hi",
    "sha256": "485f2bf212a4f52e719a612b6c2cba2bf1e3e9f03fd6badabac20e32c473154f",
    "sizeKb": 3118,
-   "retrievedOn": "2026-10-17"
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-290-2024-485f2bf2.pdf",
+   "copyKb": 316
   },
   {
    "id": "uk-291-2024",
@@ -186,7 +208,9 @@
    "language": "hi",
    "sha256": "7c72396558cf1d0006389b44109cc07e0c0dcf4b1d82ee6431cb638a35905af4",
    "sizeKb": 3143,
-   "retrievedOn": "2026-10-17"
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-291-2024-7c723965.pdf",
+   "copyKb": 329
   },
   {
    "id": "uk-292-2024",
@@ -201,7 +225,9 @@
    "language": "hi",
    "sha256": "a990774be2662c3e99b83174350537d0a1aad513f1dea5476b50db94d4c0eb1c",
    "sizeKb": 3191,
-   "retrievedOn": "2026-10-17"
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-292-2024-a990774b.pdf",
+   "copyKb": 335
   },
   {
    "id": "uk-293-2024",
@@ -216,7 +242,9 @@
    "language": "hi",
    "sha256": "e2f9411bd41638f9fff66021953d0bd3412d11f6715b7a262cc1f52cc875246c",
    "sizeKb": 3129,
-   "retrievedOn": "2026-10-17"
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-293-2024-e2f9411b.pdf",
+   "copyKb": 334
   },
   {
    "id": "uk-294-2024",
@@ -231,7 +259,9 @@
    "language": "hi",
    "sha256": "1643b47dc8243264168fcbcd72415eb11fb94a1d6eda7d732d92432ab9b18b70",
    "sizeKb": 3118,
-   "retrievedOn": "2026-10-17"
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-294-2024-1643b47d.pdf",
+   "copyKb": 317
   },
   {
    "id": "uk-295-2024",
@@ -246,7 +276,9 @@
    "language": "hi",
    "sha256": "7014d5614f4e78d7dbae93a2f5c91b8236062a772e2c8be2a0d197bd90947998",
    "sizeKb": 2884,
-   "retrievedOn": "2026-10-17"
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-295-2024-7014d561.pdf",
+   "copyKb": 292
   },
   {
    "id": "uk-296-2024",
@@ -261,7 +293,9 @@
    "language": "hi",
    "sha256": "4c59434b19e797436340c990f7b4c4e944de4209f978592222995559b1673d09",
    "sizeKb": 3228,
-   "retrievedOn": "2026-10-17"
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-296-2024-4c59434b.pdf",
+   "copyKb": 336
   },
   {
    "id": "uk-298-2024",
@@ -276,7 +310,9 @@
    "language": "hi",
    "sha256": "9d5fb066b7ea3cf5f5265c4cab75479a9d2afe34475a899ebc0400b82dcb78d4",
    "sizeKb": 2318,
-   "retrievedOn": "2026-10-17"
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-298-2024-9d5fb066.pdf",
+   "copyKb": 248
   },
   {
    "id": "uk-300-2024",
@@ -291,7 +327,9 @@
    "language": "hi",
    "sha256": "910163b8f899fabeccf2b68cc776f92c99ff70242afbaf6ad1a4e6143cc6303c",
    "sizeKb": 3376,
-   "retrievedOn": "2026-10-17"
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-300-2024-910163b8.pdf",
+   "copyKb": 368
   },
   {
    "id": "uk-301-2024",
@@ -306,7 +344,9 @@
    "language": "hi",
    "sha256": "4f8610535b3afbaf1571eb87cb318dd68d296480930dff2b0de9fc620c74c0d7",
    "sizeKb": 3031,
-   "retrievedOn": "2026-10-17"
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-301-2024-4f861053.pdf",
+   "copyKb": 317
   },
   {
    "id": "uk-302-2024",
@@ -321,7 +361,9 @@
    "language": "hi",
    "sha256": "533355627a9c24eff466f11c3db8ccfbc21b8104cf68b526375781cd0759c138",
    "sizeKb": 2141,
-   "retrievedOn": "2026-10-17"
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-302-2024-53335562.pdf",
+   "copyKb": 224
   },
   {
    "id": "uk-303-2024",
@@ -336,7 +378,9 @@
    "language": "hi",
    "sha256": "94eb0f4f80e101e36e09717134cfba0d6bc59645770b78e26b67aa63d047a400",
    "sizeKb": 3048,
-   "retrievedOn": "2026-10-17"
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-303-2024-94eb0f4f.pdf",
+   "copyKb": 311
   },
   {
    "id": "uk-agri-da-2026-10",
@@ -351,7 +395,9 @@
    "language": "hi",
    "sha256": "8a0cb640cec74557d3dd1d8eece1140d267adf73d12c5e8e12186247edb81b4a",
    "sizeKb": 232,
-   "retrievedOn": "2026-10-17"
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-agri-da-2026-10-8a0cb640.pdf",
+   "copyKb": 87
   }
  ],
  "tables": [

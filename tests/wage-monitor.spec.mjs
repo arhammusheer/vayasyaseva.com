@@ -112,7 +112,8 @@ test('the source registry covers every wage dataset and its listings', () => {
   for (const state of wageStates) {
     for (const source of state.sources) {
       assert.ok(all.some((t) => t.kind === 'document' && t.url === source.url && t.sourceIds.includes(source.id)), source.id);
-      assert.ok(all.some((t) => t.kind === 'listing' && t.url === source.listing), source.listing);
+      // A copy found on a third party's site (via) is watched as a file only.
+      if (!source.via) assert.ok(all.some((t) => t.kind === 'listing' && t.url === source.listing), source.listing);
     }
   }
   assert.equal(new Set(all.map((t) => `${t.state} ${targetKey(t)}`)).size, all.length, 'each URL is watched once per state and topic');
@@ -515,4 +516,44 @@ test('renderChatwootMessage names the state file for wages and statutory.ts othe
   assert.match(lwf, /^\*\*Labour Welfare Fund · Delhi: a source changed\*\*/);
   assert.match(lwf, /the Delhi page/);
   assert.match(lwf, /statutory\.ts/);
+});
+
+test('a lead page may show nothing on a state, and is watched once per state', async () => {
+  const lead = { kind: 'page', url: 'https://firm.example/posts/', name: 'Lead', match: 'uttar pradesh', topic: 'wages', allowEmpty: true };
+  const targets = [
+    { ...lead, state: 'uttar-pradesh', stateName: 'Uttar Pradesh' },
+    { ...lead, state: 'punjab', stateName: 'Punjab', match: 'punjab' },
+  ];
+  assert.notEqual(targetKey(targets[0]), targetKey(targets[1]));
+  const fetcher = async () => ({ ok: true, status: 200, contentType: 'text/html', body: Buffer.from('<p>Minimum wages: Uttar Pradesh, October 2026</p>') });
+  const run = await runMonitor({ targets, previous: null, fetcher, now: at('2026-10-17') });
+  assert.deepEqual(run.results.map((r) => r.outcome), ['baseline', 'baseline']);
+  assert.deepEqual(run.events, []);
+});
+
+test('R2 requests are signed as AWS documents it (SigV4 GET Object example)', async () => {
+  const { signRequest } = await import('../scripts/wage-monitor/r2.mjs');
+  const auth = signRequest({
+    method: 'GET',
+    path: '/test.txt',
+    headers: { host: 'examplebucket.s3.amazonaws.com', range: 'bytes=0-9', 'x-amz-content-sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'x-amz-date': '20130524T000000Z' },
+    accessKeyId: 'AKIAIOSFODNN7EXAMPLE',
+    secretAccessKey: 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+    region: 'us-east-1',
+  });
+  assert.equal(auth, 'AWS4-HMAC-SHA256 Credential=AKIAIOSFODNN7EXAMPLE/20130524/us-east-1/s3/aws4_request, SignedHeaders=host;range;x-amz-content-sha256;x-amz-date, Signature=f0e8bdb87c964420e857bd35b5d6ed310bd44f0170aba48dd91039c6036bdb41');
+});
+
+test('the archive keeps each fetched PDF once, by hash, and never fails the fetch', async () => {
+  const { archivingFetcher, originalKey } = await import('../scripts/wage-monitor/archive.mjs');
+  const stored = new Map([[originalKey(sha256(Buffer.from('%PDF-old'))), Buffer.from('%PDF-old')]]);
+  const client = { exists: async (k) => stored.has(k), put: async (k, body) => void stored.set(k, body) };
+  const bodies = { 'https://a/new.pdf': '%PDF-new', 'https://a/again.pdf': '%PDF-new', 'https://a/old.pdf': '%PDF-old', 'https://a/page': '<html></html>' };
+  const { fetcher, log } = archivingFetcher(async (url) => ({ ok: true, status: 200, body: Buffer.from(bodies[url]) }), client);
+  for (const url of Object.keys(bodies)) assert.ok((await fetcher(url)).ok);
+  assert.deepEqual(log.archived.map((a) => a.url), ['https://a/new.pdf']);
+  assert.ok(stored.has(originalKey(sha256(Buffer.from('%PDF-new')))));
+  const broken = archivingFetcher(async () => ({ ok: true, status: 200, body: Buffer.from('%PDF-x') }), { exists: async () => { throw new Error('R2 HEAD: HTTP 403'); } });
+  assert.ok((await broken.fetcher('https://a/x.pdf')).ok);
+  assert.equal(broken.log.failed.length, 1);
 });

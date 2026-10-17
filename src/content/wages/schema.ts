@@ -25,6 +25,9 @@ const sourceSchema = z.strictObject({
   sha256: z.string().regex(/^[0-9a-f]{64}$/),
   sizeKb: z.number().int().positive().optional(),
   retrievedOn: isoDate,
+  via: z.string().min(1).optional(),
+  copy: z.url({ protocol: /^https$/, hostname: /^cdn\.vayasyaseva\.com$/ }).optional(),
+  copyKb: z.number().int().positive().optional(),
 });
 
 const rateSchema = z.strictObject({
@@ -172,6 +175,7 @@ export function wageIntegrityProblems(state: WageState): string[] {
     if (h.effectiveTo < h.effectiveFrom) problems.push(`history ${h.effectiveFrom}: ends before it starts`);
   }
   for (const source of state.sources) {
+    if (Boolean(source.copy) !== Boolean(source.copyKb)) problems.push(`source ${source.id}: copy and copyKb go together`);
     if (source.retrievedOn > state.checked.on) problems.push(`source ${source.id}: retrieved after the recorded check`);
   }
   return problems;

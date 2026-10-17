@@ -27,7 +27,9 @@
    "language": "en",
    "sha256": "ecb24b6d068ee93143b779f758e67c68caec0e46285bcc42fe006f878320cbf6",
    "sizeKb": 751,
-   "retrievedOn": "2026-10-16"
+   "retrievedOn": "2026-10-16",
+   "copy": "https://cdn.vayasyaseva.com/sources/delhi/dl-2025-04-ecb24b6d.pdf",
+   "copyKb": 221
   },
   {
    "id": "dl-2024-10",
@@ -42,7 +44,9 @@
    "language": "en",
    "sha256": "a5816572c0ebcad99724e8675b7502abf25500f4dd018e42bad51dc1788036ed",
    "sizeKb": 783,
-   "retrievedOn": "2026-10-16"
+   "retrievedOn": "2026-10-16",
+   "copy": "https://cdn.vayasyaseva.com/sources/delhi/dl-2024-10-a5816572.pdf",
+   "copyKb": 222
   },
   {
    "id": "dl-2019-gazette",
@@ -57,7 +61,9 @@
    "language": "en",
    "sha256": "0fcece8175ca4f7430fd8a520650aabc42eef3f912c4d1293f1778e4a58d3675",
    "sizeKb": 167,
-   "retrievedOn": "2026-10-17"
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/delhi/dl-2019-gazette-0fcece81.pdf",
+   "copyKb": 125
   },
   {
    "id": "dl-2011-schedules",
@@ -72,7 +78,9 @@
    "language": "en",
    "sha256": "4573b194929db75bbbda1974bd2d3edc41b8ecec048303f0c5486e44e6569392",
    "sizeKb": 861,
-   "retrievedOn": "2026-10-17"
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/delhi/dl-2011-schedules-4573b194.pdf",
+   "copyKb": 861
   }
  ],
  "tables": [

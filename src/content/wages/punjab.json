@@ -23,7 +23,9 @@
    "language": "en",
    "sha256": "228e7a12db509dffcb89be2ba32a08c1f0bdeb7c4df9ebde523f16297be27bf5",
    "sizeKb": 521,
-   "retrievedOn": "2026-10-17"
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/punjab/pb-2026-05-228e7a12.pdf",
+   "copyKb": 172
   },
   {
    "id": "pb-adjustments-1995-2025",
@@ -37,7 +39,9 @@
    "language": "en",
    "sha256": "b882338975251411e787dc4a32a29795450946dd5d5c2b8dd33b888c0dc5b815",
    "sizeKb": 14681,
-   "retrievedOn": "2026-10-17"
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/punjab/pb-adjustments-1995-2025-b8823389.pdf",
+   "copyKb": 13113
   },
   {
    "id": "pb-2026-05-brick-kilns",
@@ -52,7 +56,9 @@
    "language": "en",
    "sha256": "1c194dae19eb67d103d46a79acfb08ef9993a0442c2a0323825df0f6d4642035",
    "sizeKb": 98,
-   "retrievedOn": "2026-10-17"
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/punjab/pb-2026-05-brick-kilns-1c194dae.pdf",
+   "copyKb": 60
   }
  ],
  "tables": [

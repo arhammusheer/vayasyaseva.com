@@ -23,7 +23,9 @@
    "language": "en",
    "sha256": "547a96259729094536a671ab1421a185c8012fc40c69d7b1125c727573f43d17",
    "sizeKb": 110,
-   "retrievedOn": "2026-10-16"
+   "retrievedOn": "2026-10-16",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttar-pradesh/up-2026-04-547a9625.pdf",
+   "copyKb": 49
   },
   {
    "id": "up-2026-04-hi",
@@ -37,7 +39,9 @@
    "language": "hi",
    "sha256": "2d0871c9219ce6fe39d26d1037952b223549bd692e2d58fb84837b0776ff46bb",
    "sizeKb": 197,
-   "retrievedOn": "2026-10-16"
+   "retrievedOn": "2026-10-16",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttar-pradesh/up-2026-04-hi-2d0871c9.pdf",
+   "copyKb": 66
   },
   {
    "id": "up-vda-2024-10",
@@ -52,7 +56,45 @@
    "language": "hi",
    "sha256": "691185923cab8522becb3f695153781d888e3884581e2552c3dd52ff53a5dcb3",
    "sizeKb": 965,
-   "retrievedOn": "2026-10-16"
+   "retrievedOn": "2026-10-16",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttar-pradesh/up-vda-2024-10-69118592.pdf",
+   "copyKb": 267
+  },
+  {
+   "id": "up-2026-03-74",
+   "kind": "order",
+   "title": "Variable dearness allowance in the 74 scheduled employments, 1 April to 30 September 2026, including brick-kiln piece rates",
+   "number": "1477-84 Pravartan-(M.W.)/15",
+   "date": "2026-03-25",
+   "authority": "Labour Commissioner, Uttar Pradesh, Kanpur",
+   "legalBasis": "Minimum Wages Act, 1948. VDA on the basic rates for each point of the All-India CPI (2001=100) above 216, at the July to December 2025 average of 425. Superseded by order 374/36-2-2026-2041256 of 17 April 2026 except for brick-kiln piece rates.",
+   "url": "https://www.sgcms.com/regulatory-updates/wp-content/uploads/2026/03/74-niyojan.pdf",
+   "listing": "https://www.sgcms.com/regulatory-updates/minimum-rate-of-wages-uttar-pradesh-march-2026/",
+   "via": "Not on uplabour.gov.in. This copy was published by SGCMS, a compliance firm; it is a scan of the signed order, digitally signed by the Labour Commissioner on 25 March 2026.",
+   "language": "hi",
+   "sha256": "83e4d6072007877e27fcd6299c5d01ce40288fa054c100a27defd5a315846675",
+   "sizeKb": 1116,
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttar-pradesh/up-2026-03-74-83e4d607.pdf",
+   "copyKb": 228
+  },
+  {
+   "id": "up-agri-2025-07",
+   "kind": "notification",
+   "title": "Minimum wages in agriculture from 1 April 2025",
+   "number": "02/2025/818/36-03-2025-1619905",
+   "date": "2025-07-17",
+   "authority": "Shram Anubhag-3, Government of Uttar Pradesh",
+   "legalBasis": "Minimum Wages Act, 1948, section 4(1)(iii) read with section 3(1)(a) and 3(1)(b). Supersedes notification 02/2024/707/36-03-2024-1619905 of 9 July 2024.",
+   "url": "https://simpliance.in/download/file/dXBsb2Fkcy9nb3Z0bm90aWZpY2F0aW9uL25vdGlmaWNhdGlvbi1yZWdhcmRpbmctcmV2aXNpb24tb2YtbWluaW11bS13YWdlcy1mb3ItYWdyaWN1bHR1cmFsLXdvcmtlcnMucGRm",
+   "listing": "https://simpliance.in/India/LEI/govt_notification/uttar-pradesh/notification-regarding-revision-of-minimum-wages-for-agricultural-workers-in-uttar-pradesh-6955",
+   "via": "Not on uplabour.gov.in. This copy was published by Simpliance, a compliance firm; it is a scan of the notification, digitally signed by the Principal Secretary, Labour, on 17 July 2025, with the Labour Commissioner's forwarding note.",
+   "language": "hi",
+   "sha256": "64760ea8094a52dc02138db1ee29167339f6a30b7038fd6b45280c0ecd642d32",
+   "sizeKb": 1299,
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttar-pradesh/up-agri-2025-07-64760ea8.pdf",
+   "copyKb": 305
   }
  ],
  "tables": [
@@ -252,23 +294,59 @@
    },
    {
     "id": "brick-kiln-piece-rates",
-    "number": "1477-84 (M.W.)/15",
+    "number": "1477-84 Pravartan-(M.W.)/15",
     "date": "2026-03-25",
-    "unpublished": true,
+    "source": "up-2026-03-74",
+    "unit": "Per 1,000 bricks",
     "employments": [
      "Brick kilns: piece rates for pathera, bharaiwala and nikasi wala"
     ],
-    "note": "The April 2026 order leaves piece-rated brick-kiln work under the Labour Commissioner's order of 25 March 2026, which is not on the department's website. The last piece rates it published ran to 31 March 2025, so none are shown here."
+    "rows": [
+     {
+      "label": "Pathera",
+      "values": [
+       718.13
+      ]
+     },
+     {
+      "label": "Bharaiwala, up to 500 m",
+      "values": [
+       216.42
+      ]
+     },
+     {
+      "label": "Bharaiwala, over 500 m",
+      "values": [
+       259.71
+      ]
+     },
+     {
+      "label": "Nikasi wala",
+      "values": [
+       216.42
+      ]
+     }
+    ],
+    "note": "Basic rate plus VDA, set for 1 April to 30 September 2026 by the Labour Commissioner's order of 25 March 2026, which the April 2026 order keeps in force for brick-kiln piece rates. The October 2026 revision has not been published. The department has not put the order on its website; the copy linked is a scan of the signed order published by a compliance firm."
    },
    {
     "id": "agriculture",
-    "number": "02/2024/707/36-03-2024-1619905",
-    "date": "2024-07-09",
-    "unpublished": true,
+    "number": "02/2025/818/36-03-2025-1619905",
+    "date": "2025-07-17",
+    "source": "up-agri-2025-07",
+    "unit": "A month",
     "employments": [
      "Agriculture, including farm forestry, dairy farming, livestock, beekeeping and poultry"
     ],
-    "note": "Agriculture has its own all-inclusive rate, outside the 74 employments. The latest notification on the department's site set it from 1 April 2024; a later revision has been reported but is not on the site, so no rate is shown here."
+    "rows": [
+     {
+      "label": "Adult workers, all-inclusive (or ₹252 a day)",
+      "values": [
+       6552
+      ]
+     }
+    ],
+    "note": "From 1 April 2025, for the whole state, outside the 74 employments. Part of it may be paid in kind if the total is not less. The department has not put the notification on its website; the copy linked is a scan of the signed notification published by a compliance firm. No later agriculture notification has been found."
    },
    {
     "id": "hotels",
@@ -359,6 +437,8 @@
   "Daily rates for April 2026 are derived: monthly total / 26, rounded up to the paisa (e.g. 13690 / 26 = 526.538 -> 526.54).",
   "2026-10-17: VDAin74niyojan011024.pdf (order 801-07 Pravartan-(M.W.)/15 of 1 October 2024, Hindi scan, pages 1-2 read by eye at 200 dpi) lists the 74 scheduled employments (1-24 on page 1, 25-74 on page 2); the page names them in plain English. Order 374/36-2-2026-2041256 is titled for the 74 scheduled employments and supersedes the 74-employment order 1477-84 (M.W.)/15 of 25 March 2026, which is not online, so the 2024 list is the latest official one. Its operative words ('those employments where minimum wages are otherwise fixed under the Minimum Wages Act') are read as the 74; separately notified employments have their own orders. In the 2024 order's brick-kiln table, time-rated unskilled and skilled kiln workers get the general rates.",
   "2026-10-17: uplabour.gov.in/Pages/MWA.aspx lists 33 VDA circulars, newest 19/02/2025. The latest separate orders online for hotels and restaurants (2075-81, 16 October 2024), carpets (815-21), glass bangles (822-28) and bidi (808-14, piece rates to 29 August 2025) all ran to 31 March 2025; no later orders are posted, so the page shows no figures for them. Agriculture: Page/GO.aspx has notification 02/2024/707/36-03-2024-1619905 of 9 July 2024 (all-inclusive, from 1 April 2024); a July 2025 notification (02/2025/8181/36-03-2025-1619905) is listed by third parties but not on the site, so no agriculture figure is shown. Engineering factories with 50+ workers and vacuum pan sugar mills are paid DA under government settlement notifications (4/2016/873/36-1-2016-549(ST)/8 of 14 September 2016; 1305/36-2-2022-8/2004-TC of 29 June 2022); the memos online give only the index point.",
-  "2026-10-17: no wage order newer than 17 April 2026 on the home ticker, the LatestUpdates feed (2025-26, 2026-27), MWA.aspx or the GO list. No October 2026 VDA order is posted."
+  "2026-10-17: no wage order newer than 17 April 2026 on the home ticker, the LatestUpdates feed (2025-26, 2026-27), MWA.aspx or the GO list. No October 2026 VDA order is posted.",
+  "2026-10-17: order 1477-84 Pravartan-(M.W.)/15 of 25 March 2026 is not on uplabour.gov.in; SGCMS (sgcms.com, a compliance firm) publishes a two-page scan (74-niyojan.pdf, sha256 83e4d607...). Read by eye at 110 dpi: index 425 (base 216), 1 April to 30 September 2026; unskilled 5750 + 5563.65 = 11313.65; brick kilns: time-rated unskilled and skilled as rows 1 and 3; pathera 365 + 353.13 = 718.13, bharaiwala up to 500 m 110 + 106.42 = 216.42, over 500 m 132 + 127.71 = 259.71, nikasi wala 110 + 106.42 = 216.42, per thousand. Page 2: the list of 74 employments and 'संख्या 1477-84 प्रवर्तन-(एम0डब्लू0)/15 दिनांक 25/03/2026', digitally signed Markandeya Sahi 25-03-2026 18:02:41. The number matches the order that 374/36-2-2026-2041256 supersedes; the October 2025 (386, index 414) and April 2025 (2128-35, index 413) orders SGCMS also publishes reproduce from the same base-216 rule.",
+  "2026-10-17: agriculture notification 02/2025/818/36-03-2025-1619905 of 17 July 2025 is not on uplabour.gov.in; Simpliance publishes a two-page scan (sha256 64760ea8...). Read by eye: Shram Anubhag-3, supersedes 02/2024/707 of 9 July 2024, from 1 April 2025, whole of Uttar Pradesh, all-inclusive Rs 6552 a month or Rs 252 a day for the three kinds of agricultural work; hourly rate not less than 1/6 of the daily; digitally signed Shanmuga Sundaram 17-07-2025. Simpliance lists the number as .../8181/...; the scan reads 818. CMV360 (28 July 2025) reports the same figures."
  ]
 }

@@ -26,7 +26,9 @@ import tls from "node:tls";
 import { dirname, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import { importTs, root } from "../lib/register-ts.mjs";
+import { archiveNote, archivingFetcher } from "./archive.mjs";
 import { buildTargets, fetchSource, istDate, registryProblems, runMonitor } from "./monitor.mjs";
+import { r2FromEnv } from "./r2.mjs";
 import { chatwootClient, githubClient, renderSummary, reportEvents, reportToChatwoot } from "./report.mjs";
 import { coverageProblems } from "./monitor.mjs";
 
@@ -99,8 +101,12 @@ async function main() {
   const targets = buildTargets(states, registry);
   // Hosts whose firewall refuses a descriptive user agent get a plain one (sources.json plainUserAgentHosts).
   const plain = new Set(registry.plainUserAgentHosts ?? []);
-  const fetcher = (url) => fetchSource(url, plain.has(new URL(url).host) ? { userAgent: "Mozilla/5.0" } : {});
-  const run = await runMonitor({ targets, previous, fetcher, now });
+  const plainFetcher = (url) => fetchSource(url, plain.has(new URL(url).host) ? { userAgent: "Mozilla/5.0" } : {});
+  // With R2_ARCHIVE_* set, every PDF fetched is also kept in the archive (archive.mjs).
+  const r2 = r2FromEnv(env);
+  const archive = r2 ? archivingFetcher(plainFetcher, r2, now) : null;
+  const run = await runMonitor({ targets, previous, fetcher: archive?.fetcher ?? plainFetcher, now });
+  notes.push(archive ? archiveNote(archive.log) : "Archive: not configured (R2_ARCHIVE_* unset); originals were not stored.");
   // Keep other states' snapshots when only one was checked.
   const nextState = values.only && previous ? { ...run.state, sources: { ...previous.sources, ...run.state.sources } } : run.state;
   const actions = notify === "chatwoot" ? await reportToChatwoot(run.events, { chatwoot, state: nextState, today }) : await reportEvents(run.events, { github, today });

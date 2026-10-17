@@ -57,6 +57,22 @@ ESIC circulars, notifications and contribution rates; Social Security
 (Central) Rules, 2026; S.O. 2698(E); the Code on Social Security, 2020; the
 Code on Wages, 2019.
 
+**Leads** (`pages` with `allowEmpty`): SGCMS's minimum wage posts and
+AscentHR's notifications, one target per state with the state's name as the
+pattern. Compliance firms often post an order before the state does (UP's
+brick-kiln and agriculture orders were never on uplabour.gov.in), so a new
+line there is a prompt to find the order, not a source in itself. A week
+with nothing on a state is not a failure.
+
+**Copies from third parties** (`via` on a source): where the state never
+published the document and a compliance firm did, the dataset cites that
+copy, says so in `via`, and the monitor watches the file but not the firm's
+article page.
+
+**Location pages** quote some rates in prose (the NCR and Bengaluru hubs).
+`pnpm content:unit` fails if one of those figures is not a current rate in a
+wage dataset or `statutory.ts`, so a revision cannot leave them behind.
+
 None of Uttarakhand, UP, Delhi or Haryana levies Professional Tax (Punjab's
 equivalent is its ₹200 development tax), so its sources only catch a
 new levy if the labour department announces it. Uttar Pradesh's labour site
@@ -147,6 +163,31 @@ kubectl -n growth logs -f job/compliance-monitor-now
 The **Wage monitor** GitHub workflow is a manual fallback with its own
 snapshot in the Actions cache; it reports to GitHub issues.
 
+## Our copies of the documents
+
+Government portals move, replace and drop files, so we keep our own.
+
+- **Hosted copies.** Every document a wage page cites is hosted at
+  `cdn.vayasyaseva.com/sources/<state>/<id>-<sha8>.pdf`, compressed
+  (grayscale, 120 dpi, JPEG quality 60: Hindi scans stay comfortably readable
+  at about a tenth of their size), and the pages link it first, with the
+  original beside it. `scripts/wage-monitor/host-copies.mjs` checks each file
+  against the dataset's `sha256`, compresses it, uploads it and writes `copy`
+  and `copyKb` back. Run it in each update PR after adding a source:
+
+  ```sh
+  ../vayasya-infra/cloudflare/run env CLOUDFLARE_ACCOUNT_ID=3f03827748ac33418f1176adaa436f26 \
+    node scripts/wage-monitor/host-copies.mjs
+  ```
+
+- **Originals.** The bytes as retrieved sit beside them at
+  `sources/original/<sha256>.pdf`, one object per hash, never overwritten.
+  The daily run stores every PDF it fetches there (`archive.mjs`), cited or
+  newly listed, once `R2_ARCHIVE_ACCOUNT_ID`, `R2_ARCHIVE_BUCKET` (`cdn-vspl`),
+  `R2_ARCHIVE_ACCESS_KEY_ID` and `R2_ARCHIVE_SECRET_ACCESS_KEY` are set; the
+  summary says how many it checked and stored. `r2.mjs` signs the requests
+  itself, since the CronJob runs Node with no packages.
+
 ## Adding a state or a source
 
 1. Add the state's wage dataset (`src/content/wages/<state>.json`) and its
@@ -156,9 +197,11 @@ snapshot in the Actions cache; it reports to GitHub issues.
    pages (every `listing` the dataset uses), and at least one source each
    for `pt`, `lwf` and `licence`. Add every new document `statutory.ts`
    cites under the state's or `national`'s `documents`.
-3. Run `pnpm content:unit` and `pnpm wages:monitor --dry-run --only <state>`
+3. Host our copies (`host-copies.mjs`, above).
+4. Run `pnpm content:unit` and `pnpm wages:monitor --dry-run --only <state>`
    and check each source finds what you expect. After merge, the next
    morning's run records the new listings as a baseline.
 
-Sources are public government pages. The registry and the messages hold
-URLs, document titles and the text of public orders only.
+Sources are public government pages, and the leads public pages of
+compliance firms. The registry and the messages hold URLs, document titles
+and the text of public orders only.

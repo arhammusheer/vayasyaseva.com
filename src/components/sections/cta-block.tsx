@@ -25,6 +25,11 @@ const copy = {
     aria: "Vayasya Seva se workers maangein",
     link: "Workers maangein",
   },
+  "pa-IN": {
+    heading: ["ਆਪਣੀ ਸਾਈਟ 'ਤੇ", "ਕਾਮੇ ਚਾਹੀਦੇ ਹਨ?"],
+    aria: "Vayasya Seva ਤੋਂ ਕਾਮੇ ਮੰਗੋ",
+    link: "ਕਾਮੇ ਮੰਗੋ",
+  },
 } satisfies Record<Locale, BandCopy>;
 
 /** The Setu product page: its next step is a Setu conversation, not a crew. */

@@ -12,9 +12,9 @@ import { localeParams } from "@/lib/i18n";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/services");
 
-const TITLE = "Contract Labour Services in SIDCUL Haridwar";
+const TITLE = "Contract Labour: Factory, Loading and Housekeeping";
 const DESCRIPTION =
-  "Factory, loading and unloading, and housekeeping crews for sites in SIDCUL and across Haridwar, and how an engagement runs from site visit to monthly records.";
+  "Factory, loading and unloading, and housekeeping crews in Bengaluru, Delhi NCR, Punjab and Uttarakhand, and how an engagement runs, site visit to records.";
 
 export const metadata = pageMetadata({
   title: TITLE,
@@ -36,7 +36,7 @@ export default function ServicesPage() {
       <JsonLd data={servicePageSchema(servicePages)} />
       <PageHero
         title="What we supply."
-        lede="Supervised crews for shopfloors, docks and premises, in SIDCUL and across Haridwar."
+        lede="Supervised crews for shopfloors, docks and premises, wherever your site is."
       />
       <section className="capability-section">
         <div className="site-shell">

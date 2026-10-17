@@ -97,6 +97,19 @@ export function trackAnalyticsEvent(name: string, parameters?: AnalyticsParams) 
   }
 }
 
+/**
+ * An event for Umami only (every visitor, no consent needed, no GA4 or Meta):
+ * the area-intent board's outcome events (src/lib/intent/report.ts), which
+ * mean nothing outside that board.
+ */
+export function trackUmamiEvent(name: string, parameters?: AnalyticsParams) {
+  try {
+    withUmami((umami) => umami.track(name, parameters));
+  } catch {
+    // Analytics must never interrupt the visitor's task.
+  }
+}
+
 /** A page view in Umami with a sanitised URL (see AnalyticsTracker). */
 export function trackPageView(url: string) {
   try {

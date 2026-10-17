@@ -96,7 +96,7 @@ function pageGroup(url) {
 
 /** The location pages went live on 17 October 2026 (/locations, three hubs, nine areas). */
 const LOCATIONS_LIVE = "2026-10-17";
-const REGION_NAMES = { uttarakhand: "Uttarakhand", bengaluru: "Bengaluru", "delhi-ncr": "Delhi NCR" };
+const REGION_NAMES = { uttarakhand: "Uttarakhand", bengaluru: "Bengaluru", "delhi-ncr": "Delhi NCR", jalandhar: "Jalandhar–Kapurthala" };
 const regionOf = (url) => url.match(/\/locations\/([a-z-]+)/)?.[1] ?? "index";
 
 /** The location URLs in the live sitemap (the job downloads only scripts/, not the registry). */

@@ -40,10 +40,10 @@ async function visible(selector){await page.waitForFunction(s=>{const el=documen
 try {
   // Search landing pages keep their URLs, self-canonicals and useful content.
   for(const [path, title, text] of [
-    ['/en-in/jobs', 'SIDCUL Haridwar', 'Apply now'],
+    ['/en-in/jobs', 'Factory, Packing and Warehouse Jobs', 'Apply now'],
     ['/en-in/jobs/packing', 'Packing Jobs', 'Packing products into cartons'],
     ['/hi-in/jobs/electrician', 'इलेक्ट्रीशियन', 'वायरमैन'],
-    ['/hi-latn-in/jobs/freshers', 'Freshers', 'fresher'],
+    ['/hi-latn-in/jobs/freshers', 'Fresher Job', 'fresher'],
     ['/en-in/jobs/10th-pass', '10th Pass', 'welder, fitter, electrician'],
     ['/en-in/jobs/12th-pass', '12th Pass', 'computer'],
   ]) {
@@ -62,7 +62,9 @@ try {
   assert.equal(await page.locator('main a[href="/en-in/jobs/freshers"]').count(),1);
   assert.equal(await page.locator('main a[href="/en-in/jobs/haridwar"]').count(),1);
   for (const id of ['helper','machine','iti','office']) assert.equal(await page.locator('main section#'+id).count(),1,'/jobs #'+id);
-  await page.locator('.jobs-submit').click();await page.waitForURL('**/en-in/jobs/haridwar');assert.equal(new URL(page.url()).pathname,'/en-in/jobs/haridwar');
+  // Every market is listed; with no signal none comes first (alphabetical) and Apply opens the form that asks.
+  assert.deepEqual(await page.locator('main [data-market]').evaluateAll((els)=>els.map((e)=>e.getAttribute('data-market')).filter(Boolean)),['bengaluru','haridwar','jalandhar','punjab','uttarakhand']);
+  await page.locator('.jobs-submit').click();await page.waitForURL('**/en-in/jobs/apply');assert.equal(new URL(page.url()).pathname,'/en-in/jobs/apply');
   console.log('Job landing pages preserve self-canonicals, unique content, role links and guided application access');
   await open('/en-in/jobs/apply'+complete);
   await page.locator('#quick-name').waitFor();
@@ -115,7 +117,7 @@ try {
   // In the same tab, Back to Apply returns to a restored draft.
   await page.goto(origin+'/en-in/jobs/privacy');await page.locator('h1').waitFor();
   assert.equal(await page.locator('main a[href="/en-in/privacy#job-seekers"]').count(),1);
-  await page.locator('main a.jobs-submit').click();await page.waitForURL('**/en-in/jobs/haridwar**');await page.locator('[data-draft-notice]').waitFor();
+  await page.locator('main a.jobs-submit').click();await page.waitForURL('**/en-in/jobs/apply**');await page.locator('[data-draft-notice]').waitFor();
   assert.equal(await page.locator('#quick-name').inputValue(),'Draft Test');assert.equal(await page.locator('#quick-phone').inputValue(),'9999900001');
   assert.equal(await page.locator('[name=agree]').isChecked(),false);
   // One no-fee line in the page (the form's footer), and the done screen says only what we do if the work fits.
@@ -161,6 +163,21 @@ try {
   await page.evaluate(()=>sessionStorage.clear());await open('/en-in/jobs/apply'+complete+'&cluster=mumbai');
   await fill();await send();await visible('.jobs-done h2');assert.equal(startedBodies.at(-1).pageCluster,null);
   console.log('The Haridwar jobs hub and ?cluster= tag applications with source, locale, cluster and page');
+  // Jalandhar–Kapurthala: its own area answers on its hub. /jobs/apply has no market of its own: with
+  // nothing decided it asks which market (market:*), in Punjabi too, and sends no page cluster.
+  for (const [path, area, tag, label, pageCluster] of [
+    ['/en-in/jobs/jalandhar','jalandhar:kapurthala','en-IN','Kapurthala','jalandhar'],
+    ['/pa-in/jobs/jalandhar','jalandhar:kapurthala','pa-IN','ਕਪੂਰਥਲਾ','jalandhar'],
+    ['/pa-in/jobs/apply','market:jalandhar','pa-IN','ਜਲੰਧਰ / ਕਪੂਰਥਲਾ',null],
+  ]) {
+    await page.evaluate(()=>sessionStorage.clear());await open(path+complete.replace('area=laksar','area='+area));
+    assert.ok((await page.locator('[data-step=area] .is-selected').textContent()).includes(label), path);
+    assert.equal(await page.locator('[data-step=area]').getByText('SIDCUL', {exact:false}).count(),0, path);
+    await fill();await send();await visible('.jobs-done h2');
+    const body=startedBodies.at(-1);
+    assert.equal(body.source,'web');assert.equal(body.locale,tag);assert.equal(body.pageCluster,pageCluster);
+  }
+  console.log('Jalandhar–Kapurthala and Punjabi: region areas on the hub, market answers on /jobs/apply, pa-IN locale');
   console.log('Role prefills override conflicting saved choices; multilingual drafts restore');
   await page.evaluate(()=>sessionStorage.clear());
   // Request a crew: step 1 the requirement, step 2 who to talk to.
@@ -240,8 +257,8 @@ try {
   await page.locator('#name').fill('Hub Test');await page.locator('#company').fill('Hub Company');await page.locator('#phone').fill('9999900001');
   await page.locator('button[type=submit]').click();await visible('[role=status] h2');
   assert.equal(contactBodies.at(-1).pageCluster,'haridwar');assert.equal(contactBodies.at(-1).siteState,'UK');
-  // Job seekers who land here get one quiet line to Jobs in Haridwar (neutral: the language picker, then the form).
-  await open('/en-in/contact');assert.equal(await page.locator('main a[href="/jobs/haridwar"]').count(),1);
+  // Job seekers who land here get one quiet line to /jobs (every market; neutral: the language picker first).
+  await open('/en-in/contact');assert.equal(await page.locator('main a[href="/jobs"]').count(),1);
   console.log('Request a crew: two steps, drafts stay separate, prefills from links and the Haridwar hub, no lead flags on the page');
   // Image metadata varies with public page/role data, never personal prefills.
   const image=await page.goto(origin+'/en-in/jobs/apply?role=packing&name=PrivateName&phone=9999900001');await page.locator('meta[property="og:image"]').waitFor({state:'attached'});
@@ -250,6 +267,26 @@ try {
   assert.equal(image.status(),200);
   await open('/en-in/services/loading-unloading-labour');assert.match(await page.locator('meta[property="og:image"]').getAttribute('content'),/services-loading-unloading-labour-/);
   console.log('Page and role share images are distinct and exclude personal prefills');
+  // The area decision, not a default, puts a market first (docs/area-intent.md).
+  // /api/context answers as for a phone in Kapurthala; a second visitor arrives from the Haridwar ad.
+  for (const [label, geo, landing, market, areaLabel] of [
+    ['Kapurthala visitor', {country:'IN',region:'PB',city:'Kapurthala'}, '/en-in/jobs', 'jalandhar', 'Kapurthala'],
+    ['Haridwar ad click', {country:'IN',region:null,city:null}, '/en-in/jobs?utm_campaign=search_jobs&cluster=haridwar', 'haridwar', 'Laksar'],
+    ['Ludhiana visitor', {country:'IN',region:'PB',city:'Ludhiana'}, '/en-in/jobs', 'punjab', 'Ludhiana'],
+  ]) {
+    const visitor=await browser.newContext({viewport:{width:390,height:844}});
+    await visitor.route('**/_t/**',r=>r.abort());await visitor.route('**/_vercel/insights/**',r=>r.abort());
+    await visitor.route('**/api/context',r=>r.fulfill({json:geo}));
+    const v=await visitor.newPage();v.on('pageerror',e=>errors.push(e.message));
+    await v.goto(origin+landing);
+    await v.waitForFunction((m)=>document.querySelector('main [data-market]')?.getAttribute('data-market')===m,market,{timeout:8000});
+    assert.equal(await v.locator('main a.jobs-submit').getAttribute('href'),'/en-in/jobs/'+market,label+': Apply opens the market');
+    // The form with no market of its own asks the decided market's areas.
+    await v.goto(origin+'/en-in/jobs/apply?work=any&experience=fresher&education=12th&shift=day&start=now');
+    await v.locator('[data-step=area]').getByText(areaLabel,{exact:false}).first().waitFor({timeout:8000});
+    await visitor.close();
+  }
+  console.log('The area decision orders /jobs, opens Apply and sets the form areas: Kapurthala, a Haridwar ad and Ludhiana');
   assert.deepEqual(errors,[]);
   console.log('All form checks passed with mocked APIs; no enquiries or SMS sent.');
 } catch (error) {

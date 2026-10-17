@@ -1,5 +1,5 @@
 import type { Locale } from "@/lib/i18n";
-import { QUICK_ANSWERS, type JobRole, type QuickQuestion } from "@/lib/talent-intake/rules";
+import { AREA_CLUSTERS, QUICK_ANSWERS, type JobRole, type QuickQuestion } from "@/lib/talent-intake/rules";
 import { NO_FEE, SHIFTS_LINE } from "@/content/pages/jobs";
 
 /**
@@ -28,10 +28,40 @@ export interface StepDef {
 
 const picked = (a: Answers, step: string, value: string) => a[step]?.includes(value) ?? false;
 
-/** "Where do you live?" answers per cluster: Bengaluru's on /jobs/bengaluru, Haridwar's everywhere else. */
-const HARIDWAR_AREAS = ["sidcul-bahadrabad", "haridwar-jwalapur", "roorkee-bhagwanpur", "laksar", "outside"] as const;
-const BENGALURU_AREAS = ["bengaluru:north", "bengaluru:south", "bengaluru:east", "bengaluru:west", "bengaluru:outside"] as const;
-export const areaOptions = (cluster: string | null | undefined): readonly string[] => (cluster === "bengaluru" ? BENGALURU_AREAS : HARIDWAR_AREAS);
+/**
+ * "Where do you live?" answers (no market is the default, owner direction
+ * 17 Oct 2026), by where the form's market came from (AreaSource):
+ * - "page" or "link": the market's own areas, ending with the rest of its
+ *   state where that is another market, and "outside", which files under
+ *   the page's market (rules.ts submissionCluster).
+ * - "decision": the decided market's areas, then every other market in
+ *   place of "outside", so a wrong guess never files the person as "other".
+ * - "ask": which market, in MARKET_ORDER, "Somewhere else" last.
+ */
+export type AreaSource = "page" | "link" | "decision" | "ask";
+const MARKET_AREAS = ["market:bengaluru", "market:haridwar", "market:jalandhar", "market:punjab", "market:uttarakhand", "market:other"] as const;
+const CLUSTER_AREAS: Readonly<Record<string, readonly string[]>> = {
+  haridwar: ["sidcul-bahadrabad", "haridwar-jwalapur", "roorkee-bhagwanpur", "laksar", "haridwar:rest-of-uttarakhand", "outside"],
+  uttarakhand: ["uttarakhand:haridwar", "uttarakhand:dehradun-selaqui", "uttarakhand:udham-singh-nagar", "uttarakhand:other", "uttarakhand:outside"],
+  jalandhar: ["jalandhar:kapurthala", "jalandhar:city", "jalandhar:phagwara-goraya", "jalandhar:rest-of-punjab", "jalandhar:outside"],
+  punjab: ["punjab:jalandhar-kapurthala", "punjab:ludhiana", "punjab:mohali", "punjab:amritsar", "punjab:other", "punjab:outside"],
+  bengaluru: ["bengaluru:north", "bengaluru:south", "bengaluru:east", "bengaluru:west", "bengaluru:outside"],
+};
+/** Each set's "outside" answer: the last one. */
+const isOutside = (id: string, set: readonly string[]) => id === set[set.length - 1];
+
+export function areaOptions(cluster: string | null | undefined, source: AreaSource = cluster ? "page" : "ask"): readonly string[] {
+  const own = cluster ? CLUSTER_AREAS[cluster] : undefined;
+  if (!own || source === "ask") return MARKET_AREAS;
+  if (source !== "decision") return own;
+  const local = own.filter((id) => !isOutside(id, own));
+  const covered = new Set(local.map((id) => AREA_CLUSTERS[id as keyof typeof AREA_CLUSTERS]));
+  const others = MARKET_AREAS.filter((id) => {
+    const market = AREA_CLUSTERS[id as keyof typeof AREA_CLUSTERS];
+    return market === null || !covered.has(market);
+  });
+  return [...local, ...others];
+}
 
 /** The questions, in order. Follow-ups appear only for the work chosen. */
 export const STEP_DEFS: StepDef[] = [
@@ -47,7 +77,7 @@ export const STEP_DEFS: StepDef[] = [
   { id: "start", kind: "single", options: ids("start") },
   // Last of the taps, so the final step is only name and number. The
   // options depend on the page's cluster (areaOptions).
-  { id: "area", kind: "single", options: HARIDWAR_AREAS },
+  { id: "area", kind: "single", options: MARKET_AREAS },
 ];
 
 /** The role a submission is tagged with: the first work chosen, or the ITI trade when only one. */
@@ -70,6 +100,11 @@ export interface QuickApplyCopy {
   breadcrumb: string;
   heading: string;
   lede: string;
+  /**
+   * The H1 and title when ?cluster=<id> names a market (ads landing on
+   * /jobs/apply for it); the defaults name no market.
+   */
+  inCluster: Partial<Record<"haridwar" | "uttarakhand" | "jalandhar" | "punjab" | "bengaluru", { title: string; heading: string }>>;
   next: string;
   questions: Record<string, { question: string; hint?: string }>;
   labels: Record<string, string>;
@@ -93,12 +128,19 @@ export interface QuickApplyCopy {
 
 export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
   "en-IN": {
-    title: "Apply for Work in SIDCUL Haridwar: Quick Form",
-    description: "Apply for SIDCUL Haridwar jobs. No fee to apply. Full 8-hour shifts. Tap a few answers, then your name and number. Factory, packing, warehouse and ITI work.",
+    title: "Apply for Factory and Warehouse Work: Quick Form",
+    description: "Apply for factory, packing, warehouse and ITI work. No fee to apply. Full 8-hour shifts. Tap a few answers, then your name and number.",
     eyebrow: "JOBS",
     breadcrumb: "Quick application",
-    heading: "Looking for work in SIDCUL Haridwar?",
+    heading: "Looking for factory or warehouse work?",
     lede: "Tap a few answers, then your name and number.",
+    inCluster: {
+      haridwar: { title: "Apply for Work in SIDCUL Haridwar: Quick Form", heading: "Looking for work in SIDCUL Haridwar?" },
+      uttarakhand: { title: "Apply for Work in Uttarakhand: Quick Form", heading: "Looking for work in Uttarakhand?" },
+      punjab: { title: "Apply for Work in Punjab: Quick Form", heading: "Looking for work in Punjab?" },
+      bengaluru: { title: "Apply for Work in Bengaluru: Quick Form", heading: "Looking for work in Bengaluru?" },
+      jalandhar: { title: "Apply for Work in Kapurthala and Jalandhar: Quick Form", heading: "Looking for work in Kapurthala or Jalandhar?" },
+    },
     next: "Next",
     questions: {
       work: { question: "What work are you looking for?" },
@@ -128,6 +170,16 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       laksar: "Laksar", outside: "Outside Haridwar",
       "bengaluru:north": "North / Peenya", "bengaluru:south": "South / Electronic City", "bengaluru:east": "East / Whitefield", "bengaluru:west": "West / Kengeri",
       "bengaluru:outside": "Outside Bengaluru",
+      "jalandhar:kapurthala": "Kapurthala", "jalandhar:city": "Jalandhar city", "jalandhar:phagwara-goraya": "Phagwara / Goraya",
+      "jalandhar:outside": "Somewhere else",
+      "uttarakhand:haridwar": "Haridwar / Roorkee", "uttarakhand:dehradun-selaqui": "Dehradun / Selaqui",
+      "uttarakhand:udham-singh-nagar": "Rudrapur / Kashipur / Sitarganj", "uttarakhand:other": "Elsewhere in Uttarakhand",
+      "uttarakhand:outside": "Outside Uttarakhand",
+      "punjab:jalandhar-kapurthala": "Jalandhar / Kapurthala", "punjab:ludhiana": "Ludhiana", "punjab:mohali": "Mohali / Kharar",
+      "punjab:amritsar": "Amritsar", "punjab:other": "Elsewhere in Punjab", "punjab:outside": "Outside Punjab",
+      "market:haridwar": "Haridwar / Roorkee", "market:uttarakhand": "Elsewhere in Uttarakhand", "market:jalandhar": "Jalandhar / Kapurthala",
+      "market:punjab": "Elsewhere in Punjab", "market:bengaluru": "Bengaluru", "market:other": "Somewhere else",
+      "haridwar:rest-of-uttarakhand": "Elsewhere in Uttarakhand", "jalandhar:rest-of-punjab": "Elsewhere in Punjab",
     },
     details: {
       question: "Last step: how do we reach you?",
@@ -143,12 +195,19 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
     shifts: SHIFTS_LINE["en-IN"],
   },
   "hi-IN": {
-    title: "सिडकुल हरिद्वार में काम के लिए अप्लाई करें: छोटा फ़ॉर्म",
-    description: "सिडकुल हरिद्वार में नौकरी के लिए आवेदन करें। कोई फ़ीस नहीं। पूरी 8 घंटे की शिफ्ट। कुछ जवाब चुनिए, फिर नाम और नंबर। फ़ैक्टरी, पैकिंग, वेयरहाउस और ITI का काम।",
+    title: "फ़ैक्टरी और वेयरहाउस के काम के लिए अप्लाई करें: छोटा फ़ॉर्म",
+    description: "फ़ैक्टरी, पैकिंग, वेयरहाउस और ITI के काम के लिए आवेदन करें। कोई फ़ीस नहीं। पूरी 8 घंटे की शिफ्ट। कुछ जवाब चुनिए, फिर नाम और नंबर।",
     eyebrow: "नौकरी",
     breadcrumb: "जल्दी आवेदन",
-    heading: "सिडकुल हरिद्वार में काम चाहिए?",
+    heading: "फ़ैक्टरी या वेयरहाउस का काम चाहिए?",
     lede: "कुछ जवाब चुनिए, फिर अपना नाम और नंबर।",
+    inCluster: {
+      haridwar: { title: "सिडकुल हरिद्वार में काम के लिए अप्लाई करें: छोटा फ़ॉर्म", heading: "सिडकुल हरिद्वार में काम चाहिए?" },
+      uttarakhand: { title: "उत्तराखंड में काम के लिए अप्लाई करें: छोटा फ़ॉर्म", heading: "उत्तराखंड में काम चाहिए?" },
+      punjab: { title: "पंजाब में काम के लिए अप्लाई करें: छोटा फ़ॉर्म", heading: "पंजाब में काम चाहिए?" },
+      bengaluru: { title: "बेंगलुरु में काम के लिए अप्लाई करें: छोटा फ़ॉर्म", heading: "बेंगलुरु में काम चाहिए?" },
+      jalandhar: { title: "कपूरथला और जालंधर में काम के लिए अप्लाई करें: छोटा फ़ॉर्म", heading: "कपूरथला या जालंधर में काम चाहिए?" },
+    },
     next: "आगे",
     questions: {
       work: { question: "आपको कौन-सा काम चाहिए?" },
@@ -178,6 +237,16 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       laksar: "लक्सर", outside: "हरिद्वार से बाहर",
       "bengaluru:north": "नॉर्थ / पीन्या", "bengaluru:south": "साउथ / इलेक्ट्रॉनिक सिटी", "bengaluru:east": "ईस्ट / व्हाइटफ़ील्ड", "bengaluru:west": "वेस्ट / केंगेरी",
       "bengaluru:outside": "बेंगलुरु से बाहर",
+      "jalandhar:kapurthala": "कपूरथला", "jalandhar:city": "जालंधर शहर", "jalandhar:phagwara-goraya": "फगवाड़ा / गुराया",
+      "jalandhar:outside": "कहीं और",
+      "uttarakhand:haridwar": "हरिद्वार / रुड़की", "uttarakhand:dehradun-selaqui": "देहरादून / सेलाकुई",
+      "uttarakhand:udham-singh-nagar": "रुद्रपुर / काशीपुर / सितारगंज", "uttarakhand:other": "उत्तराखंड में कहीं और",
+      "uttarakhand:outside": "उत्तराखंड से बाहर",
+      "punjab:jalandhar-kapurthala": "जालंधर / कपूरथला", "punjab:ludhiana": "लुधियाना", "punjab:mohali": "मोहाली / खरड़",
+      "punjab:amritsar": "अमृतसर", "punjab:other": "पंजाब में कहीं और", "punjab:outside": "पंजाब से बाहर",
+      "market:haridwar": "हरिद्वार / रुड़की", "market:uttarakhand": "उत्तराखंड में कहीं और", "market:jalandhar": "जालंधर / कपूरथला",
+      "market:punjab": "पंजाब में कहीं और", "market:bengaluru": "बेंगलुरु", "market:other": "कहीं और",
+      "haridwar:rest-of-uttarakhand": "उत्तराखंड में कहीं और", "jalandhar:rest-of-punjab": "पंजाब में कहीं और",
     },
     details: {
       question: "आख़िरी कदम: आपसे संपर्क कैसे करें?",
@@ -193,12 +262,19 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
     shifts: SHIFTS_LINE["hi-IN"],
   },
   "hi-Latn-IN": {
-    title: "SIDCUL Haridwar Job: Apply Karein, Chhota Form",
-    description: "SIDCUL Haridwar job ke liye apply karein. Koi fee nahi. Poori 8 ghante ki shift. Kuch jawab tap kijiye, phir naam aur number. Factory, packing, warehouse, ITI.",
+    title: "Factory, Warehouse Job: Apply Karein, Chhota Form",
+    description: "Factory, packing, warehouse aur ITI ke kaam ke liye apply karein. Koi fee nahi. Poori 8 ghante ki shift. Kuch jawab tap kijiye, phir naam aur number.",
     eyebrow: "Jobs",
     breadcrumb: "Jaldi apply",
-    heading: "SIDCUL Haridwar mein kaam chahiye?",
+    heading: "Factory ya warehouse ka kaam chahiye?",
     lede: "Kuch jawab tap kijiye, phir apna naam aur number.",
+    inCluster: {
+      haridwar: { title: "SIDCUL Haridwar Job: Apply Karein, Chhota Form", heading: "SIDCUL Haridwar mein kaam chahiye?" },
+      uttarakhand: { title: "Uttarakhand Job: Apply Karein, Chhota Form", heading: "Uttarakhand mein kaam chahiye?" },
+      punjab: { title: "Punjab Job: Apply Karein, Chhota Form", heading: "Punjab mein kaam chahiye?" },
+      bengaluru: { title: "Bengaluru Job: Apply Karein, Chhota Form", heading: "Bengaluru mein kaam chahiye?" },
+      jalandhar: { title: "Kapurthala, Jalandhar Job: Apply Karein, Chhota Form", heading: "Kapurthala ya Jalandhar mein kaam chahiye?" },
+    },
     next: "Aage",
     questions: {
       work: { question: "Aapko kaun-sa kaam chahiye?" },
@@ -228,6 +304,16 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       laksar: "Laksar", outside: "Haridwar se bahar",
       "bengaluru:north": "North / Peenya", "bengaluru:south": "South / Electronic City", "bengaluru:east": "East / Whitefield", "bengaluru:west": "West / Kengeri",
       "bengaluru:outside": "Bengaluru se bahar",
+      "jalandhar:kapurthala": "Kapurthala", "jalandhar:city": "Jalandhar shehar", "jalandhar:phagwara-goraya": "Phagwara / Goraya",
+      "jalandhar:outside": "Kahin aur",
+      "uttarakhand:haridwar": "Haridwar / Roorkee", "uttarakhand:dehradun-selaqui": "Dehradun / Selaqui",
+      "uttarakhand:udham-singh-nagar": "Rudrapur / Kashipur / Sitarganj", "uttarakhand:other": "Uttarakhand mein kahin aur",
+      "uttarakhand:outside": "Uttarakhand se bahar",
+      "punjab:jalandhar-kapurthala": "Jalandhar / Kapurthala", "punjab:ludhiana": "Ludhiana", "punjab:mohali": "Mohali / Kharar",
+      "punjab:amritsar": "Amritsar", "punjab:other": "Punjab mein kahin aur", "punjab:outside": "Punjab se bahar",
+      "market:haridwar": "Haridwar / Roorkee", "market:uttarakhand": "Uttarakhand mein kahin aur", "market:jalandhar": "Jalandhar / Kapurthala",
+      "market:punjab": "Punjab mein kahin aur", "market:bengaluru": "Bengaluru", "market:other": "Kahin aur",
+      "haridwar:rest-of-uttarakhand": "Uttarakhand mein kahin aur", "jalandhar:rest-of-punjab": "Punjab mein kahin aur",
     },
     details: {
       question: "Aakhri step: aapse sampark kaise karein?",
@@ -241,5 +327,72 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
     errors: { name: "Poora naam likhiye (kam se kam 2 akshar)." },
     noFee: NO_FEE["hi-Latn-IN"],
     shifts: SHIFTS_LINE["hi-Latn-IN"],
+  },
+  "pa-IN": {
+    title: "ਫ਼ੈਕਟਰੀ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦੇ ਕੰਮ ਲਈ ਅਪਲਾਈ ਕਰੋ: ਛੋਟਾ ਫ਼ਾਰਮ",
+    description: "ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ, ਵੇਅਰਹਾਊਸ ਅਤੇ ITI ਦੇ ਕੰਮ ਲਈ ਅਪਲਾਈ ਕਰੋ। ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ। ਪੂਰੀ 8 ਘੰਟੇ ਦੀ ਸ਼ਿਫ਼ਟ। ਕੁਝ ਜਵਾਬ ਚੁਣੋ, ਫਿਰ ਨਾਮ ਅਤੇ ਨੰਬਰ।",
+    eyebrow: "ਨੌਕਰੀ",
+    breadcrumb: "ਜਲਦੀ ਅਪਲਾਈ",
+    heading: "ਫ਼ੈਕਟਰੀ ਜਾਂ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ ਚਾਹੀਦਾ ਹੈ?",
+    lede: "ਕੁਝ ਜਵਾਬ ਚੁਣੋ, ਫਿਰ ਆਪਣਾ ਨਾਮ ਅਤੇ ਨੰਬਰ।",
+    inCluster: {
+      haridwar: { title: "ਸਿਡਕੁਲ ਹਰਿਦੁਆਰ ਵਿੱਚ ਕੰਮ ਲਈ ਅਪਲਾਈ ਕਰੋ: ਛੋਟਾ ਫ਼ਾਰਮ", heading: "ਸਿਡਕੁਲ ਹਰਿਦੁਆਰ ਵਿੱਚ ਕੰਮ ਚਾਹੀਦਾ ਹੈ?" },
+      uttarakhand: { title: "ਉੱਤਰਾਖੰਡ ਵਿੱਚ ਕੰਮ ਲਈ ਅਪਲਾਈ ਕਰੋ: ਛੋਟਾ ਫ਼ਾਰਮ", heading: "ਉੱਤਰਾਖੰਡ ਵਿੱਚ ਕੰਮ ਚਾਹੀਦਾ ਹੈ?" },
+      punjab: { title: "ਪੰਜਾਬ ਵਿੱਚ ਕੰਮ ਲਈ ਅਪਲਾਈ ਕਰੋ: ਛੋਟਾ ਫ਼ਾਰਮ", heading: "ਪੰਜਾਬ ਵਿੱਚ ਕੰਮ ਚਾਹੀਦਾ ਹੈ?" },
+      bengaluru: { title: "ਬੈਂਗਲੁਰੂ ਵਿੱਚ ਕੰਮ ਲਈ ਅਪਲਾਈ ਕਰੋ: ਛੋਟਾ ਫ਼ਾਰਮ", heading: "ਬੈਂਗਲੁਰੂ ਵਿੱਚ ਕੰਮ ਚਾਹੀਦਾ ਹੈ?" },
+      jalandhar: { title: "ਕਪੂਰਥਲਾ ਅਤੇ ਜਲੰਧਰ ਵਿੱਚ ਕੰਮ ਲਈ ਅਪਲਾਈ ਕਰੋ: ਛੋਟਾ ਫ਼ਾਰਮ", heading: "ਕਪੂਰਥਲਾ ਜਾਂ ਜਲੰਧਰ ਵਿੱਚ ਕੰਮ ਚਾਹੀਦਾ ਹੈ?" },
+    },
+    next: "ਅੱਗੇ",
+    questions: {
+      work: { question: "ਤੁਹਾਨੂੰ ਕਿਹੜਾ ਕੰਮ ਚਾਹੀਦਾ ਹੈ?" },
+      trade: { question: "ਕਿਹੜਾ ITI ਟ੍ਰੇਡ?" },
+      iti: { question: "ਤੁਹਾਡਾ ITI?" },
+      machines: { question: "ਤੁਸੀਂ ਕਿਹੜੀਆਂ ਮਸ਼ੀਨਾਂ ਚਲਾਈਆਂ ਹਨ?" },
+      forklift: { question: "ਕੀ ਤੁਹਾਡੇ ਕੋਲ ਲਾਇਸੈਂਸ ਹੈ?" },
+      computer: { question: "ਤੁਸੀਂ ਕੰਪਿਊਟਰ 'ਤੇ ਕੀ ਕਰ ਲੈਂਦੇ ਹੋ?" },
+      experience: { question: "ਤੁਹਾਡੇ ਕੋਲ ਕੰਮ ਦਾ ਕਿੰਨਾ ਤਜਰਬਾ ਹੈ?" },
+      education: { question: "ਤੁਸੀਂ ਕਿੱਥੋਂ ਤੱਕ ਪੜ੍ਹਾਈ ਕੀਤੀ ਹੈ?" },
+      shift: { question: "ਤੁਸੀਂ ਕਿਹੜੀ ਸ਼ਿਫ਼ਟ ਕਰ ਸਕਦੇ ਹੋ?" },
+      start: { question: "ਤੁਸੀਂ ਕਦੋਂ ਤੋਂ ਕੰਮ ਸ਼ੁਰੂ ਕਰ ਸਕਦੇ ਹੋ?" },
+      area: { question: "ਤੁਸੀਂ ਕਿੱਥੇ ਰਹਿੰਦੇ ਹੋ?" },
+    },
+    labels: {
+      "factory-helper": "ਫ਼ੈਕਟਰੀ ਹੈਲਪਰ", packing: "ਪੈਕਿੰਗ", warehouse: "ਵੇਅਰਹਾਊਸ / ਲੋਡਿੰਗ", "machine-operator": "ਮਸ਼ੀਨ ਆਪਰੇਟਰ",
+      "iti-trades": "ITI ਟ੍ਰੇਡ", housekeeping: "ਹਾਊਸਕੀਪਿੰਗ", "data-entry-operator": "ਡਾਟਾ ਐਂਟਰੀ", "forklift-operator": "ਫ਼ੋਰਕਲਿਫ਼ਟ ਆਪਰੇਟਰ",
+      any: "ਕੋਈ ਵੀ ਕੰਮ", electrician: "ਇਲੈਕਟ੍ਰੀਸ਼ੀਅਨ", welder: "ਵੈਲਡਰ", fitter: "ਫ਼ਿਟਰ", machinist: "ਮਸ਼ੀਨਿਸਟ / ਟਰਨਰ", "other-trade": "ਹੋਰ ਟ੍ਰੇਡ",
+      "iti-pass": "ITI ਪਾਸ", "iti-pursuing": "ਪੜ੍ਹਾਈ ਜਾਂ ਅਪ੍ਰੈਂਟਿਸ ਚੱਲ ਰਹੀ ਹੈ", "no-iti": "ITI ਨਹੀਂ, ਪਰ ਤਜਰਬਾ ਹੈ",
+      "packing-machine": "ਪੈਕਿੰਗ ਮਸ਼ੀਨਾਂ", moulding: "ਇੰਜੈਕਸ਼ਨ ਮੋਲਡਿੰਗ", press: "ਪ੍ਰੈੱਸ / ਸ਼ੀਟ ਮੈਟਲ", "cnc-vmc": "CNC / VMC",
+      "other-machine": "ਹੋਰ ਮਸ਼ੀਨਾਂ", "licence-experience": "ਲਾਇਸੈਂਸ ਅਤੇ ਤਜਰਬਾ ਦੋਵੇਂ", "experience-only": "ਤਜਰਬਾ ਹੈ, ਲਾਇਸੈਂਸ ਨਹੀਂ",
+      "want-to-learn": "ਨਹੀਂ, ਸਿੱਖਣਾ ਚਾਹੁੰਦਾ/ਚਾਹੁੰਦੀ ਹਾਂ", typing: "ਟਾਈਪਿੰਗ", excel: "Excel", tally: "Tally", "sap-erp": "SAP / ERP",
+      fresher: "ਨਹੀਂ, ਮੈਂ ਫ਼ਰੈਸ਼ਰ ਹਾਂ", "under-1": "1 ਸਾਲ ਤੋਂ ਘੱਟ", "1-3": "1 ਤੋਂ 3 ਸਾਲ", "3-plus": "3 ਸਾਲ ਤੋਂ ਵੱਧ",
+      "below-10th": "10ਵੀਂ ਤੋਂ ਘੱਟ", "10th": "10ਵੀਂ ਪਾਸ", "12th": "12ਵੀਂ ਪਾਸ", "iti-diploma": "ITI / ਡਿਪਲੋਮਾ", graduate: "ਗ੍ਰੈਜੂਏਟ",
+      day: "ਦਿਨ", night: "ਰਾਤ", rotating: "ਬਦਲਦੀ ਸ਼ਿਫ਼ਟ, ਕੋਈ ਵੀ", now: "ਤੁਰੰਤ", week: "ਇੱਕ ਹਫ਼ਤੇ ਵਿੱਚ", month: "ਇੱਕ ਮਹੀਨੇ ਵਿੱਚ",
+      "sidcul-bahadrabad": "ਸਿਡਕੁਲ / ਬਹਾਦਰਾਬਾਦ", "haridwar-jwalapur": "ਹਰਿਦੁਆਰ ਸ਼ਹਿਰ / ਜਵਾਲਾਪੁਰ", "roorkee-bhagwanpur": "ਰੁੜਕੀ / ਭਗਵਾਨਪੁਰ",
+      laksar: "ਲਕਸਰ", outside: "ਹਰਿਦੁਆਰ ਤੋਂ ਬਾਹਰ",
+      "bengaluru:north": "ਨੌਰਥ / ਪੀਨਿਆ", "bengaluru:south": "ਸਾਊਥ / ਇਲੈਕਟ੍ਰਾਨਿਕ ਸਿਟੀ", "bengaluru:east": "ਈਸਟ / ਵ੍ਹਾਈਟਫ਼ੀਲਡ", "bengaluru:west": "ਵੈਸਟ / ਕੇਂਗੇਰੀ",
+      "bengaluru:outside": "ਬੈਂਗਲੁਰੂ ਤੋਂ ਬਾਹਰ",
+      "jalandhar:kapurthala": "ਕਪੂਰਥਲਾ", "jalandhar:city": "ਜਲੰਧਰ ਸ਼ਹਿਰ", "jalandhar:phagwara-goraya": "ਫਗਵਾੜਾ / ਗੁਰਾਇਆ",
+      "jalandhar:outside": "ਕਿਤੇ ਹੋਰ",
+      "uttarakhand:haridwar": "ਹਰਿਦੁਆਰ / ਰੁੜਕੀ", "uttarakhand:dehradun-selaqui": "ਦੇਹਰਾਦੂਨ / ਸੇਲਾਕੁਈ",
+      "uttarakhand:udham-singh-nagar": "ਰੁਦਰਪੁਰ / ਕਾਸ਼ੀਪੁਰ / ਸਿਤਾਰਗੰਜ", "uttarakhand:other": "ਉੱਤਰਾਖੰਡ ਵਿੱਚ ਕਿਤੇ ਹੋਰ",
+      "uttarakhand:outside": "ਉੱਤਰਾਖੰਡ ਤੋਂ ਬਾਹਰ",
+      "punjab:jalandhar-kapurthala": "ਜਲੰਧਰ / ਕਪੂਰਥਲਾ", "punjab:ludhiana": "ਲੁਧਿਆਣਾ", "punjab:mohali": "ਮੋਹਾਲੀ / ਖਰੜ",
+      "punjab:amritsar": "ਅੰਮ੍ਰਿਤਸਰ", "punjab:other": "ਪੰਜਾਬ ਵਿੱਚ ਕਿਤੇ ਹੋਰ", "punjab:outside": "ਪੰਜਾਬ ਤੋਂ ਬਾਹਰ",
+      "market:haridwar": "ਹਰਿਦੁਆਰ / ਰੁੜਕੀ", "market:uttarakhand": "ਉੱਤਰਾਖੰਡ ਵਿੱਚ ਕਿਤੇ ਹੋਰ", "market:jalandhar": "ਜਲੰਧਰ / ਕਪੂਰਥਲਾ",
+      "market:punjab": "ਪੰਜਾਬ ਵਿੱਚ ਕਿਤੇ ਹੋਰ", "market:bengaluru": "ਬੈਂਗਲੁਰੂ", "market:other": "ਕਿਤੇ ਹੋਰ",
+      "haridwar:rest-of-uttarakhand": "ਉੱਤਰਾਖੰਡ ਵਿੱਚ ਕਿਤੇ ਹੋਰ", "jalandhar:rest-of-punjab": "ਪੰਜਾਬ ਵਿੱਚ ਕਿਤੇ ਹੋਰ",
+    },
+    details: {
+      question: "ਆਖ਼ਰੀ ਕਦਮ: ਤੁਹਾਡੇ ਨਾਲ ਸੰਪਰਕ ਕਿਵੇਂ ਕਰੀਏ?",
+      name: "ਤੁਹਾਡਾ ਨਾਮ",
+      namePlaceholder: "ਨਾਮ",
+      phone: "ਮੋਬਾਈਲ ਨੰਬਰ",
+      phonePlaceholder: "10 ਅੰਕਾਂ ਦਾ ਮੋਬਾਈਲ ਨੰਬਰ",
+      optional: "ਜ਼ਰੂਰੀ ਨਹੀਂ",
+      send: "ਭੇਜੋ",
+    },
+    errors: { name: "ਪੂਰਾ ਨਾਮ ਲਿਖੋ (ਘੱਟੋ-ਘੱਟ 2 ਅੱਖਰ)।" },
+    noFee: NO_FEE["pa-IN"],
+    shifts: SHIFTS_LINE["pa-IN"],
   },
 };

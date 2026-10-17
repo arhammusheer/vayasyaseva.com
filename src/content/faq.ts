@@ -1,13 +1,12 @@
 import type { FaqItem } from "./types";
 import { AGENCY_FAQ } from "./agency-faq";
 import { servicePages } from "./service-pages";
-import { haridwarCopy } from "./pages/haridwar-sidcul";
 import { WAGE_HUB_PATH } from "@/content/registry/identifiers";
 
 /**
  * /faq: every buyer question in one place, grouped. Each question has one
  * home: the general and compliance groups live here, the service groups in
- * service-pages.ts and the Haridwar group in pages/haridwar-sidcul.ts, and
+ * service-pages.ts (each market's questions are on its own page), and
  * the pages show their own group with a "More questions" link to
  * /faq#<group>. Claims follow docs/claims-register.md.
  */
@@ -33,9 +32,10 @@ export const WORKING_WITH_US: FaqItem[] = [
     category: "commercial",
   },
   {
-    question: "Do you supply crews outside Haridwar?",
+    question: "Where do you supply crews?",
     answer:
-      "Most of our work is in SIDCUL and across Haridwar. For a site elsewhere in India, tell us where it is and we’ll tell you plainly whether we can staff it.",
+      "In Bengaluru, Delhi NCR, Punjab (Jalandhar and Kapurthala) and Uttarakhand (Haridwar and beyond). For a site elsewhere in India, tell us where it is and we’ll tell you plainly whether we can staff it.",
+    link: { href: "/locations", label: "Locations" },
     category: "commercial",
   },
   AGENCY_FAQ,
@@ -117,7 +117,7 @@ export const faqGroups: FaqGroup[] = [
   { id: "working-with-us", title: "Working with us", items: WORKING_WITH_US },
   { id: "compliance", title: "Payroll and compliance", items: COMPLIANCE_FAQS },
   ...servicePages.map((s) => ({ id: s.slug, title: s.name, items: s.faqs, topic: true })),
-  { id: "haridwar-sidcul", title: "SIDCUL Haridwar", items: haridwarCopy["en-IN"].faqs, topic: true },
+  // No location group: each market's questions are on its own page (/locations), none is singled out here.
 ];
 
 export const FAQ_PATH = "/faq";

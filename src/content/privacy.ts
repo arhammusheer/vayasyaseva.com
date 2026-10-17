@@ -122,7 +122,7 @@ This section applies when you send us your details through the jobs pages of the
 
 **In short.** We keep your details for up to 12 months after you last reply to us. We call when a site in or near your area needs people. We do not share your details with another company. To have them removed, email help@vayasyaseva.com with your mobile number. The rest of this section is the full notice.
 
-**What we collect.** Your mobile number and anything you choose to send us: photos, PDF or Word documents and a typed message, together with their file names and types. On the short application form (www.vayasyaseva.com/jobs/apply, and the same form on pages such as /jobs/haridwar) we also collect your name and your answers about the work you want, your experience, education, ITI trade or skills, the shifts you can do, when you can start and the area you live in. We also record:
+**What we collect.** Your mobile number and anything you choose to send us: photos, PDF or Word documents and a typed message, together with their file names and types. On the short application form (www.vayasyaseva.com/jobs/apply, and the same form on each market's jobs page) we also collect your name and your answers about the work you want, your experience, education, ITI trade or skills, the shifts you can do, when you can start and the area you live in. We also record:
 
 - the jobs page you used, its address and its language;
 - the area of that page, if it is about a particular area;

@@ -15,20 +15,22 @@ registerHooks({ resolve(specifier, context, next) {
   return next(specifier, context);
 } });
 const { allShareContent, shareLanding } = await import('../src/lib/share-content.ts');
-const fonts = Object.fromEntries(['AnekLatin-SemiBold', 'AnekDevanagari-SemiBold', 'Hind-Regular', 'JetBrainsMono-Regular'].map(name => [name, readFileSync(resolve(root, `src/assets/fonts/og/${name}.ttf`)).toString('base64')]));
+const fonts = Object.fromEntries(['AnekLatin-SemiBold', 'AnekDevanagari-SemiBold', 'AnekGurmukhi-Variable', 'Hind-Regular', 'JetBrainsMono-Regular'].map(name => [name, readFileSync(resolve(root, `src/assets/fonts/og/${name}.ttf`)).toString('base64')]));
 const mark = readFileSync(resolve(root, 'public/brand/downloads/vayasya-seva-mark.svg')).toString('base64');
 const escape = value => value.replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 function html(content) {
+  // Gurmukhi (pa-IN) only: other pages' markup, and so their image hashes, stay as they were.
+  const guru = content.locale === 'pa-IN';
   return `<!doctype html><html lang="${content.locale}"><meta charset="utf-8"><style>
   @font-face{font-family:Anek;src:url(data:font/ttf;base64,${fonts['AnekLatin-SemiBold']});font-weight:600}
   @font-face{font-family:AnekDeva;src:url(data:font/ttf;base64,${fonts['AnekDevanagari-SemiBold']});font-weight:600}
-  @font-face{font-family:Hind;src:url(data:font/ttf;base64,${fonts['Hind-Regular']});font-weight:400}
+${guru ? `  @font-face{font-family:AnekGuru;src:url(data:font/ttf;base64,${fonts['AnekGurmukhi-Variable']});font-weight:100 800}\n` : ''}  @font-face{font-family:Hind;src:url(data:font/ttf;base64,${fonts['Hind-Regular']});font-weight:400}
   @font-face{font-family:JetBrains;src:url(data:font/ttf;base64,${fonts['JetBrainsMono-Regular']});font-weight:400}
   *{box-sizing:border-box}body{margin:0;width:1200px;height:630px;background:#0F172A;color:#fff;padding:48px 64px;border-top:7px solid #DAA236;display:flex;flex-direction:column}
   header{display:flex;align-items:center;gap:16px}header img{width:68px;height:68px}header strong{font:600 38px Anek;letter-spacing:-.5px}header small{margin-left:auto;font:16px JetBrains;color:#CBD5E1}
-  main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:18px 0}aside{font:400 18px Hind;letter-spacing:2px;color:#EBB74A;margin-bottom:16px}
-  h1{font:600 78px/1.07 ${content.locale === 'hi-IN' ? 'AnekDeva,Anek' : 'Anek,AnekDeva'};letter-spacing:-1.5px;margin:0;white-space:pre-line;max-width:1072px}
-  p{font:400 29px/1.4 Hind;margin:20px 0 0;color:#CBD5E1;max-width:1000px}
+  main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:18px 0}aside{font:400 18px Hind${guru ? ',AnekGuru' : ''};letter-spacing:2px;color:#EBB74A;margin-bottom:16px}
+  h1{font:600 78px/${guru ? '1.2' : '1.07'} ${content.locale === 'hi-IN' ? 'AnekDeva,Anek' : guru ? 'AnekGuru,Anek' : 'Anek,AnekDeva'};letter-spacing:${guru ? '0' : '-1.5px'};margin:0;white-space:pre-line;max-width:1072px}
+  p{font:400 29px/1.4 Hind${guru ? ',AnekGuru' : ''};margin:20px 0 0;color:#CBD5E1;max-width:1000px}
   footer{height:40px;display:flex;align-items:flex-end;justify-content:space-between;border-top:1px solid #475569;font:15px JetBrains;color:#CBD5E1}
   </style><header><img src="data:image/svg+xml;base64,${mark}" alt=""><strong>Vayasya Seva</strong><small>WORKFORCE. WITH CARE.</small></header>
   <main><aside>${escape(content.eyebrow)}</aside><h1>${escape(content.heading)}</h1><p>${escape(content.description)}</p></main>

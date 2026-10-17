@@ -37,10 +37,34 @@ export const locales = {
     hint: "Ye page Hindi mein padhein, English letters mein",
     published: true,
   },
+  // Punjabi in Gurmukhi (owner direction, 17 Oct 2026): the jobs pages for
+  // the Jalandhar region only. Drafts pending native review, like hi-IN.
+  "pa-IN": {
+    segment: "pa-in",
+    hreflang: "pa-IN",
+    ogLocale: "pa_IN",
+    label: "ਪੰਜਾਬੀ",
+    hint: "ਇਹ ਪੰਨਾ ਪੰਜਾਬੀ ਵਿੱਚ ਪੜ੍ਹੋ",
+    published: true,
+  },
 } as const satisfies Record<LocaleTag, unknown>;
 
 export type Locale = keyof typeof locales;
 export const allLocales = Object.keys(locales) as Locale[];
+
+/**
+ * The languages every multi-language page is written in. Punjabi covers only
+ * the pages that list it in the registry (the Jalandhar region's jobs pages).
+ */
+export type CoreLocale = Exclude<Locale, "pa-IN">;
+/** Copy for pages not written in every language: the core three, and others where a page has them. */
+export type CopyIn<T> = Record<CoreLocale, T> & Partial<Record<Locale, T>>;
+/** A page's copy in one language. Throws if the registry builds a page in a language it has no copy for. */
+export function copyIn<T>(copy: CopyIn<T>, locale: Locale, what: string): T {
+  const t = copy[locale];
+  if (!t) throw new Error(`${what} has no ${locale} copy; remove ${locale} from its registry entry or write it`);
+  return t;
+}
 
 /** What a page's neutral URL (no locale segment) does. */
 export type LocaleOverride = Locale | "prompt";
@@ -172,6 +196,26 @@ export function localeOfParams(params: { locale?: string }): Locale {
 }
 
 /**
+ * Where a reader goes for a page not written in their language, before the
+ * page's default: Punjabi readers to Hinglish (the Punjab picker's next
+ * choice), not straight to English.
+ */
+const NEAREST: Partial<Record<Locale, Locale>> = { "pa-IN": "hi-Latn-IN" };
+
+/**
+ * A page's URL for a reader of `locale`: in that language when the page is
+ * built in it, else the nearest language it is built in (NEAREST, then the
+ * page's default). For links built from the page's language, such as the
+ * jobs header and footer, which reach pages Punjabi doesn't cover.
+ */
+export function nearestLocalePath(path: string, locale: Locale) {
+  const built = localesOf(path);
+  const near = NEAREST[locale];
+  const target = built.includes(locale) ? locale : near && built.includes(near) ? near : defaultLocaleOf(path);
+  return localePath(path, target);
+}
+
+/**
  * Point an in-site link at a real page. A neutral path ("/contact") goes to
  * the reader's locale when the page is published in it (or, for reviewers
  * reading an unpublished locale, built in it), else the page's default
@@ -185,9 +229,10 @@ export function localizeHref(href: string, locale?: Locale) {
   const suffix = match[2];
   if (splitLocalePath(path).locale) return href;
   if (/^\/(api|_next|_t)(\/|$)/.test(path) || /\.[a-z0-9]+$/i.test(path)) return href;
-  const reachable =
-    locale && localesOf(path).includes(locale) && (isPublic(path, locale) || isPaused(path, locale) || !locales[locale].published);
-  const target = reachable ? locale : defaultLocaleOf(path);
+  const reachableIn = (l: Locale) =>
+    localesOf(path).includes(l) && (isPublic(path, l) || isPaused(path, l) || !locales[l].published);
+  const near = locale && NEAREST[locale];
+  const target = locale && reachableIn(locale) ? locale : near && reachableIn(near) ? near : defaultLocaleOf(path);
   return `${localePath(path, target)}${suffix}`;
 }
 

@@ -33,7 +33,7 @@ export type FormExtras = { form?: IntakeForm; applicantName?: string | null; ans
 /** The legacy page source for each locale: what n8n accepted before "web". */
 const LOCALE_LEGACY_SOURCES = Object.fromEntries(
   Object.entries(LEGACY_SOURCE_LOCALES).map(([source, locale]) => [locale, source]),
-) as Record<IntakeLocale, IntakeSource>;
+) as Partial<Record<IntakeLocale, IntakeSource>>;
 
 /**
  * Whether web submissions go to n8n as source "web" (PLAN §1a). Off until
@@ -48,6 +48,9 @@ export function webSourceEnabled() {
   return process.env.TALENT_INTAKE_WEB_SOURCE === "1";
 }
 
+/** The set an area answer came from: market:*, a market's own ids, or none. */
+const areaSet = (id: string | undefined) => (!id ? "none" : id.includes(":") ? id.split(":")[0] : "haridwar");
+
 /** Builds, validates and forwards one submission; answers 202 with the reference. */
 export async function forwardSubmission(draft: Draft, phone: string, text: string | null, extras: FormExtras = {}) {
   const channel = draft.channel ?? "web";
@@ -58,7 +61,8 @@ export async function forwardSubmission(draft: Draft, phone: string, text: strin
   const pageCluster = draft.pageCluster ?? null;
   const payload = talentIntakeSchema.safeParse({
     ref: draft.ref,
-    source: channel !== "web" ? draft.source : webSourceEnabled() || !locale ? WEB_SOURCE : LOCALE_LEGACY_SOURCES[locale],
+    // A locale with no legacy source (pa-IN, added after "web") always sends "web".
+    source: channel !== "web" ? draft.source : webSourceEnabled() || !locale ? WEB_SOURCE : (LOCALE_LEGACY_SOURCES[locale] ?? WEB_SOURCE),
     locale,
     cluster: submissionCluster(pageCluster, extras.answers),
     pageCluster,
@@ -89,6 +93,10 @@ export async function forwardSubmission(draft: Draft, phone: string, text: strin
     source: payload.data.source,
     locale: payload.data.locale ?? "none",
     cluster: payload.data.cluster ?? "none",
+    // The page's own market and the area answer's set (its id prefix, or
+    // "haridwar" for Haridwar's unprefixed ids), to see how filing happened.
+    page_cluster: payload.data.pageCluster ?? "none",
+    area: areaSet(payload.data.answers?.area?.[0]),
     files: payload.data.attachments.length,
   });
   const body: JobsSubmitResponse = { ref: draft.ref };

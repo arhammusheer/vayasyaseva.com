@@ -23,6 +23,7 @@ export const BREADCRUMB_NAMES: Readonly<Record<string, { "en-IN": string } & Par
   "/locations/uttarakhand": { "en-IN": "Uttarakhand" },
   "/locations/bengaluru": { "en-IN": "Bengaluru" },
   "/locations/delhi-ncr": { "en-IN": "Delhi NCR" },
+  "/locations/jalandhar": { "en-IN": "Jalandhar and Kapurthala" },
   "/minimum-wages": { "en-IN": "Minimum wages", "hi-IN": "न्यूनतम मजदूरी" },
-  "/jobs": { "en-IN": "Jobs", "hi-IN": "नौकरी", "hi-Latn-IN": "Jobs" },
+  "/jobs": { "en-IN": "Jobs", "hi-IN": "नौकरी", "hi-Latn-IN": "Jobs", "pa-IN": "ਨੌਕਰੀਆਂ" },
 };

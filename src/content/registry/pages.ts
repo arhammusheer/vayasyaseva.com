@@ -13,7 +13,6 @@
 import { JOB_HUB_SLUGS, JOB_ROLE_SLUGS } from "@/lib/talent-intake/rules";
 import {
   HARIDWAR_HUB_PATH,
-  LOCALE_TAGS,
   LOCATIONS_PATH,
   LOCATION_CLUSTERS,
   LOCATION_ESTATES,
@@ -29,6 +28,7 @@ import {
   type ClusterId,
   type GuideSlug,
   type LocaleTag,
+  type LocationCluster,
   type PageStatus,
   type WageStateSlug,
 } from "./identifiers";
@@ -179,10 +179,20 @@ const WAGE_HI_STATUS: PageStatus = "review";
  */
 const LOCATIONS_STATUS: PageStatus = "published";
 const LOCATIONS_UPDATED = "2026-10-16";
+/** Regions added after the first set, by the day they went up. */
+const LOCATION_ADDED: Partial<Record<LocationCluster, string>> = { jalandhar: "2026-10-17" };
 
-const ALL = Object.fromEntries(LOCALE_TAGS.map((l) => [l, "published"])) as Record<LocaleTag, PageStatus>;
+/** The three languages of every multi-language page (Punjabi is per page: WITH_PUNJABI). */
+const ALL = { "en-IN": "published", "hi-IN": "published", "hi-Latn-IN": "published" } as const satisfies Partial<Record<LocaleTag, PageStatus>>;
+/**
+ * The Jalandhar region's jobs funnel also in Punjabi (owner direction,
+ * 17 Oct 2026): its hub, the guided form, and the two pages the form links
+ * (no fee, your details). Drafts pending native review, like hi-IN.
+ */
+const WITH_PUNJABI = { ...ALL, "pa-IN": "published" } as const satisfies Partial<Record<LocaleTag, PageStatus>>;
 const EN = { "en-IN": "published" } as const;
-const RETIRED_ALL = Object.fromEntries(LOCALE_TAGS.map((l) => [l, "retired"])) as Record<LocaleTag, PageStatus>;
+/** Retired in the three languages it had (it never had Punjabi). */
+const RETIRED_ALL = { "en-IN": "retired", "hi-IN": "retired", "hi-Latn-IN": "retired" } as const;
 const RETIRED_EN = { "en-IN": "retired" } as const;
 const RETIRED_EN_HINGLISH = { "en-IN": "retired", "hi-Latn-IN": "retired" } as const;
 
@@ -225,11 +235,11 @@ export const pageEntries: readonly PageEntry[] = [
   jobsPage("/jobs", "jobs-index", 0.8),
   // Focused guided application, also used by ads and direct application links.
   // A form, not a search landing page: the role and cluster pages rank instead.
-  { ...jobsPage("/jobs/apply", "jobs-apply", 0.8), noindex: true },
+  { ...jobsPage("/jobs/apply", "jobs-apply", 0.8), locales: WITH_PUNJABI, noindex: true },
   // No fee, and how to report anyone who asks for money in our name.
-  jobsPage("/jobs/fees-and-fraud", "static", 0.5, "yearly"),
+  { ...jobsPage("/jobs/fees-and-fraud", "static", 0.5, "yearly"), locales: WITH_PUNJABI },
   // What happens to an applicant's details, in plain words; the form's checkbox links here.
-  jobsPage("/jobs/privacy", "static", 0.4, "yearly"),
+  { ...jobsPage("/jobs/privacy", "static", 0.4, "yearly"), locales: WITH_PUNJABI },
   ...JOB_ROLE_SLUGS.map((slug) => jobsPage(`/jobs/${slug}`, "job-role", 0.8)),
   // Candidate categories (freshers, 10th, 12th pass), linked from the jobs overview.
   ...JOB_HUB_SLUGS.map((slug) => jobsPage(`/jobs/${slug}`, "job-hub", 0.7)),
@@ -237,16 +247,22 @@ export const pageEntries: readonly PageEntry[] = [
   { ...jobsPage(jobsHubPath("haridwar"), "jobs-city", 0.8), cluster: "haridwar" },
   // Jobs only: a worker list, no buyer hub yet (clusters.ts).
   { ...jobsPage(jobsHubPath("bengaluru"), "jobs-city", 0.7), cluster: "bengaluru" },
-  { path: HARIDWAR_HUB_PATH, kind: "cluster-hub", audience: "business", locales: ALL, parent: "/", cluster: "haridwar", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.9 },
+  // Open work (Kapurthala packing), so priced like Haridwar's.
+  { ...jobsPage(jobsHubPath("jalandhar"), "jobs-city", 0.8), locales: WITH_PUNJABI, cluster: "jalandhar" },
+  // Worker lists for the rest of each state (owner direction, 17 Oct 2026).
+  { ...jobsPage(jobsHubPath("uttarakhand"), "jobs-city", 0.7), cluster: "uttarakhand" },
+  { ...jobsPage(jobsHubPath("punjab"), "jobs-city", 0.7), locales: WITH_PUNJABI, cluster: "punjab" },
+  // Filed under Locations like every market's buyer page (17 Oct 2026); it keeps its URL.
+  { path: HARIDWAR_HUB_PATH, kind: "cluster-hub", audience: "business", locales: ALL, parent: LOCATIONS_PATH, cluster: "haridwar", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.8 },
   // Location pages: the index, a hub per region, a page per industrial area.
   // Mixed audience: buyers and job seekers both search estate names, so the
   // (locations) layout has no phone.
   { path: LOCATIONS_PATH, kind: "static", audience: "mixed", locales: { "en-IN": LOCATIONS_STATUS }, parent: "/", updated: LOCATIONS_UPDATED, changeFrequency: "monthly", priority: 0.6 },
   ...LOCATION_CLUSTERS.flatMap((cluster) => [
-    { path: locationPath(cluster), kind: "cluster-hub", audience: "mixed", locales: { "en-IN": LOCATIONS_STATUS }, parent: LOCATIONS_PATH, cluster, updated: LOCATIONS_UPDATED, changeFrequency: "monthly", priority: 0.8 } satisfies PageEntry,
+    { path: locationPath(cluster), kind: "cluster-hub", audience: "mixed", locales: { "en-IN": LOCATIONS_STATUS }, parent: LOCATIONS_PATH, cluster, updated: LOCATION_ADDED[cluster] ?? LOCATIONS_UPDATED, changeFrequency: "monthly", priority: 0.8 } satisfies PageEntry,
     ...LOCATION_ESTATES[cluster].map(
       (estate) =>
-        ({ path: estatePath(cluster, estate), kind: "estate", audience: "mixed", locales: { "en-IN": LOCATIONS_STATUS }, parent: locationPath(cluster), cluster, updated: LOCATIONS_UPDATED, changeFrequency: "monthly", priority: 0.7 }) satisfies PageEntry,
+        ({ path: estatePath(cluster, estate), kind: "estate", audience: "mixed", locales: { "en-IN": LOCATIONS_STATUS }, parent: locationPath(cluster), cluster, updated: LOCATION_ADDED[cluster] ?? LOCATIONS_UPDATED, changeFrequency: "monthly", priority: 0.7 }) satisfies PageEntry,
     ),
   ]),
   // Sectors and engagement steps now live on /services.

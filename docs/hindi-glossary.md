@@ -27,6 +27,10 @@ Terms used on `/hi-in/` (हिंदी, Devanagari) and `/hi-latn-in/` (Hindi 
 | Production helper | प्रोडक्शन हेल्पर | |
 | SIDCUL | सिडकुल | Keep SIDCUL in Latin where it helps searchers, such as titles |
 | Haridwar | हरिद्वार | |
+| Jalandhar | जालंधर | |
+| Kapurthala | कपूरथला | |
+| Phagwara | फगवाड़ा | |
+| Goraya | गुराया | Punjabi ਗੁਰਾਇਆ; "Goraya" in Latin script, as searched |
 
 ## Banned words in Hindi
 

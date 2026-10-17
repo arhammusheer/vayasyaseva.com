@@ -44,8 +44,8 @@ export interface JobsCopy {
   heading: string;
   lede: string;
   apply: string;
-  /** The quiet line under Apply to the Bengaluru worker list. */
-  bengaluru: string;
+  /** The label over the list of markets (every jobs hub, the visitor's first). */
+  markets: string;
   form: JobsFormCopy;
   /** Role names, as the /jobs groups and related-role rows show them. */
   work: { title: string; role: JobRole }[];
@@ -74,6 +74,7 @@ export const NO_FEE: Record<Locale, { text: string; link: string }> = {
   "en-IN": { text: "No fee to apply.", link: "Spot a fake offer" },
   "hi-IN": { text: "आवेदन की कोई फ़ीस नहीं।", link: "नकली ऑफ़र पहचानें" },
   "hi-Latn-IN": { text: "Apply ki koi fee nahi.", link: "Nakli offer pehchanein" },
+  "pa-IN": { text: "ਅਪਲਾਈ ਕਰਨ ਦੀ ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ।", link: "ਨਕਲੀ ਆਫ਼ਰ ਪਛਾਣੋ" },
 };
 
 /** Work is shift-wise only: say so plainly (owner, 16 October 2026). The form's header line. */
@@ -81,27 +82,31 @@ export const SHIFTS_LINE: Record<Locale, string> = {
   "en-IN": "Work is in full 8-hour shifts. There is no part-time work.",
   "hi-IN": "काम पूरी 8 घंटे की शिफ्ट में होता है। पार्ट-टाइम काम नहीं है।",
   "hi-Latn-IN": "Kaam poori 8 ghante ki shift mein hota hai. Part-time kaam nahi hai.",
+  "pa-IN": "ਕੰਮ ਪੂਰੀ 8 ਘੰਟੇ ਦੀ ਸ਼ਿਫ਼ਟ ਵਿੱਚ ਹੁੰਦਾ ਹੈ। ਪਾਰਟ-ਟਾਈਮ ਕੰਮ ਨਹੀਂ ਹੈ।",
 };
 
 /**
  * /jobs in every locale, and the jobs form's strings. /jobs is a router:
- * Apply (to /jobs/haridwar), the four work groups and Who can apply. Its H1 and title
- * stay as they are until /jobs/haridwar is indexed (the restructure's SEO
- * order). hi-IN is the page most job seekers use; en-IN and hi-Latn-IN
- * mirror it. hi-IN and hi-Latn-IN are drafts pending native review.
+ * Apply (to the visitor's market, else /jobs/apply), every market, the four
+ * work groups and Who can apply. No market is named first (owner direction,
+ * 17 Oct 2026); the title and description list them alphabetically. It had
+ * about 60 search impressions a month before the change. hi-IN is the page most job seekers use; en-IN and hi-Latn-IN
+ * mirror it. hi-IN, hi-Latn-IN and pa-IN are drafts pending native review;
+ * /jobs itself is not built in pa-IN, but its form strings are used on the
+ * Punjabi jobs pages.
  * Claims discipline: no promised call-back times, no guarantees of work.
  */
 export const jobsCopy: Record<Locale, JobsCopy> = {
   "en-IN": {
-    title: "SIDCUL Haridwar Vacancy: Factory, Warehouse, ITI Jobs",
+    title: "Factory, Packing and Warehouse Jobs: No Fee to Apply",
     description:
-      "SIDCUL Haridwar jobs. No fee to apply. Full 8-hour shifts. Factory, packing, warehouse, housekeeping and ITI work. Apply online with a few short answers.",
+      "Factory, packing and warehouse work in Bengaluru, Haridwar, Jalandhar–Kapurthala, Punjab and Uttarakhand. No fee, full 8-hour shifts. Apply online.",
     breadcrumb: "Jobs",
-    eyebrow: "JOBS · SIDCUL HARIDWAR",
-    heading: "Find work in SIDCUL Haridwar.",
+    eyebrow: "JOBS",
+    heading: "Find factory and warehouse work.",
     lede: "Factory, packing, warehouse, housekeeping and ITI work.",
     apply: "Apply now",
-    bengaluru: "In Bengaluru?",
+    markets: "Where do you want to work?",
     form: {
       steps: {
         files: {
@@ -165,15 +170,15 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     who: "Who can apply",
   },
   "hi-IN": {
-    title: "सिडकुल हरिद्वार वैकेंसी: फ़ैक्टरी, वेयरहाउस और ITI की नौकरी",
+    title: "फ़ैक्टरी, पैकिंग और वेयरहाउस की नौकरी: आवेदन की कोई फ़ीस नहीं",
     description:
-      "सिडकुल हरिद्वार में नौकरी। आवेदन की कोई फ़ीस नहीं। पूरी 8 घंटे की शिफ्ट। फ़ैक्टरी, पैकिंग, वेयरहाउस, हाउसकीपिंग और ITI का काम। कुछ आसान सवालों से ऑनलाइन आवेदन करें।",
+      "बेंगलुरु, हरिद्वार, जालंधर–कपूरथला, पंजाब और उत्तराखंड में फ़ैक्टरी, पैकिंग और वेयरहाउस का काम। कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट। ऑनलाइन आवेदन करें।",
     breadcrumb: "नौकरी",
-    eyebrow: "नौकरी · सिडकुल हरिद्वार",
-    heading: "सिडकुल हरिद्वार में काम ढूँढें।",
+    eyebrow: "नौकरी",
+    heading: "फ़ैक्टरी और वेयरहाउस का काम ढूँढें।",
     lede: "फ़ैक्टरी, पैकिंग, वेयरहाउस, हाउसकीपिंग और ITI का काम।",
     apply: "आवेदन करें",
-    bengaluru: "बेंगलुरु में हैं?",
+    markets: "आप कहाँ काम करना चाहते हैं?",
     form: {
       steps: {
         files: {
@@ -237,15 +242,15 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     who: "कौन आवेदन कर सकता है",
   },
   "hi-Latn-IN": {
-    title: "SIDCUL Haridwar Vacancy: Factory, Warehouse, ITI Naukri",
+    title: "Factory, Packing, Warehouse Job: Apply ki Koi Fee Nahi",
     description:
-      "SIDCUL Haridwar job. Koi fee nahi. Poori 8 ghante ki shift. Factory, packing, warehouse, housekeeping aur ITI ka kaam. Kuch aasaan sawaal, phir online apply.",
+      "Bengaluru, Haridwar, Jalandhar–Kapurthala, Punjab aur Uttarakhand mein factory, packing aur warehouse ka kaam. Koi fee nahi, 8 ghante ki shift. Online apply.",
     breadcrumb: "Jobs",
-    eyebrow: "Jobs · SIDCUL Haridwar",
-    heading: "SIDCUL Haridwar mein kaam dhoondhein.",
+    eyebrow: "Jobs",
+    heading: "Factory aur warehouse ka kaam dhoondhein.",
     lede: "Factory, packing, warehouse, housekeeping aur ITI ka kaam.",
     apply: "Apply karein",
-    bengaluru: "Bengaluru mein hain?",
+    markets: "Aap kahan kaam karna chahte hain?",
     form: {
       steps: {
         files: {
@@ -307,5 +312,77 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       { title: "Data entry operator", role: "data-entry-operator" },
     ],
     who: "Kaun apply kar sakta hai",
+  },
+  "pa-IN": {
+    title: "ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦੀ ਨੌਕਰੀ: ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ",
+    description:
+      "ਬੈਂਗਲੁਰੂ, ਹਰਿਦੁਆਰ, ਜਲੰਧਰ–ਕਪੂਰਥਲਾ, ਪੰਜਾਬ ਅਤੇ ਉੱਤਰਾਖੰਡ ਵਿੱਚ ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ। ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ, ਪੂਰੀ 8 ਘੰਟੇ ਦੀ ਸ਼ਿਫ਼ਟ। ਆਨਲਾਈਨ ਅਪਲਾਈ ਕਰੋ।",
+    breadcrumb: "ਨੌਕਰੀਆਂ",
+    eyebrow: "ਨੌਕਰੀ",
+    heading: "ਫ਼ੈਕਟਰੀ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ ਲੱਭੋ।",
+    lede: "ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ, ਵੇਅਰਹਾਊਸ, ਹਾਊਸਕੀਪਿੰਗ ਅਤੇ ITI ਦਾ ਕੰਮ।",
+    apply: "ਅਪਲਾਈ ਕਰੋ",
+    markets: "ਤੁਸੀਂ ਕਿੱਥੇ ਕੰਮ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?",
+    form: {
+      steps: {
+        files: {
+          title: "ਫ਼ੋਟੋ ਜਾਂ ਕਾਗਜ਼ ਜੋੜੋ",
+          hint: "ਸਰਟੀਫ਼ਿਕੇਟ, ITI, ਲਾਇਸੈਂਸ, ਸੈਲਰੀ ਸਲਿੱਪ ਜਾਂ ਰਿਜ਼ਿਊਮ।",
+          warning: "ਆਧਾਰ ਜਾਂ ਬੈਂਕ ਦੇ ਕਾਗਜ਼ ਨਾ ਭੇਜੋ।",
+        },
+        phone: {
+          title: "ਤੁਹਾਡਾ ਮੋਬਾਈਲ ਨੰਬਰ",
+          placeholder: "98765 43210",
+          agree: "ਮੇਰੀ ਉਮਰ 18 ਸਾਲ ਜਾਂ ਇਸ ਤੋਂ ਵੱਧ ਹੈ। Vayasya Seva ਮੇਰੀ ਜਾਣਕਾਰੀ ਰੱਖ ਸਕਦੀ ਹੈ ਅਤੇ ਕੰਮ ਲਈ ਮੇਰੇ ਨਾਲ ਸੰਪਰਕ ਕਰ ਸਕਦੀ ਹੈ।",
+          keep: "ਅਸੀਂ ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ 12 ਮਹੀਨੇ ਤੱਕ ਰੱਖਦੇ ਹਾਂ।",
+          details: "ਪੂਰੀ ਜਾਣਕਾਰੀ",
+        },
+      },
+      files: {
+        camera: "ਫ਼ੋਟੋ ਖਿੱਚੋ",
+        choose: "ਫ਼ਾਈਲ ਚੁਣੋ",
+        remove: "ਹਟਾਓ",
+        tooLarge: "ਬਹੁਤ ਵੱਡੀ ਹੈ",
+        wrongType: "ਨਹੀਂ ਭੇਜੀ ਜਾ ਸਕਦੀ (ਫ਼ੋਟੋ, PDF ਜਾਂ Word ਫ਼ਾਈਲ ਭੇਜੋ)",
+        tooMany: "ਵੱਧ ਤੋਂ ਵੱਧ 7 ਫ਼ਾਈਲਾਂ ਭੇਜ ਸਕਦੇ ਹੋ।",
+      },
+      next: "ਅੱਗੇ",
+      retry: "ਦੁਬਾਰਾ ਭੇਜੋ",
+      retryNotice: "ਇਸ ਅਰਜ਼ੀ ਦੀ ਪੁਸ਼ਟੀ ਲਈ ਦੁਬਾਰਾ ਭੇਜੋ। ਤੁਹਾਡਾ ਰੈਫ਼ਰੈਂਸ ਨੰਬਰ:",
+      submit: "ਭੇਜੋ",
+      sending: "ਭੇਜ ਰਹੇ ਹਾਂ…",
+      sendingFile: (n, total, percent) => `ਫ਼ਾਈਲ ${n} / ${total} ਭੇਜ ਰਹੇ ਹਾਂ… ${percent}%`,
+      errors: {
+        phone: "10 ਅੰਕਾਂ ਦਾ ਮੋਬਾਈਲ ਨੰਬਰ ਲਿਖੋ।",
+        agree: "ਕਿਰਪਾ ਕਰਕੇ ਬਾਕਸ 'ਤੇ ਟਿੱਕ ਕਰੋ: ਤੁਹਾਡੀ ਉਮਰ 18 ਸਾਲ ਜਾਂ ਵੱਧ ਹੈ ਅਤੇ ਤੁਸੀਂ ਸੰਪਰਕ ਲਈ ਸਹਿਮਤ ਹੋ।",
+        verification: "ਕੁਝ ਸਕਿੰਟ ਰੁਕੋ, ਫਿਰ ਦੁਬਾਰਾ ਭੇਜੋ ਦਬਾਓ।",
+        network: "ਨੈੱਟਵਰਕ ਟੁੱਟ ਗਿਆ। ਸਿਗਨਲ ਵੇਖ ਕੇ ਦੁਬਾਰਾ ਭੇਜੋ ਦਬਾਓ।",
+        server: "ਸਾਡੇ ਵੱਲੋਂ ਕੁਝ ਗੜਬੜ ਹੋ ਗਈ। ਕੁਝ ਮਿੰਟਾਂ ਬਾਅਦ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
+        expired: "ਫ਼ਾਰਮ ਦਾ ਸਮਾਂ ਖ਼ਤਮ ਹੋ ਗਿਆ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਅਪਲਾਈ ਕਰੋ। ਅਸੀਂ ਅਰਜ਼ੀਆਂ ਮੋਬਾਈਲ ਨੰਬਰ ਨਾਲ ਮਿਲਾਉਂਦੇ ਹਾਂ, ਇਸ ਲਈ ਦੋ ਵਾਰ ਭੇਜਣਾ ਠੀਕ ਹੈ।",
+      },
+      done: {
+        title: "ਮਿਲ ਗਿਆ, ਧੰਨਵਾਦ।",
+        refLabel: "ਤੁਹਾਡਾ ਰੈਫ਼ਰੈਂਸ ਨੰਬਰ",
+        body: "ਅਸੀਂ ਇਹ ਰੈਫ਼ਰੈਂਸ VAYSPL ਤੋਂ SMS ਕਰਾਂਗੇ। ਇਹ SMS ਸੰਭਾਲ ਕੇ ਰੱਖੋ। ਕੰਮ ਤੁਹਾਡੇ ਲਾਇਕ ਹੋਇਆ ਤਾਂ ਅਸੀਂ ਕਾਲ ਕਰਾਂਗੇ।",
+        fraud: NO_FEE["pa-IN"].link,
+        again: "ਇੱਕ ਹੋਰ ਭੇਜੋ",
+      },
+      labels: { photo: "ਫ਼ੋਟੋ", document: "ਕਾਗਜ਼" },
+      prefill: { name: "ਨਾਮ", work: "ਕਿਹੜਾ ਕੰਮ ਚਾਹੀਦਾ ਹੈ", experience: "ਤਜਰਬਾ", location: "ਇਲਾਕਾ", start: "ਕਦੋਂ ਤੋਂ ਸ਼ੁਰੂ ਕਰ ਸਕਦੇ ਹੋ" },
+    },
+    work: [
+      { title: "ਪ੍ਰੋਡਕਸ਼ਨ ਹੈਲਪਰ", role: "factory-helper" },
+      { title: "ਪੈਕਿੰਗ", role: "packing" },
+      { title: "ਲੋਡਿੰਗ-ਅਨਲੋਡਿੰਗ", role: "warehouse" },
+      { title: "ਹਾਊਸਕੀਪਿੰਗ", role: "housekeeping" },
+      { title: "ਮਸ਼ੀਨ ਆਪਰੇਟਰ", role: "machine-operator" },
+      { title: "ਫ਼ੋਰਕਲਿਫ਼ਟ ਆਪਰੇਟਰ", role: "forklift-operator" },
+      { title: "ਇਲੈਕਟ੍ਰੀਸ਼ੀਅਨ", role: "electrician" },
+      { title: "ਵੈਲਡਰ", role: "welder" },
+      { title: "ਫ਼ਿਟਰ", role: "fitter" },
+      { title: "ਹੋਰ ITI ਟ੍ਰੇਡ", role: "iti-trades" },
+      { title: "ਡਾਟਾ ਐਂਟਰੀ ਆਪਰੇਟਰ", role: "data-entry-operator" },
+    ],
+    who: "ਕੌਣ ਅਪਲਾਈ ਕਰ ਸਕਦਾ ਹੈ",
   },
 };

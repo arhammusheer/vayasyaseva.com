@@ -118,7 +118,7 @@ export const wageHubHi = {
   heading: (year: string | null) => `न्यूनतम मजदूरी${year ? ` ${year}` : ""}`,
   lede: "आपको कम से कम कितना मिलना चाहिए: अपना राज्य और अपना काम देखिए। इससे कम देने की इजाज़त नहीं है।",
   /** The page's one jobs door: a quiet line under the lede. */
-  jobsLine: { before: "नौकरी चाहिए?", label: "हरिद्वार में नौकरियाँ", href: "/jobs/haridwar" },
+  jobsLine: { before: "नौकरी चाहिए?", label: "नौकरियाँ देखें", href: "/jobs" },
   table: { skill: "काम", month: "महीना", day: "रोज़", notSet: "तय नहीं" },
   inForce: (date: string) => `${date} से लागू।`,
   /** Said once, under the lede, when any state's revision is overdue. */

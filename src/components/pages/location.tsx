@@ -14,7 +14,10 @@ import { linkable } from "@/content/registry";
 import { JsonLd, pageUrl, webPageSchema } from "@/lib/structured-data";
 import { areaSurfaces, jobsAreaHref } from "@/lib/intent/surfaces";
 import { locationPages, type LocationCopy } from "@/content/locations";
-import { estatePath, locationPath } from "@/content/registry/identifiers";
+import { LOCATIONS_PATH, estatePath, locationPath } from "@/content/registry/identifiers";
+import { localizeHref } from "@/lib/i18n";
+import { MARKET_ORDER } from "@/lib/intent/model";
+import { MarketList, type MarketItem } from "@/components/sections/market-list";
 
 const pathOf = (p: LocationCopy) => (p.estate ? estatePath(p.cluster, p.estate) : locationPath(p.cluster));
 
@@ -124,36 +127,29 @@ export function LocationPage({ page }: { page: LocationCopy }) {
   );
 }
 
-/** /locations: SIDCUL Haridwar and every published region hub, one line each. */
+/**
+ * /locations: every market's buyer page, one line each, in MARKET_ORDER
+ * (no market first, owner direction 17 Oct 2026); MarketList moves the
+ * visitor's market(s) to the front after load.
+ */
 export function LocationsIndex() {
-  const hubs = [...locationPages.values()].filter((p) => !p.estate && linkable(pathOf(p), "en-IN"));
+  const hubs = new Map(
+    [...locationPages.values()].filter((p) => !p.estate && linkable(pathOf(p), "en-IN")).map((p) => [p.cluster as string, p]),
+  );
+  const items: MarketItem[] = MARKET_ORDER.flatMap((id) => {
+    if (id === "haridwar")
+      return linkable("/haridwar-sidcul", "en-IN")
+        ? [{ cluster: id, href: localizeHref("/haridwar-sidcul", "en-IN"), title: "SIDCUL Haridwar", text: "Our home base: SIDCUL, Bahadrabad, Bhagwanpur and Roorkee." }]
+        : [];
+    const h = hubs.get(id);
+    return h ? [{ cluster: id, href: localizeHref(pathOf(h), "en-IN"), title: h.name, text: h.lede }] : [];
+  });
   return (
     <>
       <JsonLd data={webPageSchema({ name: "Locations", description: "Where Vayasya Seva supplies contract labour crews.", url: "/locations", type: "CollectionPage" })} />
-      <PageHero title="Where we supply crews." lede="Uttarakhand, Bengaluru and Delhi NCR. Pick a region, or tell us where your site is." />
+      <PageHero title="Where we supply crews." lede="Bengaluru, Delhi NCR, Punjab and Uttarakhand. Pick a region, or tell us where your site is." />
       <Section className="border-t border-border">
-        <ul className="location-areas">
-          {linkable("/haridwar-sidcul", "en-IN") && (
-            <li>
-              <Link href="/haridwar-sidcul">
-                <strong>
-                  SIDCUL Haridwar <ArrowUpRight size={20} aria-hidden="true" />
-                </strong>
-                <span>Our home base: SIDCUL, Bahadrabad, Bhagwanpur and Roorkee.</span>
-              </Link>
-            </li>
-          )}
-          {hubs.map((h) => (
-            <li key={h.cluster}>
-              <Link href={pathOf(h)}>
-                <strong>
-                  {h.name} <ArrowUpRight size={20} aria-hidden="true" />
-                </strong>
-                <span>{h.lede}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <MarketList items={items} path={LOCATIONS_PATH} side="business" surface="locations-index" className="location-areas" />
       </Section>
       <CtaBlock />
     </>

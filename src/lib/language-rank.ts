@@ -9,15 +9,25 @@
  * Signals, in order:
  * 1. the vspl_lang cookie, set only when someone picks a language on the picker;
  * 2. non-English Accept-Language tags, by q-value (hi pulls Hinglish in after it);
- * 3. the visitor's state, from the request's geo headers (visitorRegion);
- * 4. the page's cluster;
- * 5. the default set.
+ * 3. area intent the request itself carries: ?cluster=<id>, or a place in
+ *    its UTM tags (an ad for Kapurthala jobs), by the area-intent model's
+ *    words (src/lib/intent/model.ts). The rest of area intent stays in the
+ *    browser by design (docs/area-intent.md), so the proxy never sees it;
+ * 4. the visitor's state, from the request's geo headers (visitorRegion);
+ * 5. the page's cluster;
+ * 6. the default set.
+ *
+ * Punjabi: a visitor in Punjab, or one whose request names the Jalandhar
+ * region, gets ਪੰਜਾਬੀ first wherever a page has it. The picker's
+ * language_choice events (choice, position, order key) show whether that
+ * order is right.
  *
  * Nothing here redirects or changes a locale URL: /hi-in/jobs is always Hindi.
  * Imported by the proxy: keep it light.
  */
-import { pageEntries, pageEntry } from "@/content/registry";
+import { pageEntry } from "@/content/registry";
 import type { ClusterId } from "@/content/registry/identifiers";
+import { clustersInUtm } from "./intent/model";
 import { quickShareVariant, QUICK_SHARE_VARIANTS } from "./share-variant";
 import { allLocales, preferredLocales, type Locale } from "./i18n";
 
@@ -27,7 +37,7 @@ export { LANGUAGE_COOKIE } from "./language-cookie";
 export const PICKER_TOP = 3;
 
 /** Short codes for the order key in the picker variant's URL ("hi-hl-en"). */
-const KEY_CODES = { "en-IN": "en", "hi-IN": "hi", "hi-Latn-IN": "hl" } as const satisfies Record<Locale, string>;
+const KEY_CODES = { "en-IN": "en", "hi-IN": "hi", "hi-Latn-IN": "hl", "pa-IN": "pa" } as const satisfies Record<Locale, string>;
 const CODE_LOCALES = Object.fromEntries(Object.entries(KEY_CODES).map(([l, c]) => [c, l])) as Record<string, Locale>;
 
 /**
@@ -38,7 +48,9 @@ const CODE_LOCALES = Object.fromEntries(Object.entries(KEY_CODES).map(([l, c]) =
 const RANK_SETS = {
   hindi: ["hi-IN", "hi-Latn-IN", "en-IN"],
   karnataka: ["en-IN", "hi-Latn-IN", "hi-IN"],
-  punjab: ["hi-Latn-IN", "en-IN", "hi-IN"],
+  // Punjabi first (owner direction, 17 Oct 2026), then PLAN §6.4's Punjab
+  // order: Hinglish · English · हिंदी (workers from the Hindi belt read Hinglish).
+  punjab: ["pa-IN", "hi-Latn-IN", "en-IN", "hi-IN"],
   default: ["en-IN", "hi-IN", "hi-Latn-IN"],
 } as const satisfies Record<string, readonly Locale[]>;
 type RankSet = keyof typeof RANK_SETS;
@@ -61,33 +73,20 @@ const CLUSTER_SETS: Readonly<Record<ClusterId, RankSet | undefined>> = {
   "delhi-ncr": "hindi",
   saharanpur: "hindi",
   jalandhar: "punjab",
+  punjab: "punjab",
   bengaluru: "karnataka",
   other: undefined,
 };
 
 /**
- * The cluster of a jobs page without one of its own (/jobs, /jobs/apply,
- * the role pages and hubs). Haridwar while its jobs hub is published: every
- * opening is in SIDCUL Haridwar and the role pages stay Haridwar-first (PLAN
- * §5.3), so a visitor whose region is missing or misread (mobile CGNAT often
- * places a phone in a gateway state) still gets the Hindi-belt order there.
- * Other hubs (Bengaluru, a worker list) keep their own order on their page.
- * Without Haridwar, the one published hub if there is exactly one.
+ * The cluster that fills gaps in a page's order: the page's own, and nothing
+ * else. Pages without a market of their own (/jobs, /jobs/apply, the role
+ * and qualification pages) take no market's order by default (owner
+ * direction, 17 Oct 2026: no market is the default; the visitor's signals
+ * decide).
  */
-const JOBS_CLUSTER: ClusterId | undefined = (() => {
-  const hubs = new Set(
-    pageEntries
-      .filter((p) => p.kind === "jobs-city" && p.cluster && Object.values(p.locales).includes("published"))
-      .map((p) => p.cluster!),
-  );
-  if (hubs.has("haridwar")) return "haridwar";
-  return hubs.size === 1 ? [...hubs][0] : undefined;
-})();
-
-/** The cluster that fills gaps in a page's order: its own, else the jobs cluster for jobs pages. */
 export function pageCluster(path: string): ClusterId | undefined {
-  const entry = pageEntry(path);
-  return entry?.cluster ?? (entry?.audience === "jobs" ? JOBS_CLUSTER : undefined);
+  return pageEntry(path)?.cluster;
 }
 
 export type VisitorRegion = { country?: string; region?: string };
@@ -110,6 +109,23 @@ export function visitorRegion(headers: Headers): VisitorRegion {
     country: country && /^[A-Z]{2}$/.test(country) && country !== "XX" && country !== "T1" ? country : undefined,
     region: region && /^[A-Z0-9]{1,3}$/.test(region) ? region : undefined,
   };
+}
+
+/**
+ * The visitor's city from the request (x-vercel-ip-city, URL-encoded; or
+ * Cloudflare's cf-ipcity), for area intent only. Read per request, never stored.
+ */
+export function visitorCity(headers: Headers): string | undefined {
+  const raw = headers.get("x-vercel-ip-city") ?? headers.get("cf-ipcity");
+  if (!raw) return undefined;
+  let city = raw;
+  try {
+    city = decodeURIComponent(raw);
+  } catch {
+    // Not URL-encoded: use as sent.
+  }
+  city = city.trim();
+  return city && city.length <= 60 && /^[\p{L} .'-]+$/u.test(city) ? city : undefined;
 }
 
 /**
@@ -148,8 +164,19 @@ export type RankInput = VisitorRegion & {
   /** The vspl_lang cookie. */
   chosen?: string;
   acceptLanguage?: string | null;
+  /** The cluster the request names (?cluster= or UTM tags): area intent the proxy can see. */
+  intent?: ClusterId;
   cluster?: ClusterId;
 };
+
+/** The cluster a request's URL names: ?cluster=<id>, else the first place in its UTM tags. */
+export function urlIntent(search: URLSearchParams): ClusterId | undefined {
+  const known = (id: string | null | undefined): id is ClusterId => !!id && Object.hasOwn(CLUSTER_SETS, id) && id !== "other";
+  const param = search.get("cluster");
+  if (known(param)) return param;
+  // The same tags the browser reads (src/lib/intent/store.ts notePageView).
+  return clustersInUtm(["utm_campaign", "utm_term", "utm_content", "utm_source"].map((k) => search.get(k))).find(known);
+}
 
 /** The page's languages (`available`) in picker order for one request. */
 export function rankLocales(available: readonly Locale[], input: RankInput): Locale[] {
@@ -160,6 +187,8 @@ export function rankLocales(available: readonly Locale[], input: RankInput): Loc
   const chosen = allLocales.find((l) => l === input.chosen);
   if (chosen) add(chosen);
   acceptLanguageLocales(input.acceptLanguage).forEach(add);
+  const intentSet = input.intent ? CLUSTER_SETS[input.intent] : undefined;
+  if (intentSet) RANK_SETS[intentSet].forEach(add);
   if (input.country === "IN") {
     const set = input.region ? REGION_SETS[input.region] : undefined;
     if (set) RANK_SETS[set].forEach(add);
@@ -236,7 +265,9 @@ export function isRankSegment(segment: string | undefined) {
  * `search` carries the share variant for /jobs/apply.
  */
 export function rankSegmentFor(path: string, input: RankInput, search: URLSearchParams): string {
-  const key = orderKey(rankLocales(preferredLocales(path), { ...input, cluster: input.cluster ?? pageCluster(path) }));
+  const key = orderKey(
+    rankLocales(preferredLocales(path), { ...input, intent: input.intent ?? urlIntent(search), cluster: input.cluster ?? pageCluster(path) }),
+  );
   const variant = VARIANT_PATHS.has(path)
     ? quickShareVariant({ role: search.get("role"), hub: search.get("hub"), work: search.get("work") })
     : "";

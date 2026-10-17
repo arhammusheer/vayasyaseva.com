@@ -81,18 +81,21 @@ test("picker variants: every order is prerendered and parses back; /jobs/apply a
   assert.equal(rank.isRankSegment("en-hi"), true);
 });
 
-test("jobs pages without a cluster use the jobs cluster (every opening is in SIDCUL Haridwar)", () => {
+test("jobs pages without a market of their own take no market's order: the visitor's signals decide", () => {
   const none = new URLSearchParams();
   for (const path of ["/jobs", "/jobs/apply", "/jobs/12th-pass", "/jobs/freshers", "/jobs/packing"]) {
-    // No geo (Cloudflare without the location transform) and a misread region (CGNAT gateway state).
-    assert.equal(rank.rankSegmentFor(path, {}, none).split("_")[0], "hi-hl-en", `${path} {}`);
-    assert.equal(rank.rankSegmentFor(path, { country: "IN" }, none).split("_")[0], "hi-hl-en", `${path} IN`);
-    assert.equal(rank.rankSegmentFor(path, { country: "IN", region: "MH" }, none).split("_")[0], "hi-hl-en", `${path} MH`);
-    // A mapped region and visitors outside India still win.
+    // No signal: the default set, not Haridwar's (owner direction, 17 Oct 2026).
+    assert.equal(rank.rankSegmentFor(path, {}, none).split("_")[0], "en-hi-hl", `${path} {}`);
+    assert.equal(rank.rankSegmentFor(path, { country: "IN", region: "MH" }, none).split("_")[0], "en-hi-hl", `${path} MH`);
+    // Region and intent decide.
+    assert.equal(rank.rankSegmentFor(path, { country: "IN", region: "UK" }, none).split("_")[0], "hi-hl-en", `${path} UK`);
     assert.equal(rank.rankSegmentFor(path, { country: "IN", region: "KA" }, none).split("_")[0], "en-hl-hi", `${path} KA`);
-    assert.equal(rank.rankSegmentFor(path, { country: "US" }, none).split("_")[0], "en-hi-hl", `${path} US`);
+    assert.equal(rank.rankSegmentFor(path, { country: "IN" }, new URLSearchParams("utm_campaign=search_jobs&cluster=haridwar")).split("_")[0], "hi-hl-en", `${path} Haridwar ad`);
+    // A generic campaign name alone says nothing about the market.
+    assert.equal(rank.rankSegmentFor(path, {}, new URLSearchParams("utm_campaign=search_jobs")).split("_")[0], "en-hi-hl", `${path} generic ad`);
   }
-  assert.equal(rank.pageCluster("/jobs"), "haridwar");
+  assert.equal(rank.pageCluster("/jobs"), undefined);
+  assert.equal(rank.pageCluster("/jobs/haridwar"), "haridwar");
   assert.equal(rank.pageCluster("/about"), undefined);
 });
 
@@ -102,4 +105,47 @@ test("header quick switch: the page's regional set, fixed per page", () => {
   assert.deepEqual(i18n.languageLinks("/hi-latn-in/haridwar-sidcul").map((l) => l.lang), ["en-IN", "hi-IN"]);
   assert.deepEqual(i18n.languageLinks("/en-in/about"), []);
   assert.ok(i18n.languageLinks("/en-in/jobs").every((l) => l.hint));
+});
+
+const WITH_PA = [...ALL, "pa-IN"];
+
+test("Punjabi: first for a visitor in Punjab and for a request that names the Jalandhar region", () => {
+  assert.deepEqual(order({ country: "IN", region: "PB" }, WITH_PA), ["pa-IN", "hi-Latn-IN", "en-IN", "hi-IN"]);
+  // Intent the request carries (?cluster=, UTM tags) beats a region elsewhere in India...
+  assert.deepEqual(order({ country: "IN", region: "UP", intent: "jalandhar" }, WITH_PA).slice(0, 2), ["pa-IN", "hi-Latn-IN"]);
+  // ...but not a language the browser asks for.
+  assert.equal(order({ country: "IN", region: "PB", acceptLanguage: "hi-IN,hi;q=0.9" }, WITH_PA)[0], "hi-IN");
+  assert.equal(order({ acceptLanguage: "pa-IN,pa;q=0.9,en;q=0.8" }, WITH_PA)[0], "pa-IN");
+  // The page's cluster fills gaps: the Jalandhar hub puts Punjabi first for an unknown region.
+  assert.equal(order({ country: "IN", cluster: "jalandhar" }, WITH_PA)[0], "pa-IN");
+  // A Hindi-belt visitor with no Punjab signal keeps the Hindi order; Punjabi comes last.
+  assert.deepEqual(order({ country: "IN", region: "UP" }, WITH_PA), ["hi-IN", "hi-Latn-IN", "en-IN", "pa-IN"]);
+  // Pages without Punjabi are unchanged.
+  assert.deepEqual(order({ country: "IN", region: "PB" }), ["hi-Latn-IN", "en-IN", "hi-IN"]);
+});
+
+test("urlIntent reads ?cluster= and the Punjab campaigns' UTM tags", () => {
+  assert.equal(rank.urlIntent(new URLSearchParams("cluster=jalandhar")), "jalandhar");
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_campaign=jobs_jalandhar&utm_term=packing%20job")), "jalandhar");
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_term=ludhiana%20job")), "punjab");
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_term=kapurthala%20job")), "jalandhar");
+  assert.equal(rank.urlIntent(new URLSearchParams("cluster=nowhere")), undefined);
+  // A Punjab ad landing on the neutral /jobs/apply gets the Punjabi-first picker.
+  const seg = rank.rankSegmentFor("/jobs/apply", { country: "IN", region: "UP" }, new URLSearchParams("utm_campaign=jobs_jalandhar"));
+  assert.ok(seg.startsWith("pa-"), seg);
+  assert.ok(rank.rankSegments("/jobs/apply").includes(seg));
+});
+
+test("Punjabi readers fall back to Hinglish on pages without Punjabi", () => {
+  assert.equal(i18n.nearestLocalePath("/jobs/jalandhar", "pa-IN"), "/pa-in/jobs/jalandhar");
+  assert.equal(i18n.nearestLocalePath("/jobs/haridwar", "pa-IN"), "/hi-latn-in/jobs/haridwar");
+  assert.equal(i18n.localizeHref("/jobs/packing", "pa-IN"), "/hi-latn-in/jobs/packing");
+  assert.equal(i18n.localizeHref("/jobs/privacy", "pa-IN"), "/pa-in/jobs/privacy");
+});
+
+test("visitorCity reads Vercel's URL-encoded city or Cloudflare's, and rejects junk", () => {
+  assert.equal(rank.visitorCity(new Headers({ "x-vercel-ip-city": "Sultanpur%20Lodhi" })), "Sultanpur Lodhi");
+  assert.equal(rank.visitorCity(new Headers({ "cf-ipcity": "Kapurthala" })), "Kapurthala");
+  assert.equal(rank.visitorCity(new Headers({ "x-vercel-ip-city": "%3Cscript%3E" })), undefined);
+  assert.equal(rank.visitorCity(new Headers({})), undefined);
 });

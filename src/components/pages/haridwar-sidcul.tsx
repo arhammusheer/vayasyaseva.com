@@ -9,21 +9,21 @@ import { Button } from "@/components/ui/button";
 import { CtaBlock } from "@/components/sections/cta-block";
 import { ClientStrip } from "@/components/sections/client-strip";
 import { FaqSection } from "@/components/sections/faq-section";
-import { faqHref } from "@/content/faq";
+import { FAQ_PATH } from "@/content/faq";
 import { JsonLd, webPageSchema } from "@/lib/structured-data";
 import { haridwarCopy } from "@/content/pages/haridwar-sidcul";
-import { jobsDoorHref } from "@/components/layout/nav-links";
+import { jobsAreaHref } from "@/lib/intent/surfaces";
 import { HARIDWAR_SECTION_ANCHORS } from "@/content/registry/identifiers";
-import { localePath, locales, type Locale } from "@/lib/i18n";
+import { copyIn, localePath, locales, type Locale } from "@/lib/i18n";
 import { isPaused } from "@/content/registry";
 import { PausedNotice } from "@/components/sections/paused-notice";
 
 const PATH = "/haridwar-sidcul";
 const CREW_HREF = "/contact#location=haridwar";
-const AND: Record<Locale, string> = { "en-IN": "and", "hi-IN": "और", "hi-Latn-IN": "aur" };
+const AND: Record<Locale, string> = { "en-IN": "and", "hi-IN": "और", "hi-Latn-IN": "aur", "pa-IN": "ਅਤੇ" };
 
 export function haridwarMetadata(locale: Locale) {
-  const t = haridwarCopy[locale];
+  const t = copyIn(haridwarCopy, locale, PATH);
   return pageMetadata({
     title: t.title,
     description: t.description,
@@ -34,7 +34,7 @@ export function haridwarMetadata(locale: Locale) {
 
 /** "A, B and C", each area name carrying its anchor (/haridwar-sidcul#bhagwanpur). */
 function Areas({ locale }: { locale: Locale }) {
-  const names = haridwarCopy[locale].areas;
+  const names = copyIn(haridwarCopy, locale, PATH).areas;
   return HARIDWAR_SECTION_ANCHORS.map((id, i) => (
     <span key={id}>
       {i > 0 && (i === HARIDWAR_SECTION_ANCHORS.length - 1 ? ` ${AND[locale]} ` : ", ")}
@@ -52,7 +52,7 @@ function Areas({ locale }: { locale: Locale }) {
  * so there the jobs door is a button first, with Request a crew beside it.
  */
 export function HaridwarPage({ locale }: { locale: Locale }) {
-  const t = haridwarCopy[locale];
+  const t = copyIn(haridwarCopy, locale, PATH);
   const url = localePath(PATH, locale);
   const [before, after] = t.sidcul.split("{areas}");
   const jobsFirst = locale === "hi-IN";
@@ -86,7 +86,7 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
           jobsFirst ? (
             <div className="flex flex-wrap gap-3 pt-2">
               <Button asChild size="lg">
-                <NextLink href={jobsDoorHref(locale)} prefetch={false}>
+                <NextLink href={jobsAreaHref("haridwar", locale)} prefetch={false}>
                   {t.jobs.label} <ArrowRight aria-hidden="true" />
                 </NextLink>
               </Button>
@@ -99,7 +99,7 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
               {crewButton}
               <p className="seeker-line">
                 {t.jobs.text}{" "}
-                <NextLink href={jobsDoorHref(locale)} className="text-link mt-0" prefetch={false}>
+                <NextLink href={jobsAreaHref("haridwar", locale)} className="text-link mt-0" prefetch={false}>
                   {t.jobs.label} <ArrowRight size={18} aria-hidden="true" />
                 </NextLink>
               </p>
@@ -137,7 +137,7 @@ export function HaridwarPage({ locale }: { locale: Locale }) {
           </div>
         </div>
       </Section>
-      <FaqSection title={t.faqHeading} variant="subtle" items={t.faqs} open more={{ href: faqHref("haridwar-sidcul"), label: t.moreFaqs }} />
+      <FaqSection title={t.faqHeading} variant="subtle" items={t.faqs} open more={{ href: FAQ_PATH, label: t.moreFaqs }} />
       <CtaBlock locale={locale} href={CREW_HREF} />
     </>
   );

@@ -203,12 +203,12 @@ const { REF_PATTERN, INTAKE_SOURCES, WEB_SOURCE, isSubmissionSource, INTAKE_LOCA
   function isSubmissionSource(value) {
       return value === WEB_SOURCE || (typeof value === "string" && Object.hasOwn(INTAKE_SOURCES, value));
   }
-  const INTAKE_LOCALES = ["en-IN", "hi-IN", "hi-Latn-IN"];
+  const INTAKE_LOCALES = ["en-IN", "hi-IN", "hi-Latn-IN", "pa-IN"];
   function isIntakeLocale(value) {
       return typeof value === "string" && INTAKE_LOCALES.includes(value);
   }
   const LEGACY_SOURCE_LOCALES = { web_en: "en-IN", web_hi: "hi-IN", web_hinglish: "hi-Latn-IN" };
-  const INTAKE_CLUSTERS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other"];
+  const INTAKE_CLUSTERS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other", "punjab"];
   function isIntakeCluster(value) {
       return typeof value === "string" && INTAKE_CLUSTERS.includes(value);
   }
@@ -275,6 +275,16 @@ const { REF_PATTERN, INTAKE_SOURCES, WEB_SOURCE, isSubmissionSource, INTAKE_LOCA
           laksar: "Laksar", outside: "Outside Haridwar",
           "bengaluru:north": "Bengaluru North / Peenya", "bengaluru:south": "Bengaluru South / Electronic City", "bengaluru:east": "Bengaluru East / Whitefield",
           "bengaluru:west": "Bengaluru West / Kengeri", "bengaluru:outside": "Outside Bengaluru",
+          "jalandhar:kapurthala": "Kapurthala", "jalandhar:city": "Jalandhar city", "jalandhar:phagwara-goraya": "Phagwara / Goraya",
+          "jalandhar:outside": "Outside Jalandhar and Kapurthala",
+          "uttarakhand:haridwar": "Haridwar / Roorkee", "uttarakhand:dehradun-selaqui": "Dehradun / Selaqui",
+          "uttarakhand:udham-singh-nagar": "Rudrapur / Kashipur / Sitarganj", "uttarakhand:other": "Elsewhere in Uttarakhand",
+          "uttarakhand:outside": "Outside Uttarakhand",
+          "punjab:jalandhar-kapurthala": "Jalandhar / Kapurthala", "punjab:ludhiana": "Ludhiana", "punjab:mohali": "Mohali / Kharar",
+          "punjab:amritsar": "Amritsar", "punjab:other": "Elsewhere in Punjab", "punjab:outside": "Outside Punjab",
+          "market:haridwar": "Haridwar / Roorkee", "market:uttarakhand": "Elsewhere in Uttarakhand", "market:jalandhar": "Jalandhar / Kapurthala",
+          "market:punjab": "Elsewhere in Punjab", "market:bengaluru": "Bengaluru", "market:other": "Somewhere else",
+          "haridwar:rest-of-uttarakhand": "Elsewhere in Uttarakhand (Haridwar form)", "jalandhar:rest-of-punjab": "Elsewhere in Punjab (Jalandhar form)",
       },
   };
   const AREA_CLUSTERS = {
@@ -288,6 +298,29 @@ const { REF_PATTERN, INTAKE_SOURCES, WEB_SOURCE, isSubmissionSource, INTAKE_LOCA
       "bengaluru:east": "bengaluru",
       "bengaluru:west": "bengaluru",
       "bengaluru:outside": null,
+      "jalandhar:kapurthala": "jalandhar",
+      "jalandhar:city": "jalandhar",
+      "jalandhar:phagwara-goraya": "jalandhar",
+      "jalandhar:outside": null,
+      "uttarakhand:haridwar": "haridwar",
+      "uttarakhand:dehradun-selaqui": "uttarakhand",
+      "uttarakhand:udham-singh-nagar": "uttarakhand",
+      "uttarakhand:other": "uttarakhand",
+      "uttarakhand:outside": null,
+      "punjab:jalandhar-kapurthala": "jalandhar",
+      "punjab:ludhiana": "punjab",
+      "punjab:mohali": "punjab",
+      "punjab:amritsar": "punjab",
+      "punjab:other": "punjab",
+      "punjab:outside": null,
+      "market:haridwar": "haridwar",
+      "market:uttarakhand": "uttarakhand",
+      "market:jalandhar": "jalandhar",
+      "market:punjab": "punjab",
+      "market:bengaluru": "bengaluru",
+      "market:other": null,
+      "haridwar:rest-of-uttarakhand": "uttarakhand",
+      "jalandhar:rest-of-punjab": "punjab",
   };
   function submissionCluster(pageCluster, answers) {
       const area = answers?.area?.[0];
@@ -349,6 +382,7 @@ const { composeNote, filesToAttach, conversationAttributes } = (() => {
       "en-IN": "English jobs page (en-IN)",
       "hi-IN": "हिंदी jobs page (hi-IN)",
       "hi-Latn-IN": "Hindi jobs page, Latin script (hi-Latn-IN)",
+      "pa-IN": "ਪੰਜਾਬੀ jobs page (pa-IN)",
       en: "English jobs page (en-IN)",
       hi: "हिंदी jobs page (hi-IN)",
       hinglish: "Hindi jobs page, Latin script (hi-Latn-IN)",
@@ -357,6 +391,7 @@ const { composeNote, filesToAttach, conversationAttributes } = (() => {
       "en-IN": "English",
       "hi-IN": "Hindi",
       "hi-Latn-IN": "Hindi, Latin script",
+      "pa-IN": "Punjabi",
       en: "English",
       hi: "Hindi",
       hinglish: "Hindi, Latin script",

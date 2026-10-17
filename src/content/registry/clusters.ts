@@ -131,6 +131,38 @@ export const clusters: readonly Cluster[] = [
     claims: [],
     registrations: [],
   },
+  {
+    // Jalandhar–Kapurthala, Punjab (owner direction, 17 Oct 2026): parity
+    // with SIDCUL Haridwar, a jobs hub with open work and business pages,
+    // on a live requirement in Kapurthala and the owner's confirmation that
+    // VSPL is the employer of record nationally. The id stays "jalandhar"
+    // (a stored value since PLAN §1a, and where the search is: "jalandhar
+    // job" ~5,400 a month against "kapurthala job" ~260). No Punjabi until
+    // there is a native reviewer and someone who can reply in it.
+    id: "jalandhar",
+    publishable: true,
+    name: { "en-IN": "Jalandhar and Kapurthala", "hi-IN": "जालंधर और कपूरथला", "hi-Latn-IN": "Jalandhar aur Kapurthala" },
+    navLabel: "Jalandhar–Kapurthala",
+    states: ["punjab"],
+    // Punjabi first where a page has it (owner direction, 17 Oct 2026), then
+    // PLAN §6.4's Punjab order: Hinglish · English · हिंदी.
+    quickSwitch: ["pa-IN", "hi-Latn-IN", "en-IN"],
+    buyerHub: "/locations/jalandhar",
+    claims: [],
+    registrations: [],
+  },
+  {
+    // Punjab outside Jalandhar–Kapurthala (owner direction, 17 Oct 2026):
+    // a jobs-only market, a worker list like Bengaluru's. No buyer page; the
+    // Jalandhar region's carries Punjab's business side.
+    id: "punjab",
+    publishable: true,
+    name: { "en-IN": "Punjab", "hi-IN": "पंजाब", "hi-Latn-IN": "Punjab", "pa-IN": "ਪੰਜਾਬ" },
+    states: ["punjab"],
+    quickSwitch: ["pa-IN", "hi-Latn-IN", "en-IN"],
+    claims: [],
+    registrations: [],
+  },
 ];
 
 export function clusterById(id: string) {

@@ -1,5 +1,5 @@
 import type { FaqItem } from "../types";
-import type { Locale } from "@/lib/i18n";
+import type { CopyIn } from "@/lib/i18n";
 import { wageStatePath, type HARIDWAR_SECTION_ANCHORS } from "@/content/registry/identifiers";
 
 type Area = (typeof HARIDWAR_SECTION_ANCHORS)[number];
@@ -43,7 +43,7 @@ const SERVICE_HREFS = ["/services/factory-labour", "/services/loading-unloading-
  * The hi-IN H1 leads with the literal search term (most hi-IN visitors look
  * up SIDCUL itself), and its paragraph opens with the full form.
  */
-export const haridwarCopy: Record<Locale, HaridwarCopy> = {
+export const haridwarCopy: CopyIn<HaridwarCopy> = {
   "en-IN": {
     title: "Labour Contractor in SIDCUL Haridwar",
     description:

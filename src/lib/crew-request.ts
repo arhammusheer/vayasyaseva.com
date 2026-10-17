@@ -176,6 +176,10 @@ const KNOWN_PLACES: Record<string, Place> = {
   "noida-greater-noida": { state: "UP", city: "Noida / Greater Noida", cluster: "delhi-ncr" },
   "faridabad-ghaziabad": { state: "", city: "Faridabad / Ghaziabad", cluster: "delhi-ncr" },
   "delhi-industrial-areas": { state: "DL", city: "Delhi", cluster: "delhi-ncr" },
+  jalandhar: { state: "PB", city: "Jalandhar / Kapurthala", cluster: "jalandhar" },
+  kapurthala: { state: "PB", city: "Kapurthala", cluster: "jalandhar" },
+  "phagwara-goraya": { state: "PB", city: "Phagwara / Goraya", cluster: "jalandhar" },
+  "jalandhar-focal-point": { state: "PB", city: "Focal Point, Jalandhar", cluster: "jalandhar" },
 };
 
 /** Words in free text that place a site in Uttarakhand's Haridwar district. */

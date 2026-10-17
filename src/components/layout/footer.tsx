@@ -4,7 +4,7 @@ import { siteConfig } from "@/content/site";
 import { linkable } from "@/content/registry";
 import { AnalyticsPreferencesButton } from "@/components/analytics";
 import NextLink from "next/link";
-import { FALLBACK_LOCALE, localePath, type Locale } from "@/lib/i18n";
+import { FALLBACK_LOCALE, nearestLocalePath, type Locale } from "@/lib/i18n";
 import type { HeaderDoor } from "@/components/layout/header";
 import { JOBS_NAV, SETU_LOGIN, WORK_DOOR, jobsDoorHref, jobsFooterLinks, referenceLinks, type NavLink } from "@/components/layout/nav-links";
 
@@ -25,7 +25,7 @@ function businessColumns(reference: boolean): Column[] {
         { href: "/services/factory-labour", label: "Factory labour" },
         { href: "/services/loading-unloading-labour", label: "Loading and unloading" },
         { href: "/services/housekeeping", label: "Housekeeping and grounds" },
-        { href: "/haridwar-sidcul", label: "Haridwar SIDCUL" },
+        // Every market through /locations; none is singled out (owner direction, 17 Oct 2026).
         ...(linkable("/locations", "en-IN") ? [{ href: "/locations", label: "Locations" }] : []),
         { href: "/faq", label: "Questions" },
       ],
@@ -78,7 +78,7 @@ export function Footer({
         <div className="footer-main">
           <div className="footer-about">
             <Link
-              href={isJobs ? localePath("/jobs", locale) : "/"}
+              href={isJobs ? nearestLocalePath("/jobs", locale) : "/"}
               className="footer-brand"
               aria-label={isJobs ? t.logo : "Vayasya Seva home"}
             >
@@ -95,7 +95,7 @@ export function Footer({
                 <address lang="en-IN">
                   <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
                 </address>
-                {/* The one jobs link in this footer: Jobs in Haridwar
+                {/* The one jobs link in this footer: /jobs, every market
                     (neutral from English pages, so not the i18n Link). */}
                 <p className="footer-jobs-door" lang={workLocale}>
                   {work.lead}{" "}

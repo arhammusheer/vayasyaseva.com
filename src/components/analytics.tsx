@@ -54,7 +54,7 @@ function campaignTags() {
   const tags: Record<string, string> = {};
   try {
     const params = new URLSearchParams(window.location.search);
-    for (const key of ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"]) {
+    for (const key of ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "cluster"]) {
       const value = params.get(key);
       if (value) tags[key] = value.slice(0, 100);
     }
@@ -119,6 +119,19 @@ const BANNER = {
       "Har visit par bina cookie wali page ginti chalti hai, aur agar aap hamare ad se aakar apply karte hain, to Google Ads ko bas yeh pata chalta hai ki kaun sa click tha (“Sirf zaroori” chunne par yeh bhi nahi). “Sab allow karein” chunne par Google Analytics, ad ki ginti (remarketing nahi) aur aapki visit ki recording bhi chalti hai, jismein form mein likhi baatein bhi aati hain; adhoora chhoda form 30 din rakha jaata hai, sirf form theek karne ke liye.",
     privacy: "Poori jaankari (English mein)",
     end: ".",
+  },
+  // Same points as the Hindi text, sentence for sentence (draft for native review).
+  "pa-IN": {
+    label: "ਨਿੱਜਤਾ ਦੇ ਵਿਕਲਪ",
+    question: "ਹੋਰ ਐਨਾਲਿਟਿਕਸ ਚਾਲੂ ਕਰੀਏ?",
+    more: "ਹੋਰ ਜਾਣੋ",
+    less: "ਘੱਟ ਵਿਖਾਓ",
+    reject: "ਸਿਰਫ਼ ਜ਼ਰੂਰੀ",
+    accept: "ਸਭ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ",
+    details:
+      "ਹਰ ਵਿਜ਼ਿਟ 'ਤੇ ਬਿਨਾਂ ਕੁਕੀ ਵਾਲੀ ਪੇਜ ਗਿਣਤੀ ਚੱਲਦੀ ਹੈ, ਅਤੇ ਜੇ ਤੁਸੀਂ ਸਾਡੇ ਇਸ਼ਤਿਹਾਰ ਤੋਂ ਆ ਕੇ ਅਪਲਾਈ ਕਰਦੇ ਹੋ, ਤਾਂ Google Ads ਨੂੰ ਬੱਸ ਇਹ ਪਤਾ ਲੱਗਦਾ ਹੈ ਕਿ ਕਿਹੜਾ ਕਲਿੱਕ ਸੀ (“ਸਿਰਫ਼ ਜ਼ਰੂਰੀ” ਚੁਣਨ 'ਤੇ ਇਹ ਵੀ ਨਹੀਂ)। “ਸਭ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ” ਚੁਣਨ 'ਤੇ Google Analytics, ਇਸ਼ਤਿਹਾਰ ਦੀ ਗਿਣਤੀ (ਰੀਮਾਰਕੀਟਿੰਗ ਨਹੀਂ) ਅਤੇ ਤੁਹਾਡੀ ਵਿਜ਼ਿਟ ਦੀ ਰਿਕਾਰਡਿੰਗ ਵੀ ਚੱਲਦੀ ਹੈ, ਜਿਸ ਵਿੱਚ ਫ਼ਾਰਮ ਵਿੱਚ ਲਿਖੀਆਂ ਗੱਲਾਂ ਵੀ ਆਉਂਦੀਆਂ ਹਨ; ਅਧੂਰਾ ਛੱਡਿਆ ਫ਼ਾਰਮ 30 ਦਿਨ ਰੱਖਿਆ ਜਾਂਦਾ ਹੈ, ਸਿਰਫ਼ ਫ਼ਾਰਮ ਠੀਕ ਕਰਨ ਲਈ।",
+    privacy: "ਹਰ ਇੱਕ ਦਾ ਵੇਰਵਾ (ਅੰਗਰੇਜ਼ੀ ਵਿੱਚ)",
+    end: "।",
   },
 } as const;
 

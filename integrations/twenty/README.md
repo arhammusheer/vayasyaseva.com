@@ -39,12 +39,13 @@ Idempotent: it creates what is missing and updates select options; it never dele
 ## How data gets in
 
 - **Applications**: Windmill `f/talent/sync_crm` every minute: each new submission in the talent database becomes (or updates) its person by phone, an application and an SMS-acknowledgement communication; a changed SMS status is written again. The talent database stays the record of truth and consent evidence; `crm_sync` there says what was written. Backfilled on 17 Oct 2026: 37 people, 41 applications, 27 acknowledgements.
+- **Applicants' files**: the dispatcher's `files` target attaches each application's photos and documents to it, labelled `VS-J-XXXXXX-<n>.<ext>` (never the applicant's file name). The Windmill API key's role needs the **Upload files** permission (integrations/windmill/README.md, "Applicants' files into Twenty").
 - **Leads**: the website's `/api/contact` and `/api/agent/contact` post each enquiry (after emailing it, in `after()`) to Windmill `f/leads/intake`, which files the company, the client contact, the crew request at stage New and the enquiry as an inbound communication. Replay-safe by case ID.
 - **By hand**: staff add notes, tasks, calls and anything else in Twenty itself.
 
 ## Erasure and retention
 
-The talent pipeline's erasure (`f/talent/retention`, privacy notice §10) removes the person's Twenty records too (their communications, applications and the person) before the database rows, and stops if Twenty fails. Leads follow the business retention in the privacy notice; delete a company's records in Twenty by hand when asked.
+The talent pipeline's erasure (`f/talent/retention`, privacy notice §10) removes the person's Twenty records too (their applications' attachments, trashed ones too, their communications, applications and the person with its own attachments) before the database rows, and stops if Twenty fails. Leads follow the business retention in the privacy notice; delete a company's records in Twenty by hand when asked.
 
 ## The API key
 

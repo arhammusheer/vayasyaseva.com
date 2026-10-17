@@ -4,10 +4,10 @@ The SQL and rules for running `f/talent/*` (see README.md for the layout and dep
 
 ## Deliveries: stuck, dead and unknown work
 
-Since roadmap 1F every application has three rows in `deliveries`, one per
-target (`sms`, `chatwoot`, `crm`), and one worker, `f/talent/dispatch`,
+Since roadmap 1F every application has a row in `deliveries` per
+target (`sms`, `chatwoot`, `crm`, and since 18 Oct 2026 `files`), and one worker, `f/talent/dispatch`,
 runs them every minute on one connection. A failed attempt waits 1, 2, 4…
-minutes (at most an hour); at its cap (SMS 3, Chatwoot 3, CRM 8) the row is
+minutes (at most an hour); at its cap (SMS 3, Chatwoot 3, CRM 8, files 8) the row is
 `dead`. An SMS whose send was ambiguous or interrupted is `unknown` and is
 never sent again automatically. The older columns (`submissions.status`,
 `sms_acknowledgements.status`, `crm_sync`) are still written by each step;
@@ -42,6 +42,33 @@ SELECT case_id, status, attempts, last_error, reason FROM deliveries_attention O
 UPDATE deliveries SET status = 'pending', attempts = 0, next_attempt_at = now(), last_error = NULL, updated_at = now()
 WHERE lead_id = (SELECT id FROM leads WHERE case_id = 'REQ-…');
 ```
+
+## Applicants' files in Twenty
+
+The `files` target copies each application's photos and documents from R2 into Twenty, as attachments on the Application named `VS-J-XXXXXX-<n>.<ext>` (README, "Applicants' files into Twenty"). R2 keeps files 90 days: the backfill of earlier applications must finish before about **25 December 2026**, when the first ones (from 26 September) expire.
+
+```sql
+-- Backfill progress, per file (pending: not yet copied; missing: gone from R2; skipped: voice notes)
+SELECT crm_file_status, count(*) FROM attachments GROUP BY 1;
+
+-- Per application: files deliveries by status, and the oldest still waiting
+SELECT status, count(*), min(created_at) AS oldest FROM deliveries WHERE target = 'files' GROUP BY 1;
+
+-- Waiting for the CRM step (no Twenty application yet): fix the crm row first
+SELECT s.ref, d.attempts, d.last_error FROM deliveries d JOIN submissions s ON s.id = d.submission_id
+LEFT JOIN crm_sync c ON c.submission_id = d.submission_id
+WHERE d.target = 'files' AND d.status = 'pending' AND c.application_id IS NULL;
+
+-- One application's files
+SELECT position, kind, crm_file_status, crm_file_error, crm_file_at FROM attachments
+WHERE submission_id = (SELECT id FROM submissions WHERE ref = 'VS-J-XXXXXX') ORDER BY position;
+
+-- Retry a dead files delivery (after fixing the cause, e.g. the key's Upload files permission)
+UPDATE deliveries SET status = 'pending', attempts = 0, next_attempt_at = now(), last_error = NULL, updated_at = now()
+WHERE target = 'files' AND submission_id = (SELECT id FROM submissions WHERE ref = 'VS-J-XXXXXX');
+```
+
+An error naming the **Upload files permission (UPLOAD_FILE)** means the Windmill API key's role in Twenty lacks it (Settings → Roles).
 
 ## SMS acknowledgement (Fast2SMS)
 
@@ -115,7 +142,7 @@ WHERE phone = '+91XXXXXXXXXX';
 `f/talent/retention` runs hourly. Each run:
 
 1. queues everyone whose last contact (`last_contact_at` or `last_confirmed_at`) is more than 12 months old, plus older submissions with no `people` row, as `erasure_requests` with reason `retention`;
-2. takes one queued request and deletes, in this order: the person's R2 files, their Chatwoot contacts (which deletes their conversations), their applicant records in Twenty, then their submissions (attachments and SMS rows go with them) and their `people` row;
+2. takes one queued request and deletes, in this order: the person's R2 files, their Chatwoot contacts (which deletes their conversations), their applicant records in Twenty (each application's attachments, trashed ones too, before the application, since deleting an application only unlinks them; the person's own attachments with the person), then their submissions (attachments and SMS rows go with them) and their `people` row. The Twenty step and the row delete hold the dispatcher's lock, so the dispatcher skips those runs;
 3. marks the request `done`, keeping only the counts: the phone and reference are cleared.
 
 An R2 or Chatwoot failure stops the run before any row is deleted; the request goes back to `pending` after an hour and fails after three attempts. One request per run keeps each run short; raise the schedule if the queue grows.
@@ -130,7 +157,7 @@ LIMIT 1
 ON CONFLICT (phone) WHERE status IN ('pending', 'running') DO NOTHING;
 
 -- Progress
-SELECT reason, status, attempts, last_error, removed_submissions, removed_files, removed_contacts, requested_at, processed_at
+SELECT reason, status, attempts, last_error, removed_submissions, removed_files, removed_contacts, removed_crm_files, requested_at, processed_at
 FROM erasure_requests ORDER BY requested_at DESC LIMIT 20;
 ```
 

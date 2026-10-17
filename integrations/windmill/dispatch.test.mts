@@ -119,14 +119,14 @@ test("migration: existing statuses become deliveries, the old columns stay, and 
   assert.equal(old.status, "delivered");
 });
 
-test("a new application gets its three deliveries; one dispatcher run does them all", async () => {
+test("a new application gets its four deliveries; one dispatcher run does them all", async () => {
   const { query } = await testDb(TALENT_SCHEMA);
   const id = await save(query, "VS-J-NEW001");
-  assert.deepEqual(await deliveries(query, id), { sms: "pending/0", chatwoot: "pending/0", crm: "pending/0" });
-  const d = deps(query);
+  assert.deepEqual(await deliveries(query, id), { sms: "pending/0", chatwoot: "pending/0", crm: "pending/0", files: "pending/0" });
+  const d = deps(query, { files: { twenty: {} as never, download: async () => assert.fail("no files to download") } });
   const result = await runDispatch(d);
-  assert.deepEqual(result.done, { sms: 1, chatwoot: 1, crm: 1 });
-  assert.deepEqual(await deliveries(query, id), { sms: "done/1", chatwoot: "done/1", crm: "done/1" });
+  assert.deepEqual(result.done, { sms: 1, crm: 1, files: 1, chatwoot: 1 }, "no files: done once the application exists");
+  assert.deepEqual(await deliveries(query, id), { sms: "done/1", chatwoot: "done/1", crm: "done/1", files: "done/1" });
   const [old] = await query<{ status: string; sms: string }>(`SELECT s.status, a.status AS sms FROM submissions s JOIN sms_acknowledgements a ON a.submission_id = s.id`);
   assert.deepEqual([old.status, old.sms], ["delivered", "accepted"], "each step still writes its own status");
   // Nothing left: a second run sends nothing.

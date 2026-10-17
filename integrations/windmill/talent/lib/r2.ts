@@ -28,6 +28,18 @@ export async function downloadObject(key: string): Promise<{ data: Blob; content
   return { data: await res.blob(), contentType: res.headers.get("content-type") ?? "application/octet-stream" };
 }
 
+/** The same, but null when the object is gone (R2 keeps applicants' files 90 days): the files step marks it missing. */
+export async function downloadIfExists(key: string): Promise<Blob | null> {
+  const { aws, url } = await client("read");
+  const res = await aws.fetch(url(key), { method: "GET" });
+  if (res.status === 404) {
+    await res.body?.cancel().catch(() => {});
+    return null;
+  }
+  if (!res.ok) throw new Error(`R2 GET ${key}: HTTP ${res.status}`);
+  return res.blob();
+}
+
 /** Deletes one object. S3 answers 204 whether or not it existed; anything else stops the erasure. */
 export async function deleteObject(key: string): Promise<void> {
   const { aws, url } = await client("erase");

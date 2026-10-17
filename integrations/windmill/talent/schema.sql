@@ -190,7 +190,7 @@ BEGIN
   -- the old statuses from the deliveries.
   CREATE TABLE IF NOT EXISTS deliveries (
     submission_id   uuid NOT NULL REFERENCES submissions (id) ON DELETE CASCADE,
-    target          text NOT NULL CHECK (target IN ('sms', 'chatwoot', 'crm')),
+    target          text NOT NULL CHECK (target IN ('sms', 'chatwoot', 'crm', 'files')),
     status          text NOT NULL DEFAULT 'pending'
                     CHECK (status IN ('pending', 'running', 'done', 'unknown', 'dead')),
     attempts        int NOT NULL DEFAULT 0,
@@ -205,12 +205,17 @@ BEGIN
   CREATE INDEX IF NOT EXISTS deliveries_due_idx ON deliveries (target, next_attempt_at) WHERE status = 'pending';
   CREATE INDEX IF NOT EXISTS deliveries_status_idx ON deliveries (status, updated_at);
 
-  -- Every new submission gets its three deliveries (SMS: three attempts, as
-  -- before; Chatwoot: three; CRM: eight).
+  -- The files target (18 Oct 2026): applicants' files copied from R2 into
+  -- Twenty as attachments on their application (talent/lib/run-files.ts).
+  ALTER TABLE deliveries DROP CONSTRAINT IF EXISTS deliveries_target_check;
+  ALTER TABLE deliveries ADD CONSTRAINT deliveries_target_check CHECK (target IN ('sms', 'chatwoot', 'crm', 'files'));
+
+  -- Every new submission gets its four deliveries (SMS: three attempts, as
+  -- before; Chatwoot: three; CRM: eight; files into Twenty: eight).
   CREATE OR REPLACE FUNCTION queue_deliveries() RETURNS trigger LANGUAGE plpgsql AS $fn$
   BEGIN
     INSERT INTO deliveries (submission_id, target, max_attempts)
-    VALUES (NEW.id, 'sms', 3), (NEW.id, 'chatwoot', 3), (NEW.id, 'crm', 8)
+    VALUES (NEW.id, 'sms', 3), (NEW.id, 'chatwoot', 3), (NEW.id, 'crm', 8), (NEW.id, 'files', 8)
     ON CONFLICT DO NOTHING;
     RETURN NEW;
   END
@@ -268,7 +273,8 @@ BEGIN
   LEFT JOIN deliveries r ON r.submission_id = s.id AND r.target = 'crm';
 
   -- Work that needs a person: dead rows, SMS of unknown fate, and rows stuck
-  -- running or overdue (f/platform/health counts these).
+  -- running or overdue (f/platform/health counts these). A files row waiting
+  -- for its Twenty application is not overdue itself: the CRM row is.
   CREATE OR REPLACE VIEW deliveries_attention AS
   SELECT d.*, s.ref,
          CASE WHEN d.status = 'dead' THEN 'dead'
@@ -278,7 +284,9 @@ BEGIN
   FROM deliveries d JOIN submissions s ON s.id = d.submission_id
   WHERE d.status IN ('dead', 'unknown')
      OR (d.status = 'running' AND d.updated_at < now() - interval '15 minutes')
-     OR (d.status = 'pending' AND d.next_attempt_at < now() - interval '1 hour');
+     OR (d.status = 'pending' AND d.next_attempt_at < now() - interval '1 hour'
+         AND (d.target <> 'files' OR EXISTS (
+           SELECT 1 FROM crm_sync c WHERE c.submission_id = d.submission_id AND c.application_id IS NOT NULL)));
 
   -- Idempotency-Key answers of the jobs routes (the site's
   -- src/server/submissions/policies/idempotency.ts, through
@@ -294,5 +302,35 @@ BEGIN
     PRIMARY KEY (scope, key)
   );
   CREATE INDEX IF NOT EXISTS idempotency_keys_updated_idx ON idempotency_keys (updated_at);
+
+  -- Applicants' files into Twenty (18 Oct 2026; the files delivery target,
+  -- talent/lib/run-files.ts). Per file: the Twenty file and attachment it
+  -- became, and where it stands: pending; done (attached); missing (gone
+  -- from R2, which keeps files 90 days); skipped (voice notes, from before
+  -- 16 Oct 2026, are not copied and are left to expire).
+  ALTER TABLE attachments ADD COLUMN IF NOT EXISTS twenty_file_id uuid;
+  ALTER TABLE attachments ADD COLUMN IF NOT EXISTS twenty_attachment_id uuid;
+  ALTER TABLE attachments ADD COLUMN IF NOT EXISTS crm_file_status text NOT NULL DEFAULT 'pending';
+  ALTER TABLE attachments DROP CONSTRAINT IF EXISTS attachments_crm_file_status_check;
+  ALTER TABLE attachments ADD CONSTRAINT attachments_crm_file_status_check
+    CHECK (crm_file_status IN ('pending', 'done', 'missing', 'skipped'));
+  ALTER TABLE attachments ADD COLUMN IF NOT EXISTS crm_file_error text;
+  ALTER TABLE attachments ADD COLUMN IF NOT EXISTS crm_file_at timestamptz;
+  -- How many Twenty attachments an erasure removed.
+  ALTER TABLE erasure_requests ADD COLUMN IF NOT EXISTS removed_crm_files int;
+
+  -- The backfill: a files delivery for every earlier application with files
+  -- (re-running adds only what is missing). Oldest first, two minutes apart,
+  -- so the first to expire from R2 (from 25 Dec 2026) go first and the
+  -- queue drains without counting as overdue.
+  INSERT INTO deliveries (submission_id, target, max_attempts, next_attempt_at, created_at, updated_at)
+  SELECT b.id, 'files', 8, now() + (b.n - 1) * interval '2 minutes', b.created_at, now()
+  FROM (
+    SELECT s.id, s.created_at, row_number() OVER (ORDER BY s.created_at, s.id) AS n
+    FROM submissions s
+    WHERE EXISTS (SELECT 1 FROM attachments a WHERE a.submission_id = s.id)
+      AND NOT EXISTS (SELECT 1 FROM deliveries d WHERE d.submission_id = s.id AND d.target = 'files')
+  ) b
+  ON CONFLICT DO NOTHING;
 END
 $$;

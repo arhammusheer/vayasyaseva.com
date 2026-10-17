@@ -5,7 +5,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { contactsToDelete, filesToDelete } from "./talent/lib/erasure.ts";
 import { runRetention } from "./talent/lib/run-retention.ts";
-import { CLAIM_ERASURE, DELETE_ROWS, QUEUE_EXPIRED_AND_RECOVER, SAVE_SUBMISSION } from "./talent/lib/sql.ts";
+import { CLAIM_ERASURE, DELETE_ROWS, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, QUEUE_EXPIRED_AND_RECOVER, SAVE_SUBMISSION } from "./talent/lib/sql.ts";
 import { SCRIPTS } from "./scripts.mts";
 
 const claimed = { id: "req-1", phone: "+919876543210", reason: "request" as const, files: [] as string[], contacts: [] as number[] };
@@ -20,10 +20,13 @@ test("every Chatwoot contact is deleted once; invalid ids are dropped", () => {
   assert.deepEqual(contactsToDelete({ contacts: [0, null as unknown as number] }), []);
 });
 
-function retentionDb(claim: typeof claimed | null) {
+function retentionDb(claim: typeof claimed | null, dispatcherRuns = 0) {
   const log: string[] = [];
   const params: unknown[][] = [];
+  let busy = dispatcherRuns;
   const query = (async (text: string, p: unknown[] = []) => {
+    if (text === ERASURE_DISPATCH_LOCK) return busy-- > 0 ? (log.push("lock busy"), [{ locked: false }]) : (log.push("lock"), [{ locked: true }]);
+    if (text === ERASURE_DISPATCH_UNLOCK) return (log.push("unlock"), [{ unlocked: true }]);
     params.push(p);
     if (text === QUEUE_EXPIRED_AND_RECOVER) return (log.push("queue"), [{ recovered: "1", queued: "2" }]);
     if (text === CLAIM_ERASURE) return (log.push("claim"), claim ? [claim] : []);
@@ -39,11 +42,29 @@ test("files, contacts and CRM records go before the rows, which go last", async 
     query: db.query,
     deleteFile: async (key) => void db.log.push(`file ${key}`),
     deleteContact: async (id) => void db.log.push(`contact ${id}`),
-    eraseCrmPerson: async (phone) => (db.log.push(`crm ${phone}`), 1),
+    eraseCrmPerson: async (phone) => (db.log.push(`crm ${phone}`), { people: 1, files: 3 }),
   });
-  assert.deepEqual(db.log, ["queue", "claim", "file a/1.jpg", "contact 12", "crm +919876543210", "rows"]);
-  assert.deepEqual(db.params.at(-1), ["req-1", "+919876543210", 2, 1]);
-  assert.deepEqual(result, { recovered: 1, queued: 2, erased: { requestId: "req-1", files: 2, contacts: 1, crmPeople: 1 } });
+  assert.deepEqual(db.log, ["queue", "claim", "file a/1.jpg", "contact 12", "lock", "crm +919876543210", "rows", "unlock"]);
+  assert.deepEqual(db.params.at(-1), ["req-1", "+919876543210", 2, 1, 3]);
+  assert.deepEqual(result, { recovered: 1, queued: 2, erased: { requestId: "req-1", files: 2, contacts: 1, crmPeople: 1, crmFiles: 3 } });
+});
+
+test("erasure waits for a running dispatcher before the Twenty step, and gives up for the run if it never stops", async () => {
+  const db = retentionDb({ ...claimed }, 2);
+  await runRetention({
+    query: db.query,
+    deleteFile: async () => {},
+    deleteContact: async () => {},
+    eraseCrmPerson: async () => (db.log.push("crm"), { people: 1, files: 0 }),
+    sleep: async () => {},
+  });
+  assert.deepEqual(db.log, ["queue", "claim", "lock busy", "lock busy", "lock", "crm", "rows", "unlock"]);
+  const stuck = retentionDb({ ...claimed }, 1000);
+  await assert.rejects(
+    runRetention({ query: stuck.query, deleteFile: async () => {}, deleteContact: async () => {}, eraseCrmPerson: async () => assert.fail(), sleep: async () => {} }),
+    /dispatcher kept running/,
+  );
+  assert.equal(stuck.log.includes("rows"), false);
 });
 
 test("an R2, Chatwoot or Twenty failure stops the run before any row is deleted", async () => {
@@ -60,11 +81,12 @@ test("an R2, Chatwoot or Twenty failure stops the run before any row is deleted"
         },
         eraseCrmPerson: async () => {
           if (failing === "crm") throw new Error("Twenty down");
-          return 0;
+          return { people: 0, files: 0 };
         },
       }),
     );
     assert.equal(db.log.includes("rows"), false);
+    if (failing === "crm") assert.equal(db.log.at(-1), "unlock", "the dispatcher's lock is released");
   }
 });
 
@@ -92,6 +114,7 @@ test("a finished erasure keeps counts only: phone and reference are cleared", ()
   assert.match(DELETE_ROWS, /DELETE FROM submissions WHERE phone = \$2/);
   assert.match(DELETE_ROWS, /DELETE FROM people WHERE phone = \$2/);
   assert.match(DELETE_ROWS, /phone = NULL, ref = NULL/);
+  assert.match(DELETE_ROWS, /removed_crm_files = \$5::int/);
 });
 
 test("retention runs hourly", () => {

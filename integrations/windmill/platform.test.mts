@@ -164,7 +164,7 @@ test("the envelope route saves a job application in the talent database and a le
   const accepted = await runSubmission(true, envelope("job_application.v1", "VS-J-ENV001", job), d);
   assert.deepEqual(accepted, { wm_status_code: 202, result: { ok: true, ref: "VS-J-ENV001" } });
   const [row] = await talent.query<{ n: number }>(`SELECT count(*)::int AS n FROM deliveries`);
-  assert.equal(row.n, 3);
+  assert.equal(row.n, 4, "sms, chatwoot, crm, files");
   const enquiry = await runSubmission(true, envelope("business_enquiry.v1", lead.caseId, lead), d);
   assert.deepEqual(enquiry, { wm_status_code: 202, result: { ok: true, caseId: lead.caseId, created: true } });
   assert.deepEqual(started.map((s) => s.split(":")[0]), ["dispatch", "leads"]);

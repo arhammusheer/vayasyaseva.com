@@ -168,7 +168,7 @@ const { withTalentDb, withDatabase, queryWith } = (() => {
 })();
 
 // integrations/windmill/talent/lib/sql.ts
-const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR } = (() => {
+const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, FILES_SUBMISSION, FILES_FOR, SAVE_FILE_ID, SETTLE_FILE, FILE_ERROR, CLEAR_FILE_ID } = (() => {
   const RETENTION_MONTHS = 12;
   const SAVE_SUBMISSION = `
   WITH s AS (
@@ -312,7 +312,7 @@ const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLE
   UPDATE erasure_requests
   SET status = 'done', processed_at = now(), updated_at = now(),
       removed_submissions = (SELECT count(*) FROM gone), removed_files = $3::int, removed_contacts = $4::int,
-      phone = NULL, ref = NULL
+      removed_crm_files = $5::int, phone = NULL, ref = NULL
   WHERE id = $1::uuid AND status = 'running'
   RETURNING id, status, removed_submissions;`;
   const schemaStatements = (schema) => schema.replace(/^--.*\n/gm, "");
@@ -367,9 +367,11 @@ const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLE
   RETURNING submission_id, target, status;`;
   const CLAIM_DELIVERY = `
   WITH c AS (
-    SELECT submission_id, target FROM deliveries
+    SELECT submission_id, target FROM deliveries d
     WHERE target = $1 AND status = 'pending' AND next_attempt_at <= now()
       AND ($2::uuid IS NULL OR submission_id = $2::uuid)
+      AND ($1 <> 'files' OR EXISTS (
+        SELECT 1 FROM crm_sync cs WHERE cs.submission_id = d.submission_id AND cs.application_id IS NOT NULL))
     ORDER BY next_attempt_at, created_at LIMIT 1 FOR UPDATE SKIP LOCKED
   )
   UPDATE deliveries d SET status = 'running', attempts = d.attempts + 1, updated_at = now()
@@ -397,7 +399,24 @@ const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLE
   WHERE id = $1::uuid AND status = 'delivering'
   RETURNING status;`;
   const SYNC_CANDIDATE_FOR = SYNC_CANDIDATES.replace(/WHERE c\.submission_id IS NULL\n {3}OR c\.ack_status IS DISTINCT FROM \(CASE WHEN a\.delivery_status IS NULL THEN a\.status ELSE a\.status \|\| ':' \|\| a\.delivery_status END\)\nORDER BY s\.created_at\nLIMIT \$1;/, "WHERE s.id = $1::uuid;");
-  return { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR };
+  const ERASURE_DISPATCH_LOCK = DISPATCH_LOCK;
+  const ERASURE_DISPATCH_UNLOCK = `SELECT pg_advisory_unlock(hashtext('talent:dispatch')) AS unlocked;`;
+  const FILES_SUBMISSION = `
+  SELECT s.id, s.ref, c.application_id
+  FROM submissions s LEFT JOIN crm_sync c ON c.submission_id = s.id
+  WHERE s.id = $1::uuid;`;
+  const FILES_FOR = `
+  SELECT id, position, kind, r2_key, mime, size_bytes, twenty_file_id, twenty_attachment_id, crm_file_status
+  FROM attachments WHERE submission_id = $1::uuid ORDER BY position;`;
+  const SAVE_FILE_ID = `UPDATE attachments SET twenty_file_id = $2::uuid, crm_file_error = NULL, updated_at = now() WHERE id = $1::uuid;`;
+  const SETTLE_FILE = `
+  UPDATE attachments
+  SET crm_file_status = $2, twenty_attachment_id = coalesce($3::uuid, twenty_attachment_id),
+      twenty_file_id = coalesce($4::uuid, twenty_file_id), crm_file_error = $5, crm_file_at = now(), updated_at = now()
+  WHERE id = $1::uuid;`;
+  const FILE_ERROR = `UPDATE attachments SET crm_file_error = $2, updated_at = now() WHERE id = $1::uuid;`;
+  const CLEAR_FILE_ID = `UPDATE attachments SET twenty_file_id = NULL, updated_at = now() WHERE id = $1::uuid;`;
+  return { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, FILES_SUBMISSION, FILES_FOR, SAVE_FILE_ID, SETTLE_FILE, FILE_ERROR, CLEAR_FILE_ID };
 })();
 
 // integrations/windmill/talent/lib/delivery.ts
@@ -474,7 +493,7 @@ const { DLR_URL, DLR_TIMEOUT_MS, CHECK_BATCH, outcomeOf, unixToIso, parseReport,
 })();
 
 // integrations/windmill/talent/lib/r2.ts
-const { downloadObject, deleteObject } = (() => {
+const { downloadObject, downloadIfExists, deleteObject } = (() => {
   async function client(access) {
       const [accessKeyId, secretAccessKey, endpoint, bucket] = await Promise.all([
           config(access === "read" ? "r2_read_key_id" : "r2_erase_key_id"),
@@ -493,17 +512,28 @@ const { downloadObject, deleteObject } = (() => {
           throw new Error(`R2 GET ${key}: HTTP ${res.status}`);
       return { data: await res.blob(), contentType: res.headers.get("content-type") ?? "application/octet-stream" };
   }
+  async function downloadIfExists(key) {
+      const { aws, url } = await client("read");
+      const res = await aws.fetch(url(key), { method: "GET" });
+      if (res.status === 404) {
+          await res.body?.cancel().catch(() => { });
+          return null;
+      }
+      if (!res.ok)
+          throw new Error(`R2 GET ${key}: HTTP ${res.status}`);
+      return res.blob();
+  }
   async function deleteObject(key) {
       const { aws, url } = await client("erase");
       const res = await aws.fetch(url(key), { method: "DELETE" });
       if (!res.ok && res.status !== 404)
           throw new Error(`R2 DELETE ${key}: HTTP ${res.status}`);
   }
-  return { downloadObject, deleteObject };
+  return { downloadObject, downloadIfExists, deleteObject };
 })();
 
 // integrations/windmill/talent/lib/twenty.ts
-const { eq, twentyClient, twentyFromConfig } = (() => {
+const { eq, twentyClient, twentyFromConfig, TwentyGraphqlError, inClusterUploadUrl, twentyFilesClient, twentyFilesFromConfig } = (() => {
   const eq = (field, value) => `${field}[eq]:${JSON.stringify(value)}`;
   function twentyClient(baseUrl, apiKey, fetchImpl = fetch) {
       const base = baseUrl.replace(/\/$/, "");
@@ -550,7 +580,99 @@ const { eq, twentyClient, twentyFromConfig } = (() => {
   async function twentyFromConfig() {
       return twentyClient(await config("twenty_base_url"), await config("twenty_api_key"));
   }
-  return { eq, twentyClient, twentyFromConfig };
+  class TwentyGraphqlError extends Error {
+      codes;
+      constructor(message, codes) {
+          super(message);
+          this.codes = codes;
+      }
+  }
+  const FILE_UPLOAD_PATH = "/file-upload/";
+  function inClusterUploadUrl(uploadUrl, baseUrl) {
+      const url = new URL(uploadUrl);
+      if (!url.pathname.startsWith(FILE_UPLOAD_PATH))
+          return uploadUrl;
+      return `${baseUrl.replace(/\/$/, "")}${url.pathname}${url.search}`;
+  }
+  const isPermissionError = (messages, codes) => codes.includes("FORBIDDEN") || codes.includes("PERMISSION_DENIED") || messages.some((m) => /permission/i.test(m));
+  function twentyFilesClient(baseUrl, apiKey, fetchImpl = fetch) {
+      const base = baseUrl.replace(/\/$/, "");
+      let fieldId = null;
+      async function gql(operation, query, variables = {}) {
+          const res = await fetchImpl(`${base}/metadata`, {
+              method: "POST",
+              headers: { authorization: `Bearer ${apiKey}`, "content-type": "application/json" },
+              body: JSON.stringify({ query, variables }),
+              signal: AbortSignal.timeout(30_000),
+          });
+          const text = await res.text();
+          let json = null;
+          try {
+              json = text ? JSON.parse(text) : null;
+          }
+          catch { }
+          const errors = json?.errors ?? [];
+          if (errors.length) {
+              const messages = errors.map((e) => e.message);
+              const codes = errors.map((e) => e.extensions?.code ?? "").filter(Boolean);
+              if (isPermissionError(messages, codes)) {
+                  throw new TwentyGraphqlError(`Twenty ${operation}: refused for permissions; the API key's role needs the Upload files permission (UPLOAD_FILE). ${messages.join("; ").slice(0, 200)}`, codes);
+              }
+              const limited = !res.ok ? res.status === 429 : messages.some((m) => /too many requests|rate limit|limit reached/i.test(m));
+              const status = limited ? "HTTP 429 " : res.ok ? "" : `HTTP ${res.status} `;
+              throw new TwentyGraphqlError(`Twenty ${operation}: ${status}${messages.join("; ").slice(0, 300)}`, codes);
+          }
+          if (!res.ok)
+              throw new Error(`Twenty ${operation}: HTTP ${res.status} ${text.slice(0, 200)}`);
+          if (!json?.data)
+              throw new Error(`Twenty ${operation}: no data in the answer`);
+          return json.data;
+      }
+      return {
+          attachmentFileFieldId() {
+              fieldId ??= gql("objects", `{ objects(paging:{first:500}) { edges { node { id nameSingular fields(paging:{first:500}) { edges { node { id name type } } } } } } }`)
+                  .then((data) => {
+                  const attachment = data.objects.edges.map((e) => e.node).find((o) => o.nameSingular === "attachment");
+                  const field = attachment?.fields.edges.map((e) => e.node).find((f) => f.name === "file" && f.type === "FILES");
+                  if (!field)
+                      throw new Error("Twenty has no attachment.file (FILES) field");
+                  return field.id;
+              })
+                  .catch((err) => {
+                  fieldId = null;
+                  throw err;
+              });
+              return fieldId;
+          },
+          async createFileUpload(filename, size, fieldMetadataId) {
+              const data = await gql("createFileUpload", `mutation CreateFileUpload($filename: String!, $size: Float!, $fileFolder: FileFolder!, $fieldMetadataId: String) {
+    createFileUpload(filename: $filename, size: $size, fileFolder: $fileFolder, fieldMetadataId: $fieldMetadataId) { fileId uploadUrl contentType expiresAt }
+  }`, { filename, size, fileFolder: "FilesField", fieldMetadataId });
+              const target = data.createFileUpload;
+              if (!target?.fileId || !target.uploadUrl)
+                  throw new Error("Twenty createFileUpload: no upload target in the answer");
+              return target;
+          },
+          async put(uploadUrl, data) {
+              const res = await fetchImpl(inClusterUploadUrl(uploadUrl, base), {
+                  method: "PUT",
+                  headers: { "content-type": "application/octet-stream" },
+                  body: data,
+                  signal: AbortSignal.timeout(120_000),
+              });
+              if (!res.ok)
+                  throw new Error(`Twenty PUT /file-upload: HTTP ${res.status} ${(await res.text()).slice(0, 200)}`);
+              await res.body?.cancel().catch(() => { });
+          },
+          async completeFileUpload(fileId) {
+              await gql("completeFileUpload", `mutation CompleteFileUpload($fileId: String!) { completeFileUpload(fileId: $fileId) { id } }`, { fileId });
+          },
+      };
+  }
+  async function twentyFilesFromConfig() {
+      return twentyFilesClient(await config("twenty_base_url"), await config("twenty_api_key"));
+  }
+  return { eq, twentyClient, twentyFromConfig, TwentyGraphqlError, inClusterUploadUrl, twentyFilesClient, twentyFilesFromConfig };
 })();
 
 // integrations/windmill/talent/lib/crm.ts
@@ -825,10 +947,24 @@ const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneD
       lastAppliedAt: null,
       lastContactAt: null,
   };
+  async function attachmentsOf(crm, field, id) {
+      const live = await crm.find("attachments", eq(field, id));
+      const trashed = await crm.find("attachments", `and(${eq(field, id)},deletedAt[is]:NOT_NULL)`);
+      return [...new Map([...live, ...trashed].map((r) => [r.id, r])).values()];
+  }
+  async function removeAttachments(crm, field, id) {
+      let removed = 0;
+      for (const a of await attachmentsOf(crm, field, id))
+          if (await crm.remove("attachments", a.id))
+              removed++;
+      return removed;
+  }
   async function erasePerson(crm, phone) {
       const people = await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(phone)));
+      let files = 0;
       for (const person of people) {
           for (const app of await crm.find("applications", eq("personId", person.id))) {
+              files += await removeAttachments(crm, "targetApplicationId", app.id);
               for (const comm of await crm.find("communications", eq("applicationId", app.id)))
                   await crm.remove("communications", comm.id);
               await crm.remove("applications", app.id);
@@ -840,10 +976,12 @@ const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneD
           }
           if (clientContact)
               await crm.update("people", person.id, WORKER_FIELDS_CLEARED);
-          else
+          else {
+              files += await removeAttachments(crm, "targetPersonId", person.id);
               await crm.remove("people", person.id);
+          }
       }
-      return people.length;
+      return { people: people.length, files };
   }
   return { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, erasePerson };
 })();
@@ -1333,9 +1471,120 @@ const { SYNC_BATCH, syncOne, runSyncCrm } = (() => {
   return { SYNC_BATCH, syncOne, runSyncCrm };
 })();
 
+// integrations/windmill/talent/lib/run-files.ts
+const { fileExtension, fileLabel, fileCategory, runFiles } = (() => {
+  const EXTENSIONS = {
+      "image/jpeg": "jpg",
+      "image/png": "png",
+      "image/webp": "webp",
+      "application/pdf": "pdf",
+      "application/msword": "doc",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "docx",
+  };
+  function fileExtension(file) {
+      const fromKey = file.r2_key.split("/").pop()?.match(/\.([a-z0-9]{1,8})$/i)?.[1];
+      return (fromKey ?? EXTENSIONS[file.mime.split(";")[0].trim()] ?? "bin").toLowerCase();
+  }
+  const fileLabel = (ref, file) => `${ref}-${file.position + 1}.${fileExtension(file)}`;
+  function fileCategory(file) {
+      if (file.kind === "image" || file.mime.startsWith("image/"))
+          return "IMAGE";
+      if (EXTENSIONS[file.mime.split(";")[0].trim()])
+          return "TEXT_DOCUMENT";
+      return "OTHER";
+  }
+  const message = (err) => (err instanceof Error ? err.message : "unknown error").slice(0, 500);
+  function byLabel(records) {
+      const index = new Map();
+      for (const r of records) {
+          const files = Array.isArray(r.file) ? r.file : [];
+          for (const f of files)
+              if (f?.label)
+                  index.set(f.label, { attachmentId: r.id, fileId: f.fileId ?? null });
+          if (typeof r.name === "string" && !index.has(r.name))
+              index.set(r.name, { attachmentId: r.id, fileId: files[0]?.fileId ?? null });
+      }
+      return index;
+  }
+  const restartable = (err) => err instanceof TwentyGraphqlError && !/HTTP 429|permission/i.test(err.message);
+  async function runFiles(deps, submissionId) {
+      const result = { done: false, attached: 0, matched: 0, missing: 0, skipped: 0 };
+      const [sub] = await deps.query(FILES_SUBMISSION, [submissionId]);
+      if (!sub)
+          return { ...result, done: true, error: "No submission" };
+      const rows = await deps.query(FILES_FOR, [submissionId]);
+      for (const f of rows.filter((r) => r.crm_file_status === "pending" && r.kind === "audio")) {
+          await deps.query(SETTLE_FILE, [f.id, "skipped", null, null, "Voice note: not copied"]);
+          result.skipped++;
+      }
+      const pending = rows.filter((r) => r.crm_file_status === "pending" && r.kind !== "audio");
+      if (!pending.length)
+          return { ...result, done: true };
+      if (!sub.application_id)
+          return { ...result, error: "Waiting for the Twenty application" };
+      const applicationId = sub.application_id;
+      const existing = byLabel(await deps.crm.find("attachments", eq("targetApplicationId", applicationId)));
+      let fieldId = null;
+      for (const f of pending) {
+          const label = fileLabel(sub.ref, f);
+          try {
+              const found = existing.get(label);
+              if (found) {
+                  await deps.query(SETTLE_FILE, [f.id, "done", found.attachmentId, found.fileId, null]);
+                  result.matched++;
+                  continue;
+              }
+              let fileId = f.twenty_file_id;
+              if (fileId) {
+                  try {
+                      await deps.files.completeFileUpload(fileId);
+                  }
+                  catch (err) {
+                      if (!restartable(err))
+                          throw err;
+                      await deps.query(CLEAR_FILE_ID, [f.id]);
+                      fileId = null;
+                  }
+              }
+              if (!fileId) {
+                  const data = await deps.download(f.r2_key);
+                  if (!data) {
+                      await deps.query(SETTLE_FILE, [f.id, "missing", null, null, "Not in R2 (expired or erased)"]);
+                      result.missing++;
+                      continue;
+                  }
+                  fieldId ??= await deps.files.attachmentFileFieldId();
+                  const target = await deps.files.createFileUpload(label, data.size, fieldId);
+                  fileId = target.fileId;
+                  await deps.query(SAVE_FILE_ID, [f.id, fileId]);
+                  await deps.files.put(target.uploadUrl, data);
+                  await deps.files.completeFileUpload(fileId);
+              }
+              const attachment = await deps.crm.create("attachments", "Attachment", {
+                  name: label,
+                  file: [{ fileId, label }],
+                  fileCategory: fileCategory(f),
+                  targetApplicationId: applicationId,
+              });
+              await deps.query(SETTLE_FILE, [f.id, "done", attachment.id, fileId, null]);
+              existing.set(label, { attachmentId: attachment.id, fileId });
+              result.attached++;
+          }
+          catch (err) {
+              await deps.query(FILE_ERROR, [f.id, message(err)]);
+              throw err;
+          }
+      }
+      return { ...result, done: true };
+  }
+  return { fileExtension, fileLabel, fileCategory, runFiles };
+})();
+
 // integrations/windmill/talent/lib/run-dispatch.ts
-const { BUDGET, backoffSeconds, runDispatch } = (() => {
-  const BUDGET = { sms: 5, chatwoot: 1, crm: 10 };
+const { BUDGET, TARGETS, backoffSeconds, runDispatch } = (() => {
+  const BUDGET = { sms: 5, crm: 10, files: 1, chatwoot: 1 };
+  const TARGETS = ["sms", "crm", "files", "chatwoot"];
+  const TWENTY_TARGETS = ["crm", "files"];
   const backoffSeconds = (attempts) => Math.min(60 * 2 ** Math.max(0, attempts - 1), 3600);
   const message = (err) => (err instanceof Error ? err.message : "unknown error").slice(0, 500);
   async function legacy(query, submissionId) {
@@ -1403,10 +1652,23 @@ const { BUDGET, backoffSeconds, runDispatch } = (() => {
           return { kind: "retry", error: message(err) };
       }
   }
-  const STEPS = { sms, chatwoot, crm };
+  async function files(deps, submissionId) {
+      if (!deps.crm || !deps.files)
+          return { kind: "retry", error: "Twenty is not configured" };
+      try {
+          const result = await runFiles({ query: deps.query, crm: deps.crm, files: deps.files.twenty, download: deps.files.download }, submissionId);
+          return result.done ? { kind: "done", error: result.error ?? null } : { kind: "retry", error: result.error };
+      }
+      catch (err) {
+          if (/HTTP 429/.test(message(err)))
+              throw new RateLimited(message(err));
+          return { kind: "retry", error: message(err) };
+      }
+  }
+  const STEPS = { sms, crm, files, chatwoot };
   async function runDispatch(deps, options = {}) {
       const log = deps.log ?? ((m) => console.error(m));
-      const zero = () => ({ sms: 0, chatwoot: 0, crm: 0 });
+      const zero = () => ({ sms: 0, crm: 0, files: 0, chatwoot: 0 });
       const result = { recovered: 0, done: zero(), retried: zero(), failed: zero() };
       const [lock] = await deps.query(DISPATCH_LOCK);
       if (!lock?.locked)
@@ -1415,8 +1677,11 @@ const { BUDGET, backoffSeconds, runDispatch } = (() => {
           await deps.query(RECOVER_INTERRUPTED_SENDS);
           result.recovered = (await deps.query(RECOVER_STUCK_DISPATCH)).length;
       }
-      const targets = options.submissionId ? ["sms"] : ["sms", "chatwoot", "crm"];
+      const targets = options.submissionId ? ["sms"] : TARGETS;
+      let twentyLimited = false;
       for (const target of targets) {
+          if (twentyLimited && TWENTY_TARGETS.includes(target))
+              continue;
           for (let n = 0; n < (options.submissionId ? 1 : BUDGET[target]); n++) {
               const [claim] = await deps.query(CLAIM_DELIVERY, [
                   target,
@@ -1448,8 +1713,10 @@ const { BUDGET, backoffSeconds, runDispatch } = (() => {
                   result.retried[target]++;
               else
                   result.failed[target]++;
-              if (stop)
+              if (stop) {
+                  twentyLimited = true;
                   break;
+              }
           }
       }
       if (options.deliveryCheck && !options.submissionId) {
@@ -1457,7 +1724,7 @@ const { BUDGET, backoffSeconds, runDispatch } = (() => {
       }
       return result;
   }
-  return { BUDGET, backoffSeconds, runDispatch };
+  return { BUDGET, TARGETS, backoffSeconds, runDispatch };
 })();
 
 // integrations/windmill/notify/lib/config.ts
@@ -1871,12 +2138,14 @@ const { InvalidEventError, emit, tryEmit } = (() => {
 export async function main(submission_id) {
     const apiKey = await config("fast2sms_api_key");
     const crm = submission_id ? null : await twentyFromConfig().catch(() => null);
+    const twentyFiles = submission_id ? null : await twentyFilesFromConfig().catch(() => null);
     const deliveryCheck = !submission_id && new Date().getUTCMinutes() % 15 === 0;
     return withTalentDb((query) => runDispatch({
         query,
         sendSms: (claim) => sendAcknowledgement(claim, apiKey),
         chatwoot: { createContact, createConversation, postMessage, download: downloadObject, attachFile },
         crm,
+        files: twentyFiles ? { twenty: twentyFiles, download: downloadIfExists } : null,
         lookupReport: (id) => lookupReport(id, apiKey),
         notify: tryEmit,
     }, { submissionId: submission_id || null, deliveryCheck }));

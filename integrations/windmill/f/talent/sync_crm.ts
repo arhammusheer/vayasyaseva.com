@@ -79,7 +79,7 @@ const { withTalentDb, withDatabase, queryWith } = (() => {
 })();
 
 // integrations/windmill/talent/lib/twenty.ts
-const { eq, twentyClient, twentyFromConfig } = (() => {
+const { eq, twentyClient, twentyFromConfig, TwentyGraphqlError, inClusterUploadUrl, twentyFilesClient, twentyFilesFromConfig } = (() => {
   const eq = (field, value) => `${field}[eq]:${JSON.stringify(value)}`;
   function twentyClient(baseUrl, apiKey, fetchImpl = fetch) {
       const base = baseUrl.replace(/\/$/, "");
@@ -126,7 +126,99 @@ const { eq, twentyClient, twentyFromConfig } = (() => {
   async function twentyFromConfig() {
       return twentyClient(await config("twenty_base_url"), await config("twenty_api_key"));
   }
-  return { eq, twentyClient, twentyFromConfig };
+  class TwentyGraphqlError extends Error {
+      codes;
+      constructor(message, codes) {
+          super(message);
+          this.codes = codes;
+      }
+  }
+  const FILE_UPLOAD_PATH = "/file-upload/";
+  function inClusterUploadUrl(uploadUrl, baseUrl) {
+      const url = new URL(uploadUrl);
+      if (!url.pathname.startsWith(FILE_UPLOAD_PATH))
+          return uploadUrl;
+      return `${baseUrl.replace(/\/$/, "")}${url.pathname}${url.search}`;
+  }
+  const isPermissionError = (messages, codes) => codes.includes("FORBIDDEN") || codes.includes("PERMISSION_DENIED") || messages.some((m) => /permission/i.test(m));
+  function twentyFilesClient(baseUrl, apiKey, fetchImpl = fetch) {
+      const base = baseUrl.replace(/\/$/, "");
+      let fieldId = null;
+      async function gql(operation, query, variables = {}) {
+          const res = await fetchImpl(`${base}/metadata`, {
+              method: "POST",
+              headers: { authorization: `Bearer ${apiKey}`, "content-type": "application/json" },
+              body: JSON.stringify({ query, variables }),
+              signal: AbortSignal.timeout(30_000),
+          });
+          const text = await res.text();
+          let json = null;
+          try {
+              json = text ? JSON.parse(text) : null;
+          }
+          catch { }
+          const errors = json?.errors ?? [];
+          if (errors.length) {
+              const messages = errors.map((e) => e.message);
+              const codes = errors.map((e) => e.extensions?.code ?? "").filter(Boolean);
+              if (isPermissionError(messages, codes)) {
+                  throw new TwentyGraphqlError(`Twenty ${operation}: refused for permissions; the API key's role needs the Upload files permission (UPLOAD_FILE). ${messages.join("; ").slice(0, 200)}`, codes);
+              }
+              const limited = !res.ok ? res.status === 429 : messages.some((m) => /too many requests|rate limit|limit reached/i.test(m));
+              const status = limited ? "HTTP 429 " : res.ok ? "" : `HTTP ${res.status} `;
+              throw new TwentyGraphqlError(`Twenty ${operation}: ${status}${messages.join("; ").slice(0, 300)}`, codes);
+          }
+          if (!res.ok)
+              throw new Error(`Twenty ${operation}: HTTP ${res.status} ${text.slice(0, 200)}`);
+          if (!json?.data)
+              throw new Error(`Twenty ${operation}: no data in the answer`);
+          return json.data;
+      }
+      return {
+          attachmentFileFieldId() {
+              fieldId ??= gql("objects", `{ objects(paging:{first:500}) { edges { node { id nameSingular fields(paging:{first:500}) { edges { node { id name type } } } } } } }`)
+                  .then((data) => {
+                  const attachment = data.objects.edges.map((e) => e.node).find((o) => o.nameSingular === "attachment");
+                  const field = attachment?.fields.edges.map((e) => e.node).find((f) => f.name === "file" && f.type === "FILES");
+                  if (!field)
+                      throw new Error("Twenty has no attachment.file (FILES) field");
+                  return field.id;
+              })
+                  .catch((err) => {
+                  fieldId = null;
+                  throw err;
+              });
+              return fieldId;
+          },
+          async createFileUpload(filename, size, fieldMetadataId) {
+              const data = await gql("createFileUpload", `mutation CreateFileUpload($filename: String!, $size: Float!, $fileFolder: FileFolder!, $fieldMetadataId: String) {
+    createFileUpload(filename: $filename, size: $size, fileFolder: $fileFolder, fieldMetadataId: $fieldMetadataId) { fileId uploadUrl contentType expiresAt }
+  }`, { filename, size, fileFolder: "FilesField", fieldMetadataId });
+              const target = data.createFileUpload;
+              if (!target?.fileId || !target.uploadUrl)
+                  throw new Error("Twenty createFileUpload: no upload target in the answer");
+              return target;
+          },
+          async put(uploadUrl, data) {
+              const res = await fetchImpl(inClusterUploadUrl(uploadUrl, base), {
+                  method: "PUT",
+                  headers: { "content-type": "application/octet-stream" },
+                  body: data,
+                  signal: AbortSignal.timeout(120_000),
+              });
+              if (!res.ok)
+                  throw new Error(`Twenty PUT /file-upload: HTTP ${res.status} ${(await res.text()).slice(0, 200)}`);
+              await res.body?.cancel().catch(() => { });
+          },
+          async completeFileUpload(fileId) {
+              await gql("completeFileUpload", `mutation CompleteFileUpload($fileId: String!) { completeFileUpload(fileId: $fileId) { id } }`, { fileId });
+          },
+      };
+  }
+  async function twentyFilesFromConfig() {
+      return twentyFilesClient(await config("twenty_base_url"), await config("twenty_api_key"));
+  }
+  return { eq, twentyClient, twentyFromConfig, TwentyGraphqlError, inClusterUploadUrl, twentyFilesClient, twentyFilesFromConfig };
 })();
 
 // integrations/windmill/talent/lib/crm.ts
@@ -401,10 +493,24 @@ const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneD
       lastAppliedAt: null,
       lastContactAt: null,
   };
+  async function attachmentsOf(crm, field, id) {
+      const live = await crm.find("attachments", eq(field, id));
+      const trashed = await crm.find("attachments", `and(${eq(field, id)},deletedAt[is]:NOT_NULL)`);
+      return [...new Map([...live, ...trashed].map((r) => [r.id, r])).values()];
+  }
+  async function removeAttachments(crm, field, id) {
+      let removed = 0;
+      for (const a of await attachmentsOf(crm, field, id))
+          if (await crm.remove("attachments", a.id))
+              removed++;
+      return removed;
+  }
   async function erasePerson(crm, phone) {
       const people = await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(phone)));
+      let files = 0;
       for (const person of people) {
           for (const app of await crm.find("applications", eq("personId", person.id))) {
+              files += await removeAttachments(crm, "targetApplicationId", app.id);
               for (const comm of await crm.find("communications", eq("applicationId", app.id)))
                   await crm.remove("communications", comm.id);
               await crm.remove("applications", app.id);
@@ -416,10 +522,12 @@ const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneD
           }
           if (clientContact)
               await crm.update("people", person.id, WORKER_FIELDS_CLEARED);
-          else
+          else {
+              files += await removeAttachments(crm, "targetPersonId", person.id);
               await crm.remove("people", person.id);
+          }
       }
-      return people.length;
+      return { people: people.length, files };
   }
   return { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, erasePerson };
 })();
@@ -680,7 +788,7 @@ const { TWENTY_APP_URL, CLUSTER_LABELS, roleLabel, areaLabel, clusterLabel, appl
 })();
 
 // integrations/windmill/talent/lib/sql.ts
-const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR } = (() => {
+const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, FILES_SUBMISSION, FILES_FOR, SAVE_FILE_ID, SETTLE_FILE, FILE_ERROR, CLEAR_FILE_ID } = (() => {
   const RETENTION_MONTHS = 12;
   const SAVE_SUBMISSION = `
   WITH s AS (
@@ -824,7 +932,7 @@ const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLE
   UPDATE erasure_requests
   SET status = 'done', processed_at = now(), updated_at = now(),
       removed_submissions = (SELECT count(*) FROM gone), removed_files = $3::int, removed_contacts = $4::int,
-      phone = NULL, ref = NULL
+      removed_crm_files = $5::int, phone = NULL, ref = NULL
   WHERE id = $1::uuid AND status = 'running'
   RETURNING id, status, removed_submissions;`;
   const schemaStatements = (schema) => schema.replace(/^--.*\n/gm, "");
@@ -879,9 +987,11 @@ const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLE
   RETURNING submission_id, target, status;`;
   const CLAIM_DELIVERY = `
   WITH c AS (
-    SELECT submission_id, target FROM deliveries
+    SELECT submission_id, target FROM deliveries d
     WHERE target = $1 AND status = 'pending' AND next_attempt_at <= now()
       AND ($2::uuid IS NULL OR submission_id = $2::uuid)
+      AND ($1 <> 'files' OR EXISTS (
+        SELECT 1 FROM crm_sync cs WHERE cs.submission_id = d.submission_id AND cs.application_id IS NOT NULL))
     ORDER BY next_attempt_at, created_at LIMIT 1 FOR UPDATE SKIP LOCKED
   )
   UPDATE deliveries d SET status = 'running', attempts = d.attempts + 1, updated_at = now()
@@ -909,7 +1019,24 @@ const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLE
   WHERE id = $1::uuid AND status = 'delivering'
   RETURNING status;`;
   const SYNC_CANDIDATE_FOR = SYNC_CANDIDATES.replace(/WHERE c\.submission_id IS NULL\n {3}OR c\.ack_status IS DISTINCT FROM \(CASE WHEN a\.delivery_status IS NULL THEN a\.status ELSE a\.status \|\| ':' \|\| a\.delivery_status END\)\nORDER BY s\.created_at\nLIMIT \$1;/, "WHERE s.id = $1::uuid;");
-  return { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR };
+  const ERASURE_DISPATCH_LOCK = DISPATCH_LOCK;
+  const ERASURE_DISPATCH_UNLOCK = `SELECT pg_advisory_unlock(hashtext('talent:dispatch')) AS unlocked;`;
+  const FILES_SUBMISSION = `
+  SELECT s.id, s.ref, c.application_id
+  FROM submissions s LEFT JOIN crm_sync c ON c.submission_id = s.id
+  WHERE s.id = $1::uuid;`;
+  const FILES_FOR = `
+  SELECT id, position, kind, r2_key, mime, size_bytes, twenty_file_id, twenty_attachment_id, crm_file_status
+  FROM attachments WHERE submission_id = $1::uuid ORDER BY position;`;
+  const SAVE_FILE_ID = `UPDATE attachments SET twenty_file_id = $2::uuid, crm_file_error = NULL, updated_at = now() WHERE id = $1::uuid;`;
+  const SETTLE_FILE = `
+  UPDATE attachments
+  SET crm_file_status = $2, twenty_attachment_id = coalesce($3::uuid, twenty_attachment_id),
+      twenty_file_id = coalesce($4::uuid, twenty_file_id), crm_file_error = $5, crm_file_at = now(), updated_at = now()
+  WHERE id = $1::uuid;`;
+  const FILE_ERROR = `UPDATE attachments SET crm_file_error = $2, updated_at = now() WHERE id = $1::uuid;`;
+  const CLEAR_FILE_ID = `UPDATE attachments SET twenty_file_id = NULL, updated_at = now() WHERE id = $1::uuid;`;
+  return { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, FILES_SUBMISSION, FILES_FOR, SAVE_FILE_ID, SETTLE_FILE, FILE_ERROR, CLEAR_FILE_ID };
 })();
 
 // integrations/windmill/talent/lib/run-sync-crm.ts

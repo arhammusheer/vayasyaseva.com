@@ -28,16 +28,18 @@ import { SCRIPTS } from "./scripts.mts";
 import { INTAKE_CLUSTERS, JOB_ROLE_SLUGS, QUICK_ANSWERS } from "../../packages/contracts/src/rules.ts";
 
 function fakeTwenty() {
-  const store: Record<string, TwentyRecord[]> = { people: [], applications: [], communications: [], companies: [], opportunities: [] };
+  const store: Record<string, TwentyRecord[]> = { people: [], applications: [], communications: [], companies: [], opportunities: [], attachments: [] };
   let n = 0;
   const get = (r: TwentyRecord, path: string) => path.split(".").reduce<unknown>((v, k) => (v as Record<string, unknown> | undefined)?.[k], r);
   const calls: string[] = [];
   const crm: Twenty = {
     async find(plural, filter) {
-      const m = filter.match(/^(.+)\[eq\]:(".*")$/);
+      // Twenty's API leaves trashed records out unless the filter names deletedAt.
+      const trashed = filter.match(/^and\((.+),deletedAt\[is\]:NOT_NULL\)$/);
+      const m = (trashed?.[1] ?? filter).match(/^(.+)\[eq\]:(".*")$/);
       if (!m) throw new Error(`bad filter ${filter}`);
       const value = JSON.parse(m[2]);
-      return store[plural].filter((r) => get(r, m[1]) === value);
+      return store[plural].filter((r) => get(r, m[1]) === value && Boolean(r.deletedAt) === Boolean(trashed));
     },
     async create(plural, _singular, body) {
       calls.push(`create ${plural}`);
@@ -243,9 +245,20 @@ test("sync: a run already in progress skips", async () => {
 test("erasure removes the person's communications, applications and the person; none is fine", async () => {
   const t = fakeTwenty();
   await runSyncCrm({ query: syncDb([candidate()]).query, crm: t.crm });
-  assert.equal(await erasePerson(t.crm, "+919876543210"), 1);
+  const [person] = t.store.people;
+  const [app] = t.store.applications;
+  // Two files on the application (one in Twenty's trash), one on the person, one on someone else.
+  await t.crm.create("attachments", "Attachment", { name: "VS-J-ABC234-1.jpg", targetApplicationId: app.id });
+  await t.crm.create("attachments", "Attachment", { name: "VS-J-ABC234-2.pdf", targetApplicationId: app.id, deletedAt: "2026-10-18T00:00:00Z" });
+  await t.crm.create("attachments", "Attachment", { name: "photo.jpg", targetPersonId: person.id });
+  await t.crm.create("attachments", "Attachment", { name: "other.pdf", targetPersonId: "someone-else" });
+  t.calls.length = 0;
+  assert.deepEqual(await erasePerson(t.crm, "+919876543210"), { people: 1, files: 3 });
   assert.deepEqual([t.store.people.length, t.store.applications.length, t.store.communications.length], [0, 0, 0]);
-  assert.equal(await erasePerson(t.crm, "+919876543210"), 0);
+  assert.deepEqual(t.store.attachments.map((a) => a.name), ["other.pdf"]);
+  assert.ok(t.calls.indexOf("remove attachments") < t.calls.indexOf("remove applications"), "attachments before the application, which would only unlink them");
+  assert.ok(t.calls.lastIndexOf("remove attachments") < t.calls.indexOf("remove people"));
+  assert.deepEqual(await erasePerson(t.crm, "+919876543210"), { people: 0, files: 0 });
 });
 
 test("erasure keeps a client contact who shares the phone: only the worker side goes", async () => {
@@ -255,7 +268,10 @@ test("erasure keeps a client contact who shares the phone: only the worker side 
   const [person] = t.store.people;
   const opp = await t.crm.create("opportunities", "Opportunity", { caseId: "REQ-1", pointOfContactId: person.id });
   await t.crm.create("communications", "Communication", { externalKey: "lead:REQ-1", personId: person.id, opportunityId: opp.id });
-  assert.equal(await erasePerson(t.crm, "+919876543210"), 1);
+  await t.crm.create("attachments", "Attachment", { name: "VS-J-ABC234-1.jpg", targetApplicationId: t.store.applications[0].id });
+  await t.crm.create("attachments", "Attachment", { name: "site-visit.pdf", targetPersonId: person.id });
+  assert.deepEqual(await erasePerson(t.crm, "+919876543210"), { people: 1, files: 1 });
+  assert.deepEqual(t.store.attachments.map((a) => a.name), ["site-visit.pdf"], "the client contact keeps their own attachments");
   assert.equal(t.store.people.length, 1);
   assert.equal(t.store.people[0].personType, "CLIENT_CONTACT");
   assert.deepEqual([t.store.people[0].clusters, t.store.people[0].workRoles, t.store.people[0].workerStatus], [[], [], null]);

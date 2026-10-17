@@ -18,7 +18,7 @@
 import { fileURLToPath } from "node:url";
 
 const SITE = "https://www.vayasyaseva.com";
-const LOCALE_SEGMENT = /^\/(en-in|hi-in|hi-latn-in)(?=\/|$)/;
+const LOCALE_SEGMENT = /^\/(en-in|hi-in|hi-latn-in|pa-in|kn-in)(?=\/|$)/;
 
 /** Neutral paths whose pages are for job seekers, or for everyone (no phone). */
 const PHONE_FREE = [

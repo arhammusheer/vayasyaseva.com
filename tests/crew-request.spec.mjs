@@ -169,6 +169,11 @@ test('prefilled links: free text is kept, never dropped', () => {
   assert.equal(crewPrefill({ city: 'Phagwara' }).fields.siteState, 'PB');
   assert.equal(crewPrefill({ city: 'Greater Noida' }).fields.siteState, 'UP');
   assert.equal(crewPrefill({ city: 'Mumbai' }).fields.siteState, undefined);
+  // Delhi NCR's Delhi and Haryana towns name their own state; a "Delhi Road" in another state's town stays there.
+  assert.equal(crewPrefill({ city: 'IMT Manesar' }).fields.siteState, 'HR');
+  assert.equal(crewPrefill({ city: 'Gurugram' }).fields.siteState, 'HR');
+  assert.equal(crewPrefill({ city: 'Okhla Phase 2' }).fields.siteState, 'DL');
+  assert.equal(crewPrefill({ city: 'Delhi Road, Roorkee' }).fields.siteState, 'UK');
   assert.equal(crewPrefill({ cluster: 'mumbai' }).fields.pageCluster, undefined);
   assert.equal(crewPrefill({ cluster: 'uttarakhand' }).fields.pageCluster, 'uttarakhand');
 });

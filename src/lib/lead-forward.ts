@@ -84,28 +84,41 @@ export function buildLeadPayload(
   };
 }
 
-/** Posts the lead; true once Windmill answers 202. Never throws. */
-export async function forwardLead(payload: LeadPayload, fetchImpl: typeof fetch = fetch): Promise<boolean> {
+/** Waits before the second and third tries. Windmill files a replayed case ID once (f/leads/intake). */
+const RETRY_DELAYS_MS = [1_000, 3_000];
+
+/**
+ * Posts the lead; true once Windmill answers 202. Retries a network error,
+ * a timeout, 429 or 5xx up to twice; any other answer (400, 403) is final.
+ * Never throws.
+ */
+export async function forwardLead(payload: LeadPayload, fetchImpl: typeof fetch = fetch, retryDelays: readonly number[] = RETRY_DELAYS_MS): Promise<boolean> {
   const secret = process.env.LEAD_WEBHOOK_SECRET?.trim();
   if (!secret) {
     console.warn("[LEAD FORWARD SKIPPED] LEAD_WEBHOOK_SECRET is not set", { caseId: payload.caseId });
     return false;
   }
   const url = process.env.LEAD_WEBHOOK_URL?.trim() || DEFAULT_URL;
-  try {
-    const res = await fetchImpl(url, {
-      method: "POST",
-      headers: { "content-type": "application/json", "x-vspl-lead-secret": secret },
-      body: JSON.stringify(payload),
-      signal: AbortSignal.timeout(TIMEOUT_MS),
-    });
-    if (res.status === 202) {
-      console.info("[LEAD FORWARDED]", { caseId: payload.caseId });
-      return true;
+  for (let attempt = 1; ; attempt++) {
+    let retry = true;
+    try {
+      const res = await fetchImpl(url, {
+        method: "POST",
+        headers: { "content-type": "application/json", "x-vspl-lead-secret": secret },
+        body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(TIMEOUT_MS),
+      });
+      if (res.status === 202) {
+        console.info("[LEAD FORWARDED]", { caseId: payload.caseId, attempt });
+        return true;
+      }
+      retry = res.status === 429 || res.status >= 500;
+      console.error("[LEAD FORWARD FAILED]", { caseId: payload.caseId, status: res.status, attempt });
+    } catch (error) {
+      console.error("[LEAD FORWARD FAILED]", { caseId: payload.caseId, error: error instanceof Error ? error.name : "unknown", attempt });
     }
-    console.error("[LEAD FORWARD FAILED]", { caseId: payload.caseId, status: res.status });
-  } catch (error) {
-    console.error("[LEAD FORWARD FAILED]", { caseId: payload.caseId, error: error instanceof Error ? error.name : "unknown" });
+    const delay = retryDelays[attempt - 1];
+    if (!retry || delay === undefined) return false;
+    await new Promise((resolve) => setTimeout(resolve, delay));
   }
-  return false;
 }

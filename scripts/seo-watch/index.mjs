@@ -85,7 +85,7 @@ async function nonBrand(start, end) {
 
 /** Which part of the site a URL is, for the retitle rule. */
 function pageGroup(url) {
-  const path = url.replace(/^https:\/\/www\.vayasyaseva\.com/, "").replace(/^\/(en-in|hi-in|hi-latn-in)(?=\/|$)/, "") || "/";
+  const path = url.replace(/^https:\/\/www\.vayasyaseva\.com/, "").replace(/^\/(en-in|hi-in|hi-latn-in|pa-in|kn-in)(?=\/|$)/, "") || "/";
   if (path === "/") return "home";
   if (path.startsWith("/jobs/haridwar")) return "jobsHaridwar";
   if (path.startsWith("/haridwar-sidcul") || path.startsWith("/locations/haridwar")) return "haridwarHub";

@@ -9,9 +9,10 @@
  * Signals, in order:
  * 1. the vspl_lang cookie, set only when someone picks a language on the picker;
  * 2. non-English Accept-Language tags, by q-value (hi pulls Hinglish in after it);
- * 3. area intent the request itself carries: ?cluster=<id>, or a place in
- *    its UTM tags (an ad for Kapurthala jobs), by the markets' ad words
- *    (src/markets/data.ts). The rest of area intent stays in the
+ * 3. area intent the request itself carries: ?cluster=<market>, or a place in
+ *    its UTM tags (an ad for Kapurthala jobs), by the markets' words
+ *    (src/markets/data.ts). Only markets count: ?cluster=saharanpur is not
+ *    intent (owner direction, 17 Oct 2026). The rest of area intent stays in the
  *    browser by design (docs/area-intent.md), so the proxy never sees it;
  * 4. the visitor's state, from the request's geo headers (visitorRegion);
  * 5. the page's cluster;
@@ -34,7 +35,7 @@
  */
 import { pageEntry } from "@/content/registry";
 import type { ClusterId } from "@/content/registry/identifiers";
-import { isClusterId, languageSetFor, marketsInAdTags, type LanguageSetName } from "@/markets/index";
+import { canonicalRegion, isMarketId, languageSetFor, marketsInAdTags, type LanguageSetName, type MarketId } from "@/markets/index";
 import { quickShareVariant, QUICK_SHARE_VARIANTS } from "./share-variant";
 import { allLocales, preferredLocales, type Locale } from "./i18n";
 
@@ -68,11 +69,12 @@ const RANK_SETS = {
 type RankSet = keyof typeof RANK_SETS;
 
 /**
- * ISO 3166-2:IN subdivision codes (without "IN-"). Old and new codes both
- * map: Uttarakhand UK/UT, Chhattisgarh CG/CT, Telangana TG/TS (default set).
+ * ISO 3166-2:IN subdivision codes (without "IN-"). Uttarakhand's old UT is
+ * read as UK (src/markets REGION_ALIASES); Chhattisgarh CG/CT and Telangana
+ * TG/TS (default set) are listed both ways.
  */
 const REGION_SETS: Readonly<Record<string, RankSet>> = {
-  UT: "hindi", UK: "hindi", UP: "hindi", DL: "hindi", HR: "hindi", RJ: "hindi", MP: "hindi",
+  UK: "hindi", UP: "hindi", DL: "hindi", HR: "hindi", RJ: "hindi", MP: "hindi",
   BR: "hindi", JH: "hindi", CG: "hindi", CT: "hindi", HP: "hindi", CH: "hindi",
   KA: "karnataka",
   PB: "punjab",
@@ -81,7 +83,7 @@ const REGION_SETS: Readonly<Record<string, RankSet>> = {
 /**
  * A page's or request's cluster fills gaps only: the path says where the job
  * is, not what the reader reads. Each market's set is in src/markets/data.ts
- * (languageSet); Saharanpur takes the Hindi set, "other" none.
+ * (languageSet); a cluster that is not a market (Saharanpur, "other") has none.
  */
 const clusterSet = (id: ClusterId | undefined): RankSet | undefined => languageSetFor(id);
 
@@ -171,18 +173,21 @@ export type RankInput = VisitorRegion & {
   /** The vspl_lang cookie. */
   chosen?: string;
   acceptLanguage?: string | null;
-  /** The cluster the request names (?cluster= or UTM tags): area intent the proxy can see. */
+  /** The market the request names (?cluster= or UTM tags): area intent the proxy can see. */
   intent?: ClusterId;
   cluster?: ClusterId;
 };
 
-/** The cluster a request's URL names: ?cluster=<id>, else the first place in its UTM tags. */
-export function urlIntent(search: URLSearchParams): ClusterId | undefined {
-  const known = (id: string | null | undefined): id is ClusterId => isClusterId(id) && id !== "other";
+/**
+ * The market a request's URL names: ?cluster=<market>, else the first
+ * market in its UTM tags. A cluster that is not a market (saharanpur,
+ * other) names none.
+ */
+export function urlIntent(search: URLSearchParams): MarketId | undefined {
   const param = search.get("cluster");
-  if (known(param)) return param;
+  if (isMarketId(param)) return param;
   // The same tags the browser reads (src/lib/intent/store.ts notePageView).
-  return marketsInAdTags(["utm_campaign", "utm_term", "utm_content", "utm_source"].map((k) => search.get(k))).find(known);
+  return marketsInAdTags(["utm_campaign", "utm_term", "utm_content", "utm_source"].map((k) => search.get(k)))[0];
 }
 
 /** The page's languages (`available`) in picker order for one request. */
@@ -193,7 +198,8 @@ export function rankLocales(available: readonly Locale[], input: RankInput): Loc
   };
   const chosen = allLocales.find((l) => l === input.chosen);
   const intentSet = clusterSet(input.intent);
-  const regionSet = input.country === "IN" && input.region ? REGION_SETS[input.region] : undefined;
+  const region = canonicalRegion(input.region);
+  const regionSet = input.country === "IN" && region && Object.hasOwn(REGION_SETS, region) ? REGION_SETS[region] : undefined;
   if (chosen) add(chosen);
   // No signal: location first, then the browser's languages.
   if (!chosen && !intentSet && regionSet) RANK_SETS[regionSet].forEach(add);

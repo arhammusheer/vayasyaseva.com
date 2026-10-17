@@ -174,6 +174,16 @@ test('prefilled links: free text is kept, never dropped', () => {
   assert.equal(crewPrefill({ city: 'Gurugram' }).fields.siteState, 'HR');
   assert.equal(crewPrefill({ city: 'Okhla Phase 2' }).fields.siteState, 'DL');
   assert.equal(crewPrefill({ city: 'Delhi Road, Roorkee' }).fields.siteState, 'UK');
+  // One vocabulary (model v3): campaign short forms and state names name their state too; "NCR" spans three and names none.
+  assert.equal(crewPrefill({ city: 'BLR' }).fields.siteState, 'KA');
+  assert.equal(crewPrefill({ city: 'Gurgaon' }).fields.siteState, 'HR');
+  assert.equal(crewPrefill({ city: 'Somewhere, Punjab' }).fields.siteState, 'PB');
+  assert.equal(crewPrefill({ city: 'Bhel, Uttarakhand' }).fields.siteState, 'UK');
+  assert.equal(crewPrefill({ city: 'NCR' }).fields.siteState, undefined);
+  assert.equal(crewPrefill({ city: 'Sector 63, Noida, NCR' }).fields.siteState, 'UP');
+  // UT is Uttarakhand's old code: read as UK.
+  assert.equal(crewPrefill({ state: 'UT' }).fields.siteState, 'UK');
+  assert.equal(crewPrefill({ state: 'ut' }).fields.siteState, 'UK');
   assert.equal(crewPrefill({ cluster: 'mumbai' }).fields.pageCluster, undefined);
   assert.equal(crewPrefill({ cluster: 'uttarakhand' }).fields.pageCluster, 'uttarakhand');
 });

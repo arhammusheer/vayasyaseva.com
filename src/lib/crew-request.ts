@@ -17,7 +17,7 @@ import {
   STATE_OPTIONS,
   type ContactFormData,
 } from "@/lib/contact-contract";
-import { PLACES_BY_ID, placeById, stateForPlace } from "@/markets/index";
+import { PLACES_BY_ID, canonicalRegion, placeById, stateForPlace } from "@/markets/index";
 
 /**
  * Version of the privacy notice a business enquiry is sent under, shown in
@@ -163,7 +163,8 @@ const STATE_BY_NAME = Object.fromEntries(
 
 function stateCode(value: string | undefined) {
   if (!value) return undefined;
-  const upper = value.trim().toUpperCase();
+  // An old code (UT) is read as the current one (UK): src/markets REGION_ALIASES.
+  const upper = canonicalRegion(value.trim().toUpperCase());
   if (upper in STATE_OPTIONS) return upper;
   return STATE_BY_NAME[value.trim().toLowerCase()];
 }

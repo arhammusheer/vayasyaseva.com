@@ -132,3 +132,92 @@ test("Delhi and Haryana towns narrow to Delhi NCR, as their region alone already
   // A Delhi town typed with another state is not that state's market by accident.
   assert.equal(siteCluster("UK", "Delhi Road, Roorkee"), "haridwar");
 });
+
+/* ---------- Model v3 (owner direction, 17 Oct 2026) ---------- */
+
+test("model v3: the version on area-intent events", async () => {
+  const { MODEL_VERSION } = await importTs("src/lib/intent/model.ts");
+  assert.equal(MODEL_VERSION, 3);
+});
+
+test("one vocabulary: place words name markets in ad tags, ad words name places", async () => {
+  const { geoCluster, siteCluster, placeState } = await importTs("src/lib/intent/model.ts");
+  const markets = await importTs("src/markets/index.ts");
+  // The data has one word list per market: no second list of ad words.
+  for (const id of markets.MARKET_IDS) assert.equal("adWords" in markets.MARKETS[id], false, id);
+  // Place words that were never ad words now name their market in tags…
+  assert.deepEqual(clustersInUtm(["jobs_okhla"]), ["delhi-ncr"]);
+  assert.deepEqual(clustersInUtm(["rurki vacancy"]), ["haridwar"]);
+  assert.deepEqual(clustersInUtm(["hoskote_jobs"]), ["bengaluru"]);
+  assert.deepEqual(clustersInUtm(["jobs_jullundur"]), ["jalandhar"]);
+  // …and the campaigns' short forms are places too, each in its own state.
+  assert.equal(geoCluster("KA", "BLR"), "bengaluru");
+  assert.equal(placeState("blr"), "KA");
+  assert.equal(placeState("gurgaon"), "HR");
+  assert.equal(placeState("delhi"), "DL");
+  // Every word with one region names that state; "ncr" spans three and names none.
+  for (const g of markets.PLACE_GROUPS) for (const w of g.words) assert.equal(placeState(w), g.region.length === 1 ? g.region[0] : undefined, w);
+  assert.equal(siteCluster("UP", "NCR", null), "delhi-ncr");
+  assert.equal(siteCluster("HR", "Gurgaon NCR", null), "delhi-ncr");
+  // Exact match for an IP city, whole words for typed text, as before.
+  assert.equal(geoCluster("UK", "SIDCUL Haridwar"), "uttarakhand");
+  assert.equal(siteCluster("UK", "SIDCUL Haridwar", null), "haridwar");
+});
+
+test("state names name the state's market in ad tags, but never narrow a site away from its page", async () => {
+  const { siteCluster, placeState, geoCluster } = await importTs("src/lib/intent/model.ts");
+  assert.deepEqual(clustersInUtm(["jobs_uttarakhand"]), ["uttarakhand"]);
+  assert.deepEqual(clustersInUtm(["jobs_punjab"]), ["punjab"]);
+  assert.deepEqual(clustersInUtm(["jobs_delhi"]), ["delhi-ncr"]);
+  assert.deepEqual(clustersInUtm(["jobs_ncr"]), ["delhi-ncr"]);
+  assert.deepEqual(clustersInUtm(["punjabi_jobs", "uttarakhandi"]), []);
+  assert.deepEqual(clustersInUtm(["uttarakhand_haridwar_jobs"]), ["haridwar", "uttarakhand"]);
+  assert.equal(placeState("Uttarakhand"), "UK");
+  assert.equal(placeState("Punjab"), "PB");
+  // A Haridwar enquiry from /locations/haridwar stays Haridwar's when the city just names the state.
+  assert.equal(siteCluster("UK", "Plot 12, Uttarakhand", "haridwar"), "haridwar");
+  assert.equal(siteCluster("PB", "Focal Point, Punjab", "jalandhar"), "jalandhar");
+  assert.equal(siteCluster("UK", "Uttarakhand", null), "uttarakhand");
+  // A place still beats the state name.
+  assert.equal(siteCluster("UK", "Roorkee, Uttarakhand", null), "haridwar");
+  assert.equal(siteCluster("PB", "Kapurthala, Punjab", "punjab"), "jalandhar");
+  assert.equal(geoCluster("PB", "Punjab"), "punjab");
+});
+
+test("UT is Uttarakhand's old code: read as UK everywhere", async () => {
+  const { geoCluster, siteCluster, REGION_CLUSTERS, SITE_STATE_CLUSTERS, CLUSTER_STATES } = await importTs("src/lib/intent/model.ts");
+  const markets = await importTs("src/markets/index.ts");
+  assert.equal(markets.canonicalRegion("UT"), "UK");
+  assert.equal(markets.canonicalRegion("PB"), "PB");
+  // The tables hold current codes only.
+  assert.equal("UT" in REGION_CLUSTERS, false);
+  assert.equal("UT" in SITE_STATE_CLUSTERS, false);
+  assert.deepEqual(Object.values(CLUSTER_STATES).flat().includes("UT"), false);
+  assert.equal(markets.marketForRegion("UT"), "uttarakhand");
+  assert.equal(geoCluster("UT", null), "uttarakhand");
+  assert.equal(geoCluster("UT", "Roorkee"), "haridwar");
+  // A site state of UT was no market before; now it is Uttarakhand's, like UK.
+  assert.equal(siteCluster("UT", "", null), "uttarakhand");
+  assert.equal(siteCluster("UT", "Plot 4", "haridwar"), "haridwar");
+  assert.equal(siteCluster("UT", "SIDCUL Haridwar", null), "haridwar");
+  assert.deepEqual(markets.marketsForState("UT"), markets.marketsForState("UK"));
+  assert.equal(markets.marketCoversState("haridwar", "UT"), true);
+});
+
+test("Saharanpur is a stored cluster id, not a market: no intent, no language order", async () => {
+  const markets = await importTs("src/markets/index.ts");
+  const { CLUSTER_IDS } = await importTs("src/content/registry/identifiers.ts");
+  assert.ok(CLUSTER_IDS.includes("saharanpur"), "the stored id stays");
+  assert.equal(markets.isMarketId("saharanpur"), false);
+  assert.equal(markets.languageSetFor("saharanpur"), undefined);
+  assert.deepEqual(clustersInUtm(["jobs_saharanpur"]), []);
+});
+
+test("multi-word ad tags: _ and - read as spaces", () => {
+  for (const tag of ["jobs_electronic_city", "electronic-city", "Jobs-Electronic-City-2026"]) assert.deepEqual(clustersInUtm([tag]), ["bengaluru"], tag);
+  for (const tag of ["greater_noida", "jobs-gautam-buddha-nagar", "new_delhi"]) assert.deepEqual(clustersInUtm([tag]), ["delhi-ncr"], tag);
+  assert.deepEqual(clustersInUtm(["dera_bassi_jobs"]), ["punjab"]);
+  assert.deepEqual(clustersInUtm(["sultanpur-lodhi"]), ["jalandhar"]);
+  // Still whole words: letters run on don't match.
+  assert.deepEqual(clustersInUtm(["electroniccity", "xelectronic_city"]), []);
+});

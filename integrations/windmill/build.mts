@@ -40,7 +40,12 @@ function compile(path: string, isEntry = false): CompiledModule {
 
   const deps: string[] = [];
   const external: string[] = [];
-  let code = output.replace(/^import\s+([^;]*?)\s+from\s+"([^"]+)";?\s*$/gm, (line, _bindings: string, spec: string) => {
+  // A relative JSON import (the contracts' generated schemas) becomes a constant.
+  let code = output.replace(/^import\s+(\w+)\s+from\s+"(\.[^"]+\.json)"\s+with\s*\{\s*type:\s*"json"\s*\};?\s*$/gm, (_line, name: string, spec: string) => {
+    const json = JSON.stringify(JSON.parse(readFileSync(resolve(dirname(path), spec), "utf8")));
+    return `const ${name} = ${json};`;
+  });
+  code = code.replace(/^import\s+([^;]*?)\s+from\s+"([^"]+)";?\s*$/gm, (line, _bindings: string, spec: string) => {
     if (spec.startsWith(".")) {
       deps.push(resolve(dirname(path), spec));
       return "";

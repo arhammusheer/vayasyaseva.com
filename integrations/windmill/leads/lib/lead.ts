@@ -7,6 +7,7 @@
  */
 import { optionValue, phoneDigits } from "../../talent/lib/crm.ts";
 import { eq, type Twenty } from "../../talent/lib/twenty.ts";
+import { SCHEMAS, check } from "../../contracts/validate.ts";
 
 export interface Lead {
   caseId: string;
@@ -81,6 +82,12 @@ export function validateLead(body: unknown): { ok: true; lead: Lead } | { ok: fa
       sourcePath: str(b.sourcePath, 300),
     },
   };
+}
+
+/** The lead checked against the generated canonical schema (business_enquiry.v1, compliance_help.v1). */
+export function checkLead(body: unknown): { ok: true; lead: Lead } | { ok: false; errors: string[] } {
+  const checked = check<Lead>(SCHEMAS["business_enquiry.v1"], body);
+  return checked.ok ? { ok: true, lead: { ...checked.value, receivedAt: new Date(checked.value.receivedAt).toISOString() } } : checked;
 }
 
 /** The form's role ids as the opportunity's three services (setup.mts). */

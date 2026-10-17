@@ -283,7 +283,7 @@ export function headlineRate(state: WageState) {
   return { table, low: rows[0], high: rows.at(-1)! };
 }
 
-/** "₹13,018", or "₹12,356 to ₹13,690" where the headline table has zones. */
+/** "₹13,134", or "₹12,356 to ₹13,690" where the headline table has zones. */
 export const headlineRange = (state: WageState) => {
   const { low, high } = headlineRate(state);
   return low.monthly === high.monthly ? formatRupees(low.monthly) : `${formatRupees(low.monthly)} to ${formatRupees(high.monthly)}`;

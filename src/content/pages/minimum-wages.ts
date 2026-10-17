@@ -58,10 +58,11 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
     const factory = rs(s, "factories-and-industries", "uttarakhand", "unskilled");
     const engineering = rs(s, "engineering-50-plus", "uttarakhand", "unskilled");
     const unskilled = rate(s, "factories-and-industries", "uttarakhand", "unskilled");
+    const from = s.tables.find((t) => t.id === "factories-and-industries")!.effectiveFrom;
     return {
       title: (year) => `Uttarakhand Minimum Wages${year ? ` ${year}` : ""}: Rates by Skill`,
-      description: `Uttarakhand minimum wage from 1 Apr 2026: ${factory} a month unskilled (notification 289), ${engineering} in engineering units with 50+ workers. ${stamp([s])}.`,
-      answer: `From 1 April 2026, an unskilled worker in most Uttarakhand factories must get at least ${factory} a month, or ${formatRupees(unskilled.daily ?? 0)} a day.`,
+      description: `Uttarakhand minimum wage from ${formatShortDate(from)}: ${factory} a month unskilled (notification 289), ${engineering} in engineering units with 50+ workers. ${stamp([s])}.`,
+      answer: `From ${formatDate(from)}, an unskilled worker in most Uttarakhand factories must get at least ${factory} a month, or ${formatRupees(unskilled.daily ?? 0)} a day.`,
       whichTable: {
         rule: "Pharma, food and packaging units use Most factories, whatever their size.",
         labels: { "factories-and-industries": "Most factories", "engineering-50-plus": "Engineering unit, 50+ workers" },
@@ -231,7 +232,7 @@ export const wageHubCopy = {
     `Each state sets its own; there is no national rate. For unskilled work it runs from ${lowest} to ${highest}.`,
   /** What changed in the last revision, under the in-force date; none where nothing did. */
   lastChange: {
-    uttarakhand: (s: WageState) => `VDA up to ${formatRupees(rate(s, "factories-and-industries", "uttarakhand", "unskilled").vda)}; new engineering rates`,
+    uttarakhand: (s: WageState) => `VDA up to ${formatRupees(rate(s, "factories-and-industries", "uttarakhand", "unskilled").vda)}; DA for engineering units of 50+`,
     "uttar-pradesh": () => "Split into three district categories",
   } as Partial<Record<WageStateSlug, (s: WageState) => string>>,
 };

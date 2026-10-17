@@ -69,7 +69,7 @@ test('short state codes 308 to published full slugs only', () => {
 test('headline rate comes from the headline table only, as a range across zones', () => {
   const byState = Object.fromEntries(wageStates.map((s) => [s.state, s]));
   assert.equal(headlineRate(byState.uttarakhand).table.id, 'factories-and-industries');
-  assert.equal(headlineRange(byState.uttarakhand), '₹13,018');
+  assert.equal(headlineRange(byState.uttarakhand), '₹13,134');
   assert.equal(headlineRange(byState['uttar-pradesh']), '₹12,356 to ₹13,690');
   assert.equal(headlineRange(byState.delhi), '₹18,456');
 });

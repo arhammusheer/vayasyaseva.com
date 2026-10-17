@@ -3,7 +3,7 @@
  "name": "Uttarakhand",
  "titleName": "Uttarakhand",
  "nextRevision": {
-  "expected": "2026-10-01",
+  "expected": "2027-04-01",
   "basis": "Variable dearness allowance for the scheduled employments is adjusted every 1 April and 1 October, from the average consumer price index of July to December and January to June. The rates for engineering units with 50 or more workers are interim relief, in force until further orders. The state notified the Uttarakhand Code on Wages Rules, 2026 on 25 August 2026, so new rates may also come under the Code."
  },
  "checked": {
@@ -398,6 +398,23 @@
    "retrievedOn": "2026-10-17",
    "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-agri-da-2026-10-8a0cb640.pdf",
    "copyKb": 87
+  },
+  {
+   "id": "uk-vda-2026-10",
+   "kind": "order",
+   "title": "Variable dearness allowance in scheduled employments, 1 October 2026 to 31 March 2027",
+   "number": "3259/4-01/2024",
+   "date": "2026-10-14",
+   "authority": "Labour Commissioner, Uttarakhand, Haldwani",
+   "legalBasis": "Applies notification 460(1)/VIII-1/2026-228(Shram)/2001 dated 22 April 2026: ₹57.60 for each point of the All-India CPI (2016=100) above 139, at the January to June 2026 average of 150.",
+   "url": "https://cdnbbsr.s3waas.gov.in/s36547884cea64550284728eb26b0947ef/uploads/2026/10/20261017211345996.pdf",
+   "listing": "https://labour.uk.gov.in/document-category/circulars-notifications/",
+   "language": "hi",
+   "sha256": "f316eed1ebf7db6e11f68516f9a0f6a9b9dc8edfa1a50f5ee17c09ad907f0ffc",
+   "sizeKb": 1411,
+   "retrievedOn": "2026-10-17",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttarakhand/uk-vda-2026-10-f316eed1.pdf",
+   "copyKb": 983
   }
  ],
  "tables": [
@@ -408,9 +425,9 @@
    "appliesTo": "The 16 employments in notification 289, including engineering industries with fewer than 50 workers, metal and foundry units, plastics, rubber, dairies, sweets and drinks makers, and every registered factory not covered by another notification. Engineering units with 50 or more workers use the table below. Shops, construction, hotels and some other employments have their own notifications and rates.",
    "sources": [
     "uk-289-2024",
-    "uk-vda-2026-04"
+    "uk-vda-2026-10"
    ],
-   "effectiveFrom": "2026-04-01",
+   "effectiveFrom": "2026-10-01",
    "zones": [
     {
      "id": "uttarakhand",
@@ -427,49 +444,49 @@
      "zone": "uttarakhand",
      "skill": "unskilled",
      "basic": 12500,
-     "vda": 518,
-     "monthly": 13018,
-     "daily": 500.7
+     "vda": 634,
+     "monthly": 13134,
+     "daily": 505.16
     },
     {
      "zone": "uttarakhand",
      "skill": "semi-skilled",
      "basic": 12933,
-     "vda": 518,
-     "monthly": 13451,
-     "daily": 517.35
+     "vda": 634,
+     "monthly": 13567,
+     "daily": 521.81
     },
     {
      "zone": "uttarakhand",
      "skill": "skilled",
      "basic": 13365,
-     "vda": 518,
-     "monthly": 13883,
-     "daily": 533.97
+     "vda": 634,
+     "monthly": 13999,
+     "daily": 538.43
     },
     {
      "zone": "uttarakhand",
      "skill": "highly-skilled",
      "basic": 14093,
-     "vda": 518,
-     "monthly": 14611,
-     "daily": 561.97
+     "vda": 634,
+     "monthly": 14727,
+     "daily": 566.43
     },
     {
      "zone": "uttarakhand",
      "skill": "clerical-grade-1",
      "basic": 14093,
-     "vda": 518,
-     "monthly": 14611,
-     "daily": 561.97
+     "vda": 634,
+     "monthly": 14727,
+     "daily": 566.43
     },
     {
      "zone": "uttarakhand",
      "skill": "clerical-grade-2",
      "basic": 13551,
-     "vda": 518,
-     "monthly": 14069,
-     "daily": 541.12
+     "vda": 634,
+     "monthly": 14185,
+     "daily": 545.58
     }
    ]
   },
@@ -524,9 +541,9 @@
  ],
  "employments": {
   "vda": {
-   "amount": 518,
-   "effectiveFrom": "2026-04-01",
-   "source": "uk-vda-2026-04"
+   "amount": 634,
+   "effectiveFrom": "2026-10-01",
+   "source": "uk-vda-2026-10"
   },
   "groups": [
    {
@@ -1451,6 +1468,45 @@
  },
  "history": [
   {
+   "table": "factories-and-industries",
+   "effectiveFrom": "2026-04-01",
+   "effectiveTo": "2026-09-30",
+   "source": "uk-vda-2026-04",
+   "note": "Same basic wage, with VDA of ₹518.",
+   "rates": [
+    {
+     "zone": "uttarakhand",
+     "skill": "unskilled",
+     "monthly": 13018
+    },
+    {
+     "zone": "uttarakhand",
+     "skill": "semi-skilled",
+     "monthly": 13451
+    },
+    {
+     "zone": "uttarakhand",
+     "skill": "skilled",
+     "monthly": 13883
+    },
+    {
+     "zone": "uttarakhand",
+     "skill": "highly-skilled",
+     "monthly": 14611
+    },
+    {
+     "zone": "uttarakhand",
+     "skill": "clerical-grade-1",
+     "monthly": 14611
+    },
+    {
+     "zone": "uttarakhand",
+     "skill": "clerical-grade-2",
+     "monthly": 14069
+    }
+   ]
+  },
+  {
    "table": "engineering-50-plus",
    "effectiveFrom": "2026-04-01",
    "effectiveTo": "2026-09-30",
@@ -1520,6 +1576,7 @@
   "2026-10-17: rates as read (monthly basic, VDA separate, base All-India CPI (2016=100) 301, Rs 20 a point; daily rate 1/26 of basic + VDA, hourly 1/6 of daily): 286 shops, towns of 1 lakh+ / rest: 12539/12391, 13280/13110, 14023/13838, clerical I 15275/15035, clerical II 14340/14139. 287 construction: 12500, 13226, 13961, 15173, 14265 (endorsement number handwritten, read as 284 or 287; order 1203 gives 287; its job appendix repeats 288's). 288: 12391, 13110, 13838, 15035, 14139; printed date 15 March 2019, corrected to 2024 by OM 319 of 22 March 2024 in the same file. 290 cloth printing: as 288 plus highly skilled 15035. 291 clubs: as 288. 292 presses: 12539, 13280, skilled II 14023, skilled I 14340, clerical I 15275, clerical II 14340. 293 transport: 12539, 13280, 14023, 15275, 14340. 294 cinema, towns of 2 lakh+ / rest: 12539/12391, 13280/13110, 14023/13838, highly skilled B 14340/14139, highly skilled A 15275/15035, clerical I 15275/15035, clerical II 14340/14139. 295 tailoring, Dehradun and Nainital / other towns: 12539/12391, 13280/13110, 14023/13838. 296 pharmacies, allopathic / Ayurvedic and Unani: 12539/12384, 13280/13110, 14023/13838, 15275/15035, 14340/14139. 298 dharamshalas: 12500; 12685; 13064 graduate / 12879 not; 13250 / 13156; 13443 / 13350. 300 hotels, category A / B: under 10 workers 12816/12159, 13071/12360, 13335/12554 (no highly skilled rate); 10 or more 13071/12423, 13335/12624, 13605/12816, 13991/13071; star hotels 13466/13071, 14246/13605, 15035/14123, 16071/14773. 301 schools: 12391, 12763, 13110, 13396, 13675, 13960, 14254, 14819. 302 tea: unskilled only, 12391. 303 hosiery: 12716, 12863, 12986, clerical I 13195, clerical II 13049.",
   "2026-10-17: in every 2024 table the clerical rows read (क) grade I and (ख) grade II, while the appendices letter them the other way round; rates are attached by grade name (grade I, five or more years' service, is the higher rate). Paragraph 1 of 286 and 287 prints the CPI base as 2001=100 and paragraph 2 as 2016=100; DA order 1203 applies the 2016 series.",
   "2026-10-17: agriculture. Orders 1100/4-01/07 of 18 April 2026 (202604181045155169.pdf) and 3295/4-01/07 of 16 October 2026 (202610161590430589.pdf, one-page scans, read by eye) set the allowance for unskilled agricultural workers under Government orders 430/VIII/15-40(Shram)/2008 of 15 July 2015 and 1044(1)/VIII/15-40(Shram)/2008 of 30 July 2015: (455-253) x 20 = 4040 for 1 April to 30 September 2026, (468-253) x 20 = 4300 for 1 October 2026 to 31 March 2027. Neither 2015 order is on the department's site, and no official copy was found elsewhere, so no basic wage is shown.",
-  "2026-10-17: also on the circulars list and not wage rates: 202603311966659871.pdf (Shops and Establishments: 24x7 opening clarification of 17 February 2026, Ordinance 4 of 2025, women's night-shift notification of 8 December 2025); 20260418572332681.pdf (DA for engineering units under the 2000 notification 2492, 1 February to 31 July 2026, replaced from 1 April 2026 by the 29 April 2026 interim order)."
+  "2026-10-17: also on the circulars list and not wage rates: 202603311966659871.pdf (Shops and Establishments: 24x7 opening clarification of 17 February 2026, Ordinance 4 of 2025, women's night-shift notification of 8 December 2025); 20260418572332681.pdf (DA for engineering units under the 2000 notification 2492, 1 February to 31 July 2026, replaced from 1 April 2026 by the 29 April 2026 interim order).",
+  "2026-10-17: 20261017211345996.pdf (order 3259/4-01/2024 dated 14-10-2026, Prakash Chandra Dumka, Labour Commissioner; 4 pages, scanned Hindi, read by eye at 120 dpi), listed on labour.uk.gov.in 'Circulars / Notifications' as 'DA Other Niyojan', 17/10/2026. VDA from 01-10-2026 to 31-03-2027 for all categories in the same 57 scheduled employments (notifications 286 to 311 of 15 March 2024 as amended by 460(1) of 22 April 2026): (150 - 139) x 57.60 = 634, CPI 2016=100, January-June 2026 average 150. Every row on pages 1-4 reads 634.00. Factories table: 12500 + 634 = 13134 unskilled, 13567 semi-skilled, 13999 skilled, 14727 highly skilled and clerical I, 14185 clerical II; daily = monthly / 26 rounded up to the paisa."
  ]
 }

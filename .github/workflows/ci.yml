@@ -25,6 +25,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Verify generated contracts (packages/contracts/generated)
+        run: pnpm contracts:check
+
+      - name: Contracts against the fixture corpus (Zod and ajv)
+        run: pnpm contracts:test
+
       - name: Verify OpenAPI contract
         run: pnpm openapi:check
 

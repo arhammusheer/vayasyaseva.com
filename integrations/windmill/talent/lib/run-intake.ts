@@ -4,7 +4,7 @@
  */
 import { accepted, forbidden, invalid } from "./response.ts";
 import { SAVE_SUBMISSION } from "./sql.ts";
-import { saveSubmissionParams, validateSubmission } from "./validate.ts";
+import { checkSubmission, saveSubmissionParams } from "./intake-payload.ts";
 import type { Query } from "./db.ts";
 
 
@@ -17,7 +17,7 @@ export interface IntakeDeps {
 
 export async function runIntake(authorized: boolean, body: unknown, deps: IntakeDeps) {
   if (!authorized) return forbidden();
-  const checked = validateSubmission(body);
+  const checked = checkSubmission(body);
   if (!checked.ok) return invalid(checked.errors);
   const [saved] = await deps.query<{ submission_id: string | null }>(SAVE_SUBMISSION, saveSubmissionParams(checked.value));
   // A replayed reference saves nothing and sends nothing; it still answers 202 (n8n did).

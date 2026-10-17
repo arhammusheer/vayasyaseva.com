@@ -1,0 +1,14 @@
+{
+  "schema": "canonical",
+  "note": "From /api/agent/jobs/start.",
+  "data": {
+    "ref": "VS-J-AGENT3",
+    "source": "web_hi",
+    "role": null,
+    "hub": null,
+    "channel": "agent",
+    "agentName": null,
+    "files": [],
+    "exp": 1792232400
+  }
+}

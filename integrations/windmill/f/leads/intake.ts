@@ -2,6 +2,10 @@
 
 import * as wmill from "windmill-client";
 
+import postgres from "postgres";
+
+import { Ajv2020 } from "ajv/dist/2020.js";
+
 import { timingSafeEqual } from "node:crypto";
 
 // integrations/windmill/talent/lib/config.ts
@@ -24,6 +28,8 @@ const { VARIABLES, variablePath, setConfigForTests, config } = (() => {
       twenty_api_key: { secret: true },
       lead_webhook_secret: { secret: true },
       fast2sms_dlr_secret: { secret: true },
+      leads_pg_url: { secret: true },
+      submission_signing_secret: { secret: true },
   };
   const variablePath = (name) => `f/talent/${name}`;
   let override = null;
@@ -43,6 +49,37 @@ const { VARIABLES, variablePath, setConfigForTests, config } = (() => {
       return value;
   }
   return { VARIABLES, variablePath, setConfigForTests, config };
+})();
+
+// integrations/windmill/talent/lib/db.ts
+const { withTalentDb, withDatabase, queryWith } = (() => {
+  const passThroughJson = (oid) => ({
+      to: oid,
+      from: [oid],
+      serialize: (value) => (typeof value === "string" ? value : JSON.stringify(value)),
+      parse: (value) => JSON.parse(value),
+  });
+  async function withTalentDb(fn) {
+      return withDatabase("talent_pg_url", fn);
+  }
+  async function withDatabase(url, fn) {
+      const sql = postgres(await config(url), {
+          max: 1,
+          connect_timeout: 10,
+          idle_timeout: 5,
+          prepare: false,
+          types: { json: passThroughJson(114), jsonb: passThroughJson(3802) },
+          onnotice: () => { },
+      });
+      try {
+          return await fn(queryWith(sql));
+      }
+      finally {
+          await sql.end({ timeout: 5 });
+      }
+  }
+  const queryWith = (sql) => async (text, params = []) => (await sql.unsafe(text, params));
+  return { withTalentDb, withDatabase, queryWith };
 })();
 
 // integrations/windmill/talent/lib/response.ts
@@ -403,63 +440,54 @@ const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneD
   return { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, erasePerson };
 })();
 
-// integrations/windmill/leads/lib/lead.ts
-const { validateLead, serviceValues, crewSize, opportunityName, recordLead } = (() => {
-  const CASE_ID = /^(REQ|AGT)-\d{8}-[0-9A-F]{8}$/;
-  const CLUSTERS = new Set(["HARIDWAR", "UTTARAKHAND", "DELHI_NCR", "BENGALURU", "JALANDHAR", "SAHARANPUR", "OTHER", "PUNJAB"]);
-  const str = (v, max) => {
-      if (typeof v !== "string")
-          return null;
-      const t = v.trim();
-      return t ? t.slice(0, max) : null;
+// integrations/windmill/contracts/validate.ts
+const { check, SCHEMAS } = (() => {
+  const jobApplicationSchema = {"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://www.vayasyaseva.com/contracts/job_application.v1.canonical.schema.json","type":"object","properties":{"ref":{"type":"string","pattern":"^VS-J-[A-Z0-9]{6}$"},"source":{"anyOf":[{"type":"string","const":"web"},{"type":"string","enum":["web_en","web_hi","web_hinglish"]}]},"locale":{"anyOf":[{"type":"string","enum":["en-IN","hi-IN","hi-Latn-IN","pa-IN","kn-IN"]},{"type":"null"}]},"cluster":{"anyOf":[{"type":"string","enum":["haridwar","uttarakhand","delhi-ncr","bengaluru","jalandhar","saharanpur","other","punjab"]},{"type":"null"}]},"pageCluster":{"anyOf":[{"type":"string","enum":["haridwar","uttarakhand","delhi-ncr","bengaluru","jalandhar","saharanpur","other","punjab"]},{"type":"null"}]},"pagePath":{"anyOf":[{"type":"string","maxLength":200,"pattern":"^\\/([a-z0-9]+(-[a-z0-9]+)*(\\/[a-z0-9]+(-[a-z0-9]+)*)*)?$"},{"type":"null"}]},"role":{"anyOf":[{"type":"string","enum":["factory-helper","packing","machine-operator","warehouse","forklift-operator","data-entry-operator","housekeeping","iti-trades","electrician","welder","fitter"]},{"type":"null"}]},"hub":{"anyOf":[{"type":"string","enum":["freshers","10th-pass","12th-pass"]},{"type":"null"}]},"channel":{"type":"string","enum":["web","agent"]},"agentName":{"anyOf":[{"type":"string","maxLength":100},{"type":"null"}]},"phone":{"type":"string","pattern":"^\\+91[6-9]\\d{9}$"},"adult":{"type":"boolean","const":true},"consent":{"type":"object","properties":{"version":{"type":"string","minLength":1,"maxLength":40},"at":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"}},"required":["version","at"],"additionalProperties":false},"text":{"anyOf":[{"type":"string","maxLength":4000},{"type":"null"}]},"attachments":{"maxItems":8,"type":"array","items":{"oneOf":[{"type":"object","properties":{"kind":{"type":"string","const":"image"},"key":{"type":"string","minLength":1,"maxLength":300},"mime":{"type":"string","pattern":"^image\\/(jpeg|png|webp)$"},"size":{"type":"integer","minimum":1,"maximum":10485760},"name":{"anyOf":[{"type":"string","maxLength":200},{"type":"null"}]}},"required":["kind","key","mime","size","name"],"additionalProperties":false},{"type":"object","properties":{"kind":{"type":"string","const":"document"},"key":{"type":"string","minLength":1,"maxLength":300},"mime":{"type":"string","pattern":"^application\\/(pdf|msword|vnd\\.openxmlformats-officedocument\\.wordprocessingml\\.document)$"},"size":{"type":"integer","minimum":1,"maximum":20971520},"name":{"anyOf":[{"type":"string","maxLength":200},{"type":"null"}]}},"required":["kind","key","mime","size","name"],"additionalProperties":false}]}},"form":{"anyOf":[{"type":"string","enum":["long","quick"]},{"type":"null"}]},"applicantName":{"anyOf":[{"type":"string","minLength":1,"maxLength":80},{"type":"null"}]},"answers":{"anyOf":[{"type":"object","properties":{"work":{"minItems":1,"type":"array","items":{"type":"string","enum":["factory-helper","packing","warehouse","machine-operator","iti-trades","housekeeping","data-entry-operator","forklift-operator","any"]},"uniqueItems":true},"trade":{"minItems":1,"type":"array","items":{"type":"string","enum":["electrician","welder","fitter","machinist","other-trade"]},"uniqueItems":true},"iti":{"minItems":1,"type":"array","items":{"type":"string","enum":["iti-pass","iti-pursuing","no-iti"]},"uniqueItems":true},"machines":{"minItems":1,"type":"array","items":{"type":"string","enum":["packing-machine","moulding","press","cnc-vmc","other-machine"]},"uniqueItems":true},"forklift":{"minItems":1,"type":"array","items":{"type":"string","enum":["licence-experience","experience-only","want-to-learn"]},"uniqueItems":true},"computer":{"minItems":1,"type":"array","items":{"type":"string","enum":["typing","excel","tally","sap-erp"]},"uniqueItems":true},"experience":{"minItems":1,"type":"array","items":{"type":"string","enum":["fresher","under-1","1-3","3-plus"]},"uniqueItems":true},"education":{"minItems":1,"type":"array","items":{"type":"string","enum":["below-10th","10th","12th","iti-diploma","graduate"]},"uniqueItems":true},"shift":{"minItems":1,"type":"array","items":{"type":"string","enum":["day","night","rotating"]},"uniqueItems":true},"start":{"minItems":1,"type":"array","items":{"type":"string","enum":["now","week","month"]},"uniqueItems":true},"area":{"minItems":1,"type":"array","items":{"type":"string","enum":["sidcul-bahadrabad","haridwar-jwalapur","roorkee-bhagwanpur","laksar","outside","bengaluru:north","bengaluru:south","bengaluru:east","bengaluru:west","bengaluru:outside","jalandhar:kapurthala","jalandhar:city","jalandhar:phagwara-goraya","jalandhar:outside","uttarakhand:haridwar","uttarakhand:dehradun-selaqui","uttarakhand:udham-singh-nagar","uttarakhand:other","uttarakhand:outside","punjab:jalandhar-kapurthala","punjab:ludhiana","punjab:mohali","punjab:amritsar","punjab:other","punjab:outside","market:haridwar","market:uttarakhand","market:jalandhar","market:punjab","market:bengaluru","market:other","haridwar:rest-of-uttarakhand","jalandhar:rest-of-punjab"]},"uniqueItems":true}},"additionalProperties":false,"minProperties":1},{"type":"null"}]}},"required":["ref","source","locale","cluster","pageCluster","pagePath","role","hub","channel","agentName","phone","adult","consent","text","attachments","form","applicantName","answers"],"additionalProperties":false,"title":"job_application.v1 (canonical)","description":"A job application as the website forwards it to Windmill f/talent/intake.","allOf":[{"anyOf":[{"properties":{"text":{"type":"string","minLength":1}},"required":["text"]},{"properties":{"attachments":{"minItems":1}},"required":["attachments"]},{"properties":{"answers":{"type":"object"}},"required":["answers"]}]},{"if":{"properties":{"source":{"const":"web"}},"required":["source"]},"then":{"properties":{"locale":{"type":"string"}}}}]};
+  const businessEnquirySchema = {"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://www.vayasyaseva.com/contracts/business_enquiry.v1.canonical.schema.json","type":"object","properties":{"caseId":{"type":"string","pattern":"^(REQ|AGT)-\\d{8}-[0-9A-F]{8}$"},"receivedAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"channel":{"type":"string","enum":["web","agent"]},"name":{"type":"string","minLength":1,"maxLength":120},"company":{"anyOf":[{"type":"string","minLength":1,"maxLength":160},{"type":"null"}]},"jobTitle":{"anyOf":[{"type":"string","minLength":1,"maxLength":120},{"type":"null"}]},"phone":{"type":"string","maxLength":30,"pattern":"^\\D*(?:\\d\\D*){10,}$"},"email":{"anyOf":[{"type":"string","maxLength":200,"pattern":"^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"},{"type":"null"}]},"services":{"maxItems":20,"type":"array","items":{"type":"string","minLength":1,"maxLength":40}},"headcount":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"headcountBand":{"anyOf":[{"type":"string","minLength":1,"maxLength":20},{"type":"null"}]},"site":{"anyOf":[{"type":"string","minLength":1,"maxLength":300},{"type":"null"}]},"cluster":{"anyOf":[{"type":"string","enum":["haridwar","uttarakhand","delhi-ncr","bengaluru","jalandhar","saharanpur","other","punjab"]},{"type":"null"}]},"startWindow":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"targetStartDate":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"requestType":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"enquiry":{"type":"string","minLength":1,"maxLength":8000},"sourcePath":{"anyOf":[{"type":"string","minLength":1,"maxLength":300},{"type":"null"}]}},"required":["caseId","receivedAt","channel","name","company","jobTitle","phone","email","services","headcount","headcountBand","site","cluster","startWindow","targetStartDate","requestType","enquiry","sourcePath"],"additionalProperties":false,"title":"business_enquiry.v1 (canonical)","description":"A business enquiry as the website forwards it to Windmill f/leads/intake."};
+  const envelopeSchema = {"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://www.vayasyaseva.com/contracts/envelope.v1.canonical.schema.json","oneOf":[{"type":"object","properties":{"v":{"type":"number","const":1},"sentAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"idempotencyKey":{"anyOf":[{"type":"string","pattern":"^[A-Za-z0-9_.:-]{8,128}$"},{"type":"null"}]},"type":{"type":"string","const":"job_application.v1"},"id":{"type":"string","pattern":"^VS-J-[A-Z0-9]{6}$"},"payload":{"type":"object","properties":{"ref":{"type":"string","pattern":"^VS-J-[A-Z0-9]{6}$"},"source":{"anyOf":[{"type":"string","const":"web"},{"type":"string","enum":["web_en","web_hi","web_hinglish"]}]},"locale":{"anyOf":[{"type":"string","enum":["en-IN","hi-IN","hi-Latn-IN","pa-IN","kn-IN"]},{"type":"null"}]},"cluster":{"anyOf":[{"type":"string","enum":["haridwar","uttarakhand","delhi-ncr","bengaluru","jalandhar","saharanpur","other","punjab"]},{"type":"null"}]},"pageCluster":{"anyOf":[{"type":"string","enum":["haridwar","uttarakhand","delhi-ncr","bengaluru","jalandhar","saharanpur","other","punjab"]},{"type":"null"}]},"pagePath":{"anyOf":[{"type":"string","maxLength":200,"pattern":"^\\/([a-z0-9]+(-[a-z0-9]+)*(\\/[a-z0-9]+(-[a-z0-9]+)*)*)?$"},{"type":"null"}]},"role":{"anyOf":[{"type":"string","enum":["factory-helper","packing","machine-operator","warehouse","forklift-operator","data-entry-operator","housekeeping","iti-trades","electrician","welder","fitter"]},{"type":"null"}]},"hub":{"anyOf":[{"type":"string","enum":["freshers","10th-pass","12th-pass"]},{"type":"null"}]},"channel":{"type":"string","enum":["web","agent"]},"agentName":{"anyOf":[{"type":"string","maxLength":100},{"type":"null"}]},"phone":{"type":"string","pattern":"^\\+91[6-9]\\d{9}$"},"adult":{"type":"boolean","const":true},"consent":{"type":"object","properties":{"version":{"type":"string","minLength":1,"maxLength":40},"at":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"}},"required":["version","at"],"additionalProperties":false},"text":{"anyOf":[{"type":"string","maxLength":4000},{"type":"null"}]},"attachments":{"maxItems":8,"type":"array","items":{"oneOf":[{"type":"object","properties":{"kind":{"type":"string","const":"image"},"key":{"type":"string","minLength":1,"maxLength":300},"mime":{"type":"string","pattern":"^image\\/(jpeg|png|webp)$"},"size":{"type":"integer","minimum":1,"maximum":10485760},"name":{"anyOf":[{"type":"string","maxLength":200},{"type":"null"}]}},"required":["kind","key","mime","size","name"],"additionalProperties":false},{"type":"object","properties":{"kind":{"type":"string","const":"document"},"key":{"type":"string","minLength":1,"maxLength":300},"mime":{"type":"string","pattern":"^application\\/(pdf|msword|vnd\\.openxmlformats-officedocument\\.wordprocessingml\\.document)$"},"size":{"type":"integer","minimum":1,"maximum":20971520},"name":{"anyOf":[{"type":"string","maxLength":200},{"type":"null"}]}},"required":["kind","key","mime","size","name"],"additionalProperties":false}]}},"form":{"anyOf":[{"type":"string","enum":["long","quick"]},{"type":"null"}]},"applicantName":{"anyOf":[{"type":"string","minLength":1,"maxLength":80},{"type":"null"}]},"answers":{"anyOf":[{"type":"object","properties":{"work":{"minItems":1,"type":"array","items":{"type":"string","enum":["factory-helper","packing","warehouse","machine-operator","iti-trades","housekeeping","data-entry-operator","forklift-operator","any"]},"uniqueItems":true},"trade":{"minItems":1,"type":"array","items":{"type":"string","enum":["electrician","welder","fitter","machinist","other-trade"]},"uniqueItems":true},"iti":{"minItems":1,"type":"array","items":{"type":"string","enum":["iti-pass","iti-pursuing","no-iti"]},"uniqueItems":true},"machines":{"minItems":1,"type":"array","items":{"type":"string","enum":["packing-machine","moulding","press","cnc-vmc","other-machine"]},"uniqueItems":true},"forklift":{"minItems":1,"type":"array","items":{"type":"string","enum":["licence-experience","experience-only","want-to-learn"]},"uniqueItems":true},"computer":{"minItems":1,"type":"array","items":{"type":"string","enum":["typing","excel","tally","sap-erp"]},"uniqueItems":true},"experience":{"minItems":1,"type":"array","items":{"type":"string","enum":["fresher","under-1","1-3","3-plus"]},"uniqueItems":true},"education":{"minItems":1,"type":"array","items":{"type":"string","enum":["below-10th","10th","12th","iti-diploma","graduate"]},"uniqueItems":true},"shift":{"minItems":1,"type":"array","items":{"type":"string","enum":["day","night","rotating"]},"uniqueItems":true},"start":{"minItems":1,"type":"array","items":{"type":"string","enum":["now","week","month"]},"uniqueItems":true},"area":{"minItems":1,"type":"array","items":{"type":"string","enum":["sidcul-bahadrabad","haridwar-jwalapur","roorkee-bhagwanpur","laksar","outside","bengaluru:north","bengaluru:south","bengaluru:east","bengaluru:west","bengaluru:outside","jalandhar:kapurthala","jalandhar:city","jalandhar:phagwara-goraya","jalandhar:outside","uttarakhand:haridwar","uttarakhand:dehradun-selaqui","uttarakhand:udham-singh-nagar","uttarakhand:other","uttarakhand:outside","punjab:jalandhar-kapurthala","punjab:ludhiana","punjab:mohali","punjab:amritsar","punjab:other","punjab:outside","market:haridwar","market:uttarakhand","market:jalandhar","market:punjab","market:bengaluru","market:other","haridwar:rest-of-uttarakhand","jalandhar:rest-of-punjab"]},"uniqueItems":true}},"additionalProperties":false,"minProperties":1},{"type":"null"}]}},"required":["ref","source","locale","cluster","pageCluster","pagePath","role","hub","channel","agentName","phone","adult","consent","text","attachments","form","applicantName","answers"],"additionalProperties":false,"title":"job_application.v1 (canonical)","description":"A job application as the website forwards it to Windmill f/talent/intake.","allOf":[{"anyOf":[{"properties":{"text":{"type":"string","minLength":1}},"required":["text"]},{"properties":{"attachments":{"minItems":1}},"required":["attachments"]},{"properties":{"answers":{"type":"object"}},"required":["answers"]}]},{"if":{"properties":{"source":{"const":"web"}},"required":["source"]},"then":{"properties":{"locale":{"type":"string"}}}}]}},"required":["v","sentAt","idempotencyKey","type","id","payload"],"additionalProperties":false},{"type":"object","properties":{"v":{"type":"number","const":1},"sentAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"idempotencyKey":{"anyOf":[{"type":"string","pattern":"^[A-Za-z0-9_.:-]{8,128}$"},{"type":"null"}]},"type":{"type":"string","const":"business_enquiry.v1"},"id":{"type":"string","pattern":"^(REQ|AGT)-\\d{8}-[0-9A-F]{8}$"},"payload":{"type":"object","properties":{"caseId":{"type":"string","pattern":"^(REQ|AGT)-\\d{8}-[0-9A-F]{8}$"},"receivedAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"channel":{"type":"string","enum":["web","agent"]},"name":{"type":"string","minLength":1,"maxLength":120},"company":{"anyOf":[{"type":"string","minLength":1,"maxLength":160},{"type":"null"}]},"jobTitle":{"anyOf":[{"type":"string","minLength":1,"maxLength":120},{"type":"null"}]},"phone":{"type":"string","maxLength":30,"pattern":"^\\D*(?:\\d\\D*){10,}$"},"email":{"anyOf":[{"type":"string","maxLength":200,"pattern":"^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"},{"type":"null"}]},"services":{"maxItems":20,"type":"array","items":{"type":"string","minLength":1,"maxLength":40}},"headcount":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"headcountBand":{"anyOf":[{"type":"string","minLength":1,"maxLength":20},{"type":"null"}]},"site":{"anyOf":[{"type":"string","minLength":1,"maxLength":300},{"type":"null"}]},"cluster":{"anyOf":[{"type":"string","enum":["haridwar","uttarakhand","delhi-ncr","bengaluru","jalandhar","saharanpur","other","punjab"]},{"type":"null"}]},"startWindow":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"targetStartDate":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"requestType":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"enquiry":{"type":"string","minLength":1,"maxLength":8000},"sourcePath":{"anyOf":[{"type":"string","minLength":1,"maxLength":300},{"type":"null"}]}},"required":["caseId","receivedAt","channel","name","company","jobTitle","phone","email","services","headcount","headcountBand","site","cluster","startWindow","targetStartDate","requestType","enquiry","sourcePath"],"additionalProperties":false,"title":"business_enquiry.v1 (canonical)","description":"A business enquiry as the website forwards it to Windmill f/leads/intake."}},"required":["v","sentAt","idempotencyKey","type","id","payload"],"additionalProperties":false},{"type":"object","properties":{"v":{"type":"number","const":1},"sentAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"idempotencyKey":{"anyOf":[{"type":"string","pattern":"^[A-Za-z0-9_.:-]{8,128}$"},{"type":"null"}]},"type":{"type":"string","const":"compliance_help.v1"},"id":{"type":"string","pattern":"^(REQ|AGT)-\\d{8}-[0-9A-F]{8}$"},"payload":{"type":"object","properties":{"caseId":{"type":"string","pattern":"^(REQ|AGT)-\\d{8}-[0-9A-F]{8}$"},"receivedAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"channel":{"type":"string","enum":["web","agent"]},"name":{"type":"string","minLength":1,"maxLength":120},"company":{"anyOf":[{"type":"string","minLength":1,"maxLength":160},{"type":"null"}]},"jobTitle":{"anyOf":[{"type":"string","minLength":1,"maxLength":120},{"type":"null"}]},"phone":{"type":"string","maxLength":30,"pattern":"^\\D*(?:\\d\\D*){10,}$"},"email":{"anyOf":[{"type":"string","maxLength":200,"pattern":"^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"},{"type":"null"}]},"services":{"maxItems":20,"type":"array","items":{"type":"string","minLength":1,"maxLength":40}},"headcount":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"headcountBand":{"anyOf":[{"type":"string","minLength":1,"maxLength":20},{"type":"null"}]},"site":{"anyOf":[{"type":"string","minLength":1,"maxLength":300},{"type":"null"}]},"cluster":{"anyOf":[{"type":"string","enum":["haridwar","uttarakhand","delhi-ncr","bengaluru","jalandhar","saharanpur","other","punjab"]},{"type":"null"}]},"startWindow":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"targetStartDate":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"requestType":{"type":"string","const":"compliance-help"},"enquiry":{"type":"string","minLength":1,"maxLength":8000},"sourcePath":{"anyOf":[{"type":"string","minLength":1,"maxLength":300},{"type":"null"}]}},"required":["caseId","receivedAt","channel","name","company","jobTitle","phone","email","services","headcount","headcountBand","site","cluster","startWindow","targetStartDate","requestType","enquiry","sourcePath"],"additionalProperties":false,"title":"compliance_help.v1 (canonical)","description":"A compliance help request: a lead with requestType compliance-help."}},"required":["v","sentAt","idempotencyKey","type","id","payload"],"additionalProperties":false}],"title":"envelope.v1","description":"One submission, as the site delivers it to Windmill webhook/vspl-submission."};
+  let ajv;
+  const compiled = new Map();
+  function validator(schema) {
+      ajv ??= new Ajv2020({ allErrors: true, strict: false, validateFormats: false });
+      let validate = compiled.get(schema);
+      if (!validate) {
+          validate = ajv.compile(schema);
+          compiled.set(schema, validate);
+      }
+      return validate;
+  }
+  function fieldsOf(validate) {
+      const names = new Set();
+      for (const e of validate.errors ?? []) {
+          const top = e.instancePath.split("/")[1];
+          if (top)
+              names.add(top);
+          else if (e.keyword === "required" || e.keyword === "additionalProperties") {
+              const p = e.params;
+              names.add(p.missingProperty ?? p.additionalProperty ?? "payload");
+          }
+          else
+              names.add("payload");
+      }
+      return names.size ? [...names].sort() : ["payload"];
+  }
+  function check(schema, body) {
+      const validate = validator(schema);
+      return validate(body) ? { ok: true, value: body } : { ok: false, errors: fieldsOf(validate) };
+  }
+  const SCHEMAS = {
+      "job_application.v1": jobApplicationSchema,
+      "business_enquiry.v1": businessEnquirySchema,
+      "envelope.v1": envelopeSchema,
   };
-  function validateLead(body) {
-      const b = (body && typeof body === "object" ? body : {});
-      const errors = [];
-      const caseId = str(b.caseId, 40);
-      if (!caseId || !CASE_ID.test(caseId))
-          errors.push("caseId");
-      const name = str(b.name, 120);
-      if (!name)
-          errors.push("name");
-      const phone = str(b.phone, 30);
-      if (!phone || phoneDigits(phone).length < 10)
-          errors.push("phone");
-      const enquiry = str(b.enquiry, 8000);
-      if (!enquiry)
-          errors.push("enquiry");
-      const receivedAt = str(b.receivedAt, 40);
-      if (!receivedAt || Number.isNaN(Date.parse(receivedAt)))
-          errors.push("receivedAt");
-      const email = str(b.email, 200);
-      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-          errors.push("email");
-      if (errors.length)
-          return { ok: false, errors };
-      const services = Array.isArray(b.services) ? b.services.filter((s) => typeof s === "string").slice(0, 20).map((s) => s.slice(0, 40)) : [];
-      return {
-          ok: true,
-          lead: {
-              caseId: caseId,
-              receivedAt: new Date(receivedAt).toISOString(),
-              channel: b.channel === "agent" ? "agent" : "web",
-              name: name,
-              company: str(b.company, 160),
-              jobTitle: str(b.jobTitle, 120),
-              phone: phone,
-              email,
-              services,
-              headcount: str(b.headcount, 40),
-              headcountBand: str(b.headcountBand, 20),
-              site: str(b.site, 300),
-              cluster: str(b.cluster, 40),
-              startWindow: str(b.startWindow, 40),
-              targetStartDate: str(b.targetStartDate, 40),
-              requestType: str(b.requestType, 40),
-              enquiry: enquiry,
-              sourcePath: str(b.sourcePath, 300),
-          },
-      };
+  return { check, SCHEMAS };
+})();
+
+// integrations/windmill/leads/lib/lead.ts
+const { checkLead, serviceValues, crewSize, opportunityName, recordLead } = (() => {
+  function checkLead(body) {
+      const checked = check(SCHEMAS["business_enquiry.v1"], body);
+      return checked.ok ? { ok: true, lead: { ...checked.value, receivedAt: new Date(checked.value.receivedAt).toISOString() } } : checked;
   }
   function serviceValues(roles) {
       const out = new Set();
@@ -528,7 +556,6 @@ const { validateLead, serviceValues, crewSize, opportunityName, recordLead } = (
               ...(companyId ? { companyId } : {}),
           })).id;
       }
-      const cluster = lead.cluster ? optionValue(lead.cluster) : null;
       const opportunity = await crm.create("opportunities", "Opportunity", {
           name: opportunityName(lead),
           stage: "NEW",
@@ -537,7 +564,7 @@ const { validateLead, serviceValues, crewSize, opportunityName, recordLead } = (
           crewSize: crewSize(lead),
           services: serviceValues(lead.services),
           siteLocation: lead.site ?? "",
-          cluster: cluster && CLUSTERS.has(cluster) ? cluster : null,
+          cluster: lead.cluster ? optionValue(lead.cluster) : null,
           startDate: isoDate(lead.targetStartDate),
           enquiry: lead.enquiry,
           pointOfContactId: personId,
@@ -563,7 +590,112 @@ const { validateLead, serviceValues, crewSize, opportunityName, recordLead } = (
           opportunityId,
       });
   }
-  return { validateLead, serviceValues, crewSize, opportunityName, recordLead };
+  return { checkLead, serviceValues, crewSize, opportunityName, recordLead };
+})();
+
+// integrations/windmill/leads/lib/sql.ts
+const { LEADS_SAVE, LEADS_SYNC_LOCK, LEADS_RECOVER_STUCK, LEADS_CLAIM, LEADS_FINISH } = (() => {
+  const LEADS_SAVE = `
+  WITH l AS (
+    INSERT INTO leads (case_id, type, channel, payload, idempotency_key, received_at)
+    VALUES ($1, $2, $3, $4::jsonb, $5, $6::timestamptz)
+    ON CONFLICT (case_id) DO NOTHING
+    RETURNING id
+  ), d AS (
+    INSERT INTO deliveries (lead_id, target) SELECT id, 'crm' FROM l RETURNING 1
+  )
+  SELECT (SELECT id FROM l) AS lead_id, (SELECT count(*) FROM d) AS deliveries;`;
+  const LEADS_SYNC_LOCK = `SELECT pg_try_advisory_lock(hashtext('leads:sync_crm')) AS locked;`;
+  const LEADS_RECOVER_STUCK = `
+  UPDATE deliveries
+  SET status = CASE WHEN attempts >= max_attempts THEN 'dead' ELSE 'pending' END,
+      last_error = coalesce(last_error, 'Interrupted; picked up again'), next_attempt_at = now(), updated_at = now()
+  WHERE status = 'running' AND updated_at < now() - interval '15 minutes'
+  RETURNING lead_id;`;
+  const LEADS_CLAIM = `
+  WITH c AS (
+    SELECT lead_id FROM deliveries
+    WHERE target = 'crm' AND status = 'pending' AND next_attempt_at <= now() AND ($1::uuid IS NULL OR lead_id = $1::uuid)
+    ORDER BY next_attempt_at, created_at LIMIT 1 FOR UPDATE SKIP LOCKED
+  ), claimed AS (
+    UPDATE deliveries d SET status = 'running', attempts = d.attempts + 1, updated_at = now()
+    FROM c WHERE d.lead_id = c.lead_id AND d.target = 'crm'
+    RETURNING d.lead_id, d.attempts
+  )
+  SELECT claimed.lead_id, claimed.attempts, l.case_id, l.payload
+  FROM claimed JOIN leads l ON l.id = claimed.lead_id;`;
+  const LEADS_FINISH = `
+  UPDATE deliveries
+  SET status = CASE WHEN $2 = 'retry' THEN (CASE WHEN attempts >= max_attempts THEN 'dead' ELSE 'pending' END) ELSE $2 END,
+      next_attempt_at = CASE WHEN $2 = 'retry' THEN now() + make_interval(secs => $4::int) ELSE next_attempt_at END,
+      last_error = $3, result = coalesce($5::jsonb, result),
+      done_at = CASE WHEN $2 = 'done' THEN now() ELSE done_at END, updated_at = now()
+  WHERE lead_id = $1::uuid AND target = 'crm' AND status = 'running'
+  RETURNING status;`;
+  return { LEADS_SAVE, LEADS_SYNC_LOCK, LEADS_RECOVER_STUCK, LEADS_CLAIM, LEADS_FINISH };
+})();
+
+// integrations/windmill/leads/lib/run-leads.ts
+const { saveLead, LEADS_BATCH, leadBackoffSeconds, runLeadsSync } = (() => {
+  async function saveLead(query, lead, idempotencyKey = null) {
+      const type = lead.requestType === "compliance-help" ? "compliance_help.v1" : "business_enquiry.v1";
+      const [row] = await query(LEADS_SAVE, [
+          lead.caseId,
+          type,
+          lead.channel,
+          JSON.stringify(lead),
+          idempotencyKey,
+          lead.receivedAt,
+      ]);
+      return { leadId: row?.lead_id ?? null, created: Boolean(row?.lead_id) };
+  }
+  const LEADS_BATCH = 5;
+  const leadBackoffSeconds = (attempts) => Math.min(60 * 2 ** Math.max(0, attempts - 1), 3600);
+  async function runLeadsSync(deps, options = {}) {
+      const log = deps.log ?? ((m) => console.error(m));
+      const result = { recovered: 0, done: 0, retried: 0, dead: 0 };
+      const [lock] = await deps.query(LEADS_SYNC_LOCK);
+      if (!lock?.locked)
+          return { ...result, skipped: "another sync is running" };
+      result.recovered = (await deps.query(LEADS_RECOVER_STUCK)).length;
+      const batch = options.leadId ? 1 : (options.batch ?? LEADS_BATCH);
+      for (let n = 0; n < batch; n++) {
+          const [claim] = await deps.query(LEADS_CLAIM, [options.leadId ?? null]);
+          if (!claim)
+              break;
+          let outcome = "done";
+          let error = null;
+          let written = null;
+          try {
+              written = await recordLead(deps.crm, claim.payload);
+          }
+          catch (err) {
+              outcome = "retry";
+              error = (err instanceof Error ? err.message : "unknown error").slice(0, 500);
+          }
+          const [finished] = await deps.query(LEADS_FINISH, [
+              claim.lead_id,
+              outcome,
+              error,
+              leadBackoffSeconds(claim.attempts),
+              written === null ? null : JSON.stringify(written),
+          ]);
+          if (finished?.status === "done")
+              result.done++;
+          else if (finished?.status === "dead")
+              result.dead++;
+          else
+              result.retried++;
+          if (error && /HTTP 429/.test(error)) {
+              result.rateLimited = true;
+              break;
+          }
+          if (error)
+              log(`lead ${claim.case_id} not in Twenty yet: ${error}`);
+      }
+      return result;
+  }
+  return { saveLead, LEADS_BATCH, leadBackoffSeconds, runLeadsSync };
 })();
 
 export const SECRET_HEADER = "x-vspl-lead-secret";
@@ -582,13 +714,15 @@ export async function preprocessor(event) {
 export async function main(authorized, body) {
     if (!authorized)
         return respond(403, { ok: false, error: "Forbidden" });
-    const checked = validateLead(body);
+    const checked = checkLead(body);
     if (!checked.ok)
         return respond(400, { ok: false, error: `Invalid lead: ${checked.errors.join(", ")}` });
     try {
-        const crm = await twentyFromConfig();
-        const result = await recordLead(crm, checked.lead);
-        return respond(202, { ok: true, caseId: checked.lead.caseId, created: result.created });
+        const saved = await withDatabase("leads_pg_url", (query) => saveLead(query, checked.lead));
+        if (saved.leadId) {
+            await wmill.runScriptByPathAsync("f/leads/sync_crm", { lead_id: saved.leadId }).catch(() => { });
+        }
+        return respond(202, { ok: true, caseId: checked.lead.caseId, created: saved.created });
     }
     catch (err) {
         console.error("lead intake failed:", checked.lead.caseId, err instanceof Error ? `${err.name}: ${err.message}` : "unknown error");

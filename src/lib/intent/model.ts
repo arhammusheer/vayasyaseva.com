@@ -16,7 +16,7 @@
  * and Delhi NCR (business only).
  *
  * Pure: the header, the market lists and the jobs form (client), the tests
- * and analytics all use it. Market knowledge (places, regions, ad words,
+ * and analytics all use it. Market knowledge (places and ad-tag words, regions,
  * stand-ins) comes from src/markets; this file holds the weighing. The server always renders
  * the no-signal page, so search engines see the same page as a visitor with
  * no signals; only the order and the area links adapt after load.
@@ -35,8 +35,12 @@ import {
   stateForPlace,
 } from "@/markets/index";
 
-/** Bumped when the decision rules change, so analytics can tell the models' data apart. */
-export const MODEL_VERSION = 2;
+/**
+ * Bumped when the decision rules change, so analytics can tell the models'
+ * data apart. 3 (17 Oct 2026): one vocabulary per market (place and ad
+ * words merged), UT read as UK, no Saharanpur intent, multi-word ad tags.
+ */
+export const MODEL_VERSION = 3;
 
 export type AreaSignals = {
   /**
@@ -70,7 +74,7 @@ export const WEIGHTS = { chosenFresh: 20, chosen: 12, param: 7, landing: 6, page
  * the header and the forms import them by these names.
  */
 
-/** A visitor's region (ISO 3166-2:IN, without "IN-") to the market covering the state. UP has none: only its NCR cities do. */
+/** A state (ISO 3166-2:IN, without "IN-", current codes: UT is read as UK by the functions) to the market covering it. UP has none: only its NCR cities do. */
 export const REGION_CLUSTERS: Readonly<Record<string, string>> = REGION_MARKETS;
 
 /** The states each market's sites are in (ISO 3166-2:IN codes). */
@@ -88,7 +92,8 @@ export const PLACES: readonly { words: readonly string[]; region: readonly strin
 
 /**
  * The state a typed city is in, when it names a place in PLACES ("Roorkee"
- * → UK, "Peenya" → KA, "Noida" → UP), for every market alike.
+ * → UK, "Peenya" → KA, "Noida" → UP, "Punjab" → PB), for every market
+ * alike. "NCR" spans three states and names none.
  */
 export const placeState = (city: string | null | undefined): string | undefined => stateForPlace(city);
 
@@ -120,10 +125,11 @@ export const siteCluster = (state: string | null | undefined, city: string | nul
   siteMarket(state, city, pageCluster);
 
 /**
- * Markets named by place words in UTM tags and campaign names, as whole
- * words (src/markets/data.ts adWords). Campaigns say which market they are
- * for with ?cluster= or a place word (jobs_jalandhar), never a generic name
- * (search_jobs means no market).
+ * Markets named by their words in UTM tags and campaign names, as whole
+ * words, `_` and `-` read as spaces (src/markets/data.ts placeGroups: the
+ * same vocabulary as places). Campaigns say which market they are for with
+ * ?cluster= or a place word (jobs_jalandhar, jobs_electronic_city), never a
+ * generic name (search_jobs means no market).
  */
 export const clustersInUtm = (values: (string | null | undefined)[]): string[] => marketsInAdTags(values);
 

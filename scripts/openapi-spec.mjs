@@ -1,135 +1,27 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-// Node strips the types; rules.ts has no imports, so it loads as plain JS.
-import {
-  AGENT_LANGUAGE_SOURCES,
-  ATTACHMENT_KINDS,
-  INTAKE_LIMITS,
-  JOB_ROLE_SLUGS,
-  MAX_AGENT_NAME_LENGTH,
-} from "../src/lib/talent-intake/rules.ts";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, "..");
 
-export const contactContractPath = path.join(projectRoot, "src/contracts/contact.contract.json");
+export const contactContractPath = path.join(projectRoot, "packages/contracts/src/contact.contract.json");
 export const openApiOutputPath = path.join(projectRoot, "src/openapi/v1.json");
+
+export const componentsPath = path.join(projectRoot, "packages/contracts/generated/openapi.components.json");
+
+/** components.schemas, generated from the Zod contracts. */
+export function loadComponents() {
+  return JSON.parse(fs.readFileSync(componentsPath, "utf8"));
+}
 
 export function loadContactContract() {
   return JSON.parse(fs.readFileSync(contactContractPath, "utf8"));
 }
 
-function buildFieldProperty(definition) {
-  const property =
-    definition.type === "enum"
-      ? { type: "string", enum: Object.keys(definition.values) }
-      : definition.type === "enum-array"
-        ? {
-            type: "array",
-            items: { type: "string", enum: Object.keys(definition.values) },
-            uniqueItems: true,
-            minItems: definition.minItems ?? 1,
-          }
-        : { type: "string" };
-
-  // Ids with their labels, so an agent can match what the person said.
-  const labels =
-    definition.type === "enum" || definition.type === "enum-array"
-      ? Object.entries(definition.values)
-          .filter(([id, label]) => id !== label)
-          .map(([id, label]) => `${id} (${label})`)
-          .join(", ")
-      : "";
-  property.description = labels ? `${definition.description} Values: ${labels}.` : definition.description;
-
-  if (typeof definition.minLength === "number") property.minLength = definition.minLength;
-  if (typeof definition.maxLength === "number") property.maxLength = definition.maxLength;
-  if (typeof definition.pattern === "string") property.pattern = definition.pattern;
-  if (typeof definition.format === "string") property.format = definition.format;
-  if (definition.example !== undefined) property.example = definition.example;
-  if (definition.deprecated) property.deprecated = true;
-  return property;
-}
-
-function buildRequestSchema(request) {
-  const properties = {};
-  const required = [];
-
-  for (const [fieldName, definition] of Object.entries(request.fields)) {
-    if (definition.required) {
-      required.push(fieldName);
-    }
-
-    properties[fieldName] = buildFieldProperty(definition);
-  }
-
-  return {
-    type: "object",
-    additionalProperties: false,
-    required,
-    description: request.requireOneOfMessage,
-    anyOf: request.requireOneOf.map((group) => ({ required: group })),
-    properties,
-  };
-}
-
-/** Fields only the website sets; the agent route drops them. */
-const WEBSITE_ONLY_FIELDS = ["pageCluster", "sourcePath"];
-
 const json = (ref) => ({ "application/json": { schema: { $ref: `#/components/schemas/${ref}` } } });
 const response = (description, ref) => ({ description, content: json(ref) });
-
-const agentSchema = {
-  type: "object",
-  additionalProperties: false,
-  required: ["name"],
-  description: "Who is sending. Optional, shown to our team with the submission.",
-  properties: {
-    name: {
-      type: "string",
-      minLength: 1,
-      maxLength: MAX_AGENT_NAME_LENGTH,
-      pattern: "^[\\p{L}\\p{N} .,_+()/:-]+$",
-      example: "Example Assistant",
-    },
-  },
-};
-
-const personFields = {
-  phone: {
-    type: "string",
-    description: "The job seeker's 10-digit Indian mobile number. +91 or a leading 0 is accepted.",
-    example: "98765 43210",
-  },
-  adult: {
-    type: "boolean",
-    const: true,
-    description: "The person told you they are 18 or older. Jobs are for adults only.",
-  },
-  consent: {
-    type: "boolean",
-    const: true,
-    description:
-      "The person agreed that Vayasya Seva may keep their details and contact them about work, under the job seeker privacy notice (https://www.vayasyaseva.com/en-in/privacy#job-seekers; in plain words, in their language: https://www.vayasyaseva.com/en-in/jobs/privacy).",
-  },
-};
-
-const jobPageFields = {
-  language: {
-    type: "string",
-    enum: Object.keys(AGENT_LANGUAGE_SOURCES),
-    default: "en",
-    description: "Language the person speaks: en (English), hi (Hindi), hinglish (Hindi written in Latin script).",
-  },
-  role: {
-    type: ["string", "null"],
-    enum: [...JOB_ROLE_SLUGS, null],
-    description: "The kind of work, if the person named one that matches. Leave it out otherwise.",
-  },
-  agent: { $ref: "#/components/schemas/AgentInfo" },
-};
 
 const agentErrors = {
   "400": response("Invalid payload; `fields` says which", "AgentError"),
@@ -137,114 +29,6 @@ const agentErrors = {
   "502": response("Our side failed; try again later", "AgentError"),
   "503": response("Temporarily unavailable; try again later", "AgentError"),
 };
-
-function buildAgentJobsSchemas() {
-  return {
-    AgentInfo: agentSchema,
-    AgentJobsRequest: {
-      type: "object",
-      additionalProperties: false,
-      required: ["phone", "adult", "consent", "text"],
-      properties: {
-        ...jobPageFields,
-        ...personFields,
-        text: {
-          type: "string",
-          minLength: 1,
-          maxLength: INTAKE_LIMITS.maxTextLength,
-          description:
-            "About the person in their own words: name, work wanted, experience, where they live, when they can start. Never include Aadhaar, PAN or bank details.",
-          example: "Name: Ravi Kumar. Wants packing or warehouse work. 2 years in a packing unit. Lives in Bahadrabad. Can start next week.",
-        },
-      },
-    },
-    AgentJobsStartRequest: {
-      type: "object",
-      additionalProperties: false,
-      required: ["files"],
-      properties: {
-        ...jobPageFields,
-        files: {
-          type: "array",
-          minItems: 1,
-          maxItems: INTAKE_LIMITS.maxAttachments,
-          items: {
-            type: "object",
-            additionalProperties: false,
-            required: ["kind", "mime", "size", "name"],
-            properties: {
-              kind: { type: "string", enum: [...ATTACHMENT_KINDS] },
-              mime: {
-                type: "string",
-                description:
-                  "image: image/jpeg, png or webp. document: application/pdf, msword or vnd.openxmlformats-officedocument.wordprocessingml.document.",
-                example: "application/pdf",
-              },
-              size: {
-                type: "integer",
-                minimum: 1,
-                description: `Bytes. At most ${INTAKE_LIMITS.maxBytes.image} for images, ${INTAKE_LIMITS.maxBytes.document} for documents.`,
-              },
-              name: { type: ["string", "null"], maxLength: INTAKE_LIMITS.maxFileNameLength },
-            },
-          },
-        },
-      },
-    },
-    AgentJobsStartResponse: {
-      type: "object",
-      required: ["ref", "ticket", "uploads"],
-      properties: {
-        ref: { type: "string", example: "VS-J-7K2M9Q" },
-        ticket: { type: "string", description: "Signed, valid for an hour. Send it unchanged to /api/agent/jobs/submit." },
-        uploads: {
-          type: "array",
-          description: "Same order as `files`. PUT each file's bytes to `url` with exactly these `headers`, within 15 minutes.",
-          items: {
-            type: "object",
-            required: ["key", "url", "headers"],
-            properties: {
-              key: { type: "string" },
-              url: { type: "string", format: "uri" },
-              headers: { type: "object", additionalProperties: { type: "string" } },
-            },
-          },
-        },
-      },
-    },
-    AgentJobsSubmitRequest: {
-      type: "object",
-      additionalProperties: false,
-      required: ["ticket", "phone", "adult", "consent"],
-      properties: {
-        ticket: { type: "string" },
-        ...personFields,
-        text: { type: ["string", "null"], maxLength: INTAKE_LIMITS.maxTextLength },
-      },
-    },
-    AgentJobsAccepted: {
-      type: "object",
-      required: ["ref"],
-      properties: {
-        ref: {
-          type: "string",
-          example: "VS-J-7K2M9Q",
-          description: "Give this to the person. Our team calls them on the number they applied with; they quote this reference if they write to us about the application.",
-        },
-      },
-    },
-    AgentError: {
-      type: "object",
-      additionalProperties: true,
-      required: ["error"],
-      properties: {
-        error: { type: "string", example: "invalid_request" },
-        fields: { type: "array", items: { type: "object", additionalProperties: true } },
-        retryAfterSeconds: { type: "integer" },
-      },
-    },
-  };
-}
 
 function buildAgentPaths() {
   return {
@@ -310,10 +94,7 @@ function buildAgentPaths() {
 }
 
 export function buildOpenApiSpec(contactContract) {
-  const requestSchema = buildRequestSchema(contactContract.request);
-  const agentProperties = Object.fromEntries(
-    Object.entries(requestSchema.properties).filter(([name]) => !WEBSITE_ONLY_FIELDS.includes(name))
-  );
+  const { schemas } = loadComponents();
 
   return {
     openapi: "3.1.1",
@@ -413,65 +194,9 @@ export function buildOpenApiSpec(contactContract) {
       },
       ...buildAgentPaths(),
     },
-    components: {
-      schemas: {
-        ContactInquiryRequest: requestSchema,
-        AgentContactRequest: {
-          ...requestSchema,
-          properties: { ...agentProperties, agent: { $ref: "#/components/schemas/AgentInfo" } },
-        },
-        AgentContactSuccess: {
-          type: "object",
-          required: ["success", "caseId", "message"],
-          properties: {
-            success: { type: "boolean", const: true },
-            caseId: { type: "string", example: "AGT-20261002-1A2B3C4D", description: "Give this to the person." },
-            message: { type: "string", example: contactContract.responses.successMessage },
-          },
-        },
-        ...buildAgentJobsSchemas(),
-        ContactInquirySuccess: {
-          type: "object",
-          additionalProperties: false,
-          required: ["success", "message"],
-          properties: {
-            success: {
-              type: "boolean",
-              const: true,
-              example: true,
-            },
-            caseId: {
-              type: "string",
-              example: "REQ-20261016-1A2B3C4D",
-              description: "Reference for this enquiry, shown to the person.",
-            },
-            message: {
-              type: "string",
-              example: contactContract.responses.successMessage,
-            },
-          },
-        },
-        ApiError: {
-          type: "object",
-          additionalProperties: true,
-          required: ["error"],
-          properties: {
-            error: {
-              type: "string",
-              example: contactContract.responses.validationError,
-            },
-            details: {
-              type: "array",
-              description: "Validation issue details (present on 400 responses)",
-              items: {
-                type: "object",
-                additionalProperties: true,
-              },
-            },
-          },
-        },
-      },
-    },
+    // The request and response schemas: Zod in packages/contracts,
+    // generated by its scripts/generate.mjs (pnpm contracts:generate).
+    components: { schemas },
   };
 }
 

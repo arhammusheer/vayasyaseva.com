@@ -1,0 +1,14 @@
+{
+  "schema": "AgentJobsStartRequest",
+  "note": "Declares one PDF.",
+  "data": {
+    "files": [
+      {
+        "kind": "document",
+        "mime": "application/pdf",
+        "size": 1000,
+        "name": "cv.pdf"
+      }
+    ]
+  }
+}

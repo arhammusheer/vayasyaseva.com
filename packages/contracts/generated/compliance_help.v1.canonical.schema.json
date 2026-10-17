@@ -1,0 +1,202 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.vayasyaseva.com/contracts/compliance_help.v1.canonical.schema.json",
+  "type": "object",
+  "properties": {
+    "caseId": {
+      "type": "string",
+      "pattern": "^(REQ|AGT)-\\d{8}-[0-9A-F]{8}$"
+    },
+    "receivedAt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+    },
+    "channel": {
+      "type": "string",
+      "enum": [
+        "web",
+        "agent"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "company": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "jobTitle": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "phone": {
+      "type": "string",
+      "maxLength": 30,
+      "pattern": "^\\D*(?:\\d\\D*){10,}$"
+    },
+    "email": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 200,
+          "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "services": {
+      "maxItems": 20,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 40
+      }
+    },
+    "headcount": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "headcountBand": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "site": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "cluster": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "haridwar",
+            "uttarakhand",
+            "delhi-ncr",
+            "bengaluru",
+            "jalandhar",
+            "saharanpur",
+            "other",
+            "punjab"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "startWindow": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "targetStartDate": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "requestType": {
+      "type": "string",
+      "const": "compliance-help"
+    },
+    "enquiry": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 8000
+    },
+    "sourcePath": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "caseId",
+    "receivedAt",
+    "channel",
+    "name",
+    "company",
+    "jobTitle",
+    "phone",
+    "email",
+    "services",
+    "headcount",
+    "headcountBand",
+    "site",
+    "cluster",
+    "startWindow",
+    "targetStartDate",
+    "requestType",
+    "enquiry",
+    "sourcePath"
+  ],
+  "additionalProperties": false,
+  "title": "compliance_help.v1 (canonical)",
+  "description": "A compliance help request: a lead with requestType compliance-help."
+}

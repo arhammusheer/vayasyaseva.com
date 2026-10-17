@@ -6,7 +6,7 @@
  * of this).
  *
  * Market knowledge that is not page content (names and link labels, places,
- * regions, ad words, the language picker and header switch order) lives in
+ * regions, the words places and ad tags share, the language picker and header switch order) lives in
  * src/markets.
  */
 import type { ClusterId, LocaleTag, WageStateSlug } from "./identifiers";

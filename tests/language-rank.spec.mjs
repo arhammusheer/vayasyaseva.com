@@ -51,6 +51,19 @@ test("only the page's languages are ranked", () => {
   assert.deepEqual(order({ country: "IN", region: "UP" }, ["en-IN", "hi-Latn-IN"]), ["hi-Latn-IN", "en-IN"]);
 });
 
+test("Saharanpur steers no picker order, as intent or as a page's cluster; UT orders as UK", () => {
+  const visitor = { country: "IN", region: "MH" };
+  assert.deepEqual(order({ ...visitor, intent: "saharanpur" }), order(visitor));
+  assert.deepEqual(order({ ...visitor, cluster: "saharanpur" }), order(visitor));
+  assert.deepEqual(order({ ...visitor, intent: "haridwar" }), ["hi-IN", "hi-Latn-IN", "en-IN"]);
+  assert.equal(rank.rankSegmentFor("/jobs/apply", { country: "US" }, new URLSearchParams("cluster=saharanpur")), "en-hi-hl");
+  assert.equal(rank.rankSegmentFor("/jobs/apply", { country: "US" }, new URLSearchParams("cluster=haridwar")), "hi-hl-en");
+  const every = ["en-IN", "hi-IN", "hi-Latn-IN", "pa-IN", "kn-IN"];
+  for (const acceptLanguage of [undefined, "pa", "kn"]) {
+    assert.deepEqual(order({ country: "IN", region: "UT", acceptLanguage }, every), order({ country: "IN", region: "UK", acceptLanguage }, every));
+  }
+});
+
 test("visitorRegion reads Vercel headers, else Cloudflare's", () => {
   const h = (o) => new Headers(o);
   assert.deepEqual(rank.visitorRegion(h({ "x-vercel-ip-country": "IN", "x-vercel-ip-country-region": "UT" })), { country: "IN", region: "UT" });
@@ -143,6 +156,14 @@ test("urlIntent reads ?cluster= and the Punjab campaigns' UTM tags", () => {
   assert.equal(rank.urlIntent(new URLSearchParams("utm_term=ludhiana%20job")), "punjab");
   assert.equal(rank.urlIntent(new URLSearchParams("utm_term=kapurthala%20job")), "jalandhar");
   assert.equal(rank.urlIntent(new URLSearchParams("cluster=nowhere")), undefined);
+  // Only markets are intent (model v3): Saharanpur and "other" are stored cluster ids, not markets.
+  assert.equal(rank.urlIntent(new URLSearchParams("cluster=saharanpur")), undefined);
+  assert.equal(rank.urlIntent(new URLSearchParams("cluster=other")), undefined);
+  assert.equal(rank.urlIntent(new URLSearchParams("cluster=saharanpur&utm_campaign=jobs_haridwar")), "haridwar");
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_campaign=jobs_saharanpur")), undefined);
+  // Multi-word place words match with _ or - for spaces.
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_campaign=jobs_electronic_city")), "bengaluru");
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_term=sultanpur-lodhi")), "jalandhar");
   // A Punjab ad landing on the neutral /jobs/apply gets the Punjabi-first picker.
   const seg = rank.rankSegmentFor("/jobs/apply", { country: "IN", region: "UP" }, new URLSearchParams("utm_campaign=jobs_jalandhar"));
   assert.ok(seg.startsWith("pa-"), seg);

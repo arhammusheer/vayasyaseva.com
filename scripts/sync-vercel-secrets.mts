@@ -34,10 +34,25 @@ const secrets: [name: string, read: () => string][] = [
   ["TALENT_R2_SECRET_ACCESS_KEY", () => sopsValue("TALENT_R2_SECRET_ACCESS_KEY")],
   ["TALENT_INTAKE_WEBHOOK_SECRET", () => clusterValue("growth", "windmill-talent", "TALENT_INTAKE_WEBHOOK_SECRET")],
   ["TURNSTILE_SECRET_KEY", () => tofuOutput("vayasyaseva_jobs_turnstile_secret")],
+  // The jobs tickets' own key (src/lib/talent-intake/server.ts), once it is in
+  // vercel/vayasyaseva.com.sops.yaml. Until then the site derives it from the
+  // webhook secret, as before, so a missing value is skipped, not an error.
+  ["TICKET_SIGNING_KEY", () => sopsValue("TICKET_SIGNING_KEY")],
+  // The signed Windmill routes' key (webhook/vspl-submission, webhook/vspl-idempotency), once the owner
+  // has created growth/windmill-submission. With it the site switches to the envelope route.
+  ["SUBMISSION_SIGNING_SECRET", () => clusterValue("growth", "windmill-submission", "SUBMISSION_SIGNING_SECRET")],
 ];
+const optional = new Set(["TICKET_SIGNING_KEY", "SUBMISSION_SIGNING_SECRET"]);
 
 for (const [name, read] of secrets) {
-  const value = read().trim();
+  let value: string;
+  try {
+    value = read().trim();
+  } catch (error) {
+    if (!optional.has(name)) throw error;
+    console.log(`- ${name}: not in its source yet, skipped`);
+    continue;
+  }
   if (!value) throw new Error(`${name}: empty value from its source`);
   run("vercel", ["env", "add", name, "production,preview", "--sensitive", "--force", "--yes"], { input: value });
   console.log(`- ${name}: set for production and preview (${value.length} chars)`);

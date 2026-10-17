@@ -1,0 +1,19 @@
+{
+  "schema": "ContactInquiryRequest",
+  "note": "Each role once.",
+  "data": {
+    "name": "Asha Rawat",
+    "phone": "+91 98765 43210",
+    "company": "Acme Foods",
+    "email": "asha@acme.example",
+    "roles": [
+      "packing",
+      "packing"
+    ],
+    "headcountBand": "50-99",
+    "siteState": "UK",
+    "siteCity": "SIDCUL Haridwar",
+    "startWindow": "2-4-weeks",
+    "durationBand": "ongoing"
+  }
+}

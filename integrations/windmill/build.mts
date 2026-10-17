@@ -1,9 +1,9 @@
 /**
  * Generates the Windmill scripts in f/<folder>/ from <folder>/scripts/*.ts
- * (talent, leads, notify).
+ * (talent, leads, platform, notify).
  * Windmill runs each script as one Bun file and resolves npm imports
  * itself, but cannot reach files outside the workspace (talent/lib, the
- * website's src/lib/talent-intake/rules.ts). So each entry is compiled
+ * contracts package, packages/contracts/src/rules.ts). So each entry is compiled
  * with TypeScript and its relative imports are inlined, each module in its
  * own scope; npm and node: imports stay as imports at the top.
  *
@@ -13,7 +13,7 @@
  * The .script.yaml files are JSON (valid YAML), in the wmill CLI's layout,
  * so `wmill sync` could read the folder too; deploy.mts uses the API.
  */
-import { readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, relative, resolve } from "node:path";
 import ts from "typescript";
 import { FOLDER, SCRIPTS, specPath } from "./scripts.mts";
@@ -31,11 +31,12 @@ interface CompiledModule {
 
 const cache = new Map<string, CompiledModule>();
 
-/** Schema files inlined where a setup script names their placeholder (declared in <folder>/scripts/globals.d.ts). */
-const SCHEMAS: [string, string][] = [
-  ["__TALENT_SCHEMA__", "talent/schema.sql"],
-  ["__NOTIFY_SCHEMA__", "notify/schema.sql"],
-];
+/** Schema files inlined where a setup script names their placeholder (<folder>/scripts/globals.d.ts). */
+const SCHEMAS: Record<string, string> = {
+  __TALENT_SCHEMA__: "talent/schema.sql",
+  __LEADS_SCHEMA__: "leads/schema.sql",
+  __NOTIFY_SCHEMA__: "notify/schema.sql",
+};
 
 function compile(path: string, isEntry = false): CompiledModule {
   const hit = cache.get(path);
@@ -47,7 +48,12 @@ function compile(path: string, isEntry = false): CompiledModule {
 
   const deps: string[] = [];
   const external: string[] = [];
-  let code = output.replace(/^import\s+([^;]*?)\s+from\s+"([^"]+)";?\s*$/gm, (line, _bindings: string, spec: string) => {
+  // A relative JSON import (the contracts' generated schemas) becomes a constant.
+  let code = output.replace(/^import\s+(\w+)\s+from\s+"(\.[^"]+\.json)"\s+with\s*\{\s*type:\s*"json"\s*\};?\s*$/gm, (_line, name: string, spec: string) => {
+    const json = JSON.stringify(JSON.parse(readFileSync(resolve(dirname(path), spec), "utf8")));
+    return `const ${name} = ${json};`;
+  });
+  code = code.replace(/^import\s+([^;]*?)\s+from\s+"([^"]+)";?\s*$/gm, (line, _bindings: string, spec: string) => {
     if (spec.startsWith(".")) {
       deps.push(resolve(dirname(path), spec));
       return "";
@@ -112,7 +118,7 @@ export function bundle(entry: string): string {
     main.code,
     "",
   ].join("\n\n");
-  for (const [placeholder, file] of SCHEMAS) {
+  for (const [placeholder, file] of Object.entries(SCHEMAS)) {
     if (!out.includes(placeholder)) continue;
     // A function replacer: a string one would read "$$" in the SQL as an escaped "$".
     const schemaLiteral = JSON.stringify(readFileSync(resolve(here, file), "utf8"));
@@ -180,6 +186,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
         stale++;
       }
     } else {
+      mkdirSync(dirname(path), { recursive: true });
       writeFileSync(path, content);
       console.log(`wrote ${relative(repoRoot, path)}`);
     }

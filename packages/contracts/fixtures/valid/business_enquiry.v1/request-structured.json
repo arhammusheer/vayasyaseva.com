@@ -1,0 +1,18 @@
+{
+  "schema": "ContactInquiryRequest",
+  "note": "The website form's requirement.",
+  "data": {
+    "name": "Asha Rawat",
+    "phone": "+91 98765 43210",
+    "company": "Acme Foods",
+    "email": "asha@acme.example",
+    "roles": [
+      "packing"
+    ],
+    "headcountBand": "50-99",
+    "siteState": "UK",
+    "siteCity": "SIDCUL Haridwar",
+    "startWindow": "2-4-weeks",
+    "durationBand": "ongoing"
+  }
+}

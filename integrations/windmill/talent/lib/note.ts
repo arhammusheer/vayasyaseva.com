@@ -4,7 +4,7 @@
  * "Files to fetch" nodes: where the submission came from, the person's own
  * message and (on rows from before 16 October 2026) voice-note transcripts.
  */
-import { INTAKE_FORMS, JOB_HUBS, JOB_ROLES, QUICK_ANSWERS, QUICK_QUESTIONS, type QuickQuestion } from "../../../../src/lib/talent-intake/rules.ts";
+import { INTAKE_FORMS, JOB_HUBS, JOB_ROLES, QUICK_ANSWERS, QUICK_QUESTIONS, type QuickQuestion } from "../../../../packages/contracts/src/rules.ts";
 import type { ClaimedSubmission, ComposedNote, FileToAttach } from "./types.ts";
 
 /** The page's language, by stored locale (BCP 47 on new rows, short code on older ones). */

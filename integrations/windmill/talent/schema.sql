@@ -179,5 +179,120 @@ BEGIN
   ALTER TABLE sms_acknowledgements ADD COLUMN IF NOT EXISTS delivered_at timestamptz;
   ALTER TABLE sms_acknowledgements ADD COLUMN IF NOT EXISTS delivery_checked_at timestamptz;
   CREATE INDEX IF NOT EXISTS sms_acknowledgements_request_idx ON sms_acknowledgements (request_id);
+
+  -- Roadmap 1F: one deliveries row per submission and target (the SMS
+  -- acknowledgement, the Chatwoot conversation, the Twenty CRM records),
+  -- worked by the one dispatcher (f/talent/dispatch) with exponential backoff
+  -- and a cap on attempts, after which a row is 'dead'. An SMS whose send was
+  -- interrupted is 'unknown' and is never sent again automatically. The
+  -- older status columns (submissions.status, sms_acknowledgements.status,
+  -- crm_sync) are kept and still written by each step; the views below show
+  -- the old statuses from the deliveries.
+  CREATE TABLE IF NOT EXISTS deliveries (
+    submission_id   uuid NOT NULL REFERENCES submissions (id) ON DELETE CASCADE,
+    target          text NOT NULL CHECK (target IN ('sms', 'chatwoot', 'crm')),
+    status          text NOT NULL DEFAULT 'pending'
+                    CHECK (status IN ('pending', 'running', 'done', 'unknown', 'dead')),
+    attempts        int NOT NULL DEFAULT 0,
+    max_attempts    int NOT NULL,
+    next_attempt_at timestamptz NOT NULL DEFAULT now(),
+    last_error      text,
+    done_at         timestamptz,
+    created_at      timestamptz NOT NULL DEFAULT now(),
+    updated_at      timestamptz NOT NULL DEFAULT now(),
+    PRIMARY KEY (submission_id, target)
+  );
+  CREATE INDEX IF NOT EXISTS deliveries_due_idx ON deliveries (target, next_attempt_at) WHERE status = 'pending';
+  CREATE INDEX IF NOT EXISTS deliveries_status_idx ON deliveries (status, updated_at);
+
+  -- Every new submission gets its three deliveries (SMS: three attempts, as
+  -- before; Chatwoot: three; CRM: eight).
+  CREATE OR REPLACE FUNCTION queue_deliveries() RETURNS trigger LANGUAGE plpgsql AS $fn$
+  BEGIN
+    INSERT INTO deliveries (submission_id, target, max_attempts)
+    VALUES (NEW.id, 'sms', 3), (NEW.id, 'chatwoot', 3), (NEW.id, 'crm', 8)
+    ON CONFLICT DO NOTHING;
+    RETURN NEW;
+  END
+  $fn$;
+  DROP TRIGGER IF EXISTS submissions_queue_deliveries ON submissions;
+  CREATE TRIGGER submissions_queue_deliveries AFTER INSERT ON submissions FOR EACH ROW EXECUTE FUNCTION queue_deliveries();
+
+  -- Twenty shows the acknowledgement's status: when it changes (sent,
+  -- delivered, failed), the CRM delivery runs again.
+  CREATE OR REPLACE FUNCTION reopen_crm_delivery() RETURNS trigger LANGUAGE plpgsql AS $fn$
+  BEGIN
+    IF OLD.status IS DISTINCT FROM NEW.status OR OLD.delivery_status IS DISTINCT FROM NEW.delivery_status THEN
+      UPDATE deliveries SET status = 'pending', attempts = 0, next_attempt_at = now(), last_error = NULL, updated_at = now()
+      WHERE submission_id = NEW.submission_id AND target = 'crm' AND status IN ('done', 'dead');
+    END IF;
+    RETURN NEW;
+  END
+  $fn$;
+  DROP TRIGGER IF EXISTS sms_acknowledgements_reopen_crm ON sms_acknowledgements;
+  CREATE TRIGGER sms_acknowledgements_reopen_crm AFTER UPDATE ON sms_acknowledgements FOR EACH ROW EXECUTE FUNCTION reopen_crm_delivery();
+
+  -- The existing statuses, carried over once (re-running adds only what is missing).
+  INSERT INTO deliveries (submission_id, target, status, attempts, max_attempts, next_attempt_at, last_error, done_at, created_at, updated_at)
+  SELECT a.submission_id, 'sms',
+         CASE a.status WHEN 'pending' THEN 'pending' WHEN 'sending' THEN 'running' WHEN 'accepted' THEN 'done'
+                       WHEN 'failed' THEN 'dead' ELSE 'unknown' END,
+         a.attempts, 3, a.next_attempt_at, a.last_error, a.accepted_at, a.created_at, a.updated_at
+  FROM sms_acknowledgements a
+  ON CONFLICT DO NOTHING;
+  INSERT INTO deliveries (submission_id, target, status, attempts, max_attempts, last_error, done_at, created_at, updated_at)
+  SELECT s.id, 'chatwoot',
+         CASE s.status WHEN 'received' THEN 'pending' WHEN 'delivering' THEN 'running' WHEN 'delivered' THEN 'done' ELSE 'dead' END,
+         s.attempts, 3, s.last_error, CASE WHEN s.status = 'delivered' THEN s.updated_at END, s.created_at, s.updated_at
+  FROM submissions s
+  ON CONFLICT DO NOTHING;
+  INSERT INTO deliveries (submission_id, target, status, max_attempts, done_at, created_at, updated_at)
+  SELECT s.id, 'crm', CASE WHEN c.submission_id IS NULL THEN 'pending' ELSE 'done' END, 8, c.synced_at, s.created_at, coalesce(c.synced_at, s.created_at)
+  FROM submissions s LEFT JOIN crm_sync c ON c.submission_id = s.id
+  ON CONFLICT DO NOTHING;
+
+  -- The old statuses, from the deliveries: Chatwoot as submissions.status
+  -- named them, the SMS as sms_acknowledgements.status, and whether the CRM
+  -- has it. One row per submission.
+  CREATE OR REPLACE VIEW delivery_status AS
+  SELECT s.id AS submission_id, s.ref, s.created_at,
+         CASE c.status WHEN 'pending' THEN 'received' WHEN 'running' THEN 'delivering' WHEN 'done' THEN 'delivered' ELSE 'failed' END AS chatwoot_status,
+         CASE m.status WHEN 'pending' THEN 'pending' WHEN 'running' THEN 'sending' WHEN 'done' THEN 'accepted'
+                       WHEN 'dead' THEN 'failed' ELSE 'unknown' END AS sms_status,
+         (r.status = 'done') AS crm_synced,
+         c.attempts AS chatwoot_attempts, m.attempts AS sms_attempts, r.attempts AS crm_attempts,
+         coalesce(c.last_error, m.last_error, r.last_error) AS last_error
+  FROM submissions s
+  LEFT JOIN deliveries c ON c.submission_id = s.id AND c.target = 'chatwoot'
+  LEFT JOIN deliveries m ON m.submission_id = s.id AND m.target = 'sms'
+  LEFT JOIN deliveries r ON r.submission_id = s.id AND r.target = 'crm';
+
+  -- Work that needs a person: dead rows, SMS of unknown fate, and rows stuck
+  -- running or overdue (f/platform/health counts these).
+  CREATE OR REPLACE VIEW deliveries_attention AS
+  SELECT d.*, s.ref,
+         CASE WHEN d.status = 'dead' THEN 'dead'
+              WHEN d.status = 'unknown' THEN 'unknown'
+              WHEN d.status = 'running' AND d.updated_at < now() - interval '15 minutes' THEN 'stuck'
+              ELSE 'overdue' END AS reason
+  FROM deliveries d JOIN submissions s ON s.id = d.submission_id
+  WHERE d.status IN ('dead', 'unknown')
+     OR (d.status = 'running' AND d.updated_at < now() - interval '15 minutes')
+     OR (d.status = 'pending' AND d.next_attempt_at < now() - interval '1 hour');
+
+  -- Idempotency-Key answers of the jobs routes (the site's
+  -- src/server/submissions/policies/idempotency.ts, through
+  -- f/platform/idempotency). Kept a day.
+  CREATE TABLE IF NOT EXISTS idempotency_keys (
+    scope       text NOT NULL,
+    key         text NOT NULL,
+    fingerprint text NOT NULL,
+    state       text NOT NULL CHECK (state IN ('running', 'done', 'failed')),
+    answer      jsonb,
+    carry       jsonb,
+    updated_at  timestamptz NOT NULL DEFAULT now(),
+    PRIMARY KEY (scope, key)
+  );
+  CREATE INDEX IF NOT EXISTS idempotency_keys_updated_idx ON idempotency_keys (updated_at);
 END
 $$;

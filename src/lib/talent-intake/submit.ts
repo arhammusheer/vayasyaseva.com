@@ -7,6 +7,7 @@ import { NextResponse } from "next/server";
 import { talentIntakeSchema, type JobsSubmitResponse } from "./contract";
 import { reportServerCount } from "@/lib/measurement/server";
 import { areaSet } from "@/markets/index";
+import { transport } from "@/server/submissions/transport";
 import {
   LEGACY_SOURCE_LOCALES,
   WEB_SOURCE,
@@ -21,7 +22,6 @@ import {
   IntakeNotConfigured,
   TALENT_CONSENT_VERSION,
   deleteUpload,
-  forwardToIntake,
   readTicket,
   uploadedSize,
   type Ticket,
@@ -50,7 +50,13 @@ export function webSourceEnabled() {
 }
 
 /** Builds, validates and forwards one submission; answers 202 with the reference. */
-export async function forwardSubmission(draft: Draft, phone: string, text: string | null, extras: FormExtras = {}) {
+export async function forwardSubmission(
+  draft: Draft,
+  phone: string,
+  text: string | null,
+  extras: FormExtras = {},
+  meta: { idempotencyKey: string | null } = { idempotencyKey: null },
+) {
   const channel = draft.channel ?? "web";
   // The jobs pages send "web" plus the page locale; a ticket issued before
   // that carries a legacy page source, which implies the locale. The agent
@@ -82,7 +88,7 @@ export async function forwardSubmission(draft: Draft, phone: string, text: strin
     return NextResponse.json({ error: "invalid_request", fields: payload.error.issues.map((i) => i.path.join(".")) }, { status: 400 });
   }
 
-  await forwardToIntake(payload.data);
+  await transport().application(payload.data, meta);
   reportServerCount("application_received", channel === "agent" ? "/api/agent/jobs" : "/api/jobs/submit", {
     channel,
     form: payload.data.form ?? "agent",
@@ -106,7 +112,14 @@ export async function forwardSubmission(draft: Draft, phone: string, text: strin
  * matches what was declared, then forwards. The attachment list comes from
  * the ticket, never from the caller.
  */
-export async function submitWithTicket(rawTicket: string, phone: string, text: string | null, channel: IntakeChannel, extras: FormExtras = {}) {
+export async function submitWithTicket(
+  rawTicket: string,
+  phone: string,
+  text: string | null,
+  channel: IntakeChannel,
+  extras: FormExtras = {},
+  meta: { idempotencyKey: string | null } = { idempotencyKey: null },
+) {
   const ticket = readTicket(rawTicket);
   if (!ticket) {
     return NextResponse.json({ error: "expired" }, { status: 410 });
@@ -127,7 +140,7 @@ export async function submitWithTicket(rawTicket: string, phone: string, text: s
     }
   }
 
-  return forwardSubmission(ticket, phone, text, extras);
+  return forwardSubmission(ticket, phone, text, extras, meta);
 }
 
 /** The 5xx answer for a failure on our side, logged under `route`. */

@@ -1,0 +1,589 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.vayasyaseva.com/contracts/job_application.v1.canonical.schema.json",
+  "type": "object",
+  "properties": {
+    "ref": {
+      "type": "string",
+      "pattern": "^VS-J-[A-Z0-9]{6}$"
+    },
+    "source": {
+      "anyOf": [
+        {
+          "type": "string",
+          "const": "web"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "web_en",
+            "web_hi",
+            "web_hinglish"
+          ]
+        }
+      ]
+    },
+    "locale": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "en-IN",
+            "hi-IN",
+            "hi-Latn-IN",
+            "pa-IN",
+            "kn-IN"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "cluster": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "haridwar",
+            "uttarakhand",
+            "delhi-ncr",
+            "bengaluru",
+            "jalandhar",
+            "saharanpur",
+            "other",
+            "punjab"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "pageCluster": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "haridwar",
+            "uttarakhand",
+            "delhi-ncr",
+            "bengaluru",
+            "jalandhar",
+            "saharanpur",
+            "other",
+            "punjab"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "pagePath": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 200,
+          "pattern": "^\\/([a-z0-9]+(-[a-z0-9]+)*(\\/[a-z0-9]+(-[a-z0-9]+)*)*)?$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "role": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "factory-helper",
+            "packing",
+            "machine-operator",
+            "warehouse",
+            "forklift-operator",
+            "data-entry-operator",
+            "housekeeping",
+            "iti-trades",
+            "electrician",
+            "welder",
+            "fitter"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "hub": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "freshers",
+            "10th-pass",
+            "12th-pass"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "channel": {
+      "type": "string",
+      "enum": [
+        "web",
+        "agent"
+      ]
+    },
+    "agentName": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 100
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "phone": {
+      "type": "string",
+      "pattern": "^\\+91[6-9]\\d{9}$"
+    },
+    "adult": {
+      "type": "boolean",
+      "const": true
+    },
+    "consent": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+        }
+      },
+      "required": [
+        "version",
+        "at"
+      ],
+      "additionalProperties": false
+    },
+    "text": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 4000
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "attachments": {
+      "maxItems": 8,
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "image"
+              },
+              "key": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 300
+              },
+              "mime": {
+                "type": "string",
+                "pattern": "^image\\/(jpeg|png|webp)$"
+              },
+              "size": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 10485760
+              },
+              "name": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "kind",
+              "key",
+              "mime",
+              "size",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "document"
+              },
+              "key": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 300
+              },
+              "mime": {
+                "type": "string",
+                "pattern": "^application\\/(pdf|msword|vnd\\.openxmlformats-officedocument\\.wordprocessingml\\.document)$"
+              },
+              "size": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20971520
+              },
+              "name": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "maxLength": 200
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "kind",
+              "key",
+              "mime",
+              "size",
+              "name"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "form": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "long",
+            "quick"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "applicantName": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "answers": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "work": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "factory-helper",
+                  "packing",
+                  "warehouse",
+                  "machine-operator",
+                  "iti-trades",
+                  "housekeeping",
+                  "data-entry-operator",
+                  "forklift-operator",
+                  "any"
+                ]
+              },
+              "uniqueItems": true
+            },
+            "trade": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "electrician",
+                  "welder",
+                  "fitter",
+                  "machinist",
+                  "other-trade"
+                ]
+              },
+              "uniqueItems": true
+            },
+            "iti": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "iti-pass",
+                  "iti-pursuing",
+                  "no-iti"
+                ]
+              },
+              "uniqueItems": true
+            },
+            "machines": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "packing-machine",
+                  "moulding",
+                  "press",
+                  "cnc-vmc",
+                  "other-machine"
+                ]
+              },
+              "uniqueItems": true
+            },
+            "forklift": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "licence-experience",
+                  "experience-only",
+                  "want-to-learn"
+                ]
+              },
+              "uniqueItems": true
+            },
+            "computer": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "typing",
+                  "excel",
+                  "tally",
+                  "sap-erp"
+                ]
+              },
+              "uniqueItems": true
+            },
+            "experience": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "fresher",
+                  "under-1",
+                  "1-3",
+                  "3-plus"
+                ]
+              },
+              "uniqueItems": true
+            },
+            "education": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "below-10th",
+                  "10th",
+                  "12th",
+                  "iti-diploma",
+                  "graduate"
+                ]
+              },
+              "uniqueItems": true
+            },
+            "shift": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "day",
+                  "night",
+                  "rotating"
+                ]
+              },
+              "uniqueItems": true
+            },
+            "start": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "now",
+                  "week",
+                  "month"
+                ]
+              },
+              "uniqueItems": true
+            },
+            "area": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "sidcul-bahadrabad",
+                  "haridwar-jwalapur",
+                  "roorkee-bhagwanpur",
+                  "laksar",
+                  "outside",
+                  "bengaluru:north",
+                  "bengaluru:south",
+                  "bengaluru:east",
+                  "bengaluru:west",
+                  "bengaluru:outside",
+                  "jalandhar:kapurthala",
+                  "jalandhar:city",
+                  "jalandhar:phagwara-goraya",
+                  "jalandhar:outside",
+                  "uttarakhand:haridwar",
+                  "uttarakhand:dehradun-selaqui",
+                  "uttarakhand:udham-singh-nagar",
+                  "uttarakhand:other",
+                  "uttarakhand:outside",
+                  "punjab:jalandhar-kapurthala",
+                  "punjab:ludhiana",
+                  "punjab:mohali",
+                  "punjab:amritsar",
+                  "punjab:other",
+                  "punjab:outside",
+                  "market:haridwar",
+                  "market:uttarakhand",
+                  "market:jalandhar",
+                  "market:punjab",
+                  "market:bengaluru",
+                  "market:other",
+                  "haridwar:rest-of-uttarakhand",
+                  "jalandhar:rest-of-punjab"
+                ]
+              },
+              "uniqueItems": true
+            }
+          },
+          "additionalProperties": false,
+          "minProperties": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "ref",
+    "source",
+    "locale",
+    "cluster",
+    "pageCluster",
+    "pagePath",
+    "role",
+    "hub",
+    "channel",
+    "agentName",
+    "phone",
+    "adult",
+    "consent",
+    "text",
+    "attachments",
+    "form",
+    "applicantName",
+    "answers"
+  ],
+  "additionalProperties": false,
+  "title": "job_application.v1 (canonical)",
+  "description": "A job application as the website forwards it to Windmill f/talent/intake.",
+  "allOf": [
+    {
+      "anyOf": [
+        {
+          "properties": {
+            "text": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "text"
+          ]
+        },
+        {
+          "properties": {
+            "attachments": {
+              "minItems": 1
+            }
+          },
+          "required": [
+            "attachments"
+          ]
+        },
+        {
+          "properties": {
+            "answers": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "answers"
+          ]
+        }
+      ]
+    },
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "const": "web"
+          }
+        },
+        "required": [
+          "source"
+        ]
+      },
+      "then": {
+        "properties": {
+          "locale": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ]
+}

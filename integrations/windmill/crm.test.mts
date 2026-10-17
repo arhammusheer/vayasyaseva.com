@@ -22,10 +22,10 @@ import {
 import { runSyncCrm } from "./talent/lib/run-sync-crm.ts";
 import { CRM_SYNC_LOCK, RECORD_CRM_SYNC, SYNC_CANDIDATES } from "./talent/lib/sql.ts";
 import { twentyClient, type Twenty, type TwentyRecord } from "./talent/lib/twenty.ts";
-import { crewSize, opportunityName, recordLead, serviceValues, validateLead } from "./leads/lib/lead.ts";
+import { checkLead, crewSize, opportunityName, recordLead, serviceValues } from "./leads/lib/lead.ts";
 import { main as leadMain } from "./leads/scripts/intake.ts";
 import { SCRIPTS } from "./scripts.mts";
-import { INTAKE_CLUSTERS, JOB_ROLE_SLUGS, QUICK_ANSWERS } from "../../src/lib/talent-intake/rules.ts";
+import { INTAKE_CLUSTERS, JOB_ROLE_SLUGS, QUICK_ANSWERS } from "../../packages/contracts/src/rules.ts";
 
 function fakeTwenty() {
   const store: Record<string, TwentyRecord[]> = { people: [], applications: [], communications: [], companies: [], opportunities: [] };
@@ -279,8 +279,11 @@ test("the REST client: filters quoted, 404 on delete is 'already gone', errors n
   await assert.rejects(client.create("people", "Person", { phones: "9876543210" }), (e: Error) => /HTTP 400 A duplicate entry/.test(e.message) && !e.message.includes("9876543210"));
 });
 
-test("sync runs every minute, after the minute's acknowledgements", () => {
-  assert.equal(SCRIPTS.find((s) => s.name === "sync_crm")?.schedule?.cron, "30 * * * * *");
+test("the CRM sync runs inside the dispatcher every minute; its own schedule is retired", () => {
+  const sync = SCRIPTS.find((s) => s.name === "sync_crm" && (s.folder ?? "talent") === "talent");
+  assert.equal(sync?.schedule, undefined);
+  assert.equal(sync?.retiredSchedule, true);
+  assert.equal(SCRIPTS.find((s) => s.name === "dispatch")?.schedule?.cron, "0 * * * * *");
 });
 
 // --- leads ---------------------------------------------------------------------------
@@ -304,15 +307,14 @@ const leadBody = {
   requestType: "crew",
   enquiry: "Roles: Packing, Loading\nHeadcount: 20-49\n\nNeed a crew for the new line.",
   sourcePath: "/contact",
-  extra: "ignored",
 };
 
-test("a lead is validated field by field; only known fields survive", () => {
-  const ok = validateLead(leadBody);
-  assert.equal(ok.ok, true);
-  if (ok.ok) assert.equal("extra" in ok.lead, false);
-  const bad = validateLead({ ...leadBody, caseId: "nope", phone: "12", email: "x" });
-  assert.deepEqual(bad.ok ? [] : bad.errors, ["caseId", "phone", "email"]);
+test("a lead is checked against the canonical schema (business_enquiry.v1); the errors name the fields", () => {
+  assert.equal(checkLead(leadBody).ok, true);
+  const bad = checkLead({ ...leadBody, caseId: "nope", phone: "12", email: "x" });
+  assert.deepEqual(bad.ok ? [] : bad.errors, ["caseId", "email", "phone"]);
+  const extra = checkLead({ ...leadBody, extra: "not in the contract" });
+  assert.deepEqual(extra.ok ? [] : extra.errors, ["extra"]);
   assert.deepEqual(serviceValues(["packing", "loading-unloading", "gardening", "astronaut"]), ["FACTORY_LABOUR", "LOADING_UNLOADING", "HOUSEKEEPING", "OTHER"]);
   assert.equal(crewSize({ headcount: "about 35 people", headcountBand: null }), 35);
   assert.equal(crewSize({ headcount: null, headcountBand: "250+" }), 250);
@@ -320,7 +322,7 @@ test("a lead is validated field by field; only known fields survive", () => {
 
 test("a lead becomes company, client contact, crew request at New, and the enquiry; replay changes nothing", async () => {
   const t = fakeTwenty();
-  const v = validateLead(leadBody);
+  const v = checkLead(leadBody);
   assert.ok(v.ok);
   if (!v.ok) return;
   const first = await recordLead(t.crm, v.lead);
@@ -345,7 +347,7 @@ test("a lead becomes company, client contact, crew request at New, and the enqui
 
 test("a replay after a write interrupted before the enquiry adds the enquiry once", async () => {
   const t = fakeTwenty();
-  const v = validateLead(leadBody);
+  const v = checkLead(leadBody);
   if (!v.ok) return assert.fail();
   const create = t.crm.create;
   t.crm.create = async (plural, singular, body) => {
@@ -366,7 +368,7 @@ test("a replay after a write interrupted before the enquiry adds the enquiry onc
 test("a lead from a known worker's phone reuses the person without changing their type", async () => {
   const t = fakeTwenty();
   t.store.people.push({ id: "w1", personType: "WORKER", phones: { primaryPhoneNumber: "9876543299" } });
-  const v = validateLead(leadBody);
+  const v = checkLead(leadBody);
   if (!v.ok) return assert.fail();
   await recordLead(t.crm, v.lead);
   assert.equal(t.store.people.length, 1);

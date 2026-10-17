@@ -1,0 +1,22 @@
+{
+  "schema": "canonical",
+  "note": "Every ticket expires.",
+  "data": {
+    "ref": "VS-J-7K2M9Q",
+    "source": "web",
+    "locale": "en-IN",
+    "pageCluster": "haridwar",
+    "pagePath": "/jobs/haridwar",
+    "role": "packing",
+    "hub": null,
+    "files": [
+      {
+        "key": "intake/2026/10/VS-J-7K2M9Q/0.jpg",
+        "kind": "image",
+        "mime": "image/jpeg",
+        "size": 245000,
+        "name": "cv.jpg"
+      }
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "canonical",
+  "note": "/api/agent/jobs: a legacy source with the locale it implies, no form.",
+  "data": {
+    "ref": "VS-J-AGENT3",
+    "source": "web_hi",
+    "locale": "hi-IN",
+    "cluster": "other",
+    "pageCluster": null,
+    "pagePath": null,
+    "role": null,
+    "hub": null,
+    "channel": "agent",
+    "agentName": "Example Assistant",
+    "phone": "+919876543210",
+    "adult": true,
+    "consent": {
+      "version": "2026-10-16-v7",
+      "at": "2026-10-17T09:30:00.000Z"
+    },
+    "text": "Two years in a packing unit.",
+    "attachments": [],
+    "form": null,
+    "applicantName": null,
+    "answers": null
+  }
+}

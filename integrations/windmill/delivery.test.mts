@@ -116,10 +116,11 @@ test("lookupReport reads the DLR API's answer and never throws", async () => {
   assert.equal(await lookupReport("SCW0cx", "k", (async () => new Response("no", { status: 500 })) as typeof fetch), null);
 });
 
-test("scripts: the report route and the 15-minute check are registered", () => {
+test("scripts: the report route is registered; the 15-minute check moved into the dispatcher", () => {
   const report = SCRIPTS.find((s) => s.name === "delivery_report")!;
   assert.deepEqual(report.route, { path: "webhook/fast2sms-dlr", method: "post", secretHeader: "x-vspl-dlr-secret" });
-  assert.equal(SCRIPTS.find((s) => s.name === "delivery_check")?.schedule?.cron, "0 */15 * * * *");
+  // The 15-minute check now runs inside the dispatcher (f/talent/dispatch, minute % 15 === 0).
+  assert.equal(SCRIPTS.find((s) => s.name === "delivery_check")?.retiredSchedule, true);
 });
 
 test("preprocessor: the secret may come as ?key= instead of the header", async () => {

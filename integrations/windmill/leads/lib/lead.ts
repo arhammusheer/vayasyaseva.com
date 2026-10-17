@@ -7,80 +7,20 @@
  */
 import { optionValue, phoneDigits } from "../../talent/lib/crm.ts";
 import { eq, type Twenty } from "../../talent/lib/twenty.ts";
+import { SCHEMAS, check } from "../../contracts/validate.ts";
+import type { LeadCanonical } from "../../../../packages/contracts/src/business-enquiry.v1.ts";
 
-export interface Lead {
-  caseId: string;
-  receivedAt: string;
-  channel: "web" | "agent";
-  name: string;
-  company: string | null;
-  jobTitle: string | null;
-  phone: string;
-  email: string | null;
-  /** The contact form's role ids (factory-helpers, loading-unloading...). */
-  services: string[];
-  headcount: string | null;
-  headcountBand: string | null;
-  site: string | null;
-  cluster: string | null;
-  startWindow: string | null;
-  targetStartDate: string | null;
-  requestType: string | null;
-  /** The whole enquiry as our team reads it: every answer, then the free text. */
-  enquiry: string;
-  sourcePath: string | null;
-}
+/**
+ * The lead: business_enquiry.v1 canonical (packages/contracts), checked by
+ * checkLead against the generated schema. Its cluster is one of the intake
+ * clusters (the schema's list), so it maps straight to Twenty's option.
+ */
+export type Lead = LeadCanonical;
 
-const CASE_ID = /^(REQ|AGT)-\d{8}-[0-9A-F]{8}$/;
-const CLUSTERS = new Set(["HARIDWAR", "UTTARAKHAND", "DELHI_NCR", "BENGALURU", "JALANDHAR", "SAHARANPUR", "OTHER", "PUNJAB"]);
-
-const str = (v: unknown, max: number): string | null => {
-  if (typeof v !== "string") return null;
-  const t = v.trim();
-  return t ? t.slice(0, max) : null;
-};
-
-/** Only the fields we use, each checked and cut to size; anything else is ignored. */
-export function validateLead(body: unknown): { ok: true; lead: Lead } | { ok: false; errors: string[] } {
-  const b = (body && typeof body === "object" ? body : {}) as Record<string, unknown>;
-  const errors: string[] = [];
-  const caseId = str(b.caseId, 40);
-  if (!caseId || !CASE_ID.test(caseId)) errors.push("caseId");
-  const name = str(b.name, 120);
-  if (!name) errors.push("name");
-  const phone = str(b.phone, 30);
-  if (!phone || phoneDigits(phone).length < 10) errors.push("phone");
-  const enquiry = str(b.enquiry, 8000);
-  if (!enquiry) errors.push("enquiry");
-  const receivedAt = str(b.receivedAt, 40);
-  if (!receivedAt || Number.isNaN(Date.parse(receivedAt))) errors.push("receivedAt");
-  const email = str(b.email, 200);
-  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push("email");
-  if (errors.length) return { ok: false, errors };
-  const services = Array.isArray(b.services) ? b.services.filter((s): s is string => typeof s === "string").slice(0, 20).map((s) => s.slice(0, 40)) : [];
-  return {
-    ok: true,
-    lead: {
-      caseId: caseId!,
-      receivedAt: new Date(receivedAt!).toISOString(),
-      channel: b.channel === "agent" ? "agent" : "web",
-      name: name!,
-      company: str(b.company, 160),
-      jobTitle: str(b.jobTitle, 120),
-      phone: phone!,
-      email,
-      services,
-      headcount: str(b.headcount, 40),
-      headcountBand: str(b.headcountBand, 20),
-      site: str(b.site, 300),
-      cluster: str(b.cluster, 40),
-      startWindow: str(b.startWindow, 40),
-      targetStartDate: str(b.targetStartDate, 40),
-      requestType: str(b.requestType, 40),
-      enquiry: enquiry!,
-      sourcePath: str(b.sourcePath, 300),
-    },
-  };
+/** The lead checked against the generated canonical schema (business_enquiry.v1, compliance_help.v1). */
+export function checkLead(body: unknown): { ok: true; lead: Lead } | { ok: false; errors: string[] } {
+  const checked = check<Lead>(SCHEMAS["business_enquiry.v1"], body);
+  return checked.ok ? { ok: true, lead: { ...checked.value, receivedAt: new Date(checked.value.receivedAt).toISOString() } } : checked;
 }
 
 /** The form's role ids as the opportunity's three services (setup.mts). */
@@ -159,7 +99,6 @@ export async function recordLead(crm: Twenty, lead: Lead): Promise<LeadResult> {
     ).id;
   }
 
-  const cluster = lead.cluster ? optionValue(lead.cluster) : null;
   const opportunity = await crm.create("opportunities", "Opportunity", {
     name: opportunityName(lead),
     stage: "NEW",
@@ -168,7 +107,7 @@ export async function recordLead(crm: Twenty, lead: Lead): Promise<LeadResult> {
     crewSize: crewSize(lead),
     services: serviceValues(lead.services),
     siteLocation: lead.site ?? "",
-    cluster: cluster && CLUSTERS.has(cluster) ? cluster : null,
+    cluster: lead.cluster ? optionValue(lead.cluster) : null,
     startDate: isoDate(lead.targetStartDate),
     enquiry: lead.enquiry,
     pointOfContactId: personId,

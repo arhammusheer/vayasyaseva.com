@@ -368,17 +368,35 @@ const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneD
       else
           await crm.create("communications", "Communication", fields);
   }
+  const WORKER_FIELDS_CLEARED = {
+      personType: "CLIENT_CONTACT",
+      workerStatus: null,
+      clusters: [],
+      workRoles: [],
+      homeArea: "",
+      language: null,
+      consentVersion: "",
+      consentedAt: null,
+      lastAppliedAt: null,
+      lastContactAt: null,
+  };
   async function erasePerson(crm, phone) {
       const people = await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(phone)));
       for (const person of people) {
-          for (const comm of await crm.find("communications", eq("personId", person.id)))
-              await crm.remove("communications", comm.id);
           for (const app of await crm.find("applications", eq("personId", person.id))) {
               for (const comm of await crm.find("communications", eq("applicationId", app.id)))
                   await crm.remove("communications", comm.id);
               await crm.remove("applications", app.id);
           }
-          await crm.remove("people", person.id);
+          const clientContact = person.personType === "CLIENT_CONTACT" || (await crm.find("opportunities", eq("pointOfContactId", person.id))).length > 0;
+          for (const comm of await crm.find("communications", eq("personId", person.id))) {
+              if (!clientContact || !comm.opportunityId)
+                  await crm.remove("communications", comm.id);
+          }
+          if (clientContact)
+              await crm.update("people", person.id, WORKER_FIELDS_CLEARED);
+          else
+              await crm.remove("people", person.id);
       }
       return people.length;
   }
@@ -473,8 +491,12 @@ const { validateLead, serviceValues, crewSize, opportunityName, recordLead } = (
   const isoDate = (v) => (v && /^\d{4}-\d{2}-\d{2}/.test(v) && !Number.isNaN(Date.parse(v)) ? v.slice(0, 10) : null);
   async function recordLead(crm, lead) {
       const [existing] = await crm.find("opportunities", eq("caseId", lead.caseId));
-      if (existing)
+      if (existing) {
+          const personId = typeof existing.pointOfContactId === "string" ? existing.pointOfContactId : null;
+          if (personId)
+              await recordEnquiry(crm, lead, personId, existing.id);
           return { opportunityId: existing.id, created: false };
+      }
       let companyId = null;
       if (lead.company) {
           const [company] = await crm.find("companies", eq("name", lead.company));
@@ -521,6 +543,13 @@ const { validateLead, serviceValues, crewSize, opportunityName, recordLead } = (
           pointOfContactId: personId,
           ...(companyId ? { companyId } : {}),
       });
+      await recordEnquiry(crm, lead, personId, opportunity.id);
+      return { opportunityId: opportunity.id, created: true };
+  }
+  async function recordEnquiry(crm, lead, personId, opportunityId) {
+      const externalKey = `lead:${lead.caseId}`;
+      if ((await crm.find("communications", eq("externalKey", externalKey))).length)
+          return;
       await crm.create("communications", "Communication", {
           name: `Website enquiry ${lead.caseId}`,
           channel: "EMAIL",
@@ -529,11 +558,10 @@ const { validateLead, serviceValues, crewSize, opportunityName, recordLead } = (
           body: lead.enquiry,
           provider: lead.channel === "agent" ? "AI agent (/api/agent/contact)" : "Website form (/api/contact)",
           statusAt: lead.receivedAt,
-          externalKey: `lead:${lead.caseId}`,
+          externalKey,
           personId,
-          opportunityId: opportunity.id,
+          opportunityId,
       });
-      return { opportunityId: opportunity.id, created: true };
   }
   return { validateLead, serviceValues, crewSize, opportunityName, recordLead };
 })();

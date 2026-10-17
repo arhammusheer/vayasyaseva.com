@@ -86,6 +86,11 @@ const PLACES: readonly { words: readonly string[]; region: readonly string[]; cl
   { words: ["dehradun", "selaqui", "rudrapur", "kashipur", "sitarganj", "pantnagar", "haldwani", "kotdwar", "rishikesh"], region: ["UK", "UT"], cluster: "uttarakhand" },
   { words: ["ludhiana", "mohali", "kharar", "amritsar", "patiala", "rajpura", "bathinda", "zirakpur", "dera bassi"], region: ["PB"], cluster: "punjab" },
   { words: ["bengaluru", "bangalore", "peenya", "bommasandra", "jigani", "attibele", "hoskote", "whitefield", "electronic city", "narasapura"], region: ["KA"], cluster: "bengaluru" },
+  // Delhi NCR's Delhi and Haryana sides, one state each, so a typed town names
+  // its state (placeState). Last: a "Delhi Road" in another state's town
+  // matches that town first. Same market as the region alone, so no decision changes.
+  { words: ["delhi", "new delhi", "okhla", "bawana", "narela", "mayapuri", "naraina", "wazirpur", "patparganj", "mundka"], region: ["DL"], cluster: "delhi-ncr" },
+  { words: ["gurugram", "gurgaon", "manesar", "faridabad", "ballabgarh", "sonipat", "kundli", "bahadurgarh"], region: ["HR"], cluster: "delhi-ncr" },
 ];
 
 /** Lower case, accents stripped (Haridwār → haridwar), spaces collapsed. */

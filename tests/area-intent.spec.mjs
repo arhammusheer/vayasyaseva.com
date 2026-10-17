@@ -121,3 +121,14 @@ test("a business site's market: a named place, else the sending page when it cov
   assert.equal(siteCluster("UP", "Saharanpur", "haridwar"), null);
   assert.equal(siteCluster(undefined, "", "bengaluru"), "bengaluru");
 });
+
+test("Delhi and Haryana towns narrow to Delhi NCR, as their region alone already did", async () => {
+  const { geoCluster, siteCluster } = await importTs("src/lib/intent/model.ts");
+  for (const [region, city] of [["HR", "Gurugram"], ["HR", "Manesar"], ["DL", "New Delhi"], ["DL", "Okhla"]]) {
+    assert.equal(geoCluster(region, city), "delhi-ncr");
+    assert.equal(geoCluster(region, city), geoCluster(region));
+    assert.equal(siteCluster(region, city), siteCluster(region, null));
+  }
+  // A Delhi town typed with another state is not that state's market by accident.
+  assert.equal(siteCluster("UK", "Delhi Road, Roorkee"), "haridwar");
+});

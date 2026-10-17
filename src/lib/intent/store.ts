@@ -56,7 +56,7 @@ const session = () => window.sessionStorage;
 const local = () => window.localStorage;
 
 /** The neutral path (no locale segment), so one page in two languages counts once. */
-const neutralPath = (pathname: string) => pathname.replace(/^\/(en-in|hi-in|hi-latn-in|pa-in)(?=\/|$)/, "") || "/";
+const neutralPath = (pathname: string) => pathname.replace(/^\/(en-in|hi-in|hi-latn-in|pa-in|kn-in)(?=\/|$)/, "") || "/";
 
 /**
  * Records this page view's signals: its cluster, the session's landing page,

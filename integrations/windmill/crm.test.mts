@@ -246,6 +246,22 @@ test("erasure removes the person's communications, applications and the person; 
   assert.equal(await erasePerson(t.crm, "+919876543210"), 0);
 });
 
+test("erasure keeps a client contact who shares the phone: only the worker side goes", async () => {
+  const t = fakeTwenty();
+  await runSyncCrm({ query: syncDb([candidate()]).query, crm: t.crm });
+  // The same number then sends a business enquiry: the person becomes a lead's point of contact.
+  const [person] = t.store.people;
+  const opp = await t.crm.create("opportunities", "Opportunity", { caseId: "REQ-1", pointOfContactId: person.id });
+  await t.crm.create("communications", "Communication", { externalKey: "lead:REQ-1", personId: person.id, opportunityId: opp.id });
+  assert.equal(await erasePerson(t.crm, "+919876543210"), 1);
+  assert.equal(t.store.people.length, 1);
+  assert.equal(t.store.people[0].personType, "CLIENT_CONTACT");
+  assert.deepEqual([t.store.people[0].clusters, t.store.people[0].workRoles, t.store.people[0].workerStatus], [[], [], null]);
+  assert.equal(t.store.applications.length, 0);
+  assert.deepEqual(t.store.communications.map((c) => c.externalKey), ["lead:REQ-1"]);
+  assert.equal(t.store.opportunities.length, 1);
+});
+
 test("the REST client: filters quoted, 404 on delete is 'already gone', errors name status not values", async () => {
   const seen: string[] = [];
   const fetchFake = (async (url: string, init?: RequestInit) => {
@@ -323,6 +339,26 @@ test("a lead becomes company, client contact, crew request at New, and the enqui
   const again = await recordLead(t.crm, v.lead);
   assert.equal(again.created, false);
   assert.deepEqual([t.store.companies.length, t.store.people.length, t.store.opportunities.length, t.store.communications.length], [1, 1, 1, 1]);
+});
+
+test("a replay after a write interrupted before the enquiry adds the enquiry once", async () => {
+  const t = fakeTwenty();
+  const v = validateLead(leadBody);
+  if (!v.ok) return assert.fail();
+  const create = t.crm.create;
+  t.crm.create = async (plural, singular, body) => {
+    if (plural === "communications") throw new Error("Twenty POST /communications: HTTP 503");
+    return create(plural, singular, body);
+  };
+  await assert.rejects(recordLead(t.crm, v.lead));
+  assert.deepEqual([t.store.opportunities.length, t.store.communications.length], [1, 0]);
+  t.crm.create = create;
+  assert.equal((await recordLead(t.crm, v.lead)).created, false);
+  assert.equal(t.store.communications.length, 1);
+  assert.equal(t.store.communications[0].opportunityId, t.store.opportunities[0].id);
+  assert.equal(t.store.communications[0].personId, t.store.people[0].id);
+  await recordLead(t.crm, v.lead);
+  assert.equal(t.store.communications.length, 1);
 });
 
 test("a lead from a known worker's phone reuses the person without changing their type", async () => {

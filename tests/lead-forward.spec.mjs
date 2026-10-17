@@ -68,8 +68,20 @@ test('forwarding posts with the secret, is true only on 202, and never throws', 
     assert.equal(seen.url, 'https://hooks.test/api/r/webhook/vspl-lead');
     assert.equal(seen.init.headers['x-vspl-lead-secret'], 's3cret');
     assert.equal(JSON.parse(seen.init.body).caseId, 'REQ-20261017-0A1B2C3D');
-    assert.equal(await forwardLead(lead, async () => new Response('', { status: 500 })), false);
-    assert.equal(await forwardLead(lead, async () => { throw new Error('network down'); }), false);
+    // A 5xx, 429 or network error is tried three times in all; a 4xx once.
+    const counting = (answer) => { const f = async () => (f.calls++, answer()); f.calls = 0; return f; };
+    const down = counting(() => new Response('', { status: 500 }));
+    assert.equal(await forwardLead(lead, down, [0, 0]), false);
+    assert.equal(down.calls, 3);
+    const offline = counting(() => { throw new Error('network down'); });
+    assert.equal(await forwardLead(lead, offline, [0, 0]), false);
+    assert.equal(offline.calls, 3);
+    const refused = counting(() => new Response('', { status: 403 }));
+    assert.equal(await forwardLead(lead, refused, [0, 0]), false);
+    assert.equal(refused.calls, 1);
+    let tries = 0;
+    assert.equal(await forwardLead(lead, async () => new Response('', { status: ++tries < 3 ? 503 : 202 }), [0, 0]), true);
+    assert.equal(tries, 3);
   } finally {
     process.env = saved;
   }

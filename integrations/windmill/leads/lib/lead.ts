@@ -117,10 +117,17 @@ export interface LeadResult {
   created: boolean;
 }
 
-/** Writes the lead. Replaying a case ID finds the opportunity and changes nothing. */
+/**
+ * Writes the lead. Replaying a case ID finds the opportunity and adds only
+ * what an interrupted first write left out (the enquiry's communication).
+ */
 export async function recordLead(crm: Twenty, lead: Lead): Promise<LeadResult> {
   const [existing] = await crm.find("opportunities", eq("caseId", lead.caseId));
-  if (existing) return { opportunityId: existing.id, created: false };
+  if (existing) {
+    const personId = typeof existing.pointOfContactId === "string" ? existing.pointOfContactId : null;
+    if (personId) await recordEnquiry(crm, lead, personId, existing.id);
+    return { opportunityId: existing.id, created: false };
+  }
 
   let companyId: string | null = null;
   if (lead.company) {
@@ -168,6 +175,14 @@ export async function recordLead(crm: Twenty, lead: Lead): Promise<LeadResult> {
     ...(companyId ? { companyId } : {}),
   });
 
+  await recordEnquiry(crm, lead, personId, opportunity.id);
+  return { opportunityId: opportunity.id, created: true };
+}
+
+/** The enquiry as an inbound communication, once per case ID (its externalKey). */
+async function recordEnquiry(crm: Twenty, lead: Lead, personId: string, opportunityId: string) {
+  const externalKey = `lead:${lead.caseId}`;
+  if ((await crm.find("communications", eq("externalKey", externalKey))).length) return;
   await crm.create("communications", "Communication", {
     name: `Website enquiry ${lead.caseId}`,
     channel: "EMAIL",
@@ -176,9 +191,8 @@ export async function recordLead(crm: Twenty, lead: Lead): Promise<LeadResult> {
     body: lead.enquiry,
     provider: lead.channel === "agent" ? "AI agent (/api/agent/contact)" : "Website form (/api/contact)",
     statusAt: lead.receivedAt,
-    externalKey: `lead:${lead.caseId}`,
+    externalKey,
     personId,
-    opportunityId: opportunity.id,
+    opportunityId,
   });
-  return { opportunityId: opportunity.id, created: true };
 }

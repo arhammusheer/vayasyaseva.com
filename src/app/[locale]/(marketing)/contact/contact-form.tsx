@@ -184,7 +184,7 @@ function referringPath() {
     if (!entry || new URL(entry.name).pathname !== window.location.pathname) return null;
     const referrer = new URL(document.referrer);
     if (referrer.origin !== window.location.origin) return null;
-    const path = referrer.pathname.replace(/^\/(en-in|hi-in|hi-latn-in)(?=\/|$)/, "") || "/";
+    const path = referrer.pathname.replace(/^\/(en-in|hi-in|hi-latn-in|pa-in|kn-in)(?=\/|$)/, "") || "/";
     return /^\/[A-Za-z0-9/_-]*$/.test(path) && path !== "/contact" ? path.slice(0, 200) : null;
   } catch {
     return null;

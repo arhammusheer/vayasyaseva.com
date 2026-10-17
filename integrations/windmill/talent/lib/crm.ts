@@ -334,20 +334,42 @@ export async function upsertAcknowledgement(crm: Twenty, c: SyncCandidate, perso
   else await crm.create("communications", "Communication", fields);
 }
 
+/** The worker side of a person, emptied when a client contact's applicant data is erased. */
+const WORKER_FIELDS_CLEARED = {
+  personType: "CLIENT_CONTACT",
+  workerStatus: null,
+  clusters: [],
+  workRoles: [],
+  homeArea: "",
+  language: null,
+  consentVersion: "",
+  consentedAt: null,
+  lastAppliedAt: null,
+  lastContactAt: null,
+} as const;
+
 /**
- * Erasure (privacy notice §10): everything Twenty holds for a phone number,
- * its communications and applications first, then the person. Nothing to
- * remove is success. Returns how many people were removed.
+ * Erasure (privacy notice §10): the applicant data Twenty holds for a phone
+ * number, its applications and their communications first. A person who is
+ * also a client contact (a lead's point of contact, or typed so by the leads
+ * intake) keeps the person and the enquiry history, which leads retention
+ * covers; only the worker side goes. Anyone else is removed. Nothing to
+ * remove is success. Returns how many people had applicant data erased.
  */
 export async function erasePerson(crm: Twenty, phone: string): Promise<number> {
   const people = await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(phone)));
   for (const person of people) {
-    for (const comm of await crm.find("communications", eq("personId", person.id))) await crm.remove("communications", comm.id);
     for (const app of await crm.find("applications", eq("personId", person.id))) {
       for (const comm of await crm.find("communications", eq("applicationId", app.id))) await crm.remove("communications", comm.id);
       await crm.remove("applications", app.id);
     }
-    await crm.remove("people", person.id);
+    const clientContact =
+      person.personType === "CLIENT_CONTACT" || (await crm.find("opportunities", eq("pointOfContactId", person.id))).length > 0;
+    for (const comm of await crm.find("communications", eq("personId", person.id))) {
+      if (!clientContact || !comm.opportunityId) await crm.remove("communications", comm.id);
+    }
+    if (clientContact) await crm.update("people", person.id, WORKER_FIELDS_CLEARED);
+    else await crm.remove("people", person.id);
   }
   return people.length;
 }

@@ -80,7 +80,7 @@ if (sitemap.status !== 200) {
 }
 const urls = [...new Set([...sitemap.body.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]))];
 const sitemapPaths = new Set(urls.map((url) => trim(url.slice(SITE.length)) || "/"));
-const LOCALE_LINK = /href="(\/(?:en-in|hi-in|hi-latn-in)(?:\/[^"?#]*)?)(?:[?#][^"]*)?"/g;
+const LOCALE_LINK = /href="(\/(?:en-in|hi-in|hi-latn-in|pa-in|kn-in)(?:\/[^"?#]*)?)(?:[?#][^"]*)?"/g;
 
 // Published but noindex (src/content/registry noindex): linkable, out of search.
 const { pageEntries, builtLocales, publishedLocales } = await importTs("src/content/registry/index.ts");
@@ -188,7 +188,7 @@ await Promise.all(
 // Its title and description are what the search result shows, so they must
 // fit and must not change with the visitor's language order; and no shared
 // cache may keep one visitor's order.
-const neutralPaths = [...new Set([...sitemapPaths].map((p) => p.replace(/^\/(?:en-in|hi-in|hi-latn-in)(?=\/|$)/, "") || "/"))];
+const neutralPaths = [...new Set([...sitemapPaths].map((p) => p.replace(/^\/(?:en-in|hi-in|hi-latn-in|pa-in|kn-in)(?=\/|$)/, "") || "/"))];
 let pickers = 0;
 await Promise.all(
   neutralPaths.map(async (path) => {

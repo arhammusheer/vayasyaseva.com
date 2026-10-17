@@ -10,7 +10,7 @@ export const RETENTION_MONTHS = 12;
 
 // --- intake -------------------------------------------------------------------
 
-/** $1..$18 from saveSubmissionParams (validate.ts). A replayed ref inserts nothing and returns submission_id null. */
+/** $1..$18 from saveSubmissionParams (intake-payload.ts). A replayed ref inserts nothing and returns submission_id null. */
 export const SAVE_SUBMISSION = `
 WITH s AS (
   INSERT INTO submissions (ref, source, locale, phone, consent_version, consented_at, adult, text, role, hub, channel, agent_name, form, applicant_name, answers, cluster, page_cluster, page_path)

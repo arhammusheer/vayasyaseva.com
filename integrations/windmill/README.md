@@ -41,12 +41,14 @@ The Sarvam transcribe workflow is not ported (voice notes ended 16 October 2026)
 | `talent/scripts/*.ts` | Script entries: `main` (and intake's `preprocessor`). Thin: they wire the real database, Fast2SMS, Chatwoot and R2 into `talent/lib/run-*.ts`. |
 | `talent/lib/run-*.ts` | What each script does, step by step, with its outside world injected (the tests drive these). |
 | `talent/lib/sql.ts` | Every query, copied verbatim from the n8n workflows when they were ported. |
-| `talent/lib/{validate,sms,note,erasure,mask}.ts` | The n8n Code nodes, as plain functions. Validation reuses the website's `src/lib/talent-intake/rules.ts`. |
+| `contracts/validate.ts` | ajv over the contracts package's generated canonical schemas (`packages/contracts/generated`, inlined by the build). Intake and leads validate with it; the fixture corpus (`packages/contracts/fixtures`) runs through it in `contracts.test.mts`. |
+| `talent/lib/intake-payload.ts` | The application checked (ajv, plus the one rule JSON Schema cannot say: file keys under the reference) and shaped for SAVE_SUBMISSION. |
+| `talent/lib/{sms,note,erasure,mask}.ts` | The n8n Code nodes, as plain functions, using the shared `packages/contracts/src/rules.ts`. |
 | `talent/lib/{config,db,r2,chatwoot}.ts` | Windmill variables, Postgres (`postgres` npm, one connection per run), R2 (`aws4fetch`), Chatwoot. |
 | `talent/lib/response.ts` | How a sync HTTP route answers: `{ wm_status_code, result }` (the body is `result` only). |
 | `talent/schema.sql` | The `talent` schema: the n8n copy plus `crm_sync` (a test checks the n8n part is unchanged). |
 | `talent/lib/{twenty,crm}.ts`, `run-sync-crm.ts` | Twenty's REST API, the talent→Twenty mapping and erasure, and the sync step by step. |
-| `leads/scripts/intake.ts`, `leads/lib/lead.ts` | The website's leads into Twenty (validation, company, contact, crew request, enquiry). |
+| `leads/scripts/intake.ts`, `leads/lib/lead.ts` | The website's leads into Twenty (checked against business_enquiry.v1; company, contact, crew request, enquiry). |
 | `scripts.mts` | The scripts: summary, argument schema, schedule, HTTP route. Shared by build and deploy. |
 | `build.mts` | Generates `f/talent/<name>.ts` (one self-contained Bun file: relative imports inlined, npm imports kept) and `<name>.script.yaml`. |
 | `f/talent/*`, `f/leads/*` | **Generated.** Never edit by hand. |

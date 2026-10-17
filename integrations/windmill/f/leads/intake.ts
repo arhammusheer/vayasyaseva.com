@@ -449,63 +449,7 @@ const { check, SCHEMAS } = (() => {
 })();
 
 // integrations/windmill/leads/lib/lead.ts
-const { validateLead, checkLead, serviceValues, crewSize, opportunityName, recordLead } = (() => {
-  const CASE_ID = /^(REQ|AGT)-\d{8}-[0-9A-F]{8}$/;
-  const CLUSTERS = new Set(["HARIDWAR", "UTTARAKHAND", "DELHI_NCR", "BENGALURU", "JALANDHAR", "SAHARANPUR", "OTHER", "PUNJAB"]);
-  const str = (v, max) => {
-      if (typeof v !== "string")
-          return null;
-      const t = v.trim();
-      return t ? t.slice(0, max) : null;
-  };
-  function validateLead(body) {
-      const b = (body && typeof body === "object" ? body : {});
-      const errors = [];
-      const caseId = str(b.caseId, 40);
-      if (!caseId || !CASE_ID.test(caseId))
-          errors.push("caseId");
-      const name = str(b.name, 120);
-      if (!name)
-          errors.push("name");
-      const phone = str(b.phone, 30);
-      if (!phone || phoneDigits(phone).length < 10)
-          errors.push("phone");
-      const enquiry = str(b.enquiry, 8000);
-      if (!enquiry)
-          errors.push("enquiry");
-      const receivedAt = str(b.receivedAt, 40);
-      if (!receivedAt || Number.isNaN(Date.parse(receivedAt)))
-          errors.push("receivedAt");
-      const email = str(b.email, 200);
-      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-          errors.push("email");
-      if (errors.length)
-          return { ok: false, errors };
-      const services = Array.isArray(b.services) ? b.services.filter((s) => typeof s === "string").slice(0, 20).map((s) => s.slice(0, 40)) : [];
-      return {
-          ok: true,
-          lead: {
-              caseId: caseId,
-              receivedAt: new Date(receivedAt).toISOString(),
-              channel: b.channel === "agent" ? "agent" : "web",
-              name: name,
-              company: str(b.company, 160),
-              jobTitle: str(b.jobTitle, 120),
-              phone: phone,
-              email,
-              services,
-              headcount: str(b.headcount, 40),
-              headcountBand: str(b.headcountBand, 20),
-              site: str(b.site, 300),
-              cluster: str(b.cluster, 40),
-              startWindow: str(b.startWindow, 40),
-              targetStartDate: str(b.targetStartDate, 40),
-              requestType: str(b.requestType, 40),
-              enquiry: enquiry,
-              sourcePath: str(b.sourcePath, 300),
-          },
-      };
-  }
+const { checkLead, serviceValues, crewSize, opportunityName, recordLead } = (() => {
   function checkLead(body) {
       const checked = check(SCHEMAS["business_enquiry.v1"], body);
       return checked.ok ? { ok: true, lead: { ...checked.value, receivedAt: new Date(checked.value.receivedAt).toISOString() } } : checked;
@@ -577,7 +521,6 @@ const { validateLead, checkLead, serviceValues, crewSize, opportunityName, recor
               ...(companyId ? { companyId } : {}),
           })).id;
       }
-      const cluster = lead.cluster ? optionValue(lead.cluster) : null;
       const opportunity = await crm.create("opportunities", "Opportunity", {
           name: opportunityName(lead),
           stage: "NEW",
@@ -586,7 +529,7 @@ const { validateLead, checkLead, serviceValues, crewSize, opportunityName, recor
           crewSize: crewSize(lead),
           services: serviceValues(lead.services),
           siteLocation: lead.site ?? "",
-          cluster: cluster && CLUSTERS.has(cluster) ? cluster : null,
+          cluster: lead.cluster ? optionValue(lead.cluster) : null,
           startDate: isoDate(lead.targetStartDate),
           enquiry: lead.enquiry,
           pointOfContactId: personId,
@@ -612,7 +555,7 @@ const { validateLead, checkLead, serviceValues, crewSize, opportunityName, recor
           opportunityId,
       });
   }
-  return { validateLead, checkLead, serviceValues, crewSize, opportunityName, recordLead };
+  return { checkLead, serviceValues, crewSize, opportunityName, recordLead };
 })();
 
 export const SECRET_HEADER = "x-vspl-lead-secret";
@@ -631,7 +574,7 @@ export async function preprocessor(event) {
 export async function main(authorized, body) {
     if (!authorized)
         return respond(403, { ok: false, error: "Forbidden" });
-    const checked = validateLead(body);
+    const checked = checkLead(body);
     if (!checked.ok)
         return respond(400, { ok: false, error: `Invalid lead: ${checked.errors.join(", ")}` });
     try {

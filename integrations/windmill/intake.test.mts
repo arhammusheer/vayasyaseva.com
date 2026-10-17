@@ -8,18 +8,28 @@ import { composeNote } from "./talent/lib/note.ts";
 import { runIntake } from "./talent/lib/run-intake.ts";
 import { SAVE_SUBMISSION } from "./talent/lib/sql.ts";
 import type { ClaimedSubmission } from "./talent/lib/types.ts";
-import { saveSubmissionParams, validateSubmission } from "./talent/lib/validate.ts";
+import { checkSubmission, saveSubmissionParams } from "./talent/lib/intake-payload.ts";
 import { preprocessor, secretMatches } from "./talent/scripts/intake.ts";
 
 function validate(body: unknown) {
-  const out = validateSubmission(body);
+  const out = checkSubmission(body);
   if (!out.ok) throw new Error(`Invalid submission: ${out.errors.join(", ")}`);
   return out.value;
 }
 
+// What the site sends: job_application.v1 canonical (packages/contracts).
 const base = {
   ref: "VS-J-TEST99",
-  phone: "9876543210",
+  source: "web",
+  locale: "en-IN",
+  cluster: null,
+  pageCluster: null,
+  pagePath: null,
+  role: null,
+  hub: null,
+  channel: "web",
+  agentName: null,
+  phone: "+919876543210",
   adult: true,
   consent: { version: "2026-10-02", at: "2026-10-16T10:00:00Z" },
   text: null,
@@ -38,7 +48,7 @@ test("consent versions are stored as given: the earlier dates and the website's 
 });
 
 test("legacy page sources still pass and keep their short locale", () => {
-  const out = validate({ ...base, source: "web_hinglish" });
+  const out = validate({ ...base, source: "web_hinglish", locale: null });
   assert.equal(out.source, "web_hinglish");
   assert.equal(out.locale, "hinglish");
   assert.equal(out.cluster, null);
@@ -56,20 +66,26 @@ test("web submissions carry a BCP 47 locale, cluster and page path", () => {
 });
 
 test("a web submission without a valid locale is rejected", () => {
-  assert.throws(() => validate({ ...base, source: "web" }), /locale/);
+  assert.throws(() => validate({ ...base, source: "web", locale: null }), /locale/);
   assert.throws(() => validate({ ...base, source: "web", locale: "en" }), /locale/);
   assert.throws(() => validate({ ...base, source: "web_xx" }), /source/);
 });
 
-test("unknown page fields are dropped, not fatal", () => {
-  const out = validate({ ...base, source: "web", locale: "en-IN", cluster: "mumbai", pageCluster: "Haridwar", pagePath: "/en-in/jobs?x=1" });
-  assert.equal(out.cluster, null);
-  assert.equal(out.pageCluster, null);
-  assert.equal(out.pagePath, null);
+test("page fields outside the contract are refused (the site sends only known ones)", () => {
+  assert.throws(() => validate({ ...base, cluster: "mumbai" }), /cluster/);
+  assert.throws(() => validate({ ...base, pageCluster: "Haridwar" }), /pageCluster/);
+  assert.throws(() => validate({ ...base, pagePath: "/en-in/jobs?x=1" }), /pagePath/);
+  assert.throws(() => validate({ ...base, phone: "9876543210" }), /phone/);
+});
+
+test("a file under another reference is refused", () => {
+  const file = { kind: "image", key: "intake/2026/10/VS-J-OTHER1/0.jpg", mime: "image/jpeg", size: 10, name: null };
+  assert.throws(() => validate({ ...base, attachments: [file] }), /attachments/);
+  assert.equal(validate({ ...base, attachments: [{ ...file, key: "intake/2026/10/VS-J-TEST99/0.jpg" }] }).attachments[0].position, 0);
 });
 
 test("identity numbers in the message are masked before saving", () => {
-  const out = validate({ ...base, source: "web", locale: "en-IN", answers: undefined, text: "Aadhaar 2345 6789 0123, PAN ABCDE1234F" });
+  const out = validate({ ...base, source: "web", locale: "en-IN", answers: null, text: "Aadhaar 2345 6789 0123, PAN ABCDE1234F" });
   assert.equal(out.text, "Aadhaar XXXX XXXX 0123, PAN [PAN removed]");
 });
 
@@ -128,7 +144,7 @@ test("a wrong or missing secret answers 403 and saves nothing", async () => {
 
 test("an invalid payload answers 400 with the failing fields and saves nothing", async () => {
   const t = intakeDeps("s1");
-  const out = await runIntake(true, { ...base, source: "web" }, t.deps);
+  const out = await runIntake(true, { ...base, source: "web", locale: null }, t.deps);
   assert.equal(out.wm_status_code, 400);
   assert.match((out.result as { error: string }).error, /locale/);
   assert.deepEqual(t.queries, []);

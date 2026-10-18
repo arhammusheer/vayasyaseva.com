@@ -278,14 +278,16 @@ export function isGone(path: string, locale?: Locale): boolean {
 }
 
 /**
- * hreflang alternates for a page, given its neutral path. x-default must not
- * redirect: it is the language picker on "prompt" pages (served at the
- * neutral URL) and the default language's page everywhere else.
+ * hreflang alternates for a page, given its neutral path. x-default is the
+ * default language's page, never the neutral URL: on "prompt" pages that URL
+ * is the language picker, which is noindex (Google indexed the pickers in
+ * place of the pages they lead to, 18 Oct 2026), and an hreflang target must
+ * be indexable and must not redirect.
  */
 export function languageAlternates(path: string) {
   const published = localesOf(path).filter((l) => isIndexable(path, l));
   if (published.length < 2) return undefined;
-  const xDefault = neutralTarget(path) === "prompt" ? path : localePath(path, defaultLocaleOf(path));
+  const xDefault = localePath(path, defaultLocaleOf(path));
   return {
     ...Object.fromEntries(published.map((l) => [locales[l].hreflang, localePath(path, l)])),
     "x-default": xDefault,

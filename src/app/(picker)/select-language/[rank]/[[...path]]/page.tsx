@@ -10,11 +10,8 @@ import { quickApplyCopy } from "@/content/pages/quick-apply";
 import { feesAndFraudCopy } from "@/content/pages/fees-and-fraud";
 import { jobsPrivacyCopy } from "@/content/pages/jobs-privacy";
 import {
-  isIndexable,
-  languageAlternates,
   localePath,
   locales,
-  localesOf,
   neutralTarget,
   pages,
   type Locale,
@@ -95,7 +92,6 @@ const PROMPT: Record<Locale, string> = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { path, variant } = await readParams(params);
   const english = pageSummary(path);
-  const languages = languageAlternates(path);
   const sharing = pageMetadata({ title: english.title, description: english.text ?? "Choose your language.", alternates: { canonical: localePath(path, "en-IN") }, shareVariant: variant });
   return {
     openGraph: { ...sharing.openGraph, url: path },
@@ -104,9 +100,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     // The English page's own description: one snippet per canonical URL,
     // whatever order this visitor's variant lists the languages in.
     description: english.text ?? "Choose your language.",
-    alternates: { canonical: path, ...(languages && { languages }) },
-    // Indexed while at least one language version is (src/content/registry).
-    ...(localesOf(path).some((l) => isIndexable(path, l)) ? {} : { robots: { index: false, follow: true } }),
+    // Never indexed and in no hreflang set: the picker has no content of its
+    // own, and Google indexed it in place of the language pages it links to
+    // (18 Oct 2026). Search results show the locale pages; shared links and
+    // ads still open the picker at the neutral URL.
+    alternates: { canonical: path },
+    robots: { index: false, follow: true },
   };
 }
 

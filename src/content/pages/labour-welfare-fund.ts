@@ -80,6 +80,7 @@ export const lwfCopy = {
     due: "When",
     sources: "From",
     wages: (name: string) => `Minimum wages in ${name}`,
+    full: (name: string) => `Labour Welfare Fund in ${name}: examples, payment and penalties`,
   },
   faqs: (funds: StateFund[]) => {
     const none = funds.filter((f) => f.noContribution).map((f) => f.name);

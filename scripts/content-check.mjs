@@ -168,6 +168,7 @@ const GROUP_OF_AUDIENCE = { business: ["marketing"], jobs: ["jobs"], mixed: ["re
 const DYNAMIC_ROUTE_KINDS = {
   "/jobs/[role]": ["job-role", "job-hub", "jobs-city"],
   "/minimum-wages/[state]": ["wage-state"],
+  "/labour-welfare-fund/[state]": ["lwf-state"],
   "/locations/[cluster]": ["cluster-hub"],
   "/locations/[cluster]/[estate]": ["estate"],
 };

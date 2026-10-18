@@ -26,6 +26,7 @@ const COMMON: Record<string, { heading: string; description: string }> = {
   "/minimum-wages": { heading: "Minimum wages\nby state.", description: "Current rates by skill level, each from the state's own notification." },
   "/minimum-wages/uttarakhand": { heading: "Minimum wages\nin Uttarakhand.", description: "Monthly rates by skill level, basic wage and VDA, from the notification." },
   "/minimum-wages/uttar-pradesh": { heading: "Minimum wages\nin Uttar Pradesh.", description: "Rates by district category and skill level, basic wage and VDA." },
+  "/gratuity": { heading: "Gratuity for\nemployers.", description: "15 days' wages a year, after five years or one on a fixed term, up to ₹20 lakh." },
   "/bonus": { heading: "Statutory\nbonus.", description: "8.33% to 20% of wages, for workers on up to ₹21,000, by 30 November." },
   "/epf": { heading: "EPF for\nemployers.", description: "The ₹25,000 ceiling, the 12% split, due dates and contract workers." },
   "/esic": { heading: "ESIC for\nemployers.", description: "3.25% and 0.75% on wages up to ₹21,000, paid by the 15th." },

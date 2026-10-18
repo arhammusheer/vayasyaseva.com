@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
-import { BONUS_ELIGIBLE_UP_TO, EPF_CEILING, ESIC_LIMIT, KA_PT_FROM, bonus, delhiLwf, epf, esic, haryanaLwf, karnatakaPt } from "@/content/contributions";
+import { BONUS_ELIGIBLE_UP_TO, EPF_CEILING, ESIC_LIMIT, GRATUITY_CEILING, KA_PT_FROM, bonus, delhiLwf, epf, esic, gratuity, haryanaLwf, karnatakaPt, type GratuityExit } from "@/content/contributions";
 
 /**
  * The reference pages' calculators: one amount in, the shares out, worked
@@ -235,6 +235,79 @@ export function BonusCalculator({ places }: { places: BonusPlace[] }) {
               ? `Above ₹7,000 a month, bonus is worked out on ₹7,000 or the minimum wage, whichever is higher: here ${inr(r.base)}. For a full year; part of a year earns a proportionate share.`
               : "For a full year; part of a year earns a proportionate share."
             : `Above ₹${BONUS_ELIGIBLE_UP_TO.toLocaleString("en-IN")} a month in wages (basic + DA), statutory bonus is not due.`
+        }
+      />
+    </div>
+  );
+}
+
+export function GratuityCalculator({ places }: { places: BonusPlace[] }) {
+  const [place, setPlace] = useState(0);
+  const minimumWage = places[place]?.minimumWage ?? 0;
+  const [wages, setWages] = useState(Math.round(minimumWage));
+  const [years, setYears] = useState(6);
+  const [months, setMonths] = useState(0);
+  const [exit, setExit] = useState<GratuityExit>("regular");
+  const r = gratuity(wages, years, months, exit);
+  const placeId = useId();
+  const exits: [string, GratuityExit][] = [["Leaving or retiring", "regular"], ["Fixed term ends", "fixed-term"], ["Death or disablement", "death"]];
+  const short = exit === "fixed-term" ? "one year under the contract" : "five years of continuous service";
+  return (
+    <div className="ref-calc">
+      <div className="grid gap-6">
+        <div>
+          <label htmlFor={placeId}>Where the worker works</label>
+          <select
+            id={placeId}
+            value={place}
+            onChange={(e) => {
+              const next = Number(e.target.value);
+              setPlace(next);
+              setWages(Math.round(places[next]?.minimumWage ?? 0));
+            }}
+          >
+            {places.map((p, i) => (
+              <option key={p.label} value={i}>
+                {p.label}: {inr(p.minimumWage)} minimum wage
+              </option>
+            ))}
+          </select>
+        </div>
+        {/* Keyed by place, so the field shows the new state's minimum wage. */}
+        <AmountField key={place} label="Last wages a month (basic + DA)" value={wages} onChange={setWages} presets={[Math.round(minimumWage), 25000, 40000]} />
+        <div className="grid gap-6 sm:grid-cols-2">
+          <AmountField label="Years of service" prefix="" value={years} onChange={setYears} presets={[1, 5, 10]} format={(n) => `${n} yr`} />
+          <AmountField label="And months" prefix="" value={months} onChange={(n) => setMonths(Math.min(n, 11))} presets={[0, 6, 7]} format={(n) => `${n} mo`} />
+        </div>
+        <div>
+          <span className="block text-[15px] font-semibold">How the worker leaves</span>
+          <div className="ref-presets" role="group" aria-label="How the worker leaves">
+            {exits.map(([label, value]) => (
+              <button key={value} type="button" aria-pressed={exit === value} onClick={() => setExit(value)}>
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+      <Result
+        rows={[
+          ["15 days' wages", inr(r.perYear)],
+          ["Years counted", r.counted === 1 ? "1 year" : `${r.counted} years`],
+          ...(r.capped ? ([["Before the ceiling", inr(r.uncapped)]] as [string, string][]) : []),
+        ]}
+        total={["Gratuity", r.due ? inr(r.amount) : "Not yet due"]}
+        warn={!r.due}
+        note={
+          !r.due
+            ? exit === "death"
+              ? "Nothing to count yet: gratuity on death or disablement is for each completed year, and a part over six months."
+              : `Not due before ${short}. ${exit === "regular" ? "On death or disablement, or at the end of a fixed term of a year or more, it is." : ""}`.trim()
+            : r.capped
+              ? `Limited to the ceiling of ${inr(GRATUITY_CEILING)}. Paid within 30 days of falling due.`
+              : months > 6
+                ? `The ${months} months count as a full year, being more than six. Paid within 30 days of falling due.`
+                : "A part year counts as a full year only when it is more than six months. Paid within 30 days of falling due."
         }
       />
     </div>

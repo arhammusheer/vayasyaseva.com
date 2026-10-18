@@ -1,14 +1,15 @@
 import Link from "@/components/i18n/link";
 import { Section } from "@/components/layout/section";
 import { Doors } from "@/components/pages/minimum-wages";
-import { BonusCalculator, EpfCalculator, EsicCalculator, KarnatakaPtCalculator, type BonusPlace } from "@/components/reference/calculators";
-import { BonusCalendar, EpfSplit, EsicPeriods, KarnatakaPtYear } from "@/components/reference/figures";
+import { BonusCalculator, EpfCalculator, EsicCalculator, GratuityCalculator, KarnatakaPtCalculator, type BonusPlace } from "@/components/reference/calculators";
+import { BonusCalendar, EpfSplit, EsicPeriods, GratuityStairs, KarnatakaPtYear } from "@/components/reference/figures";
 import { RefSection, RefWide, RuleGroups, TopicEnd, TopicHero } from "@/components/reference/primitives";
 import { wageDoors } from "@/content/pages/minimum-wages";
 import { linkable } from "@/content/registry";
 import { epfCeilingChange, epfTopic } from "@/content/topics/epf";
 import { esicTopic } from "@/content/topics/esic";
 import { bonusTopic } from "@/content/topics/bonus";
+import { gratuityTopic } from "@/content/topics/gratuity";
 import { headlineTable, wageStates } from "@/content/wages";
 import { wageStatePath } from "@/content/registry/identifiers";
 import { karnatakaPtTopic, professionalTaxTopic, ptStates } from "@/content/topics/professional-tax";
@@ -204,6 +205,30 @@ export function BonusPage() {
       </RefWide>
       <RefSection id="calculator" heading="Work it out." intro="On the state's unskilled minimum wage, for a full year. The ₹21,000 and ₹7,000 are the Central sphere's figures; no state we cover had notified its own when we checked." subtle>
         <BonusCalculator places={bonusPlaces()} />
+      </RefSection>
+      <RefSection id="rules" heading="The rules.">
+        <RuleGroups groups={t.rules} />
+      </RefSection>
+      <TopicEnd faqs={t.faqs} self={t.path} links={t.links} sources={t.sources} />
+      <Doors doors={doors} />
+    </>
+  );
+}
+
+/** Gratuity: what each year of service adds, and from when it is due; a calculator on each state's minimum wage. */
+export function GratuityPage() {
+  const t = gratuityTopic;
+  const places = bonusPlaces();
+  const shown = places.find((p) => p.label === "Haryana") ?? places[0];
+  return (
+    <>
+      <Schema topic={t} />
+      <Hero topic={t} />
+      <RefWide id="years" heading="Every year adds 15 days' wages." intro="The amount grows by the same step for each year of service. What changes at five years is who can receive it.">
+        <GratuityStairs wage={shown.minimumWage} label={`${shown.label}'s unskilled minimum wage`} />
+      </RefWide>
+      <RefSection id="calculator" heading="Work it out." intro="On the wages last drawn, basic and DA. Pick the state for its unskilled minimum wage, or type the worker's own." subtle>
+        <GratuityCalculator places={places} />
       </RefSection>
       <RefSection id="rules" heading="The rules.">
         <RuleGroups groups={t.rules} />

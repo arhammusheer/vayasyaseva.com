@@ -5,9 +5,12 @@
  * (src/content/statutory.ts), where the wage pages' employer dues cite the
  * same documents, so one re-check covers both.
  */
+/** A table cell: text, or text linking to another page (a state's own page). */
+export type TableCell = string | { text: string; href: string };
+
 export type TopicSection =
   | { kind: "facts"; id: string; heading?: string; intro?: string; rows: { label: string; text: string }[]; note?: string }
-  | { kind: "table"; id: string; heading: string; intro?: string; caption: string; columns: string[]; rows: string[][]; note?: string }
+  | { kind: "table"; id: string; heading: string; intro?: string; caption: string; columns: string[]; rows: TableCell[][]; note?: string }
   | { kind: "prose"; id: string; heading: string; paragraphs: string[] };
 
 export type Topic = {

@@ -174,7 +174,7 @@ export function LabourWelfareFundPage() {
           ))}
         </div>
       </Section>
-      <Faqs faqs={faqs}>
+      <Faqs faqs={faqs} self={LWF_PATH}>
         <p className="method-back">
           <Link href={WAGE_HUB_PATH} className="text-link">
             {l.links.wages} <ArrowRight size={18} aria-hidden="true" />

@@ -8,7 +8,7 @@ import { COMPLIANCE_HELP } from "@/content/compliance";
 import { wageDoors } from "@/content/pages/minimum-wages";
 import { linkable } from "@/content/registry";
 import { statutorySources } from "@/content/statutory";
-import type { Topic, TopicSection } from "@/content/topics/types";
+import type { TableCell, Topic, TopicSection } from "@/content/topics/types";
 import { formatDate, formatShortMonth } from "@/content/wages";
 import { JsonLd, faqSchema, webPageSchema } from "@/lib/structured-data";
 import { localePath } from "@/lib/i18n";
@@ -36,6 +36,19 @@ function Facts({ rows }: { rows: { label: string; text: string }[] }) {
     </dl>
   );
 }
+
+/** A cell's text, linked when it names another page that is published. */
+function Cell({ cell }: { cell: TableCell }) {
+  if (typeof cell === "string") return <>{cell}</>;
+  return linkable(cell.href, "en-IN") ? (
+    <Link href={cell.href} className="dues-name-link">
+      {cell.text}
+    </Link>
+  ) : (
+    <>{cell.text}</>
+  );
+}
+const cellText = (cell: TableCell) => (typeof cell === "string" ? cell : cell.text);
 
 function Body({ section }: { section: TopicSection }) {
   if (section.kind === "prose") return <>{section.paragraphs.map((p) => <p key={p}>{p}</p>)}</>;
@@ -65,10 +78,14 @@ function Body({ section }: { section: TopicSection }) {
           </thead>
           <tbody>
             {section.rows.map((row) => (
-              <tr key={row[0]}>
-                <th scope="row">{row[0]}</th>
+              <tr key={cellText(row[0])}>
+                <th scope="row">
+                  <Cell cell={row[0]} />
+                </th>
                 {row.slice(1).map((cell, i) => (
-                  <td key={i}>{cell}</td>
+                  <td key={i}>
+                    <Cell cell={cell} />
+                  </td>
                 ))}
               </tr>
             ))}
@@ -135,7 +152,7 @@ export function ReferenceTopicPage({ topic }: { topic: Topic }) {
           </ol>
         </div>
       </Section>
-      <Faqs faqs={topic.faqs}>
+      <Faqs faqs={topic.faqs} self={topic.path}>
         {links.length > 0 && (
           <p className="method-back">
             {links.map((l) => (

@@ -4390,3 +4390,577 @@ a:hover > svg {
 .dues-name-link:hover {
   color: var(--gold-700);
 }
+
+/* ── Reference topic pages: EPF, ESIC, Labour Welfare Fund, Professional Tax (redesign, 18 Oct 2026) ──
+   Each page: the answer and its numbers at a glance in the hero, one signature
+   figure that explains how that scheme works, a calculator, the rules as
+   ruled rows, then questions and folded sources. Built on the wage pages'
+   type, rules and gold; no cards. */
+
+/* At a glance: the four numbers, ruled, beside the answer. */
+.ref-glance {
+  display: grid;
+  border-top: 1px solid var(--foreground);
+}
+.ref-glance > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 16px;
+  padding-block: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.ref-glance dt {
+  font-size: 15px;
+  line-height: 1.35;
+  color: var(--muted-foreground);
+}
+.ref-glance dt small {
+  display: block;
+  font-size: 13px;
+}
+.ref-glance dd {
+  font-family: var(--stack-display);
+  font-size: clamp(24px, 2.4vw, 30px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+.ref-glance .is-key dd {
+  color: var(--gold-700);
+}
+
+/* A section: heading left, body right on wide screens (the wage pages' split). */
+.ref-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px 64px;
+}
+@media (min-width: 1024px) {
+  .ref-split {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  }
+}
+.ref-h2 {
+  font-family: var(--stack-display);
+  font-size: clamp(28px, 3.2vw, 40px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.ref-h2 + p,
+.ref-intro {
+  margin-top: 14px;
+  max-width: 34ch;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+.ref-body {
+  min-width: 0;
+  max-width: 760px;
+}
+.ref-wide {
+  min-width: 0;
+}
+
+/* Rules: groups of label and value rows, the label a short noun. */
+.ref-rules {
+  display: grid;
+  gap: 44px;
+}
+.ref-rules h3 {
+  font-family: var(--stack-display);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--foreground);
+}
+.ref-rows > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 4px;
+  padding-block: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.ref-rows > div:last-child {
+  border-bottom: 0;
+}
+@media (min-width: 640px) {
+  .ref-rows > div {
+    grid-template-columns: minmax(0, 200px) minmax(0, 1fr);
+    gap: 24px;
+  }
+}
+.ref-rows dt {
+  font-weight: 600;
+  font-size: 16px;
+}
+.ref-rows dd {
+  font-size: 16.5px;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+  max-width: 62ch;
+}
+.ref-rows dd strong {
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+/* Calculator: one input, preset amounts, a ruled result. */
+.ref-calc {
+  display: grid;
+  gap: 24px;
+}
+.ref-calc label {
+  display: block;
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+.ref-calc-field {
+  display: flex;
+  align-items: center;
+  max-width: 320px;
+  height: 56px;
+  border: 1px solid var(--neutral-300);
+  border-radius: 8px;
+  background: var(--background);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.ref-calc-field:focus-within {
+  border-color: var(--gold-600);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--gold-400) 35%, transparent);
+}
+.ref-calc-field span {
+  padding-left: 16px;
+  font-family: var(--stack-display);
+  font-size: 22px;
+  color: var(--muted-foreground);
+}
+.ref-calc-field input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0 16px 0 8px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-family: var(--stack-display);
+  font-size: 24px;
+  font-variant-numeric: tabular-nums;
+  color: var(--foreground);
+}
+.ref-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.ref-presets button {
+  height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  color: var(--foreground);
+  background: var(--background);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.ref-presets button:hover {
+  border-color: var(--gold-500);
+}
+.ref-presets button[aria-pressed="true"] {
+  border-color: var(--gold-600);
+  background: var(--gold-50);
+  font-weight: 600;
+}
+.ref-presets button:focus-visible,
+.ref-calc-toggle input:focus-visible {
+  outline: 2px solid var(--gold-600);
+  outline-offset: 2px;
+}
+.ref-calc-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+  font-size: 15px;
+  color: var(--muted-foreground);
+  cursor: pointer;
+}
+.ref-calc-toggle input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--gold-600);
+}
+.ref-result {
+  border-top: 1px solid var(--foreground);
+}
+.ref-result > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding-block: 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 16px;
+}
+.ref-result dt {
+  color: var(--muted-foreground);
+}
+.ref-result dd {
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.ref-result .is-total {
+  border-bottom: 0;
+}
+.ref-result .is-total dt {
+  color: var(--foreground);
+  font-weight: 600;
+}
+.ref-result .is-total dd {
+  font-family: var(--stack-display);
+  font-size: 28px;
+  color: var(--gold-700);
+}
+.ref-calc-note {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--muted-foreground);
+  max-width: 62ch;
+}
+.ref-calc-note.is-warn {
+  color: var(--warning);
+}
+@media (min-width: 900px) {
+  .ref-calc {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 48px;
+    align-items: start;
+  }
+}
+
+/* Signature figures. Shared axis text. */
+.ref-figure {
+  margin-top: 8px;
+}
+.ref-figure figcaption {
+  margin-top: 16px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--muted-foreground);
+  max-width: 70ch;
+}
+.ref-axis {
+  font-size: 13px;
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+}
+
+/* EPF: where the 25% goes, one bar drawn to scale. */
+.epf-split {
+  display: flex;
+  height: 64px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.epf-split > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  font-family: var(--stack-display);
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+}
+.epf-split .is-worker { background: var(--neutral-800); color: var(--neutral-0); }
+.epf-split .is-epf { background: var(--neutral-600); color: var(--neutral-0); }
+.epf-split .is-eps { background: var(--gold-500); color: var(--neutral-950); }
+.epf-split .is-edli { background: var(--gold-200); }
+.epf-split .is-admin { background: var(--neutral-200); }
+.epf-legend {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  margin-top: 20px;
+  border-top: 1px solid var(--border);
+}
+@media (min-width: 900px) {
+  .epf-legend { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px; border-top: 0; }
+}
+.epf-legend > div {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr);
+  gap: 4px 12px;
+  padding-block: 12px;
+  border-bottom: 1px solid var(--border);
+}
+@media (min-width: 900px) {
+  .epf-legend > div { border-bottom: 0; border-top: 1px solid var(--border); }
+}
+.epf-legend i {
+  grid-row: span 2;
+  width: 14px;
+  height: 14px;
+  margin-top: 4px;
+  border-radius: 3px;
+}
+.epf-legend strong {
+  font-family: var(--stack-display);
+  font-size: 22px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.epf-legend span {
+  font-size: 14.5px;
+  line-height: 1.45;
+  color: var(--muted-foreground);
+}
+.epf-legend .is-worker i { background: var(--neutral-800); }
+.epf-legend .is-epf i { background: var(--neutral-600); }
+.epf-legend .is-eps i { background: var(--gold-500); }
+.epf-legend .is-edli i { background: var(--gold-200); }
+.epf-legend .is-admin i { background: var(--neutral-200); }
+.epf-brace {
+  display: grid;
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--muted-foreground);
+}
+.epf-brace > div {
+  display: flex;
+  justify-content: center;
+  padding-top: 8px;
+  border-top: 2px solid var(--neutral-300);
+}
+
+/* The ceiling change: before and after, then what to do. */
+.ref-change {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  font-family: var(--stack-display);
+  font-variant-numeric: tabular-nums;
+}
+.ref-change s {
+  font-size: clamp(28px, 4vw, 44px);
+  color: var(--neutral-400);
+  text-decoration-thickness: 2px;
+}
+.ref-change strong {
+  font-size: clamp(44px, 6vw, 72px);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.ref-change span {
+  font-family: var(--stack-body);
+  font-size: 16px;
+  color: var(--muted-foreground);
+}
+
+/* Timelines: months along a line (ESIC periods, PT year, Haryana's year). */
+.ref-months {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 4px;
+}
+.ref-months > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 0;
+  text-align: center;
+}
+.ref-months .bar {
+  border-radius: 4px 4px 0 0;
+  background: var(--neutral-300);
+}
+.ref-months .bar.is-on { background: var(--neutral-800); }
+.ref-months .bar.is-gold { background: var(--gold-500); }
+.ref-months .bar.is-soft { background: var(--gold-200); }
+.ref-months .val {
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--foreground);
+}
+.ref-months .mon {
+  padding-top: 6px;
+  border-top: 1px solid var(--foreground);
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+}
+@media (max-width: 520px) {
+  .ref-months .val { font-size: 10.5px; }
+  .ref-months .mon { font-size: 11px; }
+}
+.ref-periods {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  margin-top: 10px;
+}
+.ref-periods > div {
+  padding: 10px 0 0;
+  border-top: 2px solid var(--foreground);
+  font-size: 14.5px;
+  line-height: 1.45;
+}
+.ref-periods strong {
+  display: block;
+  font-family: var(--stack-display);
+  font-size: 18px;
+  font-weight: 500;
+}
+.ref-periods span {
+  color: var(--muted-foreground);
+}
+.ref-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-top: 18px;
+  font-size: 14px;
+  color: var(--muted-foreground);
+}
+.ref-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.ref-legend i {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+/* Delhi: two half-years side by side. */
+.ref-halves {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px;
+}
+@media (min-width: 760px) {
+  .ref-halves { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px; }
+}
+.ref-halves > div {
+  border-top: 2px solid var(--foreground);
+  padding-top: 16px;
+}
+.ref-halves h3 {
+  font-family: var(--stack-display);
+  font-size: 24px;
+  font-weight: 500;
+}
+.ref-halves ol {
+  display: grid;
+  margin-top: 12px;
+}
+.ref-halves li {
+  display: grid;
+  grid-template-columns: minmax(0, 120px) minmax(0, 1fr);
+  gap: 16px;
+  padding-block: 10px;
+  border-bottom: 1px solid var(--border);
+  font-size: 15.5px;
+}
+.ref-halves li b {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.ref-halves li span {
+  color: var(--muted-foreground);
+}
+.ref-split-amount {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+  margin-top: 28px;
+  font-variant-numeric: tabular-nums;
+}
+.ref-split-amount > div {
+  display: grid;
+  gap: 2px;
+}
+.ref-split-amount strong {
+  font-family: var(--stack-display);
+  font-size: clamp(30px, 3.6vw, 44px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.ref-split-amount span {
+  font-size: 14.5px;
+  color: var(--muted-foreground);
+}
+.ref-split-amount .op {
+  font-family: var(--stack-display);
+  font-size: 28px;
+  color: var(--neutral-400);
+}
+.ref-split-amount .is-gold strong {
+  color: var(--gold-700);
+}
+
+/* Haryana: the cap curve. */
+.ref-curve svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.ref-curve .grid line { stroke: var(--border); }
+.ref-curve .axis-line { stroke: var(--foreground); }
+.ref-curve .curve { fill: none; stroke: var(--neutral-800); stroke-width: 3; stroke-linejoin: round; }
+.ref-curve .curve-employer { fill: none; stroke: var(--gold-500); stroke-width: 3; stroke-linejoin: round; }
+.ref-curve .area { fill: color-mix(in oklab, var(--gold-200) 45%, transparent); }
+.ref-curve text { fill: var(--muted-foreground); font-size: 13px; font-variant-numeric: tabular-nums; }
+.ref-curve .label-strong { fill: var(--foreground); font-weight: 600; }
+.ref-curve .mark { fill: var(--background); stroke: var(--gold-700); stroke-width: 2.5; }
+.ref-curve .cap-line { stroke: var(--gold-700); stroke-dasharray: 4 4; }
+
+/* States table on the PT hub. */
+.ref-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+.ref-status::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--gold-500);
+}
+.ref-status.is-none {
+  font-weight: 400;
+  color: var(--muted-foreground);
+}
+.ref-status.is-none::before {
+  background: var(--neutral-300);
+}
+
+.ref-calc .ref-calc-toggle {
+  display: inline-flex;
+  margin-bottom: 0;
+  font-weight: 400;
+}
+.ref-split-amount.is-wide {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}

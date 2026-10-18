@@ -5,7 +5,7 @@ import type { LwfStateSlug } from "@/content/registry/identifiers";
  * (/labour-welfare-fund/<state>, 18 Oct 2026). The basic rows (who it
  * covers, the two shares, the due date) stay in src/content/statutory.ts,
  * which the hub and the wage pages read; this file holds what only the
- * state page shows. Every line cites a source in statutorySources by id.
+ * state page shows. The page cites statutorySources by id.
  *
  * Read against the documents on 18 Oct 2026:
  * - Haryana: the Punjab Labour Welfare Fund Act, 1965 as amended by Haryana
@@ -27,16 +27,6 @@ import type { LwfStateSlug } from "@/content/registry/identifiers";
  *   online portal was checked live.
  */
 
-export type LwfFact = { label: string; text: string; sources: string[] };
-
-export type LwfExample = {
-  heading: string;
-  /** One line before the rows: what the example assumes. */
-  intro: string;
-  rows: { label: string; value: string }[];
-  note?: string;
-};
-
 export type LwfStateDetail = {
   slug: LwfStateSlug;
   name: string;
@@ -47,114 +37,121 @@ export type LwfStateDetail = {
   heading: string;
   /** The answer first: the amounts and the date. */
   lede: string;
-  facts: LwfFact[];
-  example: LwfExample;
-  /** How the amounts have moved, where the documents show it. */
-  history?: { heading: string; rows: { from: string; worker: string; employer: string; source: string }[]; note: string };
-  pay: { heading: string; text: string; link: { href: string; label: string } };
+  glance: { label: string; note?: string; value: string; key?: boolean }[];
+  /** The signature figure's heading and line. */
+  figure: { heading: string; intro: string };
+  calculator: { intro: string };
+  rules: { heading: string; rows: { label: string; text: string }[] }[];
+  pay: { text: string; link: { href: string; label: string } };
   faqs: { question: string; answer: string }[];
   sources: string[];
 };
 
-const rupees = (n: number) => `₹${n.toLocaleString("en-IN", { minimumFractionDigits: Number.isInteger(n) ? 0 : 2, maximumFractionDigits: 2 })}`;
-
-/**
- * Haryana's worked example from the state's unskilled minimum wage (the
- * wage dataset), so the figure moves when the wage page does, and one wage
- * above the cap.
- */
-function haryanaExample(minimumWage: number): LwfExample {
-  const cap = 35;
-  const share = Math.round(minimumWage * 0.002 * 100) / 100;
-  const worker = Math.min(share, cap);
-  const capFrom = cap / 0.002;
-  return {
-    heading: "What it comes to.",
-    intro: `For one worker on Haryana's unskilled minimum wage of ${rupees(minimumWage)} a month, and one earning ${rupees(20000)}:`,
-    rows: [
-      { label: `On ${rupees(minimumWage)} a month`, value: `Worker ${rupees(worker)}, employer ${rupees(worker * 2)}: ${rupees(worker * 3)} a month, ${rupees(worker * 3 * 12)} a year` },
-      { label: `On ${rupees(20000)} a month`, value: `0.2% is ${rupees(40)}, above the cap, so worker ${rupees(cap)}, employer ${rupees(cap * 2)}: ${rupees(cap * 3)} a month, ${rupees(cap * 3 * 12)} a year` },
-      { label: "Where the cap starts", value: `At ${rupees(capFrom)} a month; above it the shares stay at ${rupees(cap)} and ${rupees(cap * 2)}` },
+export const lwfStates: Record<LwfStateSlug, LwfStateDetail> = {
+  haryana: {
+    slug: "haryana",
+    name: "Haryana",
+    title: "Haryana Labour Welfare Fund 2026: ₹35 Cap, Due Date",
+    description:
+      "Haryana LWF from 1 January 2026: 0.2% of wages up to ₹35 a month from the worker, twice that from the employer, paid online before 31 December. With examples.",
+    heading: "Labour Welfare Fund in Haryana.",
+    lede: "Each worker pays 0.2% of wages, up to ₹35 a month, and the employer pays twice that. The employer deposits both shares online once a year, before 31 December.",
+    glance: [
+      { label: "Worker pays", note: "of wages, up to ₹35 a month", value: "0.2%" },
+      { label: "Employer pays", note: "up to ₹70 a month", value: "Twice", key: true },
+      { label: "The cap starts at", note: "monthly wages", value: "₹17,500" },
+      { label: "Due", note: "once a year", value: "31 Dec" },
     ],
-    note: "Figures before any rounding. The employer deducts the worker's share from wages and deposits both shares together.",
-  };
-}
-
-export function lwfStateDetail(slug: LwfStateSlug, haryanaMinimumWage: number): LwfStateDetail {
-  if (slug === "haryana") {
-    return {
-      slug,
-      name: "Haryana",
-      title: "Haryana Labour Welfare Fund 2026: ₹35 Cap, Due Date",
-      description:
-        "Haryana LWF from 1 January 2026: 0.2% of wages up to ₹35 a month from the worker, twice that from the employer, paid online before 31 December. With examples.",
-      heading: "Labour Welfare Fund in Haryana.",
-      lede: "From 1 January 2026, each worker pays 0.2% of wages, up to ₹35 a month, and the employer pays twice the worker's share, up to ₹70. The employer pays both shares online once a year, before 31 December.",
-      facts: [
-        { label: "Who it covers", text: "Factories, shops and commercial establishments with ten or more employees on any day in the last twelve months.", sources: ["hr-lwf-act"] },
-        { label: "Who counts", text: "Every employee on the establishment's register on the last working day of the month.", sources: ["hr-lwf-act"] },
-        { label: "Worker pays", text: "0.2% of salary or wages, up to ₹35 a month from 1 January 2026, deducted from wages by the employer.", sources: ["hr-lwf-act", "hr-lwf-2026"] },
-        { label: "Employer pays", text: "Twice the worker's share, up to ₹70 a month.", sources: ["hr-lwf-act", "hr-lwf-2026"] },
-        { label: "When", text: "Both shares, once a year, before 31 December.", sources: ["hr-lwf-act"] },
-        { label: "Paid late", text: "More than a month after 31 December, interest of 12% a year runs until the money is deposited. Unpaid sums can be recovered as arrears of land revenue.", sources: ["hr-lwf-act"] },
-        { label: "Penalty", text: "Breaking the Act or obstructing an inspector: a fine of ₹2,000 to ₹5,000 for a first offence; up to three months in prison or a fine of ₹3,000 to ₹10,000 after that.", sources: ["hr-lwf-act"] },
-      ],
-      example: haryanaExample(haryanaMinimumWage),
-      history: {
-        heading: "How the cap has moved.",
+    figure: {
+      heading: "Capped at ₹35 a month.",
+      intro: "The worker's share grows with wages until ₹17,500 a month, then stays at ₹35. The employer pays twice the worker's share.",
+    },
+    calculator: { intro: "For one worker. The shares are worked out every month and deposited together for the year." },
+    rules: [
+      {
+        heading: "Who it covers",
         rows: [
-          { from: "1 January 2025", worker: "₹34", employer: "₹68", source: "hr-lwf-2026" },
-          { from: "1 January 2026", worker: "₹35", employer: "₹70", source: "hr-lwf-2026" },
+          { label: "Establishments", text: "Factories, shops and commercial establishments with ten or more employees on any day in the last twelve months." },
+          { label: "Who counts", text: "Every employee on the register on the last working day of the month." },
         ],
-        note: "The cap is indexed to the consumer price index every 1 January, so expect a new figure each year.",
       },
-      pay: {
-        heading: "How to pay.",
-        text: "The Act requires online payment to the Welfare Commissioner. Employers file and pay through the Haryana Labour Department's portal, under the Labour Welfare Board.",
-        link: { href: "https://hrylabour.gov.in/login/welfare", label: "Haryana Labour Welfare Board login" },
+      {
+        heading: "How much",
+        rows: [
+          { label: "Worker", text: "0.2% of salary or wages, up to ₹35 a month from 1 January 2026 (₹34 in 2025), deducted from wages." },
+          { label: "Employer", text: "Twice the worker's share, up to ₹70 a month." },
+          { label: "The cap", text: "Indexed to the consumer price index every 1 January, so expect a new figure each year." },
+        ],
       },
-      faqs: [
-        {
-          question: "Is Haryana's Labour Welfare Fund paid monthly?",
-          answer: "The shares are worked out every month, but the employer deposits them once a year: both shares, online, before 31 December. More than a month late, interest of 12% a year applies.",
-        },
-        {
-          question: "Does a worker who joins mid-year count?",
-          answer: "Yes, for each month they are on the establishment's register on its last working day. A worker who has left by then does not count for that month.",
-        },
-      ],
-      sources: ["hr-lwf-act", "hr-lwf-2026"],
-    };
-  }
-  return {
-    slug,
+      {
+        heading: "When",
+        rows: [
+          { label: "Payment", text: "Both shares, once a year, before 31 December, online." },
+          { label: "Paid late", text: "More than a month after 31 December, interest of 12% a year runs until the money is deposited. Unpaid sums can be recovered as arrears of land revenue." },
+          { label: "Penalty", text: "For breaking the Act or obstructing an inspector: a fine of ₹2,000 to ₹5,000 for a first offence; up to three months in prison or a fine of ₹3,000 to ₹10,000 after that." },
+        ],
+      },
+    ],
+    pay: {
+      text: "The Act requires online payment to the Welfare Commissioner. Employers file and pay on the Haryana Labour Department's portal, under the Labour Welfare Board.",
+      link: { href: "https://hrylabour.gov.in/login/welfare", label: "Haryana Labour Welfare Board login" },
+    },
+    faqs: [
+      {
+        question: "Is Haryana's Labour Welfare Fund paid monthly?",
+        answer: "The shares are worked out every month, but the employer deposits them once a year: both shares, online, before 31 December. More than a month late, interest of 12% a year applies.",
+      },
+      {
+        question: "Does a worker who joins mid-year count?",
+        answer: "Yes, for each month they are on the establishment's register on its last working day. A worker who has left by then does not count for that month.",
+      },
+    ],
+    sources: ["hr-lwf-act", "hr-lwf-2026"],
+  },
+  delhi: {
+    slug: "delhi",
     name: "Delhi",
     title: "Delhi Labour Welfare Fund 2026: Rates and Due Dates",
     description:
       "Delhi LWF: ₹0.75 from each worker and ₹2.25 from the employer every half-year, for units with 5 or more persons, paid by 15 July and 15 January. With examples.",
     heading: "Labour Welfare Fund in Delhi.",
-    lede: "Every half-year, each worker pays ₹0.75 and the employer pays ₹2.25, and the Government of Delhi adds ₹1.50. The employer deposits the worker's and its own share before 15 July and 15 January.",
-    facts: [
-      { label: "Who it covers", text: "Establishments employing five or more persons.", sources: ["dl-lwf-2004"] },
-      { label: "Who counts", text: "Every employee on the register on 30 June and on 31 December, except those working in a managerial or supervisory capacity and drawing more than ₹2,500 a month.", sources: ["dl-lwf-2004"] },
-      { label: "Worker pays", text: "₹0.75 every six months.", sources: ["dl-lwf-2004"] },
-      { label: "Employer pays", text: "₹2.25 every six months, and deposits the worker's share with its own.", sources: ["dl-lwf-2004"] },
-      { label: "Government adds", text: "₹1.50 every six months for each worker, paid by the Government of Delhi.", sources: ["dl-lwf-2004"] },
-      { label: "When", text: "For January to June, before 15 July; for July to December, before 15 January.", sources: ["dl-lwf-2004"] },
-      { label: "Paid late", text: "Unpaid contributions can be recovered as arrears of land revenue.", sources: ["dl-lwf-2004"] },
+    lede: "A fixed amount for each worker, twice a year: ₹0.75 from the worker and ₹2.25 from the employer, deposited before 15 July and 15 January. The Government of Delhi adds ₹1.50.",
+    glance: [
+      { label: "Worker pays", note: "each half-year", value: "₹0.75" },
+      { label: "Employer pays", note: "each half-year", value: "₹2.25", key: true },
+      { label: "Covered from", value: "5 persons" },
+      { label: "Due", value: "15 Jul, 15 Jan" },
     ],
-    example: {
-      heading: "What it comes to.",
-      intro: "For an establishment with 40 workers on the register on 30 June:",
-      rows: [
-        { label: "Workers' share", value: "40 × ₹0.75 = ₹30" },
-        { label: "Employer's share", value: "40 × ₹2.25 = ₹90" },
-        { label: "Deposit before 15 July", value: "₹120, and the same again before 15 January for the next count" },
-      ],
-      note: "The Government of Delhi's ₹1.50 a worker is paid separately; the employer does not deposit it.",
+    figure: {
+      heading: "Twice a year, by headcount.",
+      intro: "Not a share of wages: a fixed amount for each worker on the register on the last day of each half-year.",
     },
+    calculator: { intro: "For one half-year, by the workers on the register on 30 June or 31 December." },
+    rules: [
+      {
+        heading: "Who it covers",
+        rows: [
+          { label: "Establishments", text: "Establishments employing five or more persons." },
+          { label: "Who counts", text: "Every employee on the register on 30 June and on 31 December, except those in a managerial or supervisory capacity drawing more than ₹2,500 a month." },
+        ],
+      },
+      {
+        heading: "How much",
+        rows: [
+          { label: "Worker", text: "₹0.75 every six months." },
+          { label: "Employer", text: "₹2.25 every six months, and it deposits the worker's share with its own." },
+          { label: "Government", text: "₹1.50 every six months for each worker, paid by the Government of Delhi." },
+        ],
+      },
+      {
+        heading: "When",
+        rows: [
+          { label: "Payment", text: "For January to June, before 15 July; for July to December, before 15 January." },
+          { label: "Paid late", text: "Unpaid contributions can be recovered as arrears of land revenue." },
+        ],
+      },
+    ],
     pay: {
-      heading: "How to pay.",
       text: "Employers register the establishment and pay online on the Delhi Labour Welfare Board's portal.",
       link: { href: "https://dlabourwelfareboard.delhi.gov.in/index.php", label: "Delhi Labour Welfare Board portal" },
     },
@@ -169,5 +166,5 @@ export function lwfStateDetail(slug: LwfStateSlug, haryanaMinimumWage: number): 
       },
     ],
     sources: ["dl-lwf-2004"],
-  };
-}
+  },
+};

@@ -47,19 +47,25 @@ export const WORK_DOOR: Record<Locale, { lead: string; label: string }> = {
  * Reference pages, listed once published. `long` is the footer's label
  * where the menu's would be unclear out of context.
  */
-const REFERENCE: (NavLink & { long?: string })[] = [
+const REFERENCE: (NavLink & { long?: string; bar?: true })[] = [
   // One link per topic (owner, 18 Oct 2026: the footer had grown to 13).
   // State pages and the VDA tracker are one click away on their hub, their one home.
-  { href: WAGE_HUB_PATH, label: "Minimum wages" },
-  { href: LWF_PATH, label: "Labour Welfare Fund" },
-  { href: "/epf", label: "EPF", long: "EPF for employers" },
-  { href: "/esic", label: "ESIC", long: "ESIC for employers" },
-  { href: "/professional-tax", label: "Professional Tax" },
+  { href: WAGE_HUB_PATH, label: "Minimum wages", bar: true },
+  { href: LWF_PATH, label: "Labour Welfare Fund", bar: true },
+  { href: "/epf", label: "EPF", long: "EPF for employers", bar: true },
+  { href: "/esic", label: "ESIC", long: "ESIC for employers", bar: true },
+  { href: "/professional-tax", label: "Professional Tax", bar: true },
   { href: guidePath("new-labour-codes"), label: "Labour codes guide" },
   { href: WAGE_METHOD_PATH, label: "How we check", long: "How we check minimum wages" },
 ];
 export const referenceLinks = (long = false): NavLink[] =>
   REFERENCE.filter((l) => linkable(l.href, "en-IN")).map((l) => ({ href: l.href, label: long ? (l.long ?? l.label) : l.label }));
+/**
+ * The reference header's bar: every topic hub, so a reader on one topic can
+ * reach the others (owner, 18 Oct 2026: it showed only Minimum wages). The
+ * method page and guides stay in the menu and footer.
+ */
+export const referenceBarLinks = (): NavLink[] => REFERENCE.filter((l) => l.bar && linkable(l.href, "en-IN")).map((l) => ({ href: l.href, label: l.label }));
 
 /** The jobs header, menu and footer, in the page's language. */
 export const JOBS_NAV: Record<

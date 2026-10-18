@@ -1,4 +1,4 @@
-import type { Topic } from "./types";
+import type { TopicPage } from "./types";
 
 /**
  * /esic: ESIC for employers. Read against the documents on 18 Oct 2026:
@@ -18,77 +18,52 @@ import type { Topic } from "./types";
  * Re-check by 21 Nov 2026, when the 1950 regulations' saving ends and the
  * draft 2026 regulations (flat 1% a month damages) may replace them.
  */
-export const esicTopic: Topic = {
+export const esicTopic: TopicPage = {
   path: "/esic",
   title: "ESIC Contribution 2026: 3.25% + 0.75%, ₹21,000 Limit",
   description:
     "ESIC for employers: 3.25% from the employer and 0.75% from the worker on wages up to ₹21,000 a month, paid by the 15th. Contract workers, late fees, examples.",
   breadcrumb: "ESIC",
   heading: "ESIC for employers.",
-  lede: "Every establishment with 10 or more employees pays ESIC for workers earning up to ₹21,000 a month: 3.25% of wages from the employer and 0.75% from the worker, each rounded up to the next rupee, within 15 days of the month's end.",
-  sections: [
+  lede: "For every worker earning up to ₹21,000 a month, the employer pays 3.25% of wages and the worker 0.75%, each rounded up to the next rupee, by the 15th of the next month.",
+  glance: [
+    { label: "Employer pays", value: "3.25%", key: true },
+    { label: "Worker pays", note: "nothing on ₹176 a day or less", value: "0.75%" },
+    { label: "Wage limit", note: "a month, when a period begins", value: "₹21,000" },
+    { label: "Due", value: "15th" },
+  ],
+  updatedFrom: "the Gazette, the Ministry of Labour and ESIC",
+  rules: [
     {
-      kind: "facts",
-      id: "rules",
+      heading: "Who it covers",
       rows: [
-        { label: "Who must register", text: "Every establishment with 10 or more persons, other than a seasonal factory, from the date ESIC's benefits are notified for its area. Workers above the wage limit count towards the 10, and an establishment stays covered if its headcount later falls." },
-        { label: "Wage limit", text: "₹21,000 a month, in force since 1 January 2017; the Ministry of Labour's FAQs of March 2026 confirm it continues under the Code." },
-        { label: "Which wages", text: "Wages as the Code defines them (section 2(88)): basic pay, dearness allowance and retaining allowance, plus any excluded allowances above half of total pay. ESIC expects this to bring back workers who had been left out." },
-        { label: "Employer pays", text: "3.25% of wages, rounded up to the next rupee." },
-        { label: "Worker pays", text: "0.75% of wages, rounded up to the next rupee, deducted from wages. ESIC exempts workers whose average daily wage is up to ₹176 from their share; the employer still pays its own." },
+        { label: "Establishments", text: "Every establishment with 10 or more persons, other than a seasonal factory, from the date ESIC's benefits are notified for its area. Workers above the limit count towards the 10, and it stays covered if headcount later falls." },
+        { label: "Workers", text: "Everyone on wages up to ₹21,000 a month, in force since 1 January 2017; the Ministry of Labour's FAQs of March 2026 confirm it continues under the Code." },
+        { label: "Which wages", text: "Wages as the Code defines them (section 2(88)): basic pay, dearness allowance and retaining allowance, plus allowances above half of total pay. ESIC expects this to bring back workers who had been left out." },
+      ],
+    },
+    {
+      heading: "How much",
+      rows: [
+        { label: "Employer", text: "3.25% of wages, rounded up to the next rupee." },
+        { label: "Worker", text: "0.75%, rounded up, deducted from wages. ESIC exempts workers averaging ₹176 a day or less; the employer still pays its own share." },
         { label: "Workers with a disability", text: "No employer's share for up to three years." },
-        { label: "Registering workers", text: "Each worker on or before the day they join, through the ESIC portal with Aadhaar; the insurance number lapses if the declaration is not completed within 30 days." },
-        { label: "When", text: "Within 15 days of the end of the month the wages are for: by the 15th." },
       ],
     },
     {
-      kind: "table",
-      id: "example",
-      heading: "What it comes to.",
-      intro: "For one worker, a full month:",
-      caption: "ESIC contributions a month at different wages",
-      columns: ["Wages a month", "Worker, 0.75%", "Employer, 3.25%", "Total"],
+      heading: "When",
       rows: [
-        ["₹18,000", "₹135", "₹585", "₹720"],
-        ["₹18,500", "₹139 (from ₹138.75)", "₹602 (from ₹601.25)", "₹741"],
-        ["₹22,000, raised mid-period", "₹165", "₹715", "₹880"],
-        ["₹22,000, on joining", "Not covered", "Not covered", "Nothing"],
+        { label: "Registering workers", text: "On or before the day each worker joins, through the ESIC portal with Aadhaar; the insurance number lapses if the declaration is not finished within 30 days." },
+        { label: "Payment", text: "Within 15 days of the end of the month the wages are for: by the 15th." },
+        { label: "Paid late", text: "Interest of 12% a year, plus damages of up to 5% a year for under two months, 10% for two to four, 15% for four to six and 25% beyond, up to the arrears themselves. These rates come from the 1950 regulations, kept in force until November 2026; draft regulations propose a flat 1% a month." },
       ],
-      note: "A covered worker whose wages pass ₹21,000 during a contribution period stays covered until it ends; a worker who joins above the limit is not covered, but still counts towards the 10.",
     },
     {
-      kind: "table",
-      id: "periods",
-      heading: "Contribution periods.",
-      caption: "ESIC contribution periods",
-      columns: ["Period", "Covered for the whole period if"],
+      heading: "Contract workers",
       rows: [
-        ["1 April to 30 September", "Wages were within the limit when the period began"],
-        ["1 October to 31 March", "Wages were within the limit when the period began"],
+        { label: "Covered", text: "A worker employed through a contractor is an employee of the establishment under the Code." },
+        { label: "Who is liable", text: "The principal employer must pay both shares for every worker, including those employed through a contractor, and can recover them from the contractor's bills or as a debt." },
       ],
-    },
-    {
-      kind: "prose",
-      id: "contract-workers",
-      heading: "Contract workers.",
-      paragraphs: [
-        "The Code counts a person employed directly or through a contractor as an employee. The principal employer must pay both the employer's and the employee's contribution for every worker, including those employed through a contractor, and can recover the money from the contractor's bills or as a debt.",
-      ],
-    },
-    {
-      kind: "table",
-      id: "late",
-      heading: "Paid late.",
-      intro: "Interest of 12% a year runs from the due date until payment, and damages can be charged on the arrears, up to these rates a year:",
-      caption: "ESIC damages on arrears, maximum rate a year by length of delay",
-      columns: ["Delay", "Damages, up to"],
-      rows: [
-        ["Less than 2 months", "5% a year"],
-        ["2 months to less than 4", "10% a year"],
-        ["4 months to less than 6", "15% a year"],
-        ["6 months or more", "25% a year"],
-      ],
-      note: "Damages cannot exceed the arrears. These rates come from the 1950 regulations, which the Code keeps in force until November 2026; draft regulations of July 2026 propose a flat 1% a month in their place.",
     },
   ],
   faqs: [
@@ -98,18 +73,17 @@ export const esicTopic: Topic = {
     },
     {
       question: "How much is the employer's ESIC contribution?",
-      answer: "3.25% of wages, rounded up to the next rupee, plus the worker's 0.75%, which the employer deducts from wages and pays with its own. On ₹18,000 that is ₹585 and ₹135.",
+      answer: "3.25% of wages, rounded up to the next rupee, plus the worker's 0.75%, which the employer deducts and pays with its own. On ₹18,000 that is ₹585 and ₹135.",
     },
     {
       question: "Who pays ESIC for contract workers?",
-      answer: "The principal employer is responsible for both shares for workers employed through a contractor, and can recover them from the contractor. In practice the contractor pays, and the principal employer should check it has.",
+      answer: "The principal employer is responsible for both shares for workers employed through a contractor, and can recover them from the contractor. In practice the contractor pays, and the principal employer checks that it has.",
     },
   ],
   sources: ["css-2020", "ss-central-rules-2026", "esi-period-2026", "mole-faq-2026", "esic-contribution", "esic-wages-circular-2025", "esi-regs-1950", "interest-2026", "esi-draft-regs-2026"],
   links: [
     { href: "/epf", label: "EPF for employers" },
     { href: "/minimum-wages", label: "Minimum wages by state" },
-    { href: "/labour-welfare-fund", label: "Labour Welfare Fund by state" },
   ],
   checked: "2026-10-18",
 };

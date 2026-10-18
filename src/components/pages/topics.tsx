@@ -1,0 +1,176 @@
+import Link from "@/components/i18n/link";
+import { Section } from "@/components/layout/section";
+import { Doors } from "@/components/pages/minimum-wages";
+import { EpfCalculator, EsicCalculator, KarnatakaPtCalculator } from "@/components/reference/calculators";
+import { EpfSplit, EsicPeriods, KarnatakaPtYear } from "@/components/reference/figures";
+import { RefSection, RefWide, RuleGroups, TopicEnd, TopicHero } from "@/components/reference/primitives";
+import { wageDoors } from "@/content/pages/minimum-wages";
+import { linkable } from "@/content/registry";
+import { epfCeilingChange, epfTopic } from "@/content/topics/epf";
+import { esicTopic } from "@/content/topics/esic";
+import { karnatakaPtTopic, professionalTaxTopic, ptStates } from "@/content/topics/professional-tax";
+import type { TopicPage } from "@/content/topics/types";
+import { JsonLd, faqSchema, webPageSchema } from "@/lib/structured-data";
+import { localePath } from "@/lib/i18n";
+import { pageMetadata } from "@/lib/metadata";
+
+/**
+ * The reference topic pages (redesign, 18 Oct 2026). Each composes its own
+ * order around one signature figure that explains how its scheme works and
+ * a calculator, on the parts in src/components/reference. Owner: the earlier
+ * template looked like "a skeleton structure slapped onto random info".
+ */
+
+export function topicMetadata(topic: TopicPage) {
+  return pageMetadata({ title: topic.title, description: topic.description, alternates: { canonical: localePath(topic.path, "en-IN") }, locale: "en-IN" });
+}
+
+function Schema({ topic }: { topic: TopicPage }) {
+  return (
+    <>
+      <JsonLd data={webPageSchema({ name: topic.title, description: topic.description, url: localePath(topic.path, "en-IN") })} />
+      <JsonLd data={faqSchema(topic.faqs)} />
+    </>
+  );
+}
+
+function Hero({ topic }: { topic: TopicPage }) {
+  return <TopicHero path={topic.path} breadcrumb={topic.breadcrumb} heading={topic.heading} lede={topic.lede} glance={topic.glance} checked={topic.checked} updatedFrom={topic.updatedFrom} />;
+}
+
+const doors = [wageDoors.business, wageDoors.jobsAll];
+
+/** EPF: where the 25% goes, the ceiling that just changed, a calculator, the rules. */
+export function EpfPage() {
+  const t = epfTopic;
+  return (
+    <>
+      <Schema topic={t} />
+      <Hero topic={t} />
+      <RefWide id="split" heading="Where the 25% goes." intro="Two shares of 12% on the same wages, and two small charges the employer pays on top.">
+        <EpfSplit />
+      </RefWide>
+      <RefSection id="calculator" heading="Work it out." intro="For one worker, a full month. Above ₹25,000 the contributions stop at the ceiling." subtle>
+        <EpfCalculator />
+      </RefSection>
+      <RefSection id="ceiling" heading="The ceiling rose on 17 September 2026." intro="What EPFO's FAQs ask employers to do now.">
+        <div className="ref-change" aria-label="The wage ceiling went from ₹15,000 to ₹25,000 a month">
+          <s>₹15,000</s>
+          <strong>₹25,000</strong>
+          <span>a month, the first change since September 2014</span>
+        </div>
+        <dl className="ref-rows mt-8">
+          {epfCeilingChange.map((r) => (
+            <div key={r.label}>
+              <dt>{r.label}</dt>
+              <dd>{r.text}</dd>
+            </div>
+          ))}
+        </dl>
+      </RefSection>
+      <RefSection id="rules" heading="The rules.">
+        <RuleGroups groups={t.rules} />
+      </RefSection>
+      <TopicEnd faqs={t.faqs} self={t.path} links={t.links} sources={t.sources} />
+      <Doors doors={doors} />
+    </>
+  );
+}
+
+/** ESIC: the contribution period, which decides coverage; a calculator; the rules. */
+export function EsicPage() {
+  const t = esicTopic;
+  return (
+    <>
+      <Schema topic={t} />
+      <Hero topic={t} />
+      <RefWide id="periods" heading="Coverage is decided twice a year." intro="ESIC runs in two contribution periods. A worker within ₹21,000 when one begins stays covered to its end, whatever happens to their wages.">
+        <EsicPeriods />
+      </RefWide>
+      <RefSection id="calculator" heading="Work it out." intro="For one worker, a full month." subtle>
+        <EsicCalculator />
+      </RefSection>
+      <RefSection id="rules" heading="The rules.">
+        <RuleGroups groups={t.rules} />
+      </RefSection>
+      <TopicEnd faqs={t.faqs} self={t.path} links={t.links} sources={t.sources} />
+      <Doors doors={doors} />
+    </>
+  );
+}
+
+/** Karnataka PT: the year in twelve months, a calculator, what the employer does. */
+export function KarnatakaPtPage() {
+  const t = karnatakaPtTopic;
+  return (
+    <>
+      <Schema topic={t} />
+      <Hero topic={t} />
+      <RefWide id="year" heading="₹2,500 a year, in twelve parts." intro="The financial year from April: the same ₹200 each month, and ₹300 in February to reach the Constitution's limit.">
+        <KarnatakaPtYear />
+      </RefWide>
+      <RefSection id="calculator" heading="Work it out." intro="For one worker's salary in a month." subtle>
+        <KarnatakaPtCalculator />
+      </RefSection>
+      <RefSection id="rules" heading="The rules.">
+        <RuleGroups groups={t.rules} />
+      </RefSection>
+      <TopicEnd faqs={t.faqs} self={t.path} links={t.links} sources={t.sources} />
+      <Doors doors={doors} />
+    </>
+  );
+}
+
+/** The six states: who levies professional tax. */
+export function ProfessionalTaxHubPage() {
+  const t = professionalTaxTopic;
+  return (
+    <>
+      <Schema topic={t} />
+      <Hero topic={t} />
+      <Section id="states" className="pt-10 sm:pt-14 lg:pt-16">
+        <div className="wage-table-scroll">
+          <table className="wage-table is-index">
+            <caption className="sr-only">Professional tax on salaries in the six states we cover</caption>
+            <thead>
+              <tr>
+                <th scope="col">State</th>
+                <th scope="col">Levied</th>
+                <th scope="col">On salaries</th>
+                <th scope="col" className="col-split">Who pays</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ptStates.map((s) => {
+                const name = typeof s.state === "string" ? s.state : s.state.text;
+                const href = typeof s.state === "string" ? undefined : s.state.href;
+                return (
+                  <tr key={name} className="wage-row">
+                    <th scope="row">
+                      {href && linkable(href, "en-IN") ? (
+                        <Link href={href} className="wage-row-link">
+                          {name}
+                        </Link>
+                      ) : (
+                        name
+                      )}
+                    </th>
+                    <td>
+                      <span className={s.levied ? "ref-status" : "ref-status is-none"}>{s.levied ? "Yes" : "No"}</span>
+                    </td>
+                    <td>{s.levied ? <strong>{s.amount}</strong> : s.amount}</td>
+                    <td className="col-split">{s.who}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <p className="wage-note">In Karnataka and Punjab the employer deducts the tax from salary and pays it every month.</p>
+      </Section>
+      <TopicEnd faqs={t.faqs} self={t.path} links={t.links} sources={t.sources} />
+      <Doors doors={doors} />
+    </>
+  );
+}
+

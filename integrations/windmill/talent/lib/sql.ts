@@ -324,6 +324,9 @@ export const SYNC_CANDIDATE_FOR = SYNC_CANDIDATES.replace(
   /WHERE c\.submission_id IS NULL\n {3}OR c\.ack_status IS DISTINCT FROM \(CASE WHEN a\.delivery_status IS NULL THEN a\.status ELSE a\.status \|\| ':' \|\| a\.delivery_status END\)\nORDER BY s\.created_at\nLIMIT \$1;/,
   "WHERE s.id = $1::uuid;",
 );
+// A replace that misses leaves LIMIT $1 bound to a uuid (every per-submission
+// CRM delivery failed that way, 18 Oct 2026): fail at load instead.
+if (SYNC_CANDIDATE_FOR === SYNC_CANDIDATES) throw new Error("SYNC_CANDIDATE_FOR: the WHERE clause was not replaced");
 
 // --- files into Twenty (the files target, talent/lib/run-files.ts) -------------
 

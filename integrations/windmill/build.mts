@@ -104,8 +104,10 @@ export function bundle(entry: string): string {
       if (other) throw new Error(`${relative(repoRoot, entry)}: "${name}" is exported by both ${other} and ${relative(repoRoot, path)}`);
       seen.set(name, relative(repoRoot, path));
     }
-    const indented = mod.code.replace(/^/gm, "  ");
-    return `// ${relative(repoRoot, path)}\nconst { ${mod.exports.join(", ")} } = (() => {\n${indented}\n  return { ${mod.exports.join(", ")} };\n})();`;
+    // Not re-indented: an indent would change multi-line template strings
+    // (the SQL), so a replace written against the source missed in the
+    // bundle (SYNC_CANDIDATE_FOR kept its LIMIT $1, 18 Oct 2026).
+    return `// ${relative(repoRoot, path)}\nconst { ${mod.exports.join(", ")} } = (() => {\n${mod.code}\n  return { ${mod.exports.join(", ")} };\n})();`;
   });
 
   cache.delete(entry);

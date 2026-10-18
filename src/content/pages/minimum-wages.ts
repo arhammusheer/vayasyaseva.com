@@ -86,7 +86,7 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
     const t = "scheduled-employments";
     const [c1, c2, c3] = ["category-1", "category-2", "category-3"].map((z) => rs(s, t, z, "unskilled"));
     return {
-      title: (year) => `Minimum Wages in UP${year ? ` ${year}` : ""}: Rates by Skill Level`,
+      title: (year) => `Minimum Wage in Uttar Pradesh${year ? ` ${year}` : ""}: UP Rates by Skill`,
       description: `UP minimum wage from 1 Apr 2026, unskilled: ${c1} Noida/Ghaziabad, ${c2} Nagar Nigam districts, ${c3} elsewhere. All skill levels. ${stamp([s])}.`,
       answer: `From 1 April 2026, unskilled work in Uttar Pradesh pays at least ${c1} a month in Gautam Buddha Nagar (Noida) and Ghaziabad, ${c2} in other Nagar Nigam districts and ${c3} everywhere else.`,
       faqs: [

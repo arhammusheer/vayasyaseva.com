@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
-import { EPF_CEILING, ESIC_LIMIT, KA_PT_FROM, delhiLwf, epf, esic, haryanaLwf, karnatakaPt } from "@/content/contributions";
+import { BONUS_ELIGIBLE_UP_TO, EPF_CEILING, ESIC_LIMIT, KA_PT_FROM, bonus, delhiLwf, epf, esic, haryanaLwf, karnatakaPt } from "@/content/contributions";
 
 /**
  * The reference pages' calculators: one amount in, the shares out, worked
@@ -170,6 +170,72 @@ export function KarnatakaPtCalculator() {
         ]}
         total={["The year", inr(r.year)]}
         note={r.due ? "Deducted from salary and paid by the 20th of the next month." : `Below ₹${KA_PT_FROM.toLocaleString("en-IN")} a month there is no tax, unless bonus or arrears take that month over it.`}
+      />
+    </div>
+  );
+}
+
+/** One state's unskilled minimum wage, from the wage dataset, for the bonus calculator. */
+export type BonusPlace = { label: string; minimumWage: number };
+
+export function BonusCalculator({ places }: { places: BonusPlace[] }) {
+  const [place, setPlace] = useState(0);
+  const minimumWage = places[place]?.minimumWage ?? 0;
+  const [wages, setWages] = useState(Math.round(minimumWage));
+  const [rate, setRate] = useState(100 / 12);
+  const r = bonus(wages, minimumWage, rate);
+  const placeId = useId();
+  const rates: [string, number][] = [["8.33%", 100 / 12], ["12%", 12], ["20%", 20]];
+  return (
+    <div className="ref-calc">
+      <div className="grid gap-6">
+        <div>
+          <label htmlFor={placeId}>Where the worker works</label>
+          <select
+            id={placeId}
+            value={place}
+            onChange={(e) => {
+              const next = Number(e.target.value);
+              setPlace(next);
+              setWages(Math.round(places[next]?.minimumWage ?? 0));
+            }}
+          >
+            {places.map((p, i) => (
+              <option key={p.label} value={i}>
+                {p.label}: {inr(p.minimumWage)} minimum wage
+              </option>
+            ))}
+          </select>
+        </div>
+        {/* Keyed by place, so the field shows the new state's minimum wage. */}
+        <AmountField key={place} label="Wages a month (basic + DA)" value={wages} onChange={setWages} presets={[Math.round(minimumWage), 21000, 25000]} />
+        <div>
+          <span className="block text-[15px] font-semibold">Bonus rate</span>
+          <div className="ref-presets" role="group" aria-label="Bonus rate">
+            {rates.map(([label, value]) => (
+              <button key={label} type="button" aria-pressed={Math.abs(rate - value) < 0.001} onClick={() => setRate(value)}>
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+      <Result
+        rows={[
+          ["Worked out on", r.eligible ? `${inr(r.base)} a month` : "—"],
+          ["The year's wages for bonus", r.eligible ? inr(r.yearWages) : "—"],
+          ["At 8.33%, the least", r.eligible ? inr(r.minimum) : "—"],
+          ["At 20%, the most", r.eligible ? inr(r.maximum) : "—"],
+        ]}
+        total={[`Bonus for the year at ${rate === 100 / 12 ? "8.33" : rate}%`, r.eligible ? inr(r.atRate) : "Not eligible"]}
+        warn={!r.eligible}
+        note={
+          r.eligible
+            ? wages > 7000
+              ? `Above ₹7,000 a month, bonus is worked out on ₹7,000 or the minimum wage, whichever is higher: here ${inr(r.base)}. For a full year; part of a year earns a proportionate share.`
+              : "For a full year; part of a year earns a proportionate share."
+            : `Above ₹${BONUS_ELIGIBLE_UP_TO.toLocaleString("en-IN")} a month in wages (basic + DA), statutory bonus is not due.`
+        }
       />
     </div>
   );

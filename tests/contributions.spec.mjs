@@ -35,3 +35,18 @@ test('Karnataka PT starts at ₹25,000: ₹200 a month, ₹300 in February, ₹2
   assert.deepEqual(c.karnatakaPt(25000), { due: true, month: 200, february: 300, year: 2500 });
   assert.equal(11 * 200 + 300, 2500);
 });
+
+test('Statutory bonus: ₹7,000 or the minimum wage, whichever is higher; 8⅓% to 20%; nothing above ₹21,000', () => {
+  // Haryana unskilled: the minimum wage is the base.
+  const hr = c.bonus(15220.71, 15220.71);
+  assert.deepEqual([hr.eligible, hr.base, hr.yearWages, hr.minimum, hr.maximum], [true, 15220.71, 182648.52, 15220.71, 36529.7]);
+  // Above ₹7,000 with a minimum wage below it: worked out on ₹7,000.
+  const low = c.bonus(15000, 6500);
+  assert.deepEqual([low.base, low.minimum, low.maximum], [7000, 7000, 16800]);
+  // A worker paid more than the minimum wage is still worked out on the minimum wage.
+  assert.equal(c.bonus(18000, 15220.71).base, 15220.71);
+  // At or below ₹7,000 the actual wage is the base.
+  assert.equal(c.bonus(6000, 15220.71).base, 6000);
+  assert.deepEqual([c.bonus(25000, 15220.71).eligible, c.bonus(25000, 15220.71).maximum], [false, 0]);
+  assert.equal(c.bonus(21000, 15220.71).eligible, true);
+});

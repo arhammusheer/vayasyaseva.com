@@ -55,6 +55,7 @@ const REFERENCE: (NavLink & { long?: string; bar?: true })[] = [
   { href: "/epf", label: "EPF", long: "EPF for employers", bar: true },
   { href: "/esic", label: "ESIC", long: "ESIC for employers", bar: true },
   { href: "/professional-tax", label: "Professional Tax", bar: true },
+  { href: "/bonus", label: "Bonus", long: "Statutory bonus", bar: true },
   { href: guidePath("new-labour-codes"), label: "Labour codes guide" },
   { href: WAGE_METHOD_PATH, label: "How we check", long: "How we check minimum wages" },
 ];

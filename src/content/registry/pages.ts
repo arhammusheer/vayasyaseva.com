@@ -338,6 +338,9 @@ export const pageEntries: readonly PageEntry[] = [
   // employer-side searches ~25,000 (EPF), ~15,000 (ESIC) and ~12,100
   // ("professional tax karnataka") a month. Reference layout, English only.
   { path: "/epf", kind: "static", audience: "mixed", locales: { "en-IN": "published" }, parent: "/", updated: "2026-10-18", changeFrequency: "monthly", priority: 0.6 },
+  // Statutory bonus (18 Oct 2026): "bonus calculation" peaks at 18,100 a month in
+  // October, "payment of bonus act" at 14,800 (Keyword Planner).
+  { path: "/bonus", kind: "static", audience: "mixed", locales: { "en-IN": "published" }, parent: "/", updated: "2026-10-18", changeFrequency: "monthly", priority: 0.6 },
   { path: "/esic", kind: "static", audience: "mixed", locales: { "en-IN": "published" }, parent: "/", updated: "2026-10-18", changeFrequency: "monthly", priority: 0.6 },
   { path: "/professional-tax", kind: "static", audience: "mixed", locales: { "en-IN": "published" }, parent: "/", updated: "2026-10-18", changeFrequency: "monthly", priority: 0.5 },
   { path: "/professional-tax/karnataka", kind: "static", audience: "mixed", locales: { "en-IN": "published" }, parent: "/professional-tax", updated: "2026-10-18", changeFrequency: "monthly", priority: 0.6 },

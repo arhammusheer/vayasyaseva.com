@@ -45,6 +45,7 @@ const referenceSection = linkable(WAGE_HUB_PATH, "en-IN")
         : []),
       ...[
         ["/epf", "EPF for employers", "The ₹25,000 wage ceiling from 17 September 2026, the 12% split into EPS and EPF, EDLI and admin charges, due dates, damages and contract workers"],
+        ["/bonus", "Statutory bonus", "8.33% to 20% of wages for workers on up to ₹21,000 a month under the Code on Wages, worked out on ₹7,000 or the minimum wage, paid by 30 November; contract workers and penalties"],
         ["/esic", "ESIC for employers", "3.25% and 0.75% contributions on wages up to ₹21,000 a month, contribution periods, due date, damages and contract workers"],
         ["/professional-tax", "Professional Tax by state", "Which of Karnataka, Punjab, Uttarakhand, Uttar Pradesh, Delhi and Haryana levy professional tax, and the ₹2,500 cap"],
         ["/professional-tax/karnataka", "Professional Tax in Karnataka", "₹200 a month on salaries of ₹25,000 or more, ₹300 in February, Form 5-A by the 20th, penalties and examples"],

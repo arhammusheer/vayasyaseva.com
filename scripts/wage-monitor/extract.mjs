@@ -43,6 +43,33 @@ const ACCESSIBLE = /\s*Accessible Version\s*:?\s*(\([^)]*\))?/gi;
  * says "View" or "Download". `match`, a RegExp, keeps only the links whose
  * label or URL matches (for home pages that link everything).
  */
+/**
+ * A WordPress documents API listing (the Ministry of Labour's site renders
+ * in the browser from wp-json, so its HTML has no links). One entry per
+ * post: its public page under `publicBase` and "date: title" as the label.
+ * `page: true` marks them as pages, not files, so they are not fetched and
+ * described like a new PDF.
+ */
+export function wpDocumentLinks(body, publicBase, match) {
+  let data;
+  try {
+    data = JSON.parse(body);
+  } catch {
+    return [];
+  }
+  const found = new Map();
+  for (const post of Array.isArray(data?.posts) ? data.posts : []) {
+    const slug = post?.post_slug || post?.post_name;
+    if (!slug || !post?.post_title) continue;
+    const url = new URL(encodeURIComponent(slug), publicBase).href;
+    const date = post.acf_data?.date || String(post.post_date ?? "").slice(0, 10);
+    const label = `${date ? `${date}: ` : ""}${decodeEntities(String(post.post_title)).replace(/\s+/g, " ").trim()}`.slice(0, 300);
+    if (match && !match.test(label)) continue;
+    found.set(url, { url, label, page: true });
+  }
+  return [...found.values()].sort((a, b) => a.url.localeCompare(b.url));
+}
+
 export function documentLinks(html, baseUrl, match) {
   const clean = html.replace(/<!--[\s\S]*?-->/g, " ").replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, " ");
   const found = new Map();

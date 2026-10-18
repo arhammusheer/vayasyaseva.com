@@ -22,6 +22,12 @@ export type GuideSource = {
   /** "India" or the state. */
   jurisdiction: string;
   url?: string;
+  /**
+   * Where the compliance monitor watches this source when `url` cannot be
+   * fetched by it (India Code does not answer automated requests): the same
+   * text's Gazette copy. scripts/wage-monitor/sources.json must list it.
+   */
+  watchedAs?: string;
   language: "en" | "hi";
   retrievedOn: string;
 };
@@ -43,6 +49,7 @@ export const guideSources: readonly GuideSource[] = [
     authority: "Parliament of India",
     jurisdiction: "India",
     url: "https://www.indiacode.nic.in/handle/123456789/15793",
+    watchedAs: "https://egazette.gov.in/WriteReadData/2019/210356.pdf",
     language: "en",
     retrievedOn: CHECKED,
   },
@@ -55,6 +62,7 @@ export const guideSources: readonly GuideSource[] = [
     authority: "Parliament of India",
     jurisdiction: "India",
     url: "https://www.indiacode.nic.in/handle/123456789/22040",
+    watchedAs: "https://egazette.gov.in/WriteReadData/2020/222118.pdf",
     language: "en",
     retrievedOn: CHECKED,
   },
@@ -67,6 +75,7 @@ export const guideSources: readonly GuideSource[] = [
     authority: "Parliament of India",
     jurisdiction: "India",
     url: "https://www.indiacode.nic.in/handle/123456789/16823",
+    watchedAs: "https://egazette.gov.in/WriteReadData/2020/222111.pdf",
     language: "en",
     retrievedOn: CHECKED,
   },
@@ -79,6 +88,7 @@ export const guideSources: readonly GuideSource[] = [
     authority: "Parliament of India",
     jurisdiction: "India",
     url: "https://www.indiacode.nic.in/handle/123456789/22041",
+    watchedAs: "https://egazette.gov.in/WriteReadData/2020/222112.pdf",
     language: "en",
     retrievedOn: CHECKED,
   },

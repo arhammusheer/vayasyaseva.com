@@ -1,8 +1,14 @@
 {
-  "$comment": "Primary sources the daily compliance monitor watches (PLAN section 11; owner direction 16 Oct 2026). Per state: the wage pages' cited documents come from src/content/wages/<state>.json automatically; list here the department pages where a new wage notification would first appear (topic wages, the default) and the sources for that state's Professional Tax (pt), Labour Welfare Fund (lwf) and contract labour licence (licence). `national` holds EPF (epf), ESIC (esic) and the labour codes (codes). Listings are compared by the documents they link (`match`, a case-insensitive regex on the link text or path, keeps only relevant links); pages are compared by the lines of text that match `match`; documents by their SHA-256. Every document src/content/statutory.ts cites must be watched here (coverageProblems). See docs/wage-monitor.md.",
+  "$comment": "Primary sources the daily compliance monitor watches (PLAN section 11; owner direction 16 Oct 2026). Per state: the wage pages' cited documents come from src/content/wages/<state>.json automatically; list here the department pages where a new wage notification would first appear (topic wages, the default) and the sources for that state's Professional Tax (pt), Labour Welfare Fund (lwf) and contract labour licence (licence). `national` holds EPF (epf), ESIC (esic) and the labour codes (codes). Listings are compared by the documents they link (`match`, a case-insensitive regex on the link text or path, keeps only relevant links); pages are compared by the lines of text that match `match`; documents by their SHA-256. Every document src/content/statutory.ts cites must be watched here (coverageProblems). See docs/wage-monitor.md. `plainUserAgentHosts` get a browser user agent (they refuse ours); `legacyTlsHosts` need legacy TLS renegotiation, which Node refuses by default. Location page sources (src/content/locations) are checked for loading only, on the first three days of each month (topic locations).",
   "plainUserAgentHosts": [
     "www.labour.gov.in",
-    "ascent-hr.com"
+    "ascent-hr.com",
+    "www.pib.gov.in",
+    "www.business-standard.com"
+  ],
+  "legacyTlsHosts": [
+    "siidcul.com",
+    "punjabassembly.gov.in"
   ],
   "states": {
     "uttarakhand": {
@@ -44,6 +50,21 @@
           "url": "https://cdnbbsr.s3waas.gov.in/s36547884cea64550284728eb26b0947ef/uploads/2025/04/2025041461612759.pdf",
           "name": "U.P. Labour Welfare Fund Rules, 1972",
           "topic": "lwf"
+        },
+        {
+          "url": "https://cdnbbsr.s3waas.gov.in/s36547884cea64550284728eb26b0947ef/uploads/2025/04/20250414207825416.pdf",
+          "name": "Contract Labour (Regulation and Abolition) Act, 1970 (Labour Department copy)",
+          "topic": "licence"
+        },
+        {
+          "url": "https://cdnbbsr.s3waas.gov.in/s36547884cea64550284728eb26b0947ef/uploads/2026/09/202609241754770724.pdf",
+          "name": "Uttarakhand Code on Wages Rules, 2026",
+          "topic": "wages"
+        },
+        {
+          "url": "https://cdnbbsr.s3waas.gov.in/s36547884cea64550284728eb26b0947ef/uploads/2026/09/20260924196250226.pdf",
+          "name": "Uttarakhand Industrial Relations Rules, 2026",
+          "topic": "codes"
         }
       ],
       "pages": [
@@ -407,6 +428,23 @@
         "url": "https://www.esic.gov.in/notifications",
         "name": "ESIC: notifications",
         "topic": "esic"
+      },
+      {
+        "url": "https://www.labour.gov.in/cms/wp-json/document/documents?document_category=gazette-notifications&limit=100&page=1",
+        "name": "Ministry of Labour: gazette notifications (the site's documents API; its pages render in the browser)",
+        "topic": "codes",
+        "format": "wp-documents",
+        "publicBase": "https://www.labour.gov.in/documents/"
+      },
+      {
+        "url": "https://www.epfo.gov.in/",
+        "name": "EPFO: home page updates (FAQs and circulars appear here first)",
+        "topic": "epf"
+      },
+      {
+        "url": "https://www.epfo.gov.in/press-release/",
+        "name": "EPFO: press releases",
+        "topic": "epf"
       }
     ],
     "pages": [
@@ -415,6 +453,12 @@
         "name": "ESIC: rates of contribution",
         "topic": "esic",
         "match": "%|Rs\\.?\\s?\\d|₹|exempt|due date|within \\d+ days"
+      },
+      {
+        "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2192463",
+        "name": "PIB: the four labour codes take effect (cited by the labour codes guide)",
+        "topic": "codes",
+        "match": "Code|effect|21 November|notif"
       }
     ],
     "documents": [
@@ -501,6 +545,51 @@
       {
         "url": "https://cdnbbsr.s3waas.gov.in/s380537a945c7aaa788ccfcdf1b99b5d8f/uploads/2024/07/20240716890312078.pdf",
         "name": "Constitution of India (Article 276: professional tax cap)",
+        "topic": "codes"
+      },
+      {
+        "url": "https://egazette.gov.in/WriteReadData/2020/222118.pdf",
+        "name": "The Industrial Relations Code, 2020",
+        "topic": "codes"
+      },
+      {
+        "url": "https://egazette.gov.in/WriteReadData/2020/222112.pdf",
+        "name": "The Occupational Safety, Health and Working Conditions Code, 2020",
+        "topic": "codes"
+      },
+      {
+        "url": "https://egazette.gov.in/WriteReadData/2025/267885.pdf",
+        "name": "Commencement of the Code on Wages, S.O. 5322(E)",
+        "topic": "codes"
+      },
+      {
+        "url": "https://egazette.gov.in/WriteReadData/2025/267883.pdf",
+        "name": "Commencement of the Industrial Relations Code, S.O. 5320(E)",
+        "topic": "codes"
+      },
+      {
+        "url": "https://egazette.gov.in/WriteReadData/2025/267882.pdf",
+        "name": "Commencement of the Code on Social Security, S.O. 5319(E)",
+        "topic": "codes"
+      },
+      {
+        "url": "https://egazette.gov.in/WriteReadData/2025/267884.pdf",
+        "name": "Commencement of the OSH Code, S.O. 5321(E)",
+        "topic": "codes"
+      },
+      {
+        "url": "https://egazette.gov.in/WriteReadData/2026/272365.pdf",
+        "name": "Code on Wages (Central) Rules, 2026",
+        "topic": "codes"
+      },
+      {
+        "url": "https://egazette.gov.in/WriteReadData/2026/272336.pdf",
+        "name": "Industrial Relations (Central) Rules, 2026",
+        "topic": "codes"
+      },
+      {
+        "url": "https://egazette.gov.in/WriteReadData/2026/272379.pdf",
+        "name": "OSH (Central) Rules, 2026",
         "topic": "codes"
       }
     ]

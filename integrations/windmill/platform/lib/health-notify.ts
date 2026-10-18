@@ -92,11 +92,12 @@ export function healthConditions(health: Health): { firing: Condition[]; checked
       }
     }
   }
-  const erasure = health.talent?.erasureFailed ?? 0;
-  if (erasure) {
+  for (const db of ["talent", "leads"] as const) {
+    const erasure = health[db]?.erasureFailed ?? 0;
+    if (!erasure) continue;
     firing.push({
-      ...describeKey(`${HEALTH_KEY_PREFIX}talent:erasure_failed`),
-      summary: `${erasure} failed after three attempts. The person's data is still held: fix the cause and requeue (OPERATIONS.md, retention and erasure).`,
+      ...describeKey(`${HEALTH_KEY_PREFIX}${db}:erasure_failed`),
+      summary: `${erasure} failed after three attempts. The person's data is still held: fix the cause and requeue (OPERATIONS.md, ${db === "talent" ? "retention and erasure" : "enquiry erasure"}).`,
     });
   }
   return { firing, checked };

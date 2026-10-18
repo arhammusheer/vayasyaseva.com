@@ -282,7 +282,7 @@ const health = (over: Partial<Health> = {}): Health => ({
   ok: false,
   checkedAt: "2026-10-18T04:30:00.000Z",
   talent: { dead: {}, unknown: { sms: 1 }, stuck: {}, overdue: {}, oldest: "2026-10-11T06:00:00.000Z", erasureFailed: 0 },
-  leads: { dead: {}, unknown: {}, stuck: {}, overdue: {}, oldest: null },
+  leads: { dead: {}, unknown: {}, stuck: {}, overdue: {}, oldest: null, erasureFailed: 0 },
   errors: [],
   ...over,
 });
@@ -293,6 +293,8 @@ test("health: one key per condition; counts and the reason, no personal data", (
   assert.match(firing[0].title, /SMS sends interrupted/);
   assert.match(firing[0].summary, /^1 now; the oldest open item in this database dates from 2026-10-11 06:00 UTC/);
   const down = healthConditions(health({ leads: null, talent: { ...health().talent!, erasureFailed: 2, overdue: { crm: 3 } } })).firing.map((c) => `${c.key}:${c.severity}`);
+  const leadErasure = healthConditions(health({ leads: { ...health().talent!, unknown: {}, erasureFailed: 1 } })).firing.map((c) => `${c.key}:${c.severity}`);
+  assert.ok(leadErasure.includes("platform:health:leads:erasure_failed:warning"), "a failed enquiry erasure fires too");
   assert.deepEqual(down, [
     `${HEALTH_KEY_PREFIX}talent:unknown:sms:notice`,
     `${HEALTH_KEY_PREFIX}talent:overdue:crm:critical`,
@@ -335,7 +337,7 @@ test("health: the old unknown SMS fires once, not every 15 minutes; it resolves 
 
 test("health: a database it cannot read fires critical, and its conditions are not resolved meanwhile", async () => {
   const h = hub();
-  await notifyHealth(health({ leads: { dead: { crm: 1 }, unknown: {}, stuck: {}, overdue: {}, oldest: null } }), h.mem.store, h.now());
+  await notifyHealth(health({ leads: { dead: { crm: 1 }, unknown: {}, stuck: {}, overdue: {}, oldest: null, erasureFailed: 0 } }), h.mem.store, h.now());
   await h.dispatch();
   const blind = await notifyHealth(health({ leads: null, errors: ["leads: connection refused"] }), h.mem.store, h.now());
   assert.deepEqual(blind.fired, [`${HEALTH_KEY_PREFIX}leads:unreadable`]);

@@ -53,3 +53,60 @@ SET status = CASE WHEN $2 = 'retry' THEN (CASE WHEN attempts >= max_attempts THE
     done_at = CASE WHEN $2 = 'done' THEN now() ELSE done_at END, updated_at = now()
 WHERE lead_id = $1::uuid AND target = 'crm' AND status = 'running'
 RETURNING status;`;
+
+// --- erasure (f/leads/erase, leads/lib/erase.ts) ------------------------------
+
+/** Releases the sync lock taken with LEADS_SYNC_LOCK (erasure holds it so no sync runs in between). */
+export const LEADS_SYNC_UNLOCK = `SELECT pg_advisory_unlock(hashtext('leads:sync_crm')) AS unlocked;`;
+
+/** Requests stuck running for an hour go back, or fail at three attempts. */
+export const LEADS_ERASURE_RECOVER = `
+UPDATE erasure_requests
+SET status = CASE WHEN attempts >= 3 THEN 'failed' ELSE 'pending' END,
+    last_error = coalesce(last_error, 'Interrupted; picked up again'), updated_at = now()
+WHERE status = 'running' AND updated_at < now() - interval '1 hour'
+RETURNING id;`;
+
+/**
+ * Claims the oldest pending request, with every lead it covers: its case ID,
+ * or every lead whose phone has the same last ten digits.
+ */
+export const LEADS_ERASURE_CLAIM = `
+WITH claimed AS (
+  UPDATE erasure_requests e
+  SET status = 'running', attempts = e.attempts + 1, last_error = NULL, updated_at = now()
+  WHERE e.id = (
+    SELECT id FROM erasure_requests WHERE status = 'pending'
+    ORDER BY requested_at LIMIT 1 FOR UPDATE SKIP LOCKED)
+  RETURNING e.id, e.case_id, e.phone
+)
+SELECT c.id, c.case_id, c.phone,
+  coalesce((
+    SELECT jsonb_agg(jsonb_build_object('id', l.id, 'caseId', l.case_id, 'company', l.payload->>'company', 'phone', l.payload->>'phone', 'opportunityId', d.result->>'opportunityId'))
+    FROM leads l LEFT JOIN deliveries d ON d.lead_id = l.id AND d.target = 'crm'
+    WHERE l.case_id = c.case_id
+       OR (c.phone IS NOT NULL AND right(regexp_replace(l.payload->>'phone', '\\D', '', 'g'), 10) = right(regexp_replace(c.phone, '\\D', '', 'g'), 10))
+  ), '[]'::jsonb) AS leads
+FROM claimed c;`;
+
+/**
+ * $1 request, $2 lead ids (uuid[]), $3 opportunities, $4 people, $5 companies,
+ * $6 attachments removed in Twenty. Deletes the leads (their deliveries go
+ * with them) and keeps only the counts: case ID and phone are cleared.
+ */
+export const LEADS_ERASURE_DONE = `
+WITH gone AS (
+  DELETE FROM leads WHERE id = ANY($2::uuid[]) RETURNING id
+)
+UPDATE erasure_requests
+SET status = 'done', processed_at = now(), updated_at = now(), case_id = NULL, phone = NULL,
+    removed_leads = (SELECT count(*) FROM gone), removed_opportunities = $3::int, removed_people = $4::int,
+    removed_companies = $5::int, removed_crm_files = $6::int
+WHERE id = $1::uuid AND status = 'running'
+RETURNING id, removed_leads;`;
+
+/** $1 request, $2 error: back to pending (picked up next run), or failed at three attempts. */
+export const LEADS_ERASURE_FAIL = `
+UPDATE erasure_requests
+SET status = CASE WHEN attempts >= 3 THEN 'failed' ELSE 'pending' END, last_error = $2, updated_at = now()
+WHERE id = $1::uuid AND status = 'running';`;

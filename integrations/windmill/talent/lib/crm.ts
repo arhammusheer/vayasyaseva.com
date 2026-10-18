@@ -365,7 +365,7 @@ async function attachmentsOf(crm: Twenty, field: string, id: string): Promise<Tw
 }
 
 /** Hard-deletes a record's attachments (and so their files); returns how many. */
-async function removeAttachments(crm: Twenty, field: string, id: string): Promise<number> {
+export async function removeAttachments(crm: Twenty, field: string, id: string): Promise<number> {
   let removed = 0;
   for (const a of await attachmentsOf(crm, field, id)) if (await crm.remove("attachments", a.id)) removed++;
   return removed;

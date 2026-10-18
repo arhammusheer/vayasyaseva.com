@@ -1,0 +1,13 @@
+{
+  "summary": "Leads · erasure",
+  "description": "Erasure requests for business enquiries (by case ID or phone, queued by hand): removes the crew requests, enquiries, files, notes and tasks from Twenty, the contact and company when nothing else uses them, then the inbox rows; keeps only counts. One request per run.",
+  "lock": "",
+  "kind": "script",
+  "language": "bun",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {},
+    "required": []
+  }
+}

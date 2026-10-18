@@ -554,11 +554,13 @@ function healthConditions(health) {
             }
         }
     }
-    const erasure = health.talent?.erasureFailed ?? 0;
-    if (erasure) {
+    for (const db of ["talent", "leads"]) {
+        const erasure = health[db]?.erasureFailed ?? 0;
+        if (!erasure)
+            continue;
         firing.push({
-            ...describeKey(`${HEALTH_KEY_PREFIX}talent:erasure_failed`),
-            summary: `${erasure} failed after three attempts. The person's data is still held: fix the cause and requeue (OPERATIONS.md, retention and erasure).`,
+            ...describeKey(`${HEALTH_KEY_PREFIX}${db}:erasure_failed`),
+            summary: `${erasure} failed after three attempts. The person's data is still held: fix the cause and requeue (OPERATIONS.md, ${db === "talent" ? "retention and erasure" : "enquiry erasure"}).`,
         });
     }
     return { firing, checked };
@@ -627,12 +629,11 @@ async function counts(query) {
 const total = (c) => (c ? ["dead", "unknown", "stuck", "overdue"].reduce((n, r) => n + Object.values(c[r]).reduce((a, b) => a + b, 0), 0) : 0);
 async function runHealth(db, now = new Date()) {
     const errors = [];
-    const talent = await db
-        .talent(async (q) => ({ ...(await counts(q)), erasureFailed: (await q(HEALTH_ERASURE))[0]?.failed ?? 0 }))
-        .catch((err) => (errors.push(`talent: ${err instanceof Error ? err.message : "unknown error"}`), null));
-    const leads = await db.leads(counts).catch((err) => (errors.push(`leads: ${err instanceof Error ? err.message : "unknown error"}`), null));
+    const withErasure = async (q) => ({ ...(await counts(q)), erasureFailed: (await q(HEALTH_ERASURE))[0]?.failed ?? 0 });
+    const talent = await db.talent(withErasure).catch((err) => (errors.push(`talent: ${err instanceof Error ? err.message : "unknown error"}`), null));
+    const leads = await db.leads(withErasure).catch((err) => (errors.push(`leads: ${err instanceof Error ? err.message : "unknown error"}`), null));
     return {
-        ok: errors.length === 0 && total(talent) === 0 && total(leads) === 0 && (talent?.erasureFailed ?? 0) === 0,
+        ok: errors.length === 0 && total(talent) === 0 && total(leads) === 0 && (talent?.erasureFailed ?? 0) === 0 && (leads?.erasureFailed ?? 0) === 0,
         checkedAt: now.toISOString(),
         talent,
         leads,

@@ -174,6 +174,15 @@ export const SCRIPTS: ScriptSpec[] = [
     schedule: { cron: "15 * * * * *", summary: "Every minute: leads into Twenty CRM" },
   },
   {
+    name: "erase",
+    folder: "leads",
+    summary: "Leads · erasure",
+    description:
+      "Erasure requests for business enquiries (by case ID or phone, queued by hand): removes the crew requests, enquiries, files, notes and tasks from Twenty, the contact and company when nothing else uses them, then the inbox rows; keeps only counts. One request per run.",
+    schema: noArgs,
+    schedule: { cron: "0 30 * * * *", summary: "Hourly: enquiry erasure requests" },
+  },
+  {
     name: "submission",
     folder: "platform",
     summary: "Platform · submission",

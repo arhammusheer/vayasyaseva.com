@@ -25,7 +25,7 @@ export interface Health {
   ok: boolean;
   checkedAt: string;
   talent: (Counts & { erasureFailed: number }) | null;
-  leads: Counts | null;
+  leads: (Counts & { erasureFailed: number }) | null;
   errors: string[];
 }
 
@@ -45,12 +45,12 @@ const total = (c: Counts | null) => (c ? (["dead", "unknown", "stuck", "overdue"
 
 export async function runHealth(db: { talent: <T>(fn: (q: Query) => Promise<T>) => Promise<T>; leads: <T>(fn: (q: Query) => Promise<T>) => Promise<T> }, now = new Date()): Promise<Health> {
   const errors: string[] = [];
-  const talent = await db
-    .talent(async (q) => ({ ...(await counts(q)), erasureFailed: (await q<{ failed: number }>(HEALTH_ERASURE))[0]?.failed ?? 0 }))
-    .catch((err) => (errors.push(`talent: ${err instanceof Error ? err.message : "unknown error"}`), null));
-  const leads = await db.leads(counts).catch((err) => (errors.push(`leads: ${err instanceof Error ? err.message : "unknown error"}`), null));
+  // Both databases have erasure_requests: applicants in talent, enquiries in leads.
+  const withErasure = async (q: Query) => ({ ...(await counts(q)), erasureFailed: (await q<{ failed: number }>(HEALTH_ERASURE))[0]?.failed ?? 0 });
+  const talent = await db.talent(withErasure).catch((err) => (errors.push(`talent: ${err instanceof Error ? err.message : "unknown error"}`), null));
+  const leads = await db.leads(withErasure).catch((err) => (errors.push(`leads: ${err instanceof Error ? err.message : "unknown error"}`), null));
   return {
-    ok: errors.length === 0 && total(talent) === 0 && total(leads) === 0 && (talent?.erasureFailed ?? 0) === 0,
+    ok: errors.length === 0 && total(talent) === 0 && total(leads) === 0 && (talent?.erasureFailed ?? 0) === 0 && (leads?.erasureFailed ?? 0) === 0,
     checkedAt: now.toISOString(),
     talent,
     leads,

@@ -48,6 +48,31 @@ BEGIN
      OR (d.status = 'running' AND d.updated_at < now() - interval '15 minutes')
      OR (d.status = 'pending' AND d.next_attempt_at < now() - interval '1 hour');
 
+  -- Erasure of a business enquiry on request (privacy notice §10): by case ID
+  -- or by phone (every enquiry from that number). f/leads/erase removes the
+  -- enquiries from Twenty and this inbox, then clears case_id and phone here,
+  -- keeping only the counts. Queued by hand (integrations/windmill/OPERATIONS.md);
+  -- nothing is queued automatically.
+  CREATE TABLE IF NOT EXISTS erasure_requests (
+    id                    uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    case_id               text,
+    phone                 text,
+    reason                text NOT NULL DEFAULT 'request' CHECK (reason IN ('request')),
+    status                text NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'running', 'done', 'failed')),
+    attempts              int NOT NULL DEFAULT 0,
+    last_error            text,
+    removed_leads         int,
+    removed_opportunities int,
+    removed_people        int,
+    removed_companies     int,
+    removed_crm_files     int,
+    requested_at          timestamptz NOT NULL DEFAULT now(),
+    processed_at          timestamptz,
+    updated_at            timestamptz NOT NULL DEFAULT now(),
+    CHECK (status = 'done' OR case_id IS NOT NULL OR phone IS NOT NULL)
+  );
+  CREATE INDEX IF NOT EXISTS erasure_requests_pending_idx ON erasure_requests (status, requested_at);
+
   -- Idempotency-Key answers of the contact routes (f/platform/idempotency). Kept a day.
   CREATE TABLE IF NOT EXISTS idempotency_keys (
     scope       text NOT NULL,

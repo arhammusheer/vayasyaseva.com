@@ -153,7 +153,8 @@ export const delhiNcrPages: LocationCopy[] = [
     ],
     sources: [
       UP_WAGE,
-      { label: "GNIDA: about Greater Noida", url: "https://greaternoidaauthority.in/node/47" },
+      // GNIDA's own site stopped answering (Oct 2026); the CAG audit gives January 1991, the Ecotech sectors and Surajpur.
+      { label: "CAG: performance audit of GNIDA, Report No. 4 of 2023", url: "https://cag.gov.in/ag1/uttar-pradesh/en/audit-report/details/122410" },
       { label: "MSME-DI: District profile, Gautam Buddha Nagar (2012–13)", url: "https://dcmsme.gov.in/old/dips/DIP%20Report%20Gautam%20Budh%20Nagar.pdf" },
       { label: "ThePrint: Noida at 50 (secondary)", url: "https://theprint.in/ground-reports/at-50-noida-cosmopolitan-city-commercial-centre-industrial-utopia/2666905/" },
       { label: "PTI via The Week: Surajpur and UPSIDA (secondary)", url: "https://www.theweek.in/wire-updates/business/2024/12/21/des89-ncr-cm-surajpur.html" },
@@ -172,7 +173,7 @@ export const delhiNcrPages: LocationCopy[] = [
     heading: "Labour contractor in Faridabad and Ghaziabad.",
     lede: "Supervised crews for engineering, auto component and garment units in Faridabad's sectors and Ghaziabad's industrial sites.",
     paragraph:
-      "Faridabad grew from a 1948 refugee township into Haryana's engineering city, with HSIIDC estates in sectors 31 and 59 and IMT Faridabad in sectors 66 to 69. Across the state border, Ghaziabad's industry runs along Sahibabad, Loni Road and Meerut Road, and engineering goods is its One District One Product sector.",
+      "Faridabad, founded in 1607 by Shaikh Farid, is Haryana's engineering city, with HSIIDC estates in sectors 31 and 59 and IMT Faridabad in sectors 66 to 69. Across the state border, Ghaziabad's industry runs along Sahibabad, Loni Road and Meerut Road, and engineering goods is its One District One Product sector.",
     faqs: [
       {
         question: "Do you supply contract labour in Faridabad and Ghaziabad?",
@@ -200,11 +201,9 @@ export const delhiNcrPages: LocationCopy[] = [
       { label: "HSIIDC: Faridabad estates", url: "https://hsiidc.org.in/activities-and-services/infrastructure-development-industrial-estates/faridabad" },
       { label: "HSIIDC: IMT Faridabad", url: "https://hsiidc.org.in/activities-and-services/infrastructure-imts/imt-faridabad" },
       { label: "MSME-DI: District profile, Faridabad (2012)", url: "https://dcmsme.gov.in/old/dips/DIP%20Report%20%20Faridabad.pdf" },
-      { label: "Lok Sabha debates, 23 Nov 1956: Faridabad township", url: "https://eparlib.nic.in/bitstream/123456789/896784/1/01_XIV_23-11-1956_p61_p70_PII.pdf" },
       { label: "Ghaziabad district: about the district", url: "https://ghaziabad.nic.in/about-district/" },
       { label: "MSME-DI: District profile, Ghaziabad (2012–13)", url: "https://dcmsme.gov.in/old/dips/final%20Report%20Ghaziabad.pdf" },
       { label: "UPSDM: Ghaziabad district skill plan", url: "https://www.upsdm.gov.in/Content/WebAssets/DSDP/GHAZIABAD.pdf" },
-      { label: "UP government: Tronica City, Ghaziabad", url: "https://nri.up.gov.in/post/en/tronica-city-ghaziabad" },
       HR_WAGE,
       UP_WAGE,
       HR_LWF,

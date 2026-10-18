@@ -224,7 +224,7 @@ function isIntakeLocale(value) {
     return typeof value === "string" && INTAKE_LOCALES.includes(value);
 }
 const LEGACY_SOURCE_LOCALES = { web_en: "en-IN", web_hi: "hi-IN", web_hinglish: "hi-Latn-IN" };
-const INTAKE_CLUSTERS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other", "punjab"];
+const INTAKE_CLUSTERS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other", "punjab", "dehradun"];
 function isIntakeCluster(value) {
     return typeof value === "string" && INTAKE_CLUSTERS.includes(value);
 }
@@ -298,9 +298,13 @@ const QUICK_ANSWERS = {
         "uttarakhand:outside": "Outside Uttarakhand",
         "punjab:jalandhar-kapurthala": "Jalandhar / Kapurthala", "punjab:ludhiana": "Ludhiana", "punjab:mohali": "Mohali / Kharar",
         "punjab:amritsar": "Amritsar", "punjab:other": "Elsewhere in Punjab", "punjab:outside": "Outside Punjab",
+        "dehradun:selaqui-sahaspur": "Selaqui / Sahaspur", "dehradun:city": "Dehradun city", "dehradun:rishikesh-doiwala": "Rishikesh / Doiwala",
+        "dehradun:vikasnagar": "Vikasnagar / Herbertpur", "dehradun:outside": "Outside Dehradun",
         "market:haridwar": "Haridwar / Roorkee", "market:uttarakhand": "Elsewhere in Uttarakhand", "market:jalandhar": "Jalandhar / Kapurthala",
         "market:punjab": "Elsewhere in Punjab", "market:bengaluru": "Bengaluru", "market:other": "Somewhere else",
+        "market:dehradun": "Dehradun / Selaqui",
         "haridwar:rest-of-uttarakhand": "Elsewhere in Uttarakhand (Haridwar form)", "jalandhar:rest-of-punjab": "Elsewhere in Punjab (Jalandhar form)",
+        "dehradun:rest-of-uttarakhand": "Elsewhere in Uttarakhand (Dehradun form)",
     },
 };
 const AREA_CLUSTERS = {
@@ -319,7 +323,7 @@ const AREA_CLUSTERS = {
     "jalandhar:phagwara-goraya": "jalandhar",
     "jalandhar:outside": null,
     "uttarakhand:haridwar": "haridwar",
-    "uttarakhand:dehradun-selaqui": "uttarakhand",
+    "uttarakhand:dehradun-selaqui": "dehradun",
     "uttarakhand:udham-singh-nagar": "uttarakhand",
     "uttarakhand:other": "uttarakhand",
     "uttarakhand:outside": null,
@@ -329,14 +333,21 @@ const AREA_CLUSTERS = {
     "punjab:amritsar": "punjab",
     "punjab:other": "punjab",
     "punjab:outside": null,
+    "dehradun:selaqui-sahaspur": "dehradun",
+    "dehradun:city": "dehradun",
+    "dehradun:rishikesh-doiwala": "dehradun",
+    "dehradun:vikasnagar": "dehradun",
+    "dehradun:outside": null,
     "market:haridwar": "haridwar",
     "market:uttarakhand": "uttarakhand",
     "market:jalandhar": "jalandhar",
     "market:punjab": "punjab",
     "market:bengaluru": "bengaluru",
     "market:other": null,
+    "market:dehradun": "dehradun",
     "haridwar:rest-of-uttarakhand": "uttarakhand",
     "jalandhar:rest-of-punjab": "punjab",
+    "dehradun:rest-of-uttarakhand": "uttarakhand",
 };
 function submissionCluster(pageCluster, answers) {
     const area = answers?.area?.[0];

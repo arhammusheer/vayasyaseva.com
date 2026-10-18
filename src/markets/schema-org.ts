@@ -14,6 +14,12 @@ export type SchemaPlace = {
 
 export const MARKET_PLACES = {
   bengaluru: { "@type": "City", name: "Bengaluru", containedInPlace: { "@type": "State", name: "Karnataka" } },
+  dehradun: {
+    "@type": "City",
+    name: "Dehradun",
+    alternateName: ["Dehra Dun", "Selaqui"],
+    containedInPlace: { "@type": "State", name: "Uttarakhand" },
+  },
   "delhi-ncr": { "@type": "Place", name: "Delhi NCR", alternateName: "National Capital Region" },
   haridwar: {
     "@type": "City",

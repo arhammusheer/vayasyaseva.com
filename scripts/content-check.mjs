@@ -68,7 +68,7 @@ const warn = (message) => warnings.push(message);
 
 const { pageEntries, pathAliases, clusters, builtLocales, publishedLocales, isNoindex, PAUSABLE_KINDS } = await importTs("src/content/registry/index.ts");
 const { pageEntrySchema, clusterSchema } = await importTs("src/content/registry/schema.ts");
-const { CLUSTER_IDS, HARIDWAR_AREA_IDS, BENGALURU_AREA_IDS, JALANDHAR_AREA_IDS, UTTARAKHAND_AREA_IDS, PUNJAB_AREA_IDS, MARKET_AREA_IDS, REST_OF_STATE_AREA_IDS, LOCALE_TAGS } = await importTs("src/content/registry/identifiers.ts");
+const { CLUSTER_IDS, HARIDWAR_AREA_IDS, BENGALURU_AREA_IDS, JALANDHAR_AREA_IDS, UTTARAKHAND_AREA_IDS, PUNJAB_AREA_IDS, DEHRADUN_AREA_IDS, MARKET_AREA_IDS, REST_OF_STATE_AREA_IDS, LOCALE_TAGS } = await importTs("src/content/registry/identifiers.ts");
 const { JOB_ROLE_SLUGS, JOB_HUB_SLUGS, QUICK_ANSWERS, INTAKE_LOCALES, INTAKE_CLUSTERS, AREA_CLUSTERS } = await importTs("src/lib/talent-intake/rules.ts");
 
 function walk(dir, files = []) {
@@ -219,7 +219,7 @@ for (const [kind, slugs] of [["job-role", JOB_ROLE_SLUGS], ["job-hub", JOB_HUB_S
   }
 }
 const areaIds = Object.keys(QUICK_ANSWERS.area);
-const AREA_IDS = [...HARIDWAR_AREA_IDS, ...BENGALURU_AREA_IDS, ...JALANDHAR_AREA_IDS, ...UTTARAKHAND_AREA_IDS, ...PUNJAB_AREA_IDS, ...MARKET_AREA_IDS, ...REST_OF_STATE_AREA_IDS];
+const AREA_IDS = [...HARIDWAR_AREA_IDS, ...BENGALURU_AREA_IDS, ...JALANDHAR_AREA_IDS, ...UTTARAKHAND_AREA_IDS, ...PUNJAB_AREA_IDS, ...DEHRADUN_AREA_IDS, ...MARKET_AREA_IDS, ...REST_OF_STATE_AREA_IDS];
 if (areaIds.join() !== AREA_IDS.join()) fail(`C2 QUICK_ANSWERS.area (${areaIds.join(", ")}) differs from the *_AREA_IDS lists in identifiers.ts; stored ids are append-only`);
 // rules.ts must stay import-free (the Windmill build inlines it), so it repeats these lists.
 if (INTAKE_LOCALES.join() !== LOCALE_TAGS.join()) fail(`C2 INTAKE_LOCALES in rules.ts (${INTAKE_LOCALES.join(", ")}) differs from LOCALE_TAGS`);

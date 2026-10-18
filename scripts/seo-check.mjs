@@ -231,6 +231,8 @@ const REDIRECTS = [
   { path: "/jobs", host: "vayasyaseva.com", status: 308, location: `${SITE}/jobs` },
   { path: "/api/contact", host: "vayasyaseva.com", status: 308, location: `${SITE}/api/contact` },
   { path: "/robots.txt", host: "vayasyaseva.com", status: 308, location: `${SITE}/robots.txt` },
+  // An estate that moved to another region's hub (MOVED_ESTATES): one hop.
+  { path: "/en-in/locations/uttarakhand/selaqui", status: 308, location: "/en-in/locations/dehradun/selaqui" },
   // The picker's internal route is never a URL of its own.
   { path: "/select-language/hi-hl-en/jobs", status: 308, location: "/jobs" },
   { path: "/select-language/jobs", status: 308, location: "/jobs" },

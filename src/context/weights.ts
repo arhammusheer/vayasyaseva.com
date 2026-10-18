@@ -7,10 +7,12 @@
  * 4 (18 Oct 2026): replaces area intent model 3 (src/lib/intent) with
  * families, per-audience weights, stated picks, bands and the holdout
  * (owner decisions, 18 Oct 2026).
+ * 5 (18 Oct 2026): Dehradun becomes a market (Dehradun-district places no
+ * longer name the rest of Uttarakhand); the weights are unchanged.
  */
 import type { AudienceWeights, ContextTables, RegionWeights } from "./core";
 
-export const CONTEXT_VERSION = 4;
+export const CONTEXT_VERSION = 5;
 
 /**
  * Job seekers: where they live decides, so the IP (roughly where the phone

@@ -1020,6 +1020,48 @@
     }
   },
   {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/dehradun",
+    "lastModified": "2026-10-18T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/dehradun",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/dehradun",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/dehradun",
+        "x-default": "https://www.vayasyaseva.com/jobs/dehradun"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/dehradun",
+    "lastModified": "2026-10-18T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/dehradun",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/dehradun",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/dehradun",
+        "x-default": "https://www.vayasyaseva.com/jobs/dehradun"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/dehradun",
+    "lastModified": "2026-10-18T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/dehradun",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/dehradun",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/dehradun",
+        "x-default": "https://www.vayasyaseva.com/jobs/dehradun"
+      }
+    }
+  },
+  {
     "url": "https://www.vayasyaseva.com/en-in/jobs/uttarakhand",
     "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "monthly",
@@ -1129,15 +1171,9 @@
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/uttarakhand",
-    "lastModified": "2026-10-16T00:00:00.000Z",
+    "lastModified": "2026-10-18T00:00:00.000Z",
     "changeFrequency": "monthly",
     "priority": 0.8
-  },
-  {
-    "url": "https://www.vayasyaseva.com/en-in/locations/uttarakhand/selaqui",
-    "lastModified": "2026-10-16T00:00:00.000Z",
-    "changeFrequency": "monthly",
-    "priority": 0.7
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/bengaluru",
@@ -1264,6 +1300,18 @@
         "x-default": "https://www.vayasyaseva.com/en-in/locations/haridwar"
       }
     }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/dehradun",
+    "lastModified": "2026-10-18T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/dehradun/selaqui",
+    "lastModified": "2026-10-18T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/compliance",

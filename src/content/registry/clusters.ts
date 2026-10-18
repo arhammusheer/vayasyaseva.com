@@ -81,13 +81,27 @@ export const clusters: readonly Cluster[] = [
   },
   {
     // The Uttarakhand business page (owner direction 16-17 Oct 2026: publish
-    // as normal; VSPL confirmed it can supply crews here). Haridwar is its
-    // own market, like Jalandhar–Kapurthala in Punjab; this one carries the
-    // rest of the state (Selaqui).
+    // as normal; VSPL confirmed it can supply crews here). Haridwar and
+    // Dehradun are markets of their own, like Jalandhar–Kapurthala in
+    // Punjab; this one carries the rest of the state (Udham Singh Nagar,
+    // Kotdwar and beyond).
     id: "uttarakhand",
     publishable: true,
     states: ["uttarakhand"],
     buyerHub: "/locations/uttarakhand",
+    claims: [],
+    registrations: [],
+  },
+  {
+    // Dehradun (owner direction, 18 Oct 2026): a market of its own, like
+    // Haridwar and Jalandhar–Kapurthala, with a jobs hub and business pages.
+    // Selaqui moved here from the Uttarakhand hub. The jobs hub is a worker
+    // list: no open requirement is named until there is one. "dehradun job"
+    // is ~12,100 searches a month in Dehradun (Keyword Planner, 18 Oct 2026).
+    id: "dehradun",
+    publishable: true,
+    states: ["uttarakhand"],
+    buyerHub: "/locations/dehradun",
     claims: [],
     registrations: [],
   },

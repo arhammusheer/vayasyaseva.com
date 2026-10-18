@@ -15,6 +15,7 @@ import {
   LOCATIONS_PATH,
   LOCATION_CLUSTERS,
   LOCATION_ESTATES,
+  MOVED_ESTATES,
   estatePath,
   locationPath,
   WAGE_HUB_PATH,
@@ -183,7 +184,7 @@ const WAGE_HI_STATUS: PageStatus = "review";
 const LOCATIONS_STATUS: PageStatus = "published";
 const LOCATIONS_UPDATED = "2026-10-16";
 /** Regions added after the first set, by the day they went up. */
-const LOCATION_ADDED: Partial<Record<LocationCluster, string>> = { jalandhar: "2026-10-17" };
+const LOCATION_ADDED: Partial<Record<LocationCluster, string>> = { jalandhar: "2026-10-17", dehradun: "2026-10-18", uttarakhand: "2026-10-18" };
 
 /** The three languages of every multi-language page (Punjabi and Kannada are per page: WITH_*). */
 const ALL = { "en-IN": "published", "hi-IN": "published", "hi-Latn-IN": "published" } as const satisfies Partial<Record<LocaleTag, PageStatus>>;
@@ -262,6 +263,8 @@ export const pageEntries: readonly PageEntry[] = [
   { ...jobsPage(jobsHubPath("bengaluru"), "jobs-city", 0.7), locales: WITH_KANNADA, cluster: "bengaluru" },
   // Open work (Kapurthala packing), so priced like Haridwar's.
   { ...jobsPage(jobsHubPath("jalandhar"), "jobs-city", 0.8), locales: WITH_PUNJABI, cluster: "jalandhar" },
+  // A worker list (no open requirement named), its own market since 18 Oct 2026.
+  { ...jobsPage(jobsHubPath("dehradun"), "jobs-city", 0.7), cluster: "dehradun", updated: "2026-10-18" },
   // Worker lists for the rest of each state (owner direction, 17 Oct 2026).
   { ...jobsPage(jobsHubPath("uttarakhand"), "jobs-city", 0.7), cluster: "uttarakhand" },
   { ...jobsPage(jobsHubPath("punjab"), "jobs-city", 0.7), locales: WITH_PUNJABI, cluster: "punjab" },
@@ -274,10 +277,13 @@ export const pageEntries: readonly PageEntry[] = [
   { path: LOCATIONS_PATH, kind: "static", audience: "mixed", locales: { "en-IN": LOCATIONS_STATUS }, parent: "/", updated: LOCATIONS_UPDATED, changeFrequency: "monthly", priority: 0.6 },
   ...LOCATION_CLUSTERS.flatMap((cluster) => [
     { path: locationPath(cluster), kind: "cluster-hub", audience: "mixed", locales: LOCATION_HUB_LOCALES[cluster] ?? { "en-IN": LOCATIONS_STATUS }, parent: LOCATIONS_PATH, cluster, updated: LOCATION_ADDED[cluster] ?? LOCATIONS_UPDATED, changeFrequency: "monthly", priority: 0.8 } satisfies PageEntry,
-    ...LOCATION_ESTATES[cluster].map(
-      (estate) =>
-        ({ path: estatePath(cluster, estate), kind: "estate", audience: "mixed", locales: { "en-IN": LOCATIONS_STATUS }, parent: locationPath(cluster), cluster, updated: LOCATION_ADDED[cluster] ?? LOCATIONS_UPDATED, changeFrequency: "monthly", priority: 0.7 }) satisfies PageEntry,
-    ),
+    ...LOCATION_ESTATES[cluster].map((estate): PageEntry => {
+      const path = estatePath(cluster, estate);
+      // Moved to another region's hub: retired here, one 308 to the new page.
+      const movedTo = MOVED_ESTATES[path];
+      if (movedTo) return { path, kind: "estate", audience: "mixed", locales: RETIRED_EN, parent: locationPath(cluster), retiredTo: movedTo, updated: "2026-10-18", changeFrequency: "monthly", priority: 0.7 };
+      return { path, kind: "estate", audience: "mixed", locales: { "en-IN": LOCATIONS_STATUS }, parent: locationPath(cluster), cluster, updated: LOCATION_ADDED[cluster] ?? LOCATIONS_UPDATED, changeFrequency: "monthly", priority: 0.7 };
+    }),
   ]),
   // Sectors and engagement steps now live on /services.
   { path: "/industries", kind: "static", audience: "business", locales: RETIRED_EN, parent: "/", retiredTo: "/services#sectors", updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.8 },

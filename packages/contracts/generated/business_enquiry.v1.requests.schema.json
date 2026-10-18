@@ -28,7 +28,7 @@
           "type": "string",
           "minLength": 10,
           "description": "Phone number with country/area code",
-          "example": "+91 72920 14101"
+          "example": "+91 98765 43210"
         },
         "email": {
           "description": "Business email address",

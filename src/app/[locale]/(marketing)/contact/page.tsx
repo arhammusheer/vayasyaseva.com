@@ -4,7 +4,8 @@ import { Section } from "@/components/layout/section";
 import { siteConfig } from "@/content/site";
 import { businessPhone, businessPhoneHref } from "@/content/business-contact";
 import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
-import { ContactFormForMode, ContactHeading, HEADINGS } from "./contact-mode";
+import { HEADINGS } from "./contact-headings";
+import { ContactFormForMode, ContactHeading } from "./contact-mode";
 import { AgentGuidance } from "@/components/agent-guidance";
 import { JobsLink } from "@/components/i18n/jobs-link";
 import { localeParams } from "@/lib/i18n";
@@ -100,8 +101,6 @@ export default function ContactPage() {
             <p className="crew-reply max-w-sm">{RESPONSE_LINE}</p>
           </div>
           <div className="lg:col-start-2 lg:row-start-1 lg:row-span-2">
-            {/* Outside Suspense: the form renders on the client only, and agents read the server HTML. */}
-            <AgentGuidance form="contact" />
             <Suspense fallback={<ContactFormFallback />}>
               <ContactFormForMode />
             </Suspense>
@@ -127,6 +126,7 @@ export default function ContactPage() {
                 </div>
               ))}
             </dl>
+            <AgentGuidance />
           </div>
         </div>
       </Section>

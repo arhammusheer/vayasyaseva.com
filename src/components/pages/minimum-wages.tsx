@@ -7,7 +7,7 @@ import { Section } from "@/components/layout/section";
 import { JsonLd, faqSchema, wageHubSchema, wageStateSchema, webPageSchema } from "@/lib/structured-data";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { linkable } from "@/content/registry";
-import { WAGE_HUB_PATH, wageStatePath, type WageStateSlug } from "@/content/registry/identifiers";
+import { WAGE_HUB_PATH, WAGE_VDA_PATH, wageStatePath, type WageStateSlug } from "@/content/registry/identifiers";
 import {
   SKILLS,
   checkedByLine,
@@ -48,15 +48,15 @@ import { EmploymentFinder } from "@/components/pages/employment-finder";
  */
 
 /** Published state pages, in hub order. A state in review is not listed or linked. */
-const listedStates = () => wageStates.filter((s) => linkable(wageStatePath(s.state), "en-IN"));
+export const listedStates = () => wageStates.filter((s) => linkable(wageStatePath(s.state), "en-IN"));
 
 /** The year shows in titles and headings only while the figures are current (PLAN §5.5). */
 const yearOf = (state: WageState, today: string) => (wageStatus(state, today).stale ? null : ratesYear(state));
-const hubYear = () => listedStates().map(ratesYear).sort().at(-1) ?? null;
-const hubStale = (today: string) => listedStates().some((s) => wageStatus(s, today).stale);
+export const hubYear = () => listedStates().map(ratesYear).sort().at(-1) ?? null;
+export const hubStale = (today: string) => listedStates().some((s) => wageStatus(s, today).stale);
 
 /** A shorter hero than a business page's, so the first rates show on the first screen. */
-const HERO_TIGHT = "pb-8 pt-6 sm:pb-10 sm:pt-14 lg:pb-12 lg:pt-14";
+export const HERO_TIGHT = "pb-8 pt-6 sm:pb-10 sm:pt-14 lg:pb-12 lg:pt-14";
 
 function stateOrThrow(slug: WageStateSlug) {
   const state = wageStates.find((s) => s.state === slug);
@@ -477,7 +477,7 @@ function OrderNumber({ value }: { value: string }) {
 }
 
 /** The dark band with two doors: the one ending of every wage page. */
-function Doors({ doors }: { doors: WageDoor[] }) {
+export function Doors({ doors }: { doors: WageDoor[] }) {
   return (
     <section className="wage-doors" data-header-theme="dark">
       <div className="site-shell wage-doors-inner">
@@ -502,7 +502,7 @@ function Doors({ doors }: { doors: WageDoor[] }) {
   );
 }
 
-function Faqs({ faqs, children }: { faqs: { question: string; answer: string }[]; children?: React.ReactNode }) {
+export function Faqs({ faqs, children }: { faqs: { question: string; answer: string }[]; children?: React.ReactNode }) {
   return (
     <Section id="questions" variant="subtle">
       <div className="wage-split">
@@ -773,6 +773,13 @@ export function WageHubPage({ locale = "en-IN" }: { locale?: Locale }) {
         </div>
         <p className="wage-note">
           {x.hub.checked}{" "}
+          {linkable(WAGE_VDA_PATH, "en-IN") && (
+            <>
+              <Link href={WAGE_VDA_PATH} className="wage-inline-link">
+                {x.hub.vda} <ArrowRight size={16} aria-hidden="true" />
+              </Link>{" "}
+            </>
+          )}
           <Link href={EDITORIAL_HREF} className="wage-inline-link">
             {x.howWeCheck} <ArrowRight size={16} aria-hidden="true" />
           </Link>

@@ -19,6 +19,7 @@ import {
   locationPath,
   WAGE_HUB_PATH,
   WAGE_METHOD_PATH,
+  WAGE_VDA_PATH,
   WAGE_STATE_CODES,
   guidePath,
   jobsHubPath,
@@ -305,6 +306,11 @@ export const pageEntries: readonly PageEntry[] = [
   // Sources, method, checks and corrections for the wage pages and guides:
   // a static page beside the dynamic /minimum-wages/[state] route. The
   // editorial policy moved here from /about.
+  // The VDA and DA revisions of the published states, from the same dataset:
+  // "variable dearness allowance" ~6,600 searches a month, peaking each April
+  // and October (Keyword Planner, 18 Oct 2026). Rebuilt daily like the hub;
+  // `updated` moves with the newest state file.
+  { path: WAGE_VDA_PATH, kind: "static", audience: "mixed", locales: { "en-IN": "published" }, parent: WAGE_HUB_PATH, updated: WAGE_HUB_UPDATED(), changeFrequency: "monthly", priority: 0.6 },
   { path: WAGE_METHOD_PATH, kind: "static", audience: "mixed", locales: { "en-IN": "published" }, parent: WAGE_HUB_PATH, updated: EDITORIAL_POLICY, changeFrequency: "yearly", priority: 0.5 },
   // Guides sit in the reference section beside the wage pages (its header,
   // no phone), so their trail runs through the wage hub, not /compliance.

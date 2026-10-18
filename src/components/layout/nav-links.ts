@@ -1,5 +1,5 @@
 import { linkable } from "@/content/registry";
-import { WAGE_HUB_PATH, WAGE_METHOD_PATH, WAGE_VDA_PATH, guidePath, jobsHubPath, wageStatePath, type ClusterId } from "@/content/registry/identifiers";
+import { WAGE_HUB_PATH, WAGE_METHOD_PATH, WAGE_VDA_PATH, LWF_PATH, guidePath, jobsHubPath, wageStatePath, type ClusterId } from "@/content/registry/identifiers";
 import { JOBS_AREA_LABEL, orderedJobMarkets } from "@/context/surfaces";
 import { localePath, nearestLocalePath, type Locale } from "@/lib/i18n";
 import type { JobGroupId } from "@/content/pages/jobs";
@@ -57,6 +57,7 @@ const REFERENCE: (NavLink & { long?: string })[] = [
   { href: wageStatePath("uttar-pradesh"), label: "Uttar Pradesh" },
   { href: wageStatePath("uttarakhand"), label: "Uttarakhand" },
   { href: WAGE_VDA_PATH, label: "VDA tracker", long: "VDA and DA tracker" },
+  { href: LWF_PATH, label: "Labour Welfare Fund", long: "Labour Welfare Fund by state" },
   { href: WAGE_METHOD_PATH, label: "How we check", long: "How we check minimum wages" },
   { href: guidePath("new-labour-codes"), label: "Labour codes guide" },
 ];

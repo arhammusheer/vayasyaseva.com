@@ -26,6 +26,7 @@ const COMMON: Record<string, { heading: string; description: string }> = {
   "/minimum-wages": { heading: "Minimum wages\nby state.", description: "Current rates by skill level, each from the state's own notification." },
   "/minimum-wages/uttarakhand": { heading: "Minimum wages\nin Uttarakhand.", description: "Monthly rates by skill level, basic wage and VDA, from the notification." },
   "/minimum-wages/uttar-pradesh": { heading: "Minimum wages\nin Uttar Pradesh.", description: "Rates by district category and skill level, basic wage and VDA." },
+  "/labour-welfare-fund": { heading: "Labour Welfare Fund\nby state.", description: "Who it covers, what the worker and employer pay, and when it is due." },
   "/minimum-wages/vda": { heading: "VDA revisions\nby state.", description: "The allowance in force, when it changed, and which revisions are due." },
   "/minimum-wages/how-we-check": { heading: "How we check\nminimum wages.", description: "Where the rates come from, when we check them, and how to report an error." },
   "/minimum-wages/delhi": { heading: "Minimum wages\nin Delhi.", description: "Monthly and daily rates by skill level, from the Labour Department's order." },

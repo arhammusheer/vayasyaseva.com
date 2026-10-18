@@ -8,7 +8,7 @@ import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { siteConfig } from "@/content/site";
 import { COMPLIANCE_HELP, COMPLIANCE_RECORDS, CONTRACTOR_CHECKS } from "@/content/compliance";
 import { linkable } from "@/content/registry";
-import { WAGE_HUB_PATH, guidePath } from "@/content/registry/identifiers";
+import { LWF_PATH, WAGE_HUB_PATH, guidePath } from "@/content/registry/identifiers";
 import { localeParams } from "@/lib/i18n";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/compliance");
@@ -26,6 +26,7 @@ export const metadata = pageMetadata({
 /** Reference pages, in the resources line once published. */
 const resources = [
   { href: WAGE_HUB_PATH, label: "Minimum wages by state" },
+  { href: LWF_PATH, label: "Labour Welfare Fund by state" },
   { href: guidePath("new-labour-codes"), label: "New labour codes guide" },
 ].filter((r) => linkable(r.href, "en-IN"));
 

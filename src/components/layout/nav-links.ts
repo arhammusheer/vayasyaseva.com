@@ -1,6 +1,6 @@
 import { linkable } from "@/content/registry";
 import { WAGE_HUB_PATH, WAGE_METHOD_PATH, guidePath, jobsHubPath, wageStatePath, type ClusterId } from "@/content/registry/identifiers";
-import { JOBS_AREA_LABEL, orderedJobMarkets } from "@/lib/intent/surfaces";
+import { JOBS_AREA_LABEL, orderedJobMarkets } from "@/context/surfaces";
 import { localePath, nearestLocalePath, type Locale } from "@/lib/i18n";
 import type { JobGroupId } from "@/content/pages/jobs";
 

@@ -143,7 +143,7 @@ export const RETENTION: readonly RetentionStore[] = [
   },
   {
     id: "area-reporting",
-    what: "sessionStorage vs-area-reported-v1 and vs-area-board-v1 (which area events this tab has sent)",
+    what: "sessionStorage vs-ctx-reported-v1 (which visitor-context events this tab has sent)",
     days: null,
     notice: null,
     noticeRef: "none (no personal data; session only)",
@@ -161,11 +161,11 @@ export const RETENTION: readonly RetentionStore[] = [
   },
   {
     id: "area-signals",
-    what: "sessionStorage vs-area-session-v2 and vs-area-region-v3, localStorage vs-area-choice-v1 (the header's area signals; a picked market is remembered 90 days)",
+    what: "Cookie vs_ctx (picked markets and audience: links and the crew form's site 90 days, the jobs form's area 30 days), cookie vs_geo (the IP's country, state and market, browser session), sessionStorage vs-ctx-session-v1 and vs-ctx-geo-v1 (this visit's signals)",
     days: 90,
-    notice: null,
-    noticeRef: "none (stays in the browser; docs/area-intent.md)",
-    enforcedBy: "src/lib/intent/store.ts (CHOICE_DAYS, session idle time)",
+    notice: "90 days",
+    noticeRef: "/privacy §2 Where you want to work or hire",
+    enforcedBy: "Cookie max-age and src/context/weights.ts PICK_DAYS (read time); vs_geo has no max-age (session cookie, src/proxy.ts)",
     enforcedInRepo: true,
   },
   {

@@ -1,6 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { FALLBACK_LOCALE, fromLegacyPrefix, isGone, localePath, localesOf, movedPathname, neutralTarget, splitLocalePath } from "@/lib/i18n";
-import { LANGUAGE_COOKIE, isRankSegment, rankSegmentFor, visitorRegion } from "@/lib/language-rank";
+import { LANGUAGE_COOKIE, isRankSegment, rankSegmentFor, visitorCity, visitorRegion } from "@/lib/language-rank";
+import { parsePicksCookie } from "@/context/collect";
+import { geoCookieValue, requestGeo } from "@/context/geo";
+import { GEO_COOKIE, PICKS_COOKIE } from "@/context/keys";
 
 /**
  * First-party proxy for our self-hosted Umami: /_t/s.js (tracker) and /_t/e
@@ -133,6 +136,9 @@ function routeLocale(request: NextRequest, pathname = request.nextUrl.pathname):
         chosen: request.cookies.get(LANGUAGE_COOKIE)?.value,
         acceptLanguage: request.headers.get("accept-language"),
         ...visitorRegion(request.headers),
+        city: visitorCity(request.headers),
+        // The visitor's remembered picks (src/context): a market they chose orders its languages.
+        picks: parsePicksCookie(request.cookies.get(PICKS_COOKIE)?.value),
       },
       request.nextUrl.searchParams,
     );
@@ -192,10 +198,24 @@ function requestHost(request: NextRequest) {
   return request.headers.get("host")?.trim().toLowerCase().replace(/:\d+$/, "").replace(/\.$/, "");
 }
 
+/**
+ * The visitor's IP region for the visitor context (src/context/geo.ts), as
+ * a cookie for this browser session, so the page decides before paint.
+ * Set only when it is missing or has changed (a phone moving networks).
+ */
+function withGeo(request: NextRequest, response: NextResponse) {
+  const geo = requestGeo(request.headers);
+  if (!geo) return response;
+  const value = geoCookieValue(geo);
+  if (request.cookies.get(GEO_COOKIE)?.value === value) return response;
+  response.cookies.set(GEO_COOKIE, value, { path: "/", sameSite: "lax", secure: request.nextUrl.protocol === "https:" });
+  return response;
+}
+
 export function proxy(request: NextRequest) {
   if (requestHost(request) === APEX_HOST) return apexRedirect(request);
   if (request.nextUrl.pathname.startsWith("/_t/")) return umami(request);
-  return routeLocale(request);
+  return withGeo(request, routeLocale(request));
 }
 
 export const config = {

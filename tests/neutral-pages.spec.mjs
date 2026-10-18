@@ -1,4 +1,4 @@
-// No market is named first (owner direction, 17 Oct 2026; docs/area-intent.md):
+// No market is named first (owner direction, 17 Oct 2026; docs/visitor-context.md):
 // role and qualification pages name the work in their titles and headings,
 // and list every job market, in MARKET_ORDER, in their descriptions.
 import assert from "node:assert/strict";

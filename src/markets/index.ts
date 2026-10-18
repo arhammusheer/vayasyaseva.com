@@ -1,5 +1,5 @@
 /**
- * Market queries (docs/area-intent.md). Layer 2: pure functions over the
+ * Market queries (docs/visitor-context.md). Layer 2: pure functions over the
  * market records in ./data.ts, the place ids in ./places.ts and the form
  * areas in ./areas.ts. The proxy and client bundles import this file, so it
  * carries no labels: those are in ./labels.ts and ./schema-org.ts, imported
@@ -11,7 +11,7 @@ import { FORM_AREAS, MARKET_AREA_ANSWERS, areaFilesUnder, areaSetOf, type AreaId
 import { MARKETS, MARKET_IDS, REGION_ALIASES, type LanguageSetName, type MarketId, type MarketRecord, type PlaceGroup, type RegionCode, type Side } from "./data";
 import { PLACES_BY_ID, type Place, type PlaceId } from "./places";
 
-export { MARKETS, MARKET_IDS, NON_MARKET_CLUSTERS, REGION_ALIASES } from "./data";
+export { MARKETS, MARKET_IDS, NEARBY, NON_MARKET_CLUSTERS, REGION_ALIASES } from "./data";
 export { PLACES_BY_ID } from "./places";
 export { FORM_AREAS, MARKET_AREA_ANSWERS, UNPREFIXED_AREA_SET } from "./areas";
 export type { BusinessMarketId, JobsMarketId, LanguageSetName, MarketId, MarketRecord, PlaceGroup, RegionCode, Side } from "./data";

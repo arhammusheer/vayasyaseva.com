@@ -13,14 +13,14 @@ import { cn } from "@/lib/utils";
 import { currentAdClick, formPage, measurementClaim, track, trackConversion, type AnalyticsParams } from "@/lib/measurement/gateway";
 import { jobsCopy } from "@/content/pages/jobs";
 import { STEP_DEFS, areaOptions, quickApplyCopy, roleFor, type Answers, type AreaSource, type StepDef } from "@/content/pages/quick-apply";
-import { MODEL_VERSION } from "@/lib/intent/model";
-import { reportChoice } from "@/lib/intent/report";
+import { CONTEXT_VERSION } from "@/context/weights";
+import { reportChoice } from "@/context/report";
 import { readPrefill } from "@/lib/prefill";
 import { localePath, splitLocalePath, type Locale } from "@/lib/i18n";
 import { clusterById } from "@/content/registry/clusters";
-import { noteChoice } from "@/lib/intent/store";
-import { useAreaDecision } from "@/lib/intent/use-area";
-import { usePathname } from "next/navigation";
+import { noteAudience, notePick } from "@/context/runtime";
+import { useVisitorContext } from "@/context/use-context";
+import { isMarketId } from "@/markets/index";
 import { AREA_CLUSTERS, submissionCluster, type QuickAnswers, MAX_APPLICANT_NAME_LENGTH, WEB_SOURCE, cleanQuickAnswers, isJobRole, isJobHub, isPagePath, normaliseIndianMobile, type IntakeCluster, type JobHub, type JobRole } from "@/lib/talent-intake/rules";
 import { JobSubmissionFailure, useJobSubmission } from "@/lib/use-job-submission";
 import { TURNSTILE_SCRIPT_URL } from "@/lib/turnstile";
@@ -133,12 +133,16 @@ export function QuickApply({
 }) {
   const t = quickApplyCopy[locale];
   const form = jobsCopy[locale].form;
-  // Where no market is the page's own (or the link's), the visitor's decided
-  // market (src/lib/intent) gives the area answers; undecided or torn
-  // between two, the form asks which market. Only the options follow the
-  // decision: pageCluster stays the page's own.
-  const area = useAreaDecision(splitLocalePath(usePathname()).path);
-  const decidedMarket = area.jobs.length === 1 ? area.jobs[0] : null;
+  // Where no market is the page's own (or the link's), the visitor context
+  // (src/context) gives the area answers: one decided market's areas (and
+  // every other market), else which market, the visitor's markets and
+  // nearby ones first. The holdout sees the neutral form unless the visitor
+  // picked a market. Only the options follow the context: pageCluster
+  // stays the page's own, and nothing is ever answered for the person.
+  const ctx = useVisitorContext();
+  const neutral = !ctx || ctx.region.band === "unknown" || (ctx.holdout && ctx.region.band !== "stated");
+  const decidedMarket = !neutral && ctx.sides.jobs.length === 1 ? ctx.sides.jobs[0] : null;
+  const firstMarkets = ctx && !neutral ? [...ctx.sides.jobs, ...ctx.region.nearby] : (ctx?.region.nearby ?? []);
   const [answers, setAnswers] = useState<Answers>({});
   // Multi-choice questions count as answered once Next is pressed.
   const [confirmed, setConfirmed] = useState<string[]>([]);
@@ -175,6 +179,8 @@ export function QuickApply({
   const markStarted = () => {
     if (started.current) return;
     started.current = true;
+    // Starting the jobs form says who the visitor is (src/context).
+    noteAudience("jobs");
     track("job_form_start", { locale, variant: "quick", page: formPage() });
     track("quick_apply_start", { locale, entry: entry.current });
   };
@@ -279,18 +285,17 @@ export function QuickApply({
       pendingStep.current = step.id;
       const before = answers[step.id]?.[0];
       setAnswers((a) => ({ ...a, [step.id]: [value] }));
-      // Where the person lives is a strong hint for this session, not a
-      // standing pick (src/lib/intent/store.ts noteChoice).
+      // Where the person lives: remembered 30 days (owner decision, 18 Oct 2026; src/context).
       if (step.id === "area" && Object.hasOwn(AREA_CLUSTERS, value)) {
         const c = AREA_CLUSTERS[value as keyof typeof AREA_CLUSTERS];
-        if (c) noteChoice(c, "answer");
-        // Measures the decision only where it chose the options (or the form asked).
+        if (isMarketId(c)) notePick("answer", c);
+        // Measures the context only where it chose the options (or the form asked).
         // "Somewhere else" names no market: chosen as "other" (after a decision, a correction).
-        if (areaSource === "decision" || areaSource === "ask") reportChoice(c ?? "other", areaSource === "decision" && areaMarket ? [areaMarket] : [], "jobs-form");
+        if (areaSource === "decision" || areaSource === "ask") reportChoice(c ?? "other", areaSource === "decision" && areaMarket ? [areaMarket] : [], "jobs-form", ctx?.region.band);
       }
       const params: AnalyticsParams = { locale, step: step.id, answer: value };
       if (before && before !== value) params.changed = "yes";
-      if (step.id === "area") Object.assign(params, { area_source: areaSource, decided: areaMarket ?? "none", v: MODEL_VERSION });
+      if (step.id === "area") Object.assign(params, { area_source: areaSource, decided: areaMarket ?? "none", band: ctx?.region.band ?? "unknown", v: CONTEXT_VERSION });
       track("quick_step", params);
       return;
     }
@@ -357,6 +362,8 @@ export function QuickApply({
         // The market the application files under, and where the area answers came from.
         cluster: submissionCluster(cluster, answers as QuickAnswers),
         area_source: areaSource,
+        band: ctx?.region.band ?? "unknown",
+        holdout: ctx?.holdout ? "yes" : "no",
       };
       track("job_form_submit", { ...summary, page: formPage() });
       track("quick_apply_submit", summary);
@@ -414,7 +421,7 @@ export function QuickApply({
             {q.hint && <p className="quick-hint">{q.hint}</p>}
             <Pills
               labelledBy={`quick-q-${step.id}`}
-              options={step.id === "area" ? areaChoices(areaOptions(areaMarket, areaSource), answers.area?.[0]) : step.options}
+              options={step.id === "area" ? areaChoices(areaOptions(areaMarket, areaSource, firstMarkets), answers.area?.[0]) : step.options}
               labels={t.labels}
               multi={step.kind === "multi"}
               disabled={locked}

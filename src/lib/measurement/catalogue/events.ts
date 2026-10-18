@@ -62,12 +62,12 @@ const UMAMI: readonly Sink[] = ["umami"];
 const TRACKER = "src/components/analytics-tracker.tsx";
 const QUICK = "src/components/jobs/quick-apply.tsx";
 const CONTACT = "src/app/[locale]/(marketing)/contact/contact-form.tsx";
-const REPORT = "src/lib/intent/report.ts";
+const REPORT = "src/context/report.ts";
 const CONSENT = "src/components/measurement/consent-banner.tsx";
 
 const FORM_TIMING = anon("form_seconds field_seconds corrections pastes");
-const JOB_SUMMARY = anon("locale variant work experience questions files cluster area_source");
-const BOARD_CHOICE = anon("market decided surface v");
+const JOB_SUMMARY = anon("locale variant work experience questions files cluster area_source band holdout");
+const BOARD_CHOICE = anon("market decided surface band v");
 
 export const EVENTS = {
   // Links, clicks, reading (AnalyticsTracker): every visitor, GA4 with Allow All.
@@ -125,7 +125,7 @@ export const EVENTS = {
   // The job application (quick form).
   job_form_start: { purpose: "form-behaviour", sinks: TRACKED, props: anon("locale variant page"), consumers: ["form-funnel", "jobs-ads-board"], source: QUICK },
   quick_apply_start: { purpose: "form-behaviour", sinks: TRACKED, props: anon("locale entry"), consumers: ["form-funnel"], source: QUICK },
-  quick_step: { purpose: "form-behaviour", sinks: TRACKED, props: anon("locale step answer changed area_source decided v"), consumers: ["form-funnel", "area-intent-metrics"], source: QUICK },
+  quick_step: { purpose: "form-behaviour", sinks: TRACKED, props: anon("locale step answer changed area_source decided band v"), consumers: ["form-funnel", "area-intent-metrics"], source: QUICK },
   job_form_error: { purpose: "form-behaviour", sinks: TRACKED, props: anon("locale variant page reason checks"), consumers: ["form-funnel"], source: QUICK },
   job_form_submit: {
     purpose: "form-behaviour",
@@ -154,32 +154,36 @@ export const EVENTS = {
     source: CONTACT,
   },
 
-  // Area intent (docs/area-intent.md): the detailed events, also to GA4 with Allow All.
+  // Visitor context (docs/visitor-context.md): the detailed events, also to GA4 with Allow All.
   area_intent: {
     purpose: "area-intent",
     sinks: TRACKED,
-    props: { ...anon("mode intent geo basis chosen v business jobs confidence"), country: P, region: P },
+    props: {
+      ...anon("v mode band aud aud_stated intent second geo basis arrival business jobs nearby confidence pts_stated pts_arrival pts_browsing pts_ambient lang lang_basis holdout"),
+      country: P,
+      region: P,
+    },
     consumers: ["area-intent-metrics"],
-    source: "src/lib/intent/use-area.ts",
+    source: REPORT,
   },
   area_nav_click: {
     purpose: "area-intent",
     sinks: TRACKED,
-    props: anon("cluster surface mode decided is_decided position explicit v"),
+    props: anon("cluster surface mode band decided is_decided position explicit v"),
     consumers: ["area-intent-metrics"],
-    source: "src/components/layout/header.tsx, src/components/sections/market-list.tsx",
+    source: "src/components/layout/header.tsx, src/components/sections/market-list.tsx, src/components/jobs/jobs-in-row.tsx",
   },
 
   // The "Area intent" board's outcome events: Umami only.
   intent_by: {
     purpose: "area-intent",
     sinks: UMAMI,
-    props: anon("markets mode v"),
+    props: anon("markets mode band holdout v"),
     consumers: ["area-intent-board"],
-    wireName: { pattern: "intent_by_<basis>", values: ["pick", "link", "ad", "page", "location"] },
+    wireName: { pattern: "intent_by_<basis>", values: ["pick", "arrival", "page", "location"] },
     source: REPORT,
   },
-  intent_none: { purpose: "area-intent", sinks: UMAMI, props: anon("markets mode v"), consumers: ["area-intent-board"], source: REPORT },
+  intent_none: { purpose: "area-intent", sinks: UMAMI, props: anon("markets mode band holdout v"), consumers: ["area-intent-board"], source: REPORT },
   market_shown: {
     purpose: "area-intent",
     sinks: UMAMI,
@@ -233,6 +237,7 @@ export const SESSION_PROPS: Readonly<Record<string, DataClass>> = {
   utm_content: P,
   utm_term: P,
   cluster: A,
+  holdout: A,
 };
 
 /** Umami page views (gateway trackPage): a known path plus campaign tags and ?cluster=. */

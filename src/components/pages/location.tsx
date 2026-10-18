@@ -11,9 +11,9 @@ import { FaqSection } from "@/components/sections/faq-section";
 import { FAQ_PATH } from "@/content/faq";
 import { isPaused, linkable } from "@/content/registry";
 import { JsonLd, pageUrl, webPageSchema } from "@/lib/structured-data";
-import { JOBS_AREA_LABEL, areaSurfaces } from "@/lib/intent/surfaces";
+import { JOBS_AREA_LABEL, marketSurfaces } from "@/context/surfaces";
 import { locationCopyIn, locationPages, type LocationCopy } from "@/content/locations";
-import { LOCATIONS_PATH, estatePath, jobsHubPath, locationPath } from "@/content/registry/identifiers";
+import { estatePath, jobsHubPath, locationPath } from "@/content/registry/identifiers";
 import { JobsLink } from "@/components/i18n/jobs-link";
 import { localePath, localizeHref, locales, type Locale } from "@/lib/i18n";
 import { MARKET_IDS as MARKET_ORDER } from "@/markets/index";
@@ -63,7 +63,9 @@ function Areas({ areas, and }: { areas: NonNullable<LocationCopy["areas"]>; and:
  * the cluster has a jobs hub; the client strip; one paragraph on the place
  * with its areas and the crews we supply; four questions; the crew band. No
  * phone (the (locations) layout). In Hindi the jobs door comes first, as a
- * button: most hi-IN visitors to a place page are job seekers.
+ * button: most hi-IN visitors to a place page are job seekers. Elsewhere
+ * both orders are in the HTML and the visitor context shows the jobs-first
+ * one to a visitor it reads as a job seeker (src/context/css.ts).
  */
 export function LocationPage({ page: source, locale = "en-IN" }: { page: LocationCopy; locale?: Locale }) {
   const page = locationCopyIn(source, locale);
@@ -71,14 +73,14 @@ export function LocationPage({ page: source, locale = "en-IN" }: { page: Locatio
   const path = pathOf(page);
   const url = localePath(path, locale);
   const crewHref = `/contact#location=${page.placeId}`;
-  const jobsHub = areaSurfaces()[page.cluster]?.jobs;
+  const jobsHub = marketSurfaces()[page.cluster]?.jobs;
   const hub = locationPages.get(locationPath(page.cluster));
   const jobsLabel = JOBS_AREA_LABEL[locale]?.[page.cluster] ?? `Jobs in ${hub ? locationCopyIn(hub, locale).name : page.name}`;
   const jobsFirst = locale === "hi-IN" && Boolean(jobsHub);
   const englishOnly = locale === "en-IN" ? undefined : "en-IN";
   const [before, after] = page.areas ? page.paragraph.split("{areas}") : [page.paragraph, ""];
-  const crewButton = (
-    <Button asChild size="lg" variant={jobsFirst ? "outline" : "default"}>
+  const crewButton = (second: boolean) => (
+    <Button asChild size="lg" variant={second ? "outline" : "default"}>
       <Link href={crewHref}>
         {ui.crew} <ArrowUpRight aria-hidden="true" />
       </Link>
@@ -105,28 +107,33 @@ export function LocationPage({ page: source, locale = "en-IN" }: { page: Locatio
         title={page.heading}
         lede={page.lede}
         footnote={
-          jobsFirst ? (
-            <div className="flex flex-wrap gap-3 pt-2">
-              <Button asChild size="lg">
-                <JobsLink path={jobsHubPath(page.cluster)} locale={locale}>
-                  {jobsLabel} <ArrowRight aria-hidden="true" />
-                </JobsLink>
-              </Button>
-              {crewButton}
-            </div>
-          ) : (
-            <div className="flex flex-wrap items-center gap-x-8 gap-y-4 pt-2">
-              {crewButton}
-              {jobsHub && (
-                <p className="seeker-line">
-                  {ui.seeker}{" "}
-                  <JobsLink path={jobsHubPath(page.cluster)} locale={locale} className="text-link mt-0">
-                    {jobsLabel} <ArrowRight size={18} aria-hidden="true" />
+          <>
+            {/* Jobs first: always in Hindi; for a visitor the context reads as a job seeker,
+                CSS shows this one before paint (owner decision, 18 Oct 2026; src/context/css.ts). */}
+            {jobsHub && (
+              <div className={`flex flex-wrap gap-3 pt-2 ${jobsFirst ? "" : "ctx-aud-jobs"}`}>
+                <Button asChild size="lg">
+                  <JobsLink path={jobsHubPath(page.cluster)} locale={locale}>
+                    {jobsLabel} <ArrowRight aria-hidden="true" />
                   </JobsLink>
-                </p>
-              )}
-            </div>
-          )
+                </Button>
+                {crewButton(true)}
+              </div>
+            )}
+            {!jobsFirst && (
+              <div className={`flex flex-wrap items-center gap-x-8 gap-y-4 pt-2 ${jobsHub ? "ctx-aud-default" : ""}`}>
+                {crewButton(false)}
+                {jobsHub && (
+                  <p className="seeker-line">
+                    {ui.seeker}{" "}
+                    <JobsLink path={jobsHubPath(page.cluster)} locale={locale} className="text-link mt-0">
+                      {jobsLabel} <ArrowRight size={18} aria-hidden="true" />
+                    </JobsLink>
+                  </p>
+                )}
+              </div>
+            )}
+          </>
         }
       />
       <ClientStrip label={ui.clients} afterRule />
@@ -183,7 +190,7 @@ export function LocationsIndex() {
       <JsonLd data={webPageSchema({ name: "Locations", description: "Where Vayasya Seva supplies contract labour crews.", url: "/locations", type: "CollectionPage" })} />
       <PageHero title="Where we supply crews." lede="Bengaluru, Delhi NCR, Punjab and Uttarakhand. Pick a region, or tell us where your site is." />
       <Section className="border-t border-border">
-        <MarketList items={items} path={LOCATIONS_PATH} side="business" surface="locations-index" className="location-areas" />
+        <MarketList items={items} side="business" surface="locations-index" className="location-areas" />
       </Section>
       <CtaBlock />
     </>

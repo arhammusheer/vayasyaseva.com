@@ -40,7 +40,7 @@ test('the lead carries the form, the site\'s market, and the whole enquiry', () 
   const lead = buildLeadPayload(data, { caseId: 'REQ-20261017-0A1B2C3D', channel: 'web', receivedAt: new Date('2026-10-17T05:00:00Z') });
   assert.equal(lead.caseId, 'REQ-20261017-0A1B2C3D');
   assert.equal(lead.receivedAt, '2026-10-17T05:00:00.000Z');
-  // The city names the market inside the state (src/lib/intent/model.ts siteCluster).
+  // The city names the market inside the state (src/markets siteMarket).
   assert.equal(lead.cluster, 'haridwar');
   assert.deepEqual(lead.services, ['packing', 'loading-unloading']);
   assert.equal(lead.headcountBand, '50-99');

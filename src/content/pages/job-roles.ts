@@ -14,7 +14,7 @@ import type { JobRole } from "@/lib/talent-intake/rules";
  * form's lines, /jobs/fees-and-fraud and the market hubs' FAQ). No market
  * is named first (owner direction, 17 Oct 2026): titles and headings name the
  * work, descriptions list the markets alphabetically, and the form asks the
- * visitor's market (src/lib/intent).
+ * visitor's market (src/context).
  *
  * Claims discipline: no pay figures, no promised call-back times, no
  * guarantee of work. hi-IN and hi-Latn-IN are drafts pending native review;

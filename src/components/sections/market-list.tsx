@@ -2,10 +2,9 @@
 import NextLink from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { track } from "@/lib/measurement/gateway";
-import { noteChoice } from "@/lib/intent/store";
-import { useAreaDecision } from "@/lib/intent/use-area";
-import { MODEL_VERSION } from "@/lib/intent/model";
-import { reportChoice } from "@/lib/intent/report";
+import { currentContext, noteAudience, notePick } from "@/context/runtime";
+import { contextMode, reportChoice } from "@/context/report";
+import { CONTEXT_VERSION } from "@/context/weights";
 
 /** One market in a list: its cluster id and its page, with the href already resolved for the page's language. */
 export type MarketItem = { cluster: string; href: string; title: string; text?: string };
@@ -13,51 +12,52 @@ export type MarketItem = { cluster: string; href: string; title: string; text?: 
 /**
  * Every market on equal terms (owner direction, 17 Oct 2026). The server
  * renders `items` in MARKET_ORDER, so search engines and visitors with no
- * signal see the same list; after load the area decision (src/lib/intent)
- * moves the visitor's market(s) to the front. A tap is an explicit pick,
- * remembered and reported like the header's area links (area_nav_click),
- * so the lists measure which market people want as well as showing it.
+ * signal see the same list; the visitor context's CSS (src/context/css.ts)
+ * puts the decided market(s) first before paint, then nearby markets for
+ * job seekers. A tap is an explicit pick, remembered and reported like the
+ * header's area links (area_nav_click), so the lists measure which market
+ * people want as well as showing it.
  */
 export function MarketList({
   items,
-  path,
   side,
   surface,
   className,
 }: {
   items: MarketItem[];
-  /** The page's neutral path, for the decision. */
-  path: string;
-  /** Which side of the decision orders the list. */
+  /** Which side of the context orders the list. */
   side: "business" | "jobs";
   /** The analytics surface name (jobs-index, locations-index). */
   surface: string;
   className?: string;
 }) {
-  const area = useAreaDecision(path);
-  const decided = area[side];
-  const ordered = [
-    ...decided.flatMap((id) => items.filter((i) => i.cluster === id)),
-    ...items.filter((i) => !decided.includes(i.cluster)),
-  ];
   return (
-    <ul className={className} data-decided={decided.join(" ") || undefined}>
-      {ordered.map((item, i) => (
-        <li key={item.cluster} data-market={item.cluster}>
+    <ul className={`${className ?? ""} ${side === "jobs" ? "ctx-j" : "ctx-b"}`}>
+      {items.map((item) => (
+        <li key={item.cluster} data-m={item.cluster}>
           <NextLink
             href={item.href}
             onClick={() => {
-              noteChoice(item.cluster);
-              reportChoice(item.cluster, decided, surface);
+              const ctx = currentContext();
+              const decided = ctx?.sides[side] ?? [];
+              const band = ctx?.region.band ?? "unknown";
+              // Where the visitor saw it: decided markets first, then nearby (jobs), then the rest.
+              const shown = [...decided, ...(side === "jobs" ? (ctx?.region.nearby ?? []) : [])];
+              const rest = items.map((i) => i.cluster).filter((id) => !shown.includes(id));
+              const position = [...shown.filter((id) => items.some((i) => i.cluster === id)), ...rest].indexOf(item.cluster) + 1;
+              notePick("link", item.cluster);
+              noteAudience(side);
+              reportChoice(item.cluster, decided, surface, band);
               track("area_nav_click", {
                 cluster: item.cluster,
                 surface,
-                mode: area.mode,
+                mode: ctx ? contextMode(ctx) : "default",
+                band,
                 decided: decided.join("+") || "none",
                 is_decided: decided.includes(item.cluster) ? "yes" : "no",
-                position: i + 1,
+                position,
                 explicit: "yes",
-                v: MODEL_VERSION,
+                v: CONTEXT_VERSION,
               });
             }}
           >
@@ -75,27 +75,28 @@ export function MarketList({
 /**
  * The Apply button where no market is the page's own (/jobs): the decided
  * market's hub, whose form has that market's areas, else /jobs/apply, whose
- * form asks which market. The server renders /jobs/apply.
+ * form asks which market. Every candidate is in the HTML; the visitor
+ * context's CSS shows one (src/context/css.ts, .ctx-apply).
  */
 export function DecidedApplyLink({
-  path,
   hubs,
   fallback,
   label,
   className,
 }: {
-  path: string;
   /** Each market's jobs hub, resolved for the page's language. */
   hubs: Record<string, string>;
   fallback: string;
   label: string;
   className?: string;
 }) {
-  const area = useAreaDecision(path);
-  const decided = area.jobs.find((id) => hubs[id]);
   return (
-    <NextLink href={decided ? hubs[decided] : fallback} className={className} data-market={decided}>
-      {label} <ArrowRight size={20} aria-hidden="true" />
-    </NextLink>
+    <span className="ctx-apply">
+      {[["", fallback], ...Object.entries(hubs)].map(([id, href]) => (
+        <NextLink key={href} href={href} className={className} data-m={id} onClick={() => noteAudience("jobs")}>
+          {label} <ArrowRight size={20} aria-hidden="true" />
+        </NextLink>
+      ))}
+    </span>
   );
 }

@@ -67,6 +67,7 @@ export const PURPOSE_IDS = [
   "ads-measurement",
   "meta-pixel",
   "language-preference",
+  "visitor-context",
 ] as const;
 export type PurposeId = (typeof PURPOSE_IDS)[number];
 
@@ -117,8 +118,8 @@ export const PURPOSES: readonly Purpose[] = [
     enabled: umamiLoads,
     // area_intent is also sent to GA4 when ga4 is allowed, like every
     // tracked event (the catalogue lists its sinks); the board events are Umami only.
-    data: "How the header decided the visitor's market (basis, markets, confidence, country and Indian region from the IP) and which market links and form areas were picked (docs/area-intent.md).",
-    storage: ["sessionStorage:vs-area-reported-v1", "sessionStorage:vs-area-board-v1"],
+    data: "How the visitor context decided the visitor's audience, market and language order (band, basis, each signal family's points, markets, confidence, country and Indian state from the IP, the holdout) and which market links and form areas were picked (docs/visitor-context.md).",
+    storage: ["sessionStorage:vs-ctx-reported-v1"],
     notice: { section: "2", lead: COUNTS_LEAD },
     consentModeSignals: [],
   },
@@ -254,6 +255,20 @@ export const PURPOSES: readonly Purpose[] = [
     data: "The language picked on a language-select page, so that page lists it first next time; not measurement.",
     storage: ["cookie:vspl_lang"],
     notice: { section: "2", lead: "**Language choice.**" },
+    consentModeSignals: [],
+  },
+  {
+    // Owner decisions, 18 Oct 2026 (docs/visitor-context.md): the site decides
+    // in the browser which markets and languages to put first.
+    id: "visitor-context",
+    basis: "always",
+    vendors: [],
+    side: "both",
+    since: 9,
+    enabled: () => true,
+    data: "Which markets and languages the site puts first: the markets the visitor picked (labelled links, the jobs form's area, the crew form's site place) and whether they came for jobs or for workers, for up to 90 days; this visit's pages, campaign tags and a 10% comparison group; the country, state and market of the connection's IP for the browser session. Kept in the browser and read by the site's server only to order the language choices; not measurement.",
+    storage: ["cookie:vs_ctx", "cookie:vs_geo", "sessionStorage:vs-ctx-session-v1", "sessionStorage:vs-ctx-geo-v1"],
+    notice: { section: "2", lead: "**Where you want to work or hire.**" },
     consentModeSignals: [],
   },
 ];

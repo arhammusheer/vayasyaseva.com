@@ -204,18 +204,23 @@ test("the picker's three: English always, the other two by language, intent and 
   }
 });
 
-test("header switch: the visitor's order fills the bar, English stays visible on non-English pages", async () => {
-  const { splitLanguages } = await importTs("src/lib/language-order.ts");
-  const links = (langs, more = []) => [...langs.map((lang) => ({ lang, more: false })), ...more.map((lang) => ({ lang, more: true }))];
-  const pick = (s) => [s.quick.map((l) => l.lang), s.more.map((l) => l.lang)];
-  // On /hi-in/jobs (fixed: English, Hinglish | Punjabi, Kannada), a visitor in Karnataka.
-  const onHindi = links(["en-IN", "hi-Latn-IN"], ["pa-IN", "kn-IN"]);
-  assert.deepEqual(pick(splitLanguages(onHindi, ["kn-IN", "en-IN", "hi-Latn-IN", "hi-IN", "pa-IN"], "hi-IN")), [["kn-IN", "en-IN"], ["hi-Latn-IN", "pa-IN"]]);
-  // A visitor in Punjab whose order puts English fourth: English still takes the last bar slot.
-  assert.deepEqual(pick(splitLanguages(onHindi, ["pa-IN", "hi-Latn-IN", "kn-IN", "en-IN", "hi-IN"], "hi-IN")), [["pa-IN", "en-IN"], ["hi-Latn-IN", "kn-IN"]]);
-  // On an English page the bar is the visitor's two.
-  const onEnglish = links(["hi-IN", "hi-Latn-IN"], ["pa-IN", "kn-IN"]);
-  assert.deepEqual(pick(splitLanguages(onEnglish, ["pa-IN", "hi-Latn-IN", "en-IN", "hi-IN", "kn-IN"], "en-IN")), [["pa-IN", "hi-Latn-IN"], ["hi-IN", "kn-IN"]]);
-  // Before the order is known: the fixed split.
-  assert.deepEqual(pick(splitLanguages(onHindi, null, "hi-IN")), [["en-IN", "hi-Latn-IN"], ["pa-IN", "kn-IN"]]);
+test("the phone's language always gets one of the three (owner decision, 18 Oct 2026)", () => {
+  const FIVE = ["en-IN", "hi-IN", "hi-Latn-IN", "pa-IN", "kn-IN"];
+  // A Hindi phone in Bengaluru: ಕನ್ನಡ leads (location), English stays, हिंदी takes the third place.
+  assert.deepEqual(rank.rankTop(FIVE, { country: "IN", region: "KA", acceptLanguage: "hi-IN,hi;q=0.9,en;q=0.8" }), ["kn-IN", "en-IN", "hi-IN"]);
+  assert.equal(rank.rankSegmentFor("/jobs", { country: "IN", region: "KA", acceptLanguage: "hi-IN,hi;q=0.9" }, new URLSearchParams()), "kn-en-hi");
+  // A Kannada phone in the Hindi belt.
+  assert.deepEqual(rank.rankTop(FIVE, { country: "IN", region: "UP", acceptLanguage: "kn-IN" }), ["hi-IN", "en-IN", "kn-IN"]);
+  // An English phone changes nothing.
+  assert.deepEqual(rank.rankTop(FIVE, { country: "IN", region: "KA", acceptLanguage: "en-IN" }), ["kn-IN", "en-IN", "hi-Latn-IN"]);
+  // A picked language still leads, and the phone's still has its place.
+  assert.deepEqual(rank.rankTop(FIVE, { country: "IN", region: "KA", chosen: "pa-IN", acceptLanguage: "hi" }), ["pa-IN", "hi-IN", "en-IN"]);
+});
+
+test("a market the visitor picked (vs_ctx cookie) orders the picker like intent in the URL", () => {
+  const FIVE = ["en-IN", "hi-IN", "hi-Latn-IN", "pa-IN", "kn-IN"];
+  const picks = [{ kind: "link", market: "jalandhar", at: Date.now() - 864e5 }];
+  assert.equal(rank.rankLocales(FIVE, { country: "IN", region: "MH", picks })[0], "pa-IN");
+  // An old pick past its 90 days counts for nothing.
+  assert.equal(rank.rankLocales(FIVE, { country: "IN", region: "MH", picks: [{ ...picks[0], at: Date.now() - 91 * 864e5 }] })[0], "en-IN");
 });

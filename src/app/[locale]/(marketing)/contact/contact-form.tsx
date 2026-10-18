@@ -30,9 +30,11 @@ import {
   type ContactFormData,
 } from "@/lib/contact-contract";
 import { assessCrewRequest, crewPrefill, requirementLines } from "@/lib/crew-request";
-// A site state is where the business's site is, not a market the visitor
-// picked, so it doesn't steer the area decision (src/lib/intent).
-import { statesOf } from "@/markets/index";
+// The site's place is the client's market: strong evidence for the visitor
+// context, never a pick of what to show (owner decision, 18 Oct 2026; src/context).
+import { isMarketId, siteMarket, statesOf } from "@/markets/index";
+import { noteAudience, notePick } from "@/context/runtime";
+import { useVisitorContext } from "@/context/use-context";
 import { clusters } from "@/content/registry/clusters";
 
 /**
@@ -125,6 +127,9 @@ const FIRST_STATES: string[] = [...new Set(clusters.filter((c) => c.buyerHub).fl
   .filter((code) => code in STATE_OPTIONS)
   .sort((a, b) => STATE_OPTIONS[a].localeCompare(STATE_OPTIONS[b]));
 
+/** Position in `list`, or after it. */
+const rank = (list: readonly string[], code: string) => (list.includes(code) ? list.indexOf(code) : list.length);
+
 const STEP_1_ORDER: Field[] = ["roles", "headcountBand", "siteState", "siteCity", "sitePincode", "startWindow", "durationBand", "shiftPattern", "details"];
 const STEP_1_COMPLIANCE_ORDER: Field[] = ["needs", "siteState", "headcountBand", "details"];
 const STEP_2_ORDER: Field[] = ["name", "company", "role", "phone", "email"];
@@ -209,8 +214,14 @@ const DRAFT_KEYS: Record<Mode, string> = {
   compliance: "vayasya-compliance-draft",
 };
 
-/** The site's state: where we run crews or publish wage pages first, then every state. */
+/**
+ * The site's state: where we run crews first (the visitor's decided markets'
+ * states before the rest, src/context), then every state. Order only: nothing is chosen for them.
+ */
 function StateSelect({ value, error, onChange }: { value: string; error?: string; onChange: (value: string) => void }) {
+  const ctx = useVisitorContext();
+  const theirs = ctx && ctx.region.band !== "unknown" && !ctx.holdout ? ctx.region.markets.flatMap((m) => statesOf(m)) : [];
+  const first = [...FIRST_STATES].sort((a, b) => rank(theirs, a) - rank(theirs, b));
   return (
     <select
       id="siteState"
@@ -223,7 +234,7 @@ function StateSelect({ value, error, onChange }: { value: string; error?: string
     >
       <option value="" disabled>Choose a state</option>
       <optgroup label="Where we supply crews">
-        {FIRST_STATES.map((code) => (
+        {first.map((code) => (
           <option key={code} value={code} className="text-foreground">{STATE_OPTIONS[code]}</option>
         ))}
       </optgroup>
@@ -310,6 +321,8 @@ export function ContactForm() {
   const markStarted = useCallback(() => {
     if (trackedStart.current) return;
     trackedStart.current = true;
+    // Starting the crew form says who the visitor is (src/context).
+    noteAudience("business");
     track("contact_form_start", { form_type: formType });
   }, [formType]);
 
@@ -384,6 +397,9 @@ export function ContactForm() {
       focusFirst(found, isCompliance ? STEP_1_COMPLIANCE_ORDER : STEP_1_ORDER);
       return;
     }
+    // Where the site is: the client's market for the rest of the visit and later ones.
+    const site = siteMarket(values.siteState, values.siteCity, values.pageCluster);
+    if (isMarketId(site)) notePick("site", site);
     goToStep(2);
   }
 

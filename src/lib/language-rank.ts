@@ -9,11 +9,13 @@
  * Signals, in order:
  * 1. the vspl_lang cookie, set only when someone picks a language on the picker;
  * 2. non-English Accept-Language tags, by q-value (hi pulls Hinglish in after it);
- * 3. area intent the request itself carries: ?cluster=<market>, or a place in
- *    its UTM tags (an ad for Kapurthala jobs), by the markets' words
- *    (src/markets/data.ts). Only markets count: ?cluster=saharanpur is not
- *    intent (owner direction, 17 Oct 2026). The rest of area intent stays in the
- *    browser by design (docs/area-intent.md), so the proxy never sees it;
+ * 3. the visitor's market when something they did or how they arrived
+ *    decided it (the visitor context, src/context, run here on what the
+ *    request carries): a market picked on the site (the vs_ctx cookie), or
+ *    ?cluster=<market>, or a place in its UTM tags (an ad for Kapurthala
+ *    jobs), by the markets' words (src/markets/data.ts). Only markets count:
+ *    ?cluster=saharanpur is not intent (owner direction, 17 Oct 2026). This
+ *    visit's browsing stays in the browser (docs/visitor-context.md);
  * 4. the visitor's state, from the request's geo headers (visitorRegion);
  * 5. the page's cluster;
  * 6. the default set.
@@ -30,62 +32,28 @@
  * language_choice events (choice, position, order key) show whether that
  * order is right.
  *
+ * The large choices always include English and the phone's first language
+ * the page has (owner decision, 18 Oct 2026; rankTop).
+ *
  * Nothing here redirects or changes a locale URL: /hi-in/jobs is always Hindi.
  * Imported by the proxy: keep it light.
  */
 import { pageEntry } from "@/content/registry";
 import type { ClusterId } from "@/content/registry/identifiers";
-import { canonicalRegion, isMarketId, languageSetFor, marketsInAdTags, type LanguageSetName, type MarketId } from "@/markets/index";
+import { canonicalRegion, geoMarket, isMarketId, marketForPlace, marketsInAdTags, type MarketId } from "@/markets/index";
+import { resolveContext, type Pick } from "@/context/core";
+import { PICKER_TOP, contextTables } from "@/context/tables";
 import { quickShareVariant, QUICK_SHARE_VARIANTS } from "./share-variant";
 import { allLocales, preferredLocales, type Locale } from "./i18n";
 
 export { LANGUAGE_COOKIE } from "./language-cookie";
 
-/**
- * How many languages the picker shows as large choices; the rest go under
- * "More languages". English is always one of them (owner direction, 17 Oct
- * 2026); the other two follow the visitor's language, intent and location.
- */
-export const PICKER_TOP = 3;
+export { PICKER_TOP };
 const ALWAYS: Locale = "en-IN";
 
 /** Short codes for the order key in the picker variant's URL ("hi-hl-en"). */
 const KEY_CODES = { "en-IN": "en", "hi-IN": "hi", "hi-Latn-IN": "hl", "pa-IN": "pa", "kn-IN": "kn" } as const satisfies Record<Locale, string>;
 const CODE_LOCALES = Object.fromEntries(Object.entries(KEY_CODES).map(([l, c]) => [c, l])) as Record<string, Locale>;
-
-/**
- * Picker orders per region (PLAN §6.4). Maharashtra gets a set only if it is
- * promoted (with mr-IN); until then it falls to the default. Karnataka puts
- * ಕನ್ನಡ first (published 17 Oct 2026), then English · Hinglish · हिंदी.
- */
-const RANK_SETS = {
-  hindi: ["hi-IN", "hi-Latn-IN", "en-IN"],
-  karnataka: ["kn-IN", "en-IN", "hi-Latn-IN", "hi-IN"],
-  // Punjabi first (owner direction, 17 Oct 2026), then PLAN §6.4's Punjab
-  // order: Hinglish · English · हिंदी (workers from the Hindi belt read Hinglish).
-  punjab: ["pa-IN", "hi-Latn-IN", "en-IN", "hi-IN"],
-  default: ["en-IN", "hi-IN", "hi-Latn-IN"],
-} as const satisfies Record<LanguageSetName | "default", readonly Locale[]>;
-type RankSet = keyof typeof RANK_SETS;
-
-/**
- * ISO 3166-2:IN subdivision codes (without "IN-"). Uttarakhand's old UT is
- * read as UK (src/markets REGION_ALIASES); Chhattisgarh CG/CT and Telangana
- * TG/TS (default set) are listed both ways.
- */
-const REGION_SETS: Readonly<Record<string, RankSet>> = {
-  UK: "hindi", UP: "hindi", DL: "hindi", HR: "hindi", RJ: "hindi", MP: "hindi",
-  BR: "hindi", JH: "hindi", CG: "hindi", CT: "hindi", HP: "hindi", CH: "hindi",
-  KA: "karnataka",
-  PB: "punjab",
-};
-
-/**
- * A page's or request's cluster fills gaps only: the path says where the job
- * is, not what the reader reads. Each market's set is in src/markets/data.ts
- * (languageSet); a cluster that is not a market (Saharanpur, "other") has none.
- */
-const clusterSet = (id: ClusterId | undefined): RankSet | undefined => languageSetFor(id);
 
 /**
  * The cluster that fills gaps in a page's order: the page's own, and nothing
@@ -173,9 +141,17 @@ export type RankInput = VisitorRegion & {
   /** The vspl_lang cookie. */
   chosen?: string;
   acceptLanguage?: string | null;
+  /** The visitor's city from the request, which narrows the state to a market. */
+  city?: string;
   /** The market the request names (?cluster= or UTM tags): area intent the proxy can see. */
   intent?: ClusterId;
+  /** The page's own market. */
   cluster?: ClusterId;
+  /** Picks remembered in the vs_ctx cookie (src/context/store.ts), and when this session began. */
+  picks?: readonly Pick[];
+  sessionStart?: number;
+  /** A decided market from the browser (the header switch: src/context/use-context.ts). */
+  decided?: string;
 };
 
 /**
@@ -186,37 +162,51 @@ export type RankInput = VisitorRegion & {
 export function urlIntent(search: URLSearchParams): MarketId | undefined {
   const param = search.get("cluster");
   if (isMarketId(param)) return param;
-  // The same tags the browser reads (src/lib/intent/store.ts notePageView).
+  // The same tags the browser reads (src/context/store.ts).
   return marketsInAdTags(["utm_campaign", "utm_term", "utm_content", "utm_source"].map((k) => search.get(k)))[0];
+}
+
+/**
+ * The visitor context for one request's language order (src/context/core.ts):
+ * the same ranking the browser runs, on what a request carries.
+ */
+function languageContext(available: readonly Locale[], input: RankInput) {
+  const region = input.country === "IN" ? canonicalRegion(input.region) : undefined;
+  const market = input.country === "IN" ? geoMarket(region, input.city) : undefined;
+  const now = Date.now();
+  return resolveContext(
+    {
+      now,
+      sessionStart: input.sessionStart ?? now,
+      page: { market: isMarketId(input.cluster) ? input.cluster : undefined, audience: "mixed", locale: ALWAYS, locales: available },
+      picks: input.picks ?? (isMarketId(input.decided) ? [{ kind: "link", market: input.decided, at: now }] : []),
+      arrival: isMarketId(input.intent) ? { param: input.intent } : undefined,
+      geo: input.country
+        ? { country: input.country, state: region, market, level: market && marketForPlace(input.city, { region, match: "exact" }) ? "city" : "state" }
+        : undefined,
+      deviceLocales: acceptLanguageLocales(input.acceptLanguage),
+      languagePick: allLocales.find((l) => l === input.chosen),
+    },
+    contextTables(),
+  ).language;
 }
 
 /** The page's languages (`available`) in picker order for one request. */
 export function rankLocales(available: readonly Locale[], input: RankInput): Locale[] {
-  const order: Locale[] = [];
-  const add = (locale: Locale) => {
-    if (available.includes(locale) && !order.includes(locale)) order.push(locale);
-  };
-  const chosen = allLocales.find((l) => l === input.chosen);
-  const intentSet = clusterSet(input.intent);
-  const region = canonicalRegion(input.region);
-  const regionSet = input.country === "IN" && region && Object.hasOwn(REGION_SETS, region) ? REGION_SETS[region] : undefined;
-  if (chosen) add(chosen);
-  // No signal: location first, then the browser's languages.
-  if (!chosen && !intentSet && regionSet) RANK_SETS[regionSet].forEach(add);
-  acceptLanguageLocales(input.acceptLanguage).forEach(add);
-  if (intentSet) RANK_SETS[intentSet].forEach(add);
-  if (regionSet) RANK_SETS[regionSet].forEach(add);
-  else if (input.country && input.country !== "IN") RANK_SETS.default.forEach(add);
-  const pageSet = clusterSet(input.cluster);
-  if (pageSet) RANK_SETS[pageSet].forEach(add);
-  RANK_SETS.default.forEach(add);
-  available.forEach(add);
-  return order;
+  return languageContext(available, input).order as Locale[];
 }
 
 /**
- * The large choices for an order: its first PICKER_TOP, with English always
- * among them (it takes the last place when the order ranks it lower).
+ * The large choices for a request: the first PICKER_TOP, with English and
+ * the phone's first language the page has always among them.
+ */
+export function rankTop(available: readonly Locale[], input: RankInput): Locale[] {
+  return languageContext(available, input).top as Locale[];
+}
+
+/**
+ * The large choices for an order alone: its first PICKER_TOP, with English
+ * always among them (it takes the last place when the order ranks it lower).
  */
 export function topChoices(order: readonly Locale[]): Locale[] {
   const top = order.slice(0, PICKER_TOP);
@@ -226,10 +216,9 @@ export function topChoices(order: readonly Locale[]): Locale[] {
 
 /** "hi-hl-en": the top choices of an order, as one URL segment. */
 export function orderKey(order: readonly Locale[]) {
-  return topChoices(order)
-    .map((l) => KEY_CODES[l])
-    .join("-");
+  return keyOf(topChoices(order));
 }
+const keyOf = (top: readonly Locale[]) => top.map((l) => KEY_CODES[l]).join("-");
 
 /** Every top-choice order a page can show (English always among them): one prerendered picker variant each. */
 export function orderKeys(path: string): string[] {
@@ -288,8 +277,8 @@ export function isRankSegment(segment: string | undefined) {
  * `search` carries the share variant for /jobs/apply.
  */
 export function rankSegmentFor(path: string, input: RankInput, search: URLSearchParams): string {
-  const key = orderKey(
-    rankLocales(preferredLocales(path), { ...input, intent: input.intent ?? urlIntent(search), cluster: input.cluster ?? pageCluster(path) }),
+  const key = keyOf(
+    rankTop(preferredLocales(path), { ...input, intent: input.intent ?? urlIntent(search), cluster: input.cluster ?? pageCluster(path) }),
   );
   const variant = VARIANT_PATHS.has(path)
     ? quickShareVariant({ role: search.get("role"), hub: search.get("hub"), work: search.get("work") })

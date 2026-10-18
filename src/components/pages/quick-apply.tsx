@@ -1,6 +1,7 @@
 import { getShareContent, quickShareVariant } from "@/lib/share-content";
 import { pageMetadata } from "@/lib/metadata";
 import { QuickApply } from "@/components/jobs/quick-apply";
+import { JobsInRow } from "@/components/jobs/jobs-in-row";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { JsonLd, webPageSchema } from "@/lib/structured-data";
 import { quickApplyCopy } from "@/content/pages/quick-apply";
@@ -48,7 +49,11 @@ export function QuickApplyPage({ locale, prefillKey = "", cluster }: { locale: L
             <h1 className="quick-title">{heading}</h1>
             <p className="quick-lede">{t.lede}</p>
           </div>
-          <QuickApply key={prefillKey} locale={locale} />
+          <div>
+            {/* A link for one market (?cluster=) already says where; the row is for everyone else. */}
+            {!cluster && <JobsInRow locale={locale} />}
+            <QuickApply key={prefillKey} locale={locale} />
+          </div>
         </div>
       </section>
     </>

@@ -1,5 +1,5 @@
 /**
- * Market knowledge, one record per market (docs/area-intent.md "Adding a
+ * Market knowledge, one record per market (docs/visitor-context.md "Adding a
  * market"). Layer 1: data only. The query functions are in ./index.ts;
  * labels (./labels.ts) and schema.org places (./schema-org.ts) are separate
  * entry points, so the proxy and client bundles that need a decision never
@@ -197,6 +197,28 @@ export const MARKETS = {
 type MarketsWithSide<S extends Side> = { [K in MarketId]: S extends (typeof MARKETS)[K]["sides"][number] ? K : never }[MarketId];
 export type BusinessMarketId = MarketsWithSide<"business">;
 export type JobsMarketId = MarketsWithSide<"jobs">;
+
+/**
+ * Markets near a place for job seekers whose own market has no jobs hub
+ * (Delhi NCR) or whose state no market covers (owner decision, 18 Oct 2026:
+ * show the nearest first). Keyed by market id or ISO 3166-2:IN state code
+ * (current codes). An order hint for lists and the jobs form's market
+ * question, never a decision: the jobs door and Apply stay on /jobs.
+ */
+export const NEARBY: Readonly<Record<string, readonly MarketId[]>> = {
+  "delhi-ncr": ["haridwar", "uttarakhand"],
+  // UP outside NCR: its west (Saharanpur, Muzaffarnagar) borders Haridwar.
+  UP: ["haridwar", "uttarakhand"],
+  HP: ["jalandhar", "punjab"],
+  JK: ["jalandhar", "punjab"],
+  CH: ["punjab", "jalandhar"],
+  TN: ["bengaluru"],
+  AP: ["bengaluru"],
+  TS: ["bengaluru"],
+  TG: ["bengaluru"],
+  KL: ["bengaluru"],
+  GA: ["bengaluru"],
+};
 
 /**
  * Clusters that are not markets: stored ids with no pages of their own and

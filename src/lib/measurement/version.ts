@@ -3,4 +3,4 @@
  * `vayasya-site-measurement-v<N>` (store.ts), so raising it asks every
  * visitor again. Its own file so the browser bundle doesn't carry the ledger.
  */
-export const CONSENT_VERSION = 8;
+export const CONSENT_VERSION = 9;

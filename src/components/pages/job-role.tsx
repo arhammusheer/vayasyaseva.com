@@ -4,6 +4,7 @@ import { pageMetadata } from "@/lib/metadata";
 import { Section } from "@/components/layout/section";
 import { FaqSection } from "@/components/sections/faq-section";
 import { QuickApply } from "@/components/jobs/quick-apply";
+import { JobsInRow } from "@/components/jobs/jobs-in-row";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { JsonLd, webPageSchema } from "@/lib/structured-data";
 import { RELATED_ROLES, getJobRole, jobRoleLabels, jobRoles } from "@/content/pages/job-roles";
@@ -59,6 +60,7 @@ export function JobRolePage({ slug, locale }: { slug: string; locale: Locale }) 
           </div>
           {/* #apply: the header's Apply scrolls here instead of leaving the role. */}
           <div id="apply" className="quick-anchor">
+            <JobsInRow locale={locale} />
             <QuickApply key={role.slug} locale={locale} role={role.slug} />
           </div>
         </div>

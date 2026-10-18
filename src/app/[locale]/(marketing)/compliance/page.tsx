@@ -13,7 +13,7 @@ import { localeParams } from "@/lib/i18n";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/compliance");
 
-const TITLE = "Contract Labour Compliance: EPF, ESIC, PT and LWF";
+const TITLE = "Labour Law Compliance: PF, ESIC, LWF, Contract Licence";
 const DESCRIPTION =
   "Registers, payroll, EPF, ESIC, Professional Tax, Labour Welfare Fund and the contract labour licence: what we run for each worker, and the documents you get.";
 

@@ -83,7 +83,7 @@ export const servicePages: ServiceLandingContent[] = [
     slug: "loading-unloading-labour",
     name: "Loading and unloading",
     summary: "Loading, unloading, picking, packing, racking and dispatch crews.",
-    metaTitle: "Loading and Unloading Labour for Warehouses",
+    metaTitle: "Loading and Unloading Labour Services for Warehouses",
     description:
       "Loading and unloading labour for warehouses, factory stores and transporters in Bengaluru, Delhi NCR, Punjab and Uttarakhand: trucks, containers, dispatch.",
     heading: "Loading and unloading labour for warehouses and dispatch.",

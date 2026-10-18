@@ -45,7 +45,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       description:
         "Haridwar job vacancy in SIDCUL and Roorkee. No fee. Full 8-hour shifts. Factory, packing, warehouse and housekeeping work. Apply online, a few short questions.",
       eyebrow: "JOBS · HARIDWAR",
-      heading: "Factory and warehouse jobs in Haridwar.",
+      heading: "Factory and warehouse jobs in Haridwar and Roorkee.",
       lede: "Work in SIDCUL, Bahadrabad, Bhagwanpur and Roorkee.",
       after: { label: "After you apply", steps: ["SMS from VAYSPL", "We call if the work fits", "You decide"] },
       faqTitle: "Questions.",
@@ -170,7 +170,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       description:
         "सिडकुल हरिद्वार और रुड़की में फ़ैक्टरी, वेयरहाउस की वैकेंसी। कोई फ़ीस नहीं। पूरी 8 घंटे की शिफ्ट। कुछ आसान सवाल, ऑनलाइन आवेदन।",
       eyebrow: "नौकरी · हरिद्वार",
-      heading: "हरिद्वार में फ़ैक्टरी और वेयरहाउस की नौकरी।",
+      heading: "हरिद्वार और रुड़की में फ़ैक्टरी और वेयरहाउस की नौकरी।",
       lede: "सिडकुल, बहादराबाद, भगवानपुर और रुड़की में काम।",
       after: { label: "आवेदन के बाद", steps: ["VAYSPL से SMS", "काम लायक हुआ तो हम कॉल करते हैं", "फ़ैसला आपका"] },
       faqTitle: "सवाल।",
@@ -291,7 +291,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       description:
         "Haridwar job vacancy SIDCUL aur Roorkee mein. Koi fee nahi. Poori 8 ghante ki shift. Factory, packing, warehouse aur housekeeping. Online apply karein.",
       eyebrow: "Jobs · Haridwar",
-      heading: "Haridwar mein factory aur warehouse ki job.",
+      heading: "Haridwar aur Roorkee mein factory aur warehouse ki job.",
       lede: "SIDCUL, Bahadrabad, Bhagwanpur aur Roorkee mein kaam.",
       after: { label: "Apply ke baad", steps: ["VAYSPL se SMS", "Kaam laayak hua to hum call karte hain", "Faisla aapka"] },
       faqTitle: "Sawaal.",

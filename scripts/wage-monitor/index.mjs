@@ -32,7 +32,7 @@ import { dirname, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import { importTs, root } from "../lib/register-ts.mjs";
 import { archiveNote, archivingFetcher } from "./archive.mjs";
-import { buildTargets, fetchSource, istDate, registryProblems, runMonitor } from "./monitor.mjs";
+import { LOCATION_CHECK_DAYS, buildTargets, fetchSource, istDate, legacyTlsFetch, locationTargets, registryProblems, runMonitor } from "./monitor.mjs";
 import { r2FromEnv } from "./r2.mjs";
 import { chatwootClient, githubClient, monitorFailedEvent, renderSummary, reportEvents, reportToChatwoot, reportToHub } from "./report.mjs";
 import { hubFromEnv, parseNotify } from "../lib/notify-hub.mjs";
@@ -78,6 +78,7 @@ async function main() {
       json: { type: "boolean", default: false },
       "save-state": { type: "boolean", default: false },
       notify: { type: "string" },
+      locations: { type: "boolean", default: false },
     },
   });
   const env = process.env;
@@ -88,7 +89,9 @@ async function main() {
   const registry = JSON.parse(readFileSync(resolve(root, "scripts/wage-monitor/sources.json"), "utf8"));
 
   const { statutorySources } = await importTs("src/content/statutory.ts");
-  const problems = [...registryProblems(wageStates, registry), ...coverageProblems(wageStates, registry, statutorySources.map((s) => s.url))];
+  const { guideSources } = await importTs("src/content/guides/sources.ts");
+  const cited = [...statutorySources.map((s) => s.url), ...guideSources.map((s) => s.watchedAs ?? s.url).filter(Boolean)];
+  const problems = [...registryProblems(wageStates, registry), ...coverageProblems(wageStates, registry, cited)];
   if (problems.length) throw new Error(`Source registry problems:\n- ${problems.join("\n- ")}`);
 
   const states = values.only ? wageStates.filter((s) => s.state === values.only) : wageStates;
@@ -107,9 +110,18 @@ async function main() {
   const now = new Date();
   const today = istDate(now);
   const targets = buildTargets(states, registry);
+  // Location page sources: a monthly load check (the first three days, or --locations).
+  if (!values.only && (values.locations || LOCATION_CHECK_DAYS.includes(today.slice(8, 10)))) {
+    const { locationPages } = await importTs("src/content/locations/index.ts");
+    targets.push(...locationTargets([...locationPages.values()]));
+  }
   // Hosts whose firewall refuses a descriptive user agent get a plain one (sources.json plainUserAgentHosts).
   const plain = new Set(registry.plainUserAgentHosts ?? []);
-  const plainFetcher = (url) => fetchSource(url, plain.has(new URL(url).host) ? { userAgent: "Mozilla/5.0" } : {});
+  const legacy = new Set(registry.legacyTlsHosts ?? []);
+  const plainFetcher = (url) => {
+    const host = new URL(url).host;
+    return fetchSource(url, { ...(plain.has(host) && { userAgent: "Mozilla/5.0" }), ...(legacy.has(host) && { fetchImpl: legacyTlsFetch }) });
+  };
   // With R2_ARCHIVE_* set, every PDF fetched is also kept in the archive (archive.mjs).
   const r2 = r2FromEnv(env);
   const archive = r2 ? archivingFetcher(plainFetcher, r2, now) : null;

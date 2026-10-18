@@ -14,7 +14,7 @@ The code is `scripts/wage-monitor/` (the name predates the wider scope).
 ## What it watches
 
 Every source has a **topic**: `wages`, `epf`, `esic`, `pt`, `lwf`,
-`licence` or `codes`.
+`licence`, `codes` or `locations`.
 
 **Per state with a wage page** (`src/content/wages/<state>.json`):
 
@@ -25,13 +25,28 @@ Every source has a **topic**: `wages`, `epf`, `esic`, `pt`, `lwf`,
   state pages where a change would show, with a `match` pattern per topic,
   and the documents the employer dues cite for that state.
 
-**National** (EPF, ESIC, labour codes): the EPFO circulars list, ESIC's
-circulars and notifications, ESIC's contribution rates page, and every
-gazette, EPFO and Ministry document `src/content/statutory.ts` cites.
+**National** (EPF, ESIC, labour codes): the EPFO circulars list, EPFO's home
+page updates and press releases, ESIC's circulars and notifications, ESIC's
+contribution rates page, the Ministry of Labour's gazette notifications, and
+every gazette, EPFO and Ministry document `src/content/statutory.ts` or a
+guide cites. The Ministry's site renders in the browser, so it is read
+through its documents API (`format: "wp-documents"`): each post is an entry
+keyed by its public page, and new ones are named in the alert rather than
+fetched.
+
+**Guides** (`src/content/guides/sources.ts`): every source is watched before
+a guide can publish. India Code does not answer automated requests, so an Act
+cited there is watched as its Gazette copy (`watchedAs`).
+
+**Location page sources** (`src/content/locations`, about 77 links): checked
+for loading only, on the first three days of each month (or `--locations`).
+Their content is never compared, since estate profiles and district pages
+change in ways that do not matter; a link that fails all three days raises
+the usual "not loaded for 3 days" alert under "Location page sources".
 
 `pnpm content:unit` fails if a published state has no source for wages, PT,
 LWF or the licence, if EPF, ESIC or the codes have none, or if a document the
-employer dues cite is not watched (`coverageProblems`).
+employer dues or a guide cite is not watched (`coverageProblems`).
 
 Three kinds of source:
 
@@ -59,10 +74,17 @@ Code on Wages, 2019.
 
 **Leads** (`pages` with `allowEmpty`): SGCMS's minimum wage posts and
 AscentHR's notifications, one target per state with the state's name as the
-pattern. Compliance firms often post an order before the state does (UP's
+pattern. A lead alerts on a new line only: posts age off these feeds every
+week, and a line that scrolled off is not news (18 Oct 2026, after six
+"page changed" alerts for exactly that). Compliance firms often post an order before the state does (UP's
 brick-kiln and agriculture orders were never on uplabour.gov.in), so a new
 line there is a prompt to find the order, not a source in itself. A week
 with nothing on a state is not a failure.
+
+**Hosts that need help** (`sources.json`): `plainUserAgentHosts` refuse the
+monitor's user agent and get a browser's; `legacyTlsHosts` (SIIDCUL, the
+Punjab Assembly) need TLS legacy renegotiation, which Node refuses by default
+and browsers allow.
 
 **Copies from third parties** (`via` on a source): where the state never
 published the document and a compliance firm did, the dataset cites that

@@ -2,7 +2,9 @@
 // how to compare today's fetch with the stored snapshot, and which events
 // deserve an alert. runMonitor takes its fetcher as an argument, so the
 // tests run it against fixtures; fetchSource is the real one. No GitHub here.
-import { clipText, describeDocument, diffLines, documentLinks, htmlText, sha256, withFigures } from "./extract.mjs";
+import https from "node:https";
+import { constants as cryptoConstants } from "node:crypto";
+import { clipText, describeDocument, diffLines, documentLinks, htmlText, sha256, withFigures, wpDocumentLinks } from "./extract.mjs";
 
 export const STATE_VERSION = 1;
 /** A source that fails on this many consecutive days is an alert. */
@@ -22,6 +24,7 @@ export const TOPICS = {
   lwf: "Labour Welfare Fund",
   licence: "Contract labour licence",
   codes: "Labour codes",
+  locations: "Location page sources",
 };
 /** Topics every published state must have at least one source for, and the national ones. */
 export const STATE_TOPICS = ["wages", "pt", "lwf", "licence"];
@@ -61,6 +64,33 @@ export async function fetchSource(url, { attempts = 2, retryDelayMs = 5_000, fet
     }
   }
   return last;
+}
+
+/**
+ * A fetch for hosts whose TLS needs legacy renegotiation (siidcul.com,
+ * punjabassembly.gov.in): browsers and curl allow it, Node's fetch refuses
+ * with ERR_SSL_UNSAFE_LEGACY_RENEGOTIATION_DISABLED. Only the hosts listed in
+ * sources.json `legacyTlsHosts` use it. Follows up to five redirects; the
+ * response has the fields fetchSource reads.
+ */
+export function legacyTlsFetch(url, { headers = {}, signal } = {}, redirects = 5) {
+  return new Promise((resolve, reject) => {
+    const req = https.get(url, { headers, signal, secureOptions: cryptoConstants.SSL_OP_LEGACY_SERVER_CONNECT }, (res) => {
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location && redirects > 0) {
+        res.resume();
+        resolve(legacyTlsFetch(new URL(res.headers.location, url).href, { headers, signal }, redirects - 1));
+        return;
+      }
+      const chunks = [];
+      res.on("data", (c) => chunks.push(c));
+      res.on("end", () => {
+        const body = Buffer.concat(chunks);
+        resolve({ ok: res.statusCode >= 200 && res.statusCode < 300, status: res.statusCode, headers: { get: (k) => res.headers[k.toLowerCase()] ?? null }, arrayBuffer: async () => body });
+      });
+      res.on("error", reject);
+    });
+    req.on("error", (error) => reject(Object.assign(new Error(error.message), { cause: { code: error.code } })));
+  });
 }
 
 /** The calendar date in India, so "a day" matches the owner's day. */
@@ -128,7 +158,7 @@ function implausible(target, res, prev, links, allCount) {
 function registryTargets(entry, scope) {
   const out = [];
   for (const d of entry?.documents ?? []) out.push({ ...scope, kind: "document", url: d.url, name: d.name, topic: d.topic ?? "wages", sourceIds: d.sourceIds ?? [], listings: [] });
-  for (const l of entry?.listings ?? []) out.push({ ...scope, kind: "listing", url: l.url, name: l.name, match: l.match, topic: l.topic ?? "wages" });
+  for (const l of entry?.listings ?? []) out.push({ ...scope, kind: "listing", url: l.url, name: l.name, match: l.match, topic: l.topic ?? "wages", ...(l.format && { format: l.format, publicBase: l.publicBase }) });
   for (const pg of entry?.pages ?? []) out.push({ ...scope, kind: "page", url: pg.url, name: pg.name, match: pg.match, topic: pg.topic ?? "wages", allowEmpty: Boolean(pg.allowEmpty) });
   return out;
 }
@@ -193,6 +223,24 @@ export function coverageProblems(wageStates, registry, citedUrls = []) {
     if (t.kind === "page" && !t.match) problems.push(`${t.url}: a page needs a match pattern (the lines to compare)`);
   }
   return problems;
+}
+
+/**
+ * The location pages' sources (src/content/locations: estate profiles,
+ * district sites, SIIDCUL pages), checked on the first three days of each
+ * month for whether they still load: slow-changing facts, not circulars, so
+ * no daily line diff (owner, 18 Oct 2026). A source that fails all three
+ * days raises the usual "not loaded for 3 days" alert. The match never
+ * matches, so a page's content is never compared; an empty page still
+ * counts as a failed load.
+ */
+export const LOCATION_CHECK_DAYS = ["01", "02", "03"];
+export function locationTargets(locationPages) {
+  const seen = new Map();
+  for (const page of locationPages) {
+    for (const s of page.sources ?? []) if (/^https:\/\//.test(s.url) && !seen.has(s.url)) seen.set(s.url, s.label);
+  }
+  return [...seen].map(([url, label]) => ({ ...NATIONAL, kind: "page", url, name: `Location page source: ${label}`, match: "(?!)", topic: "locations", allowEmpty: true }));
 }
 
 /** Problems with the registry itself, for the unit tests and a pre-flight check. */
@@ -285,9 +333,10 @@ export async function runMonitor({ targets, previous, fetcher, now = new Date(),
       }
       if (target.kind === "listing") {
         html = res.body.toString("utf8");
-        const all = documentLinks(html, target.url);
+        const parse = target.format === "wp-documents" ? (m) => wpDocumentLinks(html, target.publicBase, m) : (m) => documentLinks(html, target.url, m);
+        const all = parse();
         allCount = all.length;
-        links = target.match ? documentLinks(html, target.url, new RegExp(target.match, "i")) : all;
+        links = target.match ? parse(new RegExp(target.match, "i")) : all;
       }
       if (target.kind !== "page") bogus = implausible(target, res, prev, links, allCount);
     }
@@ -323,8 +372,11 @@ export async function runMonitor({ targets, previous, fetcher, now = new Date(),
       const after = new Set(lines);
       const added = lines.filter((l) => !before.has(l));
       const removed = prev.lines.filter((l) => !after.has(l));
-      if (added.length || removed.length) events.push({ type: "page-changed", state: target.state, stateName: target.stateName, url: target.url, name: target.name, added, removed });
-      results.push({ target, outcome: added.length || removed.length ? "changed" : "unchanged", detail: `${lines.length} lines watched${added.length ? `, ${added.length} new` : ""}${removed.length ? `, ${removed.length} gone` : ""}` });
+      // A lead page is a rolling feed: posts age off it every week, so only a new line is news
+      // (18 Oct 2026: AscentHR's feed raised six "page changed" alerts for lines that had scrolled off).
+      const alerts = target.allowEmpty ? added.length > 0 : added.length || removed.length;
+      if (alerts) events.push({ type: "page-changed", state: target.state, stateName: target.stateName, url: target.url, name: target.name, added, removed: target.allowEmpty ? [] : removed });
+      results.push({ target, outcome: alerts ? "changed" : "unchanged", detail: `${lines.length} lines watched${added.length ? `, ${added.length} new` : ""}${removed.length ? `, ${removed.length} gone` : ""}` });
       continue;
     }
 
@@ -379,7 +431,7 @@ export async function runMonitor({ targets, previous, fetcher, now = new Date(),
   // A file new on two listings (an order on the wage page and the home page)
   // is fetched once and its description shared.
   if (describeNew) {
-    const unique = [...new Set(newDocs.map((l) => l.url))].slice(0, MAX_NEW_DOCS);
+    const unique = [...new Set(newDocs.filter((l) => !l.page).map((l) => l.url))].slice(0, MAX_NEW_DOCS);
     const described = await fetchAll(unique, guarded);
     for (const link of newDocs) {
       const res = described.get(link.url);

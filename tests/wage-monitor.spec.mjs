@@ -6,8 +6,8 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { deflateSync } from 'node:zlib';
 import { importTs, root } from '../scripts/lib/register-ts.mjs';
-import { describeDocument, diffLines, documentLinks, htmlText, sha256 } from '../scripts/wage-monitor/extract.mjs';
-import { buildTargets, coverageProblems, fetchSource, fingerprint, istDate, pageLines, registryProblems, runMonitor, targetKey } from '../scripts/wage-monitor/monitor.mjs';
+import { describeDocument, diffLines, documentLinks, htmlText, sha256, wpDocumentLinks } from '../scripts/wage-monitor/extract.mjs';
+import { buildTargets, coverageProblems, fetchSource, fingerprint, istDate, locationTargets, pageLines, registryProblems, runMonitor, targetKey } from '../scripts/wage-monitor/monitor.mjs';
 import { extractPdfText, parseCMap } from '../scripts/wage-monitor/pdf-text.mjs';
 import { chatwootClient, issueTitle, monitorFailedEvent, renderChatwootMessage, reportEvents, reportToChatwoot, reportToHub, safe } from '../scripts/wage-monitor/report.mjs';
 import { hubClient, hubFromEnv, parseNotify } from '../scripts/lib/notify-hub.mjs';
@@ -418,7 +418,10 @@ test('fetchSource retries a server error once, not a 404, and never throws', asy
 
 test('every published state is watched for wages, PT, LWF and the licence; EPF, ESIC and the codes nationally; every dues source is watched', async () => {
   const { statutorySources } = await importTs('src/content/statutory.ts');
-  assert.deepEqual(coverageProblems(wageStates, registry, statutorySources.map((s) => s.url)), []);
+  const { guideSources } = await importTs('src/content/guides/sources.ts');
+  // Guides too (18 Oct 2026), so a guide cannot go public on unwatched sources; India Code is watched as its Gazette copy.
+  const cited = [...statutorySources.map((s) => s.url), ...guideSources.map((s) => s.watchedAs ?? s.url).filter(Boolean)];
+  assert.deepEqual(coverageProblems(wageStates, registry, cited), []);
   const bare = coverageProblems([fakeState], fakeRegistry, ['https://example.gov.in/rules.pdf']);
   for (const want of ['delhi: no source watched for Professional Tax', 'delhi: no source watched for Labour Welfare Fund', 'national: no source watched for EPF', 'national: no source watched for ESIC', 'https://example.gov.in/rules.pdf is cited on the site but not watched']) {
     assert.ok(bare.some((p) => p.startsWith(want)), want);
@@ -626,6 +629,51 @@ test('an empty lead page is a failed load, not every line gone', async () => {
   assert.equal(day2.results[0].outcome, 'failed');
   assert.match(day2.results[0].detail, /came back empty/);
   assert.deepEqual(day2.events, []);
+});
+
+test('a lead page alerts on a new post, never on one that aged off the feed', async () => {
+  const lead = { kind: 'page', url: 'https://firm.example/posts/', name: 'Lead', match: 'uttar pradesh', topic: 'wages', allowEmpty: true, state: 'uttar-pradesh', stateName: 'Uttar Pradesh' };
+  const page = (html) => async () => ({ ok: true, status: 200, contentType: 'text/html', body: Buffer.from(html) });
+  const day1 = await runMonitor({ targets: [lead], previous: null, fetcher: page('<p>Minimum wages: Uttar Pradesh, April 2026</p><p>Delhi DA order</p>'), now: at('2026-10-16') });
+  // The UP post scrolled off; the page still has text, just nothing on this state.
+  const day2 = await runMonitor({ targets: [lead], previous: day1.state, fetcher: page('<p>Delhi DA order</p><p>Haryana LWF notice</p>'), now: at('2026-10-17') });
+  assert.equal(day2.results[0].outcome, 'unchanged');
+  assert.deepEqual(day2.events, []);
+  const day3 = await runMonitor({ targets: [lead], previous: day2.state, fetcher: page('<p>Minimum wages: Uttar Pradesh, October 2026</p>'), now: at('2026-10-18') });
+  assert.equal(day3.results[0].outcome, 'changed');
+  assert.deepEqual(day3.events.map((e) => [e.type, e.added, e.removed]), [['page-changed', ['Minimum wages: Uttar Pradesh, October 2026'], []]]);
+});
+
+test('the Ministry of Labour documents API is read as a listing of its posts, not fetched as files', async () => {
+  const body = JSON.stringify({ posts: [
+    { ID: 1, post_slug: 'epfo-wage-ceiling', post_title: 'Gazette Notification- EPFO Wage Ceiling of Rs. 25,000', post_date: '2026-09-21 17:07:57', acf_data: { date: '17/09/2026' } },
+    { ID: 2, post_slug: 'code-on-wages', post_title: 'Implementation of Code on Wages, 2019', post_date: '2026-09-23 16:01:19' },
+  ] });
+  const links = wpDocumentLinks(body, 'https://www.labour.gov.in/documents/');
+  assert.deepEqual(links.map((l) => [l.url, l.label, l.page]), [
+    ['https://www.labour.gov.in/documents/code-on-wages', '2026-09-23: Implementation of Code on Wages, 2019', true],
+    ['https://www.labour.gov.in/documents/epfo-wage-ceiling', '17/09/2026: Gazette Notification- EPFO Wage Ceiling of Rs. 25,000', true],
+  ]);
+  assert.deepEqual(wpDocumentLinks('<html>not json</html>', 'https://x.example/'), []);
+  const target = { kind: 'listing', url: 'https://www.labour.gov.in/cms/wp-json/document/documents?x', name: 'MoLE', topic: 'codes', format: 'wp-documents', publicBase: 'https://www.labour.gov.in/documents/', state: 'national', stateName: 'All states' };
+  const json = (posts) => async () => ({ ok: true, status: 200, contentType: 'application/json', body: Buffer.from(JSON.stringify({ posts })) });
+  const day1 = await runMonitor({ targets: [target], previous: null, fetcher: json(JSON.parse(body).posts), now: at('2026-10-17') });
+  let described = 0;
+  const day2 = await runMonitor({ targets: [target], previous: day1.state, now: at('2026-10-18'), fetcher: async (url) => (url === target.url ? json([...JSON.parse(body).posts, { ID: 3, post_slug: 'esi-ceiling', post_title: 'ESI wage ceiling', post_date: '2026-10-18 10:00:00' }])() : (described++, { ok: false, status: 404 })) });
+  assert.deepEqual(day2.events.map((e) => [e.type, e.added.map((l) => l.label)]), [['listing-changed', ['2026-10-18: ESI wage ceiling']]]);
+  assert.equal(described, 0);
+});
+
+test('location page sources are a monthly load check: deduplicated, never compared line by line', async () => {
+  const pages = [{ sources: [{ label: 'SIIDCUL Haridwar', url: 'https://siidcul.com/haridwar' }, { label: 'MSME-DI', url: 'https://msme.example/profile.pdf' }] }, { sources: [{ label: 'SIIDCUL again', url: 'https://siidcul.com/haridwar' }] }];
+  const targets = locationTargets(pages);
+  assert.deepEqual(targets.map((t) => [t.url, t.topic, t.kind, t.allowEmpty]), [['https://siidcul.com/haridwar', 'locations', 'page', true], ['https://msme.example/profile.pdf', 'locations', 'page', true]]);
+  const page = (html) => async () => ({ ok: true, status: 200, contentType: 'text/html', body: Buffer.from(html) });
+  const day1 = await runMonitor({ targets, previous: null, fetcher: page('<p>Estate of 2,034 acres</p>'), now: at('2026-11-01') });
+  const day2 = await runMonitor({ targets, previous: day1.state, fetcher: page('<p>Estate of 2,100 acres, new units</p>'), now: at('2026-12-01') });
+  assert.deepEqual(day2.events, []);
+  const { locationPages } = await importTs('src/content/locations/index.ts');
+  assert.ok(locationTargets([...locationPages.values()]).length > 20, 'every location page source is in the monthly check');
 });
 
 test('R2 requests are signed as AWS documents it (SigV4 GET Object example)', async () => {

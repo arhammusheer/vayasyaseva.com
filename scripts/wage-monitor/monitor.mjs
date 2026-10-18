@@ -276,9 +276,12 @@ export async function runMonitor({ targets, previous, fetcher, now = new Date(),
     let lines = null;
     if (res.ok) {
       if (target.kind === "page") {
-        lines = pageLines(res.body.toString("utf8"), new RegExp(target.match, "i"));
-        // A lead page (allowEmpty: a compliance firm's latest posts) may have nothing on a state this week.
-        if (!lines.length && !target.allowEmpty) bogus = prev?.lines?.length ? "none of the watched lines are on the page any more" : "no lines match the pattern";
+        const body = res.body.toString("utf8");
+        lines = pageLines(body, new RegExp(target.match, "i"));
+        // A lead page (allowEmpty: a compliance firm's latest posts) may have nothing on a state this week,
+        // but a page with no text at all is a refused request (AscentHR sends an empty 200), not a quiet week.
+        if (!htmlText(body).trim()) bogus = "the page came back empty";
+        else if (!lines.length && !target.allowEmpty) bogus = prev?.lines?.length ? "none of the watched lines are on the page any more" : "no lines match the pattern";
       }
       if (target.kind === "listing") {
         html = res.body.toString("utf8");

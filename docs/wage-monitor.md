@@ -107,7 +107,8 @@ monitor starts a new one.
 
 A response that is not the source counts as a failed load, not a change: an
 HTML page where a PDF used to be, a listing with no document links or fewer
-than half its earlier links, or a page with none of its watched lines. So a
+than half its earlier links, a page with none of its watched lines, or a
+page with no text at all (even a lead page, which may otherwise be empty). So a
 bad day on a government site does not report everything as removed and then
 new.
 
@@ -151,8 +152,9 @@ monitor trusts the two Let's Encrypt certificates in
 `scripts/wage-monitor/certs/` (the YR1 intermediate and Root YR cross-signed
 by ISRG Root X1), and pblabour.gov.in and psdt.punjab.gov.in omit their
 intermediates, so it also trusts Sectigo Public Server Authentication CA DV
-R36 and GeoTrust TLS RSA CA G1 from the same folder. www.labour.gov.in refuses descriptive user agents, so it
-gets a plain one (`plainUserAgentHosts`).
+R36 and GeoTrust TLS RSA CA G1 from the same folder. www.labour.gov.in refuses descriptive user agents and ascent-hr.com
+answers them with an empty page (since 18 October 2026), so both get a plain
+one (`plainUserAgentHosts`).
 
 ## Where it runs
 

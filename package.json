@@ -14,7 +14,7 @@
     "type-check": "tsc --noEmit && pnpm windmill:check && pnpm twenty:check",
     "forms:unit": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test tests/job-resume.spec.mjs tests/job-intake.spec.mjs tests/registry.spec.mjs tests/crew-request.spec.mjs tests/lead-forward.spec.mjs tests/submissions.spec.mjs",
     "content:check": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/content-check.mjs",
-    "content:unit": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test tests/sitemap-snapshot.spec.mjs tests/registry-status.spec.mjs tests/legacy-redirects.spec.mjs tests/wages.spec.mjs tests/wage-monitor.spec.mjs tests/language-rank.spec.mjs tests/context.spec.mjs tests/neutral-pages.spec.mjs tests/stored-ids.spec.mjs tests/markets.spec.mjs tests/measurement-policy.spec.mjs",
+    "content:unit": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test tests/sitemap-snapshot.spec.mjs tests/registry-status.spec.mjs tests/legacy-redirects.spec.mjs tests/wages.spec.mjs tests/wage-monitor.spec.mjs tests/language-rank.spec.mjs tests/context.spec.mjs tests/context-replay.spec.mjs tests/neutral-pages.spec.mjs tests/stored-ids.spec.mjs tests/markets.spec.mjs tests/measurement-policy.spec.mjs",
     "wages:monitor": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/wage-monitor/index.mjs",
     "forms:check": "node tests/forms.spec.mjs",
     "measurement:check": "node tests/measurement.spec.mjs",
@@ -36,6 +36,7 @@
     "share:check": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/build-share-images.mjs --check",
     "brand:assets": "node scripts/build-brand-assets.mjs",
     "indexnow": "node scripts/indexnow.mjs",
+    "context:replay": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/context-replay.mjs",
     "seo:check": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/seo-check.mjs",
     "phone:check": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/check-jobs-phone.mjs",
     "ship": "node scripts/ship.mjs"

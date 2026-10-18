@@ -11,7 +11,7 @@ that answers three questions for every visitor, on every page:
 Each answer comes with a confidence band. The page uses the band to decide
 how strongly to act. Nothing redirects, and no URL or locale changes on its own.
 
-Status (18 Oct 2026): the owner approved all eight decisions in section 11, with a **10%** holdout (not 5%). Built as model 4 on branch feat/visitor-context; the system as built is documented in docs/visitor-context.md. Phases 0–5 shipped together, with no separate shadow week: the 10% holdout and the `area_intent` points give the comparison. Still to do from phase 6: `scripts/context-replay.mjs`, and the Umami board's new `intent_by_arrival` tile.
+Status (18 Oct 2026): the owner approved all eight decisions in section 11, with a **10%** holdout (not 5%). Built as model 4 on branch feat/visitor-context; the system as built is documented in docs/visitor-context.md. Phases 0–5 shipped together, with no separate shadow week: the 10% holdout and the `area_intent` points give the comparison. Phase 6 is done: the Umami board has its `intent_by_arrival` tile (18 Oct 2026), and `scripts/context-replay.mjs` replays sessions under candidate weights (docs/visitor-context.md, "Tuning with the replay").
 
 ---
 

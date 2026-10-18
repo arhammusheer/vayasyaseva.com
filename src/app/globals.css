@@ -4327,3 +4327,37 @@ a:hover > svg {
   gap: 4px;
   max-width: 760px;
 }
+
+/* /labour-welfare-fund: one section per state, facts as label and value rows. */
+.lwf-states {
+  display: grid;
+  gap: 56px;
+}
+.lwf-state {
+  scroll-margin-top: 96px;
+}
+.lwf-facts {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--border);
+}
+.lwf-facts > div {
+  display: grid;
+  grid-template-columns: minmax(0, 160px) minmax(0, 1fr);
+  gap: 16px;
+  padding-block: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.lwf-facts dt {
+  font-weight: 600;
+  color: var(--foreground);
+}
+.lwf-facts dd {
+  color: var(--muted-foreground);
+}
+@media (max-width: 560px) {
+  .lwf-facts > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+}

@@ -21,7 +21,7 @@ import {
 } from "@/lib/contact-contract";
 
 import { linkable } from "@/content/registry";
-import { WAGE_HUB_PATH, WAGE_METHOD_PATH, WAGE_VDA_PATH, wageStatePath } from "@/content/registry/identifiers";
+import { WAGE_HUB_PATH, WAGE_METHOD_PATH, WAGE_VDA_PATH, LWF_PATH, wageStatePath } from "@/content/registry/identifiers";
 import { wageStates } from "@/content/wages";
 
 const baseUrl = "https://www.vayasyaseva.com";
@@ -39,6 +39,9 @@ const referenceSection = linkable(WAGE_HUB_PATH, "en-IN")
         ),
       ...(linkable(WAGE_VDA_PATH, "en-IN")
         ? [`- [VDA and DA tracker](${baseUrl}/en-in${WAGE_VDA_PATH}): The variable dearness allowance or DA in force in each state above, when it last changed, each state's revision dates, and which revisions are due but not yet published`]
+        : []),
+      ...(linkable(LWF_PATH, "en-IN")
+        ? [`- [Labour Welfare Fund by state](${baseUrl}/en-in${LWF_PATH}): Who each state's Labour Welfare Fund covers, the worker's and the employer's share, and when it is due, from each state's Act and Labour Welfare Board notices`]
         : []),
       ...(linkable(WAGE_METHOD_PATH, "en-IN")
         ? [`- [How we check minimum wages](${baseUrl}/en-in${WAGE_METHOD_PATH}): Where the minimum wage rates come from, when we check them, and how to report a mistake`]

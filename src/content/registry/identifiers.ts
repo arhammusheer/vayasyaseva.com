@@ -101,6 +101,8 @@ export const wageStatePath = (state: WageStateSlug) => `${WAGE_HUB_PATH}/${state
  * reserved: content:check fails a wage state slug or code that takes one.
  */
 export const WAGE_METHOD_PATH = `${WAGE_HUB_PATH}/how-we-check`;
+/** Labour Welfare Fund by state (18 Oct 2026), from the employer dues in src/content/statutory.ts. */
+export const LWF_PATH = "/labour-welfare-fund";
 /** The VDA and DA revision tracker (18 Oct 2026), built from the same wage dataset. */
 export const WAGE_VDA_PATH = `${WAGE_HUB_PATH}/vda`;
 

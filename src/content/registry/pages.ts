@@ -11,6 +11,7 @@
  * Public repo: publishable facts only (content:check enforces part of this).
  */
 import { JOB_HUB_SLUGS, JOB_ROLE_SLUGS } from "@/lib/talent-intake/rules";
+import { STATUTORY_CHECKED } from "@/content/statutory";
 import {
   LOCATIONS_PATH,
   LOCATION_CLUSTERS,
@@ -21,6 +22,7 @@ import {
   WAGE_HUB_PATH,
   WAGE_METHOD_PATH,
   WAGE_VDA_PATH,
+  LWF_PATH,
   WAGE_STATE_CODES,
   guidePath,
   jobsHubPath,
@@ -317,6 +319,11 @@ export const pageEntries: readonly PageEntry[] = [
   // and October (Keyword Planner, 18 Oct 2026). Rebuilt daily like the hub;
   // `updated` moves with the newest state file.
   { path: WAGE_VDA_PATH, kind: "static", audience: "mixed", locales: { "en-IN": "published" }, parent: WAGE_HUB_PATH, updated: WAGE_HUB_UPDATED(), changeFrequency: "monthly", priority: 0.6 },
+  // Labour Welfare Fund by state, from src/content/statutory.ts (the wage
+  // pages' employer dues): "labour welfare fund" ~12,100 searches a month,
+  // Haryana 2,900, Delhi 1,600 (Keyword Planner, 18 Oct 2026). Reference
+  // layout; its trail runs from home, like the wage hub.
+  { path: LWF_PATH, kind: "static", audience: "mixed", locales: { "en-IN": "published" }, parent: "/", updated: STATUTORY_CHECKED, changeFrequency: "monthly", priority: 0.6 },
   { path: WAGE_METHOD_PATH, kind: "static", audience: "mixed", locales: { "en-IN": "published" }, parent: WAGE_HUB_PATH, updated: EDITORIAL_POLICY, changeFrequency: "yearly", priority: 0.5 },
   // Guides sit in the reference section beside the wage pages (its header,
   // no phone), so their trail runs through the wage hub, not /compliance.

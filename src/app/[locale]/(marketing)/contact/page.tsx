@@ -4,7 +4,7 @@ import { Section } from "@/components/layout/section";
 import { siteConfig } from "@/content/site";
 import { businessPhone, businessPhoneHref } from "@/content/business-contact";
 import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
-import { ContactForm } from "./contact-form";
+import { ContactFormForMode, ContactHeading, HEADINGS } from "./contact-mode";
 import { AgentGuidance } from "@/components/agent-guidance";
 import { JobsLink } from "@/components/i18n/jobs-link";
 import { localeParams } from "@/lib/i18n";
@@ -12,44 +12,18 @@ import { localeParams } from "@/lib/i18n";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/contact");
 
-type Mode = "crew" | "assessment" | "compliance";
-
-/** ?type=assessment and ?type=compliance: variants of one page (canonical /contact). */
-function modeOf(type: string | string[] | undefined): Mode {
-  return type === "assessment" ? "assessment" : type === "compliance" ? "compliance" : "crew";
-}
-
-const META: Record<Mode, { title: string; description: string; shareVariant: string }> = {
-  crew: {
-    title: "Request a Crew: Contract Labour Enquiry",
-    description:
-      "Need contract labour? Tell Vayasya Seva the work, how many workers, the site and the start date. We aim to reply within two working days, Monday to Saturday.",
-    shareVariant: "",
-  },
-  assessment: {
-    title: "Request a Site Assessment",
-    description:
-      "Ask Vayasya Seva to look at your site before a crew starts. Tell us the work, the site and when. We aim to reply within two working days, Monday to Saturday.",
-    shareVariant: "assessment",
-  },
-  compliance: {
-    title: "Get Compliance Help: EPF, ESIC and Labour Law",
-    description:
-      "Behind on EPF, ESIC, PT, LWF, a contract labour licence or registers? Vayasya Seva guides you to get compliant and connects you with CAs and labour lawyers.",
-    shareVariant: "compliance",
-  },
-};
-
-export async function generateMetadata({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
-  const { title, description, shareVariant } = META[modeOf((await searchParams).type)];
-  return pageMetadata({ title, description, alternates: { canonical: "/contact" }, shareVariant });
-}
-
-const HEADINGS: Record<Mode, string> = {
-  crew: "Request a crew.",
-  assessment: "Request a site assessment.",
-  compliance: "Get compliance help.",
-};
+/**
+ * One static page. The ?type=assessment and ?type=compliance variants
+ * (canonical /contact) change the heading and the form in the browser
+ * (./contact-mode.tsx); title and description are the crew request's, which
+ * is what search shows for the canonical URL.
+ */
+export const metadata = pageMetadata({
+  title: "Request a Crew: Contract Labour Enquiry",
+  description:
+    "Need contract labour? Tell Vayasya Seva the work, how many workers, the site and the start date. We aim to reply within two working days, Monday to Saturday.",
+  alternates: { canonical: "/contact" },
+});
 
 function ContactFormFallback() {
   return (
@@ -87,8 +61,7 @@ const lines = [
   },
 ];
 
-export default async function ContactPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
-  const mode = modeOf((await searchParams).type);
+export default function ContactPage() {
   return (
     <>
       <JsonLd
@@ -121,21 +94,16 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
               Looking for work?&nbsp;<span className="text-gold-700 underline underline-offset-4">Jobs →</span>
             </JobsLink>
             <p className="eyebrow text-gold-700">FOR BUSINESSES</p>
-            <h1 className="crew-intro-title">{HEADINGS[mode]}</h1>
-            {mode === "compliance" && (
-              <p className="crew-reply max-w-sm">
-                Missed EPF or ESIC filings, no contract labour licence, registers not kept? We guide you through
-                getting compliant, and connect you with CAs, labour lawyers and compliance consultants in the
-                Vayasya Network.
-              </p>
-            )}
+            <Suspense fallback={<h1 className="crew-intro-title">{HEADINGS.crew}</h1>}>
+              <ContactHeading />
+            </Suspense>
             <p className="crew-reply max-w-sm">{RESPONSE_LINE}</p>
           </div>
           <div className="lg:col-start-2 lg:row-start-1 lg:row-span-2">
             {/* Outside Suspense: the form renders on the client only, and agents read the server HTML. */}
             <AgentGuidance form="contact" />
             <Suspense fallback={<ContactFormFallback />}>
-              <ContactForm key={mode} />
+              <ContactFormForMode />
             </Suspense>
           </div>
           <div className="lg:col-start-1 lg:row-start-2 lg:pt-12">

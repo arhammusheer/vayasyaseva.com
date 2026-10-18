@@ -27,6 +27,9 @@ export const metadata = pageMetadata({
 const resources = [
   { href: WAGE_HUB_PATH, label: "Minimum wages by state" },
   { href: LWF_PATH, label: "Labour Welfare Fund by state" },
+  { href: "/epf", label: "EPF for employers" },
+  { href: "/esic", label: "ESIC for employers" },
+  { href: "/professional-tax", label: "Professional Tax by state" },
   { href: guidePath("new-labour-codes"), label: "New labour codes guide" },
 ].filter((r) => linkable(r.href, "en-IN"));
 

@@ -336,6 +336,11 @@
           "url": "https://klwb.karnataka.gov.in/en",
           "name": "Karnataka Labour Welfare Board: notices",
           "topic": "lwf"
+        },
+        {
+          "url": "https://gst.karnataka.gov.in/Profession_tax.aspx",
+          "name": "Commercial Taxes Department, Karnataka: Professional Tax acts, rules and notifications",
+          "topic": "pt"
         }
       ],
       "documents": [
@@ -358,6 +363,16 @@
           "url": "https://karmikaspandana.karnataka.gov.in/uploads/media_to_upload1769512711.pdf",
           "name": "OSH (Karnataka) Rules, 2026: draft",
           "topic": "licence"
+        },
+        {
+          "url": "https://gst.karnataka.gov.in/Documents/General/ptnotificationact29323.pdf",
+          "name": "Karnataka Tax on Professions (Amendment) Act, 2025 (Act 33 of 2025)",
+          "topic": "pt"
+        },
+        {
+          "url": "https://gst.karnataka.gov.in/Othertaxlaws/PTRULES27012020ason31032019.pdf",
+          "name": "Karnataka Tax on Professions Rules, 1976",
+          "topic": "pt"
         }
       ],
       "pages": [
@@ -405,7 +420,7 @@
     "documents": [
       {
         "url": "https://pmvbry-cdn.epfindia.gov.in/wp-content/uploads/2026/09/Wage-Ceiling-Circular-28.09.2026.pdf",
-        "name": "EPF wage ceiling circular, 28 September 2026",
+        "name": "EPF wage ceiling of ₹25,000, S.O. 5109(E) (as hosted by EPFO)",
         "topic": "epf"
       },
       {
@@ -437,6 +452,56 @@
         "url": "https://www.labour.gov.in/static/uploads/2026/02/83978455025732b99b0165def80ab171.pdf",
         "name": "Ministry of Labour: labour codes compliance handbook",
         "topic": "licence"
+      },
+      {
+        "url": "https://egazette.gov.in/WriteReadData/2026/273002.pdf",
+        "name": "EPF wage ceiling of ₹15,000 under the Code, S.O. 2702(E)",
+        "topic": "epf"
+      },
+      {
+        "url": "https://egazette.gov.in/WriteReadData/2026/273957.pdf",
+        "name": "Employees' Provident Fund Scheme, 2026, G.S.R. 525(E)",
+        "topic": "epf"
+      },
+      {
+        "url": "https://egazette.gov.in/WriteReadData/2026/273942.pdf",
+        "name": "Employees' Deposit Linked Insurance Scheme, 2026, G.S.R. 526(E)",
+        "topic": "epf"
+      },
+      {
+        "url": "https://egazette.gov.in/WriteReadData/2026/273951.pdf",
+        "name": "Employees' Pension Scheme, 2026, G.S.R. 527(E)",
+        "topic": "epf"
+      },
+      {
+        "url": "https://egazette.gov.in/WriteReadData/2026/272387.pdf",
+        "name": "ESI coverage to the end of the contribution period, S.O. 2351(E)",
+        "topic": "esic"
+      },
+      {
+        "url": "https://egazette.gov.in/WriteReadData/2026/274902.pdf",
+        "name": "ESI (General) Regulations, 2026: draft",
+        "topic": "esic"
+      },
+      {
+        "url": "https://esic.gov.in/attachments/circularfile/New_wage_definition_u_s_2_88_of_The_Code_on_Social_Security_2020_1765902209.pdf",
+        "name": "ESIC circular: new definition of wages, 11 December 2025",
+        "topic": "esic"
+      },
+      {
+        "url": "https://www.esic.gov.in/attachments/actfile/04423ea7329d664985893d3b2822ea72.pdf",
+        "name": "ESI (General) Regulations, 1950",
+        "topic": "esic"
+      },
+      {
+        "url": "https://www.labour.gov.in/static/uploads/2026/03/a4ccf4c6d97c4f1f36a6d83f8c64213d.pdf",
+        "name": "Ministry of Labour: labour codes additional FAQs, 16 March 2026",
+        "topic": "codes"
+      },
+      {
+        "url": "https://cdnbbsr.s3waas.gov.in/s380537a945c7aaa788ccfcdf1b99b5d8f/uploads/2024/07/20240716890312078.pdf",
+        "name": "Constitution of India (Article 276: professional tax cap)",
+        "topic": "codes"
       }
     ]
   }

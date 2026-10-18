@@ -58,6 +58,9 @@ const REFERENCE: (NavLink & { long?: string })[] = [
   { href: wageStatePath("uttarakhand"), label: "Uttarakhand" },
   { href: WAGE_VDA_PATH, label: "VDA tracker", long: "VDA and DA tracker" },
   { href: LWF_PATH, label: "Labour Welfare Fund", long: "Labour Welfare Fund by state" },
+  { href: "/epf", label: "EPF", long: "EPF for employers" },
+  { href: "/esic", label: "ESIC", long: "ESIC for employers" },
+  { href: "/professional-tax", label: "Professional Tax", long: "Professional Tax by state" },
   { href: WAGE_METHOD_PATH, label: "How we check", long: "How we check minimum wages" },
   { href: guidePath("new-labour-codes"), label: "Labour codes guide" },
 ];

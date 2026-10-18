@@ -1404,6 +1404,30 @@
     "priority": 0.6
   },
   {
+    "url": "https://www.vayasyaseva.com/en-in/epf",
+    "lastModified": "2026-10-18T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.6
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/esic",
+    "lastModified": "2026-10-18T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.6
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/professional-tax",
+    "lastModified": "2026-10-18T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.5
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/professional-tax/karnataka",
+    "lastModified": "2026-10-18T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.6
+  },
+  {
     "url": "https://www.vayasyaseva.com/en-in/minimum-wages/how-we-check",
     "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "yearly",

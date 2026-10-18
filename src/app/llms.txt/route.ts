@@ -43,6 +43,14 @@ const referenceSection = linkable(WAGE_HUB_PATH, "en-IN")
       ...(linkable(LWF_PATH, "en-IN")
         ? [`- [Labour Welfare Fund by state](${baseUrl}/en-in${LWF_PATH}): Who each state's Labour Welfare Fund covers, the worker's and the employer's share, and when it is due, from each state's Act and Labour Welfare Board notices`, ...LWF_STATE_SLUGS.filter((s) => linkable(lwfStatePath(s), "en-IN")).map((s) => `- [Labour Welfare Fund in ${s === "delhi" ? "Delhi" : "Haryana"}](${baseUrl}/en-in${lwfStatePath(s)}): Who counts, both shares, a worked example, how to pay online, and late payment and penalties, from the state's Act and notices`)]
         : []),
+      ...[
+        ["/epf", "EPF for employers", "The ₹25,000 wage ceiling from 17 September 2026, the 12% split into EPS and EPF, EDLI and admin charges, due dates, damages and contract workers"],
+        ["/esic", "ESIC for employers", "3.25% and 0.75% contributions on wages up to ₹21,000 a month, contribution periods, due date, damages and contract workers"],
+        ["/professional-tax", "Professional Tax by state", "Which of Karnataka, Punjab, Uttarakhand, Uttar Pradesh, Delhi and Haryana levy professional tax, and the ₹2,500 cap"],
+        ["/professional-tax/karnataka", "Professional Tax in Karnataka", "₹200 a month on salaries of ₹25,000 or more, ₹300 in February, Form 5-A by the 20th, penalties and examples"],
+      ]
+        .filter(([path]) => linkable(path, "en-IN"))
+        .map(([path, label, text]) => `- [${label}](${baseUrl}/en-in${path}): ${text}`),
       ...(linkable(WAGE_METHOD_PATH, "en-IN")
         ? [`- [How we check minimum wages](${baseUrl}/en-in${WAGE_METHOD_PATH}): Where the minimum wage rates come from, when we check them, and how to report a mistake`]
         : []),

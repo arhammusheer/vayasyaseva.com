@@ -334,6 +334,13 @@ export const pageEntries: readonly PageEntry[] = [
     (state) =>
       ({ path: lwfStatePath(state), kind: "lwf-state", audience: "mixed", locales: { "en-IN": "published" }, parent: LWF_PATH, updated: "2026-10-18", changeFrequency: "monthly", priority: 0.6 }) satisfies PageEntry,
   ),
+  // EPF, ESIC and Professional Tax for employers (18 Oct 2026, src/content/topics):
+  // employer-side searches ~25,000 (EPF), ~15,000 (ESIC) and ~12,100
+  // ("professional tax karnataka") a month. Reference layout, English only.
+  { path: "/epf", kind: "static", audience: "mixed", locales: { "en-IN": "published" }, parent: "/", updated: "2026-10-18", changeFrequency: "monthly", priority: 0.6 },
+  { path: "/esic", kind: "static", audience: "mixed", locales: { "en-IN": "published" }, parent: "/", updated: "2026-10-18", changeFrequency: "monthly", priority: 0.6 },
+  { path: "/professional-tax", kind: "static", audience: "mixed", locales: { "en-IN": "published" }, parent: "/", updated: "2026-10-18", changeFrequency: "monthly", priority: 0.5 },
+  { path: "/professional-tax/karnataka", kind: "static", audience: "mixed", locales: { "en-IN": "published" }, parent: "/professional-tax", updated: "2026-10-18", changeFrequency: "monthly", priority: 0.6 },
   { path: WAGE_METHOD_PATH, kind: "static", audience: "mixed", locales: { "en-IN": "published" }, parent: WAGE_HUB_PATH, updated: EDITORIAL_POLICY, changeFrequency: "yearly", priority: 0.5 },
   // Guides sit in the reference section beside the wage pages (its header,
   // no phone), so their trail runs through the wage hub, not /compliance.

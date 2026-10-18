@@ -210,3 +210,38 @@ export function DelhiHalves() {
     </figure>
   );
 }
+
+/** Statutory bonus: earned over the accounting year, paid within the eight months after it. */
+export function BonusCalendar() {
+  const earn = ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar"];
+  const pay = ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov"];
+  return (
+    <figure className="ref-figure">
+      <div className="bonus-cal" role="img" aria-label="Bonus is earned on wages from April to March, and paid within the next eight months, from April to the end of November.">
+        <div className="bonus-cal-row" style={{ gridTemplateColumns: `repeat(${earn.length + pay.length}, minmax(0, 1fr))` }}>
+          {earn.map((m, i) => (
+            <div key={`e${i}`} className="is-earn">
+              <span className="mon">{m}</span>
+            </div>
+          ))}
+          {pay.map((m, i) => (
+            <div key={`p${i}`} className={i === pay.length - 1 ? "is-pay is-due" : "is-pay"}>
+              <span className="mon">{m}</span>
+            </div>
+          ))}
+        </div>
+        <div className="bonus-cal-spans" style={{ gridTemplateColumns: "12fr 8fr" }}>
+          <div>
+            <strong>Earned</strong>
+            <span>on wages for the accounting year, April to March</span>
+          </div>
+          <div>
+            <strong>Paid by 30 November</strong>
+            <span>within eight months of the year&apos;s end</span>
+          </div>
+        </div>
+      </div>
+      <figcaption>The bonus for the year that ended on 31 March 2026 is due by 30 November 2026. A Diwali bonus paid in October can be counted towards it.</figcaption>
+    </figure>
+  );
+}

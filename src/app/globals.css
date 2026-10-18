@@ -4964,3 +4964,65 @@ a:hover > svg {
   padding-top: 24px;
   border-top: 1px solid var(--border);
 }
+
+/* Bonus: the accounting year, then the eight months to pay it. */
+.bonus-cal-row {
+  display: grid;
+  gap: 3px;
+}
+.bonus-cal-row > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 72px;
+  border-radius: 4px;
+  min-width: 0;
+}
+.bonus-cal-row .is-earn { background: var(--neutral-800); }
+.bonus-cal-row .is-pay { background: var(--gold-200); }
+.bonus-cal-row .is-due { background: var(--gold-500); }
+.bonus-cal-row .mon {
+  padding: 6px 0;
+  text-align: center;
+  font-size: 12px;
+  color: var(--neutral-0);
+}
+.bonus-cal-row .is-pay .mon { color: var(--neutral-900); }
+.bonus-cal-spans {
+  display: grid;
+  gap: 3px;
+  margin-top: 10px;
+}
+.bonus-cal-spans > div {
+  display: grid;
+  gap: 2px;
+  padding-top: 10px;
+  border-top: 2px solid var(--foreground);
+  font-size: 14.5px;
+  line-height: 1.4;
+}
+.bonus-cal-spans strong {
+  font-family: var(--stack-display);
+  font-size: 19px;
+  font-weight: 500;
+}
+.bonus-cal-spans span { color: var(--muted-foreground); }
+@media (max-width: 640px) {
+  .bonus-cal-row .mon { font-size: 9px; writing-mode: vertical-rl; transform: rotate(180deg); padding: 6px 0; margin: 0 auto; }
+}
+/* A labelled select beside the amount field. */
+.ref-calc select {
+  height: 48px;
+  width: 100%;
+  max-width: 320px;
+  padding: 0 12px;
+  border: 1px solid var(--neutral-300);
+  border-radius: 8px;
+  background: var(--background);
+  font-size: 16px;
+  color: var(--foreground);
+}
+.ref-calc select:focus-visible {
+  outline: 2px solid var(--gold-600);
+  outline-offset: 2px;
+}

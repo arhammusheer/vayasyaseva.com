@@ -52,3 +52,21 @@ export function karnatakaPt(salary: number) {
   const due = salary >= KA_PT_FROM;
   return { due, month: due ? 200 : 0, february: due ? 300 : 0, year: due ? 2500 : 0 };
 }
+
+export const BONUS_ELIGIBLE_UP_TO = 21_000;
+export const BONUS_CALCULATION_CEILING = 7_000;
+/**
+ * Statutory bonus for a full accounting year (Code on Wages s.26, with the
+ * Central sphere's S.O. 4711(E) and 4710(E)): eligible on monthly wages up
+ * to ₹21,000; above ₹7,000 a month it is worked out on ₹7,000 or the
+ * minimum wage, whichever is higher; 8⅓% to 20%, and at least ₹100.
+ */
+export function bonus(wages: number, minimumWage: number, ratePct = 100 / 12, months = 12) {
+  const w = Math.max(wages, 0);
+  const eligible = w > 0 && w <= BONUS_ELIGIBLE_UP_TO;
+  const base = w <= BONUS_CALCULATION_CEILING ? w : Math.max(BONUS_CALCULATION_CEILING, minimumWage);
+  const yearWages = paise(base * months);
+  const at = (pct: number) => Math.max(paise((yearWages * pct) / 100), months === 12 ? 100 : 0);
+  const rate = Math.min(Math.max(ratePct, 100 / 12), 20);
+  return { eligible, base, yearWages, minimum: eligible ? at(100 / 12) : 0, maximum: eligible ? at(20) : 0, atRate: eligible ? at(rate) : 0, rate };
+}

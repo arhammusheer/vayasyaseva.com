@@ -1,13 +1,16 @@
 import Link from "@/components/i18n/link";
 import { Section } from "@/components/layout/section";
 import { Doors } from "@/components/pages/minimum-wages";
-import { EpfCalculator, EsicCalculator, KarnatakaPtCalculator } from "@/components/reference/calculators";
-import { EpfSplit, EsicPeriods, KarnatakaPtYear } from "@/components/reference/figures";
+import { BonusCalculator, EpfCalculator, EsicCalculator, KarnatakaPtCalculator, type BonusPlace } from "@/components/reference/calculators";
+import { BonusCalendar, EpfSplit, EsicPeriods, KarnatakaPtYear } from "@/components/reference/figures";
 import { RefSection, RefWide, RuleGroups, TopicEnd, TopicHero } from "@/components/reference/primitives";
 import { wageDoors } from "@/content/pages/minimum-wages";
 import { linkable } from "@/content/registry";
 import { epfCeilingChange, epfTopic } from "@/content/topics/epf";
 import { esicTopic } from "@/content/topics/esic";
+import { bonusTopic } from "@/content/topics/bonus";
+import { headlineTable, wageStates } from "@/content/wages";
+import { wageStatePath } from "@/content/registry/identifiers";
 import { karnatakaPtTopic, professionalTaxTopic, ptStates } from "@/content/topics/professional-tax";
 import type { TopicPage } from "@/content/topics/types";
 import { JsonLd, faqSchema, webPageSchema } from "@/lib/structured-data";
@@ -174,3 +177,39 @@ export function ProfessionalTaxHubPage() {
   );
 }
 
+
+/** Each published wage state's unskilled minimum wage (each UP category on its own), for the bonus calculator. */
+function bonusPlaces(): BonusPlace[] {
+  return wageStates
+    .filter((st) => linkable(wageStatePath(st.state), "en-IN"))
+    .flatMap((st) => {
+      const table = headlineTable(st);
+      return table.zones.map((z) => ({
+        label: table.zones.length > 1 ? `${st.name}, ${z.name}` : st.name,
+        minimumWage: table.rates.find((r) => r.zone === z.id && r.skill === "unskilled")!.monthly,
+      }));
+    })
+    .sort((a, b) => a.label.localeCompare(b.label));
+}
+
+/** Statutory bonus: the year it is earned and the eight months to pay it; a calculator on each state's minimum wage. */
+export function BonusPage() {
+  const t = bonusTopic;
+  return (
+    <>
+      <Schema topic={t} />
+      <Hero topic={t} />
+      <RefWide id="calendar" heading="Earned over the year, paid by 30 November." intro="Bonus is worked out on the wages of the accounting year, and paid within the eight months that follow it.">
+        <BonusCalendar />
+      </RefWide>
+      <RefSection id="calculator" heading="Work it out." intro="On the state's unskilled minimum wage, for a full year. The ₹21,000 and ₹7,000 are the Central sphere's figures; no state we cover had notified its own when we checked." subtle>
+        <BonusCalculator places={bonusPlaces()} />
+      </RefSection>
+      <RefSection id="rules" heading="The rules.">
+        <RuleGroups groups={t.rules} />
+      </RefSection>
+      <TopicEnd faqs={t.faqs} self={t.path} links={t.links} sources={t.sources} />
+      <Doors doors={doors} />
+    </>
+  );
+}

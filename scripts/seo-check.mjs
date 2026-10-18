@@ -202,6 +202,10 @@ await Promise.all(
     else if (description.length > PICKER_DESCRIPTION_MAX) {
       fail(path, `picker description is ${description.length} characters (max ${PICKER_DESCRIPTION_MAX})`);
     }
+    // The picker is never indexed and in no hreflang set (Google indexed it
+    // in place of the language pages, 18 Oct 2026).
+    if (!/<meta name="robots" content="[^"]*noindex/.test(body)) fail(path, "picker is indexable (want noindex, follow)");
+    if (/<link rel="alternate" hrefLang=/i.test(body)) fail(path, "picker carries hreflang alternates");
     for (const name of ["cdn-cache-control", "cloudflare-cdn-cache-control"]) {
       if (headers.get(name) !== "no-store") fail(path, `picker response lacks ${name}: no-store (per-visitor order)`);
     }

@@ -263,6 +263,53 @@ Metrics (from these, `v=4`):
 Weights are tuned only in `weights.ts`, with a `CONTEXT_VERSION` bump and
 the golden scenarios in `tests/context.spec.mjs` rewritten on purpose.
 
+### Tuning with the replay
+
+`pnpm context:replay` (`scripts/context-replay.mjs`) rebuilds real sessions
+from Umami and decides them again under candidate weights. It scores each
+candidate on the metrics above (by band, with 95% intervals, against the
+targets) and lists the decisions a candidate changes, grouped by scenario
+("arrival param haridwar · jobs page · IP IN/UP · picked bengaluru").
+
+```
+pnpm context:replay --save ~/vspl-replay.json        # last 28 days, current weights
+pnpm context:replay --from ~/vspl-replay.json --set jobs.ipCity=4
+pnpm context:replay --from ~/vspl-replay.json --candidate try.json --json out.json
+```
+
+A candidate file names only what it changes (`{ "name": "…", "jobs": {
+"ipCity": 4 }, "bands": { "confidentPoints": 7 } }`). The groups are `jobs`,
+`business`, `audience`, `bands` and `days`, and an unknown name is an error.
+
+It needs no new collection. Pageviews (path and query) go through
+`collectSignals` in order. The IP region comes from `area_intent`'s geo
+props, the browser language from Umami's session, and picks and audience
+from the events sent when they happen: `market_chosen_*`, `quick_step` area
+answers, `area_nav_click`, `job_form_start`, `contact_form_start` and
+`language_choice`. Only sessions with decisions from the current
+`CONTEXT_VERSION` are replayed.
+
+**Check the rebuild first.** The report starts with the share of logged
+`area_intent` decisions the rebuild reproduces with today's weights, and
+the commonest misses. Below 90%, read the misses before trusting the
+scores. Known gaps:
+
+- Each tab has its own session, but Umami can't see tabs. A page opened in
+  a new tab starts afresh on the site and not in the rebuild.
+- Picks from another Umami session (another device or month) are not seen.
+- The crew form's site place (`contact_form_step` carries no place).
+- Browser languages after the first.
+- Header doors that send no event ("Apply", "Request a crew").
+
+**Truth.** Holdout sessions are the cleanest truth, because nothing was
+ordered for them; the report shows them on their own row. A form answer
+after a pick in the same session is counted as "already picked", not as a
+test of the guess. Review after about 500 decided sessions per audience,
+then monthly.
+
+The dump holds pseudonymous Umami session ids, paths, queries and event
+props. Keep it outside the repo and delete it when tuning is done.
+
 ## The Umami board "Area intent"
 
 Umami's board tiles count events by name and can't filter on properties,

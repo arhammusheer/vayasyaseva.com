@@ -6,7 +6,7 @@
  * inbound communication. The case ID makes it replay-safe.
  */
 import { optionValue, phoneDigits } from "../../talent/lib/crm.ts";
-import { eq, type Twenty } from "../../talent/lib/twenty.ts";
+import { eq, type Twenty, type TwentyRecord } from "../../talent/lib/twenty.ts";
 import { SCHEMAS, check } from "../../contracts/validate.ts";
 import type { LeadCanonical } from "../../../../packages/contracts/src/business-enquiry.v1.ts";
 
@@ -75,8 +75,12 @@ export async function recordLead(crm: Twenty, lead: Lead): Promise<LeadResult> {
     companyId = company?.id ?? (await crm.create("companies", "Company", { name: lead.company })).id;
   }
 
-  const [byPhone] = await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(lead.phone)));
-  const [byEmail] = byPhone || !lead.email ? [] : await crm.find("people", eq("emails.primaryEmail", lead.email));
+  // Never an applicant's record: a job seeker who also sends an enquiry gets a
+  // separate client contact, so erasing them as an applicant takes their
+  // applicant name with the worker record (erasure keeps client contacts).
+  const notWorker = (people: TwentyRecord[]) => people.find((p) => p.personType !== "WORKER");
+  const byPhone = notWorker(await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(lead.phone))));
+  const byEmail = byPhone || !lead.email ? undefined : notWorker(await crm.find("people", eq("emails.primaryEmail", lead.email)));
   const contact = byPhone ?? byEmail;
   let personId: string;
   if (contact) {

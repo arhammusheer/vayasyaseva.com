@@ -654,7 +654,7 @@ async function twentyFilesFromConfig() {
 })();
 
 // integrations/windmill/talent/lib/crm.ts
-const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, erasePerson } = (() => {
+const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, removeAttachments, erasePerson } = (() => {
 const CLUSTER_VALUES = new Set(["HARIDWAR", "UTTARAKHAND", "DELHI_NCR", "BENGALURU", "JALANDHAR", "SAHARANPUR", "OTHER", "PUNJAB"]);
 const ROLE_VALUES = new Set([
     "FACTORY_HELPER", "PACKING", "MACHINE_OPERATOR", "WAREHOUSE", "FORKLIFT_OPERATOR", "DATA_ENTRY_OPERATOR",
@@ -891,7 +891,8 @@ function ackFields(c, personId, applicationId) {
     };
 }
 async function upsertPerson(crm, c) {
-    const [existing] = await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(c.phone)));
+    const people = await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(c.phone)));
+    const existing = people.find((p) => p.personType !== "CLIENT_CONTACT") ?? people[0];
     const fields = personFields(c, existing ?? null);
     if (existing) {
         await crm.update("people", existing.id, fields);
@@ -925,6 +926,7 @@ const WORKER_FIELDS_CLEARED = {
     lastAppliedAt: null,
     lastContactAt: null,
 };
+const CLIENT_NAME_CLEARED = { firstName: "Client contact", lastName: "" };
 async function attachmentsOf(crm, field, id) {
     const live = await crm.find("attachments", eq(field, id));
     const trashed = await crm.find("attachments", `and(${eq(field, id)},deletedAt[is]:NOT_NULL)`);
@@ -952,8 +954,11 @@ async function erasePerson(crm, phone) {
             if (!clientContact || !comm.opportunityId)
                 await crm.remove("communications", comm.id);
         }
-        if (clientContact)
-            await crm.update("people", person.id, WORKER_FIELDS_CLEARED);
+        if (clientContact) {
+            const name = person.name;
+            const fromApplication = person.personType !== "CLIENT_CONTACT" || /^Applicant VS-J-/.test(name?.firstName ?? "");
+            await crm.update("people", person.id, fromApplication ? { ...WORKER_FIELDS_CLEARED, name: CLIENT_NAME_CLEARED } : WORKER_FIELDS_CLEARED);
+        }
         else {
             files += await removeAttachments(crm, "targetPersonId", person.id);
             await crm.remove("people", person.id);
@@ -961,7 +966,7 @@ async function erasePerson(crm, phone) {
     }
     return { people: people.length, files };
 }
-  return { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, erasePerson };
+  return { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, removeAttachments, erasePerson };
 })();
 
 export async function main() {

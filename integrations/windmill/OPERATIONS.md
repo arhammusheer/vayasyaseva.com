@@ -163,7 +163,29 @@ FROM erasure_requests ORDER BY requested_at DESC LIMIT 20;
 
 Reply to the person once the request shows `done`.
 
-**Switching it on** was done at cutover: hand-run `f/talent/retention` once with a test request queued, check R2, Chatwoot, Twenty and the tables, then `pnpm windmill:deploy --enable-retention`. Erasure also removes the applicant side in Twenty (`erasePerson`), keeping a client contact who shares the number.
+**Switching it on** was done at cutover: hand-run `f/talent/retention` once with a test request queued, check R2, Chatwoot, Twenty and the tables, then `pnpm windmill:deploy --enable-retention`. Erasure also removes the applicant side in Twenty (`erasePerson`), keeping a client contact who shares the number. An enquiry never reuses an applicant's record (`recordLead` creates its own client contact), so the applicant's name goes with the worker record; a kept contact still typed worker, or named `Applicant VS-J-…`, is renamed "Client contact".
+
+## Enquiry erasure
+
+A business enquiry (crew request, site assessment, compliance help) is erased on request by `f/leads/erase`, hourly at :30 and by hand. Nothing is queued automatically: enquiry retention is still to be decided (docs/architecture-roadmap.md). Queue a request in the `leads` database by case ID, or by phone for every enquiry from that number:
+
+```sql
+INSERT INTO erasure_requests (case_id) VALUES ('REQ-20261018-XXXXXXXX');
+INSERT INTO erasure_requests (phone) VALUES ('+91XXXXXXXXXX');
+
+-- Progress
+SELECT status, attempts, last_error, removed_leads, removed_opportunities, removed_people, removed_companies, removed_crm_files, requested_at, processed_at
+FROM erasure_requests ORDER BY requested_at DESC LIMIT 20;
+```
+
+Each run takes one request and, holding the lead sync's lock:
+
+1. in Twenty, deletes each enquiry's crew request (opportunity) with its enquiry communications, files, notes and tasks (a note or task linked to another record stays, without its link);
+2. deletes the contact unless another crew request still names them; a contact who is also an applicant keeps the worker side, renamed `Applicant VS-J-…` and without company, job title or email; by phone, client contacts on the number go too;
+3. deletes the company only when no person, crew request, note or task is left on it;
+4. deletes the inbox rows (their deliveries go with them) and marks the request `done`, keeping only the counts: case ID and phone are cleared.
+
+A Twenty failure stops the run before any row is deleted; the request goes back to `pending` and fails after three attempts, which `f/platform/health` reports (`platform.erasure_failed`, leads). The staff email already sent and the hub's event (case ID and counts; its `pii` is cleared within a day) are not touched. An applicant erasure for the same number is separate: queue it in `talent` (above).
 
 ## SMS templates (DLT)
 

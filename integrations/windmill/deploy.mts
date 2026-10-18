@@ -29,7 +29,7 @@
  * 5. Runs f/talent/setup, f/leads/setup and f/notify/setup (schemas) and waits for them.
  * 6. Creates or updates the schedules and the HTTP routes. Schedules are
  *    created disabled: --enable-schedules turns f/talent/dispatch and
- *    f/leads/sync_crm on, --enable-retention turns retention on (after a
+ *    f/leads/sync_crm on, --enable-retention turns retention and f/leads/erase on (after a
  *    hand-run check, as with n8n), --enable-notify turns f/notify/dispatch,
  *    digest and f/platform/health (every 15 minutes, into the hub) on (after
  *    the owner has set NTFY_TOKEN and RESEND_NOTIFY_API_KEY;
@@ -419,7 +419,7 @@ async function schedule(w: Api, exists: (path: string) => Promise<boolean>, spec
   const enable =
     spec.folder === "notify" || spec.notifySchedule
       ? ENABLE_NOTIFY
-      : spec.name === "retention"
+      : spec.name === "retention" || (spec.folder === "leads" && spec.name === "erase")
         ? ENABLE_RETENTION
         : ENABLE_SCHEDULES || (replacedWereOn && REPLACEMENTS.has(`${spec.folder ?? FOLDER}/${spec.name}`));
   const body = { schedule: spec.schedule.cron, timezone: TIMEZONE, args: {}, summary: spec.schedule.summary };

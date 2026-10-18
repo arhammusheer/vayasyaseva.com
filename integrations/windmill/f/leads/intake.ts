@@ -238,7 +238,7 @@ async function twentyFilesFromConfig() {
 })();
 
 // integrations/windmill/talent/lib/crm.ts
-const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, erasePerson } = (() => {
+const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, removeAttachments, erasePerson } = (() => {
 const CLUSTER_VALUES = new Set(["HARIDWAR", "UTTARAKHAND", "DELHI_NCR", "BENGALURU", "JALANDHAR", "SAHARANPUR", "OTHER", "PUNJAB"]);
 const ROLE_VALUES = new Set([
     "FACTORY_HELPER", "PACKING", "MACHINE_OPERATOR", "WAREHOUSE", "FORKLIFT_OPERATOR", "DATA_ENTRY_OPERATOR",
@@ -475,7 +475,8 @@ function ackFields(c, personId, applicationId) {
     };
 }
 async function upsertPerson(crm, c) {
-    const [existing] = await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(c.phone)));
+    const people = await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(c.phone)));
+    const existing = people.find((p) => p.personType !== "CLIENT_CONTACT") ?? people[0];
     const fields = personFields(c, existing ?? null);
     if (existing) {
         await crm.update("people", existing.id, fields);
@@ -509,6 +510,7 @@ const WORKER_FIELDS_CLEARED = {
     lastAppliedAt: null,
     lastContactAt: null,
 };
+const CLIENT_NAME_CLEARED = { firstName: "Client contact", lastName: "" };
 async function attachmentsOf(crm, field, id) {
     const live = await crm.find("attachments", eq(field, id));
     const trashed = await crm.find("attachments", `and(${eq(field, id)},deletedAt[is]:NOT_NULL)`);
@@ -536,8 +538,11 @@ async function erasePerson(crm, phone) {
             if (!clientContact || !comm.opportunityId)
                 await crm.remove("communications", comm.id);
         }
-        if (clientContact)
-            await crm.update("people", person.id, WORKER_FIELDS_CLEARED);
+        if (clientContact) {
+            const name = person.name;
+            const fromApplication = person.personType !== "CLIENT_CONTACT" || /^Applicant VS-J-/.test(name?.firstName ?? "");
+            await crm.update("people", person.id, fromApplication ? { ...WORKER_FIELDS_CLEARED, name: CLIENT_NAME_CLEARED } : WORKER_FIELDS_CLEARED);
+        }
         else {
             files += await removeAttachments(crm, "targetPersonId", person.id);
             await crm.remove("people", person.id);
@@ -545,7 +550,7 @@ async function erasePerson(crm, phone) {
     }
     return { people: people.length, files };
 }
-  return { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, erasePerson };
+  return { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, removeAttachments, erasePerson };
 })();
 
 // integrations/windmill/contracts/validate.ts
@@ -638,8 +643,9 @@ async function recordLead(crm, lead) {
         const [company] = await crm.find("companies", eq("name", lead.company));
         companyId = company?.id ?? (await crm.create("companies", "Company", { name: lead.company })).id;
     }
-    const [byPhone] = await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(lead.phone)));
-    const [byEmail] = byPhone || !lead.email ? [] : await crm.find("people", eq("emails.primaryEmail", lead.email));
+    const notWorker = (people) => people.find((p) => p.personType !== "WORKER");
+    const byPhone = notWorker(await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(lead.phone))));
+    const byEmail = byPhone || !lead.email ? undefined : notWorker(await crm.find("people", eq("emails.primaryEmail", lead.email)));
     const contact = byPhone ?? byEmail;
     let personId;
     if (contact) {
@@ -1017,7 +1023,7 @@ function leadForwardFailedEvent(caseId, attempts, error) {
 })();
 
 // integrations/windmill/leads/lib/sql.ts
-const { LEADS_SAVE, LEADS_SYNC_LOCK, LEADS_RECOVER_STUCK, LEADS_CLAIM, LEADS_FINISH } = (() => {
+const { LEADS_SAVE, LEADS_SYNC_LOCK, LEADS_RECOVER_STUCK, LEADS_CLAIM, LEADS_FINISH, LEADS_SYNC_UNLOCK, LEADS_ERASURE_RECOVER, LEADS_ERASURE_CLAIM, LEADS_ERASURE_DONE, LEADS_ERASURE_FAIL } = (() => {
 const LEADS_SAVE = `
 WITH l AS (
   INSERT INTO leads (case_id, type, channel, payload, idempotency_key, received_at)
@@ -1055,7 +1061,45 @@ SET status = CASE WHEN $2 = 'retry' THEN (CASE WHEN attempts >= max_attempts THE
     done_at = CASE WHEN $2 = 'done' THEN now() ELSE done_at END, updated_at = now()
 WHERE lead_id = $1::uuid AND target = 'crm' AND status = 'running'
 RETURNING status;`;
-  return { LEADS_SAVE, LEADS_SYNC_LOCK, LEADS_RECOVER_STUCK, LEADS_CLAIM, LEADS_FINISH };
+const LEADS_SYNC_UNLOCK = `SELECT pg_advisory_unlock(hashtext('leads:sync_crm')) AS unlocked;`;
+const LEADS_ERASURE_RECOVER = `
+UPDATE erasure_requests
+SET status = CASE WHEN attempts >= 3 THEN 'failed' ELSE 'pending' END,
+    last_error = coalesce(last_error, 'Interrupted; picked up again'), updated_at = now()
+WHERE status = 'running' AND updated_at < now() - interval '1 hour'
+RETURNING id;`;
+const LEADS_ERASURE_CLAIM = `
+WITH claimed AS (
+  UPDATE erasure_requests e
+  SET status = 'running', attempts = e.attempts + 1, last_error = NULL, updated_at = now()
+  WHERE e.id = (
+    SELECT id FROM erasure_requests WHERE status = 'pending'
+    ORDER BY requested_at LIMIT 1 FOR UPDATE SKIP LOCKED)
+  RETURNING e.id, e.case_id, e.phone
+)
+SELECT c.id, c.case_id, c.phone,
+  coalesce((
+    SELECT jsonb_agg(jsonb_build_object('id', l.id, 'caseId', l.case_id, 'company', l.payload->>'company', 'phone', l.payload->>'phone', 'opportunityId', d.result->>'opportunityId'))
+    FROM leads l LEFT JOIN deliveries d ON d.lead_id = l.id AND d.target = 'crm'
+    WHERE l.case_id = c.case_id
+       OR (c.phone IS NOT NULL AND right(regexp_replace(l.payload->>'phone', '\\D', '', 'g'), 10) = right(regexp_replace(c.phone, '\\D', '', 'g'), 10))
+  ), '[]'::jsonb) AS leads
+FROM claimed c;`;
+const LEADS_ERASURE_DONE = `
+WITH gone AS (
+  DELETE FROM leads WHERE id = ANY($2::uuid[]) RETURNING id
+)
+UPDATE erasure_requests
+SET status = 'done', processed_at = now(), updated_at = now(), case_id = NULL, phone = NULL,
+    removed_leads = (SELECT count(*) FROM gone), removed_opportunities = $3::int, removed_people = $4::int,
+    removed_companies = $5::int, removed_crm_files = $6::int
+WHERE id = $1::uuid AND status = 'running'
+RETURNING id, removed_leads;`;
+const LEADS_ERASURE_FAIL = `
+UPDATE erasure_requests
+SET status = CASE WHEN attempts >= 3 THEN 'failed' ELSE 'pending' END, last_error = $2, updated_at = now()
+WHERE id = $1::uuid AND status = 'running';`;
+  return { LEADS_SAVE, LEADS_SYNC_LOCK, LEADS_RECOVER_STUCK, LEADS_CLAIM, LEADS_FINISH, LEADS_SYNC_UNLOCK, LEADS_ERASURE_RECOVER, LEADS_ERASURE_CLAIM, LEADS_ERASURE_DONE, LEADS_ERASURE_FAIL };
 })();
 
 // integrations/windmill/leads/lib/run-leads.ts

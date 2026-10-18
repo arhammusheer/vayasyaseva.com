@@ -32,7 +32,7 @@
         "minLength": 10,
         "description": "Phone number with country/area code",
         "requiredMessage": "Valid phone number is required",
-        "example": "+91 72920 14101"
+        "example": "+91 98765 43210"
       },
       "email": {
         "type": "string",

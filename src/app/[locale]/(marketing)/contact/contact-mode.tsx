@@ -2,6 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { ContactForm } from "./contact-form";
+import { HEADINGS, type Mode } from "./contact-headings";
 
 /**
  * ?type=assessment and ?type=compliance: variants of one static page
@@ -11,18 +12,10 @@ import { ContactForm } from "./contact-form";
  * the server made every "Request a crew" click wait for a fresh render
  * (18 Oct 2026).
  */
-export type Mode = "crew" | "assessment" | "compliance";
-
 export function useContactMode(): Mode {
   const type = useSearchParams().get("type");
   return type === "assessment" ? "assessment" : type === "compliance" ? "compliance" : "crew";
 }
-
-export const HEADINGS: Record<Mode, string> = {
-  crew: "Request a crew.",
-  assessment: "Request a site assessment.",
-  compliance: "Get compliance help.",
-};
 
 /** The H1, and the compliance variant's extra line. */
 export function ContactHeading() {

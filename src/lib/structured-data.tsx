@@ -8,6 +8,7 @@ import { MARKET_PLACES, type SchemaPlace } from "@/markets/schema-org";
 import { formatDate, type WageSource, type WageState } from "@/content/wages";
 import type { Guide } from "@/content/guides";
 import type { GuideSource } from "@/content/guides/sources";
+import type { StatutorySource } from "@/content/statutory";
 
 const BASE_URL = "https://www.vayasyaseva.com";
 const ORG_ID = `${BASE_URL}/#organization`;
@@ -77,7 +78,7 @@ const applyAction = {
     },
     {
       "@type": "EntryPoint",
-      urlTemplate: `${BASE_URL}/jobs#name={name}&phone={phone}&work={work}&experience={experience}&location={location}&start={start}&about={about}`,
+      urlTemplate: `${BASE_URL}/en-in/jobs/apply?work={work}&experience={experience}&education={education}&shift={shift}&start={start}&area={area}#name={name}&phone={phone}`,
       inLanguage: ["en-IN", "hi-IN", "hi-Latn-IN"],
     },
   ],
@@ -408,6 +409,53 @@ function guideCitation(source: GuideSource) {
         inLanguage: source.language === "hi" ? "hi-IN" : "en-IN",
         ...(source.url && { url: source.url }),
       };
+}
+
+/**
+ * A reference topic page (/epf, /bonus, /gratuity…): WebPage + Article dated
+ * by the visible "Updated" line and citing the documents it lists. The topic,
+ * not the company, is what the page is about, so no `about: Organization`.
+ */
+export function topicSchema(page: { url: string; headline: string; description: string; checked: string; sources: StatutorySource[] }) {
+  const url = pageUrl(page.url);
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${url}#webpage`,
+        name: page.headline,
+        description: page.description,
+        url,
+        isPartOf: { "@id": SITE_ID },
+        publisher: { "@id": ORG_ID },
+        inLanguage: "en-IN",
+        dateModified: page.checked,
+        mainEntity: { "@id": `${url}#article` },
+      },
+      {
+        "@type": "Article",
+        "@id": `${url}#article`,
+        headline: page.headline,
+        description: page.description,
+        url,
+        mainEntityOfPage: { "@id": `${url}#webpage` },
+        inLanguage: "en-IN",
+        dateModified: page.checked,
+        author: { "@id": ORG_ID },
+        publisher: { "@id": ORG_ID },
+        isAccessibleForFree: true,
+        citation: page.sources.map((source) => ({
+          "@type": "Legislation",
+          name: source.title,
+          legislationIdentifier: source.number,
+          legislationDate: source.date,
+          legislationPassedBy: { "@type": "GovernmentOrganization", name: source.authority },
+          url: source.url,
+        })),
+      },
+    ],
+  };
 }
 
 /**

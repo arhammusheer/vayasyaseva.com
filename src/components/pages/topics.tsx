@@ -14,7 +14,8 @@ import { headlineTable, wageStates } from "@/content/wages";
 import { wageStatePath } from "@/content/registry/identifiers";
 import { karnatakaPtTopic, professionalTaxTopic, ptStates } from "@/content/topics/professional-tax";
 import type { TopicPage } from "@/content/topics/types";
-import { JsonLd, faqSchema, webPageSchema } from "@/lib/structured-data";
+import { JsonLd, faqSchema, topicSchema } from "@/lib/structured-data";
+import { statutorySources } from "@/content/statutory";
 import { localePath } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
 
@@ -32,7 +33,15 @@ export function topicMetadata(topic: TopicPage) {
 function Schema({ topic }: { topic: TopicPage }) {
   return (
     <>
-      <JsonLd data={webPageSchema({ name: topic.title, description: topic.description, url: localePath(topic.path, "en-IN") })} />
+      <JsonLd
+        data={topicSchema({
+          headline: topic.title,
+          description: topic.description,
+          url: localePath(topic.path, "en-IN"),
+          checked: topic.checked,
+          sources: topic.sources.flatMap((id) => statutorySources.filter((s) => s.id === id)),
+        })}
+      />
       <JsonLd data={faqSchema(topic.faqs)} />
     </>
   );

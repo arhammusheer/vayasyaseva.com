@@ -1,7 +1,8 @@
 {
   "$comment": "Primary sources the daily compliance monitor watches (PLAN section 11; owner direction 16 Oct 2026). Per state: the wage pages' cited documents come from src/content/wages/<state>.json automatically; list here the department pages where a new wage notification would first appear (topic wages, the default) and the sources for that state's Professional Tax (pt), Labour Welfare Fund (lwf) and contract labour licence (licence). `national` holds EPF (epf), ESIC (esic) and the labour codes (codes). Listings are compared by the documents they link (`match`, a case-insensitive regex on the link text or path, keeps only relevant links); pages are compared by the lines of text that match `match`; documents by their SHA-256. Every document src/content/statutory.ts cites must be watched here (coverageProblems). See docs/wage-monitor.md.",
   "plainUserAgentHosts": [
-    "www.labour.gov.in"
+    "www.labour.gov.in",
+    "ascent-hr.com"
   ],
   "states": {
     "uttarakhand": {

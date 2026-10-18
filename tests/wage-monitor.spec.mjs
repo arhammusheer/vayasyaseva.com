@@ -618,6 +618,16 @@ test('a lead page may show nothing on a state, and is watched once per state', a
   assert.deepEqual(run.events, []);
 });
 
+test('an empty lead page is a failed load, not every line gone', async () => {
+  const lead = { kind: 'page', url: 'https://firm.example/posts/', name: 'Lead', match: 'uttar pradesh', topic: 'wages', allowEmpty: true, state: 'uttar-pradesh', stateName: 'Uttar Pradesh' };
+  const page = (html) => async () => ({ ok: true, status: 200, contentType: 'text/html', body: Buffer.from(html) });
+  const day1 = await runMonitor({ targets: [lead], previous: null, fetcher: page('<p>Minimum wages: Uttar Pradesh, October 2026</p>'), now: at('2026-10-17') });
+  const day2 = await runMonitor({ targets: [lead], previous: day1.state, fetcher: page(''), now: at('2026-10-18') });
+  assert.equal(day2.results[0].outcome, 'failed');
+  assert.match(day2.results[0].detail, /came back empty/);
+  assert.deepEqual(day2.events, []);
+});
+
 test('R2 requests are signed as AWS documents it (SigV4 GET Object example)', async () => {
   const { signRequest } = await import('../scripts/wage-monitor/r2.mjs');
   const auth = signRequest({

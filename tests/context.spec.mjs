@@ -209,6 +209,9 @@ test("boot script: self-contained, runs before paint and sets the attributes", (
       sessionStorage: { getItem: (k) => store[k] ?? null, setItem: (k, v) => (store[k] = v) },
       localStorage: { getItem: () => null },
       URLSearchParams,
+      // A fixed draw above the holdout share: with Math.random() about one
+      // run in ten fell in the holdout and lost its inferred sides.
+      Math: Object.assign(Object.create(Math), { random: () => HOLDOUT_SHARE + 0.01 }),
     };
     sandbox.window = sandbox;
     vm.createContext(sandbox);

@@ -4364,3 +4364,17 @@ a:hover > svg {
 .lwf-facts-wide {
   max-width: 820px;
 }
+/* Reference topic pages (EPF, ESIC, Professional Tax): wider prose for the fact rows and tables. */
+.lwf-wide {
+  max-width: 820px;
+}
+.topic-sources {
+  display: grid;
+  gap: 12px;
+  max-width: 820px;
+  padding-left: 1.25rem;
+  list-style: decimal;
+}
+.topic-sources li {
+  color: var(--muted-foreground);
+}

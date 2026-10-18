@@ -27,5 +27,8 @@ export const BREADCRUMB_NAMES: Readonly<Record<string, { "en-IN": string } & Par
   "/locations/dehradun": { "en-IN": "Dehradun" },
   "/minimum-wages": { "en-IN": "Minimum wages", "hi-IN": "न्यूनतम मजदूरी" },
   "/labour-welfare-fund": { "en-IN": "Labour Welfare Fund" },
+  "/epf": { "en-IN": "EPF" },
+  "/esic": { "en-IN": "ESIC" },
+  "/professional-tax": { "en-IN": "Professional Tax" },
   "/jobs": { "en-IN": "Jobs", "hi-IN": "नौकरी", "hi-Latn-IN": "Jobs", "pa-IN": "ਨੌਕਰੀਆਂ", "kn-IN": "ಉದ್ಯೋಗಗಳು" },
 };

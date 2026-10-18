@@ -38,14 +38,25 @@ const picked = (a: Answers, step: string, value: string) => a[step]?.includes(va
  * - "decision": the decided market's areas, then every other market in
  *   place of "outside", so a wrong guess never files the person as "other".
  * - "ask": which market, in MARKET_ORDER, "Somewhere else" last.
+ * `first`: markets to list first among the market answers, in order (the
+ * visitor context's markets when torn between two, then nearby markets).
  */
 export type AreaSource = "page" | "link" | "decision" | "ask";
 // The answers and their order: src/markets/areas.ts (from rules' AREA_CLUSTERS).
 const MARKET_AREAS = marketAreaAnswers();
 
-export function areaOptions(cluster: string | null | undefined, source: AreaSource = cluster ? "page" : "ask"): readonly string[] {
+/** Market answers with `first`'s markets moved to the front, in its order. */
+const marketsFirst = (ids: readonly string[], first: readonly string[]) => {
+  const rank = (id: string) => {
+    const i = first.indexOf(areaFilesUnder(id) ?? "");
+    return i < 0 ? first.length : i;
+  };
+  return [...ids].sort((a, b) => rank(a) - rank(b));
+};
+
+export function areaOptions(cluster: string | null | undefined, source: AreaSource = cluster ? "page" : "ask", first: readonly string[] = []): readonly string[] {
   const own = formAreas(cluster);
-  if (!own || source === "ask") return MARKET_AREAS;
+  if (!own || source === "ask") return marketsFirst(MARKET_AREAS, first);
   if (source !== "decision") return own;
   // Every answer but "outside" (one that files under no market).
   const local = own.filter((id) => areaFilesUnder(id) !== null);
@@ -54,7 +65,7 @@ export function areaOptions(cluster: string | null | undefined, source: AreaSour
     const market = areaFilesUnder(id);
     return market === null || !covered.has(market);
   });
-  return [...local, ...others];
+  return [...local, ...marketsFirst(others, first)];
 }
 
 /** The questions, in order. Follow-ups appear only for the work chosen. */

@@ -1,7 +1,7 @@
 // What the market tables decide today, as one table of inputs and outputs
 // (tests/fixtures/market-behaviour.json, pinned by tests/markets.spec.mjs).
 // A refactor must leave it unchanged; a change that means to move a decision
-// (and bumps MODEL_VERSION in src/lib/intent/model.ts) rewrites it on purpose:
+// (and bumps CONTEXT_VERSION in src/context/weights.ts) rewrites it on purpose:
 //   node scripts/write-behaviour-snapshots.mjs
 import { join } from "node:path";
 import { importTs, root } from "./register-ts.mjs";
@@ -16,17 +16,16 @@ const SOURCES = ["page", "link", "decision", "ask"];
 const v = (x) => (x === undefined ? null : x);
 
 export async function marketBehaviour() {
-  const model = await importTs("src/lib/intent/model.ts");
   const rank = await importTs("src/lib/language-rank.ts");
   const { areaOptions } = await importTs("src/content/pages/quick-apply.ts");
   const { crewPrefill, KNOWN_PLACES } = await importTs("src/lib/crew-request.ts");
-  const surfaces = await importTs("src/lib/intent/surfaces.ts");
+  const surfaces = await importTs("src/context/surfaces.ts");
   const { clusters } = await importTs("src/content/registry/index.ts");
   const markets = await importTs("src/markets/index.ts");
   const { MARKET_LABELS } = await importTs("src/markets/labels.ts");
   const { CLUSTER_IDS, LOCALE_TAGS } = await importTs("src/content/registry/identifiers.ts");
 
-  const words = [...new Set(model.PLACES.flatMap((p) => p.words))].sort();
+  const words = [...new Set(markets.PLACE_GROUPS.flatMap((p) => p.words))].sort();
   // Ad-tag spellings: the words (one vocabulary for places and tags since
   // model v3), campaign-style variants, multi-word words written with `_`
   // and `-`, and tags that must name no market or several.
@@ -41,20 +40,20 @@ export async function marketBehaviour() {
 
   const table = {
     tables: {
-      MARKET_ORDER: model.MARKET_ORDER,
-      REGION_CLUSTERS: model.REGION_CLUSTERS,
-      SITE_STATE_CLUSTERS: model.SITE_STATE_CLUSTERS,
-      CLUSTER_STATES: model.CLUSTER_STATES,
+      MARKET_ORDER: markets.MARKET_IDS,
+      REGION_CLUSTERS: markets.REGION_MARKETS,
+      SITE_STATE_CLUSTERS: markets.SITE_STATE_MARKETS,
+      CLUSTER_STATES: markets.MARKET_STATES,
     },
-    placeState: Object.fromEntries(words.map((w) => [w, v(model.placeState(w))])),
+    placeState: Object.fromEntries(words.map((w) => [w, v(markets.stateForPlace(w))])),
     geoCluster: Object.fromEntries(
-      REGIONS.flatMap((r) => [[`${r}|`, v(model.geoCluster(r))], ...words.map((w) => [`${r}|${w}`, v(model.geoCluster(r, w))])]),
+      REGIONS.flatMap((r) => [[`${r}|`, v(markets.geoMarket(r))], ...words.map((w) => [`${r}|${w}`, v(markets.geoMarket(r, w))])]),
     ),
     siteCluster: Object.fromEntries([
-      ...REGIONS.flatMap((s) => words.map((w) => [`${s}|${w}|`, v(model.siteCluster(s, w))])),
-      ...REGIONS.flatMap((s) => PAGE_CLUSTERS.map((p) => [`${s}||${p}`, v(model.siteCluster(s, null, p))])),
+      ...REGIONS.flatMap((s) => words.map((w) => [`${s}|${w}|`, v(markets.siteMarket(s, w))])),
+      ...REGIONS.flatMap((s) => PAGE_CLUSTERS.map((p) => [`${s}||${p}`, v(markets.siteMarket(s, null, p))])),
     ]),
-    clustersInUtm: Object.fromEntries(adTags.map((t) => [t, model.clustersInUtm([t])])),
+    clustersInUtm: Object.fromEntries(adTags.map((t) => [t, markets.marketsInAdTags([t])])),
     urlIntent: Object.fromEntries([
       ...[...CLUSTER_IDS, "mumbai"].map((c) => [`?cluster=${c}`, v(rank.urlIntent(new URLSearchParams({ cluster: c })))]),
       ...adTags.map((t) => [`?utm_campaign=${t}`, v(rank.urlIntent(new URLSearchParams({ utm_campaign: t })))]),

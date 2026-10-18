@@ -4236,3 +4236,73 @@ a:hover > svg {
   color: var(--muted-foreground);
   line-height: 1.5;
 }
+
+/* Visitor context (docs/visitor-context.md). Surfaces render every candidate;
+   the generated rules in src/context/css.ts (inlined in <head>) hide or order
+   them from the <html data-ctx-*> attributes before paint. The wrappers take
+   no box of their own, so the bar's layout is unchanged. */
+.ctx-slot,
+.ctx-door,
+.ctx-apply {
+  display: contents;
+}
+.ctx-j,
+.ctx-b {
+  display: flex;
+  flex-direction: column;
+}
+
+/* "Jobs in Haridwar · More places" on jobs pages with no market of their own. */
+.jobs-in {
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+.jobs-in-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 16px;
+}
+.jobs-in-label {
+  color: var(--muted-foreground);
+}
+.jobs-in-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--foreground);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: var(--border);
+  text-underline-offset: 5px;
+}
+.jobs-in-chip:hover {
+  color: var(--gold-700);
+}
+.jobs-in-chip:focus-visible {
+  outline: 2px solid var(--gold-700);
+  outline-offset: 2px;
+}
+.jobs-in-more summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--muted-foreground);
+  cursor: pointer;
+}
+.jobs-in-more ul {
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+}
+.jobs-in-more li a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+}
+.jobs-in-more li a:hover {
+  color: var(--gold-700);
+}

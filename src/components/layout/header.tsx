@@ -28,21 +28,34 @@ import {
 import { clusterById } from "@/content/registry";
 import { LOCATIONS_PATH, jobsHubPath, type ClusterId } from "@/content/registry/identifiers";
 import { track } from "@/lib/measurement/gateway";
-import { useAreaDecision } from "@/lib/intent/use-area";
-import { splitLanguages, useLanguageOrder } from "@/lib/language-order";
-import { noteChoice } from "@/lib/intent/store";
-import { MODEL_VERSION } from "@/lib/intent/model";
-import { reportChoice } from "@/lib/intent/report";
-import { JOBS_AREA_LABEL, businessLabel, jobsAreaHref, orderedJobMarkets } from "@/lib/intent/surfaces";
+import { useVisitorContext } from "@/context/use-context";
+import { currentContext, noteAudience, notePick } from "@/context/runtime";
+import { contextMode, reportChoice } from "@/context/report";
+import { CONTEXT_VERSION } from "@/context/weights";
+import { LOCALE_CODES } from "@/context/tables";
+import { JOBS_AREA_LABEL, businessLabel, businessMarkets, jobMarkets, jobsAreaHref, orderedJobMarkets } from "@/context/surfaces";
 import { marketName } from "@/markets/labels";
 
-/** A header link that names an area: clicking it records the visitor's pick. */
 /**
  * A link to one market. `pick`: its label names the market, so following it
- * is an explicit pick (remembered, src/lib/intent/store.ts). An unlabelled
+ * is an explicit pick (remembered, src/context/runtime.ts). An unlabelled
  * door ("Jobs") is not; it is still reported, as surface "jobs-door".
+ * `slot`: which candidate it is in a surface the visitor context's CSS
+ * chooses from (src/context/css.ts): the business area slot ("" for
+ * Locations, "1", "2") or the jobs door ("none", "one", "l1", "l2").
+ * `audience`: a door that says who the visitor is.
  */
-type AreaLink = NavLink & { neutral?: boolean; cluster?: string; surface?: "business" | "jobs" | "jobs-door"; pick?: boolean; position?: number };
+type AreaLink = NavLink & {
+  neutral?: boolean;
+  cluster?: string;
+  surface?: "business" | "jobs" | "jobs-door";
+  pick?: boolean;
+  position?: number;
+  slot?: "" | "1" | "2" | "none" | "one" | "l1" | "l2";
+  audience?: "jobs" | "business";
+};
+const SLOT_KINDS = new Set(["", "1", "2"]);
+const DOOR_KINDS = new Set(["none", "one", "l1", "l2"]);
 
 /**
  * "Request a crew" on business pages, in the page's language. The Hindi and
@@ -81,7 +94,7 @@ export type HeaderDoor = "business" | "jobs" | "reference";
 export type HeaderPhone = { display: string; href: string };
 
 /** A menu row: one link, or several on one line, with an optional lead-in. */
-type SheetRow = { links: (NavLink & { neutral?: boolean })[]; lead?: string; lang?: string };
+type SheetRow = { links: AreaLink[]; lead?: string; lang?: string };
 
 export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?: HeaderPhone }) {
   const pathname = usePathname();
@@ -186,20 +199,20 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
     };
   }, [pathname]);
   // The page's other languages: the bar holds as many as its regional set,
-  // reordered for the visitor after load (src/lib/language-order.ts); the
-  // rest under "More" (the menu on phones lists them all).
+  // the rest under "More" (the menu on phones lists them all). Every link
+  // is in both, and the visitor context's CSS (src/context/css.ts) shows
+  // them in the visitor's order before paint; without it, the fixed split.
   const languages = languageLinks(pathname);
+  const quickCount = languages.filter((l) => !l.more).length;
   // The business and reference headers are English; links follow the
   // page's language where they can. The jobs header is in the page's language.
   const split = splitLocalePath(pathname);
   const pageLocale = split.locale ?? FALLBACK_LOCALE;
   const path = split.path;
-  // Which area(s) to show (src/lib/intent): the no-signal default until
-  // the page has loaded, then the visitor's intent, or both when their
-  // region and intent disagree with no clear winner.
-  const area = useAreaDecision(path);
-  const languageOrder = useLanguageOrder(path, area);
-  const { quick, more } = splitLanguages(languages, languageOrder, pageLocale);
+  // The visitor context (src/context): read at click time and for the menu
+  // sheet, which renders when opened. Surfaces visible on load carry every
+  // candidate and let CSS choose, so they never change after hydration.
+  const ctx = useVisitorContext();
   const isHome = path === "/";
   const view: HeaderDoor = door === "reference" && LEGAL.has(path) ? "business" : door;
   const isJobs = view === "jobs";
@@ -216,26 +229,55 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
   const jobsLocale = useJobsLocale(doorLocale);
   const doorLang = doorLocale === "en-IN" ? undefined : doorLocale;
   const work = WORK_DOOR[doorLocale];
-  const jobsDoors: AreaLink[] = area.jobs.length
-    ? area.jobs.map((id) => ({
-        href: jobsAreaHref(id, jobsLocale),
-        label: area.jobs.length > 1 ? (JOBS_AREA_LABEL[doorLocale][id] ?? work.label) : work.label,
-        lang: doorLang,
-        neutral: true,
-        cluster: id,
-        surface: area.jobs.length > 1 ? ("jobs" as const) : ("jobs-door" as const),
-        pick: area.jobs.length > 1,
-      }))
-    : [{ href: jobsDoorHref(jobsLocale), label: work.label, lang: doorLang, neutral: true }];
-  // The business bar's area slot: the buyer page(s) of the decided area, or
-  // Locations (every market) when nothing is decided.
-  const areaLinks: AreaLink[] = area.business
-    .map((id) => ({ id, hub: clusterById(id)?.buyerHub }))
-    .filter((a): a is { id: string; hub: string } => Boolean(a.hub))
-    .map(({ id, hub }, i) => ({ href: hub, label: businessLabel(id), cluster: id, surface: "business" as const, pick: true, position: i + 1 }));
-  const businessLinks: AreaLink[] = BUSINESS_LINKS.flatMap((l) => (l.href === LOCATIONS_PATH && areaLinks.length ? areaLinks : [l]));
-  // Every market's jobs hub in the jobs menu, the decided ones first.
-  const jobsHubs = orderedJobMarkets(area.jobs).map((id, i) => ({
+  const jobIds = jobMarkets();
+  const jobsDoorFor = (id: string, slot: AreaLink["slot"]): AreaLink => ({
+    href: jobsAreaHref(id, jobsLocale),
+    label: slot === "one" ? work.label : (JOBS_AREA_LABEL[doorLocale][id] ?? work.label),
+    lang: doorLang,
+    neutral: true,
+    cluster: id,
+    surface: slot === "one" ? "jobs-door" : "jobs",
+    pick: slot !== "one",
+    slot,
+    position: slot === "l2" ? 2 : 1,
+  });
+  // Every candidate door: /jobs, each hub unlabelled, each hub labelled first or second.
+  const jobsDoorSlots: AreaLink[] = [
+    { href: jobsDoorHref(jobsLocale), label: work.label, lang: doorLang, neutral: true, slot: "none", audience: "jobs" },
+    ...jobIds.map((id) => jobsDoorFor(id, "one")),
+    ...jobIds.map((id) => jobsDoorFor(id, "l1")),
+    ...jobIds.map((id) => jobsDoorFor(id, "l2")),
+  ];
+  // The menu sheet's doors, from the context at the time it opens.
+  const decidedJobs = ctx?.sides.jobs ?? [];
+  const sure = ctx?.region.band === "stated" || ctx?.region.band === "confident";
+  const jobsDoors: AreaLink[] = !decidedJobs.length
+    ? [jobsDoorSlots[0]]
+    : decidedJobs.length === 1 && sure
+      ? [jobsDoorFor(decidedJobs[0], "one")]
+      : decidedJobs.map((id, i) => jobsDoorFor(id, i ? "l2" : "l1"));
+  // The business bar's area slot: "Locations" (every market) when nothing
+  // is decided, else the decided markets' buyer pages, first and second.
+  const buyerFor = (id: string, slot: "1" | "2"): AreaLink => ({
+    href: clusterById(id)?.buyerHub ?? LOCATIONS_PATH,
+    label: businessLabel(id),
+    cluster: id,
+    surface: "business",
+    pick: true,
+    position: slot === "1" ? 1 : 2,
+    slot,
+  });
+  const businessIds = businessMarkets();
+  const locationsLink = BUSINESS_LINKS.find((l) => l.href === LOCATIONS_PATH)!;
+  const areaSlot: AreaLink[] = [
+    { ...locationsLink, slot: "" },
+    ...businessIds.map((id) => buyerFor(id, "1")),
+    ...businessIds.map((id) => buyerFor(id, "2")),
+  ];
+  const sheetAreaLinks: AreaLink[] = (ctx?.sides.business ?? []).filter((id) => clusterById(id)?.buyerHub).map((id, i) => buyerFor(id, i ? "2" : "1"));
+  const sheetBusinessLinks: AreaLink[] = BUSINESS_LINKS.flatMap((l) => (l.href === LOCATIONS_PATH && sheetAreaLinks.length ? sheetAreaLinks : [l]));
+  // Every market's jobs hub in the jobs menu: decided first, then nearby.
+  const jobsHubs = orderedJobMarkets(decidedJobs, ctx?.region.nearby).map((id, i) => ({
     href: nearestLocalePath(jobsHubPath(id as Exclude<ClusterId, "other">), pageLocale),
     label: JOBS_AREA_LABEL[pageLocale][id] ?? marketName(id, pageLocale) ?? id,
     cluster: id,
@@ -244,11 +286,12 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
     position: i + 1,
   }));
   // Apply: the decided market's hub (its form), else the form that asks
-  // which market (/jobs/apply).
-  const applyHref = area.jobs.length ? jobsHubs[0].href : nearestLocalePath("/jobs/apply", pageLocale);
-  const businessDoor = { href: "/", label: JOBS_NAV[doorLocale].business, lang: doorLang };
+  // which market (/jobs/apply). Every candidate is rendered; CSS picks one.
+  const applyFallback = nearestLocalePath("/jobs/apply", pageLocale);
+  const applyHub = (id: string) => nearestLocalePath(jobsHubPath(id as Exclude<ClusterId, "other">), pageLocale);
+  const businessDoor: AreaLink = { href: "/", label: JOBS_NAV[doorLocale].business, lang: doorLang, audience: "business" };
   const jobsHome = nearestLocalePath("/jobs", pageLocale);
-  const nav: { bar: NavLink[]; doors: SheetRow["links"]; sheet: SheetRow[]; more: SheetRow[]; cta?: NavLink } =
+  const nav: { bar: AreaLink[]; doors: AreaLink[]; sheet: SheetRow[]; more: SheetRow[]; cta?: NavLink } =
     view === "jobs"
       ? {
           // "All jobs" is the logo; "No fee" is in the menu, the footer and
@@ -264,19 +307,19 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
             { links: [{ href: nearestLocalePath("/jobs/fees-and-fraud", pageLocale), label: t.fee }] },
             { links: [businessDoor] },
           ],
-          cta: { href: applyHref, label: t.apply },
+          cta: { href: applyFallback, label: t.apply },
         }
       : view === "reference"
         ? {
             bar: referenceLinks().slice(0, 1),
-            doors: [businessDoor, ...jobsDoors],
+            doors: [businessDoor, ...jobsDoorSlots],
             sheet: referenceLinks().map((l) => ({ links: [l] })),
             more: [{ links: [businessDoor] }, { links: jobsDoors }],
           }
         : {
-            bar: businessLinks,
-            doors: jobsDoors,
-            sheet: businessLinks.map((l) => ({ links: [l] })),
+            bar: BUSINESS_LINKS.flatMap((l) => (l.href === LOCATIONS_PATH ? areaSlot : [l])),
+            doors: jobsDoorSlots,
+            sheet: sheetBusinessLinks.map((l) => ({ links: [l] })),
             // Setu login stays here for returning clients: the Setu page's
             // traffic is mostly people looking for it.
             more: [
@@ -290,8 +333,9 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
   // with the form on it (#apply: market, role and hub pages) scrolls to that
   // form instead, keeping the role it pre-selects. /jobs/apply is left for
   // agent and legacy links.
-  const applyHere = (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (!isJobs || href !== applyHref) return;
+  const applyHere = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    noteAudience("jobs");
+    if (!isJobs) return;
     const form = document.getElementById("apply");
     if (!form) return;
     stayOnPage(event);
@@ -301,50 +345,82 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
   };
   // One link in the bar or the menu: external, neutral (href already
   // localized, so no locale added), or an in-site link through the i18n Link.
-  // An area link remembers the pick and reports it (area_nav_click).
+  // An area link remembers the pick and reports it (area_nav_click), beside
+  // what the context had decided at that moment.
   const picked = (item: AreaLink, then?: () => void) => () => {
+    if (item.audience) noteAudience(item.audience);
     if (item.cluster) {
+      const now = currentContext();
+      const decided = (item.surface === "business" ? now?.sides.business : now?.sides.jobs) ?? [];
+      const band = now?.region.band ?? "unknown";
+      if (item.surface !== "business") noteAudience("jobs");
       if (item.pick) {
-        noteChoice(item.cluster);
-        reportChoice(item.cluster, item.surface === "business" ? area.business : area.jobs, item.surface ?? "business");
+        notePick("link", item.cluster);
+        reportChoice(item.cluster, decided, item.surface ?? "business", band);
       }
-      // What the visitor followed, beside what the site had decided, so the
-      // decision's accuracy can be measured (docs/area-intent.md).
-      const decided = item.surface === "business" ? area.business : area.jobs;
       track("area_nav_click", {
         cluster: item.cluster,
         surface: item.surface ?? "business",
-        mode: area.mode,
+        mode: now ? contextMode(now) : "default",
+        band,
         decided: decided.join("+") || "none",
         is_decided: decided.includes(item.cluster) ? "yes" : "no",
         position: item.position ?? 0,
         explicit: item.pick ? "yes" : "no",
-        v: MODEL_VERSION,
+        v: CONTEXT_VERSION,
       });
     }
     then?.();
   };
-  const navLink = (item: AreaLink, extra: { className?: string; onClick?: () => void } = {}) =>
-    item.href.startsWith("http") ? (
-      <a key={item.href} href={item.href} className={extra.className}>
+  const navLink = (item: AreaLink, extra: { className?: string; onClick?: () => void } = {}) => {
+    const data = {
+      "data-m": item.slot !== undefined ? (item.cluster ?? "") : undefined,
+      "data-slot": item.slot !== undefined && SLOT_KINDS.has(item.slot) ? item.slot : undefined,
+      "data-door": item.slot !== undefined && DOOR_KINDS.has(item.slot) ? item.slot : undefined,
+    };
+    const key = `${item.href}|${item.slot ?? ""}`;
+    return item.href.startsWith("http") ? (
+      <a key={key} href={item.href} className={extra.className}>
         {item.label}
       </a>
     ) : item.neutral ? (
-      <NextLink key={item.href} href={item.href} lang={item.lang} className={extra.className} onClick={picked(item, extra.onClick)}>
+      <NextLink key={key} href={item.href} lang={item.lang} className={extra.className} onClick={picked(item, extra.onClick)} {...data}>
         {item.label}
       </NextLink>
     ) : (
       <Link
-        key={item.href}
+        key={key}
         href={item.href}
         lang={item.lang}
         className={extra.className}
         onClick={picked(item, extra.onClick)}
         aria-current={current(item.href)}
+        {...data}
       >
         {item.label}
       </Link>
     );
+  };
+  // Candidates of one surface sit together in a wrapper the context's CSS
+  // addresses (display: contents, so the bar's layout is unchanged).
+  const grouped = (items: AreaLink[], kinds: Set<string>, className: string) => {
+    const runs: (AreaLink | AreaLink[])[] = [];
+    for (const item of items) {
+      const member = item.slot !== undefined && kinds.has(item.slot);
+      const last = runs[runs.length - 1];
+      if (member && Array.isArray(last)) last.push(item);
+      else runs.push(member ? [item] : item);
+    }
+    return runs.map((run, i) =>
+      Array.isArray(run) ? (
+        <span key={`${className}-${i}`} className={className}>
+          {run.map((item) => navLink(item))}
+        </span>
+      ) : (
+        navLink(run)
+      ),
+    );
+  };
   const close = () => setOpen(false);
   return (
     <header
@@ -377,23 +453,23 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
         </Link>
         {nav.bar.length > 0 && (
           <nav aria-label="Main navigation" className="desktop-nav">
-            {nav.bar.map((item) => navLink(item))}
+            {grouped(nav.bar, SLOT_KINDS, "ctx-slot")}
           </nav>
         )}
         <div className="header-end">
           {languages.length > 0 && (
-            <nav aria-label={isJobs ? t.language : "Language"} className="header-lang">
-              {quick.map((l) => (
-                <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang} title={l.hint}>
+            <nav aria-label={isJobs ? t.language : "Language"} className={`header-lang ctx-lang-bar lang-k${quickCount}`}>
+              {languages.map((l) => (
+                <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang} title={l.hint} data-l={LOCALE_CODES[l.lang]} data-fixed={l.more ? "m" : "q"}>
                   {l.label}
                 </Link>
               ))}
-              {more.length > 0 && (
-                <details className="header-lang-more" ref={moreRef}>
+              {languages.length > quickCount && (
+                <details className="header-lang-more ctx-lang-more" ref={moreRef}>
                   <summary lang={isJobs ? pageLocale : "en-IN"}>{MORE_LABEL[isJobs ? pageLocale : "en-IN"]}</summary>
                   <div>
-                    {more.map((l) => (
-                      <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang} title={l.hint}>
+                    {languages.map((l) => (
+                      <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang} title={l.hint} data-l={LOCALE_CODES[l.lang]} data-fixed={l.more ? "m" : "q"}>
                         {l.label}
                       </Link>
                     ))}
@@ -403,19 +479,37 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
             </nav>
           )}
           <nav aria-label={isJobs ? t.sections : "Site sections"} className="header-doors">
-            {nav.doors.map((d) => navLink(d))}
+            {grouped(nav.doors, DOOR_KINDS, "ctx-door")}
           </nav>
           {showPhone && (
             <a className="header-phone" href={phone.href}>
               {phone.display}
             </a>
           )}
-          {nav.cta && (
+          {nav.cta && isJobs && (
+            // Apply: /jobs/apply and every market's hub; the context's CSS shows one.
+            <span className="ctx-apply">
+              {[{ id: "", href: applyFallback }, ...jobIds.map((id) => ({ id, href: applyHub(id) }))].map(({ id, href }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="header-contact"
+                  lang={nav.cta!.lang}
+                  data-m={id}
+                  onClick={applyHere}
+                  aria-current={current(href)}
+                >
+                  {nav.cta!.label} <ArrowUpRight size={17} aria-hidden="true" />
+                </Link>
+              ))}
+            </span>
+          )}
+          {nav.cta && !isJobs && (
             <Link
               href={nav.cta.href}
               className="header-contact"
               lang={nav.cta.lang}
-              onClick={(event) => applyHere(event, nav.cta!.href)}
+              onClick={() => noteAudience("business")}
               aria-current={current(nav.cta.href)}
             >
               {nav.cta.label} <ArrowUpRight size={17} aria-hidden="true" />

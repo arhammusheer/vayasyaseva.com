@@ -168,8 +168,8 @@ test("no personal property goes to an analytics sink, except the documented draf
   assert.ok(!Object.values(catalogue.SESSION_PROPS).includes("personal"));
 });
 
-test("every event the area-intent doc names resolves in the catalogue", () => {
-  const doc = readFileSync(join(root, "docs/area-intent.md"), "utf8");
+test("every event the visitor-context doc names resolves in the catalogue", () => {
+  const doc = readFileSync(join(root, "docs/visitor-context.md"), "utf8");
   const board = doc.slice(doc.indexOf("## The Umami board"), doc.indexOf("## Storage and privacy"));
   const names = new Set();
   for (const row of board.split("\n").filter((l) => l.startsWith("|") && !l.startsWith("|---") && !l.startsWith("| Board"))) {
@@ -179,7 +179,7 @@ test("every event the area-intent doc names resolves in the catalogue", () => {
   assert.ok(names.size >= 15, `found ${names.size} board events`);
   for (const name of names) {
     const expanded = name.includes("<market>") ? MARKET_IDS.map((m) => name.replace("<market>", eventKey(m))) : [name];
-    for (const wire of expanded) assert.ok(catalogue.resolveEvent(wire)?.listed, `${wire} (docs/area-intent.md) is not in the catalogue`);
+    for (const wire of expanded) assert.ok(catalogue.resolveEvent(wire)?.listed, `${wire} (docs/visitor-context.md) is not in the catalogue`);
   }
 });
 

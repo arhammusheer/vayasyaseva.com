@@ -3,6 +3,7 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
 import { Section } from "@/components/layout/section";
 import { QuickApply } from "@/components/jobs/quick-apply";
+import { JobsInRow } from "@/components/jobs/jobs-in-row";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { JsonLd, webPageSchema } from "@/lib/structured-data";
 import { getJobHub, jobHubLabels } from "@/content/pages/job-hubs";
@@ -54,6 +55,7 @@ export function JobHubPage({ slug, locale }: { slug: string; locale: Locale }) {
             <p className="quick-lede">{hub.lede}</p>
           </div>
           <div id="apply" className="quick-anchor">
+            <JobsInRow locale={locale} />
             <QuickApply key={hub.slug} locale={locale} hub={hub.slug} />
           </div>
         </div>

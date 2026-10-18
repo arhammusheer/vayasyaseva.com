@@ -10,7 +10,7 @@ import { JsonLd, webPageSchema } from "@/lib/structured-data";
 import { JOB_GROUP_ROLES, jobsCopy } from "@/content/pages/jobs";
 import { jobRolePath } from "@/components/pages/job-role";
 import { localePath, locales, nearestLocalePath, type Locale } from "@/lib/i18n";
-import { orderedJobMarkets } from "@/lib/intent/surfaces";
+import { orderedJobMarkets } from "@/context/surfaces";
 import { DecidedApplyLink, MarketList, type MarketItem } from "@/components/sections/market-list";
 
 const PATH = "/jobs";
@@ -27,7 +27,7 @@ export function jobsMetadata(locale: Locale) {
 
 /**
  * A router, not a market's landing (no form, no shifts line: those are on
- * the hubs and /jobs/apply). Apply opens the visitor's market (src/lib/intent),
+ * the hubs and /jobs/apply). Apply opens the visitor's market (src/context),
  * else /jobs/apply; then every market, the visitor's first once decided
  * (alphabetical before that); then pick your work (four groups, names only,
  * each a #id the jobs menu links to) or your qualification. No FAQ: the form
@@ -36,7 +36,7 @@ export function jobsMetadata(locale: Locale) {
 export function JobsPage({ locale }: { locale: Locale }) {
   const t = jobsCopy[locale];
   const url = localePath(PATH, locale);
-  // Every market's hub in MARKET_ORDER; MarketList reorders after load.
+  // Every market's hub in MARKET_ORDER; the visitor context's CSS orders them before paint.
   const markets: MarketItem[] = orderedJobMarkets().flatMap((id) => {
     const hub = getJobCluster(id, locale);
     return hub ? [{ cluster: id, href: nearestLocalePath(`/jobs/${id}`, locale), title: jobsLinkLabel(id, locale) ?? hub.name }] : [];
@@ -56,9 +56,9 @@ export function JobsPage({ locale }: { locale: Locale }) {
             <p className="jobs-lede">{t.lede}</p>
           </div>
           <div>
-            <DecidedApplyLink path={PATH} hubs={hubs} fallback={localePath("/jobs/apply", locale)} label={t.apply} className="jobs-submit" />
+            <DecidedApplyLink hubs={hubs} fallback={localePath("/jobs/apply", locale)} label={t.apply} className="jobs-submit" />
             <p className="jobs-markets-label">{t.markets}</p>
-            <MarketList items={markets} path={PATH} side="jobs" surface="jobs-index" className="location-areas jobs-markets" />
+            <MarketList items={markets} side="jobs" surface="jobs-index" className="location-areas jobs-markets" />
           </div>
         </div>
       </section>

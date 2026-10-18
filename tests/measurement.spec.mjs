@@ -18,7 +18,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 
 const origin = process.env.MEASUREMENT_TEST_ORIGIN ?? "http://localhost:3000";
 const GOLDEN = new URL("./fixtures/measurement-golden.json", import.meta.url);
-const KEY = "vayasya-site-measurement-v8";
+const KEY = "vayasya-site-measurement-v9";
 const DAY = 864e5;
 const GCLID = "TeStClIcK-0123456789abcdef";
 const APPLY = "/en-in/jobs/apply?work=any&experience=fresher&education=12th&shift=day&start=now&area=laksar";
@@ -58,7 +58,11 @@ async function session(stored, { blockStorage = false } = {}) {
   await context.route(/connect\.facebook\.net\//, (r) => (requested.add("meta"), r.fulfill({ contentType: "application/javascript", body: "" })));
   await context.route("**/_vercel/insights/**", (r) => r.fulfill({ status: 200, body: "" }));
   await context.route("**/challenges.cloudflare.com/**", (r) => r.fulfill({ contentType: "application/javascript", body: "" }));
-  await context.route("**/api/context", (r) => r.fulfill({ json: { country: "IN", region: "UK", city: "Haridwar" } }));
+  await context.route("**/api/context", (r) => r.fulfill({ json: { country: "IN", state: "UK", market: "haridwar", level: "city" } }));
+  // Outside the visitor context's 10% holdout, so the payloads are stable (its draw is Math.random).
+  await context.addInitScript(() => {
+    Math.random = () => 0.5;
+  });
   await context.route("**/api/jobs/start", (r) => r.fulfill({ json: { ref: "VS-J-TEST01", ticket: "ticket-1", uploads: [] } }));
   await context.route("**/api/jobs/submit", (r) => (calls.push(["submit", r.request().postDataJSON()]), r.fulfill({ status: 202, json: { ref: "VS-J-TEST01" } })));
   const page = await context.newPage();

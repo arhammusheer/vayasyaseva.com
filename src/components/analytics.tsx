@@ -7,6 +7,7 @@ import { ConsentBanner } from "@/components/measurement/consent-banner";
 import { ConsentTags } from "@/components/measurement/consent-tags";
 import { safeAnalyticsPath } from "@/lib/analytics-pages";
 import { setSession, track } from "@/lib/measurement/gateway";
+import { currentContext } from "@/context/runtime";
 import { useConsent } from "@/lib/measurement/react";
 
 export { AnalyticsPreferencesButton } from "@/components/measurement/preferences-button";
@@ -43,10 +44,12 @@ export function Analytics({ gaId }: { gaId: string }) {
   const consentState = consent === "loading" ? null : (consent ?? "none");
 
   // Session properties in Umami, so any report can be filtered by language,
-  // consent and the ad campaign that brought the visit.
+  // consent, the ad campaign that brought the visit and the visitor
+  // context's holdout (src/context: 10% of sessions see the neutral site).
   useEffect(() => {
     if (!consentState) return;
-    setSession({ locale, consent: consentState, ...campaignTags() });
+    const ctx = currentContext();
+    setSession({ locale, consent: consentState, ...campaignTags(), ...(ctx ? { holdout: ctx.holdout ? "yes" : "no" } : {}) });
   }, [consentState, locale]);
 
   // How many visitors see the prompt, for the choice rate. Once per visit:

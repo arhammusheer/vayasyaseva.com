@@ -13,7 +13,7 @@ export const analyticsSummary = noticeRows();
 export const privacyContent = `
 # Privacy Policy
 
-*Last updated: 17 October 2026*
+*Last updated: 18 October 2026*
 
 ## 1. Who this notice covers
 
@@ -45,7 +45,9 @@ Our contact details are in Section 11. The Site is intended for businesses and f
 
 **Job applications from our ads.** When you click one of our Google ads, Google adds a click identifier to the link (\`gclid\`, \`gbraid\` or \`wbraid\`), which your browser keeps for that visit only, in session storage. If you then send a job application, our server tells Google Ads that the click led to an application, with the identifier, the time and our reference, and nothing else about you. This runs unless you choose "Required Only", in which case the identifier is not kept or sent.
 
-**Language choice.** If you pick a language on a page that asks which language you read (such as www.vayasyaseva.com/jobs), the Site sets a cookie named \`vspl_lang\` that holds only that language, for one year, so that page lists it first next time. It is not used for measurement or advertising and does not change the language of any page by itself. To order the choices, the Site also reads your browser's language setting and the approximate region of your connection on each visit; neither is stored. You can delete the cookie in your browser settings.
+**Language choice.** If you pick a language on a page that asks which language you read (such as www.vayasyaseva.com/jobs), the Site sets a cookie named \`vspl_lang\` that holds only that language, for one year, so that page lists it first next time. It is not used for measurement or advertising and does not change the language of any page by itself. To order the choices, the Site also reads your browser's language setting, which is not stored, and uses the places described in the next paragraph. You can delete the cookie in your browser settings.
+
+**Where you want to work or hire.** The Site lists first the places and languages most likely to suit you, such as jobs near where you live or the area your business is hiring in. To do this it uses what you choose on the Site (a place you tap, where you live on the job form, your site's location on the crew form, and whether you open the jobs or the business pages), the pages you view and any campaign tags in the link during a visit, your browser's language setting, and the approximate country, state and region of your connection. Your choices are kept in a cookie named \`vs_ctx\` for up to 90 days (30 days for where you live), the approximate location in a cookie named \`vs_geo\` until you close your browser, and the rest in your browser's session storage for that visit. This changes only which places and languages are offered first and which links lead to them, never what a page says or the language it is in; our server reads the cookies only to order the choices on a page that asks which language you read. One visit in ten is shown the standard order, so we can check that the ordering helps. How the Site decided is counted with the usage events above, without the cookies' contents. You can delete the cookies in your browser settings.
 
 ## 3. Your analytics choices {#analytics}
 

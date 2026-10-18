@@ -461,7 +461,8 @@ function ackFields(c, personId, applicationId) {
     };
 }
 async function upsertPerson(crm, c) {
-    const [existing] = await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(c.phone)));
+    const people = await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(c.phone)));
+    const existing = people.find((p) => p.personType !== "CLIENT_CONTACT") ?? people[0];
     const fields = personFields(c, existing ?? null);
     if (existing) {
         await crm.update("people", existing.id, fields);
@@ -495,6 +496,7 @@ const WORKER_FIELDS_CLEARED = {
     lastAppliedAt: null,
     lastContactAt: null,
 };
+const CLIENT_NAME_CLEARED = { firstName: "Client contact", lastName: "" };
 async function attachmentsOf(crm, field, id) {
     const live = await crm.find("attachments", eq(field, id));
     const trashed = await crm.find("attachments", `and(${eq(field, id)},deletedAt[is]:NOT_NULL)`);
@@ -522,8 +524,11 @@ async function erasePerson(crm, phone) {
             if (!clientContact || !comm.opportunityId)
                 await crm.remove("communications", comm.id);
         }
-        if (clientContact)
-            await crm.update("people", person.id, WORKER_FIELDS_CLEARED);
+        if (clientContact) {
+            const name = person.name;
+            const fromApplication = person.personType !== "CLIENT_CONTACT" || /^Applicant VS-J-/.test(name?.firstName ?? "");
+            await crm.update("people", person.id, fromApplication ? { ...WORKER_FIELDS_CLEARED, name: CLIENT_NAME_CLEARED } : WORKER_FIELDS_CLEARED);
+        }
         else {
             files += await removeAttachments(crm, "targetPersonId", person.id);
             await crm.remove("people", person.id);
@@ -624,8 +629,9 @@ async function recordLead(crm, lead) {
         const [company] = await crm.find("companies", eq("name", lead.company));
         companyId = company?.id ?? (await crm.create("companies", "Company", { name: lead.company })).id;
     }
-    const [byPhone] = await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(lead.phone)));
-    const [byEmail] = byPhone || !lead.email ? [] : await crm.find("people", eq("emails.primaryEmail", lead.email));
+    const notWorker = (people) => people.find((p) => p.personType !== "WORKER");
+    const byPhone = notWorker(await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(lead.phone))));
+    const byEmail = byPhone || !lead.email ? undefined : notWorker(await crm.find("people", eq("emails.primaryEmail", lead.email)));
     const contact = byPhone ?? byEmail;
     let personId;
     if (contact) {

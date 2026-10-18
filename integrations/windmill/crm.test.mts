@@ -275,6 +275,8 @@ test("erasure keeps a client contact who shares the phone: only the worker side 
   assert.equal(t.store.people.length, 1);
   assert.equal(t.store.people[0].personType, "CLIENT_CONTACT");
   assert.deepEqual([t.store.people[0].clusters, t.store.people[0].workRoles, t.store.people[0].workerStatus], [[], [], null]);
+  // Merged before leads got their own contact: the name came from the application, so it goes too.
+  assert.deepEqual(t.store.people[0].name, { firstName: "Client contact", lastName: "" });
   assert.equal(t.store.applications.length, 0);
   assert.deepEqual(t.store.communications.map((c) => c.externalKey), ["lead:REQ-1"]);
   assert.equal(t.store.opportunities.length, 1);
@@ -381,14 +383,38 @@ test("a replay after a write interrupted before the enquiry adds the enquiry onc
   assert.equal(t.store.communications.length, 1);
 });
 
-test("a lead from a known worker's phone reuses the person without changing their type", async () => {
+test("a lead from a known worker's phone gets its own client contact; the worker record is left as it is", async () => {
   const t = fakeTwenty();
-  t.store.people.push({ id: "w1", personType: "WORKER", phones: { primaryPhoneNumber: "9876543299" } });
+  t.store.people.push({ id: "w1", personType: "WORKER", name: { firstName: "Applicant VS-J-ABC234", lastName: "" }, phones: { primaryPhoneNumber: "9876543299" } });
   const v = checkLead(leadBody);
   if (!v.ok) return assert.fail();
   await recordLead(t.crm, v.lead);
+  assert.equal(t.store.people.length, 2);
+  const [worker, client] = t.store.people;
+  assert.deepEqual([worker.personType, worker.companyId], ["WORKER", undefined]);
+  assert.equal(client.personType, "CLIENT_CONTACT");
+  assert.equal((client.name as { firstName: string }).firstName, v.lead.name);
+  assert.equal(t.store.opportunities[0].pointOfContactId, client.id);
+});
+
+test("applicant first, enquiry second, then erasure: the applicant record and name go, the client contact stays", async () => {
+  const t = fakeTwenty();
+  const phone = "+919876543299";
+  await runSyncCrm({ query: syncDb([candidate({ phone, applicant_name: "Ravi", person_name: null })]).query, crm: t.crm });
+  const v = checkLead(leadBody);
+  if (!v.ok) return assert.fail();
+  await recordLead(t.crm, v.lead);
+  // A later application from the number still lands on the worker record.
+  await runSyncCrm({ query: syncDb([candidate({ id: "sub-2", ref: "VS-J-DEF567", phone, applicant_name: "Ravi", person_name: null })]).query, crm: t.crm });
+  assert.equal(t.store.applications.length, 2);
+  assert.ok(t.store.applications.every((a) => a.personId === t.store.people.find((p) => p.personType === "WORKER")!.id));
+  await erasePerson(t.crm, phone);
   assert.equal(t.store.people.length, 1);
-  assert.equal(t.store.people[0].personType, "WORKER");
+  const [kept] = t.store.people;
+  assert.equal(kept.personType, "CLIENT_CONTACT");
+  assert.equal((kept.name as { firstName: string }).firstName, v.lead.name, "the enquiry's name, not the applicant's");
+  assert.equal(t.store.applications.length, 0);
+  assert.equal(t.store.opportunities.length, 1);
 });
 
 test("the lead route: 403 without the secret, 400 for a bad lead, never error details", async () => {

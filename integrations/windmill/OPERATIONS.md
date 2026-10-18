@@ -163,7 +163,7 @@ FROM erasure_requests ORDER BY requested_at DESC LIMIT 20;
 
 Reply to the person once the request shows `done`.
 
-**Switching it on** was done at cutover: hand-run `f/talent/retention` once with a test request queued, check R2, Chatwoot, Twenty and the tables, then `pnpm windmill:deploy --enable-retention`. Erasure also removes the applicant side in Twenty (`erasePerson`), keeping a client contact who shares the number.
+**Switching it on** was done at cutover: hand-run `f/talent/retention` once with a test request queued, check R2, Chatwoot, Twenty and the tables, then `pnpm windmill:deploy --enable-retention`. Erasure also removes the applicant side in Twenty (`erasePerson`), keeping a client contact who shares the number. An enquiry never reuses an applicant's record (`recordLead` creates its own client contact), so the applicant's name goes with the worker record; a kept contact still typed worker, or named `Applicant VS-J-…`, is renamed "Client contact".
 
 ## SMS templates (DLT)
 

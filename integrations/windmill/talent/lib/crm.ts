@@ -311,7 +311,9 @@ export function ackFields(c: SyncCandidate, personId: string, applicationId: str
 
 /** Finds the person by phone and creates or updates them. Returns their id. */
 export async function upsertPerson(crm: Twenty, c: SyncCandidate): Promise<string> {
-  const [existing] = await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(c.phone)));
+  // The worker record when the number also has a separate client contact (recordLead).
+  const people = await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(c.phone)));
+  const existing = people.find((p) => p.personType !== "CLIENT_CONTACT") ?? people[0];
   const fields = personFields(c, existing ?? null);
   if (existing) {
     await crm.update("people", existing.id, fields);
@@ -347,6 +349,9 @@ const WORKER_FIELDS_CLEARED = {
   lastAppliedAt: null,
   lastContactAt: null,
 } as const;
+
+/** What a kept client contact is called once the applicant name it carried is erased. */
+const CLIENT_NAME_CLEARED = { firstName: "Client contact", lastName: "" } as const;
 
 /**
  * Every attachment on a record (`field` is targetApplicationId or
@@ -397,7 +402,14 @@ export async function erasePerson(crm: Twenty, phone: string): Promise<ErasedCrm
     for (const comm of await crm.find("communications", eq("personId", person.id))) {
       if (!clientContact || !comm.opportunityId) await crm.remove("communications", comm.id);
     }
-    if (clientContact) await crm.update("people", person.id, WORKER_FIELDS_CLEARED);
+    if (clientContact) {
+      // A name from an application goes too: a record still typed worker was
+      // merged before leads got their own contact, and the placeholder names
+      // the application.
+      const name = person.name as { firstName?: string } | undefined;
+      const fromApplication = person.personType !== "CLIENT_CONTACT" || /^Applicant VS-J-/.test(name?.firstName ?? "");
+      await crm.update("people", person.id, fromApplication ? { ...WORKER_FIELDS_CLEARED, name: CLIENT_NAME_CLEARED } : WORKER_FIELDS_CLEARED);
+    }
     else {
       files += await removeAttachments(crm, "targetPersonId", person.id);
       await crm.remove("people", person.id);

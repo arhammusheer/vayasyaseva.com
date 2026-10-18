@@ -83,7 +83,7 @@ export const CONSENT_LEDGER: readonly LedgerEntry[] = [
     v: 9,
     date: "2026-10-18",
     change: "Visitor context (owner decisions, 18 Oct 2026): the vs_ctx cookie keeps picked markets and audience up to 90 days, the vs_geo cookie the connection's country, state and market for the browser session, a 10% comparison group sees the standard order; /privacy §2 \"Where you want to work or hire\". Everyone is asked again.",
-    signoff: "pending",
+    signoff: "owner, 18 Oct 2026; counsel review of the /privacy wording pending",
     fingerprint: "90e19e13636e4dcdf0e894f2e40d5f0b7e3c17e79a2990ea140c0dc04544625d",
   },
 ];

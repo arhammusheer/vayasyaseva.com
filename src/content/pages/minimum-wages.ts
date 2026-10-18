@@ -25,7 +25,7 @@ const rs = (state: WageState, table: string, zone: string, skill: Skill) => form
  * named person signs the figures off, "Updated Oct 2026" until then (the
  * same wording as the line under each H1).
  */
-const stamp = (states: readonly WageState[]) =>
+export const stamp = (states: readonly WageState[]) =>
   `${states.every((s) => s.checked.by) ? "Checked" : "Updated"} ${formatShortMonth(states.map((s) => s.checked.on).sort()[0])}`;
 
 type FaqItem = { question: string; answer: string };
@@ -392,5 +392,6 @@ export const wageUi = {
     byCategory: "by district category",
     mayBeRevised: "may have been revised",
     checked: "Updated from each state's own notifications.",
+    vda: "VDA revisions by state",
   },
 };

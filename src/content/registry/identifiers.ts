@@ -90,6 +90,8 @@ export const wageStatePath = (state: WageStateSlug) => `${WAGE_HUB_PATH}/${state
  * reserved: content:check fails a wage state slug or code that takes one.
  */
 export const WAGE_METHOD_PATH = `${WAGE_HUB_PATH}/how-we-check`;
+/** The VDA and DA revision tracker (18 Oct 2026), built from the same wage dataset. */
+export const WAGE_VDA_PATH = `${WAGE_HUB_PATH}/vda`;
 
 /** Guides. No agency word in any slug, title or H1. */
 export const GUIDE_SLUGS = ["new-labour-codes", "what-is-contract-labour", "contract-labour-act"] as const;

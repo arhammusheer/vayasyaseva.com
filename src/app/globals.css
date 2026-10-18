@@ -4306,3 +4306,24 @@ a:hover > svg {
 .jobs-in-more li a:hover {
   color: var(--gold-700);
 }
+
+/* /minimum-wages/vda: the status column. Due is the one state that needs attention. */
+.vda-status {
+  font-family: var(--font-hind), sans-serif;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--muted-foreground);
+}
+.vda-status.is-due {
+  color: var(--warning);
+  font-weight: 600;
+}
+.vda-status.is-revised {
+  color: var(--foreground);
+  font-weight: 600;
+}
+.vda-moved {
+  display: grid;
+  gap: 4px;
+  max-width: 760px;
+}

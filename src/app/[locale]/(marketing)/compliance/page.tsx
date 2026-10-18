@@ -8,7 +8,8 @@ import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { siteConfig } from "@/content/site";
 import { COMPLIANCE_HELP, COMPLIANCE_RECORDS, CONTRACTOR_CHECKS } from "@/content/compliance";
 import { linkable } from "@/content/registry";
-import { LWF_PATH, WAGE_HUB_PATH, guidePath } from "@/content/registry/identifiers";
+import { WAGE_HUB_PATH, guidePath } from "@/content/registry/identifiers";
+import { topicParts } from "@/content/reference-links";
 import { localeParams } from "@/lib/i18n";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/compliance");
@@ -26,20 +27,30 @@ export const metadata = pageMetadata({
 /** Reference pages, in the resources line once published. */
 const resources = [
   { href: WAGE_HUB_PATH, label: "Minimum wages by state" },
-  { href: LWF_PATH, label: "Labour Welfare Fund by state" },
-  { href: "/epf", label: "EPF for employers" },
-  { href: "/esic", label: "ESIC for employers" },
-  { href: "/professional-tax", label: "Professional Tax by state" },
   { href: guidePath("new-labour-codes"), label: "New labour codes guide" },
 ].filter((r) => linkable(r.href, "en-IN"));
 
-/** Ruled rows: a title and one line each, all visible. */
+/**
+ * Ruled rows: a title and one line each, all visible. Topic names in a
+ * title (EPF, ESIC, Professional Tax, Labour Welfare Fund) link to their
+ * reference pages, which the resources line no longer repeats.
+ */
 function Rows({ items }: { items: { title: string; text: string }[] }) {
   return (
     <ul className="jobs-work">
       {items.map((r) => (
         <li key={r.title}>
-          <h3>{r.title}</h3>
+          <h3>
+            {topicParts(r.title).map((part, i) =>
+              part.href ? (
+                <Link key={i} href={part.href} className="dues-name-link">
+                  {part.text}
+                </Link>
+              ) : (
+                part.text
+              ),
+            )}
+          </h3>
           <p>{r.text}</p>
         </li>
       ))}

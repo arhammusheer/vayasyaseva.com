@@ -33,6 +33,7 @@ import { getWageStateCopy, listDates, wageDoors, wageHubCopy, wageUi as x, type 
 import { SKILLS_HI, WAGE_HUB_HI, formatDateHi, wageHubHi } from "@/content/pages/minimum-wages.hi";
 import { localePath, type Locale } from "@/lib/i18n";
 import { duesNote, duesSources, employerDues } from "@/content/statutory";
+import { referenceHref, topicParts } from "@/content/reference-links";
 import { COMPLIANCE_HELP } from "@/content/compliance";
 import { EmploymentFinder } from "@/components/pages/employment-finder";
 
@@ -502,7 +503,23 @@ export function Doors({ doors }: { doors: WageDoor[] }) {
   );
 }
 
-export function Faqs({ faqs, children }: { faqs: { question: string; answer: string }[]; children?: React.ReactNode }) {
+/**
+ * Questions, with the first mention of EPF, ESIC, Professional Tax or the
+ * Labour Welfare Fund in the answers linked to its page (never the page's
+ * own topic: `self` is the page's path).
+ */
+export function Faqs({ faqs, self, children }: { faqs: { question: string; answer: string }[]; self?: string; children?: React.ReactNode }) {
+  const used = new Set<string>(self ? [self] : []);
+  const answer = (text: string) =>
+    topicParts(text).map((part, i) => {
+      if (!part.href || used.has(part.href.split("#")[0])) return part.text;
+      used.add(part.href.split("#")[0]);
+      return (
+        <Link key={i} href={part.href} className="wage-inline-link">
+          {part.text}
+        </Link>
+      );
+    });
   return (
     <Section id="questions" variant="subtle">
       <div className="wage-split">
@@ -511,13 +528,27 @@ export function Faqs({ faqs, children }: { faqs: { question: string; answer: str
           {faqs.map((f) => (
             <div key={f.question}>
               <h3>{f.question}</h3>
-              <p>{f.answer}</p>
+              <p>{answer(f.answer)}</p>
             </div>
           ))}
           {children}
         </div>
       </div>
     </Section>
+  );
+}
+
+/** "Professional Tax is not levied in Delhi.", with Professional Tax linking to its page. */
+function NotLevied({ text }: { text?: string }) {
+  const href = referenceHref("pt");
+  if (!text || !href || !text.startsWith("Professional Tax")) return <>{text}</>;
+  return (
+    <>
+      <Link href={href} className="wage-inline-link">
+        Professional Tax
+      </Link>
+      {text.slice("Professional Tax".length)}
+    </>
   );
 }
 
@@ -556,7 +587,14 @@ function Dues({ slug, name }: { slug: WageStateSlug; name: string }) {
               <Fragment key={r.name}>
                 <tr className={r.explain ? "has-explain" : undefined}>
                   <th scope="row">
-                    {r.name}
+                    {/* Each topic links to its page, the one home for it (18 Oct 2026). */}
+                    {r.topic && referenceHref(r.topic, slug) ? (
+                      <Link href={referenceHref(r.topic, slug)!} className="dues-name-link">
+                        {r.name}
+                      </Link>
+                    ) : (
+                      r.name
+                    )}
                     <small>{r.applies}</small>
                   </th>
                   <td data-label={x.dues.worker}>{r.worker}</td>
@@ -582,7 +620,7 @@ function Dues({ slug, name }: { slug: WageStateSlug; name: string }) {
         </table>
       </div>
       <p className="wage-note">
-        {dues.notLevied} {duesNote}
+        <NotLevied text={dues.notLevied} /> {duesNote}
       </p>
       <p className="wage-note">
         {x.dues.help}{" "}

@@ -14,6 +14,9 @@ import type { WageStateSlug } from "@/content/registry/identifiers";
 export const STATUTORY_CHECKED = "2026-10-16";
 export const STATUTORY_REVIEW_BY = "2026-11-21";
 
+/** Topics with a reference page of their own. */
+export type ReferenceTopic = "epf" | "esic" | "pt" | "lwf";
+
 export type StatutorySource = { id: string; title: string; number: string; date: string; authority: string; url: string };
 
 /** One due date in the strip: when, then what is due. */
@@ -22,6 +25,11 @@ export type Deadline = { when: string; detail: string; what: string; sources: st
 /** One row of "Who pays what": the worker's and the employer's share. */
 export type DueRow = {
   name: string;
+  /**
+   * The reference page this row's topic has (src/content/reference-links.ts),
+   * so the dues table links each name to where it is explained in full.
+   */
+  topic?: ReferenceTopic;
   /** Who it covers, one short line. */
   applies: string;
   worker: string;
@@ -320,6 +328,7 @@ const upLwfDeadline: Deadline = {
 
 const epf: DueRow = {
   name: "EPF",
+  topic: "epf",
   applies: "20+ employees; wages up to ₹25,000 a month",
   worker: "12%",
   employer: "12% + 0.5% EDLI + 0.5% admin",
@@ -327,6 +336,7 @@ const epf: DueRow = {
 };
 const esic: DueRow = {
   name: "ESIC",
+  topic: "esic",
   applies: "10+ employees; wages up to ₹21,000 a month",
   worker: "0.75%",
   employer: "3.25%",
@@ -347,6 +357,7 @@ const esic: DueRow = {
  */
 const upLwf: DueRow = {
   name: "Labour Welfare Fund",
+  topic: "lwf",
   applies: "Units with 50+ persons",
   worker: "Nothing",
   employer: "No set rate",
@@ -372,8 +383,8 @@ export const employerDues: Partial<Record<WageStateSlug, StateDues>> = {
     rows: [
       epf,
       esic,
-      { name: "Professional Tax", applies: "Wages of ₹25,000 a month or more", worker: "₹200 a month, ₹300 in February", employer: "Deducts and pays it", sources: ["ka-pt-act", "ka-pt-2025"] },
-      { name: "Labour Welfare Fund", applies: "Factories with 10+ workers, 20+ contract workers, shops with 50+", worker: "₹50 a year", employer: "₹100 a year", sources: ["ka-lwf-2025"] },
+      { name: "Professional Tax", topic: "pt", applies: "Wages of ₹25,000 a month or more", worker: "₹200 a month, ₹300 in February", employer: "Deducts and pays it", sources: ["ka-pt-act", "ka-pt-2025"] },
+      { name: "Labour Welfare Fund", topic: "lwf", applies: "Factories with 10+ workers, 20+ contract workers, shops with 50+", worker: "₹50 a year", employer: "₹100 a year", sources: ["ka-lwf-2025"] },
     ],
   },
   uttarakhand: {
@@ -391,7 +402,7 @@ export const employerDues: Partial<Record<WageStateSlug, StateDues>> = {
     rows: [
       epf,
       esic,
-      { name: "Labour Welfare Fund", applies: "Units with 10+ employees", worker: "0.2% of wages, up to ₹35 a month (2026 limit)", employer: "Twice the worker's share, up to ₹70", sources: ["hr-lwf-act", "hr-lwf-2026"] },
+      { name: "Labour Welfare Fund", topic: "lwf", applies: "Units with 10+ employees", worker: "0.2% of wages, up to ₹35 a month (2026 limit)", employer: "Twice the worker's share, up to ₹70", sources: ["hr-lwf-act", "hr-lwf-2026"] },
     ],
     notLevied: "Professional Tax is not levied in Haryana.",
   },
@@ -406,9 +417,10 @@ export const employerDues: Partial<Record<WageStateSlug, StateDues>> = {
     rows: [
       epf,
       esic,
-      { name: "Development tax", applies: "Income above the income-tax threshold", worker: "₹200 a month", employer: "Deducts and pays it", sources: ["pb-psdt-act", "pb-psdt-rules-2021"] },
+      { name: "Development tax", topic: "pt", applies: "Income above the income-tax threshold", worker: "₹200 a month", employer: "Deducts and pays it", sources: ["pb-psdt-act", "pb-psdt-rules-2021"] },
       {
         name: "Labour Welfare Fund",
+        topic: "lwf",
         applies: "Factories, bus services and other units with more than 20 persons",
         worker: "₹5 a month",
         employer: "₹20 a month",
@@ -434,7 +446,7 @@ export const employerDues: Partial<Record<WageStateSlug, StateDues>> = {
     rows: [
       epf,
       esic,
-      { name: "Labour Welfare Fund", applies: "5+ persons", worker: "₹0.75 a half-year", employer: "₹2.25 a half-year", sources: ["dl-lwf-2004"] },
+      { name: "Labour Welfare Fund", topic: "lwf", applies: "5+ persons", worker: "₹0.75 a half-year", employer: "₹2.25 a half-year", sources: ["dl-lwf-2004"] },
     ],
     notLevied: "Professional Tax is not levied in Delhi.",
   },

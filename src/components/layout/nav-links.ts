@@ -1,5 +1,5 @@
 import { linkable } from "@/content/registry";
-import { WAGE_HUB_PATH, WAGE_METHOD_PATH, WAGE_VDA_PATH, LWF_PATH, guidePath, jobsHubPath, wageStatePath, type ClusterId } from "@/content/registry/identifiers";
+import { WAGE_HUB_PATH, WAGE_METHOD_PATH, LWF_PATH, guidePath, jobsHubPath, type ClusterId } from "@/content/registry/identifiers";
 import { JOBS_AREA_LABEL, orderedJobMarkets } from "@/context/surfaces";
 import { localePath, nearestLocalePath, type Locale } from "@/lib/i18n";
 import type { JobGroupId } from "@/content/pages/jobs";
@@ -48,21 +48,15 @@ export const WORK_DOOR: Record<Locale, { lead: string; label: string }> = {
  * where the menu's would be unclear out of context.
  */
 const REFERENCE: (NavLink & { long?: string })[] = [
+  // One link per topic (owner, 18 Oct 2026: the footer had grown to 13).
+  // State pages and the VDA tracker are one click away on their hub, their one home.
   { href: WAGE_HUB_PATH, label: "Minimum wages" },
-  // States alphabetically: no state's market first (17 Oct 2026).
-  { href: wageStatePath("delhi"), label: "Delhi" },
-  { href: wageStatePath("haryana"), label: "Haryana" },
-  { href: wageStatePath("karnataka"), label: "Karnataka" },
-  { href: wageStatePath("punjab"), label: "Punjab" },
-  { href: wageStatePath("uttar-pradesh"), label: "Uttar Pradesh" },
-  { href: wageStatePath("uttarakhand"), label: "Uttarakhand" },
-  { href: WAGE_VDA_PATH, label: "VDA tracker", long: "VDA and DA tracker" },
-  { href: LWF_PATH, label: "Labour Welfare Fund", long: "Labour Welfare Fund by state" },
+  { href: LWF_PATH, label: "Labour Welfare Fund" },
   { href: "/epf", label: "EPF", long: "EPF for employers" },
   { href: "/esic", label: "ESIC", long: "ESIC for employers" },
-  { href: "/professional-tax", label: "Professional Tax", long: "Professional Tax by state" },
-  { href: WAGE_METHOD_PATH, label: "How we check", long: "How we check minimum wages" },
+  { href: "/professional-tax", label: "Professional Tax" },
   { href: guidePath("new-labour-codes"), label: "Labour codes guide" },
+  { href: WAGE_METHOD_PATH, label: "How we check", long: "How we check minimum wages" },
 ];
 export const referenceLinks = (long = false): NavLink[] =>
   REFERENCE.filter((l) => linkable(l.href, "en-IN")).map((l) => ({ href: l.href, label: long ? (l.long ?? l.label) : l.label }));

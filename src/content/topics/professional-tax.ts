@@ -124,7 +124,7 @@ export const professionalTaxTopic: Topic = {
       caption: "Professional tax on salaries in Karnataka, Punjab, Uttarakhand, Uttar Pradesh, Delhi and Haryana",
       columns: ["State", "On salaries", "Who pays"],
       rows: [
-        ["Karnataka", "₹200 a month, ₹300 in February", "Salary of ₹25,000 or more in the month"],
+        [{ text: "Karnataka", href: "/professional-tax/karnataka" }, "₹200 a month, ₹300 in February", "Salary of ₹25,000 or more in the month"],
         ["Punjab", "₹200 a month (development tax)", "Income-tax payers only"],
         ["Uttarakhand", "None", ""],
         ["Uttar Pradesh", "None", ""],

@@ -141,7 +141,7 @@ export function LwfStatePage({ slug }: { slug: LwfStateSlug }) {
           </div>
         </div>
       </Section>
-      <Faqs faqs={d.faqs}>
+      <Faqs faqs={d.faqs} self={lwfStatePath(slug)}>
         <p className="method-back">
           <Link href={LWF_PATH} className="text-link">
             Labour Welfare Fund in other states <ArrowRight size={18} aria-hidden="true" />

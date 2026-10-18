@@ -4378,3 +4378,15 @@ a:hover > svg {
 .topic-sources li {
   color: var(--muted-foreground);
 }
+
+/* Dues table: each topic name links to its reference page, quietly (gold on hover, as the hub's state rows). */
+.dues-name-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--gold-500);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+.dues-name-link:hover {
+  color: var(--gold-700);
+}

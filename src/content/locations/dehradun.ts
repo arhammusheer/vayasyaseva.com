@@ -26,7 +26,8 @@ const SRC = {
   pharmaCity: { label: "SIIDCUL: Integrated Industrial Estate Pharma City, Selaqui", url: "https://siidcul.com/integrated-industrial-estate-pharma-city-selaqui" },
   sidcSelaqui: { label: "SIIDCUL: SIDC Selaqui allottee list (21 July 2023)", url: "https://siidcul.com/UserFiles/files/SIDC_Selaqui21072023.pdf" },
   msme: { label: "MSME-DI: Dehradun district industrial profile (2010–12 data)", url: "https://dcmsme.gov.in/old/dips/DIPSR%20-%20DEHRADUN.pdf" },
-  scheduleM: { label: "Revised Schedule M, Drugs Rules, G.S.R. 922(E), 28 December 2023", url: "https://drugscontrol.py.gov.in/sites/default/files/2024-08/G.S.R.%20922(E).pdf" },
+  // CDSCO's own copy (paras 3.4 and 11.4.6: cleaning and contract staff); the Puducherry copy's certificate expired (Oct 2026).
+  scheduleM: { label: "Revised Schedule M, Drugs Rules, G.S.R. 922(E), 28 December 2023 (CDSCO copy)", url: "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadGazette_NotificationsFiles/2023.12.28_DR_Final%20G.S.R.%20922(E)_Notification%20of%20Schedule%20M%20of.pdf" },
   osh: { label: "Draft Uttarakhand OSH Code rules (22 May 2026)", url: "https://cdnbbsr.s3waas.gov.in/s36547884cea64550284728eb26b0947ef/uploads/2026/07/20260725686982897.pdf" },
 };
 

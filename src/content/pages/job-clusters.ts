@@ -5,8 +5,8 @@ import { AGE_FAQ } from "./job-hubs";
 
 /**
  * Jobs hubs for one market, under /jobs/<cluster> (PLAN §5.3): Haridwar and
- * Jalandhar–Kapurthala with open work; Bengaluru, Uttarakhand (outside
- * Haridwar) and Punjab (outside Jalandhar–Kapurthala) as worker lists (no openings named, no estates, no
+ * Jalandhar–Kapurthala with open work; Bengaluru, Dehradun, Uttarakhand
+ * (outside Haridwar and Dehradun) and Punjab (outside Jalandhar–Kapurthala) as worker lists (no openings named, no estates, no
  * "vacancy" in the title, PLAN §5.3 "hubs where no roles are open now"). A
  * cluster gets one only once it is in src/content/registry/clusters.ts and
  * its page is in pages.ts.
@@ -20,7 +20,7 @@ import { AGE_FAQ } from "./job-hubs";
  * pending native review.
  */
 export interface JobClusterCopy {
-  slug: Extract<ClusterId, "haridwar" | "bengaluru" | "jalandhar" | "uttarakhand" | "punjab">;
+  slug: Extract<ClusterId, "haridwar" | "bengaluru" | "jalandhar" | "uttarakhand" | "punjab" | "dehradun">;
   /** Short name for breadcrumbs. */
   name: string;
   metaTitle: string;
@@ -126,16 +126,38 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "uttarakhand",
       name: "Uttarakhand",
-      metaTitle: "Factory Jobs in Uttarakhand: Join Our Worker List",
+      // Outside Haridwar and Dehradun since 18 Oct 2026: titled for the rest
+      // of the state's searches (Haldwani, Rudrapur, Kashipur job).
+      metaTitle: "Rudrapur, Kashipur, Haldwani Jobs: Join Our Worker List",
       description:
-        "Factory, warehouse and housekeeping work across Uttarakhand. Join our worker list: no fee, full 8-hour shifts. We call when a site needs your work.",
+        "Factory and warehouse work in Rudrapur, Kashipur, Sitarganj, Haldwani and across Uttarakhand. Join our worker list: no fee, full 8-hour shifts.",
       eyebrow: "JOBS · UTTARAKHAND",
-      heading: "Factory and warehouse work across Uttarakhand.",
+      heading: "Factory and warehouse work in Rudrapur, Kashipur and across Uttarakhand.",
       lede: "We're building a list of workers across Uttarakhand. When a site near you needs people, we call you.",
       after: { label: "After you apply", steps: ["SMS from VAYSPL", "We call when a site needs you", "You decide"] },
       faqTitle: "Questions.",
       faqs: [
         { question: "Are there openings now?", answer: "Not every week. You join our list, and we call when a site near you needs your kind of work.", category: "operations" },
+        { question: "What documents do I need?", answer: "Your 10th or 12th marksheet. Your ITI certificate, if you have one. The ID the site asks for at joining. We tell you what to bring before you join. Don't send Aadhaar or bank papers in the form.", category: "operations" },
+        AGE_FAQ["en-IN"],
+        { question: "Who pays me?", answer: "We do, with EPF and ESIC where they apply.", category: "operations" },
+      ],
+    },
+    {
+      // A worker list: no open requirement in Dehradun yet, so no "vacancy"
+      // in the title (PLAN §5.3). "dehradun job" ~12,100 a month locally.
+      slug: "dehradun",
+      name: "Dehradun",
+      metaTitle: "Jobs in Dehradun: Selaqui Factory and Warehouse Work",
+      description:
+        "Factory, packing and warehouse work in Dehradun, Selaqui and Rishikesh. Join our worker list: no fee, full 8-hour shifts. We call when a site needs you.",
+      eyebrow: "JOBS · DEHRADUN",
+      heading: "Factory and warehouse work in Dehradun.",
+      lede: "We're building a list of workers in Dehradun, Selaqui, Vikasnagar and Rishikesh. When a site there needs people, we call you.",
+      after: { label: "After you apply", steps: ["SMS from VAYSPL", "We call when a site needs you", "You decide"] },
+      faqTitle: "Questions.",
+      faqs: [
+        { question: "Are there openings now?", answer: "Not every week. You join our list, and we call when a site in Dehradun or Selaqui needs your kind of work.", category: "operations" },
         { question: "What documents do I need?", answer: "Your 10th or 12th marksheet. Your ITI certificate, if you have one. The ID the site asks for at joining. We tell you what to bring before you join. Don't send Aadhaar or bank papers in the form.", category: "operations" },
         AGE_FAQ["en-IN"],
         { question: "Who pays me?", answer: "We do, with EPF and ESIC where they apply.", category: "operations" },
@@ -249,16 +271,34 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "uttarakhand",
       name: "उत्तराखंड",
-      metaTitle: "उत्तराखंड में फ़ैक्टरी का काम: हमारी वर्कर लिस्ट में जुड़ें",
+      metaTitle: "रुद्रपुर, काशीपुर, हल्द्वानी में फ़ैक्टरी का काम: लिस्ट में जुड़ें",
       description:
-        "पूरे उत्तराखंड में फ़ैक्टरी, वेयरहाउस और हाउसकीपिंग का काम। हमारी वर्कर लिस्ट में जुड़ें: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट। साइट पर ज़रूरत होने पर हम कॉल करते हैं।",
+        "रुद्रपुर, काशीपुर, सितारगंज, हल्द्वानी और पूरे उत्तराखंड में फ़ैक्टरी और वेयरहाउस का काम। हमारी वर्कर लिस्ट में जुड़ें: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट।",
       eyebrow: "नौकरी · उत्तराखंड",
-      heading: "पूरे उत्तराखंड में फ़ैक्टरी और वेयरहाउस का काम।",
+      heading: "रुद्रपुर, काशीपुर और पूरे उत्तराखंड में फ़ैक्टरी और वेयरहाउस का काम।",
       lede: "हम पूरे उत्तराखंड में वर्करों की लिस्ट बना रहे हैं। आपके पास किसी साइट को लोग चाहिए होंगे तो हम आपको कॉल करेंगे।",
       after: { label: "आवेदन के बाद", steps: ["VAYSPL से SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
       faqTitle: "सवाल।",
       faqs: [
         { question: "क्या अभी जगह खाली है?", answer: "हर हफ़्ते नहीं। आप हमारी लिस्ट में जुड़ते हैं, और आपके पास की किसी साइट को आपके जैसे काम की ज़रूरत होने पर हम कॉल करते हैं।", category: "operations" },
+        { question: "कौन-से कागज़ चाहिए?", answer: "10वीं या 12वीं की मार्कशीट। ITI सर्टिफ़िकेट, अगर है। जॉइनिंग पर साइट जो ID माँगे। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।", category: "operations" },
+        AGE_FAQ["hi-IN"],
+        { question: "वेतन कौन देता है?", answer: "हम देते हैं, लागू होने पर EPF और ESIC के साथ।", category: "operations" },
+      ],
+    },
+    {
+      slug: "dehradun",
+      name: "देहरादून",
+      metaTitle: "देहरादून में नौकरी: सेलाकुई में फ़ैक्टरी और वेयरहाउस का काम",
+      description:
+        "देहरादून, सेलाकुई और ऋषिकेश में फ़ैक्टरी, पैकिंग और वेयरहाउस का काम। हमारी वर्कर लिस्ट में जुड़ें: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट। ज़रूरत होने पर हम कॉल करते हैं।",
+      eyebrow: "नौकरी · देहरादून",
+      heading: "देहरादून में फ़ैक्टरी और वेयरहाउस का काम।",
+      lede: "हम देहरादून, सेलाकुई, विकासनगर और ऋषिकेश में वर्करों की लिस्ट बना रहे हैं। वहाँ किसी साइट को लोग चाहिए होंगे तो हम आपको कॉल करेंगे।",
+      after: { label: "आवेदन के बाद", steps: ["VAYSPL से SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
+      faqTitle: "सवाल।",
+      faqs: [
+        { question: "क्या अभी जगह खाली है?", answer: "हर हफ़्ते नहीं। आप हमारी लिस्ट में जुड़ते हैं, और देहरादून या सेलाकुई की किसी साइट को आपके जैसे काम की ज़रूरत होने पर हम कॉल करते हैं।", category: "operations" },
         { question: "कौन-से कागज़ चाहिए?", answer: "10वीं या 12वीं की मार्कशीट। ITI सर्टिफ़िकेट, अगर है। जॉइनिंग पर साइट जो ID माँगे। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।", category: "operations" },
         AGE_FAQ["hi-IN"],
         { question: "वेतन कौन देता है?", answer: "हम देते हैं, लागू होने पर EPF और ESIC के साथ।", category: "operations" },
@@ -370,16 +410,34 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "uttarakhand",
       name: "Uttarakhand",
-      metaTitle: "Uttarakhand Factory Job: Worker List mein Judein",
+      metaTitle: "Rudrapur, Kashipur, Haldwani Job: List mein Judein",
       description:
-        "Poore Uttarakhand mein factory, warehouse aur housekeeping ka kaam. Worker list mein judein: koi fee nahi, 8 ghante ki shift. Zaroorat par hum call karenge.",
+        "Rudrapur, Kashipur, Sitarganj, Haldwani aur poore Uttarakhand mein factory aur warehouse ka kaam. Worker list mein judein: koi fee nahi, 8 ghante ki shift.",
       eyebrow: "Jobs · Uttarakhand",
-      heading: "Poore Uttarakhand mein factory aur warehouse ka kaam.",
+      heading: "Rudrapur, Kashipur aur poore Uttarakhand mein factory aur warehouse ka kaam.",
       lede: "Hum poore Uttarakhand mein workers ki list bana rahe hain. Aapke paas kisi site ko log chahiye honge to hum aapko call karenge.",
       after: { label: "Apply ke baad", steps: ["VAYSPL se SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
       faqTitle: "Sawaal.",
       faqs: [
         { question: "Kya abhi jagah khaali hai?", answer: "Har hafte nahi. Aap hamari list mein judte hain, aur aapke paas ki kisi site ko aapke jaise kaam ki zaroorat hone par hum call karte hain.", category: "operations" },
+        { question: "Kaun-se documents chahiye?", answer: "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.", category: "operations" },
+        AGE_FAQ["hi-Latn-IN"],
+        { question: "Salary kaun deta hai?", answer: "Hum dete hain, laagu hone par EPF aur ESIC ke saath.", category: "operations" },
+      ],
+    },
+    {
+      slug: "dehradun",
+      name: "Dehradun",
+      metaTitle: "Dehradun Job: Selaqui Factory aur Warehouse ka Kaam",
+      description:
+        "Dehradun, Selaqui, Rishikesh mein factory, packing aur warehouse ka kaam. Worker list mein judein: koi fee nahi, 8 ghante ki shift. Zaroorat par call karenge.",
+      eyebrow: "Jobs · Dehradun",
+      heading: "Dehradun mein factory aur warehouse ka kaam.",
+      lede: "Hum Dehradun, Selaqui, Vikasnagar aur Rishikesh mein workers ki list bana rahe hain. Wahan kisi site ko log chahiye honge to hum aapko call karenge.",
+      after: { label: "Apply ke baad", steps: ["VAYSPL se SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
+      faqTitle: "Sawaal.",
+      faqs: [
+        { question: "Kya abhi jagah khaali hai?", answer: "Har hafte nahi. Aap hamari list mein judte hain, aur Dehradun ya Selaqui ki kisi site ko aapke jaise kaam ki zaroorat hone par hum call karte hain.", category: "operations" },
         { question: "Kaun-se documents chahiye?", answer: "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.", category: "operations" },
         AGE_FAQ["hi-Latn-IN"],
         { question: "Salary kaun deta hai?", answer: "Hum dete hain, laagu hone par EPF aur ESIC ke saath.", category: "operations" },

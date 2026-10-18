@@ -20,7 +20,7 @@ export type LocaleTag = (typeof LOCALE_TAGS)[number];
  * (/jobs/<cluster>, /locations/<cluster>), with no state suffix. A cluster
  * gets pages only once it is in clusters.ts.
  */
-export const CLUSTER_IDS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other", "punjab"] as const;
+export const CLUSTER_IDS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other", "punjab", "dehradun"] as const;
 export type ClusterId = (typeof CLUSTER_IDS)[number];
 
 /**
@@ -56,13 +56,24 @@ export type Audience = (typeof AUDIENCES)[number];
  */
 export const LOCATIONS_PATH = "/locations";
 export const LOCATION_ESTATES = {
+  // Selaqui stays listed (a stored slug) but moved to Dehradun's hub: MOVED_ESTATES.
   uttarakhand: ["selaqui"],
   bengaluru: ["peenya", "bommasandra-jigani-attibele", "electronic-city-whitefield", "hoskote-narasapura"],
   "delhi-ncr": ["gurugram-manesar", "noida-greater-noida", "faridabad-ghaziabad", "delhi-industrial-areas"],
   jalandhar: ["kapurthala", "jalandhar-focal-point", "phagwara-goraya"],
   haridwar: [],
+  dehradun: ["selaqui"],
 } as const satisfies Partial<Record<ClusterId, readonly string[]>>;
 export type LocationCluster = keyof typeof LOCATION_ESTATES;
+/**
+ * Estates that moved to another region's hub, old path to new. The old URL
+ * is retired and 308s to the new one (src/content/registry/pages.ts); its
+ * slug stays in LOCATION_ESTATES, as stored ids never go.
+ */
+export const MOVED_ESTATES: Readonly<Record<string, string>> = {
+  // Dehradun became a market of its own (18 Oct 2026).
+  "/locations/uttarakhand/selaqui": "/locations/dehradun/selaqui",
+};
 export const LOCATION_CLUSTERS = Object.keys(LOCATION_ESTATES) as LocationCluster[];
 export const locationPath = (cluster: LocationCluster) => `${LOCATIONS_PATH}/${cluster}`;
 export const estatePath = (cluster: LocationCluster, estate: string) => `${LOCATIONS_PATH}/${cluster}/${estate}`;
@@ -112,7 +123,9 @@ export const JALANDHAR_AREA_IDS = ["jalandhar:kapurthala", "jalandhar:city", "ja
  */
 export const UTTARAKHAND_AREA_IDS = ["uttarakhand:haridwar", "uttarakhand:dehradun-selaqui", "uttarakhand:udham-singh-nagar", "uttarakhand:other", "uttarakhand:outside"] as const;
 export const PUNJAB_AREA_IDS = ["punjab:jalandhar-kapurthala", "punjab:ludhiana", "punjab:mohali", "punjab:amritsar", "punjab:other", "punjab:outside"] as const;
+/** Dehradun's (jobs hub published 18 Oct 2026): Selaqui–Sahaspur, the city, Rishikesh–Doiwala, Vikasnagar, outside. Append-only too. */
+export const DEHRADUN_AREA_IDS = ["dehradun:selaqui-sahaspur", "dehradun:city", "dehradun:rishikesh-doiwala", "dehradun:vikasnagar", "dehradun:outside"] as const;
 /** The form with no market of its own (no signal yet): which market the person lives in. Append-only too. */
-export const MARKET_AREA_IDS = ["market:haridwar", "market:uttarakhand", "market:jalandhar", "market:punjab", "market:bengaluru", "market:other"] as const;
+export const MARKET_AREA_IDS = ["market:haridwar", "market:uttarakhand", "market:jalandhar", "market:punjab", "market:bengaluru", "market:other", "market:dehradun"] as const;
 /** The rest of the state on the Haridwar and Jalandhar forms, filed under the state's market (17 Oct 2026). Append-only too. */
-export const REST_OF_STATE_AREA_IDS = ["haridwar:rest-of-uttarakhand", "jalandhar:rest-of-punjab"] as const;
+export const REST_OF_STATE_AREA_IDS = ["haridwar:rest-of-uttarakhand", "jalandhar:rest-of-punjab", "dehradun:rest-of-uttarakhand"] as const;

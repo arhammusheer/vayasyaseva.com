@@ -25,7 +25,8 @@ export const PLACES_BY_ID = {
   bahadrabad: { state: "UK", city: "Bahadrabad, Haridwar", market: "haridwar" },
   roorkee: { state: "UK", city: "Roorkee, Haridwar", market: "haridwar" },
   uttarakhand: { state: "UK", city: "", market: "uttarakhand" },
-  selaqui: { state: "UK", city: "Selaqui, Dehradun", market: "uttarakhand" },
+  // Selaqui files under Dehradun since its market opened (18 Oct 2026).
+  selaqui: { state: "UK", city: "Selaqui, Dehradun", market: "dehradun" },
   bengaluru: { state: "KA", city: "Bengaluru", market: "bengaluru" },
   peenya: { state: "KA", city: "Peenya, Bengaluru", market: "bengaluru" },
   "bommasandra-jigani-attibele": { state: "KA", city: "Bommasandra / Jigani / Attibele", market: "bengaluru" },
@@ -40,6 +41,7 @@ export const PLACES_BY_ID = {
   kapurthala: { state: "PB", city: "Kapurthala", market: "jalandhar" },
   "phagwara-goraya": { state: "PB", city: "Phagwara / Goraya", market: "jalandhar" },
   "jalandhar-focal-point": { state: "PB", city: "Focal Point, Jalandhar", market: "jalandhar" },
+  dehradun: { state: "UK", city: "Dehradun", market: "dehradun" },
 } as const satisfies Record<string, Place>;
 
 export type PlaceId = keyof typeof PLACES_BY_ID;

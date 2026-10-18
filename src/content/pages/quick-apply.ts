@@ -142,6 +142,7 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
     inCluster: {
       haridwar: { title: "Apply for Work in SIDCUL Haridwar: Quick Form", heading: "Looking for work in SIDCUL Haridwar?" },
       uttarakhand: { title: "Apply for Work in Uttarakhand: Quick Form", heading: "Looking for work in Uttarakhand?" },
+      dehradun: { title: "Apply for Work in Dehradun and Selaqui: Quick Form", heading: "Looking for work in Dehradun or Selaqui?" },
       punjab: { title: "Apply for Work in Punjab: Quick Form", heading: "Looking for work in Punjab?" },
       bengaluru: { title: "Apply for Work in Bengaluru: Quick Form", heading: "Looking for work in Bengaluru?" },
       jalandhar: { title: "Apply for Work in Kapurthala and Jalandhar: Quick Form", heading: "Looking for work in Kapurthala or Jalandhar?" },
@@ -185,6 +186,9 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       "market:haridwar": "Haridwar / Roorkee", "market:uttarakhand": "Elsewhere in Uttarakhand", "market:jalandhar": "Jalandhar / Kapurthala",
       "market:punjab": "Elsewhere in Punjab", "market:bengaluru": "Bengaluru", "market:other": "Somewhere else",
       "haridwar:rest-of-uttarakhand": "Elsewhere in Uttarakhand", "jalandhar:rest-of-punjab": "Elsewhere in Punjab",
+      "dehradun:selaqui-sahaspur": "Selaqui / Sahaspur", "dehradun:city": "Dehradun city", "dehradun:rishikesh-doiwala": "Rishikesh / Doiwala",
+      "dehradun:vikasnagar": "Vikasnagar / Herbertpur", "dehradun:outside": "Somewhere else", "market:dehradun": "Dehradun / Selaqui",
+      "dehradun:rest-of-uttarakhand": "Elsewhere in Uttarakhand",
     },
     details: {
       question: "Last step: how do we reach you?",
@@ -209,6 +213,7 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
     inCluster: {
       haridwar: { title: "सिडकुल हरिद्वार में काम के लिए अप्लाई करें: छोटा फ़ॉर्म", heading: "सिडकुल हरिद्वार में काम चाहिए?" },
       uttarakhand: { title: "उत्तराखंड में काम के लिए अप्लाई करें: छोटा फ़ॉर्म", heading: "उत्तराखंड में काम चाहिए?" },
+      dehradun: { title: "देहरादून और सेलाकुई में काम के लिए अप्लाई करें: छोटा फ़ॉर्म", heading: "देहरादून या सेलाकुई में काम चाहिए?" },
       punjab: { title: "पंजाब में काम के लिए अप्लाई करें: छोटा फ़ॉर्म", heading: "पंजाब में काम चाहिए?" },
       bengaluru: { title: "बेंगलुरु में काम के लिए अप्लाई करें: छोटा फ़ॉर्म", heading: "बेंगलुरु में काम चाहिए?" },
       jalandhar: { title: "कपूरथला और जालंधर में काम के लिए अप्लाई करें: छोटा फ़ॉर्म", heading: "कपूरथला या जालंधर में काम चाहिए?" },
@@ -252,6 +257,9 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       "market:haridwar": "हरिद्वार / रुड़की", "market:uttarakhand": "उत्तराखंड में कहीं और", "market:jalandhar": "जालंधर / कपूरथला",
       "market:punjab": "पंजाब में कहीं और", "market:bengaluru": "बेंगलुरु", "market:other": "कहीं और",
       "haridwar:rest-of-uttarakhand": "उत्तराखंड में कहीं और", "jalandhar:rest-of-punjab": "पंजाब में कहीं और",
+      "dehradun:selaqui-sahaspur": "सेलाकुई / सहसपुर", "dehradun:city": "देहरादून शहर", "dehradun:rishikesh-doiwala": "ऋषिकेश / डोईवाला",
+      "dehradun:vikasnagar": "विकासनगर / हरबर्टपुर", "dehradun:outside": "कहीं और", "market:dehradun": "देहरादून / सेलाकुई",
+      "dehradun:rest-of-uttarakhand": "उत्तराखंड में कहीं और",
     },
     details: {
       question: "आख़िरी कदम: आपसे संपर्क कैसे करें?",
@@ -276,6 +284,7 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
     inCluster: {
       haridwar: { title: "SIDCUL Haridwar Job: Apply Karein, Chhota Form", heading: "SIDCUL Haridwar mein kaam chahiye?" },
       uttarakhand: { title: "Uttarakhand Job: Apply Karein, Chhota Form", heading: "Uttarakhand mein kaam chahiye?" },
+      dehradun: { title: "Dehradun, Selaqui Job: Apply Karein, Chhota Form", heading: "Dehradun ya Selaqui mein kaam chahiye?" },
       punjab: { title: "Punjab Job: Apply Karein, Chhota Form", heading: "Punjab mein kaam chahiye?" },
       bengaluru: { title: "Bengaluru Job: Apply Karein, Chhota Form", heading: "Bengaluru mein kaam chahiye?" },
       jalandhar: { title: "Kapurthala, Jalandhar Job: Apply Karein, Chhota Form", heading: "Kapurthala ya Jalandhar mein kaam chahiye?" },
@@ -319,6 +328,9 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       "market:haridwar": "Haridwar / Roorkee", "market:uttarakhand": "Uttarakhand mein kahin aur", "market:jalandhar": "Jalandhar / Kapurthala",
       "market:punjab": "Punjab mein kahin aur", "market:bengaluru": "Bengaluru", "market:other": "Kahin aur",
       "haridwar:rest-of-uttarakhand": "Uttarakhand mein kahin aur", "jalandhar:rest-of-punjab": "Punjab mein kahin aur",
+      "dehradun:selaqui-sahaspur": "Selaqui / Sahaspur", "dehradun:city": "Dehradun shehar", "dehradun:rishikesh-doiwala": "Rishikesh / Doiwala",
+      "dehradun:vikasnagar": "Vikasnagar / Herbertpur", "dehradun:outside": "Kahin aur", "market:dehradun": "Dehradun / Selaqui",
+      "dehradun:rest-of-uttarakhand": "Uttarakhand mein kahin aur",
     },
     details: {
       question: "Aakhri step: aapse sampark kaise karein?",
@@ -343,6 +355,7 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
     inCluster: {
       haridwar: { title: "ਸਿਡਕੁਲ ਹਰਿਦੁਆਰ ਵਿੱਚ ਕੰਮ ਲਈ ਅਪਲਾਈ ਕਰੋ: ਛੋਟਾ ਫ਼ਾਰਮ", heading: "ਸਿਡਕੁਲ ਹਰਿਦੁਆਰ ਵਿੱਚ ਕੰਮ ਚਾਹੀਦਾ ਹੈ?" },
       uttarakhand: { title: "ਉੱਤਰਾਖੰਡ ਵਿੱਚ ਕੰਮ ਲਈ ਅਪਲਾਈ ਕਰੋ: ਛੋਟਾ ਫ਼ਾਰਮ", heading: "ਉੱਤਰਾਖੰਡ ਵਿੱਚ ਕੰਮ ਚਾਹੀਦਾ ਹੈ?" },
+      dehradun: { title: "ਦੇਹਰਾਦੂਨ ਅਤੇ ਸੇਲਾਕੁਈ ਵਿੱਚ ਕੰਮ ਲਈ ਅਪਲਾਈ ਕਰੋ: ਛੋਟਾ ਫ਼ਾਰਮ", heading: "ਦੇਹਰਾਦੂਨ ਜਾਂ ਸੇਲਾਕੁਈ ਵਿੱਚ ਕੰਮ ਚਾਹੀਦਾ ਹੈ?" },
       punjab: { title: "ਪੰਜਾਬ ਵਿੱਚ ਕੰਮ ਲਈ ਅਪਲਾਈ ਕਰੋ: ਛੋਟਾ ਫ਼ਾਰਮ", heading: "ਪੰਜਾਬ ਵਿੱਚ ਕੰਮ ਚਾਹੀਦਾ ਹੈ?" },
       bengaluru: { title: "ਬੈਂਗਲੁਰੂ ਵਿੱਚ ਕੰਮ ਲਈ ਅਪਲਾਈ ਕਰੋ: ਛੋਟਾ ਫ਼ਾਰਮ", heading: "ਬੈਂਗਲੁਰੂ ਵਿੱਚ ਕੰਮ ਚਾਹੀਦਾ ਹੈ?" },
       jalandhar: { title: "ਕਪੂਰਥਲਾ ਅਤੇ ਜਲੰਧਰ ਵਿੱਚ ਕੰਮ ਲਈ ਅਪਲਾਈ ਕਰੋ: ਛੋਟਾ ਫ਼ਾਰਮ", heading: "ਕਪੂਰਥਲਾ ਜਾਂ ਜਲੰਧਰ ਵਿੱਚ ਕੰਮ ਚਾਹੀਦਾ ਹੈ?" },
@@ -386,6 +399,9 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       "market:haridwar": "ਹਰਿਦੁਆਰ / ਰੁੜਕੀ", "market:uttarakhand": "ਉੱਤਰਾਖੰਡ ਵਿੱਚ ਕਿਤੇ ਹੋਰ", "market:jalandhar": "ਜਲੰਧਰ / ਕਪੂਰਥਲਾ",
       "market:punjab": "ਪੰਜਾਬ ਵਿੱਚ ਕਿਤੇ ਹੋਰ", "market:bengaluru": "ਬੈਂਗਲੁਰੂ", "market:other": "ਕਿਤੇ ਹੋਰ",
       "haridwar:rest-of-uttarakhand": "ਉੱਤਰਾਖੰਡ ਵਿੱਚ ਕਿਤੇ ਹੋਰ", "jalandhar:rest-of-punjab": "ਪੰਜਾਬ ਵਿੱਚ ਕਿਤੇ ਹੋਰ",
+      "dehradun:selaqui-sahaspur": "ਸੇਲਾਕੁਈ / ਸਹਸਪੁਰ", "dehradun:city": "ਦੇਹਰਾਦੂਨ ਸ਼ਹਿਰ", "dehradun:rishikesh-doiwala": "ਰਿਸ਼ੀਕੇਸ਼ / ਡੋਈਵਾਲਾ",
+      "dehradun:vikasnagar": "ਵਿਕਾਸਨਗਰ / ਹਰਬਰਟਪੁਰ", "dehradun:outside": "ਕਿਤੇ ਹੋਰ", "market:dehradun": "ਦੇਹਰਾਦੂਨ / ਸੇਲਾਕੁਈ",
+      "dehradun:rest-of-uttarakhand": "ਉੱਤਰਾਖੰਡ ਵਿੱਚ ਕਿਤੇ ਹੋਰ",
     },
     details: {
       question: "ਆਖ਼ਰੀ ਕਦਮ: ਤੁਹਾਡੇ ਨਾਲ ਸੰਪਰਕ ਕਿਵੇਂ ਕਰੀਏ?",
@@ -410,6 +426,7 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
     inCluster: {
       haridwar: { title: "ಸಿಡ್ಕುಲ್ ಹರಿದ್ವಾರದಲ್ಲಿ ಕೆಲಸಕ್ಕೆ ಅರ್ಜಿ: ಚಿಕ್ಕ ಫಾರ್ಮ್", heading: "ಸಿಡ್ಕುಲ್ ಹರಿದ್ವಾರದಲ್ಲಿ ಕೆಲಸ ಬೇಕೇ?" },
       uttarakhand: { title: "ಉತ್ತರಾಖಂಡದಲ್ಲಿ ಕೆಲಸಕ್ಕೆ ಅರ್ಜಿ: ಚಿಕ್ಕ ಫಾರ್ಮ್", heading: "ಉತ್ತರಾಖಂಡದಲ್ಲಿ ಕೆಲಸ ಬೇಕೇ?" },
+      dehradun: { title: "ಡೆಹ್ರಾಡೂನ್ ಮತ್ತು ಸೆಲಾಕುಯಿಯಲ್ಲಿ ಕೆಲಸಕ್ಕೆ ಅರ್ಜಿ: ಚಿಕ್ಕ ಫಾರ್ಮ್", heading: "ಡೆಹ್ರಾಡೂನ್ ಅಥವಾ ಸೆಲಾಕುಯಿಯಲ್ಲಿ ಕೆಲಸ ಬೇಕೇ?" },
       jalandhar: { title: "ಕಪೂರ್ಥಲಾ ಮತ್ತು ಜಲಂಧರ್‌ನಲ್ಲಿ ಕೆಲಸಕ್ಕೆ ಅರ್ಜಿ: ಚಿಕ್ಕ ಫಾರ್ಮ್", heading: "ಕಪೂರ್ಥಲಾ ಅಥವಾ ಜಲಂಧರ್‌ನಲ್ಲಿ ಕೆಲಸ ಬೇಕೇ?" },
       punjab: { title: "ಪಂಜಾಬ್‌ನಲ್ಲಿ ಕೆಲಸಕ್ಕೆ ಅರ್ಜಿ: ಚಿಕ್ಕ ಫಾರ್ಮ್", heading: "ಪಂಜಾಬ್‌ನಲ್ಲಿ ಕೆಲಸ ಬೇಕೇ?" },
       bengaluru: { title: "ಬೆಂಗಳೂರಿನಲ್ಲಿ ಕೆಲಸಕ್ಕೆ ಅರ್ಜಿ: ಚಿಕ್ಕ ಫಾರ್ಮ್", heading: "ಬೆಂಗಳೂರಿನಲ್ಲಿ ಕೆಲಸ ಬೇಕೇ?" },
@@ -453,6 +470,9 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       "market:haridwar": "ಹರಿದ್ವಾರ / ರೂರ್ಕಿ", "market:uttarakhand": "ಉತ್ತರಾಖಂಡದಲ್ಲಿ ಬೇರೆಡೆ", "market:jalandhar": "ಜಲಂಧರ್ / ಕಪೂರ್ಥಲಾ",
       "market:punjab": "ಪಂಜಾಬ್‌ನಲ್ಲಿ ಬೇರೆಡೆ", "market:bengaluru": "ಬೆಂಗಳೂರು", "market:other": "ಬೇರೆಲ್ಲೋ",
       "haridwar:rest-of-uttarakhand": "ಉತ್ತರಾಖಂಡದಲ್ಲಿ ಬೇರೆಡೆ", "jalandhar:rest-of-punjab": "ಪಂಜಾಬ್‌ನಲ್ಲಿ ಬೇರೆಡೆ",
+      "dehradun:selaqui-sahaspur": "ಸೆಲಾಕುಯಿ / ಸಹಸ್‌ಪುರ", "dehradun:city": "ಡೆಹ್ರಾಡೂನ್ ನಗರ", "dehradun:rishikesh-doiwala": "ಋಷಿಕೇಶ / ಡೋಯಿವಾಲಾ",
+      "dehradun:vikasnagar": "ವಿಕಾಸ್‌ನಗರ / ಹರ್ಬರ್ಟ್‌ಪುರ", "dehradun:outside": "ಬೇರೆಲ್ಲೋ", "market:dehradun": "ಡೆಹ್ರಾಡೂನ್ / ಸೆಲಾಕುಯಿ",
+      "dehradun:rest-of-uttarakhand": "ಉತ್ತರಾಖಂಡದಲ್ಲಿ ಬೇರೆಡೆ",
     },
     details: {
       question: "ಕೊನೆಯ ಹಂತ: ನಿಮ್ಮನ್ನು ಹೇಗೆ ಸಂಪರ್ಕಿಸುವುದು?",

@@ -64,7 +64,7 @@ try {
   assert.equal(await page.locator('main a[href="/en-in/jobs/haridwar"]:visible').count(),1);
   for (const id of ['helper','machine','iti','office']) assert.equal(await page.locator('main section#'+id).count(),1,'/jobs #'+id);
   // Every market is listed; with no signal none comes first (alphabetical) and Apply opens the form that asks.
-  assert.deepEqual(await page.locator('main .ctx-j > [data-m]').evaluateAll((els)=>els.map((e)=>e.getAttribute('data-m'))),['bengaluru','haridwar','jalandhar','punjab','uttarakhand']);
+  assert.deepEqual(await page.locator('main .ctx-j > [data-m]').evaluateAll((els)=>els.map((e)=>e.getAttribute('data-m'))),['bengaluru','dehradun','haridwar','jalandhar','punjab','uttarakhand']);
   await page.locator('.jobs-submit:visible').click();await page.waitForURL('**/en-in/jobs/apply');assert.equal(new URL(page.url()).pathname,'/en-in/jobs/apply');
   console.log('Job landing pages preserve self-canonicals, unique content, role links and guided application access');
   await open('/en-in/jobs/apply'+complete);
@@ -311,7 +311,7 @@ try {
     await visitor.addInitScript(()=>{Math.random=()=>0.5;});
     const v=await visitor.newPage();v.on('pageerror',e=>errors.push(e.message));
     await v.goto(origin+'/en-in/jobs/10th-pass?work=any&experience=fresher&shift=day&start=now');
-    assert.equal(await v.locator('.ctx-jrow > [data-m]:visible').count(),5,'every market before anything is known');
+    assert.equal(await v.locator('.ctx-jrow > [data-m]:visible').count(),6,'every market before anything is known');
     await v.locator('.ctx-jrow > [data-m="bengaluru"]').click();
     assert.equal(new URL(v.url()).pathname,'/en-in/jobs/10th-pass');
     await v.waitForFunction(()=>document.documentElement.getAttribute('data-ctx-band')==='stated');

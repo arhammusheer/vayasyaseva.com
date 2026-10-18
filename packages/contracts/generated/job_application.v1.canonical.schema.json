@@ -52,7 +52,8 @@
             "jalandhar",
             "saharanpur",
             "other",
-            "punjab"
+            "punjab",
+            "dehradun"
           ]
         },
         {
@@ -72,7 +73,8 @@
             "jalandhar",
             "saharanpur",
             "other",
-            "punjab"
+            "punjab",
+            "dehradun"
           ]
         },
         {
@@ -485,14 +487,21 @@
                   "punjab:amritsar",
                   "punjab:other",
                   "punjab:outside",
+                  "dehradun:selaqui-sahaspur",
+                  "dehradun:city",
+                  "dehradun:rishikesh-doiwala",
+                  "dehradun:vikasnagar",
+                  "dehradun:outside",
                   "market:haridwar",
                   "market:uttarakhand",
                   "market:jalandhar",
                   "market:punjab",
                   "market:bengaluru",
                   "market:other",
+                  "market:dehradun",
                   "haridwar:rest-of-uttarakhand",
-                  "jalandhar:rest-of-punjab"
+                  "jalandhar:rest-of-punjab",
+                  "dehradun:rest-of-uttarakhand"
                 ]
               },
               "uniqueItems": true

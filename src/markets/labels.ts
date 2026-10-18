@@ -18,6 +18,7 @@ type MarketLabel = {
 
 export const MARKET_LABELS = {
   bengaluru: { name: { "en-IN": "Bengaluru", "hi-IN": "बेंगलुरु", "hi-Latn-IN": "Bengaluru" } },
+  dehradun: { name: { "en-IN": "Dehradun", "hi-IN": "देहरादून", "hi-Latn-IN": "Dehradun" } },
   "delhi-ncr": { name: { "en-IN": "Delhi NCR", "hi-IN": "दिल्ली NCR", "hi-Latn-IN": "Delhi NCR" } },
   haridwar: { name: { "en-IN": "Haridwar", "hi-IN": "हरिद्वार", "hi-Latn-IN": "Haridwar" } },
   jalandhar: {
@@ -36,6 +37,13 @@ export const JOBS_LINK_LABELS = {
     "hi-Latn-IN": "Bengaluru mein job",
     "kn-IN": "ಬೆಂಗಳೂರಿನಲ್ಲಿ ಉದ್ಯೋಗ",
     "pa-IN": "ਬੈਂਗਲੁਰੂ ਵਿੱਚ ਨੌਕਰੀ",
+  },
+  dehradun: {
+    "en-IN": "Jobs in Dehradun",
+    "hi-IN": "देहरादून में नौकरी",
+    "hi-Latn-IN": "Dehradun mein job",
+    "kn-IN": "ಡೆಹ್ರಾಡೂನ್‌ನಲ್ಲಿ ಉದ್ಯೋಗ",
+    "pa-IN": "ਦੇਹਰਾਦੂਨ ਵਿੱਚ ਨੌਕਰੀ",
   },
   haridwar: {
     "en-IN": "Jobs in Haridwar",

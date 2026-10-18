@@ -14,7 +14,8 @@
     "jalandhar",
     "saharanpur",
     "other",
-    "punjab"
+    "punjab",
+    "dehradun"
   ],
   "identifiers.PAGE_STATUSES": [
     "draft",
@@ -51,7 +52,8 @@
     "bengaluru",
     "delhi-ncr",
     "jalandhar",
-    "haridwar"
+    "haridwar",
+    "dehradun"
   ],
   "identifiers.HARIDWAR_AREA_IDS": [
     "sidcul-bahadrabad",
@@ -88,17 +90,26 @@
     "punjab:other",
     "punjab:outside"
   ],
+  "identifiers.DEHRADUN_AREA_IDS": [
+    "dehradun:selaqui-sahaspur",
+    "dehradun:city",
+    "dehradun:rishikesh-doiwala",
+    "dehradun:vikasnagar",
+    "dehradun:outside"
+  ],
   "identifiers.MARKET_AREA_IDS": [
     "market:haridwar",
     "market:uttarakhand",
     "market:jalandhar",
     "market:punjab",
     "market:bengaluru",
-    "market:other"
+    "market:other",
+    "market:dehradun"
   ],
   "identifiers.REST_OF_STATE_AREA_IDS": [
     "haridwar:rest-of-uttarakhand",
-    "jalandhar:rest-of-punjab"
+    "jalandhar:rest-of-punjab",
+    "dehradun:rest-of-uttarakhand"
   ],
   "rules.INTAKE_SOURCES": [
     "web_en",
@@ -162,11 +173,11 @@
     "jalandhar",
     "kapurthala",
     "phagwara-goraya",
-    "jalandhar-focal-point"
+    "jalandhar-focal-point",
+    "dehradun"
   ],
   "locations.placeId": [
     "uttarakhand",
-    "selaqui",
     "delhi-ncr",
     "gurugram-manesar",
     "noida-greater-noida",
@@ -181,7 +192,9 @@
     "bommasandra-jigani-attibele",
     "electronic-city-whitefield",
     "hoskote-narasapura",
-    "haridwar"
+    "haridwar",
+    "dehradun",
+    "selaqui"
   ],
   "identifiers.LOCATION_ESTATES.uttarakhand": [
     "selaqui"
@@ -204,6 +217,9 @@
     "phagwara-goraya"
   ],
   "identifiers.LOCATION_ESTATES.haridwar": [],
+  "identifiers.LOCATION_ESTATES.dehradun": [
+    "selaqui"
+  ],
   "rules.QUICK_ANSWERS.work": [
     "factory-helper",
     "packing",
@@ -294,14 +310,21 @@
     "punjab:amritsar",
     "punjab:other",
     "punjab:outside",
+    "dehradun:selaqui-sahaspur",
+    "dehradun:city",
+    "dehradun:rishikesh-doiwala",
+    "dehradun:vikasnagar",
+    "dehradun:outside",
     "market:haridwar",
     "market:uttarakhand",
     "market:jalandhar",
     "market:punjab",
     "market:bengaluru",
     "market:other",
+    "market:dehradun",
     "haridwar:rest-of-uttarakhand",
-    "jalandhar:rest-of-punjab"
+    "jalandhar:rest-of-punjab",
+    "dehradun:rest-of-uttarakhand"
   ],
   "crm.ANSWER_OPTIONS.experience": [
     "fresher=FRESHER",
@@ -359,6 +382,13 @@
     "market:bengaluru=MARKET_BENGALURU",
     "market:other=MARKET_OTHER",
     "haridwar:rest-of-uttarakhand=HW_REST_OF_UTTARAKHAND",
-    "jalandhar:rest-of-punjab=JL_REST_OF_PUNJAB"
+    "jalandhar:rest-of-punjab=JL_REST_OF_PUNJAB",
+    "dehradun:selaqui-sahaspur=DD_SELAQUI_SAHASPUR",
+    "dehradun:city=DEHRADUN_CITY",
+    "dehradun:rishikesh-doiwala=RISHIKESH_DOIWALA",
+    "dehradun:vikasnagar=VIKASNAGAR_HERBERTPUR",
+    "dehradun:outside=OUTSIDE_DEHRADUN",
+    "market:dehradun=MARKET_DEHRADUN",
+    "dehradun:rest-of-uttarakhand=DD_REST_OF_UTTARAKHAND"
   ]
 }

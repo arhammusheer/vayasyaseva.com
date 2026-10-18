@@ -28,6 +28,10 @@ Terms used on `/hi-in/` (हिंदी, Devanagari) and `/hi-latn-in/` (Hindi 
 | SIDCUL | सिडकुल | Keep SIDCUL in Latin where it helps searchers, such as titles |
 | Haridwar | हरिद्वार | |
 | Jalandhar | जालंधर | |
+| Dehradun | देहरादून | |
+| Selaqui | सेलाकुई | Also spelt Selakui; "Selaqui" in Latin script, as SIIDCUL writes it |
+| Rishikesh | ऋषिकेश | |
+| Vikasnagar | विकासनगर | |
 | Kapurthala | कपूरथला | |
 | Phagwara | फगवाड़ा | |
 | Goraya | गुराया | Punjabi ਗੁਰਾਇਆ; "Goraya" in Latin script, as searched |

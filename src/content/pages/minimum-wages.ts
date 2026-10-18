@@ -242,18 +242,18 @@ type Door = { eyebrow: string; heading: string; text: string; link: LinkItem; ex
 
 /** The doors band at the foot of each wage page (PLAN §5.5): no phone. */
 export const wageDoors = {
-  /** Uttarakhand: the state's market, whose form also files Haridwar applicants under Haridwar. */
+  /** Uttarakhand: the state's market, whose form also files Haridwar and Dehradun applicants under their own markets. */
   jobs: {
     eyebrow: "LOOKING FOR WORK",
     heading: "Factory and warehouse jobs across Uttarakhand.",
-    text: "Haridwar and the rest of the state. Full 8-hour shifts. There is no fee to apply.",
+    text: "Haridwar, Dehradun and the rest of the state. Full 8-hour shifts. There is no fee to apply.",
     link: { href: "/jobs/uttarakhand", label: "Jobs across Uttarakhand" },
   } satisfies Door,
   /** The hub covers several states, so its jobs door is the national jobs page, not one city's. */
   jobsAll: {
     eyebrow: "LOOKING FOR WORK",
     heading: "Factory and warehouse jobs.",
-    text: "In Bengaluru, Haridwar, Jalandhar–Kapurthala, Punjab and Uttarakhand. Full 8-hour shifts. There is no fee to apply.",
+    text: "In Bengaluru, Dehradun, Haridwar, Jalandhar–Kapurthala, Punjab and Uttarakhand. Full 8-hour shifts. There is no fee to apply.",
     link: { href: "/jobs", label: "See jobs" },
   } satisfies Door,
   business: {

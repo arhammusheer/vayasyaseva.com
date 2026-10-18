@@ -2,6 +2,7 @@
   "tables": {
     "MARKET_ORDER": [
       "bengaluru",
+      "dehradun",
       "delhi-ncr",
       "haridwar",
       "jalandhar",
@@ -25,6 +26,9 @@
     "CLUSTER_STATES": {
       "bengaluru": [
         "KA"
+      ],
+      "dehradun": [
+        "UK"
       ],
       "delhi-ncr": [
         "DL",
@@ -60,9 +64,13 @@
     "bholath": "PB",
     "blr": "KA",
     "bommasandra": "KA",
+    "clement town": "UK",
+    "dehra dun": "UK",
     "dehradun": "UK",
     "delhi": "DL",
     "dera bassi": "PB",
+    "doiwala": "UK",
+    "doon": "UK",
     "electronic city": "KA",
     "faridabad": "HR",
     "gautam buddha nagar": "UP",
@@ -74,9 +82,12 @@
     "haldwani": "UK",
     "hardwar": "UK",
     "haridwar": "UK",
+    "harrawala": "UK",
+    "herbertpur": "UK",
     "hoskote": "KA",
     "jalandhar": "PB",
     "jhabrera": "UK",
+    "jhajra": "UK",
     "jigani": "KA",
     "jullundur": "PB",
     "jwalapur": "UK",
@@ -87,10 +98,12 @@
     "kotdwar": "UK",
     "kundli": "HR",
     "laksar": "UK",
+    "langha": "UK",
     "ludhiana": "PB",
     "manesar": "HR",
     "manglaur": "UK",
     "mayapuri": "DL",
+    "mohabbewala": "UK",
     "mohali": "PB",
     "mundka": "DL",
     "nakodar": "PB",
@@ -107,6 +120,8 @@
     "peenya": "KA",
     "phagwara": "PB",
     "phillaur": "PB",
+    "prem nagar": "UK",
+    "premnagar": "UK",
     "punjab": "PB",
     "rajpura": "PB",
     "ranipur": "UK",
@@ -114,12 +129,14 @@
     "roorkee": "UK",
     "rudrapur": "UK",
     "rurki": "UK",
+    "sahaspur": "UK",
     "selaqui": "UK",
     "sidcul": "UK",
     "sitarganj": "UK",
     "sonipat": "HR",
     "sultanpur lodhi": "PB",
     "uttarakhand": "UK",
+    "vikasnagar": "UK",
     "wazirpur": "DL",
     "whitefield": "KA",
     "zirakpur": "PB"
@@ -140,9 +157,13 @@
     "UK|bholath": "uttarakhand",
     "UK|blr": "uttarakhand",
     "UK|bommasandra": "uttarakhand",
-    "UK|dehradun": "uttarakhand",
+    "UK|clement town": "dehradun",
+    "UK|dehra dun": "dehradun",
+    "UK|dehradun": "dehradun",
     "UK|delhi": "uttarakhand",
     "UK|dera bassi": "uttarakhand",
+    "UK|doiwala": "dehradun",
+    "UK|doon": "dehradun",
     "UK|electronic city": "uttarakhand",
     "UK|faridabad": "uttarakhand",
     "UK|gautam buddha nagar": "uttarakhand",
@@ -154,9 +175,12 @@
     "UK|haldwani": "uttarakhand",
     "UK|hardwar": "haridwar",
     "UK|haridwar": "haridwar",
+    "UK|harrawala": "dehradun",
+    "UK|herbertpur": "dehradun",
     "UK|hoskote": "uttarakhand",
     "UK|jalandhar": "uttarakhand",
     "UK|jhabrera": "haridwar",
+    "UK|jhajra": "dehradun",
     "UK|jigani": "uttarakhand",
     "UK|jullundur": "uttarakhand",
     "UK|jwalapur": "haridwar",
@@ -167,10 +191,12 @@
     "UK|kotdwar": "uttarakhand",
     "UK|kundli": "uttarakhand",
     "UK|laksar": "haridwar",
+    "UK|langha": "dehradun",
     "UK|ludhiana": "uttarakhand",
     "UK|manesar": "uttarakhand",
     "UK|manglaur": "haridwar",
     "UK|mayapuri": "uttarakhand",
+    "UK|mohabbewala": "dehradun",
     "UK|mohali": "uttarakhand",
     "UK|mundka": "uttarakhand",
     "UK|nakodar": "uttarakhand",
@@ -187,19 +213,23 @@
     "UK|peenya": "uttarakhand",
     "UK|phagwara": "uttarakhand",
     "UK|phillaur": "uttarakhand",
+    "UK|prem nagar": "dehradun",
+    "UK|premnagar": "dehradun",
     "UK|punjab": "uttarakhand",
     "UK|rajpura": "uttarakhand",
     "UK|ranipur": "haridwar",
-    "UK|rishikesh": "uttarakhand",
+    "UK|rishikesh": "dehradun",
     "UK|roorkee": "haridwar",
     "UK|rudrapur": "uttarakhand",
     "UK|rurki": "haridwar",
-    "UK|selaqui": "uttarakhand",
+    "UK|sahaspur": "dehradun",
+    "UK|selaqui": "dehradun",
     "UK|sidcul": "haridwar",
     "UK|sitarganj": "uttarakhand",
     "UK|sonipat": "uttarakhand",
     "UK|sultanpur lodhi": "uttarakhand",
     "UK|uttarakhand": "uttarakhand",
+    "UK|vikasnagar": "dehradun",
     "UK|wazirpur": "uttarakhand",
     "UK|whitefield": "uttarakhand",
     "UK|zirakpur": "uttarakhand",
@@ -218,9 +248,13 @@
     "UT|bholath": "uttarakhand",
     "UT|blr": "uttarakhand",
     "UT|bommasandra": "uttarakhand",
-    "UT|dehradun": "uttarakhand",
+    "UT|clement town": "dehradun",
+    "UT|dehra dun": "dehradun",
+    "UT|dehradun": "dehradun",
     "UT|delhi": "uttarakhand",
     "UT|dera bassi": "uttarakhand",
+    "UT|doiwala": "dehradun",
+    "UT|doon": "dehradun",
     "UT|electronic city": "uttarakhand",
     "UT|faridabad": "uttarakhand",
     "UT|gautam buddha nagar": "uttarakhand",
@@ -232,9 +266,12 @@
     "UT|haldwani": "uttarakhand",
     "UT|hardwar": "haridwar",
     "UT|haridwar": "haridwar",
+    "UT|harrawala": "dehradun",
+    "UT|herbertpur": "dehradun",
     "UT|hoskote": "uttarakhand",
     "UT|jalandhar": "uttarakhand",
     "UT|jhabrera": "haridwar",
+    "UT|jhajra": "dehradun",
     "UT|jigani": "uttarakhand",
     "UT|jullundur": "uttarakhand",
     "UT|jwalapur": "haridwar",
@@ -245,10 +282,12 @@
     "UT|kotdwar": "uttarakhand",
     "UT|kundli": "uttarakhand",
     "UT|laksar": "haridwar",
+    "UT|langha": "dehradun",
     "UT|ludhiana": "uttarakhand",
     "UT|manesar": "uttarakhand",
     "UT|manglaur": "haridwar",
     "UT|mayapuri": "uttarakhand",
+    "UT|mohabbewala": "dehradun",
     "UT|mohali": "uttarakhand",
     "UT|mundka": "uttarakhand",
     "UT|nakodar": "uttarakhand",
@@ -265,19 +304,23 @@
     "UT|peenya": "uttarakhand",
     "UT|phagwara": "uttarakhand",
     "UT|phillaur": "uttarakhand",
+    "UT|prem nagar": "dehradun",
+    "UT|premnagar": "dehradun",
     "UT|punjab": "uttarakhand",
     "UT|rajpura": "uttarakhand",
     "UT|ranipur": "haridwar",
-    "UT|rishikesh": "uttarakhand",
+    "UT|rishikesh": "dehradun",
     "UT|roorkee": "haridwar",
     "UT|rudrapur": "uttarakhand",
     "UT|rurki": "haridwar",
-    "UT|selaqui": "uttarakhand",
+    "UT|sahaspur": "dehradun",
+    "UT|selaqui": "dehradun",
     "UT|sidcul": "haridwar",
     "UT|sitarganj": "uttarakhand",
     "UT|sonipat": "uttarakhand",
     "UT|sultanpur lodhi": "uttarakhand",
     "UT|uttarakhand": "uttarakhand",
+    "UT|vikasnagar": "dehradun",
     "UT|wazirpur": "uttarakhand",
     "UT|whitefield": "uttarakhand",
     "UT|zirakpur": "uttarakhand",
@@ -296,9 +339,13 @@
     "PB|bholath": "jalandhar",
     "PB|blr": "punjab",
     "PB|bommasandra": "punjab",
+    "PB|clement town": "punjab",
+    "PB|dehra dun": "punjab",
     "PB|dehradun": "punjab",
     "PB|delhi": "punjab",
     "PB|dera bassi": "punjab",
+    "PB|doiwala": "punjab",
+    "PB|doon": "punjab",
     "PB|electronic city": "punjab",
     "PB|faridabad": "punjab",
     "PB|gautam buddha nagar": "punjab",
@@ -310,9 +357,12 @@
     "PB|haldwani": "punjab",
     "PB|hardwar": "punjab",
     "PB|haridwar": "punjab",
+    "PB|harrawala": "punjab",
+    "PB|herbertpur": "punjab",
     "PB|hoskote": "punjab",
     "PB|jalandhar": "jalandhar",
     "PB|jhabrera": "punjab",
+    "PB|jhajra": "punjab",
     "PB|jigani": "punjab",
     "PB|jullundur": "jalandhar",
     "PB|jwalapur": "punjab",
@@ -323,10 +373,12 @@
     "PB|kotdwar": "punjab",
     "PB|kundli": "punjab",
     "PB|laksar": "punjab",
+    "PB|langha": "punjab",
     "PB|ludhiana": "punjab",
     "PB|manesar": "punjab",
     "PB|manglaur": "punjab",
     "PB|mayapuri": "punjab",
+    "PB|mohabbewala": "punjab",
     "PB|mohali": "punjab",
     "PB|mundka": "punjab",
     "PB|nakodar": "jalandhar",
@@ -343,6 +395,8 @@
     "PB|peenya": "punjab",
     "PB|phagwara": "jalandhar",
     "PB|phillaur": "jalandhar",
+    "PB|prem nagar": "punjab",
+    "PB|premnagar": "punjab",
     "PB|punjab": "punjab",
     "PB|rajpura": "punjab",
     "PB|ranipur": "punjab",
@@ -350,12 +404,14 @@
     "PB|roorkee": "punjab",
     "PB|rudrapur": "punjab",
     "PB|rurki": "punjab",
+    "PB|sahaspur": "punjab",
     "PB|selaqui": "punjab",
     "PB|sidcul": "punjab",
     "PB|sitarganj": "punjab",
     "PB|sonipat": "punjab",
     "PB|sultanpur lodhi": "jalandhar",
     "PB|uttarakhand": "punjab",
+    "PB|vikasnagar": "punjab",
     "PB|wazirpur": "punjab",
     "PB|whitefield": "punjab",
     "PB|zirakpur": "punjab",
@@ -374,9 +430,13 @@
     "KA|bholath": "bengaluru",
     "KA|blr": "bengaluru",
     "KA|bommasandra": "bengaluru",
+    "KA|clement town": "bengaluru",
+    "KA|dehra dun": "bengaluru",
     "KA|dehradun": "bengaluru",
     "KA|delhi": "bengaluru",
     "KA|dera bassi": "bengaluru",
+    "KA|doiwala": "bengaluru",
+    "KA|doon": "bengaluru",
     "KA|electronic city": "bengaluru",
     "KA|faridabad": "bengaluru",
     "KA|gautam buddha nagar": "bengaluru",
@@ -388,9 +448,12 @@
     "KA|haldwani": "bengaluru",
     "KA|hardwar": "bengaluru",
     "KA|haridwar": "bengaluru",
+    "KA|harrawala": "bengaluru",
+    "KA|herbertpur": "bengaluru",
     "KA|hoskote": "bengaluru",
     "KA|jalandhar": "bengaluru",
     "KA|jhabrera": "bengaluru",
+    "KA|jhajra": "bengaluru",
     "KA|jigani": "bengaluru",
     "KA|jullundur": "bengaluru",
     "KA|jwalapur": "bengaluru",
@@ -401,10 +464,12 @@
     "KA|kotdwar": "bengaluru",
     "KA|kundli": "bengaluru",
     "KA|laksar": "bengaluru",
+    "KA|langha": "bengaluru",
     "KA|ludhiana": "bengaluru",
     "KA|manesar": "bengaluru",
     "KA|manglaur": "bengaluru",
     "KA|mayapuri": "bengaluru",
+    "KA|mohabbewala": "bengaluru",
     "KA|mohali": "bengaluru",
     "KA|mundka": "bengaluru",
     "KA|nakodar": "bengaluru",
@@ -421,6 +486,8 @@
     "KA|peenya": "bengaluru",
     "KA|phagwara": "bengaluru",
     "KA|phillaur": "bengaluru",
+    "KA|prem nagar": "bengaluru",
+    "KA|premnagar": "bengaluru",
     "KA|punjab": "bengaluru",
     "KA|rajpura": "bengaluru",
     "KA|ranipur": "bengaluru",
@@ -428,12 +495,14 @@
     "KA|roorkee": "bengaluru",
     "KA|rudrapur": "bengaluru",
     "KA|rurki": "bengaluru",
+    "KA|sahaspur": "bengaluru",
     "KA|selaqui": "bengaluru",
     "KA|sidcul": "bengaluru",
     "KA|sitarganj": "bengaluru",
     "KA|sonipat": "bengaluru",
     "KA|sultanpur lodhi": "bengaluru",
     "KA|uttarakhand": "bengaluru",
+    "KA|vikasnagar": "bengaluru",
     "KA|wazirpur": "bengaluru",
     "KA|whitefield": "bengaluru",
     "KA|zirakpur": "bengaluru",
@@ -452,9 +521,13 @@
     "DL|bholath": "delhi-ncr",
     "DL|blr": "delhi-ncr",
     "DL|bommasandra": "delhi-ncr",
+    "DL|clement town": "delhi-ncr",
+    "DL|dehra dun": "delhi-ncr",
     "DL|dehradun": "delhi-ncr",
     "DL|delhi": "delhi-ncr",
     "DL|dera bassi": "delhi-ncr",
+    "DL|doiwala": "delhi-ncr",
+    "DL|doon": "delhi-ncr",
     "DL|electronic city": "delhi-ncr",
     "DL|faridabad": "delhi-ncr",
     "DL|gautam buddha nagar": "delhi-ncr",
@@ -466,9 +539,12 @@
     "DL|haldwani": "delhi-ncr",
     "DL|hardwar": "delhi-ncr",
     "DL|haridwar": "delhi-ncr",
+    "DL|harrawala": "delhi-ncr",
+    "DL|herbertpur": "delhi-ncr",
     "DL|hoskote": "delhi-ncr",
     "DL|jalandhar": "delhi-ncr",
     "DL|jhabrera": "delhi-ncr",
+    "DL|jhajra": "delhi-ncr",
     "DL|jigani": "delhi-ncr",
     "DL|jullundur": "delhi-ncr",
     "DL|jwalapur": "delhi-ncr",
@@ -479,10 +555,12 @@
     "DL|kotdwar": "delhi-ncr",
     "DL|kundli": "delhi-ncr",
     "DL|laksar": "delhi-ncr",
+    "DL|langha": "delhi-ncr",
     "DL|ludhiana": "delhi-ncr",
     "DL|manesar": "delhi-ncr",
     "DL|manglaur": "delhi-ncr",
     "DL|mayapuri": "delhi-ncr",
+    "DL|mohabbewala": "delhi-ncr",
     "DL|mohali": "delhi-ncr",
     "DL|mundka": "delhi-ncr",
     "DL|nakodar": "delhi-ncr",
@@ -499,6 +577,8 @@
     "DL|peenya": "delhi-ncr",
     "DL|phagwara": "delhi-ncr",
     "DL|phillaur": "delhi-ncr",
+    "DL|prem nagar": "delhi-ncr",
+    "DL|premnagar": "delhi-ncr",
     "DL|punjab": "delhi-ncr",
     "DL|rajpura": "delhi-ncr",
     "DL|ranipur": "delhi-ncr",
@@ -506,12 +586,14 @@
     "DL|roorkee": "delhi-ncr",
     "DL|rudrapur": "delhi-ncr",
     "DL|rurki": "delhi-ncr",
+    "DL|sahaspur": "delhi-ncr",
     "DL|selaqui": "delhi-ncr",
     "DL|sidcul": "delhi-ncr",
     "DL|sitarganj": "delhi-ncr",
     "DL|sonipat": "delhi-ncr",
     "DL|sultanpur lodhi": "delhi-ncr",
     "DL|uttarakhand": "delhi-ncr",
+    "DL|vikasnagar": "delhi-ncr",
     "DL|wazirpur": "delhi-ncr",
     "DL|whitefield": "delhi-ncr",
     "DL|zirakpur": "delhi-ncr",
@@ -530,9 +612,13 @@
     "HR|bholath": "delhi-ncr",
     "HR|blr": "delhi-ncr",
     "HR|bommasandra": "delhi-ncr",
+    "HR|clement town": "delhi-ncr",
+    "HR|dehra dun": "delhi-ncr",
     "HR|dehradun": "delhi-ncr",
     "HR|delhi": "delhi-ncr",
     "HR|dera bassi": "delhi-ncr",
+    "HR|doiwala": "delhi-ncr",
+    "HR|doon": "delhi-ncr",
     "HR|electronic city": "delhi-ncr",
     "HR|faridabad": "delhi-ncr",
     "HR|gautam buddha nagar": "delhi-ncr",
@@ -544,9 +630,12 @@
     "HR|haldwani": "delhi-ncr",
     "HR|hardwar": "delhi-ncr",
     "HR|haridwar": "delhi-ncr",
+    "HR|harrawala": "delhi-ncr",
+    "HR|herbertpur": "delhi-ncr",
     "HR|hoskote": "delhi-ncr",
     "HR|jalandhar": "delhi-ncr",
     "HR|jhabrera": "delhi-ncr",
+    "HR|jhajra": "delhi-ncr",
     "HR|jigani": "delhi-ncr",
     "HR|jullundur": "delhi-ncr",
     "HR|jwalapur": "delhi-ncr",
@@ -557,10 +646,12 @@
     "HR|kotdwar": "delhi-ncr",
     "HR|kundli": "delhi-ncr",
     "HR|laksar": "delhi-ncr",
+    "HR|langha": "delhi-ncr",
     "HR|ludhiana": "delhi-ncr",
     "HR|manesar": "delhi-ncr",
     "HR|manglaur": "delhi-ncr",
     "HR|mayapuri": "delhi-ncr",
+    "HR|mohabbewala": "delhi-ncr",
     "HR|mohali": "delhi-ncr",
     "HR|mundka": "delhi-ncr",
     "HR|nakodar": "delhi-ncr",
@@ -577,6 +668,8 @@
     "HR|peenya": "delhi-ncr",
     "HR|phagwara": "delhi-ncr",
     "HR|phillaur": "delhi-ncr",
+    "HR|prem nagar": "delhi-ncr",
+    "HR|premnagar": "delhi-ncr",
     "HR|punjab": "delhi-ncr",
     "HR|rajpura": "delhi-ncr",
     "HR|ranipur": "delhi-ncr",
@@ -584,12 +677,14 @@
     "HR|roorkee": "delhi-ncr",
     "HR|rudrapur": "delhi-ncr",
     "HR|rurki": "delhi-ncr",
+    "HR|sahaspur": "delhi-ncr",
     "HR|selaqui": "delhi-ncr",
     "HR|sidcul": "delhi-ncr",
     "HR|sitarganj": "delhi-ncr",
     "HR|sonipat": "delhi-ncr",
     "HR|sultanpur lodhi": "delhi-ncr",
     "HR|uttarakhand": "delhi-ncr",
+    "HR|vikasnagar": "delhi-ncr",
     "HR|wazirpur": "delhi-ncr",
     "HR|whitefield": "delhi-ncr",
     "HR|zirakpur": "delhi-ncr",
@@ -608,9 +703,13 @@
     "UP|bholath": null,
     "UP|blr": null,
     "UP|bommasandra": null,
+    "UP|clement town": null,
+    "UP|dehra dun": null,
     "UP|dehradun": null,
     "UP|delhi": null,
     "UP|dera bassi": null,
+    "UP|doiwala": null,
+    "UP|doon": null,
     "UP|electronic city": null,
     "UP|faridabad": null,
     "UP|gautam buddha nagar": "delhi-ncr",
@@ -622,9 +721,12 @@
     "UP|haldwani": null,
     "UP|hardwar": null,
     "UP|haridwar": null,
+    "UP|harrawala": null,
+    "UP|herbertpur": null,
     "UP|hoskote": null,
     "UP|jalandhar": null,
     "UP|jhabrera": null,
+    "UP|jhajra": null,
     "UP|jigani": null,
     "UP|jullundur": null,
     "UP|jwalapur": null,
@@ -635,10 +737,12 @@
     "UP|kotdwar": null,
     "UP|kundli": null,
     "UP|laksar": null,
+    "UP|langha": null,
     "UP|ludhiana": null,
     "UP|manesar": null,
     "UP|manglaur": null,
     "UP|mayapuri": null,
+    "UP|mohabbewala": null,
     "UP|mohali": null,
     "UP|mundka": null,
     "UP|nakodar": null,
@@ -655,6 +759,8 @@
     "UP|peenya": null,
     "UP|phagwara": null,
     "UP|phillaur": null,
+    "UP|prem nagar": null,
+    "UP|premnagar": null,
     "UP|punjab": null,
     "UP|rajpura": null,
     "UP|ranipur": null,
@@ -662,12 +768,14 @@
     "UP|roorkee": null,
     "UP|rudrapur": null,
     "UP|rurki": null,
+    "UP|sahaspur": null,
     "UP|selaqui": null,
     "UP|sidcul": null,
     "UP|sitarganj": null,
     "UP|sonipat": null,
     "UP|sultanpur lodhi": null,
     "UP|uttarakhand": null,
+    "UP|vikasnagar": null,
     "UP|wazirpur": null,
     "UP|whitefield": null,
     "UP|zirakpur": null,
@@ -686,9 +794,13 @@
     "MH|bholath": null,
     "MH|blr": null,
     "MH|bommasandra": null,
+    "MH|clement town": null,
+    "MH|dehra dun": null,
     "MH|dehradun": null,
     "MH|delhi": null,
     "MH|dera bassi": null,
+    "MH|doiwala": null,
+    "MH|doon": null,
     "MH|electronic city": null,
     "MH|faridabad": null,
     "MH|gautam buddha nagar": null,
@@ -700,9 +812,12 @@
     "MH|haldwani": null,
     "MH|hardwar": null,
     "MH|haridwar": null,
+    "MH|harrawala": null,
+    "MH|herbertpur": null,
     "MH|hoskote": null,
     "MH|jalandhar": null,
     "MH|jhabrera": null,
+    "MH|jhajra": null,
     "MH|jigani": null,
     "MH|jullundur": null,
     "MH|jwalapur": null,
@@ -713,10 +828,12 @@
     "MH|kotdwar": null,
     "MH|kundli": null,
     "MH|laksar": null,
+    "MH|langha": null,
     "MH|ludhiana": null,
     "MH|manesar": null,
     "MH|manglaur": null,
     "MH|mayapuri": null,
+    "MH|mohabbewala": null,
     "MH|mohali": null,
     "MH|mundka": null,
     "MH|nakodar": null,
@@ -733,6 +850,8 @@
     "MH|peenya": null,
     "MH|phagwara": null,
     "MH|phillaur": null,
+    "MH|prem nagar": null,
+    "MH|premnagar": null,
     "MH|punjab": null,
     "MH|rajpura": null,
     "MH|ranipur": null,
@@ -740,12 +859,14 @@
     "MH|roorkee": null,
     "MH|rudrapur": null,
     "MH|rurki": null,
+    "MH|sahaspur": null,
     "MH|selaqui": null,
     "MH|sidcul": null,
     "MH|sitarganj": null,
     "MH|sonipat": null,
     "MH|sultanpur lodhi": null,
     "MH|uttarakhand": null,
+    "MH|vikasnagar": null,
     "MH|wazirpur": null,
     "MH|whitefield": null,
     "MH|zirakpur": null,
@@ -764,9 +885,13 @@
     "null|bholath": null,
     "null|blr": null,
     "null|bommasandra": null,
+    "null|clement town": null,
+    "null|dehra dun": null,
     "null|dehradun": null,
     "null|delhi": null,
     "null|dera bassi": null,
+    "null|doiwala": null,
+    "null|doon": null,
     "null|electronic city": null,
     "null|faridabad": null,
     "null|gautam buddha nagar": null,
@@ -778,9 +903,12 @@
     "null|haldwani": null,
     "null|hardwar": null,
     "null|haridwar": null,
+    "null|harrawala": null,
+    "null|herbertpur": null,
     "null|hoskote": null,
     "null|jalandhar": null,
     "null|jhabrera": null,
+    "null|jhajra": null,
     "null|jigani": null,
     "null|jullundur": null,
     "null|jwalapur": null,
@@ -791,10 +919,12 @@
     "null|kotdwar": null,
     "null|kundli": null,
     "null|laksar": null,
+    "null|langha": null,
     "null|ludhiana": null,
     "null|manesar": null,
     "null|manglaur": null,
     "null|mayapuri": null,
+    "null|mohabbewala": null,
     "null|mohali": null,
     "null|mundka": null,
     "null|nakodar": null,
@@ -811,6 +941,8 @@
     "null|peenya": null,
     "null|phagwara": null,
     "null|phillaur": null,
+    "null|prem nagar": null,
+    "null|premnagar": null,
     "null|punjab": null,
     "null|rajpura": null,
     "null|ranipur": null,
@@ -818,12 +950,14 @@
     "null|roorkee": null,
     "null|rudrapur": null,
     "null|rurki": null,
+    "null|sahaspur": null,
     "null|selaqui": null,
     "null|sidcul": null,
     "null|sitarganj": null,
     "null|sonipat": null,
     "null|sultanpur lodhi": null,
     "null|uttarakhand": null,
+    "null|vikasnagar": null,
     "null|wazirpur": null,
     "null|whitefield": null,
     "null|zirakpur": null
@@ -843,9 +977,13 @@
     "UK|bholath|": "uttarakhand",
     "UK|blr|": "uttarakhand",
     "UK|bommasandra|": "uttarakhand",
-    "UK|dehradun|": "uttarakhand",
+    "UK|clement town|": "dehradun",
+    "UK|dehra dun|": "dehradun",
+    "UK|dehradun|": "dehradun",
     "UK|delhi|": "uttarakhand",
     "UK|dera bassi|": "uttarakhand",
+    "UK|doiwala|": "dehradun",
+    "UK|doon|": "dehradun",
     "UK|electronic city|": "uttarakhand",
     "UK|faridabad|": "uttarakhand",
     "UK|gautam buddha nagar|": "uttarakhand",
@@ -857,9 +995,12 @@
     "UK|haldwani|": "uttarakhand",
     "UK|hardwar|": "haridwar",
     "UK|haridwar|": "haridwar",
+    "UK|harrawala|": "dehradun",
+    "UK|herbertpur|": "dehradun",
     "UK|hoskote|": "uttarakhand",
     "UK|jalandhar|": "uttarakhand",
     "UK|jhabrera|": "haridwar",
+    "UK|jhajra|": "dehradun",
     "UK|jigani|": "uttarakhand",
     "UK|jullundur|": "uttarakhand",
     "UK|jwalapur|": "haridwar",
@@ -870,10 +1011,12 @@
     "UK|kotdwar|": "uttarakhand",
     "UK|kundli|": "uttarakhand",
     "UK|laksar|": "haridwar",
+    "UK|langha|": "dehradun",
     "UK|ludhiana|": "uttarakhand",
     "UK|manesar|": "uttarakhand",
     "UK|manglaur|": "haridwar",
     "UK|mayapuri|": "uttarakhand",
+    "UK|mohabbewala|": "dehradun",
     "UK|mohali|": "uttarakhand",
     "UK|mundka|": "uttarakhand",
     "UK|nakodar|": "uttarakhand",
@@ -890,19 +1033,23 @@
     "UK|peenya|": "uttarakhand",
     "UK|phagwara|": "uttarakhand",
     "UK|phillaur|": "uttarakhand",
+    "UK|prem nagar|": "dehradun",
+    "UK|premnagar|": "dehradun",
     "UK|punjab|": "uttarakhand",
     "UK|rajpura|": "uttarakhand",
     "UK|ranipur|": "haridwar",
-    "UK|rishikesh|": "uttarakhand",
+    "UK|rishikesh|": "dehradun",
     "UK|roorkee|": "haridwar",
     "UK|rudrapur|": "uttarakhand",
     "UK|rurki|": "haridwar",
-    "UK|selaqui|": "uttarakhand",
+    "UK|sahaspur|": "dehradun",
+    "UK|selaqui|": "dehradun",
     "UK|sidcul|": "haridwar",
     "UK|sitarganj|": "uttarakhand",
     "UK|sonipat|": "uttarakhand",
     "UK|sultanpur lodhi|": "uttarakhand",
     "UK|uttarakhand|": "uttarakhand",
+    "UK|vikasnagar|": "dehradun",
     "UK|wazirpur|": "uttarakhand",
     "UK|whitefield|": "uttarakhand",
     "UK|zirakpur|": "uttarakhand",
@@ -920,9 +1067,13 @@
     "UT|bholath|": "uttarakhand",
     "UT|blr|": "uttarakhand",
     "UT|bommasandra|": "uttarakhand",
-    "UT|dehradun|": "uttarakhand",
+    "UT|clement town|": "dehradun",
+    "UT|dehra dun|": "dehradun",
+    "UT|dehradun|": "dehradun",
     "UT|delhi|": "uttarakhand",
     "UT|dera bassi|": "uttarakhand",
+    "UT|doiwala|": "dehradun",
+    "UT|doon|": "dehradun",
     "UT|electronic city|": "uttarakhand",
     "UT|faridabad|": "uttarakhand",
     "UT|gautam buddha nagar|": "uttarakhand",
@@ -934,9 +1085,12 @@
     "UT|haldwani|": "uttarakhand",
     "UT|hardwar|": "haridwar",
     "UT|haridwar|": "haridwar",
+    "UT|harrawala|": "dehradun",
+    "UT|herbertpur|": "dehradun",
     "UT|hoskote|": "uttarakhand",
     "UT|jalandhar|": "uttarakhand",
     "UT|jhabrera|": "haridwar",
+    "UT|jhajra|": "dehradun",
     "UT|jigani|": "uttarakhand",
     "UT|jullundur|": "uttarakhand",
     "UT|jwalapur|": "haridwar",
@@ -947,10 +1101,12 @@
     "UT|kotdwar|": "uttarakhand",
     "UT|kundli|": "uttarakhand",
     "UT|laksar|": "haridwar",
+    "UT|langha|": "dehradun",
     "UT|ludhiana|": "uttarakhand",
     "UT|manesar|": "uttarakhand",
     "UT|manglaur|": "haridwar",
     "UT|mayapuri|": "uttarakhand",
+    "UT|mohabbewala|": "dehradun",
     "UT|mohali|": "uttarakhand",
     "UT|mundka|": "uttarakhand",
     "UT|nakodar|": "uttarakhand",
@@ -967,19 +1123,23 @@
     "UT|peenya|": "uttarakhand",
     "UT|phagwara|": "uttarakhand",
     "UT|phillaur|": "uttarakhand",
+    "UT|prem nagar|": "dehradun",
+    "UT|premnagar|": "dehradun",
     "UT|punjab|": "uttarakhand",
     "UT|rajpura|": "uttarakhand",
     "UT|ranipur|": "haridwar",
-    "UT|rishikesh|": "uttarakhand",
+    "UT|rishikesh|": "dehradun",
     "UT|roorkee|": "haridwar",
     "UT|rudrapur|": "uttarakhand",
     "UT|rurki|": "haridwar",
-    "UT|selaqui|": "uttarakhand",
+    "UT|sahaspur|": "dehradun",
+    "UT|selaqui|": "dehradun",
     "UT|sidcul|": "haridwar",
     "UT|sitarganj|": "uttarakhand",
     "UT|sonipat|": "uttarakhand",
     "UT|sultanpur lodhi|": "uttarakhand",
     "UT|uttarakhand|": "uttarakhand",
+    "UT|vikasnagar|": "dehradun",
     "UT|wazirpur|": "uttarakhand",
     "UT|whitefield|": "uttarakhand",
     "UT|zirakpur|": "uttarakhand",
@@ -997,9 +1157,13 @@
     "PB|bholath|": "jalandhar",
     "PB|blr|": "punjab",
     "PB|bommasandra|": "punjab",
+    "PB|clement town|": "punjab",
+    "PB|dehra dun|": "punjab",
     "PB|dehradun|": "punjab",
     "PB|delhi|": "punjab",
     "PB|dera bassi|": "punjab",
+    "PB|doiwala|": "punjab",
+    "PB|doon|": "punjab",
     "PB|electronic city|": "punjab",
     "PB|faridabad|": "punjab",
     "PB|gautam buddha nagar|": "punjab",
@@ -1011,9 +1175,12 @@
     "PB|haldwani|": "punjab",
     "PB|hardwar|": "punjab",
     "PB|haridwar|": "punjab",
+    "PB|harrawala|": "punjab",
+    "PB|herbertpur|": "punjab",
     "PB|hoskote|": "punjab",
     "PB|jalandhar|": "jalandhar",
     "PB|jhabrera|": "punjab",
+    "PB|jhajra|": "punjab",
     "PB|jigani|": "punjab",
     "PB|jullundur|": "jalandhar",
     "PB|jwalapur|": "punjab",
@@ -1024,10 +1191,12 @@
     "PB|kotdwar|": "punjab",
     "PB|kundli|": "punjab",
     "PB|laksar|": "punjab",
+    "PB|langha|": "punjab",
     "PB|ludhiana|": "punjab",
     "PB|manesar|": "punjab",
     "PB|manglaur|": "punjab",
     "PB|mayapuri|": "punjab",
+    "PB|mohabbewala|": "punjab",
     "PB|mohali|": "punjab",
     "PB|mundka|": "punjab",
     "PB|nakodar|": "jalandhar",
@@ -1044,6 +1213,8 @@
     "PB|peenya|": "punjab",
     "PB|phagwara|": "jalandhar",
     "PB|phillaur|": "jalandhar",
+    "PB|prem nagar|": "punjab",
+    "PB|premnagar|": "punjab",
     "PB|punjab|": "punjab",
     "PB|rajpura|": "punjab",
     "PB|ranipur|": "punjab",
@@ -1051,12 +1222,14 @@
     "PB|roorkee|": "punjab",
     "PB|rudrapur|": "punjab",
     "PB|rurki|": "punjab",
+    "PB|sahaspur|": "punjab",
     "PB|selaqui|": "punjab",
     "PB|sidcul|": "punjab",
     "PB|sitarganj|": "punjab",
     "PB|sonipat|": "punjab",
     "PB|sultanpur lodhi|": "jalandhar",
     "PB|uttarakhand|": "punjab",
+    "PB|vikasnagar|": "punjab",
     "PB|wazirpur|": "punjab",
     "PB|whitefield|": "punjab",
     "PB|zirakpur|": "punjab",
@@ -1074,9 +1247,13 @@
     "KA|bholath|": "bengaluru",
     "KA|blr|": "bengaluru",
     "KA|bommasandra|": "bengaluru",
+    "KA|clement town|": "bengaluru",
+    "KA|dehra dun|": "bengaluru",
     "KA|dehradun|": "bengaluru",
     "KA|delhi|": "bengaluru",
     "KA|dera bassi|": "bengaluru",
+    "KA|doiwala|": "bengaluru",
+    "KA|doon|": "bengaluru",
     "KA|electronic city|": "bengaluru",
     "KA|faridabad|": "bengaluru",
     "KA|gautam buddha nagar|": "bengaluru",
@@ -1088,9 +1265,12 @@
     "KA|haldwani|": "bengaluru",
     "KA|hardwar|": "bengaluru",
     "KA|haridwar|": "bengaluru",
+    "KA|harrawala|": "bengaluru",
+    "KA|herbertpur|": "bengaluru",
     "KA|hoskote|": "bengaluru",
     "KA|jalandhar|": "bengaluru",
     "KA|jhabrera|": "bengaluru",
+    "KA|jhajra|": "bengaluru",
     "KA|jigani|": "bengaluru",
     "KA|jullundur|": "bengaluru",
     "KA|jwalapur|": "bengaluru",
@@ -1101,10 +1281,12 @@
     "KA|kotdwar|": "bengaluru",
     "KA|kundli|": "bengaluru",
     "KA|laksar|": "bengaluru",
+    "KA|langha|": "bengaluru",
     "KA|ludhiana|": "bengaluru",
     "KA|manesar|": "bengaluru",
     "KA|manglaur|": "bengaluru",
     "KA|mayapuri|": "bengaluru",
+    "KA|mohabbewala|": "bengaluru",
     "KA|mohali|": "bengaluru",
     "KA|mundka|": "bengaluru",
     "KA|nakodar|": "bengaluru",
@@ -1121,6 +1303,8 @@
     "KA|peenya|": "bengaluru",
     "KA|phagwara|": "bengaluru",
     "KA|phillaur|": "bengaluru",
+    "KA|prem nagar|": "bengaluru",
+    "KA|premnagar|": "bengaluru",
     "KA|punjab|": "bengaluru",
     "KA|rajpura|": "bengaluru",
     "KA|ranipur|": "bengaluru",
@@ -1128,12 +1312,14 @@
     "KA|roorkee|": "bengaluru",
     "KA|rudrapur|": "bengaluru",
     "KA|rurki|": "bengaluru",
+    "KA|sahaspur|": "bengaluru",
     "KA|selaqui|": "bengaluru",
     "KA|sidcul|": "bengaluru",
     "KA|sitarganj|": "bengaluru",
     "KA|sonipat|": "bengaluru",
     "KA|sultanpur lodhi|": "bengaluru",
     "KA|uttarakhand|": "bengaluru",
+    "KA|vikasnagar|": "bengaluru",
     "KA|wazirpur|": "bengaluru",
     "KA|whitefield|": "bengaluru",
     "KA|zirakpur|": "bengaluru",
@@ -1151,9 +1337,13 @@
     "DL|bholath|": "delhi-ncr",
     "DL|blr|": "delhi-ncr",
     "DL|bommasandra|": "delhi-ncr",
+    "DL|clement town|": "delhi-ncr",
+    "DL|dehra dun|": "delhi-ncr",
     "DL|dehradun|": "delhi-ncr",
     "DL|delhi|": "delhi-ncr",
     "DL|dera bassi|": "delhi-ncr",
+    "DL|doiwala|": "delhi-ncr",
+    "DL|doon|": "delhi-ncr",
     "DL|electronic city|": "delhi-ncr",
     "DL|faridabad|": "delhi-ncr",
     "DL|gautam buddha nagar|": "delhi-ncr",
@@ -1165,9 +1355,12 @@
     "DL|haldwani|": "delhi-ncr",
     "DL|hardwar|": "delhi-ncr",
     "DL|haridwar|": "delhi-ncr",
+    "DL|harrawala|": "delhi-ncr",
+    "DL|herbertpur|": "delhi-ncr",
     "DL|hoskote|": "delhi-ncr",
     "DL|jalandhar|": "delhi-ncr",
     "DL|jhabrera|": "delhi-ncr",
+    "DL|jhajra|": "delhi-ncr",
     "DL|jigani|": "delhi-ncr",
     "DL|jullundur|": "delhi-ncr",
     "DL|jwalapur|": "delhi-ncr",
@@ -1178,10 +1371,12 @@
     "DL|kotdwar|": "delhi-ncr",
     "DL|kundli|": "delhi-ncr",
     "DL|laksar|": "delhi-ncr",
+    "DL|langha|": "delhi-ncr",
     "DL|ludhiana|": "delhi-ncr",
     "DL|manesar|": "delhi-ncr",
     "DL|manglaur|": "delhi-ncr",
     "DL|mayapuri|": "delhi-ncr",
+    "DL|mohabbewala|": "delhi-ncr",
     "DL|mohali|": "delhi-ncr",
     "DL|mundka|": "delhi-ncr",
     "DL|nakodar|": "delhi-ncr",
@@ -1198,6 +1393,8 @@
     "DL|peenya|": "delhi-ncr",
     "DL|phagwara|": "delhi-ncr",
     "DL|phillaur|": "delhi-ncr",
+    "DL|prem nagar|": "delhi-ncr",
+    "DL|premnagar|": "delhi-ncr",
     "DL|punjab|": "delhi-ncr",
     "DL|rajpura|": "delhi-ncr",
     "DL|ranipur|": "delhi-ncr",
@@ -1205,12 +1402,14 @@
     "DL|roorkee|": "delhi-ncr",
     "DL|rudrapur|": "delhi-ncr",
     "DL|rurki|": "delhi-ncr",
+    "DL|sahaspur|": "delhi-ncr",
     "DL|selaqui|": "delhi-ncr",
     "DL|sidcul|": "delhi-ncr",
     "DL|sitarganj|": "delhi-ncr",
     "DL|sonipat|": "delhi-ncr",
     "DL|sultanpur lodhi|": "delhi-ncr",
     "DL|uttarakhand|": "delhi-ncr",
+    "DL|vikasnagar|": "delhi-ncr",
     "DL|wazirpur|": "delhi-ncr",
     "DL|whitefield|": "delhi-ncr",
     "DL|zirakpur|": "delhi-ncr",
@@ -1228,9 +1427,13 @@
     "HR|bholath|": "delhi-ncr",
     "HR|blr|": "delhi-ncr",
     "HR|bommasandra|": "delhi-ncr",
+    "HR|clement town|": "delhi-ncr",
+    "HR|dehra dun|": "delhi-ncr",
     "HR|dehradun|": "delhi-ncr",
     "HR|delhi|": "delhi-ncr",
     "HR|dera bassi|": "delhi-ncr",
+    "HR|doiwala|": "delhi-ncr",
+    "HR|doon|": "delhi-ncr",
     "HR|electronic city|": "delhi-ncr",
     "HR|faridabad|": "delhi-ncr",
     "HR|gautam buddha nagar|": "delhi-ncr",
@@ -1242,9 +1445,12 @@
     "HR|haldwani|": "delhi-ncr",
     "HR|hardwar|": "delhi-ncr",
     "HR|haridwar|": "delhi-ncr",
+    "HR|harrawala|": "delhi-ncr",
+    "HR|herbertpur|": "delhi-ncr",
     "HR|hoskote|": "delhi-ncr",
     "HR|jalandhar|": "delhi-ncr",
     "HR|jhabrera|": "delhi-ncr",
+    "HR|jhajra|": "delhi-ncr",
     "HR|jigani|": "delhi-ncr",
     "HR|jullundur|": "delhi-ncr",
     "HR|jwalapur|": "delhi-ncr",
@@ -1255,10 +1461,12 @@
     "HR|kotdwar|": "delhi-ncr",
     "HR|kundli|": "delhi-ncr",
     "HR|laksar|": "delhi-ncr",
+    "HR|langha|": "delhi-ncr",
     "HR|ludhiana|": "delhi-ncr",
     "HR|manesar|": "delhi-ncr",
     "HR|manglaur|": "delhi-ncr",
     "HR|mayapuri|": "delhi-ncr",
+    "HR|mohabbewala|": "delhi-ncr",
     "HR|mohali|": "delhi-ncr",
     "HR|mundka|": "delhi-ncr",
     "HR|nakodar|": "delhi-ncr",
@@ -1275,6 +1483,8 @@
     "HR|peenya|": "delhi-ncr",
     "HR|phagwara|": "delhi-ncr",
     "HR|phillaur|": "delhi-ncr",
+    "HR|prem nagar|": "delhi-ncr",
+    "HR|premnagar|": "delhi-ncr",
     "HR|punjab|": "delhi-ncr",
     "HR|rajpura|": "delhi-ncr",
     "HR|ranipur|": "delhi-ncr",
@@ -1282,12 +1492,14 @@
     "HR|roorkee|": "delhi-ncr",
     "HR|rudrapur|": "delhi-ncr",
     "HR|rurki|": "delhi-ncr",
+    "HR|sahaspur|": "delhi-ncr",
     "HR|selaqui|": "delhi-ncr",
     "HR|sidcul|": "delhi-ncr",
     "HR|sitarganj|": "delhi-ncr",
     "HR|sonipat|": "delhi-ncr",
     "HR|sultanpur lodhi|": "delhi-ncr",
     "HR|uttarakhand|": "delhi-ncr",
+    "HR|vikasnagar|": "delhi-ncr",
     "HR|wazirpur|": "delhi-ncr",
     "HR|whitefield|": "delhi-ncr",
     "HR|zirakpur|": "delhi-ncr",
@@ -1305,9 +1517,13 @@
     "UP|bholath|": null,
     "UP|blr|": null,
     "UP|bommasandra|": null,
+    "UP|clement town|": null,
+    "UP|dehra dun|": null,
     "UP|dehradun|": null,
     "UP|delhi|": null,
     "UP|dera bassi|": null,
+    "UP|doiwala|": null,
+    "UP|doon|": null,
     "UP|electronic city|": null,
     "UP|faridabad|": null,
     "UP|gautam buddha nagar|": "delhi-ncr",
@@ -1319,9 +1535,12 @@
     "UP|haldwani|": null,
     "UP|hardwar|": null,
     "UP|haridwar|": null,
+    "UP|harrawala|": null,
+    "UP|herbertpur|": null,
     "UP|hoskote|": null,
     "UP|jalandhar|": null,
     "UP|jhabrera|": null,
+    "UP|jhajra|": null,
     "UP|jigani|": null,
     "UP|jullundur|": null,
     "UP|jwalapur|": null,
@@ -1332,10 +1551,12 @@
     "UP|kotdwar|": null,
     "UP|kundli|": null,
     "UP|laksar|": null,
+    "UP|langha|": null,
     "UP|ludhiana|": null,
     "UP|manesar|": null,
     "UP|manglaur|": null,
     "UP|mayapuri|": null,
+    "UP|mohabbewala|": null,
     "UP|mohali|": null,
     "UP|mundka|": null,
     "UP|nakodar|": null,
@@ -1352,6 +1573,8 @@
     "UP|peenya|": null,
     "UP|phagwara|": null,
     "UP|phillaur|": null,
+    "UP|prem nagar|": null,
+    "UP|premnagar|": null,
     "UP|punjab|": null,
     "UP|rajpura|": null,
     "UP|ranipur|": null,
@@ -1359,12 +1582,14 @@
     "UP|roorkee|": null,
     "UP|rudrapur|": null,
     "UP|rurki|": null,
+    "UP|sahaspur|": null,
     "UP|selaqui|": null,
     "UP|sidcul|": null,
     "UP|sitarganj|": null,
     "UP|sonipat|": null,
     "UP|sultanpur lodhi|": null,
     "UP|uttarakhand|": null,
+    "UP|vikasnagar|": null,
     "UP|wazirpur|": null,
     "UP|whitefield|": null,
     "UP|zirakpur|": null,
@@ -1382,9 +1607,13 @@
     "MH|bholath|": null,
     "MH|blr|": null,
     "MH|bommasandra|": null,
+    "MH|clement town|": null,
+    "MH|dehra dun|": null,
     "MH|dehradun|": null,
     "MH|delhi|": null,
     "MH|dera bassi|": null,
+    "MH|doiwala|": null,
+    "MH|doon|": null,
     "MH|electronic city|": null,
     "MH|faridabad|": null,
     "MH|gautam buddha nagar|": null,
@@ -1396,9 +1625,12 @@
     "MH|haldwani|": null,
     "MH|hardwar|": null,
     "MH|haridwar|": null,
+    "MH|harrawala|": null,
+    "MH|herbertpur|": null,
     "MH|hoskote|": null,
     "MH|jalandhar|": null,
     "MH|jhabrera|": null,
+    "MH|jhajra|": null,
     "MH|jigani|": null,
     "MH|jullundur|": null,
     "MH|jwalapur|": null,
@@ -1409,10 +1641,12 @@
     "MH|kotdwar|": null,
     "MH|kundli|": null,
     "MH|laksar|": null,
+    "MH|langha|": null,
     "MH|ludhiana|": null,
     "MH|manesar|": null,
     "MH|manglaur|": null,
     "MH|mayapuri|": null,
+    "MH|mohabbewala|": null,
     "MH|mohali|": null,
     "MH|mundka|": null,
     "MH|nakodar|": null,
@@ -1429,6 +1663,8 @@
     "MH|peenya|": null,
     "MH|phagwara|": null,
     "MH|phillaur|": null,
+    "MH|prem nagar|": null,
+    "MH|premnagar|": null,
     "MH|punjab|": null,
     "MH|rajpura|": null,
     "MH|ranipur|": null,
@@ -1436,12 +1672,14 @@
     "MH|roorkee|": null,
     "MH|rudrapur|": null,
     "MH|rurki|": null,
+    "MH|sahaspur|": null,
     "MH|selaqui|": null,
     "MH|sidcul|": null,
     "MH|sitarganj|": null,
     "MH|sonipat|": null,
     "MH|sultanpur lodhi|": null,
     "MH|uttarakhand|": null,
+    "MH|vikasnagar|": null,
     "MH|wazirpur|": null,
     "MH|whitefield|": null,
     "MH|zirakpur|": null,
@@ -1459,9 +1697,13 @@
     "null|bholath|": null,
     "null|blr|": null,
     "null|bommasandra|": null,
+    "null|clement town|": null,
+    "null|dehra dun|": null,
     "null|dehradun|": null,
     "null|delhi|": null,
     "null|dera bassi|": null,
+    "null|doiwala|": null,
+    "null|doon|": null,
     "null|electronic city|": null,
     "null|faridabad|": null,
     "null|gautam buddha nagar|": null,
@@ -1473,9 +1715,12 @@
     "null|haldwani|": null,
     "null|hardwar|": null,
     "null|haridwar|": null,
+    "null|harrawala|": null,
+    "null|herbertpur|": null,
     "null|hoskote|": null,
     "null|jalandhar|": null,
     "null|jhabrera|": null,
+    "null|jhajra|": null,
     "null|jigani|": null,
     "null|jullundur|": null,
     "null|jwalapur|": null,
@@ -1486,10 +1731,12 @@
     "null|kotdwar|": null,
     "null|kundli|": null,
     "null|laksar|": null,
+    "null|langha|": null,
     "null|ludhiana|": null,
     "null|manesar|": null,
     "null|manglaur|": null,
     "null|mayapuri|": null,
+    "null|mohabbewala|": null,
     "null|mohali|": null,
     "null|mundka|": null,
     "null|nakodar|": null,
@@ -1506,6 +1753,8 @@
     "null|peenya|": null,
     "null|phagwara|": null,
     "null|phillaur|": null,
+    "null|prem nagar|": null,
+    "null|premnagar|": null,
     "null|punjab|": null,
     "null|rajpura|": null,
     "null|ranipur|": null,
@@ -1513,12 +1762,14 @@
     "null|roorkee|": null,
     "null|rudrapur|": null,
     "null|rurki|": null,
+    "null|sahaspur|": null,
     "null|selaqui|": null,
     "null|sidcul|": null,
     "null|sitarganj|": null,
     "null|sonipat|": null,
     "null|sultanpur lodhi|": null,
     "null|uttarakhand|": null,
+    "null|vikasnagar|": null,
     "null|wazirpur|": null,
     "null|whitefield|": null,
     "null|zirakpur|": null,
@@ -1531,6 +1782,7 @@
     "UK||punjab": "uttarakhand",
     "UK||saharanpur": "uttarakhand",
     "UK||other": "uttarakhand",
+    "UK||dehradun": "dehradun",
     "UT||null": "uttarakhand",
     "UT||haridwar": "haridwar",
     "UT||uttarakhand": "uttarakhand",
@@ -1540,6 +1792,7 @@
     "UT||punjab": "uttarakhand",
     "UT||saharanpur": "uttarakhand",
     "UT||other": "uttarakhand",
+    "UT||dehradun": "dehradun",
     "PB||null": "punjab",
     "PB||haridwar": "punjab",
     "PB||uttarakhand": "punjab",
@@ -1549,6 +1802,7 @@
     "PB||punjab": "punjab",
     "PB||saharanpur": "punjab",
     "PB||other": "punjab",
+    "PB||dehradun": "punjab",
     "KA||null": "bengaluru",
     "KA||haridwar": "bengaluru",
     "KA||uttarakhand": "bengaluru",
@@ -1558,6 +1812,7 @@
     "KA||punjab": "bengaluru",
     "KA||saharanpur": "bengaluru",
     "KA||other": "bengaluru",
+    "KA||dehradun": "bengaluru",
     "DL||null": "delhi-ncr",
     "DL||haridwar": "delhi-ncr",
     "DL||uttarakhand": "delhi-ncr",
@@ -1567,6 +1822,7 @@
     "DL||punjab": "delhi-ncr",
     "DL||saharanpur": "delhi-ncr",
     "DL||other": "delhi-ncr",
+    "DL||dehradun": "delhi-ncr",
     "HR||null": "delhi-ncr",
     "HR||haridwar": "delhi-ncr",
     "HR||uttarakhand": "delhi-ncr",
@@ -1576,6 +1832,7 @@
     "HR||punjab": "delhi-ncr",
     "HR||saharanpur": "delhi-ncr",
     "HR||other": "delhi-ncr",
+    "HR||dehradun": "delhi-ncr",
     "UP||null": null,
     "UP||haridwar": null,
     "UP||uttarakhand": null,
@@ -1585,6 +1842,7 @@
     "UP||punjab": null,
     "UP||saharanpur": null,
     "UP||other": null,
+    "UP||dehradun": null,
     "MH||null": null,
     "MH||haridwar": null,
     "MH||uttarakhand": null,
@@ -1594,6 +1852,7 @@
     "MH||punjab": null,
     "MH||saharanpur": null,
     "MH||other": null,
+    "MH||dehradun": null,
     "null||null": null,
     "null||haridwar": "haridwar",
     "null||uttarakhand": "uttarakhand",
@@ -1602,7 +1861,8 @@
     "null||jalandhar": "jalandhar",
     "null||punjab": "punjab",
     "null||saharanpur": "saharanpur",
-    "null||other": "other"
+    "null||other": "other",
+    "null||dehradun": "dehradun"
   },
   "clustersInUtm": {
     "adampur": [
@@ -1647,14 +1907,26 @@
     "bommasandra": [
       "bengaluru"
     ],
+    "clement town": [
+      "dehradun"
+    ],
+    "dehra dun": [
+      "dehradun"
+    ],
     "dehradun": [
-      "uttarakhand"
+      "dehradun"
     ],
     "delhi": [
       "delhi-ncr"
     ],
     "dera bassi": [
       "punjab"
+    ],
+    "doiwala": [
+      "dehradun"
+    ],
+    "doon": [
+      "dehradun"
     ],
     "electronic city": [
       "bengaluru"
@@ -1689,6 +1961,12 @@
     "haridwar": [
       "haridwar"
     ],
+    "harrawala": [
+      "dehradun"
+    ],
+    "herbertpur": [
+      "dehradun"
+    ],
     "hoskote": [
       "bengaluru"
     ],
@@ -1697,6 +1975,9 @@
     ],
     "jhabrera": [
       "haridwar"
+    ],
+    "jhajra": [
+      "dehradun"
     ],
     "jigani": [
       "bengaluru"
@@ -1728,6 +2009,9 @@
     "laksar": [
       "haridwar"
     ],
+    "langha": [
+      "dehradun"
+    ],
     "ludhiana": [
       "punjab"
     ],
@@ -1739,6 +2023,9 @@
     ],
     "mayapuri": [
       "delhi-ncr"
+    ],
+    "mohabbewala": [
+      "dehradun"
     ],
     "mohali": [
       "punjab"
@@ -1788,6 +2075,12 @@
     "phillaur": [
       "jalandhar"
     ],
+    "prem nagar": [
+      "dehradun"
+    ],
+    "premnagar": [
+      "dehradun"
+    ],
     "punjab": [
       "punjab"
     ],
@@ -1798,7 +2091,7 @@
       "haridwar"
     ],
     "rishikesh": [
-      "uttarakhand"
+      "dehradun"
     ],
     "roorkee": [
       "haridwar"
@@ -1809,8 +2102,11 @@
     "rurki": [
       "haridwar"
     ],
+    "sahaspur": [
+      "dehradun"
+    ],
     "selaqui": [
-      "uttarakhand"
+      "dehradun"
     ],
     "sidcul": [
       "haridwar"
@@ -1826,6 +2122,9 @@
     ],
     "uttarakhand": [
       "uttarakhand"
+    ],
+    "vikasnagar": [
+      "dehradun"
     ],
     "wazirpur": [
       "delhi-ncr"
@@ -1878,14 +2177,26 @@
     "jobs_bommasandra": [
       "bengaluru"
     ],
+    "jobs_clement_town": [
+      "dehradun"
+    ],
+    "jobs_dehra_dun": [
+      "dehradun"
+    ],
     "jobs_dehradun": [
-      "uttarakhand"
+      "dehradun"
     ],
     "jobs_delhi": [
       "delhi-ncr"
     ],
     "jobs_dera_bassi": [
       "punjab"
+    ],
+    "jobs_doiwala": [
+      "dehradun"
+    ],
+    "jobs_doon": [
+      "dehradun"
     ],
     "jobs_electronic_city": [
       "bengaluru"
@@ -1920,6 +2231,12 @@
     "jobs_haridwar": [
       "haridwar"
     ],
+    "jobs_harrawala": [
+      "dehradun"
+    ],
+    "jobs_herbertpur": [
+      "dehradun"
+    ],
     "jobs_hoskote": [
       "bengaluru"
     ],
@@ -1928,6 +2245,9 @@
     ],
     "jobs_jhabrera": [
       "haridwar"
+    ],
+    "jobs_jhajra": [
+      "dehradun"
     ],
     "jobs_jigani": [
       "bengaluru"
@@ -1959,6 +2279,9 @@
     "jobs_laksar": [
       "haridwar"
     ],
+    "jobs_langha": [
+      "dehradun"
+    ],
     "jobs_ludhiana": [
       "punjab"
     ],
@@ -1970,6 +2293,9 @@
     ],
     "jobs_mayapuri": [
       "delhi-ncr"
+    ],
+    "jobs_mohabbewala": [
+      "dehradun"
     ],
     "jobs_mohali": [
       "punjab"
@@ -2019,6 +2345,12 @@
     "jobs_phillaur": [
       "jalandhar"
     ],
+    "jobs_prem_nagar": [
+      "dehradun"
+    ],
+    "jobs_premnagar": [
+      "dehradun"
+    ],
     "jobs_punjab": [
       "punjab"
     ],
@@ -2029,7 +2361,7 @@
       "haridwar"
     ],
     "jobs_rishikesh": [
-      "uttarakhand"
+      "dehradun"
     ],
     "jobs_roorkee": [
       "haridwar"
@@ -2040,8 +2372,11 @@
     "jobs_rurki": [
       "haridwar"
     ],
+    "jobs_sahaspur": [
+      "dehradun"
+    ],
     "jobs_selaqui": [
-      "uttarakhand"
+      "dehradun"
     ],
     "jobs_sidcul": [
       "haridwar"
@@ -2058,6 +2393,9 @@
     "jobs_uttarakhand": [
       "uttarakhand"
     ],
+    "jobs_vikasnagar": [
+      "dehradun"
+    ],
     "jobs_wazirpur": [
       "delhi-ncr"
     ],
@@ -2066,6 +2404,24 @@
     ],
     "jobs_zirakpur": [
       "punjab"
+    ],
+    "clement_town": [
+      "dehradun"
+    ],
+    "clement-town": [
+      "dehradun"
+    ],
+    "jobs-clement-town": [
+      "dehradun"
+    ],
+    "dehra_dun": [
+      "dehradun"
+    ],
+    "dehra-dun": [
+      "dehradun"
+    ],
+    "jobs-dehra-dun": [
+      "dehradun"
     ],
     "dera_bassi": [
       "punjab"
@@ -2112,6 +2468,15 @@
     "jobs-new-delhi": [
       "delhi-ncr"
     ],
+    "prem_nagar": [
+      "dehradun"
+    ],
+    "prem-nagar": [
+      "dehradun"
+    ],
+    "jobs-prem-nagar": [
+      "dehradun"
+    ],
     "sultanpur_lodhi": [
       "jalandhar"
     ],
@@ -2152,6 +2517,7 @@
     "?cluster=saharanpur": null,
     "?cluster=other": null,
     "?cluster=punjab": "punjab",
+    "?cluster=dehradun": "dehradun",
     "?cluster=mumbai": null,
     "?utm_campaign=adampur": "jalandhar",
     "?utm_campaign=amritsar": "punjab",
@@ -2167,9 +2533,13 @@
     "?utm_campaign=bholath": "jalandhar",
     "?utm_campaign=blr": "bengaluru",
     "?utm_campaign=bommasandra": "bengaluru",
-    "?utm_campaign=dehradun": "uttarakhand",
+    "?utm_campaign=clement town": "dehradun",
+    "?utm_campaign=dehra dun": "dehradun",
+    "?utm_campaign=dehradun": "dehradun",
     "?utm_campaign=delhi": "delhi-ncr",
     "?utm_campaign=dera bassi": "punjab",
+    "?utm_campaign=doiwala": "dehradun",
+    "?utm_campaign=doon": "dehradun",
     "?utm_campaign=electronic city": "bengaluru",
     "?utm_campaign=faridabad": "delhi-ncr",
     "?utm_campaign=gautam buddha nagar": "delhi-ncr",
@@ -2181,9 +2551,12 @@
     "?utm_campaign=haldwani": "uttarakhand",
     "?utm_campaign=hardwar": "haridwar",
     "?utm_campaign=haridwar": "haridwar",
+    "?utm_campaign=harrawala": "dehradun",
+    "?utm_campaign=herbertpur": "dehradun",
     "?utm_campaign=hoskote": "bengaluru",
     "?utm_campaign=jalandhar": "jalandhar",
     "?utm_campaign=jhabrera": "haridwar",
+    "?utm_campaign=jhajra": "dehradun",
     "?utm_campaign=jigani": "bengaluru",
     "?utm_campaign=jullundur": "jalandhar",
     "?utm_campaign=jwalapur": "haridwar",
@@ -2194,10 +2567,12 @@
     "?utm_campaign=kotdwar": "uttarakhand",
     "?utm_campaign=kundli": "delhi-ncr",
     "?utm_campaign=laksar": "haridwar",
+    "?utm_campaign=langha": "dehradun",
     "?utm_campaign=ludhiana": "punjab",
     "?utm_campaign=manesar": "delhi-ncr",
     "?utm_campaign=manglaur": "haridwar",
     "?utm_campaign=mayapuri": "delhi-ncr",
+    "?utm_campaign=mohabbewala": "dehradun",
     "?utm_campaign=mohali": "punjab",
     "?utm_campaign=mundka": "delhi-ncr",
     "?utm_campaign=nakodar": "jalandhar",
@@ -2214,19 +2589,23 @@
     "?utm_campaign=peenya": "bengaluru",
     "?utm_campaign=phagwara": "jalandhar",
     "?utm_campaign=phillaur": "jalandhar",
+    "?utm_campaign=prem nagar": "dehradun",
+    "?utm_campaign=premnagar": "dehradun",
     "?utm_campaign=punjab": "punjab",
     "?utm_campaign=rajpura": "punjab",
     "?utm_campaign=ranipur": "haridwar",
-    "?utm_campaign=rishikesh": "uttarakhand",
+    "?utm_campaign=rishikesh": "dehradun",
     "?utm_campaign=roorkee": "haridwar",
     "?utm_campaign=rudrapur": "uttarakhand",
     "?utm_campaign=rurki": "haridwar",
-    "?utm_campaign=selaqui": "uttarakhand",
+    "?utm_campaign=sahaspur": "dehradun",
+    "?utm_campaign=selaqui": "dehradun",
     "?utm_campaign=sidcul": "haridwar",
     "?utm_campaign=sitarganj": "uttarakhand",
     "?utm_campaign=sonipat": "delhi-ncr",
     "?utm_campaign=sultanpur lodhi": "jalandhar",
     "?utm_campaign=uttarakhand": "uttarakhand",
+    "?utm_campaign=vikasnagar": "dehradun",
     "?utm_campaign=wazirpur": "delhi-ncr",
     "?utm_campaign=whitefield": "bengaluru",
     "?utm_campaign=zirakpur": "punjab",
@@ -2244,9 +2623,13 @@
     "?utm_campaign=jobs_bholath": "jalandhar",
     "?utm_campaign=jobs_blr": "bengaluru",
     "?utm_campaign=jobs_bommasandra": "bengaluru",
-    "?utm_campaign=jobs_dehradun": "uttarakhand",
+    "?utm_campaign=jobs_clement_town": "dehradun",
+    "?utm_campaign=jobs_dehra_dun": "dehradun",
+    "?utm_campaign=jobs_dehradun": "dehradun",
     "?utm_campaign=jobs_delhi": "delhi-ncr",
     "?utm_campaign=jobs_dera_bassi": "punjab",
+    "?utm_campaign=jobs_doiwala": "dehradun",
+    "?utm_campaign=jobs_doon": "dehradun",
     "?utm_campaign=jobs_electronic_city": "bengaluru",
     "?utm_campaign=jobs_faridabad": "delhi-ncr",
     "?utm_campaign=jobs_gautam_buddha_nagar": "delhi-ncr",
@@ -2258,9 +2641,12 @@
     "?utm_campaign=jobs_haldwani": "uttarakhand",
     "?utm_campaign=jobs_hardwar": "haridwar",
     "?utm_campaign=jobs_haridwar": "haridwar",
+    "?utm_campaign=jobs_harrawala": "dehradun",
+    "?utm_campaign=jobs_herbertpur": "dehradun",
     "?utm_campaign=jobs_hoskote": "bengaluru",
     "?utm_campaign=jobs_jalandhar": "jalandhar",
     "?utm_campaign=jobs_jhabrera": "haridwar",
+    "?utm_campaign=jobs_jhajra": "dehradun",
     "?utm_campaign=jobs_jigani": "bengaluru",
     "?utm_campaign=jobs_jullundur": "jalandhar",
     "?utm_campaign=jobs_jwalapur": "haridwar",
@@ -2271,10 +2657,12 @@
     "?utm_campaign=jobs_kotdwar": "uttarakhand",
     "?utm_campaign=jobs_kundli": "delhi-ncr",
     "?utm_campaign=jobs_laksar": "haridwar",
+    "?utm_campaign=jobs_langha": "dehradun",
     "?utm_campaign=jobs_ludhiana": "punjab",
     "?utm_campaign=jobs_manesar": "delhi-ncr",
     "?utm_campaign=jobs_manglaur": "haridwar",
     "?utm_campaign=jobs_mayapuri": "delhi-ncr",
+    "?utm_campaign=jobs_mohabbewala": "dehradun",
     "?utm_campaign=jobs_mohali": "punjab",
     "?utm_campaign=jobs_mundka": "delhi-ncr",
     "?utm_campaign=jobs_nakodar": "jalandhar",
@@ -2291,22 +2679,32 @@
     "?utm_campaign=jobs_peenya": "bengaluru",
     "?utm_campaign=jobs_phagwara": "jalandhar",
     "?utm_campaign=jobs_phillaur": "jalandhar",
+    "?utm_campaign=jobs_prem_nagar": "dehradun",
+    "?utm_campaign=jobs_premnagar": "dehradun",
     "?utm_campaign=jobs_punjab": "punjab",
     "?utm_campaign=jobs_rajpura": "punjab",
     "?utm_campaign=jobs_ranipur": "haridwar",
-    "?utm_campaign=jobs_rishikesh": "uttarakhand",
+    "?utm_campaign=jobs_rishikesh": "dehradun",
     "?utm_campaign=jobs_roorkee": "haridwar",
     "?utm_campaign=jobs_rudrapur": "uttarakhand",
     "?utm_campaign=jobs_rurki": "haridwar",
-    "?utm_campaign=jobs_selaqui": "uttarakhand",
+    "?utm_campaign=jobs_sahaspur": "dehradun",
+    "?utm_campaign=jobs_selaqui": "dehradun",
     "?utm_campaign=jobs_sidcul": "haridwar",
     "?utm_campaign=jobs_sitarganj": "uttarakhand",
     "?utm_campaign=jobs_sonipat": "delhi-ncr",
     "?utm_campaign=jobs_sultanpur_lodhi": "jalandhar",
     "?utm_campaign=jobs_uttarakhand": "uttarakhand",
+    "?utm_campaign=jobs_vikasnagar": "dehradun",
     "?utm_campaign=jobs_wazirpur": "delhi-ncr",
     "?utm_campaign=jobs_whitefield": "bengaluru",
     "?utm_campaign=jobs_zirakpur": "punjab",
+    "?utm_campaign=clement_town": "dehradun",
+    "?utm_campaign=clement-town": "dehradun",
+    "?utm_campaign=jobs-clement-town": "dehradun",
+    "?utm_campaign=dehra_dun": "dehradun",
+    "?utm_campaign=dehra-dun": "dehradun",
+    "?utm_campaign=jobs-dehra-dun": "dehradun",
     "?utm_campaign=dera_bassi": "punjab",
     "?utm_campaign=dera-bassi": "punjab",
     "?utm_campaign=jobs-dera-bassi": "punjab",
@@ -2322,6 +2720,9 @@
     "?utm_campaign=new_delhi": "delhi-ncr",
     "?utm_campaign=new-delhi": "delhi-ncr",
     "?utm_campaign=jobs-new-delhi": "delhi-ncr",
+    "?utm_campaign=prem_nagar": "dehradun",
+    "?utm_campaign=prem-nagar": "dehradun",
+    "?utm_campaign=jobs-prem-nagar": "dehradun",
     "?utm_campaign=sultanpur_lodhi": "jalandhar",
     "?utm_campaign=sultanpur-lodhi": "jalandhar",
     "?utm_campaign=jobs-sultanpur-lodhi": "jalandhar",
@@ -4351,6 +4752,258 @@
       "hi-Latn-IN",
       "kn-IN"
     ],
+    "cluster=dehradun|region=UK|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=dehradun|region=UK|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=dehradun|region=UK|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=dehradun|region=UK|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=dehradun|region=UT|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=dehradun|region=UT|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=dehradun|region=UT|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=dehradun|region=UT|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=dehradun|region=PB|accept=null": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=dehradun|region=PB|accept=hi": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=dehradun|region=PB|accept=kn": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=dehradun|region=PB|accept=pa": [
+      "pa-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "hi-IN",
+      "kn-IN"
+    ],
+    "cluster=dehradun|region=KA|accept=null": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=dehradun|region=KA|accept=hi": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=dehradun|region=KA|accept=kn": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=dehradun|region=KA|accept=pa": [
+      "kn-IN",
+      "en-IN",
+      "hi-Latn-IN",
+      "hi-IN",
+      "pa-IN"
+    ],
+    "cluster=dehradun|region=DL|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=dehradun|region=DL|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=dehradun|region=DL|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=dehradun|region=DL|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=dehradun|region=HR|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=dehradun|region=HR|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=dehradun|region=HR|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=dehradun|region=HR|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=dehradun|region=UP|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=dehradun|region=UP|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=dehradun|region=UP|accept=kn": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN",
+      "pa-IN"
+    ],
+    "cluster=dehradun|region=UP|accept=pa": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=dehradun|region=MH|accept=null": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=dehradun|region=MH|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=dehradun|region=MH|accept=kn": [
+      "kn-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN"
+    ],
+    "cluster=dehradun|region=MH|accept=pa": [
+      "pa-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "kn-IN"
+    ],
+    "cluster=dehradun|region=null|accept=null": [
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=dehradun|region=null|accept=hi": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
+    ],
+    "cluster=dehradun|region=null|accept=kn": [
+      "kn-IN",
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "pa-IN"
+    ],
+    "cluster=dehradun|region=null|accept=pa": [
+      "pa-IN",
+      "en-IN",
+      "hi-IN",
+      "hi-Latn-IN",
+      "kn-IN"
+    ],
     "cluster=null|region=UK|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
@@ -4660,11 +5313,19 @@
       "en-IN",
       "hi-IN",
       "kn-IN"
+    ],
+    "dehradun": [
+      "hi-IN",
+      "hi-Latn-IN",
+      "en-IN",
+      "pa-IN",
+      "kn-IN"
     ]
   },
   "areaOptions": {
     "null|page": [
       "market:bengaluru",
+      "market:dehradun",
       "market:haridwar",
       "market:jalandhar",
       "market:punjab",
@@ -4673,6 +5334,7 @@
     ],
     "null|link": [
       "market:bengaluru",
+      "market:dehradun",
       "market:haridwar",
       "market:jalandhar",
       "market:punjab",
@@ -4681,6 +5343,7 @@
     ],
     "null|decision": [
       "market:bengaluru",
+      "market:dehradun",
       "market:haridwar",
       "market:jalandhar",
       "market:punjab",
@@ -4689,6 +5352,7 @@
     ],
     "null|ask": [
       "market:bengaluru",
+      "market:dehradun",
       "market:haridwar",
       "market:jalandhar",
       "market:punjab",
@@ -4718,12 +5382,14 @@
       "laksar",
       "haridwar:rest-of-uttarakhand",
       "market:bengaluru",
+      "market:dehradun",
       "market:jalandhar",
       "market:punjab",
       "market:other"
     ],
     "haridwar|ask": [
       "market:bengaluru",
+      "market:dehradun",
       "market:haridwar",
       "market:jalandhar",
       "market:punjab",
@@ -4756,6 +5422,7 @@
     ],
     "uttarakhand|ask": [
       "market:bengaluru",
+      "market:dehradun",
       "market:haridwar",
       "market:jalandhar",
       "market:punjab",
@@ -4764,6 +5431,7 @@
     ],
     "delhi-ncr|page": [
       "market:bengaluru",
+      "market:dehradun",
       "market:haridwar",
       "market:jalandhar",
       "market:punjab",
@@ -4772,6 +5440,7 @@
     ],
     "delhi-ncr|link": [
       "market:bengaluru",
+      "market:dehradun",
       "market:haridwar",
       "market:jalandhar",
       "market:punjab",
@@ -4780,6 +5449,7 @@
     ],
     "delhi-ncr|decision": [
       "market:bengaluru",
+      "market:dehradun",
       "market:haridwar",
       "market:jalandhar",
       "market:punjab",
@@ -4788,6 +5458,7 @@
     ],
     "delhi-ncr|ask": [
       "market:bengaluru",
+      "market:dehradun",
       "market:haridwar",
       "market:jalandhar",
       "market:punjab",
@@ -4813,6 +5484,7 @@
       "bengaluru:south",
       "bengaluru:east",
       "bengaluru:west",
+      "market:dehradun",
       "market:haridwar",
       "market:jalandhar",
       "market:punjab",
@@ -4821,6 +5493,7 @@
     ],
     "bengaluru|ask": [
       "market:bengaluru",
+      "market:dehradun",
       "market:haridwar",
       "market:jalandhar",
       "market:punjab",
@@ -4847,12 +5520,14 @@
       "jalandhar:phagwara-goraya",
       "jalandhar:rest-of-punjab",
       "market:bengaluru",
+      "market:dehradun",
       "market:haridwar",
       "market:uttarakhand",
       "market:other"
     ],
     "jalandhar|ask": [
       "market:bengaluru",
+      "market:dehradun",
       "market:haridwar",
       "market:jalandhar",
       "market:punjab",
@@ -4861,6 +5536,7 @@
     ],
     "saharanpur|page": [
       "market:bengaluru",
+      "market:dehradun",
       "market:haridwar",
       "market:jalandhar",
       "market:punjab",
@@ -4869,6 +5545,7 @@
     ],
     "saharanpur|link": [
       "market:bengaluru",
+      "market:dehradun",
       "market:haridwar",
       "market:jalandhar",
       "market:punjab",
@@ -4877,6 +5554,7 @@
     ],
     "saharanpur|decision": [
       "market:bengaluru",
+      "market:dehradun",
       "market:haridwar",
       "market:jalandhar",
       "market:punjab",
@@ -4885,6 +5563,7 @@
     ],
     "saharanpur|ask": [
       "market:bengaluru",
+      "market:dehradun",
       "market:haridwar",
       "market:jalandhar",
       "market:punjab",
@@ -4893,6 +5572,7 @@
     ],
     "other|page": [
       "market:bengaluru",
+      "market:dehradun",
       "market:haridwar",
       "market:jalandhar",
       "market:punjab",
@@ -4901,6 +5581,7 @@
     ],
     "other|link": [
       "market:bengaluru",
+      "market:dehradun",
       "market:haridwar",
       "market:jalandhar",
       "market:punjab",
@@ -4909,6 +5590,7 @@
     ],
     "other|decision": [
       "market:bengaluru",
+      "market:dehradun",
       "market:haridwar",
       "market:jalandhar",
       "market:punjab",
@@ -4917,6 +5599,7 @@
     ],
     "other|ask": [
       "market:bengaluru",
+      "market:dehradun",
       "market:haridwar",
       "market:jalandhar",
       "market:punjab",
@@ -4946,12 +5629,51 @@
       "punjab:amritsar",
       "punjab:other",
       "market:bengaluru",
+      "market:dehradun",
       "market:haridwar",
       "market:uttarakhand",
       "market:other"
     ],
     "punjab|ask": [
       "market:bengaluru",
+      "market:dehradun",
+      "market:haridwar",
+      "market:jalandhar",
+      "market:punjab",
+      "market:uttarakhand",
+      "market:other"
+    ],
+    "dehradun|page": [
+      "dehradun:selaqui-sahaspur",
+      "dehradun:city",
+      "dehradun:rishikesh-doiwala",
+      "dehradun:vikasnagar",
+      "dehradun:rest-of-uttarakhand",
+      "dehradun:outside"
+    ],
+    "dehradun|link": [
+      "dehradun:selaqui-sahaspur",
+      "dehradun:city",
+      "dehradun:rishikesh-doiwala",
+      "dehradun:vikasnagar",
+      "dehradun:rest-of-uttarakhand",
+      "dehradun:outside"
+    ],
+    "dehradun|decision": [
+      "dehradun:selaqui-sahaspur",
+      "dehradun:city",
+      "dehradun:rishikesh-doiwala",
+      "dehradun:vikasnagar",
+      "dehradun:rest-of-uttarakhand",
+      "market:bengaluru",
+      "market:haridwar",
+      "market:jalandhar",
+      "market:punjab",
+      "market:other"
+    ],
+    "dehradun|ask": [
+      "market:bengaluru",
+      "market:dehradun",
       "market:haridwar",
       "market:jalandhar",
       "market:punjab",
@@ -4995,7 +5717,7 @@
       "siteState": "UK"
     },
     "selaqui": {
-      "pageCluster": "uttarakhand",
+      "pageCluster": "dehradun",
       "siteCity": "Selaqui, Dehradun",
       "siteState": "UK"
     },
@@ -5068,12 +5790,18 @@
       "pageCluster": "jalandhar",
       "siteCity": "Focal Point, Jalandhar",
       "siteState": "PB"
+    },
+    "dehradun": {
+      "pageCluster": "dehradun",
+      "siteCity": "Dehradun",
+      "siteState": "UK"
     }
   },
   "labels": {
     "businessLabel": {
       "haridwar": "Haridwar",
       "uttarakhand": "Uttarakhand",
+      "dehradun": "Dehradun",
       "delhi-ncr": "Delhi NCR",
       "bengaluru": "Bengaluru",
       "jalandhar": "Jalandhar–Kapurthala",
@@ -5082,6 +5810,7 @@
     "JOBS_AREA_LABEL": {
       "en-IN": {
         "bengaluru": "Jobs in Bengaluru",
+        "dehradun": "Jobs in Dehradun",
         "haridwar": "Jobs in Haridwar",
         "jalandhar": "Jobs in Jalandhar and Kapurthala",
         "punjab": "Jobs across Punjab",
@@ -5089,6 +5818,7 @@
       },
       "hi-IN": {
         "bengaluru": "बेंगलुरु में नौकरी",
+        "dehradun": "देहरादून में नौकरी",
         "haridwar": "हरिद्वार में नौकरी",
         "jalandhar": "जालंधर और कपूरथला में नौकरी",
         "punjab": "पूरे पंजाब में नौकरी",
@@ -5096,6 +5826,7 @@
       },
       "hi-Latn-IN": {
         "bengaluru": "Bengaluru mein job",
+        "dehradun": "Dehradun mein job",
         "haridwar": "Haridwar mein job",
         "jalandhar": "Jalandhar aur Kapurthala mein job",
         "punjab": "Poore Punjab mein job",
@@ -5103,6 +5834,7 @@
       },
       "pa-IN": {
         "bengaluru": "ਬੈਂਗਲੁਰੂ ਵਿੱਚ ਨੌਕਰੀ",
+        "dehradun": "ਦੇਹਰਾਦੂਨ ਵਿੱਚ ਨੌਕਰੀ",
         "haridwar": "ਹਰਿਦੁਆਰ ਵਿੱਚ ਨੌਕਰੀ",
         "jalandhar": "ਜਲੰਧਰ ਅਤੇ ਕਪੂਰਥਲਾ ਵਿੱਚ ਨੌਕਰੀ",
         "punjab": "ਪੂਰੇ ਪੰਜਾਬ ਵਿੱਚ ਨੌਕਰੀ",
@@ -5110,6 +5842,7 @@
       },
       "kn-IN": {
         "bengaluru": "ಬೆಂಗಳೂರಿನಲ್ಲಿ ಉದ್ಯೋಗ",
+        "dehradun": "ಡೆಹ್ರಾಡೂನ್‌ನಲ್ಲಿ ಉದ್ಯೋಗ",
         "haridwar": "ಹರಿದ್ವಾರದಲ್ಲಿ ಉದ್ಯೋಗ",
         "jalandhar": "ಜಲಂಧರ್ ಮತ್ತು ಕಪೂರ್ಥಲಾದಲ್ಲಿ ಉದ್ಯೋಗ",
         "punjab": "ಪಂಜಾಬ್‌ನಾದ್ಯಂತ ಉದ್ಯೋಗ",
@@ -5126,6 +5859,11 @@
         "en-IN": "Uttarakhand",
         "hi-IN": "उत्तराखंड",
         "hi-Latn-IN": "Uttarakhand"
+      },
+      "dehradun": {
+        "en-IN": "Dehradun",
+        "hi-IN": "देहरादून",
+        "hi-Latn-IN": "Dehradun"
       },
       "delhi-ncr": {
         "en-IN": "Delhi NCR",
@@ -5160,6 +5898,11 @@
         "hi-IN",
         "hi-Latn-IN"
       ],
+      "dehradun": [
+        "en-IN",
+        "hi-IN",
+        "hi-Latn-IN"
+      ],
       "delhi-ncr": [
         "en-IN",
         "hi-IN",
@@ -5184,6 +5927,7 @@
   },
   "orderedJobMarkets": [
     "bengaluru",
+    "dehradun",
     "haridwar",
     "jalandhar",
     "punjab",

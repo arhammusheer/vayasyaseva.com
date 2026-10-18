@@ -145,9 +145,9 @@ export const statutorySources: StatutorySource[] = [
   },
   {
     id: "hr-lwf-act",
-    title: "Punjab Labour Welfare Fund Act, 1965, as amended by Haryana (section 9A: contributions)",
-    number: "Punjab Act 17 of 1965, amended up to 14 March 2019",
-    date: "2019-03-14",
+    title: "Punjab Labour Welfare Fund Act, 1965, as amended by Haryana (section 9A: contributions; sections 20 and 26A: recovery and penalty)",
+    number: "Punjab Act 17 of 1965, Labour Department copy with changes to 7 March 2025",
+    date: "2025-03-07",
     authority: "Labour Department, Haryana",
     url: "https://www.hrylabour.gov.in/staticdocs/labourActpdfdocs/Punjab_Labour_Welfar_Fund_Act.pdf",
   },

@@ -8,7 +8,7 @@ import { COMPLIANCE_HELP } from "@/content/compliance";
 import { lwfCopy as l, lwfStamp, stateFunds, type StateFund } from "@/content/pages/labour-welfare-fund";
 import { wageDoors, wageUi } from "@/content/pages/minimum-wages";
 import { linkable } from "@/content/registry";
-import { LWF_PATH, WAGE_HUB_PATH, wageStatePath } from "@/content/registry/identifiers";
+import { LWF_PATH, LWF_STATE_SLUGS, WAGE_HUB_PATH, lwfStatePath, wageStatePath, type LwfStateSlug } from "@/content/registry/identifiers";
 import { formatDate } from "@/content/wages";
 import { JsonLd, faqSchema, webPageSchema } from "@/lib/structured-data";
 import { localePath } from "@/lib/i18n";
@@ -33,9 +33,17 @@ export function lwfMetadata() {
 /** "₹50 a year", or the U.P. Act's "Nothing" spelled out as no regular contribution. */
 const share = (f: StateFund, value: string) => (f.noContribution && value === "Nothing" ? "No contribution" : value);
 
+/** The state's own page, where it has one and it is published. */
+function statePage(slug: string) {
+  if (!(LWF_STATE_SLUGS as readonly string[]).includes(slug)) return undefined;
+  const path = lwfStatePath(slug as LwfStateSlug);
+  return linkable(path, "en-IN") ? path : undefined;
+}
+
 function StateSection({ fund }: { fund: StateFund }) {
   const { row, due } = fund;
   const wagePage = wageStatePath(fund.slug);
+  const full = statePage(fund.slug);
   return (
     <section id={fund.slug} className="wage-split lwf-state">
       <h2 className="wage-h2">{l.state.heading(fund.name)}</h2>
@@ -81,6 +89,13 @@ function StateSection({ fund }: { fund: StateFund }) {
           ))}
           .
         </p>
+        {full && (
+          <p>
+            <Link href={full} className="text-link">
+              {l.state.full(fund.name)} <ArrowRight size={18} aria-hidden="true" />
+            </Link>
+          </p>
+        )}
         {linkable(wagePage, "en-IN") && (
           <p>
             <Link href={wagePage} className="text-link">
@@ -124,9 +139,15 @@ export function LabourWelfareFundPage() {
               {funds.map((f) => (
                 <tr key={f.slug} className="wage-row">
                   <th scope="row">
-                    <a href={`#${f.slug}`} className="wage-row-link">
-                      {f.name} <ArrowRight size={18} aria-hidden="true" />
-                    </a>
+                    {statePage(f.slug) ? (
+                      <Link href={statePage(f.slug)!} className="wage-row-link">
+                        {f.name} <ArrowRight size={18} aria-hidden="true" />
+                      </Link>
+                    ) : (
+                      <a href={`#${f.slug}`} className="wage-row-link">
+                        {f.name} <ArrowRight size={18} aria-hidden="true" />
+                      </a>
+                    )}
                   </th>
                   <td>
                     <strong>{share(f, f.row.worker)}</strong>

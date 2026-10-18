@@ -4361,3 +4361,6 @@ a:hover > svg {
     gap: 2px;
   }
 }
+.lwf-facts-wide {
+  max-width: 820px;
+}

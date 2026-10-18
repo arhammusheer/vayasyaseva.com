@@ -23,6 +23,8 @@ import {
   WAGE_METHOD_PATH,
   WAGE_VDA_PATH,
   LWF_PATH,
+  LWF_STATE_SLUGS,
+  lwfStatePath,
   WAGE_STATE_CODES,
   guidePath,
   jobsHubPath,
@@ -49,6 +51,7 @@ export const PAGE_KINDS = [
   "estate",
   "wage-hub",
   "wage-state",
+  "lwf-state",
   "guide",
   "legal",
 ] as const;
@@ -324,6 +327,13 @@ export const pageEntries: readonly PageEntry[] = [
   // Haryana 2,900, Delhi 1,600 (Keyword Planner, 18 Oct 2026). Reference
   // layout; its trail runs from home, like the wage hub.
   { path: LWF_PATH, kind: "static", audience: "mixed", locales: { "en-IN": "published" }, parent: "/", updated: STATUTORY_CHECKED, changeFrequency: "monthly", priority: 0.6 },
+  // Haryana ("labour welfare fund haryana" ~2,900 a month) and Delhi (~1,600)
+  // get pages of their own with what the hub has no room for: a worked
+  // example, how to pay, late payment and penalties (src/content/lwf-states.ts).
+  ...LWF_STATE_SLUGS.map(
+    (state) =>
+      ({ path: lwfStatePath(state), kind: "lwf-state", audience: "mixed", locales: { "en-IN": "published" }, parent: LWF_PATH, updated: "2026-10-18", changeFrequency: "monthly", priority: 0.6 }) satisfies PageEntry,
+  ),
   { path: WAGE_METHOD_PATH, kind: "static", audience: "mixed", locales: { "en-IN": "published" }, parent: WAGE_HUB_PATH, updated: EDITORIAL_POLICY, changeFrequency: "yearly", priority: 0.5 },
   // Guides sit in the reference section beside the wage pages (its header,
   // no phone), so their trail runs through the wage hub, not /compliance.

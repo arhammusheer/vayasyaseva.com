@@ -70,3 +70,24 @@ export function bonus(wages: number, minimumWage: number, ratePct = 100 / 12, mo
   const rate = Math.min(Math.max(ratePct, 100 / 12), 20);
   return { eligible, base, yearWages, minimum: eligible ? at(100 / 12) : 0, maximum: eligible ? at(20) : 0, atRate: eligible ? at(rate) : 0, rate };
 }
+
+export const GRATUITY_CEILING = 2_000_000;
+export type GratuityExit = "regular" | "fixed-term" | "death";
+/**
+ * Gratuity on leaving (Code on Social Security s.53 and 54; Social Security
+ * (Central) Rules r.33): 15 days' wages for each completed year, a part over
+ * six months counting as a year, monthly wages ÷ 26 × 15; due after five
+ * years of continuous service, after one year for a fixed-term worker, and
+ * at any length of service on death or disablement; up to ₹20 lakh.
+ */
+export function gratuity(wages: number, years: number, months: number, exit: GratuityExit = "regular") {
+  const y = Math.max(Math.floor(years), 0);
+  const m = Math.min(Math.max(Math.floor(months), 0), 11);
+  const counted = y + (m > 6 ? 1 : 0);
+  const served = y + m / 12;
+  const due = exit === "death" ? counted > 0 : exit === "fixed-term" ? served >= 1 : y >= 5;
+  const perYear = paise((Math.max(wages, 0) / 26) * 15);
+  // Rounded once, at the end: wages ÷ 26 × 15 × years.
+  const uncapped = paise((Math.max(wages, 0) / 26) * 15 * counted);
+  return { due, counted, perYear, uncapped, amount: due ? Math.min(uncapped, GRATUITY_CEILING) : 0, capped: due && uncapped > GRATUITY_CEILING };
+}

@@ -15,7 +15,7 @@ export const STATUTORY_CHECKED = "2026-10-16";
 export const STATUTORY_REVIEW_BY = "2026-11-21";
 
 /** Topics with a reference page of their own. */
-export type ReferenceTopic = "epf" | "esic" | "pt" | "lwf" | "bonus";
+export type ReferenceTopic = "epf" | "esic" | "pt" | "lwf" | "bonus" | "gratuity";
 
 export type StatutorySource = { id: string; title: string; number: string; date: string; authority: string; url: string };
 
@@ -94,6 +94,30 @@ export const statutorySources: StatutorySource[] = [
     date: "2026-08-25",
     authority: "Government of Uttarakhand",
     url: "https://cdnbbsr.s3waas.gov.in/s36547884cea64550284728eb26b0947ef/uploads/2026/09/202609241754770724.pdf",
+  },
+  {
+    id: "css-2020-gratuity",
+    title: "The Code on Social Security, 2020 (Chapter V, sections 53 to 58: gratuity; section 54: continuous service; sections 133 and 134: penalties)",
+    number: "Act No. 36 of 2020",
+    date: "2020-09-29",
+    authority: "Ministry of Law and Justice",
+    url: "https://egazette.gov.in/WriteReadData/2020/222111.pdf",
+  },
+  {
+    id: "gratuity-ceiling-2018",
+    title: "Gratuity of up to ₹20 lakh (notified under the Payment of Gratuity Act, 1972; kept by section 164(2)(a) of the Code)",
+    number: "S.O. 1420(E)",
+    date: "2018-03-29",
+    authority: "Ministry of Labour and Employment",
+    url: "https://egazette.gov.in/WriteReadData/2018/184299.pdf",
+  },
+  {
+    id: "ss-central-rules-gratuity",
+    title: "Social Security (Central) Rules, 2026 (rules 31 to 34: nomination, application, payment of gratuity)",
+    number: "G.S.R. 344(E)",
+    date: "2026-05-08",
+    authority: "Ministry of Labour and Employment",
+    url: "https://egazette.gov.in/WriteReadData/2026/272366.pdf",
   },
   {
     id: "css-2020",
@@ -405,6 +429,16 @@ const bonusRow: DueRow = {
   sources: ["cow-2019-bonus", "bonus-eligibility-2026", "bonus-ceiling-2026"],
 };
 
+/** Gratuity, the same in every state under the Code on Social Security (s.53, 56; ₹20 lakh kept by s.164(2)(a)). */
+const gratuityRow: DueRow = {
+  name: "Gratuity",
+  topic: "gratuity",
+  applies: "10+ employees; on leaving after 5 years (1 year on a fixed term)",
+  worker: "Nothing",
+  employer: "15 days' wages for each year, up to ₹20 lakh, within 30 days",
+  sources: ["css-2020-gratuity", "gratuity-ceiling-2018"],
+};
+
 const upLwf: DueRow = {
   name: "Labour Welfare Fund",
   topic: "lwf",
@@ -436,11 +470,12 @@ export const employerDues: Partial<Record<WageStateSlug, StateDues>> = {
       { name: "Professional Tax", topic: "pt", applies: "Wages of ₹25,000 a month or more", worker: "₹200 a month, ₹300 in February", employer: "Deducts and pays it", sources: ["ka-pt-act", "ka-pt-2025"] },
       { name: "Labour Welfare Fund", topic: "lwf", applies: "Factories with 10+ workers, 20+ contract workers, shops with 50+", worker: "₹50 a year", employer: "₹100 a year", sources: ["ka-lwf-2025"] },
       bonusRow,
+      gratuityRow,
     ],
   },
   uttarakhand: {
     deadlines: [wages, epfEsic, upLwfDeadline, licence("Uttarakhand has not yet fixed the forms and fees; ask the Labour Department how to apply.")],
-    rows: [epf, esic, upLwf, bonusRow],
+    rows: [epf, esic, upLwf, bonusRow, gratuityRow],
     notLevied: "Professional Tax is not levied in Uttarakhand.",
   },
   haryana: {
@@ -455,6 +490,7 @@ export const employerDues: Partial<Record<WageStateSlug, StateDues>> = {
       esic,
       { name: "Labour Welfare Fund", topic: "lwf", applies: "Units with 10+ employees", worker: "0.2% of wages, up to ₹35 a month (2026 limit)", employer: "Twice the worker's share, up to ₹70", sources: ["hr-lwf-act", "hr-lwf-2026"] },
       bonusRow,
+      gratuityRow,
     ],
     notLevied: "Professional Tax is not levied in Haryana.",
   },
@@ -482,11 +518,12 @@ export const employerDues: Partial<Record<WageStateSlug, StateDues>> = {
         sources: ["pb-lwf-act", "pb-lwf-2014"],
       },
       bonusRow,
+      gratuityRow,
     ],
   },
   "uttar-pradesh": {
     deadlines: [wages, epfEsic, upLwfDeadline, licence("Apply on the UP Labour Department portal.")],
-    rows: [epf, esic, upLwf, bonusRow],
+    rows: [epf, esic, upLwf, bonusRow, gratuityRow],
     notLevied: "Professional Tax is not levied in Uttar Pradesh.",
   },
   delhi: {
@@ -501,6 +538,7 @@ export const employerDues: Partial<Record<WageStateSlug, StateDues>> = {
       esic,
       { name: "Labour Welfare Fund", topic: "lwf", applies: "5+ persons", worker: "₹0.75 a half-year", employer: "₹2.25 a half-year", sources: ["dl-lwf-2004"] },
       bonusRow,
+      gratuityRow,
     ],
     notLevied: "Professional Tax is not levied in Delhi.",
   },

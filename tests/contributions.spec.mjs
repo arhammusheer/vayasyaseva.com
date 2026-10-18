@@ -50,3 +50,19 @@ test('Statutory bonus: ₹7,000 or the minimum wage, whichever is higher; 8⅓% 
   assert.deepEqual([c.bonus(25000, 15220.71).eligible, c.bonus(25000, 15220.71).maximum], [false, 0]);
   assert.equal(c.bonus(21000, 15220.71).eligible, true);
 });
+
+test('Gratuity: 15/26 of monthly wages per year; 5 years (1 for fixed-term); a part over six months counts; ₹20 lakh cap', () => {
+  assert.equal(c.gratuity(15220.71, 5, 0).amount, 43905.89);
+  const ft = c.gratuity(18000, 1, 7, 'fixed-term');
+  assert.deepEqual([ft.due, ft.counted, ft.amount], [true, 2, 20769.23]);
+  // A regular worker at 4 years 7 months: not due on the Code's text.
+  assert.deepEqual([c.gratuity(18000, 4, 7).due, c.gratuity(18000, 4, 7).amount], [false, 0]);
+  // Exactly six months does not count as a year.
+  assert.equal(c.gratuity(26000, 5, 6).counted, 5);
+  assert.equal(c.gratuity(26000, 5, 7).counted, 6);
+  // Fixed-term under a year: not due. Death: due at any length of service with a counted year.
+  assert.equal(c.gratuity(18000, 0, 11, 'fixed-term').due, false);
+  assert.equal(c.gratuity(18000, 2, 0, 'death').amount, 20769.23);
+  const big = c.gratuity(200000, 30, 0);
+  assert.deepEqual([big.amount, big.capped], [2000000, true]);
+});

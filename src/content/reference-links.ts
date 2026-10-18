@@ -19,6 +19,8 @@ export function referenceHref(topic: ReferenceTopic, state?: WageStateSlug): str
       return first("/esic");
     case "bonus":
       return first("/bonus");
+    case "gratuity":
+      return first("/gratuity");
     case "pt":
       return state === "karnataka" ? first("/professional-tax/karnataka", "/professional-tax") : first("/professional-tax");
     case "lwf": {

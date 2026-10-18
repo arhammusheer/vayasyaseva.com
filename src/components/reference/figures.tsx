@@ -245,3 +245,38 @@ export function BonusCalendar() {
     </figure>
   );
 }
+
+/**
+ * Gratuity: what a worker on the given wage has earned by each year of
+ * service. Fixed-term workers can take it from year one; regular workers
+ * only from year five, the bars before that drawn empty.
+ */
+export function GratuityStairs({ wage, label }: { wage: number; label: string }) {
+  const years = Array.from({ length: 10 }, (_, i) => i + 1);
+  const amount = (y: number) => Math.round((wage / 26) * 15 * y * 100) / 100;
+  const max = amount(10);
+  return (
+    <figure className="ref-figure">
+      <div className="grat-stairs" role="img" aria-label={`Gratuity on ${inr(wage)} a month by years of service, from ${inr(amount(1))} after one year to ${inr(max)} after ten. Fixed-term workers can receive it from year one; regular workers from year five.`}>
+        {years.map((y) => (
+          <div key={y} className={y < 5 ? "is-fixed" : "is-all"}>
+            <span className="val">{inr(Math.round(amount(y)))}</span>
+            <div className="bar" style={{ height: `${Math.max((amount(y) / max) * 180, 6)}px` }} />
+            <span className="yr">{y}</span>
+          </div>
+        ))}
+      </div>
+      <div className="grat-spans" style={{ gridTemplateColumns: "4fr 6fr" }}>
+        <div>
+          <strong>Years 1 to 4</strong>
+          <span>fixed-term workers only, and on death or disablement</span>
+        </div>
+        <div>
+          <strong>From year 5</strong>
+          <span>every worker, on any exit</span>
+        </div>
+      </div>
+      <figcaption>Years of service, on {label} of {inr(wage)} a month. Each year adds the same 15 days&apos; wages; a part year over six months counts as a full year. The ceiling of ₹20 lakh is far above these amounts.</figcaption>
+    </figure>
+  );
+}

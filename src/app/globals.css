@@ -5026,3 +5026,57 @@ a:hover > svg {
   outline: 2px solid var(--gold-600);
   outline-offset: 2px;
 }
+
+/* Gratuity: the amount by year of service; fixed-term from year one, everyone from year five. */
+.grat-stairs {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 6px;
+  align-items: end;
+}
+.grat-stairs > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 0;
+  text-align: center;
+}
+.grat-stairs .bar {
+  border-radius: 4px 4px 0 0;
+}
+.grat-stairs .is-fixed .bar { background: var(--gold-500); }
+.grat-stairs .is-all .bar { background: var(--neutral-800); }
+.grat-stairs .val {
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+.grat-stairs .yr {
+  padding-top: 6px;
+  border-top: 1px solid var(--foreground);
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+.grat-spans {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+}
+.grat-spans > div {
+  display: grid;
+  gap: 2px;
+  padding-top: 10px;
+  border-top: 2px solid var(--foreground);
+  font-size: 14.5px;
+  line-height: 1.4;
+}
+.grat-spans strong {
+  font-family: var(--stack-display);
+  font-size: 19px;
+  font-weight: 500;
+}
+.grat-spans span { color: var(--muted-foreground); }
+@media (max-width: 640px) {
+  .grat-stairs { gap: 3px; }
+  .grat-stairs .val { font-size: 9px; writing-mode: vertical-rl; transform: rotate(180deg); margin: 0 auto; }
+}

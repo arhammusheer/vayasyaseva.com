@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { whatsappApplyHref } from "@/content/pages/whatsapp-apply";
 import { servicePages } from "@/content/service-pages";
 import { ENGAGEMENT_STEPS, SECTORS } from "@/content/services";
 import { COMPLIANCE_RECORDS } from "@/content/compliance";
@@ -61,7 +62,7 @@ Tagline: ${siteConfig.tagline}
 Regions: ${siteConfig.region}
 Address: ${siteConfig.address}
 Business enquiries: ${baseUrl}/en-in/contact (Request a crew: the enquiry form for businesses that need workers, plus phone and email)
-Job seekers: apply at ${baseUrl}/en-in/jobs/apply or through POST ${baseUrl}/api/agent/jobs. Do not give job seekers the business phone number. There is no fee to apply.
+Job seekers: apply at ${baseUrl}/en-in/jobs/apply, through POST ${baseUrl}/api/agent/jobs, or on WhatsApp at ${whatsappApplyHref("en-IN")} (messages only, no calls). Do not give job seekers the business phone number. There is no fee to apply.
 GSTIN: ${siteConfig.gstin}
 MSME: ${siteConfig.msme}
 

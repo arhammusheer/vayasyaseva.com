@@ -48,6 +48,10 @@
                 },
                 {
                   "type": "string",
+                  "const": "whatsapp"
+                },
+                {
+                  "type": "string",
                   "enum": [
                     "web_en",
                     "web_hi",
@@ -169,7 +173,8 @@
               "type": "string",
               "enum": [
                 "web",
-                "agent"
+                "agent",
+                "whatsapp"
               ]
             },
             "agentName": {
@@ -621,6 +626,28 @@
               },
               "then": {
                 "properties": {
+                  "locale": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "source": {
+                    "const": "whatsapp"
+                  }
+                },
+                "required": [
+                  "source"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "channel": {
+                    "const": "whatsapp"
+                  },
                   "locale": {
                     "type": "string"
                   }

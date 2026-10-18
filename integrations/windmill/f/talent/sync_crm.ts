@@ -24,6 +24,7 @@ const VARIABLES = {
     twenty_api_key: { secret: true },
     lead_webhook_secret: { secret: true },
     fast2sms_dlr_secret: { secret: true },
+    fast2sms_whatsapp_secret: { secret: true },
     leads_pg_url: { secret: true },
     submission_signing_secret: { secret: true },
 };
@@ -545,7 +546,7 @@ async function erasePerson(crm, phone) {
 })();
 
 // packages/contracts/src/rules.ts
-const { REF_PATTERN, INTAKE_SOURCES, WEB_SOURCE, isSubmissionSource, INTAKE_LOCALES, isIntakeLocale, LEGACY_SOURCE_LOCALES, INTAKE_CLUSTERS, isIntakeCluster, PAGE_PATH_PATTERN, MAX_PAGE_PATH_LENGTH, isPagePath, INTAKE_CHANNELS, AGENT_LANGUAGE_SOURCES, MAX_AGENT_NAME_LENGTH, JOB_ROLES, JOB_ROLE_SLUGS, isJobRole, JOB_HUBS, JOB_HUB_SLUGS, isJobHub, INTAKE_FORMS, INTAKE_FORM_KEYS, MAX_APPLICANT_NAME_LENGTH, QUICK_ANSWERS, AREA_CLUSTERS, submissionCluster, QUICK_QUESTIONS, cleanQuickAnswers, ATTACHMENT_KINDS, ATTACHMENT_MIME, INTAKE_LIMITS, attachmentKeyPrefix, isAttachmentKeyFor, normaliseIndianMobile } = (() => {
+const { REF_PATTERN, INTAKE_SOURCES, WEB_SOURCE, WHATSAPP_SOURCE, isSubmissionSource, INTAKE_LOCALES, isIntakeLocale, LEGACY_SOURCE_LOCALES, INTAKE_CLUSTERS, isIntakeCluster, PAGE_PATH_PATTERN, MAX_PAGE_PATH_LENGTH, isPagePath, INTAKE_CHANNELS, AGENT_LANGUAGE_SOURCES, MAX_AGENT_NAME_LENGTH, JOB_ROLES, JOB_ROLE_SLUGS, isJobRole, JOB_HUBS, JOB_HUB_SLUGS, isJobHub, INTAKE_FORMS, INTAKE_FORM_KEYS, MAX_APPLICANT_NAME_LENGTH, QUICK_ANSWERS, AREA_CLUSTERS, submissionCluster, QUICK_QUESTIONS, cleanQuickAnswers, ATTACHMENT_KINDS, ATTACHMENT_MIME, INTAKE_LIMITS, attachmentKeyPrefix, isAttachmentKeyFor, normaliseIndianMobile } = (() => {
 const REF_PATTERN = /^VS-J-[A-Z0-9]{6}$/;
 const INTAKE_SOURCES = {
     web_en: "en",
@@ -553,6 +554,7 @@ const INTAKE_SOURCES = {
     web_hinglish: "hinglish",
 };
 const WEB_SOURCE = "web";
+const WHATSAPP_SOURCE = "whatsapp";
 function isSubmissionSource(value) {
     return value === WEB_SOURCE || (typeof value === "string" && Object.hasOwn(INTAKE_SOURCES, value));
 }
@@ -570,7 +572,7 @@ const MAX_PAGE_PATH_LENGTH = 200;
 function isPagePath(value) {
     return typeof value === "string" && value.length <= MAX_PAGE_PATH_LENGTH && PAGE_PATH_PATTERN.test(value);
 }
-const INTAKE_CHANNELS = ["web", "agent"];
+const INTAKE_CHANNELS = ["web", "agent", "whatsapp"];
 const AGENT_LANGUAGE_SOURCES = { en: "web_en", hi: "web_hi", hinglish: "web_hinglish" };
 const MAX_AGENT_NAME_LENGTH = 100;
 const JOB_ROLES = {
@@ -737,7 +739,7 @@ function normaliseIndianMobile(input) {
         return `+91${digits.slice(1)}`;
     return null;
 }
-  return { REF_PATTERN, INTAKE_SOURCES, WEB_SOURCE, isSubmissionSource, INTAKE_LOCALES, isIntakeLocale, LEGACY_SOURCE_LOCALES, INTAKE_CLUSTERS, isIntakeCluster, PAGE_PATH_PATTERN, MAX_PAGE_PATH_LENGTH, isPagePath, INTAKE_CHANNELS, AGENT_LANGUAGE_SOURCES, MAX_AGENT_NAME_LENGTH, JOB_ROLES, JOB_ROLE_SLUGS, isJobRole, JOB_HUBS, JOB_HUB_SLUGS, isJobHub, INTAKE_FORMS, INTAKE_FORM_KEYS, MAX_APPLICANT_NAME_LENGTH, QUICK_ANSWERS, AREA_CLUSTERS, submissionCluster, QUICK_QUESTIONS, cleanQuickAnswers, ATTACHMENT_KINDS, ATTACHMENT_MIME, INTAKE_LIMITS, attachmentKeyPrefix, isAttachmentKeyFor, normaliseIndianMobile };
+  return { REF_PATTERN, INTAKE_SOURCES, WEB_SOURCE, WHATSAPP_SOURCE, isSubmissionSource, INTAKE_LOCALES, isIntakeLocale, LEGACY_SOURCE_LOCALES, INTAKE_CLUSTERS, isIntakeCluster, PAGE_PATH_PATTERN, MAX_PAGE_PATH_LENGTH, isPagePath, INTAKE_CHANNELS, AGENT_LANGUAGE_SOURCES, MAX_AGENT_NAME_LENGTH, JOB_ROLES, JOB_ROLE_SLUGS, isJobRole, JOB_HUBS, JOB_HUB_SLUGS, isJobHub, INTAKE_FORMS, INTAKE_FORM_KEYS, MAX_APPLICANT_NAME_LENGTH, QUICK_ANSWERS, AREA_CLUSTERS, submissionCluster, QUICK_QUESTIONS, cleanQuickAnswers, ATTACHMENT_KINDS, ATTACHMENT_MIME, INTAKE_LIMITS, attachmentKeyPrefix, isAttachmentKeyFor, normaliseIndianMobile };
 })();
 
 // integrations/windmill/talent/lib/notify-application.ts
@@ -785,6 +787,8 @@ const clusterLabel = (cluster) => (cluster && has(CLUSTER_LABELS, cluster) ? CLU
 function formLabel(c) {
     if (c.channel === "agent")
         return "AI agent";
+    if (c.channel === "whatsapp")
+        return "WhatsApp chat";
     if (c.answers && Object.keys(c.answers).length)
         return "quick form";
     if (c.source === "web" || c.source.startsWith("web_"))
@@ -812,7 +816,7 @@ function applicationEvent(c, personId) {
 })();
 
 // integrations/windmill/talent/lib/sql.ts
-const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, FILES_SUBMISSION, FILES_FOR, SAVE_FILE_ID, SETTLE_FILE, FILE_ERROR, CLEAR_FILE_ID } = (() => {
+const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, FILES_SUBMISSION, FILES_FOR, SAVE_FILE_ID, SETTLE_FILE, FILE_ERROR, CLEAR_FILE_ID, SEEN_WHATSAPP_MESSAGE, FORGET_WHATSAPP_MESSAGE, GET_WHATSAPP_CHAT, SAVE_WHATSAPP_CHAT, UPDATE_WHATSAPP_CHAT, DELETE_WHATSAPP_CHAT, PURGE_WHATSAPP } = (() => {
 const RETENTION_MONTHS = 12;
 const SAVE_SUBMISSION = `
 WITH s AS (
@@ -952,6 +956,8 @@ WITH gone AS (
   DELETE FROM submissions WHERE phone = $2 RETURNING id
 ), person AS (
   DELETE FROM people WHERE phone = $2 RETURNING 1
+), chat AS (
+  DELETE FROM whatsapp_chats WHERE phone = $2 RETURNING 1
 )
 UPDATE erasure_requests
 SET status = 'done', processed_at = now(), updated_at = now(),
@@ -1062,7 +1068,34 @@ SET crm_file_status = $2, twenty_attachment_id = coalesce($3::uuid, twenty_attac
 WHERE id = $1::uuid;`;
 const FILE_ERROR = `UPDATE attachments SET crm_file_error = $2, updated_at = now() WHERE id = $1::uuid;`;
 const CLEAR_FILE_ID = `UPDATE attachments SET twenty_file_id = NULL, updated_at = now() WHERE id = $1::uuid;`;
-  return { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, FILES_SUBMISSION, FILES_FOR, SAVE_FILE_ID, SETTLE_FILE, FILE_ERROR, CLEAR_FILE_ID };
+const SEEN_WHATSAPP_MESSAGE = `INSERT INTO whatsapp_messages (message_id) VALUES ($1) ON CONFLICT DO NOTHING RETURNING message_id;`;
+const FORGET_WHATSAPP_MESSAGE = `DELETE FROM whatsapp_messages WHERE message_id = $1;`;
+const GET_WHATSAPP_CHAT = `
+SELECT phone, locale, step, answers, name, notes, consented_at AS "consentedAt", ref, version, updated_at AS "updatedAt"
+FROM whatsapp_chats WHERE phone = $1;`;
+const SAVE_WHATSAPP_CHAT = `
+INSERT INTO whatsapp_chats AS c (phone, locale, step, answers, name, notes, consented_at, ref, version, updated_at)
+SELECT $1, $2, $3, $4::jsonb, $5, $6, $7::timestamptz, $8, 1, now()
+WHERE $9::int = 0
+ON CONFLICT (phone) DO NOTHING
+RETURNING version;`;
+const UPDATE_WHATSAPP_CHAT = `
+UPDATE whatsapp_chats
+SET locale = $2, step = $3, answers = $4::jsonb, name = $5, notes = $6, consented_at = $7::timestamptz, ref = $8,
+    version = version + 1, updated_at = now()
+WHERE phone = $1 AND version = $9::int
+RETURNING version;`;
+const DELETE_WHATSAPP_CHAT = `DELETE FROM whatsapp_chats WHERE phone = $1 AND version = $2::int RETURNING phone;`;
+const PURGE_WHATSAPP = `
+WITH chats AS (
+  DELETE FROM whatsapp_chats
+  WHERE (consented_at IS NULL AND updated_at < now() - interval '1 day') OR updated_at < now() - interval '30 days'
+  RETURNING 1
+), messages AS (
+  DELETE FROM whatsapp_messages WHERE received_at < now() - interval '3 days' RETURNING 1
+)
+SELECT (SELECT count(*) FROM chats) AS chats, (SELECT count(*) FROM messages) AS messages;`;
+  return { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, FILES_SUBMISSION, FILES_FOR, SAVE_FILE_ID, SETTLE_FILE, FILE_ERROR, CLEAR_FILE_ID, SEEN_WHATSAPP_MESSAGE, FORGET_WHATSAPP_MESSAGE, GET_WHATSAPP_CHAT, SAVE_WHATSAPP_CHAT, UPDATE_WHATSAPP_CHAT, DELETE_WHATSAPP_CHAT, PURGE_WHATSAPP };
 })();
 
 // integrations/windmill/talent/lib/run-sync-crm.ts

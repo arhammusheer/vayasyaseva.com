@@ -62,6 +62,7 @@ export const clusterLabel = (cluster: string | null) => (cluster && has(CLUSTER_
 
 function formLabel(c: SyncCandidate): string {
   if (c.channel === "agent") return "AI agent";
+  if (c.channel === "whatsapp") return "WhatsApp chat";
   if (c.answers && Object.keys(c.answers).length) return "quick form";
   if (c.source === "web" || c.source.startsWith("web_")) return "website form";
   return c.source;

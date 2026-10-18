@@ -174,6 +174,8 @@ WITH gone AS (
   DELETE FROM submissions WHERE phone = $2 RETURNING id
 ), person AS (
   DELETE FROM people WHERE phone = $2 RETURNING 1
+), chat AS (
+  DELETE FROM whatsapp_chats WHERE phone = $2 RETURNING 1
 )
 UPDATE erasure_requests
 SET status = 'done', processed_at = now(), updated_at = now(),
@@ -364,3 +366,48 @@ export const FILE_ERROR = `UPDATE attachments SET crm_file_error = $2, updated_a
 
 /** $1 attachment: its Twenty file could not be completed (never uploaded); the retry starts again. */
 export const CLEAR_FILE_ID = `UPDATE attachments SET twenty_file_id = NULL, updated_at = now() WHERE id = $1::uuid;`;
+
+// --- WhatsApp apply chat (f/talent/whatsapp, talent/lib/run-whatsapp.ts) ---------
+
+/** $1 message id. Returns a row only the first time an id is seen. */
+export const SEEN_WHATSAPP_MESSAGE = `INSERT INTO whatsapp_messages (message_id) VALUES ($1) ON CONFLICT DO NOTHING RETURNING message_id;`;
+
+/** $1 message id: a message whose handling failed, so the webhook's retry is handled. */
+export const FORGET_WHATSAPP_MESSAGE = `DELETE FROM whatsapp_messages WHERE message_id = $1;`;
+
+export const GET_WHATSAPP_CHAT = `
+SELECT phone, locale, step, answers, name, notes, consented_at AS "consentedAt", ref, version, updated_at AS "updatedAt"
+FROM whatsapp_chats WHERE phone = $1;`;
+
+/** $1 phone … $8 ref, $9 the version read (0: no row yet). Returns the row only when nobody saved in between. */
+export const SAVE_WHATSAPP_CHAT = `
+INSERT INTO whatsapp_chats AS c (phone, locale, step, answers, name, notes, consented_at, ref, version, updated_at)
+SELECT $1, $2, $3, $4::jsonb, $5, $6, $7::timestamptz, $8, 1, now()
+WHERE $9::int = 0
+ON CONFLICT (phone) DO NOTHING
+RETURNING version;`;
+
+export const UPDATE_WHATSAPP_CHAT = `
+UPDATE whatsapp_chats
+SET locale = $2, step = $3, answers = $4::jsonb, name = $5, notes = $6, consented_at = $7::timestamptz, ref = $8,
+    version = version + 1, updated_at = now()
+WHERE phone = $1 AND version = $9::int
+RETURNING version;`;
+
+/** $1 phone, $2 the version read. Declined or stopped: nothing kept. */
+export const DELETE_WHATSAPP_CHAT = `DELETE FROM whatsapp_chats WHERE phone = $1 AND version = $2::int RETURNING phone;`;
+
+/**
+ * Retention for the chat: a chat without consent goes after a day, any chat
+ * 30 days after its last message (the application itself is in submissions),
+ * and the message ids after 3 days.
+ */
+export const PURGE_WHATSAPP = `
+WITH chats AS (
+  DELETE FROM whatsapp_chats
+  WHERE (consented_at IS NULL AND updated_at < now() - interval '1 day') OR updated_at < now() - interval '30 days'
+  RETURNING 1
+), messages AS (
+  DELETE FROM whatsapp_messages WHERE received_at < now() - interval '3 days' RETURNING 1
+)
+SELECT (SELECT count(*) FROM chats) AS chats, (SELECT count(*) FROM messages) AS messages;`;

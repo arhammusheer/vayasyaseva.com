@@ -54,6 +54,9 @@ jobs:
       - name: Type check
         run: pnpm type-check
 
+      - name: Verify the WhatsApp chat copy is generated
+        run: pnpm whatsapp:check
+
       - name: Verify Windmill scripts are generated
         run: pnpm windmill:build --check
 

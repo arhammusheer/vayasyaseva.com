@@ -5,7 +5,7 @@
  * submission's own reference, so that one rule is checked here.
  */
 import type { JobApplicationCanonical } from "../../../../packages/contracts/src/job-application.v1.ts";
-import { INTAKE_SOURCES, WEB_SOURCE, isAttachmentKeyFor } from "../../../../packages/contracts/src/rules.ts";
+import { INTAKE_SOURCES, WEB_SOURCE, WHATSAPP_SOURCE, isAttachmentKeyFor } from "../../../../packages/contracts/src/rules.ts";
 import { SCHEMAS, check } from "../../contracts/validate.ts";
 import { maskIds } from "./mask.ts";
 import type { ValidatedSubmission } from "./types.ts";
@@ -29,8 +29,8 @@ export function checkSubmission(raw: unknown): Validation {
       form: p.form,
       applicantName: p.applicantName?.trim() || null,
       answers: p.answers,
-      // The site sends the BCP 47 locale; a legacy source alone implies its short code.
-      locale: p.locale ?? INTAKE_SOURCES[p.source as Exclude<typeof p.source, typeof WEB_SOURCE>],
+      // The site sends the BCP 47 locale; a legacy source alone implies its short code (web and whatsapp always carry one).
+      locale: p.locale ?? INTAKE_SOURCES[p.source as Exclude<typeof p.source, typeof WEB_SOURCE | typeof WHATSAPP_SOURCE>],
       cluster: p.cluster,
       pageCluster: p.pageCluster,
       pagePath: p.pagePath,

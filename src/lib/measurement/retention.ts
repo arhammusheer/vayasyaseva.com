@@ -106,6 +106,15 @@ export const RETENTION: readonly RetentionStore[] = [
     enforcedInRepo: true,
   },
   {
+    id: "whatsapp-chat",
+    what: "The WhatsApp apply chat's state (talent DB whatsapp_chats): a day without consent, else 30 days after the last message",
+    days: 30,
+    notice: "30 days",
+    noticeRef: "/privacy §10 If you apply on WhatsApp",
+    enforcedBy: "Windmill f/talent/retention, hourly (PURGE_WHATSAPP in integrations/windmill/talent/lib/sql.ts)",
+    enforcedInRepo: true,
+  },
+  {
     id: "leads",
     what: "Business enquiries and their correspondence (email, Twenty CRM)",
     days: 730,

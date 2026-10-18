@@ -9,6 +9,7 @@ import { formatDate, type WageSource, type WageState } from "@/content/wages";
 import type { Guide } from "@/content/guides";
 import type { GuideSource } from "@/content/guides/sources";
 import type { StatutorySource } from "@/content/statutory";
+import { whatsappApplyHref } from "@/content/pages/whatsapp-apply";
 
 const BASE_URL = "https://www.vayasyaseva.com";
 const ORG_ID = `${BASE_URL}/#organization`;
@@ -80,6 +81,13 @@ const applyAction = {
       "@type": "EntryPoint",
       urlTemplate: `${BASE_URL}/en-in/jobs/apply?work={work}&experience={experience}&education={education}&shift={shift}&start={start}&area={area}#name={name}&phone={phone}`,
       inLanguage: ["en-IN", "hi-IN", "hi-Latn-IN"],
+    },
+    {
+      "@type": "EntryPoint",
+      name: "Apply on WhatsApp (messages only, no calls)",
+      url: whatsappApplyHref("en-IN"),
+      actionPlatform: "https://www.whatsapp.com",
+      inLanguage: ["en-IN", "hi-IN", "hi-Latn-IN", "pa-IN", "kn-IN"],
     },
   ],
 };

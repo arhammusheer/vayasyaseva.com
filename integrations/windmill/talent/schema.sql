@@ -28,10 +28,11 @@ BEGIN
   -- The hub page it came from (JOB_HUBS in rules.ts: /jobs/freshers…); null otherwise.
   ALTER TABLE submissions ADD COLUMN IF NOT EXISTS hub text;
   CREATE INDEX IF NOT EXISTS submissions_role_idx ON submissions (role, created_at);
-  -- How it reached us (INTAKE_CHANNELS in rules.ts): the jobs form, or an AI agent through /api/agent/jobs.
+  -- How it reached us (INTAKE_CHANNELS in rules.ts): the jobs form, an AI agent through /api/agent/jobs,
+  -- or the WhatsApp apply chat (f/talent/whatsapp, 19 Oct 2026).
   ALTER TABLE submissions ADD COLUMN IF NOT EXISTS channel text NOT NULL DEFAULT 'web';
   ALTER TABLE submissions DROP CONSTRAINT IF EXISTS submissions_channel_check;
-  ALTER TABLE submissions ADD CONSTRAINT submissions_channel_check CHECK (channel IN ('web', 'agent'));
+  ALTER TABLE submissions ADD CONSTRAINT submissions_channel_check CHECK (channel IN ('web', 'agent', 'whatsapp'));
   -- The name an agent gave for itself, if any.
   ALTER TABLE submissions ADD COLUMN IF NOT EXISTS agent_name text;
   -- Which web form ('long' or 'quick'; INTAKE_FORMS in rules.ts), the name typed
@@ -332,5 +333,33 @@ BEGIN
       AND NOT EXISTS (SELECT 1 FROM deliveries d WHERE d.submission_id = s.id AND d.target = 'files')
   ) b
   ON CONFLICT DO NOTHING;
+
+  -- The WhatsApp apply chat (19 Oct 2026, talent/lib/whatsapp.ts): one row per
+  -- WhatsApp number while it answers the questions. `step` is the question
+  -- waiting for an answer; `answers` holds QUICK_ANSWERS ids, as submissions.answers.
+  -- `version` guards against two messages handled at once (each update checks it).
+  -- Rows go 30 days after the last message (retention), and with the person's erasure.
+  CREATE TABLE IF NOT EXISTS whatsapp_chats (
+    phone        text PRIMARY KEY,
+    locale       text,
+    step         text NOT NULL,
+    answers      jsonb NOT NULL DEFAULT '{}'::jsonb,
+    name         text,
+    notes        text,
+    consented_at timestamptz,
+    ref          text,
+    reminders    int NOT NULL DEFAULT 0,
+    version      int NOT NULL DEFAULT 0,
+    created_at   timestamptz NOT NULL DEFAULT now(),
+    updated_at   timestamptz NOT NULL DEFAULT now()
+  );
+  CREATE INDEX IF NOT EXISTS whatsapp_chats_updated_idx ON whatsapp_chats (updated_at);
+  -- Fast2SMS may deliver a webhook more than once: each WhatsApp message id is
+  -- handled once. Ids only (no phone, no text); kept 3 days.
+  CREATE TABLE IF NOT EXISTS whatsapp_messages (
+    message_id  text PRIMARY KEY,
+    received_at timestamptz NOT NULL DEFAULT now()
+  );
+  CREATE INDEX IF NOT EXISTS whatsapp_messages_received_idx ON whatsapp_messages (received_at);
 END
 $$;

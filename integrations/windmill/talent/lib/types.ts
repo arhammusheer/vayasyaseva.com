@@ -13,7 +13,7 @@ import type {
   JobRole,
   LegacyLocale,
   QuickAnswers,
-  SubmissionSource,
+  StoredSource,
 } from "../../../../packages/contracts/src/rules.ts";
 
 /** Stored values: a BCP 47 tag on new rows, the legacy short code on older ones ("hinglish" is hi-Latn-IN). */
@@ -22,7 +22,7 @@ export type Locale = IntakeLocale | LegacyLocale;
 /** A validated website payload: the parameters of SAVE_SUBMISSION. */
 export interface ValidatedSubmission {
   ref: string;
-  source: SubmissionSource;
+  source: StoredSource;
   role: JobRole | null;
   hub: JobHub | null;
   /** "agent" when sent through /api/agent/jobs (submissions.channel). */
@@ -68,7 +68,7 @@ export interface ClaimedAttachment {
 export interface ClaimedSubmission {
   id: string;
   ref: string;
-  source: SubmissionSource;
+  source: StoredSource;
   role: JobRole | null;
   hub: JobHub | null;
   channel: IntakeChannel;

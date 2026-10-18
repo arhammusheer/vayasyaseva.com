@@ -24,6 +24,7 @@ const VARIABLES = {
     twenty_api_key: { secret: true },
     lead_webhook_secret: { secret: true },
     fast2sms_dlr_secret: { secret: true },
+    fast2sms_whatsapp_secret: { secret: true },
     leads_pg_url: { secret: true },
     submission_signing_secret: { secret: true },
 };

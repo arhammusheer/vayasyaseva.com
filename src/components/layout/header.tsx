@@ -22,6 +22,7 @@ import {
   WORK_DOOR,
   jobGroupLinks,
   jobsDoorHref,
+  referenceBarLinks,
   referenceLinks,
   type NavLink,
 } from "@/components/layout/nav-links";
@@ -311,7 +312,7 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
         }
       : view === "reference"
         ? {
-            bar: referenceLinks().slice(0, 1),
+            bar: referenceBarLinks(),
             doors: [businessDoor, ...jobsDoorSlots],
             sheet: referenceLinks().map((l) => ({ links: [l] })),
             more: [{ links: [businessDoor] }, { links: jobsDoors }],
@@ -328,7 +329,10 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
             ],
             cta: { href: "/contact", label: CREW_LABEL[pageLocale], lang: pageLang },
           };
-  const current = (href: string) => (href === pathname || href === path ? "page" : undefined);
+  // In the reference header a topic hub stays current on the pages under it
+  // (Haryana's LWF page marks Labour Welfare Fund; a state wage page, Minimum wages).
+  const hub = view === "reference" ? referenceBarLinks().find((l) => path.startsWith(`${l.href}/`))?.href : undefined;
+  const current = (href: string) => (href === pathname || href === path || href === hub ? "page" : undefined);
   // Apply opens the decided market's jobs hub, else /jobs/apply. A jobs page
   // with the form on it (#apply: market, role and hub pages) scrolls to that
   // form instead, keeping the role it pre-selects. /jobs/apply is left for

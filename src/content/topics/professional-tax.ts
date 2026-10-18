@@ -1,4 +1,4 @@
-import type { Topic } from "./types";
+import type { TableCell, TopicPage } from "./types";
 
 /**
  * /professional-tax and /professional-tax/karnataka. Read against the
@@ -17,54 +17,41 @@ import type { Topic } from "./types";
  * Left out, not verified from a primary source: the 2015 change of the
  * threshold to ₹15,000 (Act 14 of 2015, text not found).
  */
-export const karnatakaPtTopic: Topic = {
+export const karnatakaPtTopic: TopicPage = {
   path: "/professional-tax/karnataka",
   title: "Professional Tax in Karnataka 2026: Slab, Due Date",
   description:
     "Karnataka professional tax for employers: ₹200 a month on salaries of ₹25,000 or more, ₹300 in February, paid by the 20th with Form 5-A. Penalties and examples.",
   breadcrumb: "Karnataka",
   heading: "Professional Tax in Karnataka.",
-  lede: "An employer deducts ₹200 a month from every worker earning ₹25,000 or more in the month, and ₹300 in February: ₹2,500 a year, the most the Constitution allows. Workers earning less pay nothing. The employer pays it and files Form 5-A by the 20th of the next month.",
-  sections: [
+  lede: "Every worker earning ₹25,000 or more in a month pays ₹200, and ₹300 in February. The employer deducts it from salary and pays it by the 20th of the next month.",
+  glance: [
+    { label: "From a salary of", note: "a month", value: "₹25,000" },
+    { label: "Each month", value: "₹200", key: true },
+    { label: "February", value: "₹300" },
+    { label: "Due", note: "with Form 5-A", value: "20th" },
+  ],
+  updatedFrom: "Karnataka's Act and the Commercial Taxes Department",
+  rules: [
     {
-      kind: "facts",
-      id: "rules",
+      heading: "Who pays",
       rows: [
-        { label: "Who pays", text: "Every worker whose salary or wage for the month is ₹25,000 or more. Bonus and arrears count, spread over the months they relate to." },
-        { label: "Rate", text: "₹200 a month, ₹300 in February, from 1 April 2025 (Act 33 of 2025). Below ₹25,000 a month there is no tax." },
-        { label: "Who is left out", text: "Anyone employed for 120 days or less in the year, and people aged 60 or more." },
-        { label: "Employer's duty", text: "Deduct the tax from salary and pay it. The employer is liable for it whether or not it was deducted." },
-        { label: "Registration", text: "A registration certificate, applied for in Form 1 within 30 days of becoming an employer. Registering late carries a ₹1,000 penalty." },
-        { label: "When", text: "Pay, and file the Form 5-A statement with proof of payment, within 20 days of the month's end. There has been no quarterly option since 1 April 2012. The annual return is due within 60 days of the year's end." },
-        { label: "The company's own tax", text: "A company pays ₹2,500 a year for itself, before 30 April. Where several entries in the Schedule apply to a business, it pays under only one." },
+        { label: "Workers", text: "Anyone whose salary or wage for the month is ₹25,000 or more. Bonus and arrears count, spread over the months they relate to." },
+        { label: "Left out", text: "Anyone employed for 120 days or less in the year, and people aged 60 or more." },
+        { label: "The company itself", text: "A company also pays ₹2,500 a year for itself, before 30 April. Where several entries in the Schedule apply to a business, it pays under only one." },
       ],
     },
     {
-      kind: "table",
-      id: "example",
-      heading: "What it comes to.",
-      intro: "For an employer with 10 workers on ₹24,000 a month and 5 on ₹30,000, over a year:",
-      caption: "Karnataka professional tax for 15 workers over a year",
-      columns: ["", "Each month", "February", "Year"],
+      heading: "What the employer does",
       rows: [
-        ["10 workers on ₹24,000", "Nothing", "Nothing", "Nothing"],
-        ["5 workers on ₹30,000", "₹1,000", "₹1,500", "₹12,500"],
-        ["The company's own tax", "", "", "₹2,500, before 30 April"],
-      ],
-      note: "A ₹24,000 worker whose bonus or arrears take a month to ₹25,000 or more owes ₹200 for that month.",
-    },
-    {
-      kind: "prose",
-      id: "contract-workers",
-      heading: "Contract workers.",
-      paragraphs: [
-        "A contractor deducts and pays the tax for its own workers. Where workers are supplied as a manpower service, the Act also has the principal deduct the tax for them from what it pays the contractor, in any month the payment exceeds ₹3,000, unless the contractor produces a copy of its filed return.",
+        { label: "Register", text: "Apply for a registration certificate in Form 1 within 30 days of becoming an employer. Registering late carries a ₹1,000 penalty." },
+        { label: "Deduct and pay", text: "Deduct the tax from salary, pay it and file the Form 5-A statement with proof of payment within 20 days of the month's end. The employer owes it whether or not it was deducted." },
+        { label: "The year", text: "File the annual return within 60 days of the year's end. There has been no quarterly option since 1 April 2012." },
+        { label: "Where", text: "On the Commercial Taxes Department's portal, ptax.karnataka.gov.in, under Employer Login." },
       ],
     },
     {
-      kind: "facts",
-      id: "late",
-      heading: "Paid late.",
+      heading: "Paid late",
       rows: [
         { label: "Interest", text: "1.5% of the unpaid tax for each month or part of a month." },
         { label: "Penalty", text: "10% of the tax due after a notice of demand, on top of the interest; ₹250 for not filing the statement or not paying." },
@@ -72,17 +59,10 @@ export const karnatakaPtTopic: Topic = {
       ],
     },
     {
-      kind: "table",
-      id: "history",
-      heading: "How the slab has moved.",
-      caption: "Karnataka professional tax on salaries: the top slab over time",
-      columns: ["From", "Who pays", "Amount"],
+      heading: "Contract workers",
       rows: [
-        ["2003", "₹15,000 a month and above (lower slabs below)", "₹200 a month"],
-        ["1 April 2023", "₹25,000 a month and above", "₹200 a month"],
-        ["1 April 2025", "₹25,000 a month and above", "₹200 a month, ₹300 in February"],
+        { label: "Who deducts", text: "The contractor, for its own workers. Where workers are supplied as a manpower service, the Act also has the principal deduct their tax from what it pays the contractor, in any month the payment exceeds ₹3,000, unless the contractor produces a copy of its filed return." },
       ],
-      note: "The 2025 change raised the year's total from ₹2,400 to ₹2,500, the limit in Article 276(2) of the Constitution. Employers pay through the Commercial Taxes Department's portal, ptax.karnataka.gov.in.",
     },
   ],
   faqs: [
@@ -91,8 +71,8 @@ export const karnatakaPtTopic: Topic = {
       answer: "One slab for salaried workers: ₹200 a month, and ₹300 in February, on a salary or wage of ₹25,000 or more for the month. Below ₹25,000 there is no tax.",
     },
     {
-      question: "When is professional tax due in Karnataka?",
-      answer: "Within 20 days of the month's end: by the 20th, with the Form 5-A statement and proof of payment. Late tax carries interest of 1.5% a month.",
+      question: "When did it change?",
+      answer: "The ₹25,000 threshold applies from 1 April 2023, when it rose from ₹15,000. The ₹300 February amount applies from 1 April 2025, taking the year from ₹2,400 to ₹2,500.",
     },
     {
       question: "Is professional tax deducted from contract workers?",
@@ -108,32 +88,32 @@ export const karnatakaPtTopic: Topic = {
   checked: "2026-10-18",
 };
 
-export const professionalTaxTopic: Topic = {
+/** The six states we cover, in the hub's table. */
+export const ptStates: { state: TableCell; levied: boolean; amount: string; who: string }[] = [
+  { state: { text: "Karnataka", href: "/professional-tax/karnataka" }, levied: true, amount: "₹200 a month, ₹300 in February", who: "Salary of ₹25,000 or more in the month" },
+  { state: "Punjab", levied: true, amount: "₹200 a month, as a development tax", who: "Income-tax payers only" },
+  { state: "Delhi", levied: false, amount: "None", who: "" },
+  { state: "Haryana", levied: false, amount: "None", who: "" },
+  { state: "Uttar Pradesh", levied: false, amount: "None", who: "" },
+  { state: "Uttarakhand", levied: false, amount: "None", who: "" },
+];
+
+export const professionalTaxTopic: TopicPage = {
   path: "/professional-tax",
   title: "Professional Tax by State 2026: Who Levies It",
   description:
     "Professional tax in the states we cover: Karnataka levies it, Punjab has a development tax, and Uttarakhand, UP, Delhi and Haryana levy none. The ₹2,500 cap.",
   breadcrumb: "Professional Tax",
   heading: "Professional Tax by state.",
-  lede: "Each state decides whether to levy it, up to ₹2,500 a person a year. Of the states we cover, Karnataka levies professional tax and Punjab levies a development tax of the same kind; Uttarakhand, Uttar Pradesh, Delhi and Haryana levy none.",
-  sections: [
-    {
-      kind: "table",
-      id: "states",
-      heading: "State by state.",
-      caption: "Professional tax on salaries in Karnataka, Punjab, Uttarakhand, Uttar Pradesh, Delhi and Haryana",
-      columns: ["State", "On salaries", "Who pays"],
-      rows: [
-        [{ text: "Karnataka", href: "/professional-tax/karnataka" }, "₹200 a month, ₹300 in February", "Salary of ₹25,000 or more in the month"],
-        ["Punjab", "₹200 a month (development tax)", "Income-tax payers only"],
-        ["Uttarakhand", "None", ""],
-        ["Uttar Pradesh", "None", ""],
-        ["Delhi", "None", ""],
-        ["Haryana", "None", ""],
-      ],
-      note: "In both Karnataka and Punjab the employer deducts the tax from salary and pays it every month.",
-    },
+  lede: "Each state decides whether to levy it, up to ₹2,500 a person a year. Of the six states we cover, Karnataka and Punjab levy one; the other four do not.",
+  glance: [
+    { label: "Most a person pays", note: "a year, Article 276(2)", value: "₹2,500", key: true },
+    { label: "States that levy it", note: "of the six we cover", value: "2" },
+    { label: "Karnataka", note: "on ₹25,000 or more", value: "₹200" },
+    { label: "Punjab", note: "income-tax payers", value: "₹200" },
   ],
+  updatedFrom: "the Constitution and the states' Acts",
+  rules: [],
   faqs: [
     {
       question: "What is the most professional tax anyone can pay?",
@@ -148,7 +128,6 @@ export const professionalTaxTopic: Topic = {
   links: [
     { href: "/professional-tax/karnataka", label: "Professional Tax in Karnataka" },
     { href: "/labour-welfare-fund", label: "Labour Welfare Fund by state" },
-    { href: "/epf", label: "EPF for employers" },
   ],
   checked: "2026-10-18",
 };

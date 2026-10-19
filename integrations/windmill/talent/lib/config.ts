@@ -33,8 +33,6 @@ export const VARIABLES = {
   lead_webhook_secret: { secret: true },
   /** The x-vspl-dlr-secret header Fast2SMS sends with delivery reports (Secret growth/windmill-fast2sms). */
   fast2sms_dlr_secret: { secret: true },
-  /** The x-vspl-wa-secret header Fast2SMS sends with WhatsApp messages to the apply number (f/talent/whatsapp). */
-  fast2sms_whatsapp_secret: { secret: true },
   /** postgres://leads:…@pg-main-rw.data.svc.cluster.local:5432/leads: the lead inbox (vayasya-infra pg-main-leads). */
   leads_pg_url: { secret: true },
   /**

@@ -34,7 +34,7 @@ export const jobsPrivacyCopy: Record<Locale, JobsPrivacyCopy> = {
     shortLabel: "In short",
     short: [
       { label: "What we keep", text: "Your name, mobile number, your answers, and any photos or documents you send." },
-      { label: "Who sees it", text: "Our team, and the services that run this site, our files and our SMS." },
+      { label: "Who sees it", text: "Our team, and the services that run this site, our files, and our SMS and WhatsApp messages." },
       { label: "How long", text: "12 months after you last reply to us. Then we delete it." },
       { label: "To remove it", text: `Email ${EMAIL} with your mobile number, or tell us when we call.` },
     ],
@@ -64,7 +64,7 @@ export const jobsPrivacyCopy: Record<Locale, JobsPrivacyCopy> = {
     shortLabel: "थोड़े में",
     short: [
       { label: "हम क्या रखते हैं", text: "आपका नाम, मोबाइल नंबर, आपके जवाब, और जो फ़ोटो या कागज़ आप भेजें।" },
-      { label: "कौन देखता है", text: "हमारी टीम, और वे सेवाएँ जिन पर यह साइट, हमारी फ़ाइलें और SMS चलते हैं।" },
+      { label: "कौन देखता है", text: "हमारी टीम, और वे सेवाएँ जिन पर यह साइट, हमारी फ़ाइलें, और SMS और WhatsApp मैसेज चलते हैं।" },
       { label: "कब तक", text: "आपके आख़िरी जवाब के बाद 12 महीने तक। फिर हम इसे हटा देते हैं।" },
       { label: "हटवाना हो तो", text: `अपने मोबाइल नंबर के साथ ${EMAIL} पर ईमेल करें, या जब हम कॉल करें तब बता दें।` },
     ],
@@ -94,7 +94,7 @@ export const jobsPrivacyCopy: Record<Locale, JobsPrivacyCopy> = {
     shortLabel: "Thode mein",
     short: [
       { label: "Hum kya rakhte hain", text: "Aapka naam, mobile number, aapke jawab, aur jo photo ya documents aap bhejein." },
-      { label: "Kaun dekhta hai", text: "Hamari team, aur woh services jin par yeh site, hamari files aur SMS chalte hain." },
+      { label: "Kaun dekhta hai", text: "Hamari team, aur woh services jin par yeh site, hamari files, aur SMS aur WhatsApp messages chalte hain." },
       { label: "Kab tak", text: "Aapke aakhri jawab ke baad 12 mahine tak. Phir hum ise hata dete hain." },
       { label: "Hatwana ho to", text: `Apne mobile number ke saath ${EMAIL} par email karein, ya jab hum call karein tab bata dein.` },
     ],
@@ -124,7 +124,7 @@ export const jobsPrivacyCopy: Record<Locale, JobsPrivacyCopy> = {
     shortLabel: "ਥੋੜ੍ਹੇ ਵਿੱਚ",
     short: [
       { label: "ਅਸੀਂ ਕੀ ਰੱਖਦੇ ਹਾਂ", text: "ਤੁਹਾਡਾ ਨਾਮ, ਮੋਬਾਈਲ ਨੰਬਰ, ਤੁਹਾਡੇ ਜਵਾਬ, ਅਤੇ ਜੋ ਫ਼ੋਟੋ ਜਾਂ ਕਾਗਜ਼ ਤੁਸੀਂ ਭੇਜੋ।" },
-      { label: "ਕੌਣ ਵੇਖਦਾ ਹੈ", text: "ਸਾਡੀ ਟੀਮ, ਅਤੇ ਉਹ ਸੇਵਾਵਾਂ ਜਿਨ੍ਹਾਂ 'ਤੇ ਇਹ ਸਾਈਟ, ਸਾਡੀਆਂ ਫ਼ਾਈਲਾਂ ਅਤੇ SMS ਚੱਲਦੇ ਹਨ।" },
+      { label: "ਕੌਣ ਵੇਖਦਾ ਹੈ", text: "ਸਾਡੀ ਟੀਮ, ਅਤੇ ਉਹ ਸੇਵਾਵਾਂ ਜਿਨ੍ਹਾਂ 'ਤੇ ਇਹ ਸਾਈਟ, ਸਾਡੀਆਂ ਫ਼ਾਈਲਾਂ, ਅਤੇ SMS ਅਤੇ WhatsApp ਮੈਸੇਜ ਚੱਲਦੇ ਹਨ।" },
       { label: "ਕਦੋਂ ਤੱਕ", text: "ਤੁਹਾਡੇ ਆਖ਼ਰੀ ਜਵਾਬ ਤੋਂ ਬਾਅਦ 12 ਮਹੀਨੇ ਤੱਕ। ਫਿਰ ਅਸੀਂ ਇਸ ਨੂੰ ਹਟਾ ਦਿੰਦੇ ਹਾਂ।" },
       { label: "ਹਟਵਾਉਣਾ ਹੋਵੇ ਤਾਂ", text: `ਆਪਣੇ ਮੋਬਾਈਲ ਨੰਬਰ ਦੇ ਨਾਲ ${EMAIL} 'ਤੇ ਈਮੇਲ ਕਰੋ, ਜਾਂ ਜਦੋਂ ਅਸੀਂ ਕਾਲ ਕਰੀਏ ਤਾਂ ਦੱਸ ਦਿਓ।` },
     ],
@@ -154,7 +154,7 @@ export const jobsPrivacyCopy: Record<Locale, JobsPrivacyCopy> = {
     shortLabel: "ಸಂಕ್ಷಿಪ್ತವಾಗಿ",
     short: [
       { label: "ನಾವು ಏನು ಇಟ್ಟುಕೊಳ್ಳುತ್ತೇವೆ", text: "ನಿಮ್ಮ ಹೆಸರು, ಮೊಬೈಲ್ ಸಂಖ್ಯೆ, ನಿಮ್ಮ ಉತ್ತರಗಳು, ಮತ್ತು ನೀವು ಕಳುಹಿಸುವ ಫೋಟೋ ಅಥವಾ ದಾಖಲೆಗಳು." },
-      { label: "ಯಾರು ನೋಡುತ್ತಾರೆ", text: "ನಮ್ಮ ತಂಡ, ಮತ್ತು ಈ ಸೈಟ್, ನಮ್ಮ ಫೈಲ್‌ಗಳು ಮತ್ತು SMS ನಡೆಸುವ ಸೇವೆಗಳು." },
+      { label: "ಯಾರು ನೋಡುತ್ತಾರೆ", text: "ನಮ್ಮ ತಂಡ, ಮತ್ತು ಈ ಸೈಟ್, ನಮ್ಮ ಫೈಲ್‌ಗಳು, ಮತ್ತು SMS ಹಾಗೂ WhatsApp ಸಂದೇಶಗಳನ್ನು ನಡೆಸುವ ಸೇವೆಗಳು." },
       { label: "ಎಷ್ಟು ಕಾಲ", text: "ನೀವು ನಮಗೆ ಕೊನೆಯ ಬಾರಿ ಉತ್ತರಿಸಿದ 12 ತಿಂಗಳವರೆಗೆ. ನಂತರ ನಾವು ಅದನ್ನು ಅಳಿಸುತ್ತೇವೆ." },
       { label: "ಅಳಿಸಲು", text: `ನಿಮ್ಮ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯೊಂದಿಗೆ ${EMAIL} ಗೆ ಇಮೇಲ್ ಮಾಡಿ, ಅಥವಾ ನಾವು ಕರೆ ಮಾಡಿದಾಗ ತಿಳಿಸಿ.` },
     ],

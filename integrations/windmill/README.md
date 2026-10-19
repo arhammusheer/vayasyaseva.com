@@ -11,8 +11,9 @@ website without the secret (the older routes, kept as adapters):
                   webhook/vspl-talent-intake → f/talent/intake   (x-vspl-intake-secret)
                   webhook/vspl-lead          → f/leads/intake    (x-vspl-lead-secret)
 
-talent DB         f/talent/dispatch     every minute, and started by intake for the new SMS: the one
-                                        worker for the deliveries table (SMS acknowledgement, Twenty CRM,
+talent DB         f/talent/dispatch     every minute, and started by intake for the new acknowledgement: the
+                                        one worker for the deliveries table (acknowledgement on WhatsApp,
+                                        else SMS; Twenty CRM,
                                         files into Twenty, Chatwoot conversation), backoff, caps, dead / unknown;
                                         every 15 minutes also the missing SMS delivery reports
                   f/talent/retention    hourly: the 12-month rule and erasure requests,
@@ -26,13 +27,6 @@ lead inbox (leads DB)
                   f/leads/sync_crm      every minute, and started by intake: due leads into Twenty
                                         (company, contact, crew request, enquiry), backoff, cap 8
                   f/leads/setup         the schema (leads/schema.sql), run by every deploy
-
-WhatsApp apply number (+91 78958 50598, Fast2SMS, co-existence)
-                  ──POST──► hooks.vayasyaseva.com/api/r/webhook/fast2sms-whatsapp
-                  f/talent/whatsapp     checks x-vspl-wa-secret; the numbered chat (language, consent,
-                                        work, area, name) in whatsapp_chats; the last answer files the
-                                        application like the jobs form (source and channel whatsapp)
-                                        and replies through Fast2SMS session messages
 
 Fast2SMS delivery reports ──POST──► hooks.vayasyaseva.com/api/r/webhook/fast2sms-dlr
                   f/talent/delivery_report  checks x-vspl-dlr-secret (or ?key=), marks the
@@ -104,7 +98,6 @@ Scripts read `f/talent/<name>` with `wmill.getVariable` (`talent/lib/config.ts`)
 | `leads_pg_url` | yes | `data/pg-main-leads` password (vayasya-infra, RUNBOOK "Leads inbox"), as `postgres://leads:…@pg-main-rw.data.svc.cluster.local:5432/leads` |
 | `submission_signing_secret` | yes | `SUBMISSION_SIGNING_SECRET` in `growth/windmill-submission`; Vercel has the same value. Until that Secret exists, deploy sets a random value nobody knows, so the signed routes refuse everything |
 | `fast2sms_dlr_secret` | yes | `FAST2SMS_DLR_SECRET` in `growth/windmill-fast2sms`; the `x-vspl-dlr-secret` header of the Fast2SMS webhook |
-| `fast2sms_whatsapp_secret` | yes | `FAST2SMS_WA_SECRET` in `growth/windmill-fast2sms` (until it exists, `FAST2SMS_DLR_SECRET`); the `x-vspl-wa-secret` header of the WhatsApp webhook |
 
 The `TALENT_*`, `FAST2SMS_*` and `CHATWOOT_*` keys are read from `growth/n8n-env` until n8n is retired; `--secrets-from=<secret>` reads another Secret in `growth` with the same keys. The API token is `SUPERADMIN_SECRET` in `growth/windmill-env`.
 
@@ -137,17 +130,16 @@ Cron is Windmill's six-field form (seconds first), timezone Asia/Kolkata: acknow
 - **The webhook** is made once in the Fast2SMS dashboard (its API answers 401 to creating one): `node integrations/windmill/fast2sms-webhook.mts` prints the values and confirms it exists; `--copy-secret` puts the header value on the clipboard.
 - **Leads**: a replayed case ID answers 202 and changes nothing; errors answer a bare 500. The website posts in `after()`, so a slow or failing route never touches the form, and the email to the shared inbox stays the primary path.
 
-## The WhatsApp apply chat (19 October 2026)
+## The WhatsApp acknowledgement (20 October 2026)
 
-- **What it asks.** `talent/lib/whatsapp.ts`: the language (skipped when the site link's `[VS|<locale>|<work>|<area>]` code or the message's script says it), then 18+ and the jobs form's consent line with the privacy link, then the work (numbers, several allowed), the area (the market answers) and the name (0 skips). Fast2SMS session messages are text only, so every question is a numbered list; Devanagari, Gurmukhi and Kannada digits count. STOP ends it, NEW starts again, a chat idle for 24 hours starts over. The words are the site's: `pnpm whatsapp:copy` writes `talent/lib/whatsapp-copy.json` from src/content (CI checks it).
-- **What it files.** The quick form's application (`job_application.v1`, source and channel `whatsapp`, consent version `2026-10-19-wa1`) through `runIntake`, so the SMS acknowledgement, Twenty, Chatwoot and retention run as for the form. Voice notes and photos stay in the WhatsApp chat (the Business app, through co-existence); the application notes that they were sent.
-- **Once per message.** `whatsapp_messages` keeps each message id 3 days; a failed run forgets the id so Fast2SMS's retry is handled. Each chat save checks `whatsapp_chats.version`, so two messages at once cannot overwrite each other; the application is filed before the chat is saved and keeps its reference across a retried save.
-- **Retention.** `f/talent/retention` runs `PURGE_WHATSAPP` first: chats without consent after a day, any chat 30 days after its last message. Erasure (`DELETE_ROWS`) removes the person's chat too.
-- **Setup.** Deploy creates the route. Then make the webhook in the Fast2SMS dashboard: `node integrations/windmill/fast2sms-whatsapp-webhook.mts` prints the values, `--copy-secret` the header. Calls: co-existence keeps calling in the Business app and the API cannot turn it off, so the site shows the number only as a wa.me link and every reply says it takes no calls.
+- **WhatsApp first.** The `sms` delivery sends the reference as the approved Utility template `vspl_application_received` (`_hinglish` for hi-Latn-IN) from the WhatsApp Business number, +91 78958 50598 (Fast2SMS, co-existence with the Business app), so an applicant who replies opens a chat the team answers in the app (`talent/lib/whatsapp-ack.ts`). One send per application, ever.
+- **SMS as the fallback.** The dispatcher looks the WhatsApp report up each minute (`GET /dev/whatsapp/{request_id}`; there is no WhatsApp webhook). Delivered or read: done, and the SMS is `skipped`. A refused or unclear send, a failure report, or 10 minutes with neither delivered nor read: the DLT SMS goes as before. Waiting does not use the delivery's three attempts. A language without an approved template in `WA_TEMPLATES` gets the SMS straight away.
+- **Columns.** `sms_acknowledgements.wa_status` (`sending`, `accepted`, `failed`, `unknown`, `skipped`), `wa_request_id`, `wa_delivery` (`read`, `delivered`, `failed`, `pending`) with Fast2SMS's text in `wa_detail`. In Twenty the WhatsApp message is its own Communication (channel WhatsApp, Delivery up to **Read**); the SMS has one only when it was sent.
+- **Templates.** `node integrations/windmill/whatsapp-templates.mts` shows each language's status and Fast2SMS message id; `--create` submits any missing (submitted 20 Oct 2026). Put approved ids in `WA_TEMPLATES` and deploy. The WhatsApp apply chat that ran on this number (19 Oct 2026) was removed the same day, before its webhook existed; deploy deletes its route, script and variable.
 
 ## Deliveries and the lead inbox (roadmap 1F)
 
-- **Deliveries.** Each application gets four rows (a trigger on `submissions`): `sms` (3 attempts), `chatwoot` (3), `crm` (8), `files` (8). A run works them in the order sms, crm, files, chatwoot. The dispatcher claims due rows with `FOR UPDATE SKIP LOCKED`; a failure waits 1, 2, 4… minutes (at most an hour), and at the cap the row is `dead`. An SMS whose send was ambiguous or interrupted is `unknown` and is never resent. When the acknowledgement's status changes (accepted, delivered, failed), a trigger reopens the `crm` row so Twenty shows it. The older status columns are kept and still written; the view `delivery_status` shows the old statuses from the deliveries, and setup carried the existing statuses over once.
+- **Deliveries.** Each application gets four rows (a trigger on `submissions`): `sms` (3 attempts), `chatwoot` (3), `crm` (8), `files` (8). A run works them in the order sms, crm, files, chatwoot. The dispatcher claims due rows with `FOR UPDATE SKIP LOCKED`; a failure waits 1, 2, 4… minutes (at most an hour), and at the cap the row is `dead`. An SMS whose send was ambiguous or interrupted is `unknown` and is never resent. When the acknowledgement's status changes (on WhatsApp or by SMS: accepted, delivered, read, failed), a trigger reopens the `crm` row so Twenty shows it. A `wait` (the WhatsApp report not in yet) puts the row back a minute later without counting an attempt. The older status columns are kept and still written; the view `delivery_status` shows the old statuses from the deliveries, and setup carried the existing statuses over once.
 - **Connections.** The talent role has five. At most: one intake per request in flight, the dispatcher (one at a time, advisory lock; intake's targeted run exits at once if the dispatcher holds the lock), retention (hourly), a delivery report. The dispatcher replaced four every-minute schedules.
 - **Lead inbox.** A lead is saved (inbox row and its `crm` delivery, one statement) before the route answers 202, then filed in Twenty by `f/leads/sync_crm`. A Twenty outage no longer loses a lead; it waits and retries.
 - **Signed route.** `x-vspl-timestamp` (Unix seconds) and `x-vspl-signature: v1=<base64url HMAC-SHA256 of "v1:<timestamp>.<raw body>">`; more than five minutes off is refused. The route is created with `raw_string` so the body is checked exactly as signed.

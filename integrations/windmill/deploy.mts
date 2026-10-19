@@ -136,7 +136,6 @@ function readValues(): Record<ConfigName, string> {
     twenty_api_key: secretValue("growth", "twenty-api", "TWENTY_API_KEY"),
     lead_webhook_secret: secretValue("growth", "windmill-leads", "LEAD_WEBHOOK_SECRET"),
     fast2sms_dlr_secret: secretValue("growth", "windmill-fast2sms", "FAST2SMS_DLR_SECRET"),
-    fast2sms_whatsapp_secret: whatsAppSecret(),
     leads_pg_url: `postgres://leads:${encodeURIComponent(leadsPassword)}@${TALENT_DB_HOST}:5432/leads`,
     submission_signing_secret: signingSecret(),
   };
@@ -154,20 +153,6 @@ function signingSecret(): string {
   } catch {
     step("growth/windmill-submission not found: the signed routes will refuse everything until it exists");
     return randomBytes(32).toString("base64url");
-  }
-}
-
-/**
- * FAST2SMS_WA_SECRET in growth/windmill-fast2sms: the x-vspl-wa-secret header
- * of the WhatsApp webhook. Until the owner adds that key, the delivery
- * reports' secret (same Secret, same Fast2SMS account) stands in.
- */
-function whatsAppSecret(): string {
-  try {
-    return secretValue("growth", "windmill-fast2sms", "FAST2SMS_WA_SECRET");
-  } catch {
-    step("growth/windmill-fast2sms has no FAST2SMS_WA_SECRET: the WhatsApp route uses FAST2SMS_DLR_SECRET");
-    return secretValue("growth", "windmill-fast2sms", "FAST2SMS_DLR_SECRET");
   }
 }
 
@@ -222,7 +207,7 @@ async function portForward(): Promise<{ base: string; stop: () => void }> {
 
 function api(base: string, token: string) {
   const ws = WORKSPACE.id;
-  async function call(method: "GET" | "POST", path: string, body?: unknown): Promise<string> {
+  async function call(method: "GET" | "POST" | "DELETE", path: string, body?: unknown): Promise<string> {
     const res = await fetch(`${base}/api${path.replace("{ws}", ws)}`, {
       method,
       headers: { authorization: `Bearer ${token}`, ...(body === undefined ? {} : { "content-type": "application/json" }) },
@@ -239,8 +224,23 @@ function api(base: string, token: string) {
     step(what);
     if (!DRY_RUN) await call("POST", path, body);
   };
-  return { call, exists, write };
+  const remove = async (method: "POST" | "DELETE", path: string, what: string) => {
+    step(what);
+    if (!DRY_RUN) await call(method, path);
+  };
+  return { call, exists, write, remove };
 }
+
+/**
+ * Removed from SCRIPTS, so deploy takes them out of Windmill too: the route
+ * first, then the script, then its variable. The WhatsApp apply chat
+ * (19 Oct 2026) went the same day; acknowledgements go out on WhatsApp instead.
+ */
+const RETIRED = {
+  routes: ["f/talent/whatsapp"],
+  scripts: ["f/talent/whatsapp"],
+  variables: ["f/talent/fast2sms_whatsapp_secret"],
+};
 
 /**
  * Owns the schedules and the route. Windmill runs them as their owner and
@@ -379,6 +379,15 @@ async function main() {
     if (replacedWereOn) step("the replaced schedules were on: f/talent/dispatch and f/leads/sync_crm will be on too");
     for (const spec of SCRIPTS) await schedule(asService, exists, spec, replacedWereOn);
     for (const spec of SCRIPTS) await route(asService, exists, spec);
+    for (const path of RETIRED.routes) {
+      if (await exists(`/w/{ws}/http_triggers/exists/${path}`)) await asService.remove("DELETE", `/w/{ws}/http_triggers/delete/${path}`, `removing the retired route of ${path}`);
+    }
+    for (const path of RETIRED.scripts) {
+      if (await exists(`/w/{ws}/scripts/exists/p/${path}`)) await w.remove("POST", `/w/{ws}/scripts/delete/p/${path}`, `removing the retired script ${path}`);
+    }
+    for (const path of RETIRED.variables) {
+      if (await exists(`/w/{ws}/variables/exists/${path}`)) await w.remove("DELETE", `/w/{ws}/variables/delete/${path}`, `removing the retired variable ${path}`);
+    }
 
     // 7. Warm the route: a wrong secret must answer 403
     for (const spec of SCRIPTS.filter((s) => s.route)) {

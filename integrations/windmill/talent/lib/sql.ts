@@ -88,6 +88,58 @@ SET status = $2, request_id = $3, last_error = $4,
 WHERE submission_id = $1::uuid AND status = 'sending'
 RETURNING submission_id, status;`;
 
+// --- WhatsApp acknowledgement (whatsapp-ack.ts) ---------------------------------
+
+/** $1 submission: the acknowledgement's state, with what the WhatsApp send needs. */
+export const GET_ACKNOWLEDGEMENT = `
+SELECT a.status, a.wa_status, a.wa_request_id, a.wa_sent_at, a.wa_delivery, a.wa_updated_at, s.ref, s.phone, s.locale
+FROM sms_acknowledgements a JOIN submissions s ON s.id = a.submission_id
+WHERE a.submission_id = $1::uuid;`;
+
+/** $1 submission, $2 why: no WhatsApp message for it; the SMS goes. */
+export const SKIP_WHATSAPP = `
+UPDATE sms_acknowledgements SET wa_status = 'skipped', wa_error = $2, wa_updated_at = now(), updated_at = now()
+WHERE submission_id = $1::uuid AND wa_status IS NULL;`;
+
+/** $1 submission. One WhatsApp send per application, ever. */
+export const CLAIM_WHATSAPP_ACK = `
+UPDATE sms_acknowledgements SET wa_status = 'sending', wa_updated_at = now(), updated_at = now()
+WHERE submission_id = $1::uuid AND wa_status IS NULL AND status = 'pending'
+RETURNING submission_id;`;
+
+/** $1 submission, $2 accepted|failed|unknown, $3 request id, $4 error. */
+export const SAVE_WHATSAPP_RESULT = `
+UPDATE sms_acknowledgements
+SET wa_status = $2, wa_request_id = $3, wa_error = $4,
+    wa_sent_at = CASE WHEN $2 = 'accepted' THEN now() ELSE wa_sent_at END,
+    wa_updated_at = now(), updated_at = now()
+WHERE submission_id = $1::uuid AND wa_status = 'sending';`;
+
+/** $1 submission: a send interrupted five minutes ago may have gone; the SMS goes too. */
+export const RECOVER_WHATSAPP_SEND = `
+UPDATE sms_acknowledgements
+SET wa_status = 'unknown', wa_error = 'Interrupted WhatsApp send; the SMS goes instead', wa_updated_at = now(), updated_at = now()
+WHERE submission_id = $1::uuid AND wa_status = 'sending';`;
+
+/**
+ * $1 submission, $2 read|delivered|failed|pending, $3 Fast2SMS's status and
+ * text, $4 when (null: now, for delivered or read). Never moves back from
+ * read, or from delivered to anything but read.
+ */
+export const SAVE_WHATSAPP_REPORT = `
+UPDATE sms_acknowledgements
+SET wa_delivery = $2, wa_detail = $3,
+    wa_delivered_at = CASE WHEN $2 IN ('delivered', 'read') THEN coalesce(wa_delivered_at, $4::timestamptz, now()) ELSE wa_delivered_at END,
+    wa_updated_at = now(), updated_at = now()
+WHERE submission_id = $1::uuid AND wa_status = 'accepted'
+  AND wa_delivery IS DISTINCT FROM 'read'
+  AND (wa_delivery IS DISTINCT FROM 'delivered' OR $2 = 'read');`;
+
+/** $1 submission: WhatsApp delivered it, so no SMS. */
+export const SKIP_SMS = `
+UPDATE sms_acknowledgements SET status = 'skipped', last_error = NULL, updated_at = now()
+WHERE submission_id = $1::uuid AND status = 'pending';`;
+
 // --- deliver --------------------------------------------------------------------
 
 export const RECOVER_STUCK_DELIVERIES = `
@@ -174,8 +226,6 @@ WITH gone AS (
   DELETE FROM submissions WHERE phone = $2 RETURNING id
 ), person AS (
   DELETE FROM people WHERE phone = $2 RETURNING 1
-), chat AS (
-  DELETE FROM whatsapp_chats WHERE phone = $2 RETURNING 1
 )
 UPDATE erasure_requests
 SET status = 'done', processed_at = now(), updated_at = now(),
@@ -203,13 +253,14 @@ SELECT s.id, s.ref, s.source, s.channel, s.locale, s.phone, s.consent_version, s
        p.locale AS person_locale, p.status AS person_status, p.last_applied_at, p.last_contact_at, p.last_confirmed_at,
        a.status AS ack_status, a.request_id, a.last_error AS ack_error, a.accepted_at, a.updated_at AS ack_updated_at,
        a.delivery_status, a.delivery_detail, a.delivered_at,
+       a.wa_status, a.wa_request_id, a.wa_error, a.wa_sent_at, a.wa_delivery, a.wa_detail, a.wa_delivered_at, a.wa_updated_at,
        c.person_id, c.application_id, c.ack_status AS synced_ack_status, (c.submission_id IS NOT NULL) AS synced
 FROM submissions s
 LEFT JOIN people p ON p.phone = s.phone
 LEFT JOIN sms_acknowledgements a ON a.submission_id = s.id
 LEFT JOIN crm_sync c ON c.submission_id = s.id
 WHERE c.submission_id IS NULL
-   OR c.ack_status IS DISTINCT FROM (CASE WHEN a.delivery_status IS NULL THEN a.status ELSE a.status || ':' || a.delivery_status END)
+   OR c.ack_status IS DISTINCT FROM nullif(concat_ws(':', a.status, a.delivery_status, a.wa_status, a.wa_delivery), '')
 ORDER BY s.created_at
 LIMIT $1;`;
 
@@ -290,13 +341,16 @@ FROM c WHERE d.submission_id = c.submission_id AND d.target = c.target
 RETURNING d.submission_id, d.target, d.attempts, d.max_attempts;`;
 
 /**
- * $1 submission, $2 target, $3 outcome (done, retry, unknown, dead), $4
- * error, $5 seconds to wait before a retry. A retry at the cap is dead.
+ * $1 submission, $2 target, $3 outcome (done, retry, wait, unknown, dead), $4
+ * error, $5 seconds to wait before a retry. A retry at the cap is dead; a
+ * wait (the WhatsApp acknowledgement's report) does not count as an attempt.
  */
 export const FINISH_DELIVERY = `
 UPDATE deliveries
-SET status = CASE WHEN $3 = 'retry' THEN (CASE WHEN attempts >= max_attempts THEN 'dead' ELSE 'pending' END) ELSE $3 END,
-    next_attempt_at = CASE WHEN $3 = 'retry' THEN now() + make_interval(secs => $5::int) ELSE next_attempt_at END,
+SET status = CASE WHEN $3 = 'retry' THEN (CASE WHEN attempts >= max_attempts THEN 'dead' ELSE 'pending' END)
+                  WHEN $3 = 'wait' THEN 'pending' ELSE $3 END,
+    attempts = CASE WHEN $3 = 'wait' THEN greatest(attempts - 1, 0) ELSE attempts END,
+    next_attempt_at = CASE WHEN $3 IN ('retry', 'wait') THEN now() + make_interval(secs => $5::int) ELSE next_attempt_at END,
     last_error = $4,
     done_at = CASE WHEN $3 = 'done' THEN now() ELSE done_at END,
     updated_at = now()
@@ -323,7 +377,7 @@ RETURNING status;`;
 
 /** $1 submission: SYNC_CANDIDATES' columns for one submission, synced or not. */
 export const SYNC_CANDIDATE_FOR = SYNC_CANDIDATES.replace(
-  /WHERE c\.submission_id IS NULL\n {3}OR c\.ack_status IS DISTINCT FROM \(CASE WHEN a\.delivery_status IS NULL THEN a\.status ELSE a\.status \|\| ':' \|\| a\.delivery_status END\)\nORDER BY s\.created_at\nLIMIT \$1;/,
+  /WHERE c\.submission_id IS NULL\n {3}OR c\.ack_status IS DISTINCT FROM nullif\(concat_ws\(':', a\.status, a\.delivery_status, a\.wa_status, a\.wa_delivery\), ''\)\nORDER BY s\.created_at\nLIMIT \$1;/,
   "WHERE s.id = $1::uuid;",
 );
 // A replace that misses leaves LIMIT $1 bound to a uuid (every per-submission
@@ -366,48 +420,3 @@ export const FILE_ERROR = `UPDATE attachments SET crm_file_error = $2, updated_a
 
 /** $1 attachment: its Twenty file could not be completed (never uploaded); the retry starts again. */
 export const CLEAR_FILE_ID = `UPDATE attachments SET twenty_file_id = NULL, updated_at = now() WHERE id = $1::uuid;`;
-
-// --- WhatsApp apply chat (f/talent/whatsapp, talent/lib/run-whatsapp.ts) ---------
-
-/** $1 message id. Returns a row only the first time an id is seen. */
-export const SEEN_WHATSAPP_MESSAGE = `INSERT INTO whatsapp_messages (message_id) VALUES ($1) ON CONFLICT DO NOTHING RETURNING message_id;`;
-
-/** $1 message id: a message whose handling failed, so the webhook's retry is handled. */
-export const FORGET_WHATSAPP_MESSAGE = `DELETE FROM whatsapp_messages WHERE message_id = $1;`;
-
-export const GET_WHATSAPP_CHAT = `
-SELECT phone, locale, step, answers, name, notes, consented_at AS "consentedAt", ref, version, updated_at AS "updatedAt"
-FROM whatsapp_chats WHERE phone = $1;`;
-
-/** $1 phone … $8 ref, $9 the version read (0: no row yet). Returns the row only when nobody saved in between. */
-export const SAVE_WHATSAPP_CHAT = `
-INSERT INTO whatsapp_chats AS c (phone, locale, step, answers, name, notes, consented_at, ref, version, updated_at)
-SELECT $1, $2, $3, $4::jsonb, $5, $6, $7::timestamptz, $8, 1, now()
-WHERE $9::int = 0
-ON CONFLICT (phone) DO NOTHING
-RETURNING version;`;
-
-export const UPDATE_WHATSAPP_CHAT = `
-UPDATE whatsapp_chats
-SET locale = $2, step = $3, answers = $4::jsonb, name = $5, notes = $6, consented_at = $7::timestamptz, ref = $8,
-    version = version + 1, updated_at = now()
-WHERE phone = $1 AND version = $9::int
-RETURNING version;`;
-
-/** $1 phone, $2 the version read. Declined or stopped: nothing kept. */
-export const DELETE_WHATSAPP_CHAT = `DELETE FROM whatsapp_chats WHERE phone = $1 AND version = $2::int RETURNING phone;`;
-
-/**
- * Retention for the chat: a chat without consent goes after a day, any chat
- * 30 days after its last message (the application itself is in submissions),
- * and the message ids after 3 days.
- */
-export const PURGE_WHATSAPP = `
-WITH chats AS (
-  DELETE FROM whatsapp_chats
-  WHERE (consented_at IS NULL AND updated_at < now() - interval '1 day') OR updated_at < now() - interval '30 days'
-  RETURNING 1
-), messages AS (
-  DELETE FROM whatsapp_messages WHERE received_at < now() - interval '3 days' RETURNING 1
-)
-SELECT (SELECT count(*) FROM chats) AS chats, (SELECT count(*) FROM messages) AS messages;`;

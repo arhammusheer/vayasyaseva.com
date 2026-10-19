@@ -114,23 +114,6 @@ export const SCRIPTS: ScriptSpec[] = [
     route: { path: "webhook/fast2sms-dlr", method: "post", secretHeader: "x-vspl-dlr-secret" },
   },
   {
-    name: "whatsapp",
-    summary: "Talent · WhatsApp apply chat",
-    description:
-      "Messages to the WhatsApp apply number (POST /webhook/fast2sms-whatsapp): checks x-vspl-wa-secret, moves the chat on (language, consent, work, area, name), files the finished application like the jobs form and replies through Fast2SMS.",
-    schema: {
-      $schema: "https://json-schema.org/draft/2020-12/schema",
-      type: "object",
-      properties: {
-        authorized: { type: "boolean", description: "Set by the preprocessor: the secret header matched." },
-        body: { type: "object", description: "The message: sender, type, text, message id and the WhatsApp number id." },
-      },
-      required: ["authorized", "body"],
-    },
-    hasPreprocessor: true,
-    route: { path: "webhook/fast2sms-whatsapp", method: "post", secretHeader: "x-vspl-wa-secret" },
-  },
-  {
     name: "delivery_check",
     summary: "Talent · SMS delivery check",
     description:

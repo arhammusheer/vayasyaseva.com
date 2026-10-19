@@ -26,7 +26,6 @@ const VARIABLES = {
     twenty_api_key: { secret: true },
     lead_webhook_secret: { secret: true },
     fast2sms_dlr_secret: { secret: true },
-    fast2sms_whatsapp_secret: { secret: true },
     leads_pg_url: { secret: true },
     submission_signing_secret: { secret: true },
 };
@@ -220,7 +219,7 @@ function contactsToDelete(claimed) {
 })();
 
 // integrations/windmill/talent/lib/sql.ts
-const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, FILES_SUBMISSION, FILES_FOR, SAVE_FILE_ID, SETTLE_FILE, FILE_ERROR, CLEAR_FILE_ID, SEEN_WHATSAPP_MESSAGE, FORGET_WHATSAPP_MESSAGE, GET_WHATSAPP_CHAT, SAVE_WHATSAPP_CHAT, UPDATE_WHATSAPP_CHAT, DELETE_WHATSAPP_CHAT, PURGE_WHATSAPP } = (() => {
+const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, GET_ACKNOWLEDGEMENT, SKIP_WHATSAPP, CLAIM_WHATSAPP_ACK, SAVE_WHATSAPP_RESULT, RECOVER_WHATSAPP_SEND, SAVE_WHATSAPP_REPORT, SKIP_SMS, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, FILES_SUBMISSION, FILES_FOR, SAVE_FILE_ID, SETTLE_FILE, FILE_ERROR, CLEAR_FILE_ID } = (() => {
 const RETENTION_MONTHS = 12;
 const SAVE_SUBMISSION = `
 WITH s AS (
@@ -287,6 +286,38 @@ SET status = $2, request_id = $3, last_error = $4,
     next_attempt_at = now() + interval '1 minute', updated_at = now()
 WHERE submission_id = $1::uuid AND status = 'sending'
 RETURNING submission_id, status;`;
+const GET_ACKNOWLEDGEMENT = `
+SELECT a.status, a.wa_status, a.wa_request_id, a.wa_sent_at, a.wa_delivery, a.wa_updated_at, s.ref, s.phone, s.locale
+FROM sms_acknowledgements a JOIN submissions s ON s.id = a.submission_id
+WHERE a.submission_id = $1::uuid;`;
+const SKIP_WHATSAPP = `
+UPDATE sms_acknowledgements SET wa_status = 'skipped', wa_error = $2, wa_updated_at = now(), updated_at = now()
+WHERE submission_id = $1::uuid AND wa_status IS NULL;`;
+const CLAIM_WHATSAPP_ACK = `
+UPDATE sms_acknowledgements SET wa_status = 'sending', wa_updated_at = now(), updated_at = now()
+WHERE submission_id = $1::uuid AND wa_status IS NULL AND status = 'pending'
+RETURNING submission_id;`;
+const SAVE_WHATSAPP_RESULT = `
+UPDATE sms_acknowledgements
+SET wa_status = $2, wa_request_id = $3, wa_error = $4,
+    wa_sent_at = CASE WHEN $2 = 'accepted' THEN now() ELSE wa_sent_at END,
+    wa_updated_at = now(), updated_at = now()
+WHERE submission_id = $1::uuid AND wa_status = 'sending';`;
+const RECOVER_WHATSAPP_SEND = `
+UPDATE sms_acknowledgements
+SET wa_status = 'unknown', wa_error = 'Interrupted WhatsApp send; the SMS goes instead', wa_updated_at = now(), updated_at = now()
+WHERE submission_id = $1::uuid AND wa_status = 'sending';`;
+const SAVE_WHATSAPP_REPORT = `
+UPDATE sms_acknowledgements
+SET wa_delivery = $2, wa_detail = $3,
+    wa_delivered_at = CASE WHEN $2 IN ('delivered', 'read') THEN coalesce(wa_delivered_at, $4::timestamptz, now()) ELSE wa_delivered_at END,
+    wa_updated_at = now(), updated_at = now()
+WHERE submission_id = $1::uuid AND wa_status = 'accepted'
+  AND wa_delivery IS DISTINCT FROM 'read'
+  AND (wa_delivery IS DISTINCT FROM 'delivered' OR $2 = 'read');`;
+const SKIP_SMS = `
+UPDATE sms_acknowledgements SET status = 'skipped', last_error = NULL, updated_at = now()
+WHERE submission_id = $1::uuid AND status = 'pending';`;
 const RECOVER_STUCK_DELIVERIES = `
 UPDATE submissions
 SET status = CASE WHEN attempts >= 3 THEN 'failed' ELSE 'received' END,
@@ -360,8 +391,6 @@ WITH gone AS (
   DELETE FROM submissions WHERE phone = $2 RETURNING id
 ), person AS (
   DELETE FROM people WHERE phone = $2 RETURNING 1
-), chat AS (
-  DELETE FROM whatsapp_chats WHERE phone = $2 RETURNING 1
 )
 UPDATE erasure_requests
 SET status = 'done', processed_at = now(), updated_at = now(),
@@ -378,13 +407,14 @@ SELECT s.id, s.ref, s.source, s.channel, s.locale, s.phone, s.consent_version, s
        p.locale AS person_locale, p.status AS person_status, p.last_applied_at, p.last_contact_at, p.last_confirmed_at,
        a.status AS ack_status, a.request_id, a.last_error AS ack_error, a.accepted_at, a.updated_at AS ack_updated_at,
        a.delivery_status, a.delivery_detail, a.delivered_at,
+       a.wa_status, a.wa_request_id, a.wa_error, a.wa_sent_at, a.wa_delivery, a.wa_detail, a.wa_delivered_at, a.wa_updated_at,
        c.person_id, c.application_id, c.ack_status AS synced_ack_status, (c.submission_id IS NOT NULL) AS synced
 FROM submissions s
 LEFT JOIN people p ON p.phone = s.phone
 LEFT JOIN sms_acknowledgements a ON a.submission_id = s.id
 LEFT JOIN crm_sync c ON c.submission_id = s.id
 WHERE c.submission_id IS NULL
-   OR c.ack_status IS DISTINCT FROM (CASE WHEN a.delivery_status IS NULL THEN a.status ELSE a.status || ':' || a.delivery_status END)
+   OR c.ack_status IS DISTINCT FROM nullif(concat_ws(':', a.status, a.delivery_status, a.wa_status, a.wa_delivery), '')
 ORDER BY s.created_at
 LIMIT $1;`;
 const RECORD_CRM_SYNC = `
@@ -433,8 +463,10 @@ FROM c WHERE d.submission_id = c.submission_id AND d.target = c.target
 RETURNING d.submission_id, d.target, d.attempts, d.max_attempts;`;
 const FINISH_DELIVERY = `
 UPDATE deliveries
-SET status = CASE WHEN $3 = 'retry' THEN (CASE WHEN attempts >= max_attempts THEN 'dead' ELSE 'pending' END) ELSE $3 END,
-    next_attempt_at = CASE WHEN $3 = 'retry' THEN now() + make_interval(secs => $5::int) ELSE next_attempt_at END,
+SET status = CASE WHEN $3 = 'retry' THEN (CASE WHEN attempts >= max_attempts THEN 'dead' ELSE 'pending' END)
+                  WHEN $3 = 'wait' THEN 'pending' ELSE $3 END,
+    attempts = CASE WHEN $3 = 'wait' THEN greatest(attempts - 1, 0) ELSE attempts END,
+    next_attempt_at = CASE WHEN $3 IN ('retry', 'wait') THEN now() + make_interval(secs => $5::int) ELSE next_attempt_at END,
     last_error = $4,
     done_at = CASE WHEN $3 = 'done' THEN now() ELSE done_at END,
     updated_at = now()
@@ -452,7 +484,7 @@ UPDATE submissions
 SET status = CASE WHEN attempts >= 3 THEN 'failed' ELSE 'received' END, last_error = $2, updated_at = now()
 WHERE id = $1::uuid AND status = 'delivering'
 RETURNING status;`;
-const SYNC_CANDIDATE_FOR = SYNC_CANDIDATES.replace(/WHERE c\.submission_id IS NULL\n {3}OR c\.ack_status IS DISTINCT FROM \(CASE WHEN a\.delivery_status IS NULL THEN a\.status ELSE a\.status \|\| ':' \|\| a\.delivery_status END\)\nORDER BY s\.created_at\nLIMIT \$1;/, "WHERE s.id = $1::uuid;");
+const SYNC_CANDIDATE_FOR = SYNC_CANDIDATES.replace(/WHERE c\.submission_id IS NULL\n {3}OR c\.ack_status IS DISTINCT FROM nullif\(concat_ws\(':', a\.status, a\.delivery_status, a\.wa_status, a\.wa_delivery\), ''\)\nORDER BY s\.created_at\nLIMIT \$1;/, "WHERE s.id = $1::uuid;");
 if (SYNC_CANDIDATE_FOR === SYNC_CANDIDATES)
     throw new Error("SYNC_CANDIDATE_FOR: the WHERE clause was not replaced");
 const ERASURE_DISPATCH_LOCK = DISPATCH_LOCK;
@@ -472,34 +504,7 @@ SET crm_file_status = $2, twenty_attachment_id = coalesce($3::uuid, twenty_attac
 WHERE id = $1::uuid;`;
 const FILE_ERROR = `UPDATE attachments SET crm_file_error = $2, updated_at = now() WHERE id = $1::uuid;`;
 const CLEAR_FILE_ID = `UPDATE attachments SET twenty_file_id = NULL, updated_at = now() WHERE id = $1::uuid;`;
-const SEEN_WHATSAPP_MESSAGE = `INSERT INTO whatsapp_messages (message_id) VALUES ($1) ON CONFLICT DO NOTHING RETURNING message_id;`;
-const FORGET_WHATSAPP_MESSAGE = `DELETE FROM whatsapp_messages WHERE message_id = $1;`;
-const GET_WHATSAPP_CHAT = `
-SELECT phone, locale, step, answers, name, notes, consented_at AS "consentedAt", ref, version, updated_at AS "updatedAt"
-FROM whatsapp_chats WHERE phone = $1;`;
-const SAVE_WHATSAPP_CHAT = `
-INSERT INTO whatsapp_chats AS c (phone, locale, step, answers, name, notes, consented_at, ref, version, updated_at)
-SELECT $1, $2, $3, $4::jsonb, $5, $6, $7::timestamptz, $8, 1, now()
-WHERE $9::int = 0
-ON CONFLICT (phone) DO NOTHING
-RETURNING version;`;
-const UPDATE_WHATSAPP_CHAT = `
-UPDATE whatsapp_chats
-SET locale = $2, step = $3, answers = $4::jsonb, name = $5, notes = $6, consented_at = $7::timestamptz, ref = $8,
-    version = version + 1, updated_at = now()
-WHERE phone = $1 AND version = $9::int
-RETURNING version;`;
-const DELETE_WHATSAPP_CHAT = `DELETE FROM whatsapp_chats WHERE phone = $1 AND version = $2::int RETURNING phone;`;
-const PURGE_WHATSAPP = `
-WITH chats AS (
-  DELETE FROM whatsapp_chats
-  WHERE (consented_at IS NULL AND updated_at < now() - interval '1 day') OR updated_at < now() - interval '30 days'
-  RETURNING 1
-), messages AS (
-  DELETE FROM whatsapp_messages WHERE received_at < now() - interval '3 days' RETURNING 1
-)
-SELECT (SELECT count(*) FROM chats) AS chats, (SELECT count(*) FROM messages) AS messages;`;
-  return { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, FILES_SUBMISSION, FILES_FOR, SAVE_FILE_ID, SETTLE_FILE, FILE_ERROR, CLEAR_FILE_ID, SEEN_WHATSAPP_MESSAGE, FORGET_WHATSAPP_MESSAGE, GET_WHATSAPP_CHAT, SAVE_WHATSAPP_CHAT, UPDATE_WHATSAPP_CHAT, DELETE_WHATSAPP_CHAT, PURGE_WHATSAPP };
+  return { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, GET_ACKNOWLEDGEMENT, SKIP_WHATSAPP, CLAIM_WHATSAPP_ACK, SAVE_WHATSAPP_RESULT, RECOVER_WHATSAPP_SEND, SAVE_WHATSAPP_REPORT, SKIP_SMS, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, FILES_SUBMISSION, FILES_FOR, SAVE_FILE_ID, SETTLE_FILE, FILE_ERROR, CLEAR_FILE_ID };
 })();
 
 // integrations/windmill/talent/lib/run-retention.ts
@@ -684,7 +689,7 @@ async function twentyFilesFromConfig() {
 })();
 
 // integrations/windmill/talent/lib/crm.ts
-const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, removeAttachments, erasePerson } = (() => {
+const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, smsWasSent, whatsAppWasSent, WA_ACK_TEMPLATE, waAckText, whatsAppDeliveryStatus, waAckKey, waAckFields, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, removeAttachments, erasePerson } = (() => {
 const CLUSTER_VALUES = new Set(["HARIDWAR", "UTTARAKHAND", "DELHI_NCR", "BENGALURU", "JALANDHAR", "SAHARANPUR", "OTHER", "PUNJAB", "DEHRADUN"]);
 const ROLE_VALUES = new Set([
     "FACTORY_HELPER", "PACKING", "MACHINE_OPERATOR", "WAREHOUSE", "FORKLIFT_OPERATOR", "DATA_ENTRY_OPERATOR",
@@ -908,7 +913,44 @@ function deliveryStatus(ackStatus, delivery = null) {
             return "QUEUED";
     }
 }
-const ackSyncState = (c) => c.ack_status && c.delivery_status ? `${c.ack_status}:${c.delivery_status}` : c.ack_status;
+const ackSyncState = (c) => [c.ack_status, c.delivery_status, c.wa_status, c.wa_delivery].filter(Boolean).join(":") || null;
+const smsWasSent = (c) => !!c.ack_status && c.ack_status !== "pending" && c.ack_status !== "skipped";
+const whatsAppWasSent = (c) => !!c.wa_status && c.wa_status !== "skipped";
+const WA_ACK_TEMPLATE = "vspl_application_received (WhatsApp, Utility)";
+const waAckText = (ref) => `Vayasya Seva received your job application.\nReference: ${ref}\n\nIf the work fits, our team will contact you.\nReply here if you have a question. You can send a voice note too.\n\nThis number takes messages only, not calls.`;
+function whatsAppDeliveryStatus(waStatus, delivery) {
+    if (waStatus === "accepted" && delivery === "read")
+        return "READ";
+    if (waStatus === "accepted" && delivery === "delivered")
+        return "DELIVERED";
+    if (waStatus === "accepted" && delivery === "failed")
+        return "FAILED";
+    if (waStatus === "accepted")
+        return "SENT";
+    if (waStatus === "failed")
+        return "FAILED";
+    if (waStatus === "unknown")
+        return "UNKNOWN";
+    return "QUEUED";
+}
+const waAckKey = (submissionId) => `wa-ack:${submissionId}`;
+function waAckFields(c, personId, applicationId) {
+    return {
+        name: `WhatsApp · application received · ${c.ref}`,
+        channel: "WHATSAPP",
+        direction: "OUTBOUND",
+        deliveryStatus: whatsAppDeliveryStatus(c.wa_status, c.wa_delivery),
+        template: WA_ACK_TEMPLATE,
+        body: waAckText(c.ref),
+        provider: "Fast2SMS",
+        providerId: c.wa_request_id ?? "",
+        statusAt: iso(c.wa_delivered_at ?? c.wa_sent_at ?? c.wa_updated_at),
+        error: c.wa_delivery === "failed" || c.wa_delivery === "pending" ? (c.wa_detail ?? "") : (c.wa_error ?? ""),
+        externalKey: waAckKey(c.id),
+        personId,
+        applicationId,
+    };
+}
 const ackKey = (submissionId) => `sms-ack:${submissionId}`;
 function ackFields(c, personId, applicationId) {
     return {
@@ -944,12 +986,18 @@ async function ensureApplication(crm, c, personId) {
     return (await crm.create("applications", "Application", applicationFields(c, personId))).id;
 }
 async function upsertAcknowledgement(crm, c, personId, applicationId) {
-    const fields = ackFields(c, personId, applicationId);
-    const [existing] = await crm.find("communications", eq("externalKey", ackKey(c.id)));
-    if (existing)
-        await crm.update("communications", existing.id, fields);
-    else
-        await crm.create("communications", "Communication", fields);
+    const records = [];
+    if (whatsAppWasSent(c))
+        records.push([waAckKey(c.id), waAckFields(c, personId, applicationId)]);
+    if (smsWasSent(c))
+        records.push([ackKey(c.id), ackFields(c, personId, applicationId)]);
+    for (const [key, fields] of records) {
+        const [existing] = await crm.find("communications", eq("externalKey", key));
+        if (existing)
+            await crm.update("communications", existing.id, fields);
+        else
+            await crm.create("communications", "Communication", fields);
+    }
 }
 const WORKER_FIELDS_CLEARED = {
     personType: "CLIENT_CONTACT",
@@ -1003,15 +1051,11 @@ async function erasePerson(crm, phone) {
     }
     return { people: people.length, files };
 }
-  return { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, removeAttachments, erasePerson };
+  return { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, smsWasSent, whatsAppWasSent, WA_ACK_TEMPLATE, waAckText, whatsAppDeliveryStatus, waAckKey, waAckFields, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, removeAttachments, erasePerson };
 })();
 
 export async function main() {
     const crm = await twentyFromConfig();
-    return withTalentDb(async (query) => {
-        const [whatsapp] = await query(PURGE_WHATSAPP);
-        const result = await runRetention({ query, deleteFile: deleteObject, deleteContact, eraseCrmPerson: (phone) => erasePerson(crm, phone) });
-        return { ...result, whatsapp: { chats: Number(whatsapp?.chats ?? 0), messages: Number(whatsapp?.messages ?? 0) } };
-    });
+    return withTalentDb((query) => runRetention({ query, deleteFile: deleteObject, deleteContact, eraseCrmPerson: (phone) => erasePerson(crm, phone) }));
 }
 

@@ -95,6 +95,14 @@ const candidate = (over: Partial<SyncCandidate> = {}): SyncCandidate => ({
   delivery_status: null,
   delivery_detail: null,
   delivered_at: null,
+  wa_status: null,
+  wa_request_id: null,
+  wa_error: null,
+  wa_sent_at: null,
+  wa_delivery: null,
+  wa_detail: null,
+  wa_delivered_at: null,
+  wa_updated_at: null,
   person_id: null,
   application_id: null,
   synced_ack_status: null,
@@ -189,11 +197,11 @@ test("sync: a second application from the same phone reuses the person", async (
 
 test("sync: a changed acknowledgement only updates the communication", async () => {
   const t = fakeTwenty();
-  const first = syncDb([candidate({ ack_status: "pending", request_id: null })]);
+  const first = syncDb([candidate({ ack_status: "accepted", request_id: "req-1" })]);
   await runSyncCrm({ query: first.query, crm: t.crm });
   const [personId, appId] = [t.store.people[0].id, t.store.applications[0].id];
   t.calls.length = 0;
-  const again = syncDb([candidate({ synced: true, person_id: personId, application_id: appId, synced_ack_status: "pending", ack_status: "failed", ack_error: "invalid number" })]);
+  const again = syncDb([candidate({ synced: true, person_id: personId, application_id: appId, synced_ack_status: "accepted", ack_status: "accepted", request_id: "req-1", delivery_status: "failed", delivery_detail: "invalid number" })]);
   const result = await runSyncCrm({ query: again.query, crm: t.crm });
   assert.deepEqual(result, { created: 0, updated: 1, failed: 0 });
   assert.deepEqual(t.calls, ["update communications"]);

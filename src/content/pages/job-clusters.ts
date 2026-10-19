@@ -47,7 +47,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       eyebrow: "JOBS · HARIDWAR",
       heading: "Factory and warehouse jobs in Haridwar and Roorkee.",
       lede: "Work in SIDCUL, Bahadrabad, Bhagwanpur and Roorkee.",
-      after: { label: "After you apply", steps: ["SMS from VAYSPL", "We call if the work fits", "You decide"] },
+      after: { label: "After you apply", steps: ["WhatsApp or SMS", "We call if the work fits", "You decide"] },
       faqTitle: "Questions.",
       faqs: [
         {
@@ -73,7 +73,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       eyebrow: "JOBS · BENGALURU",
       heading: "Factory and warehouse work in Bengaluru.",
       lede: "We're building a list of workers in Bengaluru. When a site there needs people, we call you.",
-      after: { label: "After you apply", steps: ["SMS from VAYSPL", "We call when a site needs you", "You decide"] },
+      after: { label: "After you apply", steps: ["WhatsApp or SMS", "We call when a site needs you", "You decide"] },
       faqTitle: "Questions.",
       faqs: [
         {
@@ -106,7 +106,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       eyebrow: "JOBS · JALANDHAR–KAPURTHALA",
       heading: "Packing and factory jobs in Kapurthala and Jalandhar.",
       lede: "Packing work in Kapurthala now. Factory and warehouse work across Jalandhar and Phagwara.",
-      after: { label: "After you apply", steps: ["SMS from VAYSPL", "We call if the work fits", "You decide"] },
+      after: { label: "After you apply", steps: ["WhatsApp or SMS", "We call if the work fits", "You decide"] },
       faqTitle: "Questions.",
       faqs: [
         {
@@ -134,7 +134,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       eyebrow: "JOBS · UTTARAKHAND",
       heading: "Factory and warehouse work in Rudrapur, Kashipur and across Uttarakhand.",
       lede: "We're building a list of workers across Uttarakhand. When a site near you needs people, we call you.",
-      after: { label: "After you apply", steps: ["SMS from VAYSPL", "We call when a site needs you", "You decide"] },
+      after: { label: "After you apply", steps: ["WhatsApp or SMS", "We call when a site needs you", "You decide"] },
       faqTitle: "Questions.",
       faqs: [
         { question: "Are there openings now?", answer: "Not every week. You join our list, and we call when a site near you needs your kind of work.", category: "operations" },
@@ -154,7 +154,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       eyebrow: "JOBS · DEHRADUN",
       heading: "Factory and warehouse work in Dehradun.",
       lede: "We're building a list of workers in Dehradun, Selaqui, Vikasnagar and Rishikesh. When a site there needs people, we call you.",
-      after: { label: "After you apply", steps: ["SMS from VAYSPL", "We call when a site needs you", "You decide"] },
+      after: { label: "After you apply", steps: ["WhatsApp or SMS", "We call when a site needs you", "You decide"] },
       faqTitle: "Questions.",
       faqs: [
         { question: "Are there openings now?", answer: "Not every week. You join our list, and we call when a site in Dehradun or Selaqui needs your kind of work.", category: "operations" },
@@ -174,7 +174,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       eyebrow: "JOBS · PUNJAB",
       heading: "Factory and packing work across Punjab.",
       lede: "We're building a list of workers across Punjab. When a site near you needs people, we call you.",
-      after: { label: "After you apply", steps: ["SMS from VAYSPL", "We call when a site needs you", "You decide"] },
+      after: { label: "After you apply", steps: ["WhatsApp or SMS", "We call when a site needs you", "You decide"] },
       faqTitle: "Questions.",
       faqs: [
         { question: "Are there openings now?", answer: "In Kapurthala, yes: packing work. Elsewhere, not every week. You join our list, and we call when a site near you needs your kind of work.", category: "operations" },
@@ -194,7 +194,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       eyebrow: "नौकरी · हरिद्वार",
       heading: "हरिद्वार और रुड़की में फ़ैक्टरी और वेयरहाउस की नौकरी।",
       lede: "सिडकुल, बहादराबाद, भगवानपुर और रुड़की में काम।",
-      after: { label: "आवेदन के बाद", steps: ["VAYSPL से SMS", "काम लायक हुआ तो हम कॉल करते हैं", "फ़ैसला आपका"] },
+      after: { label: "आवेदन के बाद", steps: ["WhatsApp या SMS", "काम लायक हुआ तो हम कॉल करते हैं", "फ़ैसला आपका"] },
       faqTitle: "सवाल।",
       faqs: [
         {
@@ -220,7 +220,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       eyebrow: "नौकरी · बेंगलुरु",
       heading: "बेंगलुरु में फ़ैक्टरी और वेयरहाउस का काम।",
       lede: "हम बेंगलुरु में वर्करों की लिस्ट बना रहे हैं। वहाँ किसी साइट को लोग चाहिए होंगे तो हम आपको कॉल करेंगे।",
-      after: { label: "आवेदन के बाद", steps: ["VAYSPL से SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
+      after: { label: "आवेदन के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
       faqTitle: "सवाल।",
       faqs: [
         {
@@ -251,7 +251,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       eyebrow: "नौकरी · जालंधर–कपूरथला",
       heading: "कपूरथला और जालंधर में पैकिंग और फ़ैक्टरी की नौकरी।",
       lede: "कपूरथला में अभी पैकिंग का काम है। जालंधर और फगवाड़ा में फ़ैक्टरी और वेयरहाउस का काम।",
-      after: { label: "आवेदन के बाद", steps: ["VAYSPL से SMS", "काम लायक हुआ तो हम कॉल करते हैं", "फ़ैसला आपका"] },
+      after: { label: "आवेदन के बाद", steps: ["WhatsApp या SMS", "काम लायक हुआ तो हम कॉल करते हैं", "फ़ैसला आपका"] },
       faqTitle: "सवाल।",
       faqs: [
         {
@@ -277,7 +277,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       eyebrow: "नौकरी · उत्तराखंड",
       heading: "रुद्रपुर, काशीपुर और पूरे उत्तराखंड में फ़ैक्टरी और वेयरहाउस का काम।",
       lede: "हम पूरे उत्तराखंड में वर्करों की लिस्ट बना रहे हैं। आपके पास किसी साइट को लोग चाहिए होंगे तो हम आपको कॉल करेंगे।",
-      after: { label: "आवेदन के बाद", steps: ["VAYSPL से SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
+      after: { label: "आवेदन के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
       faqTitle: "सवाल।",
       faqs: [
         { question: "क्या अभी जगह खाली है?", answer: "हर हफ़्ते नहीं। आप हमारी लिस्ट में जुड़ते हैं, और आपके पास की किसी साइट को आपके जैसे काम की ज़रूरत होने पर हम कॉल करते हैं।", category: "operations" },
@@ -295,7 +295,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       eyebrow: "नौकरी · देहरादून",
       heading: "देहरादून में फ़ैक्टरी और वेयरहाउस का काम।",
       lede: "हम देहरादून, सेलाकुई, विकासनगर और ऋषिकेश में वर्करों की लिस्ट बना रहे हैं। वहाँ किसी साइट को लोग चाहिए होंगे तो हम आपको कॉल करेंगे।",
-      after: { label: "आवेदन के बाद", steps: ["VAYSPL से SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
+      after: { label: "आवेदन के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
       faqTitle: "सवाल।",
       faqs: [
         { question: "क्या अभी जगह खाली है?", answer: "हर हफ़्ते नहीं। आप हमारी लिस्ट में जुड़ते हैं, और देहरादून या सेलाकुई की किसी साइट को आपके जैसे काम की ज़रूरत होने पर हम कॉल करते हैं।", category: "operations" },
@@ -313,7 +313,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       eyebrow: "नौकरी · पंजाब",
       heading: "पूरे पंजाब में फ़ैक्टरी और पैकिंग का काम।",
       lede: "हम पूरे पंजाब में वर्करों की लिस्ट बना रहे हैं। आपके पास किसी साइट को लोग चाहिए होंगे तो हम आपको कॉल करेंगे।",
-      after: { label: "आवेदन के बाद", steps: ["VAYSPL से SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
+      after: { label: "आवेदन के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
       faqTitle: "सवाल।",
       faqs: [
         { question: "क्या अभी जगह खाली है?", answer: "कपूरथला में हाँ: पैकिंग का काम। बाकी जगह हर हफ़्ते नहीं। आप हमारी लिस्ट में जुड़ते हैं, और आपके पास की किसी साइट को आपके जैसे काम की ज़रूरत होने पर हम कॉल करते हैं।", category: "operations" },
@@ -333,7 +333,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       eyebrow: "Jobs · Haridwar",
       heading: "Haridwar aur Roorkee mein factory aur warehouse ki job.",
       lede: "SIDCUL, Bahadrabad, Bhagwanpur aur Roorkee mein kaam.",
-      after: { label: "Apply ke baad", steps: ["VAYSPL se SMS", "Kaam laayak hua to hum call karte hain", "Faisla aapka"] },
+      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Kaam laayak hua to hum call karte hain", "Faisla aapka"] },
       faqTitle: "Sawaal.",
       faqs: [
         {
@@ -359,7 +359,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       eyebrow: "Jobs · Bengaluru",
       heading: "Bengaluru mein factory aur warehouse ka kaam.",
       lede: "Hum Bengaluru mein workers ki list bana rahe hain. Wahan kisi site ko log chahiye honge to hum aapko call karenge.",
-      after: { label: "Apply ke baad", steps: ["VAYSPL se SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
+      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
       faqTitle: "Sawaal.",
       faqs: [
         {
@@ -390,7 +390,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       eyebrow: "Jobs · Jalandhar–Kapurthala",
       heading: "Kapurthala aur Jalandhar mein packing aur factory ki job.",
       lede: "Kapurthala mein abhi packing ka kaam hai. Jalandhar aur Phagwara mein factory aur warehouse ka kaam.",
-      after: { label: "Apply ke baad", steps: ["VAYSPL se SMS", "Kaam laayak hua to hum call karte hain", "Faisla aapka"] },
+      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Kaam laayak hua to hum call karte hain", "Faisla aapka"] },
       faqTitle: "Sawaal.",
       faqs: [
         {
@@ -416,7 +416,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       eyebrow: "Jobs · Uttarakhand",
       heading: "Rudrapur, Kashipur aur poore Uttarakhand mein factory aur warehouse ka kaam.",
       lede: "Hum poore Uttarakhand mein workers ki list bana rahe hain. Aapke paas kisi site ko log chahiye honge to hum aapko call karenge.",
-      after: { label: "Apply ke baad", steps: ["VAYSPL se SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
+      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
       faqTitle: "Sawaal.",
       faqs: [
         { question: "Kya abhi jagah khaali hai?", answer: "Har hafte nahi. Aap hamari list mein judte hain, aur aapke paas ki kisi site ko aapke jaise kaam ki zaroorat hone par hum call karte hain.", category: "operations" },
@@ -434,7 +434,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       eyebrow: "Jobs · Dehradun",
       heading: "Dehradun mein factory aur warehouse ka kaam.",
       lede: "Hum Dehradun, Selaqui, Vikasnagar aur Rishikesh mein workers ki list bana rahe hain. Wahan kisi site ko log chahiye honge to hum aapko call karenge.",
-      after: { label: "Apply ke baad", steps: ["VAYSPL se SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
+      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
       faqTitle: "Sawaal.",
       faqs: [
         { question: "Kya abhi jagah khaali hai?", answer: "Har hafte nahi. Aap hamari list mein judte hain, aur Dehradun ya Selaqui ki kisi site ko aapke jaise kaam ki zaroorat hone par hum call karte hain.", category: "operations" },
@@ -452,7 +452,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       eyebrow: "Jobs · Punjab",
       heading: "Poore Punjab mein factory aur packing ka kaam.",
       lede: "Hum poore Punjab mein workers ki list bana rahe hain. Aapke paas kisi site ko log chahiye honge to hum aapko call karenge.",
-      after: { label: "Apply ke baad", steps: ["VAYSPL se SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
+      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
       faqTitle: "Sawaal.",
       faqs: [
         { question: "Kya abhi jagah khaali hai?", answer: "Kapurthala mein haan: packing ka kaam. Baaki jagah har hafte nahi. Aap hamari list mein judte hain, aur aapke paas ki kisi site ko aapke jaise kaam ki zaroorat hone par hum call karte hain.", category: "operations" },

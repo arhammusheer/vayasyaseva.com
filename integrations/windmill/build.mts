@@ -14,7 +14,7 @@
  * so `wmill sync` could read the folder too; deploy.mts uses the API.
  */
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, relative, resolve } from "node:path";
+import { basename, dirname, relative, resolve } from "node:path";
 import ts from "typescript";
 import { FOLDER, SCRIPTS, specPath } from "./scripts.mts";
 
@@ -39,7 +39,9 @@ const SCHEMAS: Record<string, string> = {
 };
 
 function compile(path: string, isEntry = false): CompiledModule {
-  const hit = cache.get(path);
+  // Keyed by role too: an entry keeps its `export`s, a helper loses them inside its scope.
+  const key = `${isEntry ? "entry" : "helper"}:${path}`;
+  const hit = cache.get(key);
   if (hit) return hit;
   const output = ts.transpileModule(readFileSync(path, "utf8"), {
     fileName: path,
@@ -55,7 +57,10 @@ function compile(path: string, isEntry = false): CompiledModule {
   });
   code = code.replace(/^import\s+([^;]*?)\s+from\s+"([^"]+)";?\s*$/gm, (line, _bindings: string, spec: string) => {
     if (spec.startsWith(".")) {
-      deps.push(resolve(dirname(path), spec));
+      const dep = resolve(dirname(path), spec);
+      // A script inlined into another brings its own main and preprocessor (f/talent/whatsapp, 19 Oct 2026): share through lib/.
+      if (basename(dirname(dep)) === "scripts") throw new Error(`${relative(repoRoot, path)}: imports the script ${relative(repoRoot, dep)}; move what it shares to lib/`);
+      deps.push(dep);
       return "";
     }
     external.push(line.trim().replace(/;?$/, ";"));
@@ -70,7 +75,7 @@ function compile(path: string, isEntry = false): CompiledModule {
     return `${kind} ${name}`;
   });
   const compiled = { code: code.trim(), exports, deps, external };
-  cache.set(path, compiled);
+  cache.set(key, compiled);
   return compiled;
 }
 

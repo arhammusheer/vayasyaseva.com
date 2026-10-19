@@ -9,7 +9,8 @@ import { runIntake } from "./talent/lib/run-intake.ts";
 import { SAVE_SUBMISSION } from "./talent/lib/sql.ts";
 import type { ClaimedSubmission } from "./talent/lib/types.ts";
 import { checkSubmission, saveSubmissionParams } from "./talent/lib/intake-payload.ts";
-import { preprocessor, secretMatches } from "./talent/scripts/intake.ts";
+import { preprocessor } from "./talent/scripts/intake.ts";
+import { secretMatches } from "./talent/lib/secret.ts";
 
 function validate(body: unknown) {
   const out = checkSubmission(body);

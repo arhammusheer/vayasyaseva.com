@@ -15,8 +15,8 @@ import { config } from "../lib/config.ts";
 import { withTalentDb } from "../lib/db.ts";
 import { failed, forbidden, respond } from "../lib/response.ts";
 import { runWhatsApp, sendSessionText } from "../lib/run-whatsapp.ts";
+import { secretMatches } from "../lib/secret.ts";
 import { parseInbound } from "../lib/whatsapp.ts";
-import { secretMatches } from "./intake.ts";
 
 export const SECRET_HEADER = "x-vspl-wa-secret";
 

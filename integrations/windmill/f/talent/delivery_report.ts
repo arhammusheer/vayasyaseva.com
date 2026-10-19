@@ -449,14 +449,19 @@ const failed = () => respond(500, { ok: false, error: "Internal error" });
   return { respond, accepted, forbidden, invalid, failed };
 })();
 
-export const SECRET_HEADER = "x-vspl-dlr-secret";
-export function secretMatches(given, expected) {
+// integrations/windmill/talent/lib/secret.ts
+const { secretMatches } = (() => {
+function secretMatches(given, expected) {
     if (!given || !expected)
         return false;
     const a = Buffer.from(given);
     const b = Buffer.from(expected);
     return a.length === b.length && timingSafeEqual(a, b);
 }
+  return { secretMatches };
+})();
+
+export const SECRET_HEADER = "x-vspl-dlr-secret";
 export const SECRET_PARAM = "key";
 const KEPT = ["request_id", "status", "status_description", "failure_reason", "delivery_timestamp"];
 export async function preprocessor(event) {

@@ -1056,36 +1056,16 @@ async function sendSessionText(phoneNumberId, to, text, apiKey, fetchImpl = fetc
   return { runWhatsApp, FAST2SMS_SESSION_URL, sendSessionText };
 })();
 
-// integrations/windmill/talent/scripts/intake.ts
-const {  } = (() => {
-export const SECRET_HEADER = "x-vspl-intake-secret";
-export function secretMatches(given, expected) {
+// integrations/windmill/talent/lib/secret.ts
+const { secretMatches } = (() => {
+function secretMatches(given, expected) {
     if (!given || !expected)
         return false;
     const a = Buffer.from(given);
     const b = Buffer.from(expected);
     return a.length === b.length && timingSafeEqual(a, b);
 }
-export async function preprocessor(event) {
-    const headers = Object.fromEntries(Object.entries(event.headers ?? {}).map(([k, v]) => [k.toLowerCase(), v]));
-    const authorized = secretMatches(headers[SECRET_HEADER], await config("intake_webhook_secret"));
-    return { authorized, body: authorized ? (event.body ?? null) : null };
-}
-export async function main(authorized, body) {
-    try {
-        return await withTalentDb((query) => runIntake(authorized, body, {
-            query,
-            startAcknowledgement: async (submissionId) => {
-                await wmill.runScriptByPathAsync("f/talent/dispatch", { submission_id: submissionId });
-            },
-        }));
-    }
-    catch (err) {
-        console.error("intake failed:", err instanceof Error ? `${err.name}: ${err.message}` : "unknown error");
-        return failed();
-    }
-}
-  return {  };
+  return { secretMatches };
 })();
 
 export const SECRET_HEADER = "x-vspl-wa-secret";

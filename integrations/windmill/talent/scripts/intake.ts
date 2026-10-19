@@ -7,21 +7,15 @@
  * The preprocessor reads the request: only the outcome of the secret check
  * and the body reach main, so the secret never appears in the job's args.
  */
-import { timingSafeEqual } from "node:crypto";
 import * as wmill from "windmill-client";
 import { config } from "../lib/config.ts";
 import { withTalentDb } from "../lib/db.ts";
 import { runIntake } from "../lib/run-intake.ts";
+import { secretMatches } from "../lib/secret.ts";
 import { failed } from "../lib/response.ts";
 
 export const SECRET_HEADER = "x-vspl-intake-secret";
 
-export function secretMatches(given: string | undefined, expected: string): boolean {
-  if (!given || !expected) return false;
-  const a = Buffer.from(given);
-  const b = Buffer.from(expected);
-  return a.length === b.length && timingSafeEqual(a, b);
-}
 
 interface HttpEvent {
   kind?: string;

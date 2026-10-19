@@ -717,14 +717,19 @@ async function runIntake(authorized, body, deps) {
   return { runIntake };
 })();
 
-export const SECRET_HEADER = "x-vspl-intake-secret";
-export function secretMatches(given, expected) {
+// integrations/windmill/talent/lib/secret.ts
+const { secretMatches } = (() => {
+function secretMatches(given, expected) {
     if (!given || !expected)
         return false;
     const a = Buffer.from(given);
     const b = Buffer.from(expected);
     return a.length === b.length && timingSafeEqual(a, b);
 }
+  return { secretMatches };
+})();
+
+export const SECRET_HEADER = "x-vspl-intake-secret";
 export async function preprocessor(event) {
     const headers = Object.fromEntries(Object.entries(event.headers ?? {}).map(([k, v]) => [k.toLowerCase(), v]));
     const authorized = secretMatches(headers[SECRET_HEADER], await config("intake_webhook_secret"));

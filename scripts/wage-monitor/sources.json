@@ -78,6 +78,7 @@
           "url": "https://ascent-hr.com/notification/",
           "name": "Lead: AscentHR (a compliance firm) notifications on Uttarakhand. Firms often post an order before the state does; confirm against the order itself.",
           "match": "uttarakhand",
+          "ignore": "^(?:[^,]{1,40} , )*uttarakhand(?: , [^,]{1,40})*$",
           "allowEmpty": true
         }
       ]
@@ -130,6 +131,7 @@
           "url": "https://ascent-hr.com/notification/",
           "name": "Lead: AscentHR (a compliance firm) notifications on Uttar Pradesh. Firms often post an order before the state does; confirm against the order itself.",
           "match": "uttar pradesh",
+          "ignore": "^(?:[^,]{1,40} , )*uttar pradesh(?: , [^,]{1,40})*$",
           "allowEmpty": true
         }
       ]
@@ -182,7 +184,8 @@
         {
           "url": "https://ascent-hr.com/notification/",
           "name": "Lead: AscentHR (a compliance firm) notifications on Delhi. Firms often post an order before the state does; confirm against the order itself.",
-          "match": "\\bdelhi\\b",
+          "match": "\\bdelhi\\b|national capital territory|\\bg?nctd?\\b",
+          "ignore": "^(?:[^,]{1,40} , )*delhi \\(ut\\)(?: , [^,]{1,40})*$",
           "allowEmpty": true
         }
       ]
@@ -250,6 +253,7 @@
           "url": "https://ascent-hr.com/notification/",
           "name": "Lead: AscentHR (a compliance firm) notifications on Haryana. Firms often post an order before the state does; confirm against the order itself.",
           "match": "haryana",
+          "ignore": "^(?:[^,]{1,40} , )*haryana(?: , [^,]{1,40})*$",
           "allowEmpty": true
         }
       ]
@@ -297,6 +301,7 @@
           "url": "https://ascent-hr.com/notification/",
           "name": "Lead: AscentHR (a compliance firm) notifications on Punjab. Firms often post an order before the state does; confirm against the order itself.",
           "match": "punjab",
+          "ignore": "^(?:[^,]{1,40} , )*punjab(?: , [^,]{1,40})*$",
           "allowEmpty": true
         }
       ],
@@ -407,6 +412,7 @@
           "url": "https://ascent-hr.com/notification/",
           "name": "Lead: AscentHR (a compliance firm) notifications on Karnataka. Firms often post an order before the state does; confirm against the order itself.",
           "match": "karnataka",
+          "ignore": "^(?:[^,]{1,40} , )*karnataka(?: , [^,]{1,40})*$",
           "allowEmpty": true
         }
       ]

@@ -76,7 +76,12 @@ Code on Wages, 2019.
 AscentHR's notifications, one target per state with the state's name as the
 pattern. A lead alerts on a new line only: posts age off these feeds every
 week, and a line that scrolled off is not news (18 Oct 2026, after six
-"page changed" alerts for exactly that). Compliance firms often post an order before the state does (UP's
+"page changed" alerts for exactly that). A lead's `ignore` pattern drops
+lines that match the state but are not posts: AscentHR's state menu and
+category tags ("Haryana", "Haryana , Notification"), which raised six alerts
+on 19 October 2026 when the page first loaded in full. Delhi's AscentHR
+excerpts often say "National Capital Territory" rather than Delhi, so its
+pattern matches both. Compliance firms often post an order before the state does (UP's
 brick-kiln and agriculture orders were never on uplabour.gov.in), so a new
 line there is a prompt to find the order, not a source in itself. A week
 with nothing on a state is not a failure.

@@ -29,6 +29,15 @@ export type LegacyLocale = (typeof INTAKE_SOURCES)[IntakeSource];
 export const WEB_SOURCE = "web";
 export type SubmissionSource = IntakeSource | typeof WEB_SOURCE;
 
+/**
+ * The source of an application made in the WhatsApp apply chat (19 Oct 2026):
+ * Windmill builds it, never the website, with the language chosen in the chat
+ * as `locale` and channel "whatsapp". submissions.source allowed it from the start.
+ */
+export const WHATSAPP_SOURCE = "whatsapp";
+/** Every source Windmill stores: the website's, and the WhatsApp chat's. */
+export type StoredSource = SubmissionSource | typeof WHATSAPP_SOURCE;
+
 export function isSubmissionSource(value: unknown): value is SubmissionSource {
   return value === WEB_SOURCE || (typeof value === "string" && Object.hasOwn(INTAKE_SOURCES, value));
 }
@@ -71,11 +80,12 @@ export function isPagePath(value: unknown): value is string {
 }
 
 /**
- * How a submission reached us: the jobs form in a browser ("web"), or an AI
- * agent through the open routes under /api/agent/jobs ("agent"). Stored in
- * submissions.channel and shown to staff in Chatwoot.
+ * How a submission reached us: the jobs form in a browser ("web"), an AI
+ * agent through the open routes under /api/agent/jobs ("agent"), or the
+ * WhatsApp apply chat (Windmill f/talent/whatsapp, "whatsapp"). Stored in
+ * submissions.channel and shown to staff.
  */
-export const INTAKE_CHANNELS = ["web", "agent"] as const;
+export const INTAKE_CHANNELS = ["web", "agent", "whatsapp"] as const;
 export type IntakeChannel = (typeof INTAKE_CHANNELS)[number];
 
 /** Locale an agent writes in, mapped to the jobs page source it stands in for. */

@@ -27,6 +27,13 @@ lead inbox (leads DB)
                                         (company, contact, crew request, enquiry), backoff, cap 8
                   f/leads/setup         the schema (leads/schema.sql), run by every deploy
 
+WhatsApp apply number (+91 78958 50598, Fast2SMS, co-existence)
+                  ──POST──► hooks.vayasyaseva.com/api/r/webhook/fast2sms-whatsapp
+                  f/talent/whatsapp     checks x-vspl-wa-secret; the numbered chat (language, consent,
+                                        work, area, name) in whatsapp_chats; the last answer files the
+                                        application like the jobs form (source and channel whatsapp)
+                                        and replies through Fast2SMS session messages
+
 Fast2SMS delivery reports ──POST──► hooks.vayasyaseva.com/api/r/webhook/fast2sms-dlr
                   f/talent/delivery_report  checks x-vspl-dlr-secret (or ?key=), marks the
                                         acknowledgement delivered / failed; the CRM delivery reruns
@@ -97,6 +104,7 @@ Scripts read `f/talent/<name>` with `wmill.getVariable` (`talent/lib/config.ts`)
 | `leads_pg_url` | yes | `data/pg-main-leads` password (vayasya-infra, RUNBOOK "Leads inbox"), as `postgres://leads:…@pg-main-rw.data.svc.cluster.local:5432/leads` |
 | `submission_signing_secret` | yes | `SUBMISSION_SIGNING_SECRET` in `growth/windmill-submission`; Vercel has the same value. Until that Secret exists, deploy sets a random value nobody knows, so the signed routes refuse everything |
 | `fast2sms_dlr_secret` | yes | `FAST2SMS_DLR_SECRET` in `growth/windmill-fast2sms`; the `x-vspl-dlr-secret` header of the Fast2SMS webhook |
+| `fast2sms_whatsapp_secret` | yes | `FAST2SMS_WA_SECRET` in `growth/windmill-fast2sms` (until it exists, `FAST2SMS_DLR_SECRET`); the `x-vspl-wa-secret` header of the WhatsApp webhook |
 
 The `TALENT_*`, `FAST2SMS_*` and `CHATWOOT_*` keys are read from `growth/n8n-env` until n8n is retired; `--secrets-from=<secret>` reads another Secret in `growth` with the same keys. The API token is `SUPERADMIN_SECRET` in `growth/windmill-env`.
 
@@ -128,6 +136,14 @@ Cron is Windmill's six-field form (seconds first), timezone Asia/Kolkata: acknow
 - **Delivery reports** (new, no n8n equivalent): `sms_acknowledgements.delivery_status` is `delivered`, `failed` or `pending`, with Fast2SMS's own status and text in `delivery_detail`; a late or repeated report never turns delivered back. Only accepted acknowledgements are touched; reports for other messages answer 200 `matched: 0` so Fast2SMS stops retrying. The preprocessor keeps only the request ID, status, text and time, so no phone number lands in job arguments. In Twenty the Communication's Delivery becomes **Delivered** or **Failed** (with the reason in Error). Fast2SMS keeps reports about 7 days: acknowledgements from before 11 October 2026 stay Sent.
 - **The webhook** is made once in the Fast2SMS dashboard (its API answers 401 to creating one): `node integrations/windmill/fast2sms-webhook.mts` prints the values and confirms it exists; `--copy-secret` puts the header value on the clipboard.
 - **Leads**: a replayed case ID answers 202 and changes nothing; errors answer a bare 500. The website posts in `after()`, so a slow or failing route never touches the form, and the email to the shared inbox stays the primary path.
+
+## The WhatsApp apply chat (19 October 2026)
+
+- **What it asks.** `talent/lib/whatsapp.ts`: the language (skipped when the site link's `[VS|<locale>|<work>|<area>]` code or the message's script says it), then 18+ and the jobs form's consent line with the privacy link, then the work (numbers, several allowed), the area (the market answers) and the name (0 skips). Fast2SMS session messages are text only, so every question is a numbered list; Devanagari, Gurmukhi and Kannada digits count. STOP ends it, NEW starts again, a chat idle for 24 hours starts over. The words are the site's: `pnpm whatsapp:copy` writes `talent/lib/whatsapp-copy.json` from src/content (CI checks it).
+- **What it files.** The quick form's application (`job_application.v1`, source and channel `whatsapp`, consent version `2026-10-19-wa1`) through `runIntake`, so the SMS acknowledgement, Twenty, Chatwoot and retention run as for the form. Voice notes and photos stay in the WhatsApp chat (the Business app, through co-existence); the application notes that they were sent.
+- **Once per message.** `whatsapp_messages` keeps each message id 3 days; a failed run forgets the id so Fast2SMS's retry is handled. Each chat save checks `whatsapp_chats.version`, so two messages at once cannot overwrite each other; the application is filed before the chat is saved and keeps its reference across a retried save.
+- **Retention.** `f/talent/retention` runs `PURGE_WHATSAPP` first: chats without consent after a day, any chat 30 days after its last message. Erasure (`DELETE_ROWS`) removes the person's chat too.
+- **Setup.** Deploy creates the route. Then make the webhook in the Fast2SMS dashboard: `node integrations/windmill/fast2sms-whatsapp-webhook.mts` prints the values, `--copy-secret` the header. Calls: co-existence keeps calling in the Business app and the API cannot turn it off, so the site shows the number only as a wa.me link and every reply says it takes no calls.
 
 ## Deliveries and the lead inbox (roadmap 1F)
 

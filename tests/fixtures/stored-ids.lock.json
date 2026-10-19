@@ -123,7 +123,8 @@
   ],
   "rules.INTAKE_CHANNELS": [
     "web",
-    "agent"
+    "agent",
+    "whatsapp"
   ],
   "rules.JOB_ROLE_SLUGS": [
     "factory-helper",

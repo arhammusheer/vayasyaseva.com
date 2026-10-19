@@ -38,6 +38,8 @@
     "indexnow": "node scripts/indexnow.mjs",
     "context:replay": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/context-replay.mjs",
     "seo:check": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/seo-check.mjs",
+    "whatsapp:copy": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/whatsapp-copy.mjs",
+    "whatsapp:check": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/whatsapp-copy.mjs --check",
     "phone:check": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/check-jobs-phone.mjs",
     "ship": "node scripts/ship.mjs"
   },

@@ -25,6 +25,7 @@ import {
   MAX_PAGE_PATH_LENGTH,
   PAGE_PATH_PATTERN,
   WEB_SOURCE,
+  WHATSAPP_SOURCE,
   JOB_HUB_SLUGS,
   MAX_APPLICANT_NAME_LENGTH,
   QUICK_ANSWERS,
@@ -55,6 +56,8 @@ const attachmentSchema = z
 const legacySourceSchema = z.enum(Object.keys(INTAKE_SOURCES) as [IntakeSource, ...IntakeSource[]]);
 /** "web" for new web submissions; the legacy page sources stay valid (rules.ts). */
 const sourceSchema = z.union([z.literal(WEB_SOURCE), legacySourceSchema]);
+/** What Windmill accepts: the web sources, and the WhatsApp chat's (Windmill builds those itself). */
+const canonicalSourceSchema = z.union([z.literal(WEB_SOURCE), z.literal(WHATSAPP_SOURCE), legacySourceSchema]);
 const localeSchema = z.enum(INTAKE_LOCALES);
 const clusterSchema = z.enum(INTAKE_CLUSTERS);
 const pagePathSchema = z.string().max(MAX_PAGE_PATH_LENGTH).regex(PAGE_PATH_PATTERN);
@@ -167,7 +170,7 @@ export const CANONICAL_PHONE_PATTERN = /^\+91[6-9]\d{9}$/;
 export const jobApplicationCanonicalSchema = z
   .object({
     ref: z.string().regex(REF_PATTERN),
-    source: sourceSchema,
+    source: canonicalSourceSchema,
     locale: localeSchema.nullable(),
     cluster: clusterSchema.nullable(),
     pageCluster: clusterSchema.nullable(),
@@ -196,6 +199,10 @@ export const jobApplicationCanonicalSchema = z
     path: ["attachments"],
   })
   .refine((p) => p.source !== WEB_SOURCE || p.locale !== null, { message: "A web submission needs its page locale", path: ["locale"] })
+  .refine((p) => p.source !== WHATSAPP_SOURCE || (p.channel === "whatsapp" && p.locale !== null), {
+    message: "A WhatsApp application comes through the WhatsApp channel, in the language chosen in the chat",
+    path: ["channel"],
+  })
   .meta({
     title: "job_application.v1 (canonical)",
     description: "A job application as the website forwards it to Windmill f/talent/intake.",
@@ -210,6 +217,11 @@ export const jobApplicationCanonicalSchema = z
       },
       // A web submission carries its page locale.
       { if: { properties: { source: { const: WEB_SOURCE } }, required: ["source"] }, then: { properties: { locale: { type: "string" } } } },
+      // A WhatsApp application: the WhatsApp channel, with the chat's language.
+      {
+        if: { properties: { source: { const: WHATSAPP_SOURCE } }, required: ["source"] },
+        then: { properties: { channel: { const: "whatsapp" }, locale: { type: "string" } } },
+      },
     ],
   });
 export type JobApplicationCanonical = z.output<typeof jobApplicationCanonicalSchema>;

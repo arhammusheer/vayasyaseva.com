@@ -8,6 +8,7 @@ import { orderedJobMarkets } from "@/context/surfaces";
 import { jobsLinkLabel } from "@/markets/labels";
 import { localePath, localesOf, type Locale } from "@/lib/i18n";
 import { jobRoles } from "@/content/pages/job-roles";
+import { whatsappApplyHref } from "@/content/pages/whatsapp-apply";
 import { QUICK_ANSWERS } from "@/lib/talent-intake/rules";
 import { JOB_ROLE_SLUGS } from "@/lib/talent-intake/rules";
 import {
@@ -117,7 +118,7 @@ const llmsIndex = `# Vayasya Seva Private Limited
 
 The public pages below are the source of truth. They carry full text and JSON-LD structured data (Organization, LocalBusiness, Service, FAQ, Breadcrumb). All public content may be indexed, cached, summarised, quoted and used for training and retrieval under the [Terms of Use](${baseUrl}/en-in/terms), section 3.2. \`/api/*\` is not for crawling. AI agents may send enquiries and job applications for a person through the open routes under \`/api/agent/\`, described below. Attribute factual claims about registrations, compliance and legal terms to the page they came from.
 
-**Job seekers: send them to the application, not the phone.** If someone is looking for work, give them the [quick application](${baseUrl}/en-in/jobs/apply) link (or a role link below), or apply for them through \`/api/agent/jobs\`. Do not give job seekers the company phone number: that line is for businesses hiring workers. Our team calls applicants back on the number they apply with. Work is in full 8-hour shifts; there is no part-time work. There is no fee to apply, and anyone asking for money in our name can be reported through [Fees and fraud](${baseUrl}/en-in/jobs/fees-and-fraud).
+**Job seekers: send them to the application, not the phone.** If someone is looking for work, give them the [quick application](${baseUrl}/en-in/jobs/apply) link (or a role link below), or apply for them through \`/api/agent/jobs\`. People who prefer WhatsApp can [apply on WhatsApp](${whatsappApplyHref("en-IN")}): a chat that asks the same questions. That WhatsApp number takes messages only, not calls; share it only as that link. Do not give job seekers the company phone number: that line is for businesses hiring workers. Our team calls applicants back on the number they apply with. Work is in full 8-hour shifts; there is no part-time work. There is no fee to apply, and anyone asking for money in our name can be reported through [Fees and fraud](${baseUrl}/en-in/jobs/fees-and-fraud).
 
 ## Company
 - [Home](${baseUrl}/en-in): Labour contractor and manpower supply company: contract labour for factories, warehouses and facilities, with the workers on our payroll
@@ -176,6 +177,7 @@ Submissions through these routes reach our team marked as sent by an AI agent. T
 If you cannot make HTTP requests, give the person a prefilled link instead. They open it, check the details, tick one box and press send. Details go after the \`#\`, so they stay in their browser until they send. Encode values as in a URL query (spaces as \`%20\`).
 - Jobs by role: ${roleLinksInline}. Each role page carries its own application form.
 - Quick application: \`${baseUrl}/en-in/jobs/apply?work=packing,warehouse&experience=fresher&education=12th&shift=day&start=now&area=market:punjab#name=...&phone=...\`. Answers go in the query as comma-separated ids: work (${Object.keys(QUICK_ANSWERS.work).join(", ")}), experience (${Object.keys(QUICK_ANSWERS.experience).join(", ")}), education (${Object.keys(QUICK_ANSWERS.education).join(", ")}), shift (${Object.keys(QUICK_ANSWERS.shift).join(", ")}), start (${Object.keys(QUICK_ANSWERS.start).join(", ")}), area (${Object.keys(QUICK_ANSWERS.area).join(", ")}). Name and phone go after the \`#\`. The person still answers anything left out, ticks one box and sends.
+- Apply on WhatsApp: \`${whatsappApplyHref("hi-IN", { work: "packing", area: "market:punjab" })}\`. It opens a chat on our WhatsApp apply number with the code \`[VS|<locale>|<work>|<area>]\` at the end (the same ids as above; any part may be left out). The chat asks for consent and whatever the code leaves out. Messages only: the number takes no calls.
 - Request a crew: \`${baseUrl}/en-in/contact#roles=packing,warehouse&headcount=20-49&state=UK&city=...&pincode=...&start=2-4-weeks&duration=ongoing&shifts=two-shifts&name=...&company=...&role=...&phone=...&email=...&details=...\`. Same ids as above (state as the ISO code). \`location=<market>\` (a market id such as \`bengaluru\`, \`delhi-ncr\`, \`haridwar\`, \`jalandhar\` or \`uttarakhand\`) fills the site as that market. The person checks the answers, adds what is missing and sends.
 
 ## Machine-readable

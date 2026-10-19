@@ -136,6 +136,7 @@ function readValues(): Record<ConfigName, string> {
     twenty_api_key: secretValue("growth", "twenty-api", "TWENTY_API_KEY"),
     lead_webhook_secret: secretValue("growth", "windmill-leads", "LEAD_WEBHOOK_SECRET"),
     fast2sms_dlr_secret: secretValue("growth", "windmill-fast2sms", "FAST2SMS_DLR_SECRET"),
+    fast2sms_whatsapp_secret: whatsAppSecret(),
     leads_pg_url: `postgres://leads:${encodeURIComponent(leadsPassword)}@${TALENT_DB_HOST}:5432/leads`,
     submission_signing_secret: signingSecret(),
   };
@@ -153,6 +154,20 @@ function signingSecret(): string {
   } catch {
     step("growth/windmill-submission not found: the signed routes will refuse everything until it exists");
     return randomBytes(32).toString("base64url");
+  }
+}
+
+/**
+ * FAST2SMS_WA_SECRET in growth/windmill-fast2sms: the x-vspl-wa-secret header
+ * of the WhatsApp webhook. Until the owner adds that key, the delivery
+ * reports' secret (same Secret, same Fast2SMS account) stands in.
+ */
+function whatsAppSecret(): string {
+  try {
+    return secretValue("growth", "windmill-fast2sms", "FAST2SMS_WA_SECRET");
+  } catch {
+    step("growth/windmill-fast2sms has no FAST2SMS_WA_SECRET: the WhatsApp route uses FAST2SMS_DLR_SECRET");
+    return secretValue("growth", "windmill-fast2sms", "FAST2SMS_DLR_SECRET");
   }
 }
 

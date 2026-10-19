@@ -32,7 +32,10 @@ const AGENT_LANGUAGES: Record<string, string> = {
 const KIND: Record<string, string> = { audio: "voice note", image: "photo", document: "document" };
 
 export function composeNote(s: ClaimedSubmission): ComposedNote {
-  const page = s.channel === "agent" ? `AI agent (${AGENT_LANGUAGES[s.locale] ?? s.locale})` : (PAGES[s.locale] ?? s.locale);
+  const page =
+    s.channel === "agent" ? `AI agent (${AGENT_LANGUAGES[s.locale] ?? s.locale})`
+    : s.channel === "whatsapp" ? `WhatsApp apply chat (${AGENT_LANGUAGES[s.locale] ?? s.locale})`
+    : (PAGES[s.locale] ?? s.locale);
   const lines = [`**${s.applicantName ? `${s.applicantName} · ` : ""}Job seeker ${s.ref}** · ${page} · ${s.phone}`];
   if (s.form) lines.push(`**Form:** ${INTAKE_FORMS[s.form] ?? s.form}${s.pagePath ? ` on ${s.pagePath}` : ""}`);
   if (s.cluster) {
@@ -43,6 +46,9 @@ export function composeNote(s: ClaimedSubmission): ComposedNote {
     lines.push(
       `**Sent by an AI agent${s.agentName ? ` (${s.agentName})` : ""}** on the person's behalf, not through the form. Confirm the details and their consent when you call.`,
     );
+  }
+  if (s.channel === "whatsapp") {
+    lines.push("**Applied in the WhatsApp chat** on the apply number. Any voice notes or photos are in that chat in the WhatsApp Business app.");
   }
   if (s.role) lines.push(`**Asked about:** ${JOB_ROLES[s.role] ?? s.role}`);
   if (s.hub) lines.push(`**Came from:** ${JOB_HUBS[s.hub] ?? s.hub}`);
@@ -91,7 +97,7 @@ export function conversationAttributes(s: ClaimedSubmission): Record<string, str
     ...(s.cluster ? { job_cluster: s.cluster } : {}),
     ...(s.role ? { job_role: s.role } : {}),
     ...(s.hub ? { job_hub: s.hub } : {}),
-    ...(s.channel === "agent" ? { submitted_via: "agent" } : {}),
+    ...(s.channel === "agent" || s.channel === "whatsapp" ? { submitted_via: s.channel } : {}),
     ...(s.form ? { job_form: s.form } : {}),
   };
 }

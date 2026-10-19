@@ -14,7 +14,10 @@
 // - llms.txt or llms-full.txt carries the phone (agents were handing it to
 //   job seekers);
 // - the jobs routes of the OpenAPI spec, or the schemas they use, carry it;
-// - any page in the sitemap has JobPosting markup (not yet: PLAN §5.1).
+// - any page in the sitemap has JobPosting markup (not yet: PLAN §5.1);
+// - the WhatsApp apply number shows anywhere but inside its wa.me link (as
+//   digits or a tel: link): it takes messages only, and the app still rings
+//   for calls (src/content/pages/whatsapp-apply.ts).
 import { fileURLToPath } from "node:url";
 
 const SITE = "https://www.vayasyaseva.com";
@@ -33,9 +36,15 @@ const PHONE_FREE = [
 const PICKER = /^\/jobs(\/|$)/;
 
 const { businessPhone } = await import("../src/content/business-contact.ts");
+const { WHATSAPP_APPLY_NUMBER } = await import("../src/content/whatsapp-apply-number.ts");
 
-/** The ten digits with any spacing or punctuation between them: 72920 14101, 72920-14101, 7292014101. */
-const digitsPattern = new RegExp(businessPhone.digits.split("").join("[\\s\\u00a0().\\-]*"));
+/** Ten digits with any spacing or punctuation between them: 72920 14101, 72920-14101, 7292014101. */
+const spaced = (digits) => new RegExp(digits.split("").join("[\\s\\u00a0().\\-]*"));
+const digitsPattern = spaced(businessPhone.digits);
+/** The WhatsApp apply number: allowed only as wa.me/<number>, so its link is taken out before looking. */
+const applyDigits = WHATSAPP_APPLY_NUMBER.slice(-10);
+const applyPattern = spaced(applyDigits);
+const applyLink = new RegExp(`wa\\.me/${WHATSAPP_APPLY_NUMBER}`, "g");
 
 const neutralPath = (path) => path.replace(LOCALE_SEGMENT, "") || "/";
 export const isPhoneFree = (path) => PHONE_FREE.some((re) => re.test(neutralPath(path)));
@@ -63,6 +72,7 @@ export function phoneIn(text, { tel = true } = {}) {
   const found = [];
   if (tel && /href=["']?tel:|\btel:\+?\d/i.test(text)) found.push("tel: link");
   if (digitsPattern.test(text)) found.push("phone digits");
+  if (applyPattern.test(text.replace(applyLink, "wa.me/"))) found.push("WhatsApp apply number outside its wa.me link");
   return found;
 }
 

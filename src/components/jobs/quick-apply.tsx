@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { currentAdClick, formPage, measurementClaim, track, trackConversion, type AnalyticsParams } from "@/lib/measurement/gateway";
 import { jobsCopy } from "@/content/pages/jobs";
 import { STEP_DEFS, areaOptions, quickApplyCopy, roleFor, type Answers, type AreaSource, type StepDef } from "@/content/pages/quick-apply";
+import { whatsappApplyCopy, whatsappApplyHref } from "@/content/pages/whatsapp-apply";
 import { CONTEXT_VERSION } from "@/context/weights";
 import { reportChoice } from "@/context/report";
 import { readPrefill } from "@/lib/prefill";
@@ -529,6 +530,27 @@ export function QuickApply({
           {t.noFee.link}&nbsp;<span aria-hidden="true">→</span>
         </Link>
       </p>
+      <WhatsAppApply locale={locale} role={pageRole} cluster={pageCluster} />
     </div>
+  );
+}
+
+/**
+ * The other way to apply: a chat on the WhatsApp apply number that asks the
+ * same questions (src/content/pages/whatsapp-apply.ts). A wa.me link only,
+ * with the role and market filled in; the number itself is never shown, and
+ * the line says it takes no calls. AnalyticsTracker counts the click.
+ */
+function WhatsAppApply({ locale, role, cluster }: { locale: Locale; role?: JobRole; cluster?: IntakeCluster }) {
+  const t = whatsappApplyCopy[locale];
+  const market = cluster ? `market:${cluster}` : null;
+  const href = whatsappApplyHref(locale, { work: role ?? null, area: market && Object.hasOwn(AREA_CLUSTERS, market) ? market : null });
+  return (
+    <p className="quick-whatsapp">
+      <a href={href} target="_blank" rel="noopener" className="text-link mt-0">
+        {t.link.label}&nbsp;<ArrowRight size={18} aria-hidden="true" />
+      </a>
+      <span>{t.link.note}</span>
+    </p>
   );
 }

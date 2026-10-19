@@ -13,7 +13,7 @@ export const analyticsSummary = noticeRows();
 export const privacyContent = `
 # Privacy Policy
 
-*Last updated: 18 October 2026*
+*Last updated: 19 October 2026*
 
 ## 1. Who this notice covers
 
@@ -106,13 +106,15 @@ This section applies when you send us your details through the jobs pages of the
 
 **If an AI agent applies for you.** An AI agent or assistant can send your application through our agent route instead of the jobs page. It sends the same kind of details, plus the language you chose and, if it gives one, its own name. The agent confirms on your behalf that you are 18 or older and agreed to us keeping your details and contacting you about work under this notice; we record that it did so, and that the application came from an agent. Our team confirms your details and your agreement when we first contact you. The rest of this section applies in the same way.
 
+**If you apply on WhatsApp.** You can also apply by sending a message to our WhatsApp apply number. An automated chat asks the same questions as the jobs page: your language, your agreement, the work you want and where you live, and, if you give it, your name. We record your WhatsApp number as the mobile number you applied with, your answers, anything else you write, and that you agreed in the chat, with the date and time. Voice notes, photos and files you send there stay in the WhatsApp chat, where our team can see them. If you do not agree, the chat ends and we keep nothing from it. The chat itself is deleted 30 days after your last message, or within a day if you never agreed; your application is then kept as described below. The rest of this section applies in the same way.
+
 **What not to send.** We do not ask for identity or bank documents at this stage; please do not send Aadhaar, PAN or bank details. Identity numbers that appear in typed text are masked in our records, but files are stored as you send them.
 
 **Why we use it.** To consider you for work with Vayasya Seva, to contact you about suitable work, and to keep a record of your application. If no suitable work is open when you apply, we keep your details on our list of people looking for work and contact you when a site in or near your area needs people. We may contact you from time to time to check that you are still looking for work and that your details are correct. We rely on the consent you give when you submit your details. Sending details is voluntary, and it does not mean that work will be offered.
 
 **No automated decisions.** No decision about you is made automatically; a member of our team reviews each submission. We no longer accept voice notes or other audio files. Voice notes sent before 16 October 2026 were converted to text by Sarvam AI so that our team could read them.
 
-**Who handles it.** Our authorised team, and service providers acting on our instructions: Vercel (website hosting), Cloudflare (file storage, and Turnstile, which checks browser and device signals to keep automated abuse off the form), Fast2SMS (the SMS that confirms we received your application and gives your reference) and the systems we operate to store submissions and manage conversations with applicants. If you came from one of our Google ads, Google Ads is told only that the ad click led to an application (see "Job applications from our ads" in Section 2). Some providers may process data outside India.
+**Who handles it.** Our authorised team, and service providers acting on our instructions: Vercel (website hosting), Cloudflare (file storage, and Turnstile, which checks browser and device signals to keep automated abuse off the form), Fast2SMS (the SMS that confirms we received your application and gives your reference, and the WhatsApp apply chat), Meta (WhatsApp, if you apply there) and the systems we operate to store submissions and manage conversations with applicants. If you came from one of our Google ads, Google Ads is told only that the ad click led to an application (see "Job applications from our ads" in Section 2). Some providers may process data outside India.
 
 **Who else may receive it.** We do not share your details with another company. If that ever changes for a job you want, we will ask you first, and you can say no and stay on our list. We do not sell your details or share them for anyone's marketing.
 

@@ -9,20 +9,14 @@
  * args hold the request id and status alone. Reports for messages that are
  * not acknowledgements answer 200 too, so Fast2SMS does not retry them.
  */
-import { timingSafeEqual } from "node:crypto";
 import { config } from "../lib/config.ts";
 import { withTalentDb } from "../lib/db.ts";
 import { parseReport, saveReport } from "../lib/delivery.ts";
 import { failed, forbidden, respond } from "../lib/response.ts";
+import { secretMatches } from "../lib/secret.ts";
 
 export const SECRET_HEADER = "x-vspl-dlr-secret";
 
-export function secretMatches(given: string | undefined, expected: string): boolean {
-  if (!given || !expected) return false;
-  const a = Buffer.from(given);
-  const b = Buffer.from(expected);
-  return a.length === b.length && timingSafeEqual(a, b);
-}
 
 interface HttpEvent {
   headers?: Record<string, string>;

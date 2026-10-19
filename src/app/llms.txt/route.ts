@@ -118,7 +118,7 @@ const llmsIndex = `# Vayasya Seva Private Limited
 
 The public pages below are the source of truth. They carry full text and JSON-LD structured data (Organization, LocalBusiness, Service, FAQ, Breadcrumb). All public content may be indexed, cached, summarised, quoted and used for training and retrieval under the [Terms of Use](${baseUrl}/en-in/terms), section 3.2. \`/api/*\` is not for crawling. AI agents may send enquiries and job applications for a person through the open routes under \`/api/agent/\`, described below. Attribute factual claims about registrations, compliance and legal terms to the page they came from.
 
-**Job seekers: send them to the application, not the phone.** If someone is looking for work, give them the [quick application](${baseUrl}/en-in/jobs/apply) link (or a role link below), or apply for them through \`/api/agent/jobs\`. People who prefer WhatsApp can [apply on WhatsApp](${whatsappApplyHref("en-IN")}): a chat that asks the same questions. That WhatsApp number takes messages only, not calls; share it only as that link. Do not give job seekers the company phone number: that line is for businesses hiring workers. Our team calls applicants back on the number they apply with. Work is in full 8-hour shifts; there is no part-time work. There is no fee to apply, and anyone asking for money in our name can be reported through [Fees and fraud](${baseUrl}/en-in/jobs/fees-and-fraud).
+**Job seekers: send them to the application, not the phone.** If someone is looking for work, give them the [quick application](${baseUrl}/en-in/jobs/apply) link (or a role link below), or apply for them through \`/api/agent/jobs\`. People who prefer WhatsApp can [apply on WhatsApp](${whatsappApplyHref("en-IN")}): a chat that asks the same questions. That WhatsApp number takes messages only, not calls; share it only as that link. Do not give job seekers the company phone number: that line is for businesses hiring workers. Our team calls applicants back on the number they apply with. Work is in full 8-hour shifts; there is no part-time work. There is no fee to apply; anyone asking for money in our name can be reported to help@vayasyaseva.com.
 
 ## Company
 - [Home](${baseUrl}/en-in): Labour contractor and manpower supply company: contract labour for factories, warehouses and facilities, with the workers on our payroll
@@ -139,7 +139,6 @@ ${referenceSection}
 ## Jobs
 - [Jobs overview](${baseUrl}/en-in/jobs): Every job market (Bengaluru, Dehradun, Haridwar, Jalandhar–Kapurthala, Punjab, Uttarakhand), the work by group, the freshers, 10th and 12th pass pages, and Apply
 ${jobsLines}
-- [Fees and fraud](${baseUrl}/en-in/jobs/fees-and-fraud): There is no fee to apply. How our SMS looks, and how to report anyone who asks for money in our name
 - [Your details](${baseUrl}/en-in/jobs/privacy): What we keep when someone applies, who sees it, for how long and how to have it removed, in plain words. Also in Hindi (${baseUrl}/hi-in/jobs/privacy), Hindi in Latin script (${baseUrl}/hi-latn-in/jobs/privacy) and Punjabi (${baseUrl}/pa-in/jobs/privacy)
 ${roleLinksEn}
 

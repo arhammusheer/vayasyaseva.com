@@ -27,8 +27,7 @@ export interface JobsFormCopy {
     server: string;
     expired: string;
   };
-  /** `fraud`: the link to the fees and fraud page under the confirmation (the form's no-fee line is gone by then). */
-  done: { title: string; refLabel: string; body: string; fraud: string; again: string };
+  done: { title: string; refLabel: string; body: string; again: string };
   labels: { photo: string; document: string };
   /** Labels for details filled in from a prefilled link (src/lib/prefill.ts). */
   prefill: { name: string; work: string; experience: string; location: string; start: string };
@@ -67,15 +66,15 @@ export const JOB_GROUP_ROLES: Record<JobGroupId, JobRole[]> = {
 
 /**
  * The no-fee line (PLAN §5.3): the jobs form's footer, the one in-page
- * no-fee mention on a jobs page, linking /jobs/fees-and-fraud. `link` is
- * the same label the done screen uses.
+ * no-fee mention on a jobs page. Plain text, no link: the "Spot a fake
+ * offer" link drew applicants off the form (owner, 19 Oct 2026).
  */
-export const NO_FEE: Record<Locale, { text: string; link: string }> = {
-  "en-IN": { text: "No fee to apply.", link: "Spot a fake offer" },
-  "hi-IN": { text: "आवेदन की कोई फ़ीस नहीं।", link: "नकली ऑफ़र पहचानें" },
-  "hi-Latn-IN": { text: "Apply ki koi fee nahi.", link: "Nakli offer pehchanein" },
-  "pa-IN": { text: "ਅਪਲਾਈ ਕਰਨ ਦੀ ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ।", link: "ਨਕਲੀ ਆਫ਼ਰ ਪਛਾਣੋ" },
-  "kn-IN": { text: "ಅರ್ಜಿ ಸಲ್ಲಿಸಲು ಯಾವುದೇ ಶುಲ್ಕವಿಲ್ಲ.", link: "ನಕಲಿ ಆಫರ್ ಗುರುತಿಸಿ" },
+export const NO_FEE: Record<Locale, string> = {
+  "en-IN": "No fee to apply.",
+  "hi-IN": "आवेदन की कोई फ़ीस नहीं।",
+  "hi-Latn-IN": "Apply ki koi fee nahi.",
+  "pa-IN": "ਅਪਲਾਈ ਕਰਨ ਦੀ ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ।",
+  "kn-IN": "ಅರ್ಜಿ ಸಲ್ಲಿಸಲು ಯಾವುದೇ ಶುಲ್ಕವಿಲ್ಲ.",
 };
 
 /** Work is shift-wise only: say so plainly (owner, 16 October 2026). The form's header line. */
@@ -150,7 +149,6 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         title: "Received. Thank you.",
         refLabel: "Your reference",
         body: "We will SMS this reference from VAYSPL. Keep the SMS. If the work fits, we call you.",
-        fraud: NO_FEE["en-IN"].link,
         again: "Send another",
       },
       labels: { photo: "Photo", document: "Document" },
@@ -222,7 +220,6 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         title: "मिल गया, धन्यवाद।",
         refLabel: "आपका रेफ़रेंस नंबर",
         body: "हम यह रेफ़रेंस VAYSPL से SMS करेंगे। यह SMS संभालकर रखिए। काम आपके लायक हुआ, तो हम कॉल करेंगे।",
-        fraud: NO_FEE["hi-IN"].link,
         again: "एक और भेजें",
       },
       labels: { photo: "फ़ोटो", document: "कागज़" },
@@ -294,7 +291,6 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         title: "Mil gaya, dhanyavaad.",
         refLabel: "Aapka reference number",
         body: "Hum yeh reference VAYSPL se SMS karenge. Yeh SMS sambhaal kar rakhiye. Kaam aapke laayak hua, to hum call karenge.",
-        fraud: NO_FEE["hi-Latn-IN"].link,
         again: "Ek aur bhejein",
       },
       labels: { photo: "Photo", document: "Document" },
@@ -366,7 +362,6 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         title: "ਮਿਲ ਗਿਆ, ਧੰਨਵਾਦ।",
         refLabel: "ਤੁਹਾਡਾ ਰੈਫ਼ਰੈਂਸ ਨੰਬਰ",
         body: "ਅਸੀਂ ਇਹ ਰੈਫ਼ਰੈਂਸ VAYSPL ਤੋਂ SMS ਕਰਾਂਗੇ। ਇਹ SMS ਸੰਭਾਲ ਕੇ ਰੱਖੋ। ਕੰਮ ਤੁਹਾਡੇ ਲਾਇਕ ਹੋਇਆ ਤਾਂ ਅਸੀਂ ਕਾਲ ਕਰਾਂਗੇ।",
-        fraud: NO_FEE["pa-IN"].link,
         again: "ਇੱਕ ਹੋਰ ਭੇਜੋ",
       },
       labels: { photo: "ਫ਼ੋਟੋ", document: "ਕਾਗਜ਼" },
@@ -438,7 +433,6 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         title: "ಸ್ವೀಕರಿಸಲಾಗಿದೆ, ಧನ್ಯವಾದಗಳು.",
         refLabel: "ನಿಮ್ಮ ರೆಫರೆನ್ಸ್ ಸಂಖ್ಯೆ",
         body: "ಈ ರೆಫರೆನ್ಸ್ ಅನ್ನು ನಾವು VAYSPL ಇಂದ SMS ಮಾಡುತ್ತೇವೆ. ಆ SMS ಅನ್ನು ಉಳಿಸಿಕೊಳ್ಳಿ. ಕೆಲಸ ಸರಿಹೊಂದಿದರೆ, ನಾವು ಕರೆ ಮಾಡುತ್ತೇವೆ.",
-        fraud: NO_FEE["kn-IN"].link,
         again: "ಇನ್ನೊಂದು ಕಳುಹಿಸಿ",
       },
       labels: { photo: "ಫೋಟೋ", document: "ದಾಖಲೆ" },

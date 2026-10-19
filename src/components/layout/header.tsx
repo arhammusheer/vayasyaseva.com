@@ -295,8 +295,7 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
   const nav: { bar: AreaLink[]; doors: AreaLink[]; sheet: SheetRow[]; more: SheetRow[]; cta?: NavLink } =
     view === "jobs"
       ? {
-          // "All jobs" is the logo; "No fee" is in the menu, the footer and
-          // the form, not the bar.
+          // "All jobs" is the logo.
           bar: [],
           doors: [businessDoor],
           sheet: [
@@ -305,7 +304,6 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
             { links: JOB_HUB_LINKS[pageLocale].map((h) => ({ href: nearestLocalePath(`/jobs/${h.slug}`, pageLocale), label: h.label })) },
           ],
           more: [
-            { links: [{ href: nearestLocalePath("/jobs/fees-and-fraud", pageLocale), label: t.fee }] },
             { links: [businessDoor] },
           ],
           cta: { href: applyFallback, label: t.apply },

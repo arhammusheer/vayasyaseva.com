@@ -2572,38 +2572,6 @@ a:hover > svg {
   cursor: default;
 }
 
-/* Fees and fraud (/jobs/fees-and-fraud): an oversized no-fee line with the
-   one report button beside it, then two ruled checks with gold numerals. */
-.fraud-title {
-  margin-top: 12px;
-  font-family: var(--stack-display);
-  font-size: clamp(40px, 9vw, 84px);
-  font-weight: 500;
-  line-height: 1.02;
-  letter-spacing: -0.03em;
-  text-wrap: balance;
-}
-.fraud-title:lang(hi):not(:lang(hi-Latn)) {
-  letter-spacing: 0;
-  line-height: 1.2;
-}
-.fraud-report {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  gap: 12px;
-}
-.fraud-report .jobs-submit {
-  min-height: 52px;
-  height: auto;
-  padding-block: 12px;
-  line-height: 1.3;
-}
-.fraud-report p {
-  font-size: 15px;
-  color: var(--muted-foreground);
-}
-
 /* Each section's header: its own links beside the logo, then (pushed
    right) languages, the doors to the other sections, the phone and the
    button. Doors are quiet text links; the page you are on is never one. */

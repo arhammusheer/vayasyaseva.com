@@ -1,5 +1,4 @@
 import type { Locale } from "@/lib/i18n";
-import { FRAUD_REPORT_EMAIL } from "./fees-and-fraud";
 
 /**
  * /jobs/privacy: the applicant notice in plain words, in each jobs
@@ -23,7 +22,8 @@ export interface JobsPrivacyCopy {
   back: string;
 }
 
-const EMAIL = FRAUD_REPORT_EMAIL;
+/** The inbox job seekers already use: siteConfig.email and the privacy notice §10. */
+const EMAIL = "help@vayasyaseva.com";
 
 export const jobsPrivacyCopy: Record<Locale, JobsPrivacyCopy> = {
   "en-IN": {

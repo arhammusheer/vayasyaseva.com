@@ -4,7 +4,6 @@ import { jobsCopy } from "@/content/pages/jobs";
 import { getJobRole } from "@/content/pages/job-roles";
 import { getJobHub } from "@/content/pages/job-hubs";
 import { getJobCluster, jobClusters } from "@/content/pages/job-clusters";
-import { feesAndFraudCopy } from "@/content/pages/fees-and-fraud";
 import { JOB_ROLE_SLUGS, JOB_HUB_SLUGS, isJobRole, type JobRole } from "./talent-intake/rules";
 import { locationCopyIn, locationPages } from "@/content/locations";
 import { servicePages } from "@/content/service-pages";
@@ -52,8 +51,6 @@ export function getShareContent(path: string, locale: Locale = "en-IN", variant 
   let eyebrow = path.startsWith("/minimum-wages") ? "MINIMUM WAGES · REFERENCE" : "VAYASYA SEVA";
   if (path === "/jobs") {
     const t = jobsCopy[locale]; heading = t.heading; description = t.lede; eyebrow = t.eyebrow;
-  } else if (path === "/jobs/fees-and-fraud") {
-    const t = feesAndFraudCopy[locale]; heading = t.heading; description = t.lede; eyebrow = t.eyebrow;
   } else if (path.startsWith("/jobs/") && path !== "/jobs/apply") {
     const slug = path.slice("/jobs/".length);
     const cluster = getJobCluster(slug, locale);
@@ -82,7 +79,7 @@ export function getShareContent(path: string, locale: Locale = "en-IN", variant 
 }
 
 export function allShareContent(): ShareContent[] {
-  const paths = [...Object.keys(COMMON), "/jobs", "/jobs/apply", "/jobs/fees-and-fraud", ...[...JOB_ROLE_SLUGS, ...JOB_HUB_SLUGS, ...jobClusters["en-IN"].map((c) => c.slug)].map((slug) => `/jobs/${slug}`), ...servicePages.map((s) => `/services/${s.slug}`), ...locationPages.keys()];
+  const paths = [...Object.keys(COMMON), "/jobs", "/jobs/apply", ...[...JOB_ROLE_SLUGS, ...JOB_HUB_SLUGS, ...jobClusters["en-IN"].map((c) => c.slug)].map((slug) => `/jobs/${slug}`), ...servicePages.map((s) => `/services/${s.slug}`), ...locationPages.keys()];
   const entries = [...new Set(paths)].flatMap((path) => localesOf(path).map((locale) => getShareContent(path, locale)));
   for (const locale of allLocales) {
     for (const role of JOB_ROLE_SLUGS) entries.push(getShareContent("/jobs/apply", locale, `role-${role}`));

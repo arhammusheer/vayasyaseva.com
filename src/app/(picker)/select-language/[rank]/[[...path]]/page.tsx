@@ -7,7 +7,6 @@ import { getJobHub } from "@/content/pages/job-hubs";
 import { getJobCluster } from "@/content/pages/job-clusters";
 import { jobsLinkLabel } from "@/markets/labels";
 import { quickApplyCopy } from "@/content/pages/quick-apply";
-import { feesAndFraudCopy } from "@/content/pages/fees-and-fraud";
 import { jobsPrivacyCopy } from "@/content/pages/jobs-privacy";
 import {
   localePath,
@@ -54,7 +53,6 @@ async function readParams(params: Props["params"]) {
 function pageSummary(path: string): { title: string; text?: string } {
   if (path === "/jobs") return { title: jobsCopy["en-IN"].title, text: jobsCopy["en-IN"].description };
   if (path === "/jobs/apply") return { title: quickApplyCopy["en-IN"].title, text: quickApplyCopy["en-IN"].description };
-  if (path === "/jobs/fees-and-fraud") return { title: feesAndFraudCopy["en-IN"].title, text: feesAndFraudCopy["en-IN"].description };
   if (path === "/jobs/privacy") return { title: jobsPrivacyCopy["en-IN"].title, text: jobsPrivacyCopy["en-IN"].description };
   const slug = /^\/jobs\/([^/]+)$/.exec(path)?.[1];
   const role = slug ? (getJobCluster(slug, "en-IN") ?? getJobRole(slug, "en-IN") ?? getJobHub(slug, "en-IN")) : undefined;
@@ -70,7 +68,6 @@ function pageSummary(path: string): { title: string; text?: string } {
 function pageName(path: string, locale: Locale): { title: string; href?: string } {
   if (path === "/jobs") return { title: jobsCopy[locale].heading };
   if (path === "/jobs/apply") return { title: quickApplyCopy[locale].breadcrumb };
-  if (path === "/jobs/fees-and-fraud") return { title: feesAndFraudCopy[locale].breadcrumb };
   if (path === "/jobs/privacy") return { title: jobsPrivacyCopy[locale].breadcrumb };
   const slug = /^\/jobs\/([^/]+)$/.exec(path)?.[1];
   if (slug) {

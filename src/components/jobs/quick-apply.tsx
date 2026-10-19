@@ -385,7 +385,6 @@ export function QuickApply({
         <p className="font-data text-3xl tracking-wide text-gold-700 sm:text-4xl">{phase.ref}</p>
         <p className="mt-6 max-w-md text-lg leading-relaxed text-muted-foreground">{form.done.body}</p>
         <div className="mt-6 flex flex-col items-start">
-          <Link href={localePath("/jobs/fees-and-fraud", locale)} className="text-link mt-0">{form.done.fraud} <ArrowRight size={18} aria-hidden="true" /></Link>
           <button type="button" className="text-link mt-0" onClick={() => { clearDraft(); setPhase({ name: "form" }); }}>{form.done.again}</button>
         </div>
       </div>
@@ -524,12 +523,7 @@ export function QuickApply({
       {/* One Turnstile box for the whole flow: it checks the browser while the
           questions are answered, and only shows if it needs an interaction. */}
       <div ref={turnstileBox} className="mt-5" />
-      <p className="quick-note">
-        {t.noFee.text}{" "}
-        <Link href={localePath("/jobs/fees-and-fraud", locale)} className="underline underline-offset-4">
-          {t.noFee.link}&nbsp;<span aria-hidden="true">→</span>
-        </Link>
-      </p>
+      <p className="quick-note">{t.noFee}</p>
       <WhatsAppApply locale={locale} role={pageRole} cluster={pageCluster} />
     </div>
   );

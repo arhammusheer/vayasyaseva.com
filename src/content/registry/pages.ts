@@ -206,6 +206,7 @@ const EN = { "en-IN": "published" } as const;
 /** Retired in the three languages it had (it never had Punjabi). */
 const RETIRED_ALL = { "en-IN": "retired", "hi-IN": "retired", "hi-Latn-IN": "retired" } as const;
 const RETIRED_EN = { "en-IN": "retired" } as const;
+const RETIRED_REGIONAL = { "en-IN": "retired", "hi-IN": "retired", "hi-Latn-IN": "retired", "pa-IN": "retired", "kn-IN": "retired" } as const;
 const RETIRED_EN_HINGLISH = { "en-IN": "retired", "hi-Latn-IN": "retired" } as const;
 
 /**
@@ -255,8 +256,9 @@ export const pageEntries: readonly PageEntry[] = [
   // Focused guided application, also used by ads and direct application links.
   // A form, not a search landing page: the role and cluster pages rank instead.
   { ...jobsPage("/jobs/apply", "jobs-apply", 0.8), locales: WITH_REGIONAL, noindex: true },
-  // No fee, and how to report anyone who asks for money in our name.
-  { ...jobsPage("/jobs/fees-and-fraud", "static", 0.5, "yearly"), locales: WITH_REGIONAL },
+  // Retired 19 Oct 2026 (owner): the "Spot a fake offer" link drew applicants
+  // away from the form. The no-fee line stays in the form's footer.
+  { ...jobsPage("/jobs/fees-and-fraud", "static", 0.5, "yearly"), locales: RETIRED_REGIONAL, retiredTo: "/jobs" },
   // What happens to an applicant's details, in plain words; the form's checkbox links here.
   { ...jobsPage("/jobs/privacy", "static", 0.4, "yearly"), locales: WITH_REGIONAL },
   ...JOB_ROLE_SLUGS.map((slug) => jobsPage(`/jobs/${slug}`, "job-role", 0.8)),

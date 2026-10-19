@@ -11,7 +11,7 @@ import type { JobRole } from "@/lib/talent-intake/rules";
  * One job per page: a one-sentence lede that says who the work suits, the
  * form, the duties, two or three questions about this work only, and three
  * related roles. Fees, shifts and pay each have one home elsewhere (the
- * form's lines, /jobs/fees-and-fraud and the market hubs' FAQ). No market
+ * form's lines and the market hubs' FAQ). No market
  * is named first (owner direction, 17 Oct 2026): titles and headings name the
  * work, descriptions list the markets alphabetically, and the form asks the
  * visitor's market (src/context).

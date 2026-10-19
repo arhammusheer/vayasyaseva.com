@@ -145,7 +145,7 @@ export const WHATSAPP_LANGUAGE_MENU: { locale: Locale; label: string }[] = [
 export const WHATSAPP_LANGUAGE_PROMPT = "Namaste! Vayasya Seva job applications. Choose your language, reply with the number:";
 
 /** The no-fee line, for the confirmation. */
-export const whatsappNoFee = (locale: Locale) => NO_FEE[locale].text;
+export const whatsappNoFee = (locale: Locale) => NO_FEE[locale];
 
 /** A wa.me link that opens the chat with the greeting and the code filled in. */
 export function whatsappApplyHref(locale: Locale, prefill: { work?: string | null; area?: string | null } = {}) {

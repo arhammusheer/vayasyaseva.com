@@ -74,33 +74,33 @@ export const JOBS_NAV: Record<
   Locale,
   {
     business: string; enquiries: string; apply: string; menu: string; sections: string; more: string; openMenu: string; language: string;
-    logo: string; haridwar: string; fee: string; details: string; privacy: string; terms: string; english: string;
+    logo: string; haridwar: string; details: string; privacy: string; terms: string; english: string;
   }
 > = {
   "en-IN": {
     business: "For businesses", enquiries: "Business enquiries", apply: "Apply", menu: "Jobs", sections: "Site sections", more: "More",
     openMenu: "Open navigation", language: "Language", logo: "Vayasya Seva jobs",
-    haridwar: "Jobs in Haridwar", fee: "No fee", details: "Your details", privacy: "Privacy", terms: "Terms", english: "",
+    haridwar: "Jobs in Haridwar", details: "Your details", privacy: "Privacy", terms: "Terms", english: "",
   },
   "hi-IN": {
     business: "कंपनियों के लिए", enquiries: "पूछताछ", apply: "आवेदन करें", menu: "नौकरी", sections: "साइट के हिस्से", more: "और",
     openMenu: "मेन्यू खोलें", language: "भाषा", logo: "Vayasya Seva नौकरी",
-    haridwar: "हरिद्वार में नौकरी", fee: "कोई फ़ीस नहीं", details: "आपकी जानकारी", privacy: "गोपनीयता", terms: "नियम", english: " (English)",
+    haridwar: "हरिद्वार में नौकरी", details: "आपकी जानकारी", privacy: "गोपनीयता", terms: "नियम", english: " (English)",
   },
   "hi-Latn-IN": {
     business: "Companies ke liye", enquiries: "Enquiry", apply: "Apply karein", menu: "Jobs", sections: "Site ke hisse", more: "Aur",
     openMenu: "Menu kholein", language: "Bhasha", logo: "Vayasya Seva jobs",
-    haridwar: "Haridwar mein job", fee: "Koi fee nahi", details: "Aapki jaankari", privacy: "Privacy", terms: "Terms", english: " (English)",
+    haridwar: "Haridwar mein job", details: "Aapki jaankari", privacy: "Privacy", terms: "Terms", english: " (English)",
   },
   "pa-IN": {
     business: "ਕੰਪਨੀਆਂ ਲਈ", enquiries: "ਪੁੱਛਗਿੱਛ", apply: "ਅਪਲਾਈ ਕਰੋ", menu: "ਨੌਕਰੀਆਂ", sections: "ਸਾਈਟ ਦੇ ਹਿੱਸੇ", more: "ਹੋਰ",
     openMenu: "ਮੀਨੂ ਖੋਲ੍ਹੋ", language: "ਭਾਸ਼ਾ", logo: "Vayasya Seva ਨੌਕਰੀਆਂ",
-    haridwar: "ਹਰਿਦੁਆਰ ਵਿੱਚ ਨੌਕਰੀ", fee: "ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ", details: "ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ", privacy: "ਨਿੱਜਤਾ", terms: "ਨਿਯਮ", english: " (English)",
+    haridwar: "ਹਰਿਦੁਆਰ ਵਿੱਚ ਨੌਕਰੀ", details: "ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ", privacy: "ਨਿੱਜਤਾ", terms: "ਨਿਯਮ", english: " (English)",
   },
   "kn-IN": {
     business: "ಕಂಪನಿಗಳಿಗೆ", enquiries: "ವಿಚಾರಣೆಗಳು", apply: "ಅರ್ಜಿ ಸಲ್ಲಿಸಿ", menu: "ಉದ್ಯೋಗಗಳು", sections: "ಸೈಟ್‌ನ ವಿಭಾಗಗಳು", more: "ಇನ್ನಷ್ಟು",
     openMenu: "ಮೆನು ತೆರೆಯಿರಿ", language: "ಭಾಷೆ", logo: "Vayasya Seva ಉದ್ಯೋಗಗಳು",
-    haridwar: "ಹರಿದ್ವಾರದಲ್ಲಿ ಉದ್ಯೋಗ", fee: "ಯಾವುದೇ ಶುಲ್ಕವಿಲ್ಲ", details: "ನಿಮ್ಮ ಮಾಹಿತಿ", privacy: "ಗೌಪ್ಯತೆ", terms: "ನಿಯಮಗಳು", english: " (English)",
+    haridwar: "ಹರಿದ್ವಾರದಲ್ಲಿ ಉದ್ಯೋಗ", details: "ನಿಮ್ಮ ಮಾಹಿತಿ", privacy: "ಗೌಪ್ಯತೆ", terms: "ನಿಯಮಗಳು", english: " (English)",
   },
 };
 
@@ -173,13 +173,12 @@ export const JOB_HUB_LINKS: Record<Locale, { slug: string; label: string }[]> = 
   ],
 };
 
-/** The jobs footer's links: every market's hub (MARKET_ORDER), the qualification hubs, no fee, and the applicant notice once published. */
+/** The jobs footer's links: every market's hub (MARKET_ORDER), the qualification hubs and the applicant notice once published. */
 export function jobsFooterLinks(locale: Locale): NavLink[] {
   const t = JOBS_NAV[locale];
   return [
     ...orderedJobMarkets().map((id) => ({ href: nearestLocalePath(jobsHubPath(id as Exclude<ClusterId, "other">), locale), label: JOBS_AREA_LABEL[locale][id] ?? id })),
     ...JOB_HUB_LINKS[locale].map((h) => ({ href: nearestLocalePath(`/jobs/${h.slug}`, locale), label: h.label })),
-    { href: nearestLocalePath("/jobs/fees-and-fraud", locale), label: t.fee },
     ...(linkable("/jobs/privacy", locale) ? [{ href: localePath("/jobs/privacy", locale), label: t.details }] : []),
   ];
 }

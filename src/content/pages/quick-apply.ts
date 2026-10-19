@@ -124,8 +124,8 @@ export interface QuickApplyCopy {
     send: string;
   };
   errors: { name: string };
-  /** The form's footer: the page's one no-fee line, linking /jobs/fees-and-fraud. */
-  noFee: { text: string; link: string };
+  /** The form's footer: the page's one no-fee line. */
+  noFee: string;
   /** One calm line above the form: full 8-hour shifts, no part-time work. */
   shifts: string;
 }

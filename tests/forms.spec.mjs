@@ -121,12 +121,13 @@ try {
   await page.locator('main a.jobs-submit').click();await page.waitForURL('**/en-in/jobs/apply**');await page.locator('[data-draft-notice]').waitFor();
   assert.equal(await page.locator('#quick-name').inputValue(),'Draft Test');assert.equal(await page.locator('#quick-phone').inputValue(),'9999900001');
   assert.equal(await page.locator('[name=agree]').isChecked(),false);
-  // One no-fee line in the page (the form's footer), and the done screen says only what we do if the work fits.
-  assert.equal(await page.locator('main .quick-note a[href="/en-in/jobs/fees-and-fraud"]').count(),1);
+  // One no-fee line in the page (the form's footer), with no link off the form; the done screen says only what we do if the work fits.
+  assert.match(await page.locator('main .quick-note').textContent(),/No fee to apply\./);
+  assert.equal(await page.locator('main a[href*="fees-and-fraud"]').count(),0);
   await fill();await send();await visible('.jobs-done h2');
   assert.match(await page.locator('.jobs-done').textContent(),/If the work fits, we call you\./);
   assert.doesNotMatch(await page.locator('.jobs-done').textContent(),/no fee/i);
-  assert.equal(await page.locator('.jobs-done a[href="/en-in/jobs/fees-and-fraud"]').count(),1);
+  assert.equal(await page.locator('.jobs-done a[href*="fees-and-fraud"]').count(),0);
   console.log('The applicant notice opens beside the form, and the draft survives a round trip through it');
   // A role link should override a conflicting saved work preference.
   await open('/en-in/jobs/apply'+complete);await tick();await open('/hi-in/jobs/electrician');

@@ -31,7 +31,7 @@ export function jobsMetadata(locale: Locale) {
  * else /jobs/apply; then every market, the visitor's first once decided
  * (alphabetical before that); then pick your work (four groups, names only,
  * each a #id the jobs menu links to) or your qualification. No FAQ: the form
- * pages and /jobs/fees-and-fraud carry the rest.
+ * pages carry the rest.
  */
 export function JobsPage({ locale }: { locale: Locale }) {
   const t = jobsCopy[locale];

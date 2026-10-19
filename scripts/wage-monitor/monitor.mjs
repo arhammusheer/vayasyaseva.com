@@ -42,8 +42,13 @@ export const targetKey = (t) => {
   return !t.topic || t.topic === "wages" ? url : `${t.topic}:${url}`;
 };
 
-/** The lines of a page's text that match its pattern, de-duplicated and sorted (pages that reorder their text are stable). */
-export const pageLines = (html, match) => [...new Set(htmlText(html).split("\n").map((l) => l.trim()).filter((l) => l && match.test(l)))].sort();
+/**
+ * The lines of a page's text that match its pattern and not its ignore pattern, de-duplicated and
+ * sorted (pages that reorder their text are stable). `ignore` drops lines that match but are not
+ * news, such as a lead page's state menu and category tags.
+ */
+export const pageLines = (html, match, ignore = null) =>
+  [...new Set(htmlText(html).split("\n").map((l) => l.trim()).filter((l) => l && match.test(l) && !ignore?.test(l)))].sort();
 
 const USER_AGENT = "vayasyaseva.com wage source monitor (+https://vayasyaseva.com/minimum-wages)";
 /** Per request, body included. A host that hangs costs this once per run (see fetchAll). */
@@ -159,7 +164,7 @@ function registryTargets(entry, scope) {
   const out = [];
   for (const d of entry?.documents ?? []) out.push({ ...scope, kind: "document", url: d.url, name: d.name, topic: d.topic ?? "wages", sourceIds: d.sourceIds ?? [], listings: [] });
   for (const l of entry?.listings ?? []) out.push({ ...scope, kind: "listing", url: l.url, name: l.name, match: l.match, topic: l.topic ?? "wages", ...(l.format && { format: l.format, publicBase: l.publicBase }) });
-  for (const pg of entry?.pages ?? []) out.push({ ...scope, kind: "page", url: pg.url, name: pg.name, match: pg.match, topic: pg.topic ?? "wages", allowEmpty: Boolean(pg.allowEmpty) });
+  for (const pg of entry?.pages ?? []) out.push({ ...scope, kind: "page", url: pg.url, name: pg.name, match: pg.match, topic: pg.topic ?? "wages", allowEmpty: Boolean(pg.allowEmpty), ...(pg.ignore && { ignore: pg.ignore }) });
   return out;
 }
 
@@ -266,11 +271,12 @@ export function registryProblems(wageStates, registry) {
     for (const l of [...entry.listings, ...(entry.pages ?? []), ...(entry.documents ?? [])]) {
       if (!/^https:\/\//.test(l.url)) problems.push(`${state.state}: ${l.url} is not https`);
       if (!l.name) problems.push(`${state.state}: ${l.url} has no name`);
-      if (l.match) {
+      for (const key of ["match", "ignore"]) {
+        if (!l[key]) continue;
         try {
-          new RegExp(l.match, "i");
+          new RegExp(l[key], "i");
         } catch {
-          problems.push(`${state.state}: ${l.url} has an invalid match pattern`);
+          problems.push(`${state.state}: ${l.url} has an invalid ${key} pattern`);
         }
       }
     }
@@ -278,11 +284,12 @@ export function registryProblems(wageStates, registry) {
   for (const l of [...(registry.national?.listings ?? []), ...(registry.national?.pages ?? []), ...(registry.national?.documents ?? [])]) {
     if (!/^https:\/\//.test(l.url)) problems.push(`national: ${l.url} is not https`);
     if (!l.name) problems.push(`national: ${l.url} has no name`);
-    if (l.match) {
+    for (const key of ["match", "ignore"]) {
+      if (!l[key]) continue;
       try {
-        new RegExp(l.match, "i");
+        new RegExp(l[key], "i");
       } catch {
-        problems.push(`national: ${l.url} has an invalid match pattern`);
+        problems.push(`national: ${l.url} has an invalid ${key} pattern`);
       }
     }
   }
@@ -325,7 +332,7 @@ export async function runMonitor({ targets, previous, fetcher, now = new Date(),
     if (res.ok) {
       if (target.kind === "page") {
         const body = res.body.toString("utf8");
-        lines = pageLines(body, new RegExp(target.match, "i"));
+        lines = pageLines(body, new RegExp(target.match, "i"), target.ignore ? new RegExp(target.ignore, "i") : null);
         // A lead page (allowEmpty: a compliance firm's latest posts) may have nothing on a state this week,
         // but a page with no text at all is a refused request (AscentHR sends an empty 200), not a quiet week.
         if (!htmlText(body).trim()) bogus = "the page came back empty";

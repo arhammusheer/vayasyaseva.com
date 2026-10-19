@@ -644,6 +644,22 @@ test('a lead page alerts on a new post, never on one that aged off the feed', as
   assert.deepEqual(day3.events.map((e) => [e.type, e.added, e.removed]), [['page-changed', ['Minimum wages: Uttar Pradesh, October 2026'], []]]);
 });
 
+test("a lead page's state menu and category tags are ignored; its posts' titles and excerpts are not", async () => {
+  const registry = JSON.parse(readFileSync(new URL('../scripts/wage-monitor/sources.json', import.meta.url), 'utf8'));
+  const ascent = registry.states.haryana.pages.find((p) => p.url.includes('ascent-hr.com'));
+  const lead = { kind: 'page', url: ascent.url, name: 'Lead', match: ascent.match, ignore: ascent.ignore, topic: 'wages', allowEmpty: true, state: 'haryana', stateName: 'Haryana' };
+  const page = (lines) => async () => ({ ok: true, status: 200, contentType: 'text/html', body: Buffer.from(lines.map((l) => `<p>${l}</p>`).join('')) });
+  const menu = ['Haryana', 'Haryana , Notification', 'Karnataka , Notification'];
+  const day1 = await runMonitor({ targets: [lead], previous: null, fetcher: page(['Punjab']), now: at('2026-10-18') });
+  // The menu appearing (AscentHR answering again after empty pages) is not news.
+  const day2 = await runMonitor({ targets: [lead], previous: day1.state, fetcher: page(menu), now: at('2026-10-19') });
+  assert.deepEqual(day2.events, []);
+  const post = ['Revision of Minimum Wages – Haryana – 011126', 'Haryana , Minimum Wages Act , Notification', 'The Government of Haryana, vide notification no. 123, dated 1st November 2026, has revised..'];
+  const day3 = await runMonitor({ targets: [lead], previous: day2.state, fetcher: page([...menu, ...post]), now: at('2026-11-02') });
+  assert.deepEqual(day3.events.map((e) => e.added), [[post[0], post[2]]]);
+  assert.ok(registryProblems([], { states: {}, national: { pages: [{ url: 'https://firm.example/', name: 'x', match: 'a', ignore: '(' }] } }).some((p) => p.includes('invalid ignore')));
+});
+
 test('the Ministry of Labour documents API is read as a listing of its posts, not fetched as files', async () => {
   const body = JSON.stringify({ posts: [
     { ID: 1, post_slug: 'epfo-wage-ceiling', post_title: 'Gazette Notification- EPFO Wage Ceiling of Rs. 25,000', post_date: '2026-09-21 17:07:57', acf_data: { date: '17/09/2026' } },

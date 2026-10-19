@@ -1,5 +1,5 @@
 {
-  "$comment": "Primary sources the daily compliance monitor watches (PLAN section 11; owner direction 16 Oct 2026). Per state: the wage pages' cited documents come from src/content/wages/<state>.json automatically; list here the department pages where a new wage notification would first appear (topic wages, the default) and the sources for that state's Professional Tax (pt), Labour Welfare Fund (lwf) and contract labour licence (licence). `national` holds EPF (epf), ESIC (esic) and the labour codes (codes). Listings are compared by the documents they link (`match`, a case-insensitive regex on the link text or path, keeps only relevant links); pages are compared by the lines of text that match `match`; documents by their SHA-256. Every document src/content/statutory.ts cites must be watched here (coverageProblems). See docs/wage-monitor.md. `plainUserAgentHosts` get a browser user agent (they refuse ours); `legacyTlsHosts` need legacy TLS renegotiation, which Node refuses by default. Location page sources (src/content/locations) are checked for loading only, on the first three days of each month (topic locations).",
+  "$comment": "Primary sources the daily compliance monitor watches (PLAN section 11; owner direction 16 Oct 2026). Per state: the wage pages' cited documents come from src/content/wages/<state>.json automatically; list here the department pages where a new wage notification would first appear (topic wages, the default) and the sources for that state's Professional Tax (pt), Labour Welfare Fund (lwf) and contract labour licence (licence). `national` holds EPF (epf), ESIC (esic) and the labour codes (codes). Listings are compared by the documents they link (`match`, a case-insensitive regex on the link text or path, keeps only relevant links); pages are compared by the lines of text that match `match`; documents by their SHA-256. Every document src/content/statutory.ts cites must be watched here (coverageProblems). See docs/wage-monitor.md. `plainUserAgentHosts` get a browser user agent (they refuse ours); `legacyTlsHosts` need legacy TLS renegotiation, which Node refuses by default. `relayHosts` drop the cluster's connections and are fetched through the relay Worker (relay/worker.mjs) when FETCH_RELAY_URL and FETCH_RELAY_SECRET are set. Location page sources (src/content/locations) are checked for loading only, on the first three days of each month (topic locations).",
   "plainUserAgentHosts": [
     "www.labour.gov.in",
     "ascent-hr.com",
@@ -9,6 +9,9 @@
   "legacyTlsHosts": [
     "siidcul.com",
     "punjabassembly.gov.in"
+  ],
+  "relayHosts": [
+    "pblabour.gov.in"
   ],
   "states": {
     "uttarakhand": {

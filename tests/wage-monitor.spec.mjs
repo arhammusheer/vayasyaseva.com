@@ -7,7 +7,7 @@ import test from 'node:test';
 import { deflateSync } from 'node:zlib';
 import { importTs, root } from '../scripts/lib/register-ts.mjs';
 import { describeDocument, diffLines, documentLinks, htmlText, sha256, wpDocumentLinks } from '../scripts/wage-monitor/extract.mjs';
-import { buildTargets, coverageProblems, fetchSource, fingerprint, istDate, locationTargets, pageLines, registryProblems, runMonitor, targetKey } from '../scripts/wage-monitor/monitor.mjs';
+import { buildTargets, coverageProblems, fetchSource, fingerprint, istDate, locationTargets, pageLines, registryProblems, relayFetch, runMonitor, targetKey } from '../scripts/wage-monitor/monitor.mjs';
 import { extractPdfText, parseCMap } from '../scripts/wage-monitor/pdf-text.mjs';
 import { chatwootClient, issueTitle, monitorFailedEvent, renderChatwootMessage, reportEvents, reportToChatwoot, reportToHub, safe } from '../scripts/wage-monitor/report.mjs';
 import { hubClient, hubFromEnv, parseNotify } from '../scripts/lib/notify-hub.mjs';
@@ -658,6 +658,46 @@ test("a lead page's state menu and category tags are ignored; its posts' titles 
   const day3 = await runMonitor({ targets: [lead], previous: day2.state, fetcher: page([...menu, ...post]), now: at('2026-11-02') });
   assert.deepEqual(day3.events.map((e) => e.added), [[post[0], post[2]]]);
   assert.ok(registryProblems([], { states: {}, national: { pages: [{ url: 'https://firm.example/', name: 'x', match: 'a', ignore: '(' }] } }).some((p) => p.includes('invalid ignore')));
+});
+
+test('relayed hosts go through the relay with the secret, and the relay fetches only allowed hosts', async () => {
+  const calls = [];
+  const viaRelay = relayFetch({ url: 'https://relay.example/', secret: 's3cret', fetchImpl: async (url, init) => (calls.push([url, init.headers]), new Response('%PDF-1.4', { status: 200 })) });
+  const res = await fetchSource('https://pblabour.gov.in/a b.pdf', { fetchImpl: viaRelay, userAgent: 'Mozilla/5.0' });
+  assert.equal(res.ok, true);
+  assert.equal(calls[0][0], 'https://relay.example/?url=https%3A%2F%2Fpblabour.gov.in%2Fa+b.pdf');
+  assert.equal(calls[0][1]['x-relay-secret'], 's3cret');
+  assert.equal(calls[0][1]['user-agent'], 'Mozilla/5.0');
+
+  const registry = JSON.parse(readFileSync(new URL('../scripts/wage-monitor/sources.json', import.meta.url), 'utf8'));
+  const toml = readFileSync(new URL('../scripts/wage-monitor/relay/wrangler.toml', import.meta.url), 'utf8');
+  assert.deepEqual(toml.match(/^ALLOWED_HOSTS = "(.*)"$/m)[1].split(','), registry.relayHosts, 'the Worker allows exactly sources.json relayHosts');
+
+  const { default: worker } = await import('../scripts/wage-monitor/relay/worker.mjs');
+  const env = { RELAY_SECRET: 's3cret', ALLOWED_HOSTS: 'pblabour.gov.in' };
+  const ask = (target, secret = 's3cret', method = 'GET') => worker.fetch(new Request(`https://relay.example/?url=${encodeURIComponent(target)}`, { method, headers: { 'x-relay-secret': secret } }), env);
+  const real = globalThis.fetch;
+  const upstream = [];
+  globalThis.fetch = async (url) => {
+    upstream.push(String(url));
+    if (String(url).endsWith('/old.pdf')) return new Response(null, { status: 302, headers: { location: '/new.pdf' } });
+    if (String(url).endsWith('/away.pdf')) return new Response(null, { status: 302, headers: { location: 'https://evil.example/x' } });
+    return new Response('%PDF-1.4', { status: 200, headers: { 'content-type': 'application/pdf' } });
+  };
+  try {
+    assert.equal((await ask('https://pblabour.gov.in/x.pdf', 'wrong')).status, 403);
+    assert.equal((await ask('https://pblabour.gov.in/x.pdf', 's3cret', 'POST')).status, 405);
+    assert.equal((await ask('https://evil.example/x')).status, 400);
+    assert.equal((await ask('http://pblabour.gov.in/x.pdf')).status, 400);
+    assert.equal(upstream.length, 0, 'nothing is fetched for a refused request');
+    const moved = await ask('https://pblabour.gov.in/old.pdf');
+    assert.equal(moved.status, 200);
+    assert.equal(await moved.text(), '%PDF-1.4');
+    assert.deepEqual(upstream, ['https://pblabour.gov.in/old.pdf', 'https://pblabour.gov.in/new.pdf']);
+    assert.equal((await ask('https://pblabour.gov.in/away.pdf')).status, 502, 'a redirect off the allowed hosts is refused');
+  } finally {
+    globalThis.fetch = real;
+  }
 });
 
 test('the Ministry of Labour documents API is read as a listing of its posts, not fetched as files', async () => {

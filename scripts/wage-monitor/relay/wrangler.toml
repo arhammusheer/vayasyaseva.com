@@ -1,0 +1,14 @@
+# The compliance monitor's fetch relay (worker.mjs, docs/wage-monitor.md).
+# Deploy: vayasya-infra/cloudflare/run npx wrangler@4 deploy -c scripts/wage-monitor/relay/wrangler.toml
+# Secret: RELAY_SECRET (wrangler secret put; the same value is FETCH_RELAY_SECRET
+# in vayasya-infra apps/compliance-monitor/overlays/growth/secrets.sops.yaml).
+name = "vayasya-fetch-relay"
+main = "worker.mjs"
+compatibility_date = "2026-09-01"
+account_id = "3f03827748ac33418f1176adaa436f26"
+workers_dev = true
+preview_urls = false
+
+[vars]
+# Keep in step with sources.json relayHosts.
+ALLOWED_HOSTS = "pblabour.gov.in"

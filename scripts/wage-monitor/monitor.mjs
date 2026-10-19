@@ -98,6 +98,18 @@ export function legacyTlsFetch(url, { headers = {}, signal } = {}, redirects = 5
   });
 }
 
+/**
+ * A fetch through the monitor's relay (relay/worker.mjs, a Cloudflare
+ * Worker) for hosts that drop the cluster's connections (sources.json
+ * `relayHosts`; Punjab's data centre since October 2026). Same interface as
+ * fetch; the relay follows redirects itself.
+ */
+export const relayFetch = ({ url: relayUrl, secret, fetchImpl = fetch }) => (url, { headers = {}, signal } = {}) => {
+  const target = new URL(relayUrl);
+  target.searchParams.set("url", url);
+  return fetchImpl(target.href, { signal, headers: { ...headers, "x-relay-secret": secret } });
+};
+
 /** The calendar date in India, so "a day" matches the owner's day. */
 export const istDate = (now = new Date()) => new Date(now.getTime() + 5.5 * 3_600_000).toISOString().slice(0, 10);
 

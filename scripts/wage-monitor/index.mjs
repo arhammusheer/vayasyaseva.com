@@ -32,7 +32,7 @@ import { dirname, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import { importTs, root } from "../lib/register-ts.mjs";
 import { archiveNote, archivingFetcher } from "./archive.mjs";
-import { LOCATION_CHECK_DAYS, buildTargets, fetchSource, istDate, legacyTlsFetch, locationTargets, registryProblems, runMonitor } from "./monitor.mjs";
+import { LOCATION_CHECK_DAYS, buildTargets, fetchSource, istDate, legacyTlsFetch, locationTargets, registryProblems, relayFetch, runMonitor } from "./monitor.mjs";
 import { r2FromEnv } from "./r2.mjs";
 import { chatwootClient, githubClient, monitorFailedEvent, renderSummary, reportEvents, reportToChatwoot, reportToHub } from "./report.mjs";
 import { hubFromEnv, parseNotify } from "../lib/notify-hub.mjs";
@@ -118,9 +118,16 @@ async function main() {
   // Hosts whose firewall refuses a descriptive user agent get a plain one (sources.json plainUserAgentHosts).
   const plain = new Set(registry.plainUserAgentHosts ?? []);
   const legacy = new Set(registry.legacyTlsHosts ?? []);
+  // Hosts that drop the cluster's connections go through the relay Worker when it is configured (sources.json relayHosts).
+  const relayed = env.FETCH_RELAY_URL && env.FETCH_RELAY_SECRET ? new Set(registry.relayHosts ?? []) : new Set();
+  const viaRelay = relayed.size ? relayFetch({ url: env.FETCH_RELAY_URL, secret: env.FETCH_RELAY_SECRET }) : null;
   const plainFetcher = (url) => {
     const host = new URL(url).host;
-    return fetchSource(url, { ...(plain.has(host) && { userAgent: "Mozilla/5.0" }), ...(legacy.has(host) && { fetchImpl: legacyTlsFetch }) });
+    return fetchSource(url, {
+      ...(plain.has(host) && { userAgent: "Mozilla/5.0" }),
+      ...(legacy.has(host) && { fetchImpl: legacyTlsFetch }),
+      ...(relayed.has(host) && { fetchImpl: viaRelay }),
+    });
   };
   // With R2_ARCHIVE_* set, every PDF fetched is also kept in the archive (archive.mjs).
   const r2 = r2FromEnv(env);

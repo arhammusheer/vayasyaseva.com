@@ -91,6 +91,27 @@ monitor's user agent and get a browser's; `legacyTlsHosts` (SIIDCUL, the
 Punjab Assembly) need TLS legacy renegotiation, which Node refuses by default
 and browsers allow.
 
+**The relay** (`relayHosts`): Punjab's state data centre (DGG&IT,
+pblabour.gov.in) drops every TCP connection from the cluster's hosting
+network (Tier4Cloud, 202.66.172.0/23), found on 19 October 2026 after three
+days of timeouts; it answers Indian home connections and Cloudflare. The
+monitor fetches those hosts through `vayasya-fetch-relay`, a Cloudflare
+Worker in `scripts/wage-monitor/relay/`: `GET /?url=<source>` with the
+shared secret in `x-relay-secret`. It fetches only the hosts in its
+`ALLOWED_HOSTS` (kept equal to `relayHosts` by a test), checks every redirect
+against them, and bypasses Cloudflare's cache. The monitor uses it only when
+`FETCH_RELAY_URL` and `FETCH_RELAY_SECRET` are set, so a local run fetches
+directly. Which Cloudflare location serves the Worker matters: called from
+the cluster it reaches Punjab, called from Delhi it timed out (522), so test
+from the cluster. Deploy and rotate:
+
+```sh
+vayasya-infra/cloudflare/run npx wrangler@4 deploy -c scripts/wage-monitor/relay/wrangler.toml
+# rotate: one new value into the Worker and into vayasya-infra's
+# apps/compliance-monitor/overlays/growth/secrets.sops.yaml (FETCH_RELAY_SECRET)
+vayasya-infra/cloudflare/run npx wrangler@4 secret put RELAY_SECRET -c scripts/wage-monitor/relay/wrangler.toml
+```
+
 **Copies from third parties** (`via` on a source): where the state never
 published the document and a compliance firm did, the dataset cites that
 copy, says so in `via`, and the monitor watches the file but not the firm's

@@ -94,6 +94,20 @@ export const DEFAULT_POLICY: Policy = {
       push: { mode: "instant", topic: "vspl-leads", priority: { info: 4, notice: 4, warning: 4 } },
       email: "instant",
     },
+    // NFSS's website (nevaehfirstsource.com lib/notify.ts) posts one event per
+    // enquiry through the ingest route, as source "website".
+    {
+      name: "NFSS enquiry not recorded (emailed to company@ only)",
+      match: { type: "nfss.enquiry_not_recorded" },
+      push: { mode: "instant", topic: "vspl-leads", priority: { info: 4, notice: 4, warning: 5 } },
+      email: "instant",
+    },
+    {
+      name: "NFSS enquiry: instant, leads topic",
+      match: { type: "nfss.*" },
+      push: { mode: "instant", topic: "vspl-leads", priority: { info: 4, notice: 4, warning: 4 } },
+      email: "none",
+    },
     { name: "SEO weekly report: email only (search data stays off the lock screen)", match: { type: "seo.weekly_report" }, push: { mode: "none" }, email: "instant" },
     { name: "SEO rule tripped", match: { type: "seo.rule_tripped" }, push: { mode: "instant" }, email: "instant" },
     { name: "Compliance source changed (GitHub issue)", match: { type: "compliance.source_changed" }, push: { mode: "instant" }, email: "instant" },

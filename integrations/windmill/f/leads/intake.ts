@@ -28,7 +28,6 @@ const VARIABLES = {
     twenty_api_key: { secret: true },
     lead_webhook_secret: { secret: true },
     fast2sms_dlr_secret: { secret: true },
-    fast2sms_whatsapp_secret: { secret: true },
     leads_pg_url: { secret: true },
     submission_signing_secret: { secret: true },
 };
@@ -239,7 +238,7 @@ async function twentyFilesFromConfig() {
 })();
 
 // integrations/windmill/talent/lib/crm.ts
-const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, removeAttachments, erasePerson } = (() => {
+const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, smsWasSent, whatsAppWasSent, WA_ACK_TEMPLATE, waAckText, whatsAppDeliveryStatus, waAckKey, waAckFields, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, removeAttachments, erasePerson } = (() => {
 const CLUSTER_VALUES = new Set(["HARIDWAR", "UTTARAKHAND", "DELHI_NCR", "BENGALURU", "JALANDHAR", "SAHARANPUR", "OTHER", "PUNJAB", "DEHRADUN"]);
 const ROLE_VALUES = new Set([
     "FACTORY_HELPER", "PACKING", "MACHINE_OPERATOR", "WAREHOUSE", "FORKLIFT_OPERATOR", "DATA_ENTRY_OPERATOR",
@@ -463,7 +462,44 @@ function deliveryStatus(ackStatus, delivery = null) {
             return "QUEUED";
     }
 }
-const ackSyncState = (c) => c.ack_status && c.delivery_status ? `${c.ack_status}:${c.delivery_status}` : c.ack_status;
+const ackSyncState = (c) => [c.ack_status, c.delivery_status, c.wa_status, c.wa_delivery].filter(Boolean).join(":") || null;
+const smsWasSent = (c) => !!c.ack_status && c.ack_status !== "pending" && c.ack_status !== "skipped";
+const whatsAppWasSent = (c) => !!c.wa_status && c.wa_status !== "skipped";
+const WA_ACK_TEMPLATE = "vspl_application_received (WhatsApp, Utility)";
+const waAckText = (ref) => `Vayasya Seva received your job application.\nReference: ${ref}\n\nIf the work fits, our team will contact you.\nReply here if you have a question. You can send a voice note too.\n\nThis number takes messages only, not calls.`;
+function whatsAppDeliveryStatus(waStatus, delivery) {
+    if (waStatus === "accepted" && delivery === "read")
+        return "READ";
+    if (waStatus === "accepted" && delivery === "delivered")
+        return "DELIVERED";
+    if (waStatus === "accepted" && delivery === "failed")
+        return "FAILED";
+    if (waStatus === "accepted")
+        return "SENT";
+    if (waStatus === "failed")
+        return "FAILED";
+    if (waStatus === "unknown")
+        return "UNKNOWN";
+    return "QUEUED";
+}
+const waAckKey = (submissionId) => `wa-ack:${submissionId}`;
+function waAckFields(c, personId, applicationId) {
+    return {
+        name: `WhatsApp · application received · ${c.ref}`,
+        channel: "WHATSAPP",
+        direction: "OUTBOUND",
+        deliveryStatus: whatsAppDeliveryStatus(c.wa_status, c.wa_delivery),
+        template: WA_ACK_TEMPLATE,
+        body: waAckText(c.ref),
+        provider: "Fast2SMS",
+        providerId: c.wa_request_id ?? "",
+        statusAt: iso(c.wa_delivered_at ?? c.wa_sent_at ?? c.wa_updated_at),
+        error: c.wa_delivery === "failed" || c.wa_delivery === "pending" ? (c.wa_detail ?? "") : (c.wa_error ?? ""),
+        externalKey: waAckKey(c.id),
+        personId,
+        applicationId,
+    };
+}
 const ackKey = (submissionId) => `sms-ack:${submissionId}`;
 function ackFields(c, personId, applicationId) {
     return {
@@ -499,12 +535,18 @@ async function ensureApplication(crm, c, personId) {
     return (await crm.create("applications", "Application", applicationFields(c, personId))).id;
 }
 async function upsertAcknowledgement(crm, c, personId, applicationId) {
-    const fields = ackFields(c, personId, applicationId);
-    const [existing] = await crm.find("communications", eq("externalKey", ackKey(c.id)));
-    if (existing)
-        await crm.update("communications", existing.id, fields);
-    else
-        await crm.create("communications", "Communication", fields);
+    const records = [];
+    if (whatsAppWasSent(c))
+        records.push([waAckKey(c.id), waAckFields(c, personId, applicationId)]);
+    if (smsWasSent(c))
+        records.push([ackKey(c.id), ackFields(c, personId, applicationId)]);
+    for (const [key, fields] of records) {
+        const [existing] = await crm.find("communications", eq("externalKey", key));
+        if (existing)
+            await crm.update("communications", existing.id, fields);
+        else
+            await crm.create("communications", "Communication", fields);
+    }
 }
 const WORKER_FIELDS_CLEARED = {
     personType: "CLIENT_CONTACT",
@@ -558,7 +600,7 @@ async function erasePerson(crm, phone) {
     }
     return { people: people.length, files };
 }
-  return { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, removeAttachments, erasePerson };
+  return { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, smsWasSent, whatsAppWasSent, WA_ACK_TEMPLATE, waAckText, whatsAppDeliveryStatus, waAckKey, waAckFields, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, removeAttachments, erasePerson };
 })();
 
 // integrations/windmill/contracts/validate.ts

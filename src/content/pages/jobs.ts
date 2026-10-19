@@ -118,7 +118,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         phone: {
           title: "Your mobile number",
           placeholder: "98765 43210",
-          agree: "I am 18 or older. Vayasya Seva may keep my details and contact me about work.",
+          agree: "I am 18 or older. Vayasya Seva may keep my details and contact me about work, including on WhatsApp.",
           keep: "We keep your details for 12 months.",
           details: "Details",
         },
@@ -148,7 +148,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       done: {
         title: "Received. Thank you.",
         refLabel: "Your reference",
-        body: "We will SMS this reference from VAYSPL. Keep the SMS. If the work fits, we call you.",
+        body: "We will send this reference on WhatsApp, or by SMS from VAYSPL. If the work fits, we call you.",
         again: "Send another",
       },
       labels: { photo: "Photo", document: "Document" },
@@ -189,7 +189,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         phone: {
           title: "आपका मोबाइल नंबर",
           placeholder: "98765 43210",
-          agree: "मेरी उम्र 18 साल या उससे ज़्यादा है। Vayasya Seva मेरी जानकारी रख सकती है और काम के लिए मुझसे संपर्क कर सकती है।",
+          agree: "मेरी उम्र 18 साल या उससे ज़्यादा है। Vayasya Seva मेरी जानकारी रख सकती है और काम के लिए मुझसे संपर्क कर सकती है, WhatsApp पर भी।",
           keep: "हम आपकी जानकारी 12 महीने तक रखते हैं।",
           details: "पूरी जानकारी",
         },
@@ -219,7 +219,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       done: {
         title: "मिल गया, धन्यवाद।",
         refLabel: "आपका रेफ़रेंस नंबर",
-        body: "हम यह रेफ़रेंस VAYSPL से SMS करेंगे। यह SMS संभालकर रखिए। काम आपके लायक हुआ, तो हम कॉल करेंगे।",
+        body: "हम यह रेफ़रेंस WhatsApp पर, या VAYSPL से SMS से भेजेंगे। काम आपके लायक हुआ, तो हम कॉल करेंगे।",
         again: "एक और भेजें",
       },
       labels: { photo: "फ़ोटो", document: "कागज़" },
@@ -260,7 +260,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         phone: {
           title: "Aapka mobile number",
           placeholder: "98765 43210",
-          agree: "Meri umar 18 saal ya usse zyada hai. Vayasya Seva meri jaankari rakh sakti hai aur kaam ke liye mujhse contact kar sakti hai.",
+          agree: "Meri umar 18 saal ya usse zyada hai. Vayasya Seva meri jaankari rakh sakti hai aur kaam ke liye mujhse contact kar sakti hai, WhatsApp par bhi.",
           keep: "Hum aapki jaankari 12 mahine tak rakhte hain.",
           details: "Poori jaankari",
         },
@@ -290,7 +290,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       done: {
         title: "Mil gaya, dhanyavaad.",
         refLabel: "Aapka reference number",
-        body: "Hum yeh reference VAYSPL se SMS karenge. Yeh SMS sambhaal kar rakhiye. Kaam aapke laayak hua, to hum call karenge.",
+        body: "Hum yeh reference WhatsApp par, ya VAYSPL se SMS se bhejenge. Kaam aapke laayak hua, to hum call karenge.",
         again: "Ek aur bhejein",
       },
       labels: { photo: "Photo", document: "Document" },
@@ -331,7 +331,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         phone: {
           title: "ਤੁਹਾਡਾ ਮੋਬਾਈਲ ਨੰਬਰ",
           placeholder: "98765 43210",
-          agree: "ਮੇਰੀ ਉਮਰ 18 ਸਾਲ ਜਾਂ ਇਸ ਤੋਂ ਵੱਧ ਹੈ। Vayasya Seva ਮੇਰੀ ਜਾਣਕਾਰੀ ਰੱਖ ਸਕਦੀ ਹੈ ਅਤੇ ਕੰਮ ਲਈ ਮੇਰੇ ਨਾਲ ਸੰਪਰਕ ਕਰ ਸਕਦੀ ਹੈ।",
+          agree: "ਮੇਰੀ ਉਮਰ 18 ਸਾਲ ਜਾਂ ਇਸ ਤੋਂ ਵੱਧ ਹੈ। Vayasya Seva ਮੇਰੀ ਜਾਣਕਾਰੀ ਰੱਖ ਸਕਦੀ ਹੈ ਅਤੇ ਕੰਮ ਲਈ ਮੇਰੇ ਨਾਲ ਸੰਪਰਕ ਕਰ ਸਕਦੀ ਹੈ, WhatsApp 'ਤੇ ਵੀ।",
           keep: "ਅਸੀਂ ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ 12 ਮਹੀਨੇ ਤੱਕ ਰੱਖਦੇ ਹਾਂ।",
           details: "ਪੂਰੀ ਜਾਣਕਾਰੀ",
         },
@@ -361,7 +361,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       done: {
         title: "ਮਿਲ ਗਿਆ, ਧੰਨਵਾਦ।",
         refLabel: "ਤੁਹਾਡਾ ਰੈਫ਼ਰੈਂਸ ਨੰਬਰ",
-        body: "ਅਸੀਂ ਇਹ ਰੈਫ਼ਰੈਂਸ VAYSPL ਤੋਂ SMS ਕਰਾਂਗੇ। ਇਹ SMS ਸੰਭਾਲ ਕੇ ਰੱਖੋ। ਕੰਮ ਤੁਹਾਡੇ ਲਾਇਕ ਹੋਇਆ ਤਾਂ ਅਸੀਂ ਕਾਲ ਕਰਾਂਗੇ।",
+        body: "ਅਸੀਂ ਇਹ ਰੈਫ਼ਰੈਂਸ WhatsApp 'ਤੇ, ਜਾਂ VAYSPL ਤੋਂ SMS ਰਾਹੀਂ ਭੇਜਾਂਗੇ। ਕੰਮ ਤੁਹਾਡੇ ਲਾਇਕ ਹੋਇਆ ਤਾਂ ਅਸੀਂ ਕਾਲ ਕਰਾਂਗੇ।",
         again: "ਇੱਕ ਹੋਰ ਭੇਜੋ",
       },
       labels: { photo: "ਫ਼ੋਟੋ", document: "ਕਾਗਜ਼" },
@@ -402,7 +402,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         phone: {
           title: "ನಿಮ್ಮ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ",
           placeholder: "98765 43210",
-          agree: "ನನಗೆ 18 ವರ್ಷ ಅಥವಾ ಅದಕ್ಕಿಂತ ಹೆಚ್ಚು. Vayasya Seva ನನ್ನ ಮಾಹಿತಿಯನ್ನು ಇಟ್ಟುಕೊಂಡು ಕೆಲಸದ ಬಗ್ಗೆ ನನ್ನನ್ನು ಸಂಪರ್ಕಿಸಬಹುದು.",
+          agree: "ನನಗೆ 18 ವರ್ಷ ಅಥವಾ ಅದಕ್ಕಿಂತ ಹೆಚ್ಚು. Vayasya Seva ನನ್ನ ಮಾಹಿತಿಯನ್ನು ಇಟ್ಟುಕೊಂಡು ಕೆಲಸದ ಬಗ್ಗೆ ನನ್ನನ್ನು ಸಂಪರ್ಕಿಸಬಹುದು, WhatsApp ನಲ್ಲಿಯೂ.",
           keep: "ನಿಮ್ಮ ಮಾಹಿತಿಯನ್ನು ನಾವು 12 ತಿಂಗಳು ಇಟ್ಟುಕೊಳ್ಳುತ್ತೇವೆ.",
           details: "ಪೂರ್ಣ ಮಾಹಿತಿ",
         },
@@ -432,7 +432,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       done: {
         title: "ಸ್ವೀಕರಿಸಲಾಗಿದೆ, ಧನ್ಯವಾದಗಳು.",
         refLabel: "ನಿಮ್ಮ ರೆಫರೆನ್ಸ್ ಸಂಖ್ಯೆ",
-        body: "ಈ ರೆಫರೆನ್ಸ್ ಅನ್ನು ನಾವು VAYSPL ಇಂದ SMS ಮಾಡುತ್ತೇವೆ. ಆ SMS ಅನ್ನು ಉಳಿಸಿಕೊಳ್ಳಿ. ಕೆಲಸ ಸರಿಹೊಂದಿದರೆ, ನಾವು ಕರೆ ಮಾಡುತ್ತೇವೆ.",
+        body: "ಈ ರೆಫರೆನ್ಸ್ ಅನ್ನು ನಾವು WhatsApp ನಲ್ಲಿ, ಅಥವಾ VAYSPL ಇಂದ SMS ಮೂಲಕ ಕಳುಹಿಸುತ್ತೇವೆ. ಕೆಲಸ ಸರಿಹೊಂದಿದರೆ, ನಾವು ಕರೆ ಮಾಡುತ್ತೇವೆ.",
         again: "ಇನ್ನೊಂದು ಕಳುಹಿಸಿ",
       },
       labels: { photo: "ಫೋಟೋ", document: "ದಾಖಲೆ" },

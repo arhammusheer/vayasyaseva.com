@@ -29,9 +29,12 @@ const WEBHOOK_URL = process.env.TALENT_INTAKE_WEBHOOK_URL?.trim() || "https://ho
  * route (PLAN §8.3); 2026-10-16-v7, the same day's consent v7: the checkbox
  * line "We keep your details for 12 months. Details →" and the plain
  * applicant notice at /jobs/privacy in each jobs language, with /privacy §10
- * still the governing text. Owner/counsel sign-off pending.
+ * still the governing text. 2026-10-19-v8: the checkbox line adds
+ * "including on WhatsApp", since the reference now goes out on WhatsApp
+ * first (SMS as the fallback), and /privacy §10 says so. Owner/counsel
+ * sign-off pending.
  */
-export const TALENT_CONSENT_VERSION = "2026-10-16-v7";
+export const TALENT_CONSENT_VERSION = "2026-10-19-v8";
 
 /** Upload links and tickets are short-lived. */
 const UPLOAD_URL_SECONDS = 15 * 60;

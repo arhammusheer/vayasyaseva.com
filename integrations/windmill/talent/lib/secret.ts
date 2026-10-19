@@ -1,4 +1,4 @@
-/** The shared-secret check of the talent webhooks (intake, delivery reports, WhatsApp), in constant time. */
+/** The shared-secret check of the talent webhooks (intake, delivery reports), in constant time. */
 import { timingSafeEqual } from "node:crypto";
 
 export function secretMatches(given: string | undefined, expected: string): boolean {

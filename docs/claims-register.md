@@ -23,10 +23,10 @@ Last compiled: 16 October 2026, for the national phase 1 pull request; business 
 
 | Claim | Pages | Tier | Evidence or approval | Signed off | Review by |
 |---|---|---|---|---|---|
-| There is no fee to apply (and not to get work) | All jobs pages, /jobs/fees-and-fraud, wage pages | C | Owner direction | | 16 Oct 2027 |
+| There is no fee to apply (and not to get work) | All jobs pages, wage pages | C | Owner direction | | 16 Oct 2027 |
 | We typically call within a few days when there is suitable work | /jobs FAQ, confirmation screen (3 languages) | A | Practice; becomes B once callback times are measured | | 16 Apr 2027 |
-| SMS with the reference comes from VAYSPL (may show as VM-VAYSPL); references start with VS-J- | Confirmation screen, /jobs/fees-and-fraud | C | DLT sender and template 227115 | | On any template change |
-| We tell you the site and the shift before you join | Jobs FAQ, /jobs/fees-and-fraud | A | Practice | | 16 Oct 2027 |
+| The reference comes on WhatsApp, or by SMS from VAYSPL (may show as VM-VAYSPL); references start with VS-J- | Confirmation screen, jobs hubs ("After you apply"), /privacy §10 | C | WhatsApp Utility template vspl_application_received (Meta, submitted 20 Oct 2026); DLT sender and template 227115 | | On any template change |
+| We tell you the site and the shift before you join | Jobs FAQ | A | Practice | | 16 Oct 2027 |
 | "Most of our work is here" / "some of our work is around Roorkee, Bhagwanpur and Bahadrabad" | /jobs/haridwar, /jobs FAQ. /locations/haridwar now says only "We also take requirements from units in Bhagwanpur, Bahadrabad and Roorkee"; home no longer says it | A | Owner to confirm current work in all three areas | | 16 Apr 2027 |
 | You are on our payroll; we pay your PF and ESIC where they apply | Role and hub pages (3 languages) | C | As the payroll line above | | 16 Oct 2027 |
 | We track each worker’s training and how long they stay (no figures) | Home benefit 2, contract labour explainer (review) | A | Owner positioning note; any figure is B and needs data | | 16 Oct 2027 |

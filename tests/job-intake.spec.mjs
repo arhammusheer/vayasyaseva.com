@@ -63,9 +63,9 @@ test('a web application from /jobs/haridwar forwards web + locale + cluster + pa
   assert.equal(body.channel, 'web');
 });
 
-test('applications carry consent v7 (the /jobs/privacy notice), within the 40 characters n8n stores', async () => {
+test('applications carry consent v8 (WhatsApp in the checkbox line), within the 40 characters n8n stores', async () => {
   const body = await forwarded({ source: 'web', locale: 'en-IN', pageCluster: null, pagePath: '/jobs/apply' }, { form: 'quick', applicantName: 'Ravi', answers });
-  assert.equal(TALENT_CONSENT_VERSION, '2026-10-16-v7');
+  assert.equal(TALENT_CONSENT_VERSION, '2026-10-19-v8');
   assert.equal(body.consent.version, TALENT_CONSENT_VERSION);
   assert.ok(TALENT_CONSENT_VERSION.length <= 40);
   assert.ok(!Number.isNaN(Date.parse(body.consent.at)));

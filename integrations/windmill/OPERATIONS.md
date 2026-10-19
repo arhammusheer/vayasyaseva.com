@@ -72,6 +72,15 @@ An error naming the **Upload files permission (UPLOAD_FILE)** means the Windmill
 
 ## SMS acknowledgement (Fast2SMS)
 
+Since 20 October 2026 the acknowledgement goes on WhatsApp first and this SMS
+is the fallback (README, "The WhatsApp acknowledgement"). To see both:
+
+```sql
+SELECT s.ref, s.locale, a.wa_status, a.wa_delivery, a.wa_detail, a.status AS sms, a.delivery_status AS sms_delivery
+FROM sms_acknowledgements a JOIN submissions s ON s.id = a.submission_id
+ORDER BY a.created_at DESC LIMIT 20;
+```
+
 Every newly saved application, including quick/long forms and agent submissions,
 queues one row in `sms_acknowledgements` in the same database statement as the
 application. After answering HTTP 202, intake starts `f/talent/dispatch` for that

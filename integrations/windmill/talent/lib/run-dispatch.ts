@@ -5,9 +5,12 @@
  * application's SMS. It replaces the acknowledge, deliver, sync_crm and
  * delivery_check schedules; each step is the code those scripts ran.
  *
- *   sms       the Fast2SMS acknowledgement (runAcknowledge): accepted → done;
- *             a rejection → dead; a rate limit → retry; an ambiguous or
- *             interrupted send → unknown, never sent again automatically
+ *   sms       the acknowledgement: WhatsApp first (runWhatsAppAck), looked up
+ *             each minute until delivered or read → done (no SMS); a refusal,
+ *             failure or 10 minutes without delivery → the Fast2SMS SMS
+ *             (runAcknowledge): accepted → done; a rejection → dead; a rate
+ *             limit → retry; an ambiguous or interrupted send → unknown,
+ *             never sent again automatically
  *   chatwoot  the conversation, note and files (runDeliver)
  *   crm       the person, application and acknowledgement in Twenty (syncOne);
  *             runs again when the acknowledgement's status changes (trigger)
@@ -25,6 +28,7 @@ import { runDeliveryCheck, type CheckResult, type DeliveryReport } from "./deliv
 import type { DeliverDeps } from "./run-deliver.ts";
 import { runDeliver } from "./run-deliver.ts";
 import { runAcknowledge } from "./run-acknowledge.ts";
+import { runWhatsAppAck, type WhatsAppAckDeps } from "./whatsapp-ack.ts";
 import { syncOne } from "./run-sync-crm.ts";
 import { runFiles } from "./run-files.ts";
 import {
@@ -43,11 +47,14 @@ import type { Query } from "./db.ts";
 import type { Notify } from "../../notify/lib/emit.ts";
 
 export type Target = "sms" | "chatwoot" | "crm" | "files";
-export type Outcome = { kind: "done" | "retry" | "unknown" | "dead"; error?: string | null };
+/** wait: look again in `seconds` without using an attempt (the WhatsApp report). */
+export type Outcome = { kind: "done" | "retry" | "unknown" | "dead"; error?: string | null } | { kind: "wait"; seconds: number; error?: null };
 
 export interface DispatchDeps {
   query: Query;
   sendSms: (claim: ClaimedAcknowledgement) => Promise<Fast2SmsResponse>;
+  /** The WhatsApp acknowledgement; null sends the SMS only. */
+  whatsapp?: Pick<WhatsAppAckDeps, "sendWhatsApp" | "lookupWhatsApp" | "templates" | "now"> | null;
   chatwoot: Omit<DeliverDeps, "query">;
   /** Twenty; null when it is not configured (the CRM deliveries wait). */
   crm: Twenty | null;
@@ -106,6 +113,10 @@ async function legacy(query: Query, submissionId: string): Promise<Legacy | unde
 // --- Steps --------------------------------------------------------------------
 
 async function sms(deps: DispatchDeps, submissionId: string): Promise<Outcome> {
+  if (deps.whatsapp) {
+    const step = await runWhatsAppAck(submissionId, { query: deps.query, ...deps.whatsapp });
+    if (step.kind !== "sms") return step;
+  }
   const result = await runAcknowledge(submissionId, { query: deps.query, send: deps.sendSms });
   if (result) {
     if (result.status === "accepted") return { kind: "done" };
@@ -115,7 +126,7 @@ async function sms(deps: DispatchDeps, submissionId: string): Promise<Outcome> {
   }
   // Nothing to claim: the acknowledgement already moved (an older run, or not due yet).
   const now = await legacy(deps.query, submissionId);
-  if (now?.sms === "accepted") return { kind: "done" };
+  if (now?.sms === "accepted" || now?.sms === "skipped") return { kind: "done" };
   if (now?.sms === "failed") return { kind: "dead", error: "Rejected by Fast2SMS" };
   if (now?.sms === "unknown") return { kind: "unknown", error: "Interrupted send; check Fast2SMS delivery history before retrying" };
   if (now?.sms === "pending" && (now.sms_attempts ?? 0) >= 3) return { kind: "dead", error: "Three attempts" };
@@ -210,7 +221,7 @@ export async function runDispatch(deps: DispatchDeps, options: DispatchOptions =
         target,
         outcome.kind,
         outcome.error ?? null,
-        backoffSeconds(claim.attempts),
+        outcome.kind === "wait" ? outcome.seconds : backoffSeconds(claim.attempts),
       ]);
       if (finished?.status === "done") result.done[target]++;
       else if (finished?.status === "pending") result.retried[target]++;

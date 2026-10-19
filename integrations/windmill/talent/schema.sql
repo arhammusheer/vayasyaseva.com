@@ -181,6 +181,28 @@ BEGIN
   ALTER TABLE sms_acknowledgements ADD COLUMN IF NOT EXISTS delivery_checked_at timestamptz;
   CREATE INDEX IF NOT EXISTS sms_acknowledgements_request_idx ON sms_acknowledgements (request_id);
 
+  -- The WhatsApp acknowledgement (20 Oct 2026, talent/lib/whatsapp-ack.ts):
+  -- sent first, from the WhatsApp Business number; the SMS is the fallback.
+  -- wa_status is the send (skipped: no approved template for the language),
+  -- wa_delivery its report. status 'skipped': WhatsApp delivered, no SMS.
+  ALTER TABLE sms_acknowledgements DROP CONSTRAINT IF EXISTS sms_acknowledgements_status_check;
+  ALTER TABLE sms_acknowledgements ADD CONSTRAINT sms_acknowledgements_status_check
+    CHECK (status IN ('pending', 'sending', 'accepted', 'failed', 'unknown', 'skipped'));
+  ALTER TABLE sms_acknowledgements ADD COLUMN IF NOT EXISTS wa_status text;
+  ALTER TABLE sms_acknowledgements DROP CONSTRAINT IF EXISTS sms_acknowledgements_wa_status_check;
+  ALTER TABLE sms_acknowledgements ADD CONSTRAINT sms_acknowledgements_wa_status_check
+    CHECK (wa_status IN ('sending', 'accepted', 'failed', 'unknown', 'skipped'));
+  ALTER TABLE sms_acknowledgements ADD COLUMN IF NOT EXISTS wa_request_id text;
+  ALTER TABLE sms_acknowledgements ADD COLUMN IF NOT EXISTS wa_error text;
+  ALTER TABLE sms_acknowledgements ADD COLUMN IF NOT EXISTS wa_sent_at timestamptz;
+  ALTER TABLE sms_acknowledgements ADD COLUMN IF NOT EXISTS wa_updated_at timestamptz;
+  ALTER TABLE sms_acknowledgements ADD COLUMN IF NOT EXISTS wa_delivery text;
+  ALTER TABLE sms_acknowledgements DROP CONSTRAINT IF EXISTS sms_acknowledgements_wa_delivery_check;
+  ALTER TABLE sms_acknowledgements ADD CONSTRAINT sms_acknowledgements_wa_delivery_check
+    CHECK (wa_delivery IN ('read', 'delivered', 'failed', 'pending'));
+  ALTER TABLE sms_acknowledgements ADD COLUMN IF NOT EXISTS wa_detail text;
+  ALTER TABLE sms_acknowledgements ADD COLUMN IF NOT EXISTS wa_delivered_at timestamptz;
+
   -- Roadmap 1F: one deliveries row per submission and target (the SMS
   -- acknowledgement, the Chatwoot conversation, the Twenty CRM records),
   -- worked by the one dispatcher (f/talent/dispatch) with exponential backoff
@@ -225,10 +247,11 @@ BEGIN
   CREATE TRIGGER submissions_queue_deliveries AFTER INSERT ON submissions FOR EACH ROW EXECUTE FUNCTION queue_deliveries();
 
   -- Twenty shows the acknowledgement's status: when it changes (sent,
-  -- delivered, failed), the CRM delivery runs again.
+  -- delivered, read, failed, on WhatsApp or by SMS), the CRM delivery runs again.
   CREATE OR REPLACE FUNCTION reopen_crm_delivery() RETURNS trigger LANGUAGE plpgsql AS $fn$
   BEGIN
-    IF OLD.status IS DISTINCT FROM NEW.status OR OLD.delivery_status IS DISTINCT FROM NEW.delivery_status THEN
+    IF OLD.status IS DISTINCT FROM NEW.status OR OLD.delivery_status IS DISTINCT FROM NEW.delivery_status
+       OR OLD.wa_status IS DISTINCT FROM NEW.wa_status OR OLD.wa_delivery IS DISTINCT FROM NEW.wa_delivery THEN
       UPDATE deliveries SET status = 'pending', attempts = 0, next_attempt_at = now(), last_error = NULL, updated_at = now()
       WHERE submission_id = NEW.submission_id AND target = 'crm' AND status IN ('done', 'dead');
     END IF;
@@ -334,32 +357,9 @@ BEGIN
   ) b
   ON CONFLICT DO NOTHING;
 
-  -- The WhatsApp apply chat (19 Oct 2026, talent/lib/whatsapp.ts): one row per
-  -- WhatsApp number while it answers the questions. `step` is the question
-  -- waiting for an answer; `answers` holds QUICK_ANSWERS ids, as submissions.answers.
-  -- `version` guards against two messages handled at once (each update checks it).
-  -- Rows go 30 days after the last message (retention), and with the person's erasure.
-  CREATE TABLE IF NOT EXISTS whatsapp_chats (
-    phone        text PRIMARY KEY,
-    locale       text,
-    step         text NOT NULL,
-    answers      jsonb NOT NULL DEFAULT '{}'::jsonb,
-    name         text,
-    notes        text,
-    consented_at timestamptz,
-    ref          text,
-    reminders    int NOT NULL DEFAULT 0,
-    version      int NOT NULL DEFAULT 0,
-    created_at   timestamptz NOT NULL DEFAULT now(),
-    updated_at   timestamptz NOT NULL DEFAULT now()
-  );
-  CREATE INDEX IF NOT EXISTS whatsapp_chats_updated_idx ON whatsapp_chats (updated_at);
-  -- Fast2SMS may deliver a webhook more than once: each WhatsApp message id is
-  -- handled once. Ids only (no phone, no text); kept 3 days.
-  CREATE TABLE IF NOT EXISTS whatsapp_messages (
-    message_id  text PRIMARY KEY,
-    received_at timestamptz NOT NULL DEFAULT now()
-  );
-  CREATE INDEX IF NOT EXISTS whatsapp_messages_received_idx ON whatsapp_messages (received_at);
+  -- The WhatsApp apply chat (19 Oct 2026) was removed the same day, before
+  -- its webhook was ever made: its two tables never held a row.
+  DROP TABLE IF EXISTS whatsapp_chats;
+  DROP TABLE IF EXISTS whatsapp_messages;
 END
 $$;

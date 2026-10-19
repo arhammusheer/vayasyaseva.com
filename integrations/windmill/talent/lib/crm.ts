@@ -41,6 +41,15 @@ export interface SyncCandidate {
   delivery_status: string | null;
   delivery_detail: string | null;
   delivered_at: string | Date | null;
+  /** The WhatsApp acknowledgement (whatsapp-ack.ts): the send, and its report. */
+  wa_status: string | null;
+  wa_request_id: string | null;
+  wa_error: string | null;
+  wa_sent_at: string | Date | null;
+  wa_delivery: string | null;
+  wa_detail: string | null;
+  wa_delivered_at: string | Date | null;
+  wa_updated_at: string | Date | null;
   person_id: string | null;
   application_id: string | null;
   synced_ack_status: string | null;
@@ -292,9 +301,53 @@ export function deliveryStatus(ackStatus: string | null, delivery: string | null
   }
 }
 
-/** What crm_sync remembers writing ("accepted", "accepted:delivered"…): SYNC_CANDIDATES builds the same. */
-export const ackSyncState = (c: Pick<SyncCandidate, "ack_status" | "delivery_status">) =>
-  c.ack_status && c.delivery_status ? `${c.ack_status}:${c.delivery_status}` : c.ack_status;
+/**
+ * What crm_sync remembers writing ("accepted", "accepted:delivered",
+ * "skipped:accepted:read"…): the set fields joined by ":", as SYNC_CANDIDATES
+ * builds it (concat_ws skips nulls), so older rows keep their state.
+ */
+export const ackSyncState = (c: Pick<SyncCandidate, "ack_status" | "delivery_status" | "wa_status" | "wa_delivery">) =>
+  [c.ack_status, c.delivery_status, c.wa_status, c.wa_delivery].filter(Boolean).join(":") || null;
+
+/** The SMS has a Communication once it has been sent, or tried: not while WhatsApp goes first, nor when WhatsApp made it unneeded. */
+export const smsWasSent = (c: Pick<SyncCandidate, "ack_status">) => !!c.ack_status && c.ack_status !== "pending" && c.ack_status !== "skipped";
+export const whatsAppWasSent = (c: Pick<SyncCandidate, "wa_status">) => !!c.wa_status && c.wa_status !== "skipped";
+
+/** The approved WhatsApp template (whatsapp-ack.ts WA_TEMPLATES), in English. */
+export const WA_ACK_TEMPLATE = "vspl_application_received (WhatsApp, Utility)";
+export const waAckText = (ref: string) =>
+  `Vayasya Seva received your job application.\nReference: ${ref}\n\nIf the work fits, our team will contact you.\nReply here if you have a question. You can send a voice note too.\n\nThis number takes messages only, not calls.`;
+
+/** The WhatsApp Communication's Delivery: read, delivered, failed from the report, else the send's outcome. */
+export function whatsAppDeliveryStatus(waStatus: string | null, delivery: string | null): string {
+  if (waStatus === "accepted" && delivery === "read") return "READ";
+  if (waStatus === "accepted" && delivery === "delivered") return "DELIVERED";
+  if (waStatus === "accepted" && delivery === "failed") return "FAILED";
+  if (waStatus === "accepted") return "SENT";
+  if (waStatus === "failed") return "FAILED";
+  if (waStatus === "unknown") return "UNKNOWN";
+  return "QUEUED";
+}
+
+export const waAckKey = (submissionId: string) => `wa-ack:${submissionId}`;
+
+export function waAckFields(c: SyncCandidate, personId: string, applicationId: string): Record<string, unknown> {
+  return {
+    name: `WhatsApp · application received · ${c.ref}`,
+    channel: "WHATSAPP",
+    direction: "OUTBOUND",
+    deliveryStatus: whatsAppDeliveryStatus(c.wa_status, c.wa_delivery),
+    template: WA_ACK_TEMPLATE,
+    body: waAckText(c.ref),
+    provider: "Fast2SMS",
+    providerId: c.wa_request_id ?? "",
+    statusAt: iso(c.wa_delivered_at ?? c.wa_sent_at ?? c.wa_updated_at),
+    error: c.wa_delivery === "failed" || c.wa_delivery === "pending" ? (c.wa_detail ?? "") : (c.wa_error ?? ""),
+    externalKey: waAckKey(c.id),
+    personId,
+    applicationId,
+  };
+}
 
 export const ackKey = (submissionId: string) => `sms-ack:${submissionId}`;
 
@@ -336,11 +389,16 @@ export async function ensureApplication(crm: Twenty, c: SyncCandidate, personId:
   return (await crm.create("applications", "Application", applicationFields(c, personId))).id;
 }
 
+/** The acknowledgement's Communications: the WhatsApp message and the SMS, each once it was sent. */
 export async function upsertAcknowledgement(crm: Twenty, c: SyncCandidate, personId: string, applicationId: string): Promise<void> {
-  const fields = ackFields(c, personId, applicationId);
-  const [existing] = await crm.find("communications", eq("externalKey", ackKey(c.id)));
-  if (existing) await crm.update("communications", existing.id, fields);
-  else await crm.create("communications", "Communication", fields);
+  const records: [string, Record<string, unknown>][] = [];
+  if (whatsAppWasSent(c)) records.push([waAckKey(c.id), waAckFields(c, personId, applicationId)]);
+  if (smsWasSent(c)) records.push([ackKey(c.id), ackFields(c, personId, applicationId)]);
+  for (const [key, fields] of records) {
+    const [existing] = await crm.find("communications", eq("externalKey", key));
+    if (existing) await crm.update("communications", existing.id, fields);
+    else await crm.create("communications", "Communication", fields);
+  }
 }
 
 /** The worker side of a person, emptied when a client contact's applicant data is erased. */

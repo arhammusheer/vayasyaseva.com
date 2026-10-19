@@ -15,9 +15,8 @@
 //   job seekers);
 // - the jobs routes of the OpenAPI spec, or the schemas they use, carry it;
 // - any page in the sitemap has JobPosting markup (not yet: PLAN §5.1);
-// - the WhatsApp apply number shows anywhere but inside its wa.me link (as
-//   digits or a tel: link): it takes messages only, and the app still rings
-//   for calls (src/content/pages/whatsapp-apply.ts).
+// - the WhatsApp number shows at all (digits, tel: or wa.me): it sends the
+//   acknowledgements and takes replies only (src/content/whatsapp-number.ts).
 import { fileURLToPath } from "node:url";
 
 const SITE = "https://www.vayasyaseva.com";
@@ -36,15 +35,13 @@ const PHONE_FREE = [
 const PICKER = /^\/jobs(\/|$)/;
 
 const { businessPhone } = await import("../src/content/business-contact.ts");
-const { WHATSAPP_APPLY_NUMBER } = await import("../src/content/whatsapp-apply-number.ts");
+const { WHATSAPP_NUMBER } = await import("../src/content/whatsapp-number.ts");
 
 /** Ten digits with any spacing or punctuation between them: 72920 14101, 72920-14101, 7292014101. */
 const spaced = (digits) => new RegExp(digits.split("").join("[\\s\\u00a0().\\-]*"));
 const digitsPattern = spaced(businessPhone.digits);
-/** The WhatsApp apply number: allowed only as wa.me/<number>, so its link is taken out before looking. */
-const applyDigits = WHATSAPP_APPLY_NUMBER.slice(-10);
-const applyPattern = spaced(applyDigits);
-const applyLink = new RegExp(`wa\\.me/${WHATSAPP_APPLY_NUMBER}`, "g");
+/** The WhatsApp number, in any spacing (a wa.me link carries the digits too). */
+const whatsappPattern = spaced(WHATSAPP_NUMBER.slice(-10));
 
 const neutralPath = (path) => path.replace(LOCALE_SEGMENT, "") || "/";
 export const isPhoneFree = (path) => PHONE_FREE.some((re) => re.test(neutralPath(path)));
@@ -72,7 +69,7 @@ export function phoneIn(text, { tel = true } = {}) {
   const found = [];
   if (tel && /href=["']?tel:|\btel:\+?\d/i.test(text)) found.push("tel: link");
   if (digitsPattern.test(text)) found.push("phone digits");
-  if (applyPattern.test(text.replace(applyLink, "wa.me/"))) found.push("WhatsApp apply number outside its wa.me link");
+  if (whatsappPattern.test(text)) found.push("WhatsApp number");
   return found;
 }
 

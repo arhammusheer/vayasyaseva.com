@@ -24,7 +24,8 @@ export const PAYLOAD = JSON.stringify(
     from: "@{{from}}",
     message_type: "@{{message_type}}",
     body: "@{{body}}",
-    message_id: "@{{message_id}}",
+    // Fast2SMS has no message_id variable: request_id is the message's unique id (docs.fast2sms.com/reference/whatsapp-webhook).
+    message_id: "@{{request_id}}",
     phone_number_id: "@{{phone_number_id}}",
   },
   null,
@@ -54,7 +55,9 @@ if (process.argv.includes("--copy-secret")) {
 console.log(`In the Fast2SMS dashboard (Dev API → Webhooks), Create webhook with:
   Webhook Name    ${WEBHOOK_NAME}
   Service         WhatsApp
+  Format          Standard Webhook
   Event           Received (incoming messages)
+  Phone Number Id +91 78958 50598
   Method          POST
   URL             ${WEBHOOK_URL}
   Content-Type    JSON

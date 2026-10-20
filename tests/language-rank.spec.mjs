@@ -154,7 +154,11 @@ test("urlIntent reads ?cluster= and the Punjab campaigns' UTM tags", () => {
   assert.equal(rank.urlIntent(new URLSearchParams("cluster=jalandhar")), "jalandhar");
   assert.equal(rank.urlIntent(new URLSearchParams("utm_campaign=jobs_jalandhar&utm_term=packing%20job")), "jalandhar");
   assert.equal(rank.urlIntent(new URLSearchParams("utm_term=ludhiana%20job")), "punjab");
-  assert.equal(rank.urlIntent(new URLSearchParams("utm_term=kapurthala%20job")), "jalandhar");
+  // Kapurthala district is its own jobs market since 20 Oct 2026 (Phagwara included).
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_term=kapurthala%20job")), "kapurthala");
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_campaign=jobs_kapurthala&utm_term=packing%20job")), "kapurthala");
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_term=phagwara%20job")), "kapurthala");
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_term=goraya%20job")), "jalandhar");
   assert.equal(rank.urlIntent(new URLSearchParams("cluster=nowhere")), undefined);
   // Only markets are intent (model v3): Saharanpur and "other" are stored cluster ids, not markets.
   assert.equal(rank.urlIntent(new URLSearchParams("cluster=saharanpur")), undefined);
@@ -163,7 +167,7 @@ test("urlIntent reads ?cluster= and the Punjab campaigns' UTM tags", () => {
   assert.equal(rank.urlIntent(new URLSearchParams("utm_campaign=jobs_saharanpur")), undefined);
   // Multi-word place words match with _ or - for spaces.
   assert.equal(rank.urlIntent(new URLSearchParams("utm_campaign=jobs_electronic_city")), "bengaluru");
-  assert.equal(rank.urlIntent(new URLSearchParams("utm_term=sultanpur-lodhi")), "jalandhar");
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_term=sultanpur-lodhi")), "kapurthala");
   // A Punjab ad landing on the neutral /jobs/apply gets the Punjabi-first picker.
   const seg = rank.rankSegmentFor("/jobs/apply", { country: "IN", region: "UP" }, new URLSearchParams("utm_campaign=jobs_jalandhar"));
   assert.ok(seg.startsWith("pa-"), seg);

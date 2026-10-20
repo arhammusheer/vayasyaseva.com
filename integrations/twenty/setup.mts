@@ -40,8 +40,9 @@ const CLUSTERS = options([
   ["JALANDHAR", "Jalandhar"],
   ["SAHARANPUR", "Saharanpur"],
   ["OTHER", "Other"],
-  ["PUNJAB", "Punjab (outside Jalandhar–Kapurthala)"],
+  ["PUNJAB", "Punjab (outside Jalandhar and Kapurthala)"],
   ["DEHRADUN", "Dehradun"],
+  ["KAPURTHALA", "Kapurthala"],
 ]);
 // src/lib/talent-intake/rules.ts JOB_ROLES, plus the work answers' "any".
 const ROLES = options([

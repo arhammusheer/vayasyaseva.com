@@ -24,6 +24,7 @@ export const CLUSTER_LABELS: Record<string, string> = {
   saharanpur: "Saharanpur",
   punjab: "Punjab",
   dehradun: "Dehradun",
+  kapurthala: "Kapurthala",
   other: "other area",
 };
 

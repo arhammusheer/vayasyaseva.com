@@ -9,10 +9,12 @@
  * (owner decisions, 18 Oct 2026).
  * 5 (18 Oct 2026): Dehradun becomes a market (Dehradun-district places no
  * longer name the rest of Uttarakhand); the weights are unchanged.
+ * 6 (20 Oct 2026): Kapurthala becomes a jobs market (Kapurthala-district
+ * places, Phagwara included, no longer name Jalandhar's); weights unchanged.
  */
 import type { AudienceWeights, ContextTables, RegionWeights } from "./core";
 
-export const CONTEXT_VERSION = 5;
+export const CONTEXT_VERSION = 6;
 
 /**
  * Job seekers: where they live decides, so the IP (roughly where the phone

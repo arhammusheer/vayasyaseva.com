@@ -19,7 +19,8 @@
  * for a city or typed place the first match wins, and for tags the markets
  * come out in the order of their first matching group (the language picker
  * takes the first: src/lib/language-rank.ts urlIntent). Narrow markets come
- * first (Haridwar and Dehradun before the rest of Uttarakhand), then the state names,
+ * first (Haridwar and Dehradun before the rest of Uttarakhand, Jalandhar and
+ * Kapurthala before the rest of Punjab), then the state names,
  * then Delhi NCR's Delhi and Haryana groups (a "Delhi Road" in another
  * state's town matches that town first), then "NCR" (no state of its own).
  */
@@ -30,7 +31,7 @@ import type { ClusterId, LocaleTag } from "@/content/registry/identifiers";
  * market comes first by default). Every market is a cluster id (stored,
  * append-only, in identifiers.ts); not every cluster is a market.
  */
-export const MARKET_IDS = ["bengaluru", "dehradun", "delhi-ncr", "haridwar", "jalandhar", "punjab", "uttarakhand"] as const satisfies readonly ClusterId[];
+export const MARKET_IDS = ["bengaluru", "dehradun", "delhi-ncr", "haridwar", "jalandhar", "kapurthala", "punjab", "uttarakhand"] as const satisfies readonly ClusterId[];
 export type MarketId = (typeof MARKET_IDS)[number];
 
 /** A region code: ISO 3166-2:IN without "IN-". Always the current code: old ones are aliases (REGION_ALIASES). */
@@ -111,7 +112,7 @@ export const MARKETS = {
     states: ["KA"],
     defaultStates: ["KA"],
     placeGroups: [
-      { rank: 6, region: ["KA"], words: ["bengaluru", "bangalore", "blr", "peenya", "bommasandra", "jigani", "attibele", "hoskote", "whitefield", "electronic city", "narasapura"] },
+      { rank: 7, region: ["KA"], words: ["bengaluru", "bangalore", "blr", "peenya", "bommasandra", "jigani", "attibele", "hoskote", "whitefield", "electronic city", "narasapura"] },
     ],
     languageSet: "karnataka",
     // Karnataka: ಕನ್ನಡ (published 17 Oct 2026) · English · Hinglish.
@@ -124,7 +125,7 @@ export const MARKETS = {
     defaultStates: [],
     placeGroups: [
       // Dehradun district: the city, Selaqui and Sahaspur, the Vikasnagar side, Doiwala and Rishikesh.
-      { rank: 3, region: ["UK"], words: ["dehradun", "dehra dun", "doon", "selaqui", "sahaspur", "vikasnagar", "herbertpur", "premnagar", "prem nagar", "doiwala", "rishikesh", "langha", "jhajra", "mohabbewala", "harrawala", "clement town"] },
+      { rank: 4, region: ["UK"], words: ["dehradun", "dehra dun", "doon", "selaqui", "sahaspur", "vikasnagar", "herbertpur", "premnagar", "prem nagar", "doiwala", "rishikesh", "langha", "jhajra", "mohabbewala", "harrawala", "clement town"] },
     ],
     languageSet: "hindi",
     quickSwitch: HINDI_BELT_SWITCH,
@@ -135,16 +136,16 @@ export const MARKETS = {
     states: ["DL", "HR", "UP"],
     defaultStates: ["DL", "HR"],
     placeGroups: [
-      { rank: 2, region: ["UP"], words: ["noida", "greater noida", "ghaziabad", "gautam buddha nagar"] },
+      { rank: 3, region: ["UP"], words: ["noida", "greater noida", "ghaziabad", "gautam buddha nagar"] },
       // The Delhi and Haryana sides, one state each, so a typed town names
       // its state (placeState). After the towns and the state names: a
       // "Delhi Road" in another state's town matches that town first. Same
       // market as the region alone. "Delhi" is the city and the state.
-      { rank: 9, region: ["DL"], words: ["delhi", "new delhi", "okhla", "bawana", "narela", "mayapuri", "naraina", "wazirpur", "patparganj", "mundka"] },
-      { rank: 10, region: ["HR"], words: ["gurugram", "gurgaon", "manesar", "faridabad", "ballabgarh", "sonipat", "kundli", "bahadurgarh"] },
+      { rank: 10, region: ["DL"], words: ["delhi", "new delhi", "okhla", "bawana", "narela", "mayapuri", "naraina", "wazirpur", "patparganj", "mundka"] },
+      { rank: 11, region: ["HR"], words: ["gurugram", "gurgaon", "manesar", "faridabad", "ballabgarh", "sonipat", "kundli", "bahadurgarh"] },
       // "NCR" spans all three states, so it names the market in each (a UP
       // site in "NCR" is Delhi NCR's) but no state. Last: "Gurgaon NCR" is Haryana.
-      { rank: 11, region: ["DL", "HR", "UP"], words: ["ncr"] },
+      { rank: 12, region: ["DL", "HR", "UP"], words: ["ncr"] },
     ],
     languageSet: "hindi",
     quickSwitch: HINDI_BELT_SWITCH,
@@ -168,25 +169,43 @@ export const MARKETS = {
     // The state's default is the rest of Punjab; the Jalandhar region is named by place.
     defaultStates: [],
     placeGroups: [
-      { rank: 1, region: ["PB"], words: ["jalandhar", "jullundur", "kapurthala", "phagwara", "goraya", "kartarpur", "phillaur", "nakodar", "sultanpur lodhi", "adampur", "bholath"] },
+      // Jalandhar district. Kapurthala district (Phagwara included) is its
+      // own jobs market since 20 Oct 2026; its buyer page is still this one.
+      { rank: 1, region: ["PB"], words: ["jalandhar", "jullundur", "goraya", "kartarpur", "phillaur", "nakodar", "adampur"] },
     ],
     languageSet: "punjab",
     quickSwitch: PUNJAB_SWITCH,
     sides: ["business", "jobs"],
+  },
+  kapurthala: {
+    states: ["PB"],
+    defaultStates: [],
+    placeGroups: [
+      // Kapurthala district, both parts: the city, Sultanpur Lodhi, Bholath
+      // and Begowal, and Phagwara across Jalandhar district. After
+      // Jalandhar's: "Kapurthala Road, Jalandhar" is Jalandhar's.
+      { rank: 2, region: ["PB"], words: ["kapurthala", "phagwara", "sultanpur lodhi", "bholath", "begowal", "dhilwan", "nadala"] },
+    ],
+    languageSet: "punjab",
+    quickSwitch: PUNJAB_SWITCH,
+    // Jobs only (owner direction, 20 Oct 2026): Kapurthala is its own
+    // district and job market, while buyers keep the Jalandhar region's page.
+    sides: ["jobs"],
+    standIn: { business: "jalandhar" },
   },
   punjab: {
     states: ["PB"],
     defaultStates: ["PB"],
     placeGroups: [
       // The rest of the state, so a typed city names its market even on another market's page.
-      { rank: 5, region: ["PB"], words: ["ludhiana", "mohali", "kharar", "amritsar", "patiala", "rajpura", "bathinda", "zirakpur", "dera bassi"] },
+      { rank: 6, region: ["PB"], words: ["ludhiana", "mohali", "kharar", "amritsar", "patiala", "rajpura", "bathinda", "zirakpur", "dera bassi"] },
       // The state's name: the state's default market ("jobs_punjab").
-      { rank: 8, region: ["PB"], words: ["punjab"], wholeState: true },
+      { rank: 9, region: ["PB"], words: ["punjab"], wholeState: true },
     ],
     languageSet: "punjab",
     quickSwitch: PUNJAB_SWITCH,
-    // Jobs only: Punjab outside Jalandhar–Kapurthala has no buyer page, and
-    // the Jalandhar region's covers Punjab's buyers.
+    // Jobs only: Punjab outside Jalandhar and Kapurthala has no buyer page,
+    // and the Jalandhar region's covers Punjab's buyers.
     sides: ["jobs"],
     standIn: { business: "jalandhar" },
   },
@@ -195,9 +214,9 @@ export const MARKETS = {
     defaultStates: ["UK"],
     placeGroups: [
       // The rest of the state, so a typed city names its market even on another market's page.
-      { rank: 4, region: ["UK"], words: ["rudrapur", "kashipur", "sitarganj", "pantnagar", "haldwani", "kotdwar"] },
+      { rank: 5, region: ["UK"], words: ["rudrapur", "kashipur", "sitarganj", "pantnagar", "haldwani", "kotdwar"] },
       // The state's name: the state's default market ("Roorkee, Uttarakhand" stays Haridwar's: rank 0 is tried first).
-      { rank: 7, region: ["UK"], words: ["uttarakhand"], wholeState: true },
+      { rank: 8, region: ["UK"], words: ["uttarakhand"], wholeState: true },
     ],
     languageSet: "hindi",
     quickSwitch: HINDI_BELT_SWITCH,
@@ -221,9 +240,9 @@ export const NEARBY: Readonly<Record<string, readonly MarketId[]>> = {
   "delhi-ncr": ["haridwar", "uttarakhand"],
   // UP outside NCR: its west (Saharanpur, Muzaffarnagar) borders Haridwar.
   UP: ["haridwar", "uttarakhand"],
-  HP: ["jalandhar", "punjab"],
-  JK: ["jalandhar", "punjab"],
-  CH: ["punjab", "jalandhar"],
+  HP: ["jalandhar", "kapurthala", "punjab"],
+  JK: ["jalandhar", "kapurthala", "punjab"],
+  CH: ["punjab", "jalandhar", "kapurthala"],
   TN: ["bengaluru"],
   AP: ["bengaluru"],
   TS: ["bengaluru"],

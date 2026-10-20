@@ -881,9 +881,9 @@
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/jobs/jalandhar",
-    "lastModified": "2026-10-16T00:00:00.000Z",
+    "lastModified": "2026-10-20T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.8,
+    "priority": 0.7,
     "alternates": {
       "languages": {
         "en-IN": "https://www.vayasyaseva.com/en-in/jobs/jalandhar",
@@ -896,9 +896,9 @@
   },
   {
     "url": "https://www.vayasyaseva.com/hi-in/jobs/jalandhar",
-    "lastModified": "2026-10-16T00:00:00.000Z",
+    "lastModified": "2026-10-20T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.8,
+    "priority": 0.7,
     "alternates": {
       "languages": {
         "en-IN": "https://www.vayasyaseva.com/en-in/jobs/jalandhar",
@@ -911,9 +911,9 @@
   },
   {
     "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/jalandhar",
-    "lastModified": "2026-10-16T00:00:00.000Z",
+    "lastModified": "2026-10-20T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.8,
+    "priority": 0.7,
     "alternates": {
       "languages": {
         "en-IN": "https://www.vayasyaseva.com/en-in/jobs/jalandhar",
@@ -926,9 +926,9 @@
   },
   {
     "url": "https://www.vayasyaseva.com/pa-in/jobs/jalandhar",
-    "lastModified": "2026-10-16T00:00:00.000Z",
+    "lastModified": "2026-10-20T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.8,
+    "priority": 0.7,
     "alternates": {
       "languages": {
         "en-IN": "https://www.vayasyaseva.com/en-in/jobs/jalandhar",
@@ -936,6 +936,66 @@
         "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/jalandhar",
         "pa-IN": "https://www.vayasyaseva.com/pa-in/jobs/jalandhar",
         "x-default": "https://www.vayasyaseva.com/en-in/jobs/jalandhar"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/kapurthala",
+    "lastModified": "2026-10-20T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/kapurthala",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/kapurthala",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/kapurthala",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/jobs/kapurthala",
+        "x-default": "https://www.vayasyaseva.com/en-in/jobs/kapurthala"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/kapurthala",
+    "lastModified": "2026-10-20T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/kapurthala",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/kapurthala",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/kapurthala",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/jobs/kapurthala",
+        "x-default": "https://www.vayasyaseva.com/en-in/jobs/kapurthala"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/kapurthala",
+    "lastModified": "2026-10-20T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/kapurthala",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/kapurthala",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/kapurthala",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/jobs/kapurthala",
+        "x-default": "https://www.vayasyaseva.com/en-in/jobs/kapurthala"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/pa-in/jobs/kapurthala",
+    "lastModified": "2026-10-20T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/kapurthala",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/kapurthala",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/kapurthala",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/jobs/kapurthala",
+        "x-default": "https://www.vayasyaseva.com/en-in/jobs/kapurthala"
       }
     }
   },

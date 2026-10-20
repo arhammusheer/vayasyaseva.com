@@ -3,8 +3,9 @@
  * point from ./index.ts (which must not re-export it), so the proxy and the
  * bundles that only need a decision carry none of these strings.
  *
- * Two names where they differ today: `name` is the full name ("Jalandhar and
- * Kapurthala"), `short` the business header's label ("Jalandhar–Kapurthala").
+ * Two names where they differ today: `name` is the market's name ("Jalandhar",
+ * also its jobs chip), `short` the business header's label for the region's
+ * buyer page ("Jalandhar–Kapurthala", which covers Kapurthala's buyers too).
  */
 import type { LocaleTag } from "@/content/registry/identifiers";
 import type { JobsMarketId, MarketId } from "./data";
@@ -22,9 +23,10 @@ export const MARKET_LABELS = {
   "delhi-ncr": { name: { "en-IN": "Delhi NCR", "hi-IN": "दिल्ली NCR", "hi-Latn-IN": "Delhi NCR" } },
   haridwar: { name: { "en-IN": "Haridwar", "hi-IN": "हरिद्वार", "hi-Latn-IN": "Haridwar" } },
   jalandhar: {
-    name: { "en-IN": "Jalandhar and Kapurthala", "hi-IN": "जालंधर और कपूरथला", "hi-Latn-IN": "Jalandhar aur Kapurthala" },
+    name: { "en-IN": "Jalandhar", "hi-IN": "जालंधर", "hi-Latn-IN": "Jalandhar", "pa-IN": "ਜਲੰਧਰ" },
     short: "Jalandhar–Kapurthala",
   },
+  kapurthala: { name: { "en-IN": "Kapurthala", "hi-IN": "कपूरथला", "hi-Latn-IN": "Kapurthala", "pa-IN": "ਕਪੂਰਥਲਾ" } },
   punjab: { name: { "en-IN": "Punjab", "hi-IN": "पंजाब", "hi-Latn-IN": "Punjab", "pa-IN": "ਪੰਜਾਬ" } },
   uttarakhand: { name: { "en-IN": "Uttarakhand", "hi-IN": "उत्तराखंड", "hi-Latn-IN": "Uttarakhand" } },
 } as const satisfies Record<MarketId, MarketLabel>;
@@ -53,11 +55,18 @@ export const JOBS_LINK_LABELS = {
     "pa-IN": "ਹਰਿਦੁਆਰ ਵਿੱਚ ਨੌਕਰੀ",
   },
   jalandhar: {
-    "en-IN": "Jobs in Jalandhar and Kapurthala",
-    "hi-IN": "जालंधर और कपूरथला में नौकरी",
-    "hi-Latn-IN": "Jalandhar aur Kapurthala mein job",
-    "kn-IN": "ಜಲಂಧರ್ ಮತ್ತು ಕಪೂರ್ಥಲಾದಲ್ಲಿ ಉದ್ಯೋಗ",
-    "pa-IN": "ਜਲੰਧਰ ਅਤੇ ਕਪੂਰਥਲਾ ਵਿੱਚ ਨੌਕਰੀ",
+    "en-IN": "Jobs in Jalandhar",
+    "hi-IN": "जालंधर में नौकरी",
+    "hi-Latn-IN": "Jalandhar mein job",
+    "kn-IN": "ಜಲಂಧರ್‌ನಲ್ಲಿ ಉದ್ಯೋಗ",
+    "pa-IN": "ਜਲੰਧਰ ਵਿੱਚ ਨੌਕਰੀ",
+  },
+  kapurthala: {
+    "en-IN": "Jobs in Kapurthala and Phagwara",
+    "hi-IN": "कपूरथला और फगवाड़ा में नौकरी",
+    "hi-Latn-IN": "Kapurthala aur Phagwara mein job",
+    "kn-IN": "ಕಪೂರ್ಥಲಾ ಮತ್ತು ಫಗ್ವಾರಾದಲ್ಲಿ ಉದ್ಯೋಗ",
+    "pa-IN": "ਕਪੂਰਥਲਾ ਅਤੇ ਫਗਵਾੜਾ ਵਿੱਚ ਨੌਕਰੀ",
   },
   punjab: {
     "en-IN": "Jobs across Punjab",

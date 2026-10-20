@@ -5,8 +5,8 @@ import { AGE_FAQ } from "./job-hubs";
 
 /**
  * Jobs hubs for one market, under /jobs/<cluster> (PLAN §5.3): Haridwar and
- * Jalandhar–Kapurthala with open work; Bengaluru, Dehradun, Uttarakhand
- * (outside Haridwar and Dehradun) and Punjab (outside Jalandhar–Kapurthala) as worker lists (no openings named, no estates, no
+ * Kapurthala with open work; Bengaluru, Dehradun, Jalandhar, Uttarakhand
+ * (outside Haridwar and Dehradun) and Punjab (outside Jalandhar and Kapurthala) as worker lists (no openings named, no estates, no
  * "vacancy" in the title, PLAN §5.3 "hubs where no roles are open now"). A
  * cluster gets one only once it is in src/content/registry/clusters.ts and
  * its page is in pages.ts.
@@ -20,7 +20,7 @@ import { AGE_FAQ } from "./job-hubs";
  * pending native review.
  */
 export interface JobClusterCopy {
-  slug: Extract<ClusterId, "haridwar" | "bengaluru" | "jalandhar" | "uttarakhand" | "punjab" | "dehradun">;
+  slug: Extract<ClusterId, "haridwar" | "bengaluru" | "jalandhar" | "kapurthala" | "uttarakhand" | "punjab" | "dehradun">;
   /** Short name for breadcrumbs. */
   name: string;
   metaTitle: string;
@@ -96,16 +96,38 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       ],
     },
     {
+      // A worker list since 20 Oct 2026, when Kapurthala (and Phagwara, in
+      // Kapurthala district) got its own hub with the open packing work.
+      // "jalandhar job" ~5,400 a month locally (Keyword Planner, 18 Oct 2026).
+      slug: "jalandhar",
+      name: "Jalandhar",
+      metaTitle: "Jobs in Jalandhar: Factory, Packing and Warehouse Work",
+      description:
+        "Factory, packing and warehouse work in Jalandhar, its focal points, Kartarpur, Goraya and Phillaur. Join our worker list: no fee, full 8-hour shifts.",
+      eyebrow: "JOBS · JALANDHAR",
+      heading: "Factory and warehouse work in Jalandhar.",
+      lede: "We're building a list of workers in Jalandhar, Kartarpur, Goraya and Phillaur. When a site there needs people, we call you.",
+      after: { label: "After you apply", steps: ["WhatsApp or SMS", "We call when a site needs you", "You decide"] },
+      faqTitle: "Questions.",
+      faqs: [
+        { question: "Are there openings now?", answer: "Packing work in Kapurthala, yes. In Jalandhar, not every week: you join our list, and we call when a site there needs your kind of work.", category: "operations" },
+        { question: "What documents do I need?", answer: "Your 10th or 12th marksheet. Your ITI certificate, if you have one. The ID the site asks for at joining. We tell you what to bring before you join. Don't send Aadhaar or bank papers in the form.", category: "operations" },
+        AGE_FAQ["en-IN"],
+        { question: "Who pays me?", answer: "We do, with EPF and ESIC where they apply.", category: "operations" },
+      ],
+    },
+    {
       // Open work: the lede's "now" is the Kapurthala packing requirement of
       // October 2026. Change it to plain area names once that is filled.
-      slug: "jalandhar",
-      name: "Jalandhar–Kapurthala",
-      metaTitle: "Jalandhar Job Vacancy: Kapurthala Packing, Factory Jobs",
+      // Its own market since 20 Oct 2026: Kapurthala district, Phagwara included.
+      slug: "kapurthala",
+      name: "Kapurthala",
+      metaTitle: "Kapurthala Job Vacancy: Packing, Factory Jobs, Phagwara",
       description:
-        "Job vacancy in Jalandhar, Kapurthala and Phagwara. No fee. Full 8-hour shifts. Packing, factory and warehouse work. Apply online, a few short questions.",
-      eyebrow: "JOBS · JALANDHAR–KAPURTHALA",
-      heading: "Packing and factory jobs in Kapurthala and Jalandhar.",
-      lede: "Packing work in Kapurthala now. Factory and warehouse work across Jalandhar and Phagwara.",
+        "Job vacancy in Kapurthala and Phagwara. No fee. Full 8-hour shifts. Packing, factory and warehouse work. Apply online, a few short questions.",
+      eyebrow: "JOBS · KAPURTHALA",
+      heading: "Packing and factory jobs in Kapurthala and Phagwara.",
+      lede: "Packing work in Kapurthala now. Factory and warehouse work across Phagwara and Sultanpur Lodhi.",
       after: { label: "After you apply", steps: ["WhatsApp or SMS", "We call if the work fits", "You decide"] },
       faqTitle: "Questions.",
       faqs: [
@@ -244,13 +266,31 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     },
     {
       slug: "jalandhar",
-      name: "जालंधर–कपूरथला",
-      metaTitle: "जालंधर जॉब वैकेंसी: कपूरथला में पैकिंग और फ़ैक्टरी का काम",
+      name: "जालंधर",
+      metaTitle: "जालंधर में नौकरी: फ़ैक्टरी, पैकिंग और वेयरहाउस का काम",
       description:
-        "जालंधर, कपूरथला और फगवाड़ा में नौकरी की वैकेंसी। कोई फ़ीस नहीं। पूरी 8 घंटे की शिफ्ट। पैकिंग, फ़ैक्टरी और वेयरहाउस का काम। कुछ आसान सवाल, ऑनलाइन आवेदन।",
-      eyebrow: "नौकरी · जालंधर–कपूरथला",
-      heading: "कपूरथला और जालंधर में पैकिंग और फ़ैक्टरी की नौकरी।",
-      lede: "कपूरथला में अभी पैकिंग का काम है। जालंधर और फगवाड़ा में फ़ैक्टरी और वेयरहाउस का काम।",
+        "जालंधर, उसके फ़ोकल पॉइंट, करतारपुर, गुराया और फिल्लौर में फ़ैक्टरी, पैकिंग और वेयरहाउस का काम। हमारी वर्कर लिस्ट में जुड़ें: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट।",
+      eyebrow: "नौकरी · जालंधर",
+      heading: "जालंधर में फ़ैक्टरी और वेयरहाउस का काम।",
+      lede: "हम जालंधर, करतारपुर, गुराया और फिल्लौर में वर्करों की लिस्ट बना रहे हैं। वहाँ किसी साइट को लोग चाहिए होंगे तो हम आपको कॉल करेंगे।",
+      after: { label: "आवेदन के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
+      faqTitle: "सवाल।",
+      faqs: [
+        { question: "क्या अभी जगह खाली है?", answer: "कपूरथला में हाँ: पैकिंग का काम। जालंधर में हर हफ़्ते नहीं: आप हमारी लिस्ट में जुड़ते हैं, और वहाँ की किसी साइट को आपके जैसे काम की ज़रूरत होने पर हम कॉल करते हैं।", category: "operations" },
+        { question: "कौन-से कागज़ चाहिए?", answer: "10वीं या 12वीं की मार्कशीट। ITI सर्टिफ़िकेट, अगर है। जॉइनिंग पर साइट जो ID माँगे। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।", category: "operations" },
+        AGE_FAQ["hi-IN"],
+        { question: "वेतन कौन देता है?", answer: "हम देते हैं, लागू होने पर EPF और ESIC के साथ।", category: "operations" },
+      ],
+    },
+    {
+      slug: "kapurthala",
+      name: "कपूरथला",
+      metaTitle: "कपूरथला जॉब वैकेंसी: पैकिंग और फ़ैक्टरी का काम, फगवाड़ा",
+      description:
+        "कपूरथला और फगवाड़ा में नौकरी की वैकेंसी। कोई फ़ीस नहीं। पूरी 8 घंटे की शिफ्ट। पैकिंग, फ़ैक्टरी और वेयरहाउस का काम। कुछ आसान सवाल, ऑनलाइन आवेदन।",
+      eyebrow: "नौकरी · कपूरथला",
+      heading: "कपूरथला और फगवाड़ा में पैकिंग और फ़ैक्टरी की नौकरी।",
+      lede: "कपूरथला में अभी पैकिंग का काम है। फगवाड़ा और सुल्तानपुर लोधी में फ़ैक्टरी और वेयरहाउस का काम।",
       after: { label: "आवेदन के बाद", steps: ["WhatsApp या SMS", "काम लायक हुआ तो हम कॉल करते हैं", "फ़ैसला आपका"] },
       faqTitle: "सवाल।",
       faqs: [
@@ -383,13 +423,31 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     },
     {
       slug: "jalandhar",
-      name: "Jalandhar–Kapurthala",
-      metaTitle: "Jalandhar Job Vacancy: Kapurthala Packing ka Kaam",
+      name: "Jalandhar",
+      metaTitle: "Jalandhar Job: Factory, Packing aur Warehouse ka Kaam",
       description:
-        "Jalandhar, Kapurthala aur Phagwara mein job vacancy. Koi fee nahi. Poori 8 ghante ki shift. Packing, factory aur warehouse ka kaam. Online apply karein.",
-      eyebrow: "Jobs · Jalandhar–Kapurthala",
-      heading: "Kapurthala aur Jalandhar mein packing aur factory ki job.",
-      lede: "Kapurthala mein abhi packing ka kaam hai. Jalandhar aur Phagwara mein factory aur warehouse ka kaam.",
+        "Jalandhar, Kartarpur, Goraya aur Phillaur mein factory, packing aur warehouse ka kaam. Worker list mein judein: koi fee nahi, 8 ghante ki shift.",
+      eyebrow: "Jobs · Jalandhar",
+      heading: "Jalandhar mein factory aur warehouse ka kaam.",
+      lede: "Hum Jalandhar, Kartarpur, Goraya aur Phillaur mein workers ki list bana rahe hain. Wahan kisi site ko log chahiye honge to hum aapko call karenge.",
+      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
+      faqTitle: "Sawaal.",
+      faqs: [
+        { question: "Kya abhi jagah khaali hai?", answer: "Kapurthala mein haan: packing ka kaam. Jalandhar mein har hafte nahi: aap hamari list mein judte hain, aur wahan ki kisi site ko aapke jaise kaam ki zaroorat hone par hum call karte hain.", category: "operations" },
+        { question: "Kaun-se documents chahiye?", answer: "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.", category: "operations" },
+        AGE_FAQ["hi-Latn-IN"],
+        { question: "Salary kaun deta hai?", answer: "Hum dete hain, laagu hone par EPF aur ESIC ke saath.", category: "operations" },
+      ],
+    },
+    {
+      slug: "kapurthala",
+      name: "Kapurthala",
+      metaTitle: "Kapurthala Job Vacancy: Packing ka Kaam, Phagwara",
+      description:
+        "Kapurthala aur Phagwara mein job vacancy. Koi fee nahi. Poori 8 ghante ki shift. Packing, factory aur warehouse ka kaam. Online apply karein.",
+      eyebrow: "Jobs · Kapurthala",
+      heading: "Kapurthala aur Phagwara mein packing aur factory ki job.",
+      lede: "Kapurthala mein abhi packing ka kaam hai. Phagwara aur Sultanpur Lodhi mein factory aur warehouse ka kaam.",
       after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Kaam laayak hua to hum call karte hain", "Faisla aapka"] },
       faqTitle: "Sawaal.",
       faqs: [
@@ -462,17 +520,35 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       ],
     },
   ],
-  // Punjabi: the Jalandhar region's hub only (draft pending native review).
+  // Punjabi: the Punjab hubs only (draft pending native review).
   "pa-IN": [
     {
       slug: "jalandhar",
-      name: "ਜਲੰਧਰ–ਕਪੂਰਥਲਾ",
-      metaTitle: "ਜਲੰਧਰ ਜੌਬ ਵੈਕੈਂਸੀ: ਕਪੂਰਥਲਾ ਵਿੱਚ ਪੈਕਿੰਗ, ਫ਼ੈਕਟਰੀ ਦਾ ਕੰਮ",
+      name: "ਜਲੰਧਰ",
+      metaTitle: "ਜਲੰਧਰ ਵਿੱਚ ਨੌਕਰੀ: ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ",
       description:
-        "ਜਲੰਧਰ, ਕਪੂਰਥਲਾ ਅਤੇ ਫਗਵਾੜਾ ਵਿੱਚ ਨੌਕਰੀ ਦੀ ਵੈਕੈਂਸੀ। ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ। ਪੂਰੀ 8 ਘੰਟੇ ਦੀ ਸ਼ਿਫ਼ਟ। ਪੈਕਿੰਗ, ਫ਼ੈਕਟਰੀ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ। ਕੁਝ ਸੌਖੇ ਸਵਾਲ, ਆਨਲਾਈਨ ਅਪਲਾਈ।",
-      eyebrow: "ਨੌਕਰੀ · ਜਲੰਧਰ–ਕਪੂਰਥਲਾ",
-      heading: "ਕਪੂਰਥਲਾ ਅਤੇ ਜਲੰਧਰ ਵਿੱਚ ਪੈਕਿੰਗ ਅਤੇ ਫ਼ੈਕਟਰੀ ਦੀ ਨੌਕਰੀ।",
-      lede: "ਕਪੂਰਥਲਾ ਵਿੱਚ ਹੁਣ ਪੈਕਿੰਗ ਦਾ ਕੰਮ ਹੈ। ਜਲੰਧਰ ਅਤੇ ਫਗਵਾੜਾ ਵਿੱਚ ਫ਼ੈਕਟਰੀ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ।",
+        "ਜਲੰਧਰ, ਇਸਦੇ ਫ਼ੋਕਲ ਪੁਆਇੰਟ, ਕਰਤਾਰਪੁਰ, ਗੁਰਾਇਆ ਅਤੇ ਫਿਲੌਰ ਵਿੱਚ ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ। ਸਾਡੀ ਵਰਕਰ ਲਿਸਟ ਵਿੱਚ ਜੁੜੋ: ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ, ਪੂਰੀ 8 ਘੰਟੇ ਦੀ ਸ਼ਿਫ਼ਟ।",
+      eyebrow: "ਨੌਕਰੀ · ਜਲੰਧਰ",
+      heading: "ਜਲੰਧਰ ਵਿੱਚ ਫ਼ੈਕਟਰੀ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ।",
+      lede: "ਅਸੀਂ ਜਲੰਧਰ, ਕਰਤਾਰਪੁਰ, ਗੁਰਾਇਆ ਅਤੇ ਫਿਲੌਰ ਵਿੱਚ ਵਰਕਰਾਂ ਦੀ ਲਿਸਟ ਬਣਾ ਰਹੇ ਹਾਂ। ਉੱਥੇ ਕਿਸੇ ਸਾਈਟ ਨੂੰ ਲੋਕ ਚਾਹੀਦੇ ਹੋਣਗੇ ਤਾਂ ਅਸੀਂ ਤੁਹਾਨੂੰ ਕਾਲ ਕਰਾਂਗੇ।",
+      after: { label: "ਅਪਲਾਈ ਕਰਨ ਤੋਂ ਬਾਅਦ", steps: ["VAYSPL ਤੋਂ SMS", "ਸਾਈਟ ਨੂੰ ਲੋੜ ਹੋਣ 'ਤੇ ਅਸੀਂ ਕਾਲ ਕਰਦੇ ਹਾਂ", "ਫ਼ੈਸਲਾ ਤੁਹਾਡਾ"] },
+      faqTitle: "ਸਵਾਲ।",
+      faqs: [
+        { question: "ਕੀ ਹੁਣ ਜਗ੍ਹਾ ਖ਼ਾਲੀ ਹੈ?", answer: "ਕਪੂਰਥਲਾ ਵਿੱਚ ਹਾਂ: ਪੈਕਿੰਗ ਦਾ ਕੰਮ। ਜਲੰਧਰ ਵਿੱਚ ਹਰ ਹਫ਼ਤੇ ਨਹੀਂ: ਤੁਸੀਂ ਸਾਡੀ ਲਿਸਟ ਵਿੱਚ ਜੁੜਦੇ ਹੋ, ਅਤੇ ਉੱਥੇ ਦੀ ਕਿਸੇ ਸਾਈਟ ਨੂੰ ਤੁਹਾਡੇ ਵਰਗੇ ਕੰਮ ਦੀ ਲੋੜ ਹੋਣ 'ਤੇ ਅਸੀਂ ਕਾਲ ਕਰਦੇ ਹਾਂ।", category: "operations" },
+        { question: "ਕਿਹੜੇ ਕਾਗਜ਼ ਚਾਹੀਦੇ ਹਨ?", answer: "10ਵੀਂ ਜਾਂ 12ਵੀਂ ਦੀ ਮਾਰਕਸ਼ੀਟ। ITI ਸਰਟੀਫ਼ਿਕੇਟ, ਜੇ ਹੈ। ਜੁਆਇਨਿੰਗ 'ਤੇ ਸਾਈਟ ਜੋ ID ਮੰਗੇ। ਕੀ ਲਿਆਉਣਾ ਹੈ, ਜੁਆਇਨ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਅਸੀਂ ਦੱਸਦੇ ਹਾਂ। ਫ਼ਾਰਮ ਵਿੱਚ ਆਧਾਰ ਜਾਂ ਬੈਂਕ ਦੇ ਕਾਗਜ਼ ਨਾ ਭੇਜੋ।", category: "operations" },
+        AGE_FAQ["pa-IN"],
+        { question: "ਤਨਖ਼ਾਹ ਕੌਣ ਦਿੰਦਾ ਹੈ?", answer: "ਅਸੀਂ ਦਿੰਦੇ ਹਾਂ, ਲਾਗੂ ਹੋਣ 'ਤੇ EPF ਅਤੇ ESIC ਦੇ ਨਾਲ।", category: "operations" },
+      ],
+    },
+    {
+      slug: "kapurthala",
+      name: "ਕਪੂਰਥਲਾ",
+      metaTitle: "ਕਪੂਰਥਲਾ ਜੌਬ ਵੈਕੈਂਸੀ: ਪੈਕਿੰਗ ਅਤੇ ਫ਼ੈਕਟਰੀ ਦਾ ਕੰਮ, ਫਗਵਾੜਾ",
+      description:
+        "ਕਪੂਰਥਲਾ ਅਤੇ ਫਗਵਾੜਾ ਵਿੱਚ ਨੌਕਰੀ ਦੀ ਵੈਕੈਂਸੀ। ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ। ਪੂਰੀ 8 ਘੰਟੇ ਦੀ ਸ਼ਿਫ਼ਟ। ਪੈਕਿੰਗ, ਫ਼ੈਕਟਰੀ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ। ਕੁਝ ਸੌਖੇ ਸਵਾਲ, ਆਨਲਾਈਨ ਅਪਲਾਈ।",
+      eyebrow: "ਨੌਕਰੀ · ਕਪੂਰਥਲਾ",
+      heading: "ਕਪੂਰਥਲਾ ਅਤੇ ਫਗਵਾੜਾ ਵਿੱਚ ਪੈਕਿੰਗ ਅਤੇ ਫ਼ੈਕਟਰੀ ਦੀ ਨੌਕਰੀ।",
+      lede: "ਕਪੂਰਥਲਾ ਵਿੱਚ ਹੁਣ ਪੈਕਿੰਗ ਦਾ ਕੰਮ ਹੈ। ਫਗਵਾੜਾ ਅਤੇ ਸੁਲਤਾਨਪੁਰ ਲੋਧੀ ਵਿੱਚ ਫ਼ੈਕਟਰੀ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ।",
       after: { label: "ਅਪਲਾਈ ਕਰਨ ਤੋਂ ਬਾਅਦ", steps: ["VAYSPL ਤੋਂ SMS", "ਕੰਮ ਲਾਇਕ ਹੋਇਆ ਤਾਂ ਅਸੀਂ ਕਾਲ ਕਰਦੇ ਹਾਂ", "ਫ਼ੈਸਲਾ ਤੁਹਾਡਾ"] },
       faqTitle: "ਸਵਾਲ।",
       faqs: [

@@ -690,7 +690,7 @@ async function twentyFilesFromConfig() {
 
 // integrations/windmill/talent/lib/crm.ts
 const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, smsWasSent, whatsAppWasSent, WA_ACK_TEMPLATE, waAckText, whatsAppDeliveryStatus, waAckKey, waAckFields, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, removeAttachments, erasePerson } = (() => {
-const CLUSTER_VALUES = new Set(["HARIDWAR", "UTTARAKHAND", "DELHI_NCR", "BENGALURU", "JALANDHAR", "SAHARANPUR", "OTHER", "PUNJAB", "DEHRADUN"]);
+const CLUSTER_VALUES = new Set(["HARIDWAR", "UTTARAKHAND", "DELHI_NCR", "BENGALURU", "JALANDHAR", "SAHARANPUR", "OTHER", "PUNJAB", "DEHRADUN", "KAPURTHALA"]);
 const ROLE_VALUES = new Set([
     "FACTORY_HELPER", "PACKING", "MACHINE_OPERATOR", "WAREHOUSE", "FORKLIFT_OPERATOR", "DATA_ENTRY_OPERATOR",
     "HOUSEKEEPING", "ITI_TRADES", "ELECTRICIAN", "WELDER", "FITTER", "ANY",
@@ -812,10 +812,11 @@ const ANSWER_OPTIONS = {
         "bengaluru:east": ["BENGALURU_EAST", "Bengaluru East / Whitefield"],
         "bengaluru:west": ["BENGALURU_WEST", "Bengaluru West / Kengeri"],
         "bengaluru:outside": ["OUTSIDE_BENGALURU", "Outside Bengaluru"],
-        "jalandhar:kapurthala": ["KAPURTHALA", "Kapurthala"],
+        "jalandhar:kapurthala": ["KAPURTHALA", "Kapurthala / Phagwara (Jalandhar form)"],
         "jalandhar:city": ["JALANDHAR_CITY", "Jalandhar city"],
         "jalandhar:phagwara-goraya": ["PHAGWARA_GORAYA", "Phagwara / Goraya"],
-        "jalandhar:outside": ["OUTSIDE_JALANDHAR", "Outside Jalandhar and Kapurthala"],
+        "jalandhar:outside": ["OUTSIDE_JALANDHAR", "Outside Jalandhar"],
+        "jalandhar:goraya-phillaur": ["GORAYA_PHILLAUR", "Goraya / Phillaur"],
         "uttarakhand:haridwar": ["UK_HARIDWAR_ROORKEE", "Haridwar / Roorkee (Uttarakhand form)"],
         "uttarakhand:dehradun-selaqui": ["DEHRADUN_SELAQUI", "Dehradun / Selaqui"],
         "uttarakhand:udham-singh-nagar": ["UDHAM_SINGH_NAGAR", "Rudrapur / Kashipur / Sitarganj"],
@@ -827,9 +828,11 @@ const ANSWER_OPTIONS = {
         "punjab:amritsar": ["AMRITSAR", "Amritsar"],
         "punjab:other": ["ELSEWHERE_PUNJAB", "Elsewhere in Punjab"],
         "punjab:outside": ["OUTSIDE_PUNJAB", "Outside Punjab"],
+        "punjab:jalandhar": ["PB_JALANDHAR", "Jalandhar (Punjab form)"],
+        "punjab:kapurthala": ["PB_KAPURTHALA", "Kapurthala / Phagwara (Punjab form)"],
         "market:haridwar": ["MARKET_HARIDWAR", "Haridwar / Roorkee (market)"],
         "market:uttarakhand": ["MARKET_UTTARAKHAND", "Elsewhere in Uttarakhand (market)"],
-        "market:jalandhar": ["MARKET_JALANDHAR", "Jalandhar / Kapurthala (market)"],
+        "market:jalandhar": ["MARKET_JALANDHAR", "Jalandhar (market)"],
         "market:punjab": ["MARKET_PUNJAB", "Elsewhere in Punjab (market)"],
         "market:bengaluru": ["MARKET_BENGALURU", "Bengaluru (market)"],
         "market:other": ["MARKET_OTHER", "Somewhere else"],
@@ -840,8 +843,15 @@ const ANSWER_OPTIONS = {
         "dehradun:rishikesh-doiwala": ["RISHIKESH_DOIWALA", "Rishikesh / Doiwala"],
         "dehradun:vikasnagar": ["VIKASNAGAR_HERBERTPUR", "Vikasnagar / Herbertpur"],
         "dehradun:outside": ["OUTSIDE_DEHRADUN", "Outside Dehradun"],
+        "kapurthala:city": ["KAPURTHALA_CITY", "Kapurthala city"],
+        "kapurthala:phagwara": ["PHAGWARA", "Phagwara"],
+        "kapurthala:sultanpur-lodhi": ["SULTANPUR_LODHI_BHOLATH", "Sultanpur Lodhi / Bholath"],
+        "kapurthala:outside": ["OUTSIDE_KAPURTHALA", "Outside Kapurthala"],
+        "kapurthala:jalandhar": ["KP_JALANDHAR", "Jalandhar (Kapurthala form)"],
         "market:dehradun": ["MARKET_DEHRADUN", "Dehradun / Selaqui (market)"],
+        "market:kapurthala": ["MARKET_KAPURTHALA", "Kapurthala / Phagwara (market)"],
         "dehradun:rest-of-uttarakhand": ["DD_REST_OF_UTTARAKHAND", "Elsewhere in Uttarakhand (Dehradun form)"],
+        "kapurthala:rest-of-punjab": ["KP_REST_OF_PUNJAB", "Elsewhere in Punjab (Kapurthala form)"],
     },
 };
 const SKILL_LABELS = {

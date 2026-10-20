@@ -57,7 +57,8 @@
             "saharanpur",
             "other",
             "punjab",
-            "dehradun"
+            "dehradun",
+            "kapurthala"
           ]
         },
         {
@@ -78,7 +79,8 @@
             "saharanpur",
             "other",
             "punjab",
-            "dehradun"
+            "dehradun",
+            "kapurthala"
           ]
         },
         {
@@ -481,6 +483,7 @@
                   "jalandhar:city",
                   "jalandhar:phagwara-goraya",
                   "jalandhar:outside",
+                  "jalandhar:goraya-phillaur",
                   "uttarakhand:haridwar",
                   "uttarakhand:dehradun-selaqui",
                   "uttarakhand:udham-singh-nagar",
@@ -492,11 +495,18 @@
                   "punjab:amritsar",
                   "punjab:other",
                   "punjab:outside",
+                  "punjab:jalandhar",
+                  "punjab:kapurthala",
                   "dehradun:selaqui-sahaspur",
                   "dehradun:city",
                   "dehradun:rishikesh-doiwala",
                   "dehradun:vikasnagar",
                   "dehradun:outside",
+                  "kapurthala:city",
+                  "kapurthala:phagwara",
+                  "kapurthala:sultanpur-lodhi",
+                  "kapurthala:outside",
+                  "kapurthala:jalandhar",
                   "market:haridwar",
                   "market:uttarakhand",
                   "market:jalandhar",
@@ -504,9 +514,11 @@
                   "market:bengaluru",
                   "market:other",
                   "market:dehradun",
+                  "market:kapurthala",
                   "haridwar:rest-of-uttarakhand",
                   "jalandhar:rest-of-punjab",
-                  "dehradun:rest-of-uttarakhand"
+                  "dehradun:rest-of-uttarakhand",
+                  "kapurthala:rest-of-punjab"
                 ]
               },
               "uniqueItems": true

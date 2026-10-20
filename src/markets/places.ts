@@ -38,6 +38,8 @@ export const PLACES_BY_ID = {
   "faridabad-ghaziabad": { state: "", city: "Faridabad / Ghaziabad", market: "delhi-ncr" },
   "delhi-industrial-areas": { state: "DL", city: "Delhi", market: "delhi-ncr" },
   jalandhar: { state: "PB", city: "Jalandhar / Kapurthala", market: "jalandhar" },
+  // The Kapurthala estate page sits under the Jalandhar region's buyer page,
+  // which serves Kapurthala's buyers (its jobs market is its own, 20 Oct 2026).
   kapurthala: { state: "PB", city: "Kapurthala", market: "jalandhar" },
   "phagwara-goraya": { state: "PB", city: "Phagwara / Goraya", market: "jalandhar" },
   "jalandhar-focal-point": { state: "PB", city: "Focal Point, Jalandhar", market: "jalandhar" },

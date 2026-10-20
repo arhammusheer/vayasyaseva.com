@@ -15,7 +15,8 @@
     "saharanpur",
     "other",
     "punjab",
-    "dehradun"
+    "dehradun",
+    "kapurthala"
   ],
   "identifiers.PAGE_STATUSES": [
     "draft",
@@ -73,7 +74,8 @@
     "jalandhar:kapurthala",
     "jalandhar:city",
     "jalandhar:phagwara-goraya",
-    "jalandhar:outside"
+    "jalandhar:outside",
+    "jalandhar:goraya-phillaur"
   ],
   "identifiers.UTTARAKHAND_AREA_IDS": [
     "uttarakhand:haridwar",
@@ -88,7 +90,9 @@
     "punjab:mohali",
     "punjab:amritsar",
     "punjab:other",
-    "punjab:outside"
+    "punjab:outside",
+    "punjab:jalandhar",
+    "punjab:kapurthala"
   ],
   "identifiers.DEHRADUN_AREA_IDS": [
     "dehradun:selaqui-sahaspur",
@@ -97,6 +101,13 @@
     "dehradun:vikasnagar",
     "dehradun:outside"
   ],
+  "identifiers.KAPURTHALA_AREA_IDS": [
+    "kapurthala:city",
+    "kapurthala:phagwara",
+    "kapurthala:sultanpur-lodhi",
+    "kapurthala:outside",
+    "kapurthala:jalandhar"
+  ],
   "identifiers.MARKET_AREA_IDS": [
     "market:haridwar",
     "market:uttarakhand",
@@ -104,12 +115,14 @@
     "market:punjab",
     "market:bengaluru",
     "market:other",
-    "market:dehradun"
+    "market:dehradun",
+    "market:kapurthala"
   ],
   "identifiers.REST_OF_STATE_AREA_IDS": [
     "haridwar:rest-of-uttarakhand",
     "jalandhar:rest-of-punjab",
-    "dehradun:rest-of-uttarakhand"
+    "dehradun:rest-of-uttarakhand",
+    "kapurthala:rest-of-punjab"
   ],
   "rules.INTAKE_SOURCES": [
     "web_en",
@@ -300,6 +313,7 @@
     "jalandhar:city",
     "jalandhar:phagwara-goraya",
     "jalandhar:outside",
+    "jalandhar:goraya-phillaur",
     "uttarakhand:haridwar",
     "uttarakhand:dehradun-selaqui",
     "uttarakhand:udham-singh-nagar",
@@ -311,11 +325,18 @@
     "punjab:amritsar",
     "punjab:other",
     "punjab:outside",
+    "punjab:jalandhar",
+    "punjab:kapurthala",
     "dehradun:selaqui-sahaspur",
     "dehradun:city",
     "dehradun:rishikesh-doiwala",
     "dehradun:vikasnagar",
     "dehradun:outside",
+    "kapurthala:city",
+    "kapurthala:phagwara",
+    "kapurthala:sultanpur-lodhi",
+    "kapurthala:outside",
+    "kapurthala:jalandhar",
     "market:haridwar",
     "market:uttarakhand",
     "market:jalandhar",
@@ -323,9 +344,11 @@
     "market:bengaluru",
     "market:other",
     "market:dehradun",
+    "market:kapurthala",
     "haridwar:rest-of-uttarakhand",
     "jalandhar:rest-of-punjab",
-    "dehradun:rest-of-uttarakhand"
+    "dehradun:rest-of-uttarakhand",
+    "kapurthala:rest-of-punjab"
   ],
   "crm.ANSWER_OPTIONS.experience": [
     "fresher=FRESHER",
@@ -365,6 +388,7 @@
     "jalandhar:city=JALANDHAR_CITY",
     "jalandhar:phagwara-goraya=PHAGWARA_GORAYA",
     "jalandhar:outside=OUTSIDE_JALANDHAR",
+    "jalandhar:goraya-phillaur=GORAYA_PHILLAUR",
     "uttarakhand:haridwar=UK_HARIDWAR_ROORKEE",
     "uttarakhand:dehradun-selaqui=DEHRADUN_SELAQUI",
     "uttarakhand:udham-singh-nagar=UDHAM_SINGH_NAGAR",
@@ -376,6 +400,8 @@
     "punjab:amritsar=AMRITSAR",
     "punjab:other=ELSEWHERE_PUNJAB",
     "punjab:outside=OUTSIDE_PUNJAB",
+    "punjab:jalandhar=PB_JALANDHAR",
+    "punjab:kapurthala=PB_KAPURTHALA",
     "market:haridwar=MARKET_HARIDWAR",
     "market:uttarakhand=MARKET_UTTARAKHAND",
     "market:jalandhar=MARKET_JALANDHAR",
@@ -389,7 +415,14 @@
     "dehradun:rishikesh-doiwala=RISHIKESH_DOIWALA",
     "dehradun:vikasnagar=VIKASNAGAR_HERBERTPUR",
     "dehradun:outside=OUTSIDE_DEHRADUN",
+    "kapurthala:city=KAPURTHALA_CITY",
+    "kapurthala:phagwara=PHAGWARA",
+    "kapurthala:sultanpur-lodhi=SULTANPUR_LODHI_BHOLATH",
+    "kapurthala:outside=OUTSIDE_KAPURTHALA",
+    "kapurthala:jalandhar=KP_JALANDHAR",
     "market:dehradun=MARKET_DEHRADUN",
-    "dehradun:rest-of-uttarakhand=DD_REST_OF_UTTARAKHAND"
+    "market:kapurthala=MARKET_KAPURTHALA",
+    "dehradun:rest-of-uttarakhand=DD_REST_OF_UTTARAKHAND",
+    "kapurthala:rest-of-punjab=KP_REST_OF_PUNJAB"
   ]
 }

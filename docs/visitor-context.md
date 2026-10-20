@@ -26,7 +26,8 @@ what to put first and measures what people pick. Owner decisions of
 | Dehradun (`dehradun`, since 18 Oct 2026) | `/jobs/dehradun`, worker list | `/locations/dehradun` (Selaqui under it) |
 | Delhi NCR (`delhi-ncr`) | none (nearby: Haridwar, Uttarakhand) | `/locations/delhi-ncr` |
 | Haridwar (`haridwar`) | `/jobs/haridwar` | `/locations/haridwar` |
-| Jalandhar–Kapurthala (`jalandhar`) | `/jobs/jalandhar` | `/locations/jalandhar` |
+| Jalandhar (`jalandhar`) | `/jobs/jalandhar` | `/locations/jalandhar` (Jalandhar–Kapurthala region) |
+| Kapurthala (`kapurthala`), Phagwara included | `/jobs/kapurthala` | none: Jalandhar's region page |
 | Punjab outside it (`punjab`) | `/jobs/punjab`, worker list | none (Jalandhar's page stands in) |
 | Uttarakhand outside Haridwar and Dehradun (`uttarakhand`) | `/jobs/uttarakhand`, worker list | `/locations/uttarakhand` |
 

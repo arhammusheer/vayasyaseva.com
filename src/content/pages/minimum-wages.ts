@@ -253,7 +253,7 @@ export const wageDoors = {
   jobsAll: {
     eyebrow: "LOOKING FOR WORK",
     heading: "Factory and warehouse jobs.",
-    text: "In Bengaluru, Dehradun, Haridwar, Jalandhar–Kapurthala, Punjab and Uttarakhand. Full 8-hour shifts. There is no fee to apply.",
+    text: "In Bengaluru, Dehradun, Haridwar, Jalandhar, Kapurthala, Punjab and Uttarakhand. Full 8-hour shifts. There is no fee to apply.",
     link: { href: "/jobs", label: "See jobs" },
   } satisfies Door,
   business: {
@@ -269,7 +269,7 @@ export const wageDoors = {
     text: "Join our worker list. Full 8-hour shifts. There is no fee.",
     link: { href: "/jobs/bengaluru", label: "Jobs in Bengaluru" },
   } satisfies Door,
-  /** Punjab: the state's market, whose form also files Jalandhar–Kapurthala applicants there. */
+  /** Punjab: the state's market, whose form also files Jalandhar and Kapurthala applicants there. */
   jobsPunjab: {
     eyebrow: "LOOKING FOR WORK",
     heading: "Factory and packing jobs across Punjab.",

@@ -136,7 +136,7 @@ ${businessLines}
 
 ${referenceSection}
 ## Jobs
-- [Jobs overview](${baseUrl}/en-in/jobs): Every job market (Bengaluru, Dehradun, Haridwar, Jalandhar–Kapurthala, Punjab, Uttarakhand), the work by group, the freshers, 10th and 12th pass pages, and Apply
+- [Jobs overview](${baseUrl}/en-in/jobs): Every job market (Bengaluru, Dehradun, Haridwar, Jalandhar, Kapurthala, Punjab, Uttarakhand), the work by group, the freshers, 10th and 12th pass pages, and Apply
 ${jobsLines}
 - [Your details](${baseUrl}/en-in/jobs/privacy): What we keep when someone applies, who sees it, for how long and how to have it removed, in plain words. Also in Hindi (${baseUrl}/hi-in/jobs/privacy), Hindi in Latin script (${baseUrl}/hi-latn-in/jobs/privacy) and Punjabi (${baseUrl}/pa-in/jobs/privacy)
 ${roleLinksEn}

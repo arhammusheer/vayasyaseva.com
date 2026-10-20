@@ -4,7 +4,9 @@ import type { LocationCopy } from "./types";
 /**
  * The Jalandhar region, Punjab: the hub and three industrial clusters, with
  * Kapurthala as a cluster of its own (owner direction, 17 Oct 2026), on the
- * location page structure. Facts from the research of 17 Oct 2026, each
+ * location page structure. Business only: since 20 Oct 2026 Kapurthala
+ * district (Phagwara included) is a jobs market of its own, so its pages
+ * send job seekers to /jobs/kapurthala (`jobsMarket`). Facts from the research of 17 Oct 2026, each
  * cited in `sources`; MSME-DI district profiles carry 2010–11 data, so their
  * figures are named as theirs. Road distances not in a source are left out.
  * No tenant names (the Rail Coach Factory, the mills and the focal point's
@@ -64,7 +66,7 @@ export const jalandharPages: LocationCopy[] = [
       },
       {
         question: "Where do your workers come from?",
-        answer: "Job seekers across Kapurthala, Jalandhar and Phagwara apply on our jobs page for the region. We build each crew from them, close to your site.",
+        answer: "Job seekers across Jalandhar, Kapurthala and Phagwara apply on our jobs pages for each. We build each crew from them, close to your site.",
         category: "operations",
       },
       wagesFaq,
@@ -79,6 +81,7 @@ export const jalandharPages: LocationCopy[] = [
   {
     cluster: "jalandhar",
     estate: "kapurthala",
+    jobsMarket: "kapurthala",
     name: "Kapurthala",
     placeId: "kapurthala",
     metaTitle: "Labour Contractor in Kapurthala, Punjab",
@@ -143,6 +146,8 @@ export const jalandharPages: LocationCopy[] = [
   {
     cluster: "jalandhar",
     estate: "phagwara-goraya",
+    // Phagwara leads the page and is in Kapurthala district.
+    jobsMarket: "kapurthala",
     name: "Phagwara and Goraya",
     placeId: "phagwara-goraya",
     metaTitle: "Labour Contractor in Phagwara and Goraya",

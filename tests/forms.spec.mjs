@@ -64,7 +64,7 @@ try {
   assert.equal(await page.locator('main a[href="/en-in/jobs/haridwar"]:visible').count(),1);
   for (const id of ['helper','machine','iti','office']) assert.equal(await page.locator('main section#'+id).count(),1,'/jobs #'+id);
   // Every market is listed; with no signal none comes first (alphabetical) and Apply opens the form that asks.
-  assert.deepEqual(await page.locator('main .ctx-j > [data-m]').evaluateAll((els)=>els.map((e)=>e.getAttribute('data-m'))),['bengaluru','dehradun','haridwar','jalandhar','punjab','uttarakhand']);
+  assert.deepEqual(await page.locator('main .ctx-j > [data-m]').evaluateAll((els)=>els.map((e)=>e.getAttribute('data-m'))),['bengaluru','dehradun','haridwar','jalandhar','kapurthala','punjab','uttarakhand']);
   await page.locator('.jobs-submit:visible').click();await page.waitForURL('**/en-in/jobs/apply');assert.equal(new URL(page.url()).pathname,'/en-in/jobs/apply');
   console.log('Job landing pages preserve self-canonicals, unique content, role links and guided application access');
   await open('/en-in/jobs/apply'+complete);
@@ -165,12 +165,14 @@ try {
   await page.evaluate(()=>sessionStorage.clear());await open('/en-in/jobs/apply'+complete+'&cluster=mumbai');
   await fill();await send();await visible('.jobs-done h2');assert.equal(startedBodies.at(-1).pageCluster,null);
   console.log('The Haridwar jobs hub and ?cluster= tag applications with source, locale, cluster and page');
-  // Jalandhar–Kapurthala: its own area answers on its hub. /jobs/apply has no market of its own: with
-  // nothing decided it asks which market (market:*), in Punjabi too, and sends no page cluster.
+  // Jalandhar and Kapurthala (separate jobs markets since 20 Oct 2026): each hub has its own area
+  // answers. /jobs/apply has no market of its own: with nothing decided it asks which market
+  // (market:*), in Punjabi too, and sends no page cluster.
   for (const [path, area, tag, label, pageCluster] of [
-    ['/en-in/jobs/jalandhar','jalandhar:kapurthala','en-IN','Kapurthala','jalandhar'],
-    ['/pa-in/jobs/jalandhar','jalandhar:kapurthala','pa-IN','ਕਪੂਰਥਲਾ','jalandhar'],
-    ['/pa-in/jobs/apply','market:jalandhar','pa-IN','ਜਲੰਧਰ / ਕਪੂਰਥਲਾ',null],
+    ['/en-in/jobs/jalandhar','jalandhar:city','en-IN','Jalandhar city','jalandhar'],
+    ['/en-in/jobs/kapurthala','kapurthala:city','en-IN','Kapurthala city','kapurthala'],
+    ['/pa-in/jobs/kapurthala','kapurthala:phagwara','pa-IN','ਫਗਵਾੜਾ','kapurthala'],
+    ['/pa-in/jobs/apply','market:kapurthala','pa-IN','ਕਪੂਰਥਲਾ / ਫਗਵਾੜਾ',null],
   ]) {
     await page.evaluate(()=>sessionStorage.clear());await open(path+complete.replace('area=laksar','area='+area));
     assert.ok((await page.locator('[data-step=area] .is-selected').textContent()).includes(label), path);
@@ -179,7 +181,7 @@ try {
     const body=startedBodies.at(-1);
     assert.equal(body.source,'web');assert.equal(body.locale,tag);assert.equal(body.pageCluster,pageCluster);
   }
-  console.log('Jalandhar–Kapurthala and Punjabi: region areas on the hub, market answers on /jobs/apply, pa-IN locale');
+  console.log('Jalandhar, Kapurthala and Punjabi: own areas on each hub, market answers on /jobs/apply, pa-IN locale');
   console.log('Role prefills override conflicting saved choices; multilingual drafts restore');
   await page.evaluate(()=>sessionStorage.clear());
   // Request a crew: step 1 the requirement, step 2 who to talk to.
@@ -280,9 +282,9 @@ try {
   // A guess from the IP alone is "leaning": the market leads the list and the
   // form, Apply stays on the form that asks. An ad makes it "confident": Apply opens the hub.
   for (const [label, cookie, geo, landing, market, apply, areaLabel] of [
-    ['Kapurthala visitor', 'IN.PB.jalandhar.c', null, '/en-in/jobs', 'jalandhar', '/en-in/jobs/apply', 'Kapurthala'],
+    ['Kapurthala visitor', 'IN.PB.kapurthala.c', null, '/en-in/jobs', 'kapurthala', '/en-in/jobs/apply', 'Kapurthala'],
     ['Ludhiana visitor', 'IN.PB.punjab.c', null, '/en-in/jobs', 'punjab', '/en-in/jobs/apply', 'Ludhiana'],
-    ['Kapurthala visitor without the cookie', null, {country:'IN',state:'PB',market:'jalandhar',level:'city'}, '/en-in/jobs', 'jalandhar', '/en-in/jobs/apply', 'Kapurthala'],
+    ['Kapurthala visitor without the cookie', null, {country:'IN',state:'PB',market:'kapurthala',level:'city'}, '/en-in/jobs', 'kapurthala', '/en-in/jobs/apply', 'Kapurthala'],
     ['Haridwar ad click', null, {country:'IN'}, '/en-in/jobs?utm_campaign=search_jobs&cluster=haridwar', 'haridwar', '/en-in/jobs/haridwar', 'Laksar'],
   ]) {
     const visitor=await browser.newContext({viewport:{width:390,height:844}});
@@ -312,7 +314,7 @@ try {
     await visitor.addInitScript(()=>{Math.random=()=>0.5;});
     const v=await visitor.newPage();v.on('pageerror',e=>errors.push(e.message));
     await v.goto(origin+'/en-in/jobs/10th-pass?work=any&experience=fresher&shift=day&start=now');
-    assert.equal(await v.locator('.ctx-jrow > [data-m]:visible').count(),6,'every market before anything is known');
+    assert.equal(await v.locator('.ctx-jrow > [data-m]:visible').count(),7,'every market before anything is known');
     await v.locator('.ctx-jrow > [data-m="bengaluru"]').click();
     assert.equal(new URL(v.url()).pathname,'/en-in/jobs/10th-pass');
     await v.waitForFunction(()=>document.documentElement.getAttribute('data-ctx-band')==='stated');

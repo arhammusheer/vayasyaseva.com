@@ -73,9 +73,12 @@ export function LocationPage({ page: source, locale = "en-IN" }: { page: Locatio
   const path = pathOf(page);
   const url = localePath(path, locale);
   const crewHref = `/contact#location=${page.placeId}`;
-  const jobsHub = marketSurfaces()[page.cluster]?.jobs;
+  // The jobs market for this page's job seekers: the region's, unless the
+  // estate lies in a jobs market of its own (Kapurthala in the Jalandhar region).
+  const jobsMarket = page.jobsMarket ?? page.cluster;
+  const jobsHub = marketSurfaces()[jobsMarket]?.jobs;
   const hub = locationPages.get(locationPath(page.cluster));
-  const jobsLabel = JOBS_AREA_LABEL[locale]?.[page.cluster] ?? `Jobs in ${hub ? locationCopyIn(hub, locale).name : page.name}`;
+  const jobsLabel = JOBS_AREA_LABEL[locale]?.[jobsMarket] ?? `Jobs in ${hub ? locationCopyIn(hub, locale).name : page.name}`;
   const jobsFirst = locale === "hi-IN" && Boolean(jobsHub);
   const englishOnly = locale === "en-IN" ? undefined : "en-IN";
   const [before, after] = page.areas ? page.paragraph.split("{areas}") : [page.paragraph, ""];
@@ -113,7 +116,7 @@ export function LocationPage({ page: source, locale = "en-IN" }: { page: Locatio
             {jobsHub && (
               <div className={`flex flex-wrap gap-3 pt-2 ${jobsFirst ? "" : "ctx-aud-jobs"}`}>
                 <Button asChild size="lg">
-                  <JobsLink path={jobsHubPath(page.cluster)} locale={locale}>
+                  <JobsLink path={jobsHubPath(jobsMarket)} locale={locale}>
                     {jobsLabel} <ArrowRight aria-hidden="true" />
                   </JobsLink>
                 </Button>
@@ -126,7 +129,7 @@ export function LocationPage({ page: source, locale = "en-IN" }: { page: Locatio
                 {jobsHub && (
                   <p className="seeker-line">
                     {ui.seeker}{" "}
-                    <JobsLink path={jobsHubPath(page.cluster)} locale={locale} className="text-link mt-0">
+                    <JobsLink path={jobsHubPath(jobsMarket)} locale={locale} className="text-link mt-0">
                       {jobsLabel} <ArrowRight size={18} aria-hidden="true" />
                     </JobsLink>
                   </p>

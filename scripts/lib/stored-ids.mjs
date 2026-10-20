@@ -37,6 +37,7 @@ export async function currentStoredIds() {
     "identifiers.UTTARAKHAND_AREA_IDS": ids.UTTARAKHAND_AREA_IDS,
     "identifiers.PUNJAB_AREA_IDS": ids.PUNJAB_AREA_IDS,
     "identifiers.DEHRADUN_AREA_IDS": ids.DEHRADUN_AREA_IDS,
+    "identifiers.KAPURTHALA_AREA_IDS": ids.KAPURTHALA_AREA_IDS,
     "identifiers.MARKET_AREA_IDS": ids.MARKET_AREA_IDS,
     "identifiers.REST_OF_STATE_AREA_IDS": ids.REST_OF_STATE_AREA_IDS,
     "rules.INTAKE_SOURCES": keys(rules.INTAKE_SOURCES),

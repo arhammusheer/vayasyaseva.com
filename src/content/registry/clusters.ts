@@ -82,7 +82,7 @@ export const clusters: readonly Cluster[] = [
   {
     // The Uttarakhand business page (owner direction 16-17 Oct 2026: publish
     // as normal; VSPL confirmed it can supply crews here). Haridwar and
-    // Dehradun are markets of their own, like Jalandhar–Kapurthala in
+    // Dehradun are markets of their own, like Jalandhar and Kapurthala in
     // Punjab; this one carries the rest of the state (Udham Singh Nagar,
     // Kotdwar and beyond).
     id: "uttarakhand",
@@ -137,6 +137,8 @@ export const clusters: readonly Cluster[] = [
     // (a stored value since PLAN §1a, and where the search is: "jalandhar
     // job" ~5,400 a month against "kapurthala job" ~260). No Punjabi until
     // there is a native reviewer and someone who can reply in it.
+    // Since 20 Oct 2026 the jobs side is Jalandhar district only (Kapurthala
+    // has its own); the buyer page still covers the whole region.
     id: "jalandhar",
     publishable: true,
     states: ["punjab"],
@@ -145,7 +147,18 @@ export const clusters: readonly Cluster[] = [
     registrations: [],
   },
   {
-    // Punjab outside Jalandhar–Kapurthala (owner direction, 17 Oct 2026):
+    // Kapurthala district, Phagwara included (owner direction, 20 Oct 2026):
+    // a jobs market of its own, split from the Jalandhar region's jobs hub,
+    // with the open packing work. No buyer page: the Jalandhar region's
+    // covers Kapurthala's buyers (/locations/jalandhar/kapurthala).
+    id: "kapurthala",
+    publishable: true,
+    states: ["punjab"],
+    claims: [],
+    registrations: [],
+  },
+  {
+    // Punjab outside Jalandhar and Kapurthala (owner direction, 17 Oct 2026):
     // a jobs-only market, a worker list like Bengaluru's. No buyer page; the
     // Jalandhar region's carries Punjab's business side.
     id: "punjab",

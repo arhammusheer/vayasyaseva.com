@@ -20,7 +20,7 @@ export type LocaleTag = (typeof LOCALE_TAGS)[number];
  * (/jobs/<cluster>, /locations/<cluster>), with no state suffix. A cluster
  * gets pages only once it is in clusters.ts.
  */
-export const CLUSTER_IDS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other", "punjab", "dehradun"] as const;
+export const CLUSTER_IDS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other", "punjab", "dehradun", "kapurthala"] as const;
 export type ClusterId = (typeof CLUSTER_IDS)[number];
 
 /**
@@ -122,18 +122,30 @@ export const guidePath = (slug: GuideSlug) => `/guides/${slug}`;
 export const HARIDWAR_AREA_IDS = ["sidcul-bahadrabad", "haridwar-jwalapur", "roorkee-bhagwanpur", "laksar", "outside"] as const;
 /** Bengaluru's (jobs hub published 16 Oct 2026): the four directions and outside the city. Append-only too. */
 export const BENGALURU_AREA_IDS = ["bengaluru:north", "bengaluru:south", "bengaluru:east", "bengaluru:west", "bengaluru:outside"] as const;
-/** Jalandhar–Kapurthala's (jobs hub published 17 Oct 2026). Append-only too. */
-export const JALANDHAR_AREA_IDS = ["jalandhar:kapurthala", "jalandhar:city", "jalandhar:phagwara-goraya", "jalandhar:outside"] as const;
 /**
- * Uttarakhand outside Haridwar and Punjab outside Jalandhar–Kapurthala (jobs
+ * Jalandhar's (jobs hub published 17 Oct 2026, as Jalandhar–Kapurthala).
+ * Since Kapurthala's own jobs market (20 Oct 2026) jalandhar:kapurthala is
+ * the Kapurthala answer on this form, filed there, and
+ * jalandhar:phagwara-goraya is off the forms (Phagwara is in Kapurthala
+ * district, Goraya in Jalandhar's): Goraya–Phillaur replaces it. Append-only too.
+ */
+export const JALANDHAR_AREA_IDS = ["jalandhar:kapurthala", "jalandhar:city", "jalandhar:phagwara-goraya", "jalandhar:outside", "jalandhar:goraya-phillaur"] as const;
+/**
+ * Uttarakhand outside Haridwar and Punjab outside Jalandhar and Kapurthala (jobs
  * hubs published 17 Oct 2026), each with an answer that files under the
  * nearer market (uttarakhand:haridwar → haridwar). Append-only too.
  */
 export const UTTARAKHAND_AREA_IDS = ["uttarakhand:haridwar", "uttarakhand:dehradun-selaqui", "uttarakhand:udham-singh-nagar", "uttarakhand:other", "uttarakhand:outside"] as const;
-export const PUNJAB_AREA_IDS = ["punjab:jalandhar-kapurthala", "punjab:ludhiana", "punjab:mohali", "punjab:amritsar", "punjab:other", "punjab:outside"] as const;
+export const PUNJAB_AREA_IDS = ["punjab:jalandhar-kapurthala", "punjab:ludhiana", "punjab:mohali", "punjab:amritsar", "punjab:other", "punjab:outside", "punjab:jalandhar", "punjab:kapurthala"] as const;
 /** Dehradun's (jobs hub published 18 Oct 2026): Selaqui–Sahaspur, the city, Rishikesh–Doiwala, Vikasnagar, outside. Append-only too. */
 export const DEHRADUN_AREA_IDS = ["dehradun:selaqui-sahaspur", "dehradun:city", "dehradun:rishikesh-doiwala", "dehradun:vikasnagar", "dehradun:outside"] as const;
+/**
+ * Kapurthala's (jobs hub published 20 Oct 2026, its own jobs market): the
+ * city, Phagwara (Kapurthala district's other part), Sultanpur Lodhi and
+ * Bholath, outside, and Jalandhar, filed under Jalandhar's market. Append-only too.
+ */
+export const KAPURTHALA_AREA_IDS = ["kapurthala:city", "kapurthala:phagwara", "kapurthala:sultanpur-lodhi", "kapurthala:outside", "kapurthala:jalandhar"] as const;
 /** The form with no market of its own (no signal yet): which market the person lives in. Append-only too. */
-export const MARKET_AREA_IDS = ["market:haridwar", "market:uttarakhand", "market:jalandhar", "market:punjab", "market:bengaluru", "market:other", "market:dehradun"] as const;
-/** The rest of the state on the Haridwar and Jalandhar forms, filed under the state's market (17 Oct 2026). Append-only too. */
-export const REST_OF_STATE_AREA_IDS = ["haridwar:rest-of-uttarakhand", "jalandhar:rest-of-punjab", "dehradun:rest-of-uttarakhand"] as const;
+export const MARKET_AREA_IDS = ["market:haridwar", "market:uttarakhand", "market:jalandhar", "market:punjab", "market:bengaluru", "market:other", "market:dehradun", "market:kapurthala"] as const;
+/** The rest of the state on the Haridwar, Jalandhar, Dehradun and Kapurthala forms, filed under the state's market (17 Oct 2026). Append-only too. */
+export const REST_OF_STATE_AREA_IDS = ["haridwar:rest-of-uttarakhand", "jalandhar:rest-of-punjab", "dehradun:rest-of-uttarakhand", "kapurthala:rest-of-punjab"] as const;

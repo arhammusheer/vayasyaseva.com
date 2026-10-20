@@ -268,8 +268,10 @@ export const pageEntries: readonly PageEntry[] = [
   { ...jobsPage(jobsHubPath("haridwar"), "jobs-city", 0.8), cluster: "haridwar" },
   // Jobs only: a worker list, no buyer hub yet (clusters.ts).
   { ...jobsPage(jobsHubPath("bengaluru"), "jobs-city", 0.7), locales: WITH_KANNADA, cluster: "bengaluru" },
-  // Open work (Kapurthala packing), so priced like Haridwar's.
-  { ...jobsPage(jobsHubPath("jalandhar"), "jobs-city", 0.8), locales: WITH_PUNJABI, cluster: "jalandhar" },
+  // A worker list since Kapurthala's own hub took the open packing work (20 Oct 2026).
+  { ...jobsPage(jobsHubPath("jalandhar"), "jobs-city", 0.7), locales: WITH_PUNJABI, cluster: "jalandhar", updated: "2026-10-20" },
+  // Open work (Kapurthala packing), so priced like Haridwar's. Its own market since 20 Oct 2026.
+  { ...jobsPage(jobsHubPath("kapurthala"), "jobs-city", 0.8), locales: WITH_PUNJABI, cluster: "kapurthala", updated: "2026-10-20" },
   // A worker list (no open requirement named), its own market since 18 Oct 2026.
   { ...jobsPage(jobsHubPath("dehradun"), "jobs-city", 0.7), cluster: "dehradun", updated: "2026-10-18" },
   // Worker lists for the rest of each state (owner direction, 17 Oct 2026).

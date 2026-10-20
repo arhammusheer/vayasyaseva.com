@@ -1,6 +1,7 @@
 import type { FaqItem } from "../types";
 import type { LocaleTag, LocationCluster } from "@/content/registry/identifiers";
 import type { PlaceId } from "@/markets/places";
+import type { JobsMarketId } from "@/markets/data";
 
 /**
  * One location page (owner direction, 17 Oct 2026): a hero with Request a
@@ -18,6 +19,12 @@ export type LocationCopy = {
   estate?: string;
   /** Short name for breadcrumbs, the section label and links ("Peenya", "Delhi NCR"). */
   name: string;
+  /**
+   * The jobs market whose hub the page's job seekers are sent to, when it is
+   * not the region's: an estate in a jobs market of its own (Kapurthala and
+   * Phagwara, in the Jalandhar region's buyer page, since 20 Oct 2026).
+   */
+  jobsMarket?: JobsMarketId;
   /** The #location= id the Request a crew link prefills (src/markets/places.ts). */
   placeId: PlaceId;
   /** Up to 55 characters before " | Vayasya Seva". */

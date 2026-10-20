@@ -34,7 +34,7 @@ test("their descriptions list every job market, alphabetically, or none", () => 
 test("the jobs form's area answers: markets alphabetically when asking; another market, never 'other', after a decision", async () => {
   const { areaOptions } = await importTs("src/content/pages/quick-apply.ts");
   const { AREA_CLUSTERS } = await importTs("src/lib/talent-intake/rules.ts");
-  assert.deepEqual(areaOptions(null), ["market:bengaluru", "market:dehradun", "market:haridwar", "market:jalandhar", "market:punjab", "market:uttarakhand", "market:other"]);
+  assert.deepEqual(areaOptions(null), ["market:bengaluru", "market:dehradun", "market:haridwar", "market:jalandhar", "market:kapurthala", "market:punjab", "market:uttarakhand", "market:other"]);
   // Decided Haridwar on a neutral page: Haridwar's areas, then every other market; no "Outside Haridwar".
   const decided = areaOptions("haridwar", "decision");
   assert.ok(!decided.includes("outside"));
@@ -46,7 +46,19 @@ test("the jobs form's area answers: markets alphabetically when asking; another 
   assert.equal(AREA_CLUSTERS["dehradun:rest-of-uttarakhand"], "uttarakhand");
   // Dehradun's own answer on the Uttarakhand form files under Dehradun, like Haridwar's.
   assert.equal(AREA_CLUSTERS["uttarakhand:dehradun-selaqui"], "dehradun");
-  for (const market of ["haridwar", "uttarakhand", "jalandhar", "punjab", "bengaluru", "dehradun"]) {
+  // Kapurthala's answers on the Jalandhar and Punjab forms file under Kapurthala (20 Oct 2026),
+  // and the answers taken off the forms are offered nowhere.
+  assert.equal(AREA_CLUSTERS["jalandhar:kapurthala"], "kapurthala");
+  assert.equal(AREA_CLUSTERS["punjab:kapurthala"], "kapurthala");
+  assert.equal(AREA_CLUSTERS["kapurthala:rest-of-punjab"], "punjab");
+  assert.deepEqual(areaOptions("kapurthala"), ["kapurthala:city", "kapurthala:phagwara", "kapurthala:sultanpur-lodhi", "kapurthala:jalandhar", "kapurthala:rest-of-punjab", "kapurthala:outside"]);
+  for (const market of [null, "jalandhar", "punjab", "kapurthala"]) {
+    for (const source of ["page", "decision", "ask"]) {
+      const offered = areaOptions(market, source);
+      assert.ok(!offered.includes("jalandhar:phagwara-goraya") && !offered.includes("punjab:jalandhar-kapurthala"), `${market} ${source}`);
+    }
+  }
+  for (const market of ["haridwar", "uttarakhand", "jalandhar", "punjab", "bengaluru", "dehradun", "kapurthala"]) {
     for (const id of areaOptions(market, "decision")) assert.ok(Object.hasOwn(AREA_CLUSTERS, id), id);
   }
 });

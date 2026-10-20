@@ -6,11 +6,12 @@
  *
  * Layer 1: no imports but the rules and ./data.
  */
-import { AREA_CLUSTERS, type IntakeCluster } from "@/lib/talent-intake/rules";
+import { AREA_CLUSTERS, FORMLESS_AREAS, type IntakeCluster } from "@/lib/talent-intake/rules";
 import { MARKET_IDS, type MarketId } from "./data";
 
 export type AreaId = keyof typeof AREA_CLUSTERS;
-const AREA_IDS = Object.keys(AREA_CLUSTERS) as AreaId[];
+/** The answers a form may offer: every stored id but the ones taken off the forms (FORMLESS_AREAS). */
+const AREA_IDS = (Object.keys(AREA_CLUSTERS) as AreaId[]).filter((id) => !FORMLESS_AREAS.has(id));
 
 /**
  * The set an id without a "<set>:" prefix belongs to: Haridwar's, the first

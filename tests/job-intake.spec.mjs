@@ -92,7 +92,8 @@ test('until n8n accepts "web", web applications keep the legacy source', async (
     const punjabi = await forwarded({ source: 'web', locale: 'pa-IN', pageCluster: 'jalandhar', pagePath: '/jobs/jalandhar' }, { form: 'quick', answers: { area: ['jalandhar:kapurthala'] } });
     assert.equal(punjabi.source, 'web');
     assert.equal(punjabi.locale, 'pa-IN');
-    assert.equal(punjabi.cluster, 'jalandhar');
+    // Kapurthala on the Jalandhar form files under Kapurthala's own market (20 Oct 2026).
+    assert.equal(punjabi.cluster, 'kapurthala');
     const older = await forwarded({ source: 'web_hi' }, { form: 'quick', answers: { work: ['packing'] } });
     assert.equal(older.source, 'web_hi');
     const agent = await forwarded({ source: 'web_en', channel: 'agent', agentName: 'Helper' }, {}, 'Packing work');

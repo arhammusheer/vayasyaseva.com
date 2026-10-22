@@ -1497,7 +1497,13 @@ const WA_TIMEOUT_MS = 15_000;
 const WA_PHONE_NUMBER_ID = "1426644927192285";
 const WA_FALLBACK_MS = 10 * 60 * 1000;
 const WA_CHECK_SECONDS = 60;
-const WA_TEMPLATES = {};
+const WA_TEMPLATES = {
+    "en-IN": 38422,
+    "hi-IN": 38423,
+    "hi-Latn-IN": 38424,
+    "pa-IN": 38425,
+    "kn-IN": 38426,
+};
 const LOCALE_ALIASES = { en: "en-IN", hi: "hi-IN", hinglish: "hi-Latn-IN" };
 const templateFor = (locale, templates = WA_TEMPLATES) => templates[LOCALE_ALIASES[locale ?? ""] ?? locale ?? "en-IN"] ?? null;
 function whatsAppRequestUrl(claim, messageId) {

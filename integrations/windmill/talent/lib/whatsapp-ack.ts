@@ -38,7 +38,13 @@ export const WA_CHECK_SECONDS = 60;
  * language. A language without an approved template gets the SMS straight
  * away, so the code can ship before Meta approves them.
  */
-export const WA_TEMPLATES: Partial<Record<string, number>> = {};
+export const WA_TEMPLATES: Partial<Record<string, number>> = {
+  "en-IN": 38422,
+  "hi-IN": 38423,
+  "hi-Latn-IN": 38424,
+  "pa-IN": 38425,
+  "kn-IN": 38426,
+};
 
 /** Stored locales: the BCP 47 tag, or the legacy short code on older rows. */
 const LOCALE_ALIASES: Record<string, string> = { en: "en-IN", hi: "hi-IN", hinglish: "hi-Latn-IN" };

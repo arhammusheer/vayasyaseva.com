@@ -12,8 +12,14 @@ import { wageStatePath } from "@/content/registry/identifiers";
  * from the SEZ notifications list, the JN Pharma City environment report,
  * APSEZ's and VSEZ's records and the district pages, each in `sources`. No
  * tenant names, registrations, headcount or shift claims; security guards
- * are out of scope (no PSARA licence). Autonagar was left out: no citable
- * source on the estate was found (22 Oct 2026).
+ * are out of scope (no PSARA licence).
+ *
+ * OPEN (owner, 22 Oct 2026): Gajuwaka is published without Autonagar, as an
+ * interim call. More data is needed: a citable source on the Autonagar
+ * (Visakhapatnam) industrial estate (APIIC estate list, layout, units) and
+ * whether buyers name it apart from Gajuwaka. Until then "autonagar" is also
+ * not a place word in src/markets/data.ts, because Vijayawada has an
+ * Autonagar too and would misroute visitors.
  */
 
 const AP_WAGES = wageStatePath("andhra-pradesh");

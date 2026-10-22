@@ -59,9 +59,9 @@ const SRC = {
   gajuwaka: { label: "Gajuwaka", url: "https://en.wikipedia.org/wiki/Gajuwaka" },
   // CDSCO's own copy (paras 3.4 and 11.4.6: cleaning and contract staff).
   scheduleM: { label: "Revised Schedule M, Drugs Rules, G.S.R. 922(E), 28 December 2023 (CDSCO copy)", url: "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadGazette_NotificationsFiles/2023.12.28_DR_Final%20G.S.R.%20922(E)_Notification%20of%20Schedule%20M%20of.pdf" },
-  apWages: { label: "Andhra Pradesh minimum rates of wages, October 2026 (basic plus VDA, 1 April and 1 October)", url: "https://www.sgcms.com/regulatory-updates/minimum-rate-of-wages-andhra-pradesh-october-2026/" },
-  apPt: { label: "Andhra Pradesh Professional Tax", url: "https://www.greythr.com/wiki/acts/professional-tax-andhra-pradesh" },
-  apLwf: { label: "Andhra Pradesh Labour Welfare Fund Act", url: "https://www.greythr.com/wiki/acts/andhra-pradesh-labour-welfare-fund-act" },
+  apWages: { label: "Labour Department, Andhra Pradesh: VDA for the scheduled employments from 1 October 2026 (basic plus VDA, revised 1 April and 1 October)", url: "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/pdf-file-download/labour/1790751054626_VDAGazetteason01.10.2026.pdf" },
+  apPt: { label: "Commercial Taxes Department, Andhra Pradesh: Professional Tax First Schedule (Internet Archive copy, June 2022)", url: "https://web.archive.org/web/20220623183430id_/https://apct.gov.in/apportal/AllActs/APPT/APPTSchedule.aspx" },
+  apLwf: { label: "Labour Department, Andhra Pradesh: Labour Welfare Fund Act, 1987", url: "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/pdf-file-download/labour/1755841991986_LABOUR_WELFAREFUNDACT1987.pdf" },
 };
 const WAGE_SOURCES = [SRC.apWages, SRC.apPt, SRC.apLwf];
 

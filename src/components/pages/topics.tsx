@@ -179,7 +179,7 @@ export function ProfessionalTaxHubPage() {
             </tbody>
           </table>
         </div>
-        <p className="wage-note">In Karnataka and Punjab the employer deducts the tax from salary and pays it every month.</p>
+        <p className="wage-note">In Karnataka, Andhra Pradesh and Punjab the employer deducts the tax from salary and pays it every month.</p>
       </Section>
       <TopicEnd faqs={t.faqs} self={t.path} links={t.links} sources={t.sources} />
       <Doors doors={doors} />

@@ -1325,7 +1325,7 @@
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/minimum-wages",
-    "lastModified": "2026-10-17T00:00:00.000Z",
+    "lastModified": "2026-10-22T00:00:00.000Z",
     "changeFrequency": "monthly",
     "priority": 0.7
   },
@@ -1360,8 +1360,14 @@
     "priority": 0.7
   },
   {
+    "url": "https://www.vayasyaseva.com/en-in/minimum-wages/andhra-pradesh",
+    "lastModified": "2026-10-22T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
     "url": "https://www.vayasyaseva.com/en-in/minimum-wages/vda",
-    "lastModified": "2026-10-17T00:00:00.000Z",
+    "lastModified": "2026-10-22T00:00:00.000Z",
     "changeFrequency": "monthly",
     "priority": 0.6
   },

@@ -9,9 +9,14 @@ import { createHash } from "node:crypto";
 export const BUCKET = "cdn-vspl";
 export const CDN = "https://cdn.vayasyaseva.com";
 /** The bytes as retrieved, one object per content hash. */
-export const originalKey = (sha256) => `sources/original/${sha256}.pdf`;
+export const originalKey = (sha256, ext = "pdf") => `sources/original/${sha256}.${ext}`;
+/**
+ * A source's file type by its URL: "xls" or "xlsx" for the spreadsheets
+ * Andhra Pradesh publishes its wage tables as, else "pdf".
+ */
+export const sourceExt = (url) => /\.(xlsx?)(?:$|[?#])/i.exec(url)?.[1].toLowerCase() ?? "pdf";
 /** The compressed copy the pages link; the hash in the name keeps a revised file from overwriting an earlier one. */
-export const copyKey = (state, source) => `sources/${state}/${source.id}-${source.sha256.slice(0, 8)}.pdf`;
+export const copyKey = (state, source) => `sources/${state}/${source.id}-${source.sha256.slice(0, 8)}.${sourceExt(source.url)}`;
 
 const isPdf = (body) => body.subarray(0, 1024).includes("%PDF-");
 

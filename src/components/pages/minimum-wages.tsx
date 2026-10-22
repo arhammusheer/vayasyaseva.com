@@ -11,6 +11,8 @@ import { WAGE_HUB_PATH, WAGE_VDA_PATH, wageStatePath, type WageStateSlug } from 
 import {
   SKILLS,
   checkedByLine,
+  currentIndex,
+  employmentFigure,
   formatDate,
   formatRupees,
   formatRupeesAsPrinted,
@@ -21,6 +23,7 @@ import {
   sourceById,
   todayIso,
   unpublishedRevisions,
+  vdaPoints,
   wageStates,
   wageStatus,
   type Skill,
@@ -297,7 +300,7 @@ function Documents({ state, slug }: { state: WageState; slug: WageStateSlug }) {
               {g.items.map((d) => (
                 <li key={d.id}>
                   {/* Our copy first: government portals move and drop files. */}
-                  <a href={d.copy ?? d.url} lang={d.language === "hi" ? "hi-IN" : d.language === "kn" ? "kn-IN" : "en-IN"}>
+                  <a href={d.copy ?? d.url} lang={langTag(d.language)}>
                     {d.title}
                   </a>
                   <span>
@@ -336,29 +339,47 @@ function EmploymentSchedule({ state }: { state: WageState }) {
   if (!schedule) return null;
   const s = x.schedule;
   const vda = schedule.vda ? formatRupees(schedule.vda.amount) : null;
-  // A group's figures are its basic wage plus the schedule's VDA, unless it states its own unit (a piece or daily rate in full).
+  const cpi = schedule.cpi;
+  // A group's figures are its basic wage plus the schedule's VDA, unless it states its own unit (a piece or daily rate in full);
+  // an index-linked group (Andhra Pradesh) adds its own VDA, worked out from the index points.
   const addsVda = (g: EmploymentGroup) => Boolean(schedule.vda && !g.unit);
-  const figure = (g: EmploymentGroup, value: number) => (addsVda(g) ? formatRupees(value + schedule.vda!.amount) : formatRupeesAsPrinted(value));
+  type Row = NonNullable<EmploymentGroup["rows"]>[number];
+  const amount = (g: EmploymentGroup, r: Row, j: number) => employmentFigure(schedule, g, r, j);
+  const figure = (g: EmploymentGroup, r: Row, j: number) => (addsVda(g) || g.linkedTo ? formatRupees(amount(g, r, j)) : formatRupeesAsPrinted(amount(g, r, j)));
   const count = schedule.groups.reduce((n, g) => n + g.employments.length, 0);
+  /** "Basic wage plus VDA: 1,433 points (1,958 − 525) at ₹6.40 a point." */
+  const pointsLine = (g: EmploymentGroup) => {
+    const points = vdaPoints(schedule, g);
+    const current = currentIndex(schedule, g);
+    const rate = g.linkedTo!.perPoint;
+    return s.plusPoints(points.toLocaleString("en-IN"), current.toLocaleString("en-IN"), g.linkedTo!.base.toLocaleString("en-IN"), rate ? formatRupeesAsPrinted(rate) : null);
+  };
+  // Andhra Pradesh splits one notification (beedi making) over several groups: count notifications, not groups.
+  const notifications = new Set(schedule.groups.map((g) => `${g.number}|${g.date}`)).size;
+  const intro = cpi ? s.introIndex(state.name, notifications, formatDate(cpi.effectiveFrom)) : schedule.vda && vda ? s.intro(state.name, count, vda, formatDate(schedule.vda.effectiveFrom)) : s.introOneRate(state.name);
   return (
     <Section id="employments" className="pt-0 pb-12 sm:pb-14 lg:pb-16">
       <div className="wage-split">
         <h2 className="wage-h2">{s.heading}</h2>
         <div>
-          <p className="wage-emp-intro">{schedule.vda && vda ? s.intro(state.name, count, vda, formatDate(schedule.vda.effectiveFrom)) : s.introOneRate(state.name)}</p>
+          <p className="wage-emp-intro">{intro}</p>
           <EmploymentFinder label={s.find} hint={s.findHint} noMatch={s.noMatch}>
             <ul className="wage-emp-list">
               {schedule.groups.map((g) => {
                 const table = g.table ? state.tables.find((t) => t.id === g.table) : undefined;
                 const source = g.source ? sourceById(state, g.source) : undefined;
                 const date = formatDate(g.date);
-                const values = g.rows?.flatMap((r) => r.values) ?? [];
-                const lowest = values.length ? Math.min(...values) : null;
+                // The summary's "from" figure: the lowest in the group's own unit; rows paid by another unit (a day among monthly rates) only when every row is.
+                const own = g.rows?.some((r) => !r.unit) ? g.rows.filter((r) => !r.unit) : (g.rows ?? []);
+                const figures = own.flatMap((r) => r.values.map((_, j) => ({ r, j, v: amount(g, r, j) })));
+                const low = figures.length ? figures.reduce((a, b) => (b.v < a.v ? b : a)) : null;
+                const lowest = low ? low.v : null;
+                const lowUnit = low?.r.unit ?? g.unit;
                 const summary =
-                  lowest !== null
-                    ? values.length === 1
-                      ? s.only(figure(g, lowest), g.unit)
-                      : s.from(figure(g, lowest), g.unit)
+                  low && lowest !== null
+                    ? figures.length === 1
+                      ? s.only(figure(g, low.r, low.j), lowUnit)
+                      : s.from(figure(g, low.r, low.j), lowUnit)
                     : g.allowance
                       ? s.allowance(g.allowance.label, formatRupees(g.allowance.amount))
                       : table
@@ -378,7 +399,13 @@ function EmploymentSchedule({ state }: { state: WageState }) {
                         {g.rows && (
                           <div className="wage-table-scroll">
                             <table className="wage-table is-compact">
-                              <caption className="sr-only">{addsVda(g) && vda ? s.caption(g.title ?? names, state.name, vda) : s.captionStated(g.title ?? names, state.name, g.unit ?? s.perMonth)}</caption>
+                              <caption className="sr-only">
+                                {g.linkedTo && cpi
+                                  ? s.captionIndex(g.title ?? names, state.name, formatDate(cpi.effectiveFrom))
+                                  : addsVda(g) && vda
+                                    ? s.caption(g.title ?? names, state.name, vda)
+                                    : s.captionStated(g.title ?? names, state.name, g.unit ?? s.perMonth)}
+                              </caption>
                               <thead>
                                 <tr>
                                   <th scope="col">{g.unit ? s.work : x.table.skill}</th>
@@ -402,9 +429,12 @@ function EmploymentSchedule({ state }: { state: WageState }) {
                                         </tr>
                                       )}
                                       <tr>
-                                        <th scope="row">{r.label}</th>
-                                        {r.values.map((v, j) => (
-                                          <td key={j}>{figure(g, v)}</td>
+                                        <th scope="row">
+                                          {r.label}
+                                          {r.unit && <span className="wage-emp-unit">{r.unit.toLowerCase()}</span>}
+                                        </th>
+                                        {r.values.map((_, j) => (
+                                          <td key={j}>{figure(g, r, j)}</td>
                                         ))}
                                       </tr>
                                     </Fragment>
@@ -438,10 +468,11 @@ function EmploymentSchedule({ state }: { state: WageState }) {
                         {g.rows && (
                           <p className="wage-source">
                             {addsVda(g) && vda ? `${s.plusVda(vda)} ` : ""}
+                            {g.linkedTo && cpi ? `${pointsLine(g)} ` : ""}
                             {s.notification(g.number, date)}.{" "}
                             {source && (
-                              <a href={source.copy ?? source.url} lang={source.language === "hi" ? "hi-IN" : "en-IN"}>
-                                {x.pdf(source.language === "hi", source.copyKb ? formatSize(source.copyKb) : source.sizeKb ? formatSize(source.sizeKb) : null)}
+                              <a href={source.copy ?? source.url} lang={langTag(source.language)}>
+                                {x.file(fileKind(source.url), source.language, source.copyKb ? formatSize(source.copyKb) : source.sizeKb ? formatSize(source.sizeKb) : null)}
                               </a>
                             )}
                           </p>
@@ -460,6 +491,10 @@ function EmploymentSchedule({ state }: { state: WageState }) {
 }
 
 const hostOf = (url: string) => new URL(url).host.replace(/^www\./, "");
+/** The page language of a source document, for its link's lang attribute. */
+const langTag = (language: "en" | "hi" | "kn" | "te") => ({ en: "en-IN", hi: "hi-IN", kn: "kn-IN", te: "te-IN" })[language];
+/** "PDF" or "Excel": Andhra Pradesh's department publishes its wage tables as spreadsheets. */
+const fileKind = (url: string) => (/\.xlsx?(?:$|[?#])/i.test(url) ? "xls" : "pdf");
 
 /** An order number that breaks only after a slash, never at a hyphen, so it is copied whole. */
 function OrderNumber({ value }: { value: string }) {

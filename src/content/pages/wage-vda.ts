@@ -20,6 +20,7 @@ export const VDA_CYCLE: Record<WageStateSlug, string> = {
   haryana: "1 April and 1 October, in draft rules",
   punjab: "Not yet set by the state",
   karnataka: "1 April each year",
+  "andhra-pradesh": "1 April and 1 October",
 };
 
 /** The start of the half-year we are in: 1 April or 1 October. */
@@ -75,7 +76,7 @@ export const wageVdaCopy = {
   title: (year: string | null) => `Variable Dearness Allowance (VDA)${year ? ` ${year}` : ""}: State Tracker`,
   /** `stamp` is "Checked Oct 2026" once every state is signed off, else "Updated Oct 2026", as on the hub. */
   description: (names: string[], stamp: string) =>
-    `VDA and DA revisions in ${listNames(names)}: the allowance in force, when it changed and what is still due. ${stamp}.`,
+    `VDA and DA revisions in ${listNames(names.map((n) => ({ "Andhra Pradesh": "AP", "Uttar Pradesh": "UP" } as Record<string, string>)[n] ?? n))}: the allowance in force, when it changed and what is still due. ${stamp}.`,
   breadcrumb: "VDA",
   heading: (cycle: string) => `VDA revisions by state, ${formatMonth(cycle)}.`,
   /** The answer first: who has published this half-year's revision and who has not. */

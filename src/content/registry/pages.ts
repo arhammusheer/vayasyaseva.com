@@ -122,6 +122,7 @@ export const WAGE_STATE_UPDATED: Readonly<Partial<Record<WageStateSlug, string>>
   karnataka: "2026-10-16",
   haryana: "2026-10-17",
   punjab: "2026-10-17",
+  "andhra-pradesh": "2026-10-22",
 };
 const wageUpdated = (state: WageStateSlug) => {
   const updated = WAGE_STATE_UPDATED[state];
@@ -161,6 +162,12 @@ const WAGE_STATE_STATUS: Partial<Record<WageStateSlug, PageStatus>> = {
   // 2025 LWF bill (shown on the page as pending).
   haryana: "published",
   punjab: "published",
+  // Published 22 Oct 2026 (owner asked for it published, groundwork for
+  // Visakhapatnam): every scheduled employment from the department's own
+  // sheets and the 28 Sep 2026 VDA gazette. Still open: a named checker,
+  // and the notifications behind the sheets, which the department no longer
+  // hosts (andhra-pradesh.json, verification).
+  "andhra-pradesh": "published",
 };
 
 /**

@@ -6,8 +6,8 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { deflateSync } from 'node:zlib';
 import { importTs, root } from '../scripts/lib/register-ts.mjs';
-import { describeDocument, diffLines, documentLinks, htmlText, sha256, wpDocumentLinks } from '../scripts/wage-monitor/extract.mjs';
-import { buildTargets, coverageProblems, fetchSource, fingerprint, istDate, locationTargets, pageLines, registryProblems, relayFetch, runMonitor, targetKey } from '../scripts/wage-monitor/monitor.mjs';
+import { describeDocument, diffLines, documentLinks, htmlText, sha256, spaBundleLinks, spaScript, wpDocumentLinks } from '../scripts/wage-monitor/extract.mjs';
+import { ARCHIVED, buildTargets, coverageProblems, fetchSource, fingerprint, istDate, locationTargets, pageLines, registryProblems, relayFetch, runMonitor, targetKey } from '../scripts/wage-monitor/monitor.mjs';
 import { extractPdfText, parseCMap } from '../scripts/wage-monitor/pdf-text.mjs';
 import { chatwootClient, issueTitle, monitorFailedEvent, renderChatwootMessage, reportEvents, reportToChatwoot, reportToHub, safe } from '../scripts/wage-monitor/report.mjs';
 import { hubClient, hubFromEnv, parseNotify } from '../scripts/lib/notify-hub.mjs';
@@ -112,7 +112,8 @@ test('the source registry covers every wage dataset and its listings', () => {
   assert.deepEqual(registryProblems(wageStates, registry), []);
   const all = buildTargets(wageStates, registry);
   for (const state of wageStates) {
-    for (const source of state.sources) {
+    // An Internet Archive capture cannot change, so it is cited but not fetched.
+    for (const source of state.sources.filter((s) => !ARCHIVED.test(s.url))) {
       assert.ok(all.some((t) => t.kind === 'document' && t.url === source.url && t.sourceIds.includes(source.id)), source.id);
       // A copy found on a third party's site (via) is watched as a file only.
       if (!source.via) assert.ok(all.some((t) => t.kind === 'listing' && t.url === source.listing), source.listing);
@@ -718,6 +719,47 @@ test('the Ministry of Labour documents API is read as a listing of its posts, no
   const day2 = await runMonitor({ targets: [target], previous: day1.state, now: at('2026-10-18'), fetcher: async (url) => (url === target.url ? json([...JSON.parse(body).posts, { ID: 3, post_slug: 'esi-ceiling', post_title: 'ESI wage ceiling', post_date: '2026-10-18 10:00:00' }])() : (described++, { ok: false, status: 404 })) });
   assert.deepEqual(day2.events.map((e) => [e.type, e.added.map((l) => l.label)]), [['listing-changed', ['2026-10-18: ESI wage ceiling']]]);
   assert.equal(described, 0);
+});
+
+test("Andhra Pradesh's labour site is read from its app bundle: the documents its notices link, by label", async () => {
+  const base = 'https://api.example/download/';
+  const shell = '<!doctype html><html><head><script defer="defer" src="/static/js/main.d4edcfa0.js"></script></head><body><div id="root"></div></body></html>';
+  assert.equal(spaScript(shell, 'https://labour.ap.gov.in/'), 'https://labour.ap.gov.in/static/js/main.d4edcfa0.js');
+  assert.equal(spaScript('<html><body>no app</body></html>', 'https://labour.ap.gov.in/'), null);
+  const bundle = (extra = '') =>
+    `const DU="${base}";[{text:"VDA Gazette as on 01.10.2026",link:DU+"labour/1790751054626_VDAGazetteason01.10.2026.pdf"},{text:"\\u0c35\\u0c47\\u0c24\\u0c28\\u0c3e\\u0c32 \\u0c15\\u0c4b\\u0c21\\u0c4d",link:"labour/1771002428044_2026LFBI_40325_RT39_E.pdf",isNew:!1}${extra}];var t={name:"1any manufacturing.xls",url:"labour/1757000266110_1anymanufacturing.xls"};var x="labour/1755781796413_RTI_Act2005.pdf";`;
+  const links = spaBundleLinks(bundle(), base);
+  assert.deepEqual(links.map((l) => [l.url.slice(base.length), l.label]), [
+    ['labour/1755781796413_RTI_Act2005.pdf', '1755781796413_RTI_Act2005.pdf'],
+    ['labour/1757000266110_1anymanufacturing.xls', '1any manufacturing.xls'],
+    ['labour/1771002428044_2026LFBI_40325_RT39_E.pdf', 'వేతనాల కోడ్'],
+    ['labour/1790751054626_VDAGazetteason01.10.2026.pdf', 'VDA Gazette as on 01.10.2026'],
+  ]);
+  assert.deepEqual(spaBundleLinks(bundle(), base, /vda/i).map((l) => l.label), ['VDA Gazette as on 01.10.2026']);
+  // In the monitor: the shell, then its bundle; a new notice is a listing change.
+  const target = { kind: 'listing', url: 'https://labour.ap.gov.in/', name: 'AP labour', topic: 'wages', format: 'spa-bundle', publicBase: base, match: 'vda|wage', state: 'andhra-pradesh', stateName: 'Andhra Pradesh' };
+  const site = (js) => async (url) => ({ ok: true, status: 200, contentType: url.endsWith('.js') ? 'text/javascript' : 'text/html', body: Buffer.from(url.endsWith('.js') ? js : shell) });
+  const day1 = await runMonitor({ targets: [target], previous: null, fetcher: site(bundle()), now: at('2026-10-22') });
+  assert.equal(day1.results[0].outcome, 'baseline');
+  const april = ',{text:"VDA Gazette as on 01.04.2027",link:DU+"labour/1806000000000_VDAGazette01.04.2027.pdf"}';
+  const day2 = await runMonitor({ targets: [target], previous: day1.state, fetcher: site(bundle(april)), now: at('2027-03-28'), describeNew: false });
+  assert.deepEqual(day2.events.map((e) => [e.type, e.added.map((l) => l.label)]), [['listing-changed', ['VDA Gazette as on 01.04.2027']]]);
+  // A shell without its bundle is a failed load, not every document removed.
+  const day3 = await runMonitor({ targets: [target], previous: day2.state, fetcher: async () => ({ ok: true, status: 200, contentType: 'text/html', body: Buffer.from('<html>maintenance</html>') }), now: at('2027-03-29') });
+  assert.equal(day3.results[0].outcome, 'failed');
+});
+
+test('an Internet Archive capture is cited but never fetched: it cannot change', () => {
+  const capture = 'https://web.archive.org/web/20180509064207id_/http://labour.ap.gov.in/documents/Shops.pdf';
+  assert.ok(ARCHIVED.test(capture));
+  assert.ok(!ARCHIVED.test('https://web.archive.org/web/2018/http://labour.ap.gov.in/documents/Shops.pdf'), 'only a fixed capture');
+  const state = { state: 'andhra-pradesh', name: 'Andhra Pradesh', sources: [
+    { id: 'a', url: capture, listing: 'https://labour.ap.gov.in/', via: 'Internet Archive', sha256: 'x' },
+    { id: 'b', url: 'https://api.example/labour/1.pdf', listing: 'https://labour.ap.gov.in/', sha256: 'y' },
+  ] };
+  const urls = buildTargets([state], { states: {} }).map((t) => t.url);
+  assert.ok(!urls.includes(capture));
+  assert.ok(urls.includes('https://api.example/labour/1.pdf'));
 });
 
 test('location page sources are a monthly load check: deduplicated, never compared line by line', async () => {

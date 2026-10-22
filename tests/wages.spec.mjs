@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { importTs } from '../scripts/lib/register-ts.mjs';
 
-const { wageStates, wageStatus, wageRecords, dailyFromMonthly, formatRupees, headlineRate, headlineRange, checkedByLine, unpublishedRevisions, formatSize } = await importTs('src/content/wages/index.ts');
+const { wageStates, wageStatus, wageRecords, dailyFromMonthly, formatRupees, headlineRate, headlineRange, checkedByLine, unpublishedRevisions, formatSize, employmentFigure, vdaPoints } = await importTs('src/content/wages/index.ts');
 const { wageStateSchema, wageIntegrityProblems } = await importTs('src/content/wages/schema.ts');
 const { pathAliases, statusOf } = await importTs('src/content/registry/index.ts');
 
@@ -107,6 +107,46 @@ test('integrity: each scheduled employment shows its rates one way, with a figur
   assert.ok(problems.some((p) => p.includes('1 figures for 2 column(s)')));
 });
 
+test('Andhra Pradesh: an index-linked figure is basic + (index − base) × rate per point, to the paisa', () => {
+  const ap = wageStates.find((s) => s.state === 'andhra-pradesh');
+  const group = (id) => ap.employments.groups.find((g) => g.id === id);
+  const security = group('security-services');
+  assert.equal(vdaPoints(ap.employments, security), 1958 - 590);
+  // Guards without arms, Zone I: 5,000 + 1,368 × ₹6.75.
+  const guards = security.rows.find((r) => /without arms/i.test(r.label));
+  assert.equal(employmentFigure(ap.employments, security, guards, 0), 14234);
+  // Agriculture runs on the agricultural workers' index, a day.
+  const farm = group('agriculture');
+  assert.equal(vdaPoints(ap.employments, farm), 1566 - 619);
+  // Beedi making keeps its yearly index (1,904 from 1 April 2026).
+  assert.equal(vdaPoints(ap.employments, group('beedi-staff')), 1904 - 483);
+});
+
+test('Andhra Pradesh: the main tables agree with the notifications they come from', () => {
+  const ap = wageStates.find((s) => s.state === 'andhra-pradesh');
+  const table = ap.tables.find((t) => t.id === 'any-manufacturing');
+  const group = ap.employments.groups.find((g) => g.id === 'any-manufacturing');
+  const [highly, skilled, semi, unskilled] = group.rows.map((r) => employmentFigure(ap.employments, group, r, 0));
+  const monthly = (skill) => table.rates.find((r) => r.skill === skill).monthly;
+  assert.deepEqual([highly, skilled, semi, unskilled], ['highly-skilled', 'skilled', 'semi-skilled', 'unskilled'].map(monthly));
+  // Contract labour: the Commissioner's sheet states VDA for 1,111 points.
+  for (const r of ap.tables.find((t) => t.id === 'contract-labour').rates) assert.equal(Math.round((r.vda / 1111) * 100) % 5, 0, `${r.skill}: a rate per point in whole 5 paise`);
+});
+
+test('integrity: an index-linked group needs the schedule index and a rate per point for every figure', () => {
+  const ap = wageStates.find((s) => s.state === 'andhra-pradesh');
+  const shops = ap.employments.groups.find((g) => g.id === 'shops');
+  const broken = {
+    ...ap,
+    employments: {
+      groups: [...ap.employments.groups.filter((g) => g.id !== 'shops'), { ...shops, linkedTo: { series: 'industrial', base: 525 }, rows: [{ label: 'Helper', values: [3700, 3370] }] }],
+    },
+  };
+  const problems = wageIntegrityProblems(broken);
+  assert.ok(problems.some((p) => p.includes('declares no index points')));
+  assert.ok(problems.some((p) => p.includes('no VDA rate per point')));
+});
+
 test('file sizes read as KB or MB', () => {
   assert.equal(formatSize(751), '751 KB');
   assert.equal(formatSize(2368), '2.3 MB');
@@ -129,8 +169,7 @@ test('rupee figures quoted outside the wage pages are current rates (no drift af
   const current = new Set();
   for (const s of wageStates) {
     for (const t of s.tables) for (const r of t.rates) for (const v of [r.monthly, r.daily, r.basic, r.vda]) if (v != null) current.add(v);
-    const vda = s.employments?.vda?.amount ?? 0;
-    for (const g of s.employments?.groups ?? []) for (const r of g.rows ?? []) for (const v of r.values) current.add(g.unit || !vda ? v : v + vda);
+    for (const g of s.employments?.groups ?? []) for (const r of g.rows ?? []) r.values.forEach((_, j) => current.add(employmentFigure(s.employments, g, r, j)));
   }
   // Employer dues: every figure in statutory.ts (PT slabs, LWF, ceilings) is current by definition.
   for (const m of readFileSync(`${root}/src/content/statutory.ts`, 'utf8').matchAll(/\b\d[\d,]*(?:\.\d+)?\b/g)) current.add(norm(m[0]));

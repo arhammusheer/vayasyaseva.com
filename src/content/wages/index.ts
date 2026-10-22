@@ -9,6 +9,7 @@
  * module free of heavy imports: pages, scripts and tests read it.
  */
 import type { WageStateSlug } from "@/content/registry/identifiers";
+import andhraPradesh from "./andhra-pradesh.json" with { type: "json" };
 import delhi from "./delhi.json" with { type: "json" };
 import haryana from "./haryana.json" with { type: "json" };
 import karnataka from "./karnataka.json" with { type: "json" };
@@ -46,7 +47,7 @@ export type WageSource = {
   url: string;
   /** The department page that lists the document. */
   listing: string;
-  language: "en" | "hi" | "kn";
+  language: "en" | "hi" | "kn" | "te";
   /** SHA-256 of the file as retrieved, for the daily source monitor. */
   sha256: string;
   /** File size, shown in the link text so data-conscious readers know before they tap. */
@@ -126,10 +127,22 @@ export type EmploymentGroup = {
   columns?: { name: string; areas?: string }[];
   /**
    * values: one figure per column, in rupees: the basic wage where the
-   * schedule adds its VDA, else the full rate in `unit`. group: a
-   * sub-heading (hotels' unit sizes).
+   * schedule adds its VDA (or the group is `linkedTo` a price index), else
+   * the full rate in `unit`. group: a sub-heading (hotels' unit sizes).
+   * perPoint: the VDA per index point, per column, where the notification
+   * sets one per category (Andhra Pradesh). unit: a row paid by another
+   * unit than the group's ("A day" among monthly rates).
    */
-  rows?: { label: string; group?: string; values: number[] }[];
+  rows?: { label: string; group?: string; values: number[]; perPoint?: number[]; unit?: string }[];
+  /**
+   * Andhra Pradesh: the notification links its basic wages to a consumer
+   * price index (industrial workers for Part I of the schedule, agricultural
+   * workers for Part II). The VDA is (the schedule's current index − base)
+   * × the rate per point: the group's `perPoint`, or each row's. `index`
+   * and `indexSource`: a notification whose index is declared on another
+   * cycle (beedi making, once a year from 1 April).
+   */
+  linkedTo?: { series: "industrial" | "agricultural"; base: number; perPoint?: number; index?: number; indexSource?: string };
   /** The figures are the full rate as stated, with no schedule VDA added, in this unit ("Per 1,000 bricks"). */
   unit?: string;
   /** An allowance of the employment's own, in place of the schedule's VDA (agriculture). */
@@ -140,8 +153,40 @@ export type EmploymentGroup = {
 export type EmploymentSchedule = {
   /** The VDA every listed notification adds to its basic wage; absent where the main tables already carry it. */
   vda?: { amount: number; effectiveFrom: string; source: string };
+  /**
+   * Andhra Pradesh: the price index points the Commissioner of Labour
+   * declares each April and October, from which each `linkedTo` group's VDA
+   * is worked out.
+   */
+  cpi?: { industrial: number; agricultural: number; effectiveFrom: string; source: string };
   groups: EmploymentGroup[];
 };
+
+const round2 = (v: number) => Math.round(v * 100) / 100;
+
+/** The points above a group's base: its VDA is these times the rate per point. */
+export const vdaPoints = (schedule: EmploymentSchedule, group: EmploymentGroup) =>
+  group.linkedTo && schedule.cpi ? currentIndex(schedule, group) - group.linkedTo.base : 0;
+
+/** The index a group's VDA is worked out from: its own, else the schedule's for its series. */
+export const currentIndex = (schedule: EmploymentSchedule, group: EmploymentGroup) =>
+  group.linkedTo?.index ?? (group.linkedTo && schedule.cpi ? schedule.cpi[group.linkedTo.series] : 0);
+
+/** A row's VDA rate per point in one column: its own, else the group's. */
+export const perPointRate = (group: EmploymentGroup, row: NonNullable<EmploymentGroup["rows"]>[number], column: number) =>
+  row.perPoint?.[column] ?? group.linkedTo?.perPoint ?? 0;
+
+/**
+ * One figure of a scheduled employment's table, as the worker is paid it:
+ * the basic wage plus the schedule's VDA, or plus the index-linked VDA
+ * (points × rate per point, to the paisa), or the figure as stated in its
+ * unit.
+ */
+export function employmentFigure(schedule: EmploymentSchedule, group: EmploymentGroup, row: NonNullable<EmploymentGroup["rows"]>[number], column: number) {
+  const value = row.values[column];
+  if (group.linkedTo) return round2(value + round2(vdaPoints(schedule, group) * perPointRate(group, row, column)));
+  return schedule.vda && !group.unit ? value + schedule.vda.amount : value;
+}
 
 export type WageState = {
   state: WageStateSlug;
@@ -166,7 +211,7 @@ export type WageState = {
 
 /** Hub order: home state first, then the NCR neighbours, then the rest. */
 /** Alphabetical by name, so no state's market is listed first (owner direction, 17 Oct 2026). */
-export const wageStates = [delhi, haryana, karnataka, punjab, uttarPradesh, uttarakhand] as unknown as readonly WageState[];
+export const wageStates = [andhraPradesh, delhi, haryana, karnataka, punjab, uttarPradesh, uttarakhand] as unknown as readonly WageState[];
 
 export function getWageState(slug: string): WageState | undefined {
   return wageStates.find((s) => s.state === slug);

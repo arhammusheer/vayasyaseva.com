@@ -27,7 +27,11 @@ import tls from "node:tls";
 import { join, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import { root } from "../lib/register-ts.mjs";
-import { BUCKET, CDN, copyKey, originalKey } from "./archive.mjs";
+import { BUCKET, CDN, copyKey, originalKey, sourceExt } from "./archive.mjs";
+
+/** The first bytes of an OLE2 compound file (a legacy .xls). */
+const OLE2 = Buffer.from([0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1]);
+const SHEET_TYPES = { xls: "application/vnd.ms-excel", xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" };
 import { fetchSource } from "./monitor.mjs";
 
 const sha = (buf) => createHash("sha256").update(buf).digest("hex");
@@ -114,21 +118,25 @@ async function main() {
         problems.push(`${data.state} ${source.id}: the file now differs from the dataset's sha256; re-check it before hosting`);
         continue;
       }
-      if (!body.subarray(0, 1024).includes("%PDF-")) {
-        problems.push(`${data.state} ${source.id}: not a PDF; not hosted`);
+      const ext = sourceExt(source.url);
+      // A spreadsheet (Andhra Pradesh's wage sheets: an OLE2 .xls or a zipped .xlsx) is hosted as it is.
+      const isSheet = ext !== "pdf" && (body.subarray(0, 8).equals(OLE2) || body.subarray(0, 2).toString("latin1") === "PK");
+      if (!isSheet && !body.subarray(0, 1024).includes("%PDF-")) {
+        problems.push(`${data.state} ${source.id}: not a PDF or spreadsheet; not hosted`);
         continue;
       }
-      const small = compress(body, dir);
+      const small = isSheet ? body : compress(body, dir);
+      const type = isSheet ? SHEET_TYPES[ext] : "application/pdf";
       before += body.length;
       after += small.length;
       console.log(`${data.state} ${source.id}: ${kb(body.length)} KB -> ${kb(small.length)} KB`);
       if (!values["dry-run"]) {
-        const orig = join(dir, "original.pdf");
-        const copy = join(dir, "copy.pdf");
+        const orig = join(dir, `original.${ext}`);
+        const copy = join(dir, `copy.${ext}`);
         writeFileSync(orig, body);
         writeFileSync(copy, small);
-        put(originalKey(source.sha256), orig, "application/pdf");
-        put(copyKey(data.state, source), copy, "application/pdf");
+        put(originalKey(source.sha256, ext), orig, type);
+        put(copyKey(data.state, source), copy, type);
         source.copy = `${CDN}/${copyKey(data.state, source)}`;
         source.copyKb = Math.max(1, kb(small.length));
         hosted.set(source.sha256, { copy: source.copy, copyKb: source.copyKb });

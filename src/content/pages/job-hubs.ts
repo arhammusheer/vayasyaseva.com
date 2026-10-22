@@ -70,7 +70,7 @@ export const jobHubs: CopyIn<JobHubCopy[]> = {
       slug: "freshers",
       name: "Fresher jobs",
       metaTitle: "Jobs for Freshers: Factory, Packing, Warehouse",
-      description: "Fresher jobs: helper, packing, warehouse and housekeeping work, no experience needed. Pick your area when you apply. No fee.",
+      description: "Fresher jobs: helper, packing, warehouse and housekeeping work, no experience needed. Pick your area when you apply. Full 8-hour shifts. No fee.",
       heading: "Jobs for freshers.",
       lede: "No experience yet? Many factory and warehouse jobs are open to freshers.",
       roles: [
@@ -86,7 +86,7 @@ export const jobHubs: CopyIn<JobHubCopy[]> = {
       slug: "10th-pass",
       name: "10th pass jobs",
       metaTitle: "10th Pass Jobs: Helper, Packing, Warehouse",
-      description: "10th pass jobs: factory helper, packing, warehouse and housekeeping work. Pick your area when you apply. No fee. Apply online.",
+      description: "10th pass jobs: factory helper, packing, warehouse and housekeeping work. Pick your area when you apply. Full 8-hour shifts. No fee. Apply online.",
       heading: "10th pass jobs.",
       lede: "Factory and warehouse work for people who have passed 10th.",
       roles: [
@@ -168,7 +168,7 @@ export const jobHubs: CopyIn<JobHubCopy[]> = {
       slug: "freshers",
       name: "Fresher job",
       metaTitle: "Fresher Job: Factory, Packing, Warehouse",
-      description: "Fresher job, apna area chunkar apply karein. Koi fee nahi. Factory helper, packing, warehouse, housekeeping, bina experience.",
+      description: "Fresher job, apna area chunkar apply karein. EPF aur ESIC jahan lagu ho. Koi fee nahi. Factory helper, packing, warehouse, housekeeping, bina experience.",
       heading: "Fresher ke liye naukri.",
       lede: "Abhi experience nahi hai? Factory aur warehouse ki kai naukriyan fresher ke liye hain.",
       roles: [
@@ -184,7 +184,7 @@ export const jobHubs: CopyIn<JobHubCopy[]> = {
       slug: "10th-pass",
       name: "10th pass job",
       metaTitle: "10th Pass Job: Helper, Packing, Warehouse",
-      description: "10th pass job, apna area chunkar apply karein. Koi fee nahi. Factory helper, packing, warehouse aur housekeeping ka kaam. Apply karein.",
+      description: "10th pass job, apna area chunkar apply karein. Poori 8 ghante ki shift. Koi fee nahi. Factory helper, packing, warehouse aur housekeeping ka kaam. Apply karein.",
       heading: "10th pass naukri.",
       lede: "10th pass logon ke liye factory aur warehouse ka kaam.",
       roles: [

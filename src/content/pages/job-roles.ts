@@ -68,7 +68,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "factory-helper",
       name: "Factory helper",
       metaTitle: "Factory Helper Jobs: Line and Production Helper Work",
-      description: "Factory helper and production helper jobs: line work, material handling and packing. Pick your area when you apply. Apply online, no fee.",
+      description: "Factory helper and production helper jobs: line work, material handling and packing. Pick your area when you apply. Full 8-hour shifts. Apply online, no fee.",
       heading: "Factory helper jobs.",
       lede: "Production helper work on the factory line, open to freshers and to anyone who has worked on a line.",
       work: [
@@ -94,7 +94,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "packing",
       name: "Packing jobs",
       metaTitle: "Packing Jobs: Pharma and FMCG Line Packing",
-      description: "Packing jobs at pharma and FMCG plants: line packing, cartons, labelling and checks. Pick your area when you apply. Apply online, no fee.",
+      description: "Packing jobs at pharma and FMCG plants: line packing, cartons, labelling and checks. Pick your area when you apply. Full 8-hour shifts. Apply online, no fee.",
       heading: "Packing jobs.",
       lede: "Packing, labelling and checks on factory lines, open to freshers and to people with packing experience.",
       work: [
@@ -126,7 +126,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "machine-operator",
       name: "Machine operator",
       metaTitle: "Machine Operator Jobs: Packing, Moulding, Press",
-      description: "Machine operator jobs: packing, moulding, press and production machines at plants. Pick your area when you apply. Apply online, no fee.",
+      description: "Machine operator jobs: packing, moulding, press and production machines at plants. Pick your area when you apply. Full 8-hour shifts. Apply online, no fee.",
       heading: "Machine operator jobs.",
       lede: "Running production and packing machines, for people who have run a machine or helped an operator.",
       work: [
@@ -158,7 +158,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "warehouse",
       name: "Warehouse jobs",
       metaTitle: "Warehouse Jobs: Loading, Picking and Dispatch",
-      description: "Warehouse jobs: loading, unloading, picking, packing, stacking and dispatch. Pick your area when you apply. No fee to apply.",
+      description: "Warehouse jobs: loading, unloading, picking, packing, stacking and dispatch. Pick your area when you apply. Full 8-hour shifts. No fee to apply.",
       heading: "Warehouse jobs.",
       lede: "Loading, unloading, picking and dispatch, for freshers fit for physical work and people with store experience.",
       work: [
@@ -185,7 +185,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "forklift-operator",
       name: "Forklift operator",
       metaTitle: "Forklift Operator Jobs: Warehouses and Plants",
-      description: "Forklift operator jobs: loading and stacking in warehouses and plants, for experienced operators. Pick your area when you apply. No fee.",
+      description: "Forklift operator jobs: loading and stacking in warehouses and plants, for experienced operators. Pick your area when you apply. Full 8-hour shifts. No fee.",
       heading: "Forklift operator jobs.",
       lede: "Loading and stacking by forklift in warehouses and plants, for operators with experience and a driving licence.",
       work: [
@@ -212,7 +212,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "data-entry-operator",
       name: "Data entry operator",
       metaTitle: "Data Entry Operator Jobs (ERP, SAP)",
-      description: "Data entry operator (DEO) jobs: ERP and SAP entry for stores, dispatch and production. Pick your area when you apply. No fee to apply.",
+      description: "Data entry operator (DEO) jobs: ERP and SAP entry for stores, dispatch and production. Pick your area when you apply. Full 8-hour shifts. No fee to apply.",
       heading: "Data entry operator jobs.",
       lede: "Computer entries in ERP systems such as SAP at factories and warehouses, for 12th pass or graduates who can type and use Excel.",
       work: [
@@ -243,7 +243,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "housekeeping",
       name: "Housekeeping",
       metaTitle: "Housekeeping Jobs: Factories, Offices, Campuses",
-      description: "Housekeeping jobs in factories, offices, canteens and campuses, for men and women. Pick your area when you apply. Apply online, no fee.",
+      description: "Housekeeping jobs in factories, offices, canteens and campuses, for men and women. Pick your area when you apply. Full 8-hour shifts. Apply online, no fee.",
       heading: "Housekeeping jobs.",
       lede: "Housekeeping at factories, offices, canteens and campuses, for men and women, freshers or experienced.",
       work: [
@@ -300,7 +300,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "electrician",
       name: "Electrician",
       metaTitle: "Electrician Jobs: ITI Electrician, Plant Maintenance",
-      description: "Electrician jobs: plant maintenance, wiring, motors and panels for ITI electricians. Pick your area when you apply. Apply online, no fee.",
+      description: "Electrician jobs: plant maintenance, wiring, motors and panels for ITI electricians. Pick your area when you apply. Full 8-hour shifts. Apply online, no fee.",
       heading: "Electrician jobs.",
       lede: "Maintenance and wiring at plants, for ITI electricians and wiremen, with or without plant experience.",
       work: [
@@ -332,7 +332,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "welder",
       name: "Welder",
       metaTitle: "Welder Jobs: Arc, MIG and TIG Welding",
-      description: "Welder jobs: arc, MIG and TIG welding and gas cutting for fabrication and repair. Pick your area when you apply. Apply online, no fee.",
+      description: "Welder jobs: arc, MIG and TIG welding and gas cutting for fabrication and repair. Pick your area when you apply. Full 8-hour shifts. Apply online, no fee.",
       heading: "Welder jobs.",
       lede: "Fabrication and maintenance welding, for ITI welders and experienced welders who can show their work.",
       work: [
@@ -359,7 +359,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "fitter",
       name: "Fitter",
       metaTitle: "Fitter Jobs: Maintenance and Machine Fitter",
-      description: "Fitter jobs: maintenance, machine fitting and installation for ITI fitters. Pick your area when you apply. No fee to apply.",
+      description: "Fitter jobs: maintenance, machine fitting and installation for ITI fitters. Pick your area when you apply. Full 8-hour shifts. No fee to apply.",
       heading: "Fitter jobs.",
       lede: "Mechanical maintenance and fitting at plants, for ITI fitters and maintenance helpers ready to move up.",
       work: [
@@ -744,7 +744,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "packing",
       name: "Packing job",
       metaTitle: "Packing Job: Pharma aur FMCG",
-      description: "Packing job, apna area chunkar apply karein. Koi fee nahi. Pharma, FMCG factories mein line packing, carton, labelling, checking.",
+      description: "Packing job, apna area chunkar apply karein. EPF aur ESIC jahan lagu ho. Koi fee nahi. Pharma, FMCG factories mein line packing, carton, labelling, checking.",
       heading: "Packing ki naukri.",
       lede: "Factory ki line par packing, labelling aur checking, fresher aur packing ka experience rakhne walon ke liye.",
       work: [
@@ -776,7 +776,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "machine-operator",
       name: "Machine operator",
       metaTitle: "Machine Operator Job",
-      description: "Machine operator ki naukri: plants mein packing, moulding, press aur production machines. Apply karte waqt apna area chunein. Koi fee nahi.",
+      description: "Machine operator ki naukri: plants mein packing, moulding, press aur production machines. Apply karte waqt apna area chunein. Koi fee nahi lagti.",
       heading: "Machine operator ki naukri.",
       lede: "Production aur packing machines chalana, unke liye jinhone machine chalayi hai ya operator ki madad ki hai.",
       work: [
@@ -808,7 +808,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "warehouse",
       name: "Warehouse job",
       metaTitle: "Warehouse Job: Loading, Picking",
-      description: "Warehouse ki naukri: loading, unloading, picking, packing, stacking aur dispatch. Apply karte waqt apna area chunein. Koi fee nahi.",
+      description: "Warehouse ki naukri: loading, unloading, picking, packing, stacking aur dispatch. Apply karte waqt apna area chunein. EPF aur ESIC jahan lagu ho. Koi fee nahi.",
       heading: "Warehouse ki naukri.",
       lede: "Loading, unloading, picking aur dispatch, mehnat ka kaam kar sakne wale fresher aur store ka experience rakhne walon ke liye.",
       work: [
@@ -862,7 +862,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "data-entry-operator",
       name: "Data entry operator",
       metaTitle: "Data Entry Operator Job (ERP, SAP)",
-      description: "Data entry operator (DEO) ki naukri: stores, dispatch, production ke liye ERP, SAP entry. Apply karte waqt apna area chunein. Koi fee nahi.",
+      description: "Data entry operator (DEO) ki naukri: stores, dispatch, production ke liye ERP, SAP entry. Apply karte waqt apna area chunein. Koi fee nahi lagti.",
       heading: "Data entry operator ki naukri.",
       lede: "Factory aur warehouse mein SAP jaise ERP par computer entry, typing aur Excel jaanne wale 12th pass ya graduate ke liye.",
       work: [
@@ -893,7 +893,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "housekeeping",
       name: "Housekeeping",
       metaTitle: "Housekeeping Job",
-      description: "Housekeeping ki naukri: factory, office, canteen aur campus. Purush aur mahilaayein dono. Apply karte waqt apna area chunein. Koi fee nahi.",
+      description: "Housekeeping ki naukri: factory, office, canteen aur campus. Purush aur mahilaayein dono. Apply karte waqt apna area chunein. Koi fee nahi lagti.",
       heading: "Housekeeping ki naukri.",
       lede: "Factory, office, canteen aur campus mein housekeeping, purushon aur mahilaon ke liye, fresher hon ya experienced.",
       work: [
@@ -919,7 +919,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "iti-trades",
       name: "ITI trades",
       metaTitle: "ITI Job: Welder, Fitter, Electrician",
-      description: "ITI welder, fitter aur electrician ki naukri: fabrication, installation aur maintenance. Apply karte waqt apna area chunein. Koi fee nahi.",
+      description: "ITI welder, fitter aur electrician ki naukri: fabrication, installation aur maintenance. Apply karte waqt apna area chunein. Koi fee nahi lagti.",
       heading: "ITI ki naukri: welder, fitter, electrician.",
       lede: "Plants mein fabrication, installation aur maintenance ka kaam, welder, fitter, electrician ya milte-julte trade mein ITI pass ke liye.",
       work: [
@@ -982,7 +982,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "welder",
       name: "Welder",
       metaTitle: "Welder Job: Arc, MIG, TIG Welding",
-      description: "Welder job, apna area chunkar apply karein. Koi fee nahi. Fabrication aur maintenance: arc, MIG, TIG welding aur gas cutting.",
+      description: "Welder job, apna area chunkar apply karein. EPF aur ESIC jahan lagu ho. Koi fee nahi. Fabrication aur maintenance: arc, MIG, TIG welding aur gas cutting.",
       heading: "Welder ki naukri.",
       lede: "Fabrication aur maintenance ki welding, ITI welder aur apna kaam dikha sakne wale experienced welders ke liye.",
       work: [

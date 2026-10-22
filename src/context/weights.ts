@@ -11,10 +11,12 @@
  * longer name the rest of Uttarakhand); the weights are unchanged.
  * 6 (20 Oct 2026): Kapurthala becomes a jobs market (Kapurthala-district
  * places, Phagwara included, no longer name Jalandhar's); weights unchanged.
+ * 7 (22 Oct 2026): Visakhapatnam and Andhra Pradesh become markets (AP no
+ * longer looks to Bengaluru; Odisha looks to Visakhapatnam); weights unchanged.
  */
 import type { AudienceWeights, ContextTables, RegionWeights } from "./core";
 
-export const CONTEXT_VERSION = 6;
+export const CONTEXT_VERSION = 7;
 
 /**
  * Job seekers: where they live decides, so the IP (roughly where the phone

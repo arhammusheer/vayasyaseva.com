@@ -101,7 +101,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
   "en-IN": {
     title: "Factory, Packing and Warehouse Jobs: No Fee to Apply",
     description:
-      "Factory, packing and warehouse work in Bengaluru, Dehradun, Haridwar, Jalandhar, Kapurthala, Punjab and Uttarakhand. No fee, full 8-hour shifts. Apply online.",
+      "Factory and warehouse work in Andhra Pradesh, Bengaluru, Dehradun, Haridwar, Jalandhar, Kapurthala, Punjab, Uttarakhand and Visakhapatnam. No fee to apply.",
     breadcrumb: "Jobs",
     eyebrow: "JOBS",
     heading: "Find factory and warehouse work.",
@@ -172,7 +172,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
   "hi-IN": {
     title: "फ़ैक्टरी, पैकिंग और वेयरहाउस की नौकरी: आवेदन की कोई फ़ीस नहीं",
     description:
-      "बेंगलुरु, देहरादून, हरिद्वार, जालंधर, कपूरथला, पंजाब और उत्तराखंड में फ़ैक्टरी, पैकिंग और वेयरहाउस का काम। कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट। ऑनलाइन आवेदन करें।",
+      "आंध्र प्रदेश, बेंगलुरु, देहरादून, हरिद्वार, जालंधर, कपूरथला, पंजाब, उत्तराखंड और विशाखापत्तनम में फ़ैक्टरी, पैकिंग और वेयरहाउस का काम। कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट। ऑनलाइन आवेदन करें।",
     breadcrumb: "नौकरी",
     eyebrow: "नौकरी",
     heading: "फ़ैक्टरी और वेयरहाउस का काम ढूँढें।",
@@ -243,7 +243,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
   "hi-Latn-IN": {
     title: "Factory, Packing, Warehouse Job: Apply ki Koi Fee Nahi",
     description:
-      "Bengaluru, Dehradun, Haridwar, Jalandhar, Kapurthala, Punjab aur Uttarakhand mein factory, packing aur warehouse ka kaam. Koi fee nahi, 8 ghante ki shift.",
+      "Andhra Pradesh, Bengaluru, Dehradun, Haridwar, Jalandhar, Kapurthala, Punjab, Uttarakhand aur Visakhapatnam mein factory aur warehouse ka kaam. Koi fee nahi.",
     breadcrumb: "Jobs",
     eyebrow: "Jobs",
     heading: "Factory aur warehouse ka kaam dhoondhein.",
@@ -314,7 +314,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
   "pa-IN": {
     title: "ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦੀ ਨੌਕਰੀ: ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ",
     description:
-      "ਬੈਂਗਲੁਰੂ, ਦੇਹਰਾਦੂਨ, ਹਰਿਦੁਆਰ, ਜਲੰਧਰ, ਕਪੂਰਥਲਾ, ਪੰਜਾਬ ਅਤੇ ਉੱਤਰਾਖੰਡ ਵਿੱਚ ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ। ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ, ਪੂਰੀ 8 ਘੰਟੇ ਦੀ ਸ਼ਿਫ਼ਟ। ਆਨਲਾਈਨ ਅਪਲਾਈ ਕਰੋ।",
+      "ਆਂਧਰਾ ਪ੍ਰਦੇਸ਼, ਬੈਂਗਲੁਰੂ, ਦੇਹਰਾਦੂਨ, ਹਰਿਦੁਆਰ, ਜਲੰਧਰ, ਕਪੂਰਥਲਾ, ਪੰਜਾਬ, ਉੱਤਰਾਖੰਡ ਅਤੇ ਵਿਸ਼ਾਖਾਪਟਨਮ ਵਿੱਚ ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ। ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ।",
     breadcrumb: "ਨੌਕਰੀਆਂ",
     eyebrow: "ਨੌਕਰੀ",
     heading: "ਫ਼ੈਕਟਰੀ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ ਲੱਭੋ।",
@@ -385,7 +385,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
   "kn-IN": {
     title: "ಫ್ಯಾಕ್ಟರಿ ಮತ್ತು ವೇರ್‌ಹೌಸ್ ಉದ್ಯೋಗಗಳು: ಶುಲ್ಕವಿಲ್ಲ",
     description:
-      "ಬೆಂಗಳೂರು, ಡೆಹ್ರಾಡೂನ್, ಹರಿದ್ವಾರ, ಜಲಂಧರ್, ಕಪೂರ್ಥಲಾ, ಪಂಜಾಬ್ ಮತ್ತು ಉತ್ತರಾಖಂಡದಲ್ಲಿ ಫ್ಯಾಕ್ಟರಿ, ಪ್ಯಾಕಿಂಗ್ ಮತ್ತು ವೇರ್‌ಹೌಸ್ ಕೆಲಸ. ಯಾವುದೇ ಶುಲ್ಕವಿಲ್ಲ, 8 ಗಂಟೆಗಳ ಶಿಫ್ಟ್.",
+      "ಆಂಧ್ರ ಪ್ರದೇಶ, ಬೆಂಗಳೂರು, ಡೆಹ್ರಾಡೂನ್, ಹರಿದ್ವಾರ, ಜಲಂಧರ್, ಕಪೂರ್ಥಲಾ, ಪಂಜಾಬ್, ಉತ್ತರಾಖಂಡ ಮತ್ತು ವಿಶಾಖಪಟ್ಟಣದಲ್ಲಿ ಫ್ಯಾಕ್ಟರಿ ಮತ್ತು ವೇರ್‌ಹೌಸ್ ಕೆಲಸ. ಶುಲ್ಕವಿಲ್ಲ.",
     breadcrumb: "ಉದ್ಯೋಗಗಳು",
     eyebrow: "ಉದ್ಯೋಗಗಳು",
     heading: "ಫ್ಯಾಕ್ಟರಿ ಮತ್ತು ವೇರ್‌ಹೌಸ್ ಕೆಲಸ ಹುಡುಕಿ.",

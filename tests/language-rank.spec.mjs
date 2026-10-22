@@ -174,6 +174,20 @@ test("urlIntent reads ?cluster= and the Punjab campaigns' UTM tags", () => {
   assert.ok(rank.rankSegments("/jobs/apply").includes(seg));
 });
 
+test("urlIntent reads the Andhra Pradesh campaigns' UTM tags (22 Oct 2026)", () => {
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_campaign=jobs_vizag")), "visakhapatnam");
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_campaign=jobs_visakhapatnam&utm_term=pharma%20job")), "visakhapatnam");
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_term=parawada%20pharma%20jobs")), "visakhapatnam");
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_campaign=jobs_andhra")), "andhra-pradesh");
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_campaign=jobs_andhra_pradesh")), "andhra-pradesh");
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_term=vijayawada%20job")), "andhra-pradesh");
+  // A place in Vizag beats the state's name: "jobs_vizag_andhra" is Visakhapatnam's.
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_campaign=jobs_vizag_andhra")), "visakhapatnam");
+  // English first for an Andhra Pradesh ad (no Telugu yet).
+  const seg = rank.rankSegmentFor("/jobs/apply", { country: "IN", region: "UP" }, new URLSearchParams("utm_campaign=jobs_vizag"));
+  assert.ok(seg.startsWith("en-"), seg);
+});
+
 test("Punjabi readers fall back to Hinglish on pages without Punjabi", () => {
   assert.equal(i18n.nearestLocalePath("/jobs/jalandhar", "pa-IN"), "/pa-in/jobs/jalandhar");
   assert.equal(i18n.nearestLocalePath("/jobs/haridwar", "pa-IN"), "/hi-latn-in/jobs/haridwar");

@@ -44,6 +44,13 @@ export const PLACES_BY_ID = {
   "phagwara-goraya": { state: "PB", city: "Phagwara / Goraya", market: "jalandhar" },
   "jalandhar-focal-point": { state: "PB", city: "Focal Point, Jalandhar", market: "jalandhar" },
   dehradun: { state: "UK", city: "Dehradun", market: "dehradun" },
+  // Visakhapatnam (22 Oct 2026): the hub and its four belts. Parawada and
+  // Atchutapuram are in Anakapalli district, carved out of Visakhapatnam's in 2022.
+  visakhapatnam: { state: "AP", city: "Visakhapatnam", market: "visakhapatnam" },
+  "parawada-pharma-city": { state: "AP", city: "JN Pharma City, Parawada", market: "visakhapatnam" },
+  "atchutapuram-rambilli": { state: "AP", city: "APSEZ Atchutapuram / Rambilli", market: "visakhapatnam" },
+  "duvvada-vsez": { state: "AP", city: "VSEZ Duvvada, Visakhapatnam", market: "visakhapatnam" },
+  gajuwaka: { state: "AP", city: "Gajuwaka, Visakhapatnam", market: "visakhapatnam" },
 } as const satisfies Record<string, Place>;
 
 export type PlaceId = keyof typeof PLACES_BY_ID;

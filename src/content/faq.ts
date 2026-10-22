@@ -34,7 +34,7 @@ export const WORKING_WITH_US: FaqItem[] = [
   {
     question: "Where do you supply crews?",
     answer:
-      "In Bengaluru, Delhi NCR, Punjab (Jalandhar and Kapurthala) and Uttarakhand (Haridwar, Dehradun and beyond). For a site elsewhere in India, tell us where it is and we’ll tell you plainly whether we can staff it.",
+      "In Andhra Pradesh (Visakhapatnam), Bengaluru, Delhi NCR, Punjab (Jalandhar and Kapurthala) and Uttarakhand (Haridwar, Dehradun and beyond). For a site elsewhere in India, tell us where it is and we’ll tell you plainly whether we can staff it.",
     link: { href: "/locations", label: "Locations" },
     category: "commercial",
   },

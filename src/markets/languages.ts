@@ -13,6 +13,9 @@ import type { LanguageSetName } from "./data";
  * gets a set only if it is promoted (with mr-IN).
  */
 export const LANGUAGE_SETS = {
+  // Andhra Pradesh (22 Oct 2026): English first, then Hinglish and Hindi for
+  // workers from the Hindi belt. No Telugu until it is a site language.
+  andhra: ["en-IN", "hi-Latn-IN", "hi-IN"],
   hindi: ["hi-IN", "hi-Latn-IN", "en-IN"],
   karnataka: ["kn-IN", "en-IN", "hi-Latn-IN", "hi-IN"],
   punjab: ["pa-IN", "hi-Latn-IN", "en-IN", "hi-IN"],
@@ -29,6 +32,7 @@ export const STATE_LANGUAGE_SETS: Readonly<Record<string, LanguageSetName>> = {
   BR: "hindi", JH: "hindi", CG: "hindi", CT: "hindi", HP: "hindi", CH: "hindi",
   KA: "karnataka",
   PB: "punjab",
+  AP: "andhra",
 };
 
 /**

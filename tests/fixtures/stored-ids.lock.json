@@ -16,7 +16,9 @@
     "other",
     "punjab",
     "dehradun",
-    "kapurthala"
+    "kapurthala",
+    "visakhapatnam",
+    "andhra-pradesh"
   ],
   "identifiers.PAGE_STATUSES": [
     "draft",
@@ -55,7 +57,8 @@
     "delhi-ncr",
     "jalandhar",
     "haridwar",
-    "dehradun"
+    "dehradun",
+    "visakhapatnam"
   ],
   "identifiers.HARIDWAR_AREA_IDS": [
     "sidcul-bahadrabad",
@@ -109,6 +112,21 @@
     "kapurthala:outside",
     "kapurthala:jalandhar"
   ],
+  "identifiers.VISAKHAPATNAM_AREA_IDS": [
+    "visakhapatnam:city",
+    "visakhapatnam:gajuwaka",
+    "visakhapatnam:pendurthi",
+    "visakhapatnam:anakapalli",
+    "visakhapatnam:outside"
+  ],
+  "identifiers.ANDHRA_PRADESH_AREA_IDS": [
+    "andhra-pradesh:visakhapatnam",
+    "andhra-pradesh:vijayawada-guntur",
+    "andhra-pradesh:kakinada-rajahmundry",
+    "andhra-pradesh:nellore-tirupati",
+    "andhra-pradesh:other",
+    "andhra-pradesh:outside"
+  ],
   "identifiers.MARKET_AREA_IDS": [
     "market:haridwar",
     "market:uttarakhand",
@@ -117,13 +135,16 @@
     "market:bengaluru",
     "market:other",
     "market:dehradun",
-    "market:kapurthala"
+    "market:kapurthala",
+    "market:visakhapatnam",
+    "market:andhra-pradesh"
   ],
   "identifiers.REST_OF_STATE_AREA_IDS": [
     "haridwar:rest-of-uttarakhand",
     "jalandhar:rest-of-punjab",
     "dehradun:rest-of-uttarakhand",
-    "kapurthala:rest-of-punjab"
+    "kapurthala:rest-of-punjab",
+    "visakhapatnam:rest-of-andhra-pradesh"
   ],
   "rules.INTAKE_SOURCES": [
     "web_en",
@@ -189,7 +210,12 @@
     "kapurthala",
     "phagwara-goraya",
     "jalandhar-focal-point",
-    "dehradun"
+    "dehradun",
+    "visakhapatnam",
+    "parawada-pharma-city",
+    "atchutapuram-rambilli",
+    "duvvada-vsez",
+    "gajuwaka"
   ],
   "locations.placeId": [
     "uttarakhand",
@@ -209,7 +235,12 @@
     "hoskote-narasapura",
     "haridwar",
     "dehradun",
-    "selaqui"
+    "selaqui",
+    "visakhapatnam",
+    "parawada-pharma-city",
+    "atchutapuram-rambilli",
+    "duvvada-vsez",
+    "gajuwaka"
   ],
   "identifiers.LOCATION_ESTATES.uttarakhand": [
     "selaqui"
@@ -234,6 +265,12 @@
   "identifiers.LOCATION_ESTATES.haridwar": [],
   "identifiers.LOCATION_ESTATES.dehradun": [
     "selaqui"
+  ],
+  "identifiers.LOCATION_ESTATES.visakhapatnam": [
+    "parawada-pharma-city",
+    "atchutapuram-rambilli",
+    "duvvada-vsez",
+    "gajuwaka"
   ],
   "rules.QUICK_ANSWERS.work": [
     "factory-helper",
@@ -338,6 +375,17 @@
     "kapurthala:sultanpur-lodhi",
     "kapurthala:outside",
     "kapurthala:jalandhar",
+    "visakhapatnam:city",
+    "visakhapatnam:gajuwaka",
+    "visakhapatnam:pendurthi",
+    "visakhapatnam:anakapalli",
+    "visakhapatnam:outside",
+    "andhra-pradesh:visakhapatnam",
+    "andhra-pradesh:vijayawada-guntur",
+    "andhra-pradesh:kakinada-rajahmundry",
+    "andhra-pradesh:nellore-tirupati",
+    "andhra-pradesh:other",
+    "andhra-pradesh:outside",
     "market:haridwar",
     "market:uttarakhand",
     "market:jalandhar",
@@ -346,10 +394,13 @@
     "market:other",
     "market:dehradun",
     "market:kapurthala",
+    "market:visakhapatnam",
+    "market:andhra-pradesh",
     "haridwar:rest-of-uttarakhand",
     "jalandhar:rest-of-punjab",
     "dehradun:rest-of-uttarakhand",
-    "kapurthala:rest-of-punjab"
+    "kapurthala:rest-of-punjab",
+    "visakhapatnam:rest-of-andhra-pradesh"
   ],
   "crm.ANSWER_OPTIONS.experience": [
     "fresher=FRESHER",
@@ -424,6 +475,20 @@
     "market:dehradun=MARKET_DEHRADUN",
     "market:kapurthala=MARKET_KAPURTHALA",
     "dehradun:rest-of-uttarakhand=DD_REST_OF_UTTARAKHAND",
-    "kapurthala:rest-of-punjab=KP_REST_OF_PUNJAB"
+    "kapurthala:rest-of-punjab=KP_REST_OF_PUNJAB",
+    "visakhapatnam:city=VISAKHAPATNAM_CITY",
+    "visakhapatnam:gajuwaka=GAJUWAKA_DUVVADA",
+    "visakhapatnam:pendurthi=PENDURTHI_SABBAVARAM",
+    "visakhapatnam:anakapalli=ANAKAPALLI_PARAWADA",
+    "visakhapatnam:outside=OUTSIDE_VISAKHAPATNAM",
+    "andhra-pradesh:visakhapatnam=AP_VISAKHAPATNAM",
+    "andhra-pradesh:vijayawada-guntur=VIJAYAWADA_GUNTUR",
+    "andhra-pradesh:kakinada-rajahmundry=KAKINADA_RAJAHMUNDRY",
+    "andhra-pradesh:nellore-tirupati=NELLORE_TIRUPATI",
+    "andhra-pradesh:other=ELSEWHERE_ANDHRA_PRADESH",
+    "andhra-pradesh:outside=OUTSIDE_ANDHRA_PRADESH",
+    "market:visakhapatnam=MARKET_VISAKHAPATNAM",
+    "market:andhra-pradesh=MARKET_ANDHRA_PRADESH",
+    "visakhapatnam:rest-of-andhra-pradesh=VP_REST_OF_ANDHRA_PRADESH"
   ]
 }

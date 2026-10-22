@@ -34,6 +34,12 @@ Terms used on `/hi-in/` (हिंदी, Devanagari) and `/hi-latn-in/` (Hindi 
 | Vikasnagar | विकासनगर | |
 | Kapurthala | कपूरथला | |
 | Phagwara | फगवाड़ा | |
+| Visakhapatnam | विशाखापत्तनम | "Vizag" (वाइज़ैग) in brackets where it helps searchers |
+| Andhra Pradesh | आंध्र प्रदेश | |
+| Gajuwaka | गाजुवाका | |
+| Parawada | परवाड़ा | |
+| Atchutapuram | अच्युतापुरम | Also spelt Achutapuram |
+| Anakapalli | अनकापल्ली | Also spelt Anakapalle |
 | Goraya | गुराया | Punjabi ਗੁਰਾਇਆ; "Goraya" in Latin script, as searched |
 
 ## Banned words in Hindi

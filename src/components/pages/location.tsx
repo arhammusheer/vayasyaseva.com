@@ -191,7 +191,7 @@ export function LocationsIndex() {
   return (
     <>
       <JsonLd data={webPageSchema({ name: "Locations", description: "Where Vayasya Seva supplies contract labour crews.", url: "/locations", type: "CollectionPage" })} />
-      <PageHero title="Where we supply crews." lede="Bengaluru, Delhi NCR, Punjab and Uttarakhand. Pick a region, or tell us where your site is." />
+      <PageHero title="Where we supply crews." lede="Andhra Pradesh, Bengaluru, Delhi NCR, Punjab and Uttarakhand. Pick a region, or tell us where your site is." />
       <Section className="border-t border-border">
         <MarketList items={items} side="business" surface="locations-index" className="location-areas" />
       </Section>

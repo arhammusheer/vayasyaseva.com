@@ -70,7 +70,7 @@ export const jobHubs: CopyIn<JobHubCopy[]> = {
       slug: "freshers",
       name: "Fresher jobs",
       metaTitle: "Jobs for Freshers: Factory, Packing, Warehouse",
-      description: "Fresher jobs: helper, packing, warehouse and housekeeping work, no experience needed. In Bengaluru, Haridwar, Punjab and Uttarakhand. No fee.",
+      description: "Fresher jobs: helper, packing, warehouse and housekeeping work, no experience needed. Pick your area when you apply. Full 8-hour shifts. No fee.",
       heading: "Jobs for freshers.",
       lede: "No experience yet? Many factory and warehouse jobs are open to freshers.",
       roles: [
@@ -86,7 +86,7 @@ export const jobHubs: CopyIn<JobHubCopy[]> = {
       slug: "10th-pass",
       name: "10th pass jobs",
       metaTitle: "10th Pass Jobs: Helper, Packing, Warehouse",
-      description: "10th pass jobs: factory helper, packing, warehouse and housekeeping work. In Bengaluru, Haridwar, Punjab and Uttarakhand. No fee. Apply online.",
+      description: "10th pass jobs: factory helper, packing, warehouse and housekeeping work. Pick your area when you apply. Full 8-hour shifts. No fee. Apply online.",
       heading: "10th pass jobs.",
       lede: "Factory and warehouse work for people who have passed 10th.",
       roles: [
@@ -102,7 +102,7 @@ export const jobHubs: CopyIn<JobHubCopy[]> = {
       slug: "12th-pass",
       name: "12th pass jobs",
       metaTitle: "12th Pass Jobs: Data Entry, Operator, Packing",
-      description: "12th pass jobs: data entry, trainee machine operator, packing and warehouse work. In Bengaluru, Haridwar, Punjab and Uttarakhand. No fee. Full 8-hour shifts.",
+      description: "12th pass jobs: data entry, trainee machine operator, packing and warehouse work. Pick your area when you apply. No fee. Full 8-hour shifts.",
       heading: "12th pass jobs.",
       lede: "Factory, warehouse and computer work for people who have passed 12th.",
       roles: [
@@ -119,7 +119,7 @@ export const jobHubs: CopyIn<JobHubCopy[]> = {
       slug: "freshers",
       name: "फ़्रेशर की नौकरी",
       metaTitle: "फ़्रेशर के लिए नौकरी: फ़ैक्टरी, पैकिंग, वेयरहाउस",
-      description: "फ़्रेशर के लिए नौकरी: फ़ैक्टरी हेल्पर, पैकिंग, वेयरहाउस और हाउसकीपिंग का काम, बिना अनुभव के। बेंगलुरु, हरिद्वार, पंजाब और उत्तराखंड में। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
+      description: "फ़्रेशर के लिए नौकरी: फ़ैक्टरी हेल्पर, पैकिंग, वेयरहाउस और हाउसकीपिंग का काम, बिना अनुभव के। आवेदन में अपना इलाका चुनें। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
       heading: "फ़्रेशर के लिए नौकरी।",
       lede: "अभी अनुभव नहीं है? फ़ैक्टरी और वेयरहाउस की कई नौकरियाँ फ़्रेशर के लिए हैं।",
       roles: [
@@ -135,7 +135,7 @@ export const jobHubs: CopyIn<JobHubCopy[]> = {
       slug: "10th-pass",
       name: "10वीं पास नौकरी",
       metaTitle: "10वीं पास नौकरी: हेल्पर, पैकिंग, वेयरहाउस",
-      description: "10वीं पास के लिए नौकरी: फ़ैक्टरी हेल्पर, पैकिंग, वेयरहाउस और हाउसकीपिंग का काम। बेंगलुरु, हरिद्वार, पंजाब और उत्तराखंड में। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
+      description: "10वीं पास के लिए नौकरी: फ़ैक्टरी हेल्पर, पैकिंग, वेयरहाउस और हाउसकीपिंग का काम। आवेदन में अपना इलाका चुनें। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
       heading: "10वीं पास नौकरी।",
       lede: "10वीं पास लोगों के लिए फ़ैक्टरी और वेयरहाउस का काम।",
       roles: [
@@ -151,7 +151,7 @@ export const jobHubs: CopyIn<JobHubCopy[]> = {
       slug: "12th-pass",
       name: "12वीं पास नौकरी",
       metaTitle: "12वीं पास नौकरी: डेटा एंट्री, ऑपरेटर, पैकिंग",
-      description: "12वीं पास के लिए नौकरी: डेटा एंट्री, ट्रेनी मशीन ऑपरेटर, पैकिंग और वेयरहाउस का काम। बेंगलुरु, हरिद्वार, पंजाब और उत्तराखंड में। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
+      description: "12वीं पास के लिए नौकरी: डेटा एंट्री, ट्रेनी मशीन ऑपरेटर, पैकिंग और वेयरहाउस का काम। आवेदन में अपना इलाका चुनें। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
       heading: "12वीं पास नौकरी।",
       lede: "12वीं पास लोगों के लिए फ़ैक्टरी, वेयरहाउस और कंप्यूटर का काम।",
       roles: [
@@ -168,7 +168,7 @@ export const jobHubs: CopyIn<JobHubCopy[]> = {
       slug: "freshers",
       name: "Fresher job",
       metaTitle: "Fresher Job: Factory, Packing, Warehouse",
-      description: "Fresher job Bengaluru, Haridwar, Punjab aur Uttarakhand mein. Koi fee nahi. Factory helper, packing, warehouse, housekeeping, bina experience.",
+      description: "Fresher job, apna area chunkar apply karein. EPF aur ESIC jahan lagu ho. Koi fee nahi. Factory helper, packing, warehouse, housekeeping, bina experience.",
       heading: "Fresher ke liye naukri.",
       lede: "Abhi experience nahi hai? Factory aur warehouse ki kai naukriyan fresher ke liye hain.",
       roles: [
@@ -184,7 +184,7 @@ export const jobHubs: CopyIn<JobHubCopy[]> = {
       slug: "10th-pass",
       name: "10th pass job",
       metaTitle: "10th Pass Job: Helper, Packing, Warehouse",
-      description: "10th pass job Bengaluru, Haridwar, Punjab aur Uttarakhand mein. Koi fee nahi. Factory helper, packing, warehouse aur housekeeping ka kaam. Apply karein.",
+      description: "10th pass job, apna area chunkar apply karein. Poori 8 ghante ki shift. Koi fee nahi. Factory helper, packing, warehouse aur housekeeping ka kaam. Apply karein.",
       heading: "10th pass naukri.",
       lede: "10th pass logon ke liye factory aur warehouse ka kaam.",
       roles: [
@@ -200,7 +200,7 @@ export const jobHubs: CopyIn<JobHubCopy[]> = {
       slug: "12th-pass",
       name: "12th pass job",
       metaTitle: "12th Pass Job: Data Entry, Operator, Packing",
-      description: "12th pass job Bengaluru, Haridwar, Punjab aur Uttarakhand mein. Koi fee nahi. Poori 8 ghante ki shift. Data entry, trainee machine operator, packing, warehouse.",
+      description: "12th pass job, apna area chunkar apply karein. Koi fee nahi. Poori 8 ghante ki shift. Data entry, trainee machine operator, packing, warehouse.",
       heading: "12th pass naukri.",
       lede: "12th pass logon ke liye factory, warehouse aur computer ka kaam.",
       roles: [

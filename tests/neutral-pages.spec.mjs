@@ -1,6 +1,7 @@
 // No market is named first (owner direction, 17 Oct 2026; docs/visitor-context.md):
 // role and qualification pages name the work in their titles and headings,
-// and list every job market, in MARKET_ORDER, in their descriptions.
+// and, since 22 Oct 2026 (nine markets no longer fit a snippet), name none in
+// their descriptions either: the visitor picks an area on the form.
 import assert from "node:assert/strict";
 import test from "node:test";
 import { importTs } from "../scripts/lib/register-ts.mjs";
@@ -9,7 +10,7 @@ const { jobRoles } = await importTs("src/content/pages/job-roles.ts");
 const { jobHubs } = await importTs("src/content/pages/job-hubs.ts");
 const { jobsCopy } = await importTs("src/content/pages/jobs.ts");
 
-const PLACES = /sidcul|haridwar|roorkee|bengaluru|punjab|jalandhar|kapurthala|uttarakhand|सिडकुल|हरिद्वार|बेंगलुरु|पंजाब|उत्तराखंड|ਹਰਿਦੁਆਰ|ਪੰਜਾਬ/i;
+const PLACES = /sidcul|haridwar|roorkee|bengaluru|punjab|jalandhar|kapurthala|uttarakhand|dehradun|andhra|visakhapatnam|vizag|विशाखापत्तनम|आंध्र|देहरादून|सिडकुल|हरिद्वार|बेंगलुरु|पंजाब|उत्तराखंड|ਹਰਿਦੁਆਰ|ਪੰਜਾਬ/i;
 const pages = (copy) => Object.entries(copy).flatMap(([locale, list]) => (Array.isArray(list) ? list : [list]).map((p) => ({ locale, ...p })));
 
 test("role, qualification and /jobs titles and headings name no market", () => {
@@ -21,20 +22,14 @@ test("role, qualification and /jobs titles and headings name no market", () => {
   }
 });
 
-test("their descriptions list every job market, alphabetically, or none", () => {
-  const ORDER = { "en-IN": ["Bengaluru", "Haridwar", "Punjab", "Uttarakhand"], "hi-IN": ["बेंगलुरु", "हरिद्वार", "पंजाब", "उत्तराखंड"], "hi-Latn-IN": ["Bengaluru", "Haridwar", "Punjab", "Uttarakhand"] };
-  for (const p of [...pages(jobRoles), ...pages(jobHubs)]) {
-    const at = ORDER[p.locale].map((name) => p.description.indexOf(name));
-    if (at.every((i) => i < 0)) continue;
-    assert.ok(at.every((i) => i >= 0), `${p.locale} ${p.slug}: every market or none`);
-    assert.deepEqual([...at].sort((a, b) => a - b), at, `${p.locale} ${p.slug}: markets in order`);
-  }
+test("their descriptions name no market", () => {
+  for (const p of [...pages(jobRoles), ...pages(jobHubs)]) assert.doesNotMatch(p.description, PLACES, `${p.locale} ${p.slug} description`);
 });
 
 test("the jobs form's area answers: markets alphabetically when asking; another market, never 'other', after a decision", async () => {
   const { areaOptions } = await importTs("src/content/pages/quick-apply.ts");
   const { AREA_CLUSTERS } = await importTs("src/lib/talent-intake/rules.ts");
-  assert.deepEqual(areaOptions(null), ["market:bengaluru", "market:dehradun", "market:haridwar", "market:jalandhar", "market:kapurthala", "market:punjab", "market:uttarakhand", "market:other"]);
+  assert.deepEqual(areaOptions(null), ["market:andhra-pradesh", "market:bengaluru", "market:dehradun", "market:haridwar", "market:jalandhar", "market:kapurthala", "market:punjab", "market:uttarakhand", "market:visakhapatnam", "market:other"]);
   // Decided Haridwar on a neutral page: Haridwar's areas, then every other market; no "Outside Haridwar".
   const decided = areaOptions("haridwar", "decision");
   assert.ok(!decided.includes("outside"));
@@ -58,7 +53,12 @@ test("the jobs form's area answers: markets alphabetically when asking; another 
       assert.ok(!offered.includes("jalandhar:phagwara-goraya") && !offered.includes("punjab:jalandhar-kapurthala"), `${market} ${source}`);
     }
   }
-  for (const market of ["haridwar", "uttarakhand", "jalandhar", "punjab", "bengaluru", "dehradun", "kapurthala"]) {
+  // Visakhapatnam's answer on the Andhra Pradesh form files under Visakhapatnam (22 Oct 2026),
+  // and the rest of the state on Visakhapatnam's form under Andhra Pradesh.
+  assert.equal(AREA_CLUSTERS["andhra-pradesh:visakhapatnam"], "visakhapatnam");
+  assert.equal(AREA_CLUSTERS["visakhapatnam:rest-of-andhra-pradesh"], "andhra-pradesh");
+  assert.deepEqual(areaOptions("visakhapatnam"), ["visakhapatnam:city", "visakhapatnam:gajuwaka", "visakhapatnam:pendurthi", "visakhapatnam:anakapalli", "visakhapatnam:rest-of-andhra-pradesh", "visakhapatnam:outside"]);
+  for (const market of ["haridwar", "uttarakhand", "jalandhar", "punjab", "bengaluru", "dehradun", "kapurthala", "visakhapatnam", "andhra-pradesh"]) {
     for (const id of areaOptions(market, "decision")) assert.ok(Object.hasOwn(AREA_CLUSTERS, id), id);
   }
 });

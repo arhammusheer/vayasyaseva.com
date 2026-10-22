@@ -70,6 +70,49 @@ export function wpDocumentLinks(body, publicBase, match) {
   return [...found.values()].sort((a, b) => a.url.localeCompare(b.url));
 }
 
+/** The single-page app's main script, from its HTML shell: `<script src="/static/js/main.<hash>.js">`. */
+export function spaScript(html, baseUrl) {
+  const m = /<script\b[^>]*\bsrc\s*=\s*["']([^"']*\/static\/js\/main\.[0-9a-f]+\.js)["']/i.exec(html);
+  if (!m) return null;
+  try {
+    return new URL(m[1], baseUrl).href;
+  } catch {
+    return null;
+  }
+}
+
+const jsString = (s) => {
+  try {
+    return JSON.parse(`"${s}"`);
+  } catch {
+    return s;
+  }
+};
+
+/**
+ * The documents a single-page app's bundle links (Andhra Pradesh's labour
+ * site renders in the browser, so its HTML has no links; its notices and
+ * acts are object literals in the main script, such as
+ * `{text:"VDA Gazette as on 01.10.2026",link:DU+"labour/1790751054626_VDA….pdf"}`).
+ * Each path under `labour/` becomes `publicBase` + path, labelled by the
+ * object's text or name, else by its file name. Sorted and unique, like
+ * documentLinks.
+ */
+export function spaBundleLinks(js, publicBase, match) {
+  const found = new Map();
+  const urlOf = (path) => new URL(path.replace(/^\/+/, ""), publicBase).href;
+  const add = (path, label) => {
+    const url = urlOf(path);
+    const text = decodeEntities(jsString(label ?? path.split("/").pop())).replace(/\s+/g, " ").trim().slice(0, 300);
+    if (match && !match.test(text) && !match.test(path)) return;
+    if (!found.has(url) || text.length > found.get(url).label.length) found.set(url, { url, label: text });
+  };
+  for (const m of js.matchAll(/\{\s*(?:text|name)\s*:\s*"((?:[^"\\]|\\.){1,300})"\s*,\s*(?:link|url)\s*:\s*(?:[A-Za-z_$][\w$]*\s*\+\s*)?"((?:labour\/)[^"]+\.(?:pdf|xlsx?))"/g)) add(m[2], m[1]);
+  // Paths in other shapes (the acts tree, menus) that no labelled literal covered: labelled by file name.
+  for (const m of js.matchAll(/"(labour\/\d{10,}_[^"]+\.(?:pdf|xlsx?))"/g)) if (!found.has(urlOf(m[1]))) add(m[1]);
+  return [...found.values()].sort((a, b) => a.url.localeCompare(b.url));
+}
+
 export function documentLinks(html, baseUrl, match) {
   const clean = html.replace(/<!--[\s\S]*?-->/g, " ").replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, " ");
   const found = new Map();

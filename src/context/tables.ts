@@ -69,6 +69,7 @@ const WAGE_STATE_REGIONS: Record<WageStateSlug, string> = {
   haryana: "HR",
   punjab: "PB",
   karnataka: "KA",
+  "andhra-pradesh": "AP",
 };
 
 /** Session length: 30 idle minutes (mobile browsers keep tabs, and their sessionStorage, for weeks). */

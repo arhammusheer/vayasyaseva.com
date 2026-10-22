@@ -204,6 +204,34 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
       band: "bengaluru",
     };
   },
+  "andhra-pradesh": (s) => {
+    const t = "any-manufacturing";
+    const u = rate(s, t, "andhra-pradesh", "unskilled");
+    const from = s.tables.find((x) => x.id === t)!.effectiveFrom;
+    const cl = rate(s, "contract-labour", "andhra-pradesh", "unskilled");
+    const cpi = s.employments!.cpi!;
+    return {
+      title: (year) => `Andhra Pradesh Minimum Wages${year ? ` ${year}` : ""}: All Employments`,
+      description: `AP minimum wage from ${formatShortDate(from)}: ${formatRupees(u.monthly)} a month unskilled in factories, basic plus VDA, and every scheduled employment. ${stamp([s])}.`,
+      answer: `From ${formatDate(from)}, unskilled work in an Andhra Pradesh factory pays at least ${formatRupees(u.monthly)} a month, basic wage plus VDA. Shops, hotels, security, construction and the other scheduled employments each have their own rates, below.`,
+      note: {
+        text: `Each notification's VDA moves with the price index the Commissioner of Labour declares every April and October: ${cpi.industrial.toLocaleString("en-IN")} points for industrial workers from ${formatDate(cpi.effectiveFrom)}.`,
+        link: { href: "/minimum-wages/vda", label: "VDA revisions by state" },
+      },
+      faqs: [
+        {
+          question: "Why does each kind of work have a different VDA in Andhra Pradesh?",
+          answer: `Each notification links its basic wage to a price index base, such as 525 or 847 points, and sets a VDA rate per point. The VDA is the points the index has risen above that base, times the rate. From ${formatDate(cpi.effectiveFrom)} the index for industrial workers is ${cpi.industrial.toLocaleString("en-IN")} points, so a factory notification based at 847 points adds ${(cpi.industrial - 847).toLocaleString("en-IN")} points of VDA. The next figures are due on 1 April 2027.`,
+        },
+        {
+          question: "Is there a separate minimum wage for contract labour?",
+          answer: `Yes. The Commissioner of Labour fixes wages for contract labour under rule 25(v)(b) of the A.P. Contract Labour Rules, 1971, linked to the same price index: from ${formatDate(from)}, ${formatRupees(cl.monthly)} a month unskilled and ${formatRupees(rate(s, "contract-labour", "andhra-pradesh", "skilled").monthly)} skilled. A contract worker in a scheduled employment is also owed that employment's minimum wage.`,
+        },
+      ],
+      labourDepartment: { href: "https://labour.ap.gov.in/", label: "Labour Department, Andhra Pradesh" },
+      band: "elsewhere",
+    };
+  },
 };
 
 export function getWageStateCopy(slug: WageStateSlug): WageStateCopy | undefined {
@@ -222,7 +250,7 @@ export const wageHubCopy = {
   title: (year: string | null) => `Minimum Wages${year ? ` ${year}` : ""} by State: Rates by Skill Level`,
   /** The oldest date across the states, so the line is true for every one of them. */
   description: () =>
-    `Minimum wage rates for Delhi, Haryana, Punjab, UP and Uttarakhand by skill level, each with its notification number and effective date. ${stamp(wageStates)}.`,
+    `Minimum wages in Andhra Pradesh, Delhi, Haryana, Punjab, UP and Uttarakhand by skill level, each with its notification and effective date. ${stamp(wageStates)}.`,
   heading: (year: string | null) => (year ? `Minimum wages in ${year}, by state.` : "Minimum wages by state."),
   /**
    * The answer, first: the hero lede carries what the old one-question FAQ
@@ -235,6 +263,7 @@ export const wageHubCopy = {
   lastChange: {
     uttarakhand: (s: WageState) => `VDA up to ${formatRupees(rate(s, "factories-and-industries", "uttarakhand", "unskilled").vda)}; DA for engineering units of 50+`,
     "uttar-pradesh": () => "Split into three district categories",
+    "andhra-pradesh": (s) => `VDA on ${s.employments!.cpi!.industrial.toLocaleString("en-IN")} index points; each employment has its own rates`,
   } as Partial<Record<WageStateSlug, (s: WageState) => string>>,
 };
 
@@ -324,7 +353,7 @@ export const wageUi = {
     employer: "Employer",
     help: "Behind on any of this? The Vayasya Network of CAs, labour lawyers and compliance consultants can help.",
   },
-  inLanguage: { hi: "In Hindi", kn: "In Kannada" } as Record<"hi" | "kn", string>,
+  inLanguage: { hi: "In Hindi", kn: "In Kannada", te: "In English and Telugu" } as Record<"hi" | "kn" | "te", string>,
   notice: {
     staleStrong: "These rates may have been revised.",
     staleText: "Check the latest notification.",
@@ -352,6 +381,9 @@ export const wageUi = {
     heading: "Every scheduled employment",
     intro: (name: string, count: number, vda: string, date: string) =>
       `${name} sets a minimum wage for ${count} kinds of work, each in its notification. Every figure below is the notification's basic wage plus the VDA of ${vda} from ${date}, a month.`,
+    /** Andhra Pradesh: each notification links its basic wage to a price index, so each has its own VDA. */
+    introIndex: (name: string, count: number, date: string) =>
+      `${name} sets its minimum wages in ${count} notifications, each for its own kind of work. The figures below are the notification's basic wage plus the VDA in force from ${date}, a month unless a row says otherwise; piece rates, and the few notifications with no VDA, show the rate as fixed. The VDA differs by notification: the points the price index has risen above the notification's base, times its rate per point.`,
     find: "Find your work",
     introOneRate: (name: string) => `${name}'s rates above cover every kind of work in this list, except the rows that show their own rates or say why none are shown.`,
     findHint: "For example hotel, bakery or school",
@@ -368,13 +400,19 @@ export const wageUi = {
     notification: (number: string, date: string) => `Notification ${number} of ${date}`,
     perMonth: "A month",
     plusVda: (vda: string) => `Basic wage plus VDA of ${vda}.`,
+    /** "Basic wage plus VDA: 1,433 points (1,958 − 525) at ₹6.40 a point." */
+    plusPoints: (points: string, current: string, base: string, rate: string | null) =>
+      `Basic wage plus VDA: ${points} points (${current} − ${base}) at ${rate ? `${rate} a point` : "each category's rate per point"}.`,
+    captionIndex: (work: string, name: string, date: string) => `${work}: minimum wages in ${name}, in rupees, basic wage plus VDA from ${date}`,
     captionStated: (work: string, name: string, unit: string) => `${work}: minimum wages in ${name}, in rupees, ${unit.toLowerCase()}`,
     caption: (work: string, name: string, vda: string) => `${work}: minimum wages in ${name}, in rupees a month, basic wage plus VDA of ${vda}`,
   },
   sourceKind: (kind: "notification" | "order" | "corrigendum") => (kind === "notification" ? "Notification" : kind === "order" ? "Order" : "Amendment"),
   /** After a document we host: the link to where the state (or a third party) publishes it. */
   original: (host: string) => `Original on ${host}`,
-  pdf: (hindi: boolean, size: string | null) => `PDF${hindi ? ", Hindi" : ""}${size ? `, ${size}` : ""}`,
+  /** The link to a cited file: "PDF, Hindi, 120 KB" or "Excel sheet, 22 KB". */
+  file: (kind: "pdf" | "xls", language: "en" | "hi" | "kn" | "te", size: string | null) =>
+    `${kind === "xls" ? "Excel sheet" : "PDF"}${language === "hi" ? ", Hindi" : language === "kn" ? ", Kannada" : language === "te" ? ", English and Telugu" : ""}${size ? `, ${size}` : ""}`,
   sections: {
     rates: (name: string) => `Pay rates in ${name}`,
     questions: "Questions",

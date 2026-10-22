@@ -65,12 +65,24 @@ Sources by state today (`scripts/wage-monitor/sources.json`):
 | Delhi | Current minimum wage rates | Notifications (PT pattern) | Delhi Labour Welfare Board circulars and orders; LWF contribution notification (page) | Notifications (OSH pattern) |
 | Haryana | News and notifications (wage pattern) | News and notifications (PT pattern) | Same listing (LWF pattern); the LWF Act as amended by Haryana; the Board's 2026 ceiling notice (SGCMS copy) | Same listing (OSH pattern); draft OSH rules, 2026 |
 | Punjab | Home page notifications | Development tax site downloads; the 2018 Act and 2021 amendment rules | Acts and rules (LWF pattern); LWF Act, 1965; Amendment Act, 2014 (PRS copy) | Acts and rules (OSH pattern); contract labour licence page |
+| Andhra Pradesh | Labour Department site, read from its app bundle (`spa-bundle`: VDA notifications, contract labour wages, the wage sheets) | Tax on Professions Act (PRS copy); the 2013 amendment's slabs (LegitQuest copy: the Commercial Taxes Department's own schedule PDF is down) | Same site (LWF pattern); LWF Act, 1987; LWF Rules, 1988; G.O.Ms. 9 of 2020 | Same site (codes and contract labour pattern); OSH (AP) Rules, 2026 (G.O.Rt. 146); the other three final code rules |
 | National | | | | Labour codes handbook |
 
 National EPF, ESIC and codes: EPFO circulars; wage ceiling circular and FAQs;
 ESIC circulars, notifications and contribution rates; Social Security
 (Central) Rules, 2026; S.O. 2698(E); the Code on Social Security, 2020; the
 Code on Wages, 2019.
+
+**Andhra Pradesh's labour site** (labour.ap.gov.in) is a single-page app: its
+HTML is an empty shell and every notice, act and wage sheet is an object
+literal in its main script (`/static/js/main.<hash>.js`), served from
+`api.apfd.apcfss.in`. Its listings use `format: "spa-bundle"`: the monitor
+fetches the shell, follows it to the current main script (the hash changes
+with each release) and reads the documents the script links, labelled by
+their notice text (`spaBundleLinks`, with `publicBase` the download prefix).
+A shell without its script counts as a failed load. The department publishes
+its per-employment wage tables as Excel sheets, so those sources are watched
+by hash like PDFs and hosted as they are.
 
 **Leads** (`pages` with `allowEmpty`): SGCMS's minimum wage posts and
 AscentHR's notifications, one target per state with the state's name as the
@@ -111,6 +123,12 @@ vayasya-infra/cloudflare/run npx wrangler@4 deploy -c scripts/wage-monitor/relay
 # apps/compliance-monitor/overlays/growth/secrets.sops.yaml (FETCH_RELAY_SECRET)
 vayasya-infra/cloudflare/run npx wrangler@4 secret put RELAY_SECRET -c scripts/wage-monitor/relay/wrangler.toml
 ```
+
+**Internet Archive captures** (`web.archive.org/web/<timestamp>id_/…`): Andhra
+Pradesh no longer hosts most of its minimum wage notifications (2006 to 2012);
+the Internet Archive kept the department's own files. A fixed capture cannot
+change, so the dataset cites it with `via`, our hosted copy is linked first,
+and the monitor neither fetches it nor counts it as unwatched (`ARCHIVED`).
 
 **Copies from third parties** (`via` on a source): where the state never
 published the document and a compliance firm did, the dataset cites that

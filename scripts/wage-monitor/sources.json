@@ -419,6 +419,101 @@
           "allowEmpty": true
         }
       ]
+    },
+    "andhra-pradesh": {
+      "listings": [
+        {
+          "url": "https://labour.ap.gov.in/",
+          "name": "Labour Department, Andhra Pradesh: notices, VDA notifications, contract labour wages and the wage sheets (read from the site's app bundle)",
+          "format": "spa-bundle",
+          "publicBase": "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/pdf-file-download/",
+          "match": "wage|vda|cpi|gazette|g\\.?o\\.?\\s*(ms|rt)|\\.xlsx?$"
+        },
+        {
+          "url": "https://labour.ap.gov.in/",
+          "name": "Labour Department, Andhra Pradesh: Labour Welfare Fund acts, rules and orders",
+          "topic": "lwf",
+          "format": "spa-bundle",
+          "publicBase": "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/pdf-file-download/",
+          "match": "welfare ?fund|LWF"
+        },
+        {
+          "url": "https://labour.ap.gov.in/",
+          "name": "Labour Department, Andhra Pradesh: labour code rules and contract labour (OSH rules, licence)",
+          "topic": "licence",
+          "format": "spa-bundle",
+          "publicBase": "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/pdf-file-download/",
+          "match": "contract ?labour|occupational|safety|\\bOSH\\b|RT146|labour codes?|code on"
+        }
+      ],
+      "documents": [
+        {
+          "url": "https://prsindia.org/files/bills_acts/acts_states/andhra-pradesh/1987/1987AP22.pdf",
+          "name": "Andhra Pradesh Tax on Professions, Trades, Callings and Employments Act, 1987 (PRS compilation)",
+          "topic": "pt"
+        },
+        {
+          "url": "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/pdf-file-download/labour/1755841991986_LABOUR_WELFAREFUNDACT1987.pdf",
+          "name": "Andhra Pradesh Labour Welfare Fund Act, 1987 (Labour Department copy)",
+          "topic": "lwf"
+        },
+        {
+          "url": "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/pdf-file-download/labour/1755842059305_THEANDHRAPRADESHLABOURWELFAREFUNDRULES1988.pdf",
+          "name": "Andhra Pradesh Labour Welfare Fund Rules, 1988",
+          "topic": "lwf"
+        },
+        {
+          "url": "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/pdf-file-download/labour/1755842286840_GO.Ms.No9OnlinepaymentfacilityforAPLWFFund.pdf",
+          "name": "G.O.Ms. No. 9 of 2020: Labour Welfare Fund contributions (₹30 and ₹70) paid online",
+          "topic": "lwf"
+        },
+        {
+          "url": "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/pdf-file-download/labour/1788951638393_2026LFBI_43333_RT146_E(1).pdf",
+          "name": "OSH (Andhra Pradesh) Rules, 2026: final (G.O.Rt. 146)",
+          "topic": "licence"
+        },
+        {
+          "url": "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/pdf-file-download/labour/1785390770144_2026LFBI_42412_RT124_E.pdf",
+          "name": "Code on Wages (Andhra Pradesh) Rules, 2026: final (G.O.Rt. 124)",
+          "topic": "codes"
+        },
+        {
+          "url": "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/pdf-file-download/labour/1785390673551_2026LFBI_42175_RT111_E.pdf",
+          "name": "Industrial Relations (Andhra Pradesh) Rules, 2026: final (G.O.Rt. 111)",
+          "topic": "codes"
+        },
+        {
+          "url": "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/pdf-file-download/labour/1785390829133_2026LFBI_42556_RT126_E.pdf",
+          "name": "Code on Social Security (Andhra Pradesh) Rules, 2026: final (G.O.Rt. 126)",
+          "topic": "codes"
+        },
+        {
+          "url": "https://esic.gov.in/attachments/circularfile/Annexure_A_1776236669.pdf",
+          "name": "ESIC: notified districts as on 31 March 2026 (Andhra Pradesh: all 26)",
+          "topic": "esic"
+        }
+      ],
+      "pages": [
+        {
+          "url": "https://www.legitquest.com/act/andhra-pradesh-tax-on-professions-trades-callings-and-employments-amendment-act-2013/5529",
+          "name": "Andhra Pradesh Tax on Professions (Amendment) Act, 2013: the salary slabs (LegitQuest copy). The Commercial Taxes Department's own schedule page is down; a new amendment would show here late, so treat a quiet month as weak evidence.",
+          "topic": "pt",
+          "match": "^\\((i|ii|iii)\\) (up to|from|above) \\d|act no\\. \\d+ of \\d{4}"
+        },
+        {
+          "url": "https://www.sgcms.com/regulatory-updates/category/minimum-wages/",
+          "name": "Lead: SGCMS (a compliance firm) minimum wage posts on Andhra Pradesh. Firms often post an order before the state does; confirm against the order itself.",
+          "match": "andhra",
+          "allowEmpty": true
+        },
+        {
+          "url": "https://ascent-hr.com/notification/",
+          "name": "Lead: AscentHR (a compliance firm) notifications on Andhra Pradesh. Firms often post an order before the state does; confirm against the order itself.",
+          "match": "andhra",
+          "ignore": "^(?:[^,]{1,40} , )*andhra pradesh(?: , [^,]{1,40})*$",
+          "allowEmpty": true
+        }
+      ]
     }
   },
   "national": {

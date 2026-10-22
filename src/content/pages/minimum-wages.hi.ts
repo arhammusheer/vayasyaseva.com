@@ -96,6 +96,15 @@ export const WAGE_HUB_HI: Partial<Record<WageStateSlug, WageHubStateHi>> = {
     key: () => "पूरे पंजाब में एक ही दर। दफ़्तर के स्टाफ़ (चपरासी, क्लर्क) की दरें अलग हैं।",
     department: { href: "https://pblabour.gov.in/", label: "श्रम विभाग, पंजाब" },
   },
+  "andhra-pradesh": {
+    name: "आंध्र प्रदेश",
+    table: "any-manufacturing",
+    zones: [{ id: "andhra-pradesh", name: "पूरा आंध्र प्रदेश" }],
+    skills: ["unskilled", "semi-skilled", "skilled", "highly-skilled"],
+    key: (s) =>
+      `फ़ैक्टरियों की दर, पूरे राज्य में एक जैसी: विशाखापत्तनम, अनकापल्ली, विजयवाड़ा सब जगह। जिस उद्योग की अपनी अलग दर है, जैसे दुकान, होटल, सुरक्षा या निर्माण, उसमें वही दर लागू है। ठेका मज़दूरों के लिए श्रम आयुक्त की अपनी दर भी है: अकुशल को कम से कम ${formatRupees(rate(s, "contract-labour", "andhra-pradesh", "unskilled").monthly)} महीना।`,
+    department: { href: "https://labour.ap.gov.in/", label: "श्रम विभाग, आंध्र प्रदेश" },
+  },
 };
 
 /**
@@ -109,12 +118,13 @@ export const HUB_HI_SOURCE_HASH: Partial<Record<WageStateSlug, string>> = {
   delhi: "df9742b2be7d",
   haryana: "983ea0b50882",
   punjab: "2196ab5cd3f7",
+  "andhra-pradesh": "c13c14de10cf",
 };
 
 export const wageHubHi = {
-  title: (year: string | null) => `न्यूनतम मजदूरी${year ? ` ${year}` : ""}: उत्तराखंड, UP, दिल्ली, हरियाणा, पंजाब`,
+  title: (year: string | null) => `न्यूनतम मजदूरी${year ? ` ${year}` : ""}: उत्तराखंड, UP, दिल्ली, हरियाणा, पंजाब, आंध्र प्रदेश`,
   description: () =>
-    `उत्तराखंड, UP, दिल्ली, हरियाणा और पंजाब में आपके काम की सबसे कम मजदूरी, महीने और रोज़ की, और हर राज्य के श्रम विभाग की आधिकारिक साइट। जाँच: ${formatMonthHi(wageStates.map((s) => s.checked.on).sort()[0])}।`,
+    `उत्तराखंड, UP, दिल्ली, हरियाणा, पंजाब और आंध्र प्रदेश में आपके काम की सबसे कम मजदूरी, महीने और रोज़ की, और हर राज्य के श्रम विभाग की आधिकारिक साइट। जाँच: ${formatMonthHi(wageStates.map((s) => s.checked.on).sort()[0])}।`,
   heading: (year: string | null) => `न्यूनतम मजदूरी${year ? ` ${year}` : ""}`,
   lede: "आपको कम से कम कितना मिलना चाहिए: अपना राज्य और अपना काम देखिए। इससे कम देने की इजाज़त नहीं है।",
   /** The page's one jobs door: a quiet line under the lede. */

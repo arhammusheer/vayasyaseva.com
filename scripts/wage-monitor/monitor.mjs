@@ -4,7 +4,7 @@
 // tests run it against fixtures; fetchSource is the real one. No GitHub here.
 import https from "node:https";
 import { constants as cryptoConstants } from "node:crypto";
-import { clipText, describeDocument, diffLines, documentLinks, htmlText, sha256, withFigures, wpDocumentLinks } from "./extract.mjs";
+import { clipText, describeDocument, diffLines, documentLinks, htmlText, sha256, spaBundleLinks, spaScript, withFigures, wpDocumentLinks } from "./extract.mjs";
 
 export const STATE_VERSION = 1;
 /** A source that fails on this many consecutive days is an alert. */
@@ -180,6 +180,9 @@ function registryTargets(entry, scope) {
   return out;
 }
 
+/** A fixed Internet Archive capture of a file: `https://web.archive.org/web/<14-digit timestamp>id_/<original>`. */
+export const ARCHIVED = /^https:\/\/web\.archive\.org\/web\/\d{14}id_\//;
+
 /**
  * Everything to fetch: per state, each document the wage page cites (once
  * per URL, with every source id that points at it and the SHA-256 recorded
@@ -199,7 +202,9 @@ export function buildTargets(wageStates, registry) {
   for (const state of wageStates) {
     const scope = { state: state.state, stateName: state.name };
     const docs = new Map();
-    for (const source of state.sources) {
+    // An Internet Archive capture (web.archive.org/web/<timestamp>id_/…) cannot change, so there is nothing to watch:
+    // Andhra Pradesh's older notifications survive only there. Our hosted copy keeps it either way.
+    for (const source of state.sources.filter((s) => !ARCHIVED.test(s.url))) {
       const doc = docs.get(source.url) ?? { ...scope, kind: "document", topic: "wages", url: source.url, name: source.title, sourceIds: [], expectedSha256: source.sha256, listings: [] };
       doc.sourceIds.push(source.id);
       if (!doc.listings.includes(source.listing)) doc.listings.push(source.listing);
@@ -234,7 +239,8 @@ export function coverageProblems(wageStates, registry, citedUrls = []) {
   const national = topicsOf(registry.national);
   for (const topic of NATIONAL_TOPICS) if (!national.has(topic)) problems.push(`national: no source watched for ${TOPICS[topic]}`);
   const watched = new Set(buildTargets(wageStates, registry).map((t) => t.url));
-  for (const url of citedUrls) if (!watched.has(url)) problems.push(`${url} is cited on the site but not watched`);
+  // An Internet Archive capture cannot change (ARCHIVED), so it needs no watching.
+  for (const url of citedUrls) if (!watched.has(url) && !ARCHIVED.test(url)) problems.push(`${url} is cited on the site but not watched`);
   for (const t of buildTargets(wageStates, registry)) {
     if (!TOPICS[t.topic]) problems.push(`${t.url}: unknown topic "${t.topic}"`);
     if (t.kind === "page" && !t.match) problems.push(`${t.url}: a page needs a match pattern (the lines to compare)`);
@@ -327,6 +333,7 @@ export async function runMonitor({ targets, previous, fetcher, now = new Date(),
   const citedUrls = new Map(targets.filter((t) => t.kind === "document").map((t) => [t.url, t]));
   const newDocs = [];
   const guarded = hostBreaker(fetcher);
+  const bundles = new Map();
   const fetched = await fetchAll(
     [...new Set(targets.map((t) => t.url))],
     guarded,
@@ -352,7 +359,20 @@ export async function runMonitor({ targets, previous, fetcher, now = new Date(),
       }
       if (target.kind === "listing") {
         html = res.body.toString("utf8");
-        const parse = target.format === "wp-documents" ? (m) => wpDocumentLinks(html, target.publicBase, m) : (m) => documentLinks(html, target.url, m);
+        if (target.format === "spa-bundle") {
+          // The page is an empty shell; its documents are in the main script, fetched through the same breaker.
+          const script = spaScript(html, target.url);
+          // One bundle (about 10 MB) serves every topic watched on the site: fetch it once a run.
+          if (script && !bundles.has(script)) bundles.set(script, await guarded(script));
+          const js = script ? bundles.get(script) : null;
+          html = js?.ok ? js.body.toString("utf8") : "";
+        }
+        const parse =
+          target.format === "wp-documents"
+            ? (m) => wpDocumentLinks(html, target.publicBase, m)
+            : target.format === "spa-bundle"
+              ? (m) => spaBundleLinks(html, target.publicBase, m)
+              : (m) => documentLinks(html, target.url, m);
         const all = parse();
         allCount = all.length;
         links = target.match ? parse(new RegExp(target.match, "i")) : all;

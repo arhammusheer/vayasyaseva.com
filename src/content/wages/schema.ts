@@ -21,7 +21,7 @@ const sourceSchema = z.strictObject({
   legalBasis: z.string().min(1).optional(),
   url: z.url({ protocol: /^https$/ }),
   listing: z.url({ protocol: /^https$/ }),
-  language: z.enum(["en", "hi", "kn"]),
+  language: z.enum(["en", "hi", "kn", "te"]),
   sha256: z.string().regex(/^[0-9a-f]{64}$/),
   sizeKb: z.number().int().positive().optional(),
   retrievedOn: isoDate,
@@ -74,8 +74,28 @@ const employmentGroupSchema = z.strictObject({
   table: z.string().min(1).optional(),
   unpublished: z.literal(true).optional(),
   columns: z.array(z.strictObject({ name: z.string().min(1), areas: z.string().min(1).optional() })).min(2).optional(),
-  rows: z.array(z.strictObject({ label: z.string().min(1), group: z.string().min(1).optional(), values: z.array(rupees).min(1) })).min(1).optional(),
+  rows: z
+    .array(
+      z.strictObject({
+        label: z.string().min(1),
+        group: z.string().min(1).optional(),
+        values: z.array(rupees).min(1),
+        perPoint: z.array(z.number().positive()).min(1).optional(),
+        unit: z.string().min(1).optional(),
+      }),
+    )
+    .min(1)
+    .optional(),
   unit: z.string().min(1).optional(),
+  linkedTo: z
+    .strictObject({
+      series: z.enum(["industrial", "agricultural"]),
+      base: z.number().int().positive(),
+      perPoint: z.number().positive().optional(),
+      index: z.number().int().positive().optional(),
+      indexSource: z.string().min(1).optional(),
+    })
+    .optional(),
   allowance: z.strictObject({ amount: rupees, label: z.string().min(1), effectiveFrom: isoDate, source: z.string().min(1) }).optional(),
   note: z.string().min(1).optional(),
 });
@@ -91,6 +111,7 @@ export const wageStateSchema = z.strictObject({
   employments: z
     .strictObject({
       vda: z.strictObject({ amount: rupees, effectiveFrom: isoDate, source: z.string().min(1) }).optional(),
+      cpi: z.strictObject({ industrial: z.number().int().positive(), agricultural: z.number().int().positive(), effectiveFrom: isoDate, source: z.string().min(1) }).optional(),
       groups: z.array(employmentGroupSchema).min(1),
     })
     .optional(),
@@ -146,8 +167,10 @@ export function wageIntegrityProblems(state: WageState): string[] {
     for (const zone of zoneIds) for (const s of skills) if (!seen.has(`${zone}/${s}`)) problems.push(`${where}: ${zone} has no ${s} rate`);
   }
   if (state.employments) {
-    const { vda, groups } = state.employments;
+    const { vda, cpi, groups } = state.employments;
     if (vda && !sourceIds.has(vda.source)) problems.push(`employments: unknown VDA source ${vda.source}`);
+    if (cpi && !sourceIds.has(cpi.source)) problems.push(`employments: unknown index source ${cpi.source}`);
+    if (cpi && cpi.effectiveFrom > state.checked.on) problems.push(`employments: index points effective ${cpi.effectiveFrom} are after the check (${state.checked.on})`);
     if (vda && vda.effectiveFrom > state.checked.on) problems.push(`employments: VDA effective ${vda.effectiveFrom} is after the check (${state.checked.on})`);
     if (new Set(groups.map((g) => g.id)).size !== groups.length) problems.push("employments: duplicate group id");
     const seen = new Set<string>();
@@ -158,7 +181,21 @@ export function wageIntegrityProblems(state: WageState): string[] {
       if (g.table && !tableIds.has(g.table)) problems.push(`${where}: unknown table ${g.table}`);
       if (g.rows && !g.source) problems.push(`${where}: rows need the notification they come from (source)`);
       // Without a schedule VDA there is nothing to add, so every figure must be the full rate in a stated unit.
-      if (g.rows && !vda && !g.unit) problems.push(`${where}: no schedule VDA, so the rows need their unit`);
+      if (g.rows && !vda && !g.unit && !g.linkedTo) problems.push(`${where}: no schedule VDA, so the rows need their unit`);
+      // Index-linked (Andhra Pradesh): the schedule declares the points, and every figure has its rate per point.
+      if (g.linkedTo) {
+        if (!cpi) problems.push(`${where}: linked to a price index, but the schedule declares no index points (cpi)`);
+        if (!g.rows) problems.push(`${where}: linked to a price index, so it needs rows`);
+        const index = g.linkedTo.index ?? cpi?.[g.linkedTo.series];
+        if (index !== undefined && g.linkedTo.base >= index) problems.push(`${where}: base ${g.linkedTo.base} is not below the current index`);
+        if (Boolean(g.linkedTo.index) !== Boolean(g.linkedTo.indexSource)) problems.push(`${where}: an index of its own needs its source (indexSource), and the other way round`);
+        if (g.linkedTo.indexSource && !sourceIds.has(g.linkedTo.indexSource)) problems.push(`${where}: unknown index source ${g.linkedTo.indexSource}`);
+        for (const r of g.rows ?? []) {
+          if (!r.perPoint && !g.linkedTo.perPoint) problems.push(`${where} "${r.label}": no VDA rate per point`);
+          if (r.perPoint && r.perPoint.length !== r.values.length) problems.push(`${where} "${r.label}": ${r.perPoint.length} rates per point for ${r.values.length} figure(s)`);
+        }
+      }
+      for (const r of g.rows ?? []) if (r.perPoint && !g.linkedTo) problems.push(`${where} "${r.label}": a rate per point needs linkedTo`);
       for (const id of [g.source, g.allowance?.source]) if (id && !sourceIds.has(id)) problems.push(`${where}: unknown source ${id}`);
       if (g.allowance && g.allowance.effectiveFrom > state.checked.on) problems.push(`${where}: allowance effective after the check`);
       const width = g.columns?.length ?? 1;

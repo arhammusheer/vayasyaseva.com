@@ -35,7 +35,7 @@ const referenceSection = linkable(WAGE_HUB_PATH, "en-IN")
         .filter((s) => linkable(wageStatePath(s.state), "en-IN"))
         .map(
           (s) =>
-            `- [Minimum wages in ${s.name}](${baseUrl}/en-in${wageStatePath(s.state)}): Monthly and daily rates by ${s.tables.some((t) => t.zones.length > 1) ? "district category and " : ""}skill level, from the state's own notifications and orders${s.tables.some((t) => t.basicLabel === "Basic" && t.rates.some((r) => r.vda > 0)) ? ", with the basic wage and VDA" : ""}. Figures last updated ${s.checked.on}`,
+            `- [Minimum wages in ${s.name}](${baseUrl}/en-in${wageStatePath(s.state)}): ${s.tables.every((t) => t.daily === "none") ? "Monthly rates" : "Monthly and daily rates"} by ${s.tables.some((t) => t.zones.length > 1) ? "district category and " : ""}skill level, from the state's own notifications and orders${s.tables.some((t) => t.basicLabel === "Basic" && t.rates.some((r) => r.vda > 0)) ? ", with the basic wage and VDA" : ""}. Figures last updated ${s.checked.on}`,
         ),
       ...(linkable(WAGE_VDA_PATH, "en-IN")
         ? [`- [VDA and DA tracker](${baseUrl}/en-in${WAGE_VDA_PATH}): The variable dearness allowance or DA in force in each state above, when it last changed, each state's revision dates, and which revisions are due but not yet published`]
@@ -48,7 +48,7 @@ const referenceSection = linkable(WAGE_HUB_PATH, "en-IN")
         ["/bonus", "Statutory bonus", "8.33% to 20% of wages for workers on up to ₹21,000 a month under the Code on Wages, worked out on ₹7,000 or the minimum wage, paid by 30 November; contract workers and penalties"],
         ["/gratuity", "Gratuity", "15 days' wages for each year of service under the Code on Social Security, due after five years or one year on a fixed term, up to ₹20 lakh, paid within 30 days; contract workers and penalties"],
         ["/esic", "ESIC for employers", "3.25% and 0.75% contributions on wages up to ₹21,000 a month, contribution periods, due date, damages and contract workers"],
-        ["/professional-tax", "Professional Tax by state", "Which of Karnataka, Punjab, Uttarakhand, Uttar Pradesh, Delhi and Haryana levy professional tax, and the ₹2,500 cap"],
+        ["/professional-tax", "Professional Tax by state", "Which of Karnataka, Andhra Pradesh, Punjab, Uttarakhand, Uttar Pradesh, Delhi and Haryana levy professional tax, and the ₹2,500 cap"],
         ["/professional-tax/karnataka", "Professional Tax in Karnataka", "₹200 a month on salaries of ₹25,000 or more, ₹300 in February, Form 5-A by the 20th, penalties and examples"],
       ]
         .filter(([path]) => linkable(path, "en-IN"))

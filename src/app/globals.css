@@ -3948,6 +3948,14 @@ a:hover > svg {
 .wage-emp-body > .wage-table-scroll .wage-table {
   max-width: 640px;
 }
+/* A row paid by another unit than its table ("a day" among monthly rates). */
+.wage-emp-unit {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--muted-foreground);
+}
 @media (max-width: 520px) {
   .wage-emp > summary {
     grid-template-columns: minmax(0, 1fr);

@@ -39,6 +39,7 @@ const COMMON: Record<string, { heading: string; description: string }> = {
   "/minimum-wages/delhi": { heading: "Minimum wages\nin Delhi.", description: "Monthly and daily rates by skill level, from the Labour Department's order." },
   "/minimum-wages/haryana": { heading: "Minimum wages\nin Haryana.", description: "Monthly and daily rates by skill level, from the state's notification." },
   "/minimum-wages/punjab": { heading: "Minimum wages\nin Punjab.", description: "Monthly and daily rates by skill level, from the state's notification." },
+  "/minimum-wages/andhra-pradesh": { heading: "Minimum wages\nin Andhra Pradesh.", description: "Every scheduled employment, basic wage plus VDA, from the state's notifications." },
   "/locations": { heading: "Where we\nsupply crews.", description: "Bengaluru, Delhi NCR, Punjab and Uttarakhand, each with its own page." },
 };
 

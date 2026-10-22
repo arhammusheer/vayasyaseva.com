@@ -196,7 +196,7 @@ const WAGE_HI_STATUS: PageStatus = "review";
 const LOCATIONS_STATUS: PageStatus = "published";
 const LOCATIONS_UPDATED = "2026-10-16";
 /** Regions added after the first set, by the day they went up. */
-const LOCATION_ADDED: Partial<Record<LocationCluster, string>> = { jalandhar: "2026-10-17", dehradun: "2026-10-18", uttarakhand: "2026-10-18" };
+const LOCATION_ADDED: Partial<Record<LocationCluster, string>> = { jalandhar: "2026-10-17", dehradun: "2026-10-18", uttarakhand: "2026-10-18", visakhapatnam: "2026-10-22" };
 
 /** The three languages of every multi-language page (Punjabi and Kannada are per page: WITH_*). */
 const ALL = { "en-IN": "published", "hi-IN": "published", "hi-Latn-IN": "published" } as const satisfies Partial<Record<LocaleTag, PageStatus>>;
@@ -284,6 +284,10 @@ export const pageEntries: readonly PageEntry[] = [
   // Worker lists for the rest of each state (owner direction, 17 Oct 2026).
   { ...jobsPage(jobsHubPath("uttarakhand"), "jobs-city", 0.7), cluster: "uttarakhand" },
   { ...jobsPage(jobsHubPath("punjab"), "jobs-city", 0.7), locales: WITH_PUNJABI, cluster: "punjab" },
+  // Visakhapatnam and the rest of Andhra Pradesh (owner direction, 22 Oct 2026):
+  // worker lists, no open requirement named; up before any ads run.
+  { ...jobsPage(jobsHubPath("visakhapatnam"), "jobs-city", 0.7), cluster: "visakhapatnam", updated: "2026-10-22" },
+  { ...jobsPage(jobsHubPath("andhra-pradesh"), "jobs-city", 0.7), cluster: "andhra-pradesh", updated: "2026-10-22" },
   // Haridwar's buyer page moved under /locations like every other market's
   // (owner direction, 17 Oct 2026); each language keeps its own on the hop.
   { path: "/haridwar-sidcul", kind: "cluster-hub", audience: "business", locales: RETIRED_ALL, parent: LOCATIONS_PATH, retiredTo: locationPath("haridwar"), updated: RESTRUCTURE, changeFrequency: "monthly", priority: 0.8 },

@@ -714,7 +714,7 @@ async function twentyFilesFromConfig() {
 
 // integrations/windmill/talent/lib/crm.ts
 const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, smsWasSent, whatsAppWasSent, WA_ACK_TEMPLATE, waAckText, whatsAppDeliveryStatus, waAckKey, waAckFields, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, removeAttachments, erasePerson } = (() => {
-const CLUSTER_VALUES = new Set(["HARIDWAR", "UTTARAKHAND", "DELHI_NCR", "BENGALURU", "JALANDHAR", "SAHARANPUR", "OTHER", "PUNJAB", "DEHRADUN", "KAPURTHALA"]);
+const CLUSTER_VALUES = new Set(["HARIDWAR", "UTTARAKHAND", "DELHI_NCR", "BENGALURU", "JALANDHAR", "SAHARANPUR", "OTHER", "PUNJAB", "DEHRADUN", "KAPURTHALA", "VISAKHAPATNAM", "ANDHRA_PRADESH"]);
 const ROLE_VALUES = new Set([
     "FACTORY_HELPER", "PACKING", "MACHINE_OPERATOR", "WAREHOUSE", "FORKLIFT_OPERATOR", "DATA_ENTRY_OPERATOR",
     "HOUSEKEEPING", "ITI_TRADES", "ELECTRICIAN", "WELDER", "FITTER", "ANY",
@@ -876,6 +876,20 @@ const ANSWER_OPTIONS = {
         "market:kapurthala": ["MARKET_KAPURTHALA", "Kapurthala / Phagwara (market)"],
         "dehradun:rest-of-uttarakhand": ["DD_REST_OF_UTTARAKHAND", "Elsewhere in Uttarakhand (Dehradun form)"],
         "kapurthala:rest-of-punjab": ["KP_REST_OF_PUNJAB", "Elsewhere in Punjab (Kapurthala form)"],
+        "visakhapatnam:city": ["VISAKHAPATNAM_CITY", "Visakhapatnam city"],
+        "visakhapatnam:gajuwaka": ["GAJUWAKA_DUVVADA", "Gajuwaka / Steel Plant / Duvvada"],
+        "visakhapatnam:pendurthi": ["PENDURTHI_SABBAVARAM", "Pendurthi / Sabbavaram"],
+        "visakhapatnam:anakapalli": ["ANAKAPALLI_PARAWADA", "Anakapalli / Parawada / Atchutapuram"],
+        "visakhapatnam:outside": ["OUTSIDE_VISAKHAPATNAM", "Outside Visakhapatnam"],
+        "andhra-pradesh:visakhapatnam": ["AP_VISAKHAPATNAM", "Visakhapatnam / Anakapalli (Andhra Pradesh form)"],
+        "andhra-pradesh:vijayawada-guntur": ["VIJAYAWADA_GUNTUR", "Vijayawada / Guntur"],
+        "andhra-pradesh:kakinada-rajahmundry": ["KAKINADA_RAJAHMUNDRY", "Kakinada / Rajahmundry"],
+        "andhra-pradesh:nellore-tirupati": ["NELLORE_TIRUPATI", "Nellore / Tirupati / Sri City"],
+        "andhra-pradesh:other": ["ELSEWHERE_ANDHRA_PRADESH", "Elsewhere in Andhra Pradesh"],
+        "andhra-pradesh:outside": ["OUTSIDE_ANDHRA_PRADESH", "Outside Andhra Pradesh"],
+        "market:visakhapatnam": ["MARKET_VISAKHAPATNAM", "Visakhapatnam (market)"],
+        "market:andhra-pradesh": ["MARKET_ANDHRA_PRADESH", "Elsewhere in Andhra Pradesh (market)"],
+        "visakhapatnam:rest-of-andhra-pradesh": ["VP_REST_OF_ANDHRA_PRADESH", "Elsewhere in Andhra Pradesh (Visakhapatnam form)"],
     },
 };
 const SKILL_LABELS = {
@@ -1106,7 +1120,7 @@ function isIntakeLocale(value) {
     return typeof value === "string" && INTAKE_LOCALES.includes(value);
 }
 const LEGACY_SOURCE_LOCALES = { web_en: "en-IN", web_hi: "hi-IN", web_hinglish: "hi-Latn-IN" };
-const INTAKE_CLUSTERS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other", "punjab", "dehradun", "kapurthala"];
+const INTAKE_CLUSTERS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other", "punjab", "dehradun", "kapurthala", "visakhapatnam", "andhra-pradesh"];
 function isIntakeCluster(value) {
     return typeof value === "string" && INTAKE_CLUSTERS.includes(value);
 }
@@ -1185,12 +1199,20 @@ const QUICK_ANSWERS = {
         "dehradun:vikasnagar": "Vikasnagar / Herbertpur", "dehradun:outside": "Outside Dehradun",
         "kapurthala:city": "Kapurthala city", "kapurthala:phagwara": "Phagwara", "kapurthala:sultanpur-lodhi": "Sultanpur Lodhi / Bholath",
         "kapurthala:outside": "Outside Kapurthala", "kapurthala:jalandhar": "Jalandhar (Kapurthala form)",
+        "visakhapatnam:city": "Visakhapatnam city", "visakhapatnam:gajuwaka": "Gajuwaka / Steel Plant / Duvvada",
+        "visakhapatnam:pendurthi": "Pendurthi / Sabbavaram", "visakhapatnam:anakapalli": "Anakapalli / Parawada / Atchutapuram",
+        "visakhapatnam:outside": "Outside Visakhapatnam",
+        "andhra-pradesh:visakhapatnam": "Visakhapatnam / Anakapalli", "andhra-pradesh:vijayawada-guntur": "Vijayawada / Guntur",
+        "andhra-pradesh:kakinada-rajahmundry": "Kakinada / Rajahmundry", "andhra-pradesh:nellore-tirupati": "Nellore / Tirupati / Sri City",
+        "andhra-pradesh:other": "Elsewhere in Andhra Pradesh", "andhra-pradesh:outside": "Outside Andhra Pradesh",
         "market:haridwar": "Haridwar / Roorkee", "market:uttarakhand": "Elsewhere in Uttarakhand", "market:jalandhar": "Jalandhar",
         "market:punjab": "Elsewhere in Punjab", "market:bengaluru": "Bengaluru", "market:other": "Somewhere else",
         "market:dehradun": "Dehradun / Selaqui", "market:kapurthala": "Kapurthala / Phagwara",
+        "market:visakhapatnam": "Visakhapatnam (Vizag)", "market:andhra-pradesh": "Elsewhere in Andhra Pradesh",
         "haridwar:rest-of-uttarakhand": "Elsewhere in Uttarakhand (Haridwar form)", "jalandhar:rest-of-punjab": "Elsewhere in Punjab (Jalandhar form)",
         "dehradun:rest-of-uttarakhand": "Elsewhere in Uttarakhand (Dehradun form)",
         "kapurthala:rest-of-punjab": "Elsewhere in Punjab (Kapurthala form)",
+        "visakhapatnam:rest-of-andhra-pradesh": "Elsewhere in Andhra Pradesh (Visakhapatnam form)",
     },
 };
 const AREA_CLUSTERS = {
@@ -1232,6 +1254,17 @@ const AREA_CLUSTERS = {
     "kapurthala:sultanpur-lodhi": "kapurthala",
     "kapurthala:outside": null,
     "kapurthala:jalandhar": "jalandhar",
+    "visakhapatnam:city": "visakhapatnam",
+    "visakhapatnam:gajuwaka": "visakhapatnam",
+    "visakhapatnam:pendurthi": "visakhapatnam",
+    "visakhapatnam:anakapalli": "visakhapatnam",
+    "visakhapatnam:outside": null,
+    "andhra-pradesh:visakhapatnam": "visakhapatnam",
+    "andhra-pradesh:vijayawada-guntur": "andhra-pradesh",
+    "andhra-pradesh:kakinada-rajahmundry": "andhra-pradesh",
+    "andhra-pradesh:nellore-tirupati": "andhra-pradesh",
+    "andhra-pradesh:other": "andhra-pradesh",
+    "andhra-pradesh:outside": null,
     "market:haridwar": "haridwar",
     "market:uttarakhand": "uttarakhand",
     "market:jalandhar": "jalandhar",
@@ -1240,10 +1273,13 @@ const AREA_CLUSTERS = {
     "market:other": null,
     "market:dehradun": "dehradun",
     "market:kapurthala": "kapurthala",
+    "market:visakhapatnam": "visakhapatnam",
+    "market:andhra-pradesh": "andhra-pradesh",
     "haridwar:rest-of-uttarakhand": "uttarakhand",
     "jalandhar:rest-of-punjab": "punjab",
     "dehradun:rest-of-uttarakhand": "uttarakhand",
     "kapurthala:rest-of-punjab": "punjab",
+    "visakhapatnam:rest-of-andhra-pradesh": "andhra-pradesh",
 };
 const FORMLESS_AREAS = new Set(["jalandhar:phagwara-goraya", "punjab:jalandhar-kapurthala"]);
 function submissionCluster(pageCluster, answers) {
@@ -1648,6 +1684,8 @@ const CLUSTER_LABELS = {
     punjab: "Punjab",
     dehradun: "Dehradun",
     kapurthala: "Kapurthala",
+    visakhapatnam: "Visakhapatnam",
+    "andhra-pradesh": "Andhra Pradesh",
     other: "other area",
 };
 const LANGUAGE_LABELS = {

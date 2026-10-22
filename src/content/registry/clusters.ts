@@ -167,6 +167,29 @@ export const clusters: readonly Cluster[] = [
     claims: [],
     registrations: [],
   },
+  {
+    // Visakhapatnam (owner direction, 22 Oct 2026): jobs and business pages,
+    // like Bengaluru, put up to be indexed before any ads run. The jobs hub
+    // is a worker list: no open requirement is named until there is one.
+    // The buyer hub covers the city and Anakapalli district's belts
+    // (Parawada, Atchutapuram–Rambilli), which job seekers call Vizag too.
+    id: "visakhapatnam",
+    publishable: true,
+    states: ["andhra-pradesh"],
+    buyerHub: "/locations/visakhapatnam",
+    claims: [],
+    registrations: [],
+  },
+  {
+    // Andhra Pradesh outside Visakhapatnam (owner direction, 22 Oct 2026): a
+    // jobs-only market, a worker list like Punjab's. No buyer page; the
+    // Visakhapatnam hub carries the state's business side.
+    id: "andhra-pradesh",
+    publishable: true,
+    states: ["andhra-pradesh"],
+    claims: [],
+    registrations: [],
+  },
 ];
 
 export function clusterById(id: string) {

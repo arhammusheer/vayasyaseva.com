@@ -18,6 +18,7 @@ type MarketLabel = {
 };
 
 export const MARKET_LABELS = {
+  "andhra-pradesh": { name: { "en-IN": "Andhra Pradesh", "hi-IN": "आंध्र प्रदेश", "hi-Latn-IN": "Andhra Pradesh" } },
   bengaluru: { name: { "en-IN": "Bengaluru", "hi-IN": "बेंगलुरु", "hi-Latn-IN": "Bengaluru" } },
   dehradun: { name: { "en-IN": "Dehradun", "hi-IN": "देहरादून", "hi-Latn-IN": "Dehradun" } },
   "delhi-ncr": { name: { "en-IN": "Delhi NCR", "hi-IN": "दिल्ली NCR", "hi-Latn-IN": "Delhi NCR" } },
@@ -29,10 +30,18 @@ export const MARKET_LABELS = {
   kapurthala: { name: { "en-IN": "Kapurthala", "hi-IN": "कपूरथला", "hi-Latn-IN": "Kapurthala", "pa-IN": "ਕਪੂਰਥਲਾ" } },
   punjab: { name: { "en-IN": "Punjab", "hi-IN": "पंजाब", "hi-Latn-IN": "Punjab", "pa-IN": "ਪੰਜਾਬ" } },
   uttarakhand: { name: { "en-IN": "Uttarakhand", "hi-IN": "उत्तराखंड", "hi-Latn-IN": "Uttarakhand" } },
+  visakhapatnam: { name: { "en-IN": "Visakhapatnam", "hi-IN": "विशाखापत्तनम", "hi-Latn-IN": "Visakhapatnam" } },
 } as const satisfies Record<MarketId, MarketLabel>;
 
 /** The jobs door, menu and link label for a market's jobs hub, in every language. */
 export const JOBS_LINK_LABELS = {
+  "andhra-pradesh": {
+    "en-IN": "Jobs across Andhra Pradesh",
+    "hi-IN": "पूरे आंध्र प्रदेश में नौकरी",
+    "hi-Latn-IN": "Poore Andhra Pradesh mein job",
+    "kn-IN": "ಆಂಧ್ರ ಪ್ರದೇಶದಾದ್ಯಂತ ಉದ್ಯೋಗ",
+    "pa-IN": "ਪੂਰੇ ਆਂਧਰਾ ਪ੍ਰਦੇਸ਼ ਵਿੱਚ ਨੌਕਰੀ",
+  },
   bengaluru: {
     "en-IN": "Jobs in Bengaluru",
     "hi-IN": "बेंगलुरु में नौकरी",
@@ -81,6 +90,13 @@ export const JOBS_LINK_LABELS = {
     "hi-Latn-IN": "Poore Uttarakhand mein job",
     "kn-IN": "ಉತ್ತರಾಖಂಡದಾದ್ಯಂತ ಉದ್ಯೋಗ",
     "pa-IN": "ਪੂਰੇ ਉੱਤਰਾਖੰਡ ਵਿੱਚ ਨੌਕਰੀ",
+  },
+  visakhapatnam: {
+    "en-IN": "Jobs in Visakhapatnam",
+    "hi-IN": "विशाखापत्तनम में नौकरी",
+    "hi-Latn-IN": "Visakhapatnam mein job",
+    "kn-IN": "ವಿಶಾಖಪಟ್ಟಣದಲ್ಲಿ ಉದ್ಯೋಗ",
+    "pa-IN": "ਵਿਸ਼ਾਖਾਪਟਨਮ ਵਿੱਚ ਨੌਕਰੀ",
   },
 } as const satisfies Record<JobsMarketId, Record<LocaleTag, string>>;
 

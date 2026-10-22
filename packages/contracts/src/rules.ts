@@ -64,7 +64,7 @@ export const LEGACY_SOURCE_LOCALES = { web_en: "en-IN", web_hi: "hi-IN", web_hin
  * Cluster ids (PLAN §1a). Same list as CLUSTER_IDS in
  * src/content/registry/identifiers.ts (content:check compares them).
  */
-export const INTAKE_CLUSTERS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other", "punjab", "dehradun", "kapurthala"] as const;
+export const INTAKE_CLUSTERS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other", "punjab", "dehradun", "kapurthala", "visakhapatnam", "andhra-pradesh"] as const;
 export type IntakeCluster = (typeof INTAKE_CLUSTERS)[number];
 
 export function isIntakeCluster(value: unknown): value is IntakeCluster {
@@ -195,12 +195,20 @@ export const QUICK_ANSWERS = {
     "dehradun:vikasnagar": "Vikasnagar / Herbertpur", "dehradun:outside": "Outside Dehradun",
     "kapurthala:city": "Kapurthala city", "kapurthala:phagwara": "Phagwara", "kapurthala:sultanpur-lodhi": "Sultanpur Lodhi / Bholath",
     "kapurthala:outside": "Outside Kapurthala", "kapurthala:jalandhar": "Jalandhar (Kapurthala form)",
+    "visakhapatnam:city": "Visakhapatnam city", "visakhapatnam:gajuwaka": "Gajuwaka / Steel Plant / Duvvada",
+    "visakhapatnam:pendurthi": "Pendurthi / Sabbavaram", "visakhapatnam:anakapalli": "Anakapalli / Parawada / Atchutapuram",
+    "visakhapatnam:outside": "Outside Visakhapatnam",
+    "andhra-pradesh:visakhapatnam": "Visakhapatnam / Anakapalli", "andhra-pradesh:vijayawada-guntur": "Vijayawada / Guntur",
+    "andhra-pradesh:kakinada-rajahmundry": "Kakinada / Rajahmundry", "andhra-pradesh:nellore-tirupati": "Nellore / Tirupati / Sri City",
+    "andhra-pradesh:other": "Elsewhere in Andhra Pradesh", "andhra-pradesh:outside": "Outside Andhra Pradesh",
     "market:haridwar": "Haridwar / Roorkee", "market:uttarakhand": "Elsewhere in Uttarakhand", "market:jalandhar": "Jalandhar",
     "market:punjab": "Elsewhere in Punjab", "market:bengaluru": "Bengaluru", "market:other": "Somewhere else",
     "market:dehradun": "Dehradun / Selaqui", "market:kapurthala": "Kapurthala / Phagwara",
+    "market:visakhapatnam": "Visakhapatnam (Vizag)", "market:andhra-pradesh": "Elsewhere in Andhra Pradesh",
     "haridwar:rest-of-uttarakhand": "Elsewhere in Uttarakhand (Haridwar form)", "jalandhar:rest-of-punjab": "Elsewhere in Punjab (Jalandhar form)",
     "dehradun:rest-of-uttarakhand": "Elsewhere in Uttarakhand (Dehradun form)",
     "kapurthala:rest-of-punjab": "Elsewhere in Punjab (Kapurthala form)",
+    "visakhapatnam:rest-of-andhra-pradesh": "Elsewhere in Andhra Pradesh (Visakhapatnam form)",
   },
 } as const;
 export type QuickQuestion = keyof typeof QUICK_ANSWERS;
@@ -253,6 +261,18 @@ export const AREA_CLUSTERS: Record<keyof typeof QUICK_ANSWERS.area, IntakeCluste
   "kapurthala:sultanpur-lodhi": "kapurthala",
   "kapurthala:outside": null,
   "kapurthala:jalandhar": "jalandhar",
+  "visakhapatnam:city": "visakhapatnam",
+  "visakhapatnam:gajuwaka": "visakhapatnam",
+  "visakhapatnam:pendurthi": "visakhapatnam",
+  "visakhapatnam:anakapalli": "visakhapatnam",
+  "visakhapatnam:outside": null,
+  // Visakhapatnam's answer on the Andhra Pradesh form files under its own market, like punjab:kapurthala.
+  "andhra-pradesh:visakhapatnam": "visakhapatnam",
+  "andhra-pradesh:vijayawada-guntur": "andhra-pradesh",
+  "andhra-pradesh:kakinada-rajahmundry": "andhra-pradesh",
+  "andhra-pradesh:nellore-tirupati": "andhra-pradesh",
+  "andhra-pradesh:other": "andhra-pradesh",
+  "andhra-pradesh:outside": null,
   "market:haridwar": "haridwar",
   "market:uttarakhand": "uttarakhand",
   "market:jalandhar": "jalandhar",
@@ -261,10 +281,13 @@ export const AREA_CLUSTERS: Record<keyof typeof QUICK_ANSWERS.area, IntakeCluste
   "market:other": null,
   "market:dehradun": "dehradun",
   "market:kapurthala": "kapurthala",
+  "market:visakhapatnam": "visakhapatnam",
+  "market:andhra-pradesh": "andhra-pradesh",
   "haridwar:rest-of-uttarakhand": "uttarakhand",
   "jalandhar:rest-of-punjab": "punjab",
   "dehradun:rest-of-uttarakhand": "uttarakhand",
   "kapurthala:rest-of-punjab": "punjab",
+  "visakhapatnam:rest-of-andhra-pradesh": "andhra-pradesh",
 };
 
 /**
@@ -280,7 +303,8 @@ export const FORMLESS_AREAS: ReadonlySet<string> = new Set(["jalandhar:phagwara-
  * on /jobs/haridwar files under haridwar (the page), and the same answer on
  * /jobs/apply files under other. The page's own cluster is stored separately
  * (page_cluster). The market answers (market:*) and the cross-market ones
- * (uttarakhand:haridwar, uttarakhand:dehradun-selaqui, jalandhar:kapurthala, punjab:kapurthala) file under the market
+ * (uttarakhand:haridwar, uttarakhand:dehradun-selaqui, jalandhar:kapurthala, punjab:kapurthala,
+ * andhra-pradesh:visakhapatnam) file under the market
  * the person named, whatever page they were on.
  */
 export function submissionCluster(pageCluster: IntakeCluster | null | undefined, answers: QuickAnswers | null | undefined): IntakeCluster {

@@ -58,7 +58,9 @@
             "other",
             "punjab",
             "dehradun",
-            "kapurthala"
+            "kapurthala",
+            "visakhapatnam",
+            "andhra-pradesh"
           ]
         },
         {
@@ -80,7 +82,9 @@
             "other",
             "punjab",
             "dehradun",
-            "kapurthala"
+            "kapurthala",
+            "visakhapatnam",
+            "andhra-pradesh"
           ]
         },
         {
@@ -507,6 +511,17 @@
                   "kapurthala:sultanpur-lodhi",
                   "kapurthala:outside",
                   "kapurthala:jalandhar",
+                  "visakhapatnam:city",
+                  "visakhapatnam:gajuwaka",
+                  "visakhapatnam:pendurthi",
+                  "visakhapatnam:anakapalli",
+                  "visakhapatnam:outside",
+                  "andhra-pradesh:visakhapatnam",
+                  "andhra-pradesh:vijayawada-guntur",
+                  "andhra-pradesh:kakinada-rajahmundry",
+                  "andhra-pradesh:nellore-tirupati",
+                  "andhra-pradesh:other",
+                  "andhra-pradesh:outside",
                   "market:haridwar",
                   "market:uttarakhand",
                   "market:jalandhar",
@@ -515,10 +530,13 @@
                   "market:other",
                   "market:dehradun",
                   "market:kapurthala",
+                  "market:visakhapatnam",
+                  "market:andhra-pradesh",
                   "haridwar:rest-of-uttarakhand",
                   "jalandhar:rest-of-punjab",
                   "dehradun:rest-of-uttarakhand",
-                  "kapurthala:rest-of-punjab"
+                  "kapurthala:rest-of-punjab",
+                  "visakhapatnam:rest-of-andhra-pradesh"
                 ]
               },
               "uniqueItems": true

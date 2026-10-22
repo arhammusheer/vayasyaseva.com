@@ -282,7 +282,7 @@ export const wageDoors = {
   jobsAll: {
     eyebrow: "LOOKING FOR WORK",
     heading: "Factory and warehouse jobs.",
-    text: "In Bengaluru, Dehradun, Haridwar, Jalandhar, Kapurthala, Punjab and Uttarakhand. Full 8-hour shifts. There is no fee to apply.",
+    text: "In Andhra Pradesh, Bengaluru, Dehradun, Haridwar, Jalandhar, Kapurthala, Punjab, Uttarakhand and Visakhapatnam. Full 8-hour shifts. There is no fee to apply.",
     link: { href: "/jobs", label: "See jobs" },
   } satisfies Door,
   business: {

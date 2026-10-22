@@ -5,8 +5,9 @@ import { AGE_FAQ } from "./job-hubs";
 
 /**
  * Jobs hubs for one market, under /jobs/<cluster> (PLAN §5.3): Haridwar and
- * Kapurthala with open work; Bengaluru, Dehradun, Jalandhar, Uttarakhand
- * (outside Haridwar and Dehradun) and Punjab (outside Jalandhar and Kapurthala) as worker lists (no openings named, no estates, no
+ * Kapurthala with open work; Bengaluru, Dehradun, Jalandhar, Visakhapatnam,
+ * Uttarakhand (outside Haridwar and Dehradun), Punjab (outside Jalandhar and
+ * Kapurthala) and Andhra Pradesh (outside Visakhapatnam) as worker lists (no openings named, no estates, no
  * "vacancy" in the title, PLAN §5.3 "hubs where no roles are open now"). A
  * cluster gets one only once it is in src/content/registry/clusters.ts and
  * its page is in pages.ts.
@@ -20,7 +21,7 @@ import { AGE_FAQ } from "./job-hubs";
  * pending native review.
  */
 export interface JobClusterCopy {
-  slug: Extract<ClusterId, "haridwar" | "bengaluru" | "jalandhar" | "kapurthala" | "uttarakhand" | "punjab" | "dehradun">;
+  slug: Extract<ClusterId, "haridwar" | "bengaluru" | "jalandhar" | "kapurthala" | "uttarakhand" | "punjab" | "dehradun" | "visakhapatnam" | "andhra-pradesh">;
   /** Short name for breadcrumbs. */
   name: string;
   metaTitle: string;
@@ -205,6 +206,46 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
         { question: "Who pays me?", answer: "We do, with EPF and ESIC where they apply.", category: "operations" },
       ],
     },
+    {
+      // A worker list (owner direction, 22 Oct 2026): no open requirement in
+      // Visakhapatnam yet, so no "vacancy" in the title (PLAN §5.3). Job
+      // seekers there search in English and say "Vizag" as often as not.
+      slug: "visakhapatnam",
+      name: "Visakhapatnam",
+      metaTitle: "Jobs in Visakhapatnam (Vizag): Factory and Pharma Work",
+      description:
+        "Factory, pharma, packing and warehouse work in Vizag: Gajuwaka, Duvvada, Parawada and Atchutapuram. Join our worker list: no fee, full 8-hour shifts.",
+      eyebrow: "JOBS · VISAKHAPATNAM",
+      heading: "Factory and warehouse work in Visakhapatnam.",
+      lede: "We're building a list of workers in Visakhapatnam, Gajuwaka, Parawada and Atchutapuram. When a site there needs people, we call you.",
+      after: { label: "After you apply", steps: ["WhatsApp or SMS", "We call when a site needs you", "You decide"] },
+      faqTitle: "Questions.",
+      faqs: [
+        { question: "Are there openings now?", answer: "Not every week. You join our list, and we call when a site in Vizag or Anakapalli needs your kind of work.", category: "operations" },
+        { question: "What documents do I need?", answer: "Your 10th or 12th marksheet. Your ITI certificate, if you have one. The ID the site asks for at joining. We tell you what to bring before you join. Don't send Aadhaar or bank papers in the form.", category: "operations" },
+        AGE_FAQ["en-IN"],
+        { question: "Who pays me?", answer: "We do, with EPF and ESIC where they apply.", category: "operations" },
+      ],
+    },
+    {
+      // Andhra Pradesh outside Visakhapatnam (owner direction, 22 Oct 2026): a worker list.
+      slug: "andhra-pradesh",
+      name: "Andhra Pradesh",
+      metaTitle: "Factory Jobs in Andhra Pradesh: Join Our Worker List",
+      description:
+        "Factory, packing and warehouse work in Vijayawada, Guntur, Kakinada, Nellore and across Andhra Pradesh. Join our worker list: no fee, full 8-hour shifts.",
+      eyebrow: "JOBS · ANDHRA PRADESH",
+      heading: "Factory and warehouse work across Andhra Pradesh.",
+      lede: "We're building a list of workers across Andhra Pradesh. When a site near you needs people, we call you.",
+      after: { label: "After you apply", steps: ["WhatsApp or SMS", "We call when a site needs you", "You decide"] },
+      faqTitle: "Questions.",
+      faqs: [
+        { question: "Are there openings now?", answer: "Not every week. You join our list, and we call when a site near you needs your kind of work.", category: "operations" },
+        { question: "What documents do I need?", answer: "Your 10th or 12th marksheet. Your ITI certificate, if you have one. The ID the site asks for at joining. We tell you what to bring before you join. Don't send Aadhaar or bank papers in the form.", category: "operations" },
+        AGE_FAQ["en-IN"],
+        { question: "Who pays me?", answer: "We do, with EPF and ESIC where they apply.", category: "operations" },
+      ],
+    },
   ],
   "hi-IN": [
     {
@@ -362,6 +403,42 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
         { question: "वेतन कौन देता है?", answer: "हम देते हैं, लागू होने पर EPF और ESIC के साथ।", category: "operations" },
       ],
     },
+    {
+      slug: "visakhapatnam",
+      name: "विशाखापत्तनम",
+      metaTitle: "विशाखापत्तनम (वाइज़ैग) में नौकरी: फ़ैक्टरी और फ़ार्मा का काम",
+      description:
+        "वाइज़ैग के गाजुवाका, दुव्वाडा, परवाड़ा और अच्युतापुरम में फ़ैक्टरी, फ़ार्मा, पैकिंग और वेयरहाउस का काम। हमारी वर्कर लिस्ट में जुड़ें: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट।",
+      eyebrow: "नौकरी · विशाखापत्तनम",
+      heading: "विशाखापत्तनम में फ़ैक्टरी और वेयरहाउस का काम।",
+      lede: "हम विशाखापत्तनम, गाजुवाका, परवाड़ा और अच्युतापुरम में वर्करों की लिस्ट बना रहे हैं। वहाँ किसी साइट को लोग चाहिए होंगे तो हम आपको कॉल करेंगे।",
+      after: { label: "आवेदन के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
+      faqTitle: "सवाल।",
+      faqs: [
+        { question: "क्या अभी जगह खाली है?", answer: "हर हफ़्ते नहीं। आप हमारी लिस्ट में जुड़ते हैं, और वाइज़ैग या अनकापल्ली की किसी साइट को आपके जैसे काम की ज़रूरत होने पर हम कॉल करते हैं।", category: "operations" },
+        { question: "कौन-से कागज़ चाहिए?", answer: "10वीं या 12वीं की मार्कशीट। ITI सर्टिफ़िकेट, अगर है। जॉइनिंग पर साइट जो ID माँगे। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।", category: "operations" },
+        AGE_FAQ["hi-IN"],
+        { question: "वेतन कौन देता है?", answer: "हम देते हैं, लागू होने पर EPF और ESIC के साथ।", category: "operations" },
+      ],
+    },
+    {
+      slug: "andhra-pradesh",
+      name: "आंध्र प्रदेश",
+      metaTitle: "आंध्र प्रदेश में फ़ैक्टरी का काम: हमारी वर्कर लिस्ट में जुड़ें",
+      description:
+        "विजयवाड़ा, गुंटूर, काकीनाडा, नेल्लोर और पूरे आंध्र प्रदेश में फ़ैक्टरी, पैकिंग और वेयरहाउस का काम। हमारी वर्कर लिस्ट में जुड़ें: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट।",
+      eyebrow: "नौकरी · आंध्र प्रदेश",
+      heading: "पूरे आंध्र प्रदेश में फ़ैक्टरी और वेयरहाउस का काम।",
+      lede: "हम पूरे आंध्र प्रदेश में वर्करों की लिस्ट बना रहे हैं। आपके पास किसी साइट को लोग चाहिए होंगे तो हम आपको कॉल करेंगे।",
+      after: { label: "आवेदन के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
+      faqTitle: "सवाल।",
+      faqs: [
+        { question: "क्या अभी जगह खाली है?", answer: "हर हफ़्ते नहीं। आप हमारी लिस्ट में जुड़ते हैं, और आपके पास की किसी साइट को आपके जैसे काम की ज़रूरत होने पर हम कॉल करते हैं।", category: "operations" },
+        { question: "कौन-से कागज़ चाहिए?", answer: "10वीं या 12वीं की मार्कशीट। ITI सर्टिफ़िकेट, अगर है। जॉइनिंग पर साइट जो ID माँगे। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।", category: "operations" },
+        AGE_FAQ["hi-IN"],
+        { question: "वेतन कौन देता है?", answer: "हम देते हैं, लागू होने पर EPF और ESIC के साथ।", category: "operations" },
+      ],
+    },
   ],
   "hi-Latn-IN": [
     {
@@ -514,6 +591,42 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       faqTitle: "Sawaal.",
       faqs: [
         { question: "Kya abhi jagah khaali hai?", answer: "Kapurthala mein haan: packing ka kaam. Baaki jagah har hafte nahi. Aap hamari list mein judte hain, aur aapke paas ki kisi site ko aapke jaise kaam ki zaroorat hone par hum call karte hain.", category: "operations" },
+        { question: "Kaun-se documents chahiye?", answer: "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.", category: "operations" },
+        AGE_FAQ["hi-Latn-IN"],
+        { question: "Salary kaun deta hai?", answer: "Hum dete hain, laagu hone par EPF aur ESIC ke saath.", category: "operations" },
+      ],
+    },
+    {
+      slug: "visakhapatnam",
+      name: "Visakhapatnam",
+      metaTitle: "Vizag (Visakhapatnam) Job: Factory aur Pharma ka Kaam",
+      description:
+        "Vizag ke Gajuwaka, Duvvada, Parawada aur Atchutapuram mein factory, pharma, packing aur warehouse ka kaam. List mein judein: koi fee nahi, 8 ghante ki shift.",
+      eyebrow: "Jobs · Visakhapatnam",
+      heading: "Visakhapatnam mein factory aur warehouse ka kaam.",
+      lede: "Hum Visakhapatnam, Gajuwaka, Parawada aur Atchutapuram mein workers ki list bana rahe hain. Wahan kisi site ko log chahiye honge to hum aapko call karenge.",
+      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
+      faqTitle: "Sawaal.",
+      faqs: [
+        { question: "Kya abhi jagah khaali hai?", answer: "Har hafte nahi. Aap hamari list mein judte hain, aur Vizag ya Anakapalli ki kisi site ko aapke jaise kaam ki zaroorat hone par hum call karte hain.", category: "operations" },
+        { question: "Kaun-se documents chahiye?", answer: "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.", category: "operations" },
+        AGE_FAQ["hi-Latn-IN"],
+        { question: "Salary kaun deta hai?", answer: "Hum dete hain, laagu hone par EPF aur ESIC ke saath.", category: "operations" },
+      ],
+    },
+    {
+      slug: "andhra-pradesh",
+      name: "Andhra Pradesh",
+      metaTitle: "Andhra Pradesh Factory Job: Worker List mein Judein",
+      description:
+        "Vijayawada, Guntur, Kakinada, Nellore aur poore Andhra Pradesh mein factory, packing, warehouse ka kaam. List mein judein: koi fee nahi, 8 ghante ki shift.",
+      eyebrow: "Jobs · Andhra Pradesh",
+      heading: "Poore Andhra Pradesh mein factory aur warehouse ka kaam.",
+      lede: "Hum poore Andhra Pradesh mein workers ki list bana rahe hain. Aapke paas kisi site ko log chahiye honge to hum aapko call karenge.",
+      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
+      faqTitle: "Sawaal.",
+      faqs: [
+        { question: "Kya abhi jagah khaali hai?", answer: "Har hafte nahi. Aap hamari list mein judte hain, aur aapke paas ki kisi site ko aapke jaise kaam ki zaroorat hone par hum call karte hain.", category: "operations" },
         { question: "Kaun-se documents chahiye?", answer: "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.", category: "operations" },
         AGE_FAQ["hi-Latn-IN"],
         { question: "Salary kaun deta hai?", answer: "Hum dete hain, laagu hone par EPF aur ESIC ke saath.", category: "operations" },

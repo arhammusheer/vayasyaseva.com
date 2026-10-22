@@ -6,10 +6,11 @@ import { bengaluruPages } from "./bengaluru";
 import { delhiNcrPages } from "./delhi-ncr";
 import { jalandharPages } from "./jalandhar";
 import { dehradunPages } from "./dehradun";
+import { visakhapatnamPages } from "./visakhapatnam";
 import { LOCATIONS_PATH, estatePath, locationPath } from "@/content/registry/identifiers";
 
 /** Every location page's copy, by path. Filled region by region (one file per region). */
-const pages: LocationCopy[] = [...uttarakhandPages, ...delhiNcrPages, ...jalandharPages, ...bengaluruPages, ...haridwarPages, ...dehradunPages];
+const pages: LocationCopy[] = [...uttarakhandPages, ...delhiNcrPages, ...jalandharPages, ...bengaluruPages, ...haridwarPages, ...dehradunPages, ...visakhapatnamPages];
 
 export const locationPages: ReadonlyMap<string, LocationCopy> = new Map(
   pages.map((p) => [p.estate ? estatePath(p.cluster, p.estate) : locationPath(p.cluster), p]),

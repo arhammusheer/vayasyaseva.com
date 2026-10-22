@@ -8,7 +8,7 @@ export const generateStaticParams = localeParams(LOCATIONS_PATH);
 
 export const metadata = pageMetadata({
   title: "Locations: Where We Supply Contract Labour Crews",
-  description: "Where Vayasya Seva supplies supervised contract labour crews: Bengaluru's industrial areas, Delhi NCR, Jalandhar and Kapurthala, and Uttarakhand.",
+  description: "Where Vayasya Seva supplies supervised contract labour crews: Bengaluru's industrial areas, Delhi NCR, Jalandhar and Kapurthala, Uttarakhand and Visakhapatnam.",
   alternates: { canonical: LOCATIONS_PATH },
 });
 

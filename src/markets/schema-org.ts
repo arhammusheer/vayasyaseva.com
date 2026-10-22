@@ -29,4 +29,10 @@ export const MARKET_PLACES = {
   },
   jalandhar: { "@type": "Place", name: "Jalandhar and Kapurthala", containedInPlace: { "@type": "State", name: "Punjab" } },
   uttarakhand: { "@type": "State", name: "Uttarakhand" },
+  visakhapatnam: {
+    "@type": "City",
+    name: "Visakhapatnam",
+    alternateName: ["Vizag", "Vishakhapatnam"],
+    containedInPlace: { "@type": "State", name: "Andhra Pradesh" },
+  },
 } as const satisfies Record<BusinessMarketId, SchemaPlace>;

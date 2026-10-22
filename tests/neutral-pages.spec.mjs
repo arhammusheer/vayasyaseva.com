@@ -34,7 +34,7 @@ test("their descriptions list every job market, alphabetically, or none", () => 
 test("the jobs form's area answers: markets alphabetically when asking; another market, never 'other', after a decision", async () => {
   const { areaOptions } = await importTs("src/content/pages/quick-apply.ts");
   const { AREA_CLUSTERS } = await importTs("src/lib/talent-intake/rules.ts");
-  assert.deepEqual(areaOptions(null), ["market:bengaluru", "market:dehradun", "market:haridwar", "market:jalandhar", "market:kapurthala", "market:punjab", "market:uttarakhand", "market:other"]);
+  assert.deepEqual(areaOptions(null), ["market:andhra-pradesh", "market:bengaluru", "market:dehradun", "market:haridwar", "market:jalandhar", "market:kapurthala", "market:punjab", "market:uttarakhand", "market:visakhapatnam", "market:other"]);
   // Decided Haridwar on a neutral page: Haridwar's areas, then every other market; no "Outside Haridwar".
   const decided = areaOptions("haridwar", "decision");
   assert.ok(!decided.includes("outside"));
@@ -58,7 +58,12 @@ test("the jobs form's area answers: markets alphabetically when asking; another 
       assert.ok(!offered.includes("jalandhar:phagwara-goraya") && !offered.includes("punjab:jalandhar-kapurthala"), `${market} ${source}`);
     }
   }
-  for (const market of ["haridwar", "uttarakhand", "jalandhar", "punjab", "bengaluru", "dehradun", "kapurthala"]) {
+  // Visakhapatnam's answer on the Andhra Pradesh form files under Visakhapatnam (22 Oct 2026),
+  // and the rest of the state on Visakhapatnam's form under Andhra Pradesh.
+  assert.equal(AREA_CLUSTERS["andhra-pradesh:visakhapatnam"], "visakhapatnam");
+  assert.equal(AREA_CLUSTERS["visakhapatnam:rest-of-andhra-pradesh"], "andhra-pradesh");
+  assert.deepEqual(areaOptions("visakhapatnam"), ["visakhapatnam:city", "visakhapatnam:gajuwaka", "visakhapatnam:pendurthi", "visakhapatnam:anakapalli", "visakhapatnam:rest-of-andhra-pradesh", "visakhapatnam:outside"]);
+  for (const market of ["haridwar", "uttarakhand", "jalandhar", "punjab", "bengaluru", "dehradun", "kapurthala", "visakhapatnam", "andhra-pradesh"]) {
     for (const id of areaOptions(market, "decision")) assert.ok(Object.hasOwn(AREA_CLUSTERS, id), id);
   }
 });

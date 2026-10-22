@@ -225,7 +225,7 @@ function isIntakeLocale(value) {
     return typeof value === "string" && INTAKE_LOCALES.includes(value);
 }
 const LEGACY_SOURCE_LOCALES = { web_en: "en-IN", web_hi: "hi-IN", web_hinglish: "hi-Latn-IN" };
-const INTAKE_CLUSTERS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other", "punjab", "dehradun", "kapurthala"];
+const INTAKE_CLUSTERS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other", "punjab", "dehradun", "kapurthala", "visakhapatnam", "andhra-pradesh"];
 function isIntakeCluster(value) {
     return typeof value === "string" && INTAKE_CLUSTERS.includes(value);
 }
@@ -304,12 +304,20 @@ const QUICK_ANSWERS = {
         "dehradun:vikasnagar": "Vikasnagar / Herbertpur", "dehradun:outside": "Outside Dehradun",
         "kapurthala:city": "Kapurthala city", "kapurthala:phagwara": "Phagwara", "kapurthala:sultanpur-lodhi": "Sultanpur Lodhi / Bholath",
         "kapurthala:outside": "Outside Kapurthala", "kapurthala:jalandhar": "Jalandhar (Kapurthala form)",
+        "visakhapatnam:city": "Visakhapatnam city", "visakhapatnam:gajuwaka": "Gajuwaka / Steel Plant / Duvvada",
+        "visakhapatnam:pendurthi": "Pendurthi / Sabbavaram", "visakhapatnam:anakapalli": "Anakapalli / Parawada / Atchutapuram",
+        "visakhapatnam:outside": "Outside Visakhapatnam",
+        "andhra-pradesh:visakhapatnam": "Visakhapatnam / Anakapalli", "andhra-pradesh:vijayawada-guntur": "Vijayawada / Guntur",
+        "andhra-pradesh:kakinada-rajahmundry": "Kakinada / Rajahmundry", "andhra-pradesh:nellore-tirupati": "Nellore / Tirupati / Sri City",
+        "andhra-pradesh:other": "Elsewhere in Andhra Pradesh", "andhra-pradesh:outside": "Outside Andhra Pradesh",
         "market:haridwar": "Haridwar / Roorkee", "market:uttarakhand": "Elsewhere in Uttarakhand", "market:jalandhar": "Jalandhar",
         "market:punjab": "Elsewhere in Punjab", "market:bengaluru": "Bengaluru", "market:other": "Somewhere else",
         "market:dehradun": "Dehradun / Selaqui", "market:kapurthala": "Kapurthala / Phagwara",
+        "market:visakhapatnam": "Visakhapatnam (Vizag)", "market:andhra-pradesh": "Elsewhere in Andhra Pradesh",
         "haridwar:rest-of-uttarakhand": "Elsewhere in Uttarakhand (Haridwar form)", "jalandhar:rest-of-punjab": "Elsewhere in Punjab (Jalandhar form)",
         "dehradun:rest-of-uttarakhand": "Elsewhere in Uttarakhand (Dehradun form)",
         "kapurthala:rest-of-punjab": "Elsewhere in Punjab (Kapurthala form)",
+        "visakhapatnam:rest-of-andhra-pradesh": "Elsewhere in Andhra Pradesh (Visakhapatnam form)",
     },
 };
 const AREA_CLUSTERS = {
@@ -351,6 +359,17 @@ const AREA_CLUSTERS = {
     "kapurthala:sultanpur-lodhi": "kapurthala",
     "kapurthala:outside": null,
     "kapurthala:jalandhar": "jalandhar",
+    "visakhapatnam:city": "visakhapatnam",
+    "visakhapatnam:gajuwaka": "visakhapatnam",
+    "visakhapatnam:pendurthi": "visakhapatnam",
+    "visakhapatnam:anakapalli": "visakhapatnam",
+    "visakhapatnam:outside": null,
+    "andhra-pradesh:visakhapatnam": "visakhapatnam",
+    "andhra-pradesh:vijayawada-guntur": "andhra-pradesh",
+    "andhra-pradesh:kakinada-rajahmundry": "andhra-pradesh",
+    "andhra-pradesh:nellore-tirupati": "andhra-pradesh",
+    "andhra-pradesh:other": "andhra-pradesh",
+    "andhra-pradesh:outside": null,
     "market:haridwar": "haridwar",
     "market:uttarakhand": "uttarakhand",
     "market:jalandhar": "jalandhar",
@@ -359,10 +378,13 @@ const AREA_CLUSTERS = {
     "market:other": null,
     "market:dehradun": "dehradun",
     "market:kapurthala": "kapurthala",
+    "market:visakhapatnam": "visakhapatnam",
+    "market:andhra-pradesh": "andhra-pradesh",
     "haridwar:rest-of-uttarakhand": "uttarakhand",
     "jalandhar:rest-of-punjab": "punjab",
     "dehradun:rest-of-uttarakhand": "uttarakhand",
     "kapurthala:rest-of-punjab": "punjab",
+    "visakhapatnam:rest-of-andhra-pradesh": "andhra-pradesh",
 };
 const FORMLESS_AREAS = new Set(["jalandhar:phagwara-goraya", "punjab:jalandhar-kapurthala"]);
 function submissionCluster(pageCluster, answers) {

@@ -697,6 +697,7 @@ const CREW_REGIONS: Partial<Record<WageStateSlug, [string, string, string]>> = {
   haryana: ["Gurugram or Manesar", "We supply crews in IMT Manesar, Gurugram and Faridabad.", "/locations/delhi-ncr/gurugram-manesar"],
   karnataka: ["Bengaluru", "We supply crews across Bengaluru's industrial belts.", "/locations/bengaluru"],
   punjab: ["Jalandhar or Kapurthala", "We supply crews in Jalandhar, Kapurthala and Phagwara.", "/locations/jalandhar"],
+  "andhra-pradesh": ["Visakhapatnam", "We supply crews in Visakhapatnam, Parawada, Atchutapuram and Duvvada.", "/locations/visakhapatnam"],
 };
 function crewDoor(slug: WageStateSlug) {
   const r = CREW_REGIONS[slug];

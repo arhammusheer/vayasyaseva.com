@@ -22,6 +22,7 @@ what to put first and measures what people pick. Owner decisions of
 
 | Market (cluster id) | Jobs | Business |
 |---|---|---|
+| Andhra Pradesh outside Visakhapatnam (`andhra-pradesh`, since 22 Oct 2026) | `/jobs/andhra-pradesh`, worker list | none (Visakhapatnam's page stands in) |
 | Bengaluru (`bengaluru`) | `/jobs/bengaluru`, worker list | `/locations/bengaluru` |
 | Dehradun (`dehradun`, since 18 Oct 2026) | `/jobs/dehradun`, worker list | `/locations/dehradun` (Selaqui under it) |
 | Delhi NCR (`delhi-ncr`) | none (nearby: Haridwar, Uttarakhand) | `/locations/delhi-ncr` |
@@ -30,6 +31,7 @@ what to put first and measures what people pick. Owner decisions of
 | Kapurthala (`kapurthala`), Phagwara included | `/jobs/kapurthala` | none: Jalandhar's region page |
 | Punjab outside it (`punjab`) | `/jobs/punjab`, worker list | none (Jalandhar's page stands in) |
 | Uttarakhand outside Haridwar and Dehradun (`uttarakhand`) | `/jobs/uttarakhand`, worker list | `/locations/uttarakhand` |
+| Visakhapatnam (`visakhapatnam`, since 22 Oct 2026), Anakapalli's belt included | `/jobs/visakhapatnam`, worker list | `/locations/visakhapatnam` (Parawada, Atchutapuram–Rambilli, Duvvada, Gajuwaka under it) |
 
 ## The pieces
 

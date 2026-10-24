@@ -2396,6 +2396,222 @@ a:hover > svg {
 .quick-anchor {
   scroll-margin-top: 16px;
 }
+/* The day's pay under a jobs hub's lede (a market's `pay`): the figure the
+   ads carry in the display face, what it includes directly beneath, and the
+   breakdown behind a quiet toggle. No box; figures in the data face. */
+/* The figure on its own line; what it includes beneath, with the toggle
+   beside it where the line has room (it wraps under on the narrowest
+   phones), and the open breakdown at full width. */
+.quick-pay {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 14px;
+  margin-top: 16px;
+}
+.quick-pay-figure {
+  display: contents;
+}
+.quick-pay-figure strong {
+  flex: 1 1 100%;
+  font-family: var(--stack-display);
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+.quick-pay-figure span {
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+.quick-pay-how[open] {
+  flex: 1 1 100%;
+}
+.quick-pay-figure :is(strong, span):is(:lang(hi), :lang(pa)):not(:lang(hi-Latn)) {
+  letter-spacing: 0;
+  line-height: 1.35;
+}
+.quick-pay-how > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 15px;
+  color: var(--muted-foreground);
+}
+.quick-pay-how > summary > span {
+  text-decoration: underline;
+  text-decoration-color: var(--gold-700);
+  text-underline-offset: 4px;
+}
+.quick-pay-how > summary::-webkit-details-marker {
+  display: none;
+}
+.quick-pay-how > summary::after {
+  content: "+";
+  color: var(--gold-700);
+}
+.quick-pay-how[open] > summary::after {
+  content: "\2212";
+}
+.quick-pay-how > summary:hover,
+.quick-pay-how[open] > summary {
+  color: var(--foreground);
+}
+.quick-pay-how dl {
+  max-width: 30rem;
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.quick-pay-how dl > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  padding-block: 7px;
+  border-top: 1px solid var(--border);
+}
+.quick-pay-how dl > div.is-split {
+  margin-top: 14px;
+}
+.quick-pay-how dl > div.is-total {
+  font-weight: 600;
+}
+.quick-pay-how dd {
+  font-family: var(--font-data), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+.quick-pay-how p {
+  max-width: 30rem;
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+/* A given answer (?work=packing, a role page): one confirmed line, with
+   "change" to reopen the list. The next question is the active step. */
+.quick-answered p {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  margin-top: 18px;
+  font-size: 17px;
+  line-height: 1.35;
+}
+.quick-answered-q {
+  color: var(--muted-foreground);
+}
+.quick-answered-a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+.quick-answered-a svg {
+  color: var(--gold-700);
+}
+.quick-answered-dot {
+  color: var(--muted-foreground);
+}
+.quick-answered-change {
+  min-height: 44px;
+  color: var(--foreground);
+  text-decoration: underline;
+  text-decoration-color: var(--gold-700);
+  text-underline-offset: 4px;
+}
+.quick-answered + .quick-answered p {
+  margin-top: 0;
+}
+.quick-section + .quick-answered {
+  margin-top: 0;
+}
+.quick-answered + .quick-section:not(.quick-answered) {
+  margin-top: 16px;
+}
+.quick-answered + .quick-section:not(.quick-answered) .quick-question {
+  margin-top: 0;
+}
+/* Phones: the jobs hub's first screen holds the H1, the lede, the pay and
+   the first open question with its first answers, above the consent bar
+   (320x584 and 360x676 after browser chrome). The H1 steps down, the
+   spacing tightens, and the shift line moves below the form (the order of
+   the HTML is unchanged). */
+@media (max-width: 480px) {
+  .quick-top {
+    padding-top: 6px;
+  }
+  .quick-top .crumbs {
+    margin-bottom: 4px;
+  }
+  .quick-top > .site-shell {
+    row-gap: 14px;
+  }
+  .quick-title {
+    margin-top: 0;
+    font-size: 27px;
+    line-height: 1.12;
+  }
+  .quick-lede {
+    margin-top: 8px;
+    font-size: 15px;
+    line-height: 1.4;
+  }
+  .quick-pay {
+    column-gap: 10px;
+    margin-top: 10px;
+  }
+  .quick-pay-figure strong {
+    font-size: 28px;
+  }
+  .quick-pay-figure span {
+    font-size: 15px;
+  }
+  .quick-pay-how > summary {
+    min-height: 36px;
+    font-size: 14px;
+  }
+  .quick-question {
+    font-size: 21px;
+  }
+  .quick-answered p {
+    margin-top: 8px;
+  }
+  .quick-answered-change {
+    min-height: 36px;
+  }
+  .quick-answered + .quick-section:not(.quick-answered) {
+    margin-top: 6px;
+  }
+  .quick-apply {
+    display: flex;
+    flex-direction: column;
+  }
+  .quick-shifts {
+    order: 1;
+    margin: 28px 0 0;
+  }
+  .quick-note {
+    order: 2;
+  }
+  .quick-progress + .quick-section .quick-question {
+    margin-top: 16px;
+  }
+}
+@media (max-width: 360px) {
+  .quick-title {
+    font-size: 24px;
+  }
+  .quick-pay-figure strong {
+    font-size: 26px;
+  }
+}
 /* One quiet line for job seekers on a business page. */
 .seeker-line {
   display: flex;
@@ -2914,7 +3130,7 @@ a:hover > svg {
   margin-top: 12px;
 }
 
-/* The menu's language links on business and reference pages (phones). */
+/* The menu's language links (phones): every language, on every section. */
 .sheet-lang {
   display: flex;
   flex-wrap: wrap;
@@ -2933,12 +3149,46 @@ a:hover > svg {
 
 /* The smallest phones: the jobs bar (languages, Apply, menu) tightens so
    the menu button stays inside the gutter at 320px. */
+/* Phones up to 430px: the jobs bar keeps its two quick languages, Apply and
+   the menu; "More" moves into the menu, which lists every language. Punjabi
+   and Kannada labels pushed the menu button off-screen at 320-414px. */
+@media (max-width: 430px) {
+  .site-header[data-door="jobs"] .header-lang-more {
+    display: none;
+  }
+  .site-header[data-door="jobs"] .header-end {
+    gap: 6px;
+    min-width: 0;
+  }
+  .site-header[data-door="jobs"] .header-lang a {
+    padding-inline: 4px;
+    font-size: 14px;
+  }
+  .site-header[data-door="jobs"] .header-contact {
+    padding-inline: 12px;
+  }
+}
 @media (max-width: 340px) {
   .site-header[data-door="jobs"] .header-lang {
     gap: 2px;
   }
   .site-header[data-door="jobs"] .header-lang a {
-    padding-inline: 1px;
+    padding-inline: 2px;
+    font-size: 13px;
+  }
+  .site-header[data-door="jobs"] .header-end {
+    gap: 4px;
+  }
+  .site-header[data-door="jobs"] .header-contact {
+    padding-inline: 9px;
+    font-size: 12.5px;
+  }
+  .site-header[data-door="jobs"] .brand-lockup img {
+    width: 34px;
+    height: 34px;
+  }
+  .site-header[data-door="jobs"] .mobile-menu {
+    width: 40px;
   }
 }
 
@@ -3645,6 +3895,66 @@ a:hover > svg {
 @media (max-width: 639px) {
   html.consent-open body {
     padding-bottom: calc(var(--consent-banner-h, 0px) + 16px);
+  }
+}
+/* Jobs pages on a phone: the banner is a slim bar across the foot, about
+   64px at 320px wide (the card covered a third of a small phone and hid the
+   form's first question). The question and "Learn more" on one line, the two
+   answers as compact buttons below; "Learn more" still opens the details in
+   place. Layout only: the copy and the choices are the same. */
+@media (max-width: 639px) {
+  html:has(.site-header[data-door="jobs"]) .consent-banner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 3px 8px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-height: 70dvh;
+    padding: 4px 12px max(4px, env(safe-area-inset-bottom));
+    border: 0;
+    border-top: 2px solid color-mix(in srgb, var(--gold-500) 70%, transparent);
+    border-radius: 0;
+    box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.16);
+  }
+  html:has(.site-header[data-door="jobs"]) .consent-head {
+    flex: 1 1 100%;
+    justify-content: flex-start;
+    gap: 10px;
+    min-width: 0;
+  }
+  html:has(.site-header[data-door="jobs"]) .consent-head p {
+    font-size: 13px;
+    line-height: 17px;
+  }
+  html:has(.site-header[data-door="jobs"]) .consent-more {
+    position: relative;
+    min-height: 17px;
+    line-height: 17px;
+  }
+  /* A taller invisible hit area than the 17px line it sits on. */
+  html:has(.site-header[data-door="jobs"]) .consent-more::after {
+    content: "";
+    position: absolute;
+    inset: -8px -6px;
+  }
+  html:has(.site-header[data-door="jobs"]) .consent-details {
+    flex: 1 1 100%;
+    margin-top: 0;
+  }
+  html:has(.site-header[data-door="jobs"]) .consent-actions {
+    flex: 1 1 100%;
+    gap: 8px;
+    margin-top: 0;
+  }
+  html:has(.site-header[data-door="jobs"]) .consent-actions button {
+    height: 34px;
+    min-height: 34px;
+    padding-block: 0;
+    font-size: 13px;
+    line-height: 1.2;
   }
 }
 

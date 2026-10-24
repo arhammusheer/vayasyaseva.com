@@ -538,8 +538,10 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
                   </p>
                 ))}
               </nav>
-              {!isJobs && languages.length > 0 && (
-                <nav aria-label="Language" className="sheet-lang">
+              {/* Every language, jobs pages included: on the smallest phones the
+                  jobs bar drops its "More" list (globals.css), so this is the full one. */}
+              {languages.length > 0 && (
+                <nav aria-label={isJobs ? t.language : "Language"} className="sheet-lang">
                   {languages.map((l) => (
                     <Link key={l.href} href={l.href} lang={l.lang} hrefLang={l.lang} title={l.hint} onClick={close}>
                       {l.label}

@@ -5,7 +5,9 @@ import { QuickApply } from "@/components/jobs/quick-apply";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { JsonLd, pageUrl, webPageSchema } from "@/lib/structured-data";
 import { jobsCopy } from "@/content/pages/jobs";
-import { getJobCluster } from "@/content/pages/job-clusters";
+import { getJobCluster, type ClusterPay } from "@/content/pages/job-clusters";
+import { payBreakdown } from "@/content/pay";
+import { formatRupees } from "@/content/wages";
 import { isPaused, pageEntries } from "@/content/registry";
 import { PausedNotice } from "@/components/sections/paused-notice";
 import { localePath, locales, localesOf, nearestLocalePath, type Locale } from "@/lib/i18n";
@@ -37,6 +39,47 @@ export function jobClusterMetadata(slug: string, locale: Locale) {
     alternates: { canonical: localePath(clusterPath(c.slug), locale) },
     locale,
   });
+}
+
+/**
+ * The day's pay under the lede (a market's `pay`): the figure the ads carry,
+ * what it includes, and a toggle with the breakdown worked out on the server
+ * from the state minimum wage (src/content/pay.ts). The wage line and the
+ * employer's PF and ESI add up to the total; the worker's own share comes
+ * off the wage, leaving the day's take-home.
+ */
+function PayLine({ pay }: { pay: ClusterPay }) {
+  const b = payBreakdown(pay.basis);
+  const rows: { label: string; amount: string; className?: string }[] = [
+    { label: pay.how.wage(formatRupees(b.monthly)), amount: formatRupees(b.wage) },
+    { label: pay.how.employerPf, amount: `+ ${formatRupees(b.employerPf)}` },
+    { label: pay.how.employerEsic, amount: `+ ${formatRupees(b.employerEsic)}` },
+    { label: pay.how.total, amount: formatRupees(b.total), className: "is-total" },
+    { label: pay.how.workerShare, amount: `− ${formatRupees(b.workerShare)}`, className: "is-split" },
+    { label: pay.how.takeHome, amount: formatRupees(b.takeHome), className: "is-total" },
+  ];
+  return (
+    <div className="quick-pay">
+      <p className="quick-pay-figure">
+        <strong>{pay.figure}</strong>
+        <span>{pay.includes}</span>
+      </p>
+      <details className="quick-pay-how">
+        <summary>
+          <span>{pay.how.summary}</span>
+        </summary>
+        <dl>
+          {rows.map((r) => (
+            <div key={r.label} className={r.className}>
+              <dt>{r.label}</dt>
+              <dd>{r.amount}</dd>
+            </div>
+          ))}
+        </dl>
+        <p>{pay.how.note}</p>
+      </details>
+    </div>
+  );
 }
 
 /**
@@ -72,6 +115,7 @@ export function JobClusterPage({ slug, locale }: { slug: string; locale: Locale 
             <Breadcrumbs path={clusterPath(c.slug)} locale={locale} name={c.name} />
             <h1 className="quick-title">{c.heading}</h1>
             <p className="quick-lede">{c.lede}</p>
+            {c.pay && !paused && <PayLine pay={c.pay} />}
           </div>
           {/* #apply: the header's Apply scrolls here. A paused hub (PLAN §8.3)
               shows its notice there instead, with the national form. */}

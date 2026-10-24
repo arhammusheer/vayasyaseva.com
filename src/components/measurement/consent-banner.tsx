@@ -13,7 +13,9 @@ type Shown = ConsentSnapshot["banner"];
 /**
  * The consent banner: two sentences, a link to the §3 table and two
  * answers (copy.ts). Open while there is no valid answer, or after the
- * footer's "Privacy choices" (openPreferences).
+ * footer's "Privacy choices" (openPreferences). On jobs pages on a phone it
+ * is a slim bar across the foot (globals.css, .consent-banner): layout only,
+ * the same copy and choices.
  */
 export function ConsentBanner({ consent, locale }: { consent: Shown; locale: string }) {
   const [showPreferences, setShowPreferences] = useState(false);
@@ -65,24 +67,24 @@ export function ConsentBanner({ consent, locale }: { consent: Shown; locale: str
       aria-label={t.label}
       className="consent-banner fixed bottom-3 right-3 z-[100] max-h-[calc(100dvh-1.5rem)] w-[min(340px,calc(100vw-1.5rem))] overflow-y-auto rounded-md border border-white/10 border-l-[3px] border-l-gold-500/70 bg-neutral-950/95 p-3 text-white shadow-[0_12px_32px_rgba(0,0,0,0.22)] sm:right-5"
     >
-      <div className="flex items-center justify-between gap-2">
+      <div className="consent-head flex items-center justify-between gap-2">
         <p className="text-sm leading-snug">{t.question}</p>
         <button
           type="button"
           aria-expanded={showDetails}
           aria-controls={detailsId}
           onClick={() => setShowDetails((open) => !open)}
-          className="inline-flex min-h-12 shrink-0 items-center gap-0.5 px-1 text-xs text-white/75 underline underline-offset-2 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-500 sm:min-h-10"
+          className="consent-more inline-flex min-h-12 shrink-0 items-center gap-0.5 px-1 text-xs text-white/75 underline underline-offset-2 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-500 sm:min-h-10"
         >
           {showDetails ? t.less : t.more}
           <ChevronDownIcon aria-hidden="true" className={`size-3.5 transition-transform ${showDetails ? "rotate-180" : ""}`} />
         </button>
       </div>
-      <div id={detailsId} hidden={!showDetails} className="mt-1 text-xs leading-relaxed text-white/80">
+      <div id={detailsId} hidden={!showDetails} className="consent-details mt-1 text-xs leading-relaxed text-white/80">
         {t.details}{" "}
         <Link href="/privacy#analytics" className="text-white underline underline-offset-2 hover:text-gold-400">{t.privacy}</Link>{t.end}
       </div>
-      <div className="mt-2 grid grid-cols-2 gap-2">
+      <div className="consent-actions mt-2 grid grid-cols-2 gap-2">
         <Button type="button" variant="ghost" onClick={() => choose("rejected")} className="min-h-12 whitespace-normal px-3 text-white/80 hover:bg-white/10 hover:text-white sm:h-10 sm:min-h-10">
           {t.reject}
         </Button>

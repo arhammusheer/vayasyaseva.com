@@ -167,11 +167,21 @@ export function QuickApply({
   const doneHeading = useRef<HTMLHeadingElement>(null);
   const errorSummary = useRef<HTMLUListElement>(null);
   const pendingStep = useRef<string | null>(null);
+  // Answers the link or the page gave (?work=packing, a role or hub page)
+  // show as one confirmed line ("Work: Packing ✓ · change") until the
+  // visitor reopens them, so the first open question is the active step.
+  // Demand Gen visitors toggled a pre-ticked list and left (Oct 2026).
+  const [given, setGiven] = useState<string[]>([]);
+  const [reopened, setReopened] = useState<string[]>([]);
+  // The answer a reopened question had, to report whether it changed.
+  const reopenedFrom = useRef<Record<string, string[]>>({});
+  const pendingFocus = useRef<string | null>(null);
 
   // Which questions apply, and how far the visitor has unlocked: every
   // applicable question up to and including the first unanswered one.
   const active = STEP_DEFS.filter((s) => !s.when || s.when(answers));
   const isDone = (s: StepDef) => (answers[s.id]?.length ?? 0) > 0 && (s.kind === "single" || confirmed.includes(s.id));
+  const isAnswered = (s: StepDef) => given.includes(s.id) && !reopened.includes(s.id) && isDone(s);
   const firstOpen = active.findIndex((s) => !isDone(s));
   const visible = firstOpen === -1 ? active : active.slice(0, firstOpen + 1);
   const detailsUnlocked = firstOpen === -1;
@@ -214,6 +224,7 @@ export function QuickApply({
       entry.current = "preset";
       setAnswers(preset as Answers);
       setConfirmed(Object.keys(preset));
+      setGiven(Object.keys(preset));
     }
     if (hash?.name) setName(hash.name.slice(0, MAX_APPLICANT_NAME_LENGTH));
     if (hash?.phone) setPhone(hash.phone);
@@ -223,6 +234,7 @@ export function QuickApply({
   const restoreDraft = useCallback((saved: Saved) => {
     entry.current = "restored";
     setAnswers({ ...saved.answers, ...linkAnswers.current }); setConfirmed([...new Set([...saved.confirmed, ...Object.keys(linkAnswers.current)])]);
+    setGiven(Object.keys(linkAnswers.current)); setReopened([]);
     setName(saved.name); setPhone(saved.phone); setMissingFiles(saved.hadFiles);
   }, []);
   const hasDraft = Object.keys(answers).length > 0 || Boolean(name || phone || files.length || missingFiles);
@@ -250,7 +262,7 @@ export function QuickApply({
   function clearDraft() {
     draft.clear(); submission.clear(); filePicker.clear();
     const defaults = pageAnswers(pageRole, pageHub);
-    setAnswers(defaults); setConfirmed(Object.keys(defaults)); setName(""); setPhone(""); setAgreed(false); setMissingFiles(false); setFailedChecks(null);
+    setAnswers(defaults); setConfirmed(Object.keys(defaults)); setGiven(Object.keys(defaults)); setReopened([]); setName(""); setPhone(""); setAgreed(false); setMissingFiles(false); setFailedChecks(null);
     started.current = false;
     resetTurnstile();
     requestAnimationFrame(() => revealFormTarget(root.current?.querySelector<HTMLElement>(".quick-question") ?? null, { instant: true }));
@@ -295,11 +307,17 @@ export function QuickApply({
       }
       const params: AnalyticsParams = { locale, step: step.id, answer: value };
       if (before && before !== value) params.changed = "yes";
+      // A reopened answer closes again on the pick, changed or not.
+      if (reopened.includes(step.id)) {
+        params.changed = before === value ? "no" : "yes";
+        setReopened((r) => r.filter((id) => id !== step.id));
+      }
       if (step.id === "area") Object.assign(params, { area_source: areaSource, decided: areaMarket ?? "none", band: ctx?.region.band ?? "unknown", v: CONTEXT_VERSION });
       track("quick_step", params);
       return;
     }
-    if (confirmed.includes(step.id)) track("quick_step", { locale, step: step.id, answer: value, changed: "yes" });
+    // A reopened answer reports once, on Next (confirm), not per tap.
+    if (confirmed.includes(step.id) && !reopened.includes(step.id)) track("quick_step", { locale, step: step.id, answer: value, changed: "yes" });
     setAnswers((a) => {
       const current = a[step.id] ?? [];
       let next = current.includes(value) ? current.filter((v) => v !== value) : [...current, value];
@@ -312,8 +330,30 @@ export function QuickApply({
   function confirm(step: StepDef) {
     pendingStep.current = step.id;
     setConfirmed((c) => [...c.filter((id) => id !== step.id), step.id]);
-    track("quick_step", { locale, step: step.id, answer: (answers[step.id] ?? []).join(",").slice(0, 200) });
+    const answer = answers[step.id] ?? [];
+    const params: AnalyticsParams = { locale, step: step.id, answer: answer.join(",").slice(0, 200) };
+    if (reopened.includes(step.id)) {
+      const before = reopenedFrom.current[step.id] ?? [];
+      params.changed = before.length === answer.length && before.every((v) => answer.includes(v)) ? "no" : "yes";
+      setReopened((r) => r.filter((id) => id !== step.id));
+    }
+    track("quick_step", params);
   }
+
+  /** "change" on a given answer: its full list again, with the question focused. */
+  function reopen(step: StepDef) {
+    markStarted();
+    reopenedFrom.current[step.id] = answers[step.id] ?? [];
+    pendingFocus.current = step.id;
+    setReopened((r) => [...r.filter((id) => id !== step.id), step.id]);
+  }
+
+  useEffect(() => {
+    const id = pendingFocus.current;
+    if (!id) return;
+    pendingFocus.current = null;
+    root.current?.querySelector<HTMLElement>(`#quick-q-${id}`)?.focus({ preventScroll: true });
+  }, [reopened]);
 
   async function submit(event: React.FormEvent) {
     event.preventDefault();
@@ -414,6 +454,23 @@ export function QuickApply({
       {visible.map((step) => {
         const q = t.questions[step.id];
         const values = answers[step.id] ?? [];
+        if (isAnswered(step)) {
+          return (
+            <section key={step.id} className="quick-section quick-answered" data-step={step.id} aria-label={q.question}>
+              <p>
+                <span className="quick-answered-q">{t.answered.short[step.id]}:</span>{" "}
+                <span className="quick-answered-a is-selected">
+                  <Check size={16} aria-hidden="true" />
+                  {values.map((v) => t.labels[v] ?? v).join(", ")}
+                </span>
+                <span className="quick-answered-dot" aria-hidden="true">·</span>
+                <button type="button" className="quick-answered-change" disabled={locked} aria-label={`${t.answered.change}: ${q.question}`} onClick={() => reopen(step)}>
+                  {t.answered.change}
+                </button>
+              </p>
+            </section>
+          );
+        }
         return (
           <section key={step.id} className="quick-section" data-step={step.id}>
             <h2 id={`quick-q-${step.id}`} tabIndex={-1} className="quick-question form-scroll-target">{q.question}</h2>

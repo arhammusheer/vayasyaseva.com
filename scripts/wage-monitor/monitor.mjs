@@ -487,7 +487,7 @@ export async function runMonitor({ targets, previous, fetcher, now = new Date(),
   // Every event carries its target's topic (wages, epf, esic, pt, lwf, licence, codes).
   const topicOf = new Map(targets.map((t) => [`${t.state}|${t.url}`, t.topic ?? "wages"]));
   for (const e of events) e.topic ??= topicOf.get(`${e.state}|${e.url}`) ?? "wages";
-  return { state: { version: STATE_VERSION, updatedAt: now.toISOString(), sources, reported: previous?.reported ?? {}, chatwoot: previous?.chatwoot ?? {} }, events, results };
+  return { state: { version: STATE_VERSION, updatedAt: now.toISOString(), sources, hub: previous?.hub ?? {} }, events, results };
 }
 
 /**

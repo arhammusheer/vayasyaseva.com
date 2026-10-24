@@ -9,7 +9,7 @@
  *
  * Once a template is approved, put its message id in WA_TEMPLATES
  * (talent/lib/whatsapp-ack.ts) and deploy: that language then gets WhatsApp first.
- * Reads the Fast2SMS key from the cluster (growth/n8n-env, as deploy.mts) and never prints it.
+ * Reads the Fast2SMS key from the cluster (growth/windmill-talent, as deploy.mts) and never prints it.
  */
 import { execFileSync } from "node:child_process";
 
@@ -58,11 +58,11 @@ interface Listed {
 }
 
 function apiKey(): string {
-  const b64 = execFileSync("kubectl", ["-n", "growth", "get", "secret", "n8n-env", "-o", "jsonpath={.data.FAST2SMS_API_KEY}"], {
+  const b64 = execFileSync("kubectl", ["-n", "growth", "get", "secret", "windmill-talent", "-o", "jsonpath={.data.FAST2SMS_API_KEY}"], {
     encoding: "utf8",
     stdio: ["ignore", "pipe", "ignore"],
   });
-  if (!b64) throw new Error("growth/n8n-env has no FAST2SMS_API_KEY");
+  if (!b64) throw new Error("growth/windmill-talent has no FAST2SMS_API_KEY");
   return Buffer.from(b64, "base64").toString("utf8");
 }
 

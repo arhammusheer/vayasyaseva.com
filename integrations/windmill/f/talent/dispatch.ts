@@ -16,10 +16,6 @@ const VARIABLES = {
     r2_read_secret: { secret: true },
     r2_erase_key_id: { secret: true },
     r2_erase_secret: { secret: true },
-    chatwoot_admin_token: { secret: true },
-    chatwoot_inbox_identifier: { secret: true },
-    chatwoot_base_url: { secret: false },
-    chatwoot_account_id: { secret: false },
     r2_endpoint: { secret: false },
     r2_bucket: { secret: false },
     twenty_base_url: { secret: false },
@@ -47,93 +43,6 @@ async function config(name) {
     return value;
 }
   return { VARIABLES, variablePath, setConfigForTests, config };
-})();
-
-// integrations/windmill/talent/lib/chatwoot.ts
-const { createContact, createConversation, postMessage, attachFile, deleteContact } = (() => {
-const RETRY_TRIES = 3;
-const RETRY_WAIT_MS = 5_000;
-const TIMEOUT_MS = 30_000;
-async function inboxBase() {
-    const [base, identifier] = await Promise.all([config("chatwoot_base_url"), config("chatwoot_inbox_identifier")]);
-    return `${base.replace(/\/$/, "")}/public/api/v1/inboxes/${identifier}`;
-}
-async function retrying(fn, tries = RETRY_TRIES, waitMs = RETRY_WAIT_MS) {
-    let last;
-    for (let attempt = 1; attempt <= tries; attempt++) {
-        try {
-            return await fn();
-        }
-        catch (error) {
-            last = error;
-            if (attempt < tries)
-                await new Promise((r) => setTimeout(r, waitMs));
-        }
-    }
-    throw last;
-}
-async function json(res, what) {
-    if (!res.ok)
-        throw new Error(`Chatwoot ${what}: HTTP ${res.status}`);
-    return (await res.json());
-}
-async function createContact(phone, name) {
-    const base = await inboxBase();
-    return retrying(async () => json(await fetch(`${base}/contacts`, {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ source_id: `talent-${phone.replace("+", "")}`, name, phone_number: phone }),
-        signal: AbortSignal.timeout(TIMEOUT_MS),
-    }), "contact"));
-}
-async function createConversation(sourceId, customAttributes) {
-    const base = await inboxBase();
-    return json(await fetch(`${base}/contacts/${sourceId}/conversations`, {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ custom_attributes: customAttributes }),
-        signal: AbortSignal.timeout(TIMEOUT_MS),
-    }), "create conversation");
-}
-async function postMessage(sourceId, conversationId, content) {
-    const base = await inboxBase();
-    await json(await fetch(`${base}/contacts/${sourceId}/conversations/${conversationId}/messages`, {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ content }),
-        signal: AbortSignal.timeout(TIMEOUT_MS),
-    }), "post message");
-}
-async function attachFile(sourceId, conversationId, label, file, fileName) {
-    const base = await inboxBase();
-    const form = new FormData();
-    form.append("content", label);
-    form.append("attachments[]", file, fileName);
-    try {
-        const res = await fetch(`${base}/contacts/${sourceId}/conversations/${conversationId}/messages`, {
-            method: "POST",
-            body: form,
-            signal: AbortSignal.timeout(TIMEOUT_MS),
-        });
-        return res.ok;
-    }
-    catch {
-        return false;
-    }
-}
-async function deleteContact(contactId) {
-    const [base, accountId, token] = await Promise.all([config("chatwoot_base_url"), config("chatwoot_account_id"), config("chatwoot_admin_token")]);
-    await retrying(async () => {
-        const res = await fetch(`${base.replace(/\/$/, "")}/api/v1/accounts/${accountId}/contacts/${contactId}`, {
-            method: "DELETE",
-            headers: { api_access_token: token },
-            signal: AbortSignal.timeout(TIMEOUT_MS),
-        });
-        if (!res.ok && res.status !== 404)
-            throw new Error(`Chatwoot delete contact ${contactId}: HTTP ${res.status}`);
-    });
-}
-  return { createContact, createConversation, postMessage, attachFile, deleteContact };
 })();
 
 // integrations/windmill/talent/lib/db.ts
@@ -168,7 +77,7 @@ const queryWith = (sql) => async (text, params = []) => (await sql.unsafe(text, 
 })();
 
 // integrations/windmill/talent/lib/sql.ts
-const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, GET_ACKNOWLEDGEMENT, SKIP_WHATSAPP, CLAIM_WHATSAPP_ACK, SAVE_WHATSAPP_RESULT, RECOVER_WHATSAPP_SEND, SAVE_WHATSAPP_REPORT, SKIP_SMS, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, FILES_SUBMISSION, FILES_FOR, SAVE_FILE_ID, SETTLE_FILE, FILE_ERROR, CLEAR_FILE_ID } = (() => {
+const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, GET_ACKNOWLEDGEMENT, SKIP_WHATSAPP, CLAIM_WHATSAPP_ACK, SAVE_WHATSAPP_RESULT, RECOVER_WHATSAPP_SEND, SAVE_WHATSAPP_REPORT, SKIP_SMS, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, SYNC_CANDIDATE_FOR, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, FILES_SUBMISSION, FILES_FOR, SAVE_FILE_ID, SETTLE_FILE, FILE_ERROR, CLEAR_FILE_ID } = (() => {
 const RETENTION_MONTHS = 12;
 const SAVE_SUBMISSION = `
 WITH s AS (
@@ -267,39 +176,6 @@ WHERE submission_id = $1::uuid AND wa_status = 'accepted'
 const SKIP_SMS = `
 UPDATE sms_acknowledgements SET status = 'skipped', last_error = NULL, updated_at = now()
 WHERE submission_id = $1::uuid AND status = 'pending';`;
-const RECOVER_STUCK_DELIVERIES = `
-UPDATE submissions
-SET status = CASE WHEN attempts >= 3 THEN 'failed' ELSE 'received' END,
-    last_error = coalesce(last_error, 'Timed out delivering to Chatwoot'),
-    updated_at = now()
-WHERE status = 'delivering' AND updated_at < now() - interval '15 minutes'
-RETURNING id;`;
-const CLAIM_SUBMISSION = `
-WITH claimed AS (
-  UPDATE submissions s
-  SET status = 'delivering', attempts = s.attempts + 1, updated_at = now()
-  WHERE s.id = (
-    SELECT c.id FROM submissions c
-    WHERE c.status = 'received'
-      AND NOT EXISTS (
-        SELECT 1 FROM attachments a
-        WHERE a.submission_id = c.id AND a.transcript_status IN ('pending', 'running'))
-    ORDER BY c.created_at LIMIT 1 FOR UPDATE SKIP LOCKED)
-  RETURNING s.id, s.ref, s.source, s.role, s.hub, s.channel, s.agent_name AS "agentName", s.form, s.applicant_name AS "applicantName", s.answers, s.locale, s.cluster, s.page_cluster AS "pageCluster", s.page_path AS "pagePath", s.phone, s.text
-)
-SELECT c.*, coalesce((
-  SELECT jsonb_agg(jsonb_build_object(
-    'id', a.id, 'position', a.position, 'kind', a.kind, 'key', a.r2_key, 'mime', a.mime,
-    'name', a.original_name, 'transcript', a.transcript, 'transcriptStatus', a.transcript_status
-  ) ORDER BY a.position)
-  FROM attachments a WHERE a.submission_id = c.id), '[]'::jsonb) AS attachments
-FROM claimed c;`;
-const RECORD_CONVERSATION = `
-UPDATE submissions
-SET chatwoot_contact_id = $2, chatwoot_conversation_id = $3, updated_at = now()
-WHERE id = $1::uuid
-RETURNING id;`;
-const MARK_DELIVERED = `UPDATE submissions SET status = 'delivered', last_error = NULL, updated_at = now() WHERE id = $1::uuid RETURNING id;`;
 const QUEUE_EXPIRED_AND_RECOVER = `
 WITH recovered AS (
   UPDATE erasure_requests
@@ -332,8 +208,7 @@ WITH claimed AS (
   RETURNING e.id, e.phone, e.reason
 )
 SELECT c.id, c.phone, c.reason,
-  coalesce((SELECT jsonb_agg(a.r2_key) FROM attachments a JOIN submissions s ON s.id = a.submission_id WHERE s.phone = c.phone), '[]'::jsonb) AS files,
-  coalesce((SELECT jsonb_agg(DISTINCT s.chatwoot_contact_id) FROM submissions s WHERE s.phone = c.phone AND s.chatwoot_contact_id IS NOT NULL), '[]'::jsonb) AS contacts
+  coalesce((SELECT jsonb_agg(a.r2_key) FROM attachments a JOIN submissions s ON s.id = a.submission_id WHERE s.phone = c.phone), '[]'::jsonb) AS files
 FROM claimed c;`;
 const DELETE_ROWS = `
 WITH gone AS (
@@ -343,8 +218,8 @@ WITH gone AS (
 )
 UPDATE erasure_requests
 SET status = 'done', processed_at = now(), updated_at = now(),
-    removed_submissions = (SELECT count(*) FROM gone), removed_files = $3::int, removed_contacts = $4::int,
-    removed_crm_files = $5::int, phone = NULL, ref = NULL
+    removed_submissions = (SELECT count(*) FROM gone), removed_files = $3::int,
+    removed_crm_files = $4::int, phone = NULL, ref = NULL
 WHERE id = $1::uuid AND status = 'running'
 RETURNING id, status, removed_submissions;`;
 const schemaStatements = (schema) => schema.replace(/^--.*\n/gm, "");
@@ -422,17 +297,11 @@ SET status = CASE WHEN $3 = 'retry' THEN (CASE WHEN attempts >= max_attempts THE
 WHERE submission_id = $1::uuid AND target = $2 AND status = 'running'
 RETURNING status;`;
 const LEGACY_STATUS = `
-SELECT s.status AS chatwoot, a.status AS sms, a.attempts AS sms_attempts, (c.submission_id IS NOT NULL) AS crm_synced
+SELECT a.status AS sms, a.attempts AS sms_attempts, (c.submission_id IS NOT NULL) AS crm_synced
 FROM submissions s
 LEFT JOIN sms_acknowledgements a ON a.submission_id = s.id
 LEFT JOIN crm_sync c ON c.submission_id = s.id
 WHERE s.id = $1::uuid;`;
-const CLAIM_SUBMISSION_FOR = CLAIM_SUBMISSION.replace("WHERE c.status = 'received'", "WHERE c.status = 'received' AND c.id = $1::uuid");
-const RELEASE_SUBMISSION = `
-UPDATE submissions
-SET status = CASE WHEN attempts >= 3 THEN 'failed' ELSE 'received' END, last_error = $2, updated_at = now()
-WHERE id = $1::uuid AND status = 'delivering'
-RETURNING status;`;
 const SYNC_CANDIDATE_FOR = SYNC_CANDIDATES.replace(/WHERE c\.submission_id IS NULL\n {3}OR c\.ack_status IS DISTINCT FROM nullif\(concat_ws\(':', a\.status, a\.delivery_status, a\.wa_status, a\.wa_delivery\), ''\)\nORDER BY s\.created_at\nLIMIT \$1;/, "WHERE s.id = $1::uuid;");
 if (SYNC_CANDIDATE_FOR === SYNC_CANDIDATES)
     throw new Error("SYNC_CANDIDATE_FOR: the WHERE clause was not replaced");
@@ -453,7 +322,7 @@ SET crm_file_status = $2, twenty_attachment_id = coalesce($3::uuid, twenty_attac
 WHERE id = $1::uuid;`;
 const FILE_ERROR = `UPDATE attachments SET crm_file_error = $2, updated_at = now() WHERE id = $1::uuid;`;
 const CLEAR_FILE_ID = `UPDATE attachments SET twenty_file_id = NULL, updated_at = now() WHERE id = $1::uuid;`;
-  return { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, GET_ACKNOWLEDGEMENT, SKIP_WHATSAPP, CLAIM_WHATSAPP_ACK, SAVE_WHATSAPP_RESULT, RECOVER_WHATSAPP_SEND, SAVE_WHATSAPP_REPORT, SKIP_SMS, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, FILES_SUBMISSION, FILES_FOR, SAVE_FILE_ID, SETTLE_FILE, FILE_ERROR, CLEAR_FILE_ID };
+  return { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, GET_ACKNOWLEDGEMENT, SKIP_WHATSAPP, CLAIM_WHATSAPP_ACK, SAVE_WHATSAPP_RESULT, RECOVER_WHATSAPP_SEND, SAVE_WHATSAPP_REPORT, SKIP_SMS, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, SYNC_CANDIDATE_FOR, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, FILES_SUBMISSION, FILES_FOR, SAVE_FILE_ID, SETTLE_FILE, FILE_ERROR, CLEAR_FILE_ID };
 })();
 
 // integrations/windmill/talent/lib/delivery.ts
@@ -530,7 +399,7 @@ async function runDeliveryCheck(deps, batch = CHECK_BATCH) {
 })();
 
 // integrations/windmill/talent/lib/r2.ts
-const { downloadObject, downloadIfExists, deleteObject } = (() => {
+const { downloadIfExists, deleteObject } = (() => {
 async function client(access) {
     const [accessKeyId, secretAccessKey, endpoint, bucket] = await Promise.all([
         config(access === "read" ? "r2_read_key_id" : "r2_erase_key_id"),
@@ -541,13 +410,6 @@ async function client(access) {
     const aws = new AwsClient({ accessKeyId, secretAccessKey, service: "s3", region: "auto" });
     const url = (key) => `${endpoint.replace(/\/$/, "")}/${bucket}/${key.split("/").map(encodeURIComponent).join("/")}`;
     return { aws, url };
-}
-async function downloadObject(key) {
-    const { aws, url } = await client("read");
-    const res = await aws.fetch(url(key), { method: "GET" });
-    if (!res.ok)
-        throw new Error(`R2 GET ${key}: HTTP ${res.status}`);
-    return { data: await res.blob(), contentType: res.headers.get("content-type") ?? "application/octet-stream" };
 }
 async function downloadIfExists(key) {
     const { aws, url } = await client("read");
@@ -566,7 +428,7 @@ async function deleteObject(key) {
     if (!res.ok && res.status !== 404)
         throw new Error(`R2 DELETE ${key}: HTTP ${res.status}`);
 }
-  return { downloadObject, downloadIfExists, deleteObject };
+  return { downloadIfExists, deleteObject };
 })();
 
 // integrations/windmill/talent/lib/twenty.ts
@@ -1102,6 +964,228 @@ async function erasePerson(crm, phone) {
   return { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, smsWasSent, whatsAppWasSent, WA_ACK_TEMPLATE, waAckText, whatsAppDeliveryStatus, waAckKey, waAckFields, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, removeAttachments, erasePerson };
 })();
 
+// integrations/windmill/talent/lib/sms.ts
+const { FAST2SMS_URL, FAST2SMS_TIMEOUT_MS, MAX_ATTEMPTS, acknowledgementRequest, classifyAcknowledgement, sendAcknowledgement } = (() => {
+const FAST2SMS_URL = "https://www.fast2sms.com/dev/bulkV2";
+const FAST2SMS_TIMEOUT_MS = 15_000;
+const MAX_ATTEMPTS = 3;
+function acknowledgementRequest(claim) {
+    return {
+        route: "dlt",
+        sender_id: "VAYSPL",
+        message: "227115",
+        variables_values: claim.ref,
+        numbers: claim.phone.slice(-10),
+        sms_details: "1",
+        udf1: claim.ref,
+    };
+}
+function classifyAcknowledgement(claim, response) {
+    const body = response.body;
+    const accepted = response.statusCode === 200 && body?.return === true
+        && typeof body.request_id === "string" && body.request_id.length > 0;
+    const rejected = (response.statusCode === 400 || response.statusCode === 401) && body?.return === false;
+    const limited = response.statusCode === 429;
+    const status = accepted ? "accepted"
+        : limited && claim.attempts < MAX_ATTEMPTS ? "pending"
+            : rejected || limited ? "failed" : "unknown";
+    return {
+        submissionId: claim.submission_id,
+        status,
+        requestId: accepted ? body.request_id : null,
+        error: accepted ? null
+            : rejected ? `Fast2SMS rejected request (HTTP ${response.statusCode}, code ${body?.status_code ?? "unspecified"})`
+                : limited ? "Fast2SMS rate limit"
+                    : "Send outcome uncertain; check Fast2SMS delivery history before retrying",
+    };
+}
+async function sendAcknowledgement(claim, apiKey, fetchImpl = fetch) {
+    try {
+        const res = await fetchImpl(FAST2SMS_URL, {
+            method: "POST",
+            headers: { "content-type": "application/json", authorization: apiKey },
+            body: JSON.stringify(acknowledgementRequest(claim)),
+            signal: AbortSignal.timeout(FAST2SMS_TIMEOUT_MS),
+        });
+        let body;
+        try {
+            body = (await res.json());
+        }
+        catch {
+            body = undefined;
+        }
+        return { statusCode: res.status, body };
+    }
+    catch {
+        return { error: "request failed" };
+    }
+}
+  return { FAST2SMS_URL, FAST2SMS_TIMEOUT_MS, MAX_ATTEMPTS, acknowledgementRequest, classifyAcknowledgement, sendAcknowledgement };
+})();
+
+// integrations/windmill/talent/lib/run-acknowledge.ts
+const { runAcknowledge } = (() => {
+async function runAcknowledge(submissionId, deps) {
+    if (!submissionId)
+        await deps.query(RECOVER_INTERRUPTED_SENDS);
+    const [claim] = submissionId
+        ? await deps.query(CLAIM_ACKNOWLEDGEMENT_FOR, [submissionId])
+        : await deps.query(CLAIM_ACKNOWLEDGEMENT);
+    if (!claim?.submission_id)
+        return null;
+    const result = classifyAcknowledgement(claim, await deps.send(claim));
+    await deps.query(SAVE_ACKNOWLEDGEMENT_RESULT, [result.submissionId, result.status, result.requestId, result.error]);
+    return result;
+}
+  return { runAcknowledge };
+})();
+
+// integrations/windmill/talent/lib/whatsapp-ack.ts
+const { WA_SEND_URL, WA_REPORT_URL, WA_TIMEOUT_MS, WA_PHONE_NUMBER_ID, WA_FALLBACK_MS, WA_CHECK_SECONDS, WA_TEMPLATES, templateFor, whatsAppRequestUrl, classifyWhatsApp, sendWhatsAppAck, parseWhatsAppReport, lookupWhatsAppReport, runWhatsAppAck } = (() => {
+const WA_SEND_URL = "https://www.fast2sms.com/dev/whatsapp";
+const WA_REPORT_URL = "https://www.fast2sms.com/dev/whatsapp/";
+const WA_TIMEOUT_MS = 15_000;
+const WA_PHONE_NUMBER_ID = "1426644927192285";
+const WA_FALLBACK_MS = 10 * 60 * 1000;
+const WA_CHECK_SECONDS = 60;
+const WA_TEMPLATES = {
+    "en-IN": 38422,
+    "hi-IN": 38423,
+    "hi-Latn-IN": 38424,
+    "pa-IN": 38425,
+    "kn-IN": 38426,
+};
+const LOCALE_ALIASES = { en: "en-IN", hi: "hi-IN", hinglish: "hi-Latn-IN" };
+const templateFor = (locale, templates = WA_TEMPLATES) => templates[LOCALE_ALIASES[locale ?? ""] ?? locale ?? "en-IN"] ?? null;
+function whatsAppRequestUrl(claim, messageId) {
+    const params = new URLSearchParams({
+        message_id: String(messageId),
+        phone_number_id: WA_PHONE_NUMBER_ID,
+        numbers: claim.phone.slice(-10),
+        variables_values: claim.ref,
+        udf1: claim.ref,
+    });
+    return `${WA_SEND_URL}?${params}`;
+}
+function classifyWhatsApp(response) {
+    const body = response.body;
+    const ok = body?.status === true || body?.return === true;
+    const requestId = typeof body?.request_id === "string" && body.request_id ? body.request_id : null;
+    if (response.statusCode === 200 && ok && requestId)
+        return { status: "accepted", requestId, error: null };
+    const refused = body?.status === false || body?.return === false;
+    if (response.statusCode && response.statusCode >= 400 && response.statusCode < 500 && refused) {
+        const why = typeof body?.message === "string" ? `: ${body.message.slice(0, 200)}` : "";
+        return { status: "failed", requestId: null, error: `Fast2SMS refused the WhatsApp message (HTTP ${response.statusCode})${why}` };
+    }
+    return { status: "unknown", requestId: null, error: "WhatsApp send outcome uncertain; the SMS goes instead" };
+}
+async function sendWhatsAppAck(claim, messageId, apiKey, fetchImpl = fetch) {
+    try {
+        const res = await fetchImpl(whatsAppRequestUrl(claim, messageId), {
+            headers: { authorization: apiKey },
+            signal: AbortSignal.timeout(WA_TIMEOUT_MS),
+        });
+        let body;
+        try {
+            body = (await res.json());
+        }
+        catch {
+            body = undefined;
+        }
+        return { statusCode: res.status, body };
+    }
+    catch {
+        return { error: "request failed" };
+    }
+}
+const RANK = { pending: 0, delivered: 1, read: 2, failed: 3 };
+const text = (v) => (typeof v === "string" ? v.trim() : typeof v === "number" ? String(v) : "");
+function parseWhatsAppReport(raw) {
+    const entries = raw?.data;
+    if (!Array.isArray(entries) || entries.length === 0)
+        return null;
+    let best = null;
+    for (const e of entries) {
+        const status = text(e?.status).toLowerCase();
+        if (!status)
+            continue;
+        const outcome = status === "read" ? "read" : status === "delivered" ? "delivered"
+            : /fail|undeliv|reject|error/.test(status) ? "failed" : "pending";
+        const errors = text(e.errors);
+        const ts = /^\d+$/.test(text(e.timestamp)) ? new Date(Number(text(e.timestamp)) * 1000).toISOString() : null;
+        const report = { outcome, detail: (errors && errors !== "null" && errors !== "[]" ? `${status}: ${errors}` : status).slice(0, 300), at: ts };
+        if (!best || RANK[outcome] > RANK[best.outcome])
+            best = report;
+    }
+    return best;
+}
+async function lookupWhatsAppReport(requestId, apiKey, fetchImpl = fetch) {
+    try {
+        const res = await fetchImpl(WA_REPORT_URL + encodeURIComponent(requestId), {
+            headers: { authorization: apiKey },
+            signal: AbortSignal.timeout(WA_TIMEOUT_MS),
+        });
+        if (!res.ok)
+            return null;
+        return parseWhatsAppReport(await res.json());
+    }
+    catch {
+        return null;
+    }
+}
+const wait = { kind: "wait", seconds: WA_CHECK_SECONDS };
+const ms = (v) => (v ? new Date(v).getTime() : 0);
+async function runWhatsAppAck(submissionId, deps) {
+    const now = (deps.now ?? (() => new Date()))().getTime();
+    const [row] = await deps.query(GET_ACKNOWLEDGEMENT, [submissionId]);
+    if (!row || row.status !== "pending")
+        return row?.status === "skipped" ? { kind: "done" } : { kind: "sms" };
+    if (row.wa_status === null) {
+        const template = templateFor(row.locale, deps.templates);
+        if (!template || !deps.sendWhatsApp) {
+            await deps.query(SKIP_WHATSAPP, [submissionId, template ? "WhatsApp is not set up" : `No approved WhatsApp template for ${row.locale ?? "this language"}`]);
+            return { kind: "sms" };
+        }
+        const [claimed] = await deps.query(CLAIM_WHATSAPP_ACK, [submissionId]);
+        if (!claimed)
+            return wait;
+        const result = classifyWhatsApp(await deps.sendWhatsApp(row, template));
+        await deps.query(SAVE_WHATSAPP_RESULT, [submissionId, result.status, result.requestId, result.error]);
+        return result.status === "accepted" ? wait : { kind: "sms" };
+    }
+    if (row.wa_status === "sending") {
+        if (now - ms(row.wa_updated_at) < 5 * 60 * 1000)
+            return wait;
+        await deps.query(RECOVER_WHATSAPP_SEND, [submissionId]);
+        return { kind: "sms" };
+    }
+    if (row.wa_status !== "accepted")
+        return { kind: "sms" };
+    if (row.wa_delivery === "delivered" || row.wa_delivery === "read") {
+        await deps.query(SKIP_SMS, [submissionId]);
+        return { kind: "done" };
+    }
+    if (row.wa_delivery === "failed")
+        return { kind: "sms" };
+    const report = row.wa_request_id ? await deps.lookupWhatsApp(row.wa_request_id) : null;
+    if (report)
+        await deps.query(SAVE_WHATSAPP_REPORT, [submissionId, report.outcome, report.detail, report.at]);
+    if (report?.outcome === "delivered" || report?.outcome === "read") {
+        await deps.query(SKIP_SMS, [submissionId]);
+        return { kind: "done" };
+    }
+    if (report?.outcome === "failed")
+        return { kind: "sms" };
+    if (now - ms(row.wa_sent_at) >= WA_FALLBACK_MS) {
+        await deps.query(SAVE_WHATSAPP_REPORT, [submissionId, "pending", report?.detail ?? "No delivery report in 10 minutes: SMS sent", null]);
+        return { kind: "sms" };
+    }
+    return wait;
+}
+  return { WA_SEND_URL, WA_REPORT_URL, WA_TIMEOUT_MS, WA_PHONE_NUMBER_ID, WA_FALLBACK_MS, WA_CHECK_SECONDS, WA_TEMPLATES, templateFor, whatsAppRequestUrl, classifyWhatsApp, sendWhatsAppAck, parseWhatsAppReport, lookupWhatsAppReport, runWhatsAppAck };
+})();
+
 // packages/contracts/src/rules.ts
 const { REF_PATTERN, INTAKE_SOURCES, WEB_SOURCE, WHATSAPP_SOURCE, isSubmissionSource, INTAKE_LOCALES, isIntakeLocale, LEGACY_SOURCE_LOCALES, INTAKE_CLUSTERS, isIntakeCluster, PAGE_PATH_PATTERN, MAX_PAGE_PATH_LENGTH, isPagePath, INTAKE_CHANNELS, AGENT_LANGUAGE_SOURCES, MAX_AGENT_NAME_LENGTH, JOB_ROLES, JOB_ROLE_SLUGS, isJobRole, JOB_HUBS, JOB_HUB_SLUGS, isJobHub, INTAKE_FORMS, INTAKE_FORM_KEYS, MAX_APPLICANT_NAME_LENGTH, QUICK_ANSWERS, AREA_CLUSTERS, FORMLESS_AREAS, submissionCluster, QUICK_QUESTIONS, cleanQuickAnswers, ATTACHMENT_KINDS, ATTACHMENT_MIME, INTAKE_LIMITS, attachmentKeyPrefix, isAttachmentKeyFor, normaliseIndianMobile } = (() => {
 const REF_PATTERN = /^VS-J-[A-Z0-9]{6}$/;
@@ -1334,341 +1418,6 @@ function normaliseIndianMobile(input) {
     return null;
 }
   return { REF_PATTERN, INTAKE_SOURCES, WEB_SOURCE, WHATSAPP_SOURCE, isSubmissionSource, INTAKE_LOCALES, isIntakeLocale, LEGACY_SOURCE_LOCALES, INTAKE_CLUSTERS, isIntakeCluster, PAGE_PATH_PATTERN, MAX_PAGE_PATH_LENGTH, isPagePath, INTAKE_CHANNELS, AGENT_LANGUAGE_SOURCES, MAX_AGENT_NAME_LENGTH, JOB_ROLES, JOB_ROLE_SLUGS, isJobRole, JOB_HUBS, JOB_HUB_SLUGS, isJobHub, INTAKE_FORMS, INTAKE_FORM_KEYS, MAX_APPLICANT_NAME_LENGTH, QUICK_ANSWERS, AREA_CLUSTERS, FORMLESS_AREAS, submissionCluster, QUICK_QUESTIONS, cleanQuickAnswers, ATTACHMENT_KINDS, ATTACHMENT_MIME, INTAKE_LIMITS, attachmentKeyPrefix, isAttachmentKeyFor, normaliseIndianMobile };
-})();
-
-// integrations/windmill/talent/lib/note.ts
-const { composeNote, filesToAttach, conversationAttributes } = (() => {
-const PAGES = {
-    "en-IN": "English jobs page (en-IN)",
-    "hi-IN": "हिंदी jobs page (hi-IN)",
-    "hi-Latn-IN": "Hindi jobs page, Latin script (hi-Latn-IN)",
-    "pa-IN": "ਪੰਜਾਬੀ jobs page (pa-IN)",
-    "kn-IN": "ಕನ್ನಡ jobs page (kn-IN)",
-    en: "English jobs page (en-IN)",
-    hi: "हिंदी jobs page (hi-IN)",
-    hinglish: "Hindi jobs page, Latin script (hi-Latn-IN)",
-};
-const AGENT_LANGUAGES = {
-    "en-IN": "English",
-    "hi-IN": "Hindi",
-    "hi-Latn-IN": "Hindi, Latin script",
-    "pa-IN": "Punjabi",
-    "kn-IN": "Kannada",
-    en: "English",
-    hi: "Hindi",
-    hinglish: "Hindi, Latin script",
-};
-const KIND = { audio: "voice note", image: "photo", document: "document" };
-function composeNote(s) {
-    const page = s.channel === "agent" ? `AI agent (${AGENT_LANGUAGES[s.locale] ?? s.locale})`
-        : s.channel === "whatsapp" ? `WhatsApp apply chat (${AGENT_LANGUAGES[s.locale] ?? s.locale})`
-            : (PAGES[s.locale] ?? s.locale);
-    const lines = [`**${s.applicantName ? `${s.applicantName} · ` : ""}Job seeker ${s.ref}** · ${page} · ${s.phone}`];
-    if (s.form)
-        lines.push(`**Form:** ${INTAKE_FORMS[s.form] ?? s.form}${s.pagePath ? ` on ${s.pagePath}` : ""}`);
-    if (s.cluster) {
-        const pageNote = s.pageCluster && s.pageCluster !== s.cluster ? ` (page: ${s.pageCluster})` : "";
-        lines.push(`**Cluster:** ${s.cluster}${pageNote}`);
-    }
-    if (s.channel === "agent") {
-        lines.push(`**Sent by an AI agent${s.agentName ? ` (${s.agentName})` : ""}** on the person's behalf, not through the form. Confirm the details and their consent when you call.`);
-    }
-    if (s.channel === "whatsapp") {
-        lines.push("**Applied in the WhatsApp chat** on the apply number. Any voice notes or photos are in that chat in the WhatsApp Business app.");
-    }
-    if (s.role)
-        lines.push(`**Asked about:** ${JOB_ROLES[s.role] ?? s.role}`);
-    if (s.hub)
-        lines.push(`**Came from:** ${JOB_HUBS[s.hub] ?? s.hub}`);
-    if (s.answers) {
-        lines.push("", "**Their answers:**");
-        for (const [question, ids] of Object.entries(s.answers)) {
-            const labels = QUICK_ANSWERS[question];
-            lines.push(`- ${QUICK_QUESTIONS[question] ?? question}: ${ids.map((id) => labels?.[id] ?? id).join(", ")}`);
-        }
-    }
-    if (s.text)
-        lines.push("", "**Their message:**", s.text);
-    for (const [n, a] of s.attachments.entries()) {
-        if (a.kind !== "audio")
-            continue;
-        const transcript = a.transcriptStatus === "done" && a.transcript
-            ? a.transcript
-            : "_Could not be transcribed. Listen to the attachment._";
-        lines.push("", `**Voice note (file ${n + 1}), automatic transcript:**`, transcript);
-    }
-    if (s.attachments.length) {
-        lines.push("", `**Files (${s.attachments.length}):** ${s.attachments
-            .map((a, n) => `${n + 1}. ${KIND[a.kind] ?? "file"}${a.name ? ` (${a.name})` : ""}`)
-            .join(" · ")}`);
-    }
-    return { contactName: s.applicantName ?? `Job seeker ${s.ref}`, note: lines.join("\n") };
-}
-function filesToAttach(s) {
-    return s.attachments.map((a, n) => ({
-        key: a.key,
-        label: `File ${n + 1}: ${KIND[a.kind] ?? "file"}${a.name ? ` (${a.name})` : ""}`,
-    }));
-}
-function conversationAttributes(s) {
-    return {
-        ...(s.cluster ? { job_cluster: s.cluster } : {}),
-        ...(s.role ? { job_role: s.role } : {}),
-        ...(s.hub ? { job_hub: s.hub } : {}),
-        ...(s.channel === "agent" || s.channel === "whatsapp" ? { submitted_via: s.channel } : {}),
-        ...(s.form ? { job_form: s.form } : {}),
-    };
-}
-  return { composeNote, filesToAttach, conversationAttributes };
-})();
-
-// integrations/windmill/talent/lib/run-deliver.ts
-const { runDeliver } = (() => {
-async function runDeliver(deps, submissionId = null) {
-    await deps.query(RECOVER_STUCK_DELIVERIES);
-    const [s] = submissionId
-        ? await deps.query(CLAIM_SUBMISSION_FOR, [submissionId])
-        : await deps.query(CLAIM_SUBMISSION);
-    if (!s?.id)
-        return null;
-    const { contactName, note } = composeNote(s);
-    const contact = await deps.createContact(s.phone, contactName);
-    const conversation = await deps.createConversation(contact.source_id, conversationAttributes(s));
-    await deps.query(RECORD_CONVERSATION, [s.id, contact.id ?? null, conversation.id]);
-    await deps.postMessage(contact.source_id, conversation.id, note);
-    await deps.query(MARK_DELIVERED, [s.id]);
-    let filesAttached = 0;
-    const files = filesToAttach(s);
-    for (const file of files) {
-        const { data } = await deps.download(file.key);
-        if (await deps.attachFile(contact.source_id, conversation.id, file.label, data, file.key.split("/").pop() || "file"))
-            filesAttached++;
-    }
-    return { ref: s.ref, conversationId: conversation.id, files: files.length, filesAttached };
-}
-  return { runDeliver };
-})();
-
-// integrations/windmill/talent/lib/sms.ts
-const { FAST2SMS_URL, FAST2SMS_TIMEOUT_MS, MAX_ATTEMPTS, acknowledgementRequest, classifyAcknowledgement, sendAcknowledgement } = (() => {
-const FAST2SMS_URL = "https://www.fast2sms.com/dev/bulkV2";
-const FAST2SMS_TIMEOUT_MS = 15_000;
-const MAX_ATTEMPTS = 3;
-function acknowledgementRequest(claim) {
-    return {
-        route: "dlt",
-        sender_id: "VAYSPL",
-        message: "227115",
-        variables_values: claim.ref,
-        numbers: claim.phone.slice(-10),
-        sms_details: "1",
-        udf1: claim.ref,
-    };
-}
-function classifyAcknowledgement(claim, response) {
-    const body = response.body;
-    const accepted = response.statusCode === 200 && body?.return === true
-        && typeof body.request_id === "string" && body.request_id.length > 0;
-    const rejected = (response.statusCode === 400 || response.statusCode === 401) && body?.return === false;
-    const limited = response.statusCode === 429;
-    const status = accepted ? "accepted"
-        : limited && claim.attempts < MAX_ATTEMPTS ? "pending"
-            : rejected || limited ? "failed" : "unknown";
-    return {
-        submissionId: claim.submission_id,
-        status,
-        requestId: accepted ? body.request_id : null,
-        error: accepted ? null
-            : rejected ? `Fast2SMS rejected request (HTTP ${response.statusCode}, code ${body?.status_code ?? "unspecified"})`
-                : limited ? "Fast2SMS rate limit"
-                    : "Send outcome uncertain; check Fast2SMS delivery history before retrying",
-    };
-}
-async function sendAcknowledgement(claim, apiKey, fetchImpl = fetch) {
-    try {
-        const res = await fetchImpl(FAST2SMS_URL, {
-            method: "POST",
-            headers: { "content-type": "application/json", authorization: apiKey },
-            body: JSON.stringify(acknowledgementRequest(claim)),
-            signal: AbortSignal.timeout(FAST2SMS_TIMEOUT_MS),
-        });
-        let body;
-        try {
-            body = (await res.json());
-        }
-        catch {
-            body = undefined;
-        }
-        return { statusCode: res.status, body };
-    }
-    catch {
-        return { error: "request failed" };
-    }
-}
-  return { FAST2SMS_URL, FAST2SMS_TIMEOUT_MS, MAX_ATTEMPTS, acknowledgementRequest, classifyAcknowledgement, sendAcknowledgement };
-})();
-
-// integrations/windmill/talent/lib/run-acknowledge.ts
-const { runAcknowledge } = (() => {
-async function runAcknowledge(submissionId, deps) {
-    if (!submissionId)
-        await deps.query(RECOVER_INTERRUPTED_SENDS);
-    const [claim] = submissionId
-        ? await deps.query(CLAIM_ACKNOWLEDGEMENT_FOR, [submissionId])
-        : await deps.query(CLAIM_ACKNOWLEDGEMENT);
-    if (!claim?.submission_id)
-        return null;
-    const result = classifyAcknowledgement(claim, await deps.send(claim));
-    await deps.query(SAVE_ACKNOWLEDGEMENT_RESULT, [result.submissionId, result.status, result.requestId, result.error]);
-    return result;
-}
-  return { runAcknowledge };
-})();
-
-// integrations/windmill/talent/lib/whatsapp-ack.ts
-const { WA_SEND_URL, WA_REPORT_URL, WA_TIMEOUT_MS, WA_PHONE_NUMBER_ID, WA_FALLBACK_MS, WA_CHECK_SECONDS, WA_TEMPLATES, templateFor, whatsAppRequestUrl, classifyWhatsApp, sendWhatsAppAck, parseWhatsAppReport, lookupWhatsAppReport, runWhatsAppAck } = (() => {
-const WA_SEND_URL = "https://www.fast2sms.com/dev/whatsapp";
-const WA_REPORT_URL = "https://www.fast2sms.com/dev/whatsapp/";
-const WA_TIMEOUT_MS = 15_000;
-const WA_PHONE_NUMBER_ID = "1426644927192285";
-const WA_FALLBACK_MS = 10 * 60 * 1000;
-const WA_CHECK_SECONDS = 60;
-const WA_TEMPLATES = {
-    "en-IN": 38422,
-    "hi-IN": 38423,
-    "hi-Latn-IN": 38424,
-    "pa-IN": 38425,
-    "kn-IN": 38426,
-};
-const LOCALE_ALIASES = { en: "en-IN", hi: "hi-IN", hinglish: "hi-Latn-IN" };
-const templateFor = (locale, templates = WA_TEMPLATES) => templates[LOCALE_ALIASES[locale ?? ""] ?? locale ?? "en-IN"] ?? null;
-function whatsAppRequestUrl(claim, messageId) {
-    const params = new URLSearchParams({
-        message_id: String(messageId),
-        phone_number_id: WA_PHONE_NUMBER_ID,
-        numbers: claim.phone.slice(-10),
-        variables_values: claim.ref,
-        udf1: claim.ref,
-    });
-    return `${WA_SEND_URL}?${params}`;
-}
-function classifyWhatsApp(response) {
-    const body = response.body;
-    const ok = body?.status === true || body?.return === true;
-    const requestId = typeof body?.request_id === "string" && body.request_id ? body.request_id : null;
-    if (response.statusCode === 200 && ok && requestId)
-        return { status: "accepted", requestId, error: null };
-    const refused = body?.status === false || body?.return === false;
-    if (response.statusCode && response.statusCode >= 400 && response.statusCode < 500 && refused) {
-        const why = typeof body?.message === "string" ? `: ${body.message.slice(0, 200)}` : "";
-        return { status: "failed", requestId: null, error: `Fast2SMS refused the WhatsApp message (HTTP ${response.statusCode})${why}` };
-    }
-    return { status: "unknown", requestId: null, error: "WhatsApp send outcome uncertain; the SMS goes instead" };
-}
-async function sendWhatsAppAck(claim, messageId, apiKey, fetchImpl = fetch) {
-    try {
-        const res = await fetchImpl(whatsAppRequestUrl(claim, messageId), {
-            headers: { authorization: apiKey },
-            signal: AbortSignal.timeout(WA_TIMEOUT_MS),
-        });
-        let body;
-        try {
-            body = (await res.json());
-        }
-        catch {
-            body = undefined;
-        }
-        return { statusCode: res.status, body };
-    }
-    catch {
-        return { error: "request failed" };
-    }
-}
-const RANK = { pending: 0, delivered: 1, read: 2, failed: 3 };
-const text = (v) => (typeof v === "string" ? v.trim() : typeof v === "number" ? String(v) : "");
-function parseWhatsAppReport(raw) {
-    const entries = raw?.data;
-    if (!Array.isArray(entries) || entries.length === 0)
-        return null;
-    let best = null;
-    for (const e of entries) {
-        const status = text(e?.status).toLowerCase();
-        if (!status)
-            continue;
-        const outcome = status === "read" ? "read" : status === "delivered" ? "delivered"
-            : /fail|undeliv|reject|error/.test(status) ? "failed" : "pending";
-        const errors = text(e.errors);
-        const ts = /^\d+$/.test(text(e.timestamp)) ? new Date(Number(text(e.timestamp)) * 1000).toISOString() : null;
-        const report = { outcome, detail: (errors && errors !== "null" && errors !== "[]" ? `${status}: ${errors}` : status).slice(0, 300), at: ts };
-        if (!best || RANK[outcome] > RANK[best.outcome])
-            best = report;
-    }
-    return best;
-}
-async function lookupWhatsAppReport(requestId, apiKey, fetchImpl = fetch) {
-    try {
-        const res = await fetchImpl(WA_REPORT_URL + encodeURIComponent(requestId), {
-            headers: { authorization: apiKey },
-            signal: AbortSignal.timeout(WA_TIMEOUT_MS),
-        });
-        if (!res.ok)
-            return null;
-        return parseWhatsAppReport(await res.json());
-    }
-    catch {
-        return null;
-    }
-}
-const wait = { kind: "wait", seconds: WA_CHECK_SECONDS };
-const ms = (v) => (v ? new Date(v).getTime() : 0);
-async function runWhatsAppAck(submissionId, deps) {
-    const now = (deps.now ?? (() => new Date()))().getTime();
-    const [row] = await deps.query(GET_ACKNOWLEDGEMENT, [submissionId]);
-    if (!row || row.status !== "pending")
-        return row?.status === "skipped" ? { kind: "done" } : { kind: "sms" };
-    if (row.wa_status === null) {
-        const template = templateFor(row.locale, deps.templates);
-        if (!template || !deps.sendWhatsApp) {
-            await deps.query(SKIP_WHATSAPP, [submissionId, template ? "WhatsApp is not set up" : `No approved WhatsApp template for ${row.locale ?? "this language"}`]);
-            return { kind: "sms" };
-        }
-        const [claimed] = await deps.query(CLAIM_WHATSAPP_ACK, [submissionId]);
-        if (!claimed)
-            return wait;
-        const result = classifyWhatsApp(await deps.sendWhatsApp(row, template));
-        await deps.query(SAVE_WHATSAPP_RESULT, [submissionId, result.status, result.requestId, result.error]);
-        return result.status === "accepted" ? wait : { kind: "sms" };
-    }
-    if (row.wa_status === "sending") {
-        if (now - ms(row.wa_updated_at) < 5 * 60 * 1000)
-            return wait;
-        await deps.query(RECOVER_WHATSAPP_SEND, [submissionId]);
-        return { kind: "sms" };
-    }
-    if (row.wa_status !== "accepted")
-        return { kind: "sms" };
-    if (row.wa_delivery === "delivered" || row.wa_delivery === "read") {
-        await deps.query(SKIP_SMS, [submissionId]);
-        return { kind: "done" };
-    }
-    if (row.wa_delivery === "failed")
-        return { kind: "sms" };
-    const report = row.wa_request_id ? await deps.lookupWhatsApp(row.wa_request_id) : null;
-    if (report)
-        await deps.query(SAVE_WHATSAPP_REPORT, [submissionId, report.outcome, report.detail, report.at]);
-    if (report?.outcome === "delivered" || report?.outcome === "read") {
-        await deps.query(SKIP_SMS, [submissionId]);
-        return { kind: "done" };
-    }
-    if (report?.outcome === "failed")
-        return { kind: "sms" };
-    if (now - ms(row.wa_sent_at) >= WA_FALLBACK_MS) {
-        await deps.query(SAVE_WHATSAPP_REPORT, [submissionId, "pending", report?.detail ?? "No delivery report in 10 minutes: SMS sent", null]);
-        return { kind: "sms" };
-    }
-    return wait;
-}
-  return { WA_SEND_URL, WA_REPORT_URL, WA_TIMEOUT_MS, WA_PHONE_NUMBER_ID, WA_FALLBACK_MS, WA_CHECK_SECONDS, WA_TEMPLATES, templateFor, whatsAppRequestUrl, classifyWhatsApp, sendWhatsAppAck, parseWhatsAppReport, lookupWhatsAppReport, runWhatsAppAck };
 })();
 
 // integrations/windmill/talent/lib/notify-application.ts
@@ -1904,8 +1653,8 @@ async function runFiles(deps, submissionId) {
 
 // integrations/windmill/talent/lib/run-dispatch.ts
 const { BUDGET, TARGETS, backoffSeconds, runDispatch } = (() => {
-const BUDGET = { sms: 5, crm: 10, files: 1, chatwoot: 1 };
-const TARGETS = ["sms", "crm", "files", "chatwoot"];
+const BUDGET = { sms: 5, crm: 10, files: 1 };
+const TARGETS = ["sms", "crm", "files"];
 const TWENTY_TARGETS = ["crm", "files"];
 const backoffSeconds = (attempts) => Math.min(60 * 2 ** Math.max(0, attempts - 1), 3600);
 const message = (err) => (err instanceof Error ? err.message : "unknown error").slice(0, 500);
@@ -1938,26 +1687,6 @@ async function sms(deps, submissionId) {
     if (now?.sms === "pending" && (now.sms_attempts ?? 0) >= 3)
         return { kind: "dead", error: "Three attempts" };
     return { kind: "retry", error: now ? `Acknowledgement is ${now.sms}` : "No acknowledgement row" };
-}
-async function chatwoot(deps, submissionId) {
-    try {
-        const result = await runDeliver({ query: deps.query, ...deps.chatwoot }, submissionId);
-        if (result)
-            return { kind: "done" };
-    }
-    catch (err) {
-        const now = await legacy(deps.query, submissionId);
-        if (now?.chatwoot === "delivered")
-            return { kind: "done", error: message(err) };
-        const [released] = await deps.query(RELEASE_SUBMISSION, [submissionId, message(err)]);
-        return released?.status === "failed" ? { kind: "dead", error: message(err) } : { kind: "retry", error: message(err) };
-    }
-    const now = await legacy(deps.query, submissionId);
-    if (now?.chatwoot === "delivered")
-        return { kind: "done" };
-    if (now?.chatwoot === "failed")
-        return { kind: "dead", error: "Failed three times" };
-    return { kind: "retry", error: now ? `Submission is ${now.chatwoot}` : "No submission" };
 }
 class RateLimited extends Error {
 }
@@ -1992,10 +1721,10 @@ async function files(deps, submissionId) {
         return { kind: "retry", error: message(err) };
     }
 }
-const STEPS = { sms, crm, files, chatwoot };
+const STEPS = { sms, crm, files };
 async function runDispatch(deps, options = {}) {
     const log = deps.log ?? ((m) => console.error(m));
-    const zero = () => ({ sms: 0, crm: 0, files: 0, chatwoot: 0 });
+    const zero = () => ({ sms: 0, crm: 0, files: 0 });
     const result = { recovered: 0, done: zero(), retried: zero(), failed: zero() };
     const [lock] = await deps.query(DISPATCH_LOCK);
     if (!lock?.locked)
@@ -2474,7 +2203,6 @@ export async function main(submission_id) {
             sendWhatsApp: (claim, messageId) => sendWhatsAppAck(claim, messageId, apiKey),
             lookupWhatsApp: (id) => lookupWhatsAppReport(id, apiKey),
         },
-        chatwoot: { createContact, createConversation, postMessage, download: downloadObject, attachFile },
         crm,
         files: twentyFiles ? { twenty: twentyFiles, download: downloadIfExists } : null,
         lookupReport: (id) => lookupReport(id, apiKey),

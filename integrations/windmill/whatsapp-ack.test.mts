@@ -134,7 +134,6 @@ function fixture(query: Query, send: WhatsAppResponse = { statusCode: 200, body:
         templates: { "en-IN": 11, "hi-IN": 12 },
         now: () => new Date(clock),
       },
-      chatwoot: { createContact: async () => ({ id: 1, source_id: "s" }), createConversation: async () => ({ id: 1 }), postMessage: async () => {}, download: async () => ({ data: new Blob(["x"]) }), attachFile: async () => true },
       crm: null,
       lookupReport: async () => null,
       log: () => {},

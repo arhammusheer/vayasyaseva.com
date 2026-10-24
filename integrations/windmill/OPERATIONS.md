@@ -5,13 +5,15 @@ The SQL and rules for running `f/talent/*` (see README.md for the layout and dep
 ## Deliveries: stuck, dead and unknown work
 
 Since roadmap 1F every application has a row in `deliveries` per
-target (`sms`, `chatwoot`, `crm`, and since 18 Oct 2026 `files`), and one worker, `f/talent/dispatch`,
-runs them every minute on one connection. A failed attempt waits 1, 2, 4…
-minutes (at most an hour); at its cap (SMS 3, Chatwoot 3, CRM 8, files 8) the row is
+target (`sms`, `crm`, and since 18 Oct 2026 `files`), and one worker, `f/talent/dispatch`,
+runs them every minute on one connection, in the order sms, crm, files. A failed attempt waits 1, 2, 4…
+minutes (at most an hour); at its cap (SMS 3, CRM 8, files 8) the row is
 `dead`. An SMS whose send was ambiguous or interrupted is `unknown` and is
-never sent again automatically. The older columns (`submissions.status`,
-`sms_acknowledgements.status`, `crm_sync`) are still written by each step;
-the view `delivery_status` shows the old statuses from the deliveries.
+never sent again automatically. The older columns (`sms_acknowledgements.status`,
+`crm_sync`) are still written by each step;
+the view `delivery_status` shows the old statuses from the deliveries. The
+`chatwoot` target went with Chatwoot (24 Oct 2026), and with it the
+`submissions` columns `status`, `attempts`, `last_error` and the Chatwoot ids.
 `f/platform/health` counts what needs a person and, every 15 minutes, tells the notification hub when a count starts or stops (one push, then a daily reminder while it lasts).
 
 ```sql
@@ -21,17 +23,12 @@ SELECT ref, target, status, attempts, last_error, reason FROM deliveries_attenti
 -- One application, every target, in the old words
 SELECT * FROM delivery_status WHERE ref = 'VS-J-XXXXXX';
 
--- Retry a dead Chatwoot delivery (after fixing the cause)
-UPDATE submissions SET status = 'received', attempts = 0, last_error = NULL WHERE ref = 'VS-J-XXXXXX';
-UPDATE deliveries SET status = 'pending', attempts = 0, next_attempt_at = now(), last_error = NULL, updated_at = now()
-WHERE target = 'chatwoot' AND submission_id = (SELECT id FROM submissions WHERE ref = 'VS-J-XXXXXX');
-
 -- Settle a row by hand (done elsewhere, or not to be retried): it leaves the health counts
 UPDATE deliveries SET status = 'done', last_error = 'Settled by hand: <why>', done_at = now(), updated_at = now()
 WHERE target = 'sms' AND submission_id = (SELECT id FROM submissions WHERE ref = 'VS-J-XXXXXX');
 ```
 
-Run history and errors are in Windmill (Runs, filter by `f/talent/dispatch`). Chatwoot can save a message and still answer 500, so a delivery that got as far as "delivered" is never posted again.
+Run history and errors are in Windmill (Runs, filter by `f/talent/dispatch`).
 
 The lead inbox (the `leads` database) has the same shape: `leads` and
 `deliveries` (target `crm`, eight attempts), worked by `f/leads/sync_crm`.
@@ -85,7 +82,7 @@ Every newly saved application, including quick/long forms and agent submissions,
 queues one row in `sms_acknowledgements` in the same database statement as the
 application. After answering HTTP 202, intake starts `f/talent/dispatch` for that
 application's SMS; the every-minute dispatcher picks up pending rows if that
-run does not get to it. Chatwoot delivery does not wait for SMS. Setup does not queue historical applications.
+run does not get to it. Setup does not queue historical applications.
 
 The account's existing approved DLT sender **VAYSPL** and Fast2SMS message ID
 **227115** are used with the reference as the only variable:
@@ -151,10 +148,10 @@ WHERE phone = '+91XXXXXXXXXX';
 `f/talent/retention` runs hourly. Each run:
 
 1. queues everyone whose last contact (`last_contact_at` or `last_confirmed_at`) is more than 12 months old, plus older submissions with no `people` row, as `erasure_requests` with reason `retention`;
-2. takes one queued request and deletes, in this order: the person's R2 files, their Chatwoot contacts (which deletes their conversations), their applicant records in Twenty (each application's attachments, trashed ones too, before the application, since deleting an application only unlinks them; the person's own attachments with the person), then their submissions (attachments and SMS rows go with them) and their `people` row. The Twenty step and the row delete hold the dispatcher's lock, so the dispatcher skips those runs;
+2. takes one queued request and deletes, in this order: the person's R2 files, their applicant records in Twenty (each application's attachments, trashed ones too, before the application, since deleting an application only unlinks them; the person's own attachments with the person), then their submissions (attachments and SMS rows go with them) and their `people` row. The Twenty step and the row delete hold the dispatcher's lock, so the dispatcher skips those runs;
 3. marks the request `done`, keeping only the counts: the phone and reference are cleared.
 
-An R2 or Chatwoot failure stops the run before any row is deleted; the request goes back to `pending` after an hour and fails after three attempts. One request per run keeps each run short; raise the schedule if the queue grows.
+An R2 or Twenty failure stops the run before any row is deleted; the request goes back to `pending` after an hour and fails after three attempts. One request per run keeps each run short; raise the schedule if the queue grows.
 
 **A person's own request** (privacy notice §10: an email with their mobile number and reference). Check the reference matches the number, then queue it:
 
@@ -166,13 +163,13 @@ LIMIT 1
 ON CONFLICT (phone) WHERE status IN ('pending', 'running') DO NOTHING;
 
 -- Progress
-SELECT reason, status, attempts, last_error, removed_submissions, removed_files, removed_contacts, removed_crm_files, requested_at, processed_at
+SELECT reason, status, attempts, last_error, removed_submissions, removed_files, removed_crm_files, requested_at, processed_at
 FROM erasure_requests ORDER BY requested_at DESC LIMIT 20;
 ```
 
-Reply to the person once the request shows `done`.
+`removed_contacts` (Chatwoot contacts) is no longer written; it keeps the counts from before 24 Oct 2026. Reply to the person once the request shows `done`.
 
-**Switching it on** was done at cutover: hand-run `f/talent/retention` once with a test request queued, check R2, Chatwoot, Twenty and the tables, then `pnpm windmill:deploy --enable-retention`. Erasure also removes the applicant side in Twenty (`erasePerson`), keeping a client contact who shares the number. An enquiry never reuses an applicant's record (`recordLead` creates its own client contact), so the applicant's name goes with the worker record; a kept contact still typed worker, or named `Applicant VS-J-…`, is renamed "Client contact".
+**Switching it on** was done at cutover: hand-run `f/talent/retention` once with a test request queued, check R2, Twenty and the tables, then `pnpm windmill:deploy --enable-retention`. Erasure also removes the applicant side in Twenty (`erasePerson`), keeping a client contact who shares the number. An enquiry never reuses an applicant's record (`recordLead` creates its own client contact), so the applicant's name goes with the worker record; a kept contact still typed worker, or named `Applicant VS-J-…`, is renamed "Client contact".
 
 ## Enquiry erasure
 

@@ -98,7 +98,7 @@ export const RETENTION: readonly RetentionStore[] = [
   },
   {
     id: "talent-db",
-    what: "Job applications: the talent database, Chatwoot conversations and Twenty records",
+    what: "Job applications: the talent database and Twenty records",
     days: 365,
     notice: "12 months",
     noticeRef: "/privacy §10 In short, How long we keep it",

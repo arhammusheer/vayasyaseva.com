@@ -1,8 +1,8 @@
 name: Wage monitor
 
 # Manual fallback for the compliance source monitor (scripts/wage-monitor/,
-# docs/wage-monitor.md). The daily run is a Kubernetes CronJob that notifies
-# Chatwoot (vayasya-infra apps/compliance-monitor); this workflow runs the
+# docs/wage-monitor.md). The daily run is a Kubernetes CronJob that posts to
+# the notification hub (vayasya-infra apps/compliance-monitor); this workflow runs the
 # same command by hand and reports to GitHub issues labelled wage-monitor
 # instead. Its snapshot lives in the Actions cache, separate from the
 # cluster's, so the workflow never writes to the repository.

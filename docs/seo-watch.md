@@ -2,8 +2,8 @@
 
 Every Monday at 08:00 IST a CronJob in the cluster (`vayasya-infra`
 `apps/seo-watch`) runs `scripts/seo-watch/index.mjs` and sends a Search
-Console report to the owner in Chatwoot (the "SEO watch" API inbox, assigned
-to the owner by the "Monitors: assign to owner" rule).
+Console report to the owner through the notification hub
+(`docs/notification-hub.md`).
 
 The report covers:
 
@@ -31,8 +31,8 @@ The watch checks it each week, but only judges it when there is enough data:
 before the retitle, Haridwar queries brought about 2 impressions a week (the
 rank snapshot of 13 October shows 10 such queries, 28 impressions in 13
 weeks, none on the home page), and a 30% fall in 2 impressions is noise.
-Below 20 a week it says "not judged". When the rule trips, the message goes
-to its own conversation, "SEO · home retitle rule tripped".
+Below 20 a week it says "not judged". When the rule trips, a separate
+`seo.rule_tripped` event goes out as a push as well as an email.
 
 ## Access
 
@@ -44,16 +44,19 @@ that one Kubernetes service account) for a 15-minute token of
 `scripts/search-console/setup-gcp.mjs` sets it up; re-run it if the cluster's
 signing key changes (it reads `google/cluster-jwks.json` from vayasya-infra).
 
-Search data goes to Chatwoot and the notification hub's email body only. The
-logs say "sent" and the rule's status, never queries or figures: this
-repository and its Actions are public.
+## Where it goes
 
-`--notify chatwoot,hub` (the cluster's flags until Chatwoot is retired; the
-default is `chatwoot`) also posts to the notification hub
-(`docs/notification-hub.md`, needs `NOTIFY_URL` and `NOTIFY_INGEST_SECRET`):
-`seo.weekly_report` by email only, `seo.rule_tripped` as a push and an email
-when the rule trips, `seo.watch_failed` when the run fails. Their titles and
-summaries carry the week and the rule's status, never a figure.
+The watch posts to the notification hub (`NOTIFY_URL` and
+`NOTIFY_INGEST_SECRET`; `scripts/seo-watch/hub.mjs`): `seo.weekly_report` by
+email only, with the full report in the body; `seo.rule_tripped` as a push
+and an email when the rule trips; `seo.watch_failed`, a push and an email,
+when the run fails. The dedupeKeys are per week (per day for a failure), so
+a rerun is one notification, and the watch keeps no state file of its own.
+
+Search data goes to the hub's email body only. Titles and summaries, which
+reach a phone's lock screen and the digest, carry the week and the rule's
+status, never a figure. The logs say "sent" and the rule's status, never
+queries or figures: this repository and its Actions are public.
 
 ## Running it
 

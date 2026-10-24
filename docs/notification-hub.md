@@ -52,7 +52,7 @@ Alertmanager ── webhook v4 ───────────────► 
 - **title and summary are scrubbed** whatever the producer sends: Aadhaar becomes `XXXX XXXX 1234`, PAN is removed (`talent/lib/mask.ts`), and phone numbers and email addresses become `[phone removed]` / `[email removed]`. Never put a person's details there on purpose.
 - **pii** is rendered only where the policy allows it (a push whose rule has `pii: full` or `masked`). It is never put in an email or the digest. It is cleared from the row as soon as the push that needs it has been sent (or has failed for good), immediately when no push needs it, and after 24 hours in any case.
 - **pii never becomes a Windmill job argument.** `emit()` inserts the row from inside the calling script. The webhooks drop any `pii` in their preprocessor (and count it as `piiDropped`).
-- **Dedupe**: an event with no `status` is sent once per `dedupeKey`, and later ones are recorded as duplicates. With `status`, `firing` opens an episode (a second `firing` is a duplicate), and `resolved` closes it. A resolved notice goes only to the channels the firing went to, so a resolution of nothing sent is silent.
+- **Dedupe**: an event with no `status` is sent once per `dedupeKey`, and later ones are recorded as duplicates. With `status`, `firing` opens an episode (a second `firing` is a duplicate), and `resolved` closes it. A resolved notice goes only to the channels the firing went to, so a resolution of nothing sent is silent. Its push is titled `Resolved: <title>` and reads "Cleared at <date time> IST. Was: <summary>" (the email's first line is the same, without the body), so a resolution never reads as a new problem: Alertmanager resends the firing's annotations with the resolution, and `f/platform/health` sends the condition's title as the summary.
 
 ## Routing (default policy)
 
@@ -174,7 +174,7 @@ The receiver URL is `http://windmill.growth.svc.cluster.local:8000/api/r/interna
 - `Watchdog` and `InfoInhibitor` are ignored.
 - Alertmanager re-sends a firing group every `repeat_interval`, and the hub drops those as duplicates.
 
-Routing (vayasya-infra `infrastructure/kube-prometheus-stack/values.yaml`): every alert goes to the receiver `hub` with `continue: true`. Critical alerts, `NtfyNoRunningPods`, `PgMain*` and `Windmill*` also go straight to email from Alertmanager, so the alerts that mean the hub cannot deliver never depend on it. `Watchdog` stays on `null` until there is an external dead-man's switch. The token is the Secret `monitoring/alertmanager-notify` (`extra-manifests/secrets-notify.sops.yaml`), the same value as `NOTIFY_ALERTMANAGER_SECRET`.
+Routing (vayasya-infra `infrastructure/kube-prometheus-stack/values.yaml`): every alert goes to the receiver `hub` with `continue: true`. Critical alerts, `NtfyNoRunningPods`, `PgMain*` and `Windmill*` also go straight to email from Alertmanager, so the alerts that mean the hub cannot deliver never depend on it. `Watchdog` stays on `null` until the external dead-man's switch is in place (being set up in vayasya-infra as a Cloudflare Worker check-in). The token is the Secret `monitoring/alertmanager-notify` (`extra-manifests/secrets-notify.sops.yaml`), the same value as `NOTIFY_ALERTMANAGER_SECRET`.
 
 ## Owner setup
 
@@ -244,13 +244,13 @@ The repo is public, so no personal data, phone numbers or real addresses appear 
 | `lead.forward_failed` | the same, `lead-dead:<caseId>` | when the lead's delivery hits its cap (eight attempts) | the case ID and the error's HTTP status only |
 | `lead.email_failed` | the website, `src/server/submissions/types/business-enquiry.ts` through `src/server/notify.ts` (ingest, from `after()`) | when the MSG91 staff email throws; `lead-email:<caseId>` | the case ID and the route, no personal data |
 | `platform.sms_unknown`, `platform.deliveries_dead`, `…_stuck`, `…_overdue`, `platform.erasure_failed`, `platform.db_unreadable` | `f/platform/health`, every 15 minutes (`platform/lib/health-notify.ts`) | firing when a condition starts and resolved when it clears, keyed `platform:health:<database>:<reason>[:<target>]`; health reads the hub's key states, so a condition that stays (the 11 October SMS `unknown`) is one push, then the routing table's daily reminder | counts and the oldest item's time; overdue and an unreadable database are critical (instant email too) |
-| `compliance.source_changed`, `compliance.source_unreachable`, `compliance.source_recovered` | `scripts/wage-monitor` with `--notify hub` (`reportToHub` in `report.mjs`) | one per state and topic per run, keyed on the hash of the changes' fingerprints, and recorded in the snapshot (`state.hub.reported`) apart from Chatwoot's | state, topic and a count; the Chatwoot Markdown in the email body |
+| `compliance.source_changed`, `compliance.source_unreachable`, `compliance.source_recovered` | `scripts/wage-monitor` with `--notify hub` (`reportToHub` in `report.mjs`) | one per state and topic per run, keyed on the hash of the changes' fingerprints, and recorded in the snapshot (`state.hub.reported`, carried from run to run) | state, topic and a count; the Markdown detail (`renderTopicMessage`) in the email body |
 | `compliance.monitor_failed` | the same, on a failed run (once a day); and `.github/workflows/wage-monitor.yml`'s `notify-failure` job | | the error's first lines in the email only |
-| `seo.weekly_report`, `seo.rule_tripped`, `seo.watch_failed` | `scripts/seo-watch` with `--notify hub` (`scripts/seo-watch/hub.mjs`) | weekly, keyed per week (failure per day) | the week and the rule's status; Search Console figures only in the email body |
+| `seo.weekly_report`, `seo.rule_tripped`, `seo.watch_failed` | `scripts/seo-watch` (`scripts/seo-watch/hub.mjs`) | weekly, keyed per week (failure per day) | the week and the rule's status; Search Console figures only in the email body |
 | `search.pipeline_failed` | `.github/workflows/search.yml`'s `notify-failure` job | when any job of the run failed; the run is the link | |
 | `alert.<alertname>` | Alertmanager | see "Alertmanager" | |
 
-The monitors take `--notify` as a comma list. In the cluster they run `--notify chatwoot,hub` until Chatwoot is retired. The hub goes first: if Chatwoot then fails, the run fails without saving the snapshot, and the retry's hub events carry the same dedupeKeys, so the hub sends them once.
+In the cluster the compliance monitor runs `--notify hub` (its `--notify` takes `github`, `hub` or both; the default is the hub when `NOTIFY_URL` is set, else GitHub), and the SEO watch sends to the hub only. With both destinations the hub goes first: if GitHub then fails, the run fails without saving the snapshot, and the retry's hub events carry the same dedupeKeys, so the hub sends them once.
 
 The GitHub jobs post to the public route with the repository secret `NOTIFY_INGEST_SECRET`. Without the secret they print a line and succeed.
 
@@ -266,7 +266,7 @@ If job failures need their own pushes later, a scheduled script can read the fai
 
 ## Phase B owner steps
 
-In order. The cluster CronJobs download the website's `main`, so the website PR goes first: the CronJobs' new `--notify chatwoot,hub` would fail on the old scripts.
+In order (done October 2026; kept as the record). The cluster CronJobs download the website's `main`, so the website PR went first: the CronJobs' new `--notify` flags would have failed on the old scripts.
 
 1. **Merge the website PR** ("Notifications: phase B, every source into the hub"). Vercel deploys the site.
 2. **Vercel env** (Production): `NOTIFY_URL=https://hooks.vayasyaseva.com/api/r/webhook/vspl-notify` and `NOTIFY_INGEST_SECRET` (the value in `growth/windmill-notify`), then redeploy. Until then `lead.email_failed` is not sent; nothing else changes.
@@ -275,4 +275,4 @@ In order. The cluster CronJobs download the website's `main`, so the website PR 
 5. **Merge the vayasya-infra PR** ("Notifications: Alertmanager into the hub, Windmill/Twenty alerts, monitors dual-write"). Argo syncs Alertmanager's new routing and Secret, the new PrometheusRules and the CronJobs.
 6. **GitHub secret**: add the repository secret `NOTIFY_INGEST_SECRET` (the same value) for the `notify-failure` jobs of `search.yml` and `wage-monitor.yml`.
 7. **Check**: a test application and a test lead each give one push (with the right phone shown); `f/platform/health` gives one push for the old SMS `unknown` and none at the next checks; the infra RUNBOOK's `amtool alert add` test gives a push on `vspl-ops`; the next compliance monitor run's log ends without errors.
-8. **Later**: an external dead-man's switch for `Watchdog` (for example a free heartbeat service), then route `Watchdog` to it instead of `null`. Retire the monitors' Chatwoot path once the hub is trusted (`--notify hub`).
+8. **Later**: an external dead-man's switch for `Watchdog`, being set up in vayasya-infra as a Cloudflare Worker that Alertmanager checks in with; then route `Watchdog` to it instead of `null`. The monitors' Chatwoot path is gone: it was retired with Chatwoot on 24 October 2026, and the monitors send to the hub only.

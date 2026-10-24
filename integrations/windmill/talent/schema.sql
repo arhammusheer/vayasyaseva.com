@@ -13,18 +13,11 @@ BEGIN
     consented_at             timestamptz NOT NULL,
     adult                    boolean NOT NULL,
     text                     text,
-    status                   text NOT NULL DEFAULT 'received'
-                             CHECK (status IN ('received', 'delivering', 'delivered', 'failed')),
-    attempts                 int NOT NULL DEFAULT 0,
-    last_error               text,
-    chatwoot_contact_id      bigint,
-    chatwoot_conversation_id bigint,
     created_at               timestamptz NOT NULL DEFAULT now(),
     updated_at               timestamptz NOT NULL DEFAULT now()
   );
   -- The role page it came from (JOB_ROLES in src/lib/talent-intake/rules.ts); null from /jobs.
   ALTER TABLE submissions ADD COLUMN IF NOT EXISTS role text;
-  CREATE INDEX IF NOT EXISTS submissions_status_idx ON submissions (status, created_at);
   -- The hub page it came from (JOB_HUBS in rules.ts: /jobs/freshers…); null otherwise.
   ALTER TABLE submissions ADD COLUMN IF NOT EXISTS hub text;
   CREATE INDEX IF NOT EXISTS submissions_role_idx ON submissions (role, created_at);
@@ -59,7 +52,7 @@ BEGIN
   ALTER TABLE submissions ADD COLUMN IF NOT EXISTS page_path text;
   CREATE INDEX IF NOT EXISTS submissions_cluster_idx ON submissions (cluster, created_at);
 
-  -- Separate from Chatwoot delivery. Only new submissions are queued by intake;
+  -- Only new submissions are queued by intake;
   -- setup never backfills acknowledgements for historical applications.
   CREATE TABLE IF NOT EXISTS sms_acknowledgements (
     submission_id uuid PRIMARY KEY REFERENCES submissions (id) ON DELETE CASCADE,
@@ -137,7 +130,7 @@ BEGIN
 
   -- Erasure: a person's request (by mobile number, checked against a
   -- VS-J- reference) or the 12-month retention rule. The retention workflow
-  -- deletes their R2 files, Chatwoot contacts (with conversations) and rows,
+  -- deletes their R2 files, Twenty records and rows,
   -- then clears the phone and reference here, keeping only the counts.
   CREATE TABLE IF NOT EXISTS erasure_requests (
     id                  uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -204,16 +197,16 @@ BEGIN
   ALTER TABLE sms_acknowledgements ADD COLUMN IF NOT EXISTS wa_delivered_at timestamptz;
 
   -- Roadmap 1F: one deliveries row per submission and target (the SMS
-  -- acknowledgement, the Chatwoot conversation, the Twenty CRM records),
+  -- acknowledgement, the Twenty CRM records, the files into Twenty),
   -- worked by the one dispatcher (f/talent/dispatch) with exponential backoff
   -- and a cap on attempts, after which a row is 'dead'. An SMS whose send was
   -- interrupted is 'unknown' and is never sent again automatically. The
-  -- older status columns (submissions.status, sms_acknowledgements.status,
-  -- crm_sync) are kept and still written by each step; the views below show
-  -- the old statuses from the deliveries.
+  -- older status columns (sms_acknowledgements.status, crm_sync) are kept
+  -- and still written by each step; the views below show the old statuses
+  -- from the deliveries.
   CREATE TABLE IF NOT EXISTS deliveries (
     submission_id   uuid NOT NULL REFERENCES submissions (id) ON DELETE CASCADE,
-    target          text NOT NULL CHECK (target IN ('sms', 'chatwoot', 'crm', 'files')),
+    target          text NOT NULL CHECK (target IN ('sms', 'crm', 'files')),
     status          text NOT NULL DEFAULT 'pending'
                     CHECK (status IN ('pending', 'running', 'done', 'unknown', 'dead')),
     attempts        int NOT NULL DEFAULT 0,
@@ -230,15 +223,21 @@ BEGIN
 
   -- The files target (18 Oct 2026): applicants' files copied from R2 into
   -- Twenty as attachments on their application (talent/lib/run-files.ts).
+  -- The chatwoot target retired with Chatwoot (24 Oct 2026): its rows, and
+  -- the submissions columns only it used, go.
+  DELETE FROM deliveries WHERE target = 'chatwoot';
   ALTER TABLE deliveries DROP CONSTRAINT IF EXISTS deliveries_target_check;
-  ALTER TABLE deliveries ADD CONSTRAINT deliveries_target_check CHECK (target IN ('sms', 'chatwoot', 'crm', 'files'));
+  ALTER TABLE deliveries ADD CONSTRAINT deliveries_target_check CHECK (target IN ('sms', 'crm', 'files'));
+  DROP VIEW IF EXISTS delivery_status;
+  ALTER TABLE submissions DROP COLUMN IF EXISTS status, DROP COLUMN IF EXISTS attempts, DROP COLUMN IF EXISTS last_error,
+    DROP COLUMN IF EXISTS chatwoot_contact_id, DROP COLUMN IF EXISTS chatwoot_conversation_id;
 
-  -- Every new submission gets its four deliveries (SMS: three attempts, as
-  -- before; Chatwoot: three; CRM: eight; files into Twenty: eight).
+  -- Every new submission gets its three deliveries (SMS: three attempts, as
+  -- before; CRM: eight; files into Twenty: eight).
   CREATE OR REPLACE FUNCTION queue_deliveries() RETURNS trigger LANGUAGE plpgsql AS $fn$
   BEGIN
     INSERT INTO deliveries (submission_id, target, max_attempts)
-    VALUES (NEW.id, 'sms', 3), (NEW.id, 'chatwoot', 3), (NEW.id, 'crm', 8), (NEW.id, 'files', 8)
+    VALUES (NEW.id, 'sms', 3), (NEW.id, 'crm', 8), (NEW.id, 'files', 8)
     ON CONFLICT DO NOTHING;
     RETURN NEW;
   END
@@ -269,30 +268,22 @@ BEGIN
          a.attempts, 3, a.next_attempt_at, a.last_error, a.accepted_at, a.created_at, a.updated_at
   FROM sms_acknowledgements a
   ON CONFLICT DO NOTHING;
-  INSERT INTO deliveries (submission_id, target, status, attempts, max_attempts, last_error, done_at, created_at, updated_at)
-  SELECT s.id, 'chatwoot',
-         CASE s.status WHEN 'received' THEN 'pending' WHEN 'delivering' THEN 'running' WHEN 'delivered' THEN 'done' ELSE 'dead' END,
-         s.attempts, 3, s.last_error, CASE WHEN s.status = 'delivered' THEN s.updated_at END, s.created_at, s.updated_at
-  FROM submissions s
-  ON CONFLICT DO NOTHING;
   INSERT INTO deliveries (submission_id, target, status, max_attempts, done_at, created_at, updated_at)
   SELECT s.id, 'crm', CASE WHEN c.submission_id IS NULL THEN 'pending' ELSE 'done' END, 8, c.synced_at, s.created_at, coalesce(c.synced_at, s.created_at)
   FROM submissions s LEFT JOIN crm_sync c ON c.submission_id = s.id
   ON CONFLICT DO NOTHING;
 
-  -- The old statuses, from the deliveries: Chatwoot as submissions.status
-  -- named them, the SMS as sms_acknowledgements.status, and whether the CRM
-  -- has it. One row per submission.
+  -- The old statuses, from the deliveries: the SMS as
+  -- sms_acknowledgements.status names them, and whether the CRM has it.
+  -- One row per submission.
   CREATE OR REPLACE VIEW delivery_status AS
   SELECT s.id AS submission_id, s.ref, s.created_at,
-         CASE c.status WHEN 'pending' THEN 'received' WHEN 'running' THEN 'delivering' WHEN 'done' THEN 'delivered' ELSE 'failed' END AS chatwoot_status,
          CASE m.status WHEN 'pending' THEN 'pending' WHEN 'running' THEN 'sending' WHEN 'done' THEN 'accepted'
                        WHEN 'dead' THEN 'failed' ELSE 'unknown' END AS sms_status,
          (r.status = 'done') AS crm_synced,
-         c.attempts AS chatwoot_attempts, m.attempts AS sms_attempts, r.attempts AS crm_attempts,
-         coalesce(c.last_error, m.last_error, r.last_error) AS last_error
+         m.attempts AS sms_attempts, r.attempts AS crm_attempts,
+         coalesce(m.last_error, r.last_error) AS last_error
   FROM submissions s
-  LEFT JOIN deliveries c ON c.submission_id = s.id AND c.target = 'chatwoot'
   LEFT JOIN deliveries m ON m.submission_id = s.id AND m.target = 'sms'
   LEFT JOIN deliveries r ON r.submission_id = s.id AND r.target = 'crm';
 

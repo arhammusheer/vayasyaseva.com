@@ -11,7 +11,7 @@
 
 export const MAX_BATCH = 50;
 
-/** The destinations of --notify: a comma list, e.g. "chatwoot,hub". */
+/** The destinations of --notify: a comma list, e.g. "github,hub". */
 export function parseNotify(value, allowed) {
   const list = String(value ?? "")
     .split(",")

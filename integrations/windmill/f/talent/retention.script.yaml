@@ -1,6 +1,6 @@
 {
   "summary": "Talent · retention",
-  "description": "The 12-month rule and erasure requests: queues expired people, then erases one per run (R2, Chatwoot, Twenty CRM, rows).",
+  "description": "The 12-month rule and erasure requests: queues expired people, then erases one per run (R2, Twenty CRM, rows).",
   "lock": "",
   "kind": "script",
   "language": "bun",

@@ -4,8 +4,8 @@ The minimum wage pages (`/minimum-wages/<state>`) show two things that the
 states and the Centre change without warning: each state's minimum wages,
 and what employers owe there (EPF, ESIC, Professional Tax, Labour Welfare
 Fund, the contract labour licence). The compliance monitor fetches their
-primary sources every morning from the cluster and messages the owner in
-Chatwoot when something changes. The owner then dispatches the update pull
+primary sources every morning from the cluster and tells the owner through
+the notification hub when something changes. The owner then dispatches the update pull
 request (Claude can draft it from the new document). It is PLAN §11 (owner
 decision 4), widened to the employer dues on 16 October 2026.
 
@@ -147,20 +147,24 @@ quiet PT or UP topic as weak evidence, not proof nothing changed.
 
 ## When it alerts
 
-**Chatwoot** (the default in the cluster): the "Compliance monitor" API
-inbox in the Vayasya Seva account. One conversation per state and topic
-("Minimum wages · Uttarakhand", "EPF · all states", "Labour Welfare Fund ·
-Delhi"), created the first time and reused; a day's new events for it are
-one message. Messages arrive as incoming, so the inbox's agents get the usual
-Chatwoot notification. Each message ends with what to do: open the documents,
-and if the figures changed, dispatch an update PR (`src/content/wages/
-<state>.json` for wages, `src/content/statutory.ts` for the rest) and reply
-with its link. Resolve the conversation when the page matches the sources;
-the next change reopens it.
+**The notification hub** (`--notify hub`, the cluster's destination and the
+default when `NOTIFY_URL` is set): a day's new events are one hub event per
+state and topic ("Minimum wages · Uttarakhand", "EPF · all states", "Labour
+Welfare Fund · Delhi"). A change is `compliance.source_changed`, a push and
+an email; a source that stopped or started loading again is
+`compliance.source_unreachable` / `compliance.source_recovered`, in the
+morning digest. The push names the state, the topic and a count; the email
+body is the Markdown detail (`renderTopicMessage` in `report.mjs`), ending
+with what to do: open the documents, and if the figures changed, dispatch an
+update PR (`src/content/wages/<state>.json` for wages,
+`src/content/statutory.ts` for the rest). A failed run is
+`compliance.monitor_failed`. It needs `NOTIFY_URL` and `NOTIFY_INGEST_SECRET`.
+See `docs/notification-hub.md`.
 
-Every event has a fingerprint kept in the snapshot for 400 days, so the same
-change is never sent twice. If a conversation was deleted in Chatwoot, the
-monitor starts a new one.
+Every event has a fingerprint kept in the snapshot (`state.hub.reported`) for
+400 days and carried from run to run, so the same change is never sent twice;
+the hub event's dedupeKey hashes the fingerprints, so a retried run is one
+notification.
 
 | Event | Meaning |
 |---|---|
@@ -168,8 +172,8 @@ monitor starts a new one.
 | A listing changed | A document appeared on or left a page. New files are fetched and described (size, pages, lines with figures); a cited file that left the page is called out. |
 | A page changed | Watched lines were added or removed (for example a new ESIC rate). |
 | Not loaded for 3 days | A source failed on three separate India days with no successful load in between. One alert. |
-| Loads again | A source that raised the 3-day alert loads again. Only sent into an existing conversation. |
-| Monitor failed | The run itself failed (a bad registry, a crash). Sent to its own conversation; the CronJob's logs have the detail. |
+| Loads again | A source that raised the 3-day alert loads again. Sent only once the hub has heard from the monitor. |
+| Monitor failed | The run itself failed (a bad registry, a crash). One a day; the CronJob's logs have the detail. |
 
 A response that is not the source counts as a failed load, not a change: an
 HTML page where a PDF used to be, a listing with no document links or fewer
@@ -182,28 +186,20 @@ new.
 `Wage monitor: <State> sources changed`, label `wage-monitor`, with hidden
 fingerprints. The manual **Wage monitor** workflow uses this.
 
-**The notification hub** (`--notify hub`, or `chatwoot,hub` as the cluster
-runs it until Chatwoot is retired): one event per state and topic,
-`compliance.source_changed` (a push and an email with the same Markdown as
-the Chatwoot message), or `compliance.source_unreachable` /
-`compliance.source_recovered` (the morning digest). A failed run is
-`compliance.monitor_failed`. It needs `NOTIFY_URL` and `NOTIFY_INGEST_SECRET`;
-the hub's fingerprints are kept in the snapshot apart from Chatwoot's. See
-`docs/notification-hub.md`.
-
 ## Running it
 
 ```sh
-pnpm wages:monitor --dry-run --notify chatwoot   # fetch and compare; print the summary and the messages it would send
-pnpm wages:monitor --dry-run --only delhi        # one state (national sources are always checked)
-pnpm wages:monitor --dry-run --save-state        # also save the snapshot
-pnpm wages:monitor                               # notify: Chatwoot if CHATWOOT_BASE_URL is set, else GitHub
+pnpm wages:monitor --dry-run --notify hub     # fetch and compare; print the summary and the hub events it would send
+pnpm wages:monitor --dry-run --only delhi     # one state (national sources are always checked)
+pnpm wages:monitor --dry-run --save-state     # also save the snapshot
+pnpm wages:monitor                            # notify: the hub if NOTIFY_URL is set, else GitHub
+pnpm wages:monitor --notify github,hub        # both
 ```
 
-Chatwoot needs `CHATWOOT_BASE_URL` (in the cluster
-`http://chatwoot.growth.svc.cluster.local`) and `CHATWOOT_INBOX_IDENTIFIER`
-(the API inbox's identifier; it authorises the public API, so keep it in the
-SOPS secret, not in git). No agent token. GitHub needs `GITHUB_TOKEN` and
+The hub needs `NOTIFY_URL` (in the cluster
+`http://windmill.growth.svc.cluster.local:8000/api/r/webhook/vspl-notify`)
+and `NOTIFY_INGEST_SECRET` (from `growth/windmill-notify`; keep it in the
+SOPS secret, not in git). GitHub needs `GITHUB_TOKEN` and
 `GITHUB_REPOSITORY`.
 
 `--state <file>` sets the snapshot (default `.wage-monitor/state.json`,
@@ -229,8 +225,9 @@ A Kubernetes CronJob in the `growth` namespace, `vayasya-infra`
 sources. Each run clones this public repository's `main` (so a merged change
 to the registry or code takes effect the next morning), runs
 `scripts/wage-monitor/index.mjs` with Node 24, and keeps the snapshot on a
-small volume. It reaches Chatwoot over cluster DNS (Chatwoot's network policy
-allows it). Run it now:
+small volume. It runs `--notify hub` and posts to the hub's ingest route
+over cluster DNS (Windmill's network policy admits `app: compliance-monitor`).
+Run it now:
 
 ```sh
 kubectl -n growth create job --from=cronjob/compliance-monitor compliance-monitor-now

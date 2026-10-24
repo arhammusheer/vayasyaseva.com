@@ -9,7 +9,7 @@ import { importTs, root } from '../scripts/lib/register-ts.mjs';
 import { describeDocument, diffLines, documentLinks, htmlText, sha256, spaBundleLinks, spaScript, wpDocumentLinks } from '../scripts/wage-monitor/extract.mjs';
 import { ARCHIVED, buildTargets, coverageProblems, fetchSource, fingerprint, istDate, locationTargets, pageLines, registryProblems, relayFetch, runMonitor, targetKey } from '../scripts/wage-monitor/monitor.mjs';
 import { extractPdfText, parseCMap } from '../scripts/wage-monitor/pdf-text.mjs';
-import { chatwootClient, issueTitle, monitorFailedEvent, renderChatwootMessage, reportEvents, reportToChatwoot, reportToHub, safe } from '../scripts/wage-monitor/report.mjs';
+import { issueTitle, monitorFailedEvent, renderTopicMessage, reportEvents, reportToHub, safe } from '../scripts/wage-monitor/report.mjs';
 import { hubClient, hubFromEnv, parseNotify } from '../scripts/lib/notify-hub.mjs';
 import { seoEvents, seoFailedEvent } from '../scripts/seo-watch/hub.mjs';
 
@@ -415,7 +415,7 @@ test('fetchSource retries a server error once, not a 404, and never throws', asy
   assert.deepEqual([down.ok, down.error], [false, 'ENOTFOUND']);
 });
 
-// ------------------------------------------------- topics and Chatwoot
+// ------------------------------------------------------------------ topics
 
 test('every published state is watched for wages, PT, LWF and the licence; EPF, ESIC and the codes nationally; every dues source is watched', async () => {
   const { statutorySources } = await importTs('src/content/statutory.ts');
@@ -453,69 +453,8 @@ test('a watched page compares only its matching lines, in any order', async () =
   assert.deepEqual([d3.events[0].type, d3.events[0].topic, d3.events[0].state, d3.events[0].added, d3.events[0].removed], ['page-changed', 'esic', 'national', ['Employer 3.5%'], ['Employer 3.25%']]);
 });
 
-function fakeChatwoot({ failMessageOnce = false } = {}) {
-  const calls = [];
-  let conv = 100;
-  let fail = failMessageOnce;
-  return {
-    calls,
-    createContact: async () => (calls.push(['contact']), { source_id: 'src-1' }),
-    createConversation: async (contact, attrs) => (calls.push(['conversation', contact, attrs.title]), { id: ++conv }),
-    message: async (contact, id, content) => {
-      calls.push(['message', id, content]);
-      if (fail) {
-        fail = false;
-        throw new Error('Chatwoot POST /contacts/…/conversations/x/messages: HTTP 404 not found');
-      }
-      return { id: 1 };
-    },
-  };
-}
-
 const epfEvent = { type: 'page-changed', state: 'national', stateName: 'All states', topic: 'epf', url: 'https://epfo.example.gov.in/rates', name: 'EPF rates', added: ['Ceiling 30,000'], removed: ['Ceiling 25,000'] };
 const ukEvent = { ...changeEvent, topic: 'wages' };
-
-test('Chatwoot: one conversation per state and topic, one message per day, never the same event twice', async () => {
-  const cw = fakeChatwoot();
-  const state = {};
-  const first = await reportToChatwoot([ukEvent, epfEvent], { chatwoot: cw, state, today: '2026-10-17' });
-  assert.deepEqual(first.map((a) => [a.title, a.action]), [[`Minimum wages · ${ukEvent.stateName}`, 'new conversation'], ['EPF · all states', 'new conversation']]);
-  assert.equal(cw.calls.filter((c) => c[0] === 'contact').length, 1, 'one contact, reused');
-  const epfMsg = cw.calls.find((c) => c[0] === 'message' && c[2].includes('EPF'))[2];
-  assert.match(epfMsg, /\*\*EPF · all states: a source changed\*\* \(17 October 2026\)/);
-  assert.match(epfMsg, /Ceiling 30,000/);
-  assert.match(epfMsg, /every state page/);
-  assert.match(epfMsg, /src\/content\/statutory\.ts/);
-  const again = await reportToChatwoot([ukEvent, epfEvent], { chatwoot: cw, state, today: '2026-10-18' });
-  assert.deepEqual(again.map((a) => a.action), ['skip', 'skip']);
-  const next = await reportToChatwoot([{ ...epfEvent, added: ['Ceiling 35,000'] }], { chatwoot: cw, state, today: '2026-10-19' });
-  assert.equal(next[0].action, 'message', 'a new change goes to the same conversation');
-  assert.equal(next[0].conversation, first[1].conversation);
-});
-
-test('Chatwoot: a deleted conversation is replaced once; a recovery alone sends nothing; a dry run plans the message', async () => {
-  const cw = fakeChatwoot({ failMessageOnce: true });
-  const state = { chatwoot: { contact: 'src-1', conversations: { 'national:epf': 7 } } };
-  const [action] = await reportToChatwoot([epfEvent], { chatwoot: cw, state, today: '2026-10-17' });
-  assert.equal(action.action, 'new conversation');
-  assert.notEqual(state.chatwoot.conversations['national:epf'], 7);
-  const recovered = { type: 'recovered', state: 'delhi', stateName: 'Delhi', topic: 'lwf', url: 'https://x.example/', name: 'x', since: '2026-10-10' };
-  assert.equal((await reportToChatwoot([recovered], { chatwoot: cw, state, today: '2026-10-17' }))[0].action, 'skip');
-  const planned = await reportToChatwoot([ukEvent], { chatwoot: null, state: {}, today: '2026-10-17' });
-  assert.equal(planned[0].action, 'message (dry run)');
-  assert.match(planned[0].body, new RegExp(`src/content/wages/${ukEvent.state}\\.json`));
-});
-
-test('chatwootClient posts to the public API of one inbox, with no token', async () => {
-  const seen = [];
-  const fetchImpl = async (url, init) => (seen.push([url, init.method, init.headers, JSON.parse(init.body)]), { ok: true, json: async () => ({ id: 5, source_id: 's' }) });
-  const cw = chatwootClient({ baseUrl: 'http://chatwoot.growth.svc/', inboxIdentifier: 'abc', fetchImpl });
-  await cw.createContact();
-  await cw.message('s', 5, 'hi');
-  assert.equal(seen[0][0], 'http://chatwoot.growth.svc/public/api/v1/inboxes/abc/contacts');
-  assert.equal(seen[1][0], 'http://chatwoot.growth.svc/public/api/v1/inboxes/abc/contacts/s/conversations/5/messages');
-  assert.ok(!('api_access_token' in seen[0][2]));
-});
 
 // ---------------------------------------------------------------- notification hub
 
@@ -529,10 +468,10 @@ function fakeHub({ status = 202, rejected = [] } = {}) {
 }
 
 test('--notify takes a comma list of known destinations', () => {
-  assert.deepEqual(parseNotify('chatwoot,hub', ['chatwoot', 'github', 'hub']), ['chatwoot', 'hub']);
-  assert.deepEqual(parseNotify(' hub , hub ', ['chatwoot', 'hub']), ['hub']);
-  assert.throws(() => parseNotify('chatwoot,slack', ['chatwoot', 'hub']), /--notify must be one or more of chatwoot, hub/);
-  assert.throws(() => parseNotify('', ['chatwoot']), /--notify/);
+  assert.deepEqual(parseNotify('github,hub', ['github', 'hub']), ['github', 'hub']);
+  assert.deepEqual(parseNotify(' hub , hub ', ['github', 'hub']), ['hub']);
+  assert.throws(() => parseNotify('chatwoot,hub', ['github', 'hub']), /--notify must be one or more of github, hub/);
+  assert.throws(() => parseNotify('', ['hub']), /--notify/);
   assert.throws(() => hubFromEnv({}), /NOTIFY_URL and NOTIFY_INGEST_SECRET/);
 });
 
@@ -553,8 +492,6 @@ test('hub: one event per state and topic, source_changed for a change, the detai
   assert.match(epf.body, /Ceiling 30,000/);
   assert.equal(epf.link.url, 'https://epfo.example.gov.in/rates');
   assert.equal(epf.pii, undefined);
-  // Chatwoot keeps its own record: dual-writing reports each change once to each.
-  await reportToChatwoot([ukEvent, epfEvent], { chatwoot: fakeChatwoot(), state, today: '2026-10-17' });
   assert.deepEqual(await reportToHub([ukEvent, epfEvent], { hub, state, today: '2026-10-18' }), []);
   assert.equal(posts.length, 1);
   // The same changes in another run (the snapshot was lost) get the same dedupeKey, which the hub sends once.
@@ -589,6 +526,16 @@ test('hub: a failed monitor is compliance.monitor_failed, once a day', () => {
   assert.match(e.body, /Source registry problems/);
 });
 
+test('the snapshot carries what the hub was told, so a change is not reported again the next day', async () => {
+  const t = buildTargets([fakeState], fakeRegistry);
+  const fetcher = async () => ({ ok: true, status: 200, contentType: 'text/html', body: Buffer.from('<p>x</p>') });
+  const first = await runMonitor({ targets: t, previous: null, fetcher, now: at('2026-10-17'), describeNew: false });
+  first.state.hub = { reported: { abc: '2026-10-17' } };
+  const next = await runMonitor({ targets: t, previous: first.state, fetcher, now: at('2026-10-18'), describeNew: false });
+  assert.deepEqual(next.state.hub, { reported: { abc: '2026-10-17' } });
+  assert.equal('chatwoot' in next.state, false);
+});
+
 test('seo-watch: the weekly report is email only with no search data in title or summary; a tripped rule is pushed; a failure is seo.watch_failed', () => {
   const message = '**SEO weekly** | 1,234 impressions | top query: sidcul jobs';
   const [weekly] = seoEvents({ weekEnd: '2026-10-11', ruleStatus: 'counting', message });
@@ -602,8 +549,8 @@ test('seo-watch: the weekly report is email only with no search data in title or
   assert.deepEqual([failed.type, failed.dedupeKey], ['seo.watch_failed', 'seo:watch_failed:2026-10-19']);
 });
 
-test('renderChatwootMessage names the state file for wages and statutory.ts otherwise', () => {
-  const lwf = renderChatwootMessage({ topic: 'lwf', slug: 'delhi', stateName: 'Delhi', events: [{ ...epfEvent, state: 'delhi', stateName: 'Delhi', topic: 'lwf' }], today: '2026-10-17' });
+test('renderTopicMessage names the state file for wages and statutory.ts otherwise', () => {
+  const lwf = renderTopicMessage({ topic: 'lwf', slug: 'delhi', stateName: 'Delhi', events: [{ ...epfEvent, state: 'delhi', stateName: 'Delhi', topic: 'lwf' }], today: '2026-10-17' });
   assert.match(lwf, /^\*\*Labour Welfare Fund · Delhi: a source changed\*\*/);
   assert.match(lwf, /the Delhi page/);
   assert.match(lwf, /statutory\.ts/);

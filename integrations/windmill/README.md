@@ -13,13 +13,13 @@ website without the secret (the older routes, kept as adapters):
 
 talent DB         f/talent/dispatch     every minute, and started by intake for the new acknowledgement: the
                                         one worker for the deliveries table (acknowledgement on WhatsApp,
-                                        else SMS; Twenty CRM,
-                                        files into Twenty, Chatwoot conversation), backoff, caps, dead / unknown;
+                                        else SMS; Twenty CRM; files into Twenty),
+                                        backoff, caps, dead / unknown;
                                         every 15 minutes also the missing SMS delivery reports
                   f/talent/retention    hourly: the 12-month rule and erasure requests,
-                                        across R2, Chatwoot, Twenty CRM and the talent DB
+                                        across R2, Twenty CRM and the talent DB
                   f/talent/setup        the schema (talent/schema.sql), run by every deploy
-                  f/talent/acknowledge, deliver, sync_crm, delivery_check
+                  f/talent/acknowledge, sync_crm, delivery_check
                                         the steps the dispatcher runs; their schedules are off
                                         (deploy turns them off), kept for hand runs
 
@@ -48,18 +48,18 @@ The Sarvam transcribe workflow is not ported (voice notes ended 16 October 2026)
 
 | Path | What |
 |---|---|
-| `talent/scripts/*.ts` | Script entries: `main` (and intake's `preprocessor`). Thin: they wire the real database, Fast2SMS, Chatwoot and R2 into `talent/lib/run-*.ts`. |
+| `talent/scripts/*.ts` | Script entries: `main` (and intake's `preprocessor`). Thin: they wire the real database, Fast2SMS, Twenty and R2 into `talent/lib/run-*.ts`. |
 | `talent/lib/run-*.ts` | What each script does, step by step, with its outside world injected (the tests drive these). |
 | `talent/lib/sql.ts` | Every query, copied verbatim from the n8n workflows when they were ported. |
 | `contracts/validate.ts` | ajv over the contracts package's generated canonical schemas (`packages/contracts/generated`, inlined by the build). Intake and leads validate with it; the fixture corpus (`packages/contracts/fixtures`) runs through it in `contracts.test.mts`. |
 | `talent/lib/intake-payload.ts` | The application checked (ajv, plus the one rule JSON Schema cannot say: file keys under the reference) and shaped for SAVE_SUBMISSION. |
-| `talent/lib/{sms,note,erasure,mask}.ts` | The n8n Code nodes, as plain functions, using the shared `packages/contracts/src/rules.ts`. |
-| `talent/lib/{config,db,r2,chatwoot}.ts` | Windmill variables, Postgres (`postgres` npm, one connection per run), R2 (`aws4fetch`), Chatwoot. |
+| `talent/lib/{sms,erasure,mask}.ts` | The n8n Code nodes, as plain functions, using the shared `packages/contracts/src/rules.ts`. |
+| `talent/lib/{config,db,r2}.ts` | Windmill variables, Postgres (`postgres` npm, one connection per run), R2 (`aws4fetch`). |
 | `talent/lib/response.ts` | How a sync HTTP route answers: `{ wm_status_code, result }` (the body is `result` only). |
-| `talent/schema.sql` | The `talent` schema: the n8n copy plus `crm_sync` (a test checks the n8n part is unchanged). |
+| `talent/schema.sql` | The `talent` schema: first the n8n copy, since extended (`crm_sync`, `deliveries`, the files columns) and without the Chatwoot columns (24 October 2026). |
 | `talent/lib/{twenty,crm}.ts`, `run-sync-crm.ts` | Twenty's REST API, the talent→Twenty mapping and erasure, and the sync step by step. |
 | `leads/scripts/*.ts`, `leads/lib/{lead,run-leads,sql}.ts`, `leads/schema.sql` | The lead inbox: intake checks business_enquiry.v1 and saves the lead, sync_crm files it in Twenty (company, contact, crew request, enquiry), each record found before it is created. |
-| `talent/lib/run-dispatch.ts` | The one dispatcher: claims due `deliveries` rows (SKIP LOCKED, one run at a time by advisory lock) and runs the SMS, CRM, files and Chatwoot steps. |
+| `talent/lib/run-dispatch.ts` | The one dispatcher: claims due `deliveries` rows (SKIP LOCKED, one run at a time by advisory lock) and runs the SMS, CRM and files steps. |
 | `talent/lib/run-files.ts` | The files step: an application's R2 files into Twenty as attachments on its Application (`twenty.ts` `twentyFilesClient` for the upload). |
 | `platform/scripts/*.ts`, `platform/lib/*.ts` | The signed envelope route, the Idempotency-Key store and health. `signed.ts` checks `packages/contracts/src/signing.ts`'s HMAC over the raw body. |
 | `notify/` | The notification hub (ntfy pushes, Resend email, daily digest): `docs/notification-hub.md`. Other scripts raise notifications with `notify/lib/emit.ts`. |
@@ -71,7 +71,7 @@ The Sarvam transcribe workflow is not ported (voice notes ended 16 October 2026)
 
 ```bash
 pnpm windmill:check            # type-check the sources (part of pnpm type-check)
-pnpm windmill:test             # intake, acknowledgement, deliver, retention, dispatch, lead inbox, signed route, generated files
+pnpm windmill:test             # intake, acknowledgement, retention, dispatch, files, lead inbox, signed route, generated files
 pnpm windmill:build            # regenerate f/talent/*
 pnpm windmill:build --check    # CI: fail if f/ is stale
 pnpm windmill:deploy --dry-run # what deploy would change
@@ -89,9 +89,7 @@ Scripts read `f/talent/<name>` with `wmill.getVariable` (`talent/lib/config.ts`)
 | `fast2sms_api_key` | yes | `FAST2SMS_API_KEY` (`fast2sms-vspl`) |
 | `r2_read_key_id`, `r2_read_secret` | yes | `TALENT_R2_ACCESS_KEY_ID` / `_SECRET_ACCESS_KEY`, read-only on `vayasya-talent-intake` (`r2-talent-intake`) |
 | `r2_erase_key_id`, `r2_erase_secret` | yes | `TALENT_R2_ERASE_*`, delete rights, retention only (`r2-talent-erase`) |
-| `chatwoot_admin_token` | yes | `CHATWOOT_TALENT_ADMIN_TOKEN`, user "Automation (retention)" (`chatwoot-talent-admin`) |
-| `chatwoot_inbox_identifier` | yes | Read from Chatwoot at deploy (was the deliver workflow's Settings node) |
-| `chatwoot_base_url`, `chatwoot_account_id`, `r2_endpoint`, `r2_bucket` | no | Constants in `deploy.mts` |
+| `r2_endpoint`, `r2_bucket` | no | Constants in `deploy.mts` |
 | `twenty_api_key` | yes | `TWENTY_API_KEY` in `growth/twenty-api` (the workspace key "Windmill (automation)") |
 | `twenty_base_url` | no | `http://twenty.growth.svc.cluster.local` |
 | `lead_webhook_secret` | yes | `LEAD_WEBHOOK_SECRET` in `growth/windmill-leads`; the website has the same value as Vercel `LEAD_WEBHOOK_SECRET` |
@@ -99,13 +97,13 @@ Scripts read `f/talent/<name>` with `wmill.getVariable` (`talent/lib/config.ts`)
 | `submission_signing_secret` | yes | `SUBMISSION_SIGNING_SECRET` in `growth/windmill-submission`; Vercel has the same value. Until that Secret exists, deploy sets a random value nobody knows, so the signed routes refuse everything |
 | `fast2sms_dlr_secret` | yes | `FAST2SMS_DLR_SECRET` in `growth/windmill-fast2sms`; the `x-vspl-dlr-secret` header of the Fast2SMS webhook |
 
-The `TALENT_*`, `FAST2SMS_*` and `CHATWOOT_*` keys are read from `growth/n8n-env` until n8n is retired; `--secrets-from=<secret>` reads another Secret in `growth` with the same keys. The API token is `SUPERADMIN_SECRET` in `growth/windmill-env`.
+The `TALENT_*` and `FAST2SMS_*` keys are read from `growth/windmill-talent` (vayasya-infra `apps/windmill/overlays/growth/secrets-talent.sops.yaml`); `--secrets-from=<secret>` reads another Secret in `growth` with the same keys. The hand-run `whatsapp-templates.mts` and `fast2sms-webhook.mts` read the Fast2SMS key from the same Secret. The `chatwoot_*` variables went with Chatwoot (24 October 2026); deploy deletes them (`RETIRED` in `deploy.mts`). The API token is `SUPERADMIN_SECRET` in `growth/windmill-env`.
 
 ## Deploy
 
 `pnpm windmill:build && pnpm windmill:deploy`:
 
-1. reads the secrets and the inbox identifier from the cluster;
+1. reads the secrets from the cluster;
 2. ensures workspace `vspl` and folder `talent`;
 3. upserts the variables;
 4. pushes each script as a new version only when its content or metadata changed;
@@ -113,17 +111,16 @@ The `TALENT_*`, `FAST2SMS_*` and `CHATWOOT_*` keys are read from `growth/n8n-env
 6. creates or updates the schedules and the route `/api/r/webhook/vspl-talent-intake` (sync, no Windmill auth: the script checks the secret);
 7. warms the route with a wrong secret and expects 403 (the first call after a new version installs dependencies, ~7.5 s).
 
-**Schedules are created disabled.** `--enable-schedules` turns on `f/talent/dispatch` and `f/leads/sync_crm`; `--enable-retention` turns on retention (after a hand-run check, as with n8n). A later deploy without the flags leaves each schedule as it is. The schedules the dispatcher replaced (acknowledge, deliver, sync_crm, delivery_check) are turned off by every deploy; if any of them was on, the dispatcher and the lead sync are turned on in the same deploy, so deliveries never stop in between.
+**Schedules are created disabled.** `--enable-schedules` turns on `f/talent/dispatch` and `f/leads/sync_crm`; `--enable-retention` turns on retention (after a hand-run check, as with n8n). A later deploy without the flags leaves each schedule as it is. The schedules the dispatcher replaced (acknowledge, sync_crm, delivery_check) are turned off by every deploy; if any of them was on, the dispatcher and the lead sync are turned on in the same deploy, so deliveries never stop in between. Retired scripts (`RETIRED` in `deploy.mts`: the WhatsApp apply chat, and Chatwoot's `f/talent/deliver`) lose their schedule, route, script and variables.
 
-Cron is Windmill's six-field form (seconds first), timezone Asia/Kolkata: acknowledge and deliver `0 * * * * *`, sync_crm `30 * * * * *`, delivery_check `0 */15 * * * *`, retention `0 0 * * * *`.
+Cron is Windmill's six-field form (seconds first), timezone Asia/Kolkata: dispatch (and acknowledge, before it) `0 * * * * *`, sync_crm `30 * * * * *`, delivery_check `0 */15 * * * *`, retention `0 0 * * * *`.
 
 ## Behaviour (unchanged from n8n unless noted)
 
 - **Intake** answers 202 `{ ok: true, ref }` once saved; a replayed reference answers 202 and saves and sends nothing. A wrong or missing secret answers **403**; an invalid payload answers **400** `{ ok: false, error: "Invalid submission: …" }` (n8n threw, which answered 500; the website treats any non-202 the same). The preprocessor passes only `authorized` and the body to `main`, so the secret never appears in job arguments.
 - **SMS**: unchanged rules: `accepted` needs HTTP 200, `return: true` and a request ID; explicit 400/401 rejections are `failed`; 429 retries up to three attempts; everything else, and sends interrupted for five minutes, is `unknown` and never resent automatically. One SMS per run.
-- **Deliver**: one submission per run; contact creation retries (3 × 5 s), messages never retry; a run that fails before "delivered" is recovered after 15 minutes, `failed` after three attempts. A failed attachment does not stop the others.
-- **Retention**: R2 files, then Chatwoot contacts, then the person's Twenty records (each application's attachments, trashed ones too, and communications, then the application; the person's own attachments and the person), then rows; any R2, Chatwoot or Twenty failure stops the run before a row is deleted. The Twenty step and the row delete hold the dispatcher's advisory lock (waiting up to two minutes for a running dispatcher), so no attachment is added mid-erasure; `removed_crm_files` counts the attachments deleted. **Change:** a Chatwoot contact that is already gone (404) counts as deleted; n8n failed the erasure on it.
-- **Connections**: one Postgres connection per run. The `talent` role is capped at 5 connections on pg-main, shared with n8n while both run.
+- **Retention**: R2 files, then the person's Twenty records (each application's attachments, trashed ones too, and communications, then the application; the person's own attachments and the person), then rows; any R2 or Twenty failure stops the run before a row is deleted. The Twenty step and the row delete hold the dispatcher's advisory lock (waiting up to two minutes for a running dispatcher), so no attachment is added mid-erasure; `removed_crm_files` counts the attachments deleted. Chatwoot contacts were erased between the R2 and Twenty steps until Chatwoot was retired (24 October 2026); `erasure_requests.removed_contacts` is no longer written and keeps the earlier counts.
+- **Connections**: one Postgres connection per run. The `talent` role is capped at 5 connections on pg-main.
 
 - **CRM sync**: ten submissions a run (Twenty allows the API key 100 requests a minute, shared with the leads route); a 429 ends the run quietly and the rest go next minute. One failing submission is logged by reference and retried next run. A person is matched by phone; staff's worker status (callable, placed) is never downgraded, but a do-not-contact request always wins.
 - **Delivery reports** (new, no n8n equivalent): `sms_acknowledgements.delivery_status` is `delivered`, `failed` or `pending`, with Fast2SMS's own status and text in `delivery_detail`; a late or repeated report never turns delivered back. Only accepted acknowledgements are touched; reports for other messages answer 200 `matched: 0` so Fast2SMS stops retrying. The preprocessor keeps only the request ID, status, text and time, so no phone number lands in job arguments. In Twenty the Communication's Delivery becomes **Delivered** or **Failed** (with the reason in Error). Fast2SMS keeps reports about 7 days: acknowledgements from before 11 October 2026 stay Sent.
@@ -139,7 +136,7 @@ Cron is Windmill's six-field form (seconds first), timezone Asia/Kolkata: acknow
 
 ## Deliveries and the lead inbox (roadmap 1F)
 
-- **Deliveries.** Each application gets four rows (a trigger on `submissions`): `sms` (3 attempts), `chatwoot` (3), `crm` (8), `files` (8). A run works them in the order sms, crm, files, chatwoot. The dispatcher claims due rows with `FOR UPDATE SKIP LOCKED`; a failure waits 1, 2, 4… minutes (at most an hour), and at the cap the row is `dead`. An SMS whose send was ambiguous or interrupted is `unknown` and is never resent. When the acknowledgement's status changes (on WhatsApp or by SMS: accepted, delivered, read, failed), a trigger reopens the `crm` row so Twenty shows it. A `wait` (the WhatsApp report not in yet) puts the row back a minute later without counting an attempt. The older status columns are kept and still written; the view `delivery_status` shows the old statuses from the deliveries, and setup carried the existing statuses over once.
+- **Deliveries.** Each application gets three rows (a trigger on `submissions`): `sms` (3 attempts), `crm` (8), `files` (8). A run works them in the order sms, crm, files. The dispatcher claims due rows with `FOR UPDATE SKIP LOCKED`; a failure waits 1, 2, 4… minutes (at most an hour), and at the cap the row is `dead`. An SMS whose send was ambiguous or interrupted is `unknown` and is never resent. When the acknowledgement's status changes (on WhatsApp or by SMS: accepted, delivered, read, failed), a trigger reopens the `crm` row so Twenty shows it. A `wait` (the WhatsApp report not in yet) puts the row back a minute later without counting an attempt. The older status columns (`sms_acknowledgements.status`, `crm_sync`) are kept and still written; the view `delivery_status` shows the old statuses from the deliveries, and setup carried the existing statuses over once. The `chatwoot` target retired with Chatwoot (24 October 2026): setup deletes its rows, the target is no longer allowed, and the `submissions` columns only it used (`status`, `attempts`, `last_error`, `chatwoot_contact_id`, `chatwoot_conversation_id`) are dropped.
 - **Connections.** The talent role has five. At most: one intake per request in flight, the dispatcher (one at a time, advisory lock; intake's targeted run exits at once if the dispatcher holds the lock), retention (hourly), a delivery report. The dispatcher replaced four every-minute schedules.
 - **Lead inbox.** A lead is saved (inbox row and its `crm` delivery, one statement) before the route answers 202, then filed in Twenty by `f/leads/sync_crm`. A Twenty outage no longer loses a lead; it waits and retries.
 - **Signed route.** `x-vspl-timestamp` (Unix seconds) and `x-vspl-signature: v1=<base64url HMAC-SHA256 of "v1:<timestamp>.<raw body>">`; more than five minutes off is refused. The route is created with `raw_string` so the body is checked exactly as signed.
@@ -162,10 +159,11 @@ The SQL for stuck work, SMS acknowledgements, the worker list, retention and era
 
 Run a script by hand: Windmill UI, or `POST /api/w/vspl/jobs/run_wait_result/p/f/talent/<name>` with `{}`.
 
-## Cutover
+## Cutover (history)
 
-1. Deploy with schedules off; send a test application straight to `/api/r/webhook/vspl-talent-intake` (with the secret, `ref` `VS-J-TEST…`) and check: 202, the row, the SMS row `accepted`, and the people upsert. Run deliver by hand once and check Chatwoot.
-2. Point Traefik's `hooks.vayasyaseva.com/webhook/vspl-talent-intake` at Windmill's `/api/r/webhook/vspl-talent-intake` (vayasya-infra, n8n webhook ingress). The website does not change.
-3. Unpublish n8n's acknowledge and deliver, then `pnpm windmill:deploy --enable-schedules`. (Running both at once is safe for duplicates, since every claim is `SKIP LOCKED`, but shares the 5 talent connections.)
-4. Hand-run retention once (queue a test request first), then `--enable-retention` and unpublish n8n's retention.
-5. Done 17 October 2026: the talent secrets moved to `growth/windmill-talent` (vayasya-infra `apps/windmill/overlays/growth/secrets-talent.sops.yaml`, the deploy default) and `integrations/n8n` and its CI steps were removed. Deleting the n8n app itself (its database, `n8n-env`, the old webhook ingress) is the owner's step, after the rollback window.
+The move from n8n is finished. In brief, for the record:
+
+1. October 2026: Windmill deployed with schedules off, a test application sent straight to the intake route, then Traefik's `hooks.vayasyaseva.com/webhook/vspl-talent-intake` pointed at Windmill; the website did not change.
+2. n8n's workflows unpublished as Windmill's schedules were turned on (`--enable-schedules`, then `--enable-retention` after a hand-run check).
+3. 17 October 2026: the talent secrets moved to `growth/windmill-talent` (the deploy default) and `integrations/n8n` and its CI steps were removed.
+4. 24 October 2026: Chatwoot retired (the `chatwoot` delivery, its erasure step, `f/talent/deliver` and the `chatwoot_*` variables) and the n8n app deleted. Final dumps of the chatwoot and n8n databases, and a copy of the `vayasya-chatwoot` bucket, are in R2 at `vayasya-production-postgres/archive/2026-10-24/`, expiring after 30 days.

@@ -47,7 +47,7 @@ const REASONS: Record<Reason, { type: string; severity: Severity; what: (target:
 
 const DATABASES = { talent: "Job applications", leads: "Lead inbox" } as const;
 type Database = keyof typeof DATABASES;
-const TARGETS: Record<string, string> = { sms: "SMS", chatwoot: "Chatwoot", crm: "Twenty" };
+const TARGETS: Record<string, string> = { sms: "SMS", crm: "Twenty", files: "Twenty files" };
 
 export interface Condition {
   key: string;
@@ -143,7 +143,9 @@ export async function healthEvents(health: Health, store: Pick<NotifyStore, "key
     const [db, reason] = key.slice(HEALTH_KEY_PREFIX.length).split(":");
     // A database this check could not read: its counts are unknown, so nothing there is resolved.
     if (reason !== "unreadable" && !checked.includes(db as Database)) continue;
-    events.push(event({ ...describeKey(key), summary: "Clear at the latest health check." }, "resolved"));
+    const condition = describeKey(key);
+    // The resolution says what had fired (the hub renders it as "Cleared at …. Was: <summary>").
+    events.push(event({ ...condition, summary: condition.title }, "resolved"));
     result.resolved.push(key);
   }
   return { events, result };

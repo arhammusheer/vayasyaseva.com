@@ -323,7 +323,7 @@ export const agentInfoObjectSchema = z
       .trim()
       .min(1)
       .max(MAX_AGENT_NAME_LENGTH)
-      // Plain text: it is shown to staff in email and Chatwoot.
+      // Plain text: it is shown to staff in email and Twenty.
       .regex(/^[\p{L}\p{N} .,_+()/:-]+$/u, "Letters, numbers, spaces and . , _ + ( ) / : - only")
       .meta({ example: "Example Assistant" }),
   })

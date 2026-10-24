@@ -111,6 +111,12 @@ export interface QuickApplyCopy {
    */
   inCluster: Record<JobsMarketId, { title: string; heading: string }>;
   next: string;
+  /**
+   * An answer the link or page gave (?work=packing, a role page) shows as one
+   * confirmed line, "Work: Packing ✓ · change": `short` names the question,
+   * `change` reopens its answers.
+   */
+  answered: { change: string; short: Record<QuickQuestion, string> };
   questions: Record<string, { question: string; hint?: string }>;
   labels: Record<string, string>;
   details: {
@@ -151,6 +157,10 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       "andhra-pradesh": { title: "Apply for Work in Andhra Pradesh: Quick Form", heading: "Looking for work in Andhra Pradesh?" },
     },
     next: "Next",
+    answered: {
+      change: "change",
+      short: { work: "Work", trade: "Trade", iti: "ITI", machines: "Machines", forklift: "Licence", computer: "Computer", experience: "Experience", education: "Studied", shift: "Shift", start: "Start", area: "Area" },
+    },
     questions: {
       work: { question: "What work are you looking for?" },
       trade: { question: "Which ITI trade?" },
@@ -236,6 +246,10 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       "andhra-pradesh": { title: "आंध्र प्रदेश में काम के लिए अप्लाई करें: छोटा फ़ॉर्म", heading: "आंध्र प्रदेश में काम चाहिए?" },
     },
     next: "आगे",
+    answered: {
+      change: "बदलें",
+      short: { work: "काम", trade: "ट्रेड", iti: "ITI", machines: "मशीनें", forklift: "लाइसेंस", computer: "कंप्यूटर", experience: "अनुभव", education: "पढ़ाई", shift: "शिफ्ट", start: "शुरुआत", area: "इलाका" },
+    },
     questions: {
       work: { question: "आपको कौन-सा काम चाहिए?" },
       trade: { question: "कौन-सा ITI ट्रेड?" },
@@ -321,6 +335,10 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       "andhra-pradesh": { title: "Andhra Pradesh Job: Apply Karein, Chhota Form", heading: "Andhra Pradesh mein kaam chahiye?" },
     },
     next: "Aage",
+    answered: {
+      change: "badlein",
+      short: { work: "Kaam", trade: "Trade", iti: "ITI", machines: "Machines", forklift: "Licence", computer: "Computer", experience: "Anubhav", education: "Padhai", shift: "Shift", start: "Shuruaat", area: "Ilaka" },
+    },
     questions: {
       work: { question: "Aapko kaun-sa kaam chahiye?" },
       trade: { question: "Kaun-sa ITI trade?" },
@@ -406,6 +424,10 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       "andhra-pradesh": { title: "ਆਂਧਰਾ ਪ੍ਰਦੇਸ਼ ਵਿੱਚ ਕੰਮ ਲਈ ਅਪਲਾਈ ਕਰੋ: ਛੋਟਾ ਫ਼ਾਰਮ", heading: "ਆਂਧਰਾ ਪ੍ਰਦੇਸ਼ ਵਿੱਚ ਕੰਮ ਚਾਹੀਦਾ ਹੈ?" },
     },
     next: "ਅੱਗੇ",
+    answered: {
+      change: "ਬਦਲੋ",
+      short: { work: "ਕੰਮ", trade: "ਟ੍ਰੇਡ", iti: "ITI", machines: "ਮਸ਼ੀਨਾਂ", forklift: "ਲਾਇਸੈਂਸ", computer: "ਕੰਪਿਊਟਰ", experience: "ਤਜਰਬਾ", education: "ਪੜ੍ਹਾਈ", shift: "ਸ਼ਿਫ਼ਟ", start: "ਸ਼ੁਰੂਆਤ", area: "ਇਲਾਕਾ" },
+    },
     questions: {
       work: { question: "ਤੁਹਾਨੂੰ ਕਿਹੜਾ ਕੰਮ ਚਾਹੀਦਾ ਹੈ?" },
       trade: { question: "ਕਿਹੜਾ ITI ਟ੍ਰੇਡ?" },
@@ -491,6 +513,10 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       "andhra-pradesh": { title: "ಆಂಧ್ರ ಪ್ರದೇಶದಲ್ಲಿ ಕೆಲಸಕ್ಕೆ ಅರ್ಜಿ: ಚಿಕ್ಕ ಫಾರ್ಮ್", heading: "ಆಂಧ್ರ ಪ್ರದೇಶದಲ್ಲಿ ಕೆಲಸ ಬೇಕೇ?" },
     },
     next: "ಮುಂದೆ",
+    answered: {
+      change: "ಬದಲಾಯಿಸಿ",
+      short: { work: "ಕೆಲಸ", trade: "ಟ್ರೇಡ್", iti: "ITI", machines: "ಯಂತ್ರಗಳು", forklift: "ಲೈಸೆನ್ಸ್", computer: "ಕಂಪ್ಯೂಟರ್", experience: "ಅನುಭವ", education: "ಓದು", shift: "ಶಿಫ್ಟ್", start: "ಆರಂಭ", area: "ಪ್ರದೇಶ" },
+    },
     questions: {
       work: { question: "ನಿಮಗೆ ಯಾವ ಕೆಲಸ ಬೇಕು?" },
       trade: { question: "ಯಾವ ITI ಟ್ರೇಡ್?" },

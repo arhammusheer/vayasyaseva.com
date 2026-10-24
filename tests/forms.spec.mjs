@@ -152,6 +152,25 @@ try {
   await open('/en-in/jobs/warehouse');
   assert.ok((await page.locator('[data-step=work] .is-selected').textContent()).includes('Warehouse'));
   console.log('Category and role pages prefill and tag the shared intake; send another retains the page role');
+  // A given answer (?work=packing from an ad) is one confirmed line, the next question the active step; "change" reopens the list.
+  await page.evaluate(()=>sessionStorage.clear());
+  await open('/hi-latn-in/jobs/kapurthala?work=packing&cluster=kapurthala');
+  await page.locator('[data-step=work].quick-answered').waitFor();
+  assert.match(await page.locator('[data-step=work]').innerText(),/Kaam:\s*Packing\s*·\s*badlein/);
+  assert.equal(await page.locator('[data-step=work] .quick-pill').count(),0);
+  assert.equal(await page.locator('.quick-question').first().getAttribute('id'),'quick-q-experience');
+  await page.locator('[data-step=work] .quick-answered-change').click();await tick();
+  assert.equal(await page.evaluate(()=>document.activeElement?.id),'quick-q-work');
+  assert.equal(await page.locator('[data-step=work] .quick-pill[aria-pressed=true]').count(),1);
+  await page.locator('[data-step=work] .quick-pill',{hasText:'Warehouse'}).click();
+  await page.locator('[data-step=work] .jobs-submit').click();await tick();
+  assert.match(await page.locator('[data-step=work]').innerText(),/Packing, Warehouse/);
+  // The pay line and its breakdown, worked out from the Punjab minimum wage; none on a market without one.
+  assert.match(await page.locator('.quick-pay').innerText(),/₹600\+ rozana\s*PF \+ ESI milakar/);
+  await page.locator('.quick-pay-how summary').click();
+  assert.match(await page.locator('.quick-pay-how').innerText(),/₹519[\s\S]*₹67[\s\S]*₹17[\s\S]*₹603[\s\S]*₹66[\s\S]*₹453/);
+  await open('/hi-latn-in/jobs/uttarakhand');assert.equal(await page.locator('.quick-pay').count(),0);
+  console.log('Given answers show as confirmed lines with change; Kapurthala shows ₹600+ with its breakdown');
   // The cluster jobs hub sends "web", its locale, its cluster and its page path.
   for (const [locale, tag] of [['en-in','en-IN'],['hi-latn-in','hi-Latn-IN']]) {
     await page.evaluate(()=>sessionStorage.clear());await open('/'+locale+'/jobs/haridwar'+complete);

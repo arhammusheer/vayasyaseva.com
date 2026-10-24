@@ -66,3 +66,24 @@ test('Gratuity: 15/26 of monthly wages per year; 5 years (1 for fixed-term); a p
   const big = c.gratuity(200000, 30, 0);
   assert.deepEqual([big.amount, big.capped], [2000000, true]);
 });
+
+// The pay a jobs page states (src/content/pay.ts): Kapurthala's "₹600+ a day,
+// including PF + ESI" must hold at the Punjab unskilled minimum, and the
+// breakdown lines must add up as shown. A wage revision that breaks the
+// claim fails here before the page or the ads say something untrue.
+test('Pay breakdown: Punjab unskilled minimum plus employer PF and ESI is ₹600+ a day', async () => {
+  const { payBreakdown } = await importTs('src/content/pay.ts');
+  const { jobClusters } = await importTs('src/content/pages/job-clusters.ts');
+  const b = payBreakdown({ state: 'punjab', skill: 'unskilled' });
+  assert.deepEqual(b, { monthly: 13486, wage: 519, employerPf: 67, employerEsic: 17, employer: 84, total: 603, workerShare: 66, takeHome: 453 });
+  assert.equal(b.wage + b.employerPf + b.employerEsic, b.total);
+  assert.equal(b.wage - b.workerShare, b.takeHome);
+  for (const [locale, clusters] of Object.entries(jobClusters)) {
+    for (const cluster of clusters) {
+      if (!cluster.pay) continue;
+      const floor = Number(cluster.pay.figure.match(/₹([\d,]+)\+/)?.[1].replace(/,/g, ''));
+      assert.ok(floor > 0, `${locale} ${cluster.slug}: the figure names a ₹ amount with +`);
+      assert.ok(payBreakdown(cluster.pay.basis).total >= floor, `${locale} ${cluster.slug}: ${cluster.pay.figure} is more than the breakdown supports`);
+    }
+  }
+});

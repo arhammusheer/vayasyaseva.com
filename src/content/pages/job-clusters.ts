@@ -1,6 +1,7 @@
 import type { FaqItem } from "../types";
 import type { Locale } from "@/lib/i18n";
 import type { ClusterId } from "@/content/registry/identifiers";
+import type { PayBasis } from "@/content/pay";
 import { AGE_FAQ } from "./job-hubs";
 
 /**
@@ -16,9 +17,12 @@ import { AGE_FAQ } from "./job-hubs";
  * every Apply link opens: the lede names the areas, then the form, what
  * happens after you apply and three questions (role links live on /jobs). "Who pays me?" is the only payroll line on the jobs
  * side. Job-page voice (PLAN §6.2): short sentences, words a class-10 reader
- * knows. Claims discipline: no pay figures, no promised call, no guarantee
- * of work, no employer names, no part-time. hi-IN and hi-Latn-IN are drafts
- * pending native review.
+ * knows. Claims discipline: no promised call, no guarantee of work, no
+ * employer names, no part-time. The one pay figure is a market's `pay`
+ * (Kapurthala since 24 Oct 2026, the figure its ads carry): "₹600+ a day"
+ * with PF and ESI included, broken down from the state minimum wage
+ * (src/content/pay.ts); no wage above the minimum is promised. hi-IN and
+ * hi-Latn-IN are drafts pending native review.
  */
 export interface JobClusterCopy {
   slug: Extract<ClusterId, "haridwar" | "bengaluru" | "jalandhar" | "kapurthala" | "uttarakhand" | "punjab" | "dehradun" | "visakhapatnam" | "andhra-pradesh">;
@@ -35,7 +39,97 @@ export interface JobClusterCopy {
   after: { label: string; steps: [string, string, string] };
   faqTitle: string;
   faqs: FaqItem[];
+  /** The day's pay, where a market has open work to state it for. Shown under the lede only where present. */
+  pay?: ClusterPay;
 }
+
+/**
+ * The pay line and its breakdown. `basis` names the minimum wage the
+ * figures are worked out from (src/content/pay.ts); the copy only words them.
+ */
+export interface ClusterPay {
+  basis: PayBasis;
+  /** The big figure: "₹600+ a day". */
+  figure: string;
+  /** Directly under it: "including PF + ESI". */
+  includes: string;
+  how: {
+    summary: string;
+    /** The wage line, given the monthly minimum as printed ("₹13,486"). */
+    wage: (monthly: string) => string;
+    employerPf: string;
+    employerEsic: string;
+    total: string;
+    workerShare: string;
+    takeHome: string;
+    note: string;
+  };
+}
+
+/** Kapurthala's packing work: the Punjab unskilled minimum, the figure its ads carry. */
+const PUNJAB_UNSKILLED: PayBasis = { state: "punjab", skill: "unskilled" };
+const KAPURTHALA_PAY: Record<"en-IN" | "hi-IN" | "hi-Latn-IN" | "pa-IN", ClusterPay> = {
+  "en-IN": {
+    basis: PUNJAB_UNSKILLED,
+    figure: "₹600+ a day",
+    includes: "including PF + ESI",
+    how: {
+      summary: "How ₹600+ is made up",
+      wage: (m) => `Punjab minimum wage, unskilled (${m} a month ÷ 26 days)`,
+      employerPf: "PF paid by the employer, with EDLI and admin",
+      employerEsic: "ESI paid by the employer",
+      total: "Total a day",
+      workerShare: "Your own PF (12%) and ESI (0.75%), cut from the wage",
+      takeHome: "In hand a day, at the minimum wage",
+      note: "The client company pays at least this. Your offer letter gives the exact wage.",
+    },
+  },
+  "hi-IN": {
+    basis: PUNJAB_UNSKILLED,
+    figure: "₹600+ रोज़ाना",
+    includes: "PF + ESI मिलाकर",
+    how: {
+      summary: "₹600+ कैसे बनता है",
+      wage: (m) => `पंजाब की न्यूनतम मज़दूरी, अकुशल (${m} महीना ÷ 26 दिन)`,
+      employerPf: "एम्प्लॉयर का PF, EDLI और एडमिन के साथ",
+      employerEsic: "एम्प्लॉयर का ESI",
+      total: "कुल रोज़ाना",
+      workerShare: "आपका अपना PF (12%) और ESI (0.75%), मज़दूरी से कटता है",
+      takeHome: "न्यूनतम मज़दूरी पर हाथ में रोज़ाना",
+      note: "क्लाइंट कंपनी कम से कम इतना देती है। सही मज़दूरी आपके ऑफ़र लेटर में होगी।",
+    },
+  },
+  "hi-Latn-IN": {
+    basis: PUNJAB_UNSKILLED,
+    figure: "₹600+ rozana",
+    includes: "PF + ESI milakar",
+    how: {
+      summary: "₹600+ kaise banta hai",
+      wage: (m) => `Punjab ki minimum wage, unskilled (${m} mahina ÷ 26 din)`,
+      employerPf: "Employer ka PF, EDLI aur admin ke saath",
+      employerEsic: "Employer ka ESI",
+      total: "Kul rozana",
+      workerShare: "Aapka apna PF (12%) aur ESI (0.75%), wage se katta hai",
+      takeHome: "Minimum wage par haath mein rozana",
+      note: "Client company kam se kam itna deti hai. Sahi wage aapke offer letter mein hogi.",
+    },
+  },
+  "pa-IN": {
+    basis: PUNJAB_UNSKILLED,
+    figure: "₹600+ ਰੋਜ਼ਾਨਾ",
+    includes: "PF + ESI ਸਮੇਤ",
+    how: {
+      summary: "₹600+ ਕਿਵੇਂ ਬਣਦਾ ਹੈ",
+      wage: (m) => `ਪੰਜਾਬ ਦੀ ਘੱਟੋ-ਘੱਟ ਤਨਖਾਹ, ਅਕੁਸ਼ਲ (${m} ਮਹੀਨਾ ÷ 26 ਦਿਨ)`,
+      employerPf: "ਐਂਪਲਾਇਰ ਦਾ PF, EDLI ਅਤੇ ਐਡਮਿਨ ਸਮੇਤ",
+      employerEsic: "ਐਂਪਲਾਇਰ ਦਾ ESI",
+      total: "ਕੁੱਲ ਰੋਜ਼ਾਨਾ",
+      workerShare: "ਤੁਹਾਡਾ ਆਪਣਾ PF (12%) ਅਤੇ ESI (0.75%), ਤਨਖਾਹ ਵਿੱਚੋਂ ਕੱਟਦਾ ਹੈ",
+      takeHome: "ਘੱਟੋ-ਘੱਟ ਤਨਖਾਹ 'ਤੇ ਹੱਥ ਵਿੱਚ ਰੋਜ਼ਾਨਾ",
+      note: "ਕਲਾਇੰਟ ਕੰਪਨੀ ਘੱਟੋ-ਘੱਟ ਇੰਨਾ ਦਿੰਦੀ ਹੈ। ਪੱਕੀ ਤਨਖਾਹ ਤੁਹਾਡੇ ਆਫ਼ਰ ਲੈਟਰ ਵਿੱਚ ਹੋਵੇਗੀ।",
+    },
+  },
+};
 
 export const jobClusters: Record<Locale, JobClusterCopy[]> = {
   "en-IN": [
@@ -129,6 +223,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       eyebrow: "JOBS · KAPURTHALA",
       heading: "Packing and factory jobs in Kapurthala and Phagwara.",
       lede: "Packing work in Kapurthala now. Factory and warehouse work across Phagwara and Sultanpur Lodhi.",
+      pay: KAPURTHALA_PAY["en-IN"],
       after: { label: "After you apply", steps: ["WhatsApp or SMS", "We call if the work fits", "You decide"] },
       faqTitle: "Questions.",
       faqs: [
@@ -332,6 +427,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       eyebrow: "नौकरी · कपूरथला",
       heading: "कपूरथला और फगवाड़ा में पैकिंग और फ़ैक्टरी की नौकरी।",
       lede: "कपूरथला में अभी पैकिंग का काम है। फगवाड़ा और सुल्तानपुर लोधी में फ़ैक्टरी और वेयरहाउस का काम।",
+      pay: KAPURTHALA_PAY["hi-IN"],
       after: { label: "आवेदन के बाद", steps: ["WhatsApp या SMS", "काम लायक हुआ तो हम कॉल करते हैं", "फ़ैसला आपका"] },
       faqTitle: "सवाल।",
       faqs: [
@@ -525,6 +621,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       eyebrow: "Jobs · Kapurthala",
       heading: "Kapurthala aur Phagwara mein packing aur factory ki job.",
       lede: "Kapurthala mein abhi packing ka kaam hai. Phagwara aur Sultanpur Lodhi mein factory aur warehouse ka kaam.",
+      pay: KAPURTHALA_PAY["hi-Latn-IN"],
       after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Kaam laayak hua to hum call karte hain", "Faisla aapka"] },
       faqTitle: "Sawaal.",
       faqs: [
@@ -662,6 +759,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       eyebrow: "ਨੌਕਰੀ · ਕਪੂਰਥਲਾ",
       heading: "ਕਪੂਰਥਲਾ ਅਤੇ ਫਗਵਾੜਾ ਵਿੱਚ ਪੈਕਿੰਗ ਅਤੇ ਫ਼ੈਕਟਰੀ ਦੀ ਨੌਕਰੀ।",
       lede: "ਕਪੂਰਥਲਾ ਵਿੱਚ ਹੁਣ ਪੈਕਿੰਗ ਦਾ ਕੰਮ ਹੈ। ਫਗਵਾੜਾ ਅਤੇ ਸੁਲਤਾਨਪੁਰ ਲੋਧੀ ਵਿੱਚ ਫ਼ੈਕਟਰੀ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ।",
+      pay: KAPURTHALA_PAY["pa-IN"],
       after: { label: "ਅਪਲਾਈ ਕਰਨ ਤੋਂ ਬਾਅਦ", steps: ["VAYSPL ਤੋਂ SMS", "ਕੰਮ ਲਾਇਕ ਹੋਇਆ ਤਾਂ ਅਸੀਂ ਕਾਲ ਕਰਦੇ ਹਾਂ", "ਫ਼ੈਸਲਾ ਤੁਹਾਡਾ"] },
       faqTitle: "ਸਵਾਲ।",
       faqs: [

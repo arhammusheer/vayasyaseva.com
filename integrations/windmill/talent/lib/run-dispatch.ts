@@ -11,22 +11,20 @@
  *             (runAcknowledge): accepted → done; a rejection → dead; a rate
  *             limit → retry; an ambiguous or interrupted send → unknown,
  *             never sent again automatically
- *   chatwoot  the conversation, note and files (runDeliver)
  *   crm       the person, application and acknowledgement in Twenty (syncOne);
  *             runs again when the acknowledgement's status changes (trigger)
  *   files     the application's photos and documents, from R2 into Twenty as
  *             attachments on the application (runFiles); claimable once the
  *             crm step has made the application
  *
- * In that order: sms, crm, files, chatwoot.
+ * In that order: sms, crm, files. (The chatwoot target, the conversation in
+ * Chatwoot's "Jobs, website" inbox, retired with Chatwoot on 24 Oct 2026.)
  *
  * A retry waits 1, 2, 4… minutes (at most an hour); at a target's attempt cap
  * the row is dead and waits for a person (f/platform/health counts it).
  */
 import { ackSyncState, type SyncCandidate } from "./crm.ts";
 import { runDeliveryCheck, type CheckResult, type DeliveryReport } from "./delivery.ts";
-import type { DeliverDeps } from "./run-deliver.ts";
-import { runDeliver } from "./run-deliver.ts";
 import { runAcknowledge } from "./run-acknowledge.ts";
 import { runWhatsAppAck, type WhatsAppAckDeps } from "./whatsapp-ack.ts";
 import { syncOne } from "./run-sync-crm.ts";
@@ -38,7 +36,6 @@ import {
   LEGACY_STATUS,
   RECOVER_INTERRUPTED_SENDS,
   RECOVER_STUCK_DISPATCH,
-  RELEASE_SUBMISSION,
   SYNC_CANDIDATE_FOR,
 } from "./sql.ts";
 import type { ClaimedAcknowledgement, Fast2SmsResponse } from "./types.ts";
@@ -46,7 +43,7 @@ import type { Twenty, TwentyFiles } from "./twenty.ts";
 import type { Query } from "./db.ts";
 import type { Notify } from "../../notify/lib/emit.ts";
 
-export type Target = "sms" | "chatwoot" | "crm" | "files";
+export type Target = "sms" | "crm" | "files";
 /** wait: look again in `seconds` without using an attempt (the WhatsApp report). */
 export type Outcome = { kind: "done" | "retry" | "unknown" | "dead"; error?: string | null } | { kind: "wait"; seconds: number; error?: null };
 
@@ -55,7 +52,6 @@ export interface DispatchDeps {
   sendSms: (claim: ClaimedAcknowledgement) => Promise<Fast2SmsResponse>;
   /** The WhatsApp acknowledgement; null sends the SMS only. */
   whatsapp?: Pick<WhatsAppAckDeps, "sendWhatsApp" | "lookupWhatsApp" | "templates" | "now"> | null;
-  chatwoot: Omit<DeliverDeps, "query">;
   /** Twenty; null when it is not configured (the CRM deliveries wait). */
   crm: Twenty | null;
   /** Twenty's file upload and the R2 download; null when not configured (the files deliveries wait). */
@@ -84,13 +80,13 @@ export interface DispatchResult {
 
 /**
  * How many of each a run may work (Twenty allows the API key 100 requests a
- * minute, shared with the leads route; one note per run, as deliver did; one
- * application's files, up to eight, about four requests each).
+ * minute, shared with the leads route; one application's files, up to
+ * eight, about four requests each).
  */
-export const BUDGET: Record<Target, number> = { sms: 5, crm: 10, files: 1, chatwoot: 1 };
+export const BUDGET: Record<Target, number> = { sms: 5, crm: 10, files: 1 };
 
 /** The order a run works the targets in. */
-export const TARGETS: Target[] = ["sms", "crm", "files", "chatwoot"];
+export const TARGETS: Target[] = ["sms", "crm", "files"];
 /** The targets that share Twenty's per-key rate limit: a 429 on one ends both for the run. */
 const TWENTY_TARGETS: Target[] = ["crm", "files"];
 
@@ -100,7 +96,6 @@ export const backoffSeconds = (attempts: number) => Math.min(60 * 2 ** Math.max(
 const message = (err: unknown) => (err instanceof Error ? err.message : "unknown error").slice(0, 500);
 
 interface Legacy {
-  chatwoot: string | null;
   sms: string | null;
   sms_attempts: number | null;
   crm_synced: boolean;
@@ -133,24 +128,6 @@ async function sms(deps: DispatchDeps, submissionId: string): Promise<Outcome> {
   return { kind: "retry", error: now ? `Acknowledgement is ${now.sms}` : "No acknowledgement row" };
 }
 
-async function chatwoot(deps: DispatchDeps, submissionId: string): Promise<Outcome> {
-  try {
-    const result = await runDeliver({ query: deps.query, ...deps.chatwoot }, submissionId);
-    if (result) return { kind: "done" };
-  } catch (err) {
-    // Delivered before the failure (a file download): done; the note is there and is never posted twice.
-    const now = await legacy(deps.query, submissionId);
-    if (now?.chatwoot === "delivered") return { kind: "done", error: message(err) };
-    const [released] = await deps.query<{ status: string }>(RELEASE_SUBMISSION, [submissionId, message(err)]);
-    return released?.status === "failed" ? { kind: "dead", error: message(err) } : { kind: "retry", error: message(err) };
-  }
-  const now = await legacy(deps.query, submissionId);
-  if (now?.chatwoot === "delivered") return { kind: "done" };
-  if (now?.chatwoot === "failed") return { kind: "dead", error: "Failed three times" };
-  // Received but not claimable yet (a voice note still transcribing), or another run has it.
-  return { kind: "retry", error: now ? `Submission is ${now.chatwoot}` : "No submission" };
-}
-
 class RateLimited extends Error {}
 
 async function crm(deps: DispatchDeps, submissionId: string): Promise<Outcome> {
@@ -179,13 +156,13 @@ async function files(deps: DispatchDeps, submissionId: string): Promise<Outcome>
   }
 }
 
-const STEPS: Record<Target, (deps: DispatchDeps, submissionId: string) => Promise<Outcome>> = { sms, crm, files, chatwoot };
+const STEPS: Record<Target, (deps: DispatchDeps, submissionId: string) => Promise<Outcome>> = { sms, crm, files };
 
 // --- The run ----------------------------------------------------------------------
 
 export async function runDispatch(deps: DispatchDeps, options: DispatchOptions = {}): Promise<DispatchResult> {
   const log = deps.log ?? ((m: string) => console.error(m));
-  const zero = () => ({ sms: 0, crm: 0, files: 0, chatwoot: 0 });
+  const zero = () => ({ sms: 0, crm: 0, files: 0 });
   const result: DispatchResult = { recovered: 0, done: zero(), retried: zero(), failed: zero() };
   const [lock] = await deps.query<{ locked: boolean }>(DISPATCH_LOCK);
   // The running dispatcher picks up whatever this run would have done.

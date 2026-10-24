@@ -10,7 +10,7 @@
 // Console. The dedupeKeys are per week (per day for a failure), so a rerun is
 // one notification.
 
-/** The events for one week's report; `message` is the Markdown sent to Chatwoot. */
+/** The events for one week's report; `message` is the report's Markdown (the email body). */
 export function seoEvents({ weekEnd, ruleStatus, message }) {
   const events = [
     {

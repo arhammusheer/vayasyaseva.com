@@ -10,11 +10,10 @@
  * are read from the cluster into memory and sent to Windmill's API.
  *
  * 1. Reads the secrets from the cluster: the talent database password
- *    (data/pg-main-talent), the R2 keys, webhook secret, Fast2SMS key and
- *    retention Chatwoot token (growth/windmill-talent, vayasya-infra
+ *    (data/pg-main-talent), the R2 keys, webhook secret and Fast2SMS key
+ *    (growth/windmill-talent, vayasya-infra
  *    apps/windmill/overlays/growth/secrets-talent.sops.yaml; --secrets-from
- *    to read another Secret with the same keys), and the "Jobs, website"
- *    inbox identifier from Chatwoot. The API token is SUPERADMIN_SECRET in
+ *    to read another Secret with the same keys). The API token is SUPERADMIN_SECRET in
  *    growth/windmill-env (Windmill accepts it as a bearer token).
  *    The notification hub's (docs/notification-hub.md): the notify database
  *    password (data/pg-main-notify) and growth/windmill-notify
@@ -35,8 +34,9 @@
  *    the owner has set NTFY_TOKEN and RESEND_NOTIFY_API_KEY;
  *    --enable-schedules never turns them on). A re-run without the flags
  *    leaves them as they are. The schedules the dispatcher replaced
- *    (acknowledge, deliver, sync_crm, delivery_check) are turned off; the
- *    scripts stay, for hand runs.
+ *    (acknowledge, sync_crm, delivery_check) are turned off; the
+ *    scripts stay, for hand runs. RETIRED's schedules, routes, scripts and
+ *    variables are removed.
  * 7. Warms the route (the first call after a new version installs
  *    dependencies, ~7.5 s) with a wrong secret, expecting 403.
  *
@@ -78,9 +78,6 @@ const RESET_NOTIFY_POLICY = args.includes("--reset-notify-policy");
 const SECRETS_FROM = args.find((a) => a.startsWith("--secrets-from="))?.split("=")[1] ?? "windmill-talent";
 const BASE_URL_ARG = args.find((a) => a.startsWith("--base-url="))?.split("=")[1];
 
-const CHATWOOT = ["-n", "growth", "exec", "deploy/chatwoot", "--"];
-const INBOX_NAME = "Jobs, website";
-const ACCOUNT_ID = 1;
 const R2_ENDPOINT = "https://3f03827748ac33418f1176adaa436f26.r2.cloudflarestorage.com";
 const R2_BUCKET = "vayasya-talent-intake";
 const TALENT_DB_HOST = "pg-main-rw.data.svc.cluster.local";
@@ -110,14 +107,6 @@ function readValues(): Record<ConfigName, string> {
   // The lead inbox (vayasya-infra apps/pg-main, role leads): needed before this deploy.
   const leadsPassword = secretValue("data", "pg-main-leads", "password");
   const fromEnv = (key: string) => secretValue("growth", SECRETS_FROM, key);
-  step(`looking up the "${INBOX_NAME}" inbox identifier in Chatwoot`);
-  const out = kubectl([
-    ...CHATWOOT,
-    "bundle", "exec", "rails", "runner",
-    `i = Account.find(${ACCOUNT_ID}).inboxes.find_by!(name: ${JSON.stringify(INBOX_NAME)}); puts "IDENTIFIER=#{i.channel.identifier}"`,
-  ]);
-  const inboxIdentifier = out.match(/^IDENTIFIER=(\S+)$/m)?.[1];
-  if (!inboxIdentifier) throw new Error(`no "${INBOX_NAME}" API inbox in Chatwoot account ${ACCOUNT_ID}`);
   return {
     talent_pg_url: `postgres://talent:${encodeURIComponent(talentPassword)}@${TALENT_DB_HOST}:5432/talent`,
     fast2sms_api_key: fromEnv("FAST2SMS_API_KEY"),
@@ -126,10 +115,6 @@ function readValues(): Record<ConfigName, string> {
     r2_read_secret: fromEnv("TALENT_R2_SECRET_ACCESS_KEY"),
     r2_erase_key_id: fromEnv("TALENT_R2_ERASE_ACCESS_KEY_ID"),
     r2_erase_secret: fromEnv("TALENT_R2_ERASE_SECRET_ACCESS_KEY"),
-    chatwoot_admin_token: fromEnv("CHATWOOT_TALENT_ADMIN_TOKEN"),
-    chatwoot_inbox_identifier: inboxIdentifier,
-    chatwoot_base_url: "http://chatwoot.growth.svc.cluster.local",
-    chatwoot_account_id: String(ACCOUNT_ID),
     r2_endpoint: R2_ENDPOINT,
     r2_bucket: R2_BUCKET,
     twenty_base_url: "http://twenty.growth.svc.cluster.local",
@@ -232,14 +217,23 @@ function api(base: string, token: string) {
 }
 
 /**
- * Removed from SCRIPTS, so deploy takes them out of Windmill too: the route
- * first, then the script, then its variable. The WhatsApp apply chat
- * (19 Oct 2026) went the same day; acknowledgements go out on WhatsApp instead.
+ * Removed from SCRIPTS, so deploy takes them out of Windmill too: the
+ * schedule and route first, then the script, then its variables. The
+ * WhatsApp apply chat (19 Oct 2026) went the same day; acknowledgements go
+ * out on WhatsApp instead. Chatwoot's deliver script and variables went with
+ * Chatwoot (24 Oct 2026).
  */
 const RETIRED = {
+  schedules: ["f/talent/deliver"],
   routes: ["f/talent/whatsapp"],
-  scripts: ["f/talent/whatsapp"],
-  variables: ["f/talent/fast2sms_whatsapp_secret"],
+  scripts: ["f/talent/whatsapp", "f/talent/deliver"],
+  variables: [
+    "f/talent/fast2sms_whatsapp_secret",
+    "f/talent/chatwoot_admin_token",
+    "f/talent/chatwoot_inbox_identifier",
+    "f/talent/chatwoot_base_url",
+    "f/talent/chatwoot_account_id",
+  ],
 };
 
 /**
@@ -379,6 +373,9 @@ async function main() {
     if (replacedWereOn) step("the replaced schedules were on: f/talent/dispatch and f/leads/sync_crm will be on too");
     for (const spec of SCRIPTS) await schedule(asService, exists, spec, replacedWereOn);
     for (const spec of SCRIPTS) await route(asService, exists, spec);
+    for (const path of RETIRED.schedules) {
+      if (await exists(`/w/{ws}/schedules/exists/${path}`)) await asService.remove("DELETE", `/w/{ws}/schedules/delete/${path}`, `removing the retired schedule ${path}`);
+    }
     for (const path of RETIRED.routes) {
       if (await exists(`/w/{ws}/http_triggers/exists/${path}`)) await asService.remove("DELETE", `/w/{ws}/http_triggers/delete/${path}`, `removing the retired route of ${path}`);
     }

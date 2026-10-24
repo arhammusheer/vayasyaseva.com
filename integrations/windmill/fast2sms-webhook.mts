@@ -8,7 +8,7 @@
  * Fast2SMS (Oct 2026) lets the API key list webhooks but answers 401 to
  * creating one, so it is made once in the dashboard (Dev API → Webhooks →
  * Create webhook) with the values this prints; the script then confirms it.
- * Reads the Fast2SMS key (growth/n8n-env, as deploy.mts) and the secret
+ * Reads the Fast2SMS key (growth/windmill-talent, as deploy.mts) and the secret
  * (growth/windmill-fast2sms) from the cluster and prints neither.
  *
  * Fast2SMS API (docs.fast2sms.com, "Webhook (New)"), header Authorization:
@@ -56,7 +56,7 @@ async function call(method: string, url: string, apiKey: string, body?: unknown)
   return json;
 }
 
-const apiKey = secretValue("growth", "n8n-env", "FAST2SMS_API_KEY");
+const apiKey = secretValue("growth", "windmill-talent", "FAST2SMS_API_KEY");
 const dlrSecret = secretValue("growth", "windmill-fast2sms", "FAST2SMS_DLR_SECRET");
 
 const config = {

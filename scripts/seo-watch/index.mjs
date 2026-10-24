@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // The weekly SEO watch (PLAN §9.5; docs/seo-watch.md): a Search Console
-// report to the owner in Chatwoot every Monday, with the home retitle's
+// report to the owner every Monday, through the notification hub, with the home retitle's
 // rollback rule checked against the 13 weeks before it went live.
 //
 //   GOOGLE_ACCESS_TOKEN=... node scripts/seo-watch/index.mjs --dry-run     print the message
@@ -9,22 +9,15 @@
 // In the cluster (vayasya-infra apps/seo-watch) Google access is keyless: the
 // pod's projected service account token is exchanged through workload
 // identity federation (GOOGLE_WIF_AUDIENCE) for an access token of
-// GOOGLE_SERVICE_ACCOUNT. Chatwoot as for the compliance monitor
-// (CHATWOOT_BASE_URL, CHATWOOT_INBOX_IDENTIFIER).
+// GOOGLE_SERVICE_ACCOUNT. The hub as for the compliance monitor
+// (NOTIFY_URL, NOTIFY_INGEST_SECRET): the weekly report by email only, a
+// tripped rule as a push too (scripts/seo-watch/hub.mjs); its per-week
+// dedupeKey keeps a rerun to one.
 //
-//   --notify <to>   chatwoot | hub, or chatwoot,hub (default chatwoot). hub
-//                   posts to the notification hub (NOTIFY_URL,
-//                   NOTIFY_INGEST_SECRET): the weekly report by email only, a
-//                   tripped rule as a push too (scripts/seo-watch/hub.mjs). The
-//                   hub goes first; its per-week dedupeKey keeps a rerun to one.
-//
-// Search data goes to Chatwoot and the hub's email body only, never to logs
+// Search data goes to the hub's email body only, never to logs
 // or a push: the repository and its CI are public.
-import { mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
-import { dirname } from "node:path";
 import { parseArgs } from "node:util";
-import { chatwootClient } from "../wage-monitor/report.mjs";
-import { hubFromEnv, parseNotify } from "../lib/notify-hub.mjs";
+import { hubFromEnv } from "../lib/notify-hub.mjs";
 import { seoEvents, seoFailedEvent } from "./hub.mjs";
 
 const SITE = "sc-domain:vayasyaseva.com";
@@ -39,9 +32,8 @@ const MIN_BASELINE_PER_WEEK = 20;
 const KPI_M3 = { nonBrandImpressionsPerMonth: 2000, organicClicksPerMonth: 60, sidculHaridwarPosition: 10 };
 
 const { values } = parseArgs({
-  options: { "dry-run": { type: "boolean", default: false }, state: { type: "string", default: ".seo-watch/state.json" }, today: { type: "string" }, notify: { type: "string", default: "chatwoot" } },
+  options: { "dry-run": { type: "boolean", default: false }, today: { type: "string" } },
 });
-const NOTIFY = parseNotify(values.notify, ["chatwoot", "hub"]);
 const day = (d) => d.toISOString().slice(0, 10);
 const addDays = (iso, n) => day(new Date(Date.parse(`${iso}T00:00:00Z`) + n * 864e5));
 
@@ -263,14 +255,6 @@ function renderReport(r) {
 
 // ── Run ──────────────────────────────────────────────────────────────────────
 
-function readState(path) {
-  try {
-    return JSON.parse(readFileSync(path, "utf8"));
-  } catch {
-    return {};
-  }
-}
-
 async function main() {
   TOKEN = await googleToken();
   const today = values.today ?? day(new Date(Date.now() + 5.5 * 36e5));
@@ -280,37 +264,14 @@ async function main() {
     console.log(message);
     return;
   }
-  const env = process.env;
-  if (NOTIFY.includes("hub")) await hubFromEnv(env).send(seoEvents({ weekEnd: report.weeks.at(-1).end, ruleStatus: report.rule.status, message }));
-  if (!NOTIFY.includes("chatwoot")) {
-    console.log(`seo watch: sent to the hub (${report.rule.status}) for the week ending ${report.weeks.at(-1).end}`);
-    return;
-  }
-  const chatwoot = chatwootClient({ baseUrl: env.CHATWOOT_BASE_URL, inboxIdentifier: env.CHATWOOT_INBOX_IDENTIFIER });
-  const state = readState(values.state);
-  state.contact ??= (await chatwoot.createContact()).source_id;
-  const key = report.rule.status === "tripped" ? "alert" : "weekly";
-  state.conversations ??= {};
-  for (let attempt = 0; attempt < 2; attempt++) {
-    state.conversations[key] ??= (await chatwoot.createConversation(state.contact, { title: key === "alert" ? "SEO · home retitle rule tripped" : "SEO · weekly report" })).id;
-    try {
-      await chatwoot.message(state.contact, state.conversations[key], message);
-      break;
-    } catch (error) {
-      if (attempt || !/HTTP 404/.test(String(error))) throw error;
-      delete state.conversations[key];
-    }
-  }
-  mkdirSync(dirname(values.state), { recursive: true });
-  writeFileSync(`${values.state}.tmp`, JSON.stringify(state));
-  renameSync(`${values.state}.tmp`, values.state);
+  await hubFromEnv(process.env).send(seoEvents({ weekEnd: report.weeks.at(-1).end, ruleStatus: report.rule.status, message }));
   // Logs carry no search data (public CI, shared cluster logs): only the outcome.
   console.log(`seo watch: sent (${report.rule.status}) for the week ending ${report.weeks.at(-1).end}`);
 }
 
 main().catch(async (error) => {
   console.error(`seo watch failed: ${error?.message ?? error}`);
-  if (NOTIFY.includes("hub") && !values["dry-run"] && process.env.NOTIFY_URL && process.env.NOTIFY_INGEST_SECRET) {
+  if (!values["dry-run"] && process.env.NOTIFY_URL && process.env.NOTIFY_INGEST_SECRET) {
     try {
       await hubFromEnv().send([seoFailedEvent(error, day(new Date(Date.now() + 5.5 * 36e5)))]);
     } catch (notifyError) {

@@ -14,10 +14,6 @@ const VARIABLES = {
     r2_read_secret: { secret: true },
     r2_erase_key_id: { secret: true },
     r2_erase_secret: { secret: true },
-    chatwoot_admin_token: { secret: true },
-    chatwoot_inbox_identifier: { secret: true },
-    chatwoot_base_url: { secret: false },
-    chatwoot_account_id: { secret: false },
     r2_endpoint: { secret: false },
     r2_bucket: { secret: false },
     twenty_base_url: { secret: false },
@@ -517,7 +513,7 @@ const REASONS = {
     },
 };
 const DATABASES = { talent: "Job applications", leads: "Lead inbox" };
-const TARGETS = { sms: "SMS", chatwoot: "Chatwoot", crm: "Twenty" };
+const TARGETS = { sms: "SMS", crm: "Twenty", files: "Twenty files" };
 function describeKey(key) {
     const [db, reason, target = ""] = key.slice(HEALTH_KEY_PREFIX.length).split(":");
     const where = DATABASES[db] ?? db;
@@ -595,7 +591,8 @@ async function healthEvents(health, store) {
         const [db, reason] = key.slice(HEALTH_KEY_PREFIX.length).split(":");
         if (reason !== "unreadable" && !checked.includes(db))
             continue;
-        events.push(event({ ...describeKey(key), summary: "Clear at the latest health check." }, "resolved"));
+        const condition = describeKey(key);
+        events.push(event({ ...condition, summary: condition.title }, "resolved"));
         result.resolved.push(key);
     }
     return { events, result };

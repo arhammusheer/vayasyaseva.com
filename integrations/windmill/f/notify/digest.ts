@@ -600,6 +600,7 @@ function istTime(iso, withDate = true) {
         return time;
     return `${d.toLocaleDateString("en-IN", { timeZone: IST, day: "numeric", month: "short", year: "numeric" })} ${time} IST`;
 }
+const resolvedText = (event) => `Cleared at ${istTime(event.occurredAt)}. Was: ${firstLine(event.summary) || event.title}`;
 function piiLines(event, route) {
     const pii = event.pii;
     if (!pii || route.pii === "none")
@@ -614,7 +615,7 @@ function renderPush(event, route, delivery) {
     const base = { topic: route.topic, tags, ...(event.link ? { click: event.link.url } : {}) };
     const linkAction = event.link ? [{ action: "view", label: event.link.label, url: event.link.url }] : [];
     if (delivery.kind === "resolved") {
-        return { ...base, title: clip(`Resolved: ${event.title}`, 100), message: clip(firstLine(event.summary) || event.title, 300), priority: RESOLVED_PRIORITY, actions: linkAction };
+        return { ...base, title: clip(`Resolved: ${event.title}`, 100), message: clip(resolvedText(event), 300), priority: RESOLVED_PRIORITY, actions: linkAction };
     }
     if (delivery.kind === "reminder") {
         return {
@@ -649,7 +650,7 @@ function renderPush(event, route, delivery) {
 function renderEmail(event, kind) {
     const label = kind === "resolved" ? "Resolved: " : kind === "fallback" ? "Push failed, by email: " : event.severity === "critical" ? "[critical] " : event.severity === "warning" ? "[warning] " : "";
     const lines = [
-        event.summary.trim(),
+        kind === "resolved" ? resolvedText(event) : event.summary.trim(),
         kind !== "resolved" && event.body ? `\n${event.body.trim()}` : "",
         event.link ? `\n${event.link.label}: ${event.link.url}` : "",
         `\n${event.source} · ${event.type}${event.status ? ` · ${kind === "resolved" ? "resolved" : event.status}` : ""} · ${istTime(event.occurredAt)}`,

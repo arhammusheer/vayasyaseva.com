@@ -140,47 +140,6 @@ export const SKIP_SMS = `
 UPDATE sms_acknowledgements SET status = 'skipped', last_error = NULL, updated_at = now()
 WHERE submission_id = $1::uuid AND status = 'pending';`;
 
-// --- deliver --------------------------------------------------------------------
-
-export const RECOVER_STUCK_DELIVERIES = `
-UPDATE submissions
-SET status = CASE WHEN attempts >= 3 THEN 'failed' ELSE 'received' END,
-    last_error = coalesce(last_error, 'Timed out delivering to Chatwoot'),
-    updated_at = now()
-WHERE status = 'delivering' AND updated_at < now() - interval '15 minutes'
-RETURNING id;`;
-
-/** Waits until every voice note of a submission is transcribed (or failed). */
-export const CLAIM_SUBMISSION = `
-WITH claimed AS (
-  UPDATE submissions s
-  SET status = 'delivering', attempts = s.attempts + 1, updated_at = now()
-  WHERE s.id = (
-    SELECT c.id FROM submissions c
-    WHERE c.status = 'received'
-      AND NOT EXISTS (
-        SELECT 1 FROM attachments a
-        WHERE a.submission_id = c.id AND a.transcript_status IN ('pending', 'running'))
-    ORDER BY c.created_at LIMIT 1 FOR UPDATE SKIP LOCKED)
-  RETURNING s.id, s.ref, s.source, s.role, s.hub, s.channel, s.agent_name AS "agentName", s.form, s.applicant_name AS "applicantName", s.answers, s.locale, s.cluster, s.page_cluster AS "pageCluster", s.page_path AS "pagePath", s.phone, s.text
-)
-SELECT c.*, coalesce((
-  SELECT jsonb_agg(jsonb_build_object(
-    'id', a.id, 'position', a.position, 'kind', a.kind, 'key', a.r2_key, 'mime', a.mime,
-    'name', a.original_name, 'transcript', a.transcript, 'transcriptStatus', a.transcript_status
-  ) ORDER BY a.position)
-  FROM attachments a WHERE a.submission_id = c.id), '[]'::jsonb) AS attachments
-FROM claimed c;`;
-
-/** $1 submission id, $2 Chatwoot contact id (or null), $3 conversation id. */
-export const RECORD_CONVERSATION = `
-UPDATE submissions
-SET chatwoot_contact_id = $2, chatwoot_conversation_id = $3, updated_at = now()
-WHERE id = $1::uuid
-RETURNING id;`;
-
-export const MARK_DELIVERED = `UPDATE submissions SET status = 'delivered', last_error = NULL, updated_at = now() WHERE id = $1::uuid RETURNING id;`;
-
 // --- retention ------------------------------------------------------------------
 
 export const QUEUE_EXPIRED_AND_RECOVER = `
@@ -216,11 +175,10 @@ WITH claimed AS (
   RETURNING e.id, e.phone, e.reason
 )
 SELECT c.id, c.phone, c.reason,
-  coalesce((SELECT jsonb_agg(a.r2_key) FROM attachments a JOIN submissions s ON s.id = a.submission_id WHERE s.phone = c.phone), '[]'::jsonb) AS files,
-  coalesce((SELECT jsonb_agg(DISTINCT s.chatwoot_contact_id) FROM submissions s WHERE s.phone = c.phone AND s.chatwoot_contact_id IS NOT NULL), '[]'::jsonb) AS contacts
+  coalesce((SELECT jsonb_agg(a.r2_key) FROM attachments a JOIN submissions s ON s.id = a.submission_id WHERE s.phone = c.phone), '[]'::jsonb) AS files
 FROM claimed c;`;
 
-/** $1 request id, $2 phone, $3 files removed, $4 contacts removed, $5 Twenty attachments removed. Keeps counts only: phone and ref are cleared. */
+/** $1 request id, $2 phone, $3 files removed, $4 Twenty attachments removed. Keeps counts only: phone and ref are cleared. */
 export const DELETE_ROWS = `
 WITH gone AS (
   DELETE FROM submissions WHERE phone = $2 RETURNING id
@@ -229,8 +187,8 @@ WITH gone AS (
 )
 UPDATE erasure_requests
 SET status = 'done', processed_at = now(), updated_at = now(),
-    removed_submissions = (SELECT count(*) FROM gone), removed_files = $3::int, removed_contacts = $4::int,
-    removed_crm_files = $5::int, phone = NULL, ref = NULL
+    removed_submissions = (SELECT count(*) FROM gone), removed_files = $3::int,
+    removed_crm_files = $4::int, phone = NULL, ref = NULL
 WHERE id = $1::uuid AND status = 'running'
 RETURNING id, status, removed_submissions;`;
 
@@ -359,21 +317,11 @@ RETURNING status;`;
 
 /** $1 submission. Where the older status columns stand (to reconcile a step that found nothing to claim). */
 export const LEGACY_STATUS = `
-SELECT s.status AS chatwoot, a.status AS sms, a.attempts AS sms_attempts, (c.submission_id IS NOT NULL) AS crm_synced
+SELECT a.status AS sms, a.attempts AS sms_attempts, (c.submission_id IS NOT NULL) AS crm_synced
 FROM submissions s
 LEFT JOIN sms_acknowledgements a ON a.submission_id = s.id
 LEFT JOIN crm_sync c ON c.submission_id = s.id
 WHERE s.id = $1::uuid;`;
-
-/** $1 submission: one submission's Chatwoot claim (CLAIM_SUBMISSION for that id). */
-export const CLAIM_SUBMISSION_FOR = CLAIM_SUBMISSION.replace("WHERE c.status = 'received'", "WHERE c.status = 'received' AND c.id = $1::uuid");
-
-/** $1 submission, $2 error. A delivery run that failed before "delivered": back to received, or failed at three attempts. */
-export const RELEASE_SUBMISSION = `
-UPDATE submissions
-SET status = CASE WHEN attempts >= 3 THEN 'failed' ELSE 'received' END, last_error = $2, updated_at = now()
-WHERE id = $1::uuid AND status = 'delivering'
-RETURNING status;`;
 
 /** $1 submission: SYNC_CANDIDATES' columns for one submission, synced or not. */
 export const SYNC_CANDIDATE_FOR = SYNC_CANDIDATES.replace(

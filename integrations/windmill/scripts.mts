@@ -75,16 +75,9 @@ export const SCRIPTS: ScriptSpec[] = [
     retiredSchedule: true,
   },
   {
-    name: "deliver",
-    summary: "Talent · deliver",
-    description: "One submission per run becomes a conversation in Chatwoot's \"Jobs, website\" inbox: the note, then every file.",
-    schema: noArgs,
-    retiredSchedule: true,
-  },
-  {
     name: "retention",
     summary: "Talent · retention",
-    description: "The 12-month rule and erasure requests: queues expired people, then erases one per run (R2, Chatwoot, Twenty CRM, rows).",
+    description: "The 12-month rule and erasure requests: queues expired people, then erases one per run (R2, Twenty CRM, rows).",
     schema: noArgs,
     schedule: { cron: "0 0 * * * *", summary: "Hourly: retention and erasure" },
   },
@@ -125,14 +118,14 @@ export const SCRIPTS: ScriptSpec[] = [
     name: "dispatch",
     summary: "Talent · dispatch",
     description:
-      "The one worker for every application's deliveries (SMS acknowledgement, Twenty CRM, files into Twenty, Chatwoot), on one connection, with backoff and attempt caps; every 15 minutes also looks up missing SMS delivery reports. Started by intake for a new application's SMS.",
+      "The one worker for every application's deliveries (SMS acknowledgement, Twenty CRM, files into Twenty), on one connection, with backoff and attempt caps; every 15 minutes also looks up missing SMS delivery reports. Started by intake for a new application's SMS.",
     schema: {
       $schema: "https://json-schema.org/draft/2020-12/schema",
       type: "object",
       properties: { submission_id: { type: "string", description: "Only this application's SMS (from intake). Empty: everything due." } },
       required: [],
     },
-    schedule: { cron: "0 * * * * *", summary: "Every minute: SMS, Chatwoot and Twenty deliveries" },
+    schedule: { cron: "0 * * * * *", summary: "Every minute: SMS and Twenty deliveries" },
   },
   {
     name: "setup",

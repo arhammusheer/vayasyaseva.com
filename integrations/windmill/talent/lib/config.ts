@@ -12,18 +12,12 @@ export const VARIABLES = {
   fast2sms_api_key: { secret: true },
   /** The x-vspl-intake-secret header the website sends. */
   intake_webhook_secret: { secret: true },
-  /** Read-only R2 token scoped to vayasya-talent-intake (deliver attaches files). */
+  /** Read-only R2 token scoped to vayasya-talent-intake (the files step copies them into Twenty). */
   r2_read_key_id: { secret: true },
   r2_read_secret: { secret: true },
   /** Delete rights on vayasya-talent-intake, for erasure only. */
   r2_erase_key_id: { secret: true },
   r2_erase_secret: { secret: true },
-  /** Chatwoot user "Automation (retention)": deletes contacts. */
-  chatwoot_admin_token: { secret: true },
-  /** The "Jobs, website" API inbox identifier: it authorises Chatwoot's public API, so it is a secret too. */
-  chatwoot_inbox_identifier: { secret: true },
-  chatwoot_base_url: { secret: false },
-  chatwoot_account_id: { secret: false },
   r2_endpoint: { secret: false },
   r2_bucket: { secret: false },
   /** Twenty CRM (crm.vayasyaseva.com): its in-cluster URL and the workspace API key (Secret growth/twenty-api). */

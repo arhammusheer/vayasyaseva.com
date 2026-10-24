@@ -226,6 +226,7 @@ test("dispatch: one push per dedupeKey, firing then resolved, pii cleared once s
   await h.dispatch();
   assert.equal(h.ntfyCalls.length, 3);
   assert.match(String(h.ntfyCalls[2].body.title), /^Resolved: PgMainReplicaMissing/);
+  assert.match(String(h.ntfyCalls[2].body.message), /^Cleared at \d{1,2} \w+ \d{4} \d{2}:\d{2} IST\. Was: /, "a resolution never reads as a new problem");
   assert.equal(h.emailCalls.length, 0, "warning alerts go to the digest");
 });
 

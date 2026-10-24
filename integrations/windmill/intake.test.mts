@@ -4,10 +4,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { setConfigForTests } from "./talent/lib/config.ts";
-import { composeNote } from "./talent/lib/note.ts";
 import { runIntake } from "./talent/lib/run-intake.ts";
 import { SAVE_SUBMISSION } from "./talent/lib/sql.ts";
-import type { ClaimedSubmission } from "./talent/lib/types.ts";
 import { checkSubmission, saveSubmissionParams } from "./talent/lib/intake-payload.ts";
 import { preprocessor } from "./talent/scripts/intake.ts";
 import { secretMatches } from "./talent/lib/secret.ts";
@@ -98,24 +96,6 @@ test("the save parameters keep n8n's $1..$18 order", () => {
   assert.equal(params[7], "[]");
   assert.equal(params[14], JSON.stringify(base.answers));
   assert.equal(params[15], "haridwar");
-});
-
-test("the staff note names the page, its language and the cluster", () => {
-  const { note } = composeNote({
-    id: "x", ref: "VS-J-TEST99", source: "web", locale: "hi-IN", channel: "web", form: "quick", applicantName: "Ravi",
-    cluster: "haridwar", pageCluster: "haridwar", pagePath: "/jobs/haridwar", phone: "+919876543210",
-    role: null, hub: null, agentName: null, answers: null, text: null, attachments: [],
-  } as ClaimedSubmission);
-  assert.match(note, /हिंदी jobs page \(hi-IN\)/);
-  assert.match(note, /on \/jobs\/haridwar/);
-  assert.match(note, /\*\*Cluster:\*\* haridwar$/m);
-  const legacy = composeNote({
-    id: "y", ref: "VS-J-TEST98", source: "web_en", locale: "en", channel: "agent", form: null, applicantName: null,
-    cluster: null, pageCluster: null, pagePath: null, phone: "+919876543210",
-    role: null, hub: null, agentName: "Helper", answers: null, text: "Packing work", attachments: [],
-  } as unknown as ClaimedSubmission).note;
-  assert.match(legacy, /AI agent \(English\)/);
-  assert.doesNotMatch(legacy, /Cluster/);
 });
 
 function intakeDeps(submissionId: string | null, startFails = false) {

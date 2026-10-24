@@ -51,51 +51,6 @@ export interface ValidatedSubmission {
   }[];
 }
 
-/** One attachment of a claimed submission (jsonb_agg, ordered by position). */
-export interface ClaimedAttachment {
-  id: string;
-  position: number;
-  /** "audio" only on rows saved before 16 October 2026; the intake no longer accepts it. */
-  kind: AttachmentKind | "audio";
-  key: string;
-  mime: string;
-  name: string | null;
-  transcript: string | null;
-  transcriptStatus: "none" | "pending" | "running" | "done" | "failed";
-}
-
-/** The single row of CLAIM_SUBMISSION. */
-export interface ClaimedSubmission {
-  id: string;
-  ref: string;
-  source: StoredSource;
-  role: JobRole | null;
-  hub: JobHub | null;
-  channel: IntakeChannel;
-  agentName: string | null;
-  form: IntakeForm | null;
-  applicantName: string | null;
-  answers: QuickAnswers | null;
-  locale: Locale;
-  cluster: IntakeCluster | null;
-  pageCluster: IntakeCluster | null;
-  pagePath: string | null;
-  phone: string;
-  text: string | null;
-  attachments: ClaimedAttachment[];
-}
-
-export interface ComposedNote {
-  contactName: string;
-  note: string;
-}
-
-/** One file to attach to the Chatwoot conversation, in file-number order. */
-export interface FileToAttach {
-  key: string;
-  label: string;
-}
-
 /** The single row of CLAIM_ACKNOWLEDGEMENT. */
 export interface ClaimedAcknowledgement {
   submission_id: string;
@@ -118,11 +73,10 @@ export interface AcknowledgementResult {
   error: string | null;
 }
 
-/** The single row of CLAIM_ERASURE: a request, with every R2 key and Chatwoot contact for its phone. */
+/** The single row of CLAIM_ERASURE: a request, with every R2 key for its phone. */
 export interface ClaimedErasure {
   id: string;
   phone: string;
   reason: "request" | "retention";
   files: string[];
-  contacts: number[];
 }

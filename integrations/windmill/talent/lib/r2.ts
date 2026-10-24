@@ -20,15 +20,7 @@ async function client(access: Access) {
   return { aws, url };
 }
 
-/** Downloads one object. Throws on any failure (the n8n S3 node stopped the run too). */
-export async function downloadObject(key: string): Promise<{ data: Blob; contentType: string }> {
-  const { aws, url } = await client("read");
-  const res = await aws.fetch(url(key), { method: "GET" });
-  if (!res.ok) throw new Error(`R2 GET ${key}: HTTP ${res.status}`);
-  return { data: await res.blob(), contentType: res.headers.get("content-type") ?? "application/octet-stream" };
-}
-
-/** The same, but null when the object is gone (R2 keeps applicants' files 90 days): the files step marks it missing. */
+/** Downloads one object, or null when it is gone (R2 keeps applicants' files 90 days): the files step marks it missing. */
 export async function downloadIfExists(key: string): Promise<Blob | null> {
   const { aws, url } = await client("read");
   const res = await aws.fetch(url(key), { method: "GET" });

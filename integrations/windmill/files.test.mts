@@ -161,7 +161,6 @@ function deps(query: Query, twenty: ReturnType<typeof fakeTwenty>, download: (ke
   return {
     query,
     sendSms: async () => assert.fail("no SMS"),
-    chatwoot: {} as never,
     crm: twenty.crm,
     files: { twenty: twenty.files, download },
     lookupReport: async () => null,
@@ -198,7 +197,7 @@ test("the claim waits for the Twenty application without spending attempts", asy
   const other = await save(query, "VS-J-WAIT02");
   await query(`UPDATE deliveries SET next_attempt_at = now() - interval '2 hours' WHERE submission_id = $1::uuid`, [other]);
   const attention = await query<{ target: string }>(`SELECT target FROM deliveries_attention WHERE submission_id = $1::uuid`, [other]);
-  assert.deepEqual(attention.map((r) => r.target).sort(), ["chatwoot", "crm", "sms"]);
+  assert.deepEqual(attention.map((r) => r.target).sort(), ["crm", "sms"]);
 });
 
 test("a photo and a PDF: uploaded in three steps on the in-cluster host and attached to the application", async () => {
@@ -308,29 +307,18 @@ for (const [fault, uploadsAfter] of [
   });
 }
 
-test("Twenty's 429 stops the Twenty work for the run; Chatwoot still goes", async () => {
+test("Twenty's 429 stops the Twenty work for the run", async () => {
   const { query } = await testDb(TALENT_SCHEMA);
   const a = await save(query, "VS-J-LIM001");
   const b = await save(query, "VS-J-LIM002");
   await synced(query, a);
   await synced(query, b, "00000000-0000-4000-8000-0000000000a2");
-  await query(`UPDATE deliveries SET status = 'pending' WHERE submission_id = $1::uuid AND target = 'chatwoot'`, [a]);
   const t = fakeTwenty();
   t.state.limited = true;
-  let chatwoot = 0;
-  const d = deps(query, t);
-  d.chatwoot = {
-    createContact: async () => (chatwoot++, { id: 7, source_id: "src" }),
-    createConversation: async () => ({ id: 70 }),
-    postMessage: async () => {},
-    download: async () => ({ data: new Blob(["x"]) }),
-    attachFile: async () => true,
-  };
-  const result = await runDispatch(d);
+  const result = await runDispatch(deps(query, t));
   assert.deepEqual([result.retried.files, result.done.files], [1, 0]);
   assert.equal((await filesRow(query, a)).attempts, 1);
   assert.equal((await filesRow(query, b)).attempts, 0, "the next application waits for the next run");
-  assert.equal(chatwoot, 1);
 });
 
 test("a key without the Upload files permission says so", async () => {

@@ -1,6 +1,6 @@
 # Architecture roadmap
 
-Started 17 October 2026 (status updated 18 October 2026) from four read-only planning passes over this repo, vayasya-infra and nevaehfirstsource.com. Each system gets one module with one job, dependencies point one way, and every refactor is pinned by tests first, so it changes nothing users or data see.
+Started 17 October 2026 (status updated 24 October 2026) from four read-only planning passes over this repo, vayasya-infra and nevaehfirstsource.com. Each system gets one module with one job, dependencies point one way, and every refactor is pinned by tests first, so it changes nothing users or data see.
 
 | Module | Its one job |
 |---|---|
@@ -25,21 +25,22 @@ Started 17 October 2026 (status updated 18 October 2026) from four read-only pla
 | 1E | Windmill owns its secrets and the hooks certificate; `integrations/n8n` removed | infra #113, #56 |
 | 1F | Lead inbox (`leads` database) and idempotent CRM sync; `deliveries` with backoff and dead letters; one dispatcher `f/talent/dispatch`; signed route `webhook/vspl-submission`; `f/platform/health` | #63, infra #115 |
 | Hub A | Notification hub `f/notify/*` (outbox, dispatch, digest, ingest, Alertmanager adapter); ntfy at `ntfy.vayasyaseva.com` (deny-all; users `owner` read-only and `windmill` write-only); `notify` database; Resend fallback with the shared Vayasya key. Test events reached all three topics, 18 Oct 2026 | #62, infra #114, #116 |
+| Hub B | Every producer into the hub: applications and leads from the CRM steps, `lead.forward_failed`, `lead.email_failed`, `f/platform/health` every 15 minutes, the compliance monitor and SEO watch, the GitHub workflows' failures, and Alertmanager (with Windmill and Twenty down alerts). Live since 18–22 Oct 2026. `windmill.job_failed` is not possible on Windmill CE v1.822; the Windmill pod alerts and health cover it | #66, infra #118 |
+| — | Applicants' files into Twenty: the `files` delivery target copies each application's R2 files to attachments on its Twenty application (neutral labels `VS-J-XXXXXX-<n>.<ext>`, voice notes skipped), with a backfill of earlier applications; erasure deletes the attachments, trashed ones too, before the application. Live in production. The backfill must drain before the first R2 files expire, about 25 Dec 2026 | #67 |
+| — | Chatwoot retired, 24 Oct 2026: the `chatwoot` delivery target, its erasure step, `f/talent/deliver`, the `chatwoot_*` variables and the monitors' Chatwoot path removed; the compliance monitor and SEO watch send to the hub only. Final dumps of the chatwoot database and a copy of the `vayasya-chatwoot` bucket are in R2 at `vayasya-production-postgres/archive/2026-10-24/`, expiring after 30 days | #106, infra #127 |
+| N6 | n8n app deleted, 24 Oct 2026: the last reads of `growth/n8n-env` moved to `windmill-talent`. Final dumps of the n8n, listmonk_vspl and listmonk_furblow databases are in the same R2 archive, expiring after 30 days | #106, infra #127 |
 | — | Vercel WAF: one rate-limit rule on the eight form and agent POST paths, 15 per 60 s per IP, **log only** (Hobby allows one rate-limit rule) | Vercel firewall |
 
 ## In progress
 
-- **Hub phase B** (`docs/notification-hub.md`, "Producers"; built, in review with its owner steps): applications (name, phone, Call) and leads from the CRM steps, `lead.forward_failed`, `lead.email_failed` from the site, `f/platform/health` every 15 minutes (the 11 Oct SMS `unknown` fires once), the compliance monitor and SEO watch dual-writing Chatwoot and the hub, the GitHub workflows' failures, and Alertmanager into the hub with Windmill and Twenty down alerts and the weekly seo-watch alert fix (infra PR). `windmill.job_failed` is not possible on Windmill CE v1.822 (its workspace error handler runs from enterprise code only); the Windmill pod alerts and health cover it.
-- **Applicants' files into Twenty** (built, in review): the `files` delivery target copies each application's R2 files to attachments on its Twenty application (neutral labels `VS-J-XXXXXX-<n>.<ext>`, voice notes skipped), and setup backfills earlier applications oldest first. Erasure deletes the attachments, trashed ones too, before the application. Owner step: the API key's Upload files permission. The backfill must drain before the first R2 files expire, about 25 Dec 2026.
+Nothing at the moment.
 
 ## Next
 
 1. **Site onto the signed route:** add `SUBMISSION_SIGNING_SECRET` to Vercel and redeploy, with one owner-watched test application and enquiry.
-2. **Retire Chatwoot** (owner approved): after hub phase B and the file move. Run both for 1–2 weeks; stop Chatwoot delivery; take Chatwoot out of erasure and deploy; remove it in infra; update the privacy notice. First check the Chatwoot UI for a WhatsApp inbox and FurblowCraft's account.
-3. **Delete the n8n app (N6):** from 20 October 2026, after checking Windmill's health and that `/webhook/*` has no hits. The NFSS deploy reads `windmill-nfss` first.
-4. **Rotate the secrets exposed on 17 October 2026.** The Vayasya Resend key (`N8N_SMTP_PASS`) is now used by Alertmanager, Chatwoot, Twenty, n8n and the hub; update all five.
-5. **WAF:** review the log-only rule's hits (`vercel.com/<team>/vayasyaseva-com/firewall/traffic`), then switch it to `rate_limit`. Indian mobile carrier NAT shares addresses, so check before enforcing.
-6. **Health:** one SMS from about 11 Oct is `unknown`; check Fast2SMS history before any resend.
+2. **Rotate the secrets exposed on 17 October 2026.** The Vayasya Resend key (`N8N_SMTP_PASS`, send-only) is used by Alertmanager, Twenty, Setu (production and staging), the hub and the Watchdog heartbeat Worker (Chatwoot and n8n, which used it too, are gone); update all of them together.
+3. **WAF:** review the log-only rule's hits (`vercel.com/<team>/vayasyaseva-com/firewall/traffic`), then switch it to `rate_limit`. Indian mobile carrier NAT shares addresses, so check before enforcing.
+4. **Health:** one SMS from about 11 Oct is `unknown`; check Fast2SMS history before any resend.
 
 ## Work in progress, owner to decide
 

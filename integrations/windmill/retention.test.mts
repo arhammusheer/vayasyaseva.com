@@ -1,23 +1,18 @@
 // Retention and erasure (ported from the retired n8n retention.test.mjs):
-// the 12-month rule, the erasure order (R2, then Chatwoot, then Twenty CRM, then rows),
+// the 12-month rule, the erasure order (R2, then Twenty CRM, then rows),
 // stop-on-failure, and the worker-list upsert in intake.
 import assert from "node:assert/strict";
 import test from "node:test";
-import { contactsToDelete, filesToDelete } from "./talent/lib/erasure.ts";
+import { filesToDelete } from "./talent/lib/erasure.ts";
 import { runRetention } from "./talent/lib/run-retention.ts";
 import { CLAIM_ERASURE, DELETE_ROWS, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, QUEUE_EXPIRED_AND_RECOVER, SAVE_SUBMISSION } from "./talent/lib/sql.ts";
 import { SCRIPTS } from "./scripts.mts";
 
-const claimed = { id: "req-1", phone: "+919876543210", reason: "request" as const, files: [] as string[], contacts: [] as number[] };
+const claimed = { id: "req-1", phone: "+919876543210", reason: "request" as const, files: [] as string[] };
 
 test("every stored file is deleted once; none means none", () => {
   assert.deepEqual(filesToDelete({ files: ["a/1.jpg", "a/1.jpg", "a/2.pdf"] }), ["a/1.jpg", "a/2.pdf"]);
   assert.deepEqual(filesToDelete({ files: [] }), []);
-});
-
-test("every Chatwoot contact is deleted once; invalid ids are dropped", () => {
-  assert.deepEqual(contactsToDelete({ contacts: [12, 12, 40] }), [12, 40]);
-  assert.deepEqual(contactsToDelete({ contacts: [0, null as unknown as number] }), []);
 });
 
 function retentionDb(claim: typeof claimed | null, dispatcherRuns = 0) {
@@ -36,17 +31,16 @@ function retentionDb(claim: typeof claimed | null, dispatcherRuns = 0) {
   return { log, params, query };
 }
 
-test("files, contacts and CRM records go before the rows, which go last", async () => {
-  const db = retentionDb({ ...claimed, files: ["a/1.jpg", "a/1.jpg"], contacts: [12] });
+test("files and CRM records go before the rows, which go last", async () => {
+  const db = retentionDb({ ...claimed, files: ["a/1.jpg", "a/1.jpg"] });
   const result = await runRetention({
     query: db.query,
     deleteFile: async (key) => void db.log.push(`file ${key}`),
-    deleteContact: async (id) => void db.log.push(`contact ${id}`),
     eraseCrmPerson: async (phone) => (db.log.push(`crm ${phone}`), { people: 1, files: 3 }),
   });
-  assert.deepEqual(db.log, ["queue", "claim", "file a/1.jpg", "contact 12", "lock", "crm +919876543210", "rows", "unlock"]);
-  assert.deepEqual(db.params.at(-1), ["req-1", "+919876543210", 2, 1, 3]);
-  assert.deepEqual(result, { recovered: 1, queued: 2, erased: { requestId: "req-1", files: 2, contacts: 1, crmPeople: 1, crmFiles: 3 } });
+  assert.deepEqual(db.log, ["queue", "claim", "file a/1.jpg", "lock", "crm +919876543210", "rows", "unlock"]);
+  assert.deepEqual(db.params.at(-1), ["req-1", "+919876543210", 2, 3]);
+  assert.deepEqual(result, { recovered: 1, queued: 2, erased: { requestId: "req-1", files: 2, crmPeople: 1, crmFiles: 3 } });
 });
 
 test("erasure waits for a running dispatcher before the Twenty step, and gives up for the run if it never stops", async () => {
@@ -54,30 +48,26 @@ test("erasure waits for a running dispatcher before the Twenty step, and gives u
   await runRetention({
     query: db.query,
     deleteFile: async () => {},
-    deleteContact: async () => {},
     eraseCrmPerson: async () => (db.log.push("crm"), { people: 1, files: 0 }),
     sleep: async () => {},
   });
   assert.deepEqual(db.log, ["queue", "claim", "lock busy", "lock busy", "lock", "crm", "rows", "unlock"]);
   const stuck = retentionDb({ ...claimed }, 1000);
   await assert.rejects(
-    runRetention({ query: stuck.query, deleteFile: async () => {}, deleteContact: async () => {}, eraseCrmPerson: async () => assert.fail(), sleep: async () => {} }),
+    runRetention({ query: stuck.query, deleteFile: async () => {}, eraseCrmPerson: async () => assert.fail(), sleep: async () => {} }),
     /dispatcher kept running/,
   );
   assert.equal(stuck.log.includes("rows"), false);
 });
 
-test("an R2, Chatwoot or Twenty failure stops the run before any row is deleted", async () => {
-  for (const failing of ["file", "contact", "crm"]) {
-    const db = retentionDb({ ...claimed, files: ["a/1.jpg"], contacts: [12] });
+test("an R2 or Twenty failure stops the run before any row is deleted", async () => {
+  for (const failing of ["file", "crm"]) {
+    const db = retentionDb({ ...claimed, files: ["a/1.jpg"] });
     await assert.rejects(
       runRetention({
         query: db.query,
         deleteFile: async () => {
           if (failing === "file") throw new Error("R2 down");
-        },
-        deleteContact: async () => {
-          if (failing === "contact") throw new Error("Chatwoot down");
         },
         eraseCrmPerson: async () => {
           if (failing === "crm") throw new Error("Twenty down");
@@ -95,7 +85,6 @@ test("nothing queued erases nothing", async () => {
   const result = await runRetention({
     query: db.query,
     deleteFile: async () => assert.fail(),
-    deleteContact: async () => assert.fail(),
     eraseCrmPerson: async () => assert.fail(),
   });
   assert.equal(result.erased, null);
@@ -114,7 +103,7 @@ test("a finished erasure keeps counts only: phone and reference are cleared", ()
   assert.match(DELETE_ROWS, /DELETE FROM submissions WHERE phone = \$2/);
   assert.match(DELETE_ROWS, /DELETE FROM people WHERE phone = \$2/);
   assert.match(DELETE_ROWS, /phone = NULL, ref = NULL/);
-  assert.match(DELETE_ROWS, /removed_crm_files = \$5::int/);
+  assert.match(DELETE_ROWS, /removed_crm_files = \$4::int/);
 });
 
 test("retention runs hourly", () => {

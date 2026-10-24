@@ -16,10 +16,6 @@ const VARIABLES = {
     r2_read_secret: { secret: true },
     r2_erase_key_id: { secret: true },
     r2_erase_secret: { secret: true },
-    chatwoot_admin_token: { secret: true },
-    chatwoot_inbox_identifier: { secret: true },
-    chatwoot_base_url: { secret: false },
-    chatwoot_account_id: { secret: false },
     r2_endpoint: { secret: false },
     r2_bucket: { secret: false },
     twenty_base_url: { secret: false },
@@ -47,93 +43,6 @@ async function config(name) {
     return value;
 }
   return { VARIABLES, variablePath, setConfigForTests, config };
-})();
-
-// integrations/windmill/talent/lib/chatwoot.ts
-const { createContact, createConversation, postMessage, attachFile, deleteContact } = (() => {
-const RETRY_TRIES = 3;
-const RETRY_WAIT_MS = 5_000;
-const TIMEOUT_MS = 30_000;
-async function inboxBase() {
-    const [base, identifier] = await Promise.all([config("chatwoot_base_url"), config("chatwoot_inbox_identifier")]);
-    return `${base.replace(/\/$/, "")}/public/api/v1/inboxes/${identifier}`;
-}
-async function retrying(fn, tries = RETRY_TRIES, waitMs = RETRY_WAIT_MS) {
-    let last;
-    for (let attempt = 1; attempt <= tries; attempt++) {
-        try {
-            return await fn();
-        }
-        catch (error) {
-            last = error;
-            if (attempt < tries)
-                await new Promise((r) => setTimeout(r, waitMs));
-        }
-    }
-    throw last;
-}
-async function json(res, what) {
-    if (!res.ok)
-        throw new Error(`Chatwoot ${what}: HTTP ${res.status}`);
-    return (await res.json());
-}
-async function createContact(phone, name) {
-    const base = await inboxBase();
-    return retrying(async () => json(await fetch(`${base}/contacts`, {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ source_id: `talent-${phone.replace("+", "")}`, name, phone_number: phone }),
-        signal: AbortSignal.timeout(TIMEOUT_MS),
-    }), "contact"));
-}
-async function createConversation(sourceId, customAttributes) {
-    const base = await inboxBase();
-    return json(await fetch(`${base}/contacts/${sourceId}/conversations`, {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ custom_attributes: customAttributes }),
-        signal: AbortSignal.timeout(TIMEOUT_MS),
-    }), "create conversation");
-}
-async function postMessage(sourceId, conversationId, content) {
-    const base = await inboxBase();
-    await json(await fetch(`${base}/contacts/${sourceId}/conversations/${conversationId}/messages`, {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ content }),
-        signal: AbortSignal.timeout(TIMEOUT_MS),
-    }), "post message");
-}
-async function attachFile(sourceId, conversationId, label, file, fileName) {
-    const base = await inboxBase();
-    const form = new FormData();
-    form.append("content", label);
-    form.append("attachments[]", file, fileName);
-    try {
-        const res = await fetch(`${base}/contacts/${sourceId}/conversations/${conversationId}/messages`, {
-            method: "POST",
-            body: form,
-            signal: AbortSignal.timeout(TIMEOUT_MS),
-        });
-        return res.ok;
-    }
-    catch {
-        return false;
-    }
-}
-async function deleteContact(contactId) {
-    const [base, accountId, token] = await Promise.all([config("chatwoot_base_url"), config("chatwoot_account_id"), config("chatwoot_admin_token")]);
-    await retrying(async () => {
-        const res = await fetch(`${base.replace(/\/$/, "")}/api/v1/accounts/${accountId}/contacts/${contactId}`, {
-            method: "DELETE",
-            headers: { api_access_token: token },
-            signal: AbortSignal.timeout(TIMEOUT_MS),
-        });
-        if (!res.ok && res.status !== 404)
-            throw new Error(`Chatwoot delete contact ${contactId}: HTTP ${res.status}`);
-    });
-}
-  return { createContact, createConversation, postMessage, attachFile, deleteContact };
 })();
 
 // integrations/windmill/talent/lib/db.ts
@@ -168,7 +77,7 @@ const queryWith = (sql) => async (text, params = []) => (await sql.unsafe(text, 
 })();
 
 // integrations/windmill/talent/lib/r2.ts
-const { downloadObject, downloadIfExists, deleteObject } = (() => {
+const { downloadIfExists, deleteObject } = (() => {
 async function client(access) {
     const [accessKeyId, secretAccessKey, endpoint, bucket] = await Promise.all([
         config(access === "read" ? "r2_read_key_id" : "r2_erase_key_id"),
@@ -179,13 +88,6 @@ async function client(access) {
     const aws = new AwsClient({ accessKeyId, secretAccessKey, service: "s3", region: "auto" });
     const url = (key) => `${endpoint.replace(/\/$/, "")}/${bucket}/${key.split("/").map(encodeURIComponent).join("/")}`;
     return { aws, url };
-}
-async function downloadObject(key) {
-    const { aws, url } = await client("read");
-    const res = await aws.fetch(url(key), { method: "GET" });
-    if (!res.ok)
-        throw new Error(`R2 GET ${key}: HTTP ${res.status}`);
-    return { data: await res.blob(), contentType: res.headers.get("content-type") ?? "application/octet-stream" };
 }
 async function downloadIfExists(key) {
     const { aws, url } = await client("read");
@@ -204,22 +106,19 @@ async function deleteObject(key) {
     if (!res.ok && res.status !== 404)
         throw new Error(`R2 DELETE ${key}: HTTP ${res.status}`);
 }
-  return { downloadObject, downloadIfExists, deleteObject };
+  return { downloadIfExists, deleteObject };
 })();
 
 // integrations/windmill/talent/lib/erasure.ts
-const { filesToDelete, contactsToDelete } = (() => {
+const { filesToDelete } = (() => {
 function filesToDelete(claimed) {
     return [...new Set(claimed.files.filter((key) => typeof key === "string" && key.length > 0))];
 }
-function contactsToDelete(claimed) {
-    return [...new Set(claimed.contacts.filter((id) => Number.isInteger(id) && id > 0))];
-}
-  return { filesToDelete, contactsToDelete };
+  return { filesToDelete };
 })();
 
 // integrations/windmill/talent/lib/sql.ts
-const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, GET_ACKNOWLEDGEMENT, SKIP_WHATSAPP, CLAIM_WHATSAPP_ACK, SAVE_WHATSAPP_RESULT, RECOVER_WHATSAPP_SEND, SAVE_WHATSAPP_REPORT, SKIP_SMS, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, FILES_SUBMISSION, FILES_FOR, SAVE_FILE_ID, SETTLE_FILE, FILE_ERROR, CLEAR_FILE_ID } = (() => {
+const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, GET_ACKNOWLEDGEMENT, SKIP_WHATSAPP, CLAIM_WHATSAPP_ACK, SAVE_WHATSAPP_RESULT, RECOVER_WHATSAPP_SEND, SAVE_WHATSAPP_REPORT, SKIP_SMS, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, SYNC_CANDIDATE_FOR, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, FILES_SUBMISSION, FILES_FOR, SAVE_FILE_ID, SETTLE_FILE, FILE_ERROR, CLEAR_FILE_ID } = (() => {
 const RETENTION_MONTHS = 12;
 const SAVE_SUBMISSION = `
 WITH s AS (
@@ -318,39 +217,6 @@ WHERE submission_id = $1::uuid AND wa_status = 'accepted'
 const SKIP_SMS = `
 UPDATE sms_acknowledgements SET status = 'skipped', last_error = NULL, updated_at = now()
 WHERE submission_id = $1::uuid AND status = 'pending';`;
-const RECOVER_STUCK_DELIVERIES = `
-UPDATE submissions
-SET status = CASE WHEN attempts >= 3 THEN 'failed' ELSE 'received' END,
-    last_error = coalesce(last_error, 'Timed out delivering to Chatwoot'),
-    updated_at = now()
-WHERE status = 'delivering' AND updated_at < now() - interval '15 minutes'
-RETURNING id;`;
-const CLAIM_SUBMISSION = `
-WITH claimed AS (
-  UPDATE submissions s
-  SET status = 'delivering', attempts = s.attempts + 1, updated_at = now()
-  WHERE s.id = (
-    SELECT c.id FROM submissions c
-    WHERE c.status = 'received'
-      AND NOT EXISTS (
-        SELECT 1 FROM attachments a
-        WHERE a.submission_id = c.id AND a.transcript_status IN ('pending', 'running'))
-    ORDER BY c.created_at LIMIT 1 FOR UPDATE SKIP LOCKED)
-  RETURNING s.id, s.ref, s.source, s.role, s.hub, s.channel, s.agent_name AS "agentName", s.form, s.applicant_name AS "applicantName", s.answers, s.locale, s.cluster, s.page_cluster AS "pageCluster", s.page_path AS "pagePath", s.phone, s.text
-)
-SELECT c.*, coalesce((
-  SELECT jsonb_agg(jsonb_build_object(
-    'id', a.id, 'position', a.position, 'kind', a.kind, 'key', a.r2_key, 'mime', a.mime,
-    'name', a.original_name, 'transcript', a.transcript, 'transcriptStatus', a.transcript_status
-  ) ORDER BY a.position)
-  FROM attachments a WHERE a.submission_id = c.id), '[]'::jsonb) AS attachments
-FROM claimed c;`;
-const RECORD_CONVERSATION = `
-UPDATE submissions
-SET chatwoot_contact_id = $2, chatwoot_conversation_id = $3, updated_at = now()
-WHERE id = $1::uuid
-RETURNING id;`;
-const MARK_DELIVERED = `UPDATE submissions SET status = 'delivered', last_error = NULL, updated_at = now() WHERE id = $1::uuid RETURNING id;`;
 const QUEUE_EXPIRED_AND_RECOVER = `
 WITH recovered AS (
   UPDATE erasure_requests
@@ -383,8 +249,7 @@ WITH claimed AS (
   RETURNING e.id, e.phone, e.reason
 )
 SELECT c.id, c.phone, c.reason,
-  coalesce((SELECT jsonb_agg(a.r2_key) FROM attachments a JOIN submissions s ON s.id = a.submission_id WHERE s.phone = c.phone), '[]'::jsonb) AS files,
-  coalesce((SELECT jsonb_agg(DISTINCT s.chatwoot_contact_id) FROM submissions s WHERE s.phone = c.phone AND s.chatwoot_contact_id IS NOT NULL), '[]'::jsonb) AS contacts
+  coalesce((SELECT jsonb_agg(a.r2_key) FROM attachments a JOIN submissions s ON s.id = a.submission_id WHERE s.phone = c.phone), '[]'::jsonb) AS files
 FROM claimed c;`;
 const DELETE_ROWS = `
 WITH gone AS (
@@ -394,8 +259,8 @@ WITH gone AS (
 )
 UPDATE erasure_requests
 SET status = 'done', processed_at = now(), updated_at = now(),
-    removed_submissions = (SELECT count(*) FROM gone), removed_files = $3::int, removed_contacts = $4::int,
-    removed_crm_files = $5::int, phone = NULL, ref = NULL
+    removed_submissions = (SELECT count(*) FROM gone), removed_files = $3::int,
+    removed_crm_files = $4::int, phone = NULL, ref = NULL
 WHERE id = $1::uuid AND status = 'running'
 RETURNING id, status, removed_submissions;`;
 const schemaStatements = (schema) => schema.replace(/^--.*\n/gm, "");
@@ -473,17 +338,11 @@ SET status = CASE WHEN $3 = 'retry' THEN (CASE WHEN attempts >= max_attempts THE
 WHERE submission_id = $1::uuid AND target = $2 AND status = 'running'
 RETURNING status;`;
 const LEGACY_STATUS = `
-SELECT s.status AS chatwoot, a.status AS sms, a.attempts AS sms_attempts, (c.submission_id IS NOT NULL) AS crm_synced
+SELECT a.status AS sms, a.attempts AS sms_attempts, (c.submission_id IS NOT NULL) AS crm_synced
 FROM submissions s
 LEFT JOIN sms_acknowledgements a ON a.submission_id = s.id
 LEFT JOIN crm_sync c ON c.submission_id = s.id
 WHERE s.id = $1::uuid;`;
-const CLAIM_SUBMISSION_FOR = CLAIM_SUBMISSION.replace("WHERE c.status = 'received'", "WHERE c.status = 'received' AND c.id = $1::uuid");
-const RELEASE_SUBMISSION = `
-UPDATE submissions
-SET status = CASE WHEN attempts >= 3 THEN 'failed' ELSE 'received' END, last_error = $2, updated_at = now()
-WHERE id = $1::uuid AND status = 'delivering'
-RETURNING status;`;
 const SYNC_CANDIDATE_FOR = SYNC_CANDIDATES.replace(/WHERE c\.submission_id IS NULL\n {3}OR c\.ack_status IS DISTINCT FROM nullif\(concat_ws\(':', a\.status, a\.delivery_status, a\.wa_status, a\.wa_delivery\), ''\)\nORDER BY s\.created_at\nLIMIT \$1;/, "WHERE s.id = $1::uuid;");
 if (SYNC_CANDIDATE_FOR === SYNC_CANDIDATES)
     throw new Error("SYNC_CANDIDATE_FOR: the WHERE clause was not replaced");
@@ -504,7 +363,7 @@ SET crm_file_status = $2, twenty_attachment_id = coalesce($3::uuid, twenty_attac
 WHERE id = $1::uuid;`;
 const FILE_ERROR = `UPDATE attachments SET crm_file_error = $2, updated_at = now() WHERE id = $1::uuid;`;
 const CLEAR_FILE_ID = `UPDATE attachments SET twenty_file_id = NULL, updated_at = now() WHERE id = $1::uuid;`;
-  return { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, GET_ACKNOWLEDGEMENT, SKIP_WHATSAPP, CLAIM_WHATSAPP_ACK, SAVE_WHATSAPP_RESULT, RECOVER_WHATSAPP_SEND, SAVE_WHATSAPP_REPORT, SKIP_SMS, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, FILES_SUBMISSION, FILES_FOR, SAVE_FILE_ID, SETTLE_FILE, FILE_ERROR, CLEAR_FILE_ID };
+  return { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, GET_ACKNOWLEDGEMENT, SKIP_WHATSAPP, CLAIM_WHATSAPP_ACK, SAVE_WHATSAPP_RESULT, RECOVER_WHATSAPP_SEND, SAVE_WHATSAPP_REPORT, SKIP_SMS, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, SYNC_CANDIDATE_FOR, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, FILES_SUBMISSION, FILES_FOR, SAVE_FILE_ID, SETTLE_FILE, FILE_ERROR, CLEAR_FILE_ID };
 })();
 
 // integrations/windmill/talent/lib/run-retention.ts
@@ -529,13 +388,11 @@ async function runRetention(deps) {
         return result;
     for (const key of filesToDelete(claimed))
         await deps.deleteFile(key);
-    for (const id of contactsToDelete(claimed))
-        await deps.deleteContact(id);
     await lockDispatch(deps);
     try {
         const crm = await deps.eraseCrmPerson(claimed.phone);
-        await deps.query(DELETE_ROWS, [claimed.id, claimed.phone, claimed.files.length, claimed.contacts.length, crm.files]);
-        result.erased = { requestId: claimed.id, files: claimed.files.length, contacts: claimed.contacts.length, crmPeople: crm.people, crmFiles: crm.files };
+        await deps.query(DELETE_ROWS, [claimed.id, claimed.phone, claimed.files.length, crm.files]);
+        result.erased = { requestId: claimed.id, files: claimed.files.length, crmPeople: crm.people, crmFiles: crm.files };
     }
     finally {
         await deps.query(ERASURE_DISPATCH_UNLOCK);
@@ -1080,6 +937,6 @@ async function erasePerson(crm, phone) {
 
 export async function main() {
     const crm = await twentyFromConfig();
-    return withTalentDb((query) => runRetention({ query, deleteFile: deleteObject, deleteContact, eraseCrmPerson: (phone) => erasePerson(crm, phone) }));
+    return withTalentDb((query) => runRetention({ query, deleteFile: deleteObject, eraseCrmPerson: (phone) => erasePerson(crm, phone) }));
 }
 

@@ -16,10 +16,6 @@ const VARIABLES = {
     r2_read_secret: { secret: true },
     r2_erase_key_id: { secret: true },
     r2_erase_secret: { secret: true },
-    chatwoot_admin_token: { secret: true },
-    chatwoot_inbox_identifier: { secret: true },
-    chatwoot_base_url: { secret: false },
-    chatwoot_account_id: { secret: false },
     r2_endpoint: { secret: false },
     r2_bucket: { secret: false },
     twenty_base_url: { secret: false },
@@ -81,7 +77,7 @@ const queryWith = (sql) => async (text, params = []) => (await sql.unsafe(text, 
 })();
 
 // integrations/windmill/talent/lib/sql.ts
-const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, GET_ACKNOWLEDGEMENT, SKIP_WHATSAPP, CLAIM_WHATSAPP_ACK, SAVE_WHATSAPP_RESULT, RECOVER_WHATSAPP_SEND, SAVE_WHATSAPP_REPORT, SKIP_SMS, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, FILES_SUBMISSION, FILES_FOR, SAVE_FILE_ID, SETTLE_FILE, FILE_ERROR, CLEAR_FILE_ID } = (() => {
+const { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, GET_ACKNOWLEDGEMENT, SKIP_WHATSAPP, CLAIM_WHATSAPP_ACK, SAVE_WHATSAPP_RESULT, RECOVER_WHATSAPP_SEND, SAVE_WHATSAPP_REPORT, SKIP_SMS, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, SYNC_CANDIDATE_FOR, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, FILES_SUBMISSION, FILES_FOR, SAVE_FILE_ID, SETTLE_FILE, FILE_ERROR, CLEAR_FILE_ID } = (() => {
 const RETENTION_MONTHS = 12;
 const SAVE_SUBMISSION = `
 WITH s AS (
@@ -180,39 +176,6 @@ WHERE submission_id = $1::uuid AND wa_status = 'accepted'
 const SKIP_SMS = `
 UPDATE sms_acknowledgements SET status = 'skipped', last_error = NULL, updated_at = now()
 WHERE submission_id = $1::uuid AND status = 'pending';`;
-const RECOVER_STUCK_DELIVERIES = `
-UPDATE submissions
-SET status = CASE WHEN attempts >= 3 THEN 'failed' ELSE 'received' END,
-    last_error = coalesce(last_error, 'Timed out delivering to Chatwoot'),
-    updated_at = now()
-WHERE status = 'delivering' AND updated_at < now() - interval '15 minutes'
-RETURNING id;`;
-const CLAIM_SUBMISSION = `
-WITH claimed AS (
-  UPDATE submissions s
-  SET status = 'delivering', attempts = s.attempts + 1, updated_at = now()
-  WHERE s.id = (
-    SELECT c.id FROM submissions c
-    WHERE c.status = 'received'
-      AND NOT EXISTS (
-        SELECT 1 FROM attachments a
-        WHERE a.submission_id = c.id AND a.transcript_status IN ('pending', 'running'))
-    ORDER BY c.created_at LIMIT 1 FOR UPDATE SKIP LOCKED)
-  RETURNING s.id, s.ref, s.source, s.role, s.hub, s.channel, s.agent_name AS "agentName", s.form, s.applicant_name AS "applicantName", s.answers, s.locale, s.cluster, s.page_cluster AS "pageCluster", s.page_path AS "pagePath", s.phone, s.text
-)
-SELECT c.*, coalesce((
-  SELECT jsonb_agg(jsonb_build_object(
-    'id', a.id, 'position', a.position, 'kind', a.kind, 'key', a.r2_key, 'mime', a.mime,
-    'name', a.original_name, 'transcript', a.transcript, 'transcriptStatus', a.transcript_status
-  ) ORDER BY a.position)
-  FROM attachments a WHERE a.submission_id = c.id), '[]'::jsonb) AS attachments
-FROM claimed c;`;
-const RECORD_CONVERSATION = `
-UPDATE submissions
-SET chatwoot_contact_id = $2, chatwoot_conversation_id = $3, updated_at = now()
-WHERE id = $1::uuid
-RETURNING id;`;
-const MARK_DELIVERED = `UPDATE submissions SET status = 'delivered', last_error = NULL, updated_at = now() WHERE id = $1::uuid RETURNING id;`;
 const QUEUE_EXPIRED_AND_RECOVER = `
 WITH recovered AS (
   UPDATE erasure_requests
@@ -245,8 +208,7 @@ WITH claimed AS (
   RETURNING e.id, e.phone, e.reason
 )
 SELECT c.id, c.phone, c.reason,
-  coalesce((SELECT jsonb_agg(a.r2_key) FROM attachments a JOIN submissions s ON s.id = a.submission_id WHERE s.phone = c.phone), '[]'::jsonb) AS files,
-  coalesce((SELECT jsonb_agg(DISTINCT s.chatwoot_contact_id) FROM submissions s WHERE s.phone = c.phone AND s.chatwoot_contact_id IS NOT NULL), '[]'::jsonb) AS contacts
+  coalesce((SELECT jsonb_agg(a.r2_key) FROM attachments a JOIN submissions s ON s.id = a.submission_id WHERE s.phone = c.phone), '[]'::jsonb) AS files
 FROM claimed c;`;
 const DELETE_ROWS = `
 WITH gone AS (
@@ -256,8 +218,8 @@ WITH gone AS (
 )
 UPDATE erasure_requests
 SET status = 'done', processed_at = now(), updated_at = now(),
-    removed_submissions = (SELECT count(*) FROM gone), removed_files = $3::int, removed_contacts = $4::int,
-    removed_crm_files = $5::int, phone = NULL, ref = NULL
+    removed_submissions = (SELECT count(*) FROM gone), removed_files = $3::int,
+    removed_crm_files = $4::int, phone = NULL, ref = NULL
 WHERE id = $1::uuid AND status = 'running'
 RETURNING id, status, removed_submissions;`;
 const schemaStatements = (schema) => schema.replace(/^--.*\n/gm, "");
@@ -335,17 +297,11 @@ SET status = CASE WHEN $3 = 'retry' THEN (CASE WHEN attempts >= max_attempts THE
 WHERE submission_id = $1::uuid AND target = $2 AND status = 'running'
 RETURNING status;`;
 const LEGACY_STATUS = `
-SELECT s.status AS chatwoot, a.status AS sms, a.attempts AS sms_attempts, (c.submission_id IS NOT NULL) AS crm_synced
+SELECT a.status AS sms, a.attempts AS sms_attempts, (c.submission_id IS NOT NULL) AS crm_synced
 FROM submissions s
 LEFT JOIN sms_acknowledgements a ON a.submission_id = s.id
 LEFT JOIN crm_sync c ON c.submission_id = s.id
 WHERE s.id = $1::uuid;`;
-const CLAIM_SUBMISSION_FOR = CLAIM_SUBMISSION.replace("WHERE c.status = 'received'", "WHERE c.status = 'received' AND c.id = $1::uuid");
-const RELEASE_SUBMISSION = `
-UPDATE submissions
-SET status = CASE WHEN attempts >= 3 THEN 'failed' ELSE 'received' END, last_error = $2, updated_at = now()
-WHERE id = $1::uuid AND status = 'delivering'
-RETURNING status;`;
 const SYNC_CANDIDATE_FOR = SYNC_CANDIDATES.replace(/WHERE c\.submission_id IS NULL\n {3}OR c\.ack_status IS DISTINCT FROM nullif\(concat_ws\(':', a\.status, a\.delivery_status, a\.wa_status, a\.wa_delivery\), ''\)\nORDER BY s\.created_at\nLIMIT \$1;/, "WHERE s.id = $1::uuid;");
 if (SYNC_CANDIDATE_FOR === SYNC_CANDIDATES)
     throw new Error("SYNC_CANDIDATE_FOR: the WHERE clause was not replaced");
@@ -366,7 +322,7 @@ SET crm_file_status = $2, twenty_attachment_id = coalesce($3::uuid, twenty_attac
 WHERE id = $1::uuid;`;
 const FILE_ERROR = `UPDATE attachments SET crm_file_error = $2, updated_at = now() WHERE id = $1::uuid;`;
 const CLEAR_FILE_ID = `UPDATE attachments SET twenty_file_id = NULL, updated_at = now() WHERE id = $1::uuid;`;
-  return { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, GET_ACKNOWLEDGEMENT, SKIP_WHATSAPP, CLAIM_WHATSAPP_ACK, SAVE_WHATSAPP_RESULT, RECOVER_WHATSAPP_SEND, SAVE_WHATSAPP_REPORT, SKIP_SMS, RECOVER_STUCK_DELIVERIES, CLAIM_SUBMISSION, RECORD_CONVERSATION, MARK_DELIVERED, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, CLAIM_SUBMISSION_FOR, RELEASE_SUBMISSION, SYNC_CANDIDATE_FOR, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, FILES_SUBMISSION, FILES_FOR, SAVE_FILE_ID, SETTLE_FILE, FILE_ERROR, CLEAR_FILE_ID };
+  return { RETENTION_MONTHS, SAVE_SUBMISSION, CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT, GET_ACKNOWLEDGEMENT, SKIP_WHATSAPP, CLAIM_WHATSAPP_ACK, SAVE_WHATSAPP_RESULT, RECOVER_WHATSAPP_SEND, SAVE_WHATSAPP_REPORT, SKIP_SMS, QUEUE_EXPIRED_AND_RECOVER, CLAIM_ERASURE, DELETE_ROWS, schemaStatements, CRM_SYNC_LOCK, SYNC_CANDIDATES, RECORD_CRM_SYNC, SAVE_DELIVERY_REPORT, DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, DISPATCH_LOCK, RECOVER_STUCK_DISPATCH, CLAIM_DELIVERY, FINISH_DELIVERY, LEGACY_STATUS, SYNC_CANDIDATE_FOR, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, FILES_SUBMISSION, FILES_FOR, SAVE_FILE_ID, SETTLE_FILE, FILE_ERROR, CLEAR_FILE_ID };
 })();
 
 // integrations/windmill/talent/lib/delivery.ts

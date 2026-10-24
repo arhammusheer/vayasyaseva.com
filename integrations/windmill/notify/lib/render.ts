@@ -44,6 +44,13 @@ export function istTime(iso: string, withDate = true): string {
   return `${d.toLocaleDateString("en-IN", { timeZone: IST, day: "numeric", month: "short", year: "numeric" })} ${time} IST`;
 }
 
+/**
+ * A resolution's text: when it cleared, then what had fired. Alertmanager
+ * sends the firing's annotations again with the resolution, so its summary
+ * still describes the problem; "Was:" keeps it from reading as a new one.
+ */
+const resolvedText = (event: NotifyEvent) => `Cleared at ${istTime(event.occurredAt)}. Was: ${firstLine(event.summary) || event.title}`;
+
 /** The lines a push may show about the person, by the rule's pii level. */
 export function piiLines(event: NotifyEvent, route: Route): string[] {
   const pii = event.pii;
@@ -60,7 +67,7 @@ export function renderPush(event: NotifyEvent, route: Route, delivery: { kind: D
   const linkAction: NtfyAction[] = event.link ? [{ action: "view", label: event.link.label, url: event.link.url }] : [];
 
   if (delivery.kind === "resolved") {
-    return { ...base, title: clip(`Resolved: ${event.title}`, 100), message: clip(firstLine(event.summary) || event.title, 300), priority: RESOLVED_PRIORITY, actions: linkAction };
+    return { ...base, title: clip(`Resolved: ${event.title}`, 100), message: clip(resolvedText(event), 300), priority: RESOLVED_PRIORITY, actions: linkAction };
   }
   if (delivery.kind === "reminder") {
     return {
@@ -96,7 +103,7 @@ export function renderPush(event: NotifyEvent, route: Route, delivery: { kind: D
 export function renderEmail(event: NotifyEvent, kind: DeliveryKind): EmailMessage {
   const label = kind === "resolved" ? "Resolved: " : kind === "fallback" ? "Push failed, by email: " : event.severity === "critical" ? "[critical] " : event.severity === "warning" ? "[warning] " : "";
   const lines = [
-    event.summary.trim(),
+    kind === "resolved" ? resolvedText(event) : event.summary.trim(),
     kind !== "resolved" && event.body ? `\n${event.body.trim()}` : "",
     event.link ? `\n${event.link.label}: ${event.link.url}` : "",
     `\n${event.source} · ${event.type}${event.status ? ` · ${kind === "resolved" ? "resolved" : event.status}` : ""} · ${istTime(event.occurredAt)}`,

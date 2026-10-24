@@ -1,8 +1,7 @@
-// Turns monitor events into notifications and a run summary: Chatwoot
-// messages (one conversation per state and topic, the default in the
-// cluster) or GitHub issues (one open issue per state, label
-// `wage-monitor`). Clients are passed in; with none (dry run) the planned
-// messages are returned and nothing is sent.
+// Turns monitor events into notifications and a run summary: notification
+// hub events (one per state and topic, the cluster's) or GitHub issues (one
+// open issue per state, label `wage-monitor`). Clients are passed in; with
+// none (dry run) the planned messages are returned and nothing is sent.
 import { createHash } from "node:crypto";
 import { TOPICS, fingerprint } from "./monitor.mjs";
 
@@ -194,94 +193,34 @@ export function githubClient({ token, repo, fetchImpl = fetch, api = "https://ap
   };
 }
 
-// ── Chatwoot ────────────────────────────────────────────────────────────────
+// ── Per state and topic ─────────────────────────────────────────────────────
 
 /** "Minimum wages · Uttarakhand", "EPF · all states". */
-export const chatwootTitle = (topic, stateName) => `${TOPICS[topic] ?? topic} · ${stateName === "All states" ? "all states" : stateName}`;
+export const topicTitle = (topic, stateName) => `${TOPICS[topic] ?? topic} · ${stateName === "All states" ? "all states" : stateName}`;
 
 /** Where the fix goes, for the "Next" line. */
 const fileFor = (topic, slug) =>
   topic === "wages" && slug !== "national" ? `src/content/wages/${slug}.json` : "src/content/statutory.ts";
 
-/** One Chatwoot message for one state and topic on one day. */
-export function renderChatwootMessage({ topic, slug, stateName, events, today }) {
+/** The Markdown detail for one state and topic on one day (the hub event's email body). */
+export function renderTopicMessage({ topic, slug, stateName, events, today }) {
   const changed = events.some((e) => e.type !== "unreachable" && e.type !== "recovered");
   const headline = changed
-    ? `**${chatwootTitle(topic, stateName)}: a source changed** (${longDate(today)})`
-    : `**${chatwootTitle(topic, stateName)}: monitor note** (${longDate(today)})`;
+    ? `**${topicTitle(topic, stateName)}: a source changed** (${longDate(today)})`
+    : `**${topicTitle(topic, stateName)}: monitor note** (${longDate(today)})`;
   const shown = new Map();
   const sections = events.map((e) => renderEvent(e, shown).replace(/^### /gm, "**").replace(/^(\*\*[^\n]*)$/gm, (m) => (m.endsWith("**") ? m : `${m}**`)));
   const scope = slug === "national" ? "every state page" : `the ${stateName} page`;
   const next = changed
-    ? `**Next:** open the documents above. If ${TOPICS[topic] ?? topic} changed for ${scope}, dispatch an update PR (edit \`${fileFor(topic, slug)}\`, run \`pnpm content:check\`). Reply here with the PR link when it is open.`
+    ? `**Next:** open the documents above. If ${TOPICS[topic] ?? topic} changed for ${scope}, dispatch an update PR (edit \`${fileFor(topic, slug)}\`, run \`pnpm content:check\`).`
     : `**Next:** if the source has moved, update \`scripts/wage-monitor/sources.json\`.`;
   return [headline, ...sections, next].join("\n\n");
-}
-
-/**
- * Sends the alerts to Chatwoot: per state and topic, one conversation
- * (created once, kept in the snapshot) and one message per day with the
- * events not reported before. `state` is the snapshot about to be saved;
- * this records reported fingerprints and conversation ids on it. A
- * recovery alone sends nothing unless that conversation exists.
- */
-export async function reportToChatwoot(events, { chatwoot, state, today }) {
-  state.reported ??= {};
-  state.chatwoot ??= {};
-  state.chatwoot.conversations ??= {};
-  const groups = new Map();
-  for (const e of events) {
-    const key = `${e.state}:${e.topic ?? "wages"}`;
-    groups.set(key, [...(groups.get(key) ?? []), e]);
-  }
-  const actions = [];
-  for (const [key, group] of groups) {
-    const [slug, topic] = key.split(":");
-    const stateName = group[0].stateName;
-    const title = chatwootTitle(topic, stateName);
-    const fresh = group.filter((e) => !state.reported[fingerprint(e)]);
-    if (!fresh.length) {
-      actions.push({ state: slug, stateName, action: "skip", title, reason: "already reported" });
-      continue;
-    }
-    if (fresh.every((e) => e.type === "recovered") && !state.chatwoot.conversations[key]) {
-      actions.push({ state: slug, stateName, action: "skip", title, reason: "recovery with no open conversation" });
-      continue;
-    }
-    const body = renderChatwootMessage({ topic, slug, stateName, events: fresh, today });
-    if (!chatwoot) {
-      actions.push({ state: slug, stateName, action: "message (dry run)", title, body });
-      continue;
-    }
-    const contact = (state.chatwoot.contact ??= (await chatwoot.createContact()).source_id);
-    let conversation = state.chatwoot.conversations[key];
-    let created = false;
-    if (!conversation) {
-      conversation = state.chatwoot.conversations[key] = (await chatwoot.createConversation(contact, { title, topic, state: slug })).id;
-      created = true;
-    }
-    try {
-      await chatwoot.message(contact, conversation, body);
-    } catch (error) {
-      // The conversation was deleted in Chatwoot: start a new one, once.
-      if (created || !/HTTP 404/.test(String(error))) throw error;
-      conversation = state.chatwoot.conversations[key] = (await chatwoot.createConversation(contact, { title, topic, state: slug })).id;
-      created = true;
-      await chatwoot.message(contact, conversation, body);
-    }
-    for (const e of fresh) state.reported[fingerprint(e)] = today;
-    actions.push({ state: slug, stateName, action: created ? "new conversation" : "message", title, conversation, body });
-  }
-  // Forget fingerprints after 400 days; a change that old is not news.
-  const cutoff = new Date(Date.parse(`${today}T00:00:00Z`) - 400 * 864e5).toISOString().slice(0, 10);
-  for (const [fp, day] of Object.entries(state.reported)) if (day < cutoff) delete state.reported[fp];
-  return actions;
 }
 
 // ── Notification hub ─────────────────────────────────────────────────────────
 
 /**
- * One hub event per state and topic, as for Chatwoot: compliance.source_changed
+ * One hub event per state and topic: compliance.source_changed
  * when a source changed (an instant push and email), else
  * compliance.source_unreachable or compliance.source_recovered (the digest).
  * The dedupeKey hashes the events' fingerprints, so a retried run is one
@@ -298,7 +237,7 @@ export function hubEvents(events, { today }) {
   for (const [key, group] of groups) {
     const [slug, topic] = key.split(":");
     const stateName = group[0].stateName;
-    const title = chatwootTitle(topic, stateName);
+    const title = topicTitle(topic, stateName);
     const changed = group.filter((e) => e.type !== "unreachable" && e.type !== "recovered");
     const kind = changed.length ? "changed" : group.some((e) => e.type === "unreachable") ? "unreachable" : "recovered";
     const fingerprints = group.map((e) => fingerprint(e)).sort();
@@ -319,7 +258,7 @@ export function hubEvents(events, { today }) {
             : kind === "unreachable"
               ? `${plural(group.length, "source")} failing for days; it may have moved. Update scripts/wage-monitor/sources.json.`
               : `${plural(group.length, "source")} loading again.`,
-        body: renderChatwootMessage({ topic, slug, stateName, events: group, today }),
+        body: renderTopicMessage({ topic, slug, stateName, events: group, today }),
         ...(/^https?:\/\//.test(first ?? "") ? { link: { label: "The source", url: href(first) } } : {}),
       },
     });
@@ -329,8 +268,8 @@ export function hubEvents(events, { today }) {
 
 /**
  * Sends the alerts to the hub. `state` is the snapshot about to be saved;
- * fingerprints sent to the hub are kept under state.hub.reported, apart from
- * Chatwoot's, so each destination reports each change once. A recovery alone
+ * fingerprints sent to the hub are kept under state.hub.reported (carried
+ * from the previous snapshot by runMonitor), so each change is reported once. A recovery alone
  * is sent only once the hub has heard from this monitor. hub null: dry run.
  */
 export async function reportToHub(events, { hub, state, today }) {
@@ -359,24 +298,5 @@ export function monitorFailedEvent(error, today) {
     title: "Compliance monitor failed",
     summary: "No sources were checked or no alerts were sent today. Check the CronJob's logs (growth, compliance-monitor).",
     body: String(error?.message ?? error).split("\n").slice(0, 12).join("\n"),
-  };
-}
-
-/**
- * A client for Chatwoot's public API on one API inbox, authorised by the
- * inbox identifier alone (no agent token). Messages arrive as incoming, so
- * the inbox's agents are notified. The contact is "Compliance monitor".
- */
-export function chatwootClient({ baseUrl, inboxIdentifier, fetchImpl = fetch }) {
-  const base = `${baseUrl.replace(/\/$/, "")}/public/api/v1/inboxes/${encodeURIComponent(inboxIdentifier)}`;
-  const call = async (path, body) => {
-    const res = await fetchImpl(`${base}${path}`, { method: "POST", headers: { "content-type": "application/json", "user-agent": "vayasyaseva-compliance-monitor" }, body: JSON.stringify(body) });
-    if (!res.ok) throw new Error(`Chatwoot POST ${path.replace(/\/contacts\/[^/]+/, "/contacts/…")}: HTTP ${res.status} ${(await res.text()).slice(0, 200)}`);
-    return res.json();
-  };
-  return {
-    createContact: () => call("/contacts", { identifier: "compliance-monitor", name: "Compliance monitor" }),
-    createConversation: (contact, attributes) => call(`/contacts/${encodeURIComponent(contact)}/conversations`, { custom_attributes: attributes }),
-    message: (contact, conversation, content) => call(`/contacts/${encodeURIComponent(contact)}/conversations/${conversation}/messages`, { content }),
   };
 }

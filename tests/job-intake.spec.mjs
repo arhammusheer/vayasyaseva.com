@@ -116,6 +116,11 @@ test('the area answer decides the cluster, else the page', () => {
   assert.equal(submissionCluster(null, { area: ['outside'] }), 'other');
   assert.equal(submissionCluster(null, null), 'other');
   assert.equal(submissionCluster('haridwar', null), 'haridwar');
+  // Hyderabad and Telangana (27 Oct 2026): each files the other's answer under the other's market.
+  assert.equal(submissionCluster('telangana', { area: ['telangana:hyderabad'] }), 'hyderabad');
+  assert.equal(submissionCluster('hyderabad', { area: ['hyderabad:rest-of-telangana'] }), 'telangana');
+  assert.equal(submissionCluster('hyderabad', { area: ['hyderabad:outside'] }), 'hyderabad');
+  assert.equal(submissionCluster(null, { area: ['market:hyderabad'] }), 'hyderabad');
 });
 
 test('the n8n payload schema rejects "web" without a locale', () => {

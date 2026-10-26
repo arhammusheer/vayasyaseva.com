@@ -23,12 +23,14 @@ export const MARKET_LABELS = {
   dehradun: { name: { "en-IN": "Dehradun", "hi-IN": "देहरादून", "hi-Latn-IN": "Dehradun" } },
   "delhi-ncr": { name: { "en-IN": "Delhi NCR", "hi-IN": "दिल्ली NCR", "hi-Latn-IN": "Delhi NCR" } },
   haridwar: { name: { "en-IN": "Haridwar", "hi-IN": "हरिद्वार", "hi-Latn-IN": "Haridwar" } },
+  hyderabad: { name: { "en-IN": "Hyderabad", "hi-IN": "हैदराबाद", "hi-Latn-IN": "Hyderabad" } },
   jalandhar: {
     name: { "en-IN": "Jalandhar", "hi-IN": "जालंधर", "hi-Latn-IN": "Jalandhar", "pa-IN": "ਜਲੰਧਰ" },
     short: "Jalandhar–Kapurthala",
   },
   kapurthala: { name: { "en-IN": "Kapurthala", "hi-IN": "कपूरथला", "hi-Latn-IN": "Kapurthala", "pa-IN": "ਕਪੂਰਥਲਾ" } },
   punjab: { name: { "en-IN": "Punjab", "hi-IN": "पंजाब", "hi-Latn-IN": "Punjab", "pa-IN": "ਪੰਜਾਬ" } },
+  telangana: { name: { "en-IN": "Telangana", "hi-IN": "तेलंगाना", "hi-Latn-IN": "Telangana" } },
   uttarakhand: { name: { "en-IN": "Uttarakhand", "hi-IN": "उत्तराखंड", "hi-Latn-IN": "Uttarakhand" } },
   visakhapatnam: { name: { "en-IN": "Visakhapatnam", "hi-IN": "विशाखापत्तनम", "hi-Latn-IN": "Visakhapatnam" } },
 } as const satisfies Record<MarketId, MarketLabel>;
@@ -63,6 +65,13 @@ export const JOBS_LINK_LABELS = {
     "kn-IN": "ಹರಿದ್ವಾರದಲ್ಲಿ ಉದ್ಯೋಗ",
     "pa-IN": "ਹਰਿਦੁਆਰ ਵਿੱਚ ਨੌਕਰੀ",
   },
+  hyderabad: {
+    "en-IN": "Jobs in Hyderabad",
+    "hi-IN": "हैदराबाद में नौकरी",
+    "hi-Latn-IN": "Hyderabad mein job",
+    "kn-IN": "ಹೈದರಾಬಾದ್‌ನಲ್ಲಿ ಉದ್ಯೋಗ",
+    "pa-IN": "ਹੈਦਰਾਬਾਦ ਵਿੱਚ ਨੌਕਰੀ",
+  },
   jalandhar: {
     "en-IN": "Jobs in Jalandhar",
     "hi-IN": "जालंधर में नौकरी",
@@ -83,6 +92,13 @@ export const JOBS_LINK_LABELS = {
     "hi-Latn-IN": "Poore Punjab mein job",
     "kn-IN": "ಪಂಜಾಬ್‌ನಾದ್ಯಂತ ಉದ್ಯೋಗ",
     "pa-IN": "ਪੂਰੇ ਪੰਜਾਬ ਵਿੱਚ ਨੌਕਰੀ",
+  },
+  telangana: {
+    "en-IN": "Jobs across Telangana",
+    "hi-IN": "पूरे तेलंगाना में नौकरी",
+    "hi-Latn-IN": "Poore Telangana mein job",
+    "kn-IN": "ತೆಲಂಗಾಣದಾದ್ಯಂತ ಉದ್ಯೋಗ",
+    "pa-IN": "ਪੂਰੇ ਤੇਲੰਗਾਨਾ ਵਿੱਚ ਨੌਕਰੀ",
   },
   uttarakhand: {
     "en-IN": "Jobs across Uttarakhand",

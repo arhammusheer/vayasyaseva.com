@@ -51,6 +51,14 @@ export const PLACES_BY_ID = {
   "atchutapuram-rambilli": { state: "AP", city: "APSEZ Atchutapuram / Rambilli", market: "visakhapatnam" },
   "duvvada-vsez": { state: "AP", city: "VSEZ Duvvada, Visakhapatnam", market: "visakhapatnam" },
   gajuwaka: { state: "AP", city: "Gajuwaka, Visakhapatnam", market: "visakhapatnam" },
+  // Hyderabad (27 Oct 2026): the hub and its five belts, in Sangareddy,
+  // Medchal-Malkajgiri and Rangareddy districts. TS is the crew form's code.
+  hyderabad: { state: "TS", city: "Hyderabad", market: "hyderabad" },
+  "patancheru-pashamylaram": { state: "TS", city: "Patancheru / Pashamylaram", market: "hyderabad" },
+  "jeedimetla-medchal": { state: "TS", city: "Jeedimetla / Medchal", market: "hyderabad" },
+  "cherlapally-nacharam": { state: "TS", city: "Cherlapally / Nacharam, Hyderabad", market: "hyderabad" },
+  "genome-valley": { state: "TS", city: "Genome Valley, Shamirpet", market: "hyderabad" },
+  "shamshabad-kothur": { state: "TS", city: "Shamshabad / Kothur", market: "hyderabad" },
 } as const satisfies Record<string, Place>;
 
 export type PlaceId = keyof typeof PLACES_BY_ID;

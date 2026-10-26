@@ -194,7 +194,7 @@ test('state page doors come from the markets: a jobs hub where the state has one
     punjab: ['/jobs/punjab', '/locations/jalandhar'],
     karnataka: ['/jobs/bengaluru', '/locations/bengaluru'],
     'andhra-pradesh': ['/jobs/andhra-pradesh', '/locations/visakhapatnam'],
-    telangana: [dept.href, '/contact'],
+    telangana: ['/jobs/telangana', '/locations/hyderabad'],
   });
   const [jobs, crew] = stateDoors('uttarakhand', 'Uttarakhand', dept);
   assert.match(jobs.text, /^Dehradun, Haridwar and the rest of the state\. /);

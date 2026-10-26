@@ -40,6 +40,8 @@ export async function currentStoredIds() {
     "identifiers.KAPURTHALA_AREA_IDS": ids.KAPURTHALA_AREA_IDS,
     "identifiers.VISAKHAPATNAM_AREA_IDS": ids.VISAKHAPATNAM_AREA_IDS,
     "identifiers.ANDHRA_PRADESH_AREA_IDS": ids.ANDHRA_PRADESH_AREA_IDS,
+    "identifiers.HYDERABAD_AREA_IDS": ids.HYDERABAD_AREA_IDS,
+    "identifiers.TELANGANA_AREA_IDS": ids.TELANGANA_AREA_IDS,
     "identifiers.MARKET_AREA_IDS": ids.MARKET_AREA_IDS,
     "identifiers.REST_OF_STATE_AREA_IDS": ids.REST_OF_STATE_AREA_IDS,
     "rules.INTAKE_SOURCES": keys(rules.INTAKE_SOURCES),

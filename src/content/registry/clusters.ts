@@ -190,6 +190,30 @@ export const clusters: readonly Cluster[] = [
     claims: [],
     registrations: [],
   },
+  {
+    // Hyderabad (owner direction, 27 Oct 2026): jobs and business pages,
+    // like Visakhapatnam, put up to be indexed before any ads run. The jobs
+    // hub is a worker list: no open requirement is named until there is
+    // one. The buyer hub covers the metro's industrial belts in Sangareddy,
+    // Medchal-Malkajgiri and Rangareddy districts. "jobs in hyderabad" and
+    // its variants are ~43,000 searches a month (Keyword Planner, 27 Oct 2026).
+    id: "hyderabad",
+    publishable: true,
+    states: ["telangana"],
+    buyerHub: "/locations/hyderabad",
+    claims: [],
+    registrations: [],
+  },
+  {
+    // Telangana outside Hyderabad (owner direction, 27 Oct 2026): a jobs-only
+    // market, a worker list like Andhra Pradesh's. No buyer page; the
+    // Hyderabad hub carries the state's business side.
+    id: "telangana",
+    publishable: true,
+    states: ["telangana"],
+    claims: [],
+    registrations: [],
+  },
 ];
 
 export function clusterById(id: string) {

@@ -27,9 +27,11 @@ what to put first and measures what people pick. Owner decisions of
 | Dehradun (`dehradun`, since 18 Oct 2026) | `/jobs/dehradun`, worker list | `/locations/dehradun` (Selaqui under it) |
 | Delhi NCR (`delhi-ncr`) | none (nearby: Haridwar, Uttarakhand) | `/locations/delhi-ncr` |
 | Haridwar (`haridwar`) | `/jobs/haridwar` | `/locations/haridwar` |
+| Hyderabad (`hyderabad`, since 27 Oct 2026) | `/jobs/hyderabad`, worker list | `/locations/hyderabad` (Patancheru–Pashamylaram, Jeedimetla–Medchal, Cherlapally–Nacharam, Genome Valley, Shamshabad–Kothur under it) |
 | Jalandhar (`jalandhar`) | `/jobs/jalandhar` | `/locations/jalandhar` (Jalandhar–Kapurthala region) |
 | Kapurthala (`kapurthala`), Phagwara included | `/jobs/kapurthala` | none: Jalandhar's region page |
 | Punjab outside it (`punjab`) | `/jobs/punjab`, worker list | none (Jalandhar's page stands in) |
+| Telangana outside Hyderabad (`telangana`, since 27 Oct 2026) | `/jobs/telangana`, worker list | none (Hyderabad's page stands in) |
 | Uttarakhand outside Haridwar and Dehradun (`uttarakhand`) | `/jobs/uttarakhand`, worker list | `/locations/uttarakhand` |
 | Visakhapatnam (`visakhapatnam`, since 22 Oct 2026), Anakapalli's belt included | `/jobs/visakhapatnam`, worker list | `/locations/visakhapatnam` (Parawada, Atchutapuram–Rambilli, Duvvada, Gajuwaka under it) |
 
@@ -323,7 +325,7 @@ so `src/context/report.ts` also sends one plainly named event per outcome
 | Board section | Events |
 |---|---|
 | How the site decided (once per decision) | `intent_by_pick` (stated), `intent_by_arrival` (an ad or tagged link: `?cluster=`, UTM, landing page), `intent_by_page` (browsing), `intent_by_location` (IP, phone language), `intent_none` |
-| What it put first (once per session per market) | `market_shown_<market>` (bengaluru, dehradun, delhi_ncr, haridwar, jalandhar, punjab, uttarakhand) |
+| What it put first (once per session per market) | `market_shown_<market>` (one per market id, hyphens as underscores: andhra_pradesh, bengaluru, dehradun, delhi_ncr, haridwar, hyderabad, jalandhar, kapurthala, punjab, telangana, uttarakhand, visakhapatnam) |
 | What visitors picked | `market_chosen_<market>`, plus `market_chosen_other` for "Somewhere else" |
 | Was the decision right? | `intent_confirmed` (picked a market the site had put first), `intent_corrected` (picked another), `intent_self_chosen` (nothing had been decided) |
 

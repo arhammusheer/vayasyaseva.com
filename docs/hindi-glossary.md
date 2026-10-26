@@ -36,6 +36,14 @@ Terms used on `/hi-in/` (हिंदी, Devanagari) and `/hi-latn-in/` (Hindi 
 | Phagwara | फगवाड़ा | |
 | Visakhapatnam | विशाखापत्तनम | "Vizag" (वाइज़ैग) in brackets where it helps searchers |
 | Andhra Pradesh | आंध्र प्रदेश | |
+| Hyderabad | हैदराबाद | Secunderabad: सिकंदराबाद |
+| Telangana | तेलंगाना | |
+| Patancheru, Pashamylaram, Bollaram | पटनचेरु, पाशमैलारम, बोल्लारम | Jobs form area names (Hyderabad) |
+| Jeedimetla, Kukatpally, Medchal | जीडीमेटला, कूकटपल्ली, मेडचल | |
+| Uppal, Cherlapally, Nacharam | उप्पल, चर्लापल्ली, नाचारम | |
+| Shamshabad, Kothur, Shadnagar | शमशाबाद, कोथुर, शादनगर | |
+| Warangal, Hanamkonda, Karimnagar, Ramagundam | वरंगल, हनमकोंडा, करीमनगर, रामागुंडम | Telangana form |
+| Nalgonda, Suryapet, Mahabubnagar, Jadcherla | नलगोंडा, सूर्यापेट, महबूबनगर, जडचर्ला | |
 | Gajuwaka | गाजुवाका | |
 | Parawada | परवाड़ा | |
 | Atchutapuram | अच्युतापुरम | Also spelt Achutapuram |

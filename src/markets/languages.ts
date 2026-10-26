@@ -33,6 +33,8 @@ export const STATE_LANGUAGE_SETS: Readonly<Record<string, LanguageSetName>> = {
   KA: "karnataka",
   PB: "punjab",
   AP: "andhra",
+  // Telangana takes the Andhra set (owner, 27 Oct 2026); TG reads as TS (REGION_ALIASES).
+  TS: "andhra",
 };
 
 /**

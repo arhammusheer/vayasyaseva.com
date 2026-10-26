@@ -56,7 +56,7 @@ export interface SyncCandidate {
   synced: boolean;
 }
 
-const CLUSTER_VALUES = new Set(["HARIDWAR", "UTTARAKHAND", "DELHI_NCR", "BENGALURU", "JALANDHAR", "SAHARANPUR", "OTHER", "PUNJAB", "DEHRADUN", "KAPURTHALA", "VISAKHAPATNAM", "ANDHRA_PRADESH"]);
+const CLUSTER_VALUES = new Set(["HARIDWAR", "UTTARAKHAND", "DELHI_NCR", "BENGALURU", "JALANDHAR", "SAHARANPUR", "OTHER", "PUNJAB", "DEHRADUN", "KAPURTHALA", "VISAKHAPATNAM", "ANDHRA_PRADESH", "HYDERABAD", "TELANGANA"]);
 const ROLE_VALUES = new Set([
   "FACTORY_HELPER", "PACKING", "MACHINE_OPERATOR", "WAREHOUSE", "FORKLIFT_OPERATOR", "DATA_ENTRY_OPERATOR",
   "HOUSEKEEPING", "ITI_TRADES", "ELECTRICIAN", "WELDER", "FITTER", "ANY",
@@ -242,6 +242,22 @@ export const ANSWER_OPTIONS = {
     "market:visakhapatnam": ["MARKET_VISAKHAPATNAM", "Visakhapatnam (market)"],
     "market:andhra-pradesh": ["MARKET_ANDHRA_PRADESH", "Elsewhere in Andhra Pradesh (market)"],
     "visakhapatnam:rest-of-andhra-pradesh": ["VP_REST_OF_ANDHRA_PRADESH", "Elsewhere in Andhra Pradesh (Visakhapatnam form)"],
+    "hyderabad:city": ["HYDERABAD_CITY", "Hyderabad / Secunderabad city"],
+    "hyderabad:patancheru": ["PATANCHERU_PASHAMYLARAM", "Patancheru / Pashamylaram / Bollaram"],
+    "hyderabad:jeedimetla-medchal": ["JEEDIMETLA_MEDCHAL", "Jeedimetla / Kukatpally / Medchal"],
+    "hyderabad:uppal-cherlapally": ["UPPAL_CHERLAPALLY", "Uppal / Cherlapally / Nacharam"],
+    "hyderabad:shamshabad-kothur": ["SHAMSHABAD_KOTHUR", "Shamshabad / Kothur / Shadnagar"],
+    "hyderabad:outside": ["OUTSIDE_HYDERABAD", "Outside Hyderabad"],
+    "telangana:hyderabad": ["TS_HYDERABAD", "Hyderabad / Secunderabad (Telangana form)"],
+    "telangana:warangal": ["WARANGAL_HANAMKONDA", "Warangal / Hanamkonda"],
+    "telangana:karimnagar-ramagundam": ["KARIMNAGAR_RAMAGUNDAM", "Karimnagar / Ramagundam"],
+    "telangana:nalgonda-suryapet": ["NALGONDA_SURYAPET", "Nalgonda / Suryapet"],
+    "telangana:mahabubnagar-jadcherla": ["MAHABUBNAGAR_JADCHERLA", "Mahabubnagar / Jadcherla"],
+    "telangana:other": ["ELSEWHERE_TELANGANA", "Elsewhere in Telangana"],
+    "telangana:outside": ["OUTSIDE_TELANGANA", "Outside Telangana"],
+    "market:hyderabad": ["MARKET_HYDERABAD", "Hyderabad (market)"],
+    "market:telangana": ["MARKET_TELANGANA", "Elsewhere in Telangana (market)"],
+    "hyderabad:rest-of-telangana": ["HY_REST_OF_TELANGANA", "Elsewhere in Telangana (Hyderabad form)"],
   },
 } as const satisfies Record<string, Record<string, readonly [string, string]>>;
 

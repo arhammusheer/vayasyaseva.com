@@ -45,6 +45,8 @@ const CLUSTERS = options([
   ["KAPURTHALA", "Kapurthala"],
   ["VISAKHAPATNAM", "Visakhapatnam"],
   ["ANDHRA_PRADESH", "Andhra Pradesh (outside Visakhapatnam)"],
+  ["HYDERABAD", "Hyderabad"],
+  ["TELANGANA", "Telangana (outside Hyderabad)"],
 ]);
 // src/lib/talent-intake/rules.ts JOB_ROLES, plus the work answers' "any".
 const ROLES = options([

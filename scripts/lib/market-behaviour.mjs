@@ -8,8 +8,8 @@ import { importTs, root } from "./register-ts.mjs";
 
 export const MARKET_BEHAVIOUR_PATH = join(root, "tests/fixtures/market-behaviour.json");
 
-const REGIONS = ["UK", "UT", "PB", "KA", "DL", "HR", "UP", "MH", "AP", "OD", null];
-const PAGE_CLUSTERS = [null, "haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "punjab", "saharanpur", "other", "dehradun", "kapurthala", "visakhapatnam", "andhra-pradesh"];
+const REGIONS = ["UK", "UT", "PB", "KA", "DL", "HR", "UP", "MH", "AP", "OD", "TS", "TG", null];
+const PAGE_CLUSTERS = [null, "haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "punjab", "saharanpur", "other", "dehradun", "kapurthala", "visakhapatnam", "andhra-pradesh", "hyderabad", "telangana"];
 const SOURCES = ["page", "link", "decision", "ask"];
 
 /** A JSON-safe value: undefined becomes null, so the fixture keeps every key. */

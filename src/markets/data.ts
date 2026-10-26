@@ -21,7 +21,8 @@
  * takes the first: src/lib/language-rank.ts urlIntent). Narrow markets come
  * first (Haridwar and Dehradun before the rest of Uttarakhand, Jalandhar and
  * Kapurthala before the rest of Punjab, Visakhapatnam before the rest of
- * Andhra Pradesh), then the state names,
+ * Andhra Pradesh, Hyderabad before the rest of Telangana), then the state
+ * names,
  * then Delhi NCR's Delhi and Haryana groups (a "Delhi Road" in another
  * state's town matches that town first), then "NCR" (no state of its own).
  */
@@ -32,7 +33,7 @@ import type { ClusterId, LocaleTag } from "@/content/registry/identifiers";
  * market comes first by default). Every market is a cluster id (stored,
  * append-only, in identifiers.ts); not every cluster is a market.
  */
-export const MARKET_IDS = ["andhra-pradesh", "bengaluru", "dehradun", "delhi-ncr", "haridwar", "jalandhar", "kapurthala", "punjab", "uttarakhand", "visakhapatnam"] as const satisfies readonly ClusterId[];
+export const MARKET_IDS = ["andhra-pradesh", "bengaluru", "dehradun", "delhi-ncr", "haridwar", "hyderabad", "jalandhar", "kapurthala", "punjab", "telangana", "uttarakhand", "visakhapatnam"] as const satisfies readonly ClusterId[];
 export type MarketId = (typeof MARKET_IDS)[number];
 
 /** A region code: ISO 3166-2:IN without "IN-". Always the current code: old ones are aliases (REGION_ALIASES). */
@@ -44,7 +45,12 @@ export type RegionCode = string;
  * everywhere (owner direction, 17 Oct 2026). Market records use only the
  * current codes; the queries in ./index.ts read every code through this.
  */
-export const REGION_ALIASES: Readonly<Record<string, RegionCode>> = { UT: "UK" };
+export const REGION_ALIASES: Readonly<Record<string, RegionCode>> = {
+  UT: "UK",
+  // Telangana: IN-TS since November 2023 (IN-TG before), and the crew form
+  // stores TS; geo databases may still send TG.
+  TG: "TS",
+};
 
 /** The picker's language orders a market can take (src/lib/language-rank.ts RANK_SETS). */
 export type LanguageSetName = "andhra" | "hindi" | "karnataka" | "punjab";
@@ -107,9 +113,10 @@ const HINDI_BELT_SWITCH = ["en-IN", "hi-IN", "hi-Latn-IN"] as const satisfies re
 // Punjabi first where a page has it (owner direction, 17 Oct 2026), then
 // PLAN §6.4's Punjab order: Hinglish · English · हिंदी.
 const PUNJAB_SWITCH = ["pa-IN", "hi-Latn-IN", "en-IN"] as const satisfies readonly LocaleTag[];
-// Andhra Pradesh: English first (owner direction, 22 Oct 2026: most of
-// Visakhapatnam's job searches are in English), then Hinglish and Hindi for
-// workers from the Hindi belt. Telugu is not a site language yet.
+// Andhra Pradesh and Telangana: English first (owner direction, 22 Oct 2026:
+// most of Visakhapatnam's job searches are in English; Hyderabad's are 96%
+// English, Keyword Planner, 27 Oct 2026), then Hinglish and Hindi for workers
+// from the Hindi belt. Telugu is not a site language yet.
 const ANDHRA_SWITCH = ["en-IN", "hi-Latn-IN", "hi-IN"] as const satisfies readonly LocaleTag[];
 
 export const MARKETS = {
@@ -120,7 +127,7 @@ export const MARKETS = {
       // The rest of the state, so a typed city names its market even on another market's page.
       { rank: 9, region: ["AP"], words: ["vijayawada", "bezawada", "guntur", "mangalagiri", "nellore", "sri city", "tirupati", "kakinada", "rajahmundry", "rajamahendravaram", "eluru", "ongole", "kurnool", "anantapur", "anantapuramu", "srikakulam", "vizianagaram"] },
       // The state's name: the state's default market ("jobs_andhra").
-      { rank: 12, region: ["AP"], words: ["andhra pradesh", "andhra"], wholeState: true },
+      { rank: 14, region: ["AP"], words: ["andhra pradesh", "andhra"], wholeState: true },
     ],
     languageSet: "andhra",
     quickSwitch: ANDHRA_SWITCH,
@@ -162,11 +169,11 @@ export const MARKETS = {
       // its state (placeState). After the towns and the state names: a
       // "Delhi Road" in another state's town matches that town first. Same
       // market as the region alone. "Delhi" is the city and the state.
-      { rank: 13, region: ["DL"], words: ["delhi", "new delhi", "okhla", "bawana", "narela", "mayapuri", "naraina", "wazirpur", "patparganj", "mundka"] },
-      { rank: 14, region: ["HR"], words: ["gurugram", "gurgaon", "manesar", "faridabad", "ballabgarh", "sonipat", "kundli", "bahadurgarh"] },
+      { rank: 16, region: ["DL"], words: ["delhi", "new delhi", "okhla", "bawana", "narela", "mayapuri", "naraina", "wazirpur", "patparganj", "mundka"] },
+      { rank: 17, region: ["HR"], words: ["gurugram", "gurgaon", "manesar", "faridabad", "ballabgarh", "sonipat", "kundli", "bahadurgarh"] },
       // "NCR" spans all three states, so it names the market in each (a UP
       // site in "NCR" is Delhi NCR's) but no state. Last: "Gurgaon NCR" is Haryana.
-      { rank: 15, region: ["DL", "HR", "UP"], words: ["ncr"] },
+      { rank: 18, region: ["DL", "HR", "UP"], words: ["ncr"] },
     ],
     languageSet: "hindi",
     quickSwitch: HINDI_BELT_SWITCH,
@@ -183,6 +190,29 @@ export const MARKETS = {
     languageSet: "hindi",
     // Hindi belt (PLAN §6.4): English · हिंदी · Hinglish.
     quickSwitch: HINDI_BELT_SWITCH,
+    sides: ["business", "jobs"],
+  },
+  hyderabad: {
+    states: ["TS"],
+    // The state's default is the rest of Telangana; Hyderabad is named by place.
+    defaultStates: [],
+    placeGroups: [
+      // Hyderabad and Secunderabad, the residential areas job seekers name
+      // (Kukatpally, Uppal, Dilsukhnagar, Miyapur: Keyword Planner, 27 Oct
+      // 2026) and the industrial belts around them: Patancheru–Pashamylaram
+      // and Sangareddy's side, Jeedimetla–Medchal and the north, Uppal–
+      // Cherlapally and the east, Genome Valley, Shamshabad–Kothur and the
+      // south. Left out as clashes: sultanpur (UP; Sultanpur Lodhi),
+      // mallapur, autonagar (Vijayawada, Vizag), balanagar (also a mandal in
+      // Mahabubnagar) and "pharma city" (Vizag's JN Pharma City).
+      {
+        rank: 10,
+        region: ["TS"],
+        words: ["hyderabad", "hyd", "secunderabad", "cyberabad", "rangareddy", "ranga reddy", "medchal", "malkajgiri", "sangareddy", "patancheru", "patancheruvu", "pashamylaram", "pashamailaram", "bollaram", "isnapur", "rudraram", "ameenpur", "gaddapotharam", "kazipally", "khazipally", "jeedimetla", "jeedimatla", "gandimaisamma", "dundigal", "quthbullapur", "qutbullapur", "kompally", "bachupally", "kukatpally", "kphb", "miyapur", "ameerpet", "gachibowli", "madhapur", "uppal", "cherlapally", "cherlapalli", "charlapally", "nacharam", "moula ali", "kushaiguda", "kapra", "dilsukhnagar", "lb nagar", "genome valley", "shamirpet", "shameerpet", "turkapally", "shamshabad", "kothur", "shadnagar", "adibatla", "adibhatla", "maheshwaram", "kattedan", "katedan"],
+      },
+    ],
+    languageSet: "andhra",
+    quickSwitch: ANDHRA_SWITCH,
     sides: ["business", "jobs"],
   },
   jalandhar: {
@@ -221,7 +251,7 @@ export const MARKETS = {
       // The rest of the state, so a typed city names its market even on another market's page.
       { rank: 6, region: ["PB"], words: ["ludhiana", "mohali", "kharar", "amritsar", "patiala", "rajpura", "bathinda", "zirakpur", "dera bassi"] },
       // The state's name: the state's default market ("jobs_punjab").
-      { rank: 11, region: ["PB"], words: ["punjab"], wholeState: true },
+      { rank: 13, region: ["PB"], words: ["punjab"], wholeState: true },
     ],
     languageSet: "punjab",
     quickSwitch: PUNJAB_SWITCH,
@@ -230,6 +260,22 @@ export const MARKETS = {
     sides: ["jobs"],
     standIn: { business: "jalandhar" },
   },
+  telangana: {
+    states: ["TS"],
+    defaultStates: ["TS"],
+    placeGroups: [
+      // The rest of the state, so a typed city names its market even on another market's page.
+      { rank: 11, region: ["TS"], words: ["warangal", "hanamkonda", "hanumakonda", "kazipet", "karimnagar", "ramagundam", "godavarikhani", "peddapalli", "mancherial", "nalgonda", "miryalaguda", "suryapet", "kodad", "mahbubnagar", "mahabubnagar", "jadcherla", "medak", "toopran", "siddipet", "gajwel", "khammam", "kothagudem", "palvancha", "bhadrachalam", "kamareddy", "adilabad", "nizamabad", "zaheerabad", "sircilla", "jangaon", "bhongir", "bhuvanagiri", "vikarabad"] },
+      // The state's name: the state's default market ("jobs_telangana").
+      { rank: 15, region: ["TS"], words: ["telangana"], wholeState: true },
+    ],
+    languageSet: "andhra",
+    quickSwitch: ANDHRA_SWITCH,
+    // Jobs only (owner direction, 27 Oct 2026): a worker list for the state
+    // outside Hyderabad, whose buyer page covers the state's buyers.
+    sides: ["jobs"],
+    standIn: { business: "hyderabad" },
+  },
   uttarakhand: {
     states: ["UK"],
     defaultStates: ["UK"],
@@ -237,7 +283,7 @@ export const MARKETS = {
       // The rest of the state, so a typed city names its market even on another market's page.
       { rank: 5, region: ["UK"], words: ["rudrapur", "kashipur", "sitarganj", "pantnagar", "haldwani", "kotdwar"] },
       // The state's name: the state's default market ("Roorkee, Uttarakhand" stays Haridwar's: rank 0 is tried first).
-      { rank: 10, region: ["UK"], words: ["uttarakhand"], wholeState: true },
+      { rank: 12, region: ["UK"], words: ["uttarakhand"], wholeState: true },
     ],
     languageSet: "hindi",
     quickSwitch: HINDI_BELT_SWITCH,
@@ -283,8 +329,7 @@ export const NEARBY: Readonly<Record<string, readonly MarketId[]>> = {
   AP: ["visakhapatnam", "andhra-pradesh"],
   OD: ["visakhapatnam", "andhra-pradesh"],
   OR: ["visakhapatnam", "andhra-pradesh"],
-  TS: ["bengaluru", "andhra-pradesh"],
-  TG: ["bengaluru", "andhra-pradesh"],
+  // Telangana has markets of its own since 27 Oct 2026, so it needs no entry here.
   KL: ["bengaluru"],
   GA: ["bengaluru"],
 };

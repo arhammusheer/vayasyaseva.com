@@ -90,7 +90,7 @@ export const SHIFTS_LINE: Record<Locale, string> = {
  * /jobs in every locale, and the jobs form's strings. /jobs is a router:
  * Apply (to the visitor's market, else /jobs/apply), every market, the four
  * work groups and Who can apply. No market is named first (owner direction,
- * 17 Oct 2026); the title and description list them alphabetically. It had
+ * 17 Oct 2026); the description names none (27 Oct 2026: eleven markets no longer fit in 160 characters), and the page lists them alphabetically. It had
  * about 60 search impressions a month before the change. hi-IN is the page most job seekers use; en-IN and hi-Latn-IN
  * mirror it. hi-IN, hi-Latn-IN and pa-IN are drafts pending native review;
  * /jobs itself is not built in pa-IN, but its form strings are used on the
@@ -101,7 +101,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
   "en-IN": {
     title: "Factory, Packing and Warehouse Jobs: No Fee to Apply",
     description:
-      "Factory and warehouse work in Andhra Pradesh, Bengaluru, Dehradun, Haridwar, Jalandhar, Kapurthala, Punjab, Uttarakhand and Visakhapatnam. No fee to apply.",
+      "Factory, packing, warehouse and housekeeping work in the cities and states we hire for. Full 8-hour shifts. Pick your area when you apply. No fee to apply.",
     breadcrumb: "Jobs",
     eyebrow: "JOBS",
     heading: "Find factory and warehouse work.",
@@ -172,7 +172,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
   "hi-IN": {
     title: "फ़ैक्टरी, पैकिंग और वेयरहाउस की नौकरी: आवेदन की कोई फ़ीस नहीं",
     description:
-      "आंध्र प्रदेश, बेंगलुरु, देहरादून, हरिद्वार, जालंधर, कपूरथला, पंजाब, उत्तराखंड और विशाखापत्तनम में फ़ैक्टरी, पैकिंग और वेयरहाउस का काम। कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट। ऑनलाइन आवेदन करें।",
+      "जिन शहरों और राज्यों में हम भर्ती करते हैं, वहाँ फ़ैक्टरी, पैकिंग, वेयरहाउस और हाउसकीपिंग का काम, पूरी 8 घंटे की शिफ्ट। आवेदन करते समय अपना इलाका चुनें। कोई फ़ीस नहीं।",
     breadcrumb: "नौकरी",
     eyebrow: "नौकरी",
     heading: "फ़ैक्टरी और वेयरहाउस का काम ढूँढें।",
@@ -243,7 +243,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
   "hi-Latn-IN": {
     title: "Factory, Packing, Warehouse Job: Apply ki Koi Fee Nahi",
     description:
-      "Andhra Pradesh, Bengaluru, Dehradun, Haridwar, Jalandhar, Kapurthala, Punjab, Uttarakhand aur Visakhapatnam mein factory aur warehouse ka kaam. Koi fee nahi.",
+      "Factory, packing, warehouse aur housekeeping ka kaam, jahan hum bharti karte hain. Poori 8 ghante ki shift. Apply karte waqt area chunein. Koi fee nahi.",
     breadcrumb: "Jobs",
     eyebrow: "Jobs",
     heading: "Factory aur warehouse ka kaam dhoondhein.",
@@ -314,7 +314,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
   "pa-IN": {
     title: "ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦੀ ਨੌਕਰੀ: ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ",
     description:
-      "ਆਂਧਰਾ ਪ੍ਰਦੇਸ਼, ਬੈਂਗਲੁਰੂ, ਦੇਹਰਾਦੂਨ, ਹਰਿਦੁਆਰ, ਜਲੰਧਰ, ਕਪੂਰਥਲਾ, ਪੰਜਾਬ, ਉੱਤਰਾਖੰਡ ਅਤੇ ਵਿਸ਼ਾਖਾਪਟਨਮ ਵਿੱਚ ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ। ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ।",
+      "ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ, ਵੇਅਰਹਾਊਸ ਅਤੇ ਹਾਊਸਕੀਪਿੰਗ ਦਾ ਕੰਮ, ਜਿੱਥੇ ਅਸੀਂ ਭਰਤੀ ਕਰਦੇ ਹਾਂ। ਪੂਰੀ 8 ਘੰਟੇ ਦੀ ਸ਼ਿਫ਼ਟ। ਅਪਲਾਈ ਕਰਦੇ ਸਮੇਂ ਆਪਣਾ ਇਲਾਕਾ ਚੁਣੋ। ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ।",
     breadcrumb: "ਨੌਕਰੀਆਂ",
     eyebrow: "ਨੌਕਰੀ",
     heading: "ਫ਼ੈਕਟਰੀ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ ਲੱਭੋ।",
@@ -385,7 +385,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
   "kn-IN": {
     title: "ಫ್ಯಾಕ್ಟರಿ ಮತ್ತು ವೇರ್‌ಹೌಸ್ ಉದ್ಯೋಗಗಳು: ಶುಲ್ಕವಿಲ್ಲ",
     description:
-      "ಆಂಧ್ರ ಪ್ರದೇಶ, ಬೆಂಗಳೂರು, ಡೆಹ್ರಾಡೂನ್, ಹರಿದ್ವಾರ, ಜಲಂಧರ್, ಕಪೂರ್ಥಲಾ, ಪಂಜಾಬ್, ಉತ್ತರಾಖಂಡ ಮತ್ತು ವಿಶಾಖಪಟ್ಟಣದಲ್ಲಿ ಫ್ಯಾಕ್ಟರಿ ಮತ್ತು ವೇರ್‌ಹೌಸ್ ಕೆಲಸ. ಶುಲ್ಕವಿಲ್ಲ.",
+      "ನಾವು ನೇಮಕ ಮಾಡುವಲ್ಲಿ ಫ್ಯಾಕ್ಟರಿ, ಪ್ಯಾಕಿಂಗ್, ವೇರ್‌ಹೌಸ್ ಮತ್ತು ಹೌಸ್‌ಕೀಪಿಂಗ್ ಕೆಲಸ. ಪೂರ್ಣ 8 ಗಂಟೆಗಳ ಶಿಫ್ಟ್. ಅರ್ಜಿ ಹಾಕುವಾಗ ನಿಮ್ಮ ಪ್ರದೇಶವನ್ನು ಆರಿಸಿ. ಯಾವುದೇ ಶುಲ್ಕವಿಲ್ಲ.",
     breadcrumb: "ಉದ್ಯೋಗಗಳು",
     eyebrow: "ಉದ್ಯೋಗಗಳು",
     heading: "ಫ್ಯಾಕ್ಟರಿ ಮತ್ತು ವೇರ್‌ಹೌಸ್ ಕೆಲಸ ಹುಡುಕಿ.",

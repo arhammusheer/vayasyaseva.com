@@ -93,7 +93,9 @@
                     "dehradun",
                     "kapurthala",
                     "visakhapatnam",
-                    "andhra-pradesh"
+                    "andhra-pradesh",
+                    "hyderabad",
+                    "telangana"
                   ]
                 },
                 {
@@ -117,7 +119,9 @@
                     "dehradun",
                     "kapurthala",
                     "visakhapatnam",
-                    "andhra-pradesh"
+                    "andhra-pradesh",
+                    "hyderabad",
+                    "telangana"
                   ]
                 },
                 {
@@ -555,6 +559,19 @@
                           "andhra-pradesh:nellore-tirupati",
                           "andhra-pradesh:other",
                           "andhra-pradesh:outside",
+                          "hyderabad:city",
+                          "hyderabad:patancheru",
+                          "hyderabad:jeedimetla-medchal",
+                          "hyderabad:uppal-cherlapally",
+                          "hyderabad:shamshabad-kothur",
+                          "hyderabad:outside",
+                          "telangana:hyderabad",
+                          "telangana:warangal",
+                          "telangana:karimnagar-ramagundam",
+                          "telangana:nalgonda-suryapet",
+                          "telangana:mahabubnagar-jadcherla",
+                          "telangana:other",
+                          "telangana:outside",
                           "market:haridwar",
                           "market:uttarakhand",
                           "market:jalandhar",
@@ -565,11 +582,14 @@
                           "market:kapurthala",
                           "market:visakhapatnam",
                           "market:andhra-pradesh",
+                          "market:hyderabad",
+                          "market:telangana",
                           "haridwar:rest-of-uttarakhand",
                           "jalandhar:rest-of-punjab",
                           "dehradun:rest-of-uttarakhand",
                           "kapurthala:rest-of-punjab",
-                          "visakhapatnam:rest-of-andhra-pradesh"
+                          "visakhapatnam:rest-of-andhra-pradesh",
+                          "hyderabad:rest-of-telangana"
                         ]
                       },
                       "uniqueItems": true
@@ -854,7 +874,9 @@
                     "dehradun",
                     "kapurthala",
                     "visakhapatnam",
-                    "andhra-pradesh"
+                    "andhra-pradesh",
+                    "hyderabad",
+                    "telangana"
                   ]
                 },
                 {
@@ -1108,7 +1130,9 @@
                     "dehradun",
                     "kapurthala",
                     "visakhapatnam",
-                    "andhra-pradesh"
+                    "andhra-pradesh",
+                    "hyderabad",
+                    "telangana"
                   ]
                 },
                 {

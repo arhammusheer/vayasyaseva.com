@@ -10,7 +10,7 @@ const { jobRoles } = await importTs("src/content/pages/job-roles.ts");
 const { jobHubs } = await importTs("src/content/pages/job-hubs.ts");
 const { jobsCopy } = await importTs("src/content/pages/jobs.ts");
 
-const PLACES = /sidcul|haridwar|roorkee|bengaluru|punjab|jalandhar|kapurthala|uttarakhand|dehradun|andhra|visakhapatnam|vizag|विशाखापत्तनम|आंध्र|देहरादून|सिडकुल|हरिद्वार|बेंगलुरु|पंजाब|उत्तराखंड|ਹਰਿਦੁਆਰ|ਪੰਜਾਬ/i;
+const PLACES = /sidcul|haridwar|roorkee|bengaluru|punjab|jalandhar|kapurthala|uttarakhand|dehradun|andhra|visakhapatnam|vizag|hyderabad|telangana|विशाखापत्तनम|आंध्र|हैदराबाद|तेलंगाना|देहरादून|सिडकुल|हरिद्वार|बेंगलुरु|पंजाब|उत्तराखंड|ਹਰਿਦੁਆਰ|ਪੰਜਾਬ/i;
 const pages = (copy) => Object.entries(copy).flatMap(([locale, list]) => (Array.isArray(list) ? list : [list]).map((p) => ({ locale, ...p })));
 
 test("role, qualification and /jobs titles and headings name no market", () => {
@@ -29,7 +29,7 @@ test("their descriptions name no market", () => {
 test("the jobs form's area answers: markets alphabetically when asking; another market, never 'other', after a decision", async () => {
   const { areaOptions } = await importTs("src/content/pages/quick-apply.ts");
   const { AREA_CLUSTERS } = await importTs("src/lib/talent-intake/rules.ts");
-  assert.deepEqual(areaOptions(null), ["market:andhra-pradesh", "market:bengaluru", "market:dehradun", "market:haridwar", "market:jalandhar", "market:kapurthala", "market:punjab", "market:uttarakhand", "market:visakhapatnam", "market:other"]);
+  assert.deepEqual(areaOptions(null), ["market:andhra-pradesh", "market:bengaluru", "market:dehradun", "market:haridwar", "market:hyderabad", "market:jalandhar", "market:kapurthala", "market:punjab", "market:telangana", "market:uttarakhand", "market:visakhapatnam", "market:other"]);
   // Decided Haridwar on a neutral page: Haridwar's areas, then every other market; no "Outside Haridwar".
   const decided = areaOptions("haridwar", "decision");
   assert.ok(!decided.includes("outside"));
@@ -58,7 +58,12 @@ test("the jobs form's area answers: markets alphabetically when asking; another 
   assert.equal(AREA_CLUSTERS["andhra-pradesh:visakhapatnam"], "visakhapatnam");
   assert.equal(AREA_CLUSTERS["visakhapatnam:rest-of-andhra-pradesh"], "andhra-pradesh");
   assert.deepEqual(areaOptions("visakhapatnam"), ["visakhapatnam:city", "visakhapatnam:gajuwaka", "visakhapatnam:pendurthi", "visakhapatnam:anakapalli", "visakhapatnam:rest-of-andhra-pradesh", "visakhapatnam:outside"]);
-  for (const market of ["haridwar", "uttarakhand", "jalandhar", "punjab", "bengaluru", "dehradun", "kapurthala", "visakhapatnam", "andhra-pradesh"]) {
+  // Hyderabad's answer on the Telangana form files under Hyderabad (27 Oct 2026),
+  // and the rest of the state on Hyderabad's form under Telangana.
+  assert.equal(AREA_CLUSTERS["telangana:hyderabad"], "hyderabad");
+  assert.equal(AREA_CLUSTERS["hyderabad:rest-of-telangana"], "telangana");
+  assert.deepEqual(areaOptions("hyderabad"), ["hyderabad:city", "hyderabad:patancheru", "hyderabad:jeedimetla-medchal", "hyderabad:uppal-cherlapally", "hyderabad:shamshabad-kothur", "hyderabad:rest-of-telangana", "hyderabad:outside"]);
+  for (const market of ["haridwar", "uttarakhand", "jalandhar", "punjab", "bengaluru", "dehradun", "kapurthala", "visakhapatnam", "andhra-pradesh", "hyderabad", "telangana"]) {
     for (const id of areaOptions(market, "decision")) assert.ok(Object.hasOwn(AREA_CLUSTERS, id), id);
   }
 });

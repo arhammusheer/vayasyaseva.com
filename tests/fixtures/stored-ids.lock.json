@@ -18,7 +18,9 @@
     "dehradun",
     "kapurthala",
     "visakhapatnam",
-    "andhra-pradesh"
+    "andhra-pradesh",
+    "hyderabad",
+    "telangana"
   ],
   "identifiers.PAGE_STATUSES": [
     "draft",
@@ -59,7 +61,8 @@
     "jalandhar",
     "haridwar",
     "dehradun",
-    "visakhapatnam"
+    "visakhapatnam",
+    "hyderabad"
   ],
   "identifiers.HARIDWAR_AREA_IDS": [
     "sidcul-bahadrabad",
@@ -128,6 +131,23 @@
     "andhra-pradesh:other",
     "andhra-pradesh:outside"
   ],
+  "identifiers.HYDERABAD_AREA_IDS": [
+    "hyderabad:city",
+    "hyderabad:patancheru",
+    "hyderabad:jeedimetla-medchal",
+    "hyderabad:uppal-cherlapally",
+    "hyderabad:shamshabad-kothur",
+    "hyderabad:outside"
+  ],
+  "identifiers.TELANGANA_AREA_IDS": [
+    "telangana:hyderabad",
+    "telangana:warangal",
+    "telangana:karimnagar-ramagundam",
+    "telangana:nalgonda-suryapet",
+    "telangana:mahabubnagar-jadcherla",
+    "telangana:other",
+    "telangana:outside"
+  ],
   "identifiers.MARKET_AREA_IDS": [
     "market:haridwar",
     "market:uttarakhand",
@@ -138,14 +158,17 @@
     "market:dehradun",
     "market:kapurthala",
     "market:visakhapatnam",
-    "market:andhra-pradesh"
+    "market:andhra-pradesh",
+    "market:hyderabad",
+    "market:telangana"
   ],
   "identifiers.REST_OF_STATE_AREA_IDS": [
     "haridwar:rest-of-uttarakhand",
     "jalandhar:rest-of-punjab",
     "dehradun:rest-of-uttarakhand",
     "kapurthala:rest-of-punjab",
-    "visakhapatnam:rest-of-andhra-pradesh"
+    "visakhapatnam:rest-of-andhra-pradesh",
+    "hyderabad:rest-of-telangana"
   ],
   "rules.INTAKE_SOURCES": [
     "web_en",
@@ -216,7 +239,13 @@
     "parawada-pharma-city",
     "atchutapuram-rambilli",
     "duvvada-vsez",
-    "gajuwaka"
+    "gajuwaka",
+    "hyderabad",
+    "patancheru-pashamylaram",
+    "jeedimetla-medchal",
+    "cherlapally-nacharam",
+    "genome-valley",
+    "shamshabad-kothur"
   ],
   "locations.placeId": [
     "uttarakhand",
@@ -241,7 +270,13 @@
     "parawada-pharma-city",
     "atchutapuram-rambilli",
     "duvvada-vsez",
-    "gajuwaka"
+    "gajuwaka",
+    "hyderabad",
+    "patancheru-pashamylaram",
+    "jeedimetla-medchal",
+    "cherlapally-nacharam",
+    "genome-valley",
+    "shamshabad-kothur"
   ],
   "identifiers.LOCATION_ESTATES.uttarakhand": [
     "selaqui"
@@ -272,6 +307,13 @@
     "atchutapuram-rambilli",
     "duvvada-vsez",
     "gajuwaka"
+  ],
+  "identifiers.LOCATION_ESTATES.hyderabad": [
+    "patancheru-pashamylaram",
+    "jeedimetla-medchal",
+    "cherlapally-nacharam",
+    "genome-valley",
+    "shamshabad-kothur"
   ],
   "rules.QUICK_ANSWERS.work": [
     "factory-helper",
@@ -387,6 +429,19 @@
     "andhra-pradesh:nellore-tirupati",
     "andhra-pradesh:other",
     "andhra-pradesh:outside",
+    "hyderabad:city",
+    "hyderabad:patancheru",
+    "hyderabad:jeedimetla-medchal",
+    "hyderabad:uppal-cherlapally",
+    "hyderabad:shamshabad-kothur",
+    "hyderabad:outside",
+    "telangana:hyderabad",
+    "telangana:warangal",
+    "telangana:karimnagar-ramagundam",
+    "telangana:nalgonda-suryapet",
+    "telangana:mahabubnagar-jadcherla",
+    "telangana:other",
+    "telangana:outside",
     "market:haridwar",
     "market:uttarakhand",
     "market:jalandhar",
@@ -397,11 +452,14 @@
     "market:kapurthala",
     "market:visakhapatnam",
     "market:andhra-pradesh",
+    "market:hyderabad",
+    "market:telangana",
     "haridwar:rest-of-uttarakhand",
     "jalandhar:rest-of-punjab",
     "dehradun:rest-of-uttarakhand",
     "kapurthala:rest-of-punjab",
-    "visakhapatnam:rest-of-andhra-pradesh"
+    "visakhapatnam:rest-of-andhra-pradesh",
+    "hyderabad:rest-of-telangana"
   ],
   "crm.ANSWER_OPTIONS.experience": [
     "fresher=FRESHER",
@@ -490,6 +548,22 @@
     "andhra-pradesh:outside=OUTSIDE_ANDHRA_PRADESH",
     "market:visakhapatnam=MARKET_VISAKHAPATNAM",
     "market:andhra-pradesh=MARKET_ANDHRA_PRADESH",
-    "visakhapatnam:rest-of-andhra-pradesh=VP_REST_OF_ANDHRA_PRADESH"
+    "visakhapatnam:rest-of-andhra-pradesh=VP_REST_OF_ANDHRA_PRADESH",
+    "hyderabad:city=HYDERABAD_CITY",
+    "hyderabad:patancheru=PATANCHERU_PASHAMYLARAM",
+    "hyderabad:jeedimetla-medchal=JEEDIMETLA_MEDCHAL",
+    "hyderabad:uppal-cherlapally=UPPAL_CHERLAPALLY",
+    "hyderabad:shamshabad-kothur=SHAMSHABAD_KOTHUR",
+    "hyderabad:outside=OUTSIDE_HYDERABAD",
+    "telangana:hyderabad=TS_HYDERABAD",
+    "telangana:warangal=WARANGAL_HANAMKONDA",
+    "telangana:karimnagar-ramagundam=KARIMNAGAR_RAMAGUNDAM",
+    "telangana:nalgonda-suryapet=NALGONDA_SURYAPET",
+    "telangana:mahabubnagar-jadcherla=MAHABUBNAGAR_JADCHERLA",
+    "telangana:other=ELSEWHERE_TELANGANA",
+    "telangana:outside=OUTSIDE_TELANGANA",
+    "market:hyderabad=MARKET_HYDERABAD",
+    "market:telangana=MARKET_TELANGANA",
+    "hyderabad:rest-of-telangana=HY_REST_OF_TELANGANA"
   ]
 }

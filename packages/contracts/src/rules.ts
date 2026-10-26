@@ -64,7 +64,7 @@ export const LEGACY_SOURCE_LOCALES = { web_en: "en-IN", web_hi: "hi-IN", web_hin
  * Cluster ids (PLAN §1a). Same list as CLUSTER_IDS in
  * src/content/registry/identifiers.ts (content:check compares them).
  */
-export const INTAKE_CLUSTERS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other", "punjab", "dehradun", "kapurthala", "visakhapatnam", "andhra-pradesh"] as const;
+export const INTAKE_CLUSTERS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other", "punjab", "dehradun", "kapurthala", "visakhapatnam", "andhra-pradesh", "hyderabad", "telangana"] as const;
 export type IntakeCluster = (typeof INTAKE_CLUSTERS)[number];
 
 export function isIntakeCluster(value: unknown): value is IntakeCluster {
@@ -201,14 +201,23 @@ export const QUICK_ANSWERS = {
     "andhra-pradesh:visakhapatnam": "Visakhapatnam / Anakapalli", "andhra-pradesh:vijayawada-guntur": "Vijayawada / Guntur",
     "andhra-pradesh:kakinada-rajahmundry": "Kakinada / Rajahmundry", "andhra-pradesh:nellore-tirupati": "Nellore / Tirupati / Sri City",
     "andhra-pradesh:other": "Elsewhere in Andhra Pradesh", "andhra-pradesh:outside": "Outside Andhra Pradesh",
+    "hyderabad:city": "Hyderabad / Secunderabad city", "hyderabad:patancheru": "Patancheru / Pashamylaram / Bollaram",
+    "hyderabad:jeedimetla-medchal": "Jeedimetla / Kukatpally / Medchal", "hyderabad:uppal-cherlapally": "Uppal / Cherlapally / Nacharam",
+    "hyderabad:shamshabad-kothur": "Shamshabad / Kothur / Shadnagar", "hyderabad:outside": "Outside Hyderabad",
+    "telangana:hyderabad": "Hyderabad / Secunderabad", "telangana:warangal": "Warangal / Hanamkonda",
+    "telangana:karimnagar-ramagundam": "Karimnagar / Ramagundam", "telangana:nalgonda-suryapet": "Nalgonda / Suryapet",
+    "telangana:mahabubnagar-jadcherla": "Mahabubnagar / Jadcherla", "telangana:other": "Elsewhere in Telangana",
+    "telangana:outside": "Outside Telangana",
     "market:haridwar": "Haridwar / Roorkee", "market:uttarakhand": "Elsewhere in Uttarakhand", "market:jalandhar": "Jalandhar",
     "market:punjab": "Elsewhere in Punjab", "market:bengaluru": "Bengaluru", "market:other": "Somewhere else",
     "market:dehradun": "Dehradun / Selaqui", "market:kapurthala": "Kapurthala / Phagwara",
     "market:visakhapatnam": "Visakhapatnam (Vizag)", "market:andhra-pradesh": "Elsewhere in Andhra Pradesh",
+    "market:hyderabad": "Hyderabad", "market:telangana": "Elsewhere in Telangana",
     "haridwar:rest-of-uttarakhand": "Elsewhere in Uttarakhand (Haridwar form)", "jalandhar:rest-of-punjab": "Elsewhere in Punjab (Jalandhar form)",
     "dehradun:rest-of-uttarakhand": "Elsewhere in Uttarakhand (Dehradun form)",
     "kapurthala:rest-of-punjab": "Elsewhere in Punjab (Kapurthala form)",
     "visakhapatnam:rest-of-andhra-pradesh": "Elsewhere in Andhra Pradesh (Visakhapatnam form)",
+    "hyderabad:rest-of-telangana": "Elsewhere in Telangana (Hyderabad form)",
   },
 } as const;
 export type QuickQuestion = keyof typeof QUICK_ANSWERS;
@@ -273,6 +282,20 @@ export const AREA_CLUSTERS: Record<keyof typeof QUICK_ANSWERS.area, IntakeCluste
   "andhra-pradesh:nellore-tirupati": "andhra-pradesh",
   "andhra-pradesh:other": "andhra-pradesh",
   "andhra-pradesh:outside": null,
+  "hyderabad:city": "hyderabad",
+  "hyderabad:patancheru": "hyderabad",
+  "hyderabad:jeedimetla-medchal": "hyderabad",
+  "hyderabad:uppal-cherlapally": "hyderabad",
+  "hyderabad:shamshabad-kothur": "hyderabad",
+  "hyderabad:outside": null,
+  // Hyderabad, picked on the Telangana form, files under its own market.
+  "telangana:hyderabad": "hyderabad",
+  "telangana:warangal": "telangana",
+  "telangana:karimnagar-ramagundam": "telangana",
+  "telangana:nalgonda-suryapet": "telangana",
+  "telangana:mahabubnagar-jadcherla": "telangana",
+  "telangana:other": "telangana",
+  "telangana:outside": null,
   "market:haridwar": "haridwar",
   "market:uttarakhand": "uttarakhand",
   "market:jalandhar": "jalandhar",
@@ -283,11 +306,14 @@ export const AREA_CLUSTERS: Record<keyof typeof QUICK_ANSWERS.area, IntakeCluste
   "market:kapurthala": "kapurthala",
   "market:visakhapatnam": "visakhapatnam",
   "market:andhra-pradesh": "andhra-pradesh",
+  "market:hyderabad": "hyderabad",
+  "market:telangana": "telangana",
   "haridwar:rest-of-uttarakhand": "uttarakhand",
   "jalandhar:rest-of-punjab": "punjab",
   "dehradun:rest-of-uttarakhand": "uttarakhand",
   "kapurthala:rest-of-punjab": "punjab",
   "visakhapatnam:rest-of-andhra-pradesh": "andhra-pradesh",
+  "hyderabad:rest-of-telangana": "telangana",
 };
 
 /**
@@ -304,7 +330,7 @@ export const FORMLESS_AREAS: ReadonlySet<string> = new Set(["jalandhar:phagwara-
  * /jobs/apply files under other. The page's own cluster is stored separately
  * (page_cluster). The market answers (market:*) and the cross-market ones
  * (uttarakhand:haridwar, uttarakhand:dehradun-selaqui, jalandhar:kapurthala, punjab:kapurthala,
- * andhra-pradesh:visakhapatnam) file under the market
+ * andhra-pradesh:visakhapatnam, telangana:hyderabad) file under the market
  * the person named, whatever page they were on.
  */
 export function submissionCluster(pageCluster: IntakeCluster | null | undefined, answers: QuickAnswers | null | undefined): IntakeCluster {

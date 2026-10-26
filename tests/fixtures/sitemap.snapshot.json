@@ -1228,6 +1228,90 @@
     }
   },
   {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/hyderabad",
+    "lastModified": "2026-10-27T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/hyderabad",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/hyderabad",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/hyderabad",
+        "x-default": "https://www.vayasyaseva.com/en-in/jobs/hyderabad"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/hyderabad",
+    "lastModified": "2026-10-27T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/hyderabad",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/hyderabad",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/hyderabad",
+        "x-default": "https://www.vayasyaseva.com/en-in/jobs/hyderabad"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/hyderabad",
+    "lastModified": "2026-10-27T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/hyderabad",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/hyderabad",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/hyderabad",
+        "x-default": "https://www.vayasyaseva.com/en-in/jobs/hyderabad"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/jobs/telangana",
+    "lastModified": "2026-10-27T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/telangana",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/telangana",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/telangana",
+        "x-default": "https://www.vayasyaseva.com/en-in/jobs/telangana"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/jobs/telangana",
+    "lastModified": "2026-10-27T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/telangana",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/telangana",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/telangana",
+        "x-default": "https://www.vayasyaseva.com/en-in/jobs/telangana"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/jobs/telangana",
+    "lastModified": "2026-10-27T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/jobs/telangana",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/jobs/telangana",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/jobs/telangana",
+        "x-default": "https://www.vayasyaseva.com/en-in/jobs/telangana"
+      }
+    }
+  },
+  {
     "url": "https://www.vayasyaseva.com/en-in/locations",
     "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "monthly",
@@ -1404,6 +1488,42 @@
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam/gajuwaka",
     "lastModified": "2026-10-22T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/hyderabad",
+    "lastModified": "2026-10-27T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/hyderabad/patancheru-pashamylaram",
+    "lastModified": "2026-10-27T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/hyderabad/jeedimetla-medchal",
+    "lastModified": "2026-10-27T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/hyderabad/cherlapally-nacharam",
+    "lastModified": "2026-10-27T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/hyderabad/genome-valley",
+    "lastModified": "2026-10-27T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/locations/hyderabad/shamshabad-kothur",
+    "lastModified": "2026-10-27T00:00:00.000Z",
     "changeFrequency": "monthly",
     "priority": 0.7
   },

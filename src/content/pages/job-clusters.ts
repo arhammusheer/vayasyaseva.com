@@ -8,7 +8,7 @@ import { AGE_FAQ } from "./job-hubs";
  * Jobs hubs for one market, under /jobs/<cluster> (PLAN §5.3): Haridwar and
  * Kapurthala with open work; Bengaluru, Dehradun, Jalandhar, Visakhapatnam,
  * Uttarakhand (outside Haridwar and Dehradun), Punjab (outside Jalandhar and
- * Kapurthala) and Andhra Pradesh (outside Visakhapatnam) as worker lists (no openings named, no estates, no
+ * Kapurthala), Andhra Pradesh (outside Visakhapatnam), Hyderabad and Telangana (outside Hyderabad) as worker lists (no openings named, no estates, no
  * "vacancy" in the title, PLAN §5.3 "hubs where no roles are open now"). A
  * cluster gets one only once it is in src/content/registry/clusters.ts and
  * its page is in pages.ts.
@@ -25,7 +25,7 @@ import { AGE_FAQ } from "./job-hubs";
  * hi-Latn-IN are drafts pending native review.
  */
 export interface JobClusterCopy {
-  slug: Extract<ClusterId, "haridwar" | "bengaluru" | "jalandhar" | "kapurthala" | "uttarakhand" | "punjab" | "dehradun" | "visakhapatnam" | "andhra-pradesh">;
+  slug: Extract<ClusterId, "haridwar" | "bengaluru" | "jalandhar" | "kapurthala" | "uttarakhand" | "punjab" | "dehradun" | "visakhapatnam" | "andhra-pradesh" | "hyderabad" | "telangana">;
   /** Short name for breadcrumbs. */
   name: string;
   metaTitle: string;
@@ -341,6 +341,44 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
         { question: "Who pays me?", answer: "We do, with EPF and ESIC where they apply.", category: "operations" },
       ],
     },
+    {
+      // Hyderabad (owner direction, 27 Oct 2026): a worker list, like Visakhapatnam's.
+      slug: "hyderabad",
+      name: "Hyderabad",
+      metaTitle: "Jobs in Hyderabad: Factory, Pharma and Warehouse Work",
+      description:
+        "Factory, pharma, packing and warehouse work in Hyderabad: Patancheru, Jeedimetla, Uppal and Shamshabad. Join our worker list: no fee, full 8-hour shifts.",
+      eyebrow: "JOBS · HYDERABAD",
+      heading: "Factory and warehouse work in Hyderabad.",
+      lede: "We're building a list of workers in Hyderabad, Patancheru, Jeedimetla, Uppal and Shamshabad. When a site there needs people, we call you.",
+      after: { label: "After you apply", steps: ["WhatsApp or SMS", "We call when a site needs you", "You decide"] },
+      faqTitle: "Questions.",
+      faqs: [
+        { question: "Are there openings now?", answer: "Not every week. You join our list, and we call when a site in or around Hyderabad needs your kind of work.", category: "operations" },
+        { question: "What documents do I need?", answer: "Your 10th or 12th marksheet. Your ITI certificate, if you have one. The ID the site asks for at joining. We tell you what to bring before you join. Don't send Aadhaar or bank papers in the form.", category: "operations" },
+        AGE_FAQ["en-IN"],
+        { question: "Who pays me?", answer: "We do, with EPF and ESIC where they apply.", category: "operations" },
+      ],
+    },
+    {
+      // Telangana outside Hyderabad (owner direction, 27 Oct 2026): a worker list.
+      slug: "telangana",
+      name: "Telangana",
+      metaTitle: "Factory Jobs in Telangana: Join Our Worker List",
+      description:
+        "Factory, packing and warehouse work in Warangal, Karimnagar, Nalgonda, Mahabubnagar and across Telangana. Join our worker list: no fee, full 8-hour shifts.",
+      eyebrow: "JOBS · TELANGANA",
+      heading: "Factory and warehouse work across Telangana.",
+      lede: "We're building a list of workers across Telangana. When a site near you needs people, we call you.",
+      after: { label: "After you apply", steps: ["WhatsApp or SMS", "We call when a site needs you", "You decide"] },
+      faqTitle: "Questions.",
+      faqs: [
+        { question: "Are there openings now?", answer: "Not every week. You join our list, and we call when a site near you needs your kind of work.", category: "operations" },
+        { question: "What documents do I need?", answer: "Your 10th or 12th marksheet. Your ITI certificate, if you have one. The ID the site asks for at joining. We tell you what to bring before you join. Don't send Aadhaar or bank papers in the form.", category: "operations" },
+        AGE_FAQ["en-IN"],
+        { question: "Who pays me?", answer: "We do, with EPF and ESIC where they apply.", category: "operations" },
+      ],
+    },
   ],
   "hi-IN": [
     {
@@ -535,6 +573,42 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
         { question: "वेतन कौन देता है?", answer: "हम देते हैं, लागू होने पर EPF और ESIC के साथ।", category: "operations" },
       ],
     },
+    {
+      slug: "hyderabad",
+      name: "हैदराबाद",
+      metaTitle: "हैदराबाद में नौकरी: फ़ैक्टरी, फ़ार्मा और वेयरहाउस का काम",
+      description:
+        "हैदराबाद के पटनचेरु, जीडीमेटला, उप्पल और शमशाबाद में फ़ैक्टरी, फ़ार्मा, पैकिंग और वेयरहाउस का काम। हमारी वर्कर लिस्ट में जुड़ें: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट।",
+      eyebrow: "नौकरी · हैदराबाद",
+      heading: "हैदराबाद में फ़ैक्टरी और वेयरहाउस का काम।",
+      lede: "हम हैदराबाद, पटनचेरु, जीडीमेटला, उप्पल और शमशाबाद में वर्करों की लिस्ट बना रहे हैं। वहाँ किसी साइट को लोग चाहिए होंगे तो हम आपको कॉल करेंगे।",
+      after: { label: "आवेदन के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
+      faqTitle: "सवाल।",
+      faqs: [
+        { question: "क्या अभी जगह खाली है?", answer: "हर हफ़्ते नहीं। आप हमारी लिस्ट में जुड़ते हैं, और हैदराबाद या उसके आसपास की किसी साइट को आपके जैसे काम की ज़रूरत होने पर हम कॉल करते हैं।", category: "operations" },
+        { question: "कौन-से कागज़ चाहिए?", answer: "10वीं या 12वीं की मार्कशीट। ITI सर्टिफ़िकेट, अगर है। जॉइनिंग पर साइट जो ID माँगे। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।", category: "operations" },
+        AGE_FAQ["hi-IN"],
+        { question: "वेतन कौन देता है?", answer: "हम देते हैं, लागू होने पर EPF और ESIC के साथ।", category: "operations" },
+      ],
+    },
+    {
+      slug: "telangana",
+      name: "तेलंगाना",
+      metaTitle: "तेलंगाना में फ़ैक्टरी का काम: हमारी वर्कर लिस्ट में जुड़ें",
+      description:
+        "वरंगल, करीमनगर, नलगोंडा, महबूबनगर और पूरे तेलंगाना में फ़ैक्टरी, पैकिंग और वेयरहाउस का काम। हमारी वर्कर लिस्ट में जुड़ें: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट।",
+      eyebrow: "नौकरी · तेलंगाना",
+      heading: "पूरे तेलंगाना में फ़ैक्टरी और वेयरहाउस का काम।",
+      lede: "हम पूरे तेलंगाना में वर्करों की लिस्ट बना रहे हैं। आपके पास किसी साइट को लोग चाहिए होंगे तो हम आपको कॉल करेंगे।",
+      after: { label: "आवेदन के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
+      faqTitle: "सवाल।",
+      faqs: [
+        { question: "क्या अभी जगह खाली है?", answer: "हर हफ़्ते नहीं। आप हमारी लिस्ट में जुड़ते हैं, और आपके पास की किसी साइट को आपके जैसे काम की ज़रूरत होने पर हम कॉल करते हैं।", category: "operations" },
+        { question: "कौन-से कागज़ चाहिए?", answer: "10वीं या 12वीं की मार्कशीट। ITI सर्टिफ़िकेट, अगर है। जॉइनिंग पर साइट जो ID माँगे। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।", category: "operations" },
+        AGE_FAQ["hi-IN"],
+        { question: "वेतन कौन देता है?", answer: "हम देते हैं, लागू होने पर EPF और ESIC के साथ।", category: "operations" },
+      ],
+    },
   ],
   "hi-Latn-IN": [
     {
@@ -720,6 +794,42 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       eyebrow: "Jobs · Andhra Pradesh",
       heading: "Poore Andhra Pradesh mein factory aur warehouse ka kaam.",
       lede: "Hum poore Andhra Pradesh mein workers ki list bana rahe hain. Aapke paas kisi site ko log chahiye honge to hum aapko call karenge.",
+      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
+      faqTitle: "Sawaal.",
+      faqs: [
+        { question: "Kya abhi jagah khaali hai?", answer: "Har hafte nahi. Aap hamari list mein judte hain, aur aapke paas ki kisi site ko aapke jaise kaam ki zaroorat hone par hum call karte hain.", category: "operations" },
+        { question: "Kaun-se documents chahiye?", answer: "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.", category: "operations" },
+        AGE_FAQ["hi-Latn-IN"],
+        { question: "Salary kaun deta hai?", answer: "Hum dete hain, laagu hone par EPF aur ESIC ke saath.", category: "operations" },
+      ],
+    },
+    {
+      slug: "hyderabad",
+      name: "Hyderabad",
+      metaTitle: "Hyderabad Job: Factory, Pharma aur Warehouse ka Kaam",
+      description:
+        "Hyderabad ke Patancheru, Jeedimetla, Uppal aur Shamshabad mein factory, pharma, packing, warehouse ka kaam. List mein judein: koi fee nahi, 8 ghante ki shift.",
+      eyebrow: "Jobs · Hyderabad",
+      heading: "Hyderabad mein factory aur warehouse ka kaam.",
+      lede: "Hum Hyderabad, Patancheru, Jeedimetla, Uppal aur Shamshabad mein workers ki list bana rahe hain. Wahan kisi site ko log chahiye honge to hum aapko call karenge.",
+      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
+      faqTitle: "Sawaal.",
+      faqs: [
+        { question: "Kya abhi jagah khaali hai?", answer: "Har hafte nahi. Aap hamari list mein judte hain, aur Hyderabad ya uske aaspaas ki kisi site ko aapke jaise kaam ki zaroorat hone par hum call karte hain.", category: "operations" },
+        { question: "Kaun-se documents chahiye?", answer: "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.", category: "operations" },
+        AGE_FAQ["hi-Latn-IN"],
+        { question: "Salary kaun deta hai?", answer: "Hum dete hain, laagu hone par EPF aur ESIC ke saath.", category: "operations" },
+      ],
+    },
+    {
+      slug: "telangana",
+      name: "Telangana",
+      metaTitle: "Telangana Factory Job: Worker List mein Judein",
+      description:
+        "Warangal, Karimnagar, Nalgonda, Mahabubnagar aur poore Telangana mein factory, packing, warehouse ka kaam. List mein judein: koi fee nahi, 8 ghante ki shift.",
+      eyebrow: "Jobs · Telangana",
+      heading: "Poore Telangana mein factory aur warehouse ka kaam.",
+      lede: "Hum poore Telangana mein workers ki list bana rahe hain. Aapke paas kisi site ko log chahiye honge to hum aapko call karenge.",
       after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
       faqTitle: "Sawaal.",
       faqs: [

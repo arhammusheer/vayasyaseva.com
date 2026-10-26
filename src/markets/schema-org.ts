@@ -27,6 +27,12 @@ export const MARKET_PLACES = {
     alternateName: ["SIDCUL Haridwar", "Integrated Industrial Estate (IIE) Haridwar"],
     containedInPlace: { "@type": "State", name: "Uttarakhand" },
   },
+  hyderabad: {
+    "@type": "City",
+    name: "Hyderabad",
+    alternateName: ["Secunderabad", "Cyberabad"],
+    containedInPlace: { "@type": "State", name: "Telangana" },
+  },
   jalandhar: { "@type": "Place", name: "Jalandhar and Kapurthala", containedInPlace: { "@type": "State", name: "Punjab" } },
   uttarakhand: { "@type": "State", name: "Uttarakhand" },
   visakhapatnam: {

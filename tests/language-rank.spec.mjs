@@ -188,6 +188,22 @@ test("urlIntent reads the Andhra Pradesh campaigns' UTM tags (22 Oct 2026)", () 
   assert.ok(seg.startsWith("en-"), seg);
 });
 
+test("urlIntent reads Hyderabad and Telangana UTM tags; TG orders as TS (27 Oct 2026)", () => {
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_campaign=jobs_hyderabad")), "hyderabad");
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_campaign=jobs_hyd")), "hyderabad");
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_term=patancheru%20pharma%20jobs")), "hyderabad");
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_campaign=jobs_telangana")), "telangana");
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_term=warangal%20jobs")), "telangana");
+  // A place in Hyderabad beats the state's name.
+  assert.equal(rank.urlIntent(new URLSearchParams("utm_campaign=jobs_hyd_telangana")), "hyderabad");
+  // English first for a Telangana visitor (no Telugu yet), and TG (the old code) orders as TS.
+  assert.ok(rank.rankSegmentFor("/jobs/apply", { country: "IN", region: "TS" }, new URLSearchParams()).startsWith("en-"));
+  const every = ["en-IN", "hi-IN", "hi-Latn-IN", "pa-IN", "kn-IN"];
+  for (const acceptLanguage of [undefined, "hi", "kn"]) {
+    assert.deepEqual(order({ country: "IN", region: "TG", acceptLanguage }, every), order({ country: "IN", region: "TS", acceptLanguage }, every));
+  }
+});
+
 test("Punjabi readers fall back to Hinglish on pages without Punjabi", () => {
   assert.equal(i18n.nearestLocalePath("/jobs/jalandhar", "pa-IN"), "/pa-in/jobs/jalandhar");
   assert.equal(i18n.nearestLocalePath("/jobs/haridwar", "pa-IN"), "/hi-latn-in/jobs/haridwar");

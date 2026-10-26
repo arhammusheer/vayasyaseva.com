@@ -13,10 +13,13 @@
  * places, Phagwara included, no longer name Jalandhar's); weights unchanged.
  * 7 (22 Oct 2026): Visakhapatnam and Andhra Pradesh become markets (AP no
  * longer looks to Bengaluru; Odisha looks to Visakhapatnam); weights unchanged.
+ * 8 (27 Oct 2026): Hyderabad and Telangana become markets (Telangana no
+ * longer looks to Bengaluru and Andhra Pradesh; TG reads as TS); weights
+ * unchanged.
  */
 import type { AudienceWeights, ContextTables, RegionWeights } from "./core";
 
-export const CONTEXT_VERSION = 7;
+export const CONTEXT_VERSION = 8;
 
 /**
  * Job seekers: where they live decides, so the IP (roughly where the phone

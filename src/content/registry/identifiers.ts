@@ -20,7 +20,7 @@ export type LocaleTag = (typeof LOCALE_TAGS)[number];
  * (/jobs/<cluster>, /locations/<cluster>), with no state suffix. A cluster
  * gets pages only once it is in clusters.ts.
  */
-export const CLUSTER_IDS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other", "punjab", "dehradun", "kapurthala", "visakhapatnam", "andhra-pradesh"] as const;
+export const CLUSTER_IDS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other", "punjab", "dehradun", "kapurthala", "visakhapatnam", "andhra-pradesh", "hyderabad", "telangana"] as const;
 export type ClusterId = (typeof CLUSTER_IDS)[number];
 
 /**
@@ -65,6 +65,8 @@ export const LOCATION_ESTATES = {
   dehradun: ["selaqui"],
   // Visakhapatnam (22 Oct 2026): its four industrial belts, Anakapalli district's included.
   visakhapatnam: ["parawada-pharma-city", "atchutapuram-rambilli", "duvvada-vsez", "gajuwaka"],
+  // Hyderabad (27 Oct 2026): its five industrial belts, from TGIIC's park list.
+  hyderabad: ["patancheru-pashamylaram", "jeedimetla-medchal", "cherlapally-nacharam", "genome-valley", "shamshabad-kothur"],
 } as const satisfies Partial<Record<ClusterId, readonly string[]>>;
 export type LocationCluster = keyof typeof LOCATION_ESTATES;
 /**
@@ -172,7 +174,20 @@ export const VISAKHAPATNAM_AREA_IDS = ["visakhapatnam:city", "visakhapatnam:gaju
  * own market. Append-only too.
  */
 export const ANDHRA_PRADESH_AREA_IDS = ["andhra-pradesh:visakhapatnam", "andhra-pradesh:vijayawada-guntur", "andhra-pradesh:kakinada-rajahmundry", "andhra-pradesh:nellore-tirupati", "andhra-pradesh:other", "andhra-pradesh:outside"] as const;
+/**
+ * Hyderabad's (jobs hub published 27 Oct 2026, a worker list): the city,
+ * Patancheru–Pashamylaram (Sangareddy side), Jeedimetla–Medchal and the
+ * north, Uppal–Cherlapally and the east, Shamshabad–Kothur and the south,
+ * outside. Append-only too.
+ */
+export const HYDERABAD_AREA_IDS = ["hyderabad:city", "hyderabad:patancheru", "hyderabad:jeedimetla-medchal", "hyderabad:uppal-cherlapally", "hyderabad:shamshabad-kothur", "hyderabad:outside"] as const;
+/**
+ * Telangana outside Hyderabad (jobs hub published 27 Oct 2026, a worker
+ * list like Andhra Pradesh's), with Hyderabad's answer filed under its own
+ * market. Append-only too.
+ */
+export const TELANGANA_AREA_IDS = ["telangana:hyderabad", "telangana:warangal", "telangana:karimnagar-ramagundam", "telangana:nalgonda-suryapet", "telangana:mahabubnagar-jadcherla", "telangana:other", "telangana:outside"] as const;
 /** The form with no market of its own (no signal yet): which market the person lives in. Append-only too. */
-export const MARKET_AREA_IDS = ["market:haridwar", "market:uttarakhand", "market:jalandhar", "market:punjab", "market:bengaluru", "market:other", "market:dehradun", "market:kapurthala", "market:visakhapatnam", "market:andhra-pradesh"] as const;
-/** The rest of the state on the Haridwar, Jalandhar, Dehradun, Kapurthala and Visakhapatnam forms, filed under the state's market (17 Oct 2026). Append-only too. */
-export const REST_OF_STATE_AREA_IDS = ["haridwar:rest-of-uttarakhand", "jalandhar:rest-of-punjab", "dehradun:rest-of-uttarakhand", "kapurthala:rest-of-punjab", "visakhapatnam:rest-of-andhra-pradesh"] as const;
+export const MARKET_AREA_IDS = ["market:haridwar", "market:uttarakhand", "market:jalandhar", "market:punjab", "market:bengaluru", "market:other", "market:dehradun", "market:kapurthala", "market:visakhapatnam", "market:andhra-pradesh", "market:hyderabad", "market:telangana"] as const;
+/** The rest of the state on the Haridwar, Jalandhar, Dehradun, Kapurthala, Visakhapatnam and Hyderabad forms, filed under the state's market (17 Oct 2026). Append-only too. */
+export const REST_OF_STATE_AREA_IDS = ["haridwar:rest-of-uttarakhand", "jalandhar:rest-of-punjab", "dehradun:rest-of-uttarakhand", "kapurthala:rest-of-punjab", "visakhapatnam:rest-of-andhra-pradesh", "hyderabad:rest-of-telangana"] as const;

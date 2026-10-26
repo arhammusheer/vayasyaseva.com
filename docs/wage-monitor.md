@@ -106,8 +106,15 @@ and browsers allow.
 **The relay** (`relayHosts`): Punjab's state data centre (DGG&IT,
 pblabour.gov.in) drops every TCP connection from the cluster's hosting
 network (Tier4Cloud, 202.66.172.0/23), found on 19 October 2026 after three
-days of timeouts; it answers Indian home connections and Cloudflare. The
-monitor fetches those hosts through `vayasya-fetch-relay`, a Cloudflare
+days of timeouts; it answers Indian home connections and Cloudflare. From
+22 October 2026 EPFO (403 from its CloudFront firewall), ESIC (timeouts),
+Karnataka's Labour Commissioner and Welfare Board (TLS resets) and Haryana's
+labour sites (timeouts) did the same; each loaded from a home connection and
+through a test copy of the relay called from the cluster (26 October). ESIC
+takes about 20 seconds a request from anywhere, and Haryana's file host
+sometimes returns 522 through the relay, which the monitor's retry covers.
+EPFO through Cloudflare also refuses the monitor's user agent, so it is in
+`plainUserAgentHosts` too. The monitor fetches those hosts through `vayasya-fetch-relay`, a Cloudflare
 Worker in `scripts/wage-monitor/relay/`: `GET /?url=<source>` with the
 shared secret in `x-relay-secret`. It fetches only the hosts in its
 `ALLOWED_HOSTS` (kept equal to `relayHosts` by a test), checks every redirect

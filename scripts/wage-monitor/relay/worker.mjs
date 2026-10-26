@@ -1,8 +1,9 @@
 /**
  * The compliance monitor's fetch relay, a Cloudflare Worker
- * (vayasya-fetch-relay). Punjab's state data centre drops every connection
- * from the cluster's hosting network (Tier4Cloud, 19 October 2026), but
- * answers Cloudflare, so the monitor fetches the hosts in sources.json
+ * (vayasya-fetch-relay). Some government hosts drop or refuse every
+ * connection from the cluster's hosting network (Punjab from 19 October 2026;
+ * EPFO, ESIC, Karnataka and Haryana from 22 October), but answer Cloudflare,
+ * so the monitor fetches the hosts in sources.json
  * `relayHosts` through here: GET /?url=<source> with the shared secret in
  * `x-relay-secret`. Only the hosts in ALLOWED_HOSTS are fetched, on every
  * redirect too, and never from Cloudflare's cache, so a changed file is seen

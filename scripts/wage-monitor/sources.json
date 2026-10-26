@@ -4,14 +4,24 @@
     "www.labour.gov.in",
     "ascent-hr.com",
     "www.pib.gov.in",
-    "www.business-standard.com"
+    "www.business-standard.com",
+    "www.epfo.gov.in"
   ],
   "legacyTlsHosts": [
     "siidcul.com",
     "punjabassembly.gov.in"
   ],
   "relayHosts": [
-    "pblabour.gov.in"
+    "pblabour.gov.in",
+    "www.epfo.gov.in",
+    "pmvbry-cdn.epfindia.gov.in",
+    "esic.gov.in",
+    "www.esic.gov.in",
+    "karmikaspandana.karnataka.gov.in",
+    "klwb.karnataka.gov.in",
+    "hrylabour.gov.in",
+    "www.hrylabour.gov.in",
+    "storage.hrylabour.gov.in"
   ],
   "states": {
     "uttarakhand": {

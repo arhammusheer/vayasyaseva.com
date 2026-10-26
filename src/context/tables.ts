@@ -4,7 +4,7 @@
  * them as JSON (boot.ts), with collectData for reading a page view.
  */
 import { builtPages, clusters, linkable, pageEntry } from "@/content/registry";
-import { jobsHubPath, type ClusterId, type WageStateSlug } from "@/content/registry/identifiers";
+import { WAGE_STATE_REGIONS, jobsHubPath, type ClusterId, type WageStateSlug } from "@/content/registry/identifiers";
 import { MARKETS, MARKET_IDS, NEARBY, PLACE_GROUPS, isMarketId, marketForRegion } from "@/markets/index";
 import { LANGUAGE_MARKET_HINTS, LANGUAGE_SETS, STATE_LANGUAGE_SETS } from "@/markets/languages";
 import { FALLBACK_LOCALE, allLocales, locales, localesOf, type Locale } from "@/lib/i18n";
@@ -60,17 +60,6 @@ export function contextTables(): ContextTables {
 
 /** Locale tag → the two-letter code in the boot data (and the picker's order keys). */
 export const LOCALE_CODES = { "en-IN": "en", "hi-IN": "hi", "hi-Latn-IN": "hl", "pa-IN": "pa", "kn-IN": "kn" } as const satisfies Record<Locale, string>;
-
-/** A wage state page's state (ISO 3166-2:IN): its market's evidence for clients. */
-const WAGE_STATE_REGIONS: Record<WageStateSlug, string> = {
-  uttarakhand: "UK",
-  "uttar-pradesh": "UP",
-  delhi: "DL",
-  haryana: "HR",
-  punjab: "PB",
-  karnataka: "KA",
-  "andhra-pradesh": "AP",
-};
 
 /** Session length: 30 idle minutes (mobile browsers keep tabs, and their sessionStorage, for weeks). */
 export const SESSION_IDLE_MS = 30 * 60 * 1000;

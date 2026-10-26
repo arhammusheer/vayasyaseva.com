@@ -1,0 +1,287 @@
+{
+ "state": "telangana",
+ "name": "Telangana",
+ "titleName": "Telangana",
+ "nextRevision": {
+  "expected": "2027-04-01",
+  "missed": [
+   "2026-10-01"
+  ],
+  "basis": "G.O.Ms. No. 6 of 30 May 2026 has the Commissioner of Labour declare a cost of living allowance every 1 April and 1 October, from the state consumer price index for the half-years ending December and June. None had been declared under the order when we checked on 27 October 2026, including the one due from 1 October 2026."
+ },
+ "checked": {
+  "on": "2026-10-27"
+ },
+ "sources": [
+  {
+   "id": "tg-go6",
+   "kind": "notification",
+   "title": "Revision of minimum wages under the Code on Wages, 2019: one table of basic rates by zone and skill for all employments",
+   "number": "G.O.Ms. No. 6, LET&F (Lab-I)",
+   "date": "2026-05-30",
+   "authority": "Labour, Employment, Training and Factories Department, Government of Telangana",
+   "legalBasis": "Code on Wages, 2019, sections 6 to 8. In force from 1 June 2026, in supersession of every notification under the Minimum Wages Act, 1948, and subject to the outcome of writ petitions and contempt cases pending before the Telangana High Court. The order directs publication in an Extraordinary Telangana Gazette of 1 June 2026.",
+   "url": "https://unitedconsultancy.com/wp-content/uploads/2026/06/Telangana-New-Minimum-Wages-GO-No-6-Date-30-May-2026.pdf",
+   "listing": "https://goir.telangana.gov.in/Default.aspx",
+   "language": "en",
+   "sha256": "9607b5ae1a93f9c5b9d14df6f9fb796415b2d4de44d659a3edec392fcfeb01b2",
+   "sizeKb": 247,
+   "retrievedOn": "2026-10-27",
+   "via": "The government's copy is on the Government Orders portal (goir.telangana.gov.in), which serves files only through its search form, with no address to link. This copy, published by United Consultancy, a compliance firm, is the same file byte for byte (SHA-256 matches the portal's).",
+   "copy": "https://cdn.vayasyaseva.com/sources/telangana/tg-go6-9607b5ae.pdf",
+   "copyKb": 247
+  }
+ ],
+ "tables": [
+  {
+   "id": "all-employments",
+   "headline": true,
+   "title": "All employments",
+   "appliesTo": "Every employment in Schedules I and II of the order: 76 employments, including any manufacturing process in a factory, chemicals and pharmaceuticals, engineering, construction, security services, shops and commercial establishments, and hotels. Powerlooms, garments, spinning mills, brick kilns, beedi and handloom weaving are left to a separate committee. Trainees get 75% of their category's rate, but not less than the unskilled rate.",
+   "sources": [
+    "tg-go6"
+   ],
+   "effectiveFrom": "2026-06-01",
+   "zones": [
+    {
+     "id": "zone-1",
+     "name": "Zone I",
+     "areas": "Municipal corporations."
+    },
+    {
+     "id": "zone-2",
+     "name": "Zone II",
+     "areas": "Municipalities."
+    },
+    {
+     "id": "zone-3",
+     "name": "Zone III",
+     "areas": "Rural and all other areas."
+    }
+   ],
+   "daily": "derived",
+   "dailyRule": "The order divides the monthly rate by 26, a figure that includes the rest day. Pay is rounded to the nearest 50 paise.",
+   "basicLabel": "Basic minimum rate",
+   "vdaLabel": "VDA",
+   "vdaNote": "The order links these basic rates to the state consumer price index at 443 points (2001 = 100) and adds ₹33.86 a month for each point above that, declared by the Commissioner of Labour from 1 April and 1 October. No VDA had been declared under the order when we checked, so the figures here are the basic rates alone.",
+   "rates": [
+    {
+     "zone": "zone-1",
+     "skill": "highly-skilled",
+     "basic": 20000,
+     "vda": 0,
+     "monthly": 20000,
+     "daily": 769.24
+    },
+    {
+     "zone": "zone-1",
+     "skill": "skilled",
+     "basic": 18500,
+     "vda": 0,
+     "monthly": 18500,
+     "daily": 711.54
+    },
+    {
+     "zone": "zone-1",
+     "skill": "semi-skilled",
+     "basic": 17000,
+     "vda": 0,
+     "monthly": 17000,
+     "daily": 653.85
+    },
+    {
+     "zone": "zone-1",
+     "skill": "unskilled",
+     "basic": 16000,
+     "vda": 0,
+     "monthly": 16000,
+     "daily": 615.39
+    },
+    {
+     "zone": "zone-2",
+     "skill": "highly-skilled",
+     "basic": 19000,
+     "vda": 0,
+     "monthly": 19000,
+     "daily": 730.77
+    },
+    {
+     "zone": "zone-2",
+     "skill": "skilled",
+     "basic": 17500,
+     "vda": 0,
+     "monthly": 17500,
+     "daily": 673.08
+    },
+    {
+     "zone": "zone-2",
+     "skill": "semi-skilled",
+     "basic": 16000,
+     "vda": 0,
+     "monthly": 16000,
+     "daily": 615.39
+    },
+    {
+     "zone": "zone-2",
+     "skill": "unskilled",
+     "basic": 15000,
+     "vda": 0,
+     "monthly": 15000,
+     "daily": 576.93
+    },
+    {
+     "zone": "zone-3",
+     "skill": "highly-skilled",
+     "basic": 18000,
+     "vda": 0,
+     "monthly": 18000,
+     "daily": 692.31
+    },
+    {
+     "zone": "zone-3",
+     "skill": "skilled",
+     "basic": 16500,
+     "vda": 0,
+     "monthly": 16500,
+     "daily": 634.62
+    },
+    {
+     "zone": "zone-3",
+     "skill": "semi-skilled",
+     "basic": 15000,
+     "vda": 0,
+     "monthly": 15000,
+     "daily": 576.93
+    },
+    {
+     "zone": "zone-3",
+     "skill": "unskilled",
+     "basic": 14000,
+     "vda": 0,
+     "monthly": 14000,
+     "daily": 538.47
+    }
+   ]
+  }
+ ],
+ "employments": {
+  "groups": [
+   {
+    "id": "schedules",
+    "title": "All 76 scheduled employments",
+    "number": "G.O.Ms. No. 6",
+    "date": "2026-05-30",
+    "source": "tg-go6",
+    "table": "all-employments",
+    "employments": [
+     "E-commerce and courier services",
+     "Offices of religious and social institutions, such as temples, churches and mosques",
+     "Amusement parks, water theme parks and commercial entertainment or recreation parks",
+     "Mobile tower maintenance, TV cable networks and allied data or signal processing",
+     "Handicrafts establishments",
+     "Cane and bamboo industry",
+     "Borewell drilling and maintenance",
+     "Ready-mix concrete (RMC) units",
+     "Aluminium and tin product units",
+     "LPG storage and distribution agencies",
+     "Private motor transport",
+     "Stone breaking and stone crushing",
+     "Construction of projects, including dams and multipurpose projects",
+     "Security services",
+     "Construction and maintenance of roads and buildings",
+     "Distilleries and breweries",
+     "Baking",
+     "Cement concrete pipes and cement ware (excluding stoneware pipes)",
+     "Clubs and canteens",
+     "Soft drinks and aerated water units",
+     "Oil mills",
+     "Automobile engineering",
+     "Hospitals, nursing homes, clinics and dispensaries",
+     "Toddy tapping, including conveyance and selling",
+     "Electronics industries",
+     "Glass industry",
+     "Gold covering and gold coating",
+     "Metal foundries and general engineering",
+     "Rice mills, flour mills and dal mills, including roller flour mills",
+     "Tiles and potteries",
+     "Colour printing and yarn dyeing",
+     "Steel mills and steel re-rolling mills",
+     "Petrol bunks",
+     "Match and fireworks manufacture",
+     "Hotels, restaurants and eating houses",
+     "Woollen carpet making and shawl weaving",
+     "Mini and tiny cement factories",
+     "Chemicals and pharmaceuticals, including pesticides",
+     "Fisheries and seafood industry",
+     "Shops and commercial establishments",
+     "Tobacco manufacture (excluding beedi making)",
+     "Khandasari factories",
+     "Wood working, including wooden furniture (excluding timbering)",
+     "Public motor transport",
+     "Mica works",
+     "Cinema industry",
+     "Cotton carpet",
+     "Cotton ginning and pressing",
+     "Professions: chartered and cost accountants, auditors, tax consultants and advocates' clerks",
+     "Printing presses, including litho and offset printing",
+     "Safai karmacharis",
+     "Motion picture industry, including production, distribution and publicity",
+     "Marketing societies, consumer co-operative societies and co-operative banks",
+     "Sales promotion",
+     "Tanneries and leather manufacture",
+     "Lime stone kilns",
+     "Non-teaching staff in private educational institutions, including tutorials and computer coaching centres",
+     "Paper and paper board (including straw board and handmade paper)",
+     "Any manufacturing process in a factory not otherwise listed",
+     "Hostels of colleges and other educational institutions",
+     "Domestic workers",
+     "Cashew and coconut gardens",
+     "Jute and coir",
+     "Seed processing",
+     "Slate factories",
+     "Salt pans",
+     "Coffee plantations",
+     "Mesta used twine mills",
+     "Cashew processing",
+     "Agriculture",
+     "Dairy farming",
+     "Horticulture",
+     "Poultry farming, including feeding units",
+     "Sericulture",
+     "Forestry and timbering",
+     "Betel vines"
+    ],
+    "note": "The first ten were added to the scope in 2026 (Schedule I); the rest are Schedule II. Schedule II lists sales promotion twice (entries 44 and 67), counted once here. Schedule III of the order sorts job titles into the four skill levels."
+   },
+   {
+    "id": "committee",
+    "number": "G.O.Ms. No. 6, para 3",
+    "date": "2026-05-30",
+    "source": "tg-go6",
+    "unpublished": true,
+    "employments": [
+     "Powerloom industries",
+     "Garment and allied manufacturing",
+     "Spinning mills",
+     "Brick kilns",
+     "Tobacco, including beedi making",
+     "Handloom weaving establishments",
+     "Handloom weaving establishments (silk)",
+     "Additional categories in handloom weaving"
+    ],
+    "note": "The order leaves these piece-rated and labour-intensive employments to a separate committee under section 8(1)(a) of the Code on Wages. No committee rates had been published when we checked, and the order supersedes the old notifications, so there are no current rates to show."
+   }
+  ]
+ },
+ "history": [],
+ "verification": [
+  "2026-10-27: G.O.Ms. No. 6, LET&F (Lab-I), 30 May 2026, read from the United Consultancy copy (252,621 bytes, 10 pages, text layer). SHA-256 9607b5ae…01b2 matches the file the Government Orders portal (goir.telangana.gov.in, department LETF, type MS, 2026) serves. Figures read from Table 1: per month, Zone I / II / III: unskilled 16,000 / 15,000 / 14,000; semi-skilled 17,000 / 16,000 / 15,000; skilled 18,500 / 17,500 / 16,500; highly skilled 20,000 / 19,000 / 18,000.",
+  "2026-10-27: Para 1(c): basic rates linked to the consumer price index at 443 points (2001 = 100); ₹33.86 a month per point above 443; cost of living allowance declared every 1 April and 1 October. Para 5: monthly ÷ 26 for a day's wage, rest day included; trainees 75%, not below unskilled; overtime and rest-day work at double rate; pay rounded to the nearest 50 paise; principal employer responsible for a contractor's workers.",
+  "2026-10-27: Para 5(4) and (10): where existing notified wages are higher, a 10% enhancement over them applies, and anyone already paid more keeps it. The order does not say whether 'existing wages' means basic or basic plus VDA under the old notifications, or which old category maps to which skill level, so the page does not work out the 10%.",
+  "2026-10-27: Labour Department (labour.telangana.gov.in/MinRatesWages.do) still lists only the old-structure wage sheets, the latest for 1 April to 30 September 2026 under the 2012 notifications (e.g. any manufacturing process, G.O.Ms. No. 4: unskilled 13,686 at index 1,995). G.O. 6 supersedes them from 1 June 2026, so they are not shown. No 1 June or 1 October 2026 sheet or VDA notice is listed; SGCMS and AscentHR have no Telangana VDA post for October 2026.",
+  "2026-10-27: Court challenge: the order is 'subject to outcome of pending W.P's, and CCs' before the Telangana High Court (a batch from a 2023 PIL by trade unions). News reports (siasat.com) record a hearing on 4 August 2026 giving the State a final chance to file an affidavit, listed for 20 August 2026; no later outcome found. The page stays in review until someone signs off its status.",
+  "2026-10-27: Gazette: the order directs an Extraordinary Gazette of 1 June 2026. The Telangana eGazette list (tggazette.cgg.gov.in) shows no minimum wage entry between 29 May and 5 June 2026; publication unconfirmed.",
+  "2026-10-27: The department was renamed SHAKTI (Skill, Human Capital and Knowledge Training Initiatives) around July 2026; new orders are listed on GOIR under that name. G.O.Ms. No. 16 (SHAKTI, Labour-I, 5 October 2026) is listed as 'Not Issued'.",
+  "2026-10-27: Schedule II has 67 entries, with sales promotion at both 44 and 67; 66 distinct employments plus Schedule I's 10 = 76. Para 3's committee list has 8 employments plus 'any other industry the government adds'."
+ ]
+}

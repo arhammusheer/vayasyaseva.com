@@ -123,6 +123,7 @@ export const WAGE_STATE_UPDATED: Readonly<Partial<Record<WageStateSlug, string>>
   haryana: "2026-10-17",
   punjab: "2026-10-17",
   "andhra-pradesh": "2026-10-22",
+  telangana: "2026-10-27",
 };
 const wageUpdated = (state: WageStateSlug) => {
   const updated = WAGE_STATE_UPDATED[state];
@@ -168,6 +169,12 @@ const WAGE_STATE_STATUS: Partial<Record<WageStateSlug, PageStatus>> = {
   // and the notifications behind the sheets, which the department no longer
   // hosts (andhra-pradesh.json, verification).
   "andhra-pradesh": "published",
+  // Built and in review (owner, 27 Oct 2026): G.O.Ms. No. 6 of 30 May 2026
+  // replaced every notification with one table, but it is subject to writ
+  // petitions before the High Court, its gazette publication is unconfirmed
+  // and no VDA has been declared under it (telangana.json, verification).
+  // Publish once someone signs its status off.
+  telangana: "review",
 };
 
 /**

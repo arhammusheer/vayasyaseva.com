@@ -88,10 +88,11 @@ export const karnatakaPtTopic: TopicPage = {
   checked: "2026-10-18",
 };
 
-/** The seven states we cover, in the hub's table. */
+/** The eight states we cover, in the hub's table. */
 export const ptStates: { state: TableCell; levied: boolean; amount: string; who: string }[] = [
   { state: { text: "Karnataka", href: "/professional-tax/karnataka" }, levied: true, amount: "₹200 a month, ₹300 in February", who: "Salary of ₹25,000 or more in the month" },
   { state: "Andhra Pradesh", levied: true, amount: "₹150 or ₹200 a month", who: "Salary above ₹15,000 in the month" },
+  { state: "Telangana", levied: true, amount: "₹150 or ₹200 a month", who: "Salary above ₹15,000 in the month" },
   { state: "Punjab", levied: true, amount: "₹200 a month, as a development tax", who: "Income-tax payers only" },
   { state: "Delhi", levied: false, amount: "None", who: "" },
   { state: "Haryana", levied: false, amount: "None", who: "" },
@@ -103,13 +104,13 @@ export const professionalTaxTopic: TopicPage = {
   path: "/professional-tax",
   title: "Professional Tax by State 2026: Who Levies It",
   description:
-    "Professional tax in the states we cover: Karnataka and Andhra Pradesh levy it, Punjab has a development tax, and Uttarakhand, UP, Delhi and Haryana do not.",
+    "Professional tax by state: Karnataka, Andhra Pradesh and Telangana levy it, Punjab has a development tax, and Uttarakhand, UP, Delhi and Haryana do not.",
   breadcrumb: "Professional Tax",
   heading: "Professional Tax by state.",
-  lede: "Each state decides whether to levy it, up to ₹2,500 a person a year. Of the seven states we cover, Karnataka, Andhra Pradesh and Punjab levy one; the other four do not.",
+  lede: "Each state decides whether to levy it, up to ₹2,500 a person a year. Of the eight states we cover, Karnataka, Andhra Pradesh, Telangana and Punjab levy one; the other four do not.",
   glance: [
     { label: "Most a person pays", note: "a year, Article 276(2)", value: "₹2,500", key: true },
-    { label: "States that levy it", note: "of the seven we cover", value: "3" },
+    { label: "States that levy it", note: "of the eight we cover", value: "4" },
     { label: "Karnataka", note: "on ₹25,000 or more", value: "₹200" },
     { label: "Punjab", note: "income-tax payers", value: "₹200" },
   ],
@@ -125,7 +126,7 @@ export const professionalTaxTopic: TopicPage = {
       answer: "It levies the Punjab State Development Tax instead: ₹200 a month for people assessable to income tax on their salary, deducted by the employer. Workers below the income-tax threshold pay nothing.",
     },
   ],
-  sources: ["constitution-276", "ka-pt-act", "ka-pt-2025", "ap-pt-act", "ap-pt-schedule", "ap-pt-2013", "pb-psdt-act", "pb-psdt-rules-2021"],
+  sources: ["constitution-276", "ka-pt-act", "ka-pt-2025", "ap-pt-act", "ap-pt-schedule", "ap-pt-2013", "tg-pt-employer", "tg-pt-schedule", "pb-psdt-act", "pb-psdt-rules-2021"],
   links: [
     { href: "/professional-tax/karnataka", label: "Professional Tax in Karnataka" },
     { href: "/labour-welfare-fund", label: "Labour Welfare Fund by state" },

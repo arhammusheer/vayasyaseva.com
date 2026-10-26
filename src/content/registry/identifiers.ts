@@ -90,7 +90,7 @@ export const locationHubPath = (cluster: Exclude<ClusterId, "other">) => `/locat
 export const jobsHubPath = (cluster: Exclude<ClusterId, "other">) => `/jobs/${cluster}`;
 
 /** Wage pages use full state slugs; short codes 308 to them. */
-export const WAGE_STATE_SLUGS = ["uttarakhand", "uttar-pradesh", "delhi", "haryana", "punjab", "karnataka", "andhra-pradesh"] as const;
+export const WAGE_STATE_SLUGS = ["uttarakhand", "uttar-pradesh", "delhi", "haryana", "punjab", "karnataka", "andhra-pradesh", "telangana"] as const;
 export type WageStateSlug = (typeof WAGE_STATE_SLUGS)[number];
 /** A wage state's region code (ISO 3166-2:IN without "IN-"), the code src/markets uses. */
 export const WAGE_STATE_REGIONS = {
@@ -101,6 +101,8 @@ export const WAGE_STATE_REGIONS = {
   punjab: "PB",
   karnataka: "KA",
   "andhra-pradesh": "AP",
+  // ISO 3166-2:IN since November 2023 (IN-TG before); the crew form stores TS.
+  telangana: "TS",
 } as const satisfies Record<WageStateSlug, string>;
 export const WAGE_STATE_CODES = { up: "uttar-pradesh", dl: "delhi", uk: "uttarakhand" } as const satisfies Record<
   string,

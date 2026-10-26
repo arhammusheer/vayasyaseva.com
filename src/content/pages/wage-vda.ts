@@ -21,6 +21,7 @@ export const VDA_CYCLE: Record<WageStateSlug, string> = {
   punjab: "Not yet set by the state",
   karnataka: "1 April each year",
   "andhra-pradesh": "1 April and 1 October",
+  telangana: "1 April and 1 October",
 };
 
 /** The start of the half-year we are in: 1 April or 1 October. */

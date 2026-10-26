@@ -159,6 +159,17 @@ test('documentLinks drops "New" badges and "Accessible Version" size notes', () 
   assert.deepEqual(documentLinks(html, 'https://labour.example.gov.in/').map((l) => l.label), ['Uttarakhand Minimum Wages 2026', 'Minimum Wages Chai 2024']);
 });
 
+test('documentLinks reads files linked through a forceDownload script (Telangana)', () => {
+  const html = `<ul><li><a href="javascript:void(0)" onclick="javascript:forceDownload('https://labour.telangana.gov.in:443/content/minimumWages/Gazzette Notification on CPI numbers for VDA calculations/A01_04_2025.pdf','A01_04_2025.pdf')">A01_04_2025</a></li><li><a href="content/minimumWages/01042026/any%20manufacturing%204.xls">Any manufacturing process</a></li><li><a href="javascript:void(0)" onclick="toggle()">More</a></li></ul>`;
+  assert.deepEqual(
+    documentLinks(html, 'https://labour.telangana.gov.in/MinRatesWages.do').map((l) => [l.url, l.label]),
+    [
+      ['https://labour.telangana.gov.in/content/minimumWages/01042026/any%20manufacturing%204.xls', 'Any manufacturing process'],
+      ['https://labour.telangana.gov.in/content/minimumWages/Gazzette%20Notification%20on%20CPI%20numbers%20for%20VDA%20calculations/A01_04_2025.pdf', 'A01_04_2025'],
+    ],
+  );
+});
+
 test('htmlText keeps visible text only', () => {
   const text = htmlText('<style>p{}</style><p>Rates&nbsp;from <b>1 April</b></p><script>x()</script><div>Next</div>');
   assert.equal(text, 'Rates from 1 April\nNext');

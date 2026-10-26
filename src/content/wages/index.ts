@@ -14,6 +14,7 @@ import delhi from "./delhi.json" with { type: "json" };
 import haryana from "./haryana.json" with { type: "json" };
 import karnataka from "./karnataka.json" with { type: "json" };
 import punjab from "./punjab.json" with { type: "json" };
+import telangana from "./telangana.json" with { type: "json" };
 import uttarPradesh from "./uttar-pradesh.json" with { type: "json" };
 import uttarakhand from "./uttarakhand.json" with { type: "json" };
 
@@ -211,7 +212,7 @@ export type WageState = {
 
 /** Hub order: home state first, then the NCR neighbours, then the rest. */
 /** Alphabetical by name, so no state's market is listed first (owner direction, 17 Oct 2026). */
-export const wageStates = [andhraPradesh, delhi, haryana, karnataka, punjab, uttarPradesh, uttarakhand] as unknown as readonly WageState[];
+export const wageStates = [andhraPradesh, delhi, haryana, karnataka, punjab, telangana, uttarPradesh, uttarakhand] as unknown as readonly WageState[];
 
 export function getWageState(slug: string): WageState | undefined {
   return wageStates.find((s) => s.state === slug);

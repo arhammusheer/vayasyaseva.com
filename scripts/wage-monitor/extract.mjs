@@ -119,7 +119,14 @@ export function documentLinks(html, baseUrl, match) {
   for (const m of clean.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/gi)) {
     const attrs = m[1];
     const href = /\bhref\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i.exec(attrs);
-    const raw = href && decodeEntities((href[1] ?? href[2] ?? href[3] ?? "").trim());
+    let raw = href && decodeEntities((href[1] ?? href[2] ?? href[3] ?? "").trim());
+    // Telangana's Labour Department links files through a script:
+    // href="javascript:void(0)" onclick="javascript:forceDownload('https://…:443/content/….pdf','name.pdf')".
+    if (!raw || /^javascript:/i.test(raw)) {
+      const onclick = /\bonclick\s*=\s*(?:"([^"]*)"|'([^']*)')/i.exec(attrs);
+      const call = onclick && /\bforceDownload\(\s*['"]([^'"]+)['"]/i.exec(decodeEntities(onclick[1] ?? onclick[2]));
+      if (call) raw = call[1].trim();
+    }
     if (!raw || raw.startsWith("#") || /^(mailto|tel|javascript):/i.test(raw)) continue;
     let url;
     try {

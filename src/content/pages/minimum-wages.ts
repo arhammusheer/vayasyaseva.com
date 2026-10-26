@@ -227,6 +227,28 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
       labourDepartment: { href: "https://labour.ap.gov.in/", label: "Labour Department, Andhra Pradesh" },
     };
   },
+  telangana: (s) => {
+    const t = "all-employments";
+    const u1 = rate(s, t, "zone-1", "unskilled");
+    const u3 = rate(s, t, "zone-3", "unskilled");
+    const from = s.tables[0].effectiveFrom;
+    return {
+      title: (year) => `Telangana Minimum Wages${year ? ` ${year}` : ""}: Rates by Zone`,
+      description: `Telangana minimum wage from ${formatShortDate(from)}, unskilled: ${formatRupees(u1.monthly)} a month in municipal corporations, ${formatRupees(u3.monthly)} in rural areas. Basic rates, every skill level. ${stamp([s])}.`,
+      answer: `From ${formatDate(from)}, unskilled work in a Telangana municipal corporation (Zone I) pays at least ${formatRupees(u1.monthly)} a month, or ${formatRupees(u1.daily ?? 0)} a day. Municipalities and rural areas pay less.`,
+      faqs: [
+        {
+          question: "Is the new Telangana minimum wage in force while cases are pending?",
+          answer: `The order of 30 May 2026 applies from ${formatDate(from)}, but it says so "subject to outcome" of writ petitions and contempt cases before the Telangana High Court. It replaces every earlier notification, so the old rates by employment no longer apply. This page will change if the court rules otherwise.`,
+        },
+        {
+          question: "Is a VDA added on top of these rates?",
+          answer: `It will be. The order links the basic rates to the state price index at 443 points and adds ₹33.86 a month for each point above it, declared every 1 April and 1 October. None had been declared when we checked on ${formatDate(s.checked.on)}, so the figures above are the basic rates alone.`,
+        },
+      ],
+      labourDepartment: { href: "https://labour.telangana.gov.in/", label: "Labour Department, Telangana" },
+    };
+  },
 };
 
 export function getWageStateCopy(slug: WageStateSlug): WageStateCopy | undefined {

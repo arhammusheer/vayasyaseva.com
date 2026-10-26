@@ -71,7 +71,7 @@ export const bonusTopic: TopicPage = {
     },
     {
       question: "Do the ₹21,000 and ₹7,000 apply in my state?",
-      answer: "They are notified for the Central sphere. None of Uttarakhand, Uttar Pradesh, Delhi, Haryana, Punjab or Karnataka had notified its own figures when we checked on 18 October 2026, nor had Andhra Pradesh, whose Code on Wages rules of June 2026 set none, on 22 October 2026; we will update this page when one does.",
+      answer: "They are notified for the Central sphere. None of Uttarakhand, Uttar Pradesh, Delhi, Haryana, Punjab or Karnataka had notified its own figures when we checked on 18 October 2026, nor had Andhra Pradesh, whose Code on Wages rules of June 2026 set none, on 22 October 2026, or Telangana, whose rules were still in draft on 27 October 2026; we will update this page when one does.",
     },
   ],
   sources: ["cow-2019-bonus", "bonus-eligibility-2026", "bonus-ceiling-2026", "cow-central-rules-2026", "uk-wages-rules-2026"],

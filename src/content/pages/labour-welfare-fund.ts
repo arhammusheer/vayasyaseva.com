@@ -56,7 +56,7 @@ export const lwfCopy = {
   /** Before " | Vayasya Seva": at most 55 characters. */
   title: "Labour Welfare Fund (LWF) 2026: Contribution by State",
   description: (names: string[]) =>
-    `LWF in ${list(names.map((n) => ({ "Andhra Pradesh": "AP", "Uttar Pradesh": "UP" } as Record<string, string>)[n] ?? n))}: the worker's and employer's share, who it covers and the due date. ${lwfStamp()}.`,
+    `LWF in ${list(names.map((n) => ({ "Andhra Pradesh": "AP", "Uttar Pradesh": "UP" } as Record<string, string>)[n] ?? n))}: worker and employer shares, who it covers and the due date. ${lwfStamp()}.`,
   breadcrumb: "Labour Welfare Fund",
   heading: "Labour Welfare Fund contributions by state.",
   /** The answer first: each state runs its own fund, and two take no regular contribution. */

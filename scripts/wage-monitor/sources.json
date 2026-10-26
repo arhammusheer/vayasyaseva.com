@@ -529,6 +529,65 @@
           "allowEmpty": true
         }
       ]
+    },
+    "telangana": {
+      "listings": [
+        {
+          "url": "https://labour.telangana.gov.in/MinRatesWages.do",
+          "name": "Labour Department, Telangana: minimum wages (wage sheets, price index notifications and notes)"
+        },
+        {
+          "url": "https://labour.telangana.gov.in/ActServices.do",
+          "name": "Labour Department, Telangana: acts and rules (Labour Welfare Fund)",
+          "topic": "lwf",
+          "match": "welfare ?fund|LWF"
+        },
+        {
+          "url": "https://labour.telangana.gov.in/home.do",
+          "name": "Labour Department, Telangana: home page notices (draft and final rules under the labour codes, contract labour)",
+          "topic": "licence",
+          "match": "rules?|code|occupational|\\bOSH\\b|contract ?labour"
+        }
+      ],
+      "pages": [
+        {
+          "url": "https://tgct.gov.in/tgportal/AllActs/APPT/APPTSchedule.aspx",
+          "name": "Commercial Taxes Department, Telangana: Professional Tax First Schedule (the salary slabs)",
+          "topic": "pt",
+          "match": "15,0|20,0|\\bPM\\b"
+        },
+        {
+          "url": "https://tgct.gov.in/tgportal/AllActs/APPT/APPTAct/05Employer.html",
+          "name": "Telangana Tax on Professions Act, section 5: the employer's liability",
+          "topic": "pt",
+          "match": "[a-z]"
+        },
+        {
+          "url": "https://tgct.gov.in/tgportal/AllActs/APPT/APPTAct/07Returns.html",
+          "name": "Telangana Tax on Professions Act, section 7: returns (Form V)",
+          "topic": "pt",
+          "match": "[a-z]"
+        },
+        {
+          "url": "https://labour.telangana.gov.in/content/ActsRules/TELANGANA%20LABOUR%20WELFARE%20FUND%20ACT,%201987.htm",
+          "name": "Telangana Labour Welfare Fund Act, 1987 (Labour Department copy): who it covers and the contributions",
+          "topic": "lwf",
+          "match": "contribut|rupees|twenty or more"
+        },
+        {
+          "url": "https://www.sgcms.com/regulatory-updates/category/minimum-wages/",
+          "name": "Lead: SGCMS (a compliance firm) minimum wage posts on Telangana. Firms often post an order before the state does; confirm against the order itself.",
+          "match": "telangana",
+          "allowEmpty": true
+        },
+        {
+          "url": "https://ascent-hr.com/notification/",
+          "name": "Lead: AscentHR (a compliance firm) notifications on Telangana. Firms often post an order before the state does; confirm against the order itself.",
+          "match": "telangana",
+          "ignore": "^(?:[^,]{1,40} , )*telangana(?: , [^,]{1,40})*$",
+          "allowEmpty": true
+        }
+      ]
     }
   },
   "national": {

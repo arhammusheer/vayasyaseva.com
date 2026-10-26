@@ -194,8 +194,26 @@ test('state page doors come from the markets: a jobs hub where the state has one
     punjab: ['/jobs/punjab', '/locations/jalandhar'],
     karnataka: ['/jobs/bengaluru', '/locations/bengaluru'],
     'andhra-pradesh': ['/jobs/andhra-pradesh', '/locations/visakhapatnam'],
+    telangana: [dept.href, '/contact'],
   });
   const [jobs, crew] = stateDoors('uttarakhand', 'Uttarakhand', dept);
   assert.match(jobs.text, /^Dehradun, Haridwar and the rest of the state\. /);
   assert.equal(crew.text, 'We supply crews in Dehradun, Haridwar and the rest of Uttarakhand.');
+});
+
+test('Telangana: the table is G.O.Ms. No. 6 as printed, basic only until a VDA is declared', () => {
+  const tg = wageStates.find((s) => s.state === 'telangana');
+  const table = tg.tables.find((t) => t.id === 'all-employments');
+  const printed = { 'zone-1': [16000, 17000, 18500, 20000], 'zone-2': [15000, 16000, 17500, 19000], 'zone-3': [14000, 15000, 16500, 18000] };
+  const skills = ['unskilled', 'semi-skilled', 'skilled', 'highly-skilled'];
+  for (const [zone, values] of Object.entries(printed)) {
+    skills.forEach((skill, i) => {
+      const r = table.rates.find((x) => x.zone === zone && x.skill === skill);
+      assert.deepEqual([r.basic, r.vda, r.monthly, r.daily], [values[i], 0, values[i], dailyFromMonthly(values[i])], `${zone} ${skill}`);
+    });
+  }
+  assert.deepEqual(tg.nextRevision.missed, ['2026-10-01']);
+  const all = tg.employments.groups.find((g) => g.id === 'schedules').employments;
+  assert.equal(all.length, 76);
+  assert.equal(new Set(all).size, 76);
 });

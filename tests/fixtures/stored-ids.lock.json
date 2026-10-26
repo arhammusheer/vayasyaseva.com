@@ -39,7 +39,8 @@
     "haryana",
     "punjab",
     "karnataka",
-    "andhra-pradesh"
+    "andhra-pradesh",
+    "telangana"
   ],
   "identifiers.WAGE_STATE_CODES": [
     "up=uttar-pradesh",

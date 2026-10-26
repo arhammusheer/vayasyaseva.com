@@ -3,11 +3,11 @@
  "name": "Uttar Pradesh",
  "titleName": "UP",
  "nextRevision": {
-  "expected": "2026-10-01",
-  "basis": "Uttar Pradesh adjusts the variable dearness allowance for the 74 scheduled employments every 1 April and 1 October, from the six-monthly average consumer price index. The 17 April 2026 order sets interim rates while the Uttar Pradesh Code on Wages Rules, 2026 are being notified, so new rates may also come under the Code."
+  "expected": "2027-04-01",
+  "basis": "Uttar Pradesh adjusts the variable dearness allowance for the 74 scheduled employments every 1 April and 1 October, from the six-monthly average consumer price index. The basic rates are interim relief under the 17 April 2026 order. The state notified the Uttar Pradesh Code on Wages Rules, 2026 on 12 August 2026, so new rates may also come under the Code."
  },
  "checked": {
-  "on": "2026-10-17"
+  "on": "2026-10-26"
  },
  "sources": [
   {
@@ -42,6 +42,23 @@
    "retrievedOn": "2026-10-16",
    "copy": "https://cdn.vayasyaseva.com/sources/uttar-pradesh/up-2026-04-hi-2d0871c9.pdf",
    "copyKb": 66
+  },
+  {
+   "id": "up-vda-2026-10",
+   "kind": "order",
+   "title": "Variable dearness allowance in the 74 scheduled employments, 1 October 2026 to 31 March 2027",
+   "number": "I/1498869/2026-2041256",
+   "date": "2026-10-21",
+   "authority": "Shram Anubhag-2, Government of Uttar Pradesh",
+   "legalBasis": "Applies notification 374/36-2-2026-2041256 dated 17 April 2026: VDA on the basic rates for each point of the All-India CPI (2001=100) above 400, at the January to June 2026 average of 431.",
+   "url": "https://uplabour.gov.in/lc/MediaGallery/TickerScrolls/MinWages_VDAin74sheduledemploymentdated21-10-2026.pdf",
+   "listing": "https://uplabour.gov.in/lc/",
+   "language": "hi",
+   "sha256": "1145dbb73d8745f6e67c729ab16281b06e75acdf124f02eba7e2fcc40bd5876d",
+   "sizeKb": 177,
+   "retrievedOn": "2026-10-26",
+   "copy": "https://cdn.vayasyaseva.com/sources/uttar-pradesh/up-vda-2026-10-1145dbb7.pdf",
+   "copyKb": 55
   },
   {
    "id": "up-vda-2024-10",
@@ -104,10 +121,11 @@
    "title": "Scheduled employments",
    "appliesTo": "Workers in every employment where minimum wages are fixed under the Minimum Wages Act, 1948 (the state's 74 scheduled employments). Piece-rate wages in brick kilns stay under the earlier order.",
    "sources": [
+    "up-vda-2026-10",
     "up-2026-04",
     "up-2026-04-hi"
    ],
-   "effectiveFrom": "2026-04-01",
+   "effectiveFrom": "2026-10-01",
    "zones": [
     {
      "id": "category-1",
@@ -125,8 +143,8 @@
      "areas": "All remaining districts."
     }
    ],
-   "daily": "derived",
-   "dailyRule": "The April 2026 order fixes monthly rates. The 74-employment notifications set the daily rate at no less than 1/26 of basic wage plus VDA, so the daily figures here are the monthly total divided by 26, rounded up to the paisa.",
+   "daily": "stated",
+   "dailyRule": "The October 2026 memo states daily rates: no less than 1/26 of basic wage plus VDA. Part-time workers (under 6 hours a day or 36 a week) get no less than 1/8 of the daily rate an hour.",
    "basicLabel": "Basic",
    "vdaLabel": "VDA",
    "rates": [
@@ -134,73 +152,73 @@
      "zone": "category-1",
      "skill": "unskilled",
      "basic": 12885,
-     "vda": 805,
-     "monthly": 13690,
-     "daily": 526.54
+     "vda": 998.59,
+     "monthly": 13883.59,
+     "daily": 533.98
     },
     {
      "zone": "category-1",
      "skill": "semi-skilled",
      "basic": 14173,
-     "vda": 886,
-     "monthly": 15059,
-     "daily": 579.2
+     "vda": 1098.41,
+     "monthly": 15271.41,
+     "daily": 587.36
     },
     {
      "zone": "category-1",
      "skill": "skilled",
      "basic": 15876,
-     "vda": 992,
-     "monthly": 16868,
-     "daily": 648.77
+     "vda": 1230.39,
+     "monthly": 17106.39,
+     "daily": 657.94
     },
     {
      "zone": "category-2",
      "skill": "unskilled",
      "basic": 12241,
-     "vda": 765,
-     "monthly": 13006,
-     "daily": 500.24
+     "vda": 948.68,
+     "monthly": 13189.68,
+     "daily": 507.3
     },
     {
      "zone": "category-2",
      "skill": "semi-skilled",
      "basic": 13464,
-     "vda": 842,
-     "monthly": 14306,
-     "daily": 550.24
+     "vda": 1043.46,
+     "monthly": 14507.46,
+     "daily": 557.98
     },
     {
      "zone": "category-2",
      "skill": "skilled",
      "basic": 15082,
-     "vda": 943,
-     "monthly": 16025,
-     "daily": 616.35
+     "vda": 1168.86,
+     "monthly": 16250.86,
+     "daily": 625.03
     },
     {
      "zone": "category-3",
      "skill": "unskilled",
      "basic": 11629,
-     "vda": 727,
-     "monthly": 12356,
-     "daily": 475.24
+     "vda": 901.25,
+     "monthly": 12530.25,
+     "daily": 481.93
     },
     {
      "zone": "category-3",
      "skill": "semi-skilled",
      "basic": 12791,
-     "vda": 799,
-     "monthly": 13590,
-     "daily": 522.7
+     "vda": 991.3,
+     "monthly": 13782.3,
+     "daily": 530.09
     },
     {
      "zone": "category-3",
      "skill": "skilled",
      "basic": 14328,
-     "vda": 896,
-     "monthly": 15224,
-     "daily": 585.54
+     "vda": 1110.42,
+     "monthly": 15438.42,
+     "daily": 593.79
     }
    ]
   }
@@ -327,7 +345,7 @@
       ]
      }
     ],
-    "note": "Basic rate plus VDA, set for 1 April to 30 September 2026 by the Labour Commissioner's order of 25 March 2026, which the April 2026 order keeps in force for brick-kiln piece rates. The October 2026 revision has not been published. The department has not put the order on its website; the copy linked is a scan of the signed order published by a compliance firm."
+    "note": "Basic rate plus VDA, set for 1 April to 30 September 2026 by the Labour Commissioner's order of 25 March 2026, which the April 2026 order keeps in force for brick-kiln piece rates. The October 2026 VDA memo covers time rates only; no October piece-rate order has been published. The department has not put the order on its website; the copy linked is a scan of the signed order published by a compliance firm."
    },
    {
     "id": "agriculture",
@@ -404,6 +422,69 @@
  "history": [
   {
    "table": "scheduled-employments",
+   "effectiveFrom": "2026-04-01",
+   "effectiveTo": "2026-09-30",
+   "source": "up-2026-04",
+   "note": "Same basic wage and categories, with VDA at the July to December 2025 index of 425.",
+   "rates": [
+    {
+     "zone": "category-1",
+     "skill": "unskilled",
+     "monthly": 13690,
+     "daily": 526.54
+    },
+    {
+     "zone": "category-1",
+     "skill": "semi-skilled",
+     "monthly": 15059,
+     "daily": 579.2
+    },
+    {
+     "zone": "category-1",
+     "skill": "skilled",
+     "monthly": 16868,
+     "daily": 648.77
+    },
+    {
+     "zone": "category-2",
+     "skill": "unskilled",
+     "monthly": 13006,
+     "daily": 500.24
+    },
+    {
+     "zone": "category-2",
+     "skill": "semi-skilled",
+     "monthly": 14306,
+     "daily": 550.24
+    },
+    {
+     "zone": "category-2",
+     "skill": "skilled",
+     "monthly": 16025,
+     "daily": 616.35
+    },
+    {
+     "zone": "category-3",
+     "skill": "unskilled",
+     "monthly": 12356,
+     "daily": 475.24
+    },
+    {
+     "zone": "category-3",
+     "skill": "semi-skilled",
+     "monthly": 13590,
+     "daily": 522.7
+    },
+    {
+     "zone": "category-3",
+     "skill": "skilled",
+     "monthly": 15224,
+     "daily": 585.54
+    }
+   ]
+  },
+  {
+   "table": "scheduled-employments",
    "effectiveFrom": "2024-10-01",
    "effectiveTo": "2025-03-31",
    "source": "up-vda-2024-10",
@@ -439,6 +520,8 @@
   "2026-10-17: uplabour.gov.in/Pages/MWA.aspx lists 33 VDA circulars, newest 19/02/2025. The latest separate orders online for hotels and restaurants (2075-81, 16 October 2024), carpets (815-21), glass bangles (822-28) and bidi (808-14, piece rates to 29 August 2025) all ran to 31 March 2025; no later orders are posted, so the page shows no figures for them. Agriculture: Page/GO.aspx has notification 02/2024/707/36-03-2024-1619905 of 9 July 2024 (all-inclusive, from 1 April 2024); a July 2025 notification (02/2025/8181/36-03-2025-1619905) is listed by third parties but not on the site, so no agriculture figure is shown. Engineering factories with 50+ workers and vacuum pan sugar mills are paid DA under government settlement notifications (4/2016/873/36-1-2016-549(ST)/8 of 14 September 2016; 1305/36-2-2022-8/2004-TC of 29 June 2022); the memos online give only the index point.",
   "2026-10-17: no wage order newer than 17 April 2026 on the home ticker, the LatestUpdates feed (2025-26, 2026-27), MWA.aspx or the GO list. No October 2026 VDA order is posted.",
   "2026-10-17: order 1477-84 Pravartan-(M.W.)/15 of 25 March 2026 is not on uplabour.gov.in; SGCMS (sgcms.com, a compliance firm) publishes a two-page scan (74-niyojan.pdf, sha256 83e4d607...). Read by eye at 110 dpi: index 425 (base 216), 1 April to 30 September 2026; unskilled 5750 + 5563.65 = 11313.65; brick kilns: time-rated unskilled and skilled as rows 1 and 3; pathera 365 + 353.13 = 718.13, bharaiwala up to 500 m 110 + 106.42 = 216.42, over 500 m 132 + 127.71 = 259.71, nikasi wala 110 + 106.42 = 216.42, per thousand. Page 2: the list of 74 employments and 'संख्या 1477-84 प्रवर्तन-(एम0डब्लू0)/15 दिनांक 25/03/2026', digitally signed Markandeya Sahi 25-03-2026 18:02:41. The number matches the order that 374/36-2-2026-2041256 supersedes; the October 2025 (386, index 414) and April 2025 (2128-35, index 413) orders SGCMS also publishes reproduce from the same base-216 rule.",
-  "2026-10-17: agriculture notification 02/2025/818/36-03-2025-1619905 of 17 July 2025 is not on uplabour.gov.in; Simpliance publishes a two-page scan (sha256 64760ea8...). Read by eye: Shram Anubhag-3, supersedes 02/2024/707 of 9 July 2024, from 1 April 2025, whole of Uttar Pradesh, all-inclusive Rs 6552 a month or Rs 252 a day for the three kinds of agricultural work; hourly rate not less than 1/6 of the daily; digitally signed Shanmuga Sundaram 17-07-2025. Simpliance lists the number as .../8181/...; the scan reads 818. CMV360 (28 July 2025) reports the same figures."
+  "2026-10-17: agriculture notification 02/2025/818/36-03-2025-1619905 of 17 July 2025 is not on uplabour.gov.in; Simpliance publishes a two-page scan (sha256 64760ea8...). Read by eye: Shram Anubhag-3, supersedes 02/2024/707 of 9 July 2024, from 1 April 2025, whole of Uttar Pradesh, all-inclusive Rs 6552 a month or Rs 252 a day for the three kinds of agricultural work; hourly rate not less than 1/6 of the daily; digitally signed Shanmuga Sundaram 17-07-2025. Simpliance lists the number as .../8181/...; the scan reads 818. CMV360 (28 July 2025) reports the same figures.",
+  "2026-10-26: uplabour.gov.in/lc/ (the Labour Commissioner's site) home ticker links 'Revised minimum wages basic rates with VDA in. 74 scheduled employment, effective from 01/10/2026' (MediaGallery/TickerScrolls/MinWages_VDAin74sheduledemploymentdated21-10-2026.pdf; 3 pages, Hindi, text layer, created 21-10-2026). The Shram Vibhag home ticker, MWA.aspx and LatestUpdates do not list it. Office memo I/1498869/2026-2041256, Shram Anubhag-02, Lucknow, 21-10-2026, signed Kunal Silku, Special Secretary, copied to the Labour Commissioner against his letter 1579/IRD-2026 of 30-09-2026. Read in full: the 17 April 2026 rates neutralise the CPI (2001=100) to 400; VDA from 01.10.2026 to 31.03.2027 at the January-June 2026 average of 431, e.g. (431 - 400)/400 x 12885 = 998.59. Category I: unskilled 12885 + 998.59 = 13883.59 (daily 533.98), semi-skilled 14173 + 1098.41 = 15271.41 (587.36), skilled 15876 + 1230.39 = 17106.39 (657.94). Category II: 12241 + 948.68 = 13189.68 (507.30); 13464 + 1043.46 = 14507.46 (557.98); 15082 + 1168.86 = 16250.86 (625.03). Category III: 11629 + 901.25 = 12530.25 (481.93); 12791 + 991.30 = 13782.30 (530.09); 14328 + 1110.42 = 15438.42 (593.79). Every VDA equals basic x 31/400 to the paisa. The memo's daily rates are monthly / 26 rounded to the nearest paisa, so the table now uses them as stated. Notes: daily not less than 1/26 of basic plus VDA; part-time (under 6 hours a day or 36 a week) hourly not less than 1/8 of daily; contract labour deemed employed directly by the employer for these rates. AscentHR's copy (ascent-hr.com, 21 October 2026) is the same file, sha256 1145dbb7....",
+  "2026-10-26: uplabour.gov.in/lc/ ticker also links CoW459RPH(Shram Anu-3)-2026.pdf: Uttar Pradesh Code on Wages Rules, 2026, notification 1377/36-03-2026-1901341 of 12 August 2026 (UP Gazette Extraordinary, 88 pages), after the draft of 10 March 2026 (426/36-03-2026-1901341); it supersedes the UP Payment of Wages Rules 1936, Minimum Wages Rules 1952 and Code on Wages Rules 2021. The page no longer says the rules are being notified. Brick-kiln piece rates: no October 2026 order found."
  ]
 }

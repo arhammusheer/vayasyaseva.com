@@ -57,7 +57,7 @@ export const delhiNcrPages: LocationCopy[] = [
       },
       {
         question: "Which minimum wage and rules apply in Delhi NCR?",
-        answer: "The state the site is in sets them: Delhi ₹18,456, Haryana ₹15,220.71 and UP Category I ₹13,690 a month unskilled. None of the three levies Professional Tax.",
+        answer: "The state the site is in sets them: Delhi ₹18,456, Haryana ₹15,220.71 and UP Category I ₹13,883.59 a month unskilled. None of the three levies Professional Tax.",
         link: RULE_LINKS.compliance,
         category: "compliance",
       },
@@ -141,7 +141,7 @@ export const delhiNcrPages: LocationCopy[] = [
       },
       {
         question: "Which minimum wage and rules apply in Noida?",
-        answer: "Gautam Buddha Nagar is UP's Category I: ₹13,690 a month unskilled from 1 April 2026, the same through Greater Noida and the Yamuna Expressway area. UP levies no Professional Tax.",
+        answer: "Gautam Buddha Nagar is UP's Category I: ₹13,883.59 a month unskilled from 1 October 2026, the same through Greater Noida and the Yamuna Expressway area. UP levies no Professional Tax.",
         link: RULE_LINKS.up,
         category: "compliance",
       },
@@ -187,7 +187,7 @@ export const delhiNcrPages: LocationCopy[] = [
       },
       {
         question: "Which minimum wage and rules apply?",
-        answer: "Faridabad pays Haryana's ₹15,220.71 a month unskilled plus the Labour Welfare Fund; Ghaziabad pays UP Category I, ₹13,690. Neither state levies Professional Tax.",
+        answer: "Faridabad pays Haryana's ₹15,220.71 a month unskilled plus the Labour Welfare Fund; Ghaziabad pays UP Category I, ₹13,883.59. Neither state levies Professional Tax.",
         link: RULE_LINKS.up,
         category: "compliance",
       },

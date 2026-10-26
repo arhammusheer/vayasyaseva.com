@@ -6,10 +6,14 @@
  * lives once, on /minimum-wages/how-we-check (src/content/editorial.ts).
  *
  * Reference pages are read by buyers and workers alike: short sentences,
- * no phone, contractor vocabulary, and no agency words. Pages for states
- * outside Uttarakhand never imply we supply crews there.
+ * no phone, contractor vocabulary, and no agency words. A state page names
+ * only the markets whose pages are live in that state (src/markets), so it
+ * never implies we supply crews anywhere else.
  */
-import type { WageStateSlug } from "@/content/registry/identifiers";
+import { jobMarkets, marketSurfaces } from "@/context/surfaces";
+import { WAGE_STATE_REGIONS, type WageStateSlug } from "@/content/registry/identifiers";
+import { isStateWide, marketForRegion, marketsForState, standInFor } from "@/markets/index";
+import { businessLabel, jobsLinkLabel, marketName } from "@/markets/labels";
 import { formatDate, formatMonth, formatRupees, formatShortDate, formatShortMonth, getWageState, wageStates, type Skill, type WageState } from "@/content/wages";
 
 /** A rate from the dataset, by table, zone and skill. Throws if it is missing, so a typo fails the build. */
@@ -43,15 +47,12 @@ export type WageStateCopy = {
   note?: { text: string; link: LinkItem };
   /** Two questions, for the page and its FAQPage schema. */
   faqs: [FaqItem, FaqItem];
-  /** The state Labour Department's site, shown as the official source. */
-  labourDepartment: LinkItem;
   /**
-   * The doors band: a state with a jobs market ("uttarakhand", "punjab",
-   * "bengaluru" for Karnataka: its jobs hub and a crew door) or "elsewhere"
-   * (the Labour Department as official source and a crew door: no jobs
-   * door, and nothing that implies we staff sites in that state).
+   * The state Labour Department's site, shown as the official source where
+   * the state has no jobs hub (the doors come from src/markets: stateDoors
+   * below).
    */
-  band: "uttarakhand" | "bengaluru" | "punjab" | "elsewhere";
+  labourDepartment: LinkItem;
 };
 
 const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined> = {
@@ -79,7 +80,6 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
         },
       ],
       labourDepartment: { href: "https://labour.uk.gov.in/", label: "Labour Department, Uttarakhand" },
-      band: "uttarakhand",
     };
   },
   "uttar-pradesh": (s) => {
@@ -101,7 +101,6 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
         },
       ],
       labourDepartment: { href: "https://uplabour.gov.in/", label: "Labour Department, Uttar Pradesh" },
-      band: "elsewhere",
     };
   },
   delhi: (s) => {
@@ -128,7 +127,6 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
         },
       ],
       labourDepartment: { href: "https://labour.delhi.gov.in/labour/current-minimum-wage-rate", label: "Labour Department, Delhi" },
-      band: "elsewhere",
     };
   },
   haryana: (s) => {
@@ -154,7 +152,6 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
         },
       ],
       labourDepartment: { href: "https://hrylabour.gov.in/", label: "Labour Department, Haryana" },
-      band: "elsewhere",
     };
   },
   punjab: (s) => {
@@ -176,7 +173,6 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
         },
       ],
       labourDepartment: { href: "https://pblabour.gov.in/", label: "Labour Department, Punjab" },
-      band: "punjab",
     };
   },
   karnataka: (s) => {
@@ -202,7 +198,6 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
         },
       ],
       labourDepartment: { href: "https://karmikaspandana.karnataka.gov.in/en", label: "Labour Department, Karnataka" },
-      band: "bengaluru",
     };
   },
   "andhra-pradesh": (s) => {
@@ -230,7 +225,6 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
         },
       ],
       labourDepartment: { href: "https://labour.ap.gov.in/", label: "Labour Department, Andhra Pradesh" },
-      band: "elsewhere",
     };
   },
 };
@@ -241,11 +235,11 @@ export function getWageStateCopy(slug: WageStateSlug): WageStateCopy | undefined
   return state && build ? build(state) : undefined;
 }
 
+/** "a, b and c". */
+const andList = (parts: readonly string[]) => (parts.length > 1 ? `${parts.slice(0, -1).join(", ")} and ${parts.at(-1)}` : parts[0]);
+
 /** "1 October 2025, 1 April 2026 and 1 October 2026". */
-export const listDates = (dates: string[]) => {
-  const parts = dates.map(formatDate);
-  return parts.length > 1 ? `${parts.slice(0, -1).join(", ")} and ${parts.at(-1)}` : parts[0];
-};
+export const listDates = (dates: string[]) => andList(dates.map(formatDate));
 
 export const wageHubCopy = {
   title: (year: string | null) => `Minimum Wages${year ? ` ${year}` : ""} by State: Rates by Skill Level`,
@@ -272,44 +266,37 @@ type Door = { eyebrow: string; heading: string; text: string; link: LinkItem; ex
 
 /** The doors band at the foot of each wage page (PLAN §5.5): no phone. */
 export const wageDoors = {
-  /** Uttarakhand: the state's market, whose form also files Haridwar and Dehradun applicants under their own markets. */
-  jobs: {
+  /**
+   * A state's own jobs market (src/markets): "across" for the state-wide
+   * one, whose form also files the state's other markets' applicants under
+   * their own, so those are named before "the rest of the state".
+   */
+  jobsIn: (market: string, stateWide: boolean, others: readonly string[], link: LinkItem): Door => ({
     eyebrow: "LOOKING FOR WORK",
-    heading: "Factory and warehouse jobs across Uttarakhand.",
-    text: "Haridwar, Dehradun and the rest of the state. Full 8-hour shifts. There is no fee to apply.",
-    link: { href: "/jobs/uttarakhand", label: "Jobs across Uttarakhand" },
-  } satisfies Door,
-  /** The hub covers several states, so its jobs door is the national jobs page, not one city's. */
-  jobsAll: {
-    eyebrow: "LOOKING FOR WORK",
-    heading: "Factory and warehouse jobs.",
-    text: "In Andhra Pradesh, Bengaluru, Dehradun, Haridwar, Jalandhar, Kapurthala, Punjab, Uttarakhand and Visakhapatnam. Full 8-hour shifts. There is no fee to apply.",
-    link: { href: "/jobs", label: "See jobs" },
-  } satisfies Door,
+    heading: `Factory and warehouse jobs ${stateWide ? "across" : "in"} ${market}.`,
+    text: `${stateWide && others.length ? `${andList([...others, "the rest of the state"])}. ` : ""}Full 8-hour shifts. There is no fee to apply.`,
+    link,
+  }),
+  /** The hub covers several states, so its jobs door is the national jobs page, not one city's. Every published jobs hub, by name. */
+  get jobsAll(): Door {
+    return {
+      eyebrow: "LOOKING FOR WORK",
+      heading: "Factory and warehouse jobs.",
+      text: `In ${andList(jobMarkets().map((id) => marketName(id, "en-IN") ?? id))}. Full 8-hour shifts. There is no fee to apply.`,
+      link: { href: "/jobs", label: "See jobs" },
+    };
+  },
   business: {
     eyebrow: "HIRING FOR A UNIT",
     heading: "Need a crew on your site?",
     text: "Tell us the work, the headcount and the shifts.",
     link: { href: "/contact", label: "Request a crew" },
   } satisfies Door,
-  /** Karnataka: the Bengaluru worker list (no buyer hub there yet, so the business door stays neutral). */
-  jobsBengaluru: {
-    eyebrow: "LOOKING FOR WORK",
-    heading: "Factory and warehouse work in Bengaluru.",
-    text: "Join our worker list. Full 8-hour shifts. There is no fee.",
-    link: { href: "/jobs/bengaluru", label: "Jobs in Bengaluru" },
-  } satisfies Door,
-  /** Punjab: the state's market, whose form also files Jalandhar and Kapurthala applicants there. */
-  jobsPunjab: {
-    eyebrow: "LOOKING FOR WORK",
-    heading: "Factory and packing jobs across Punjab.",
-    text: "Jalandhar, Kapurthala and the rest of the state. Full 8-hour shifts. There is no fee to apply.",
-    link: { href: "/jobs/punjab", label: "Jobs across Punjab" },
-  } satisfies Door,
   /**
-   * UP and Delhi: the state's Labour Department as the official source, not
-   * as a place to complain (owner direction, 17 Oct 2026: a complaint door
-   * read to employers as if we might act against them).
+   * A state with no jobs hub of its own: the state's Labour Department as
+   * the official source, not as a place to complain (owner direction, 17
+   * Oct 2026: a complaint door read to employers as if we might act against
+   * them).
    */
   officialSource: (name: string, department: LinkItem): Door => ({
     eyebrow: "OFFICIAL SOURCE",
@@ -319,14 +306,14 @@ export const wageDoors = {
     external: true,
   }),
   /**
-   * The crew door where a location page covers the state (Delhi NCR for UP
-   * and Delhi, Bengaluru for Karnataka; owner confirmed supply there, 16 Oct
-   * 2026), so an employer reading these rates lands on their own region.
+   * The crew door where a buyer page covers the state (src/markets), so an
+   * employer reading these rates lands on their own region. `places` are
+   * the state's markets with live buyer pages.
    */
-  crewIn: (region: string, text: string, href: string): Door => ({
+  crewIn: (state: string, places: readonly string[], href: string): Door => ({
     eyebrow: "FOR EMPLOYERS",
-    heading: `Hiring in ${region}?`,
-    text,
+    heading: `Hiring in ${state}?`,
+    text: `We supply crews in ${andList(places)}.`,
     link: { href, label: "Request a crew" },
   }),
   /** A neutral crew door, where no location page covers the state. */
@@ -338,6 +325,44 @@ export const wageDoors = {
   } satisfies Door,
 };
 export type { Door as WageDoor };
+
+/**
+ * The doors at the foot of a state page, worked out from src/markets and
+ * the published pages, so a new market reaches them with no edit here.
+ * Jobs: the state's own market (marketForRegion) where its jobs hub is
+ * live, else the Labour Department as the official source. Crew: the buyer
+ * page for that market (or the one standing in for it, Jalandhar for
+ * Punjab), else the first live one in the state (Delhi NCR for UP), else
+ * the neutral door.
+ */
+export function stateDoors(slug: WageStateSlug, name: string, department: LinkItem): Door[] {
+  const region = WAGE_STATE_REGIONS[slug];
+  const surfaces = marketSurfaces();
+  const inState = marketsForState(region);
+  const home = marketForRegion(region);
+  const label = (id: string) => marketName(id, "en-IN") ?? id;
+
+  const jobsHub = home && surfaces[home]?.jobs;
+  const jobs =
+    home && jobsHub
+      ? wageDoors.jobsIn(
+          label(home),
+          isStateWide(home, region),
+          inState.filter((id) => id !== home && surfaces[id]?.jobs).map(label),
+          { href: jobsHub, label: jobsLinkLabel(home, "en-IN") ?? label(home) },
+        )
+      : wageDoors.officialSource(name, department);
+
+  const buyers = inState.filter((id) => surfaces[id]?.business);
+  const buyer = [home, home && standInFor(home, "business"), ...buyers].find((id) => id && surfaces[id]?.business);
+  const buyerHub = buyer && surfaces[buyer]?.business;
+  if (!buyer || !buyerHub) return [jobs, wageDoors.neutral];
+  // The narrower markets by name, then the state-wide one as "the rest of" the state.
+  const narrow = buyers.filter((id) => !isStateWide(id, region)).map(businessLabel);
+  const wide = buyers.some((id) => isStateWide(id, region));
+  const places = wide ? (narrow.length ? [...narrow, `the rest of ${name}`] : [name]) : narrow.length ? narrow : [businessLabel(buyer)];
+  return [jobs, wageDoors.crewIn(name, places, buyerHub)];
+}
 
 /** Labels the wage page components use. */
 export const wageUi = {

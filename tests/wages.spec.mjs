@@ -180,3 +180,22 @@ test('rupee figures quoted outside the wage pages are current rates (no drift af
   }
   assert.deepEqual(stale, [], 'update these figures to the current dataset rates');
 });
+
+test('state page doors come from the markets: a jobs hub where the state has one, else the official source', async () => {
+  const { stateDoors } = await importTs('src/content/pages/minimum-wages.ts');
+  const { WAGE_STATE_SLUGS } = await importTs('src/content/registry/identifiers.ts');
+  const dept = { href: 'https://labour.example', label: 'Labour Department' };
+  const doors = Object.fromEntries(WAGE_STATE_SLUGS.map((s) => [s, stateDoors(s, s, dept).map((d) => d.link.href)]));
+  assert.deepEqual(doors, {
+    uttarakhand: ['/jobs/uttarakhand', '/locations/uttarakhand'],
+    'uttar-pradesh': [dept.href, '/locations/delhi-ncr'],
+    delhi: [dept.href, '/locations/delhi-ncr'],
+    haryana: [dept.href, '/locations/delhi-ncr'],
+    punjab: ['/jobs/punjab', '/locations/jalandhar'],
+    karnataka: ['/jobs/bengaluru', '/locations/bengaluru'],
+    'andhra-pradesh': ['/jobs/andhra-pradesh', '/locations/visakhapatnam'],
+  });
+  const [jobs, crew] = stateDoors('uttarakhand', 'Uttarakhand', dept);
+  assert.match(jobs.text, /^Dehradun, Haridwar and the rest of the state\. /);
+  assert.equal(crew.text, 'We supply crews in Dehradun, Haridwar and the rest of Uttarakhand.');
+});

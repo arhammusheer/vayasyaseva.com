@@ -32,7 +32,7 @@ import {
   type WageTable,
 } from "@/content/wages";
 import { EDITORIAL_HREF } from "@/content/editorial";
-import { getWageStateCopy, listDates, wageDoors, wageHubCopy, wageUi as x, type WageDoor, type WageStateCopy } from "@/content/pages/minimum-wages";
+import { getWageStateCopy, listDates, stateDoors, wageDoors, wageHubCopy, wageUi as x, type WageDoor, type WageStateCopy } from "@/content/pages/minimum-wages";
 import { SKILLS_HI, WAGE_HUB_HI, formatDateHi, wageHubHi } from "@/content/pages/minimum-wages.hi";
 import { localePath, type Locale } from "@/lib/i18n";
 import { duesNote, duesSources, employerDues } from "@/content/statutory";
@@ -689,20 +689,6 @@ function TableChooser({ state, which }: { state: WageState; which: NonNullable<W
   );
 }
 
-/** The employer door for a state: its region's location page where one is live, else the neutral door. */
-const CREW_REGIONS: Partial<Record<WageStateSlug, [string, string, string]>> = {
-  uttarakhand: ["Uttarakhand", "We supply crews in SIDCUL Haridwar, Dehradun and Selaqui, and across Uttarakhand.", "/locations/uttarakhand"],
-  "uttar-pradesh": ["Noida or Ghaziabad", "We supply crews in Noida, Greater Noida and Ghaziabad.", "/locations/delhi-ncr/noida-greater-noida"],
-  delhi: ["Delhi NCR", "We supply crews in Delhi's industrial areas and across NCR.", "/locations/delhi-ncr"],
-  haryana: ["Gurugram or Manesar", "We supply crews in IMT Manesar, Gurugram and Faridabad.", "/locations/delhi-ncr/gurugram-manesar"],
-  karnataka: ["Bengaluru", "We supply crews across Bengaluru's industrial belts.", "/locations/bengaluru"],
-  punjab: ["Jalandhar or Kapurthala", "We supply crews in Jalandhar, Kapurthala and Phagwara.", "/locations/jalandhar"],
-  "andhra-pradesh": ["Visakhapatnam", "We supply crews in Visakhapatnam, Parawada, Atchutapuram and Duvvada.", "/locations/visakhapatnam"],
-};
-function crewDoor(slug: WageStateSlug) {
-  const r = CREW_REGIONS[slug];
-  return r && linkable(r[2], "en-IN") ? wageDoors.crewIn(...r) : wageDoors.neutral;
-}
 
 // ── State page ──────────────────────────────────────────────────────────────
 
@@ -710,15 +696,7 @@ export function WageStatePage({ slug }: { slug: WageStateSlug }) {
   const { state, t } = stateOrThrow(slug);
   const today = todayIso();
   const year = yearOf(state, today);
-  const crew = crewDoor(slug);
-  const doors =
-    t.band === "uttarakhand"
-      ? [wageDoors.jobs, crew]
-      : t.band === "bengaluru"
-        ? [wageDoors.jobsBengaluru, crew]
-        : t.band === "punjab"
-          ? [wageDoors.jobsPunjab, crew]
-          : [wageDoors.officialSource(state.name, t.labourDepartment), crew];
+  const doors = stateDoors(slug, state.name, t.labourDepartment);
   return (
     <>
       <JsonLd data={wageStateSchema(state, { name: t.title(year), description: t.description, url: localePath(wageStatePath(slug), "en-IN") })} />

@@ -61,6 +61,9 @@ export const marketsForState = (state: string | null | undefined): MarketId[] =>
   const code = canonicalRegion(state);
   return code ? MARKET_IDS.filter((id) => RECORDS[id].states.includes(code)) : [];
 };
+/** Whether a market is a state's catch-all: its words name the whole state (`wholeState`), as Uttarakhand's and Punjab's do. */
+export const isStateWide = (id: string | null | undefined, state: string) =>
+  isMarketId(id) && RECORDS[id].placeGroups.some((g) => g.wholeState && g.region.includes(canonicalRegion(state)));
 /** Whether a market's sites are in a state (false for a cluster that is not a market). */
 export const marketCoversState = (id: string | null | undefined, state: string) =>
   isMarketId(id) && RECORDS[id].states.includes(canonicalRegion(state));

@@ -98,6 +98,11 @@
           "name": "Labour Department, Uttar Pradesh: Minimum Wages Act orders"
         },
         {
+          "url": "https://uplabour.gov.in/lc/",
+          "name": "Labour Commissioner, Uttar Pradesh: home page notices (VDA orders appear here, not on the department's pages)",
+          "match": "wage|\\bv?da\\b|dearness|वेतन|मजदूरी|महंगाई"
+        },
+        {
           "url": "https://uplabour.gov.in/",
           "name": "Labour Department, Uttar Pradesh: home page notices (Labour Welfare Fund)",
           "topic": "lwf",

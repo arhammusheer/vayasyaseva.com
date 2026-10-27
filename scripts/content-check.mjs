@@ -4,7 +4,9 @@
 //   C2  nothing collides in the /jobs/<slug> namespace, and stored ids agree;
 //       C2c: every cluster has a market record (src/markets), its sides
 //       match its buyer and jobs hubs, and every location page's place id
-//       is a known place in the page's own market;
+//       is a known place in the page's own market; C2d: each location
+//       page's title and description fit the snippet, with no agency term
+//       in its title or H1;
 //   C8  every minimum wage file (src/content/wages) is valid: its shape, every
 //       monthly rate is basic + VDA, daily rates follow the state's rule,
 //       every rate cites a source, and every built wage page has a file.
@@ -247,6 +249,12 @@ if (Object.keys(AREA_CLUSTERS).join() !== areaIds.join()) fail("C2 AREA_CLUSTERS
   for (const [path, page] of locationPages) {
     if (!isPlaceId(page.placeId)) fail(`C2c location ${path}: placeId "${page.placeId}" is not in src/markets/places.ts`);
     else if (placeById(page.placeId).market !== page.cluster) fail(`C2c location ${path}: placeId "${page.placeId}" is in market ${placeById(page.placeId).market}, not the page's ${page.cluster}`);
+    // C2d: the snippet fits (src/content/locations/types.ts), and agency words stay out of the title and H1 (docs/brand-rules.md).
+    if (page.metaTitle.length > 55) fail(`C2d location ${path}: title is ${page.metaTitle.length} characters (max 55)`);
+    if (page.description.length < 140 || page.description.length > 160) fail(`C2d location ${path}: meta description is ${page.description.length} characters (140 to 160)`);
+    for (const [label, text] of [["title", page.metaTitle], ["H1", page.heading]]) {
+      if (/\b(agency|agencies|consultancy|placement|staffing)\b/i.test(text)) fail(`C2d location ${path}: agency term in the ${label}: ${text}`);
+    }
   }
 }
 

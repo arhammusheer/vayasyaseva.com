@@ -23,6 +23,7 @@ const wagesFaq = (zone: string): FaqItem => ({
 });
 
 const SRC = {
+  rename: { label: "Bengaluru: renamed from Bangalore on 1 November 2014", url: "https://en.wikipedia.org/wiki/Bengaluru" },
   investUrban: { label: "Invest Karnataka: Bengaluru Urban district", url: "https://investkarnataka.co.in/our-districts/bengaluru-urban/" },
   investRural: { label: "Invest Karnataka: Bengaluru Rural district", url: "https://investkarnataka.co.in/our-districts/bengaluru-rural/" },
   investKolar: { label: "Invest Karnataka: Kolar district", url: "https://investkarnataka.co.in/our-districts/kolar/" },
@@ -46,13 +47,13 @@ export const bengaluruPages: LocationCopy[] = [
     cluster: "bengaluru",
     name: "Bengaluru",
     placeId: "bengaluru",
-    metaTitle: "Labour Contractor in Bengaluru for Factories",
+    metaTitle: "Labour Contractor and Manpower Supplier in Bangalore",
     description:
-      "Supervised contract labour crews for factories, warehouses and campuses in Bengaluru: Peenya, Bommasandra, Jigani, Electronic City, Whitefield and Hoskote.",
-    heading: "Labour contractor in Bengaluru.",
-    lede: "Supervised crews for factories, warehouses and campuses across Bengaluru's industrial belts.",
+      "Labour supplier for factories, warehouses and campuses in Bangalore: supervised contract workers in Peenya, Bommasandra, Jigani, Electronic City and Hoskote.",
+    heading: "Labour contractor and manpower supplier in Bengaluru.",
+    lede: "Supervised contract workers for factories, warehouses and campuses across Bengaluru's industrial belts.",
     paragraph:
-      "Bengaluru's factories and warehouses sit in four belts around the city, most of them KIADB industrial areas: engineering in the north-west, pharma and chemicals on Hosur Road, electronics and tech campuses in the south and east, and new warehousing along Old Madras Road. We take requirements from units in {areas}.",
+      "Bengaluru, named Bangalore until 2014, has its factories and warehouses in four belts around the city, most of them KIADB industrial areas: engineering in the north-west, pharma and chemicals on Hosur Road, electronics and tech campuses in the south and east, and new warehousing along Old Madras Road. We take requirements from units in {areas}.",
     areas: [
       { href: "/locations/bengaluru/peenya", name: "Peenya" },
       { href: "/locations/bengaluru/bommasandra-jigani-attibele", name: "Bommasandra, Jigani and Attibele" },
@@ -61,8 +62,8 @@ export const bengaluruPages: LocationCopy[] = [
     ],
     faqs: [
       {
-        question: "Do you supply contract labour in Bengaluru?",
-        answer: "Yes. Supervised factory, loading and unloading, and housekeeping crews, on our payroll and run on your site by our supervisor.",
+        question: "Are you a manpower supplier in Bangalore?",
+        answer: "Yes. We supply contract labour: supervised factory, loading and unloading, and housekeeping crews, on our payroll and run on your site by our supervisor.",
         category: "commercial",
       },
       {
@@ -77,16 +78,16 @@ export const bengaluruPages: LocationCopy[] = [
         category: "commercial",
       },
     ],
-    sources: [SRC.investUrban, SRC.investRural, SRC.investKolar, SRC.msmeDi, SRC.kaWages, SRC.gba],
+    sources: [SRC.rename, SRC.investUrban, SRC.investRural, SRC.investKolar, SRC.msmeDi, SRC.kaWages, SRC.gba],
   },
   {
     cluster: "bengaluru",
     estate: "peenya",
     name: "Peenya",
     placeId: "peenya",
-    metaTitle: "Labour Contractor in Peenya Industrial Area",
+    metaTitle: "Labour Contractor in Peenya Industrial Area, Bangalore",
     description:
-      "Supervised factory, loading and housekeeping crews for Peenya Industrial Area and the Nelamangala–Dabaspet belt in Bengaluru. Engineering, tooling, garments.",
+      "Manpower supplier for Peenya Industrial Area and the Nelamangala–Dabaspet belt in Bangalore: supervised factory, loading and housekeeping crews.",
     heading: "Labour contractor in Peenya Industrial Area.",
     lede: "Supervised crews for Peenya's engineering and garment units, and for the Nelamangala warehouse belt beyond it.",
     paragraph:
@@ -116,9 +117,9 @@ export const bengaluruPages: LocationCopy[] = [
     estate: "bommasandra-jigani-attibele",
     name: "Bommasandra, Jigani and Attibele",
     placeId: "bommasandra-jigani-attibele",
-    metaTitle: "Labour Contractor in Bommasandra and Jigani",
+    metaTitle: "Labour Contractor in Bommasandra and Jigani, Bangalore",
     description:
-      "Supervised factory, loading and housekeeping crews for Bommasandra, Jigani and Attibele industrial areas on Hosur Road. Minimum wage Zone 3, Anekal taluk.",
+      "Labour supplier for Bommasandra, Jigani and Attibele industrial areas on Hosur Road, Bangalore: supervised factory, loading and housekeeping crews.",
     heading: "Labour contractor in Bommasandra, Jigani and Attibele.",
     lede: "Supervised crews for the KIADB parks on Hosur Road and in Anekal taluk, up to the Tamil Nadu border.",
     paragraph:
@@ -148,9 +149,9 @@ export const bengaluruPages: LocationCopy[] = [
     estate: "electronic-city-whitefield",
     name: "Electronic City and Whitefield",
     placeId: "electronic-city-whitefield",
-    metaTitle: "Contract Labour in Electronic City and Whitefield",
+    metaTitle: "Manpower Supply in Electronic City and Whitefield",
     description:
-      "Supervised housekeeping, factory and loading crews for Electronic City and Whitefield in Bengaluru: electronics, biotech units and large tech campuses.",
+      "Supervised housekeeping, factory and loading crews for Electronic City and Whitefield in Bangalore: electronics, biotech units and large tech campuses.",
     heading: "Contract labour in Electronic City and Whitefield.",
     lede: "Supervised crews for electronics and biotech units, and for the facility work of Bengaluru's large tech campuses.",
     paragraph:
@@ -182,7 +183,7 @@ export const bengaluruPages: LocationCopy[] = [
     placeId: "hoskote-narasapura",
     metaTitle: "Labour Contractor in Hoskote and Narasapura",
     description:
-      "Supervised loading, factory and housekeeping crews for Hoskote's warehouses and KIADB Narasapura in Kolar district, on Old Madras Road and the expressway.",
+      "Manpower supplier for Hoskote's warehouses and KIADB Narasapura, east of Bangalore: supervised loading, factory and housekeeping crews on Old Madras Road.",
     heading: "Labour contractor in Hoskote and Narasapura.",
     lede: "Supervised crews for the eastern warehouse belt and the KIADB industrial area at Narasapura in Kolar district.",
     paragraph:

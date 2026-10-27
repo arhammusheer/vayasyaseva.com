@@ -10,7 +10,7 @@ const { jobRoles } = await importTs("src/content/pages/job-roles.ts");
 const { jobHubs } = await importTs("src/content/pages/job-hubs.ts");
 const { jobsCopy } = await importTs("src/content/pages/jobs.ts");
 
-const PLACES = /sidcul|haridwar|roorkee|bengaluru|punjab|jalandhar|kapurthala|uttarakhand|dehradun|andhra|visakhapatnam|vizag|hyderabad|telangana|विशाखापत्तनम|आंध्र|हैदराबाद|तेलंगाना|देहरादून|सिडकुल|हरिद्वार|बेंगलुरु|पंजाब|उत्तराखंड|ਹਰਿਦੁਆਰ|ਪੰਜਾਬ/i;
+const PLACES = /sidcul|haridwar|roorkee|bengaluru|bangalore|punjab|jalandhar|kapurthala|uttarakhand|dehradun|andhra|visakhapatnam|vizag|hyderabad|telangana|विशाखापत्तनम|आंध्र|हैदराबाद|तेलंगाना|देहरादून|सिडकुल|हरिद्वार|बेंगलुरु|पंजाब|उत्तराखंड|ਹਰਿਦੁਆਰ|ਪੰਜਾਬ/i;
 const pages = (copy) => Object.entries(copy).flatMap(([locale, list]) => (Array.isArray(list) ? list : [list]).map((p) => ({ locale, ...p })));
 
 test("role, qualification and /jobs titles and headings name no market", () => {

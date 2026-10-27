@@ -23,6 +23,33 @@ A labour contractor and manpower supply company for factories, warehouses and fa
 
 Buyers search for "labour contractor", "labour supplier", "manpower supplier" and "manpower services". Use these terms where a buyer would look for them: titles, headings, service descriptions and FAQs that answer those searches. Don't use them as taglines, and don't use them to describe individual people.
 
+#### Where each search term goes on a location page (27 Oct 2026)
+
+Buyers type every mix of the same few words: Bangalore or Bengaluru, labour or labor, contractor, supplier, supply, manpower, workers. Google usually treats labour and labor, or contractor and contractors, as the same search, so no page needs every combination; it needs each **family** in a visible place that fits. One family per slot, never a list of variants (Google's spam policies; `docs/ai-slop-registry.md` A2.13).
+
+| Slot | What goes there | Bengaluru hub, as built |
+|---|---|---|
+| Title | "Labour Contractor and Manpower Supplier in" + the spelling people search | Labour Contractor and Manpower Supplier in Bangalore |
+| Meta description | Opens with "Labour supplier" or "Manpower supplier", names the city as searched, and "contract workers" or "crews" | Labour supplier for factories ... in Bangalore: supervised contract workers in Peenya ... |
+| H1 | "Labour contractor and manpower supplier in" + the official name | Labour contractor and manpower supplier in Bengaluru. |
+| Lede | "contract workers" | Supervised contract workers for factories ... |
+| Paragraph | The old or other name once, as a fact | Bengaluru, named Bangalore until 2014, ... |
+| First FAQ | "Are you a manpower supplier in" + the searched spelling; the answer says "contract labour" | Are you a manpower supplier in Bangalore? |
+| Schema | The place's other names as `alternateName` (`src/markets/schema-org.ts`) | Bangalore |
+
+Estate pages keep "Labour contractor" or "Contract labour" in the H1. Their titles add the city as searched where it fits in 55 characters ("..., Bangalore"), and each description opens with one of "Manpower supplier", "Labour supplier" or "Supervised ... crews", varied across the cluster rather than repeated.
+
+The searched spelling goes in the title and description (what the results page shows and bolds); the official name stays in the H1, body and breadcrumbs. Other spellings by market: Bangalore (Bengaluru), Vizag (Visakhapatnam), Gurgaon (Gurugram), Secunderabad (twin city of Hyderabad), Dehra Dun (Dehradun).
+
+Left out on purpose:
+
+- **"labor"** (US spelling): never in visible copy; the site is Indian English and Google matches it to labour. Search Console shows whether that holds.
+- **"near me"**: answered by the Google Business Profile and the searcher's distance, not page text.
+- **agency, consultancy, placement**: not on location pages (see below).
+- **"thekedar"** and other Indian-language terms: only on reviewed translations (Haridwar's Hindi pages).
+
+Done on the Bengaluru and Hyderabad pages first (27 Oct 2026). The other markets follow once Search Console shows the effect at 28 days (`docs/seo-growth-plan-2026-09.md`, owner and account work, step 4). `pnpm content:check` (C2d) holds every location title to 55 characters, descriptions to 140 to 160, and agency words out of titles and H1s.
+
 #### We are a contractor, not a staffing agency
 
 Vayasya Seva supplies the workforce. Workers are on our rolls: we pay wages, deposit EPF and ESIC, supervise the crew on site and replace absentees. A staffing agency or placement consultancy finds candidates for the client to hire and steps away. Buyers use the agency words too; answer them in body text and FAQs with the difference, and say plainly which one we are. We never describe ourselves as an agency. (Owner's direction, 16 October 2026.)

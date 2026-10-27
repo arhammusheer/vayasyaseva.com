@@ -9,6 +9,9 @@ import { ClientStrip } from "@/components/sections/client-strip";
 import { servicePages } from "@/content/service-pages";
 import { JobsLink } from "@/components/i18n/jobs-link";
 import { localeParams } from "@/lib/i18n";
+import { locationHubItems } from "@/components/pages/location";
+import { MarketList } from "@/components/sections/market-list";
+import { LOCATIONS_PATH } from "@/content/registry/identifiers";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/");
 
@@ -154,6 +157,19 @@ export default function HomePage() {
           </div>
           <Link href="/services" className="text-link">
             All services <ArrowRight size={18} aria-hidden="true" />
+          </Link>
+        </div>
+      </section>
+      {/* Every market's buyer page, linked from the home page so search
+          engines weigh them (27 Oct 2026). Same list and order as
+          /locations; the visitor context moves their market first. */}
+      <section className="site-shell home-intro home-locations">
+        <p className="eyebrow">WHERE WE SUPPLY</p>
+        <div>
+          <h2>Crews near your site.</h2>
+          <MarketList items={locationHubItems()} side="business" surface="home" className="location-areas" />
+          <Link href={LOCATIONS_PATH} className="text-link">
+            All locations <ArrowRight size={18} aria-hidden="true" />
           </Link>
         </div>
       </section>

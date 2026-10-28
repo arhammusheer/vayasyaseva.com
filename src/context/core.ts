@@ -273,17 +273,21 @@ export function resolveContext(s: ContextSignals, t: ContextTables): VisitorCont
   const basis: Family = statedNow ? "stated" : lead ? topFamily(lead) : "none";
   const arrival = lead && arrivalBest[lead] ? arrivalBest[lead].source : undefined;
 
+  // The holdout sees nothing inferred put first: no visitor markets on the sides, no nearby.
+  const inferred = !(s.holdout && !statedNow);
+
   // Near the visitor, for job seekers: their state has no market, or their market no jobs side.
   const nearby: string[] = [];
   const near = (key: string | undefined) => {
     for (const m of (key && t.nearby[key]) || []) if (has(m) && nearby.indexOf(m) < 0) nearby.push(m);
   };
-  if (lead && !t.surfaces[lead]?.jobs) near(lead);
-  if (s.geo?.state && !s.geo.market) near(s.geo.state);
-  if (s.geo?.market && !t.surfaces[s.geo.market]?.jobs) near(s.geo.market);
+  if (inferred) {
+    if (lead && !t.surfaces[lead]?.jobs) near(lead);
+    if (s.geo?.state && !s.geo.market) near(s.geo.state);
+    if (s.geo?.market && !t.surfaces[s.geo.market]?.jobs) near(s.geo.market);
+  }
 
-  // What each side shows: the page's own market first, then the visitor's (neutral for the holdout).
-  const inferred = !(s.holdout && !statedNow);
+  // What each side shows: the page's own market first, then the visitor's.
   const side = (key: Side) => {
     const out: string[] = [];
     const push = (m: string | undefined) => {

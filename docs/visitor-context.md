@@ -149,9 +149,9 @@ NCR, Himachal, J&K, Chandigarh, the south) or their market has no jobs hub
 (Delhi NCR), `NEARBY` markets are listed first. This is an order hint, never a
 decision: the jobs door and Apply stay on `/jobs`.
 
-**Holdout**: 10% of sessions (drawn at session start) get neutral sides, so
-nothing inferred is put first. A pick and the page's own market still
-apply. The decision is still computed and reported (`holdout=yes`), so the
+**Holdout**: 10% of sessions (drawn at session start) get neutral sides and
+no nearby markets, so nothing inferred is put first. A pick and the page's
+own market still apply. The decision is still computed and reported (`holdout=yes`), so the
 two groups compare like for like.
 
 ## What follows the decision
@@ -257,7 +257,7 @@ Locale URLs never switch. Detection happens only on the picker.
 Events (Umami for every visitor; Google Analytics only with Allow All, about
 7% of visitors, so use Umami and the talent database):
 
-- `area_intent`, once per session per distinct decision. Properties:
+- `area_intent`, once per context session (not per tab) per distinct decision. Properties:
   - The decision: `v` (4), `mode`, `band`, `intent`, `second`, `basis`, `arrival`, `confidence`.
   - The audience: `aud`, `aud_stated`.
   - The IP: `geo`, `country`, `region`.
@@ -270,9 +270,12 @@ Events (Umami for every visitor; Google Analytics only with Allow All, about
 - `job_form_submit` / `quick_apply_submit`: also `cluster`, `area_source`, `band`, `holdout`.
 - Server `application_received`: also `page_cluster` and `area`.
 
-Compare a metric within one model version (`v`): 2 until 17 Oct 2026, 3 until 18 Oct 2026, **4** from then.
+Compare a metric within one model version (`v`, `CONTEXT_VERSION` in
+`weights.ts`, which logs each version). Compare lift from **9** (28 Oct
+2026) only: before it the holdout still saw nearby markets first, and a
+tab's later sessions sent no decision events.
 
-Metrics (from these, `v=4`):
+Metrics (from these, one `v` at a time):
 
 - **Decision accuracy** by band: of `area_nav_click` with `explicit=yes`
   and `decided≠none`, the share with `is_decided=yes`. Targets: 85% or more

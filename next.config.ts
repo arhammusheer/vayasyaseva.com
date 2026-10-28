@@ -8,7 +8,9 @@ const securityHeaders = [
   // can't name another origin.
   { key: "Content-Security-Policy", value: "frame-ancestors 'self' https://umami.vayasyaseva.com" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=()" },
+  // Geolocation for our own pages only: the jobs form's "Use my location"
+  // (src/components/jobs/home-step.tsx). Without (self) the browser refuses it unasked.
+  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(self), payment=()" },
 ];
 
 const nextConfig: NextConfig = {

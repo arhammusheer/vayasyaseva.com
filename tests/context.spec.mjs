@@ -138,6 +138,10 @@ test("holdout: neutral sides whatever was inferred; a pick and the page's own ma
   assert.equal(attrs["data-ctx-holdout"], "1");
   assert.equal(attrs["data-ctx-m1"], undefined);
   assert.equal(attrs["data-ctx-jd"], "none");
+  // Nearby is inferred too: a held-out UP visitor sees the plain order (the jobs menu and form read it).
+  const up = { geo: { country: "IN", state: "UP", level: "state" } };
+  assert.deepEqual(decide({ ...up, holdout: true }).region.nearby, []);
+  assert.deepEqual(decide({ ...up, holdout: true, picks: [{ kind: "link", market: "delhi-ncr", at: NOW }] }).region.nearby, ["haridwar", "uttarakhand"]);
 });
 
 test("collect: sessions end after 30 idle minutes or a new arrival; one page in two languages counts once", () => {
@@ -172,6 +176,12 @@ test("collect: cookies, phone languages, wage pages", () => {
   assert.deepEqual(parsePicksCookie(picksCookie(o.picks)), o.picks);
   // A market that isn't one is ignored; so is a malformed cookie.
   assert.deepEqual(collectSignals({ now: NOW, pathname: "/", search: "", cookie: "vs_ctx=l.saharanpur.1~zz; vs_geo=US...s", session: null, languages: [], random: 0.5 }, d).picks, []);
+  // A damaged cookie (bad percent-encoding) is dropped alone; the other still counts.
+  const pick = `vs_ctx=${encodeURIComponent(picksCookie([{ kind: "link", market: "punjab", at }]))}`;
+  const badGeo = collectSignals({ now: NOW, pathname: "/", search: "", cookie: `${pick}; vs_geo=%ZZ`, session: null, languages: [], random: 0.5 }, d);
+  assert.deepEqual([badGeo.picks.map((p) => p.market), badGeo.signals.geo], [["punjab"], undefined]);
+  const badPicks = collectSignals({ now: NOW, pathname: "/", search: "", cookie: "vs_ctx=%E0%A4; vs_geo=IN.UK.haridwar.c", session: null, languages: [], random: 0.5 }, d);
+  assert.deepEqual([badPicks.picks, badPicks.signals.geo?.market], [[], "haridwar"]);
   // Model 3's localStorage pick is read once, until the cookie has one.
   assert.deepEqual(collectSignals({ now: NOW, pathname: "/", search: "", cookie: "", session: null, legacyChoice: { cluster: "bengaluru", at: NOW - HOUR }, languages: [], random: 0.5 }, d).picks, [{ kind: "link", market: "bengaluru", at: NOW - HOUR }]);
 });
@@ -223,6 +233,8 @@ test("boot script: self-contained, runs before paint and sets the attributes", (
   assert.deepEqual([r.attrs["data-ctx-aud"], r.attrs["data-ctx-band"], r.attrs["data-ctx-j1"], r.attrs["data-ctx-jd"]], ["jobs", "leaning", "haridwar", "labelled"]);
   assert.ok(r.store["vs-ctx-session-v1"]);
   assert.equal(r.ctx.pathname, "/jobs/10th-pass");
+  // A damaged picks cookie still leaves the IP's decision.
+  assert.equal(run("https://www.vayasyaseva.com/jobs/10th-pass", "vs_ctx=%E0%A4; vs_geo=IN.UK.haridwar.c").attrs["data-ctx-j1"], "haridwar");
   // A broken environment leaves the neutral page, never an error.
   assert.doesNotThrow(() => vm.runInContext(bootScript(), vm.createContext({})));
   // The data never closes the script tag early.
@@ -234,4 +246,30 @@ test("css: one rule set per market; rules only hide, order or mark", () => {
   for (const m of T.markets) assert.ok(css.includes(`[data-ctx-j1="${m}"]`), m);
   const declarations = [...css.matchAll(/\{([^}]*)\}/g)].map((x) => x[1]);
   for (const d of declarations) assert.match(d, /^(display:none|order:-?\d+|font-weight:600;text-decoration-color:var\(--gold-700\))$/, d);
+});
+
+test("report: decisions are sent once per context session, not once per tab", async () => {
+  const store = {};
+  const sent = [];
+  globalThis.window = {
+    sessionStorage: { getItem: (k) => store[k] ?? null, setItem: (k, v) => (store[k] = v) },
+    umami: { track: (name) => sent.push(name) },
+    dispatchEvent: () => true,
+  };
+  try {
+    const { reportContext } = await importTs("src/context/report.ts");
+    const signals = base({ geo: { country: "IN", state: "UK", market: "haridwar", level: "city" } });
+    const ctx = resolveContext(signals, T);
+    const decisions = () => sent.filter((n) => n === "area_intent").length;
+    reportContext(ctx, signals);
+    reportContext(ctx, signals);
+    assert.equal(decisions(), 1);
+    // The same tab, a new session after idle time with the same decision: reported again.
+    const later = { ...signals, sessionStart: NOW + HOUR };
+    reportContext(resolveContext(later, T), later);
+    assert.equal(decisions(), 2);
+    assert.equal(sent.filter((n) => n === "market_shown_haridwar").length, 2);
+  } finally {
+    delete globalThis.window;
+  }
 });

@@ -177,6 +177,25 @@ the role pages and `/jobs/apply` (not with `?cluster=`):
 **The language picker** and the header switch use the same ranking. See
 "Which language" below.
 
+**Where the person lives** (28 Oct 2026, `src/markets/home.ts`). The table
+gives the form's own answers; every jobs form then ranks them together with
+guesses about where the visitor lives, anywhere in India:
+- The guesses come from the places nearest the IP position and the IP state
+  (`/api/context/near`, asked when the form reaches the question, kept in
+  memory, never stored), and from phone languages that point to a state
+  (Bengali → West Bengal).
+- A guess the form already has an answer for raises that answer (Roorkee on
+  the Haridwar page). Otherwise it is listed by name ("Kolkata"), never as
+  "we detected". The holdout gets no guesses.
+- "Somewhere else" searches every state, city and industrial cluster
+  (`src/markets/india.ts`, names per script in `place-names.ts`). It can also
+  use the phone's location when tapped; that is matched in the browser and
+  not sent.
+- The place is stored as the `home` answer. `area` holds the answer it files
+  under: the form's own, else the place's market (`market:<id>`), else the
+  form's "outside". The page stays in `page_cluster`, so staff see both
+  where someone lives and which page they applied on.
+
 ## Before paint
 
 Nothing moves after the first paint:

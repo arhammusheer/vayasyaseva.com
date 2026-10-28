@@ -5,6 +5,7 @@
  * Twenty client so the tests can drive every path.
  */
 import { eq, type Twenty, type TwentyRecord } from "./twenty.ts";
+import { QUICK_ANSWERS } from "../../../../packages/contracts/src/rules.ts";
 
 /** One submission joined with its people row, SMS acknowledgement and sync state (SYNC_CANDIDATES). */
 export interface SyncCandidate {
@@ -126,6 +127,17 @@ export function clusters(c: SyncCandidate): string[] {
   return unique([...(c.person_clusters ?? []), c.cluster].map(clusterValue));
 }
 
+/**
+ * people.home_area as staff read it: the place the person lives ("Kolkata,
+ * West Bengal"), else the area answer's label, from the quick form's ids.
+ * Older rows hold an area id; anything else is shown as stored.
+ */
+export function homeAreaText(id: string): string {
+  const home: Record<string, string> = QUICK_ANSWERS.home;
+  const area: Record<string, string> = QUICK_ANSWERS.area;
+  return Object.hasOwn(home, id) ? home[id] : Object.hasOwn(area, id) ? area[id] : id;
+}
+
 /** The worker fields, merged into what Twenty already has (lists union; staff's status kept). */
 export function personFields(c: SyncCandidate, existing: TwentyRecord | null): Record<string, unknown> {
   const has = (field: string) => existing && existing[field] !== null && existing[field] !== undefined && existing[field] !== "";
@@ -142,7 +154,7 @@ export function personFields(c: SyncCandidate, existing: TwentyRecord | null): R
   };
   const language = languageValue(c.person_locale ?? c.locale);
   if (language) fields.language = language;
-  if (c.home_area) fields.homeArea = c.home_area;
+  if (c.home_area) fields.homeArea = homeAreaText(c.home_area);
   if (!has("personType")) fields.personType = "WORKER";
   // A do-not-contact request always wins; otherwise staff's status (callable, placed...) stays.
   if (c.person_status === "do-not-contact") fields.workerStatus = "DO_NOT_CONTACT";

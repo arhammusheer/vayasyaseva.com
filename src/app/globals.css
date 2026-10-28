@@ -2344,6 +2344,42 @@ a:hover > svg {
   margin-top: 20px;
   font-weight: 600;
 }
+/* "Somewhere else" and its search (src/components/jobs/home-step.tsx). */
+.quick-pills.is-more {
+  margin-top: 10px;
+}
+.quick-more[aria-expanded="true"] {
+  border-color: var(--gold-500);
+}
+.quick-search .quick-hint:empty {
+  display: none;
+}
+.quick-locate,
+.quick-skip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  text-decoration: underline;
+  text-decoration-color: var(--border);
+  text-underline-offset: 4px;
+}
+.quick-locate {
+  margin-top: 8px;
+  color: var(--foreground);
+}
+.quick-locate svg {
+  color: var(--gold-700);
+}
+.quick-skip {
+  display: flex;
+  margin-top: 12px;
+  color: var(--muted-foreground);
+}
+.quick-locate:hover:not(:disabled),
+.quick-skip:hover:not(:disabled) {
+  text-decoration-color: var(--gold-500);
+}
 .quick-optional {
   font-weight: 400;
   color: var(--muted-foreground);

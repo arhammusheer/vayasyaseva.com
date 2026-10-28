@@ -57,8 +57,10 @@ export function roleLabel(c: SyncCandidate): string {
   return "any work";
 }
 
-/** The area answer's label (a fixed list), or null. */
+/** Where the person lives, from fixed lists: the place they picked ("lives in Kolkata, West Bengal"), else the area answer's label, or null. */
 export function areaLabel(c: SyncCandidate): string | null {
+  const home = firstAnswer(c, "home");
+  if (has(QUICK_ANSWERS.home, home)) return `lives in ${QUICK_ANSWERS.home[home]}`;
   const area = firstAnswer(c, "area");
   return has(QUICK_ANSWERS.area, area) ? QUICK_ANSWERS.area[area] : null;
 }

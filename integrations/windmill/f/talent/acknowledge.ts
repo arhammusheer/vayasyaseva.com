@@ -152,7 +152,8 @@ WITH s AS (
   INSERT INTO people (phone, name, clusters, home_area, roles, locale, consent_version, last_applied_at, last_contact_at)
   SELECT $4, $14,
          CASE WHEN $16::text IS NULL THEN '{}'::text[] ELSE ARRAY[$16::text] END,
-         $15::jsonb #>> '{area,0}',
+         -- Where they live: the exact place when they picked one (answers.home), else the area answer.
+         coalesce($15::jsonb #>> '{home,0}', $15::jsonb #>> '{area,0}'),
          ARRAY(SELECT DISTINCT r FROM unnest(array_remove(ARRAY[$9::text], NULL) || ARRAY(SELECT jsonb_array_elements_text(coalesce($15::jsonb -> 'work', '[]'::jsonb)))) AS r),
          $3, $5, now(), now()
   FROM s

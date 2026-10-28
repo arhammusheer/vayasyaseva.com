@@ -4,7 +4,7 @@
  * "Measurement"). Umami for every visitor; `area_intent` and
  * `area_nav_click` also go to GA4 with Allow All, like every tracked event.
  *
- * - area_intent: once per session per distinct decision, with each
+ * - area_intent: once per context session per distinct decision, with each
  *   family's points for the leader, so weights can be replayed
  *   (scripts/context-replay.mjs).
  * - The "Area intent" board (Umami tiles count events by name):
@@ -29,12 +29,17 @@ const BASIS_EVENT: Record<Family, string> = {
   none: "intent_none",
 };
 
-/** Sends each key once per tab session; true if this call should send. */
-function once(key: string) {
+/**
+ * Sends each key once per context session (a new one after idle time or a
+ * new arrival, with its own holdout draw), not once per tab; true if this
+ * call should send.
+ */
+function once(session: number, key: string) {
+  const scoped = `${session}|${key}`;
   try {
     const seen: string[] = JSON.parse(window.sessionStorage.getItem(REPORTED_KEY) ?? "[]");
-    if (seen.includes(key)) return false;
-    window.sessionStorage.setItem(REPORTED_KEY, JSON.stringify([...seen, key].slice(-100)));
+    if (seen.includes(scoped)) return false;
+    window.sessionStorage.setItem(REPORTED_KEY, JSON.stringify([...seen, scoped].slice(-100)));
   } catch {
     // Blocked storage: report anyway.
   }
@@ -52,7 +57,7 @@ export function reportContext(ctx: VisitorContext, signals: ContextSignals) {
   const shown = shownMarkets(ctx);
   const mode = contextMode(ctx);
   const key = [ctx.region.band, ctx.region.markets.join("+"), ctx.sides.business.join("+"), ctx.sides.jobs.join("+"), ctx.region.basis, ctx.audience.value, ctx.language.top.join("+")].join("|");
-  if (once(`decision|${key}`)) {
+  if (once(signals.sessionStart, `decision|${key}`)) {
     const p = ctx.region.parts;
     track("area_intent", {
       v: CONTEXT_VERSION,
@@ -81,7 +86,7 @@ export function reportContext(ctx: VisitorContext, signals: ContextSignals) {
     });
     track(BASIS_EVENT[ctx.region.basis], { markets: shown.join("+") || "none", mode, band: ctx.region.band, holdout: ctx.holdout ? "yes" : "no", v: CONTEXT_VERSION }, UMAMI_ONLY);
   }
-  for (const id of shown) if (once(`shown|${id}`)) track(`market_shown_${eventKey(id)}`, { mode, v: CONTEXT_VERSION }, UMAMI_ONLY);
+  for (const id of shown) if (once(signals.sessionStart, `shown|${id}`)) track(`market_shown_${eventKey(id)}`, { mode, v: CONTEXT_VERSION }, UMAMI_ONLY);
 }
 
 /**

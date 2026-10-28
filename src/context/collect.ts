@@ -93,6 +93,14 @@ export function collectSignals(input: CollectInput, d: CollectData): { signals: 
     const i = part.indexOf("=");
     if (i > 0) cookies[part.slice(0, i).trim()] = part.slice(i + 1).trim();
   }
+  // A damaged cookie (bad percent-encoding) reads as absent; the others still count.
+  const decode = (v: string | undefined) => {
+    try {
+      return v ? decodeURIComponent(v) : "";
+    } catch {
+      return "";
+    }
+  };
 
   // The page: its locale segment, neutral path, market, audience and languages.
   const segs = input.pathname.split("/");
@@ -144,7 +152,7 @@ export function collectSignals(input: CollectInput, d: CollectData): { signals: 
   // Picks from the vs_ctx cookie (and model 3's localStorage pick, once).
   const picks: Pick[] = [];
   let audiencePick: ContextSignals["audiencePick"];
-  for (const item of (cookies.vs_ctx ? decodeURIComponent(cookies.vs_ctx) : "").split("~")) {
+  for (const item of decode(cookies.vs_ctx).split("~")) {
     const [kind, value, at] = item.split(".");
     const when = Number(at) * 1000;
     if (!Number.isFinite(when) || when <= 0) continue;
@@ -159,8 +167,9 @@ export function collectSignals(input: CollectInput, d: CollectData): { signals: 
 
   // The IP region: the proxy's cookie, else the fallback answer.
   let geo: GeoCookie | undefined = input.geo;
-  if (cookies.vs_geo) {
-    const [country, state, market, level] = decodeURIComponent(cookies.vs_geo).split(".");
+  const geoCookie = decode(cookies.vs_geo);
+  if (geoCookie) {
+    const [country, state, market, level] = geoCookie.split(".");
     geo = { country: country || undefined, state: country === "IN" && state ? state : undefined, market: country === "IN" && isMarket(market) ? market : undefined, level: level === "c" ? "city" : "state" };
   }
 

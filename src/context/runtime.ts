@@ -67,9 +67,13 @@ function compute(pathname: string, search: string): State {
   return { pathname, search, ctx: resolveContext(o.signals, contextTables()), signals: o.signals, frozen: false };
 }
 
-function apply(s: State) {
+function apply(s: State | null) {
   const html = document.documentElement;
   for (const name of html.getAttributeNames()) if (name === "data-ctx" || name.startsWith("data-ctx-")) html.removeAttribute(name);
+  if (!s) {
+    for (const l of listeners) l();
+    return;
+  }
   const attrs = contextAttributes(s.ctx, { locale: s.signals.page.locale, market: s.signals.page.market }, LOCALE_CODES);
   for (const [k, v] of Object.entries(attrs)) html.setAttribute(k, v);
   for (const l of listeners) l();
@@ -124,8 +128,15 @@ const freeze = () => {
 export function pageView(pathname: string, search: string) {
   const boot = window.__vsctx;
   const adopted = !state && boot && boot.pathname === pathname && boot.search === search;
-  state = adopted ? { ...boot, frozen: false } : compute(pathname, search);
   window.__vsctx = undefined;
+  try {
+    state = adopted ? { ...boot, frozen: false } : compute(pathname, search);
+  } catch {
+    // Whatever broke, the page stays neutral (like the boot script), never an error page.
+    state = null;
+    apply(null);
+    return;
+  }
   migrate(state.signals.picks ?? []);
   apply(state);
   window.addEventListener("pointerdown", freeze, { once: true, capture: true });
@@ -157,7 +168,11 @@ export function noteAudience(audience: "jobs" | "business") {
 /** Recompute for the current page after something the visitor did. */
 function refresh() {
   if (!state) return;
-  state = compute(state.pathname, state.search);
+  try {
+    state = compute(state.pathname, state.search);
+  } catch {
+    return;
+  }
   apply(state);
   reportContext(state.ctx, state.signals);
 }

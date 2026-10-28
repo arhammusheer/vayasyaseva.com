@@ -16,10 +16,13 @@
  * 8 (27 Oct 2026): Hyderabad and Telangana become markets (Telangana no
  * longer looks to Bengaluru and Andhra Pradesh; TG reads as TS); weights
  * unchanged.
+ * 9 (28 Oct 2026): the holdout no longer sees nearby markets first (it did
+ * in the jobs menu and form), and decisions are reported once per context
+ * session, not once per tab; weights unchanged. Compare lift from 9 only.
  */
 import type { AudienceWeights, ContextTables, RegionWeights } from "./core";
 
-export const CONTEXT_VERSION = 8;
+export const CONTEXT_VERSION = 9;
 
 /**
  * Job seekers: where they live decides, so the IP (roughly where the phone

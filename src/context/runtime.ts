@@ -29,6 +29,22 @@ declare global {
 let state: State | null = null;
 const listeners = new Set<() => void>();
 let geoAsked = false;
+// What the visitor picked since this page loaded, kept here first: the
+// vs_ctx cookie only carries it to later loads, and a blocked cookie
+// (written without error, read back empty) must not undo the pick.
+const made: { picks: Pick[]; audience?: ContextSignals["audiencePick"] } = { picks: [] };
+
+/** The signals with this page's picks over the cookie's (the newer of each kind). */
+function withMade(s: ContextSignals): ContextSignals {
+  const picks = [...(s.picks ?? [])];
+  for (const p of made.picks) {
+    const i = picks.findIndex((q) => q.kind === p.kind);
+    if (i < 0) picks.push(p);
+    else if (picks[i].at < p.at) picks[i] = p;
+  }
+  const audiencePick = made.audience && !(s.audiencePick && s.audiencePick.at >= made.audience.at) ? made.audience : s.audiencePick;
+  return { ...s, picks, audiencePick };
+}
 
 const read = <T,>(storage: () => Storage, key: string): T | null => {
   try {
@@ -64,7 +80,8 @@ function compute(pathname: string, search: string): State {
     collectData(),
   );
   write(session, SESSION_KEY, o.session);
-  return { pathname, search, ctx: resolveContext(o.signals, contextTables()), signals: o.signals, frozen: false };
+  const signals = withMade(o.signals);
+  return { pathname, search, ctx: resolveContext(signals, contextTables()), signals, frozen: false };
 }
 
 function apply(s: State | null) {
@@ -152,8 +169,9 @@ export function pageView(pathname: string, search: string) {
 /** The visitor picked a market: a labelled link, the jobs form's area answer, or the crew form's site place. */
 export function notePick(kind: Pick["kind"], market: string) {
   const signals = state?.signals ?? window.__vsctx?.signals;
-  const picks = [...(signals?.picks ?? []).filter((p) => p.kind !== kind), { kind, market, at: Date.now() }];
-  writePicks(picks, signals?.audiencePick);
+  const pick = { kind, market, at: Date.now() };
+  made.picks = [...made.picks.filter((p) => p.kind !== kind), pick];
+  writePicks([...(signals?.picks ?? []).filter((p) => p.kind !== kind), pick], signals?.audiencePick);
   refresh();
 }
 
@@ -161,7 +179,8 @@ export function notePick(kind: Pick["kind"], market: string) {
 export function noteAudience(audience: "jobs" | "business") {
   const signals = state?.signals ?? window.__vsctx?.signals;
   if (signals?.audiencePick?.audience === audience && signals.audiencePick.at >= Math.floor(signals.sessionStart / 1000) * 1000) return;
-  writePicks(signals?.picks ?? [], { audience, at: Date.now() });
+  made.audience = { audience, at: Date.now() };
+  writePicks(signals?.picks ?? [], made.audience);
   refresh();
 }
 

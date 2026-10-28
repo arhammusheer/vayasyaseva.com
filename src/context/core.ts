@@ -19,8 +19,9 @@
  *   the crew form's site place say where their site is.
  * - The band says how far the page may act: stated and confident act,
  *   leaning puts the guess first beside the others, unknown stays neutral.
- * - The holdout (10% of sessions) sees the neutral site whatever was
- *   inferred; stated picks and the page's own market still apply.
+ * - The holdout (10% of sessions) gets no inferred market; stated picks
+ *   and the page's own market still apply. Audience and language are
+ *   inferred for everyone.
  * - Guesses order things; they never become form answers.
  */
 

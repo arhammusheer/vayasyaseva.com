@@ -20,7 +20,8 @@ export type WorkOption = keyof typeof QUICK_ANSWERS.work;
 export type Answers = Record<string, string[]>;
 
 export interface StepDef {
-  id: QuickQuestion;
+  /** Every question but `home`, which is answered on the area step. */
+  id: Exclude<QuickQuestion, "home">;
   kind: "single" | "multi";
   options: readonly string[];
   /** Shown only when this returns true for the answers so far. */
@@ -116,7 +117,7 @@ export interface QuickApplyCopy {
    * confirmed line, "Work: Packing ✓ · change": `short` names the question,
    * `change` reopens its answers.
    */
-  answered: { change: string; short: Record<QuickQuestion, string> };
+  answered: { change: string; short: Record<Exclude<QuickQuestion, "home">, string> };
   questions: Record<string, { question: string; hint?: string }>;
   labels: Record<string, string>;
   details: {
@@ -130,6 +131,22 @@ export interface QuickApplyCopy {
     send: string;
   };
   errors: { name: string };
+  /**
+   * "Where do you live?" beyond the listed answers (src/components/jobs/home-step.tsx):
+   * `more` opens a search over every state, city and industrial cluster;
+   * `elsewhereIn` names a state listed beside one of its cities.
+   */
+  home: {
+    more: string;
+    search: string;
+    placeholder: string;
+    near: string;
+    locating: string;
+    denied: string;
+    none: string;
+    skip: string;
+    elsewhereIn: (state: string) => string;
+  };
   /** The form's footer: the page's one no-fee line. */
   noFee: string;
   /** One calm line above the form: full 8-hour shifts, no part-time work. */
@@ -234,6 +251,17 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       send: "Send",
     },
     errors: { name: "Write your full name (at least 2 letters)." },
+    home: {
+      more: "Somewhere else",
+      search: "Your town, city or state",
+      placeholder: "Type a place, like Kolkata or Bihar",
+      near: "Use my location",
+      locating: "Finding where you are…",
+      denied: "Your location isn't available. Type your place instead.",
+      none: "No place found. Try another spelling, or type your state.",
+      skip: "My place isn't listed",
+      elsewhereIn: (state) => `Elsewhere in ${state}`,
+    },
     noFee: NO_FEE["en-IN"],
     shifts: SHIFTS_LINE["en-IN"],
   },
@@ -333,6 +361,17 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       send: "भेजें",
     },
     errors: { name: "पूरा नाम लिखिए (कम से कम 2 अक्षर)।" },
+    home: {
+      more: "कहीं और",
+      search: "आपका शहर, कस्बा या राज्य",
+      placeholder: "जगह लिखें, जैसे कोलकाता या बिहार",
+      near: "मेरी लोकेशन से ढूँढें",
+      locating: "आपकी जगह ढूँढ रहे हैं…",
+      denied: "लोकेशन नहीं मिली। अपनी जगह लिखें।",
+      none: "कोई जगह नहीं मिली। दूसरी स्पेलिंग या अपना राज्य लिखें।",
+      skip: "मेरी जगह सूची में नहीं है",
+      elsewhereIn: (state) => `${state} में कहीं और`,
+    },
     noFee: NO_FEE["hi-IN"],
     shifts: SHIFTS_LINE["hi-IN"],
   },
@@ -432,6 +471,17 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       send: "Bhejein",
     },
     errors: { name: "Poora naam likhiye (kam se kam 2 akshar)." },
+    home: {
+      more: "Kahin aur",
+      search: "Aapka shehar, kasba ya rajya",
+      placeholder: "Jagah likhiye, jaise Kolkata ya Bihar",
+      near: "Meri location se dhoondhein",
+      locating: "Aapki jagah dhoondh rahe hain…",
+      denied: "Location nahi mili. Apni jagah likhiye.",
+      none: "Koi jagah nahi mili. Doosri spelling ya apna rajya likhiye.",
+      skip: "Meri jagah list mein nahi hai",
+      elsewhereIn: (state) => `${state} mein kahin aur`,
+    },
     noFee: NO_FEE["hi-Latn-IN"],
     shifts: SHIFTS_LINE["hi-Latn-IN"],
   },
@@ -531,6 +581,17 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       send: "ਭੇਜੋ",
     },
     errors: { name: "ਪੂਰਾ ਨਾਮ ਲਿਖੋ (ਘੱਟੋ-ਘੱਟ 2 ਅੱਖਰ)।" },
+    home: {
+      more: "ਕਿਤੇ ਹੋਰ",
+      search: "ਤੁਹਾਡਾ ਸ਼ਹਿਰ, ਕਸਬਾ ਜਾਂ ਰਾਜ",
+      placeholder: "ਥਾਂ ਲਿਖੋ, ਜਿਵੇਂ ਲੁਧਿਆਣਾ ਜਾਂ ਬਿਹਾਰ",
+      near: "ਮੇਰੀ ਲੋਕੇਸ਼ਨ ਨਾਲ ਲੱਭੋ",
+      locating: "ਤੁਹਾਡੀ ਥਾਂ ਲੱਭ ਰਹੇ ਹਾਂ…",
+      denied: "ਲੋਕੇਸ਼ਨ ਨਹੀਂ ਮਿਲੀ। ਆਪਣੀ ਥਾਂ ਲਿਖੋ।",
+      none: "ਕੋਈ ਥਾਂ ਨਹੀਂ ਮਿਲੀ। ਹੋਰ ਸਪੈਲਿੰਗ ਜਾਂ ਆਪਣਾ ਰਾਜ ਲਿਖੋ।",
+      skip: "ਮੇਰੀ ਥਾਂ ਸੂਚੀ ਵਿੱਚ ਨਹੀਂ ਹੈ",
+      elsewhereIn: (state) => `${state} ਵਿੱਚ ਕਿਤੇ ਹੋਰ`,
+    },
     noFee: NO_FEE["pa-IN"],
     shifts: SHIFTS_LINE["pa-IN"],
   },
@@ -630,6 +691,17 @@ export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
       send: "ಕಳುಹಿಸಿ",
     },
     errors: { name: "ಪೂರ್ಣ ಹೆಸರು ಬರೆಯಿರಿ (ಕನಿಷ್ಠ 2 ಅಕ್ಷರಗಳು)." },
+    home: {
+      more: "ಬೇರೆಲ್ಲೋ",
+      search: "ನಿಮ್ಮ ಊರು, ನಗರ ಅಥವಾ ರಾಜ್ಯ",
+      placeholder: "ಸ್ಥಳ ಬರೆಯಿರಿ, ಉದಾ. ಮೈಸೂರು ಅಥವಾ ಬಿಹಾರ",
+      near: "ನನ್ನ ಸ್ಥಳದಿಂದ ಹುಡುಕಿ",
+      locating: "ನಿಮ್ಮ ಸ್ಥಳ ಹುಡುಕುತ್ತಿದ್ದೇವೆ…",
+      denied: "ಸ್ಥಳ ಸಿಗಲಿಲ್ಲ. ನಿಮ್ಮ ಊರನ್ನು ಬರೆಯಿರಿ.",
+      none: "ಯಾವುದೇ ಸ್ಥಳ ಸಿಗಲಿಲ್ಲ. ಬೇರೆ ಸ್ಪೆಲ್ಲಿಂಗ್ ಅಥವಾ ನಿಮ್ಮ ರಾಜ್ಯ ಬರೆಯಿರಿ.",
+      skip: "ನನ್ನ ಸ್ಥಳ ಪಟ್ಟಿಯಲ್ಲಿ ಇಲ್ಲ",
+      elsewhereIn: (state) => `${state} – ಬೇರೆ ಊರು`,
+    },
     noFee: NO_FEE["kn-IN"],
     shifts: SHIFTS_LINE["kn-IN"],
   },

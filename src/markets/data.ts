@@ -50,6 +50,13 @@ export const REGION_ALIASES: Readonly<Record<string, RegionCode>> = {
   // Telangana: IN-TS since November 2023 (IN-TG before), and the crew form
   // stores TS; geo databases may still send TG.
   TG: "TS",
+  // ISO 3166-2:IN's 2019–2023 changes, for the jobs form's home guesses
+  // (src/markets/india.ts): Chhattisgarh, Odisha, and the merged Dadra and
+  // Nagar Haveli and Daman and Diu.
+  CT: "CG",
+  OR: "OD",
+  DN: "DH",
+  DD: "DH",
 };
 
 /** The picker's language orders a market can take (src/lib/language-rank.ts RANK_SETS). */

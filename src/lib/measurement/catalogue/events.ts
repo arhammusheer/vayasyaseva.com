@@ -125,7 +125,7 @@ export const EVENTS = {
   // The job application (quick form).
   job_form_start: { purpose: "form-behaviour", sinks: TRACKED, props: anon("locale variant page"), consumers: ["form-funnel", "jobs-ads-board"], source: QUICK },
   quick_apply_start: { purpose: "form-behaviour", sinks: TRACKED, props: anon("locale entry"), consumers: ["form-funnel"], source: QUICK },
-  quick_step: { purpose: "form-behaviour", sinks: TRACKED, props: anon("locale step answer changed area_source decided band v"), consumers: ["form-funnel", "area-intent-metrics"], source: QUICK },
+  quick_step: { purpose: "form-behaviour", sinks: TRACKED, props: { ...anon("locale step answer changed area_source decided band v pick position guesses"), home_state: P }, consumers: ["form-funnel", "area-intent-metrics"], source: QUICK },
   job_form_error: { purpose: "form-behaviour", sinks: TRACKED, props: anon("locale variant page reason checks"), consumers: ["form-funnel"], source: QUICK },
   job_form_submit: {
     purpose: "form-behaviour",
@@ -137,7 +137,7 @@ export const EVENTS = {
     completesForm: "jobs",
     source: QUICK,
   },
-  quick_apply_submit: { purpose: "form-behaviour", sinks: TRACKED, props: JOB_SUMMARY, consumers: ["form-funnel", "area-intent-metrics"], completesForm: "quick", source: QUICK },
+  quick_apply_submit: { purpose: "form-behaviour", sinks: TRACKED, props: { ...JOB_SUMMARY, home_state: P }, consumers: ["form-funnel", "area-intent-metrics"], completesForm: "quick", source: QUICK },
 
   // The business enquiry.
   contact_form_start: { purpose: "form-behaviour", sinks: TRACKED, props: anon("form_type"), consumers: ["form-funnel"], source: CONTACT },

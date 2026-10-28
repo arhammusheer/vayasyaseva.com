@@ -217,8 +217,332 @@ async function twentyFilesFromConfig() {
   return { eq, twentyClient, twentyFromConfig, TwentyGraphqlError, inClusterUploadUrl, twentyFilesClient, twentyFilesFromConfig };
 })();
 
+// packages/contracts/src/rules.ts
+const { REF_PATTERN, INTAKE_SOURCES, WEB_SOURCE, WHATSAPP_SOURCE, isSubmissionSource, INTAKE_LOCALES, isIntakeLocale, LEGACY_SOURCE_LOCALES, INTAKE_CLUSTERS, isIntakeCluster, PAGE_PATH_PATTERN, MAX_PAGE_PATH_LENGTH, isPagePath, INTAKE_CHANNELS, AGENT_LANGUAGE_SOURCES, MAX_AGENT_NAME_LENGTH, JOB_ROLES, JOB_ROLE_SLUGS, isJobRole, JOB_HUBS, JOB_HUB_SLUGS, isJobHub, INTAKE_FORMS, INTAKE_FORM_KEYS, MAX_APPLICANT_NAME_LENGTH, HOME_STATES, HOME_CITIES, homeStateOf, QUICK_ANSWERS, AREA_CLUSTERS, FORMLESS_AREAS, submissionCluster, QUICK_QUESTIONS, cleanQuickAnswers, ATTACHMENT_KINDS, ATTACHMENT_MIME, INTAKE_LIMITS, attachmentKeyPrefix, isAttachmentKeyFor, normaliseIndianMobile } = (() => {
+const REF_PATTERN = /^VS-J-[A-Z0-9]{6}$/;
+const INTAKE_SOURCES = {
+    web_en: "en",
+    web_hi: "hi",
+    web_hinglish: "hinglish",
+};
+const WEB_SOURCE = "web";
+const WHATSAPP_SOURCE = "whatsapp";
+function isSubmissionSource(value) {
+    return value === WEB_SOURCE || (typeof value === "string" && Object.hasOwn(INTAKE_SOURCES, value));
+}
+const INTAKE_LOCALES = ["en-IN", "hi-IN", "hi-Latn-IN", "pa-IN", "kn-IN"];
+function isIntakeLocale(value) {
+    return typeof value === "string" && INTAKE_LOCALES.includes(value);
+}
+const LEGACY_SOURCE_LOCALES = { web_en: "en-IN", web_hi: "hi-IN", web_hinglish: "hi-Latn-IN" };
+const INTAKE_CLUSTERS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other", "punjab", "dehradun", "kapurthala", "visakhapatnam", "andhra-pradesh", "hyderabad", "telangana"];
+function isIntakeCluster(value) {
+    return typeof value === "string" && INTAKE_CLUSTERS.includes(value);
+}
+const PAGE_PATH_PATTERN = /^\/([a-z0-9]+(-[a-z0-9]+)*(\/[a-z0-9]+(-[a-z0-9]+)*)*)?$/;
+const MAX_PAGE_PATH_LENGTH = 200;
+function isPagePath(value) {
+    return typeof value === "string" && value.length <= MAX_PAGE_PATH_LENGTH && PAGE_PATH_PATTERN.test(value);
+}
+const INTAKE_CHANNELS = ["web", "agent", "whatsapp"];
+const AGENT_LANGUAGE_SOURCES = { en: "web_en", hi: "web_hi", hinglish: "web_hinglish" };
+const MAX_AGENT_NAME_LENGTH = 100;
+const JOB_ROLES = {
+    "factory-helper": "Factory helper",
+    packing: "Packing",
+    "machine-operator": "Machine operator",
+    warehouse: "Warehouse: loading, picking, packing",
+    "forklift-operator": "Forklift operator",
+    "data-entry-operator": "Data entry operator",
+    housekeeping: "Housekeeping",
+    "iti-trades": "ITI trades: welder, fitter, electrician",
+    electrician: "Electrician",
+    welder: "Welder",
+    fitter: "Fitter",
+};
+const JOB_ROLE_SLUGS = Object.keys(JOB_ROLES);
+function isJobRole(value) {
+    return typeof value === "string" && Object.hasOwn(JOB_ROLES, value);
+}
+const JOB_HUBS = {
+    freshers: "Freshers page",
+    "10th-pass": "10th pass page",
+    "12th-pass": "12th pass page",
+};
+const JOB_HUB_SLUGS = Object.keys(JOB_HUBS);
+function isJobHub(value) {
+    return typeof value === "string" && Object.hasOwn(JOB_HUBS, value);
+}
+const INTAKE_FORMS = {
+    long: "Long form (/jobs and role pages)",
+    quick: "Quick apply (/jobs/apply)",
+};
+const INTAKE_FORM_KEYS = Object.keys(INTAKE_FORMS);
+const MAX_APPLICANT_NAME_LENGTH = 80;
+const HOME_STATES = {
+    an: "Andaman and Nicobar Islands", ap: "Andhra Pradesh", ar: "Arunachal Pradesh", as: "Assam", br: "Bihar", ch: "Chandigarh",
+    cg: "Chhattisgarh", dh: "Dadra and Nagar Haveli and Daman and Diu", dl: "Delhi", ga: "Goa", gj: "Gujarat", hr: "Haryana",
+    hp: "Himachal Pradesh", jk: "Jammu and Kashmir", jh: "Jharkhand", ka: "Karnataka", kl: "Kerala", la: "Ladakh", ld: "Lakshadweep",
+    mp: "Madhya Pradesh", mh: "Maharashtra", mn: "Manipur", ml: "Meghalaya", mz: "Mizoram", nl: "Nagaland", od: "Odisha",
+    py: "Puducherry", pb: "Punjab", rj: "Rajasthan", sk: "Sikkim", tn: "Tamil Nadu", ts: "Telangana", tr: "Tripura",
+    up: "Uttar Pradesh", uk: "Uttarakhand", wb: "West Bengal",
+};
+const HOME_CITIES = {
+    "uk:haridwar": "Haridwar", "uk:sidcul": "SIDCUL Haridwar / Bahadrabad", "uk:roorkee": "Roorkee / Bhagwanpur", "uk:laksar": "Laksar",
+    "uk:dehradun": "Dehradun", "uk:selaqui": "Selaqui / Sahaspur", "uk:rishikesh": "Rishikesh / Doiwala", "uk:vikasnagar": "Vikasnagar / Herbertpur",
+    "uk:rudrapur": "Rudrapur / Pantnagar", "uk:kashipur": "Kashipur", "uk:sitarganj": "Sitarganj", "uk:haldwani": "Haldwani",
+    "pb:jalandhar": "Jalandhar", "pb:kapurthala": "Kapurthala", "pb:phagwara": "Phagwara", "pb:sultanpur-lodhi": "Sultanpur Lodhi / Bholath",
+    "pb:goraya": "Goraya / Phillaur", "pb:ludhiana": "Ludhiana", "pb:mohali": "Mohali / Kharar", "pb:amritsar": "Amritsar",
+    "pb:patiala": "Patiala", "pb:bathinda": "Bathinda", "pb:hoshiarpur": "Hoshiarpur", "pb:gobindgarh": "Mandi Gobindgarh",
+    "ka:bengaluru": "Bengaluru", "ka:peenya": "Peenya", "ka:electronic-city": "Electronic City / Bommasandra", "ka:whitefield": "Whitefield / Hoskote",
+    "ka:kengeri": "Kengeri / Bidadi", "ka:tumakuru": "Tumakuru", "ka:mysuru": "Mysuru", "ka:hubballi": "Hubballi-Dharwad",
+    "ka:belagavi": "Belagavi", "ka:mangaluru": "Mangaluru", "ka:kalaburagi": "Kalaburagi", "ka:ballari": "Ballari",
+    "ap:visakhapatnam": "Visakhapatnam", "ap:gajuwaka": "Gajuwaka / Steel Plant", "ap:pendurthi": "Pendurthi / Sabbavaram",
+    "ap:anakapalli": "Anakapalli / Parawada", "ap:vijayawada": "Vijayawada", "ap:guntur": "Guntur", "ap:kakinada": "Kakinada",
+    "ap:rajahmundry": "Rajahmundry", "ap:nellore": "Nellore", "ap:tirupati": "Tirupati", "ap:sri-city": "Sri City", "ap:kurnool": "Kurnool",
+    "ap:anantapur": "Anantapur",
+    "ts:hyderabad": "Hyderabad / Secunderabad", "ts:patancheru": "Patancheru / Bollaram", "ts:jeedimetla": "Jeedimetla / Medchal",
+    "ts:uppal": "Uppal / Cherlapally", "ts:shamshabad": "Shamshabad / Shadnagar", "ts:warangal": "Warangal", "ts:karimnagar": "Karimnagar / Ramagundam",
+    "ts:nalgonda": "Nalgonda / Suryapet", "ts:mahabubnagar": "Mahabubnagar / Jadcherla", "ts:khammam": "Khammam", "ts:nizamabad": "Nizamabad",
+    "dl:bawana": "Bawana / Narela", "dl:okhla": "Okhla",
+    "up:noida": "Noida", "up:greater-noida": "Greater Noida", "up:ghaziabad": "Ghaziabad", "up:meerut": "Meerut", "up:saharanpur": "Saharanpur",
+    "up:muzaffarnagar": "Muzaffarnagar", "up:bijnor": "Bijnor", "up:moradabad": "Moradabad", "up:bareilly": "Bareilly", "up:aligarh": "Aligarh",
+    "up:agra": "Agra", "up:lucknow": "Lucknow", "up:kanpur": "Kanpur", "up:prayagraj": "Prayagraj", "up:varanasi": "Varanasi",
+    "up:gorakhpur": "Gorakhpur", "up:azamgarh": "Azamgarh",
+    "hr:gurugram": "Gurugram", "hr:manesar": "Manesar", "hr:faridabad": "Faridabad", "hr:sonipat": "Sonipat / Kundli", "hr:panipat": "Panipat",
+    "hr:karnal": "Karnal", "hr:yamunanagar": "Yamunanagar", "hr:ambala": "Ambala", "hr:hisar": "Hisar", "hr:bawal": "Bawal / Rewari",
+    "hp:baddi": "Baddi / Nalagarh", "hp:paonta-sahib": "Paonta Sahib", "hp:shimla": "Shimla", "hp:una": "Una",
+    "jk:jammu": "Jammu", "jk:srinagar": "Srinagar", "jk:kathua": "Kathua",
+    "rj:jaipur": "Jaipur", "rj:jodhpur": "Jodhpur", "rj:kota": "Kota", "rj:udaipur": "Udaipur", "rj:bhiwadi": "Bhiwadi", "rj:neemrana": "Neemrana",
+    "rj:alwar": "Alwar", "rj:bhilwara": "Bhilwara",
+    "gj:ahmedabad": "Ahmedabad", "gj:sanand": "Sanand", "gj:surat": "Surat", "gj:vadodara": "Vadodara", "gj:rajkot": "Rajkot", "gj:vapi": "Vapi",
+    "gj:ankleshwar": "Ankleshwar / Bharuch", "gj:morbi": "Morbi",
+    "mh:mumbai": "Mumbai", "mh:thane": "Thane", "mh:navi-mumbai": "Navi Mumbai", "mh:bhiwandi": "Bhiwandi", "mh:pune": "Pune / Pimpri-Chinchwad",
+    "mh:chakan": "Chakan / Talegaon", "mh:nashik": "Nashik", "mh:sambhajinagar": "Chhatrapati Sambhajinagar (Aurangabad)", "mh:nagpur": "Nagpur",
+    "mh:kolhapur": "Kolhapur",
+    "mp:indore": "Indore", "mp:pithampur": "Pithampur", "mp:dewas": "Dewas", "mp:bhopal": "Bhopal / Mandideep", "mp:jabalpur": "Jabalpur",
+    "mp:gwalior": "Gwalior",
+    "cg:raipur": "Raipur", "cg:bhilai": "Bhilai / Durg", "cg:bilaspur": "Bilaspur",
+    "br:patna": "Patna", "br:gaya": "Gaya", "br:muzaffarpur": "Muzaffarpur", "br:bhagalpur": "Bhagalpur", "br:darbhanga": "Darbhanga", "br:purnia": "Purnia",
+    "jh:ranchi": "Ranchi", "jh:jamshedpur": "Jamshedpur", "jh:dhanbad": "Dhanbad", "jh:bokaro": "Bokaro",
+    "wb:kolkata": "Kolkata", "wb:howrah": "Howrah", "wb:durgapur": "Durgapur", "wb:asansol": "Asansol", "wb:siliguri": "Siliguri",
+    "wb:kharagpur": "Kharagpur", "wb:haldia": "Haldia",
+    "od:bhubaneswar": "Bhubaneswar", "od:cuttack": "Cuttack", "od:rourkela": "Rourkela", "od:jharsuguda": "Jharsuguda", "od:angul": "Angul",
+    "od:berhampur": "Berhampur",
+    "as:guwahati": "Guwahati", "as:dibrugarh": "Dibrugarh", "tr:agartala": "Agartala", "mn:imphal": "Imphal", "ml:shillong": "Shillong",
+    "tn:chennai": "Chennai", "tn:sriperumbudur": "Sriperumbudur / Oragadam", "tn:hosur": "Hosur", "tn:coimbatore": "Coimbatore",
+    "tn:tiruppur": "Tiruppur", "tn:madurai": "Madurai", "tn:trichy": "Tiruchirappalli", "tn:salem": "Salem",
+    "kl:kochi": "Kochi", "kl:thiruvananthapuram": "Thiruvananthapuram", "kl:kozhikode": "Kozhikode",
+    "dh:silvassa": "Silvassa", "dh:daman": "Daman",
+};
+const homeStateOf = (id) => {
+    const state = id.split(":")[0];
+    return Object.hasOwn(HOME_STATES, state) ? state : undefined;
+};
+const HOME_LABELS = {
+    ...HOME_STATES,
+    ...Object.fromEntries(Object.entries(HOME_CITIES).map(([id, name]) => [id, `${name}, ${HOME_STATES[homeStateOf(id)]}`])),
+};
+const QUICK_ANSWERS = {
+    work: {
+        "factory-helper": "Factory helper", packing: "Packing", warehouse: "Warehouse / loading", "machine-operator": "Machine operator",
+        "iti-trades": "ITI trade", housekeeping: "Housekeeping", "data-entry-operator": "Data entry", "forklift-operator": "Forklift operator",
+        any: "Any work",
+    },
+    trade: { electrician: "Electrician", welder: "Welder", fitter: "Fitter", machinist: "Machinist / turner", "other-trade": "Other trade" },
+    iti: { "iti-pass": "ITI passed", "iti-pursuing": "Studying / apprentice", "no-iti": "Experience, no ITI" },
+    machines: {
+        "packing-machine": "Packing machines", moulding: "Injection moulding", press: "Press / sheet metal", "cnc-vmc": "CNC / VMC",
+        "other-machine": "Other machines",
+    },
+    forklift: { "licence-experience": "Licence and experience", "experience-only": "Experience, no licence", "want-to-learn": "Wants to learn" },
+    computer: { typing: "Typing", excel: "Excel", tally: "Tally", "sap-erp": "SAP / ERP" },
+    experience: { fresher: "Fresher", "under-1": "Under 1 year", "1-3": "1 to 3 years", "3-plus": "3+ years" },
+    education: { "below-10th": "Below 10th", "10th": "10th pass", "12th": "12th pass", "iti-diploma": "ITI / diploma", graduate: "Graduate" },
+    shift: { day: "Day", night: "Night", rotating: "Rotating / any" },
+    start: { now: "Immediately", week: "Within a week", month: "Within a month" },
+    area: {
+        "sidcul-bahadrabad": "SIDCUL / Bahadrabad", "haridwar-jwalapur": "Haridwar city / Jwalapur", "roorkee-bhagwanpur": "Roorkee / Bhagwanpur",
+        laksar: "Laksar", outside: "Outside Haridwar",
+        "bengaluru:north": "Bengaluru North / Peenya", "bengaluru:south": "Bengaluru South / Electronic City", "bengaluru:east": "Bengaluru East / Whitefield",
+        "bengaluru:west": "Bengaluru West / Kengeri", "bengaluru:outside": "Outside Bengaluru",
+        "jalandhar:kapurthala": "Kapurthala", "jalandhar:city": "Jalandhar city", "jalandhar:phagwara-goraya": "Phagwara / Goraya",
+        "jalandhar:outside": "Outside Jalandhar", "jalandhar:goraya-phillaur": "Goraya / Phillaur",
+        "uttarakhand:haridwar": "Haridwar / Roorkee", "uttarakhand:dehradun-selaqui": "Dehradun / Selaqui",
+        "uttarakhand:udham-singh-nagar": "Rudrapur / Kashipur / Sitarganj", "uttarakhand:other": "Elsewhere in Uttarakhand",
+        "uttarakhand:outside": "Outside Uttarakhand",
+        "punjab:jalandhar-kapurthala": "Jalandhar / Kapurthala", "punjab:ludhiana": "Ludhiana", "punjab:mohali": "Mohali / Kharar",
+        "punjab:amritsar": "Amritsar", "punjab:other": "Elsewhere in Punjab", "punjab:outside": "Outside Punjab",
+        "punjab:jalandhar": "Jalandhar", "punjab:kapurthala": "Kapurthala / Phagwara",
+        "dehradun:selaqui-sahaspur": "Selaqui / Sahaspur", "dehradun:city": "Dehradun city", "dehradun:rishikesh-doiwala": "Rishikesh / Doiwala",
+        "dehradun:vikasnagar": "Vikasnagar / Herbertpur", "dehradun:outside": "Outside Dehradun",
+        "kapurthala:city": "Kapurthala city", "kapurthala:phagwara": "Phagwara", "kapurthala:sultanpur-lodhi": "Sultanpur Lodhi / Bholath",
+        "kapurthala:outside": "Outside Kapurthala", "kapurthala:jalandhar": "Jalandhar (Kapurthala form)",
+        "visakhapatnam:city": "Visakhapatnam city", "visakhapatnam:gajuwaka": "Gajuwaka / Steel Plant / Duvvada",
+        "visakhapatnam:pendurthi": "Pendurthi / Sabbavaram", "visakhapatnam:anakapalli": "Anakapalli / Parawada / Atchutapuram",
+        "visakhapatnam:outside": "Outside Visakhapatnam",
+        "andhra-pradesh:visakhapatnam": "Visakhapatnam / Anakapalli", "andhra-pradesh:vijayawada-guntur": "Vijayawada / Guntur",
+        "andhra-pradesh:kakinada-rajahmundry": "Kakinada / Rajahmundry", "andhra-pradesh:nellore-tirupati": "Nellore / Tirupati / Sri City",
+        "andhra-pradesh:other": "Elsewhere in Andhra Pradesh", "andhra-pradesh:outside": "Outside Andhra Pradesh",
+        "hyderabad:city": "Hyderabad / Secunderabad city", "hyderabad:patancheru": "Patancheru / Pashamylaram / Bollaram",
+        "hyderabad:jeedimetla-medchal": "Jeedimetla / Kukatpally / Medchal", "hyderabad:uppal-cherlapally": "Uppal / Cherlapally / Nacharam",
+        "hyderabad:shamshabad-kothur": "Shamshabad / Kothur / Shadnagar", "hyderabad:outside": "Outside Hyderabad",
+        "telangana:hyderabad": "Hyderabad / Secunderabad", "telangana:warangal": "Warangal / Hanamkonda",
+        "telangana:karimnagar-ramagundam": "Karimnagar / Ramagundam", "telangana:nalgonda-suryapet": "Nalgonda / Suryapet",
+        "telangana:mahabubnagar-jadcherla": "Mahabubnagar / Jadcherla", "telangana:other": "Elsewhere in Telangana",
+        "telangana:outside": "Outside Telangana",
+        "market:haridwar": "Haridwar / Roorkee", "market:uttarakhand": "Elsewhere in Uttarakhand", "market:jalandhar": "Jalandhar",
+        "market:punjab": "Elsewhere in Punjab", "market:bengaluru": "Bengaluru", "market:other": "Somewhere else",
+        "market:dehradun": "Dehradun / Selaqui", "market:kapurthala": "Kapurthala / Phagwara",
+        "market:visakhapatnam": "Visakhapatnam (Vizag)", "market:andhra-pradesh": "Elsewhere in Andhra Pradesh",
+        "market:hyderabad": "Hyderabad", "market:telangana": "Elsewhere in Telangana",
+        "haridwar:rest-of-uttarakhand": "Elsewhere in Uttarakhand (Haridwar form)", "jalandhar:rest-of-punjab": "Elsewhere in Punjab (Jalandhar form)",
+        "dehradun:rest-of-uttarakhand": "Elsewhere in Uttarakhand (Dehradun form)",
+        "kapurthala:rest-of-punjab": "Elsewhere in Punjab (Kapurthala form)",
+        "visakhapatnam:rest-of-andhra-pradesh": "Elsewhere in Andhra Pradesh (Visakhapatnam form)",
+        "hyderabad:rest-of-telangana": "Elsewhere in Telangana (Hyderabad form)",
+    },
+    home: HOME_LABELS,
+};
+const AREA_CLUSTERS = {
+    "sidcul-bahadrabad": "haridwar",
+    "haridwar-jwalapur": "haridwar",
+    "roorkee-bhagwanpur": "haridwar",
+    laksar: "haridwar",
+    outside: null,
+    "bengaluru:north": "bengaluru",
+    "bengaluru:south": "bengaluru",
+    "bengaluru:east": "bengaluru",
+    "bengaluru:west": "bengaluru",
+    "bengaluru:outside": null,
+    "jalandhar:kapurthala": "kapurthala",
+    "jalandhar:city": "jalandhar",
+    "jalandhar:phagwara-goraya": "jalandhar",
+    "jalandhar:outside": null,
+    "jalandhar:goraya-phillaur": "jalandhar",
+    "uttarakhand:haridwar": "haridwar",
+    "uttarakhand:dehradun-selaqui": "dehradun",
+    "uttarakhand:udham-singh-nagar": "uttarakhand",
+    "uttarakhand:other": "uttarakhand",
+    "uttarakhand:outside": null,
+    "punjab:jalandhar-kapurthala": "jalandhar",
+    "punjab:ludhiana": "punjab",
+    "punjab:mohali": "punjab",
+    "punjab:amritsar": "punjab",
+    "punjab:other": "punjab",
+    "punjab:outside": null,
+    "punjab:jalandhar": "jalandhar",
+    "punjab:kapurthala": "kapurthala",
+    "dehradun:selaqui-sahaspur": "dehradun",
+    "dehradun:city": "dehradun",
+    "dehradun:rishikesh-doiwala": "dehradun",
+    "dehradun:vikasnagar": "dehradun",
+    "dehradun:outside": null,
+    "kapurthala:city": "kapurthala",
+    "kapurthala:phagwara": "kapurthala",
+    "kapurthala:sultanpur-lodhi": "kapurthala",
+    "kapurthala:outside": null,
+    "kapurthala:jalandhar": "jalandhar",
+    "visakhapatnam:city": "visakhapatnam",
+    "visakhapatnam:gajuwaka": "visakhapatnam",
+    "visakhapatnam:pendurthi": "visakhapatnam",
+    "visakhapatnam:anakapalli": "visakhapatnam",
+    "visakhapatnam:outside": null,
+    "andhra-pradesh:visakhapatnam": "visakhapatnam",
+    "andhra-pradesh:vijayawada-guntur": "andhra-pradesh",
+    "andhra-pradesh:kakinada-rajahmundry": "andhra-pradesh",
+    "andhra-pradesh:nellore-tirupati": "andhra-pradesh",
+    "andhra-pradesh:other": "andhra-pradesh",
+    "andhra-pradesh:outside": null,
+    "hyderabad:city": "hyderabad",
+    "hyderabad:patancheru": "hyderabad",
+    "hyderabad:jeedimetla-medchal": "hyderabad",
+    "hyderabad:uppal-cherlapally": "hyderabad",
+    "hyderabad:shamshabad-kothur": "hyderabad",
+    "hyderabad:outside": null,
+    "telangana:hyderabad": "hyderabad",
+    "telangana:warangal": "telangana",
+    "telangana:karimnagar-ramagundam": "telangana",
+    "telangana:nalgonda-suryapet": "telangana",
+    "telangana:mahabubnagar-jadcherla": "telangana",
+    "telangana:other": "telangana",
+    "telangana:outside": null,
+    "market:haridwar": "haridwar",
+    "market:uttarakhand": "uttarakhand",
+    "market:jalandhar": "jalandhar",
+    "market:punjab": "punjab",
+    "market:bengaluru": "bengaluru",
+    "market:other": null,
+    "market:dehradun": "dehradun",
+    "market:kapurthala": "kapurthala",
+    "market:visakhapatnam": "visakhapatnam",
+    "market:andhra-pradesh": "andhra-pradesh",
+    "market:hyderabad": "hyderabad",
+    "market:telangana": "telangana",
+    "haridwar:rest-of-uttarakhand": "uttarakhand",
+    "jalandhar:rest-of-punjab": "punjab",
+    "dehradun:rest-of-uttarakhand": "uttarakhand",
+    "kapurthala:rest-of-punjab": "punjab",
+    "visakhapatnam:rest-of-andhra-pradesh": "andhra-pradesh",
+    "hyderabad:rest-of-telangana": "telangana",
+};
+const FORMLESS_AREAS = new Set(["jalandhar:phagwara-goraya", "punjab:jalandhar-kapurthala"]);
+function submissionCluster(pageCluster, answers) {
+    const area = answers?.area?.[0];
+    const fromArea = area && Object.hasOwn(AREA_CLUSTERS, area) ? AREA_CLUSTERS[area] : null;
+    return fromArea ?? pageCluster ?? "other";
+}
+const QUICK_QUESTIONS = {
+    work: "Work", trade: "ITI trade", iti: "ITI", machines: "Machines", forklift: "Forklift", computer: "Computer skills",
+    experience: "Experience", education: "Education", shift: "Shifts", start: "Can start", area: "Area", home: "Lives in",
+};
+function cleanQuickAnswers(raw) {
+    if (!raw || typeof raw !== "object")
+        return null;
+    const out = {};
+    for (const [question, options] of Object.entries(QUICK_ANSWERS)) {
+        const values = raw[question];
+        if (!Array.isArray(values))
+            continue;
+        const kept = [...new Set(values.filter((v) => typeof v === "string" && Object.hasOwn(options, v)))];
+        if (kept.length)
+            out[question] = kept;
+    }
+    return Object.keys(out).length ? out : null;
+}
+const ATTACHMENT_KINDS = ["image", "document"];
+const ATTACHMENT_MIME = {
+    image: /^image\/(jpeg|png|webp)$/,
+    document: /^application\/(pdf|msword|vnd\.openxmlformats-officedocument\.wordprocessingml\.document)$/,
+};
+const INTAKE_LIMITS = {
+    maxAttachments: 8,
+    maxTextLength: 4000,
+    maxFileNameLength: 200,
+    maxBytes: { image: 10 * 1024 * 1024, document: 20 * 1024 * 1024 },
+};
+function attachmentKeyPrefix(ref, at) {
+    const month = String(at.getUTCMonth() + 1).padStart(2, "0");
+    return `intake/${at.getUTCFullYear()}/${month}/${ref}/`;
+}
+function isAttachmentKeyFor(key, ref) {
+    return key.startsWith("intake/") && key.includes(`/${ref}/`);
+}
+function normaliseIndianMobile(input) {
+    const digits = input.replace(/\D/g, "");
+    if (/^[6-9]\d{9}$/.test(digits))
+        return `+91${digits}`;
+    if (/^91[6-9]\d{9}$/.test(digits))
+        return `+${digits}`;
+    if (/^0[6-9]\d{9}$/.test(digits))
+        return `+91${digits.slice(1)}`;
+    return null;
+}
+  return { REF_PATTERN, INTAKE_SOURCES, WEB_SOURCE, WHATSAPP_SOURCE, isSubmissionSource, INTAKE_LOCALES, isIntakeLocale, LEGACY_SOURCE_LOCALES, INTAKE_CLUSTERS, isIntakeCluster, PAGE_PATH_PATTERN, MAX_PAGE_PATH_LENGTH, isPagePath, INTAKE_CHANNELS, AGENT_LANGUAGE_SOURCES, MAX_AGENT_NAME_LENGTH, JOB_ROLES, JOB_ROLE_SLUGS, isJobRole, JOB_HUBS, JOB_HUB_SLUGS, isJobHub, INTAKE_FORMS, INTAKE_FORM_KEYS, MAX_APPLICANT_NAME_LENGTH, HOME_STATES, HOME_CITIES, homeStateOf, QUICK_ANSWERS, AREA_CLUSTERS, FORMLESS_AREAS, submissionCluster, QUICK_QUESTIONS, cleanQuickAnswers, ATTACHMENT_KINDS, ATTACHMENT_MIME, INTAKE_LIMITS, attachmentKeyPrefix, isAttachmentKeyFor, normaliseIndianMobile };
+})();
+
 // integrations/windmill/talent/lib/crm.ts
-const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, smsWasSent, whatsAppWasSent, WA_ACK_TEMPLATE, waAckText, whatsAppDeliveryStatus, waAckKey, waAckFields, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, removeAttachments, erasePerson } = (() => {
+const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, homeAreaText, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, smsWasSent, whatsAppWasSent, WA_ACK_TEMPLATE, waAckText, whatsAppDeliveryStatus, waAckKey, waAckFields, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, removeAttachments, erasePerson } = (() => {
 const CLUSTER_VALUES = new Set(["HARIDWAR", "UTTARAKHAND", "DELHI_NCR", "BENGALURU", "JALANDHAR", "SAHARANPUR", "OTHER", "PUNJAB", "DEHRADUN", "KAPURTHALA", "VISAKHAPATNAM", "ANDHRA_PRADESH", "HYDERABAD", "TELANGANA"]);
 const ROLE_VALUES = new Set([
     "FACTORY_HELPER", "PACKING", "MACHINE_OPERATOR", "WAREHOUSE", "FORKLIFT_OPERATOR", "DATA_ENTRY_OPERATOR",
@@ -280,6 +604,11 @@ function workRoles(c) {
 function clusters(c) {
     return unique([...(c.person_clusters ?? []), c.cluster].map(clusterValue));
 }
+function homeAreaText(id) {
+    const home = QUICK_ANSWERS.home;
+    const area = QUICK_ANSWERS.area;
+    return Object.hasOwn(home, id) ? home[id] : Object.hasOwn(area, id) ? area[id] : id;
+}
 function personFields(c, existing) {
     const has = (field) => existing && existing[field] !== null && existing[field] !== undefined && existing[field] !== "";
     const existingList = (field) => (Array.isArray(existing?.[field]) ? existing[field] : []);
@@ -297,7 +626,7 @@ function personFields(c, existing) {
     if (language)
         fields.language = language;
     if (c.home_area)
-        fields.homeArea = c.home_area;
+        fields.homeArea = homeAreaText(c.home_area);
     if (!has("personType"))
         fields.personType = "WORKER";
     if (c.person_status === "do-not-contact")
@@ -620,266 +949,7 @@ async function erasePerson(crm, phone) {
     }
     return { people: people.length, files };
 }
-  return { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, smsWasSent, whatsAppWasSent, WA_ACK_TEMPLATE, waAckText, whatsAppDeliveryStatus, waAckKey, waAckFields, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, removeAttachments, erasePerson };
-})();
-
-// packages/contracts/src/rules.ts
-const { REF_PATTERN, INTAKE_SOURCES, WEB_SOURCE, WHATSAPP_SOURCE, isSubmissionSource, INTAKE_LOCALES, isIntakeLocale, LEGACY_SOURCE_LOCALES, INTAKE_CLUSTERS, isIntakeCluster, PAGE_PATH_PATTERN, MAX_PAGE_PATH_LENGTH, isPagePath, INTAKE_CHANNELS, AGENT_LANGUAGE_SOURCES, MAX_AGENT_NAME_LENGTH, JOB_ROLES, JOB_ROLE_SLUGS, isJobRole, JOB_HUBS, JOB_HUB_SLUGS, isJobHub, INTAKE_FORMS, INTAKE_FORM_KEYS, MAX_APPLICANT_NAME_LENGTH, QUICK_ANSWERS, AREA_CLUSTERS, FORMLESS_AREAS, submissionCluster, QUICK_QUESTIONS, cleanQuickAnswers, ATTACHMENT_KINDS, ATTACHMENT_MIME, INTAKE_LIMITS, attachmentKeyPrefix, isAttachmentKeyFor, normaliseIndianMobile } = (() => {
-const REF_PATTERN = /^VS-J-[A-Z0-9]{6}$/;
-const INTAKE_SOURCES = {
-    web_en: "en",
-    web_hi: "hi",
-    web_hinglish: "hinglish",
-};
-const WEB_SOURCE = "web";
-const WHATSAPP_SOURCE = "whatsapp";
-function isSubmissionSource(value) {
-    return value === WEB_SOURCE || (typeof value === "string" && Object.hasOwn(INTAKE_SOURCES, value));
-}
-const INTAKE_LOCALES = ["en-IN", "hi-IN", "hi-Latn-IN", "pa-IN", "kn-IN"];
-function isIntakeLocale(value) {
-    return typeof value === "string" && INTAKE_LOCALES.includes(value);
-}
-const LEGACY_SOURCE_LOCALES = { web_en: "en-IN", web_hi: "hi-IN", web_hinglish: "hi-Latn-IN" };
-const INTAKE_CLUSTERS = ["haridwar", "uttarakhand", "delhi-ncr", "bengaluru", "jalandhar", "saharanpur", "other", "punjab", "dehradun", "kapurthala", "visakhapatnam", "andhra-pradesh", "hyderabad", "telangana"];
-function isIntakeCluster(value) {
-    return typeof value === "string" && INTAKE_CLUSTERS.includes(value);
-}
-const PAGE_PATH_PATTERN = /^\/([a-z0-9]+(-[a-z0-9]+)*(\/[a-z0-9]+(-[a-z0-9]+)*)*)?$/;
-const MAX_PAGE_PATH_LENGTH = 200;
-function isPagePath(value) {
-    return typeof value === "string" && value.length <= MAX_PAGE_PATH_LENGTH && PAGE_PATH_PATTERN.test(value);
-}
-const INTAKE_CHANNELS = ["web", "agent", "whatsapp"];
-const AGENT_LANGUAGE_SOURCES = { en: "web_en", hi: "web_hi", hinglish: "web_hinglish" };
-const MAX_AGENT_NAME_LENGTH = 100;
-const JOB_ROLES = {
-    "factory-helper": "Factory helper",
-    packing: "Packing",
-    "machine-operator": "Machine operator",
-    warehouse: "Warehouse: loading, picking, packing",
-    "forklift-operator": "Forklift operator",
-    "data-entry-operator": "Data entry operator",
-    housekeeping: "Housekeeping",
-    "iti-trades": "ITI trades: welder, fitter, electrician",
-    electrician: "Electrician",
-    welder: "Welder",
-    fitter: "Fitter",
-};
-const JOB_ROLE_SLUGS = Object.keys(JOB_ROLES);
-function isJobRole(value) {
-    return typeof value === "string" && Object.hasOwn(JOB_ROLES, value);
-}
-const JOB_HUBS = {
-    freshers: "Freshers page",
-    "10th-pass": "10th pass page",
-    "12th-pass": "12th pass page",
-};
-const JOB_HUB_SLUGS = Object.keys(JOB_HUBS);
-function isJobHub(value) {
-    return typeof value === "string" && Object.hasOwn(JOB_HUBS, value);
-}
-const INTAKE_FORMS = {
-    long: "Long form (/jobs and role pages)",
-    quick: "Quick apply (/jobs/apply)",
-};
-const INTAKE_FORM_KEYS = Object.keys(INTAKE_FORMS);
-const MAX_APPLICANT_NAME_LENGTH = 80;
-const QUICK_ANSWERS = {
-    work: {
-        "factory-helper": "Factory helper", packing: "Packing", warehouse: "Warehouse / loading", "machine-operator": "Machine operator",
-        "iti-trades": "ITI trade", housekeeping: "Housekeeping", "data-entry-operator": "Data entry", "forklift-operator": "Forklift operator",
-        any: "Any work",
-    },
-    trade: { electrician: "Electrician", welder: "Welder", fitter: "Fitter", machinist: "Machinist / turner", "other-trade": "Other trade" },
-    iti: { "iti-pass": "ITI passed", "iti-pursuing": "Studying / apprentice", "no-iti": "Experience, no ITI" },
-    machines: {
-        "packing-machine": "Packing machines", moulding: "Injection moulding", press: "Press / sheet metal", "cnc-vmc": "CNC / VMC",
-        "other-machine": "Other machines",
-    },
-    forklift: { "licence-experience": "Licence and experience", "experience-only": "Experience, no licence", "want-to-learn": "Wants to learn" },
-    computer: { typing: "Typing", excel: "Excel", tally: "Tally", "sap-erp": "SAP / ERP" },
-    experience: { fresher: "Fresher", "under-1": "Under 1 year", "1-3": "1 to 3 years", "3-plus": "3+ years" },
-    education: { "below-10th": "Below 10th", "10th": "10th pass", "12th": "12th pass", "iti-diploma": "ITI / diploma", graduate: "Graduate" },
-    shift: { day: "Day", night: "Night", rotating: "Rotating / any" },
-    start: { now: "Immediately", week: "Within a week", month: "Within a month" },
-    area: {
-        "sidcul-bahadrabad": "SIDCUL / Bahadrabad", "haridwar-jwalapur": "Haridwar city / Jwalapur", "roorkee-bhagwanpur": "Roorkee / Bhagwanpur",
-        laksar: "Laksar", outside: "Outside Haridwar",
-        "bengaluru:north": "Bengaluru North / Peenya", "bengaluru:south": "Bengaluru South / Electronic City", "bengaluru:east": "Bengaluru East / Whitefield",
-        "bengaluru:west": "Bengaluru West / Kengeri", "bengaluru:outside": "Outside Bengaluru",
-        "jalandhar:kapurthala": "Kapurthala", "jalandhar:city": "Jalandhar city", "jalandhar:phagwara-goraya": "Phagwara / Goraya",
-        "jalandhar:outside": "Outside Jalandhar", "jalandhar:goraya-phillaur": "Goraya / Phillaur",
-        "uttarakhand:haridwar": "Haridwar / Roorkee", "uttarakhand:dehradun-selaqui": "Dehradun / Selaqui",
-        "uttarakhand:udham-singh-nagar": "Rudrapur / Kashipur / Sitarganj", "uttarakhand:other": "Elsewhere in Uttarakhand",
-        "uttarakhand:outside": "Outside Uttarakhand",
-        "punjab:jalandhar-kapurthala": "Jalandhar / Kapurthala", "punjab:ludhiana": "Ludhiana", "punjab:mohali": "Mohali / Kharar",
-        "punjab:amritsar": "Amritsar", "punjab:other": "Elsewhere in Punjab", "punjab:outside": "Outside Punjab",
-        "punjab:jalandhar": "Jalandhar", "punjab:kapurthala": "Kapurthala / Phagwara",
-        "dehradun:selaqui-sahaspur": "Selaqui / Sahaspur", "dehradun:city": "Dehradun city", "dehradun:rishikesh-doiwala": "Rishikesh / Doiwala",
-        "dehradun:vikasnagar": "Vikasnagar / Herbertpur", "dehradun:outside": "Outside Dehradun",
-        "kapurthala:city": "Kapurthala city", "kapurthala:phagwara": "Phagwara", "kapurthala:sultanpur-lodhi": "Sultanpur Lodhi / Bholath",
-        "kapurthala:outside": "Outside Kapurthala", "kapurthala:jalandhar": "Jalandhar (Kapurthala form)",
-        "visakhapatnam:city": "Visakhapatnam city", "visakhapatnam:gajuwaka": "Gajuwaka / Steel Plant / Duvvada",
-        "visakhapatnam:pendurthi": "Pendurthi / Sabbavaram", "visakhapatnam:anakapalli": "Anakapalli / Parawada / Atchutapuram",
-        "visakhapatnam:outside": "Outside Visakhapatnam",
-        "andhra-pradesh:visakhapatnam": "Visakhapatnam / Anakapalli", "andhra-pradesh:vijayawada-guntur": "Vijayawada / Guntur",
-        "andhra-pradesh:kakinada-rajahmundry": "Kakinada / Rajahmundry", "andhra-pradesh:nellore-tirupati": "Nellore / Tirupati / Sri City",
-        "andhra-pradesh:other": "Elsewhere in Andhra Pradesh", "andhra-pradesh:outside": "Outside Andhra Pradesh",
-        "hyderabad:city": "Hyderabad / Secunderabad city", "hyderabad:patancheru": "Patancheru / Pashamylaram / Bollaram",
-        "hyderabad:jeedimetla-medchal": "Jeedimetla / Kukatpally / Medchal", "hyderabad:uppal-cherlapally": "Uppal / Cherlapally / Nacharam",
-        "hyderabad:shamshabad-kothur": "Shamshabad / Kothur / Shadnagar", "hyderabad:outside": "Outside Hyderabad",
-        "telangana:hyderabad": "Hyderabad / Secunderabad", "telangana:warangal": "Warangal / Hanamkonda",
-        "telangana:karimnagar-ramagundam": "Karimnagar / Ramagundam", "telangana:nalgonda-suryapet": "Nalgonda / Suryapet",
-        "telangana:mahabubnagar-jadcherla": "Mahabubnagar / Jadcherla", "telangana:other": "Elsewhere in Telangana",
-        "telangana:outside": "Outside Telangana",
-        "market:haridwar": "Haridwar / Roorkee", "market:uttarakhand": "Elsewhere in Uttarakhand", "market:jalandhar": "Jalandhar",
-        "market:punjab": "Elsewhere in Punjab", "market:bengaluru": "Bengaluru", "market:other": "Somewhere else",
-        "market:dehradun": "Dehradun / Selaqui", "market:kapurthala": "Kapurthala / Phagwara",
-        "market:visakhapatnam": "Visakhapatnam (Vizag)", "market:andhra-pradesh": "Elsewhere in Andhra Pradesh",
-        "market:hyderabad": "Hyderabad", "market:telangana": "Elsewhere in Telangana",
-        "haridwar:rest-of-uttarakhand": "Elsewhere in Uttarakhand (Haridwar form)", "jalandhar:rest-of-punjab": "Elsewhere in Punjab (Jalandhar form)",
-        "dehradun:rest-of-uttarakhand": "Elsewhere in Uttarakhand (Dehradun form)",
-        "kapurthala:rest-of-punjab": "Elsewhere in Punjab (Kapurthala form)",
-        "visakhapatnam:rest-of-andhra-pradesh": "Elsewhere in Andhra Pradesh (Visakhapatnam form)",
-        "hyderabad:rest-of-telangana": "Elsewhere in Telangana (Hyderabad form)",
-    },
-};
-const AREA_CLUSTERS = {
-    "sidcul-bahadrabad": "haridwar",
-    "haridwar-jwalapur": "haridwar",
-    "roorkee-bhagwanpur": "haridwar",
-    laksar: "haridwar",
-    outside: null,
-    "bengaluru:north": "bengaluru",
-    "bengaluru:south": "bengaluru",
-    "bengaluru:east": "bengaluru",
-    "bengaluru:west": "bengaluru",
-    "bengaluru:outside": null,
-    "jalandhar:kapurthala": "kapurthala",
-    "jalandhar:city": "jalandhar",
-    "jalandhar:phagwara-goraya": "jalandhar",
-    "jalandhar:outside": null,
-    "jalandhar:goraya-phillaur": "jalandhar",
-    "uttarakhand:haridwar": "haridwar",
-    "uttarakhand:dehradun-selaqui": "dehradun",
-    "uttarakhand:udham-singh-nagar": "uttarakhand",
-    "uttarakhand:other": "uttarakhand",
-    "uttarakhand:outside": null,
-    "punjab:jalandhar-kapurthala": "jalandhar",
-    "punjab:ludhiana": "punjab",
-    "punjab:mohali": "punjab",
-    "punjab:amritsar": "punjab",
-    "punjab:other": "punjab",
-    "punjab:outside": null,
-    "punjab:jalandhar": "jalandhar",
-    "punjab:kapurthala": "kapurthala",
-    "dehradun:selaqui-sahaspur": "dehradun",
-    "dehradun:city": "dehradun",
-    "dehradun:rishikesh-doiwala": "dehradun",
-    "dehradun:vikasnagar": "dehradun",
-    "dehradun:outside": null,
-    "kapurthala:city": "kapurthala",
-    "kapurthala:phagwara": "kapurthala",
-    "kapurthala:sultanpur-lodhi": "kapurthala",
-    "kapurthala:outside": null,
-    "kapurthala:jalandhar": "jalandhar",
-    "visakhapatnam:city": "visakhapatnam",
-    "visakhapatnam:gajuwaka": "visakhapatnam",
-    "visakhapatnam:pendurthi": "visakhapatnam",
-    "visakhapatnam:anakapalli": "visakhapatnam",
-    "visakhapatnam:outside": null,
-    "andhra-pradesh:visakhapatnam": "visakhapatnam",
-    "andhra-pradesh:vijayawada-guntur": "andhra-pradesh",
-    "andhra-pradesh:kakinada-rajahmundry": "andhra-pradesh",
-    "andhra-pradesh:nellore-tirupati": "andhra-pradesh",
-    "andhra-pradesh:other": "andhra-pradesh",
-    "andhra-pradesh:outside": null,
-    "hyderabad:city": "hyderabad",
-    "hyderabad:patancheru": "hyderabad",
-    "hyderabad:jeedimetla-medchal": "hyderabad",
-    "hyderabad:uppal-cherlapally": "hyderabad",
-    "hyderabad:shamshabad-kothur": "hyderabad",
-    "hyderabad:outside": null,
-    "telangana:hyderabad": "hyderabad",
-    "telangana:warangal": "telangana",
-    "telangana:karimnagar-ramagundam": "telangana",
-    "telangana:nalgonda-suryapet": "telangana",
-    "telangana:mahabubnagar-jadcherla": "telangana",
-    "telangana:other": "telangana",
-    "telangana:outside": null,
-    "market:haridwar": "haridwar",
-    "market:uttarakhand": "uttarakhand",
-    "market:jalandhar": "jalandhar",
-    "market:punjab": "punjab",
-    "market:bengaluru": "bengaluru",
-    "market:other": null,
-    "market:dehradun": "dehradun",
-    "market:kapurthala": "kapurthala",
-    "market:visakhapatnam": "visakhapatnam",
-    "market:andhra-pradesh": "andhra-pradesh",
-    "market:hyderabad": "hyderabad",
-    "market:telangana": "telangana",
-    "haridwar:rest-of-uttarakhand": "uttarakhand",
-    "jalandhar:rest-of-punjab": "punjab",
-    "dehradun:rest-of-uttarakhand": "uttarakhand",
-    "kapurthala:rest-of-punjab": "punjab",
-    "visakhapatnam:rest-of-andhra-pradesh": "andhra-pradesh",
-    "hyderabad:rest-of-telangana": "telangana",
-};
-const FORMLESS_AREAS = new Set(["jalandhar:phagwara-goraya", "punjab:jalandhar-kapurthala"]);
-function submissionCluster(pageCluster, answers) {
-    const area = answers?.area?.[0];
-    const fromArea = area && Object.hasOwn(AREA_CLUSTERS, area) ? AREA_CLUSTERS[area] : null;
-    return fromArea ?? pageCluster ?? "other";
-}
-const QUICK_QUESTIONS = {
-    work: "Work", trade: "ITI trade", iti: "ITI", machines: "Machines", forklift: "Forklift", computer: "Computer skills",
-    experience: "Experience", education: "Education", shift: "Shifts", start: "Can start", area: "Area",
-};
-function cleanQuickAnswers(raw) {
-    if (!raw || typeof raw !== "object")
-        return null;
-    const out = {};
-    for (const [question, options] of Object.entries(QUICK_ANSWERS)) {
-        const values = raw[question];
-        if (!Array.isArray(values))
-            continue;
-        const kept = [...new Set(values.filter((v) => typeof v === "string" && Object.hasOwn(options, v)))];
-        if (kept.length)
-            out[question] = kept;
-    }
-    return Object.keys(out).length ? out : null;
-}
-const ATTACHMENT_KINDS = ["image", "document"];
-const ATTACHMENT_MIME = {
-    image: /^image\/(jpeg|png|webp)$/,
-    document: /^application\/(pdf|msword|vnd\.openxmlformats-officedocument\.wordprocessingml\.document)$/,
-};
-const INTAKE_LIMITS = {
-    maxAttachments: 8,
-    maxTextLength: 4000,
-    maxFileNameLength: 200,
-    maxBytes: { image: 10 * 1024 * 1024, document: 20 * 1024 * 1024 },
-};
-function attachmentKeyPrefix(ref, at) {
-    const month = String(at.getUTCMonth() + 1).padStart(2, "0");
-    return `intake/${at.getUTCFullYear()}/${month}/${ref}/`;
-}
-function isAttachmentKeyFor(key, ref) {
-    return key.startsWith("intake/") && key.includes(`/${ref}/`);
-}
-function normaliseIndianMobile(input) {
-    const digits = input.replace(/\D/g, "");
-    if (/^[6-9]\d{9}$/.test(digits))
-        return `+91${digits}`;
-    if (/^91[6-9]\d{9}$/.test(digits))
-        return `+${digits}`;
-    if (/^0[6-9]\d{9}$/.test(digits))
-        return `+91${digits.slice(1)}`;
-    return null;
-}
-  return { REF_PATTERN, INTAKE_SOURCES, WEB_SOURCE, WHATSAPP_SOURCE, isSubmissionSource, INTAKE_LOCALES, isIntakeLocale, LEGACY_SOURCE_LOCALES, INTAKE_CLUSTERS, isIntakeCluster, PAGE_PATH_PATTERN, MAX_PAGE_PATH_LENGTH, isPagePath, INTAKE_CHANNELS, AGENT_LANGUAGE_SOURCES, MAX_AGENT_NAME_LENGTH, JOB_ROLES, JOB_ROLE_SLUGS, isJobRole, JOB_HUBS, JOB_HUB_SLUGS, isJobHub, INTAKE_FORMS, INTAKE_FORM_KEYS, MAX_APPLICANT_NAME_LENGTH, QUICK_ANSWERS, AREA_CLUSTERS, FORMLESS_AREAS, submissionCluster, QUICK_QUESTIONS, cleanQuickAnswers, ATTACHMENT_KINDS, ATTACHMENT_MIME, INTAKE_LIMITS, attachmentKeyPrefix, isAttachmentKeyFor, normaliseIndianMobile };
+  return { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, homeAreaText, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, smsWasSent, whatsAppWasSent, WA_ACK_TEMPLATE, waAckText, whatsAppDeliveryStatus, waAckKey, waAckFields, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, removeAttachments, erasePerson };
 })();
 
 // integrations/windmill/talent/lib/notify-application.ts
@@ -925,6 +995,9 @@ function roleLabel(c) {
     return "any work";
 }
 function areaLabel(c) {
+    const home = firstAnswer(c, "home");
+    if (has(QUICK_ANSWERS.home, home))
+        return `lives in ${QUICK_ANSWERS.home[home]}`;
     const area = firstAnswer(c, "area");
     return has(QUICK_ANSWERS.area, area) ? QUICK_ANSWERS.area[area] : null;
 }
@@ -979,7 +1052,8 @@ WITH s AS (
   INSERT INTO people (phone, name, clusters, home_area, roles, locale, consent_version, last_applied_at, last_contact_at)
   SELECT $4, $14,
          CASE WHEN $16::text IS NULL THEN '{}'::text[] ELSE ARRAY[$16::text] END,
-         $15::jsonb #>> '{area,0}',
+         -- Where they live: the exact place when they picked one (answers.home), else the area answer.
+         coalesce($15::jsonb #>> '{home,0}', $15::jsonb #>> '{area,0}'),
          ARRAY(SELECT DISTINCT r FROM unnest(array_remove(ARRAY[$9::text], NULL) || ARRAY(SELECT jsonb_array_elements_text(coalesce($15::jsonb -> 'work', '[]'::jsonb)))) AS r),
          $3, $5, now(), now()
   FROM s

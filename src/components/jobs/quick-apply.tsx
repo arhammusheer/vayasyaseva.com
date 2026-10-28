@@ -2,9 +2,8 @@
 
 import Script from "next/script";
 import { useCallback, useEffect, useRef, useState, useMemo } from "react";
-import { ArrowRight, Check, Loader2 } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import Link from "@/components/i18n/link";
 import { useTurnstile } from "@/lib/use-turnstile";
 import { useSessionDraft } from "@/lib/use-session-draft";
 import { FormDraftNotice } from "@/components/form-draft-notice";
@@ -25,15 +24,14 @@ import { AREA_CLUSTERS, submissionCluster, type QuickAnswers, MAX_APPLICANT_NAME
 import { JobSubmissionFailure, useJobSubmission } from "@/lib/use-job-submission";
 import { TURNSTILE_SCRIPT_URL } from "@/lib/turnstile";
 import { JobFilePicker, declareFiles, uploadAll, useJobFiles } from "@/components/jobs/job-files";
+import { Pills } from "@/components/jobs/quick-pills";
+import { HomeStep, type HomePick } from "@/components/jobs/home-step";
+import { homeStateOf } from "@/markets/india";
 
 /**
  * The page's cluster: the hub's own (/jobs/haridwar), or ?cluster=<id> on
  * /jobs/apply from an ad, when that cluster has public pages. Never asked.
  */
-/** The area answers, keeping a saved answer the current options lack (a restored draft, a decision that moved). */
-const areaChoices = (options: readonly string[], saved: string | undefined) =>
-  saved && !options.includes(saved) && Object.hasOwn(AREA_CLUSTERS, saved) ? [...options, saved] : options;
-
 function linkCluster(params: URLSearchParams): IntakeCluster | null {
   const id = params.get("cluster");
   return id && clusterById(id) ? (id as IntakeCluster) : null;
@@ -70,47 +68,6 @@ function pageAnswers(role?: JobRole, hub?: JobHub): Answers {
 }
 
 type Phase = { name: "form" } | { name: "sending"; message: string } | { name: "done"; ref: string };
-
-/** Answers as large buttons: a radio group, or toggles when `multi`. */
-function Pills({
-  options,
-  labels,
-  selected,
-  onPick,
-  labelledBy,
-  multi = false,
-  small = false,
-  disabled = false,
-}: {
-  options: readonly string[];
-  labels: Record<string, string>;
-  selected: (value: string) => boolean;
-  onPick: (value: string) => void;
-  labelledBy: string;
-  multi?: boolean;
-  small?: boolean;
-  disabled?: boolean;
-}) {
-  return (
-    <div className={cn("quick-pills", small && "is-small")} role={multi ? "group" : "radiogroup"} aria-labelledby={labelledBy}>
-      {options.map((value) => (
-        <button
-          key={value}
-          type="button"
-          disabled={disabled}
-          role={multi ? undefined : "radio"}
-          aria-checked={multi ? undefined : selected(value)}
-          aria-pressed={multi ? selected(value) : undefined}
-          className={cn("quick-pill", selected(value) && "is-selected")}
-          onClick={() => onPick(value)}
-        >
-          {selected(value) && <Check size={16} aria-hidden="true" />}
-          {labels[value] ?? value}
-        </button>
-      ))}
-    </div>
-  );
-}
 
 /**
  * The guided jobs form. Questions unlock one below another and stay editable;
@@ -160,6 +117,10 @@ export function QuickApply({
   // page's market, the link's ?cluster=, the decided market, or ask.
   const areaSource: AreaSource = pageCluster ? "page" : cluster ? "link" : decidedMarket ? "decision" : "ask";
   const areaMarket = cluster ?? decidedMarket;
+  // The form's own area answers; the step ranks them with location guesses (src/markets/home.ts).
+  const firstKey = firstMarkets.join(",");
+  const areaFirst = useMemo(() => (firstKey ? firstKey.split(",") : []), [firstKey]);
+  const areaIntent = useMemo(() => areaOptions(areaMarket, areaSource, areaFirst), [areaMarket, areaSource, areaFirst]);
   const entry = useRef<"preset" | "fresh" | "restored">("fresh");
   const [missingFiles, setMissingFiles] = useState(false);
   const submission = useJobSubmission("vayasya-quick-submission");
@@ -289,14 +250,22 @@ export function QuickApply({
   }, [phase.name, failedChecks]);
 
 
-  function pick(step: StepDef, value: string) {
+  function pick(step: StepDef, value: string, where?: HomePick) {
     markStarted();
     // changed = yes when an answer already given is changed: a sign the
     // question or its choices confused someone.
     if (step.kind === "single") {
       pendingStep.current = step.id;
       const before = answers[step.id]?.[0];
-      setAnswers((a) => ({ ...a, [step.id]: [value] }));
+      // Where the person lives goes with the area it files under; an area alone clears it.
+      setAnswers((a) => {
+        const next = { ...a, [step.id]: [value] };
+        if (step.id === "area") {
+          if (where?.home) next.home = [where.home];
+          else delete next.home;
+        }
+        return next;
+      });
       // Where the person lives: remembered 30 days (owner decision, 18 Oct 2026; src/context).
       if (step.id === "area" && Object.hasOwn(AREA_CLUSTERS, value)) {
         const c = AREA_CLUSTERS[value as keyof typeof AREA_CLUSTERS];
@@ -312,7 +281,11 @@ export function QuickApply({
         params.changed = before === value ? "no" : "yes";
         setReopened((r) => r.filter((id) => id !== step.id));
       }
-      if (step.id === "area") Object.assign(params, { area_source: areaSource, decided: areaMarket ?? "none", band: ctx?.region.band ?? "unknown", v: CONTEXT_VERSION });
+      if (step.id === "area") {
+        Object.assign(params, { area_source: areaSource, decided: areaMarket ?? "none", band: ctx?.region.band ?? "unknown", v: CONTEXT_VERSION });
+        // How the answer was found, and the state (never the town) of the place picked.
+        if (where) Object.assign(params, { pick: where.pick, position: where.position, guesses: where.guesses, home_state: (where.home && homeStateOf(where.home)) ?? "none" });
+      }
       track("quick_step", params);
       return;
     }
@@ -372,7 +345,7 @@ export function QuickApply({
 
     const role = roleFor(answers);
     // Only the questions that applied: the intake stores them as data.
-    const sent = cleanQuickAnswers(Object.fromEntries(active.map((s) => [s.id, answers[s.id] ?? []])));
+    const sent = cleanQuickAnswers({ ...Object.fromEntries(active.map((s) => [s.id, answers[s.id] ?? []])), home: answers.area?.length ? (answers.home ?? []) : [] });
 
     const declared = declareFiles(files);
     // The page the form sits on, without its locale segment (/jobs/haridwar).
@@ -406,7 +379,8 @@ export function QuickApply({
         holdout: ctx?.holdout ? "yes" : "no",
       };
       track("job_form_submit", { ...summary, page: formPage() });
-      track("quick_apply_submit", summary);
+      // The state the person lives in goes to Umami and GA4 only, never to Meta.
+      track("quick_apply_submit", { ...summary, home_state: (answers.home?.[0] && homeStateOf(answers.home[0])) ?? "none" });
       trackConversion("jobApplication");
     } catch (error) {
       const key = error instanceof JobSubmissionFailure ? error.reason : "network";
@@ -475,15 +449,33 @@ export function QuickApply({
           <section key={step.id} className="quick-section" data-step={step.id}>
             <h2 id={`quick-q-${step.id}`} tabIndex={-1} className="quick-question form-scroll-target">{q.question}</h2>
             {q.hint && <p className="quick-hint">{q.hint}</p>}
-            <Pills
-              labelledBy={`quick-q-${step.id}`}
-              options={step.id === "area" ? areaChoices(areaOptions(areaMarket, areaSource, firstMarkets), answers.area?.[0]) : step.options}
-              labels={t.labels}
-              multi={step.kind === "multi"}
-              disabled={locked}
-              selected={(v) => values.includes(v)}
-              onPick={(v) => pick(step, v)}
-            />
+            {step.id === "area" ? (
+              <HomeStep
+                locale={locale}
+                intent={areaIntent}
+                source={areaSource}
+                market={areaMarket}
+                first={areaFirst}
+                guessing={Boolean(ctx && !ctx.holdout)}
+                area={answers.area?.[0]}
+                home={answers.home?.[0]}
+                labels={t.labels}
+                copy={t.home}
+                labelledBy={`quick-q-${step.id}`}
+                disabled={locked}
+                onPick={(where) => pick(step, where.area, where)}
+              />
+            ) : (
+              <Pills
+                labelledBy={`quick-q-${step.id}`}
+                options={step.options}
+                labels={t.labels}
+                multi={step.kind === "multi"}
+                disabled={locked}
+                selected={(v) => values.includes(v)}
+                onPick={(v) => pick(step, v)}
+              />
+            )}
             {step.kind === "multi" && (
               <button type="button" className="jobs-submit mt-6" disabled={locked || values.length === 0} onClick={() => confirm(step)}>
                 {t.next}

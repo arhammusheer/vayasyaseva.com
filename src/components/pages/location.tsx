@@ -175,19 +175,23 @@ export function LocationPage({ page: source, locale = "en-IN" }: { page: Locatio
   );
 }
 
-/**
- * /locations: every market's buyer page, one line each, in MARKET_ORDER
- * (no market first, owner direction 17 Oct 2026); MarketList moves the
- * visitor's market(s) to the front after load.
- */
-export function LocationsIndex() {
+/** Every published market hub, one line each, in MARKET_ORDER (no market first, owner direction 17 Oct 2026). */
+export function locationHubItems(): MarketItem[] {
   const hubs = new Map(
     [...locationPages.values()].filter((p) => !p.estate && linkable(pathOf(p), "en-IN")).map((p) => [p.cluster as string, p]),
   );
-  const items: MarketItem[] = MARKET_ORDER.flatMap((id) => {
+  return MARKET_ORDER.flatMap((id) => {
     const h = hubs.get(id);
     return h ? [{ cluster: id, href: localizeHref(pathOf(h), "en-IN"), title: h.name, text: h.lede }] : [];
   });
+}
+
+/**
+ * /locations: every market's buyer page, one line each, in MARKET_ORDER;
+ * MarketList moves the visitor's market(s) to the front after load.
+ */
+export function LocationsIndex() {
+  const items = locationHubItems();
   return (
     <>
       <JsonLd data={webPageSchema({ name: "Locations", description: "Where Vayasya Seva supplies contract labour crews.", url: "/locations", type: "CollectionPage" })} />

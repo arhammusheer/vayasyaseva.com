@@ -676,6 +676,13 @@ a:hover > svg {
   line-height: 1.07;
   letter-spacing: -0.035em;
 }
+/* Home: every market's buyer page, on the intro's two-column grid. */
+.home-intro.home-locations {
+  padding-block: 90px;
+}
+.home-locations .location-areas {
+  margin-top: 30px;
+}
 .home-intro p:not(.eyebrow) {
   max-width: 560px;
   margin-top: 25px;
@@ -994,6 +1001,9 @@ a:hover > svg {
   }
   .home-intro {
     padding-block: 65px 45px;
+  }
+  .home-intro.home-locations {
+    padding-block: 55px;
   }
   .home-intro h2,
   .section-intro h2 {

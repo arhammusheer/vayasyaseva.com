@@ -89,11 +89,11 @@ export const hyderabadPages: LocationCopy[] = [
     cluster: "hyderabad",
     name: "Hyderabad",
     placeId: "hyderabad",
-    metaTitle: "Labour Contractor in Hyderabad",
+    metaTitle: "Labour Contractor and Manpower Supplier in Hyderabad",
     description:
-      "Supervised contract labour crews for pharma, engineering and logistics units in Hyderabad: Patancheru, Pashamylaram, Jeedimetla, Cherlapally and Shamshabad.",
-    heading: "Labour contractor in Hyderabad.",
-    lede: "Supervised crews for pharma, engineering and logistics units across Hyderabad's industrial belts.",
+      "Labour supplier for pharma, engineering and logistics units in Hyderabad: supervised contract workers in Patancheru, Jeedimetla, Cherlapally and Shamshabad.",
+    heading: "Labour contractor and manpower supplier in Hyderabad.",
+    lede: "Supervised contract workers for pharma, engineering and logistics units across Hyderabad's industrial belts.",
     paragraph:
       "Hyderabad is India's bulk drug centre: Telangana makes about a third of the country's pharma output and half its bulk drug exports. The city's industry sits in TGIIC parks around it: Patancheru and Pashamylaram to the north-west, in Sangareddy district; Jeedimetla and Medchal to the north and Cherlapally to the east, in Medchal-Malkajgiri; Genome Valley at Shamirpet; and Shamshabad, Kothur and Adibatla to the south, in Rangareddy. We take requirements from units in {areas}.",
     areas: [
@@ -105,8 +105,8 @@ export const hyderabadPages: LocationCopy[] = [
     ],
     faqs: [
       {
-        question: "Do you supply contract labour in Hyderabad?",
-        answer: "Yes. Supervised factory, loading and unloading, and housekeeping crews, on our payroll and run on your site by our supervisor.",
+        question: "Are you a manpower supplier in Hyderabad?",
+        answer: "Yes. We supply contract labour: supervised factory, loading and unloading, and housekeeping crews, on our payroll and run on your site by our supervisor.",
         category: "commercial",
       },
       {

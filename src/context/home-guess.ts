@@ -34,7 +34,8 @@ export function homeGuess(headers: Headers): HomeGuess {
   const state = code && isStateId(code) ? code : undefined;
   const lat = coordinate(headers.get("x-vercel-ip-latitude") ?? headers.get("cf-iplatitude"), 90);
   const lon = coordinate(headers.get("x-vercel-ip-longitude") ?? headers.get("cf-iplongitude"), 180);
-  const named = placeNamed(visitorCity(headers));
+  // A city name is only trusted inside the IP's state (Bilaspur is in Himachal and Chhattisgarh).
+  const named = placeNamed(visitorCity(headers), state);
   let near = lat !== undefined && lon !== undefined ? nearestPlaces(lat, lon).map((p) => p.id) : [];
   // The IP's own city leads when it is one of the near ones (or there is no position).
   if (named && (!near.length || near.includes(named))) near = [named, ...near.filter((id) => id !== named)];

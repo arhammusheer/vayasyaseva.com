@@ -16,7 +16,7 @@ what to put first and measures what people pick. Owner decisions of
 - The jobs form's area answer is kept 30 days.
 - The crew form's site place is client evidence.
 - Job seekers outside our markets see nearby markets first.
-- A **10% holdout** sees the neutral site.
+- A **10% holdout** sees no market inferred for it (audience and language still follow the visitor).
 - The phone's language always gets a picker slot.
 - Location pages put the jobs button first for a decided job seeker.
 
@@ -150,9 +150,14 @@ NCR, Himachal, J&K, Chandigarh, the south) or their market has no jobs hub
 decision: the jobs door and Apply stay on `/jobs`.
 
 **Holdout**: 10% of sessions (drawn at session start) get neutral sides and
-no nearby markets, so nothing inferred is put first. A pick and the page's
+no nearby markets, so no inferred market is put first. A pick and the page's
 own market still apply. The decision is still computed and reported (`holdout=yes`), so the
 two groups compare like for like.
+
+The holdout covers markets only. Audience (doors, button order) and language
+(the switch's order) are inferred for every session, so it is not an
+unpersonalised control: lift against it is what market personalisation adds
+on top of the rest.
 
 ## What follows the decision
 
@@ -283,7 +288,8 @@ Metrics (from these, one `v` at a time):
 - **Form correction rate**: `quick_step` area answers with
   `area_source=decision` whose answer is another market's. Target: 10% or less.
 - **Lift**: applications and enquiries per session, `holdout=no` against
-  `holdout=yes` (`quick_apply_submit` and `generate_lead` by session).
+  `holdout=yes` (`quick_apply_submit` and `generate_lead` by session). This
+  is market personalisation's lift only (see Holdout).
 - **Basis mix**: `area_intent` by `basis` and `band`. Weights are tuned
   where a basis's decisions are often corrected.
 - **Demand per market**: `application_received` by `cluster`.

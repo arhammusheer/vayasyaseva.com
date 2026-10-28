@@ -273,3 +273,35 @@ test("report: decisions are sent once per context session, not once per tab", as
     delete globalThis.window;
   }
 });
+
+test("runtime: a pick holds on the page when the cookie can't be written", async () => {
+  const store = {};
+  const storage = { getItem: (k) => store[k] ?? null, setItem: (k, v) => (store[k] = v), removeItem: (k) => delete store[k] };
+  const html = { getAttributeNames: () => [], removeAttribute: () => {}, setAttribute: () => {} };
+  const stubs = {
+    window: { sessionStorage: storage, localStorage: { getItem: () => null, setItem: () => {}, removeItem: () => {} }, addEventListener: () => {}, dispatchEvent: () => true },
+    // Cookies blocked: writes vanish, reads return only what the proxy set.
+    document: { documentElement: html, get cookie() { return "vs_geo=IN.UK.haridwar.c"; }, set cookie(_) {} },
+    navigator: { languages: ["en-IN"] },
+    location: { protocol: "https:" },
+  };
+  const saved = Object.fromEntries(Object.keys(stubs).map((k) => [k, Object.getOwnPropertyDescriptor(globalThis, k)]));
+  for (const [k, v] of Object.entries(stubs)) Object.defineProperty(globalThis, k, { value: v, configurable: true, writable: true });
+  try {
+    const runtime = await importTs("src/context/runtime.ts");
+    runtime.pageView("/jobs/10th-pass", "");
+    assert.deepEqual([runtime.currentContext().region.band, runtime.currentContext().region.markets], ["leaning", ["haridwar"]]);
+    runtime.notePick("link", "bengaluru");
+    assert.deepEqual([runtime.currentContext().region.band, runtime.currentContext().region.markets], ["stated", ["bengaluru"]]);
+    runtime.noteAudience("business");
+    assert.deepEqual([runtime.currentContext().audience.value, runtime.currentContext().audience.stated], ["business", true]);
+    // The next page in the same tab keeps both.
+    runtime.pageView("/jobs/12th-pass", "");
+    assert.deepEqual([runtime.currentContext().region.band, runtime.currentContext().audience.value], ["stated", "business"]);
+  } finally {
+    for (const [k, d] of Object.entries(saved)) {
+      if (d) Object.defineProperty(globalThis, k, d);
+      else delete globalThis[k];
+    }
+  }
+});

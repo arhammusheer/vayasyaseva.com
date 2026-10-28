@@ -103,5 +103,5 @@ export const PICK_DAYS: ContextTables["days"] = {
   audience: 90,
 };
 
-/** Share of sessions that see the neutral site whatever was inferred (owner decision, 18 Oct 2026). */
+/** Share of sessions that get no inferred market, whatever was inferred (owner decision, 18 Oct 2026). */
 export const HOLDOUT_SHARE = 0.1;

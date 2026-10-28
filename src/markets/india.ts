@@ -319,10 +319,14 @@ const SEARCH_WORDS: ReadonlyMap<HomeId, readonly string[]> = new Map(
   ]),
 );
 
-/** The city an IP city names exactly (a part of its name or another spelling), if any. */
-export function placeNamed(city: string | null | undefined): HomeId | undefined {
+/**
+ * The city an IP city names exactly (a part of its name or another
+ * spelling), if any. With the IP's state, only a city in that state: a
+ * Bilaspur in Himachal (no row of its own) is not Chhattisgarh's.
+ */
+export function placeNamed(city: string | null | undefined, state?: HomeState): HomeId | undefined {
   const t = city ? latin(city) : "";
-  return t ? Object.keys(CITY_ROWS).find((id) => SEARCH_WORDS.get(id)!.includes(t)) : undefined;
+  return t ? Object.keys(CITY_ROWS).find((id) => (!state || homeStateOf(id) === state) && SEARCH_WORDS.get(id)!.includes(t)) : undefined;
 }
 
 const fold = (s: string) => s.normalize("NFC").toLowerCase().replace(/\s+/g, " ").trim();

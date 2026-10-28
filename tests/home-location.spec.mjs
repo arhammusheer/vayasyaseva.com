@@ -113,4 +113,7 @@ test("the IP guess: nearest places and state, India only, nothing else", () => {
   assert.equal(far.near[0], "dl");
   assert.equal(far.confident, undefined);
   assert.deepEqual(homeGuess(h({ "x-vercel-ip-country": "IN", "x-vercel-ip-latitude": "abc", "x-vercel-ip-longitude": "" })), {});
+  // A city name only counts inside the IP's state: Bilaspur, Himachal is not Bilaspur, Chhattisgarh.
+  assert.deepEqual(homeGuess(h({ "x-vercel-ip-country": "IN", "x-vercel-ip-country-region": "HP", "x-vercel-ip-city": "Bilaspur" })), { state: "hp" });
+  assert.deepEqual(homeGuess(h({ "x-vercel-ip-country": "IN", "x-vercel-ip-country-region": "CT", "x-vercel-ip-city": "Bilaspur" })), { state: "cg", near: ["cg:bilaspur"], confident: true });
 });

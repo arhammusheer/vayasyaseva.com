@@ -45,7 +45,7 @@ export function Analytics({ gaId }: { gaId: string }) {
 
   // Session properties in Umami, so any report can be filtered by language,
   // consent, the ad campaign that brought the visit and the visitor
-  // context's holdout (src/context: 10% of sessions see the neutral site).
+  // context's holdout (src/context: 10% of sessions get no inferred market).
   useEffect(() => {
     if (!consentState) return;
     const ctx = currentContext();

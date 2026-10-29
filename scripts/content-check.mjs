@@ -261,7 +261,7 @@ for (const state of wageStates) {
   if (!state.checked.by) warn(`C8 wages ${state.state}: no sign-off yet (checked.by); the page says the figures were updated from the state's documents, not that anyone checked them`);
   const status = wageStatus(state);
   if (status.stale) warn(`C8 wages ${state.state}: stale since ${status.staleFrom} (revision expected ${state.nextRevision.expected}, last check ${state.checked.on}); the page shows the "may have been revised" notice until it is re-checked`);
-  else if (status.revisionDue) warn(`C8 wages ${state.state}: revision was due on ${state.nextRevision.expected}; re-check the state's sources before ${status.staleFrom}`);
+  else if (status.revisionDue) warn(`C8 wages ${state.state}: revision was due on ${state.nextRevision.expected}; the page stays current while the monitor's daily listing check finds nothing new (scripts/wage-monitor/checks.mjs); otherwise re-check the state's sources before ${status.staleFrom}`);
 }
 // Employer dues (src/content/statutory.ts): every row cites a listed source,
 // every published state page has its dues, and a warning once the review date

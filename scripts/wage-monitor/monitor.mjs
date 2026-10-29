@@ -443,7 +443,11 @@ export async function runMonitor({ targets, previous, fetcher, now = new Date(),
       continue;
     }
 
-    sources[key] = { ...base, links, allCount, textSha256: sha256(htmlText(html)) };
+    // The day each link was first seen (checks.mjs): a link already there at the hand check is not news.
+    // A link missing from the snapshot, including every link on a first run, counts as seen today.
+    const firstSeen = { ...prev?.firstSeen };
+    for (const l of links) firstSeen[l.url] ??= today;
+    sources[key] = { ...base, links, allCount, textSha256: sha256(htmlText(html)), firstSeen };
     const cited = target.state ? [...citedUrls.values()].filter((d) => d.state === target.state && d.listings.includes(target.url)) : [];
     const missingCited = cited.filter((d) => !links.some((l) => l.url === d.url));
     if (!prev?.links) {

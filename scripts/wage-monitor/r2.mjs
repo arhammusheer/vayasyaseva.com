@@ -40,11 +40,12 @@ export function signRequest({ method, path, query = "", headers, accessKeyId, se
  */
 export function r2Client({ accountId, bucket, accessKeyId, secretAccessKey, fetchImpl = fetch, endpoint = `https://${accountId}.r2.cloudflarestorage.com` }) {
   const host = new URL(endpoint).host;
-  async function send(method, key, { body, contentType, metadata = {} } = {}) {
+  async function send(method, key, { body, contentType, cacheControl, metadata = {} } = {}) {
     const path = `/${bucket}/${key}`;
     const amzDate = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
     const sent = { "x-amz-date": amzDate, "x-amz-content-sha256": body ? hash(body) : hash("") };
     if (contentType) sent["content-type"] = contentType;
+    if (cacheControl) sent["cache-control"] = cacheControl;
     for (const [k, v] of Object.entries(metadata)) sent[`x-amz-meta-${k.toLowerCase()}`] = String(v);
     // fetch sets host itself; it is signed all the same.
     const authorization = signRequest({ method, path, headers: { host, ...sent }, accessKeyId, secretAccessKey });
@@ -58,8 +59,8 @@ export function r2Client({ accountId, bucket, accessKeyId, secretAccessKey, fetc
       if (!res.ok) throw new Error(`R2 HEAD ${key}: HTTP ${res.status}`);
       return true;
     },
-    async put(key, body, { contentType, metadata } = {}) {
-      const res = await send("PUT", key, { body, contentType, metadata });
+    async put(key, body, { contentType, cacheControl, metadata } = {}) {
+      const res = await send("PUT", key, { body, contentType, cacheControl, metadata });
       if (!res.ok) throw new Error(`R2 PUT ${key}: HTTP ${res.status} ${(await res.text()).slice(0, 200)}`);
     },
     /** The object's bytes, or null when it does not exist. */

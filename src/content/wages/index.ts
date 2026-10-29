@@ -208,7 +208,18 @@ export type WageState = {
   history: WageHistory[];
   /** What was read, how, and what it said. Not rendered; kept for review. */
   verification: string[];
+  /** The monitor's last clean read of the state's listings; attached at render (withListingChecks), never in the JSON. */
+  listingCheck?: ListingCheck;
 };
+
+/**
+ * One state's entry in the monitor's published listing checks
+ * (scripts/wage-monitor/checks.mjs, cdn.vayasyaseva.com): `on`, the last
+ * day it read every one of the state's wage listings and found no document
+ * first seen after the hand check; `datasetCheckedOn`, the dataset's
+ * `checked.on` it compared against.
+ */
+export type ListingCheck = { on: string; datasetCheckedOn: string };
 
 /** Hub order: home state first, then the NCR neighbours, then the rest. */
 /** Alphabetical by name, so no state's market is listed first (owner direction, 17 Oct 2026). */
@@ -262,28 +273,69 @@ export const todayIso = (now = new Date()) => now.toISOString().slice(0, 10);
 /** How long past the expected revision (or the last check after it) a page stays current. */
 export const STALE_AFTER_DAYS = 14;
 
+const ISO_DAY = /^\d{4}-\d{2}-\d{2}$/;
+
+/**
+ * The monitor's listing check, where it counts: made against the figures
+ * this build carries (its `datasetCheckedOn` is this dataset's
+ * `checked.on`), after the hand check, and not in the future. Anything else
+ * (a deploy behind the monitor, a malformed file) leaves the hand check alone.
+ */
+export function listingCheckOn(state: WageState, today = todayIso()) {
+  const check = state.listingCheck;
+  if (!check || check.datasetCheckedOn !== state.checked.on || !ISO_DAY.test(check.on)) return null;
+  return check.on > state.checked.on && check.on <= today ? check.on : null;
+}
+
+/** The last check of the state's sources: by hand (`checked.on`), or the monitor's later clean read of its listings. */
+export const lastCheck = (state: WageState, today = todayIso()) => listingCheckOn(state, today) ?? state.checked.on;
+
+/**
+ * The monitor's published checks, as read from cdn.vayasyaseva.com, kept to
+ * the entries with the expected shape. Unknown states and stray fields are dropped.
+ */
+export function parseListingChecks(json: unknown): Partial<Record<string, ListingCheck>> {
+  const states = (json as { version?: unknown; states?: unknown } | null)?.states;
+  if ((json as { version?: unknown })?.version !== 1 || !states || typeof states !== "object") return {};
+  const out: Partial<Record<string, ListingCheck>> = {};
+  for (const [slug, entry] of Object.entries(states as Record<string, { on?: unknown; datasetCheckedOn?: unknown }>)) {
+    if (!wageStates.some((s) => s.state === slug)) continue;
+    const { on, datasetCheckedOn } = entry ?? {};
+    if (typeof on === "string" && typeof datasetCheckedOn === "string" && ISO_DAY.test(on) && ISO_DAY.test(datasetCheckedOn)) out[slug] = { on, datasetCheckedOn };
+  }
+  return out;
+}
+
+/** The datasets with each state's listing check attached, for the pages to date themselves by. */
+export const withListingChecks = (states: readonly WageState[], checks: Partial<Record<string, ListingCheck>>) =>
+  states.map((s) => (checks[s.state] ? { ...s, listingCheck: checks[s.state] } : s));
+
 /**
  * The staleness rule (PLAN §5.5): more than 14 days past the expected
  * revision with no newer check recorded. A check made after the expected
- * date counts as newer and keeps the page current for another 14 days,
- * so the daily monitor (or the updater) has to keep confirming that
- * nothing new was published.
+ * date counts as newer and keeps the page current for another 14 days.
+ * A check is the hand check (`checked.on`) or the daily monitor's clean
+ * read of every listing of the state (`listingCheck`, see lastCheck), so
+ * a revision the state has not published does not age the page while the
+ * monitor keeps reading the listing and finding nothing new.
  */
 export function wageStatus(state: WageState, today = todayIso()) {
   const { expected } = state.nextRevision;
-  const lastCheck = state.checked.on;
-  const staleFrom = addDays(lastCheck > expected ? lastCheck : expected, STALE_AFTER_DAYS + 1);
+  const checkedOn = lastCheck(state, today);
+  const staleFrom = addDays(checkedOn > expected ? checkedOn : expected, STALE_AFTER_DAYS + 1);
   return {
     /** The revision date has passed (a newer notification may be due or late). */
     revisionDue: today >= expected,
     /** The page shows the "may have been revised" notice and drops the year from its title. */
     stale: today >= staleFrom,
     staleFrom,
+    /** The last check, by hand or by the monitor. */
+    checkedOn,
   };
 }
 
 /** The year the rates were last confirmed in force; only on pages that are not stale. */
-export const ratesYear = (state: WageState) => state.checked.on.slice(0, 4);
+export const ratesYear = (state: WageState, today = todayIso()) => lastCheck(state, today).slice(0, 4);
 
 const longDate = new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
 const shortDate = new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });

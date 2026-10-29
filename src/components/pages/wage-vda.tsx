@@ -10,6 +10,7 @@ import { stamp, wageDoors } from "@/content/pages/minimum-wages";
 import { VDA_CYCLE, allowanceNow, cycleStart, statusText, vdaStatus, wageVdaCopy as v } from "@/content/pages/wage-vda";
 import { formatRupees, formatShortDate, headlineTable, todayIso, type WageState } from "@/content/wages";
 import { JsonLd, faqSchema, webPageSchema } from "@/lib/structured-data";
+import { checkedWageStates } from "@/lib/wage-listing-checks";
 import { localePath } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
 
@@ -20,11 +21,11 @@ import { pageMetadata } from "@/lib/metadata";
  * date. A state in review is not listed, as on the hub.
  */
 
-export function wageVdaMetadata() {
+export async function wageVdaMetadata() {
   const today = todayIso();
-  const states = listedStates();
+  const states = listedStates(await checkedWageStates());
   return pageMetadata({
-    title: v.title(hubStale(today) ? null : hubYear()),
+    title: v.title(hubStale(today, states) ? null : hubYear(states, today)),
     description: v.description(
       states.map((s) => s.name),
       stamp(states),
@@ -72,10 +73,10 @@ function unskilledOf(rates: { skill: string; monthly: number }[]) {
 
 const signed = (n: number) => (n === 0 ? "No change" : `${n > 0 ? "+" : "−"}${formatRupees(Math.abs(Math.round(n * 100) / 100))}`);
 
-export function WageVdaPage() {
+export async function WageVdaPage() {
   const today = todayIso();
   const cycle = cycleStart(today);
-  const states = listedStates();
+  const states = listedStates(await checkedWageStates());
   const rows = states.map((state) => ({ state, allowance: allowanceNow(state), status: vdaStatus(state, today) }));
   const revised = rows.filter((r) => r.status.kind === "revised" && r.allowance).map((r) => r.state.name);
   const due = rows.filter((r) => r.status.kind === "due").map((r) => r.state.name);
@@ -83,7 +84,7 @@ export function WageVdaPage() {
   const withDa = rows.filter((r) => r.allowance?.isDa).map((r) => r.state.name);
   const allInclusive = rows.filter((r) => !r.allowance).map((r) => r.state.name);
   const faqs = v.faqs(states, today);
-  const title = v.title(hubStale(today) ? null : hubYear());
+  const title = v.title(hubStale(today, states) ? null : hubYear(states, today));
   return (
     <>
       <JsonLd data={webPageSchema({ name: title, description: v.description(states.map((s) => s.name), stamp(states)), url: localePath(WAGE_VDA_PATH, "en-IN") })} />

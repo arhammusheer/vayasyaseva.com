@@ -32,12 +32,19 @@ const rs = (state: WageState, table: string, zone: string, skill: Skill) => form
 export const stamp = (states: readonly WageState[]) =>
   `${states.every((s) => s.checked.by) ? "Checked" : "Updated"} ${formatShortMonth(states.map((s) => s.checked.on).sort()[0])}`;
 
+/** " October 2026" in a title, or " 2026", or nothing on a stale page. */
+const dated = (year: string | null, month: string | null) => (month ? ` ${month}` : year ? ` ${year}` : "");
+
 type FaqItem = { question: string; answer: string };
 type LinkItem = { href: string; label: string };
 
 export type WageStateCopy = {
-  /** Page title before " | Vayasya Seva", without the year (added while the page is current). */
-  title: (year: string | null) => string;
+  /**
+   * Page title before " | Vayasya Seva", without the date: the year, or the
+   * month of the last check ("October 2026"), added while the page is
+   * current. Searchers type the month ("haryana minimum wages october 2026").
+   */
+  title: (year: string | null, month: string | null) => string;
   description: string;
   /** One sentence under the H1: the rate and when it took effect. */
   answer: string;
@@ -87,7 +94,7 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
     const [c1, c2, c3] = ["category-1", "category-2", "category-3"].map((z) => rs(s, t, z, "unskilled"));
     const from = s.tables.find((table) => table.id === t)!.effectiveFrom;
     return {
-      title: (year) => `Minimum Wage in Uttar Pradesh${year ? ` ${year}` : ""}: UP Rates by Skill`,
+      title: (year, month) => `Uttar Pradesh Minimum Wage${dated(year, month)}: UP Rates`,
       description: `UP minimum wage from ${formatShortDate(from)}, unskilled: ${c1} Noida/Ghaziabad, ${c2} Nagar Nigam districts, ${c3} elsewhere. ${stamp([s])}.`,
       answer: `From ${formatDate(from)}, unskilled work in Uttar Pradesh pays at least ${c1} a month in Gautam Buddha Nagar (Noida) and Ghaziabad, ${c2} in other Nagar Nigam districts and ${c3} everywhere else.`,
       faqs: [
@@ -109,7 +116,7 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
     const from = s.tables[0].effectiveFrom;
     const latest = s.sources.find((x) => x.id === "dl-2025-04")!;
     return {
-      title: (year) => `Delhi Minimum Wage${year ? ` ${year}` : ""}: ${formatRupees(unskilled.daily ?? 0)}/day, ${formatRupees(unskilled.monthly)}/month`,
+      title: (year, month) => `Delhi Minimum Wage${dated(year, month)}: ${formatRupees(unskilled.monthly)}/month`,
       description: `Delhi minimum wage from ${formatShortDate(from)}: ${rs(s, t, "delhi", "unskilled")} a month (${formatRupees(unskilled.daily ?? 0)} a day) unskilled, ${rs(s, t, "delhi", "semi-skilled")} semi-skilled, ${rs(s, t, "delhi", "skilled")} skilled. Latest order. ${stamp([s])}.`,
       answer: `From ${formatDate(from)}, Delhi's minimum wage is ${formatRupees(unskilled.monthly)} a month for unskilled work, ${rs(s, t, "delhi", "semi-skilled")} semi-skilled and ${rs(s, t, "delhi", "skilled")} skilled.`,
       note: {
@@ -134,7 +141,7 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
     const u = rate(s, t, "haryana", "unskilled");
     const from = s.tables[0].effectiveFrom;
     return {
-      title: (year) => `Haryana Minimum Wage${year ? ` ${year}` : ""}: ${formatRupees(u.monthly)}/month Unskilled`,
+      title: (year, month) => `Haryana Minimum Wage${dated(year, month)}: ${formatRupees(u.monthly)}/month`,
       description: `Haryana minimum wage from ${formatShortDate(from)}: ${rs(s, t, "haryana", "unskilled")} a month (${formatRupees(u.daily ?? 0)} a day) unskilled, ${rs(s, t, "haryana", "semi-skilled")} semi-skilled, ${rs(s, t, "haryana", "skilled")} skilled. ${stamp([s])}.`,
       answer: `From ${formatDate(from)}, unskilled work anywhere in Haryana pays at least ${formatRupees(u.monthly)} a month, or ${formatRupees(u.daily ?? 0)} a day. One rate covers the whole state.`,
       note: {
@@ -159,7 +166,7 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
     const u = rate(s, t, "punjab", "unskilled");
     const from = s.tables[0].effectiveFrom;
     return {
-      title: (year) => `Punjab Minimum Wage${year ? ` ${year}` : ""}: ${formatRupees(u.daily ?? 0)}/day, ${formatRupees(u.monthly)}/month`,
+      title: (year, month) => `Punjab Minimum Wage${dated(year, month)}: ${formatRupees(u.monthly)}/month`,
       description: `Punjab minimum wage from ${formatShortDate(from)}: ${rs(s, t, "punjab", "unskilled")} a month (${formatRupees(u.daily ?? 0)} a day) unskilled, ${rs(s, t, "punjab", "semi-skilled")} semi-skilled, ${rs(s, t, "punjab", "skilled")} skilled, plus staff rates. ${stamp([s])}.`,
       answer: `From ${formatDate(from)}, unskilled work anywhere in Punjab pays at least ${formatRupees(u.monthly)} a month, or ${formatRupees(u.daily ?? 0)} a day. One rate covers the whole state.`,
       faqs: [
@@ -389,7 +396,10 @@ export function stateDoors(slug: WageStateSlug, name: string, department: LinkIt
 /** Labels the wage page components use. */
 export const wageUi = {
   minimumWages: "Minimum wages",
-  stateHeading: (name: string, year: string | null) => `Minimum wages in ${name}${year ? `, ${year}` : ""}.`,
+  /** The H1, dated with the month of the last check ("October 2026") while the page is current. */
+  stateHeading: (name: string, when: string | null) => `Minimum wages in ${name}${when ? `, ${when}` : ""}.`,
+  /** After the answer when the rates predate the month of the check and no revision is overdue: the dated search's answer. */
+  stillApplies: (month: string) => `No newer notification was listed when we checked in ${month}, so these rates still apply.`,
   /** The line under each H1: who checked and when, or the unsigned wording until someone signs off. */
   checked: (by: string | null, date: string) => (by ? `Checked ${date} by ${by}` : `Updated ${date}`),
   howWeCheck: "How we check",

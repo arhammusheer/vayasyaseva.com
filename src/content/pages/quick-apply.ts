@@ -14,7 +14,6 @@ import { NO_FEE, SHIFTS_LINE } from "@/content/pages/jobs";
  */
 /** Answer ids per question, from the shared rules (also read by the Windmill intake). */
 const ids = (q: QuickQuestion) => Object.keys(QUICK_ANSWERS[q]);
-export const WORK_OPTIONS = Object.keys(QUICK_ANSWERS.work) as (keyof typeof QUICK_ANSWERS.work)[];
 export type WorkOption = keyof typeof QUICK_ANSWERS.work;
 
 export type Answers = Record<string, string[]>;

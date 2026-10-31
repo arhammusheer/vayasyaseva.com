@@ -49,10 +49,6 @@ export const CONTACT_AGENT_REQUIRED = (() => {
 })();
 export const CONTACT_AGENT_COMPANY = "Include company when the person gives it (ask for it)";
 
-export const contactRequiredFields = Object.entries(fields)
-  .filter(([, definition]) => definition.required)
-  .map(([fieldName]) => fieldName);
-
 /** A stored id's label, or the id itself if the field or value is unknown. */
 export function contactOptionLabel(field: keyof ContactFormData, id: string | undefined) {
   if (!id) return undefined;

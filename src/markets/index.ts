@@ -5,10 +5,8 @@
  * carries no labels: those are in ./labels.ts and ./schema-org.ts, imported
  * on their own. Never import the registry, i18n, React or page content here.
  */
-import { CLUSTER_IDS, type ClusterId } from "@/content/registry/identifiers";
-import { AREA_CLUSTERS } from "@/lib/talent-intake/rules";
 import { FORM_AREAS, MARKET_AREA_ANSWERS, areaFilesUnder, areaSetOf, type AreaId } from "./areas";
-import { MARKETS, MARKET_IDS, REGION_ALIASES, type LanguageSetName, type MarketId, type MarketRecord, type PlaceGroup, type RegionCode, type Side } from "./data";
+import { MARKETS, MARKET_IDS, REGION_ALIASES, type MarketId, type MarketRecord, type PlaceGroup, type RegionCode, type Side } from "./data";
 import { PLACES_BY_ID, type Place, type PlaceId } from "./places";
 
 export { MARKETS, MARKET_IDS, NEARBY, NON_MARKET_CLUSTERS, REGION_ALIASES } from "./data";
@@ -19,7 +17,6 @@ export type { Place, PlaceId } from "./places";
 export type { AreaId } from "./areas";
 
 export const isMarketId = (id: unknown): id is MarketId => typeof id === "string" && (MARKET_IDS as readonly string[]).includes(id);
-export const isClusterId = (id: unknown): id is ClusterId => typeof id === "string" && (CLUSTER_IDS as readonly string[]).includes(id);
 
 /** The records widened to MarketRecord, for queries over every market. */
 const RECORDS: Readonly<Record<MarketId, MarketRecord>> = MARKETS;
@@ -53,7 +50,6 @@ export const marketForRegion = (region: string | null | undefined): MarketId | u
   const code = canonicalRegion(region);
   return code && Object.hasOwn(REGION_MARKETS, code) ? REGION_MARKETS[code] : undefined;
 };
-export const marketForSiteState = marketForRegion;
 /** The states a cluster's sites are in; none for a cluster that is not a market. */
 export const statesOf = (id: string): readonly RegionCode[] => (isMarketId(id) ? RECORDS[id].states : []);
 /** The markets whose sites are in a state, in MARKET_IDS order. */
@@ -145,7 +141,7 @@ export function siteMarket(state: string | null | undefined, city: string | null
   const named = marketForPlace(city, { region: state, match: "word" });
   if (named) return named;
   if (pageCluster && marketCoversState(pageCluster, state)) return pageCluster;
-  return marketForSiteState(state) ?? null;
+  return marketForRegion(state) ?? null;
 }
 
 /** A place id from a crew link (#location=), as stored in PLACES_BY_ID. */
@@ -168,10 +164,6 @@ export function marketsInAdTags(values: readonly (string | null | undefined)[]):
 }
 
 /* ---------- Languages and sides ---------- */
-
-/** The picker's language order for a market; none for a cluster that is not a market (Saharanpur, "other"). */
-export const languageSetFor = (cluster: string | null | undefined): LanguageSetName | undefined =>
-  isMarketId(cluster) ? RECORDS[cluster].languageSet : undefined;
 
 /** The header language switch for a market's pages; undefined for a cluster that is not a market. */
 export const quickSwitchFor = (cluster: string | null | undefined) => (isMarketId(cluster) ? MARKETS[cluster].quickSwitch : undefined);
@@ -196,9 +188,6 @@ export { areaFilesUnder };
 
 /** The set an area answer came from (analytics): "market", a market's id, or "none". */
 export const areaSet = (id: string | undefined) => (!id ? "none" : areaSetOf(id));
-
-/** Whether an id is a stored area answer. */
-export const isAreaId = (id: string): id is AreaId => Object.hasOwn(AREA_CLUSTERS, id);
 
 /* ---------- Analytics ---------- */
 

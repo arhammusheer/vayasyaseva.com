@@ -271,7 +271,6 @@ export const CITY_ROWS: Readonly<Record<string, PlaceRow>> = {
   "dh:daman": at(20.41, 72.83, 1),
 };
 
-export const isHomeId = (id: unknown): id is HomeId => typeof id === "string" && (Object.hasOwn(HOME_STATES, id) || Object.hasOwn(HOME_CITIES, id));
 export const isStateId = (id: string): id is HomeState => Object.hasOwn(HOME_STATES, id);
 export const placeRow = (id: HomeId): PlaceRow | undefined =>
   isStateId(id) ? STATE_ROWS[id] : Object.hasOwn(CITY_ROWS, id) ? CITY_ROWS[id] : undefined;

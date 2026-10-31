@@ -23,10 +23,6 @@ export interface WebsiteEvent {
   link?: { label: string; url: string };
 }
 
-export function notifyConfigured(): boolean {
-  return Boolean(process.env.NOTIFY_URL?.trim() && process.env.NOTIFY_INGEST_SECRET?.trim());
-}
-
 /** True when the hub accepted it (202). Never throws; logs the status only. */
 export async function notifyHub(event: WebsiteEvent, fetchImpl: typeof fetch = fetch): Promise<boolean> {
   const url = process.env.NOTIFY_URL?.trim();

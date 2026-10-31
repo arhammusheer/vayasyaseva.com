@@ -205,8 +205,3 @@ export function subscribe(listener: () => void) {
 export function currentContext(): VisitorContext | null {
   return state?.ctx ?? window.__vsctx?.ctx ?? null;
 }
-
-/** The current page's signals (measurement, the jobs form). */
-export function currentSignals(): ContextSignals | null {
-  return state?.signals ?? window.__vsctx?.signals ?? null;
-}

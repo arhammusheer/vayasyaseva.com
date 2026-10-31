@@ -82,12 +82,6 @@ export const LOCATION_CLUSTERS = Object.keys(LOCATION_ESTATES) as LocationCluste
 export const locationPath = (cluster: LocationCluster) => `${LOCATIONS_PATH}/${cluster}`;
 export const estatePath = (cluster: LocationCluster, estate: string) => `${LOCATIONS_PATH}/${cluster}/${estate}`;
 
-/** The business form keeps its URL; its page heading is "Request a crew". */
-export const BUSINESS_FORM_PATH = "/contact";
-
-/** A cluster's buyer hub. */
-export const locationHubPath = (cluster: Exclude<ClusterId, "other">) => `/locations/${cluster}`;
-
 /** Jobs hubs share the /jobs/<slug> namespace with roles and hubs; see content:check. */
 export const jobsHubPath = (cluster: Exclude<ClusterId, "other">) => `/jobs/${cluster}`;
 

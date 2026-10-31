@@ -1,10 +1,10 @@
 /**
- * Form prefill from the link's fragment, e.g. /jobs#phone=98…&work=packing.
+ * Form prefill from the link's fragment, e.g. /jobs#name=…&phone=98….
  * AI assistants build these links after asking the person conversationally
  * (see /llms.txt). The fragment never reaches the server, logs or analytics.
  * Values only fill fields: nothing is ticked or sent for the person.
  */
-export const JOB_PREFILL_FIELDS = ["name", "phone", "work", "experience", "location", "start", "about"] as const;
+
 /**
  * "Request a crew" (/contact). Ids as in contact.contract.json: roles
  * (comma-separated), headcount (a band such as 50-99, or a number), state
@@ -47,11 +47,4 @@ export function readPrefill<K extends string>(fields: readonly K[]): Partial<Rec
   // Clear the details from the address bar so they aren't shared or bookmarked by accident.
   history.replaceState(history.state, "", window.location.pathname + window.location.search);
   return values;
-}
-
-/** "Label: value" lines for the values present, in the given order. */
-export function labelledLines(values: Record<string, string | undefined>, labels: Record<string, string>) {
-  return Object.entries(labels)
-    .filter(([key]) => values[key])
-    .map(([key, label]) => `${label}: ${values[key]}`);
 }

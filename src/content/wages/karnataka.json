@@ -17,7 +17,7 @@
    "number": "LD 411 LWA 2023",
    "date": "2026-05-22",
    "authority": "Labour Department, Government of Karnataka",
-   "legalBasis": "Minimum Wages Act, 1948, sections 3(1)(b) and 5(1)(b), continued by section 69 of the Code on Wages, 2019. Karnataka Gazette (Extraordinary) Part IVA No. 389, 25 May 2026. In force from 22 May 2026; challenged in the Karnataka High Court (WP 16145/2026), which refused employers interim relief in September 2026.",
+   "legalBasis": "Minimum Wages Act, 1948, sections 3(1)(b) and 5(1)(b), continued by section 69 of the Code on Wages, 2019. Karnataka Gazette (Extraordinary) Part IVA No. 389, 25 May 2026. In force from 22 May 2026; challenged in the Karnataka High Court (WP 16145/2026), which refused employers interim relief in September 2026 and stayed government circulars that had held back the new rates. A Cabinet sub-committee formed in August 2026 is reviewing the notification; no decision had been reported by 31 October 2026.",
    "url": "https://karmikaspandana.karnataka.gov.in/uploads/media_to_upload1780292271.pdf",
    "listing": "https://karmikaspandana.karnataka.gov.in/47/minimum-wages-final-notification/en",
    "language": "kn",
@@ -75,7 +75,7 @@
    "daily": "stated",
    "basicLabel": "Basic (notified)",
    "vdaLabel": "VDA",
-   "vdaNote": "The notification fixes the basic rates and a VDA of ₹1,030.80 a month (₹39.64 a day) payable from 22 May 2026, listed separately. The monthly and daily figures here are basic plus VDA, as the department's summary lists them.",
+   "vdaNote": "The notification fixes the basic rates and a variable DA of 4 paise a day for each consumer price index point above 9,469, worked out every 1 April. The Labour Commissioner's summary sheet puts it at ₹1,030.80 a month (₹39.64 a day) from 22 May 2026. The monthly and daily figures here are the basic rate plus that VDA.",
    "rates": [
     {
      "zone": "zone-1",
@@ -180,8 +180,9 @@
  "verification": [
   "2026-10-16: karmikaspandana.karnataka.gov.in 'Minimum Wages Final Notification' lists the single notification LD 411 LWA 2023 dated 22.05.2026 (Gazette Part IVA No. 389, 25 May 2026), in force from 22 May 2026.",
   "2026-10-16: Rates read from the gazette's Annexure 4 page images (the Kannada text layer is garbled) and from the department's English summary sheet. Zone 1 basic: highly skilled 31114.02 (1196.69 a day), skilled 28285.47 (1087.90), semi-skilled 25714.07 (989.00), unskilled 23376.43 (899.09); Zone 2 one step lower; Zone 3 two steps lower. VDA: 859 points x 0.04 x 30 = 1030.80 a month, 39.64 a day, payable from 22-05-2026.",
-  "2026-10-16: DISCREPANCY for the reviewer: Zone 3 unskilled basic reads 19319.36 in the gazette image and 19319.35 in the summary sheet's (poorly scanned) text layer. 19319.36 is used (21251.30 / 1.1 = 19319.36).",
-  "2026-10-16: OPEN QUESTION for the reviewer: the gazette prints basic rates and the VDA separately, with no total column. The monthly figures here add them (basic + VDA), as the department's summary sheet ('Payable VDA Rs. 1030.80/- from 22-05-2026') and consultants read it. Confirm before publishing.",
-  "2026-10-16: The notification is challenged in the Karnataka High Court (WP 16145/2026 with WA 1684-1685/2026). Reports (LiveLaw, Bar & Bench, not primary) say interim relief was refused around 21 Sep 2026 and the circulars of 29 Jul and 10 Aug 2026 deferring the rates were stayed on 18 Sep 2026."
+  "2026-10-16, resolved 2026-10-31: Zone 3 unskilled basic reads 19319.36 in the gazette image and 19319.35 in the summary sheet's (poorly scanned) text layer. Re-read 2026-10-31 from a 400 dpi render of the sheet's image: it prints 19319.36, so 19319.35 was an OCR error in the text layer. 19319.36 is used (21251.30 / 1.1 = 19319.36).",
+  "2026-10-16, confirmed 2026-10-31: the gazette prints basic rates and the VDA separately, with no total column. Gazette page 9, condition 1, sets a variable DA of 4 paise a day for each CPI point above 9469 for all categories, worked out each 1 April from the previous calendar year's average (monthly VDA = points x rate x 30), so the Annexure 4 figures are basic and the VDA is added on top. The department's summary sheet ('Payable VDA Rs. 1030.80/- from 22-05-2026') gives the amount; the gazette gives only the formula. The monthly figures here add them.",
+  "2026-10-16: The notification is challenged in the Karnataka High Court (WP 16145/2026 with WA 1684-1685/2026). Reports (LiveLaw, Bar & Bench, not primary) say interim relief was refused around 21 Sep 2026 and the circulars of 29 Jul and 10 Aug 2026 deferring the rates were stayed on 18 Sep 2026.",
+  "2026-10-31: court status update (news reports, not primary). LiveLaw (21 September 2026): Justice H.T. Narendra Prasad refused interim protection in WP 16145/2026 (Karnataka Employers' Association); he first ordered the petitions heard with WA 1684-1685/2026, then reversed that the same evening because the Division Bench had reserved judgment in those appeals. Deccan Herald and Bar & Bench (19 September 2026): on 18 September the court stayed three circulars, from the Directorate of Municipal Administration, the Panchayat Raj Department and the State Audit and Accounts Department, that deferred the rates for outsourced and contract workers. Urban Acres and LegalSuvidha (17 October 2026, not confirmed by mainstream outlets) report a stay around 16 October of a 9 October 2026 circular that kept urban development and town planning staff on old wages. The Hans India (20 August 2026): a Cabinet sub-committee under G. Parameshwara was formed on 13 August to examine the notification; no decision reported. No stay of the 22 May 2026 notification and no final judgment found. Listing karmikaspandana.karnataka.gov.in/47/ still ends at the two 22-05-2026 entries; both cited PDFs re-downloaded with matching sha256."
  ]
 }

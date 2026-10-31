@@ -106,6 +106,12 @@ test('short state codes 308 to published full slugs only', () => {
   assert.equal(pathAliases['/minimum-wages/up'], '/minimum-wages/uttar-pradesh');
   assert.equal(pathAliases['/minimum-wages/dl'], '/minimum-wages/delhi');
   assert.equal(pathAliases['/minimum-wages/uk'], '/minimum-wages/uttarakhand');
+  assert.equal(pathAliases['/minimum-wages/ka'], '/minimum-wages/karnataka');
+  // Every published state answers to a short code, so a new state cannot ship without one.
+  const coded = new Set(Object.values(pathAliases));
+  for (const s of wageStates.filter((s) => statusOf(`/minimum-wages/${s.state}`, 'en-IN') === 'published')) {
+    assert.ok(coded.has(`/minimum-wages/${s.state}`), `${s.state} has no short code in WAGE_STATE_CODES`);
+  }
 });
 
 test('headline rate comes from the headline table only, as a range across zones', () => {

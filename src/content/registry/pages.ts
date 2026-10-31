@@ -118,7 +118,7 @@ const RECORDINGS_ONE_YEAR = "2026-10-17";
 export const WAGE_STATE_UPDATED: Readonly<Partial<Record<WageStateSlug, string>>> = {
   uttarakhand: "2026-10-17",
   "uttar-pradesh": "2026-10-26",
-  delhi: "2026-10-17",
+  delhi: "2026-10-29",
   karnataka: "2026-10-16",
   haryana: "2026-10-17",
   punjab: "2026-10-17",

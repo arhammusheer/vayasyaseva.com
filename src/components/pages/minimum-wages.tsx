@@ -14,6 +14,7 @@ import {
   currentIndex,
   employmentFigure,
   formatDate,
+  formatMonth,
   formatRupees,
   formatRupeesAsPrinted,
   formatShortDate,
@@ -56,6 +57,21 @@ export const listedStates = () => wageStates.filter((s) => linkable(wageStatePat
 
 /** The year shows in titles and headings only while the figures are current (PLAN §5.5). */
 const yearOf = (state: WageState, today: string) => (wageStatus(state, today).stale ? null : ratesYear(state));
+/** The month of the last check ("October 2026"), on the same terms as the year. */
+const monthOf = (state: WageState, today: string) => (wageStatus(state, today).stale ? null : formatMonth(state.checked.on));
+
+/**
+ * The answer to a dated search ("haryana minimum wages october 2026") when
+ * the rates took effect before the month of the check: no newer notification
+ * was listed, so they still apply. Not when a revision is overdue: the line
+ * under the H1 already says which ones were not notified.
+ */
+function stillApplies(state: WageState, today: string) {
+  const month = monthOf(state, today);
+  const latest = state.tables.map((t) => t.effectiveFrom).sort().at(-1)!;
+  if (!month || unpublishedRevisions(state, today).length || formatMonth(latest) === month) return null;
+  return x.stillApplies(month);
+}
 export const hubYear = () => listedStates().map(ratesYear).sort().at(-1) ?? null;
 export const hubStale = (today: string) => listedStates().some((s) => wageStatus(s, today).stale);
 
@@ -73,8 +89,9 @@ function stateOrThrow(slug: WageStateSlug) {
 
 export function wageStateMetadata(slug: WageStateSlug) {
   const { state, t } = stateOrThrow(slug);
+  const today = todayIso();
   return pageMetadata({
-    title: t.title(yearOf(state, todayIso())),
+    title: t.title(yearOf(state, today), monthOf(state, today)),
     description: t.description,
     alternates: { canonical: localePath(wageStatePath(slug), "en-IN") },
     locale: "en-IN",
@@ -696,15 +713,17 @@ export function WageStatePage({ slug }: { slug: WageStateSlug }) {
   const { state, t } = stateOrThrow(slug);
   const today = todayIso();
   const year = yearOf(state, today);
+  const month = monthOf(state, today);
+  const still = stillApplies(state, today);
   const doors = stateDoors(slug, state.name, t.labourDepartment);
   return (
     <>
-      <JsonLd data={wageStateSchema(state, { name: t.title(year), description: t.description, url: localePath(wageStatePath(slug), "en-IN") })} />
+      <JsonLd data={wageStateSchema(state, { name: t.title(year, month), description: t.description, url: localePath(wageStatePath(slug), "en-IN") })} />
       <JsonLd data={faqSchema(t.faqs)} />
       <PageHero
         crumbs={<Breadcrumbs path={wageStatePath(slug)} locale="en-IN" name={state.name} />}
-        title={x.stateHeading(state.name, year)}
-        lede={t.answer}
+        title={x.stateHeading(state.name, month)}
+        lede={still ? `${t.answer} ${still}` : t.answer}
         footnote={<CheckedLine state={state} today={today} />}
         className={HERO_TIGHT}
       />

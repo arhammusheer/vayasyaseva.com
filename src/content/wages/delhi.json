@@ -8,10 +8,10 @@
    "2025-10-01",
    "2026-04-01"
   ],
-  "basis": "The 22 October 2019 notification adds dearness allowance twice a year, on 1 April and 1 October, from the six-monthly average consumer price index. The Labour Department's current-rates page, checked on 16 October 2026, lists no order after the one effective from 1 April 2025, so the revisions due on 1 October 2025, 1 April 2026 and 1 October 2026 had not been published by then."
+  "basis": "The 22 October 2019 notification adds dearness allowance twice a year, on 1 April and 1 October, from the six-monthly average consumer price index. The Labour Department's current-rates page, last checked on 29 October 2026, lists no order after the one effective from 1 April 2025, so the revisions due on 1 October 2025, 1 April 2026 and 1 October 2026 had not been published by then."
  },
  "checked": {
-  "on": "2026-10-17"
+  "on": "2026-10-29"
  },
  "sources": [
   {
@@ -249,6 +249,7 @@
   }
  ],
  "verification": [
+  "2026-10-29: Labour Department, GNCTD, 'Current Minimum Wage Rate' page (labour.delhi.gov.in/labour/current-minimum-wage-rate, page last updated 28/10/2026) still lists the order dated 15/04/2025, w.e.f. 01/04/2025, as its most recent minimum wage order. No revision for 1 October 2025, 1 April 2026 or 1 October 2026 is listed.",
   "2026-10-16: Labour Department, GNCTD, 'Current Minimum Wage Rate' page (labour.delhi.gov.in/labour/current-minimum-wage-rate, page last updated 14/10/2026) lists order F.No.(142)/02/MW/VII/Part file/211-241 dated 15/04/2025, w.e.f. 01/04/2025, as its most recent minimum wage order.",
   "2026-10-16: da15april2025.pdf (text layer) read in full. Rates from 01.04.2025: unskilled 18456 per month and 710 per day, semi-skilled 20371 and 784, skilled 22411 and 862; clerical non-matriculate 20371 and 784, matriculate not graduate 22411 and 862, graduate and above 24356 and 937. DA added from 01.04.2025: 390, 442, 494 (clerical 442, 494, 520) on rates as on 01.10.2024 of 18066, 19929, 21917 (clerical 19929, 21917, 23836). CPI average July-December 2024: 413.42, an increase of 11.32 points. Signed K.M. Singh, Joint Labour Commissioner (HQ). The order's own number field is blank in the scan; the number is from the department's listing.",
   "2026-10-16, corrected 2026-10-17: 5da.pdf (order 12(142)/02/MW/VII/3636, signed 23/10/2019; page 2 read by eye at 100 dpi). Its figures 14806, 16284, 17924 (clerical 16284, 17924, 19522) sit in the column 'Minimum Wages after adding DA w.e.f. 01.10.2019 to 22.10.2019 / date of notification': the 2017 rates plus DA, paid up to the notification. They are not the rates the 22 October 2019 notification fixed, which this file first recorded them as. The order is no longer cited.",

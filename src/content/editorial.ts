@@ -31,6 +31,7 @@ export const editorialPolicy = {
       title: "When we check",
       text: [
         "Around 1 April and 1 October, when rates are revised, and whenever a new order comes out. Each page shows the date we last checked. If a revision is late, the page says so.",
+        "Every morning a program also reads each state's lists of orders. When nothing has been added since our last check, the page says so and gives that date. When something has, we read it before the page counts as checked again.",
       ],
     },
     {

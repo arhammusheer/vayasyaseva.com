@@ -402,6 +402,8 @@ export const wageUi = {
   stillApplies: (month: string) => `No newer notification was listed when we checked in ${month}, so these rates still apply.`,
   /** The line under each H1: who checked and when, or the unsigned wording until someone signs off. */
   checked: (by: string | null, date: string) => (by ? `Checked ${date} by ${by}` : `Updated ${date}`),
+  /** After it, when the daily monitor has since read every listing of the state and found nothing added. */
+  listingRead: (date: string) => `The state's listing showed nothing new on ${date}.`,
   howWeCheck: "How we check",
   dues: {
     heading: (name: string) => `What employers owe in ${name}`,

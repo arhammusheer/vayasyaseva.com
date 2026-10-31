@@ -190,6 +190,47 @@ page with no text at all (even a lead page, which may otherwise be empty). So a
 bad day on a government site does not report everything as removed and then
 new.
 
+## Listing checks: keeping a quiet page current
+
+A wage page goes stale 14 days after the later of its expected revision and
+its last check (`wageStatus` in `src/content/wages/index.ts`): the title and
+H1 lose their date and the "may have been revised" notice shows. A state
+whose revision is overdue and unpublished (Delhi from 1 October 2026) would
+hit that 14 days after every hand check, at the April and October search
+peaks, although the monitor reads its listing every morning. So a clean
+morning counts as a check (owner, 29 October 2026), with the honesty rule
+that only a fetch that actually read the department's listing counts.
+
+`checks.mjs` decides, per state, after each run. A state is **checked
+clean** that day when:
+
+- every wage-topic listing of the state (the registry's and the dataset's
+  `listing` pages; not the leads) loaded today and passed the usual sanity
+  checks (an empty or half-empty listing is a failed load);
+- no link on those listings was first seen after the dataset's `checked.on`
+  (the monitor keeps a `firstSeen` day per link in the snapshot); and
+- every cited wage document last seen matches the `sha256` in the dataset.
+
+Otherwise the state is **blocked**: it keeps its last clean day (that read
+was true) and the reasons, and stays blocked until someone reads the new
+document and records a newer `checked.on` (with a `verification` line), as
+for any alert. A new link stays new after the alert: it is compared with the
+hand check, not with yesterday. A lost snapshot, or the first run after this
+was added (links without a `firstSeen`), counts every link as seen that day,
+so each state needs one hand check before its listing checks count.
+
+The record, per state `{ on, datasetCheckedOn, blocked? }`, is kept in the
+snapshot (`checks`) and published after each run (not on a dry run) to
+`cdn.vayasyaseva.com/monitor/wage-listing-checks.json` with the archive's R2
+credentials. The wage pages (hub, states, VDA) fetch it when they regenerate
+(`src/lib/wage-listing-checks.ts`, cached a day) and use `on` as the last
+check only when its `datasetCheckedOn` is the build's own `checked.on`, it is
+after the hand check and not in the future. The state page then adds "The
+state's listing showed nothing new on <date>." under the H1, and the title
+and H1 carry that month. If the file cannot be read, the pages fall back to
+the hand check. `pnpm content:check` knows only the hand check, so its
+"re-check before" warning assumes the monitor stops counting.
+
 **GitHub issues** (`--notify github`): one open issue per state titled
 `Wage monitor: <State> sources changed`, label `wage-monitor`, with hidden
 fingerprints. The manual **Wage monitor** workflow uses this.

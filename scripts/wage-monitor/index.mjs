@@ -30,6 +30,7 @@ import { dirname, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import { importTs, root } from "../lib/register-ts.mjs";
 import { archiveNote, archivingFetcher } from "./archive.mjs";
+import { CHECKS_KEY, checksDocument, checksNote, listingChecks } from "./checks.mjs";
 import { LOCATION_CHECK_DAYS, buildTargets, fetchSource, istDate, legacyTlsFetch, locationTargets, registryProblems, relayFetch, runMonitor } from "./monitor.mjs";
 import { r2FromEnv } from "./r2.mjs";
 import { githubClient, monitorFailedEvent, renderSummary, reportEvents, reportToHub } from "./report.mjs";
@@ -133,11 +134,14 @@ async function main() {
   notes.push(archive ? archiveNote(archive.log) : "Archive: not configured (R2_ARCHIVE_* unset); originals were not stored.");
   // Keep other states' snapshots when only one was checked.
   const nextState = values.only && previous ? { ...run.state, sources: { ...previous.sources, ...run.state.sources } } : run.state;
+  // The listing checks (checks.mjs): kept in the snapshot, published to the CDN for the wage pages.
+  nextState.checks = listingChecks({ wageStates: states, targets, snapshot: nextState, today, previous: previous?.checks ?? {} });
   const actions = [];
   if (notify.includes("hub")) actions.push(...(await reportToHub(run.events, { hub, state: nextState, today })));
   if (notify.includes("github")) actions.push(...(await reportEvents(run.events, { github, today })));
   const save = !dryRun || values["save-state"];
   if (save) writeState(statePath, nextState);
+  notes.push(checksNote(nextState.checks, today, await publishChecks(nextState.checks, { r2: dryRun ? null : r2, now })));
   const names = { github: "GitHub", hub: "the notification hub" };
   if (dryRun) notes.push(`Dry run: nothing was sent to ${notify.map((d) => names[d]).join(" or ")}${save ? "" : " and the snapshot was not saved"}.`);
 
@@ -146,6 +150,21 @@ async function main() {
   } else {
     console.log(renderSummary({ results: run.results, events: run.events, actions, today, dryRun, notes }));
     if (dryRun) for (const a of actions.filter((x) => x.body)) console.log(`\n---\n\n**Would ${a.action.replace(" (dry run)", "")}: ${a.title}**\n\n${a.body}`);
+  }
+}
+
+/**
+ * Publishes the listing checks to cdn.vayasyaseva.com (five minutes at the
+ * edge; the pages cache it for a day). Like the archive, a failure is noted
+ * and never fails the run: the pages then keep the last published record.
+ */
+async function publishChecks(checks, { r2, now }) {
+  if (!r2) return "Not published (dry run, or R2_ARCHIVE_* unset).";
+  try {
+    await r2.put(CHECKS_KEY, Buffer.from(`${JSON.stringify(checksDocument(checks, now), null, 1)}\n`), { contentType: "application/json", cacheControl: "public, max-age=300" });
+    return `Published to ${CHECKS_KEY}.`;
+  } catch (error) {
+    return `Could not publish: ${error?.message ?? error}.`;
   }
 }
 

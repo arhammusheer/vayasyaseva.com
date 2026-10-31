@@ -20,6 +20,8 @@ import {
   formatShortDate,
   formatSize,
   headlineRate,
+  lastCheck,
+  listingCheckOn,
   ratesYear,
   sourceById,
   todayIso,
@@ -40,6 +42,7 @@ import { duesNote, duesSources, employerDues } from "@/content/statutory";
 import { referenceHref, topicParts } from "@/content/reference-links";
 import { COMPLIANCE_HELP } from "@/content/compliance";
 import { EmploymentFinder } from "@/components/pages/employment-finder";
+import { checkedWageStates } from "@/lib/wage-listing-checks";
 
 /**
  * The minimum wage pages: lean English answer pages (the hub and one page
@@ -52,13 +55,17 @@ import { EmploymentFinder } from "@/components/pages/employment-finder";
  * one line on compliance help.
  */
 
-/** Published state pages, in hub order. A state in review is not listed or linked. */
-export const listedStates = () => wageStates.filter((s) => linkable(wageStatePath(s.state), "en-IN"));
+/**
+ * Published state pages, in hub order. A state in review is not listed or
+ * linked. Pass the states from checkedWageStates() so the monitor's
+ * listing checks date the pages; the bare datasets know only the hand check.
+ */
+export const listedStates = (states: readonly WageState[] = wageStates) => states.filter((s) => linkable(wageStatePath(s.state), "en-IN"));
 
 /** The year shows in titles and headings only while the figures are current (PLAN §5.5). */
-const yearOf = (state: WageState, today: string) => (wageStatus(state, today).stale ? null : ratesYear(state));
+const yearOf = (state: WageState, today: string) => (wageStatus(state, today).stale ? null : ratesYear(state, today));
 /** The month of the last check ("October 2026"), on the same terms as the year. */
-const monthOf = (state: WageState, today: string) => (wageStatus(state, today).stale ? null : formatMonth(state.checked.on));
+const monthOf = (state: WageState, today: string) => (wageStatus(state, today).stale ? null : formatMonth(lastCheck(state, today)));
 
 /**
  * The answer to a dated search ("haryana minimum wages october 2026") when
@@ -72,14 +79,14 @@ function stillApplies(state: WageState, today: string) {
   if (!month || unpublishedRevisions(state, today).length || formatMonth(latest) === month) return null;
   return x.stillApplies(month);
 }
-export const hubYear = () => listedStates().map(ratesYear).sort().at(-1) ?? null;
-export const hubStale = (today: string) => listedStates().some((s) => wageStatus(s, today).stale);
+export const hubYear = (states = listedStates(), today = todayIso()) => states.map((s) => ratesYear(s, today)).sort().at(-1) ?? null;
+export const hubStale = (today: string, states = listedStates()) => states.some((s) => wageStatus(s, today).stale);
 
 /** A shorter hero than a business page's, so the first rates show on the first screen. */
 export const HERO_TIGHT = "pb-8 pt-6 sm:pb-10 sm:pt-14 lg:pb-12 lg:pt-14";
 
-function stateOrThrow(slug: WageStateSlug) {
-  const state = wageStates.find((s) => s.state === slug);
+function stateOrThrow(slug: WageStateSlug, states: readonly WageState[]) {
+  const state = states.find((s) => s.state === slug);
   const copy = getWageStateCopy(slug);
   if (!state || !copy) throw new Error(`No wage data or copy for ${slug}`);
   return { state, t: copy };
@@ -87,8 +94,8 @@ function stateOrThrow(slug: WageStateSlug) {
 
 // ── Metadata ────────────────────────────────────────────────────────────────
 
-export function wageStateMetadata(slug: WageStateSlug) {
-  const { state, t } = stateOrThrow(slug);
+export async function wageStateMetadata(slug: WageStateSlug) {
+  const { state, t } = stateOrThrow(slug, await checkedWageStates());
   const today = todayIso();
   return pageMetadata({
     title: t.title(yearOf(state, today), monthOf(state, today)),
@@ -98,8 +105,10 @@ export function wageStateMetadata(slug: WageStateSlug) {
   });
 }
 
-export function wageHubMetadata(locale: Locale = "en-IN") {
-  const year = hubStale(todayIso()) ? null : hubYear();
+export async function wageHubMetadata(locale: Locale = "en-IN") {
+  const today = todayIso();
+  const states = listedStates(await checkedWageStates());
+  const year = hubStale(today, states) ? null : hubYear(states, today);
   const hindi = locale === "hi-IN";
   return pageMetadata({
     title: hindi ? wageHubHi.title(year) : wageHubCopy.title(year),
@@ -119,9 +128,11 @@ export function wageHubMetadata(locale: Locale = "en-IN") {
 function CheckedLine({ state, today }: { state: WageState; today: string }) {
   const status = wageStatus(state, today);
   const due = unpublishedRevisions(state, today);
+  const listingRead = listingCheckOn(state, today);
   return (
     <p className={status.stale ? "wage-checked is-stale" : "wage-checked"} role={status.stale ? "status" : undefined}>
       {x.checked(checkedByLine(state), formatDate(state.checked.on))}.{" "}
+      {listingRead && <>{x.listingRead(formatDate(listingRead))} </>}
       {status.stale ? (
         <>
           <strong>{x.notice.staleStrong}</strong> {x.notice.staleText}{" "}
@@ -709,8 +720,8 @@ function TableChooser({ state, which }: { state: WageState; which: NonNullable<W
 
 // ── State page ──────────────────────────────────────────────────────────────
 
-export function WageStatePage({ slug }: { slug: WageStateSlug }) {
-  const { state, t } = stateOrThrow(slug);
+export async function WageStatePage({ slug }: { slug: WageStateSlug }) {
+  const { state, t } = stateOrThrow(slug, await checkedWageStates());
   const today = todayIso();
   const year = yearOf(state, today);
   const month = monthOf(state, today);
@@ -773,11 +784,12 @@ function skillRange(table: WageTable, skill: Skill) {
   );
 }
 
-export function WageHubPage({ locale = "en-IN" }: { locale?: Locale }) {
-  if (locale === "hi-IN") return <WageHubPageHi />;
+export async function WageHubPage({ locale = "en-IN" }: { locale?: Locale }) {
+  const all = await checkedWageStates();
+  if (locale === "hi-IN") return <WageHubPageHi all={all} />;
   const today = todayIso();
-  const states = listedStates();
-  const year = hubStale(today) ? null : hubYear();
+  const states = listedStates(all);
+  const year = hubStale(today, states) ? null : hubYear(states, today);
   const headlines = states.map((s) => ({ state: s, ...headlineRate(s) }));
   const lowest = [...headlines].sort((a, b) => a.low.monthly - b.low.monthly)[0];
   const highest = [...headlines].sort((a, b) => b.high.monthly - a.high.monthly)[0];
@@ -863,10 +875,10 @@ export function WageHubPage({ locale = "en-IN" }: { locale?: Locale }) {
 
 // ── Hindi hub (in review) ───────────────────────────────────────────────────
 
-function WageHubPageHi() {
+function WageHubPageHi({ all }: { all: readonly WageState[] }) {
   const today = todayIso();
-  const states = listedStates().filter((s) => WAGE_HUB_HI[s.state]);
-  const year = hubStale(today) ? null : hubYear();
+  const states = listedStates(all).filter((s) => WAGE_HUB_HI[s.state]);
+  const year = hubStale(today, listedStates(all)) ? null : hubYear(listedStates(all), today);
   const h = wageHubHi;
   const lastChecked = states.map((s) => s.checked.on).sort()[0];
   const overdue = states.some((s) => !wageStatus(s, today).stale && unpublishedRevisions(s, today).length);

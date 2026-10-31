@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { importTs } from '../scripts/lib/register-ts.mjs';
 
-const { wageStates, wageStatus, wageRecords, dailyFromMonthly, formatRupees, headlineRate, headlineRange, checkedByLine, unpublishedRevisions, formatSize, employmentFigure, vdaPoints } = await importTs('src/content/wages/index.ts');
+const { wageStates, wageStatus, lastCheck, parseListingChecks, withListingChecks, wageRecords, dailyFromMonthly, formatRupees, headlineRate, headlineRange, checkedByLine, unpublishedRevisions, formatSize, employmentFigure, vdaPoints } = await importTs('src/content/wages/index.ts');
 const { wageStateSchema, wageIntegrityProblems } = await importTs('src/content/wages/schema.ts');
 const { pathAliases, statusOf } = await importTs('src/content/registry/index.ts');
 
@@ -32,6 +32,47 @@ test('a check after the expected date counts as newer, for another 14 days', () 
   assert.equal(wageStatus(s, '2026-10-20').stale, false);
   assert.equal(wageStatus(s, '2026-10-30').stale, false);
   assert.equal(wageStatus(s, '2026-10-31').stale, true);
+});
+
+test("the monitor's clean listing read counts as a check: no cliff while it keeps reading", () => {
+  // Delhi's case: revision expected 1 Oct, unpublished; checked by hand on 29 Oct.
+  const s = withDates('2026-10-01', '2026-10-29');
+  assert.equal(wageStatus(s, '2026-11-13').stale, true, 'without the monitor: stale 14 days after the hand check');
+  const read = { ...s, listingCheck: { on: '2026-11-12', datasetCheckedOn: '2026-10-29' } };
+  assert.equal(lastCheck(read, '2026-11-13'), '2026-11-12');
+  assert.equal(wageStatus(read, '2026-11-13').stale, false);
+  assert.equal(wageStatus(read, '2026-11-13').checkedOn, '2026-11-12');
+  assert.equal(wageStatus(read, '2026-11-26').stale, false);
+  assert.equal(wageStatus(read, '2026-11-27').stale, true, 'the monitor stops counting (blocked or down): 14 days from its last clean read');
+});
+
+test('a listing check counts only against the dataset it was compared with, after the hand check, and not in the future', () => {
+  const s = withDates('2026-10-01', '2026-10-29');
+  const at = (check) => lastCheck({ ...s, listingCheck: check }, '2026-11-13');
+  assert.equal(at({ on: '2026-11-12', datasetCheckedOn: '2026-10-17' }), '2026-10-29', 'compared with an older hand check');
+  assert.equal(at({ on: '2026-11-12', datasetCheckedOn: '2026-11-01' }), '2026-10-29', 'compared with a newer dataset than this build');
+  assert.equal(at({ on: '2026-10-20', datasetCheckedOn: '2026-10-29' }), '2026-10-29', 'older than the hand check');
+  assert.equal(at({ on: '2026-11-20', datasetCheckedOn: '2026-10-29' }), '2026-10-29', 'in the future');
+  assert.equal(at({ on: 'yesterday', datasetCheckedOn: '2026-10-29' }), '2026-10-29');
+});
+
+test('the published listing checks are read defensively', () => {
+  assert.deepEqual(parseListingChecks(null), {});
+  assert.deepEqual(parseListingChecks({ version: 2, states: { delhi: { on: '2026-11-12', datasetCheckedOn: '2026-10-29' } } }), {});
+  const parsed = parseListingChecks({
+    version: 1,
+    states: {
+      delhi: { on: '2026-11-12', datasetCheckedOn: '2026-10-29', extra: 1 },
+      haryana: { datasetCheckedOn: '2026-10-17', blocked: { since: '2026-11-02', problems: ['x'] } },
+      atlantis: { on: '2026-11-12', datasetCheckedOn: '2026-10-29' },
+      punjab: { on: 20261112, datasetCheckedOn: '2026-10-17' },
+    },
+  });
+  assert.deepEqual(parsed, { delhi: { on: '2026-11-12', datasetCheckedOn: '2026-10-29' } }, 'a blocked state with no clean day, an unknown state and a bad date are dropped');
+  const states = withListingChecks(wageStates, parsed);
+  assert.deepEqual(states.find((x) => x.state === 'delhi').listingCheck, parsed.delhi);
+  assert.equal(states.find((x) => x.state === 'haryana').listingCheck, undefined);
+  assert.equal(wageStates.find((x) => x.state === 'delhi').listingCheck, undefined, 'the datasets themselves are not changed');
 });
 
 test('daily rate under a 1/26 rule rounds up to the paisa', () => {

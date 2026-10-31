@@ -9,11 +9,12 @@ import { importTs, root } from '../scripts/lib/register-ts.mjs';
 import { describeDocument, diffLines, documentLinks, htmlText, sha256, spaBundleLinks, spaScript, wpDocumentLinks } from '../scripts/wage-monitor/extract.mjs';
 import { ARCHIVED, buildTargets, coverageProblems, fetchSource, fingerprint, istDate, locationTargets, pageLines, registryProblems, relayFetch, runMonitor, targetKey } from '../scripts/wage-monitor/monitor.mjs';
 import { extractPdfText, parseCMap } from '../scripts/wage-monitor/pdf-text.mjs';
+import { CHECKS_KEY, checksDocument, checksNote, listingChecks } from '../scripts/wage-monitor/checks.mjs';
 import { issueTitle, monitorFailedEvent, renderTopicMessage, reportEvents, reportToHub, safe } from '../scripts/wage-monitor/report.mjs';
 import { hubClient, hubFromEnv, parseNotify } from '../scripts/lib/notify-hub.mjs';
 import { seoEvents, seoFailedEvent } from '../scripts/seo-watch/hub.mjs';
 
-const { wageStates } = await importTs('src/content/wages/index.ts');
+const { wageStates, parseListingChecks } = await importTs('src/content/wages/index.ts');
 const registry = JSON.parse(readFileSync(`${root}/scripts/wage-monitor/sources.json`, 'utf8'));
 
 // ---------------------------------------------------------------- fixtures
@@ -292,6 +293,85 @@ test('a day with no run does not restart the count; only a successful load does'
   assert.equal(ok.state.sources[DOC].failing, undefined);
   const again = await runMonitor({ targets, previous: ok.state, fetcher: fakeFetcher({ [DOC]: 404, [LISTING]: listingHtml([]) }), now: at('2026-10-16') });
   assert.equal(again.state.sources[DOC].failing.days, 1, 'a load starts the count again');
+});
+
+test('a listing remembers the day each link was first seen, including links that left and came back', async () => {
+  const a = row('a.pdf', 'Order A');
+  const b = row('b.pdf', 'Order B');
+  const url = (f) => `https://labour.example.gov.in/docs/${f}`;
+  const day = async (previous, rows, iso) => (await runMonitor({ targets, previous, fetcher: fakeFetcher({ [DOC]: docBytes, [LISTING]: listingHtml(rows) }), now: at(iso), describeNew: false })).state;
+  const d1 = await day(null, [a], '2026-10-16');
+  assert.equal(d1.sources[LISTING].firstSeen[url('a.pdf')], '2026-10-16', 'a first run counts every link as seen that day');
+  const d2 = await day(d1, [a, b], '2026-10-17');
+  assert.equal(d2.sources[LISTING].firstSeen[url('a.pdf')], '2026-10-16');
+  assert.equal(d2.sources[LISTING].firstSeen[url('b.pdf')], '2026-10-17');
+  const d3 = await day(d2, [a], '2026-10-18');
+  const d4 = await day(d3, [a, b], '2026-10-19');
+  assert.equal(d4.sources[LISTING].firstSeen[url('b.pdf')], '2026-10-17', 'a link that came back is not new');
+  const failed = (await runMonitor({ targets, previous: d4, fetcher: fakeFetcher({ [DOC]: docBytes, [LISTING]: 503 }), now: at('2026-10-20') })).state;
+  assert.deepEqual(failed.sources[LISTING].firstSeen, d4.sources[LISTING].firstSeen, 'kept while failing');
+});
+
+// The listing check (checks.mjs): Delhi-like, hand-checked on the 16th.
+const checkedState = { ...fakeState, checked: { on: '2026-10-16' } };
+const checkDay = async (previous, pages, iso, state = checkedState) => {
+  const run = await runMonitor({ targets, previous, fetcher: fakeFetcher({ [DOC]: docBytes, [LISTING]: listingHtml([row('order-2026.pdf', 'Order')]), ...pages }), now: at(iso), describeNew: false });
+  run.state.checks = listingChecks({ wageStates: [state], targets, snapshot: run.state, today: iso, previous: previous?.checks ?? {} });
+  return run.state;
+};
+
+test('listing check: a clean read counts; a new link blocks it, keeping the last clean day, until a newer hand check', async () => {
+  const d1 = await checkDay(null, {}, '2026-10-16');
+  assert.deepEqual(d1.checks.delhi, { on: '2026-10-16', datasetCheckedOn: '2026-10-16' }, 'links seen on the day of the hand check were there for it');
+  const d2 = await checkDay(d1, {}, '2026-10-17');
+  assert.deepEqual(d2.checks.delhi, { on: '2026-10-17', datasetCheckedOn: '2026-10-16' });
+  const added = { [LISTING]: listingHtml([row('order-2026.pdf', 'Order'), row('new.pdf', 'Minimum wages from 1 October 2026')]) };
+  const d3 = await checkDay(d2, added, '2026-10-18');
+  assert.equal(d3.checks.delhi.on, '2026-10-17', 'the last clean read stays true');
+  assert.deepEqual(d3.checks.delhi.blocked, { since: '2026-10-18', problems: ['Delhi wage orders: 1 document first seen after the hand check of 2026-10-16'] });
+  const d4 = await checkDay(d3, added, '2026-10-19');
+  assert.equal(d4.checks.delhi.on, '2026-10-17', 'the listing is unchanged since yesterday, but the new link is still unread');
+  assert.equal(d4.checks.delhi.blocked.since, '2026-10-18');
+  const rechecked = { ...checkedState, checked: { on: '2026-10-19' } };
+  const d5 = await checkDay(d4, added, '2026-10-20', rechecked);
+  assert.deepEqual(d5.checks.delhi, { on: '2026-10-20', datasetCheckedOn: '2026-10-19' }, 'a hand check after the new link clears it');
+});
+
+test('listing check: a listing that did not load or a replaced cited file is not a check; a new hand check drops the old clean day', async () => {
+  const d1 = await checkDay(null, {}, '2026-10-16');
+  const down = await checkDay(d1, { [LISTING]: 503 }, '2026-10-18');
+  assert.equal(down.checks.delhi.on, '2026-10-16');
+  assert.deepEqual(down.checks.delhi.blocked.problems, ['Delhi wage orders: not read today']);
+  const blank = await checkDay(d1, { [LISTING]: '<html><body>Under maintenance</body></html>' }, '2026-10-18');
+  assert.deepEqual(blank.checks.delhi.blocked.problems, ['Delhi wage orders: not read today'], 'a page with no documents is a failed load, not a clean one');
+  const replaced = await checkDay(d1, { [DOC]: Buffer.concat([docBytes, Buffer.from('\n% re-saved\n')]) }, '2026-10-18');
+  assert.deepEqual(replaced.checks.delhi.blocked.problems, ['Order of 1 April 2026: the file differs from the one the dataset cites']);
+  const newer = await checkDay(down, { [LISTING]: 503 }, '2026-10-19', { ...checkedState, checked: { on: '2026-10-19' } });
+  assert.equal(newer.checks.delhi.on, undefined, 'a clean day against an older hand check says nothing about the new figures');
+  assert.equal(newer.checks.delhi.datasetCheckedOn, '2026-10-19');
+});
+
+test('listing check: a snapshot from before first-seen dates (or none) proves nothing until the next hand check', async () => {
+  const d1 = await checkDay(null, {}, '2026-10-16');
+  assert.equal(d1.checks.delhi.on, '2026-10-16');
+  delete d1.sources[LISTING].firstSeen;
+  delete d1.checks;
+  const d2 = await checkDay(d1, {}, '2026-10-18');
+  assert.equal(d2.checks.delhi.on, undefined);
+  assert.match(d2.checks.delhi.blocked.problems[0], /first seen after the hand check/);
+  const fresh = await checkDay(null, {}, '2026-10-18');
+  assert.equal(fresh.checks.delhi.on, undefined, 'a lost snapshot: every link is new');
+});
+
+test('listing check: --only keeps the other states, and the published file is what the pages read', async () => {
+  const d1 = await checkDay(null, {}, '2026-10-16');
+  const kept = listingChecks({ wageStates: [checkedState], targets: [], snapshot: d1, today: '2026-10-17', previous: { ...d1.checks, haryana: { on: '2026-10-15', datasetCheckedOn: '2026-10-10' } } });
+  assert.deepEqual(kept.haryana, { on: '2026-10-15', datasetCheckedOn: '2026-10-10' });
+  assert.deepEqual(kept.delhi, d1.checks.delhi, 'a state with no targets this run is left as it was');
+  const doc = checksDocument({ ...kept, uttarakhand: { datasetCheckedOn: '2026-10-17', blocked: { since: '2026-10-17', problems: ['x'] } } }, at('2026-10-17'));
+  assert.equal(CHECKS_KEY, 'monitor/wage-listing-checks.json');
+  assert.deepEqual(parseListingChecks(JSON.parse(JSON.stringify(doc))), { delhi: { on: '2026-10-16', datasetCheckedOn: '2026-10-16' }, haryana: { on: '2026-10-15', datasetCheckedOn: '2026-10-10' } });
+  assert.match(checksNote(doc.states, '2026-10-16', 'Published.'), /^Listing checks: 1 state checked clean; uttarakhand not counted \(x\)\. Published\.$/);
 });
 
 test('a firewall or error page served with 200 counts as a failed fetch, not a change', async () => {

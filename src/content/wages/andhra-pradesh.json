@@ -17,7 +17,7 @@
    "number": "G/3186486/2026",
    "date": "2026-09-28",
    "authority": "Commissioner of Labour, Andhra Pradesh",
-   "legalBasis": "Code on Wages, 2019, section 7(2), read with rule 4 of the Code on Wages (Andhra Pradesh) Rules, 2026. Andhra Pradesh Gazette (Extraordinary) Part II No. 400, 28 September 2026. In force from 1 October 2026.",
+   "legalBasis": "Code on Wages, 2019, section 7(2), read with rule 4 of the Code on Wages (Andhra Pradesh) Rules, 2026. Andhra Pradesh Gazette (Extraordinary) Part II No. 400, 28 September 2026. In force from 1 October 2026. Its first reference, G.O.Ms. No. 34 of 25 September 2026 (LFB&IMS Department), is not online; nothing in the notification suggests it revises rates.",
    "url": "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/pdf-file-download/labour/1790751054626_VDAGazetteason01.10.2026.pdf",
    "listing": "https://labour.ap.gov.in/",
    "language": "te",
@@ -10915,6 +10915,6 @@
   "Zones taken from the notifications where the sheets have none: cinemas (four zones by municipality grade, with 8 km and 6 km peripheries) and garments (Zone I names Hyderabad, Secunderabad, Vijayawada, Visakhapatnam and Tirupati). Shops' notification does not define its zones in the English text; the sheet's definition is used.",
   "Not found: the final notifications for mesta twine mills (G.O.Ms. No. 79 of 2006; only a 2013 preliminary revision, G.O.Ms. No. 155, not made final as far as the VDA notification shows), non-teaching staff (G.O.Ms. No. 73 of 2011), the schedule pages of hotels (G.O.Ms. No. 105 of 2007; page 1 only), agriculture (G.O.Ms. No. 73 of 2012) and beedi making (G.O.Ms. No. 47 of 2006). For these the figures rest on the department's sheet and its VDA notification only, and the group links the sheet.",
   "Employments in the schedule with no rates: sales promotion (added by G.O.Ms. No. 28 of 17 July 2013) and contract labour not covered by another employment (G.O.Ms. No. 27 of 17 July 2013, paid under the contract labour rates above). Forestry and timbering (G.O.Ms. No. 71 of 2 August 2007, no VDA) appears only in a 2017 department table; no notification found, so its row says rates are not online.",
-  "Firm cross-checks for 1 October 2026: AscentHR's shops table and DCPSOL's shops and security tables equal these figures (shops unskilled Zone I ₹12,871.20; security guards without arms ₹14,234, ₹13,484, ₹13,234). King Stubb & Kasiva's April 2026 figures agree with the April index. SGCMS's October 2026 table pairs the new VDA with the April totals, so its totals are ₹224.20 short; it was not used."
+  "Firm cross-checks for 1 October 2026: AscentHR's shops table and DCPSOL's shops and security tables equal these figures (shops unskilled Zone I ₹12,871.20; security guards without arms ₹14,234, ₹13,484, ₹13,234). King Stubb & Kasiva's April 2026 figures agree with the April index. SGCMS's October 2026 table pairs the new VDA with the April totals, so its totals are short by the October VDA rise (35 points, 1958 against 1923: ₹224.00 on a row paid ₹6.40 a point, e.g. 14728.20 against 14504.20); it was not used."
  ]
 }

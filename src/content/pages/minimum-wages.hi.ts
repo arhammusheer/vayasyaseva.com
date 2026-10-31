@@ -105,6 +105,18 @@ export const WAGE_HUB_HI: Partial<Record<WageStateSlug, WageHubStateHi>> = {
       `फ़ैक्टरियों की दर, पूरे राज्य में एक जैसी: विशाखापत्तनम, अनकापल्ली, विजयवाड़ा सब जगह। जिस उद्योग की अपनी अलग दर है, जैसे दुकान, होटल, सुरक्षा या निर्माण, उसमें वही दर लागू है। ठेका मज़दूरों के लिए श्रम आयुक्त की अपनी दर भी है: अकुशल को कम से कम ${formatRupees(rate(s, "contract-labour", "andhra-pradesh", "unskilled").monthly)} महीना।`,
     department: { href: "https://labour.ap.gov.in/", label: "श्रम विभाग, आंध्र प्रदेश" },
   },
+  karnataka: {
+    name: "कर्नाटक",
+    table: "most-employments",
+    zones: [
+      { id: "zone-1", name: "ज़ोन 1" },
+      { id: "zone-2", name: "ज़ोन 2" },
+      { id: "zone-3", name: "ज़ोन 3" },
+    ],
+    skills: ["unskilled", "semi-skilled", "skilled", "highly-skilled"],
+    key: () => "महीने की दर, मूल मज़दूरी और VDA मिलाकर। ज़ोन 1: बेंगलुरु शहर। ज़ोन 2: दूसरे नगर निगम और ज़िला मुख्यालय। ज़ोन 3: बाकी इलाके, बेंगलुरु शहर के बाहर के ज़्यादातर औद्योगिक क्षेत्र भी।",
+    department: { href: "https://karmikaspandana.karnataka.gov.in/en", label: "श्रम विभाग, कर्नाटक" },
+  },
 };
 
 /**
@@ -119,6 +131,7 @@ export const HUB_HI_SOURCE_HASH: Partial<Record<WageStateSlug, string>> = {
   haryana: "983ea0b50882",
   punjab: "2196ab5cd3f7",
   "andhra-pradesh": "c13c14de10cf",
+  karnataka: "8a856ee6968a",
 };
 
 export const wageHubHi = {

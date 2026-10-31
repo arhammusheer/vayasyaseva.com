@@ -119,7 +119,7 @@ export const WAGE_STATE_UPDATED: Readonly<Partial<Record<WageStateSlug, string>>
   uttarakhand: "2026-10-17",
   "uttar-pradesh": "2026-10-26",
   delhi: "2026-10-29",
-  karnataka: "2026-10-16",
+  karnataka: "2026-10-31",
   haryana: "2026-10-17",
   punjab: "2026-10-17",
   "andhra-pradesh": "2026-10-22",
@@ -153,11 +153,12 @@ const WAGE_STATE_STATUS: Partial<Record<WageStateSlug, PageStatus>> = {
   uttarakhand: "published",
   "uttar-pradesh": "published",
   delhi: "published",
-  // Built and in review (16 Oct 2026): the 22 May 2026 single notification
-  // is in force but challenged in court, and whether its VDA is paid on top
-  // of the basic rates needs a reviewer's sign-off (karnataka.json,
-  // verification) before publishing.
-  karnataka: "review",
+  // Published 1 Nov 2026 (owner): the 22 May 2026 single notification is in
+  // force and not stayed; the 31 Oct audit confirmed every figure and that
+  // the VDA is paid on top (gazette condition 1). Still challenged in the
+  // High Court and under a Cabinet sub-committee review: court news is not
+  // watched by the monitor (karnataka.json, verification).
+  karnataka: "published",
   // Published 17 Oct 2026 (owner): one statewide rate each, from the
   // official Gazette copies. Still open: a named checker, and Punjab's July
   // 2025 LWF bill (shown on the page as pending).
@@ -171,9 +172,10 @@ const WAGE_STATE_STATUS: Partial<Record<WageStateSlug, PageStatus>> = {
   "andhra-pradesh": "published",
   // Built and in review (owner, 27 Oct 2026): G.O.Ms. No. 6 of 30 May 2026
   // replaced every notification with one table, but it is subject to writ
-  // petitions before the High Court, its gazette publication is unconfirmed
+  // petitions before the High Court, it is not in the state eGazette (none
+  // of the extraordinary gazettes listed to 26 Oct 2026; checked 1 Nov 2026)
   // and no VDA has been declared under it (telangana.json, verification).
-  // Publish once someone signs its status off.
+  // Publish once it is gazetted or the court settles its status.
   telangana: "review",
 };
 

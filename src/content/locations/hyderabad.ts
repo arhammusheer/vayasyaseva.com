@@ -21,9 +21,10 @@ import { wageStatePath } from "@/content/registry/identifiers";
 const TG_WAGES = wageStatePath("telangana");
 /**
  * The Telangana wage page is in review (owner, 27 Oct 2026: G.O.Ms. No. 6 is
- * before the High Court and no VDA has been declared under it), so the
- * wages answer links to /compliance, as Bengaluru's does while Karnataka's
- * is in review. Switches by itself once the page is published.
+ * before the High Court, no VDA has been declared under it, and it was not
+ * in the state eGazette on 1 Nov 2026), so the wages answer links to
+ * /compliance, as Bengaluru's did while Karnataka's was in review. Switches
+ * by itself once the page is published.
  */
 const WAGES_LINK = linkable(TG_WAGES, "en-IN")
   ? { href: TG_WAGES, label: "Telangana minimum wages" }

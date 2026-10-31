@@ -1,5 +1,6 @@
 import type { FaqItem } from "../types";
 import type { LocationCopy } from "./types";
+import { wageStatePath } from "@/content/registry/identifiers";
 
 /**
  * Bengaluru: the hub and four industrial areas, on the location page
@@ -7,11 +8,11 @@ import type { LocationCopy } from "./types";
  * 17 Oct 2026, each cited in `sources`. Peenya (a Special Investment Region)
  * and Electronic City (an industrial township) are asked to confirm their
  * wage zone. No tenant names, headcounts or registration claims; security
- * guards are out of scope (no PSARA licence). The Karnataka wage page is in
- * review, so wages link to /compliance.
+ * guards are out of scope (no PSARA licence). Wages link to the Karnataka
+ * wage page.
  */
 
-const RULES_LINK = { href: "/compliance", label: "How we handle compliance" };
+const RULES_LINK = { href: wageStatePath("karnataka"), label: "Karnataka minimum wages" };
 
 const KA_DUES = "Professional Tax is ₹200 a month on wages of ₹25,000 or more, and the Labour Welfare Fund is ₹50 from the worker and ₹100 from the employer each year.";
 

@@ -77,7 +77,7 @@ export const wageVdaCopy = {
   title: (year: string | null) => `Variable Dearness Allowance (VDA)${year ? ` ${year}` : ""}: State Tracker`,
   /** `stamp` is "Checked Oct 2026" once every state is signed off, else "Updated Oct 2026", as on the hub. */
   description: (names: string[], stamp: string) =>
-    `VDA and DA revisions in ${listNames(names.map((n) => ({ "Andhra Pradesh": "AP", "Uttar Pradesh": "UP" } as Record<string, string>)[n] ?? n))}: the allowance in force, when it changed and what is still due. ${stamp}.`,
+    `VDA and DA revisions in ${listNames(names.map((n) => ({ "Andhra Pradesh": "AP", "Uttar Pradesh": "UP" } as Record<string, string>)[n] ?? n))}: the allowance in force, when it changed and what is due. ${stamp}.`,
   breadcrumb: "VDA",
   heading: (cycle: string) => `VDA revisions by state, ${formatMonth(cycle)}.`,
   /** The answer first: who has published this half-year's revision and who has not. */

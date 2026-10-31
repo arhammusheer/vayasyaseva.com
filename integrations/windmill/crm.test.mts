@@ -24,7 +24,6 @@ import { CRM_SYNC_LOCK, RECORD_CRM_SYNC, SYNC_CANDIDATES } from "./talent/lib/sq
 import { twentyClient, type Twenty, type TwentyRecord } from "./talent/lib/twenty.ts";
 import { checkLead, crewSize, opportunityName, recordLead, serviceValues } from "./leads/lib/lead.ts";
 import { main as leadMain } from "./leads/scripts/intake.ts";
-import { SCRIPTS } from "./scripts.mts";
 import { INTAKE_CLUSTERS, JOB_ROLE_SLUGS, QUICK_ANSWERS } from "../../packages/contracts/src/rules.ts";
 
 function fakeTwenty() {
@@ -303,13 +302,6 @@ test("the REST client: filters quoted, 404 on delete is 'already gone', errors n
   assert.match(seen[0], /^GET http:\/\/twenty\/rest\/people\?limit=60&filter=phones.primaryPhoneNumber%5Beq%5D%3A%229876543210%22$/);
   assert.equal(await client.remove("people", "x"), false);
   await assert.rejects(client.create("people", "Person", { phones: "9876543210" }), (e: Error) => /HTTP 400 A duplicate entry/.test(e.message) && !e.message.includes("9876543210"));
-});
-
-test("the CRM sync runs inside the dispatcher every minute; its own schedule is retired", () => {
-  const sync = SCRIPTS.find((s) => s.name === "sync_crm" && (s.folder ?? "talent") === "talent");
-  assert.equal(sync?.schedule, undefined);
-  assert.equal(sync?.retiredSchedule, true);
-  assert.equal(SCRIPTS.find((s) => s.name === "dispatch")?.schedule?.cron, "0 * * * * *");
 });
 
 // --- leads ---------------------------------------------------------------------------

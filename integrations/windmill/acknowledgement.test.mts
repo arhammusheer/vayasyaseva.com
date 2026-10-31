@@ -6,6 +6,7 @@ import { runAcknowledge } from "./talent/lib/run-acknowledge.ts";
 import { acknowledgementRequest, classifyAcknowledgement, sendAcknowledgement } from "./talent/lib/sms.ts";
 import { CLAIM_ACKNOWLEDGEMENT, CLAIM_ACKNOWLEDGEMENT_FOR, RECOVER_INTERRUPTED_SENDS, SAVE_ACKNOWLEDGEMENT_RESULT } from "./talent/lib/sql.ts";
 import type { Fast2SmsResponse } from "./talent/lib/types.ts";
+import { TALENT_SCHEMA, saveApplication, testDb } from "./test-db.mts";
 
 const classify = (response: Fast2SmsResponse, attempts = 1) => classifyAcknowledgement({ submission_id: "submission", attempts }, response);
 
@@ -102,10 +103,33 @@ test("intake's run claims only its submission and skips recovery; nothing due se
   assert.equal(sends, 0);
 });
 
-test("claims are atomic and an interrupted send is never resent", () => {
+test("claims skip locked rows", () => {
+  // PGlite has one connection, so this one is checked on the text.
   assert.match(CLAIM_ACKNOWLEDGEMENT, /FOR UPDATE OF a SKIP LOCKED/);
-  assert.match(CLAIM_ACKNOWLEDGEMENT, /a\.attempts < 3/);
-  assert.match(CLAIM_ACKNOWLEDGEMENT_FOR, /s\.id = \$1::uuid/);
-  assert.match(RECOVER_INTERRUPTED_SENDS, /SET status = 'unknown'/);
-  assert.match(SAVE_ACKNOWLEDGEMENT_RESULT, /AND status = 'sending'/);
+});
+
+test("an interrupted send becomes unknown and is never resent", async () => {
+  const { query } = await testDb(TALENT_SCHEMA);
+  const id = await saveApplication(query, "VS-J-ACK001");
+  await query(`UPDATE sms_acknowledgements SET status = 'sending', attempts = 1, updated_at = now() - interval '10 minutes' WHERE submission_id = $1::uuid`, [id]);
+  let sends = 0;
+  const deps = { query, send: async () => (sends++, { statusCode: 200, body: { return: true, request_id: "R1" } }) };
+  assert.equal(await runAcknowledge(null, deps), null);
+  assert.equal(await runAcknowledge(null, deps), null);
+  assert.equal(await runAcknowledge(id, deps), null);
+  assert.equal(sends, 0);
+  const [row] = await query<{ status: string; attempts: number }>(`SELECT status, attempts FROM sms_acknowledgements WHERE submission_id = $1::uuid`, [id]);
+  assert.deepEqual(row, { status: "unknown", attempts: 1 });
+});
+
+test("a pending acknowledgement is claimed once, up to three attempts", async () => {
+  const { query } = await testDb(TALENT_SCHEMA);
+  const id = await saveApplication(query, "VS-J-ACK002");
+  let sends = 0;
+  const deps = { query, send: async () => (sends++, { statusCode: 429 }) };
+  for (let i = 0; i < 4; i++) {
+    await runAcknowledge(id, deps);
+    await query(`UPDATE sms_acknowledgements SET next_attempt_at = now() WHERE submission_id = $1::uuid`, [id]);
+  }
+  assert.equal(sends, 3);
 });

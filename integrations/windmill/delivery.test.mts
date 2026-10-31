@@ -8,6 +8,7 @@ import { lookupReport, outcomeOf, parseReport, runDeliveryCheck, unixToIso } fro
 import { DELIVERY_CHECK_DUE, MARK_DELIVERY_CHECKED, SAVE_DELIVERY_REPORT } from "./talent/lib/sql.ts";
 import { main, preprocessor } from "./talent/scripts/delivery_report.ts";
 import { SCRIPTS } from "./scripts.mts";
+import { TALENT_SCHEMA, saveApplication, testDb } from "./test-db.mts";
 
 // The example of docs.fast2sms.com "SMS Webhook Overview".
 const REPORT = {
@@ -69,9 +70,21 @@ test("main: a wrong secret is 403 and a bad report 400, before any database work
   assert.equal((await main(true, { status: "delivered" })).wm_status_code, 400);
 });
 
-test("the save query never turns delivered back and only touches accepted acknowledgements", () => {
-  assert.match(SAVE_DELIVERY_REPORT, /WHERE request_id = \$1 AND status = 'accepted'/);
-  assert.match(SAVE_DELIVERY_REPORT, /delivery_status IS DISTINCT FROM 'delivered' OR \$2 = 'delivered'/);
+test("the save query never turns delivered back and only touches accepted acknowledgements", async () => {
+  const { query } = await testDb(TALENT_SCHEMA);
+  const accepted = await saveApplication(query, "VS-J-DLR001", { phone: "+919800000021" });
+  const pending = await saveApplication(query, "VS-J-DLR002", { phone: "+919800000022" });
+  await query(`UPDATE sms_acknowledgements SET status = 'accepted', request_id = 'R1' WHERE submission_id = $1::uuid`, [accepted]);
+  await query(`UPDATE sms_acknowledgements SET request_id = 'R2' WHERE submission_id = $1::uuid`, [pending]);
+  const report = (requestId: string, status: string) => query(SAVE_DELIVERY_REPORT, [requestId, status, status, null]);
+  const statusOf = async (id: string) =>
+    (await query<{ delivery_status: string | null }>(`SELECT delivery_status FROM sms_acknowledgements WHERE submission_id = $1::uuid`, [id]))[0].delivery_status;
+
+  assert.equal((await report("R1", "delivered")).length, 1);
+  assert.equal((await report("R1", "failed")).length, 0);
+  assert.equal(await statusOf(accepted), "delivered");
+  assert.equal((await report("R2", "delivered")).length, 0);
+  assert.equal(await statusOf(pending), null);
 });
 
 function checkDb(due: { submission_id: string; request_id: string }[], matches = new Set<string>()) {

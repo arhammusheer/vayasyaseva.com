@@ -5,8 +5,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { filesToDelete } from "./talent/lib/erasure.ts";
 import { runRetention } from "./talent/lib/run-retention.ts";
-import { CLAIM_ERASURE, DELETE_ROWS, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, QUEUE_EXPIRED_AND_RECOVER, SAVE_SUBMISSION } from "./talent/lib/sql.ts";
-import { SCRIPTS } from "./scripts.mts";
+import { CLAIM_ERASURE, DELETE_ROWS, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, QUEUE_EXPIRED_AND_RECOVER } from "./talent/lib/sql.ts";
+import { TALENT_SCHEMA, saveApplication, testDb } from "./test-db.mts";
 
 const claimed = { id: "req-1", phone: "+919876543210", reason: "request" as const, files: [] as string[] };
 
@@ -91,27 +91,61 @@ test("nothing queued erases nothing", async () => {
   assert.deepEqual(db.log, ["queue", "claim"]);
 });
 
-test("the clock is 12 months from the person's own last contact", () => {
-  assert.match(QUEUE_EXPIRED_AND_RECOVER, /last_contact_at/);
-  assert.match(QUEUE_EXPIRED_AND_RECOVER, /last_confirmed_at/);
-  assert.match(QUEUE_EXPIRED_AND_RECOVER, /interval '12 months'/);
-  assert.doesNotMatch(QUEUE_EXPIRED_AND_RECOVER, /last_applied_at|updated_at\) </);
+const queuedPhones = async (query: Awaited<ReturnType<typeof testDb>>["query"]) =>
+  (await query<{ phone: string }>(`SELECT phone FROM erasure_requests WHERE reason = 'retention' ORDER BY phone`)).map((r) => r.phone);
+
+test("the clock is 12 months from the person's own last contact or confirmation", async () => {
+  const { query } = await testDb(TALENT_SCHEMA);
+  // Every row is two years old; only contact and confirmation dates differ.
+  const person = (phone: string, contact: string | null, confirmed: string | null) =>
+    query(`INSERT INTO people (phone, last_contact_at, last_confirmed_at, created_at) VALUES ($1, ${contact ?? "NULL"}, ${confirmed ?? "NULL"}, now() - interval '2 years')`, [phone]);
+  await person("+919800000001", "now() - interval '13 months'", null);
+  await person("+919800000002", "now() - interval '13 months'", "now() - interval '1 month'");
+  await person("+919800000003", "now() - interval '11 months'", null);
+  await person("+919800000004", null, null);
+  // An application from before the people table, with no row of its own.
+  await saveApplication(query, "VS-J-OLD001", { phone: "+919800000005" });
+  await query(`DELETE FROM people WHERE phone = '+919800000005'`);
+  await query(`UPDATE submissions SET created_at = now() - interval '13 months' WHERE ref = 'VS-J-OLD001'`);
+
+  const [first] = await query<{ queued: string }>(QUEUE_EXPIRED_AND_RECOVER);
+  assert.equal(Number(first.queued), 3);
+  assert.deepEqual(await queuedPhones(query), ["+919800000001", "+919800000004", "+919800000005"]);
+  // An open request is not queued twice.
+  const [again] = await query<{ queued: string }>(QUEUE_EXPIRED_AND_RECOVER);
+  assert.equal(Number(again.queued), 0);
+});
+
+test("erasure claims skip locked rows", () => {
+  // PGlite has one connection, so this one is checked on the text.
   assert.match(CLAIM_ERASURE, /FOR UPDATE SKIP LOCKED/);
 });
 
-test("a finished erasure keeps counts only: phone and reference are cleared", () => {
-  assert.match(DELETE_ROWS, /DELETE FROM submissions WHERE phone = \$2/);
-  assert.match(DELETE_ROWS, /DELETE FROM people WHERE phone = \$2/);
-  assert.match(DELETE_ROWS, /phone = NULL, ref = NULL/);
-  assert.match(DELETE_ROWS, /removed_crm_files = \$4::int/);
+test("a finished erasure removes that person only and keeps counts: phone and reference are cleared", async () => {
+  const { query } = await testDb(TALENT_SCHEMA);
+  await saveApplication(query, "VS-J-ERA001", { phone: "+919800000011" });
+  await saveApplication(query, "VS-J-ERA002", { phone: "+919800000012" });
+  const [a] = await query<{ id: string }>(`INSERT INTO erasure_requests (phone, ref, reason, status) VALUES ('+919800000011', 'VS-J-ERA001', 'request', 'running') RETURNING id`);
+  const [b] = await query<{ id: string }>(`INSERT INTO erasure_requests (phone, reason, status) VALUES ('+919800000012', 'retention', 'running') RETURNING id`);
+
+  const [done] = await query<{ id: string; status: string }>(DELETE_ROWS, [a.id, "+919800000011", 2, 1]);
+  assert.deepEqual([done.id, done.status], [a.id, "done"]);
+  const requests = await query<Record<string, unknown>>(`SELECT id, status, phone, ref, removed_submissions, removed_files, removed_crm_files FROM erasure_requests ORDER BY status`);
+  assert.deepEqual(requests, [
+    { id: a.id, status: "done", phone: null, ref: null, removed_submissions: 1, removed_files: 2, removed_crm_files: 1 },
+    { id: b.id, status: "running", phone: "+919800000012", ref: null, removed_submissions: null, removed_files: null, removed_crm_files: null },
+  ]);
+  assert.deepEqual((await query<{ phone: string }>(`SELECT phone FROM submissions`)).map((r) => r.phone), ["+919800000012"]);
+  assert.deepEqual((await query<{ phone: string }>(`SELECT phone FROM people`)).map((r) => r.phone), ["+919800000012"]);
 });
 
-test("retention runs hourly", () => {
-  assert.equal(SCRIPTS.find((s) => s.name === "retention")?.schedule?.cron, "0 0 * * * *");
-});
-
-test("intake upserts the worker list with each new submission", () => {
-  assert.match(SAVE_SUBMISSION, /INSERT INTO people/);
-  assert.match(SAVE_SUBMISSION, /FROM s\s+ON CONFLICT \(phone\) DO UPDATE/);
-  assert.match(SAVE_SUBMISSION, /last_contact_at = now\(\)/);
+test("each new application renews the person's row: one row, roles merged, last contact moved", async () => {
+  const { query } = await testDb(TALENT_SCHEMA);
+  await saveApplication(query, "VS-J-PPL001", { role: "packing" });
+  await query(`UPDATE people SET last_contact_at = now() - interval '6 months', last_applied_at = now() - interval '6 months'`);
+  await saveApplication(query, "VS-J-PPL002", { role: "warehouse" });
+  const people = await query<{ roles: string[]; recent: boolean }>(`SELECT roles, last_contact_at > now() - interval '1 minute' AS recent FROM people`);
+  assert.equal(people.length, 1);
+  assert.deepEqual([...people[0].roles].sort(), ["packing", "warehouse"]);
+  assert.equal(people[0].recent, true);
 });

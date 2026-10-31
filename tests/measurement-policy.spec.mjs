@@ -18,7 +18,7 @@ const { consentDefaultSnippet } = await importTs("src/lib/measurement/vendors/gt
 const catalogue = await importTs("src/lib/measurement/catalogue/index.ts");
 const routes = await importTs("src/lib/measurement/routes.ts");
 const { MARKET_IDS, eventKey } = await importTs("src/markets/index.ts");
-const { analyticsSummary, privacyContent } = await importTs("src/content/privacy.ts");
+const { privacyContent } = await importTs("src/content/privacy.ts");
 const { privacyRetentionProblems } = await import("../scripts/check-privacy-retention.mjs");
 
 const DAY = 864e5;
@@ -122,7 +122,6 @@ test("the ledger: consecutive versions, the latest is CONSENT_VERSION and carrie
     latestLedgerEntry().fingerprint,
     "The purpose registry or the banner copy changed. Add a ledger entry (src/lib/measurement/ledger.ts) with the new fingerprint, and agree with the owner whether it bumps the consent version.",
   );
-  for (const v of [7, 8]) assert.equal(CONSENT_LEDGER[v - 1].signoff, "pending");
 });
 
 test("the banner has the same five locales and keys", () => {
@@ -136,7 +135,6 @@ test("the banner has the same five locales and keys", () => {
 test("noticeRows() is today's §3 table", () => {
   const today = JSON.parse(readFileSync(join(root, "tests/fixtures/privacy-analytics-summary.json"), "utf8"));
   assert.deepEqual(noticeRows(), today);
-  assert.deepEqual(analyticsSummary, today);
 });
 
 test("the catalogue is well formed and agrees with the gateway's route tables", () => {

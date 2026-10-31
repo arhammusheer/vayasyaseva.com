@@ -622,6 +622,8 @@ test('the snapshot carries what the hub was told, so a change is not reported ag
   const fetcher = async () => ({ ok: true, status: 200, contentType: 'text/html', body: Buffer.from('<p>x</p>') });
   const first = await runMonitor({ targets: t, previous: null, fetcher, now: at('2026-10-17'), describeNew: false });
   first.state.hub = { reported: { abc: '2026-10-17' } };
+  // A snapshot from before Chatwoot was retired: the key is dropped, not carried.
+  first.state.chatwoot = { reported: {} };
   const next = await runMonitor({ targets: t, previous: first.state, fetcher, now: at('2026-10-18'), describeNew: false });
   assert.deepEqual(next.state.hub, { reported: { abc: '2026-10-17' } });
   assert.equal('chatwoot' in next.state, false);

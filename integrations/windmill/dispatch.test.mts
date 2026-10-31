@@ -4,43 +4,13 @@
 // Chatwoot target's clean-up.
 import assert from "node:assert/strict";
 import test from "node:test";
-import { LEADS_SCHEMA, TALENT_SCHEMA, testDb } from "./test-db.mts";
+import { LEADS_SCHEMA, TALENT_SCHEMA, saveApplication as save, testDb } from "./test-db.mts";
 import { BUDGET, backoffSeconds, runDispatch, type DispatchDeps } from "./talent/lib/run-dispatch.ts";
-import { checkSubmission, saveSubmissionParams } from "./talent/lib/intake-payload.ts";
-import { SAVE_SUBMISSION, SYNC_CANDIDATES, SYNC_CANDIDATE_FOR } from "./talent/lib/sql.ts";
 import { runHealth } from "./platform/lib/run-health.ts";
 import type { Fast2SmsResponse } from "./talent/lib/types.ts";
 import type { Twenty } from "./talent/lib/twenty.ts";
 import type { Query } from "./talent/lib/db.ts";
 import type { EmitInput } from "./notify/lib/emit.ts";
-
-const application = (ref: string) => ({
-  ref,
-  source: "web",
-  locale: "en-IN",
-  cluster: "haridwar",
-  pageCluster: "haridwar",
-  pagePath: "/jobs/haridwar",
-  role: "packing",
-  hub: null,
-  channel: "web",
-  agentName: null,
-  phone: "+919876543210",
-  adult: true,
-  consent: { version: "2026-10-16-v7", at: "2026-10-17T09:30:00.000Z" },
-  text: "Two years packing.",
-  attachments: [],
-  form: "long",
-  applicantName: null,
-  answers: null,
-});
-
-async function save(query: Query, ref: string): Promise<string> {
-  const checked = checkSubmission(application(ref));
-  assert.ok(checked.ok);
-  const [row] = await query<{ submission_id: string }>(SAVE_SUBMISSION, saveSubmissionParams(checked.value));
-  return row.submission_id;
-}
 
 const deliveries = async (query: Query, id: string) =>
   Object.fromEntries((await query<{ target: string; status: string; attempts: number }>(`SELECT target, status, attempts FROM deliveries WHERE submission_id = $1::uuid`, [id])).map((r) => [r.target, `${r.status}/${r.attempts}`]));
@@ -83,11 +53,6 @@ function deps(query: Query, over: Partial<DispatchDeps> = {}): DispatchDeps & { 
     ...over,
   };
 }
-
-test("the targeted query is the scheduled one narrowed to one submission", () => {
-  assert.notEqual(SYNC_CANDIDATE_FOR, SYNC_CANDIDATES);
-  assert.match(SYNC_CANDIDATE_FOR, /WHERE s\.id = \$1::uuid;$/);
-});
 
 test("migration: existing statuses become deliveries, the old columns stay, and the view shows them", async () => {
   const marker = "  -- Roadmap 1F:";

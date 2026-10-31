@@ -51,7 +51,8 @@ test('every record carries the fields PLAN §5.5 asks for', () => {
       for (const key of ['zone', 'skill', 'monthly', 'basic', 'vda', 'notificationNumber', 'notificationDate', 'authority', 'sourceUrl', 'effectiveFrom', 'nextRevisionExpected', 'checkedOn']) {
         assert.ok(record[key] !== undefined && record[key] !== '', `${state.state} ${record.skill}: ${key}`);
       }
-      assert.ok('daily' in record);
+      // null where the table sets no daily rate, never missing.
+      assert.notEqual(record.daily, undefined, `${state.state} ${record.skill}: daily`);
     }
   }
 });

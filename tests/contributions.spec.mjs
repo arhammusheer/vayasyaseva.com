@@ -33,7 +33,6 @@ test('Delhi LWF is fixed per worker per half-year', () => {
 test('Karnataka PT starts at ₹25,000: ₹200 a month, ₹300 in February, ₹2,500 a year', () => {
   assert.deepEqual(c.karnatakaPt(24999), { due: false, month: 0, february: 0, year: 0 });
   assert.deepEqual(c.karnatakaPt(25000), { due: true, month: 200, february: 300, year: 2500 });
-  assert.equal(11 * 200 + 300, 2500);
 });
 
 test('Statutory bonus: ₹7,000 or the minimum wage, whichever is higher; 8⅓% to 20%; nothing above ₹21,000', () => {
@@ -76,8 +75,6 @@ test('Pay breakdown: Punjab unskilled minimum plus employer PF and ESI is ₹600
   const { jobClusters } = await importTs('src/content/pages/job-clusters.ts');
   const b = payBreakdown({ state: 'punjab', skill: 'unskilled' });
   assert.deepEqual(b, { monthly: 13486, wage: 519, employerPf: 67, employerEsic: 17, employer: 84, total: 603, workerShare: 66, takeHome: 453 });
-  assert.equal(b.wage + b.employerPf + b.employerEsic, b.total);
-  assert.equal(b.wage - b.workerShare, b.takeHome);
   for (const [locale, clusters] of Object.entries(jobClusters)) {
     for (const cluster of clusters) {
       if (!cluster.pay) continue;

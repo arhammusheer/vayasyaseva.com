@@ -3,10 +3,8 @@
 // routing, then routed like any URL, so a page that has since retired or
 // lost a language is reached in one 308, never a chain.
 //
-// The IA restructure retires these pages. The business retirements are in
-// src/content/registry/pages.ts; the ones still to land (PENDING) are set up
-// here the same way. A setup line fails once pages.ts carries that
-// retirement, so it moves to LANDED rather than masking the registry.
+// The IA restructure retires these pages; the retirements are in
+// src/content/registry/pages.ts, and LANDED checks the registry carries them.
 import assert from "node:assert/strict";
 import test from "node:test";
 import { importTs } from "../scripts/lib/register-ts.mjs";
@@ -26,8 +24,6 @@ const LANDED = [
   // Never public either: retired with no redirect.
   ["/guides/what-is-contract-labour", undefined, undefined],
 ];
-/** Retirements the spec asks for that a later step lands in pages.ts. */
-const PENDING = [];
 const isRetired = (path, locale) => {
   const { locales } = entry(path);
   return locale ? locales[locale] === "retired" : Object.values(locales).every((s) => s === "retired");
@@ -39,18 +35,7 @@ const targetOf = (path, locale) => {
 // What the real registry does, before the setup below changes it.
 const misses = (list) => list.filter(([path, locale, to]) => !isRetired(path, locale) || targetOf(path, locale) !== to).map(([path, locale]) => `${path}${locale ? ` (${locale})` : ""}`);
 const landedMisses = misses(LANDED);
-const pendingMisses = misses(PENDING);
 
-const retired = (locales) => Object.fromEntries(Object.keys(locales).map((l) => [l, "retired"]));
-for (const [path, locale, retiredTo] of PENDING) {
-  if (isRetired(path, locale)) assert.fail(`${path}${locale ? ` (${locale})` : ""} is retired in pages.ts now: delete its setup line in this test`);
-  const e = entry(path);
-  if (locale) {
-    Object.assign(e, { locales: { ...e.locales, [locale]: "retired" }, retiredTo: { ...(typeof e.retiredTo === "object" ? e.retiredTo : {}), [locale]: retiredTo } });
-  } else {
-    Object.assign(e, { locales: retired(e.locales), retiredTo });
-  }
-}
 // A draft page whose route folder exists (built only for previews).
 pageEntries.push({ path: "/minimum-wages/test-draft", kind: "static", audience: "mixed", locales: { "en-IN": "draft" }, updated: "2026-10-16", changeFrequency: "yearly", priority: 0.1 });
 
@@ -118,9 +103,4 @@ test("a retired language with no target, or a page not built, 404s with no hop",
 
 test("the registry carries the landed retirements", () => {
   assert.deepEqual(landedMisses, []);
-});
-
-// A later retirement goes in PENDING (with its setup) until pages.ts lands it.
-test("the registry carries every retirement the spec asks for", () => {
-  assert.deepEqual(pendingMisses, []);
 });

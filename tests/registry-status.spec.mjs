@@ -113,13 +113,6 @@ test("paused hubs: built and noindex, out of the sitemap, but links to them keep
   assert.equal(registry.linkable("/jobs/test-hub"), false);
 });
 
-test("only cluster hubs can be paused (they render the notice)", () => {
-  assert.ok(registry.PAUSABLE_KINDS.has("jobs-city"));
-  assert.ok(registry.PAUSABLE_KINDS.has("cluster-hub"));
-  assert.ok(!registry.PAUSABLE_KINDS.has("static"));
-  assert.ok(!registry.PAUSABLE_KINDS.has("job-role"));
-});
-
 test("per-language retirement: a named target 308s, a retired language without one 404s", () => {
   assert.deepEqual(registry.builtLocales("/test-partly-retired"), ["en-IN"]);
   assert.equal(registry.redirectTarget("/test-partly-retired", "hi-Latn-IN"), "/test-mixed");

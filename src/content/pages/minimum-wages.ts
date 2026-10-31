@@ -187,7 +187,7 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
     const u1 = rate(s, t, "zone-1", "unskilled");
     const u3 = rate(s, t, "zone-3", "unskilled");
     return {
-      title: (year) => `Karnataka Minimum Wages${year ? ` ${year}` : ""}: Rates by Zone`,
+      title: (year, month) => `Karnataka Minimum Wages${dated(year, month)}: Rates by Zone`,
       description: `Karnataka minimum wage from 22 May 2026, unskilled: ${formatRupees(u1.monthly)} a month in Bengaluru (Zone 1), ${formatRupees(u3.monthly)} in Zone 3, basic plus VDA. All skill levels. ${stamp([s])}.`,
       answer: `From 22 May 2026, unskilled work in Bengaluru city (Zone 1) pays at least ${formatRupees(u1.monthly)} a month, or ${formatRupees(u1.daily ?? 0)} a day, basic plus VDA. Zones 2 and 3 pay less.`,
       note: {
@@ -201,7 +201,7 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
         },
         {
           question: "Is the VDA added on top of these rates?",
-          answer: `Yes. The notification fixes basic rates by zone and skill, and a VDA of ${formatRupees(u1.vda)} a month payable from 22 May 2026. The Labour Department lists them separately; the figures above add them. The VDA is revised once a year, from 1 April.`,
+          answer: `Yes. The notification fixes basic rates by zone and skill, and a VDA of 4 paise a day for each point the consumer price index rises above 9,469. The Labour Department's summary puts that at ${formatRupees(u1.vda)} a month from 22 May 2026; the figures above add it to the basic rate. The VDA is revised once a year, from 1 April.`,
         },
       ],
       labourDepartment: { href: "https://karmikaspandana.karnataka.gov.in/en", label: "Labour Department, Karnataka" },

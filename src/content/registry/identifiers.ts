@@ -100,10 +100,22 @@ export const WAGE_STATE_REGIONS = {
   // ISO 3166-2:IN since November 2023 (IN-TG before); the crew form stores TS.
   telangana: "TS",
 } as const satisfies Record<WageStateSlug, string>;
-export const WAGE_STATE_CODES = { up: "uttar-pradesh", dl: "delhi", uk: "uttarakhand" } as const satisfies Record<
-  string,
-  WageStateSlug
->;
+/**
+ * Short codes (/minimum-wages/ka) that 308 to a state's page once it is
+ * published. Every state has one (tests/wages.spec.mjs); Telangana answers to
+ * both its codes, TS and TG (WAGE_STATE_REGIONS).
+ */
+export const WAGE_STATE_CODES = {
+  up: "uttar-pradesh",
+  dl: "delhi",
+  uk: "uttarakhand",
+  hr: "haryana",
+  pb: "punjab",
+  ka: "karnataka",
+  ap: "andhra-pradesh",
+  ts: "telangana",
+  tg: "telangana",
+} as const satisfies Record<string, WageStateSlug>;
 export const WAGE_HUB_PATH = "/minimum-wages";
 export const wageStatePath = (state: WageStateSlug) => `${WAGE_HUB_PATH}/${state}`;
 /**

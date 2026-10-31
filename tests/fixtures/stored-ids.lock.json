@@ -47,7 +47,13 @@
   "identifiers.WAGE_STATE_CODES": [
     "up=uttar-pradesh",
     "dl=delhi",
-    "uk=uttarakhand"
+    "uk=uttarakhand",
+    "hr=haryana",
+    "pb=punjab",
+    "ka=karnataka",
+    "ap=andhra-pradesh",
+    "ts=telangana",
+    "tg=telangana"
   ],
   "identifiers.GUIDE_SLUGS": [
     "new-labour-codes",

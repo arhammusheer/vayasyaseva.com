@@ -1351,6 +1351,12 @@ a:hover > svg {
 .footer-brand span {
   padding-top: 0.12em;
 }
+.footer-brand-script {
+  margin-top: 10px;
+  font-size: 17px;
+  line-height: 1.4;
+  color: var(--neutral-300);
+}
 .footer-jobs-door {
   margin-top: 14px;
   font-size: 15px;

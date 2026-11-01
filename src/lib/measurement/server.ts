@@ -5,7 +5,7 @@
  * which nothing else may import (eslint.config.mjs).
  */
 import { uploadJobApplicationConversion } from "@/lib/google-ads-conversions";
-import { trackServerEvent } from "@/lib/server-events";
+import { postServerEvent, trackServerEvent } from "@/lib/server-events";
 import type { AdClick } from "@/lib/talent-intake/contract";
 import { measurementEnv } from "./config";
 import { blockedState, dataManagerConsent, decide, stateOfClaim, type MeasurementClaim } from "./policy";
@@ -18,6 +18,16 @@ import { blockedState, dataManagerConsent, decide, stateOfClaim, type Measuremen
 export function reportServerCount(name: string, url: string, data: Record<string, string | number>) {
   if (!decide("server-counts", blockedState(Date.now()), measurementEnv)) return;
   trackServerEvent(name, url, data);
+}
+
+/**
+ * One `ai_fetch` count: an AI crawler or assistant fetched a page or a
+ * machine-read file (src/lib/ai-fetch.ts). For the proxy, which keeps the
+ * request alive with NextFetchEvent.waitUntil, so this returns the send.
+ */
+export function reportAiFetch(path: string, data: Record<string, string>): Promise<void> {
+  if (!decide("server-counts", blockedState(Date.now()), measurementEnv)) return Promise.resolve();
+  return postServerEvent("ai_fetch", path, data);
 }
 
 /**

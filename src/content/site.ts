@@ -10,7 +10,13 @@ export const siteConfig: SiteConfig = {
   cin: "U01619UT2023PTC015814",
   msme: "UDYAM-UK-06-0029670",
   address: "Haridwar, Uttarakhand",
-  region: "Bengaluru, Delhi NCR, Punjab and Uttarakhand",
+  region: "Bengaluru, Delhi NCR, Hyderabad, Punjab, Uttarakhand and Visakhapatnam",
+  nameInScript: {
+    "hi-IN": "वयस्य सेवा",
+    "pa-IN": "ਵਯੱਸਿਆ ਸੇਵਾ",
+    "kn-IN": "ವಯಸ್ಯ ಸೇವಾ",
+    "te-IN": "వయస్య సేవ",
+  },
   sameAs: [
     "https://www.linkedin.com/company/vayasya-seva/",
     // Google Business Profile

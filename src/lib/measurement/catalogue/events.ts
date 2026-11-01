@@ -223,6 +223,14 @@ export const EVENTS = {
     consumers: [],
     source: "src/app/api/contact/route.ts, src/app/api/agent/contact/route.ts",
   },
+  // A crawler or assistant, never a person: which AI read which page (src/lib/ai-fetch.ts).
+  ai_fetch: {
+    purpose: "server-counts",
+    sinks: ["umami-server"],
+    props: anon("bot operator kind path signed country"),
+    consumers: ["site-health"],
+    source: "src/proxy.ts",
+  },
 } as const satisfies Record<string, EventSpec>;
 
 export type EventId = keyof typeof EVENTS;

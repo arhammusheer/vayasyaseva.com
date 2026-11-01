@@ -35,7 +35,7 @@ export const RETENTION: readonly RetentionStore[] = [
   },
   {
     id: "umami-server-events",
-    what: "Server counts (application_received, enquiry_received) on the separate Umami website",
+    what: "Server counts (application_received, enquiry_received, ai_fetch) on the separate Umami website",
     days: null,
     notice: null,
     noticeRef: "/privacy §2 Cookie-free site counts (no period stated)",

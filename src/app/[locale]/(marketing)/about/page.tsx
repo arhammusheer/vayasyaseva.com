@@ -51,7 +51,7 @@ export default function AboutPage() {
             around the work.
           </>
         }
-        lede="Incorporated in Haridwar in 2023, we supply supervised crews to factories, warehouses and facilities in Bengaluru, Delhi NCR, Punjab and Uttarakhand."
+        lede="Incorporated in Haridwar in 2023, we supply supervised crews to factories, warehouses and facilities in Bengaluru, Delhi NCR, Hyderabad, Punjab, Uttarakhand and Visakhapatnam."
       />
       <Section variant="subtle">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2">

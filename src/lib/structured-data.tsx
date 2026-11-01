@@ -128,7 +128,7 @@ export function organizationNode() {
     "@id": ORG_ID,
     name: siteConfig.companyName,
     legalName: siteConfig.legalName,
-    alternateName: "VSPL",
+    alternateName: ["VSPL", ...Object.values(siteConfig.nameInScript)],
     url: BASE_URL,
     logo: { "@type": "ImageObject", url: LOGO_URL, width: 1024, height: 1024 },
     image: LOGO_URL,

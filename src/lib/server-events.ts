@@ -16,22 +16,29 @@ const USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, l
 
 export function trackServerEvent(name: string, url: string, data: Record<string, string | number>) {
   if (process.env.NODE_ENV !== "production") return;
-  after(async () => {
-    try {
-      await fetch(COLLECT_URL, {
-        method: "POST",
-        headers: { "content-type": "application/json", "user-agent": USER_AGENT },
-        body: JSON.stringify({
-          type: "event",
-          payload: {
-            website: SERVER_WEBSITE_ID, hostname: "www.vayasyaseva.com", url, name, data,
-            language: "en-IN", screen: "0x0", browser: "server", os: "server", device: "server",
-          },
-        }),
-        signal: AbortSignal.timeout(3000),
-      });
-    } catch {
-      // Analytics must never affect a submission.
-    }
-  });
+  after(() => postServerEvent(name, url, data));
+}
+
+/**
+ * The send itself, for callers that keep the request alive another way (the
+ * proxy, with NextFetchEvent.waitUntil). Never rejects.
+ */
+export async function postServerEvent(name: string, url: string, data: Record<string, string | number>) {
+  if (process.env.NODE_ENV !== "production") return;
+  try {
+    await fetch(COLLECT_URL, {
+      method: "POST",
+      headers: { "content-type": "application/json", "user-agent": USER_AGENT },
+      body: JSON.stringify({
+        type: "event",
+        payload: {
+          website: SERVER_WEBSITE_ID, hostname: "www.vayasyaseva.com", url, name, data,
+          language: "en-IN", screen: "0x0", browser: "server", os: "server", device: "server",
+        },
+      }),
+      signal: AbortSignal.timeout(3000),
+    });
+  } catch {
+    // Analytics must never affect a submission or a page.
+  }
 }

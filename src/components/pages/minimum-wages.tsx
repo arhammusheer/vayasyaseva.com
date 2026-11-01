@@ -733,7 +733,7 @@ export async function WageStatePage({ slug }: { slug: WageStateSlug }) {
       <JsonLd data={faqSchema(t.faqs)} />
       <PageHero
         crumbs={<Breadcrumbs path={wageStatePath(slug)} locale="en-IN" name={state.name} />}
-        title={x.stateHeading(state.name, month)}
+        title={x.stateHeading(t.headingPlace ?? state.name, month)}
         lede={still ? `${t.answer} ${still}` : t.answer}
         footnote={<CheckedLine state={state} today={today} />}
         className={HERO_TIGHT}

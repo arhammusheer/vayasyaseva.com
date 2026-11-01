@@ -39,6 +39,13 @@ export interface SiteConfig {
   msme: string;
   address: string;
   region: string;
+  /**
+   * The name in each Indian script the site or its searchers use, for
+   * Organization.alternateName and the jobs footer. People who type in
+   * Devanagari, Gurmukhi, Kannada or Telugu search for it that way. Drafts
+   * pending native review, like the rest of the translations.
+   */
+  nameInScript: Record<"hi-IN" | "pa-IN" | "kn-IN" | "te-IN", string>;
   /** Public profiles for Organization.sameAs. Add as they are created. */
   sameAs: string[];
   /** City-level coordinates for LocalBusiness.geo. */

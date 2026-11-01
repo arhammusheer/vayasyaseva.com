@@ -90,6 +90,9 @@ export function Footer({
               />
               <span>Vayasya Seva</span>
             </Link>
+            {isJobs && locale in siteConfig.nameInScript && (
+              <p className="footer-brand-script">{siteConfig.nameInScript[locale as keyof typeof siteConfig.nameInScript]}</p>
+            )}
             {!isJobs && (
               <>
                 <address lang="en-IN">

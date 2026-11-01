@@ -32,7 +32,7 @@ export const servicePages: ServiceLandingContent[] = [
     summary: "Production helpers, packers, line feeders and material handlers.",
     metaTitle: "Factory Labour & Production Helpers for Plants",
     description:
-      "Production helpers, packers, line feeders and material handlers for factories in Bengaluru, Delhi NCR, Punjab and Uttarakhand, planned around your shifts.",
+      "Production helpers, packers, line feeders and material handlers for factories in Bengaluru, Delhi NCR, Hyderabad, Punjab, Uttarakhand and Visakhapatnam, planned around your shifts.",
     heading: "Factory labour for your plant.",
     lede: "A supervised shopfloor crew sized to your line and your shifts.",
     jobs: { role: "factory-helper", label: "Factory helper jobs" },
@@ -85,7 +85,7 @@ export const servicePages: ServiceLandingContent[] = [
     summary: "Loading, unloading, picking, packing, racking and dispatch crews.",
     metaTitle: "Loading and Unloading Labour Services for Warehouses",
     description:
-      "Loading and unloading labour for warehouses, factory stores and transporters in Bengaluru, Delhi NCR, Punjab and Uttarakhand: trucks, containers, dispatch.",
+      "Loading and unloading labour for warehouses, factory stores and transporters in Bengaluru, Delhi NCR, Hyderabad, Punjab, Uttarakhand and Visakhapatnam: trucks, containers, dispatch.",
     heading: "Loading and unloading labour for warehouses and dispatch.",
     lede: "Crews sized to the vehicles you handle and the hours your dock runs.",
     jobs: { role: "warehouse", label: "Warehouse jobs" },
@@ -110,7 +110,7 @@ export const servicePages: ServiceLandingContent[] = [
       {
         question: "Do you supply crews for factory stores as well as warehouses?",
         answer:
-          "Yes. We plan loading and unloading crews for factory stores and dispatch, warehouses and transport yards in Bengaluru, Delhi NCR, Punjab and Uttarakhand.",
+          "Yes. We plan loading and unloading crews for factory stores and dispatch, warehouses and transport yards in Bengaluru, Delhi NCR, Hyderabad, Punjab, Uttarakhand and Visakhapatnam.",
         category: "operations",
       },
       {
@@ -137,7 +137,7 @@ export const servicePages: ServiceLandingContent[] = [
     summary: "Housekeeping, pantry, washroom and grounds staff.",
     metaTitle: "Housekeeping Manpower for Plants and Offices",
     description:
-      "Housekeeping, pantry, washroom and grounds staff for plants, offices and campuses in Bengaluru, Delhi NCR, Punjab and Uttarakhand, on routines set to the site.",
+      "Housekeeping, pantry, washroom and grounds staff for plants, offices and campuses in Bengaluru, Delhi NCR, Hyderabad, Punjab, Uttarakhand and Visakhapatnam, on routines set to the site.",
     heading: "Housekeeping manpower for plants, offices and campuses.",
     lede: "Housekeeping and grounds teams on a routine set to your premises.",
     jobs: { role: "housekeeping", label: "Housekeeping jobs" },

@@ -14,7 +14,7 @@ export const generateStaticParams = localeParams("/services");
 
 const TITLE = "Contract Labour: Factory, Loading and Housekeeping";
 const DESCRIPTION =
-  "Factory, loading and unloading, and housekeeping crews in Bengaluru, Delhi NCR, Punjab and Uttarakhand, and how an engagement runs, site visit to records.";
+  "Factory, loading and unloading, and housekeeping crews in Bengaluru, Delhi NCR, Hyderabad, Punjab, Uttarakhand and Visakhapatnam, and how an engagement runs, site visit to records.";
 
 export const metadata = pageMetadata({
   title: TITLE,

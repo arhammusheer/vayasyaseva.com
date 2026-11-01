@@ -1,4 +1,6 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse, type NextFetchEvent, type NextRequest } from "next/server";
+import { AI_READ_FILES, aiFetchOf } from "@/lib/ai-fetch";
+import { reportAiFetch } from "@/lib/measurement/server";
 import { FALLBACK_LOCALE, fromLegacyPrefix, isGone, localePath, localesOf, movedPathname, neutralTarget, splitLocalePath } from "@/lib/i18n";
 import { LANGUAGE_COOKIE, isRankSegment, rankSegmentFor, visitorCity, visitorRegion } from "@/lib/language-rank";
 import { parsePicksCookie } from "@/context/collect";
@@ -212,15 +214,45 @@ function withGeo(request: NextRequest, response: NextResponse) {
   return response;
 }
 
-export function proxy(request: NextRequest) {
+/**
+ * One `ai_fetch` event per page or machine-read file an AI crawler or
+ * assistant fetches (src/lib/ai-fetch.ts), after the response. `signed`: the
+ * request carried a Web Bot Auth signature, so the agent is likely genuine.
+ */
+function countAiFetch(request: NextRequest, event: NextFetchEvent) {
+  const ai = aiFetchOf(request.headers.get("user-agent"));
+  if (!ai) return;
+  const path = request.nextUrl.pathname;
+  event.waitUntil(
+    reportAiFetch(path, {
+      ...ai,
+      path,
+      signed: request.headers.has("signature-agent") ? "yes" : "no",
+      country: request.headers.get("x-vercel-ip-country") ?? "unknown",
+    }),
+  );
+}
+
+const isAiReadFile = (pathname: string) => (AI_READ_FILES as readonly string[]).includes(pathname);
+
+export function proxy(request: NextRequest, event: NextFetchEvent) {
   if (requestHost(request) === APEX_HOST) return apexRedirect(request);
   if (request.nextUrl.pathname.startsWith("/_t/")) return umami(request);
+  countAiFetch(request, event);
+  if (isAiReadFile(request.nextUrl.pathname)) return NextResponse.next();
   return withGeo(request, routeLocale(request));
 }
 
 export const config = {
   matcher: [
     "/_t/:path*",
+    // Files AI crawlers read, for the ai_fetch count (src/lib/ai-fetch.ts AI_READ_FILES).
+    "/robots.txt",
+    "/llms.txt",
+    "/llms-full.txt",
+    "/sitemap.xml",
+    "/openapi/v1.json",
+    "/ai-access-policy.txt",
     // Pages only: not the API, Next internals, metadata images or files with an extension.
     "/((?!api/|_next/|_vercel/|opengraph-image|.*\\.[a-zA-Z0-9]+$).*)",
     // Everything on the apex host, which redirects to www.

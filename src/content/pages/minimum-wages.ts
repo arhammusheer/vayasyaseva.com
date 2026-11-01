@@ -60,6 +60,8 @@ export type WageStateCopy = {
    * below).
    */
   labourDepartment: LinkItem;
+  /** The H1's place name where the state's name alone is ambiguous (Punjab is also a province of Pakistan). */
+  headingPlace?: string;
 };
 
 const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined> = {
@@ -166,7 +168,7 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
     const u = rate(s, t, "punjab", "unskilled");
     const from = s.tables[0].effectiveFrom;
     return {
-      title: (year, month) => `Punjab Minimum Wage${dated(year, month)}: ${formatRupees(u.monthly)}/month`,
+      title: (year, month) => `Punjab (India) Minimum Wage${dated(year, month)}: ${formatRupees(u.monthly)}/month`,
       description: `Punjab minimum wage from ${formatShortDate(from)}: ${rs(s, t, "punjab", "unskilled")} a month (${formatRupees(u.daily ?? 0)} a day) unskilled, ${rs(s, t, "punjab", "semi-skilled")} semi-skilled, ${rs(s, t, "punjab", "skilled")} skilled, plus staff rates. ${stamp([s])}.`,
       answer: `From ${formatDate(from)}, unskilled work anywhere in Punjab pays at least ${formatRupees(u.monthly)} a month, or ${formatRupees(u.daily ?? 0)} a day. One rate covers the whole state.`,
       faqs: [
@@ -180,6 +182,7 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
         },
       ],
       labourDepartment: { href: "https://pblabour.gov.in/", label: "Labour Department, Punjab" },
+      headingPlace: "Punjab, India",
     };
   },
   karnataka: (s) => {

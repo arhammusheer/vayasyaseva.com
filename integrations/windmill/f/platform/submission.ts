@@ -589,7 +589,7 @@ function normaliseIndianMobile(input) {
 })();
 
 // integrations/windmill/talent/lib/crm.ts
-const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, homeAreaText, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, smsWasSent, whatsAppWasSent, WA_ACK_TEMPLATE, waAckText, whatsAppDeliveryStatus, waAckKey, waAckFields, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, removeAttachments, erasePerson } = (() => {
+const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, homeAreaText, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, smsWasSent, whatsAppWasSent, WA_ACK_TEMPLATE, waAckText, whatsAppDeliveryStatus, waAckKey, waAckFields, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, findAll, removeAttachments, erasePerson } = (() => {
 const CLUSTER_VALUES = new Set(["HARIDWAR", "UTTARAKHAND", "DELHI_NCR", "BENGALURU", "JALANDHAR", "SAHARANPUR", "OTHER", "PUNJAB", "DEHRADUN", "KAPURTHALA", "VISAKHAPATNAM", "ANDHRA_PRADESH", "HYDERABAD", "TELANGANA"]);
 const ROLE_VALUES = new Set([
     "FACTORY_HELPER", "PACKING", "MACHINE_OPERATOR", "WAREHOUSE", "FORKLIFT_OPERATOR", "DATA_ENTRY_OPERATOR",
@@ -957,30 +957,31 @@ const WORKER_FIELDS_CLEARED = {
     lastContactAt: null,
 };
 const CLIENT_NAME_CLEARED = { firstName: "Client contact", lastName: "" };
-async function attachmentsOf(crm, field, id) {
-    const live = await crm.find("attachments", eq(field, id));
-    const trashed = await crm.find("attachments", `and(${eq(field, id)},deletedAt[is]:NOT_NULL)`);
+async function findAll(crm, plural, filter) {
+    const live = await crm.find(plural, filter);
+    const trashed = await crm.find(plural, `and(${filter},deletedAt[is]:NOT_NULL)`);
     return [...new Map([...live, ...trashed].map((r) => [r.id, r])).values()];
 }
 async function removeAttachments(crm, field, id) {
     let removed = 0;
-    for (const a of await attachmentsOf(crm, field, id))
+    for (const a of await findAll(crm, "attachments", eq(field, id)))
         if (await crm.remove("attachments", a.id))
             removed++;
     return removed;
 }
 async function erasePerson(crm, phone) {
-    const people = await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(phone)));
+    const people = await findAll(crm, "people", eq("phones.primaryPhoneNumber", phoneDigits(phone)));
     let files = 0;
     for (const person of people) {
-        for (const app of await crm.find("applications", eq("personId", person.id))) {
+        for (const app of await findAll(crm, "applications", eq("personId", person.id))) {
             files += await removeAttachments(crm, "targetApplicationId", app.id);
-            for (const comm of await crm.find("communications", eq("applicationId", app.id)))
+            for (const comm of await findAll(crm, "communications", eq("applicationId", app.id)))
                 await crm.remove("communications", comm.id);
             await crm.remove("applications", app.id);
         }
-        const clientContact = person.personType === "CLIENT_CONTACT" || (await crm.find("opportunities", eq("pointOfContactId", person.id))).length > 0;
-        for (const comm of await crm.find("communications", eq("personId", person.id))) {
+        const clientContact = !person.deletedAt &&
+            (person.personType === "CLIENT_CONTACT" || (await crm.find("opportunities", eq("pointOfContactId", person.id))).length > 0);
+        for (const comm of await findAll(crm, "communications", eq("personId", person.id))) {
             if (!clientContact || !comm.opportunityId)
                 await crm.remove("communications", comm.id);
         }
@@ -996,7 +997,7 @@ async function erasePerson(crm, phone) {
     }
     return { people: people.length, files };
 }
-  return { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, homeAreaText, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, smsWasSent, whatsAppWasSent, WA_ACK_TEMPLATE, waAckText, whatsAppDeliveryStatus, waAckKey, waAckFields, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, removeAttachments, erasePerson };
+  return { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, homeAreaText, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, smsWasSent, whatsAppWasSent, WA_ACK_TEMPLATE, waAckText, whatsAppDeliveryStatus, waAckKey, waAckFields, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, findAll, removeAttachments, erasePerson };
 })();
 
 // integrations/windmill/leads/lib/lead.ts
@@ -1511,6 +1512,14 @@ WHERE submission_id = $1::uuid AND wa_status = 'accepted'
 const SKIP_SMS = `
 UPDATE sms_acknowledgements SET status = 'skipped', last_error = NULL, updated_at = now()
 WHERE submission_id = $1::uuid AND status = 'pending';`;
+const EXPIRED_PHONES = `
+  SELECT p.phone FROM people p
+  WHERE greatest(coalesce(p.last_contact_at, p.created_at), coalesce(p.last_confirmed_at, p.created_at)) < now() - interval '${RETENTION_MONTHS} months'
+  UNION
+  -- Submissions from before the people table, with no row of their own.
+  SELECT s.phone FROM submissions s
+  WHERE NOT EXISTS (SELECT 1 FROM people p WHERE p.phone = s.phone)
+  GROUP BY s.phone HAVING max(s.created_at) < now() - interval '${RETENTION_MONTHS} months'`;
 const QUEUE_EXPIRED_AND_RECOVER = `
 WITH recovered AS (
   UPDATE erasure_requests
@@ -1518,14 +1527,12 @@ WITH recovered AS (
       last_error = coalesce(last_error, 'Interrupted; retried'), updated_at = now()
   WHERE status = 'running' AND updated_at < now() - interval '1 hour'
   RETURNING id
-), expired AS (
-  SELECT p.phone FROM people p
-  WHERE greatest(coalesce(p.last_contact_at, p.created_at), coalesce(p.last_confirmed_at, p.created_at)) < now() - interval '${RETENTION_MONTHS} months'
-  UNION
-  -- Submissions from before the people table, with no row of their own.
-  SELECT s.phone FROM submissions s
-  WHERE NOT EXISTS (SELECT 1 FROM people p WHERE p.phone = s.phone)
-  GROUP BY s.phone HAVING max(s.created_at) < now() - interval '${RETENTION_MONTHS} months'
+), expired AS (${EXPIRED_PHONES}
+), withdrawn AS (
+  -- Queued for retention, then applied or confirmed again: no longer due.
+  DELETE FROM erasure_requests
+  WHERE status = 'pending' AND reason = 'retention' AND phone NOT IN (SELECT phone FROM expired)
+  RETURNING id
 ), queued AS (
   INSERT INTO erasure_requests (phone, reason)
   SELECT phone, 'retention' FROM expired
@@ -1538,18 +1545,23 @@ WITH claimed AS (
   UPDATE erasure_requests e
   SET status = 'running', attempts = e.attempts + 1, last_error = NULL, updated_at = now()
   WHERE e.id = (
-    SELECT id FROM erasure_requests WHERE status = 'pending' AND phone IS NOT NULL
-    ORDER BY requested_at LIMIT 1 FOR UPDATE SKIP LOCKED)
+    SELECT id FROM erasure_requests
+    WHERE status = 'pending' AND phone IS NOT NULL
+      AND (reason = 'request' OR phone IN (${EXPIRED_PHONES}))
+    ORDER BY reason = 'request' DESC, requested_at LIMIT 1 FOR UPDATE SKIP LOCKED)
   RETURNING e.id, e.phone, e.reason
 )
 SELECT c.id, c.phone, c.reason,
+  coalesce((SELECT jsonb_agg(s.id) FROM submissions s WHERE s.phone = c.phone), '[]'::jsonb) AS submissions,
   coalesce((SELECT jsonb_agg(a.r2_key) FROM attachments a JOIN submissions s ON s.id = a.submission_id WHERE s.phone = c.phone), '[]'::jsonb) AS files
 FROM claimed c;`;
 const DELETE_ROWS = `
 WITH gone AS (
-  DELETE FROM submissions WHERE phone = $2 RETURNING id
+  DELETE FROM submissions WHERE phone = $2 AND id = ANY($5::uuid[]) RETURNING id
 ), person AS (
-  DELETE FROM people WHERE phone = $2 RETURNING 1
+  DELETE FROM people WHERE phone = $2
+    AND NOT EXISTS (SELECT 1 FROM submissions s WHERE s.phone = $2 AND s.id <> ALL($5::uuid[]))
+  RETURNING 1
 )
 UPDATE erasure_requests
 SET status = 'done', processed_at = now(), updated_at = now(),

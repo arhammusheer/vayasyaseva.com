@@ -24,8 +24,8 @@ export interface FilesDeps {
   query: Query;
   crm: Twenty;
   files: TwentyFiles;
-  /** The R2 object, or null when it is gone (downloadIfExists in r2.ts). */
-  download: (key: string) => Promise<Blob | null>;
+  /** The R2 object, null when it is gone, "too_large" past the declared size (downloadIfExists in r2.ts). */
+  download: (key: string, maxBytes: number) => Promise<Blob | null | "too_large">;
 }
 
 export interface FileRow {
@@ -136,10 +136,15 @@ export async function runFiles(deps: FilesDeps, submissionId: string): Promise<F
         }
       }
       if (!fileId) {
-        const data = await deps.download(f.r2_key);
+        const data = await deps.download(f.r2_key, Number(f.size_bytes));
         if (!data) {
           await deps.query(SETTLE_FILE, [f.id, "missing", null, null, "Not in R2 (expired or erased)"]);
           result.missing++;
+          continue;
+        }
+        if (data === "too_large") {
+          await deps.query(SETTLE_FILE, [f.id, "skipped", null, null, "Larger than declared: replaced after it was sent; not copied"]);
+          result.skipped++;
           continue;
         }
         fieldId ??= await deps.files.attachmentFileFieldId();

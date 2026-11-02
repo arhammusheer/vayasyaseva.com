@@ -55,7 +55,7 @@ export interface DispatchDeps {
   /** Twenty; null when it is not configured (the CRM deliveries wait). */
   crm: Twenty | null;
   /** Twenty's file upload and the R2 download; null when not configured (the files deliveries wait). */
-  files?: { twenty: TwentyFiles; download: (key: string) => Promise<Blob | null> } | null;
+  files?: { twenty: TwentyFiles; download: (key: string, maxBytes: number) => Promise<Blob | null | "too_large"> } | null;
   lookupReport: (requestId: string) => Promise<DeliveryReport | null>;
   log?: (message: string) => void;
   /** The notification hub: application.received from the CRM step (syncOne). */

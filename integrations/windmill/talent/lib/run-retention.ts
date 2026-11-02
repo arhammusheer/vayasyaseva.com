@@ -31,7 +31,7 @@ const DISPATCH_LOCK_WAIT_MS = 2_000;
 
 /**
  * Takes the dispatcher's lock, so no dispatch run (which would skip while
- * erasure holds it) adds a Twenty attachment between the Twenty step and
+ * erasure holds it) writes to Twenty for the person between the claim and
  * the row delete.
  */
 async function lockDispatch(deps: RetentionDeps): Promise<void> {
@@ -46,21 +46,23 @@ async function lockDispatch(deps: RetentionDeps): Promise<void> {
 
 /**
  * Queues everyone past the 12-month rule, then erases one queued person:
- * R2 files, then their Twenty CRM records (under the dispatcher's lock),
- * then their rows. Any R2 or Twenty failure
+ * R2 files, then their Twenty CRM records, then their rows. The whole
+ * erasure runs under the dispatcher's lock, taken before the claim, so no
+ * dispatch run writes a newer application to Twenty for the person while
+ * their records are being removed. Any R2 or Twenty failure
  * throws before a row is deleted; the request goes back to pending after an
  * hour and fails after three attempts.
  */
 export async function runRetention(deps: RetentionDeps): Promise<RetentionResult> {
   const [counts] = await deps.query<{ recovered: string | number; queued: string | number }>(QUEUE_EXPIRED_AND_RECOVER);
   const result: RetentionResult = { recovered: Number(counts?.recovered ?? 0), queued: Number(counts?.queued ?? 0), erased: null };
-  const [claimed] = await deps.query<ClaimedErasure>(CLAIM_ERASURE);
-  if (!claimed?.id) return result;
-  for (const key of filesToDelete(claimed)) await deps.deleteFile(key);
   await lockDispatch(deps);
   try {
+    const [claimed] = await deps.query<ClaimedErasure>(CLAIM_ERASURE);
+    if (!claimed?.id) return result;
+    for (const key of filesToDelete(claimed)) await deps.deleteFile(key);
     const crm = await deps.eraseCrmPerson(claimed.phone);
-    await deps.query(DELETE_ROWS, [claimed.id, claimed.phone, claimed.files.length, crm.files]);
+    await deps.query(DELETE_ROWS, [claimed.id, claimed.phone, claimed.files.length, crm.files, claimed.submissions]);
     result.erased = { requestId: claimed.id, files: claimed.files.length, crmPeople: crm.people, crmFiles: crm.files };
   } finally {
     await deps.query(ERASURE_DISPATCH_UNLOCK);

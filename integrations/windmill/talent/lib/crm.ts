@@ -471,20 +471,20 @@ const WORKER_FIELDS_CLEARED = {
 const CLIENT_NAME_CLEARED = { firstName: "Client contact", lastName: "" } as const;
 
 /**
- * Every attachment on a record (`field` is targetApplicationId or
- * targetPersonId), the trashed ones too: a filter on deletedAt is how
- * Twenty's API returns soft-deleted records.
+ * Live and trashed records: Twenty's API leaves trashed ones out unless the
+ * filter names deletedAt. Erasure looks with this, since deleting a record in
+ * Twenty's UI only moves it to the trash, data and all.
  */
-async function attachmentsOf(crm: Twenty, field: string, id: string): Promise<TwentyRecord[]> {
-  const live = await crm.find("attachments", eq(field, id));
-  const trashed = await crm.find("attachments", `and(${eq(field, id)},deletedAt[is]:NOT_NULL)`);
+export async function findAll(crm: Twenty, plural: string, filter: string): Promise<TwentyRecord[]> {
+  const live = await crm.find(plural, filter);
+  const trashed = await crm.find(plural, `and(${filter},deletedAt[is]:NOT_NULL)`);
   return [...new Map([...live, ...trashed].map((r) => [r.id, r])).values()];
 }
 
-/** Hard-deletes a record's attachments (and so their files); returns how many. */
+/** Hard-deletes a record's attachments (and so their files), the trashed ones too; returns how many. */
 export async function removeAttachments(crm: Twenty, field: string, id: string): Promise<number> {
   let removed = 0;
-  for (const a of await attachmentsOf(crm, field, id)) if (await crm.remove("attachments", a.id)) removed++;
+  for (const a of await findAll(crm, "attachments", eq(field, id))) if (await crm.remove("attachments", a.id)) removed++;
   return removed;
 }
 
@@ -503,20 +503,22 @@ export interface ErasedCrm {
  * contact (a lead's point of contact, or typed so by the leads intake) keeps
  * the person and the enquiry history, which leads retention covers; only the
  * worker side goes. Anyone else is removed, with their own attachments.
+ * Records in Twenty's trash count as well, and a trashed person is removed
+ * outright (staff deleted them; a trashed record may not take an update).
  * Nothing to remove is success.
  */
 export async function erasePerson(crm: Twenty, phone: string): Promise<ErasedCrm> {
-  const people = await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(phone)));
+  const people = await findAll(crm, "people", eq("phones.primaryPhoneNumber", phoneDigits(phone)));
   let files = 0;
   for (const person of people) {
-    for (const app of await crm.find("applications", eq("personId", person.id))) {
+    for (const app of await findAll(crm, "applications", eq("personId", person.id))) {
       files += await removeAttachments(crm, "targetApplicationId", app.id);
-      for (const comm of await crm.find("communications", eq("applicationId", app.id))) await crm.remove("communications", comm.id);
+      for (const comm of await findAll(crm, "communications", eq("applicationId", app.id))) await crm.remove("communications", comm.id);
       await crm.remove("applications", app.id);
     }
-    const clientContact =
-      person.personType === "CLIENT_CONTACT" || (await crm.find("opportunities", eq("pointOfContactId", person.id))).length > 0;
-    for (const comm of await crm.find("communications", eq("personId", person.id))) {
+    const clientContact = !person.deletedAt &&
+      (person.personType === "CLIENT_CONTACT" || (await crm.find("opportunities", eq("pointOfContactId", person.id))).length > 0);
+    for (const comm of await findAll(crm, "communications", eq("personId", person.id))) {
       if (!clientContact || !comm.opportunityId) await crm.remove("communications", comm.id);
     }
     if (clientContact) {

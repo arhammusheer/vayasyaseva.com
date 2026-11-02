@@ -4,7 +4,7 @@ const origin=process.env.FORM_TEST_ORIGIN ?? 'http://localhost:3000';
 const browser=await chromium.launch({...process.env.PLAYWRIGHT_CHROME ? {executablePath:process.env.PLAYWRIGHT_CHROME} : {}});
 const context=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,reducedMotion:'reduce'});
 const errors=[];
-let starts=0, startedBodies=[], submits=[], failSubmit=false, failUpload=false, resumes=0;
+let starts=0, startedBodies=[], submits=[], failSubmit=false, expireSubmit=false, failUpload=false, resumes=0;
 await context.addInitScript(() => {
   const widgets=new Map();
   window.widgetStats={rendered:0,removed:0,resets:0};
@@ -27,7 +27,7 @@ await context.route('**/api/jobs/start',r=>{
 });
 await context.route('**/api/jobs/resume',r=>{resumes++;r.fulfill({json:{ref:'VS-J-'+String(starts).padStart(6,'0'),ticket:'ticket-'+starts,uploads:[{key:'0',url:'https://upload.example.test/0',headers:{'Content-Type':'image/png'}}]}});});
 await context.route('https://upload.example.test/**',r=>r.fulfill({status:failUpload?503:200,body:''}));
-await context.route('**/api/jobs/submit',r=>{submits.push(r.request().postDataJSON()); if(failSubmit){failSubmit=false;return r.abort();}return r.fulfill({status:202,json:{ref:'VS-J-'+String(starts).padStart(6,'0')}});});
+await context.route('**/api/jobs/submit',r=>{submits.push(r.request().postDataJSON()); if(failSubmit){failSubmit=false;return r.abort();}if(expireSubmit){expireSubmit=false;return r.fulfill({status:410,json:{error:'expired'}});}return r.fulfill({status:202,json:{ref:'VS-J-'+String(starts).padStart(6,'0')}});});
 const contactBodies=[];
 await context.route('**/api/contact',r=>{contactBodies.push(r.request().postDataJSON());r.fulfill({json:{success:true,caseId:'REQ-20261016-1A2B3C4D'}});});
 const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
@@ -106,6 +106,13 @@ try {
   failUpload=true;const uploadBefore=starts;await send();await page.locator('[data-retry-notice]').waitFor({timeout:15000});
   failUpload=false;await send();await visible('.jobs-done h2');assert.equal(starts,uploadBefore+1);assert.equal(resumes,1);
   console.log('Upload retries renew URLs while preserving the original application reference');
+  // An expired ticket can never succeed: the form unlocks and the next Send starts a new application.
+  await open('/en-in/jobs/apply'+complete);await fill();expireSubmit=true;
+  const expiredBefore=starts;await send();await page.locator('#quick-errors').waitFor();assert.match(await page.locator('#quick-errors').textContent(),/timed out/);
+  assert.equal(await page.locator('[data-retry-notice]').count(),0);assert.equal(await page.locator('#quick-phone').isDisabled(),false);
+  assert.equal(await page.evaluate(()=>sessionStorage.getItem('vayasya-quick-submission')),null);
+  await send();await visible('.jobs-done h2');assert.equal(starts,expiredBefore+2);
+  console.log('An expired ticket unlocks the form and the next Send starts afresh');
   // The checkbox line opens /jobs/privacy in a new tab; Back to Apply there closes the tab, leaving the form as it was.
   await page.evaluate(()=>sessionStorage.clear());await open('/en-in/jobs/apply'+complete);
   const details=page.locator('#quick-keep a');

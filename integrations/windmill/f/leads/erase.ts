@@ -542,7 +542,7 @@ function normaliseIndianMobile(input) {
 })();
 
 // integrations/windmill/talent/lib/crm.ts
-const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, homeAreaText, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, smsWasSent, whatsAppWasSent, WA_ACK_TEMPLATE, waAckText, whatsAppDeliveryStatus, waAckKey, waAckFields, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, removeAttachments, erasePerson } = (() => {
+const { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, homeAreaText, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, smsWasSent, whatsAppWasSent, WA_ACK_TEMPLATE, waAckText, whatsAppDeliveryStatus, waAckKey, waAckFields, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, findAll, removeAttachments, erasePerson } = (() => {
 const CLUSTER_VALUES = new Set(["HARIDWAR", "UTTARAKHAND", "DELHI_NCR", "BENGALURU", "JALANDHAR", "SAHARANPUR", "OTHER", "PUNJAB", "DEHRADUN", "KAPURTHALA", "VISAKHAPATNAM", "ANDHRA_PRADESH", "HYDERABAD", "TELANGANA"]);
 const ROLE_VALUES = new Set([
     "FACTORY_HELPER", "PACKING", "MACHINE_OPERATOR", "WAREHOUSE", "FORKLIFT_OPERATOR", "DATA_ENTRY_OPERATOR",
@@ -910,30 +910,31 @@ const WORKER_FIELDS_CLEARED = {
     lastContactAt: null,
 };
 const CLIENT_NAME_CLEARED = { firstName: "Client contact", lastName: "" };
-async function attachmentsOf(crm, field, id) {
-    const live = await crm.find("attachments", eq(field, id));
-    const trashed = await crm.find("attachments", `and(${eq(field, id)},deletedAt[is]:NOT_NULL)`);
+async function findAll(crm, plural, filter) {
+    const live = await crm.find(plural, filter);
+    const trashed = await crm.find(plural, `and(${filter},deletedAt[is]:NOT_NULL)`);
     return [...new Map([...live, ...trashed].map((r) => [r.id, r])).values()];
 }
 async function removeAttachments(crm, field, id) {
     let removed = 0;
-    for (const a of await attachmentsOf(crm, field, id))
+    for (const a of await findAll(crm, "attachments", eq(field, id)))
         if (await crm.remove("attachments", a.id))
             removed++;
     return removed;
 }
 async function erasePerson(crm, phone) {
-    const people = await crm.find("people", eq("phones.primaryPhoneNumber", phoneDigits(phone)));
+    const people = await findAll(crm, "people", eq("phones.primaryPhoneNumber", phoneDigits(phone)));
     let files = 0;
     for (const person of people) {
-        for (const app of await crm.find("applications", eq("personId", person.id))) {
+        for (const app of await findAll(crm, "applications", eq("personId", person.id))) {
             files += await removeAttachments(crm, "targetApplicationId", app.id);
-            for (const comm of await crm.find("communications", eq("applicationId", app.id)))
+            for (const comm of await findAll(crm, "communications", eq("applicationId", app.id)))
                 await crm.remove("communications", comm.id);
             await crm.remove("applications", app.id);
         }
-        const clientContact = person.personType === "CLIENT_CONTACT" || (await crm.find("opportunities", eq("pointOfContactId", person.id))).length > 0;
-        for (const comm of await crm.find("communications", eq("personId", person.id))) {
+        const clientContact = !person.deletedAt &&
+            (person.personType === "CLIENT_CONTACT" || (await crm.find("opportunities", eq("pointOfContactId", person.id))).length > 0);
+        for (const comm of await findAll(crm, "communications", eq("personId", person.id))) {
             if (!clientContact || !comm.opportunityId)
                 await crm.remove("communications", comm.id);
         }
@@ -949,7 +950,7 @@ async function erasePerson(crm, phone) {
     }
     return { people: people.length, files };
 }
-  return { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, homeAreaText, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, smsWasSent, whatsAppWasSent, WA_ACK_TEMPLATE, waAckText, whatsAppDeliveryStatus, waAckKey, waAckFields, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, removeAttachments, erasePerson };
+  return { optionValue, clusterValue, roleValue, languageValue, sourceValue, phoneDigits, workRoles, clusters, homeAreaText, personFields, ANSWER_OPTIONS, screeningFields, phoneValue, applicationFields, ACK_TEMPLATE, ackText, deliveryStatus, ackSyncState, smsWasSent, whatsAppWasSent, WA_ACK_TEMPLATE, waAckText, whatsAppDeliveryStatus, waAckKey, waAckFields, ackKey, ackFields, upsertPerson, ensureApplication, upsertAcknowledgement, findAll, removeAttachments, erasePerson };
 })();
 
 // integrations/windmill/leads/lib/sql.ts
@@ -1034,11 +1035,6 @@ WHERE id = $1::uuid AND status = 'running';`;
 
 // integrations/windmill/leads/lib/erase.ts
 const { eraseLeadsInCrm, runLeadErasure } = (() => {
-async function findAll(crm, plural, filter) {
-    const live = await crm.find(plural, filter);
-    const trashed = await crm.find(plural, `and(${filter},deletedAt[is]:NOT_NULL)`);
-    return [...new Map([...live, ...trashed].map((r) => [r.id, r])).values()];
-}
 async function removeNotesAndTasks(crm, field, id) {
     for (const [targets, records, key] of [["noteTargets", "notes", "noteId"], ["taskTargets", "tasks", "taskId"]]) {
         for (const link of await findAll(crm, targets, eq(field, id))) {

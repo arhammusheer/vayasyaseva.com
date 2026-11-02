@@ -157,7 +157,7 @@ function fakeTwenty() {
   return { crm, files: twentyFilesClient(`${BASE}/`, "test-key", fetchImpl), uploads, attachments, log, state };
 }
 
-function deps(query: Query, twenty: ReturnType<typeof fakeTwenty>, download: (key: string) => Promise<Blob | null> = async (key) => new Blob([`bytes of ${key.split("/").pop()}`])): DispatchDeps {
+function deps(query: Query, twenty: ReturnType<typeof fakeTwenty>, download: (key: string, maxBytes: number) => Promise<Blob | null | "too_large"> = async (key) => new Blob([`bytes of ${key.split("/").pop()}`])): DispatchDeps {
   return {
     query,
     sendSms: async () => assert.fail("no SMS"),
@@ -262,6 +262,19 @@ test("a voice note is skipped, never copied", async () => {
   await runDispatch(deps(query, t, async (key) => (downloaded.push(key), new Blob(["x"]))));
   assert.deepEqual((await fileRows(query, id)).map((r) => r.crm_file_status), ["done", "skipped"]);
   assert.deepEqual(downloaded, ["intake/2026/10/VS-J-AUD001/0.jpg"]);
+  assert.equal((await filesRow(query, id)).status, "done");
+});
+
+test("a file larger than declared is skipped before it is read; the rest are attached", async () => {
+  const { query } = await testDb(TALENT_SCHEMA);
+  const id = await save(query, "VS-J-BIG001");
+  await synced(query, id);
+  const t = fakeTwenty();
+  const limits: number[] = [];
+  await runDispatch(deps(query, t, async (key, maxBytes) => (limits.push(maxBytes), key.endsWith(".jpg") ? "too_large" : new Blob(["pdf"]))));
+  assert.deepEqual((await fileRows(query, id)).map((r) => r.crm_file_status), ["skipped", "done"]);
+  const sizes = (await query<{ size_bytes: number }>(`SELECT size_bytes FROM attachments WHERE submission_id = $1::uuid ORDER BY position`, [id])).map((r) => Number(r.size_bytes));
+  assert.deepEqual(limits, sizes, "each download is capped at its declared size");
   assert.equal((await filesRow(query, id)).status, "done");
 });
 

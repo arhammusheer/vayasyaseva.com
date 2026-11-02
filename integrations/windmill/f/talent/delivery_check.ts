@@ -175,6 +175,14 @@ WHERE submission_id = $1::uuid AND wa_status = 'accepted'
 const SKIP_SMS = `
 UPDATE sms_acknowledgements SET status = 'skipped', last_error = NULL, updated_at = now()
 WHERE submission_id = $1::uuid AND status = 'pending';`;
+const EXPIRED_PHONES = `
+  SELECT p.phone FROM people p
+  WHERE greatest(coalesce(p.last_contact_at, p.created_at), coalesce(p.last_confirmed_at, p.created_at)) < now() - interval '${RETENTION_MONTHS} months'
+  UNION
+  -- Submissions from before the people table, with no row of their own.
+  SELECT s.phone FROM submissions s
+  WHERE NOT EXISTS (SELECT 1 FROM people p WHERE p.phone = s.phone)
+  GROUP BY s.phone HAVING max(s.created_at) < now() - interval '${RETENTION_MONTHS} months'`;
 const QUEUE_EXPIRED_AND_RECOVER = `
 WITH recovered AS (
   UPDATE erasure_requests
@@ -182,14 +190,12 @@ WITH recovered AS (
       last_error = coalesce(last_error, 'Interrupted; retried'), updated_at = now()
   WHERE status = 'running' AND updated_at < now() - interval '1 hour'
   RETURNING id
-), expired AS (
-  SELECT p.phone FROM people p
-  WHERE greatest(coalesce(p.last_contact_at, p.created_at), coalesce(p.last_confirmed_at, p.created_at)) < now() - interval '${RETENTION_MONTHS} months'
-  UNION
-  -- Submissions from before the people table, with no row of their own.
-  SELECT s.phone FROM submissions s
-  WHERE NOT EXISTS (SELECT 1 FROM people p WHERE p.phone = s.phone)
-  GROUP BY s.phone HAVING max(s.created_at) < now() - interval '${RETENTION_MONTHS} months'
+), expired AS (${EXPIRED_PHONES}
+), withdrawn AS (
+  -- Queued for retention, then applied or confirmed again: no longer due.
+  DELETE FROM erasure_requests
+  WHERE status = 'pending' AND reason = 'retention' AND phone NOT IN (SELECT phone FROM expired)
+  RETURNING id
 ), queued AS (
   INSERT INTO erasure_requests (phone, reason)
   SELECT phone, 'retention' FROM expired
@@ -202,18 +208,23 @@ WITH claimed AS (
   UPDATE erasure_requests e
   SET status = 'running', attempts = e.attempts + 1, last_error = NULL, updated_at = now()
   WHERE e.id = (
-    SELECT id FROM erasure_requests WHERE status = 'pending' AND phone IS NOT NULL
-    ORDER BY requested_at LIMIT 1 FOR UPDATE SKIP LOCKED)
+    SELECT id FROM erasure_requests
+    WHERE status = 'pending' AND phone IS NOT NULL
+      AND (reason = 'request' OR phone IN (${EXPIRED_PHONES}))
+    ORDER BY reason = 'request' DESC, requested_at LIMIT 1 FOR UPDATE SKIP LOCKED)
   RETURNING e.id, e.phone, e.reason
 )
 SELECT c.id, c.phone, c.reason,
+  coalesce((SELECT jsonb_agg(s.id) FROM submissions s WHERE s.phone = c.phone), '[]'::jsonb) AS submissions,
   coalesce((SELECT jsonb_agg(a.r2_key) FROM attachments a JOIN submissions s ON s.id = a.submission_id WHERE s.phone = c.phone), '[]'::jsonb) AS files
 FROM claimed c;`;
 const DELETE_ROWS = `
 WITH gone AS (
-  DELETE FROM submissions WHERE phone = $2 RETURNING id
+  DELETE FROM submissions WHERE phone = $2 AND id = ANY($5::uuid[]) RETURNING id
 ), person AS (
-  DELETE FROM people WHERE phone = $2 RETURNING 1
+  DELETE FROM people WHERE phone = $2
+    AND NOT EXISTS (SELECT 1 FROM submissions s WHERE s.phone = $2 AND s.id <> ALL($5::uuid[]))
+  RETURNING 1
 )
 UPDATE erasure_requests
 SET status = 'done', processed_at = now(), updated_at = now(),

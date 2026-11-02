@@ -99,6 +99,8 @@ export type WageHistory = {
   effectiveFrom: string;
   effectiveTo: string;
   source: string;
+  /** The earlier schedule's own zones, where they differ from the table's (Karnataka's four before 22 May 2026). */
+  zones?: { id: string; name: string }[];
   note?: string;
   rates: { zone?: string; skill: Skill; monthly: number; daily?: number }[];
 };

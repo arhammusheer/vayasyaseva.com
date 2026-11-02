@@ -7,7 +7,7 @@
   "basis": "The 22 May 2026 notification sets the variable dearness allowance once a year, from 1 April, from the average consumer price index of the previous calendar year, so the next VDA is due on 1 April 2027. No October revision is due."
  },
  "checked": {
-  "on": "2026-11-02"
+  "on": "2026-11-03"
  },
  "sources": [
   {
@@ -42,6 +42,22 @@
    "retrievedOn": "2026-10-16",
    "copy": "https://cdn.vayasyaseva.com/sources/karnataka/ka-2026-05-sheet-88d717c0.pdf",
    "copyKb": 106
+  },
+  {
+   "id": "ka-shops-2026-04",
+   "kind": "notification",
+   "title": "Shops and commercial establishments: minimum wages and VDA, 1 April 2026 to 31 March 2027 (Labour Commissioner's rate sheet, replaced by the single notification from 22 May 2026)",
+   "number": "KAE 20 LMW 2017",
+   "date": "2017-12-30",
+   "authority": "Labour Commissioner, Karnataka",
+   "url": "https://karmikaspandana.karnataka.gov.in/uploads/media_to_upload1774351947.pdf",
+   "listing": "https://karmikaspandana.karnataka.gov.in/64/minimum-wages-rates-for-the-year-2026-27/en",
+   "language": "en",
+   "sha256": "72621837eede1fb0405a64e2d4e30df07b14cb813ff163e5f6ab996031e8d25e",
+   "sizeKb": 1897,
+   "retrievedOn": "2026-11-03",
+   "copy": "https://cdn.vayasyaseva.com/sources/karnataka/ka-shops-2026-04-72621837.pdf",
+   "copyKb": 387
   },
   {
    "id": "ka-2627-agriculture",
@@ -432,7 +448,131 @@
    ]
   }
  ],
- "history": [],
+ "history": [
+  {
+   "table": "single-notification",
+   "effectiveFrom": "2026-04-01",
+   "effectiveTo": "2026-05-21",
+   "source": "ka-shops-2026-04",
+   "zones": [
+    {
+     "id": "zone-i",
+     "name": "Zone I"
+    },
+    {
+     "id": "zone-ii",
+     "name": "Zone II"
+    },
+    {
+     "id": "zone-iii",
+     "name": "Zone III"
+    },
+    {
+     "id": "zone-iv",
+     "name": "Zone IV"
+    }
+   ],
+   "note": "Shops and commercial establishments under their own 2017 notification, before the single notification: four zones, basic plus a VDA of ₹4,549.20 a month (3,791 index points above 6,537). Before 22 May 2026 each employment had its own notification and rates.",
+   "rates": [
+    {
+     "zone": "zone-i",
+     "skill": "highly-skilled",
+     "monthly": 19972.6,
+     "daily": 768.18
+    },
+    {
+     "zone": "zone-i",
+     "skill": "skilled",
+     "monthly": 18570.47,
+     "daily": 714.25
+    },
+    {
+     "zone": "zone-i",
+     "skill": "semi-skilled",
+     "monthly": 17295.81,
+     "daily": 665.22
+    },
+    {
+     "zone": "zone-i",
+     "skill": "unskilled",
+     "monthly": 16137.03,
+     "daily": 620.66
+    },
+    {
+     "zone": "zone-ii",
+     "skill": "highly-skilled",
+     "monthly": 19238.15,
+     "daily": 739.93
+    },
+    {
+     "zone": "zone-ii",
+     "skill": "skilled",
+     "monthly": 17902.79,
+     "daily": 688.57
+    },
+    {
+     "zone": "zone-ii",
+     "skill": "semi-skilled",
+     "monthly": 16688.83,
+     "daily": 641.88
+    },
+    {
+     "zone": "zone-ii",
+     "skill": "unskilled",
+     "monthly": 15585.23,
+     "daily": 599.43
+    },
+    {
+     "zone": "zone-iii",
+     "skill": "highly-skilled",
+     "monthly": 18538.68,
+     "daily": 713.03
+    },
+    {
+     "zone": "zone-iii",
+     "skill": "skilled",
+     "monthly": 17266.91,
+     "daily": 664.11
+    },
+    {
+     "zone": "zone-iii",
+     "skill": "semi-skilled",
+     "monthly": 16110.75,
+     "daily": 619.65
+    },
+    {
+     "zone": "zone-iii",
+     "skill": "unskilled",
+     "monthly": 15059.7,
+     "daily": 579.22
+    },
+    {
+     "zone": "zone-iv",
+     "skill": "highly-skilled",
+     "monthly": 17872.51,
+     "daily": 687.41
+    },
+    {
+     "zone": "zone-iv",
+     "skill": "skilled",
+     "monthly": 16661.3,
+     "daily": 640.82
+    },
+    {
+     "zone": "zone-iv",
+     "skill": "semi-skilled",
+     "monthly": 15560.2,
+     "daily": 598.47
+    },
+    {
+     "zone": "zone-iv",
+     "skill": "unskilled",
+     "monthly": 14559.2,
+     "daily": 559.97
+    }
+   ]
+  }
+ ],
  "verification": [
   "2026-10-16: karmikaspandana.karnataka.gov.in 'Minimum Wages Final Notification' lists the single notification LD 411 LWA 2023 dated 22.05.2026 (Gazette Part IVA No. 389, 25 May 2026), in force from 22 May 2026.",
   "2026-10-16: Rates read from the gazette's Annexure 4 page images (the Kannada text layer is garbled) and from the department's English summary sheet. Zone 1 basic: highly skilled 31114.02 (1196.69 a day), skilled 28285.47 (1087.90), semi-skilled 25714.07 (989.00), unskilled 23376.43 (899.09); Zone 2 one step lower; Zone 3 two steps lower. VDA: 859 points x 0.04 x 30 = 1030.80 a month, 39.64 a day, payable from 22-05-2026.",
@@ -442,7 +582,9 @@
   "2026-10-31: court status update (news reports, not primary). LiveLaw (21 September 2026): Justice H.T. Narendra Prasad refused interim protection in WP 16145/2026 (Karnataka Employers' Association); he first ordered the petitions heard with WA 1684-1685/2026, then reversed that the same evening because the Division Bench had reserved judgment in those appeals. Deccan Herald and Bar & Bench (19 September 2026): on 18 September the court stayed three circulars, from the Directorate of Municipal Administration, the Panchayat Raj Department and the State Audit and Accounts Department, that deferred the rates for outsourced and contract workers. Urban Acres and LegalSuvidha (17 October 2026, not confirmed by mainstream outlets) report a stay around 16 October of a 9 October 2026 circular that kept urban development and town planning staff on old wages. The Hans India (20 August 2026): a Cabinet sub-committee under G. Parameshwara was formed on 13 August to examine the notification; no decision reported. No stay of the 22 May 2026 notification and no final judgment found. Listing karmikaspandana.karnataka.gov.in/47/ still ends at the two 22-05-2026 entries; both cited PDFs re-downloaded with matching sha256.",
   "2026-11-02: Read the whole 22 May 2026 gazette (24 pages, Kannada) from 300 dpi renders. Its preamble says Karnataka had fixed rates for 81 scheduled employments by separate notifications and that the 11 April 2025 draft covered 99. The final notification has four parts: Annexure 1 (61 employments already in the schedule, item 20 being any employment not in the schedule) and Annexure 3 (18 added to the schedule) take the Annexure 4 zone rates; Annexure 2 sets its own rates for scavenging (one rate, Zone 1/2/3 basic 25714.07/23376.43/21251.30), power generation units (no zones: thermal 34225.42/31114.02/28285.47/25714.07, hydro, solar and wind 31114.02/28285.47/25714.07/23376.43 for highly skilled to unskilled) and foundries and chemical fertiliser and pesticide units (Zone 1/2/3 one step above Annexure 4); and a 'special note' leaves 19 piece-rated, labour-intensive employments to be revised by a committee under section 8(1)(a) of the Code (beedi, cashew, handloom and powerloom, loading and unloading, agarbatti, agriculture, forestry and timber depots, bricks, silk textiles, fish, coffee curing, two plantation schedules, spinning mills, garments and tailoring, cloth dyeing and printing, khadi and village industries, shamiana and pandal work, and MSMEs). The conditions, including the VDA, apply to Annexures 1, 2 and 3. Cleaning workers in any scheduled employment get the Annexure 2 rate. The page had shown Annexures 1 and 3 as 'most scheduled employments' and left out power plants and the 19.",
   "2026-11-02: karmikaspandana.karnataka.gov.in/64/ ('Minimum Wages rates for the Year 2026-27', uploaded about 24 March 2026) lists 81 rate sheets, one per employment, each giving its notification, base points, the 2026-27 index (10,328) and basic + VDA = total from 1 April 2026 to 31 March 2027. It has sheets for 16 of the 19 committee employments; khadi, shamiana and MSMEs have none. The single notification does not touch the 19, so these sheets are their current rates. All 16 were transcribed from 200-300 dpi page images (text layers are OCR'd and unreliable) and basic + VDA = total was checked on every row. The VDA on every sheet is points x the notification's rate (4 paise; 3 for beedi) x 30 a month, and that / 26 a day.",
-  "2026-11-02: printed quirks kept as printed: beedi skilled, semi-skilled and unskilled day totals are a paisa below basic + VDA (worked from month / 26); fish row 5 prints row 4's monthly figures although its day rate is lower; garments skilled Zone III day total 518.69 (basic + VDA 518.68); spinning skilled Zone II day total 534.46 (534.47); loading's 178 for distributing a 70-200 litre container is far above its column; handloom's saree table prints an unlabelled 27.3 (left out); bricks prints single figures for task and piece work without a unit; cashew prints no rate for hand shellers with electricity; agarbatti's pouch row reads 'more than 171 grams to 50 grams'. Several notifications take effect before their date (silk, spinning and dyeing from 30 December 2017 by a 17 January 2023 notification; beedi from 1 April 2024 by one of 27 February 2025)."
+  "2026-11-02: printed quirks kept as printed: beedi skilled, semi-skilled and unskilled day totals are a paisa below basic + VDA (worked from month / 26); fish row 5 prints row 4's monthly figures although its day rate is lower; garments skilled Zone III day total 518.69 (basic + VDA 518.68); spinning skilled Zone II day total 534.46 (534.47); loading's 178 for distributing a 70-200 litre container is far above its column; handloom's saree table prints an unlabelled 27.3 (left out); bricks prints single figures for task and piece work without a unit; cashew prints no rate for hand shellers with electricity; agarbatti's pouch row reads 'more than 171 grams to 50 grams'. Several notifications take effect before their date (silk, spinning and dyeing from 30 December 2017 by a 17 January 2023 notification; beedi from 1 April 2024 by one of 27 February 2025).",
+  "2026-11-03: Rates before the single notification, for comparison and arrears: the Labour Commissioner's 2026-27 rate sheet for shops and commercial establishments (karmikaspandana.karnataka.gov.in/64/, item 68, notification KAE 20 LMW 2017 of 30 December 2017, gazetted 29 March 2018) read from 200 dpi page images (the text layer is OCR'd). Index 10,328 - 6,537 = 3,791 points, VDA 174.97 a day, 4,549.20 a month. Monthly totals Zone 1/2/3/4: highly skilled 19972.60/19238.15/18538.68/17872.51, skilled 18570.47/17902.79/17266.91/16661.30, semi-skilled 17295.81/16688.83/16110.75/15560.20, unskilled 16137.03/15585.23/15059.70/14559.20; basic + VDA = total checked on every cell. The unskilled class names 'loading and unloading in warehousing godowns, storerooms'. The sheet runs 1 April 2026 to 31 March 2027, but the single notification lists shops and commercial establishments in Annexure 1, so these rates applied to 21 May 2026. In 2025-26 the same basic took a VDA of 4,113.60 ((9,965 - 6,537) x 0.04 x 30), Zone 1 unskilled 15,701.43 (from the research brief, not re-read from the 2025-26 sheet).",
+  "2026-11-03: court status (news reports, not primary: LiveLaw 21 September 2026, Bar & Bench 19 September 2026, labourcodesadvisor.com 25 August 2026). Karnataka Employers' Association and others argue the notification was issued under the Minimum Wages Act after the Code on Wages repealed it on 21 November 2025. Interim relief refused 21 September 2026 (Justice H.T. Narendra Prasad); the petitions are tagged with WA 1684-1685/2026, in which the Division Bench has reserved judgment. Circulars of 29 July and 10 August 2026 deferring the rates for government departments, local bodies and urban development authorities stayed on 18 September 2026 (petition by AITUC, AICCTU and CITU); the 9 October 2026 circular stayed around 17 October 2026. No final ruling and no stay of the notification found as of 3 November 2026. Some sites quote 989 a day as Zone 1 unskilled: that is the Zone 1 semi-skilled basic (Zone 1 unskilled basic is 899.09)."
  ],
  "employments": {
   "vda": {

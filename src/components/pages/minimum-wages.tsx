@@ -617,6 +617,78 @@ function NotLevied({ text }: { text?: string }) {
 }
 
 /**
+ * Where the notification stands in court (Karnataka), with the rates it
+ * replaced closed underneath: an employer weighing arrears needs both.
+ * The earlier rates are the headline table's history, in that schedule's
+ * own zones.
+ */
+function Standing({ state, standing }: { state: WageState; standing: NonNullable<WageStateCopy["standing"]> }) {
+  const table = state.tables.find((t) => t.headline) ?? state.tables[0];
+  const earlier = state.history.filter((h) => h.table === table.id).sort((a, b) => b.effectiveFrom.localeCompare(a.effectiveFrom));
+  return (
+    <Section id="court" className="border-t border-border pt-12 sm:pt-14 lg:pt-16">
+      <div className="wage-split">
+        <h2 className="wage-h2">{standing.heading}</h2>
+        <div className="wage-prose">
+          {standing.paragraphs.map((p) => (
+            <p key={p}>{p}</p>
+          ))}
+        </div>
+      </div>
+      {earlier.map((h) => {
+        const zones = h.zones ?? table.zones;
+        const skills = [...new Set(h.rates.map((r) => r.skill))];
+        const rateOf = (zone: string, skill: Skill) => h.rates.find((r) => r.zone === zone && r.skill === skill);
+        const s = sourceById(state, h.source);
+        return (
+          <details key={h.effectiveFrom} className="wage-more is-section">
+            <summary>{standing.earlier}</summary>
+            <div className="wage-table-scroll">
+              <table className="wage-table is-matrix">
+                <caption className="sr-only">{`${standing.earlier}, ${formatDate(h.effectiveFrom)} to ${formatDate(h.effectiveTo)}`}</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">
+                      {x.table.skill}
+                      <span className="wage-th-unit">{x.table.units}</span>
+                    </th>
+                    {zones.map((z) => (
+                      <th scope="col" key={z.id}>
+                        {z.name}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {skills.map((skill) => (
+                    <tr key={skill} className={skill === "unskilled" ? "is-headline" : undefined}>
+                      <th scope="row">{SKILLS[skill]}</th>
+                      {zones.map((z) => {
+                        const r = rateOf(z.id, skill);
+                        return (
+                          <td key={z.id}>
+                            {r ? <strong>{formatRupees(r.monthly)}</strong> : <span className="wage-none">{x.table.notSet}</span>}
+                            {r?.daily !== undefined && <span className="wage-day">{formatRupees(r.daily)}</span>}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {h.note && <p className="wage-note">{h.note}</p>}
+            <p className="wage-source">
+              {formatDate(h.effectiveFrom)} to {formatDate(h.effectiveTo)}. {x.sourceKind(s.kind)} No. {s.number}, {formatDate(s.date)}.
+            </p>
+          </details>
+        );
+      })}
+    </Section>
+  );
+}
+
+/**
  * What an employer owes in the state beyond the wage: the due dates as one
  * strip, then who pays what for the contributions, one note and one line on
  * compliance help.
@@ -760,6 +832,7 @@ export async function WageStatePage({ slug }: { slug: WageStateSlug }) {
         )}
       </Section>
       <EmploymentSchedule state={state} intro={t.scheduleIntro} />
+      {t.standing && <Standing state={state} standing={t.standing} />}
       <Dues slug={slug} name={state.name} />
       <Faqs faqs={t.faqs}>
         <Documents state={state} slug={slug} />

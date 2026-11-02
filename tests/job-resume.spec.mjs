@@ -17,6 +17,9 @@ const {issueTicket}=await import('../src/lib/talent-intake/server.ts');
 const {POST}=await import('../src/app/api/jobs/resume/route.ts');
 const data={ref:'VS-J-UNIT99',source:'web_en',files:[{key:'intake/2026/10/VS-J-UNIT99/0.png',mime:'image/png',kind:'image',size:5,name:'test.png'}]};
 const request=body=>new Request('http://localhost/api/jobs/resume',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});
+// R2 HEADs: which keys are already uploaded.
+let uploaded=new Set();
+globalThis.fetch=async input=>{const req=input instanceof Request?input:new Request(input);assert.equal(req.method,'HEAD');const key=decodeURIComponent(new URL(req.url).pathname).split('/').slice(2).join('/');return uploaded.has(key)?new Response(null,{status:200,headers:{'content-length':'5'}}):new Response(null,{status:404});};
 test('renewal preserves the signed reference, ticket, object keys and MIME',async()=>{
   const ticket=issueTicket(data);
   const response=await POST(request({ticket,ref:'VS-J-FORGED',files:[{key:'forged'}]}));
@@ -33,4 +36,15 @@ test('forged, expired and agent tickets cannot renew human uploads',async()=>{
   try{Date.now=()=>now()-7200000;expired=issueTicket(data);}finally{Date.now=now;}
   assert.equal((await POST(request({ticket:expired}))).status,410);
   assert.equal((await POST(request({}))).status,400);
+});
+test('no new URLs once every file is uploaded: a checked or sent file cannot be replaced',async()=>{
+  const ticket=issueTicket({...data,files:[...data.files,{key:'intake/2026/10/VS-J-UNIT99/1.pdf',mime:'application/pdf',kind:'document',size:5,name:'cv.pdf'}]});
+  try{
+    uploaded=new Set([data.files[0].key]);
+    assert.equal((await POST(request({ticket}))).status,200,'one upload still missing');
+    uploaded=new Set([data.files[0].key,'intake/2026/10/VS-J-UNIT99/1.pdf']);
+    const response=await POST(request({ticket}));
+    assert.equal(response.status,409);
+    assert.equal((await response.json()).error,'already_uploaded');
+  }finally{uploaded=new Set();}
 });

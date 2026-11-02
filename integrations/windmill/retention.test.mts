@@ -8,7 +8,7 @@ import { runRetention } from "./talent/lib/run-retention.ts";
 import { CLAIM_ERASURE, DELETE_ROWS, ERASURE_DISPATCH_LOCK, ERASURE_DISPATCH_UNLOCK, QUEUE_EXPIRED_AND_RECOVER } from "./talent/lib/sql.ts";
 import { TALENT_SCHEMA, saveApplication, testDb } from "./test-db.mts";
 
-const claimed = { id: "req-1", phone: "+919876543210", reason: "request" as const, files: [] as string[] };
+const claimed = { id: "req-1", phone: "+919876543210", reason: "request" as const, submissions: ["sub-1"], files: [] as string[] };
 
 test("every stored file is deleted once; none means none", () => {
   assert.deepEqual(filesToDelete({ files: ["a/1.jpg", "a/1.jpg", "a/2.pdf"] }), ["a/1.jpg", "a/2.pdf"]);
@@ -38,12 +38,12 @@ test("files and CRM records go before the rows, which go last", async () => {
     deleteFile: async (key) => void db.log.push(`file ${key}`),
     eraseCrmPerson: async (phone) => (db.log.push(`crm ${phone}`), { people: 1, files: 3 }),
   });
-  assert.deepEqual(db.log, ["queue", "claim", "file a/1.jpg", "lock", "crm +919876543210", "rows", "unlock"]);
-  assert.deepEqual(db.params.at(-1), ["req-1", "+919876543210", 2, 3]);
+  assert.deepEqual(db.log, ["queue", "lock", "claim", "file a/1.jpg", "crm +919876543210", "rows", "unlock"]);
+  assert.deepEqual(db.params.at(-1), ["req-1", "+919876543210", 2, 3, ["sub-1"]]);
   assert.deepEqual(result, { recovered: 1, queued: 2, erased: { requestId: "req-1", files: 2, crmPeople: 1, crmFiles: 3 } });
 });
 
-test("erasure waits for a running dispatcher before the Twenty step, and gives up for the run if it never stops", async () => {
+test("erasure waits for a running dispatcher before it claims, and gives up for the run if it never stops", async () => {
   const db = retentionDb({ ...claimed }, 2);
   await runRetention({
     query: db.query,
@@ -51,13 +51,13 @@ test("erasure waits for a running dispatcher before the Twenty step, and gives u
     eraseCrmPerson: async () => (db.log.push("crm"), { people: 1, files: 0 }),
     sleep: async () => {},
   });
-  assert.deepEqual(db.log, ["queue", "claim", "lock busy", "lock busy", "lock", "crm", "rows", "unlock"]);
+  assert.deepEqual(db.log, ["queue", "lock busy", "lock busy", "lock", "claim", "crm", "rows", "unlock"]);
   const stuck = retentionDb({ ...claimed }, 1000);
   await assert.rejects(
     runRetention({ query: stuck.query, deleteFile: async () => {}, eraseCrmPerson: async () => assert.fail(), sleep: async () => {} }),
     /dispatcher kept running/,
   );
-  assert.equal(stuck.log.includes("rows"), false);
+  assert.equal(stuck.log.includes("claim"), false, "nothing is claimed, so no request waits an hour as running");
 });
 
 test("an R2 or Twenty failure stops the run before any row is deleted", async () => {
@@ -88,7 +88,7 @@ test("nothing queued erases nothing", async () => {
     eraseCrmPerson: async () => assert.fail(),
   });
   assert.equal(result.erased, null);
-  assert.deepEqual(db.log, ["queue", "claim"]);
+  assert.deepEqual(db.log, ["queue", "lock", "claim", "unlock"]);
 });
 
 const queuedPhones = async (query: Awaited<ReturnType<typeof testDb>>["query"]) =>
@@ -128,7 +128,8 @@ test("a finished erasure removes that person only and keeps counts: phone and re
   const [a] = await query<{ id: string }>(`INSERT INTO erasure_requests (phone, ref, reason, status) VALUES ('+919800000011', 'VS-J-ERA001', 'request', 'running') RETURNING id`);
   const [b] = await query<{ id: string }>(`INSERT INTO erasure_requests (phone, reason, status) VALUES ('+919800000012', 'retention', 'running') RETURNING id`);
 
-  const [done] = await query<{ id: string; status: string }>(DELETE_ROWS, [a.id, "+919800000011", 2, 1]);
+  const subs = (await query<{ id: string }>(`SELECT id FROM submissions WHERE phone = '+919800000011'`)).map((r) => r.id);
+  const [done] = await query<{ id: string; status: string }>(DELETE_ROWS, [a.id, "+919800000011", 2, 1, subs]);
   assert.deepEqual([done.id, done.status], [a.id, "done"]);
   const requests = await query<Record<string, unknown>>(`SELECT id, status, phone, ref, removed_submissions, removed_files, removed_crm_files FROM erasure_requests ORDER BY status`);
   assert.deepEqual(requests, [
@@ -137,6 +138,51 @@ test("a finished erasure removes that person only and keeps counts: phone and re
   ]);
   assert.deepEqual((await query<{ phone: string }>(`SELECT phone FROM submissions`)).map((r) => r.phone), ["+919800000012"]);
   assert.deepEqual((await query<{ phone: string }>(`SELECT phone FROM people`)).map((r) => r.phone), ["+919800000012"]);
+});
+
+const ago = (query: Awaited<ReturnType<typeof testDb>>["query"], phone: string, interval: string) =>
+  query(`UPDATE people SET last_contact_at = now() - interval '${interval}', last_confirmed_at = NULL, created_at = now() - interval '2 years' WHERE phone = $1`, [phone]);
+
+test("a person who applies again while queued for retention is no longer erased", async () => {
+  const { query } = await testDb(TALENT_SCHEMA);
+  await saveApplication(query, "VS-J-RET001", { phone: "+919800000021" });
+  await ago(query, "+919800000021", "13 months");
+  await query(QUEUE_EXPIRED_AND_RECOVER);
+  assert.deepEqual(await queuedPhones(query), ["+919800000021"]);
+
+  // They apply again before the request is claimed.
+  await saveApplication(query, "VS-J-RET002", { phone: "+919800000021" });
+  assert.deepEqual(await query(CLAIM_ERASURE), [], "the claim skips retention that is no longer due");
+  await query(QUEUE_EXPIRED_AND_RECOVER);
+  assert.deepEqual(await queuedPhones(query), [], "the next run withdraws the request");
+});
+
+test("a person's own request is claimed ahead of an older retention backlog", async () => {
+  const { query } = await testDb(TALENT_SCHEMA);
+  await saveApplication(query, "VS-J-RET011", { phone: "+919800000031" });
+  await ago(query, "+919800000031", "13 months");
+  await query(QUEUE_EXPIRED_AND_RECOVER);
+  await query(`UPDATE erasure_requests SET requested_at = now() - interval '3 days'`);
+  await saveApplication(query, "VS-J-RET012", { phone: "+919800000032" });
+  await query(`INSERT INTO erasure_requests (phone, reason) VALUES ('+919800000032', 'request')`);
+
+  const [first] = await query<{ phone: string; reason: string; submissions: string[] }>(CLAIM_ERASURE);
+  assert.deepEqual([first.phone, first.reason, first.submissions.length], ["+919800000032", "request", 1]);
+  const [second] = await query<{ phone: string; reason: string }>(CLAIM_ERASURE);
+  assert.deepEqual([second.phone, second.reason], ["+919800000031", "retention"]);
+});
+
+test("an application made during an erasure survives it, with the person's row", async () => {
+  const { query } = await testDb(TALENT_SCHEMA);
+  await saveApplication(query, "VS-J-RET021", { phone: "+919800000041" });
+  await query(`INSERT INTO erasure_requests (phone, reason) VALUES ('+919800000041', 'request')`);
+  const [claim] = await query<{ id: string; submissions: string[] }>(CLAIM_ERASURE);
+  await saveApplication(query, "VS-J-RET022", { phone: "+919800000041" });
+
+  const [done] = await query<{ removed_submissions: number }>(DELETE_ROWS, [claim.id, "+919800000041", 0, 0, claim.submissions]);
+  assert.equal(done.removed_submissions, 1);
+  assert.deepEqual((await query<{ ref: string }>(`SELECT ref FROM submissions`)).map((r) => r.ref), ["VS-J-RET022"]);
+  assert.equal((await query(`SELECT 1 FROM people WHERE phone = '+919800000041'`)).length, 1);
 });
 
 test("each new application renews the person's row: one row, roles merged, last contact moved", async () => {

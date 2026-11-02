@@ -15,6 +15,18 @@ export class JobSubmissionFailure extends Error {
 const KEY_PATTERN = /^[A-Za-z0-9_.:-]{8,128}$/;
 const newKey = () => crypto.randomUUID();
 
+/**
+ * Whether retrying this frozen attempt can ever succeed. An expired ticket, a
+ * missing or oversized upload, or a rejected body fails the same way every
+ * time, so the attempt is dropped and the next Send starts a new one.
+ */
+async function retryable(response: Response): Promise<boolean> {
+  if (response.status >= 500 || response.status === 408 || response.status === 429) return true;
+  if (response.status !== 409) return false;
+  const body = await response.json().catch(() => null) as { error?: string } | null;
+  return body?.error === "in_progress";
+}
+
 export function decodeJobAttempt(raw: unknown): Attempt | null {
   if (!raw || typeof raw !== "object" || !("ref" in raw) || !("payload" in raw)) return null;
   const payload = jobsSubmitRequestSchema.safeParse(raw.payload);
@@ -35,6 +47,12 @@ export function useJobSubmission(key: string) {
   }, [key]);
 
   function clear() { setAttempt(null); writeSessionValue(key, null); forgetIdempotencyKey(`${key}:start`); }
+
+  /** Keeps the attempt for a retry only when a retry can work; otherwise unlocks the form. */
+  async function fail(response: Response): Promise<never> {
+    if (!await retryable(response)) clear();
+    throw new JobSubmissionFailure(response.status === 410 ? "expired" : "server");
+  }
 
   async function send({ start, payload, upload, resetVerification }: {
     start: JobsStartRequest;
@@ -64,7 +82,7 @@ export function useJobSubmission(key: string) {
       } else if (!current.uploaded) {
         // PUT URLs last 15 minutes; renew them without allocating a new ref.
         const response = await fetch("/api/jobs/resume", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ticket: current.started.ticket }) });
-        if (!response.ok) throw new JobSubmissionFailure(response.status === 410 ? "expired" : "server");
+        if (!response.ok) await fail(response);
         current = { ...current, started: await response.json() as JobsStartResponse };
         setAttempt(current);
       }
@@ -82,7 +100,7 @@ export function useJobSubmission(key: string) {
         headers: { "content-type": "application/json", "idempotency-key": current.idempotencyKey },
         body: JSON.stringify(current.payload),
       });
-      if (!response.ok) throw new JobSubmissionFailure(response.status === 410 ? "expired" : "server");
+      if (!response.ok) await fail(response);
       writeSessionValue(key, null);
       forgetIdempotencyKey(`${key}:start`);
       return current.started.ref;

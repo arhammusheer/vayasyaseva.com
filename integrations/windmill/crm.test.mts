@@ -268,6 +268,18 @@ test("erasure removes the person's communications, applications and the person; 
   assert.deepEqual(await erasePerson(t.crm, "+919876543210"), { people: 0, files: 0 });
 });
 
+test("erasure finds what staff moved to Twenty's trash: the person, the application and its files", async () => {
+  const t = fakeTwenty();
+  await runSyncCrm({ query: syncDb([candidate()]).query, crm: t.crm });
+  const [person] = t.store.people;
+  const [app] = t.store.applications;
+  await t.crm.create("attachments", "Attachment", { name: "VS-J-ABC234-1.jpg", targetApplicationId: app.id });
+  // Deleted in Twenty's UI: soft-deleted, data kept.
+  for (const r of [person, app, ...t.store.communications]) r.deletedAt = "2026-10-20T00:00:00Z";
+  assert.deepEqual(await erasePerson(t.crm, "+919876543210"), { people: 1, files: 1 });
+  assert.deepEqual([t.store.people.length, t.store.applications.length, t.store.communications.length, t.store.attachments.length], [0, 0, 0, 0]);
+});
+
 test("erasure keeps a client contact who shares the phone: only the worker side goes", async () => {
   const t = fakeTwenty();
   await runSyncCrm({ query: syncDb([candidate()]).query, crm: t.crm });

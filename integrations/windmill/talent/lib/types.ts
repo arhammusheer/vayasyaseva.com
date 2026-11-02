@@ -73,10 +73,11 @@ export interface AcknowledgementResult {
   error: string | null;
 }
 
-/** The single row of CLAIM_ERASURE: a request, with every R2 key for its phone. */
+/** The single row of CLAIM_ERASURE: a request, with its phone's submissions and R2 keys at the claim. */
 export interface ClaimedErasure {
   id: string;
   phone: string;
   reason: "request" | "retention";
+  submissions: string[];
   files: string[];
 }

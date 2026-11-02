@@ -15,8 +15,8 @@
  * pending and fails after three attempts. Nothing here is automatic: requests
  * are queued by hand (OPERATIONS.md).
  */
-import { phoneDigits, removeAttachments } from "../../talent/lib/crm.ts";
-import { eq, type Twenty, type TwentyRecord } from "../../talent/lib/twenty.ts";
+import { findAll, phoneDigits, removeAttachments } from "../../talent/lib/crm.ts";
+import { eq, type Twenty } from "../../talent/lib/twenty.ts";
 import type { Query } from "../../talent/lib/db.ts";
 import { LEADS_ERASURE_CLAIM, LEADS_ERASURE_DONE, LEADS_ERASURE_FAIL, LEADS_ERASURE_RECOVER, LEADS_SYNC_LOCK, LEADS_SYNC_UNLOCK } from "./sql.ts";
 
@@ -33,13 +33,6 @@ export interface ErasedLeadsCrm {
   people: number;
   companies: number;
   files: number;
-}
-
-/** Live and trashed records: Twenty's API leaves trashed ones out unless the filter names deletedAt. */
-async function findAll(crm: Twenty, plural: string, filter: string): Promise<TwentyRecord[]> {
-  const live = await crm.find(plural, filter);
-  const trashed = await crm.find(plural, `and(${filter},deletedAt[is]:NOT_NULL)`);
-  return [...new Map([...live, ...trashed].map((r) => [r.id, r])).values()];
 }
 
 /**

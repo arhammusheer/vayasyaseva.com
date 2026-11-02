@@ -20,8 +20,12 @@ async function client(access: Access) {
   return { aws, url };
 }
 
-/** Downloads one object, or null when it is gone (R2 keeps applicants' files 90 days): the files step marks it missing. */
-export async function downloadIfExists(key: string): Promise<Blob | null> {
+/**
+ * Downloads one object, or null when it is gone (R2 keeps applicants' files 90 days): the files step marks it missing.
+ * "too_large" when it is bigger than the size declared at submit: the upload URL doesn't sign a length, so a
+ * file can be replaced after the site checked it. Read from the header, before the body is.
+ */
+export async function downloadIfExists(key: string, maxBytes: number): Promise<Blob | null | "too_large"> {
   const { aws, url } = await client("read");
   const res = await aws.fetch(url(key), { method: "GET" });
   if (res.status === 404) {
@@ -29,6 +33,11 @@ export async function downloadIfExists(key: string): Promise<Blob | null> {
     return null;
   }
   if (!res.ok) throw new Error(`R2 GET ${key}: HTTP ${res.status}`);
+  const length = Number(res.headers.get("content-length") ?? NaN);
+  if (!Number.isFinite(length) || length > maxBytes) {
+    await res.body?.cancel().catch(() => {});
+    return "too_large";
+  }
   return res.blob();
 }
 

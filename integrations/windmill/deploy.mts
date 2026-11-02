@@ -131,11 +131,17 @@ function readValues(): Record<ConfigName, string> {
  * same value in Vercel). Until the owner creates that Secret, a random value
  * nobody knows: the signed routes then refuse every request, and the site
  * keeps using the older routes (it switches only when it has the secret).
+ * Only a missing Secret or key falls back: any other kubectl failure (a
+ * timeout, RBAC) stops the deploy, since a random value would make every
+ * signed route refuse the site, which already has the real one.
  */
 function signingSecret(): string {
   try {
     return secretValue("growth", "windmill-submission", "SUBMISSION_SIGNING_SECRET");
-  } catch {
+  } catch (error) {
+    const stderr = String((error as { stderr?: unknown }).stderr ?? "");
+    const missing = /\(NotFound\)/.test(stderr) || /has no SUBMISSION_SIGNING_SECRET/.test((error as Error).message);
+    if (!missing) throw error;
     step("growth/windmill-submission not found: the signed routes will refuse everything until it exists");
     return randomBytes(32).toString("base64url");
   }

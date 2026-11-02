@@ -203,7 +203,7 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
     // The Labour Commissioner's 2026-27 rate sheets: one per committee employment it lists rates for.
     const own = s.sources.filter((x) => x.id.startsWith("ka-2627-")).length;
     return {
-      title: (year, month) => `Karnataka Minimum Wages${dated(year, month)}: Rates by Zone and Work`,
+      title: (year, month) => `Karnataka Minimum Wages${dated(year, month)}: All Employments`,
       description: `Karnataka minimum wage, 22 May 2026, unskilled: ${formatRupees(u1.monthly)} a month in Bengaluru, ${formatRupees(u3.monthly)} in Zone 3, plus garment, farm, plantation rates. ${stamp([s])}.`,
       answer: `From 22 May 2026, unskilled work in 79 employments, including engineering, construction, shops, hotels and security, pays at least ${formatRupees(u1.monthly)} a month in Bengaluru city (Zone 1), basic plus VDA. Foundries, power plants and cleaning work pay more, and 19 piece-rated employments, including garments, agriculture and plantations, keep rates of their own.`,
       note: {

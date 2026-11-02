@@ -96,6 +96,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Generated Windmill scripts (integrations/windmill/build.mts): plain JS bundles.
     "integrations/windmill/f/**",
+    // Claude Code session files and the worktrees other sessions check out inside the repo.
+    ".claude/**",
   ]),
 ]);
 

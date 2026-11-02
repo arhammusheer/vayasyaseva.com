@@ -107,14 +107,15 @@ export const WAGE_HUB_HI: Partial<Record<WageStateSlug, WageHubStateHi>> = {
   },
   karnataka: {
     name: "कर्नाटक",
-    table: "most-employments",
+    table: "single-notification",
     zones: [
       { id: "zone-1", name: "ज़ोन 1" },
       { id: "zone-2", name: "ज़ोन 2" },
       { id: "zone-3", name: "ज़ोन 3" },
     ],
     skills: ["unskilled", "semi-skilled", "skilled", "highly-skilled"],
-    key: () => "महीने की दर, मूल मज़दूरी और VDA मिलाकर। ज़ोन 1: बेंगलुरु शहर। ज़ोन 2: दूसरे नगर निगम और ज़िला मुख्यालय। ज़ोन 3: बाकी इलाके, बेंगलुरु शहर के बाहर के ज़्यादातर औद्योगिक क्षेत्र भी।",
+    key: () =>
+      "22 मई 2026 की अधिसूचना के 79 कामों की दर: इंजीनियरिंग, निर्माण, दुकानें, होटल, सुरक्षा और दूसरे। महीने की दर, मूल मज़दूरी और VDA मिलाकर। ज़ोन 1: बेंगलुरु शहर। ज़ोन 2: दूसरे नगर निगम और ज़िला मुख्यालय। ज़ोन 3: बाकी इलाके। फ़ाउंड्री, बिजलीघर और सफ़ाई के काम की दर ज़्यादा है। कपड़ा सिलाई (गारमेंट), खेती, बागान, बीड़ी, काजू और लोडिंग जैसे 19 कामों की अपनी अलग दरें हैं।",
     department: { href: "https://karmikaspandana.karnataka.gov.in/en", label: "श्रम विभाग, कर्नाटक" },
   },
 };
@@ -131,7 +132,7 @@ export const HUB_HI_SOURCE_HASH: Partial<Record<WageStateSlug, string>> = {
   haryana: "983ea0b50882",
   punjab: "2196ab5cd3f7",
   "andhra-pradesh": "c13c14de10cf",
-  karnataka: "8a856ee6968a",
+  karnataka: "1373b905d51d",
 };
 
 export const wageHubHi = {

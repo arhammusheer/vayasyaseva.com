@@ -14,7 +14,7 @@ import { jobMarkets, marketSurfaces } from "@/context/surfaces";
 import { WAGE_STATE_REGIONS, type WageStateSlug } from "@/content/registry/identifiers";
 import { isStateWide, marketForRegion, marketsForState, standInFor } from "@/markets/index";
 import { businessLabel, jobsLinkLabel, marketName } from "@/markets/labels";
-import { formatDate, formatMonth, formatRupees, formatShortDate, formatShortMonth, getWageState, wageStates, type Skill, type WageState } from "@/content/wages";
+import { employmentFigure, formatDate, formatMonth, formatRupees, formatShortDate, formatShortMonth, getWageState, wageStates, type Skill, type WageState } from "@/content/wages";
 
 /** A rate from the dataset, by table, zone and skill. Throws if it is missing, so a typo fails the build. */
 export function rate(state: WageState, table: string, zone: string, skill: Skill) {
@@ -23,6 +23,15 @@ export function rate(state: WageState, table: string, zone: string, skill: Skill
   return found;
 }
 const rs = (state: WageState, table: string, zone: string, skill: Skill) => formatRupees(rate(state, table, zone, skill).monthly);
+
+/** A figure from the "Every scheduled employment" list, as the page shows it, by group and row label. Throws if it is missing. */
+function listed(state: WageState, group: string, label: string, column = 0) {
+  const schedule = state.employments;
+  const g = schedule?.groups.find((x) => x.id === group);
+  const row = g?.rows?.find((r) => r.label === label || r.label.startsWith(`${label}:`));
+  if (!schedule || !g || !row) throw new Error(`${state.state}: no "${label}" in employments ${group}`);
+  return formatRupees(employmentFigure(schedule, g, row, column));
+}
 
 /**
  * The freshness stamp in the meta descriptions: "Checked Oct 2026" once a
@@ -62,6 +71,8 @@ export type WageStateCopy = {
   labourDepartment: LinkItem;
   /** The H1's place name where the state's name alone is ambiguous (Punjab is also a province of Pakistan). */
   headingPlace?: string;
+  /** The opening line of "Every scheduled employment", where the generic one would be untrue (Karnataka: two kinds of VDA). */
+  scheduleIntro?: string;
 };
 
 const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined> = {
@@ -186,25 +197,28 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
     };
   },
   karnataka: (s) => {
-    const t = "most-employments";
+    const t = "single-notification";
     const u1 = rate(s, t, "zone-1", "unskilled");
     const u3 = rate(s, t, "zone-3", "unskilled");
+    // The Labour Commissioner's 2026-27 rate sheets: one per committee employment it lists rates for.
+    const own = s.sources.filter((x) => x.id.startsWith("ka-2627-")).length;
     return {
-      title: (year, month) => `Karnataka Minimum Wages${dated(year, month)}: Rates by Zone`,
-      description: `Karnataka minimum wage from 22 May 2026, unskilled: ${formatRupees(u1.monthly)} a month in Bengaluru (Zone 1), ${formatRupees(u3.monthly)} in Zone 3, basic plus VDA. ${stamp([s])}.`,
-      answer: `From 22 May 2026, unskilled work in Bengaluru city (Zone 1) pays at least ${formatRupees(u1.monthly)} a month, or ${formatRupees(u1.daily ?? 0)} a day, basic plus VDA. Zones 2 and 3 pay less.`,
+      title: (year, month) => `Karnataka Minimum Wages${dated(year, month)}: All Employments`,
+      description: `Karnataka minimum wage, 22 May 2026, unskilled: ${formatRupees(u1.monthly)} a month in Bengaluru, ${formatRupees(u3.monthly)} in Zone 3, plus garment, farm, plantation rates. ${stamp([s])}.`,
+      answer: `From 22 May 2026, unskilled work in 79 employments, including engineering, construction, shops, hotels and security, pays at least ${formatRupees(u1.monthly)} a month in Bengaluru city (Zone 1), basic plus VDA. Foundries, power plants and cleaning work pay more, and 19 piece-rated employments, including garments, agriculture and plantations, keep rates of their own.`,
       note: {
         text: "Zone 1 is the Greater Bengaluru Authority area. Industrial areas outside it, such as Bommasandra, Jigani and Attibele, are Zone 3 unless they fall in a city corporation or district headquarters.",
         link: { href: "/jobs/bengaluru", label: "Jobs in Bengaluru" },
       },
+      scheduleIntro: `Karnataka sets minimum wages for 102 kinds of work. The 22 May 2026 notification covers 83 of them, in the table above or at a higher rate of their own; those figures are its basic rate plus the VDA of ${formatRupees(u1.vda)} a month. It leaves 19 piece-rated employments to a committee, and until the committee reports, their earlier notifications apply: their figures are the Labour Department's rates for 1 April 2026 to 31 March 2027, basic plus that notification's own VDA; piece rates are shown as set, with the VDA added to them in each note. The department lists rates for ${own} of the 19.`,
       faqs: [
         {
           question: "Is the new Karnataka minimum wage in force while it is challenged in court?",
           answer: "Yes. Employers have challenged the 22 May 2026 notification in the Karnataka High Court, but it has not been stayed: in September 2026 the court refused employers interim relief and stayed the circulars that had deferred the new rates. This page will change if the court rules otherwise.",
         },
         {
-          question: "Is the VDA added on top of these rates?",
-          answer: `Yes. The notification fixes basic rates by zone and skill, and a VDA of 4 paise a day for each point the consumer price index rises above 9,469. The Labour Department's summary puts that at ${formatRupees(u1.vda)} a month from 22 May 2026; the figures above add it to the basic rate. The VDA is revised once a year, from 1 April.`,
+          question: "Does the 22 May 2026 rate apply to garment factories, farms and plantations?",
+          answer: `No. The notification leaves 19 piece-rated, labour-intensive employments to a committee, among them garments and tailoring, agriculture, plantations, beedi, cashew, spinning mills, loading and unloading, and micro, small and medium enterprises. Until the committee reports, their earlier notifications apply: an unskilled garment worker in Zone I gets ${listed(s, "garments", "Unskilled", 0)} a month, and farm work pays ${listed(s, "agriculture", "Category A", 0)} a day, each basic plus that notification's VDA. Every one is in the list above.`,
         },
       ],
       labourDepartment: { href: "https://karmikaspandana.karnataka.gov.in/en", label: "Labour Department, Karnataka" },

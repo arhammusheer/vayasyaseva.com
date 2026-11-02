@@ -7,7 +7,7 @@
   "basis": "The 22 May 2026 notification sets the variable dearness allowance once a year, from 1 April, from the average consumer price index of the previous calendar year, so the next VDA is due on 1 April 2027. No October revision is due."
  },
  "checked": {
-  "on": "2026-10-31"
+  "on": "2026-11-02"
  },
  "sources": [
   {
@@ -42,14 +42,270 @@
    "retrievedOn": "2026-10-16",
    "copy": "https://cdn.vayasyaseva.com/sources/karnataka/ka-2026-05-sheet-88d717c0.pdf",
    "copyKb": 106
+  },
+  {
+   "id": "ka-2627-agriculture",
+   "kind": "notification",
+   "title": "Agriculture: minimum wages and VDA, 1 April 2026 to 31 March 2027 (Labour Commissioner's rate sheet)",
+   "number": "KAE 228 LWA 2018",
+   "date": "2019-12-11",
+   "authority": "Labour Commissioner, Karnataka",
+   "url": "https://karmikaspandana.karnataka.gov.in/uploads/media_to_upload1774347727.pdf",
+   "listing": "https://karmikaspandana.karnataka.gov.in/64/minimum-wages-rates-for-the-year-2026-27/en",
+   "language": "en",
+   "sha256": "40108cd7f64600a2129cc8dcde1627fd7e13f221335630c8e16672083521e878",
+   "sizeKb": 913,
+   "retrievedOn": "2026-11-02",
+   "copy": "https://cdn.vayasyaseva.com/sources/karnataka/ka-2627-agriculture-40108cd7.pdf",
+   "copyKb": 336
+  },
+  {
+   "id": "ka-2627-agarbatti",
+   "kind": "notification",
+   "title": "Agarbatti and incense: minimum wages and VDA, 1 April 2026 to 31 March 2027 (Labour Commissioner's rate sheet)",
+   "number": "KAE 107 LWA 2021",
+   "date": "2023-09-15",
+   "authority": "Labour Commissioner, Karnataka",
+   "url": "https://karmikaspandana.karnataka.gov.in/uploads/media_to_upload1774348169.pdf",
+   "listing": "https://karmikaspandana.karnataka.gov.in/64/minimum-wages-rates-for-the-year-2026-27/en",
+   "language": "en",
+   "sha256": "e290aac8b0f1fcbb1b942f710924912f2d1dcdf8ad039e5a55002cd19dd76acc",
+   "sizeKb": 1132,
+   "retrievedOn": "2026-11-02",
+   "copy": "https://cdn.vayasyaseva.com/sources/karnataka/ka-2627-agarbatti-e290aac8.pdf",
+   "copyKb": 268
+  },
+  {
+   "id": "ka-2627-beedi",
+   "kind": "notification",
+   "title": "Beedi making: minimum wages and VDA, 1 April 2026 to 31 March 2027 (Labour Commissioner's rate sheet)",
+   "number": "KAE 65 LWA 2023",
+   "date": "2025-02-27",
+   "authority": "Labour Commissioner, Karnataka",
+   "url": "https://karmikaspandana.karnataka.gov.in/uploads/media_to_upload1774348365.pdf",
+   "listing": "https://karmikaspandana.karnataka.gov.in/64/minimum-wages-rates-for-the-year-2026-27/en",
+   "language": "en",
+   "sha256": "e72f919e30ce2e1059b1bbe9e05b68cfc17553dbbad6a34288896e16e20efee6",
+   "sizeKb": 458,
+   "retrievedOn": "2026-11-02",
+   "copy": "https://cdn.vayasyaseva.com/sources/karnataka/ka-2627-beedi-e72f919e.pdf",
+   "copyKb": 166
+  },
+  {
+   "id": "ka-2627-bricks",
+   "kind": "notification",
+   "title": "Brick making and pre-stressed products: minimum wages and VDA, 1 April 2026 to 31 March 2027 (Labour Commissioner's rate sheet)",
+   "number": "KAE 43 LMW 2017",
+   "date": "2017-12-30",
+   "authority": "Labour Commissioner, Karnataka",
+   "url": "https://karmikaspandana.karnataka.gov.in/uploads/media_to_upload1774348427.pdf",
+   "listing": "https://karmikaspandana.karnataka.gov.in/64/minimum-wages-rates-for-the-year-2026-27/en",
+   "language": "en",
+   "sha256": "a8bffc294f22776ad055397f4a067c261ce30fe6c71854cdecacf9440d0d29b8",
+   "sizeKb": 873,
+   "retrievedOn": "2026-11-02",
+   "copy": "https://cdn.vayasyaseva.com/sources/karnataka/ka-2627-bricks-a8bffc29.pdf",
+   "copyKb": 312
+  },
+  {
+   "id": "ka-2627-cashew",
+   "kind": "notification",
+   "title": "Cashew processing: minimum wages and VDA, 1 April 2026 to 31 March 2027 (Labour Commissioner's rate sheet)",
+   "number": "KAE 45 LWA 2018",
+   "date": "2018-05-19",
+   "authority": "Labour Commissioner, Karnataka",
+   "url": "https://karmikaspandana.karnataka.gov.in/uploads/media_to_upload1774348546.pdf",
+   "listing": "https://karmikaspandana.karnataka.gov.in/64/minimum-wages-rates-for-the-year-2026-27/en",
+   "language": "en",
+   "sha256": "6160a7936dde1d3b1d33fa71882542eeec55e324d2ef53e0f067cd46b1aa5460",
+   "sizeKb": 1093,
+   "retrievedOn": "2026-11-02",
+   "copy": "https://cdn.vayasyaseva.com/sources/karnataka/ka-2627-cashew-6160a793.pdf",
+   "copyKb": 273
+  },
+  {
+   "id": "ka-2627-plantation-workers",
+   "kind": "notification",
+   "title": "Plantations: mazdoors, maistries and supervisors: minimum wages and VDA, 1 April 2026 to 31 March 2027 (Labour Commissioner's rate sheet)",
+   "number": "KAE 102 LWA 2023",
+   "date": "2025-02-10",
+   "authority": "Labour Commissioner, Karnataka",
+   "url": "https://karmikaspandana.karnataka.gov.in/uploads/media_to_upload1774348582.pdf",
+   "listing": "https://karmikaspandana.karnataka.gov.in/64/minimum-wages-rates-for-the-year-2026-27/en",
+   "language": "en",
+   "sha256": "a1d8c93f8f6e44533130da5a72fa79f570d8a321189424582505444b3ea5c0b4",
+   "sizeKb": 442,
+   "retrievedOn": "2026-11-02",
+   "copy": "https://cdn.vayasyaseva.com/sources/karnataka/ka-2627-plantation-workers-a1d8c93f.pdf",
+   "copyKb": 98
+  },
+  {
+   "id": "ka-2627-plantation-staff",
+   "kind": "notification",
+   "title": "Plantations: non-staff: minimum wages and VDA, 1 April 2026 to 31 March 2027 (Labour Commissioner's rate sheet)",
+   "number": "KAE 103 LWA 2023",
+   "date": "2025-02-10",
+   "authority": "Labour Commissioner, Karnataka",
+   "url": "https://karmikaspandana.karnataka.gov.in/uploads/media_to_upload1774348599.pdf",
+   "listing": "https://karmikaspandana.karnataka.gov.in/64/minimum-wages-rates-for-the-year-2026-27/en",
+   "language": "en",
+   "sha256": "13852faee8ce09a55681603ee8f0c362ed1bf3c9f4eedc373480ddf55508d0de",
+   "sizeKb": 469,
+   "retrievedOn": "2026-11-02",
+   "copy": "https://cdn.vayasyaseva.com/sources/karnataka/ka-2627-plantation-staff-13852fae.pdf",
+   "copyKb": 107
+  },
+  {
+   "id": "ka-2627-coffee-curing",
+   "kind": "notification",
+   "title": "Coffee curing: minimum wages and VDA, 1 April 2026 to 31 March 2027 (Labour Commissioner's rate sheet)",
+   "number": "KAE 246 LWA 2018",
+   "date": "2019-11-20",
+   "authority": "Labour Commissioner, Karnataka",
+   "url": "https://karmikaspandana.karnataka.gov.in/uploads/media_to_upload1774348918.pdf",
+   "listing": "https://karmikaspandana.karnataka.gov.in/64/minimum-wages-rates-for-the-year-2026-27/en",
+   "language": "en",
+   "sha256": "e512a81a1b0cd4d4e668574d8e8d84f1b5c3107a68027556d922c35c011ff320",
+   "sizeKb": 774,
+   "retrievedOn": "2026-11-02",
+   "copy": "https://cdn.vayasyaseva.com/sources/karnataka/ka-2627-coffee-curing-e512a81a.pdf",
+   "copyKb": 283
+  },
+  {
+   "id": "ka-2627-fish",
+   "kind": "notification",
+   "title": "Fish catching and processing: minimum wages and VDA, 1 April 2026 to 31 March 2027 (Labour Commissioner's rate sheet)",
+   "number": "KAE 104 LWA 2021",
+   "date": "2022-07-28",
+   "authority": "Labour Commissioner, Karnataka",
+   "url": "https://karmikaspandana.karnataka.gov.in/uploads/media_to_upload1774350578.pdf",
+   "listing": "https://karmikaspandana.karnataka.gov.in/64/minimum-wages-rates-for-the-year-2026-27/en",
+   "language": "en",
+   "sha256": "32f62b3cee0e7c17f21b7b94615d60b9b13f3d06b0ac880d822e6791f2dd59c9",
+   "sizeKb": 1521,
+   "retrievedOn": "2026-11-02",
+   "copy": "https://cdn.vayasyaseva.com/sources/karnataka/ka-2627-fish-32f62b3c.pdf",
+   "copyKb": 313
+  },
+  {
+   "id": "ka-2627-forestry",
+   "kind": "notification",
+   "title": "Forestry and timbering: minimum wages and VDA, 1 April 2026 to 31 March 2027 (Labour Commissioner's rate sheet)",
+   "number": "KAE 57 LWA 2019",
+   "date": "2019-11-20",
+   "authority": "Labour Commissioner, Karnataka",
+   "url": "https://karmikaspandana.karnataka.gov.in/uploads/media_to_upload1774350658.pdf",
+   "listing": "https://karmikaspandana.karnataka.gov.in/64/minimum-wages-rates-for-the-year-2026-27/en",
+   "language": "en",
+   "sha256": "3db3ddb0b0e5b1698cbac54bcfbe67b283663f18785d54dbe6d59de62d827376",
+   "sizeKb": 941,
+   "retrievedOn": "2026-11-02",
+   "copy": "https://cdn.vayasyaseva.com/sources/karnataka/ka-2627-forestry-3db3ddb0.pdf",
+   "copyKb": 199
+  },
+  {
+   "id": "ka-2627-handloom",
+   "kind": "notification",
+   "title": "Handloom and powerloom (cotton): minimum wages and VDA, 1 April 2026 to 31 March 2027 (Labour Commissioner's rate sheet)",
+   "number": "KAE 22 LWA 2019",
+   "date": "2019-02-20",
+   "authority": "Labour Commissioner, Karnataka",
+   "url": "https://karmikaspandana.karnataka.gov.in/uploads/media_to_upload1774350737.pdf",
+   "listing": "https://karmikaspandana.karnataka.gov.in/64/minimum-wages-rates-for-the-year-2026-27/en",
+   "language": "en",
+   "sha256": "6f7fccf1207cefcfff073d625e2fdef837d10184f8670be563c98526b5dd9b1f",
+   "sizeKb": 1262,
+   "retrievedOn": "2026-11-02",
+   "copy": "https://cdn.vayasyaseva.com/sources/karnataka/ka-2627-handloom-6f7fccf1.pdf",
+   "copyKb": 265
+  },
+  {
+   "id": "ka-2627-spinning",
+   "kind": "notification",
+   "title": "Spinning mills: minimum wages and VDA, 1 April 2026 to 31 March 2027 (Labour Commissioner's rate sheet)",
+   "number": "KAE 2 LWA 2023",
+   "date": "2023-01-17",
+   "authority": "Labour Commissioner, Karnataka",
+   "url": "https://karmikaspandana.karnataka.gov.in/uploads/media_to_upload1774351961.pdf",
+   "listing": "https://karmikaspandana.karnataka.gov.in/64/minimum-wages-rates-for-the-year-2026-27/en",
+   "language": "en",
+   "sha256": "d8481afbe7b1c3fd283ddc5ebc2e10621229fd764a0131692c06c64888eac1e6",
+   "sizeKb": 881,
+   "retrievedOn": "2026-11-02",
+   "copy": "https://cdn.vayasyaseva.com/sources/karnataka/ka-2627-spinning-d8481afb.pdf",
+   "copyKb": 310
+  },
+  {
+   "id": "ka-2627-garments",
+   "kind": "notification",
+   "title": "Garments, costumes and tailoring: minimum wages and VDA, 1 April 2026 to 31 March 2027 (Labour Commissioner's rate sheet)",
+   "number": "KAE 1 LWA 20223",
+   "date": "2023-01-17",
+   "authority": "Labour Commissioner, Karnataka",
+   "url": "https://karmikaspandana.karnataka.gov.in/uploads/media_to_upload1774352023.pdf",
+   "listing": "https://karmikaspandana.karnataka.gov.in/64/minimum-wages-rates-for-the-year-2026-27/en",
+   "language": "en",
+   "sha256": "4448699bfcffcfe682c3ef1d520932f5bb002fe99008d42a3634c1d8f27bc4df",
+   "sizeKb": 1102,
+   "retrievedOn": "2026-11-02",
+   "copy": "https://cdn.vayasyaseva.com/sources/karnataka/ka-2627-garments-4448699b.pdf",
+   "copyKb": 294
+  },
+  {
+   "id": "ka-2627-silk",
+   "kind": "notification",
+   "title": "Silk textiles: minimum wages and VDA, 1 April 2026 to 31 March 2027 (Labour Commissioner's rate sheet)",
+   "number": "KAE 2 LWA 2023",
+   "date": "2023-01-17",
+   "authority": "Labour Commissioner, Karnataka",
+   "url": "https://karmikaspandana.karnataka.gov.in/uploads/media_to_upload1774352039.pdf",
+   "listing": "https://karmikaspandana.karnataka.gov.in/64/minimum-wages-rates-for-the-year-2026-27/en",
+   "language": "en",
+   "sha256": "535041833e6c0c38974aacf3dc39a2569395fd74621deaf77448b3f27e9ca451",
+   "sizeKb": 1173,
+   "retrievedOn": "2026-11-02",
+   "copy": "https://cdn.vayasyaseva.com/sources/karnataka/ka-2627-silk-53504183.pdf",
+   "copyKb": 422
+  },
+  {
+   "id": "ka-2627-dyeing",
+   "kind": "notification",
+   "title": "Cloth dyeing and printing: minimum wages and VDA, 1 April 2026 to 31 March 2027 (Labour Commissioner's rate sheet)",
+   "number": "KAE 2 LWA 2023",
+   "date": "2023-01-17",
+   "authority": "Labour Commissioner, Karnataka",
+   "url": "https://karmikaspandana.karnataka.gov.in/uploads/media_to_upload1774352219.pdf",
+   "listing": "https://karmikaspandana.karnataka.gov.in/64/minimum-wages-rates-for-the-year-2026-27/en",
+   "language": "en",
+   "sha256": "ecb20a89913c11776e1e1586d9c941b30dcbd5a244cbe3be81a6bdcf5dfd65c3",
+   "sizeKb": 609,
+   "retrievedOn": "2026-11-02",
+   "copy": "https://cdn.vayasyaseva.com/sources/karnataka/ka-2627-dyeing-ecb20a89.pdf",
+   "copyKb": 134
+  },
+  {
+   "id": "ka-2627-loading",
+   "kind": "notification",
+   "title": "Loading and unloading: minimum wages and VDA, 1 April 2026 to 31 March 2027 (Labour Commissioner's rate sheet)",
+   "number": "KAE 88 LWA 2016 (Part -1)",
+   "date": "2021-05-29",
+   "authority": "Labour Commissioner, Karnataka",
+   "url": "https://karmikaspandana.karnataka.gov.in/uploads/media_to_upload1774352237.pdf",
+   "listing": "https://karmikaspandana.karnataka.gov.in/64/minimum-wages-rates-for-the-year-2026-27/en",
+   "language": "en",
+   "sha256": "14b175a6f3406948096dd50284aff9a209f1992d04eaad5bff975c96b010208b",
+   "sizeKb": 1016,
+   "retrievedOn": "2026-11-02",
+   "copy": "https://cdn.vayasyaseva.com/sources/karnataka/ka-2627-loading-14b175a6.pdf",
+   "copyKb": 201
   }
  ],
  "tables": [
   {
-   "id": "most-employments",
+   "id": "single-notification",
    "headline": true,
-   "title": "Most scheduled employments",
-   "appliesTo": "The 79 employments in Annexures 1 and 3 of the 22 May 2026 notification, including engineering and fabrication, automobile engineering, shops and commercial establishments, security and office staff through agencies, e-commerce and courier, and any employment not in the schedule. Loading and unloading keeps its piece rates; foundry and chemical units and toilet and drain cleaning have their own rates.",
+   "title": "Single notification: 79 employments",
+   "appliesTo": "The 61 employments in Annexure 1 and the 18 added to the schedule in Annexure 3 of the 22 May 2026 notification, including engineering and fabrication, automobile engineering, construction, shops and commercial establishments, hotels, hospitals, security and office staff through agencies, e-commerce and courier, and any employment not in the schedule. Annexure 2 sets higher rates for scavenging, power plants, foundries and fertiliser and pesticide units, and 19 piece-rated employments, including garments, agriculture and plantations, keep their earlier notifications until a committee revises them.",
    "sources": [
     "ka-2026-05",
     "ka-2026-05-sheet"
@@ -183,6 +439,2798 @@
   "2026-10-16, resolved 2026-10-31: Zone 3 unskilled basic reads 19319.36 in the gazette image and 19319.35 in the summary sheet's (poorly scanned) text layer. Re-read 2026-10-31 from a 400 dpi render of the sheet's image: it prints 19319.36, so 19319.35 was an OCR error in the text layer. 19319.36 is used (21251.30 / 1.1 = 19319.36).",
   "2026-10-16, confirmed 2026-10-31: the gazette prints basic rates and the VDA separately, with no total column. Gazette page 9, condition 1, sets a variable DA of 4 paise a day for each CPI point above 9469 for all categories, worked out each 1 April from the previous calendar year's average (monthly VDA = points x rate x 30), so the Annexure 4 figures are basic and the VDA is added on top. The department's summary sheet ('Payable VDA Rs. 1030.80/- from 22-05-2026') gives the amount; the gazette gives only the formula. The monthly figures here add them.",
   "2026-10-16: The notification is challenged in the Karnataka High Court (WP 16145/2026 with WA 1684-1685/2026). Reports (LiveLaw, Bar & Bench, not primary) say interim relief was refused around 21 Sep 2026 and the circulars of 29 Jul and 10 Aug 2026 deferring the rates were stayed on 18 Sep 2026.",
-  "2026-10-31: court status update (news reports, not primary). LiveLaw (21 September 2026): Justice H.T. Narendra Prasad refused interim protection in WP 16145/2026 (Karnataka Employers' Association); he first ordered the petitions heard with WA 1684-1685/2026, then reversed that the same evening because the Division Bench had reserved judgment in those appeals. Deccan Herald and Bar & Bench (19 September 2026): on 18 September the court stayed three circulars, from the Directorate of Municipal Administration, the Panchayat Raj Department and the State Audit and Accounts Department, that deferred the rates for outsourced and contract workers. Urban Acres and LegalSuvidha (17 October 2026, not confirmed by mainstream outlets) report a stay around 16 October of a 9 October 2026 circular that kept urban development and town planning staff on old wages. The Hans India (20 August 2026): a Cabinet sub-committee under G. Parameshwara was formed on 13 August to examine the notification; no decision reported. No stay of the 22 May 2026 notification and no final judgment found. Listing karmikaspandana.karnataka.gov.in/47/ still ends at the two 22-05-2026 entries; both cited PDFs re-downloaded with matching sha256."
- ]
+  "2026-10-31: court status update (news reports, not primary). LiveLaw (21 September 2026): Justice H.T. Narendra Prasad refused interim protection in WP 16145/2026 (Karnataka Employers' Association); he first ordered the petitions heard with WA 1684-1685/2026, then reversed that the same evening because the Division Bench had reserved judgment in those appeals. Deccan Herald and Bar & Bench (19 September 2026): on 18 September the court stayed three circulars, from the Directorate of Municipal Administration, the Panchayat Raj Department and the State Audit and Accounts Department, that deferred the rates for outsourced and contract workers. Urban Acres and LegalSuvidha (17 October 2026, not confirmed by mainstream outlets) report a stay around 16 October of a 9 October 2026 circular that kept urban development and town planning staff on old wages. The Hans India (20 August 2026): a Cabinet sub-committee under G. Parameshwara was formed on 13 August to examine the notification; no decision reported. No stay of the 22 May 2026 notification and no final judgment found. Listing karmikaspandana.karnataka.gov.in/47/ still ends at the two 22-05-2026 entries; both cited PDFs re-downloaded with matching sha256.",
+  "2026-11-02: Read the whole 22 May 2026 gazette (24 pages, Kannada) from 300 dpi renders. Its preamble says Karnataka had fixed rates for 81 scheduled employments by separate notifications and that the 11 April 2025 draft covered 99. The final notification has four parts: Annexure 1 (61 employments already in the schedule, item 20 being any employment not in the schedule) and Annexure 3 (18 added to the schedule) take the Annexure 4 zone rates; Annexure 2 sets its own rates for scavenging (one rate, Zone 1/2/3 basic 25714.07/23376.43/21251.30), power generation units (no zones: thermal 34225.42/31114.02/28285.47/25714.07, hydro, solar and wind 31114.02/28285.47/25714.07/23376.43 for highly skilled to unskilled) and foundries and chemical fertiliser and pesticide units (Zone 1/2/3 one step above Annexure 4); and a 'special note' leaves 19 piece-rated, labour-intensive employments to be revised by a committee under section 8(1)(a) of the Code (beedi, cashew, handloom and powerloom, loading and unloading, agarbatti, agriculture, forestry and timber depots, bricks, silk textiles, fish, coffee curing, two plantation schedules, spinning mills, garments and tailoring, cloth dyeing and printing, khadi and village industries, shamiana and pandal work, and MSMEs). The conditions, including the VDA, apply to Annexures 1, 2 and 3. Cleaning workers in any scheduled employment get the Annexure 2 rate. The page had shown Annexures 1 and 3 as 'most scheduled employments' and left out power plants and the 19.",
+  "2026-11-02: karmikaspandana.karnataka.gov.in/64/ ('Minimum Wages rates for the Year 2026-27', uploaded about 24 March 2026) lists 81 rate sheets, one per employment, each giving its notification, base points, the 2026-27 index (10,328) and basic + VDA = total from 1 April 2026 to 31 March 2027. It has sheets for 16 of the 19 committee employments; khadi, shamiana and MSMEs have none. The single notification does not touch the 19, so these sheets are their current rates. All 16 were transcribed from 200-300 dpi page images (text layers are OCR'd and unreliable) and basic + VDA = total was checked on every row. The VDA on every sheet is points x the notification's rate (4 paise; 3 for beedi) x 30 a month, and that / 26 a day.",
+  "2026-11-02: printed quirks kept as printed: beedi skilled, semi-skilled and unskilled day totals are a paisa below basic + VDA (worked from month / 26); fish row 5 prints row 4's monthly figures although its day rate is lower; garments skilled Zone III day total 518.69 (basic + VDA 518.68); spinning skilled Zone II day total 534.46 (534.47); loading's 178 for distributing a 70-200 litre container is far above its column; handloom's saree table prints an unlabelled 27.3 (left out); bricks prints single figures for task and piece work without a unit; cashew prints no rate for hand shellers with electricity; agarbatti's pouch row reads 'more than 171 grams to 50 grams'. Several notifications take effect before their date (silk, spinning and dyeing from 30 December 2017 by a 17 January 2023 notification; beedi from 1 April 2024 by one of 27 February 2025)."
+ ],
+ "employments": {
+  "vda": {
+   "amount": 1030.8,
+   "effectiveFrom": "2026-05-22",
+   "source": "ka-2026-05-sheet"
+  },
+  "groups": [
+   {
+    "id": "single-notification",
+    "title": "79 employments: Annexures 1 and 3",
+    "number": "LD 411 LWA 2023",
+    "date": "2026-05-22",
+    "source": "ka-2026-05",
+    "table": "single-notification",
+    "employments": [
+     "Soft drinks, including aerated and mineral water and fruit juice, and allied processes",
+     "Arecanut (supari) industries",
+     "Automobile engineering, including manufacturing, assembling, body building, servicing and repair",
+     "Bakeries and baking processes",
+     "Tobacco processing",
+     "Biscuit manufacturing",
+     "Brass, copper, aluminium, steel and hindalium utensils and other metal products",
+     "Carpentry and saw mills",
+     "Plywood manufacturing",
+     "Wood timber depots",
+     "Cardamom malais and cardamom plantations",
+     "Clay pottery, ceramics, stoneware and allied products",
+     "Clubs",
+     "Confectionery",
+     "Cotton ginning, pressing and allied processes",
+     "Building and other construction work",
+     "Domestic work in homes, including domestic helpers, childcare helpers and home nurses",
+     "Electronics industries",
+     "Electronics and electroplating",
+     "Any employment not in the schedule",
+     "Engineering, fabrication and allied industries",
+     "Motion pictures (cinema and short films): production, distribution, publicity and allied work",
+     "Food processing and packing, including ready-to-eat foods, drinks and spices",
+     "Glass and glassware",
+     "Granite stones and marble",
+     "Hospitals, maternity homes, nursing homes, clinics and de-addiction centres",
+     "Hostels, guest houses, home stays, paying guest accommodation, serviced apartments, residents' associations, and marriage and community halls",
+     "Hotels, residential hotels, restaurants, motels, lodges, dhabas, canteens, outdoor catering and allied establishments",
+     "Ice factories, ice cream and cold storage",
+     "Khandsari sugar factories",
+     "Laundry and dry cleaning",
+     "Liquor manufacture (distilleries and breweries), including bottling and packing",
+     "Ayurvedic, yoga, unani, siddha, homoeopathic and allopathic medicine manufacture, including production, distribution and publicity",
+     "Mandakki, avalakki, churumuri and similar products from rice, paddy, jowar or other grains",
+     "Metal rolling and re-rolling (ferrous)",
+     "Metal rolling and re-rolling (non-ferrous)",
+     "Mini cement plants",
+     "Mosaic tiles, floor tiles and glazed tiles",
+     "Oil mills",
+     "Petrol, diesel and LPG pumps",
+     "Plastic, poly plastic, rubber and PVC pipe manufacturing",
+     "Printing and publishing",
+     "Private finance corporations, chit funds and lawful non-banking cash businesses",
+     "Milk procurement, processing and distribution",
+     "Public motor transport",
+     "Paper, pulp, cardboard, straw board and newsprint",
+     "Rice, grain and dal mills",
+     "Rubber products, including foam and coir rubber",
+     "Sales promotion of medicines and household goods",
+     "Security agencies, including every establishment that takes office or security staff through an agency",
+     "Shops and commercial establishments",
+     "Spun pipes, concrete pipes, sanitary fittings, and PCC and RCC pipes and poles",
+     "Metal almirahs, chairs, tables and other furniture",
+     "Stone breaking and stone crushing",
+     "Roof tile manufacturing",
+     "Toddy tapping",
+     "Urban local bodies and panchayat raj institutions",
+     "Co-operative societies",
+     "Gold and silver ornaments, and cutting and polishing of gems and diamonds",
+     "Sericulture units and processes, part 1",
+     "Sericulture units and processes, part 2",
+     "Non-teaching staff of private schools, colleges and training centres",
+     "E-commerce and courier services",
+     "Offices of religious and social institutions, such as temples, maths, churches, mosques, gurudwaras, basadis and viharas",
+     "Amusement parks, water theme parks and other commercial recreation places",
+     "Mobile tower maintenance, TV cable networks and similar work",
+     "Inland water transport: commercial motor boats, launches, traditional boats and fishing boats",
+     "Aluminium and tin products",
+     "Cane and bamboo",
+     "Coconut and coir products",
+     "Computer, cyber and internet centres",
+     "Handicrafts",
+     "LPG storage and distribution",
+     "Borewell drilling and maintenance",
+     "Salt making",
+     "M-sand units",
+     "Poultry, bird rearing and animal husbandry",
+     "Toy making",
+     "Ready-mix concrete plants"
+    ],
+    "note": "The first 61 are Annexure 1, employments already in the schedule; the last 18 are Annexure 3, added to the schedule for the first time. Workers who clean toilets, bathrooms or drains in any of them are paid the scavenging rate below."
+   },
+   {
+    "id": "scavenging",
+    "number": "LD 411 LWA 2023",
+    "date": "2026-05-22",
+    "source": "ka-2026-05",
+    "employments": [
+     "Cleaning of toilets, bathrooms and drains (scavenging), in any scheduled employment"
+    ],
+    "columns": [
+     {
+      "name": "Zone 1",
+      "areas": "Greater Bengaluru Authority area"
+     },
+     {
+      "name": "Zone 2",
+      "areas": "Other city corporations and every district headquarters"
+     },
+     {
+      "name": "Zone 3",
+      "areas": "All other areas"
+     }
+    ],
+    "rows": [
+     {
+      "label": "All private safai karmacharis, including cleaning by machine",
+      "values": [
+       25714.07,
+       23376.43,
+       21251.3
+      ]
+     }
+    ],
+    "note": "Annexure 2 of the notification. One rate for every worker who cleans drains, bathrooms or toilets, at the level of a semi-skilled worker in the 79 employments."
+   },
+   {
+    "id": "power-plants",
+    "number": "LD 411 LWA 2023",
+    "date": "2026-05-22",
+    "source": "ka-2026-05",
+    "employments": [
+     "Power generation units"
+    ],
+    "columns": [
+     {
+      "name": "Thermal power stations"
+     },
+     {
+      "name": "Hydro, solar and wind power stations"
+     }
+    ],
+    "rows": [
+     {
+      "label": "Highly skilled: senior engineer, engineer, gang leader, assistant, deputy and plant manager",
+      "values": [
+       34225.42,
+       31114.02
+      ]
+     },
+     {
+      "label": "Skilled: junior engineer, senior technician, electrician, maistry, O&M officer, senior associate, driver, fitter or mechanic, welder",
+      "values": [
+       31114.02,
+       28285.47
+      ]
+     },
+     {
+      "label": "Semi-skilled: engineering operator, technician, assistant cook, electrician, junior engineer, lineman",
+      "values": [
+       28285.47,
+       25714.07
+      ]
+     },
+     {
+      "label": "Unskilled: attender, watchman, helper, housekeeper, security, office boy",
+      "values": [
+       25714.07,
+       23376.43
+      ]
+     }
+    ],
+    "note": "Annexure 2 of the notification. One rate across the state, with no zones. The notification lists some jobs (electrician, junior engineer) at two levels; the work done decides which applies."
+   },
+   {
+    "id": "foundry-chemicals",
+    "number": "LD 411 LWA 2023",
+    "date": "2026-05-22",
+    "source": "ka-2026-05",
+    "employments": [
+     "Foundries, with or without a machine shop",
+     "Chemical fertiliser, pesticide and insecticide manufacturing"
+    ],
+    "columns": [
+     {
+      "name": "Zone 1",
+      "areas": "Greater Bengaluru Authority area"
+     },
+     {
+      "name": "Zone 2",
+      "areas": "Other city corporations and every district headquarters"
+     },
+     {
+      "name": "Zone 3",
+      "areas": "All other areas"
+     }
+    ],
+    "rows": [
+     {
+      "label": "Highly skilled",
+      "values": [
+       34225.42,
+       31114.02,
+       28285.47
+      ]
+     },
+     {
+      "label": "Skilled",
+      "values": [
+       31114.02,
+       28285.47,
+       25714.07
+      ]
+     },
+     {
+      "label": "Semi-skilled",
+      "values": [
+       28285.47,
+       25714.07,
+       23376.43
+      ]
+     },
+     {
+      "label": "Unskilled",
+      "values": [
+       25714.07,
+       23376.43,
+       21251.3
+      ]
+     }
+    ],
+    "note": "Annexure 2 of the notification. One step above the 79 employments in each zone: Zone 2 here is Zone 1 there."
+   },
+   {
+    "id": "agriculture",
+    "number": "KAE 228 LWA 2018",
+    "date": "2019-12-11",
+    "employments": [
+     "Agriculture and allied work"
+    ],
+    "source": "ka-2627-agriculture",
+    "unit": "A day",
+    "columns": [
+     {
+      "name": "A day"
+     },
+     {
+      "name": "A month"
+     }
+    ],
+    "rows": [
+     {
+      "label": "Category A: up-rooting, excavating, ploughing by tractor, ploughing, breaking lumps of soil, trimming of bunds, alignment & leveling of bunds, ploughing to form bunds, making beds for close broad casting, leveling the land for paddy cultivation, carrying out kunte and halube operations, working in bushes and carrying out kunte, halube operations to cover soil on seeds broadcasted, transportation of manure, feeding manure, feeding chemical manure, trimming the seedlings mixing chemical manure, spraying of medicines, sowing, drill sowing, transplanting, transplanting and sowing in dry land, irrigation, lifting water from picotta and lifting water physically, spacing by removal of intervening plants in paddy area, thinning of sugarcane, mid term cultivation, winnowing, casting soil to the roots of garden crops, sugarcane, maize and potato crops, plant protection operation, to tie up sugarcane to avoid swaying, harvesting a) cutting b) thrashing c) winnowing, production and transportation of produce, cleaning, plucking (in cotton crops), other works",
+      "values": [
+       549.97,
+       14299.16
+      ]
+     },
+     {
+      "label": "Category B: watching over the birds, driving out birds from eating the crops, grazing cows and washing the cattle, grazing cattle, sheep and goats, poultry and piggery farm works, other similar works",
+      "values": [
+       549.97,
+       14299.16
+      ]
+     },
+     {
+      "label": "Category C: jaggery making, curing tobacco, pollination, pruning work in grape farms, harvesting coconut and arecanut, plucking coconut and arecanut, trimming and spraying work in arecanut and coconut farms, de-husking coconut and arecanut, baking arecanut, other works in areca-nut and coconut farms, harvesting betel leaf and pepper, other works in plant nursery fruit and flowers cultivation, other similar works",
+      "values": [
+       549.97,
+       14299.16
+      ]
+     }
+    ],
+    "note": "Figures are the basic wage plus the VDA for 1 April 2026 to 31 March 2027, ₹148.71 a day (₹3,866.40 a month): 3,222 points above 7,106, as the Labour Department works it out. The same notification pays ₹160 for one bundle of tendu (beedi) leaves; the sheet does not add a VDA to it."
+   },
+   {
+    "id": "agarbatti",
+    "number": "KAE 107 LWA 2021",
+    "date": "2023-09-15",
+    "employments": [
+     "Agarbatti and incense making: staff and daily-rated workers"
+    ],
+    "source": "ka-2627-agarbatti",
+    "unit": "A month",
+    "rows": [
+     {
+      "label": "Supervisor",
+      "values": [
+       15561.76
+      ]
+     },
+     {
+      "label": "Lab Technician",
+      "values": [
+       15231.76
+      ]
+     },
+     {
+      "label": "Lab Assistant",
+      "values": [
+       15011.76
+      ]
+     },
+     {
+      "label": "Manager/ Personnel Officer",
+      "values": [
+       15836.76
+      ]
+     },
+     {
+      "label": "Assistant Manager/ Assistant Personal Manager",
+      "values": [
+       15561.76
+      ]
+     },
+     {
+      "label": "Accountant, Cashier/ Senior Clerk, Store Keeper/",
+      "values": [
+       15121.76
+      ]
+     },
+     {
+      "label": "Stenographer/ Computer Operator/ Receptionist",
+      "values": [
+       14956.76
+      ]
+     },
+     {
+      "label": "Office Boy/ Peon/Watchman/ Attender/ Sweeper/House Keeping",
+      "values": [
+       13856.76
+      ]
+     },
+     {
+      "label": "Lorry Driver",
+      "values": [
+       14901.76
+      ]
+     },
+     {
+      "label": "Car/Jeep Driver 3 Wheel Vehicle Drivers",
+      "values": [
+       14461.76
+      ]
+     },
+     {
+      "label": "Loaders and Unloaders",
+      "values": [
+       562.99
+      ],
+      "unit": "A day"
+     },
+     {
+      "label": "General Workers",
+      "values": [
+       546.49
+      ],
+      "unit": "A day"
+     }
+    ],
+    "note": "Figures are the basic wage plus the VDA for 1 April 2026 to 31 March 2027, ₹89.08 a day (₹2,316 a month): 1,930 points above 8,398, as the Labour Department works it out."
+   },
+   {
+    "id": "agarbatti-piece",
+    "number": "KAE 107 LWA 2021",
+    "date": "2023-09-15",
+    "employments": [
+     "Agarbatti rolling and packing (piece rates)"
+    ],
+    "source": "ka-2627-agarbatti",
+    "unit": "Rate",
+    "rows": [
+     {
+      "label": "Rolling: grinded patti less than 9\", grinded flora (durbar) patti upto 9\" (thin,medium,thick)",
+      "values": [
+       75.15
+      ],
+      "unit": "Per 1,000 sticks"
+     },
+     {
+      "label": "Rolling: grinded patti 9\"-10\", grinded flora (durbar) patti more than 9\" (thin,medium,thick)",
+      "values": [
+       87.12
+      ],
+      "unit": "Per 1,000 sticks"
+     },
+     {
+      "label": "Packing, packets: packets of less than 15 grams",
+      "values": [
+       2.31
+      ],
+      "unit": "Per 12 packets"
+     },
+     {
+      "label": "Packing, packets: packs of 15 grams to 50 grams",
+      "values": [
+       2.44
+      ],
+      "unit": "Per 12 packets"
+     },
+     {
+      "label": "Packing, packets: packs of 51 grams to 160 grams",
+      "values": [
+       2.87
+      ],
+      "unit": "Per 12 packets"
+     },
+     {
+      "label": "Packing, packets: packs of more than 160 grams",
+      "values": [
+       3.47
+      ],
+      "unit": "Per 12 packets"
+     },
+     {
+      "label": "Packing, packets: 2 in 1 packs",
+      "values": [
+       2.49
+      ],
+      "unit": "Per 12 packets"
+     },
+     {
+      "label": "Packing, packets: 3 in 1 packs",
+      "values": [
+       2.89
+      ],
+      "unit": "Per 12 packets"
+     },
+     {
+      "label": "Packing, packets: 4 in 1 packs",
+      "values": [
+       3.47
+      ],
+      "unit": "Per 12 packets"
+     },
+     {
+      "label": "Packing, packets: 5 in 1 packs",
+      "values": [
+       4.1
+      ],
+      "unit": "Per 12 packets"
+     },
+     {
+      "label": "Packing, packets: 7 in 1 packs",
+      "values": [
+       5.06
+      ],
+      "unit": "Per 12 packets"
+     },
+     {
+      "label": "Packing, pouches: packs of 15 grams to 50 grams",
+      "values": [
+       2.31
+      ],
+      "unit": "Per 12 packets"
+     },
+     {
+      "label": "Packing, pouches: packs of 51 grams to 170 grams",
+      "values": [
+       2.44
+      ],
+      "unit": "Per 12 packets"
+     },
+     {
+      "label": "Packing, pouches: packs of more than 171 grams to 50 grams",
+      "values": [
+       2.49
+      ],
+      "unit": "Per 12 packets"
+     },
+     {
+      "label": "Packing, hexa packets: packs of more than 15 grams",
+      "values": [
+       3.03
+      ],
+      "unit": "Per 12 packets"
+     },
+     {
+      "label": "Bundle packing, any bundle size",
+      "values": [
+       4.9
+      ],
+      "unit": "Per kg"
+     },
+     {
+      "label": "Grinders, mixers, coaters, loaders, batti machine operators, carton packers and all other employees",
+      "values": [
+       473.83
+      ],
+      "unit": "A day"
+     }
+    ],
+    "note": "Piece rates as the notification sets them, without the VDA: the Labour Department adds ₹89.08 a day to them for 1 April 2026 to 31 March 2027. Grinders, mixers and the other employees get at least ₹473.83 a day, plus the same VDA."
+   },
+   {
+    "id": "beedi",
+    "number": "KAE 65 LWA 2023",
+    "date": "2025-02-27",
+    "employments": [
+     "Beedi making: staff and workers"
+    ],
+    "source": "ka-2627-beedi",
+    "unit": "A day",
+    "columns": [
+     {
+      "name": "A day"
+     },
+     {
+      "name": "A month"
+     }
+    ],
+    "rows": [
+     {
+      "label": "Manager",
+      "values": [
+       837.86,
+       21784.3
+      ],
+      "group": "Highly skilled"
+     },
+     {
+      "label": "Assistant Manager",
+      "values": [
+       799.4,
+       20784.3
+      ],
+      "group": "Highly skilled"
+     },
+     {
+      "label": "Cashier, Accountant, Stenographer/Computer Operator, Typist/ Data Entry Operator, Clerk (Graduate), Tobacco Mixer, Lorry / Van / Car/ Jeep Driver",
+      "values": [
+       760.93,
+       19784.3
+      ],
+      "group": "Skilled"
+     },
+     {
+      "label": "Foreman / Beedi Checker, Store Keeper, Second Division Clerk (Under Graduate)",
+      "values": [
+       722.47,
+       18784.3
+      ],
+      "group": "Semi-skilled"
+     },
+     {
+      "label": "Distributor of Tobacco Leaves, Sigadi Workers / Battiwala / tarayiwala, Loaders and Un Loaders, Vehicle Cleaner, Office Boy / Peon / Watchman / Attender",
+      "values": [
+       684.01,
+       17784.3
+      ],
+      "group": "Unskilled"
+     }
+    ],
+    "note": "Figures are the basic wage plus the VDA for 1 April 2026 to 31 March 2027, ₹49.40 a day (₹1,284.30 a month): 1,427 points above 8,901, as the Labour Department works it out. This notification's VDA is 3 paise a day a point, not 4."
+   },
+   {
+    "id": "beedi-piece",
+    "number": "KAE 65 LWA 2023",
+    "date": "2025-02-27",
+    "employments": [
+     "Beedi rolling and labelling, including home workers (piece rates)"
+    ],
+    "source": "ka-2627-beedi",
+    "unit": "Rate with VDA",
+    "rows": [
+     {
+      "label": "Beedi rollers, including home workers",
+      "values": [
+       319.4
+      ],
+      "unit": "Per 1,000 beedis"
+     },
+     {
+      "label": "Beedi labelling, including home workers",
+      "values": [
+       324.4
+      ],
+      "unit": "Per 50,000 beedis bundled"
+     }
+    ],
+    "note": "The Labour Department adds the VDA of ₹49.40 to each piece rate: ₹270 and ₹275 basic."
+   },
+   {
+    "id": "bricks",
+    "number": "KAE 43 LMW 2017",
+    "date": "2017-12-30",
+    "employments": [
+     "Brick making and pre-stressed products"
+    ],
+    "source": "ka-2627-bricks",
+    "unit": "A day",
+    "columns": [
+     {
+      "name": "A day"
+     },
+     {
+      "name": "A month"
+     }
+    ],
+    "rows": [
+     {
+      "label": "Brick Slicers",
+      "values": [
+       603.65,
+       15694.89
+      ],
+      "group": "Factory workers"
+     },
+     {
+      "label": "Brick Burners, Clay mixers",
+      "values": [
+       609.47,
+       15846.32
+      ],
+      "group": "Factory workers"
+     },
+     {
+      "label": "Fire wood slitters, Kiln repairer",
+      "values": [
+       597.82,
+       15543.47
+      ],
+      "group": "Factory workers"
+     },
+     {
+      "label": "Clay Kneaders",
+      "values": [
+       594.91,
+       15467.75
+      ],
+      "group": "Table mould bricks"
+     },
+     {
+      "label": "Kiln setters (1,000 bricks)",
+      "values": [
+       637.76,
+       16581.82
+      ],
+      "group": "Table mould bricks"
+     },
+     {
+      "label": "Sorting separating Burnt Bricks",
+      "values": [
+       597.82,
+       15543.3
+      ],
+      "group": "Table mould bricks"
+     },
+     {
+      "label": "Sorting Burnt Bricks (per day)",
+      "values": [
+       597.82,
+       15543.47
+      ],
+      "group": "Hand moulding bricks"
+     },
+     {
+      "label": "Driver",
+      "values": [
+       598.47,
+       15560.2
+      ],
+      "group": "Hand moulding bricks"
+     },
+     {
+      "label": "Cleaner",
+      "values": [
+       559.97,
+       14559.2
+      ],
+      "group": "Hand moulding bricks"
+     },
+     {
+      "label": "Clerk / Typist",
+      "values": [
+       598.47,
+       15560.2
+      ],
+      "group": "Office staff"
+     },
+     {
+      "label": "Cashier, Store Keeper",
+      "values": [
+       640.82,
+       16661.3
+      ],
+      "group": "Office staff"
+     },
+     {
+      "label": "Watchman, Attender / Office Boy / Office Peon, Sweeper",
+      "values": [
+       559.97,
+       14559.2
+      ],
+      "group": "Office staff"
+     },
+     {
+      "label": "Manager",
+      "values": [
+       724.97,
+       18872.2
+      ],
+      "group": "Office staff"
+     },
+     {
+      "label": "Accountant",
+      "values": [
+       687.42,
+       17872.2
+      ],
+      "group": "Office staff"
+     },
+     {
+      "label": "Stenographer",
+      "values": [
+       640.82,
+       16661.2
+      ],
+      "group": "Office staff"
+     },
+     {
+      "label": "Foreman",
+      "values": [
+       725.85,
+       18872.2
+      ],
+      "group": "Office staff"
+     },
+     {
+      "label": "Supervisor",
+      "values": [
+       687.41,
+       17872.51
+      ],
+      "group": "Office staff"
+     }
+    ],
+    "note": "Figures are the basic wage plus the VDA for 1 April 2026 to 31 March 2027, ₹174.97 a day (₹4,549.20 a month): 3,791 points above 6,537, as the Labour Department works it out."
+   },
+   {
+    "id": "bricks-tasks",
+    "number": "KAE 43 LMW 2017",
+    "date": "2017-12-30",
+    "employments": [
+     "Brick moulding, kiln and loading work (rates per task)"
+    ],
+    "source": "ka-2627-bricks",
+    "unit": "Per task, as listed",
+    "rows": [
+     {
+      "label": "Clay transporter, loaders, unloaders (in a group of 4 general assistants)",
+      "values": [
+       653.15
+      ],
+      "group": "Table mould bricks"
+     },
+     {
+      "label": "Bricks Moulding (with 5 assistants)",
+      "values": [
+       728.03
+      ],
+      "group": "Table mould bricks"
+     },
+     {
+      "label": "Engaged in putting coal or fire wood",
+      "values": [
+       1174.41
+      ],
+      "group": "Table mould bricks"
+     },
+     {
+      "label": "Loading / unloading of bricks to lorry (per 1,000 Bricks)",
+      "values": [
+       574.53
+      ],
+      "group": "Table mould bricks"
+     },
+     {
+      "label": "Bricks slicers (with 10 assistants per 1,000 bricks)",
+      "values": [
+       658.97
+      ],
+      "group": "Hand moulding bricks"
+     },
+     {
+      "label": "Kiln Settlers (settling for 1000 bricks)",
+      "values": [
+       606.56
+      ],
+      "group": "Hand moulding bricks"
+     },
+     {
+      "label": "Putting coal and fire wood (per kiln)",
+      "values": [
+       1602.48
+      ],
+      "group": "Hand moulding bricks"
+     },
+     {
+      "label": "Arani Makers per line",
+      "values": [
+       417.27
+      ],
+      "group": "Hand moulding bricks"
+     },
+     {
+      "label": "Loaders / unloaders of Burnt Bricks (per 1000 bricks)",
+      "values": [
+       559.97
+      ],
+      "group": "Hand moulding bricks"
+     }
+    ],
+    "note": "The sheet prints one figure for these, basic plus the VDA of ₹174.97, without saying whether it is a day's rate or a rate for the task named; the labels carry the sheet's own units."
+   },
+   {
+    "id": "cashew",
+    "number": "KAE 45 LWA 2018",
+    "date": "2018-05-19",
+    "employments": [
+     "Cashew processing: technical, canteen, office and other staff"
+    ],
+    "source": "ka-2627-cashew",
+    "unit": "A day",
+    "columns": [
+     {
+      "name": "A day"
+     },
+     {
+      "name": "A month"
+     }
+    ],
+    "rows": [
+     {
+      "label": "Fitters, Mechanics, Electricians, Operators Assistant Operator / lever operators) Fireman, Bag Carrier, Dry yards Workers",
+      "values": [
+       585.85,
+       15232
+      ],
+      "group": "Technical and other"
+     },
+     {
+      "label": "Expeller Workers, Tin Can Manufacturers / Soldering Works",
+      "values": [
+       570.85,
+       14842
+      ],
+      "group": "Technical and other"
+     },
+     {
+      "label": "Cook & coffee / tea maker",
+      "values": [
+       560.85,
+       14582
+      ],
+      "group": "Canteen Workers"
+     },
+     {
+      "label": "Servers & Suppliers",
+      "values": [
+       530.85,
+       13802
+      ],
+      "group": "Canteen Workers"
+     },
+     {
+      "label": "Cleaners /Helper",
+      "values": [
+       530.85,
+       13802
+      ],
+      "group": "Canteen Workers"
+     },
+     {
+      "label": "Ladies Yard Workers / creche/ Aya's / House Workers, watchmen",
+      "values": [
+       530.85,
+       13802
+      ],
+      "group": "General Workers"
+     },
+     {
+      "label": "Lorry Driver",
+      "values": [
+       570.85,
+       14842
+      ],
+      "group": "Drivers"
+     },
+     {
+      "label": "Car/Jeep Driver",
+      "values": [
+       560.85,
+       14582
+      ],
+      "group": "Drivers"
+     },
+     {
+      "label": "Lorry/Jeep/Car Cleaner",
+      "values": [
+       530.85,
+       13802
+      ],
+      "group": "Drivers"
+     },
+     {
+      "label": "Manager",
+      "values": [
+       615.85,
+       16012
+      ],
+      "group": "Office staff"
+     },
+     {
+      "label": "Assistant Manager",
+      "values": [
+       600.85,
+       15622
+      ],
+      "group": "Office staff"
+     },
+     {
+      "label": "Accountant",
+      "values": [
+       590.85,
+       15362
+      ],
+      "group": "Office staff"
+     },
+     {
+      "label": "Cashier / Supervisor, Computer Operator / Data Entry Operator",
+      "values": [
+       585.85,
+       15232
+      ],
+      "group": "Office staff"
+     },
+     {
+      "label": "Store keeper",
+      "values": [
+       540.85,
+       14062
+      ],
+      "group": "Office staff"
+     },
+     {
+      "label": "Clerk",
+      "values": [
+       540.85,
+       14062
+      ],
+      "group": "Office staff"
+     },
+     {
+      "label": "Office boy/peon/ /Attender",
+      "values": [
+       530.85,
+       13802
+      ],
+      "group": "Office staff"
+     }
+    ],
+    "note": "Figures are the basic wage plus the VDA for 1 April 2026 to 31 March 2027, ₹160.85 a day (₹4,182 a month): 3,485 points above 6,843, as the Labour Department works it out."
+   },
+   {
+    "id": "cashew-piece",
+    "number": "KAE 45 LWA 2018",
+    "date": "2018-05-19",
+    "employments": [
+     "Cashew shelling, peeling, grading and packing"
+    ],
+    "source": "ka-2627-cashew",
+    "unit": "Rate",
+    "rows": [
+     {
+      "label": "Sheller, machine (without electricity)",
+      "values": [
+       28
+      ],
+      "unit": "Per kg of whole kernels"
+     },
+     {
+      "label": "Shelling sorters",
+      "values": [
+       375
+      ],
+      "unit": "A day"
+     },
+     {
+      "label": "Shelling scooping",
+      "values": [
+       30
+      ],
+      "unit": "Per kg of whole kernels"
+     },
+     {
+      "label": "Peeling sorters",
+      "values": [
+       375
+      ],
+      "unit": "A day"
+     },
+     {
+      "label": "Peeling wholes",
+      "values": [
+       35
+      ],
+      "unit": "Per kg of whole kernels"
+     },
+     {
+      "label": "Peeling pieces",
+      "values": [
+       10
+      ],
+      "unit": "Per kg"
+     },
+     {
+      "label": "Packers and graders",
+      "values": [
+       375
+      ],
+      "unit": "A day"
+     }
+    ],
+    "note": "Rates without the VDA: the sheet adds ₹160.85 a day to shelling and peeling work, and the notification gives the VDA to every category. It prints no rate for hand shellers using electricity."
+   },
+   {
+    "id": "plantation-workers",
+    "number": "KAE 102 LWA 2023",
+    "date": "2025-02-10",
+    "employments": [
+     "Cinchona, rubber, tea and coffee plantations: mazdoors, rubber tappers, maistries and supervisors"
+    ],
+    "source": "ka-2627-plantation-workers",
+    "unit": "A day",
+    "columns": [
+     {
+      "name": "A day"
+     },
+     {
+      "name": "A month"
+     }
+    ],
+    "rows": [
+     {
+      "label": "Supervisors and maistries",
+      "values": [
+       511.86,
+       13308.4
+      ]
+     },
+     {
+      "label": "Cinchona, tea, coffee and mixed plantation mazdoors",
+      "values": [
+       492.86,
+       12814.4
+      ]
+     },
+     {
+      "label": "Rubber plantation mazdoors (rubber tappers)",
+      "values": [
+       492.86,
+       12814.4
+      ]
+     }
+    ],
+    "note": "Figures are the basic wage plus the VDA for 1 April 2026 to 31 March 2027, ₹65.86 a day (₹1,712.40 a month): 1,427 points above 8,901, as the Labour Department works it out."
+   },
+   {
+    "id": "plantation-staff",
+    "number": "KAE 103 LWA 2023",
+    "date": "2025-02-10",
+    "employments": [
+     "Cinchona, rubber, tea, coffee and mixed plantations: skilled and other non-staff workers"
+    ],
+    "source": "ka-2627-plantation-staff",
+    "unit": "A day",
+    "columns": [
+     {
+      "name": "A day"
+     },
+     {
+      "name": "A month"
+     }
+    ],
+    "rows": [
+     {
+      "label": "Electrical Wireman, Mechanic",
+      "values": [
+       561.86,
+       14608.4
+      ],
+      "group": "Skilled"
+     },
+     {
+      "label": "Heavy vehicle driver, Car & Tractor Driver",
+      "values": [
+       548.86,
+       14270.4
+      ],
+      "group": "Skilled"
+     },
+     {
+      "label": "Carpenter, Blacksmith",
+      "values": [
+       529.86,
+       13776.4
+      ],
+      "group": "Semi-skilled"
+     },
+     {
+      "label": "Tappalman, Sweeper, Attender, Helper (Assistant)",
+      "values": [
+       523.86,
+       13620.4
+      ],
+      "group": "Unskilled"
+     }
+    ],
+    "note": "Figures are the basic wage plus the VDA for 1 April 2026 to 31 March 2027, ₹65.86 a day (₹1,712.40 a month): 1,427 points above 8,901, as the Labour Department works it out."
+   },
+   {
+    "id": "coffee-curing",
+    "number": "KAE 246 LWA 2018",
+    "date": "2019-11-20",
+    "employments": [
+     "Coffee curing"
+    ],
+    "source": "ka-2627-coffee-curing",
+    "unit": "A day",
+    "columns": [
+     {
+      "name": "A day"
+     },
+     {
+      "name": "A month"
+     }
+    ],
+    "rows": [
+     {
+      "label": "Garblers, Graders, General Yard Workers",
+      "values": [
+       567.65,
+       14758.8
+      ],
+      "group": "Garbling and yard"
+     },
+     {
+      "label": "Garbling shed workers and creche workers",
+      "values": [
+       559.85,
+       14556
+      ],
+      "group": "Garbling and yard"
+     },
+     {
+      "label": "Canteen Supervisor",
+      "values": [
+       585.85,
+       15232
+      ],
+      "group": "Canteen Workers"
+     },
+     {
+      "label": "Cook",
+      "values": [
+       578.85,
+       15050
+      ],
+      "group": "Canteen Workers"
+     },
+     {
+      "label": "Assistant Canteen Cook / supplier",
+      "values": [
+       573.85,
+       14920
+      ],
+      "group": "Canteen Workers"
+     },
+     {
+      "label": "Canteen cleaner",
+      "values": [
+       566.85,
+       14738
+      ],
+      "group": "Canteen Workers"
+     },
+     {
+      "label": "Foreman",
+      "values": [
+       601.54,
+       15640
+      ],
+      "group": "Machine Room Employees"
+     },
+     {
+      "label": "Assistant Foreman",
+      "values": [
+       584.11,
+       15187
+      ],
+      "group": "Machine Room Employees"
+     },
+     {
+      "label": "Engine Driver",
+      "values": [
+       582.61,
+       15148
+      ],
+      "group": "Machine Room Employees"
+     },
+     {
+      "label": "Assistant Engine Driver or Mechanic",
+      "values": [
+       581.08,
+       15108
+      ],
+      "group": "Machine Room Employees"
+     },
+     {
+      "label": "Fireman, Fitter",
+      "values": [
+       582.65,
+       15149
+      ],
+      "group": "Machine Room Employees"
+     },
+     {
+      "label": "Assistant Fitter, Any other category of machine rooms worker",
+      "values": [
+       567.54,
+       14756
+      ],
+      "group": "Machine Room Employees"
+     },
+     {
+      "label": "Yard Superintendent, Maistry",
+      "values": [
+       595.35,
+       15479
+      ],
+      "group": "Yard Employees"
+     },
+     {
+      "label": "Carpenter, Mason",
+      "values": [
+       576.81,
+       14997
+      ],
+      "group": "Yard Employees"
+     },
+     {
+      "label": "Garbling Maistry",
+      "values": [
+       576.81,
+       14997
+      ],
+      "group": "Garbling Shed Staff"
+     },
+     {
+      "label": "Mukadama / Moopathies / Sorters",
+      "values": [
+       573.35,
+       14907
+      ],
+      "group": "Garbling Shed Staff"
+     },
+     {
+      "label": "Cashier/ Stenographer",
+      "values": [
+       664.11,
+       17267
+      ],
+      "group": "Office and factory staff"
+     },
+     {
+      "label": "Clerk / Typist",
+      "values": [
+       619.65,
+       16111
+      ],
+      "group": "Office and factory staff"
+     },
+     {
+      "label": "Vehicle Driver",
+      "values": [
+       579.23,
+       15060
+      ],
+      "group": "Office and factory staff"
+     },
+     {
+      "label": "Watchman / Peon / Attender",
+      "values": [
+       559.85,
+       14556
+      ],
+      "group": "Office and factory staff"
+     }
+    ],
+    "note": "Figures are the basic wage plus the VDA for 1 April 2026 to 31 March 2027, ₹160.85 a day (₹4,182 a month): 3,485 points above 6,843, as the Labour Department works it out."
+   },
+   {
+    "id": "fish",
+    "number": "KAE 104 LWA 2021",
+    "date": "2022-07-28",
+    "employments": [
+     "Fish catching and processing, prawn and crab processing, and export of frog legs"
+    ],
+    "source": "ka-2627-fish",
+    "unit": "A day",
+    "columns": [
+     {
+      "name": "A day"
+     },
+     {
+      "name": "A month"
+     }
+    ],
+    "rows": [
+     {
+      "label": "Project Officer, Plant In charge, Marketing Officer, Field Officer, Engineer",
+      "values": [
+       774.31,
+       20131.92
+      ],
+      "group": "Processing and catching"
+     },
+     {
+      "label": "Cold Storage Supervisor, Processing Supervisor, Production Supervisor and other Supervisors",
+      "values": [
+       768.81,
+       19988.92
+      ],
+      "group": "Processing and catching"
+     },
+     {
+      "label": "Chemist, Technician.cum. Supervisor, Operator, Machine Operator, Process Worker, Curing Operator, Grading, Heavy Duty Driver, Electrician, Carpenter, Mechanic, Boiler operator, Refrigerator Mechanic, Driver, Telephone Operator, Workers engaged in fishing with per seine net",
+      "values": [
+       735.81,
+       19130.92
+      ],
+      "group": "Processing and catching"
+     },
+     {
+      "label": "Laboratory Assistant, Procurement Assistant, Constructor of water blocks, Assistants engaged in prawns seedling production, Transporters of fish seedlings and putting in ponds, pulling of nets, boat driver, light Boat driver",
+      "values": [
+       719.3,
+       18701.92
+      ],
+      "group": "Processing and catching"
+     },
+     {
+      "label": "Ice dumper /dumper, unloaders from boats, transporters to markets, salesman, workers engaged in bringing motor boats into the water and bringing back to the land, deck loader, deck unloader, fish cutters, peeling and cleaners, ice breakers",
+      "values": [
+       697.31,
+       18701.92
+      ],
+      "group": "Processing and catching"
+     },
+     {
+      "label": "Workers engaged in mixing ice and salt mixing to fish, fish drying, watchman, transportation of fish seedlings from place to place, manure fish feeders, fishing of prawns, (lakes, rivers and ponds fish), transporters, attender, vehicle cleaners, cleaners, mazdoors (working on land)",
+      "values": [
+       697.31,
+       18129.92
+      ],
+      "group": "Processing and catching"
+     },
+     {
+      "label": "Manager /Personnel Officer",
+      "values": [
+       729.56,
+       18968.56
+      ],
+      "group": "Office staff"
+     },
+     {
+      "label": "Assistant Manager/ Assistant Personnel Manager",
+      "values": [
+       735.81,
+       19130.92
+      ],
+      "group": "Office staff"
+     },
+     {
+      "label": "Accountant/ First Division Assistant/ Graduate Assistant/Cashier/ Stenographer/ Computer Operator/Store Keeper/Clerk",
+      "values": [
+       620.31,
+       16127.92
+      ],
+      "group": "Office staff"
+     },
+     {
+      "label": "Typists / Data Entry Operator",
+      "values": [
+       614.81,
+       15984.92
+      ],
+      "group": "Office staff"
+     },
+     {
+      "label": "Office Boy/ Peon/ watchman/ Attender/ Sweeper",
+      "values": [
+       609.31,
+       15841.92
+      ],
+      "group": "Office staff"
+     }
+    ],
+    "note": "Figures are the basic wage plus the VDA for 1 April 2026 to 31 March 2027, ₹125.17 a day (₹3,254.40 a month): 2,712 points above 7,616, as the Labour Department works it out. The sheet prints the same monthly figure for rows 4 and 5, although row 5's daily rate is lower; both are shown as printed."
+   },
+   {
+    "id": "fish-daily",
+    "number": "KAE 104 LWA 2021",
+    "date": "2022-07-28",
+    "employments": [
+     "Prawn farming, weeding, peeling and veining, and frog legs (daily rates)"
+    ],
+    "source": "ka-2627-fish",
+    "unit": "A day",
+    "rows": [
+     {
+      "label": "Prawn farming in salt water",
+      "values": [
+       691.81
+      ]
+     },
+     {
+      "label": "Removal of weeds",
+      "values": [
+       609.31
+      ]
+     },
+     {
+      "label": "Peeling and veining: big and small sizes, beheading",
+      "values": [
+       691.81
+      ]
+     },
+     {
+      "label": "Frog legs: jumbo, big, medium and small sizes",
+      "values": [
+       691.81
+      ]
+     }
+    ],
+    "note": "Basic wage plus the VDA of ₹125.17 a day. Peeling and veining covers big and small sizes and beheading; frog legs covers every size."
+   },
+   {
+    "id": "forestry",
+    "number": "KAE 57 LWA 2019",
+    "date": "2019-11-20",
+    "employments": [
+     "Forestry and timbering"
+    ],
+    "source": "ka-2627-forestry",
+    "unit": "A day",
+    "columns": [
+     {
+      "name": "A day"
+     },
+     {
+      "name": "A month"
+     }
+    ],
+    "rows": [
+     {
+      "label": "Axeman, Sawyers, Mason, Carpenters, Workers engaged in transportation of logs through rivers, Workers engaged in breaking of boulders, Mahout, Agents/Supervisors/Maistries, Clerks, Data Entry Operator, Typists, Librarians, Draftsman, Wireless Operator, and other Similar work",
+      "values": [
+       714.25,
+       18570.47
+      ],
+      "group": "Skilled"
+     },
+     {
+      "label": "Workers engaged in collecting of bamboo, cane and reeds, Kilning of charcoal workers, Workers engaged in Dying of drog ropes, Firewood/Timber loading and unloading workers, Workers engaged in Chisely numbering, Workers engaged in raft making, Mahout assistants, Seedlings planters in plantation, Sowing seeds/planting in plantation, Lift Operator, Care Taker, Anti Poaching camp watchers (APC Watchers)",
+      "values": [
+       665.23,
+       17295.81
+      ],
+      "group": "Semi-skilled"
+     },
+     {
+      "label": "Mazdoor, watchers, workers working in forest nursery and plantations, Firewood /Timber, Head carriers, Workers engaged in boundary clearing & fire protection, Workers engaged in earth works (pit making etc.), Workers engaged in construction of roads (excluding breaking of rocks), Field Assistant, Cook, Assistant Cook, watchers & Watchmen, Peons, Field Operator, sweepers, Cleaner, Pump Operator, Elephant Khavadi, Dhobi, Meti, and other Similar Work",
+      "values": [
+       620.66,
+       16137.03
+      ],
+      "group": "Unskilled"
+     },
+     {
+      "label": "Lorry Driver, Jeep and Car Drivers and other similar works",
+      "values": [
+       714.25,
+       18570.47
+      ],
+      "group": "Drivers"
+     }
+    ],
+    "note": "Figures are the basic wage plus the VDA for 1 April 2026 to 31 March 2027, ₹148.71 a day (₹3,866.40 a month): 3,222 points above 7,106, as the Labour Department works it out. Mahouts get 25% more than the rate for their category."
+   },
+   {
+    "id": "handloom-staff",
+    "number": "KAE 22 LWA 2019",
+    "date": "2019-02-20",
+    "employments": [
+     "Handloom and powerloom (cotton): office staff"
+    ],
+    "source": "ka-2627-handloom",
+    "unit": "A day",
+    "columns": [
+     {
+      "name": "A day"
+     },
+     {
+      "name": "A month"
+     }
+    ],
+    "rows": [
+     {
+      "label": "Supervisor",
+      "values": [
+       582,
+       15132
+      ]
+     },
+     {
+      "label": "Accountant, Cashier, Typist / Data Entry Operator, Clerk",
+      "values": [
+       541.61,
+       14082
+      ]
+     },
+     {
+      "label": "Watchman, Hamali",
+      "values": [
+       518.54,
+       13482
+      ]
+     }
+    ],
+    "note": "Figures are the basic wage plus the VDA for 1 April 2026 to 31 March 2027, ₹160.85 a day (₹4,182 a month): 3,485 points above 6,843, as the Labour Department works it out."
+   },
+   {
+    "id": "handloom-piece",
+    "number": "KAE 22 LWA 2019",
+    "date": "2019-02-20",
+    "employments": [
+     "Handloom and powerloom weaving, warping, dyeing and pern winding (piece rates)"
+    ],
+    "source": "ka-2627-handloom",
+    "unit": "Per piece, as listed",
+    "rows": [
+     {
+      "label": "Counts 40",
+      "values": [
+       30
+      ],
+      "group": "Handloom sarees, plain with border, 48 to 54 inches (per metre)"
+     },
+     {
+      "label": "Counts 60",
+      "values": [
+       31
+      ],
+      "group": "Handloom sarees, plain with border, 48 to 54 inches (per metre)"
+     },
+     {
+      "label": "Counts 80",
+      "values": [
+       35
+      ],
+      "group": "Handloom sarees, plain with border, 48 to 54 inches (per metre)"
+     },
+     {
+      "label": "Counts 100-120",
+      "values": [
+       40
+      ],
+      "group": "Handloom sarees, plain with border, 48 to 54 inches (per metre)"
+     },
+     {
+      "label": "Counts 40",
+      "values": [
+       28
+      ],
+      "group": "Handloom dhotis (per metre)"
+     },
+     {
+      "label": "Counts 60",
+      "values": [
+       30
+      ],
+      "group": "Handloom dhotis (per metre)"
+     },
+     {
+      "label": "Counts 80",
+      "values": [
+       32
+      ],
+      "group": "Handloom dhotis (per metre)"
+     },
+     {
+      "label": "Counts 80-120",
+      "values": [
+       35
+      ],
+      "group": "Handloom dhotis (per metre)"
+     },
+     {
+      "label": "36\"-48\" cm (91.44-121.92)",
+      "values": [
+       27
+      ],
+      "group": "Handloom furnishing fabrics, plain, by width (per metre)"
+     },
+     {
+      "label": "49\"-60\" cm (124.46-152.40)",
+      "values": [
+       29
+      ],
+      "group": "Handloom furnishing fabrics, plain, by width (per metre)"
+     },
+     {
+      "label": "61\"-72\" cm (154.94-182.88)",
+      "values": [
+       32
+      ],
+      "group": "Handloom furnishing fabrics, plain, by width (per metre)"
+     },
+     {
+      "label": "73\"-90\" cm (185.42-228.60)",
+      "values": [
+       38
+      ],
+      "group": "Handloom furnishing fabrics, plain, by width (per metre)"
+     },
+     {
+      "label": "Counts 26-30, Width 32\"",
+      "values": [
+       18
+      ],
+      "group": "Handloom shirting (per metre)"
+     },
+     {
+      "label": "Counts 26-30, Width 50\"",
+      "values": [
+       22
+      ],
+      "group": "Handloom shirting (per metre)"
+     },
+     {
+      "label": "Counts 40-60, Width 12\"-21\"",
+      "values": [
+       10
+      ],
+      "group": "Handloom towels, napkins and handkerchiefs (per metre)"
+     },
+     {
+      "label": "Counts 40-60, Width 22\"-28\"",
+      "values": [
+       18
+      ],
+      "group": "Handloom towels, napkins and handkerchiefs (per metre)"
+     },
+     {
+      "label": "Counts 40-60, Width 29\"-36\"",
+      "values": [
+       21
+      ],
+      "group": "Handloom towels, napkins and handkerchiefs (per metre)"
+     },
+     {
+      "label": "Counts 40-60, Width 37\"-60\"",
+      "values": [
+       25
+      ],
+      "group": "Handloom towels, napkins and handkerchiefs (per metre)"
+     },
+     {
+      "label": "48\"-54\" cm (121.92-137.16), counts 40",
+      "values": [
+       16
+      ],
+      "group": "Powerloom sarees, plain with border (per metre)"
+     },
+     {
+      "label": "48\"-54\" cm (121.92-137.16), counts 60",
+      "values": [
+       20
+      ],
+      "group": "Powerloom sarees, plain with border (per metre)"
+     },
+     {
+      "label": "48\"-54\" cm (121.92-137.16), counts 80",
+      "values": [
+       24
+      ],
+      "group": "Powerloom sarees, plain with border (per metre)"
+     },
+     {
+      "label": "48\"-54\" cm (121.92-137.16), counts 80-120",
+      "values": [
+       32
+      ],
+      "group": "Powerloom sarees, plain with border (per metre)"
+     },
+     {
+      "label": "20's/10's (Coating), Width 28\", 36-40 (71.12 cm)",
+      "values": [
+       4
+      ],
+      "group": "Powerloom, other than sarees (per metre)"
+     },
+     {
+      "label": "Reeds: 20's/26's (shirting), Width 30\" (76.2 cm)",
+      "values": [
+       4
+      ],
+      "group": "Powerloom, other than sarees (per metre)"
+     },
+     {
+      "label": "Reeds: 60'/64' (shirting), Width 30\" (76.2 cm)",
+      "values": [
+       6
+      ],
+      "group": "Powerloom, other than sarees (per metre)"
+     },
+     {
+      "label": "Reeds: 52 to 56 Reeds (checks), Width 30\" (76.2 cm)",
+      "values": [
+       8
+      ],
+      "group": "Powerloom, other than sarees (per metre)"
+     },
+     {
+      "label": "Reeds: 60/64(Checks), Width 30\" (76.2 cm)",
+      "values": [
+       9
+      ],
+      "group": "Powerloom, other than sarees (per metre)"
+     },
+     {
+      "label": "Reeds: Grey Cloth (60 CTS), Width 30\" (76.2 cm)",
+      "values": [
+       6
+      ],
+      "group": "Powerloom, other than sarees (per metre)"
+     },
+     {
+      "label": "Reeds: 34/40 (plain), Width 30\" (76.2 cm)",
+      "values": [
+       6
+      ],
+      "group": "Powerloom, other than sarees (per metre)"
+     },
+     {
+      "label": "Width 30\" or 76.2 cm, counts 20-30",
+      "values": [
+       180
+      ],
+      "group": "Warping, handloom and powerloom (per warp of 600 yards)"
+     },
+     {
+      "label": "Width 30\"-54\" or 76.2-137.16 cm, counts 20-30",
+      "values": [
+       250
+      ],
+      "group": "Warping, handloom and powerloom (per warp of 600 yards)"
+     },
+     {
+      "label": "Width 30\"-54\" or 76.2-137.16 cm, counts 40-60",
+      "values": [
+       590
+      ],
+      "group": "Warping, handloom and powerloom (per warp of 600 yards)"
+     },
+     {
+      "label": "Width 30\"-54\" or 76.2-137.16 cm, counts 80-120",
+      "values": [
+       1100
+      ],
+      "group": "Warping, handloom and powerloom (per warp of 600 yards)"
+     },
+     {
+      "label": "With bleaching",
+      "values": [
+       24
+      ],
+      "group": "Dye work (per bundle of 4.5 kg)"
+     },
+     {
+      "label": "Without bleaching",
+      "values": [
+       22
+      ],
+      "group": "Dye work (per bundle of 4.5 kg)"
+     },
+     {
+      "label": "Vat colouring",
+      "values": [
+       55
+      ],
+      "group": "Dye work (per bundle of 4.5 kg)"
+     },
+     {
+      "label": "Counts 20-30",
+      "values": [
+       8
+      ],
+      "group": "Pern winding by hand (per knot, by count)"
+     },
+     {
+      "label": "Counts 40-60",
+      "values": [
+       13
+      ],
+      "group": "Pern winding by hand (per knot, by count)"
+     },
+     {
+      "label": "Counts 60-80",
+      "values": [
+       17
+      ],
+      "group": "Pern winding by hand (per knot, by count)"
+     },
+     {
+      "label": "Counts 80-120",
+      "values": [
+       20
+      ],
+      "group": "Pern winding by hand (per knot, by count)"
+     },
+     {
+      "label": "Counts 20-30",
+      "values": [
+       5
+      ],
+      "group": "Pern winding or reeling by machine (per knot, by count)"
+     },
+     {
+      "label": "Counts 40-60",
+      "values": [
+       6
+      ],
+      "group": "Pern winding or reeling by machine (per knot, by count)"
+     },
+     {
+      "label": "Counts 60-80",
+      "values": [
+       10
+      ],
+      "group": "Pern winding or reeling by machine (per knot, by count)"
+     },
+     {
+      "label": "Counts 80-120",
+      "values": [
+       11
+      ],
+      "group": "Pern winding or reeling by machine (per knot, by count)"
+     },
+     {
+      "label": "Folder",
+      "values": [
+       9
+      ],
+      "group": "Folding"
+     },
+     {
+      "label": "Folder, 8 hours of work",
+      "values": [
+       100
+      ],
+      "group": "Folding",
+      "unit": "A day"
+     }
+    ],
+    "note": "Weaving rates are per metre, warping per warp of 600 yards, dye work per bundle of 4.5 kg and pern winding per knot. Design work and checks earn a third more; dhobi work on powerlooms a tenth more. Rates without the VDA: the sheet prints ₹160.85 a day beside handloom weaving and does not say whether it applies to the rest. Its handloom saree table also prints an unlabelled ₹27.3, left out here."
+   },
+   {
+    "id": "spinning",
+    "number": "KAE 2 LWA 2023",
+    "date": "2023-01-17",
+    "employments": [
+     "Spinning mills"
+    ],
+    "source": "ka-2627-spinning",
+    "unit": "A month",
+    "columns": [
+     {
+      "name": "Zone I",
+      "areas": "Bengaluru (BBMP) and its agglomeration, and the other city corporations"
+     },
+     {
+      "name": "Zone II",
+      "areas": "All other areas"
+     }
+    ],
+    "rows": [
+     {
+      "label": "Highly skilled: Maistry and other Highly Skilled Work",
+      "values": [
+       14229.03,
+       14015.29
+      ],
+      "group": "A month"
+     },
+     {
+      "label": "Skilled: Electrician, Generator Operator, Turner, Welder, Cone Winder, Winding Fitter, Carding Fitter, Preparatory Fitter, Fitter Blowroom, Spinning Fitter, Fitter Ring Prewar, Spindle Gaggers, Shapers, Presser, Stripper, Stitcher & any other skilled labourer",
+      "values": [
+       13984.04,
+       13896.08
+      ],
+      "group": "A month"
+     },
+     {
+      "label": "Semi-skilled: Carding Assistant, Assistant Fitter, Preparatory Asst. Fitter, Yarn Conditioner, Carding Worker, Simpletex Tentors, III Drawing Tentors, Oilers, Sider, Resuck Weavers, Asst. Peepers, Cois Grinders, Buttling Peepers & other Semi Skilled Labourers",
+      "values": [
+       13570.63,
+       13511.21
+      ],
+      "group": "A month"
+     },
+     {
+      "label": "Unskilled: Bell Brusher, Work Gap Attender, Motor Attender, Stitcher Attender, Spinning Tape Stitcher, Blowroom Attender, Carding Attender, Comber Tentor, Doffing Boys, Half Carrier, Mixing Attender / Helper, Spinning Jobber, Reelers, Mixing Mazdoors, Fitter Helper, Maintenance Helper, Binding worker, Weigher, Waste Pickers, Mazdoors, Helper.cum.Winder, Cleaning Gang, and any other unskilled labourer",
+      "values": [
+       13326.72,
+       13264.62
+      ],
+      "group": "A month"
+     },
+     {
+      "label": "Accountant, Cashier, Stenographer and similar post",
+      "values": [
+       15789.52,
+       15599.71
+      ],
+      "group": "A month"
+     },
+     {
+      "label": "Clerk, Typist, Store Keeper and similar post",
+      "values": [
+       14128.3,
+       13941.91
+      ],
+      "group": "A month"
+     },
+     {
+      "label": "Watchman, Office Boy, Peon, Attender,and similar post",
+      "values": [
+       13619.46,
+       13433.07
+      ],
+      "group": "A month"
+     },
+     {
+      "label": "Highly skilled: Maistry and other Highly Skilled Work",
+      "values": [
+       547.27,
+       539.05
+      ],
+      "group": "A day",
+      "unit": "A day"
+     },
+     {
+      "label": "Skilled: Electrician, Generator Operator, Turner, Welder, Cone Winder, Winding Fitter, Carding Fitter, Preparatory Fitter, Fitter Blowroom, Spinning Fitter, Fitter Ring Prewar, Spindle Gaggers, Shapers, Presser, Stripper, Stitcher & any other skilled labourer",
+      "values": [
+       537.85,
+       534.46
+      ],
+      "group": "A day",
+      "unit": "A day"
+     },
+     {
+      "label": "Semi-skilled: Carding Assistant, Assistant Fitter, Preparatory Asst. Fitter, Yarn Conditioner, Carding Worker, Simpletex Tentors, III Drawing Tentors, Oilers, Sider, Resuck Weavers, Asst. Peepers, Cois Grinders, Buttling Peepers & other Semi Skilled Labourers",
+      "values": [
+       521.95,
+       519.66
+      ],
+      "group": "A day",
+      "unit": "A day"
+     },
+     {
+      "label": "Unskilled: Bell Brusher, Work Gap Attender, Motor Attender, Stitcher Attender, Spinning Tape Stitcher, Blowroom Attender, Carding Attender, Comber Tentor, Doffing Boys, Half Carrier, Mixing Attender / Helper, Spinning Jobber, Reelers, Mixing Mazdoors, Fitter Helper, Maintenance Helper, Binding worker, Weigher, Waste Pickers, Mazdoors, Helper.cum.Winder, Cleaning Gang, and any other unskilled labourer",
+      "values": [
+       512.57,
+       510.18
+      ],
+      "group": "A day",
+      "unit": "A day"
+     },
+     {
+      "label": "Accountant, Cashier, Stenographer and similar post",
+      "values": [
+       607.29,
+       599.99
+      ],
+      "group": "A day",
+      "unit": "A day"
+     },
+     {
+      "label": "Clerk, Typist, Store Keeper and similar post",
+      "values": [
+       543.4,
+       536.23
+      ],
+      "group": "A day",
+      "unit": "A day"
+     },
+     {
+      "label": "Watchman, Office Boy, Peon, Attender,and similar post",
+      "values": [
+       523.83,
+       516.66
+      ],
+      "group": "A day",
+      "unit": "A day"
+     }
+    ],
+    "note": "Figures are the basic wage plus the VDA for 1 April 2026 to 31 March 2027, ₹174.97 a day (₹4,549.20 a month): 3,791 points above 6,537, as the Labour Department works it out."
+   },
+   {
+    "id": "garments",
+    "number": "KAE 1 LWA 20223",
+    "date": "2023-01-17",
+    "employments": [
+     "Garments, costumes and tailoring"
+    ],
+    "source": "ka-2627-garments",
+    "unit": "A month",
+    "columns": [
+     {
+      "name": "Zone I",
+      "areas": "Bengaluru (BBMP area)"
+     },
+     {
+      "name": "Zone II",
+      "areas": "Every district headquarters"
+     },
+     {
+      "name": "Zone III",
+      "areas": "All other areas"
+     }
+    ],
+    "rows": [
+     {
+      "label": "Highly skilled: Designer, Marker and Cutter, Tailor, Cutter employed on designing & cutting and other Highly Skilled Work",
+      "values": [
+       14122.38,
+       13969.5,
+       13816.62
+      ],
+      "group": "A month"
+     },
+     {
+      "label": "Skilled: Tailor Grade-1, Head Cook, Driver, Cutting Machine Operator, Inspector, Tailor Maistry, Layer who does cutting & marking and other Skilled Work",
+      "values": [
+       13788.85,
+       13637.34,
+       13485.82
+      ],
+      "group": "A month"
+     },
+     {
+      "label": "Semi-skilled: Tailor Grade-II, Button Hole Machine Operator, Over locker machine, Ironer, Measurement Checker, Button and Buttonhole stitch, and other Semi- Skilled Work",
+      "values": [
+       13521.72,
+       13372.94,
+       13223.94
+      ],
+      "group": "A month"
+     },
+     {
+      "label": "Unskilled: Packer, Despatcher, Layer who spreads only, Trimmer, Helper, Server, Mali, Canteen Worker, Cooli, Tailor Grade-III, Watch and Ward, Any other unskilled worker",
+      "values": [
+       13253.91,
+       13105.12,
+       12956.34
+      ],
+      "group": "A month"
+     },
+     {
+      "label": "Senior Accountant and Similar Post",
+      "values": [
+       14780.01,
+       14413.1,
+       14076.76
+      ],
+      "group": "A month"
+     },
+     {
+      "label": "Cashier, Stenographer, Store keeper and Similar Post",
+      "values": [
+       14531.51,
+       14198.17,
+       13864.84
+      ],
+      "group": "A month"
+     },
+     {
+      "label": "Junior Clerk, Typist, Data Entry Operator and Similar Post",
+      "values": [
+       14191.49,
+       13864.17,
+       13536.84
+      ],
+      "group": "A month"
+     },
+     {
+      "label": "Watchman, Office boy, attender, Helper and Similar Post",
+      "values": [
+       13001.21,
+       12733.4,
+       12495.35
+      ],
+      "group": "A month"
+     },
+     {
+      "label": "Lorry Driver, Car, Jeep Driver",
+      "values": [
+       14228.48,
+       13895.14,
+       13592.11
+      ],
+      "group": "A month"
+     },
+     {
+      "label": "Lorry / Jeep / Car Cleaner",
+      "values": [
+       13001.2,
+       12733.4,
+       12490.1
+      ],
+      "group": "A month"
+     },
+     {
+      "label": "Highly skilled: Designer, Marker and Cutter, Tailor, Cutter employed on designing & cutting and other Highly Skilled Work",
+      "values": [
+       543.17,
+       537.29,
+       531.41
+      ],
+      "group": "A day",
+      "unit": "A day"
+     },
+     {
+      "label": "Skilled: Tailor Grade-1, Head Cook, Driver, Cutting Machine Operator, Inspector, Tailor Maistry, Layer who does cutting & marking and other Skilled Work",
+      "values": [
+       530.34,
+       524.51,
+       518.69
+      ],
+      "group": "A day",
+      "unit": "A day"
+     },
+     {
+      "label": "Semi-skilled: Tailor Grade-II, Button Hole Machine Operator, Over locker machine, Ironer, Measurement Checker, Button and Buttonhole stitch, and other Semi- Skilled Work",
+      "values": [
+       520.06,
+       514.34,
+       508.61
+      ],
+      "group": "A day",
+      "unit": "A day"
+     },
+     {
+      "label": "Unskilled: Packer, Despatcher, Layer who spreads only, Trimmer, Helper, Server, Mali, Canteen Worker, Cooli, Tailor Grade-III, Watch and Ward, Any other unskilled worker",
+      "values": [
+       509.76,
+       504.04,
+       498.32
+      ],
+      "group": "A day",
+      "unit": "A day"
+     },
+     {
+      "label": "Senior Accountant and Similar Post",
+      "values": [
+       568.46,
+       554.35,
+       541.41
+      ],
+      "group": "A day",
+      "unit": "A day"
+     },
+     {
+      "label": "Cashier, Stenographer, Store keeper and Similar Post",
+      "values": [
+       558.9,
+       546.08,
+       533.26
+      ],
+      "group": "A day",
+      "unit": "A day"
+     },
+     {
+      "label": "Junior Clerk, Typist, Data Entry Operator and Similar Post",
+      "values": [
+       545.82,
+       533.24,
+       520.65
+      ],
+      "group": "A day",
+      "unit": "A day"
+     },
+     {
+      "label": "Watchman, Office boy, attender, Helper and Similar Post",
+      "values": [
+       500.04,
+       489.74,
+       480.59
+      ],
+      "group": "A day",
+      "unit": "A day"
+     },
+     {
+      "label": "Lorry Driver, Car, Jeep Driver",
+      "values": [
+       547.25,
+       534.43,
+       522.77
+      ],
+      "group": "A day",
+      "unit": "A day"
+     },
+     {
+      "label": "Lorry / Jeep / Car Cleaner",
+      "values": [
+       500.04,
+       489.74,
+       480.39
+      ],
+      "group": "A day",
+      "unit": "A day"
+     }
+    ],
+    "note": "Figures are the basic wage plus the VDA for 1 April 2026 to 31 March 2027, ₹108.69 a day (₹2,826 a month): 2,355 points above 7,973, as the Labour Department works it out. This notification's zones are its own: Zone II is every district headquarters."
+   },
+   {
+    "id": "silk",
+    "number": "KAE 2 LWA 2023",
+    "date": "2023-01-17",
+    "employments": [
+     "Silk textiles"
+    ],
+    "source": "ka-2627-silk",
+    "unit": "A day",
+    "columns": [
+     {
+      "name": "A day"
+     },
+     {
+      "name": "A month"
+     }
+    ],
+    "rows": [
+     {
+      "label": "Highly skilled: Pressers, Gassers, Gas Plant Attender, and other Highly Skilled Work",
+      "values": [
+       607.13,
+       15785.29
+      ],
+      "group": "Silk charaka and filature"
+     },
+     {
+      "label": "Skilled: Charaka Reelers, Fireman (chargeman), Reelers, Twisters, Gill Roving Tenters, Ring Frame Boys, Banders, Gas Pinners, Soiling Spinning Boys, Coomb Spinners and Other Skilled Work",
+      "values": [
+       600.2,
+       15605.25
+      ],
+      "group": "Silk charaka and filature"
+     },
+     {
+      "label": "Semi-skilled: Charaka Turners, Spinners, Silk waste Cleaners, Silk Packers, Twisters, Hank Makers, Dryers, vest Pickers, Oil Fillers, Weigher, Draft Pickers, Bundlers and Packers and Semi-Skilled Work",
+      "values": [
+       577.49,
+       15014.62
+      ],
+      "group": "Silk charaka and filature"
+     },
+     {
+      "label": "Skilled: Warpers, Twisting Assistant and other Skilled Work",
+      "values": [
+       601.74,
+       15645.11
+      ],
+      "group": "Twisting, pure and art silk"
+     },
+     {
+      "label": "Semi-skilled: Winders, Twisters, Doublers, Reelers and other Semi-Skilled Work",
+      "values": [
+       577.49,
+       15014.62
+      ],
+      "group": "Twisting, pure and art silk"
+     },
+     {
+      "label": "Highly skilled: Head designers, Weavers dobby with drop box, Weavers (Jacquard), Other Fancy Weavers, and other Highly Skilled Work",
+      "values": [
+       684.18,
+       17788.59
+      ],
+      "group": "Weaving, calendering and processing"
+     },
+     {
+      "label": "Skilled: High Speed Warpers, Designers, Knotters or piecers, Lace wrappers, Weavers plain carpet weavers, Finisher, Printing machine man, Front calendar man, editing man, Developing man, Contrast pallu preparators & dyers and other Skilled Work",
+      "values": [
+       601.74,
+       15645.11
+      ],
+      "group": "Weaving, calendering and processing"
+     },
+     {
+      "label": "Semi-skilled: Pern Winder, Warp Assistant, Card Punchers, Card Lacers, Back Sizers, Cloth Examiners, Hand and machine folder, Back Calender man, Hand sewer, stitcher, marker, bundler, fringer, Hand ironing man, Assistant machine man, Scaping machine man, Winchman, Kirman, Stenter machine man, washing man, bleaching man, hydro extractor machine man, and Semi Skilled Work",
+      "values": [
+       577.49,
+       15014.62
+      ],
+      "group": "Weaving, calendering and processing"
+     },
+     {
+      "label": "Highly skilled: Maistry, Jobber, and other Highly Skilled Work",
+      "values": [
+       611.77,
+       15905.95
+      ],
+      "group": "Maintenance: power plant and workshop"
+     },
+     {
+      "label": "Skilled: Wireman, Fitter, Blacksmith, Turners, Shapers, Plumbers, Boiler attender, Carpenter, Mechanic, Welders, Engine driver, Electrician, Mechanical foreman, Mason and other Skilled Work",
+      "values": [
+       607.87,
+       15804.55
+      ],
+      "group": "Maintenance: power plant and workshop"
+     },
+     {
+      "label": "Semi-skilled: Pump man, Fire man, Oil man, Cobbler and other Semi- Skilled Work",
+      "values": [
+       592.54,
+       15406.04
+      ],
+      "group": "Maintenance: power plant and workshop"
+     },
+     {
+      "label": "Skilled: Maistry, Jobber, Time Keeper, Cashier, Accountant and other Skilled Work",
+      "values": [
+       673.79,
+       17518.54
+      ],
+      "group": "General administration"
+     },
+     {
+      "label": "Semi-skilled: Waterman, Store Keeper, Clerk, Typist and other Semi-Skilled Work",
+      "values": [
+       600.07,
+       15601.75
+      ],
+      "group": "General administration"
+     },
+     {
+      "label": "Unskilled: Mazdoor, Peon, Watchman, Mali, Sweeper, Helper and other Un-Skilled Work",
+      "values": [
+       577.49,
+       15014.62
+      ],
+      "group": "General administration"
+     }
+    ],
+    "note": "Figures are the basic wage plus the VDA for 1 April 2026 to 31 March 2027, ₹174.97 a day (₹4,549.20 a month): 3,791 points above 6,537, as the Labour Department works it out."
+   },
+   {
+    "id": "dyeing",
+    "number": "KAE 2 LWA 2023",
+    "date": "2023-01-17",
+    "employments": [
+     "Cloth dyeing and printing"
+    ],
+    "source": "ka-2627-dyeing",
+    "unit": "A day",
+    "columns": [
+     {
+      "name": "A day"
+     },
+     {
+      "name": "A month"
+     }
+    ],
+    "rows": [
+     {
+      "label": "Highly skilled: Designer/ Printers, Chemicals Mixers, Heating the yarns in chemicals",
+      "values": [
+       597.96,
+       15546.86
+      ]
+     },
+     {
+      "label": "Skilled: Electrician, Winder / Fitter / Fireman, Spinning / Spinning Maintenance, Chording / Zone Clearing, Tanning of yarns, Cloth Dyers, Rotor Operator / Roll coverers, Threshers",
+      "values": [
+       579,
+       15053.87
+      ]
+     },
+     {
+      "label": "Semi-skilled: Printing Helper / Operator Attender, Separators of the yarns / Tape man",
+      "values": [
+       543.14,
+       14121.52
+      ]
+     },
+     {
+      "label": "Unskilled: Spinning Helpers /Packers, Mixers /Frame Coolies / Dryers, Assistant Cleaners",
+      "values": [
+       529.47,
+       13766.13
+      ]
+     },
+     {
+      "label": "Drivers: Lorry Driver, Car / Jeep Driver, Light vehicle Drivers",
+      "values": [
+       572.67,
+       14889.36
+      ]
+     },
+     {
+      "label": "Cleaners: Lorry / Jeep / Car Cleaner",
+      "values": [
+       522.01,
+       13572.24
+      ]
+     }
+    ],
+    "note": "Figures are the basic wage plus the VDA for 1 April 2026 to 31 March 2027, ₹174.97 a day (₹4,549.20 a month): 3,791 points above 6,537, as the Labour Department works it out."
+   },
+   {
+    "id": "loading",
+    "number": "KAE 88 LWA 2016 (Part -1)",
+    "date": "2021-05-29",
+    "employments": [
+     "Loading and unloading (piece rates)"
+    ],
+    "source": "ka-2627-loading",
+    "unit": "Per piece, as listed",
+    "rows": [
+     {
+      "label": "Stitching in the filled sacks (per sack)",
+      "values": [
+       3.5
+      ],
+      "group": "Gunny bags"
+     },
+     {
+      "label": "Binding the bundled sacks (100 sacks/ Bundle)",
+      "values": [
+       10
+      ],
+      "group": "Gunny bags"
+     },
+     {
+      "label": "Filling and stitching the sack (per sack)",
+      "values": [
+       6
+      ],
+      "group": "Gunny bags"
+     },
+     {
+      "label": "Loading a sack of 55 Kg",
+      "values": [
+       7
+      ],
+      "group": "Iron, food products, spices, vegetables and fruits"
+     },
+     {
+      "label": "Loading a sack of 25 Kg",
+      "values": [
+       4
+      ],
+      "group": "Iron, food products, spices, vegetables and fruits"
+     },
+     {
+      "label": "Unloading a sack of 55 Kg",
+      "values": [
+       6
+      ],
+      "group": "Iron, food products, spices, vegetables and fruits"
+     },
+     {
+      "label": "Unloading a sack of 25 Kg",
+      "values": [
+       3.5
+      ],
+      "group": "Iron, food products, spices, vegetables and fruits"
+     },
+     {
+      "label": "Filling the sack with Ingredients",
+      "values": [
+       5
+      ],
+      "group": "Iron, food products, spices, vegetables and fruits"
+     },
+     {
+      "label": "Stitching the filled sack",
+      "values": [
+       3.5
+      ],
+      "group": "Iron, food products, spices, vegetables and fruits"
+     },
+     {
+      "label": "Weighing the filled sack",
+      "values": [
+       3.5
+      ],
+      "group": "Iron, food products, spices, vegetables and fruits"
+     },
+     {
+      "label": "Loading the Vegetable Fruit Trays (15-30 Kgs)",
+      "values": [
+       4.5
+      ],
+      "group": "Iron, food products, spices, vegetables and fruits"
+     },
+     {
+      "label": "Unloading the Vegetable Fruit Trays (15-30 Kgs)",
+      "values": [
+       4
+      ],
+      "group": "Iron, food products, spices, vegetables and fruits"
+     },
+     {
+      "label": "Loading of Vegetables and Fruits after Grading / Packing",
+      "values": [
+       10
+      ],
+      "group": "Iron, food products, spices, vegetables and fruits"
+     },
+     {
+      "label": "Loading of 1 Tonne Iron",
+      "values": [
+       300
+      ],
+      "group": "Iron, food products, spices, vegetables and fruits"
+     },
+     {
+      "label": "Unloading of 1 Tonne Iron",
+      "values": [
+       250
+      ],
+      "group": "Iron, food products, spices, vegetables and fruits"
+     },
+     {
+      "label": "Tying the Tarpaul to the loaded vehicle of 1 tonne",
+      "values": [
+       50
+      ],
+      "group": "Iron, food products, spices, vegetables and fruits"
+     },
+     {
+      "label": "For loading and unloading, 10 litres",
+      "values": [
+       10
+      ],
+      "group": "Liquids, by container"
+     },
+     {
+      "label": "For loading and unloading, 30 to 50 litres",
+      "values": [
+       21
+      ],
+      "group": "Liquids, by container"
+     },
+     {
+      "label": "For loading and unloading, 70 to 200 litres",
+      "values": [
+       43
+      ],
+      "group": "Liquids, by container"
+     },
+     {
+      "label": "For loading and unloading (for distance more than 100 yards), 10 litres",
+      "values": [
+       14
+      ],
+      "group": "Liquids, by container"
+     },
+     {
+      "label": "For loading and unloading (for distance more than 100 yards), 30 to 50 litres",
+      "values": [
+       29
+      ],
+      "group": "Liquids, by container"
+     },
+     {
+      "label": "For loading and unloading (for distance more than 100 yards), 70 to 200 litres",
+      "values": [
+       65
+      ],
+      "group": "Liquids, by container"
+     },
+     {
+      "label": "Arranging, 10 litres",
+      "values": [
+       2
+      ],
+      "group": "Liquids, by container"
+     },
+     {
+      "label": "Arranging, 30 to 50 litres",
+      "values": [
+       5
+      ],
+      "group": "Liquids, by container"
+     },
+     {
+      "label": "Arranging, 70 to 200 litres",
+      "values": [
+       8
+      ],
+      "group": "Liquids, by container"
+     },
+     {
+      "label": "Weighing, 10 litres",
+      "values": [
+       3
+      ],
+      "group": "Liquids, by container"
+     },
+     {
+      "label": "Weighing, 30 to 50 litres",
+      "values": [
+       7
+      ],
+      "group": "Liquids, by container"
+     },
+     {
+      "label": "Weighing, 70 to 200 litres",
+      "values": [
+       8
+      ],
+      "group": "Liquids, by container"
+     },
+     {
+      "label": "To transfer the lot, 10 litres",
+      "values": [
+       10
+      ],
+      "group": "Liquids, by container"
+     },
+     {
+      "label": "To transfer the lot, 30 to 50 litres",
+      "values": [
+       21
+      ],
+      "group": "Liquids, by container"
+     },
+     {
+      "label": "To transfer the lot, 70 to 200 litres",
+      "values": [
+       43
+      ],
+      "group": "Liquids, by container"
+     },
+     {
+      "label": "To distribute from Godown / Vehicles, 10 litres",
+      "values": [
+       10
+      ],
+      "group": "Liquids, by container"
+     },
+     {
+      "label": "To distribute from Godown / Vehicles, 30 to 50 litres",
+      "values": [
+       22
+      ],
+      "group": "Liquids, by container"
+     },
+     {
+      "label": "To distribute from Godown / Vehicles, 70 to 200 litres",
+      "values": [
+       178
+      ],
+      "group": "Liquids, by container"
+     },
+     {
+      "label": "To transfer Drums / Crates from one vehicle to another, 10 litres",
+      "values": [
+       10
+      ],
+      "group": "Liquids, by container"
+     },
+     {
+      "label": "To transfer Drums / Crates from one vehicle to another, 30 to 50 litres",
+      "values": [
+       21
+      ],
+      "group": "Liquids, by container"
+     },
+     {
+      "label": "To transfer Drums / Crates from one vehicle to another, 70 to 200 litres",
+      "values": [
+       43
+      ],
+      "group": "Liquids, by container"
+     },
+     {
+      "label": "To load / Unload gas filled cylinders / filled in goods boxes (from nearby Godowns and vehicles)",
+      "values": [
+       9
+      ],
+      "group": "Gas cylinders and boxes"
+     },
+     {
+      "label": "To load / Unload gas filled cylinders / filled in goods boxes (for a distance of more than 100 yards)",
+      "values": [
+       13
+      ],
+      "group": "Gas cylinders and boxes"
+     },
+     {
+      "label": "To transfer Cylinders / Boxes from one vehicle to another",
+      "values": [
+       10
+      ],
+      "group": "Gas cylinders and boxes"
+     },
+     {
+      "label": "Weighing of Cylinders / Boxes",
+      "values": [
+       3
+      ],
+      "group": "Gas cylinders and boxes"
+     },
+     {
+      "label": "Arranging of Cylinders / Boxes",
+      "values": [
+       3
+      ],
+      "group": "Gas cylinders and boxes"
+     },
+     {
+      "label": "To Transfer lots",
+      "values": [
+       7
+      ],
+      "group": "Gas cylinders and boxes"
+     },
+     {
+      "label": "Weighing and to load / Unload gas filled cylinders / filled in goods boxes",
+      "values": [
+       10
+      ],
+      "group": "Gas cylinders and boxes"
+     },
+     {
+      "label": "Weighing and arranging the unloaded cylinders / boxes",
+      "values": [
+       11
+      ],
+      "group": "Gas cylinders and boxes"
+     },
+     {
+      "label": "To distribute from Godown/ Vehicles",
+      "values": [
+       7
+      ],
+      "group": "Gas cylinders and boxes"
+     }
+    ],
+    "note": "Rates per sack, tray, tonne, container or cylinder, as the notification sets them, plus a VDA of ₹141.23 a day for 1 April 2026 to 31 March 2027: 3,060 points above 7,268. The sheet's ₹178 for distributing a 70 to 200 litre container is shown as printed, though it is far above the column's other rates."
+   },
+   {
+    "id": "committee-no-rates",
+    "number": "LD 411 LWA 2023",
+    "date": "2026-05-22",
+    "source": "ka-2026-05",
+    "unpublished": true,
+    "employments": [
+     "Khadi and village industries",
+     "Shamiana, pandal and canopy work, flower decoration and furniture arrangement",
+     "Micro, small and medium enterprises"
+    ],
+    "note": "The 22 May 2026 notification lists these among the 19 employments a committee will fix rates for, and the Labour Department's rate list for 2026-27 has no entry for them, so there are no rates to show."
+   }
+  ]
+ }
 }

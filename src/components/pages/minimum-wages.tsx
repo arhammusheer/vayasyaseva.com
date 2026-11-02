@@ -362,7 +362,7 @@ function Documents({ state, slug }: { state: WageState; slug: WageStateSlug }) {
  * Notifications the state cites but has not published say so instead of
  * guessing a figure.
  */
-function EmploymentSchedule({ state }: { state: WageState }) {
+function EmploymentSchedule({ state, intro: own }: { state: WageState; intro?: string }) {
   const schedule = state.employments;
   if (!schedule) return null;
   const s = x.schedule;
@@ -384,7 +384,8 @@ function EmploymentSchedule({ state }: { state: WageState }) {
   };
   // Andhra Pradesh splits one notification (beedi making) over several groups: count notifications, not groups.
   const notifications = new Set(schedule.groups.map((g) => `${g.number}|${g.date}`)).size;
-  const intro = cpi ? s.introIndex(state.name, notifications, formatDate(cpi.effectiveFrom)) : schedule.vda && vda ? s.intro(state.name, count, vda, formatDate(schedule.vda.effectiveFrom)) : s.introOneRate(state.name);
+  // Karnataka's copy writes its own: one notification with a VDA for most rows, earlier notifications with their own for the rest.
+  const intro = own ?? (cpi ? s.introIndex(state.name, notifications, formatDate(cpi.effectiveFrom)) : schedule.vda && vda ? s.intro(state.name, count, vda, formatDate(schedule.vda.effectiveFrom)) : s.introOneRate(state.name));
   return (
     <Section id="employments" className="pt-0 pb-12 sm:pb-14 lg:pb-16">
       <div className="wage-split">
@@ -491,7 +492,7 @@ function EmploymentSchedule({ state }: { state: WageState }) {
                             .
                           </p>
                         )}
-                        {g.unpublished && !g.allowance && vda && <p className="wage-note">{s.unpublished(g.number, date, vda)}</p>}
+                        {g.unpublished && !g.allowance && !g.note && vda && <p className="wage-note">{s.unpublished(g.number, date, vda)}</p>}
                         {g.note && <p className="wage-note">{g.note}</p>}
                         {g.rows && (
                           <p className="wage-source">
@@ -758,7 +759,7 @@ export async function WageStatePage({ slug }: { slug: WageStateSlug }) {
           </p>
         )}
       </Section>
-      <EmploymentSchedule state={state} />
+      <EmploymentSchedule state={state} intro={t.scheduleIntro} />
       <Dues slug={slug} name={state.name} />
       <Faqs faqs={t.faqs}>
         <Documents state={state} slug={slug} />

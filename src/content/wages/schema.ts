@@ -60,6 +60,7 @@ const historySchema = z.strictObject({
   effectiveFrom: isoDate,
   effectiveTo: isoDate,
   source: z.string().min(1),
+  zones: z.array(z.strictObject({ id: z.string().min(1), name: z.string().min(1) })).min(1).optional(),
   note: z.string().min(1).optional(),
   rates: z.array(z.strictObject({ zone: z.string().optional(), skill, monthly: rupees, daily: rupees.optional() })).min(1),
 });
@@ -210,6 +211,9 @@ export function wageIntegrityProblems(state: WageState): string[] {
     if (!tableIds.has(h.table)) problems.push(`history ${h.effectiveFrom}: unknown table ${h.table}`);
     if (!sourceIds.has(h.source)) problems.push(`history ${h.effectiveFrom}: unknown source ${h.source}`);
     if (h.effectiveTo < h.effectiveFrom) problems.push(`history ${h.effectiveFrom}: ends before it starts`);
+    // A schedule with zones of its own (Karnataka's four before the single notification) names them; otherwise the table's.
+    const zones = new Set((h.zones ?? state.tables.find((t) => t.id === h.table)?.zones ?? []).map((z) => z.id));
+    for (const r of h.rates) if (r.zone && !zones.has(r.zone)) problems.push(`history ${h.effectiveFrom}: unknown zone ${r.zone}`);
   }
   for (const source of state.sources) {
     if (Boolean(source.copy) !== Boolean(source.copyKb)) problems.push(`source ${source.id}: copy and copyKb go together`);

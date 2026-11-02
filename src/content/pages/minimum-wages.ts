@@ -73,6 +73,12 @@ export type WageStateCopy = {
   headingPlace?: string;
   /** The opening line of "Every scheduled employment", where the generic one would be untrue (Karnataka: two kinds of VDA). */
   scheduleIntro?: string;
+  /**
+   * Karnataka: the notification's standing in court, as found on a date,
+   * and the label for the rates it replaced (the headline table's history,
+   * shown closed under the prose).
+   */
+  standing?: { heading: string; paragraphs: string[]; earlier: string };
 };
 
 const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined> = {
@@ -200,6 +206,9 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
     const t = "single-notification";
     const u1 = rate(s, t, "zone-1", "unskilled");
     const u3 = rate(s, t, "zone-3", "unskilled");
+    const semi1 = rate(s, t, "zone-1", "semi-skilled");
+    // The notification prints a day rate beside each month: the basic / 26.
+    const basicDay = (r: { basic: number }) => formatRupees(Math.round((r.basic / 26) * 100) / 100);
     // The Labour Commissioner's 2026-27 rate sheets: one per committee employment it lists rates for.
     const own = s.sources.filter((x) => x.id.startsWith("ka-2627-")).length;
     return {
@@ -211,6 +220,18 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
         link: { href: "/jobs/bengaluru", label: "Jobs in Bengaluru" },
       },
       scheduleIntro: `Karnataka sets minimum wages for 102 kinds of work. The 22 May 2026 notification covers 83 of them, in the table above or at a higher rate of their own; those figures are its basic rate plus the VDA of ${formatRupees(u1.vda)} a month. It leaves 19 piece-rated employments to a committee, and until the committee reports, their earlier notifications apply: their figures are the Labour Department's rates for 1 April 2026 to 31 March 2027, basic plus that notification's own VDA; piece rates are shown as set, with the VDA added to them in each note. The department lists rates for ${own} of the 19.`,
+      standing: {
+        heading: "The court challenge",
+        paragraphs: [
+          "Employers, among them the Karnataka Employers' Association, have challenged the 22 May 2026 notification in the Karnataka High Court. They argue it was issued under the Minimum Wages Act, 1948 after the Code on Wages, 2019 had repealed that Act on 21 November 2025.",
+          "The court has not stayed it. On 21 September 2026 Justice H.T. Narendra Prasad refused the employers interim relief, and their petitions are tagged with Writ Appeals 1684 and 1685 of 2026, in which a Division Bench has reserved judgment. There is no final ruling yet.",
+          "State circulars of 29 July, 10 August and 9 October 2026 put off the new rates for government departments, local bodies and urban development authorities. The High Court stayed the first two on 18 September 2026, on a petition by the AITUC, AICCTU and CITU unions, and the October circular in mid-October 2026.",
+          "So the notification is in force, as found on 3 November 2026. An employer still paying the earlier rates risks arrears from 22 May 2026, and a principal employer is liable for wages its contractor does not pay. This page will change if the court rules otherwise.",
+          `Some sites give ${basicDay(semi1)} a day as the Zone 1 unskilled rate. That is the semi-skilled basic; the unskilled basic in Zone 1 is ${basicDay(u1)} a day, before VDA.`,
+          "Court reports: LiveLaw, 21 September 2026; Bar & Bench, 19 September 2026.",
+        ],
+        earlier: "Rates before 22 May 2026: shops and commercial establishments",
+      },
       faqs: [
         {
           question: "Is the new Karnataka minimum wage in force while it is challenged in court?",

@@ -31,6 +31,13 @@ Last compiled: 16 October 2026, for the national phase 1 pull request; business 
 | You are on our payroll; we pay your PF and ESIC where they apply | Role and hub pages (3 languages) | C | As the payroll line above | | 16 Oct 2027 |
 | We track each worker’s training and how long they stay (no figures) | Home benefit 2, contract labour explainer (review) | A | Owner positioning note; any figure is B and needs data | | 16 Oct 2027 |
 
+## Minimum wage alerts
+
+| Claim | Pages | Tier | Evidence or approval | Signed off | Review by |
+|---|---|---|---|---|---|
+| Get an email when this state's rates change; one email when a new notification changes them, nothing else | Each wage state page (the signup line and its dialog), the confirmation email | A | Owner decision, 10 Nov 2026. Sending is by hand (`pnpm alerts:send <state>`) after the wage update is live, so the claim holds only if every wage update PR is followed by a send: docs/rate-alerts.md | Owner, 10 Nov 2026 | 10 May 2027 |
+| We use this address only for these alerts; every email has a link to stop them; stopping deletes the address; an unconfirmed address is deleted after 7 days | The signup dialog, /alerts, /privacy §2, the emails | C | Built so: the list is separate from leads and Twenty (leads/schema.sql alert_subscribers), unsubscribe deletes the row, pending rows are purged | Owner, 10 Nov 2026 | 10 Nov 2027 |
+
 ## Business enquiries
 
 | Claim | Pages | Tier | Evidence or approval | Signed off | Review by |

@@ -9,6 +9,7 @@ import { runSubmission } from "./platform/lib/run-submission.ts";
 import type { RateAlertCanonical } from "../../packages/contracts/src/rate-alert.v1.ts";
 import type { EmitInput } from "./notify/lib/emit.ts";
 import type { Query } from "./talent/lib/db.ts";
+import { alertOf, ledeOf, longDate } from "./alerts-send.mts";
 
 const TOKEN_A = "A".repeat(43);
 const TOKEN_B = "B".repeat(43);
@@ -43,7 +44,7 @@ test("subscribe saves a pending address and sends one confirmation; nothing else
   assert.equal(sent.length, 1);
   assert.equal(sent[0].email.subject, "Confirm your minimum wage alerts");
   assert.match(sent[0].email.text, /minimum wage rates change in Uttarakhand\./);
-  assert.ok(sent[0].email.text.includes(`https://www.vayasyaseva.com/en-in/alerts/confirm#t=${TOKEN_A}`));
+  assert.ok(sent[0].email.text.includes(`https://www.vayasyaseva.com/en-in/alerts#confirm=${TOKEN_A}`));
   assert.equal(sent[0].email.headers, undefined, "nothing to unsubscribe from yet");
   assert.equal(sent[0].key, "alert-pending:ALR-20261110-0A1B2C3D");
 
@@ -99,7 +100,7 @@ test("a confirmed address that asks again gets a short note with the unsubscribe
   assert.equal(sent.length, 2);
   assert.equal(sent[1].email.subject, "Your minimum wage alerts");
   assert.match(sent[1].email.text, /now follows Delhi and Uttarakhand/);
-  assert.ok(sent[1].email.text.includes(`/en-in/alerts/unsubscribe#t=${TOKEN_A}`));
+  assert.ok(sent[1].email.text.includes(`/en-in/alerts#stop=${TOKEN_A}`));
   assert.equal(sent[1].email.headers?.["List-Unsubscribe"], `<https://www.vayasyaseva.com/api/alerts/unsubscribe?t=${TOKEN_A}>`);
   assert.equal(sent[1].email.headers?.["List-Unsubscribe-Post"], "List-Unsubscribe=One-Click");
   assert.equal((await rows(query))[0].status, "confirmed");
@@ -163,7 +164,7 @@ test("send: each confirmed follower of the state once per revision; a dry run on
   assert.equal(mailA.subject, content.subject);
   assert.ok(mailA.text.includes("₹13,134"));
   assert.ok(mailA.text.includes("https://www.vayasyaseva.com/en-in/minimum-wages/uttarakhand"));
-  assert.ok(mailA.text.includes(`/en-in/alerts/unsubscribe#t=${tokens[0]}`), "each email carries its own unsubscribe link");
+  assert.ok(mailA.text.includes(`/en-in/alerts#stop=${tokens[0]}`), "each email carries its own unsubscribe link");
   assert.ok(mailA.headers?.["List-Unsubscribe"]?.includes(tokens[0]));
 
   const again = await runAlertSend(content, deps);
@@ -200,13 +201,13 @@ test("the emails: plain text and HTML agree, HTML is escaped, state lists read n
   assert.equal(alertStateList(["uttar-pradesh"]), "Uttar Pradesh");
   assert.equal(alertStateList(["punjab", "delhi", "andhra-pradesh"]), "Punjab, Delhi and Andhra Pradesh");
   const confirmMail = alertConfirmEmail("hr@example.com", ["punjab"], TOKEN_A);
-  assert.ok(confirmMail.html.includes(`href="https://www.vayasyaseva.com/en-in/alerts/confirm#t=${TOKEN_A}"`));
+  assert.ok(confirmMail.html.includes(`href="https://www.vayasyaseva.com/en-in/alerts#confirm=${TOKEN_A}"`));
   assert.match(confirmMail.text, /deleted after 7 days/);
   const rates = alertRatesEmail("hr@example.com", { state: "punjab", subject: "s", lines: ["Rates <rose> & more"] }, TOKEN_A);
   assert.ok(rates.html.includes("Rates &lt;rose&gt; &amp; more"));
   assert.ok(rates.text.includes("Rates <rose> & more"));
   assert.match(rates.text, /You get this because you asked for alerts on Punjab's minimum wages\./);
-  assert.match(rates.text, /Stop these emails:\nhttps:\/\/www\.vayasyaseva\.com\/en-in\/alerts\/unsubscribe#t=/);
+  assert.match(rates.text, /Stop these emails:\nhttps:\/\/www\.vayasyaseva\.com\/en-in\/alerts#stop=/);
 });
 
 test("the mailer posts to Resend with the Idempotency-Key and reply address; without a key it sends nothing", async () => {
@@ -247,4 +248,14 @@ test("the signed route runs a rate alert action from its envelope, and refuses o
   assert.equal((await runSubmission(true, envelope(confirm(token), "ALR-20261110-FFFFFFFF"), d)).wm_status_code, 400);
   assert.equal((await runSubmission(true, envelope({ ...subscribe(), states: [] } as RateAlertCanonical), d)).wm_status_code, 400);
   assert.equal((await runSubmission(false, envelope(subscribe()), d)).wm_status_code, 403);
+});
+
+test("the send command: the revision is the headline table's in-force date; the line is the page's opening sentence", () => {
+  const wages = { state: "uttarakhand", name: "Uttarakhand", tables: [{ effectiveFrom: "2026-04-01" }, { headline: true, effectiveFrom: "2026-10-01" }] };
+  assert.deepEqual(alertOf(wages), { state: "uttarakhand", revision: "2026-10-01", subject: "Uttarakhand minimum wages changed: in force from 1 October 2026" });
+  assert.equal(longDate("2025-04-01"), "1 April 2025");
+  const html = `<h1 class="rise">Minimum wages in<!-- --> Uttarakhand</h1><p class="rise rise-2 mt-6">From 1 October 2026, an unskilled worker in most Uttarakhand factories must get at least ₹13,134 a month, or <span>₹505.16</span> a day. Delhi&#x27;s differ.</p><p>Updated</p>`;
+  assert.equal(ledeOf(html), "From 1 October 2026, an unskilled worker in most Uttarakhand factories must get at least ₹13,134 a month, or ₹505.16 a day. Delhi’s differ.");
+  assert.equal(ledeOf("<h1>Title</h1><p>Short</p>"), null);
+  assert.equal(ledeOf("<main></main>"), null);
 });

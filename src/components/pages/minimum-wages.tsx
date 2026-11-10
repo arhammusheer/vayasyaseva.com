@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { RateAlertSignup } from "@/components/reference/rate-alert-signup";
 import Link from "@/components/i18n/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
@@ -830,6 +831,8 @@ export async function WageStatePage({ slug }: { slug: WageStateSlug }) {
             </Link>
           </p>
         )}
+        {/* The one thing the page asks of its readers: an email when these rates change. */}
+        <RateAlertSignup state={slug} name={state.name} />
       </Section>
       <EmploymentSchedule state={state} intro={t.scheduleIntro} />
       {t.standing && <Standing state={state} standing={t.standing} />}

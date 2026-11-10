@@ -23,6 +23,7 @@
     "windmill:test": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test integrations/windmill/*.test.mts",
     "windmill:build": "node integrations/windmill/build.mts",
     "windmill:deploy": "node integrations/windmill/deploy.mts",
+    "alerts:send": "node integrations/windmill/alerts-send.mts",
     "talent:sync-secrets": "node scripts/sync-vercel-secrets.mts",
     "msg91:setup-contact-templates": "node scripts/setup-msg91-contact-templates.mjs",
     "openapi:generate": "pnpm contracts:generate && node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/generate-openapi.mjs",

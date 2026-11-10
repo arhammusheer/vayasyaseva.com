@@ -30,6 +30,8 @@ await context.route('https://upload.example.test/**',r=>r.fulfill({status:failUp
 await context.route('**/api/jobs/submit',r=>{submits.push(r.request().postDataJSON()); if(failSubmit){failSubmit=false;return r.abort();}if(expireSubmit){expireSubmit=false;return r.fulfill({status:410,json:{error:'expired'}});}return r.fulfill({status:202,json:{ref:'VS-J-'+String(starts).padStart(6,'0')}});});
 const contactBodies=[];
 await context.route('**/api/contact',r=>{contactBodies.push(r.request().postDataJSON());r.fulfill({json:{success:true,caseId:'REQ-20261016-1A2B3C4D'}});});
+const alertCalls=[];let alertStatus=200;
+await context.route('**/api/alerts/*',r=>{alertCalls.push({path:new URL(r.request().url()).pathname,body:r.request().postDataJSON(),headers:r.request().headers()});r.fulfill(alertStatus===200?{json:{success:true,states:['uttarakhand','punjab']}}:{status:alertStatus,json:{error:'This link is no longer valid.'}});});
 const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
 const complete='?work=any&experience=fresher&education=12th&shift=day&start=now&area=laksar';
 async function open(path){await page.goto(origin+path);await page.waitForTimeout(150);}
@@ -301,6 +303,48 @@ try {
   // The other requests have their own questions: no call back there.
   for(const type of ['assessment','compliance']){await open('/en-in/contact?type='+type);await page.locator('.crew-form').waitFor();assert.equal(await page.locator('.callback').count(),0,type);}
   console.log('Call back: a button beside the form opens a dialog with four fields, sent as requestType callback with the page market; service heroes link to Request a crew');
+  // Minimum wage rate alerts: a line and a button under the rates; the email field opens in a dialog.
+  await open('/en-in/minimum-wages/uttarakhand');
+  {
+    const ask=page.getByRole('button',{name:'Email me when rates change'});await ask.waitFor();
+    assert.equal(await page.locator('#ra-email').count(),0,'no input on the page until asked');
+    assert.ok((await page.locator('.rate-alert').textContent()).includes('Uttarakhand'));
+    await ask.click();const dialog=page.getByRole('dialog');await dialog.waitFor();
+    await dialog.locator('button[type=submit]').click();await page.locator('#ra-email-error').waitFor();
+    await page.locator('#ra-email').fill('not an address');await dialog.locator('button[type=submit]').click();await page.locator('#ra-email-error').waitFor();
+    assert.equal(alertCalls.length,0,'nothing sent while invalid');
+    await page.locator('#ra-email').fill('hr@example.test');await page.locator('#ra-email').press('Enter');
+    await dialog.getByRole('button',{name:'Close',exact:true}).first().waitFor();
+    assert.ok((await dialog.textContent()).includes('hr@example.test'));
+    const call=alertCalls.at(-1);
+    assert.equal(call.path,'/api/alerts/subscribe');
+    assert.deepEqual(call.body,{email:'hr@example.test',states:['uttarakhand'],sourcePath:'/minimum-wages/uttarakhand'});
+    assert.ok(call.headers['x-turnstile-token']);
+    await page.keyboard.press('Escape');await dialog.waitFor({state:'detached'});
+    assert.equal(await ask.count(),0);
+    assert.ok((await page.locator('.rate-alert [role=status]').textContent()).includes('hr@example.test'));
+  }
+  // The links in our emails: confirm at once, stop only after a click; the token leaves the address bar.
+  const token='hT3kq9ZxW2mVb7PcJ4nRs8Ld6YfGa1Ue0oQiXyNzKw5';
+  await page.goto('about:blank');await open('/en-in/alerts#confirm='+token);
+  await page.getByRole('heading',{name:'Confirmed.'}).waitFor();
+  assert.ok((await page.locator('.alert-link').textContent()).includes('Uttarakhand and Punjab'));
+  assert.deepEqual([alertCalls.at(-1).path,alertCalls.at(-1).body],['/api/alerts/confirm',{token}]);
+  assert.equal(new URL(page.url()).hash,'');
+  await page.goto('about:blank');await open('/en-in/alerts#stop='+token);
+  await page.getByRole('heading',{name:'Stop these emails?'}).waitFor();
+  assert.equal(alertCalls.at(-1).path,'/api/alerts/confirm','nothing is stopped until asked');
+  await page.getByRole('button',{name:'Stop the emails'}).click();await page.getByRole('heading',{name:'Stopped.'}).waitFor();
+  assert.deepEqual([alertCalls.at(-1).path,alertCalls.at(-1).body],['/api/alerts/unsubscribe',{token}]);
+  alertStatus=404;await page.goto('about:blank');await open('/en-in/alerts#confirm='+token);
+  await page.getByRole('heading',{name:'This link is no longer valid.'}).waitFor();alertStatus=200;
+  await page.goto('about:blank');await open('/en-in/alerts');
+  assert.ok((await page.locator('.alert-link').textContent()).includes('Sign up on the page of the state you follow'));
+  {
+    const html=await (await context.request.get(origin+'/en-in/alerts')).text();
+    assert.match(html,/name="robots" content="[^"]*noindex/);
+  }
+  console.log('Rate alerts: a button under the rates opens a one-field dialog; the email links confirm at once and stop on a click; /alerts is noindex');
   // Compliance help: its own step 1 (needs, state, workers, where stuck), its own draft, sent as details.
   await page.evaluate(()=>sessionStorage.clear());
   await open('/en-in/contact?type=compliance');

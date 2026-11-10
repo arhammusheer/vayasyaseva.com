@@ -61,8 +61,8 @@ export function alertStateList(slugs: string[]): string {
   return names.length <= 1 ? (names[0] ?? "") : `${names.slice(0, -1).join(", ")} and ${names.at(-1)}`;
 }
 
-export const alertConfirmUrl = (token: string) => `${ALERT_SITE}/en-in/alerts/confirm#t=${token}`;
-export const alertUnsubscribeUrl = (token: string) => `${ALERT_SITE}/en-in/alerts/unsubscribe#t=${token}`;
+export const alertConfirmUrl = (token: string) => `${ALERT_SITE}/en-in/alerts#confirm=${token}`;
+export const alertUnsubscribeUrl = (token: string) => `${ALERT_SITE}/en-in/alerts#stop=${token}`;
 const oneClickUrl = (token: string) => `${ALERT_SITE}/api/alerts/unsubscribe?t=${token}`;
 
 const escapeHtml = (value: string) => value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");

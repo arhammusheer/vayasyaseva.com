@@ -75,6 +75,17 @@ export const agentContactLimits = {
   perSender: memoryRateLimiter({ windowMs: 10 * 60_000, max: 1 }),
 };
 
+/**
+ * /api/alerts/subscribe: 5 per IP in ten minutes and 3 per address an hour
+ * (Windmill also sends one address at most one email in ten minutes).
+ * /api/alerts/confirm and /unsubscribe (the links in our emails): 30 per IP in ten minutes.
+ */
+export const alertLimits = {
+  perIp: memoryRateLimiter({ windowMs: 10 * 60_000, max: 5 }),
+  perEmail: memoryRateLimiter({ windowMs: 60 * 60_000, max: 3 }),
+  links: memoryRateLimiter({ windowMs: 10 * 60_000, max: 30 }),
+};
+
 /** /api/agent/jobs*: 10 per IP in ten minutes, 3 per phone an hour. */
 export const agentJobsLimits = {
   perIp: memoryRateLimiter({ windowMs: 10 * 60_000, max: 10 }),

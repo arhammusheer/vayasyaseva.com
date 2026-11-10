@@ -220,7 +220,7 @@ try {
   for(const query of ['', '?type=assessment']) {
     await open('/en-in/contact'+query);
     assert.equal(await page.locator('main h1').textContent(),query?'Request a site assessment.':'Request a crew.');
-    await page.locator('button[type=submit]').click();await visible('#roles');
+    await page.locator('.crew-form button[type=submit]').click();await visible('#roles');
     assert.ok(await page.locator('#roles-error').isVisible());assert.ok(await page.locator('#siteCity-error').isVisible());
     await pill('roles','Packing').click();assert.equal(await page.locator('#roles-error').count(),0);
     assert.equal(await pill('roles','Packing').getAttribute('aria-pressed'),'true');
@@ -231,9 +231,9 @@ try {
     await page.locator('[data-draft-notice]').getByRole('button',{name:'Clear draft',exact:true}).click();await tick();
     assert.equal(await page.locator('#siteCity').inputValue(),'');
     assert.equal(await page.evaluate(key=>sessionStorage.getItem(key),query?'vayasya-assessment-draft':'vayasya-contact-draft'),null);
-    await requirement();await page.locator('button[type=submit]').click();await page.locator('#name').waitFor();
+    await requirement();await page.locator('.crew-form button[type=submit]').click();await page.locator('#name').waitFor();
     assert.ok((await page.locator('.crew-recap').textContent()).includes('Work: Packing'));
-    await page.locator('button[type=submit]').click();await visible('#name');
+    await page.locator('.crew-form button[type=submit]').click();await visible('#name');
     assert.ok(await page.locator('#company-error').isVisible());
     await page.locator('#name').fill('Contact Test');await page.locator('#company').fill('Test Company');await page.locator('#phone').fill('9999900001');
     // The phone keyboard's Send key on the last field submits (Turnstile's hidden input is not a "next" field).
@@ -246,6 +246,46 @@ try {
     for(const key of ['qualified','priority','outOfScope']) assert.equal(key in body,false);
     assert.doesNotMatch(await page.locator('main').textContent(),/qualified|out of scope/i);
   }
+  // The short call-back form beside the full one (contract 1.4.0): four fields, sent as requestType callback.
+  await page.evaluate(()=>sessionStorage.clear());
+  await open('/en-in/services/factory-labour');
+  // A service page's hero now carries Request a crew, not only the job seekers' line.
+  await page.locator('main section').first().locator('a[href="/en-in/contact"]').click();await page.waitForURL('**/en-in/contact');
+  await page.locator('#cb-name').waitFor();
+  {
+    // On a phone it comes before the full form.
+    const [cb,full]=await Promise.all(['.callback','.crew-form'].map(s=>page.locator(s).evaluate(el=>el.getBoundingClientRect().top)));
+    assert.ok(cb<full,'call back first');
+    assert.ok((await page.locator('.callback').textContent()).includes('within one working day'));
+    const before=contactBodies.length;
+    await page.locator('.callback button[type=submit]').click();await visible('#cb-name');
+    for(const id of ['name','company','phone','headcountBand']) assert.ok(await page.locator(`#cb-${id}-error`).isVisible(),id);
+    assert.equal(contactBodies.length,before,'nothing sent while invalid');
+    // The full form's own errors are untouched.
+    assert.equal(await page.locator('#roles-error').count(),0);
+    await page.locator('#cb-name').fill('Callback Test');await page.locator('#cb-company').fill('Callback Company');
+    await page.locator('#cb-phone').fill('9999900003');await page.locator('#cb-headcountBand').selectOption('20-49');
+    assert.equal(await page.locator('#cb-phone-error').count(),0);
+    await page.locator('.callback button[type=submit]').click();
+    await page.locator('.callback[role=status]').waitFor();
+    const done=await page.locator('.callback[role=status]').textContent();
+    assert.ok(done.includes('We will call you.'));assert.ok(done.includes('within one working day'));assert.ok(done.includes('REQ-20261016-1A2B3C4D'));
+    const body=contactBodies.at(-1);
+    assert.deepEqual(body,{requestType:'callback',name:'Callback Test',company:'Callback Company',phone:'9999900003',headcountBand:'20-49'});
+    // The full form is still there for someone who wants to say more.
+    assert.ok(await page.locator('.crew-form #roles').isVisible());
+  }
+  // A place page's link carries its market into the call back too.
+  // (Leaves the page first: a URL that differs only in its fragment does not reload it.)
+  await page.evaluate(()=>sessionStorage.clear());await page.goto('about:blank');
+  await open('/en-in/contact#location=haridwar');
+  await page.locator('#cb-name').fill('Callback Place');await page.locator('#cb-company').fill('Place Company');
+  await page.locator('#cb-phone').fill('9999900004');await page.locator('#cb-headcountBand').selectOption('50-99');
+  await page.locator('.callback button[type=submit]').click();await page.locator('.callback[role=status]').waitFor();
+  assert.equal(contactBodies.at(-1).pageCluster,'haridwar');assert.equal(contactBodies.at(-1).requestType,'callback');
+  // The other requests have their own questions: no call back there.
+  for(const type of ['assessment','compliance']){await open('/en-in/contact?type='+type);await page.locator('.crew-form').waitFor();assert.equal(await page.locator('.callback').count(),0,type);}
+  console.log('Call back: four fields beside the full form, sent as requestType callback with the page market; service heroes link to Request a crew');
   // Compliance help: its own step 1 (needs, state, workers, where stuck), its own draft, sent as details.
   await page.evaluate(()=>sessionStorage.clear());
   await open('/en-in/contact?type=compliance');
@@ -283,9 +323,9 @@ try {
   await page.locator('main a[href="/en-in/contact#location=haridwar"]:visible').first().click();await page.waitForURL('**/en-in/contact');
   await page.locator('#siteCity').waitFor();await page.waitForFunction(()=>document.querySelector('#siteCity')?.value==='Haridwar');
   await pill('roles','Packing').click();await pill('headcountBand','20 to 49').click();await pill('startWindow','Just planning').click();await pill('durationBand','3 to 12').click();
-  await page.locator('button[type=submit]').click();await page.locator('#name').waitFor();
+  await page.locator('.crew-form button[type=submit]').click();await page.locator('#name').waitFor();
   await page.locator('#name').fill('Hub Test');await page.locator('#company').fill('Hub Company');await page.locator('#phone').fill('9999900001');
-  await page.locator('button[type=submit]').click();await visible('[role=status] h2');
+  await page.locator('.crew-form button[type=submit]').click();await visible('[role=status] h2');
   assert.equal(contactBodies.at(-1).pageCluster,'haridwar');assert.equal(contactBodies.at(-1).siteState,'UK');
   // Job seekers who land here get one quiet line to /jobs (every market), in the language they last
   // picked, else English: never the neutral picker URL, which the client router cannot enter.

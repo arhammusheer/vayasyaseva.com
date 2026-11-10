@@ -17,7 +17,7 @@ import { revealFormTarget } from "@/lib/form-navigation";
 import { cn } from "@/lib/utils";
 import { localePath } from "@/lib/i18n";
 import { track, trackConversion } from "@/lib/measurement/gateway";
-import { ENQUIRY_PREFILL_FIELDS, readPrefill } from "@/lib/prefill";
+import { readEnquiryPrefill } from "@/lib/prefill";
 import { TURNSTILE_SCRIPT_URL } from "@/lib/turnstile";
 import {
   contactFieldSchema,
@@ -184,7 +184,7 @@ function decodeDraft(raw: unknown): Values | null {
  * fragment). Only when /contact was loaded directly: after an in-app
  * navigation, document.referrer still names the page that loaded the app.
  */
-function referringPath() {
+export function referringPath() {
   try {
     const entry = performance.getEntriesByType("navigation")[0];
     if (!entry || new URL(entry.name).pathname !== window.location.pathname) return null;
@@ -197,14 +197,14 @@ function referringPath() {
   }
 }
 
-const field =
+export const field =
   "form-scroll-target mt-2 h-12 rounded-lg border-neutral-300 bg-background px-4 text-base text-foreground shadow-none placeholder:text-neutral-400 focus-visible:border-gold-500 focus-visible:ring-gold-500/25 md:text-base";
 
 function Optional() {
   return <span className="quick-optional"> Optional</span>;
 }
 
-function FieldError({ id, error }: { id: string; error?: string }) {
+export function FieldError({ id, error }: { id: string; error?: string }) {
   return error ? <p id={`${id}-error`} className="mt-1.5 text-sm text-destructive">{error}</p> : null;
 }
 
@@ -332,7 +332,7 @@ export function ContactForm() {
     // Reads the browser once on mount: the referrer and the link's fragment.
     /* eslint-disable react-hooks/set-state-in-effect */
     setSourcePath(referringPath());
-    const prefill = readPrefill(ENQUIRY_PREFILL_FIELDS);
+    const prefill = readEnquiryPrefill();
     if (!prefill) return;
     const { fields: mapped, extraLines } = crewPrefill(prefill);
     setValues((current) => {
@@ -565,7 +565,9 @@ export function ContactForm() {
           onResume={() => revealFormTarget(stepHeading.current)}
         />
       )}
-      <Script src={TURNSTILE_SCRIPT_URL} onReady={onVerificationReady} />
+      {/* onLoad as well: the call-back form on this page asks for the same
+          script, and next/script calls only onLoad on the one that waited. */}
+      <Script src={TURNSTILE_SCRIPT_URL} onReady={onVerificationReady} onLoad={onVerificationReady} />
       <div aria-hidden="true" className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden">
         <Label htmlFor="website">Website</Label>
         <Input id="website" autoComplete="new-password" tabIndex={-1} value={honeypot} onChange={(event) => setHoneypot(event.target.value)} />

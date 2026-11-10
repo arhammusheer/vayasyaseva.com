@@ -1,6 +1,7 @@
 /**
  * business_enquiry.v1 and compliance_help.v1 (one wire contract, told apart
- * by requestType): the website's contact form (/api/contact, Turnstile) and
+ * by requestType; "callback" is the short form on /contact, a business
+ * enquiry with a name, a phone and the number of workers): the website's contact form (/api/contact, Turnstile) and
  * the open agent route (/api/agent/contact).
  *
  * The staff email goes first, as before: it carries the lead flags and is
@@ -174,7 +175,11 @@ export const contactFormRoute: SubmissionRoute<ContactFormData> = {
       qualified: assessment.qualified ? "yes" : "no",
       request_type: data.requestType ?? "crew",
     });
-    return NextResponse.json({ success: true, caseId, message: responses.successMessage });
+    return NextResponse.json({
+      success: true,
+      caseId,
+      message: assessment.callback ? responses.callbackSuccessMessage : responses.successMessage,
+    });
   },
 
   fail(error, ctx) {

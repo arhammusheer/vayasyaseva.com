@@ -1,8 +1,8 @@
 /**
  * business_enquiry.v1 and compliance_help.v1: one wire contract, the contact
- * form's (./contact.contract.json, version 1.3.0), told apart by
- * `requestType` ("crew" or "site-assessment" for an enquiry, "compliance-help"
- * for compliance help). /api/contact (the website form, Turnstile) and
+ * form's (./contact.contract.json, version 1.4.0), told apart by
+ * `requestType` ("crew", "site-assessment" or "callback" for an enquiry,
+ * "compliance-help" for compliance help). /api/contact (the website form, Turnstile) and
  * /api/agent/contact (AI agents) accept it unchanged.
  *
  * Canonical (what the site forwards to Windmill f/leads/intake): the lead,
@@ -60,13 +60,17 @@ export interface ContactContract {
     fields: Record<string, ContactFieldDefinition>;
     /**
      * At least one of these groups must be complete: the free-text details
-     * (older senders) or the structured requirement (the website form).
+     * (older senders), the structured requirement (the website form), or a
+     * call back (1.4.0). An entry is a field that must be given, or
+     * "field=value": the field must hold that value.
      */
     requireOneOf: string[][];
     requireOneOfMessage: string;
   };
   responses: {
     successMessage: string;
+    /** The answer to a call back request (requestType "callback"). */
+    callbackSuccessMessage: string;
     validationError: string;
     rateLimitError: string;
     verificationError: string;
@@ -146,24 +150,44 @@ export const WEBSITE_ONLY_FIELDS = ["pageCluster", "sourcePath"] as const;
 
 const present = (value: unknown) => value !== undefined && value !== null;
 
+/** One entry of a requireOneOf group: "field", or "field=value". */
+function requirement(entry: string) {
+  const at = entry.indexOf("=");
+  return at < 0 ? { name: entry, value: undefined } : { name: entry.slice(0, at), value: entry.slice(at + 1) };
+}
+const met = (data: Record<string, unknown>, entry: string) => {
+  const { name, value } = requirement(entry);
+  return value === undefined ? present(data[name]) : data[name] === value;
+};
+/** A group as JSON Schema: its fields required, its fixed values as constants. */
+function groupSchema(group: string[]) {
+  const fixed = group.map(requirement).filter((r) => r.value !== undefined);
+  return {
+    required: group.map((entry) => requirement(entry).name),
+    ...(fixed.length ? { properties: Object.fromEntries(fixed.map((r) => [r.name, { const: r.value }])) } : {}),
+  };
+}
+
 function contactObject(names: string[], overrides: Record<string, z.ZodType> = {}) {
   return z
     .object({ ...Object.fromEntries(names.map((name) => [name, buildFieldSchema(fields[name])])), ...overrides })
     .strict()
     .superRefine((data, ctx) => {
       const groups = contactContract.request.requireOneOf;
-      if (groups.some((group) => group.every((name) => present((data as Record<string, unknown>)[name])))) return;
+      const values = data as Record<string, unknown>;
+      if (groups.some((group) => group.every((entry) => met(values, entry)))) return;
       // Point at the missing fields of the group the sender started (the most
-      // fields given; the first group on a tie), so a form can show them.
-      const given = (group: string[]) => group.filter((n) => present((data as Record<string, unknown>)[n])).length;
+      // entries met; the first group on a tie), so a form can show them.
+      const given = (group: string[]) => group.filter((entry) => met(values, entry)).length;
       const closest = groups.reduce((best, group) => (given(group) > given(best) ? group : best));
-      for (const name of closest.filter((n) => !present((data as Record<string, unknown>)[n]))) {
+      for (const entry of closest.filter((e) => !met(values, e))) {
+        const { name } = requirement(entry);
         ctx.addIssue({ code: "custom", path: [name], message: fields[name]?.requiredMessage ?? contactContract.request.requireOneOfMessage });
       }
     })
     .meta({
       description: contactContract.request.requireOneOfMessage,
-      anyOf: contactContract.request.requireOneOf.map((group) => ({ required: group })),
+      anyOf: contactContract.request.requireOneOf.map(groupSchema),
     });
 }
 
@@ -197,7 +221,7 @@ export interface ContactFormData {
   startWindow?: string;
   durationBand?: string;
   shiftPattern?: string;
-  /** "crew" (the default), "site-assessment" or "compliance-help". */
+  /** "crew" (the default), "site-assessment", "compliance-help" or "callback". */
   requestType?: string;
   pageCluster?: string;
   sourcePath?: string;

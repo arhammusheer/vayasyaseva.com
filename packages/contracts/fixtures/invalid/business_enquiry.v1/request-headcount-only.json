@@ -1,0 +1,9 @@
+{
+  "schema": "ContactInquiryRequest",
+  "note": "The number of workers alone is a call back only when requestType says so.",
+  "data": {
+    "name": "Asha Rawat",
+    "phone": "9876543210",
+    "headcountBand": "20-49"
+  }
+}

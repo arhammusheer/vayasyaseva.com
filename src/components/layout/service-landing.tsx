@@ -10,6 +10,7 @@ import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { JsonLd, serviceLandingSchema, webPageSchema } from "@/lib/structured-data";
 import { nextServicePage, type ServiceLandingContent } from "@/content/service-pages";
 import { faqHref } from "@/content/faq";
+import { Button } from "@/components/ui/button";
 
 export function serviceLandingMetadata(page: ServiceLandingContent) {
   return pageMetadata({
@@ -21,9 +22,10 @@ export function serviceLandingMetadata(page: ServiceLandingContent) {
 
 /**
  * A service landing (English only): roles, one planning paragraph, its
- * FAQs (more on /faq#<slug>), the next sibling and the gold band. Request a crew sits in the
- * header and the band; the hero's one action is the quiet jobs line, to the
- * matching role page (neutral URL, so a seeker picks a language first).
+ * FAQs (more on /faq#<slug>), the next sibling and the gold band. The hero
+ * carries Request a crew (10 Nov 2026: the only link under the heading was
+ * the job seekers'), with the quiet jobs line beside it, to the matching
+ * role page (neutral URL, so a seeker picks a language first).
  */
 export function ServiceLanding({ page }: { page: ServiceLandingContent }) {
   const url = `/services/${page.slug}`;
@@ -37,12 +39,19 @@ export function ServiceLanding({ page }: { page: ServiceLandingContent }) {
         title={page.heading}
         lede={page.lede}
         footnote={
-          <p className="seeker-line">
-            Looking for work?{" "}
-            <JobsLink path={`/jobs/${page.jobs.role}`} locale="en-IN" className="text-link">
-              {page.jobs.label} <ArrowRight size={18} aria-hidden="true" />
-            </JobsLink>
-          </p>
+          <div className="flex flex-wrap items-center gap-x-8 gap-y-4 pt-2">
+            <Button asChild size="lg">
+              <Link href="/contact">
+                Request a crew <ArrowUpRight aria-hidden="true" />
+              </Link>
+            </Button>
+            <p className="seeker-line">
+              Looking for work?{" "}
+              <JobsLink path={`/jobs/${page.jobs.role}`} locale="en-IN" className="text-link mt-0">
+                {page.jobs.label} <ArrowRight size={18} aria-hidden="true" />
+              </JobsLink>
+            </p>
+          </div>
         }
       />
       <Section>

@@ -46,7 +46,14 @@ export function crewSize(lead: Pick<Lead, "headcount" | "headcountBand">): numbe
 export function opportunityName(lead: Lead): string {
   const who = lead.company ?? lead.name;
   const size = lead.headcount ?? lead.headcountBand;
-  const what = lead.requestType === "compliance-help" ? "compliance help" : lead.requestType === "site-assessment" ? "site assessment" : "crew";
+  const what =
+    lead.requestType === "compliance-help"
+      ? "compliance help"
+      : lead.requestType === "site-assessment"
+        ? "site assessment"
+        : lead.requestType === "callback"
+          ? "call back"
+          : "crew";
   return `${who} · ${size ? `${size} ` : ""}${what}`.slice(0, 200);
 }
 

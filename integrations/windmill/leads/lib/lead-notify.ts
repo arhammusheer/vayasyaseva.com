@@ -49,11 +49,12 @@ export function crewSummary(lead: Lead): string {
   const size = /^[\d+\s-]{1,12}$/.test(lead.headcountBand ?? "") ? lead.headcountBand : /^\d{1,5}$/.test(lead.headcount?.trim() ?? "") ? lead.headcount!.trim() : null;
   const first = lead.services[0];
   const what = first ? (SERVICE_WORDS[first] ?? "workers") + (lead.services.length > 1 ? ` +${lead.services.length - 1}` : "") : "workers";
-  const kind = lead.requestType === "site-assessment" ? "site assessment: " : "";
+  const kind = lead.requestType === "site-assessment" ? "site assessment: " : lead.requestType === "callback" ? "call back: " : "";
   return `${kind}${size ? `${size} ` : ""}${what}${lead.cluster ? `, ${clusterLabel(lead.cluster)}` : ""}`;
 }
 
-const requestWord = (lead: Lead) => (lead.requestType === "compliance-help" ? "compliance help request" : "crew request");
+const requestWord = (lead: Lead) =>
+  lead.requestType === "compliance-help" ? "compliance help request" : lead.requestType === "callback" ? "call back request" : "crew request";
 
 export function leadReceivedEvent(lead: Lead, opportunityId: string): EmitInput {
   const qualified = isQualified(lead);

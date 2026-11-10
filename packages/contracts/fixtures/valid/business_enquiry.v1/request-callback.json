@@ -1,0 +1,12 @@
+{
+  "schema": "ContactInquiryRequest",
+  "note": "The short form on /contact (1.4.0): a call back, with the number of workers.",
+  "data": {
+    "name": "Asha Rawat",
+    "company": "Rawat Packaging",
+    "phone": "9876543210",
+    "requestType": "callback",
+    "headcountBand": "20-49",
+    "sourcePath": "/services/factory-labour"
+  }
+}

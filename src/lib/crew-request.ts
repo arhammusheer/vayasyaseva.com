@@ -92,9 +92,17 @@ const OUT_OF_SCOPE: { id: string; label: string; pattern: RegExp }[] = [
   },
 ];
 
+/**
+ * The short form's target (owner decision, 10 Nov 2026): a call back within
+ * one working day. On /contact, in the sent message and in the staff email only.
+ */
+export const CALLBACK_WINDOW = "We aim to call you within one working day (Monday to Saturday, IST)";
+
 export interface CrewAssessment {
-  /** A crew or site-assessment request; false for compliance help, which is not judged as a crew lead. */
+  /** A crew, site-assessment or call back request; false for compliance help, which is not judged as a crew lead. */
   crew: boolean;
+  /** The short form: only a name, a phone and the number of workers. Phone them; the rest is asked on the call. */
+  callback: boolean;
   /** 20+ workers and 3+ months. */
   qualified: boolean;
   /** Starting within 4 weeks (soft label). */
@@ -114,7 +122,7 @@ export function assessCrewRequest(data: ContactFormData): CrewAssessment {
   const soon = crew && Boolean(data.startWindow && SOON.has(data.startWindow));
   const text = [data.details, data.industry, data.shiftRequirement].filter(Boolean).join("\n");
   const outOfScope = OUT_OF_SCOPE.filter((rule) => rule.pattern.test(text)).map((rule) => rule.id);
-  return { crew, qualified, soon, outOfScope, headcountBand };
+  return { crew, callback: data.requestType === "callback", qualified, soon, outOfScope, headcountBand };
 }
 
 export function outOfScopeLabel(id: string) {

@@ -1,6 +1,6 @@
 /**
  * business_enquiry.v1 and compliance_help.v1: one wire contract, the contact
- * form's (./contact.contract.json, version 1.4.0), told apart by
+ * form's (./contact.contract.json, version 1.5.0), told apart by
  * `requestType` ("crew", "site-assessment" or "callback" for an enquiry,
  * "compliance-help" for compliance help). /api/contact (the website form, Turnstile) and
  * /api/agent/contact (AI agents) accept it unchanged.
@@ -60,8 +60,9 @@ export interface ContactContract {
     fields: Record<string, ContactFieldDefinition>;
     /**
      * At least one of these groups must be complete: the free-text details
-     * (older senders), the structured requirement (the website form), or a
-     * call back (1.4.0). An entry is a field that must be given, or
+     * (older senders), the structured requirement (the website form: the
+     * work, the workers and the site; start and duration stopped being
+     * required in 1.5.0), or a call back (1.4.0). An entry is a field that must be given, or
      * "field=value": the field must hold that value.
      */
     requireOneOf: string[][];

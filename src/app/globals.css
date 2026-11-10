@@ -2884,11 +2884,35 @@ a:hover > svg {
 }
 @media (min-width: 640px) {
   .crew-site {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 0.6fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .crew-pin input {
+    max-width: 200px;
   }
   .crew-people {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
+}
+/* The optional answers (start, duration, shifts, PIN, free text): one quiet line until asked for. */
+.crew-more-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  margin-top: 28px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--gold-700);
+}
+.crew-more-open:hover {
+  color: var(--foreground);
+}
+.crew-more-open .quick-optional {
+  font-weight: 400;
+  color: var(--muted-foreground);
+}
+.crew-more {
+  animation: quick-reveal 320ms ease-out;
 }
 .crew-select {
   appearance: none;

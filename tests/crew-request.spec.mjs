@@ -1,4 +1,4 @@
-// Request a crew (PLAN §8.1): contract v1.4.0 is additive (older enquiries
+// Request a crew (PLAN §8.1): contract v1.5.0 is additive (older enquiries
 // stay valid), enum fields are checked against fixed ids, the lead flags
 // reach the staff email only, and prefilled links map onto the form.
 import { registerHooks } from 'node:module';
@@ -33,8 +33,8 @@ const requirement = {
   durationBand: 'ongoing',
 };
 
-test('contract is v1.4.0 and older enquiries stay valid', () => {
-  assert.equal(contactContract.version, '1.4.0');
+test('contract is v1.5.0 and older enquiries stay valid', () => {
+  assert.equal(contactContract.version, '1.5.0');
   const legacy = { ...person, details: 'Need 40 packers for a new line', company: 'Acme', location: 'Haridwar', industry: 'FMCG', headcount: '40', shiftRequirement: '2 shifts', targetStartDate: '2026-11-01' };
   assert.equal(parseContactRequest(legacy).success, true);
 });
@@ -45,12 +45,18 @@ test('the structured requirement is accepted without details', () => {
   assert.deepEqual(result.data.roles, ['packing', 'loading-unloading']);
 });
 
-test('either details or the full requirement is needed', () => {
+test('either details or the requirement (work, workers, site) is needed; start and duration are optional since 1.5.0', () => {
   const result = contactSchema.safeParse({ ...person, roles: ['packing'], headcountBand: '20-49' });
   assert.equal(result.success, false);
   const paths = result.error.issues.map((issue) => issue.path[0]);
-  assert.ok(paths.includes('siteState') && paths.includes('durationBand'));
+  assert.deepEqual(paths.sort(), ['siteCity', 'siteState']);
   assert.equal(contactSchema.safeParse({ ...person }).success, false);
+  const short = parseContactRequest({ ...person, roles: ['packing'], headcountBand: '20-49', siteState: 'UK', siteCity: 'Haridwar' });
+  assert.equal(short.success, true);
+  // Not judged as qualified without a duration; never "starts soon" without a start.
+  const lead = assessCrewRequest(short.data);
+  assert.deepEqual([lead.crew, lead.qualified, lead.soon, lead.judged], [true, false, false, false]);
+  assert.equal(assessCrewRequest({ ...person, ...requirement }).judged, true);
 });
 
 test('enum fields reject unknown ids, repeats and bad PIN codes', () => {
@@ -260,6 +266,22 @@ test('lead flags reach the staff email only, never the buyer copy', async () => 
   const [staff, buyer] = sent;
   const staffDetails = staff.recipients[0].variables.details;
   assert.match(staffDetails, /Qualified \(20\+ workers, 3\+ months\): YES/);
+  // Without a duration the lead is not judged, and the email says so rather than "no".
+  {
+    const sentShort = [];
+    globalThis.fetch = async (url, init) => { sentShort.push(JSON.parse(init.body)); return new Response(JSON.stringify({ status: 'success', data: { message_id: 'm2' } }), { status: 200 }); };
+    console.info = () => {};
+    try {
+      await sendInternalContactEmail({ ...person, company: 'Acme', roles: ['packing'], headcountBand: '50-99', siteState: 'UK', siteCity: 'Haridwar' }, { caseId: 'REQ-UNIT2' });
+    } finally {
+      globalThis.fetch = realFetch;
+      console.info = realInfo;
+    }
+    const short = sentShort[0].recipients[0].variables.details;
+    assert.match(short, /Qualified \(20\+ workers, 3\+ months\): not judged \(no duration given; ask on the call\)/);
+    assert.match(short, /20 or more workers: YES/);
+    assert.doesNotMatch(short, /Starts within 4 weeks/);
+  }
   assert.match(staffDetails, /Starts within 4 weeks: yes/);
   assert.match(staffDetails, /Possibly out of scope: Security guards/);
   assert.match(staffDetails, /Came from: \/locations\/haridwar/);

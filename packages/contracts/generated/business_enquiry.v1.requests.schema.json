@@ -229,7 +229,7 @@
           "maxLength": 200
         },
         "details": {
-          "description": "Anything else about the requirement: the work, the site, timings. Required when the structured requirement fields are left out.",
+          "description": "Anything else about the requirement: the work, the site, timings. Required when the requirement fields (roles, headcountBand, siteState, siteCity) are left out.",
           "example": "Need housekeeping teams, fabrication fitters, and preventive maintenance support for a new line.",
           "type": "string",
           "maxLength": 10000
@@ -240,7 +240,7 @@
         "phone"
       ],
       "additionalProperties": false,
-      "description": "Send either details, or the requirement fields roles, headcountBand, siteState, siteCity, startWindow and durationBand, or, for a call back, requestType callback with headcountBand.",
+      "description": "Send either details, or the requirement fields roles, headcountBand, siteState and siteCity (startWindow, durationBand and shiftPattern when known), or, for a call back, requestType callback with headcountBand.",
       "anyOf": [
         {
           "required": [
@@ -252,9 +252,7 @@
             "roles",
             "headcountBand",
             "siteState",
-            "siteCity",
-            "startWindow",
-            "durationBand"
+            "siteCity"
           ]
         },
         {

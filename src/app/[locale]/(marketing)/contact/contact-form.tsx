@@ -4,7 +4,7 @@ import Script from "next/script";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { z } from "zod/v4";
-import { ArrowRight, ArrowUpRight, Check, Loader2 } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check, Loader2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -41,6 +41,13 @@ import { clusters } from "@/content/registry/clusters";
  * "Request a crew" (PLAN §8.1): step 1 the requirement, step 2 who to talk
  * to. The contract (contact.contract.json) accepts older, looser enquiries;
  * this form asks for the structured requirement and the company.
+ *
+ * Step 1 asks three things: the work, how many workers and where the site
+ * is (10 Nov 2026). Two of three people who started the form left on this
+ * step when it also insisted on a start date and a duration, which someone
+ * looking for labour is often still guessing. Those, the shifts, the PIN
+ * code and the free text are optional, behind one "Add" line
+ * (MORE_FIELDS); our team asks what is missing when it calls.
  *
  * ?type=assessment asks the same questions for a site assessment.
  * ?type=compliance asks what compliance help the business needs instead of
@@ -91,14 +98,23 @@ const EMPTY: Values = {
 type TextField = Exclude<Field, "roles" | "needs">;
 const TEXT_FIELDS = (Object.keys(EMPTY) as Field[]).filter((key): key is TextField => key !== "roles" && key !== "needs");
 
+/**
+ * The kinds of work the form offers: the ones most crews are asked for, and
+ * "Something else". The contract keeps every id (links, agents and older
+ * drafts may carry the others), and one already chosen is shown too.
+ */
+const FORM_ROLES = ["factory-helpers", "packing", "machine-operators", "loading-unloading", "warehouse", "housekeeping", "iti-trades", "other"];
+/** The optional answers behind "Add start date, duration and shifts". */
+const MORE_FIELDS = ["startWindow", "durationBand", "shiftPattern", "sitePincode", "details"] as const;
+
 const STEP_1 = z.object({
   roles: contactFieldSchema("roles", { required: true }),
   headcountBand: contactFieldSchema("headcountBand", { required: true }),
   siteState: contactFieldSchema("siteState", { required: true }),
   siteCity: contactFieldSchema("siteCity", { required: true }),
   sitePincode: contactFieldSchema("sitePincode"),
-  startWindow: contactFieldSchema("startWindow", { required: true }),
-  durationBand: contactFieldSchema("durationBand", { required: true }),
+  startWindow: contactFieldSchema("startWindow"),
+  durationBand: contactFieldSchema("durationBand"),
   shiftPattern: contactFieldSchema("shiftPattern"),
   details: contactFieldSchema("details"),
 });
@@ -130,7 +146,7 @@ const FIRST_STATES: string[] = [...new Set(clusters.filter((c) => c.buyerHub).fl
 /** Position in `list`, or after it. */
 const rank = (list: readonly string[], code: string) => (list.includes(code) ? list.indexOf(code) : list.length);
 
-const STEP_1_ORDER: Field[] = ["roles", "headcountBand", "siteState", "siteCity", "sitePincode", "startWindow", "durationBand", "shiftPattern", "details"];
+const STEP_1_ORDER: Field[] = ["roles", "headcountBand", "siteState", "siteCity", "startWindow", "durationBand", "shiftPattern", "sitePincode", "details"];
 const STEP_1_COMPLIANCE_ORDER: Field[] = ["needs", "siteState", "headcountBand", "details"];
 const STEP_2_ORDER: Field[] = ["name", "company", "role", "phone", "email"];
 
@@ -300,6 +316,8 @@ export function ContactForm() {
 
   const [values, setValues] = useState<Values>(initial);
   const [step, setStep] = useState<1 | 2>(1);
+  // The optional answers: shown once asked for, or when a link or draft already filled one.
+  const [moreAsked, setMoreAsked] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
   const [triedStep, setTriedStep] = useState<0 | 1 | 2>(0);
   const [submitting, setSubmitting] = useState(false);
@@ -383,7 +401,7 @@ export function ContactForm() {
       ...(next === 2 &&
         (isCompliance
           ? { headcount_band: values.headcountBand || "none", needs: values.needs.length }
-          : { headcount_band: values.headcountBand, start_window: values.startWindow, duration_band: values.durationBand, roles: values.roles.length })),
+          : { headcount_band: values.headcountBand, start_window: values.startWindow || "none", duration_band: values.durationBand || "none", roles: values.roles.length })),
     });
   }
 
@@ -465,8 +483,8 @@ export function ContactForm() {
               form: "crew",
               cluster: values.pageCluster || "none",
               headcount_band: values.headcountBand,
-              duration_band: values.durationBand,
-              start_window: values.startWindow,
+              duration_band: values.durationBand || "none",
+              start_window: values.startWindow || "none",
               qualified: qualified ? "yes" : "no",
             }
       );
@@ -486,6 +504,7 @@ export function ContactForm() {
     setValues(initial());
     setErrors({});
     setTriedStep(0);
+    setMoreAsked(false);
     setError(null);
     setSendFailure(null);
     resetTurnstile();
@@ -523,6 +542,9 @@ export function ContactForm() {
     );
   }
 
+  const showMore = moreAsked || MORE_FIELDS.some((key) => values[key]);
+  // The offered kinds of work, plus any other a link or draft chose.
+  const roleOptions = Object.fromEntries(Object.entries(ROLE_OPTIONS).filter(([id]) => FORM_ROLES.includes(id) || values.roles.includes(id)));
   const invalid = (key: Field) => Boolean(errors[key]) || undefined;
   const describedBy = (key: Field) => (errors[key] ? `${key}-error` : undefined);
   const failedChecks = triedStep ? [...Object.keys(errors).filter((key) => errors[key as Field]), sendFailure].filter(Boolean).join(",") : undefined;
@@ -636,7 +658,7 @@ export function ContactForm() {
           <section className="crew-section">
             <h3 id="roles-q" className="crew-question">What work is it?</h3>
             <p className="quick-hint">Choose one or more.</p>
-            <Pills id="roles" options={ROLE_OPTIONS} value={values.roles} onPick={toggleRole} invalid={invalid("roles")} />
+            <Pills id="roles" options={roleOptions} value={values.roles} onPick={toggleRole} invalid={invalid("roles")} />
             <FieldError id="roles" error={errors.roles} />
           </section>
 
@@ -672,8 +694,30 @@ export function ContactForm() {
                 />
                 <FieldError id="siteCity" error={errors.siteCity} />
               </div>
-              <div>
-                <Label htmlFor="sitePincode" className="text-sm font-medium">PIN code<Optional /></Label>
+            </div>
+          </section>
+
+          {showMore ? (
+            <div id="crew-more" className="crew-more">
+          <section className="crew-section">
+            <h3 id="startWindow-q" className="crew-question">When should work start?<Optional /></h3>
+            <Pills id="startWindow" options={START_WINDOW_OPTIONS} value={values.startWindow} onPick={(id) => set("startWindow", values.startWindow === id ? "" : id)} invalid={invalid("startWindow")} />
+            <FieldError id="startWindow" error={errors.startWindow} />
+          </section>
+
+          <section className="crew-section">
+            <h3 id="durationBand-q" className="crew-question">For how long?<Optional /></h3>
+            <Pills id="durationBand" options={DURATION_BAND_OPTIONS} value={values.durationBand} onPick={(id) => set("durationBand", values.durationBand === id ? "" : id)} invalid={invalid("durationBand")} />
+            <FieldError id="durationBand" error={errors.durationBand} />
+          </section>
+
+          <section className="crew-section">
+            <h3 id="shiftPattern-q" className="crew-question">Shift pattern<Optional /></h3>
+            <Pills id="shiftPattern" options={SHIFT_PATTERN_OPTIONS} value={values.shiftPattern} onPick={(id) => set("shiftPattern", values.shiftPattern === id ? "" : id)} />
+          </section>
+
+          <section className="crew-section crew-pin">
+            <Label htmlFor="sitePincode" className="crew-question block">Site PIN code<Optional /></Label>
                 <Input
                   id="sitePincode"
                   name="sitePincode"
@@ -689,25 +733,6 @@ export function ContactForm() {
                   className={cn(field, "font-data", errors.sitePincode && "border-destructive")}
                 />
                 <FieldError id="sitePincode" error={errors.sitePincode} />
-              </div>
-            </div>
-          </section>
-
-          <section className="crew-section">
-            <h3 id="startWindow-q" className="crew-question">When should work start?</h3>
-            <Pills id="startWindow" options={START_WINDOW_OPTIONS} value={values.startWindow} onPick={(id) => set("startWindow", id)} invalid={invalid("startWindow")} />
-            <FieldError id="startWindow" error={errors.startWindow} />
-          </section>
-
-          <section className="crew-section">
-            <h3 id="durationBand-q" className="crew-question">For how long?</h3>
-            <Pills id="durationBand" options={DURATION_BAND_OPTIONS} value={values.durationBand} onPick={(id) => set("durationBand", id)} invalid={invalid("durationBand")} />
-            <FieldError id="durationBand" error={errors.durationBand} />
-          </section>
-
-          <section className="crew-section">
-            <h3 id="shiftPattern-q" className="crew-question">Shift pattern<Optional /></h3>
-            <Pills id="shiftPattern" options={SHIFT_PATTERN_OPTIONS} value={values.shiftPattern} onPick={(id) => set("shiftPattern", values.shiftPattern === id ? "" : id)} />
           </section>
 
           <section className="crew-section">
@@ -725,6 +750,24 @@ export function ContactForm() {
             />
             <FieldError id="details" error={errors.details} />
           </section>
+            </div>
+          ) : (
+            <button
+              type="button"
+              className="crew-more-open"
+              aria-expanded={false}
+              aria-controls="crew-more"
+              onClick={() => {
+                markStarted();
+                setMoreAsked(true);
+                track("contact_form_more", { form_type: formType });
+              }}
+            >
+              <Plus size={18} aria-hidden="true" />
+              Add start date, duration and shifts
+              <Optional />
+            </button>
+          )}
 
           <div className="crew-actions">
             <Button type="submit" size="lg" className="crew-next">

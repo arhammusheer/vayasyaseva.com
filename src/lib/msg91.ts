@@ -325,17 +325,22 @@ export function createContactCaseId(date = new Date()) {
  * response or the page.
  */
 function staffFlagLines(data: ContactFormData) {
-  const { crew, callback, qualified, soon, outOfScope, headcountBand } = assessCrewRequest(data);
+  const { crew, callback, qualified, judged, soon, outOfScope, headcountBand } = assessCrewRequest(data);
+  const twentyPlus = `20 or more workers: ${headcountBand && headcountBand !== "1-9" && headcountBand !== "10-19" ? "YES" : "no"}`;
   return [
     // A call back has no duration or start yet, so it is not judged; compliance
     // help is not a crew request at all.
     ...(callback
       ? [
           "CALL BACK REQUESTED: phone them within one working day (the form says so). Ask the work, the site, the start and the duration on the call.",
-          `20 or more workers: ${headcountBand && headcountBand !== "1-9" && headcountBand !== "10-19" ? "YES" : "no"}`,
+          twentyPlus,
         ]
       : crew
-        ? [`Qualified (20+ workers, 3+ months): ${qualified ? "YES" : "no"}`, `Starts within 4 weeks: ${soon ? "yes" : "no"}`]
+        ? [
+            // The form no longer insists on start and duration (10 Nov 2026): say what was not asked, never "no".
+            ...(judged ? [`Qualified (20+ workers, 3+ months): ${qualified ? "YES" : "no"}`] : ["Qualified (20+ workers, 3+ months): not judged (no duration given; ask on the call)", twentyPlus]),
+            ...(data.startWindow || data.targetStartDate ? [`Starts within 4 weeks: ${soon ? "yes" : "no"}`] : []),
+          ]
         : ["Compliance help: guide them and connect them with the Vayasya Network (not a crew request)"]),
     ...outOfScope.map((id) => `Possibly out of scope: ${outOfScopeLabel(id)}`),
     ...(data.pageCluster ? [`Page cluster: ${data.pageCluster}`] : []),

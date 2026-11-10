@@ -1,5 +1,5 @@
 {
-  "version": "1.4.0",
+  "version": "1.5.0",
   "request": {
     "fields": {
       "name": {
@@ -257,7 +257,7 @@
       "details": {
         "type": "string",
         "required": false,
-        "description": "Anything else about the requirement: the work, the site, timings. Required when the structured requirement fields are left out.",
+        "description": "Anything else about the requirement: the work, the site, timings. Required when the requirement fields (roles, headcountBand, siteState, siteCity) are left out.",
         "requiredMessage": "Tell us about the requirement",
         "example": "Need housekeeping teams, fabrication fitters, and preventive maintenance support for a new line.",
         "maxLength": 10000
@@ -271,16 +271,14 @@
         "roles",
         "headcountBand",
         "siteState",
-        "siteCity",
-        "startWindow",
-        "durationBand"
+        "siteCity"
       ],
       [
         "requestType=callback",
         "headcountBand"
       ]
     ],
-    "requireOneOfMessage": "Send either details, or the requirement fields roles, headcountBand, siteState, siteCity, startWindow and durationBand, or, for a call back, requestType callback with headcountBand."
+    "requireOneOfMessage": "Send either details, or the requirement fields roles, headcountBand, siteState and siteCity (startWindow, durationBand and shiftPattern when known), or, for a call back, requestType callback with headcountBand."
   },
   "responses": {
     "successMessage": "Requirement received. Our team will review it and reply. We aim to reply within two working days (Monday to Saturday, IST).",

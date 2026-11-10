@@ -1,0 +1,16 @@
+{
+  "schema": "canonical",
+  "note": "A subscribe carries no token (strict).",
+  "data": {
+    "action": "subscribe",
+    "ref": "ALR-20261110-0A1B2C3D",
+    "receivedAt": "2026-11-10T09:30:00.000Z",
+    "email": "hr@example.com",
+    "states": [
+      "uttarakhand"
+    ],
+    "sourcePath": null,
+    "noticeVersion": "2026-11-10",
+    "token": "hT3kq9ZxW2mVb7PcJ4nRs8Ld6YfGa1Ue0oQiXyNzKw5"
+  }
+}

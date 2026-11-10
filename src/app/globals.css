@@ -2718,7 +2718,38 @@ a:hover > svg {
 .crew-form {
   max-width: 680px;
 }
-/* The call back: one button beside the full form; its four fields open in a dialog. */
+/* Rate alerts under a wage page's rates: a line and a button; the email field opens in the same dialog. */
+.rate-alert {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.rate-alert-line {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+.alert-link {
+  max-width: 640px;
+}
+.alert-link h2 {
+  font-family: var(--stack-display);
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.alert-link p {
+  margin: 12px 0 20px;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+/* The small dialogs: the call back on /contact (one button beside the full form; its four fields open here) and the rate alert signup. */
 .callback {
   max-width: 420px;
 }

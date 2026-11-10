@@ -1,0 +1,7 @@
+{
+  "schema": "RateAlertTokenRequest",
+  "note": "A confirm or unsubscribe link's token.",
+  "data": {
+    "token": "hT3kq9ZxW2mVb7PcJ4nRs8Ld6YfGa1Ue0oQiXyNzKw5"
+  }
+}

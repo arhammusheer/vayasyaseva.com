@@ -7,6 +7,10 @@
  *   lead         business_enquiry.v1 / compliance_help.v1; retries twice,
  *                never throws, true once Windmill has it in the lead inbox
  *
+ *   alert        rate_alert.v1 (subscribe, confirm, unsubscribe); the signed
+ *                route only, since Windmill's answer is the result: its
+ *                status and body, or 503 when the site has no signing secret
+ *
  * With SUBMISSION_SIGNING_SECRET set, both go as envelope.v1 to the one signed
  * route, webhook/vspl-submission (HMAC over timestamp and body,
  * packages/contracts/src/signing.ts). Without it, the older routes as before
@@ -16,6 +20,7 @@
 import { envelopeSchema, type Envelope } from "@vspl/contracts/envelope";
 import type { JobApplicationCanonical } from "@vspl/contracts/job-application";
 import type { LeadCanonical } from "@vspl/contracts/business-enquiry";
+import type { RateAlertCanonical } from "@vspl/contracts/rate-alert";
 import { signRequest } from "@vspl/contracts/signing";
 import { forwardLead } from "@/lib/lead-forward";
 import { forwardToIntake } from "@/lib/talent-intake/server";
@@ -23,17 +28,29 @@ import { forwardToIntake } from "@/lib/talent-intake/server";
 export interface Transport {
   application(payload: JobApplicationCanonical, meta: { idempotencyKey: string | null }): Promise<void>;
   lead(payload: LeadCanonical, meta: { idempotencyKey: string | null }): Promise<boolean>;
+  alert(payload: RateAlertCanonical): Promise<AlertAnswer>;
+}
+
+/** Windmill's answer to a rate alert action: 202 (subscribe), 200 or 404 (a link's token), else a failure. */
+export interface AlertAnswer {
+  status: number;
+  /** The states the address follows, on 200. */
+  states?: string[];
 }
 
 /** The older routes: the talent intake webhook and the leads webhook. */
 export const webhookTransport: Transport = {
   application: (payload) => forwardToIntake(payload),
   lead: (payload) => forwardLead(payload),
+  // The older routes have no rate alerts: they need the signed route.
+  alert: async () => ({ status: 503 }),
 };
 
 const SUBMISSION_URL = "https://hooks.vayasyaseva.com/api/r/webhook/vspl-submission";
 const APPLICATION_TIMEOUT_MS = 20_000;
 const LEAD_TIMEOUT_MS = 8_000;
+/** A subscribe waits for Windmill to send the confirmation email. */
+const ALERT_TIMEOUT_MS = 25_000;
 /** Waits before the second and third tries of a lead (Windmill files a case ID once). */
 const LEAD_RETRY_DELAYS_MS = [1_000, 3_000];
 
@@ -41,6 +58,10 @@ export const signingSecret = () => process.env.SUBMISSION_SIGNING_SECRET?.trim()
 
 /** POSTs a signed envelope; the answer's status. */
 async function postEnvelope(envelope: Envelope, timeoutMs: number, fetchImpl: typeof fetch): Promise<number> {
+  return (await sendEnvelope(envelope, timeoutMs, fetchImpl)).status;
+}
+
+async function sendEnvelope(envelope: Envelope, timeoutMs: number, fetchImpl: typeof fetch): Promise<Response> {
   const secret = signingSecret();
   if (!secret) throw new Error("SUBMISSION_SIGNING_SECRET is not set");
   // Never send what Windmill would refuse: a bug here should fail loudly on our side.
@@ -52,7 +73,7 @@ async function postEnvelope(envelope: Envelope, timeoutMs: number, fetchImpl: ty
     body,
     signal: AbortSignal.timeout(timeoutMs),
   });
-  return res.status;
+  return res;
 }
 
 const envelopeOf = (type: Envelope["type"], id: string, payload: unknown, idempotencyKey: string | null) =>
@@ -84,6 +105,18 @@ export function envelopeTransport(fetchImpl: typeof fetch = fetch, retryDelays: 
         const delay = retryDelays[attempt - 1];
         if (!retry || delay === undefined) return false;
         await new Promise((resolve) => setTimeout(resolve, delay));
+      }
+    },
+    async alert(payload) {
+      try {
+        const res = await sendEnvelope(envelopeOf("rate_alert.v1", payload.ref, payload, null), ALERT_TIMEOUT_MS, fetchImpl);
+        const body: unknown = res.status === 200 ? await res.json().catch(() => null) : null;
+        const states = body && typeof body === "object" && Array.isArray((body as { states?: unknown }).states) ? (body as { states: unknown[] }).states.filter((s): s is string => typeof s === "string") : undefined;
+        if (res.status !== 200 && res.status !== 202 && res.status !== 404) console.error("[RATE ALERT FORWARD FAILED]", { ref: payload.ref, action: payload.action, status: res.status });
+        return { status: res.status, ...(states ? { states } : {}) };
+      } catch (error) {
+        console.error("[RATE ALERT FORWARD FAILED]", { ref: payload.ref, action: payload.action, error: error instanceof Error ? error.name : "unknown" });
+        return { status: 502 };
       }
     },
   };

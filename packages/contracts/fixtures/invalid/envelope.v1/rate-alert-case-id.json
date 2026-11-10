@@ -1,0 +1,17 @@
+{
+  "schema": "canonical",
+  "note": "A rate alert under an enquiry's case ID.",
+  "data": {
+    "v": 1,
+    "sentAt": "2026-11-10T09:30:01.000Z",
+    "idempotencyKey": null,
+    "type": "rate_alert.v1",
+    "id": "REQ-20261110-0A1B2C3D",
+    "payload": {
+      "action": "confirm",
+      "ref": "ALR-20261110-0A1B2C3D",
+      "receivedAt": "2026-11-10T09:30:00.000Z",
+      "token": "hT3kq9ZxW2mVb7PcJ4nRs8Ld6YfGa1Ue0oQiXyNzKw5"
+    }
+  }
+}

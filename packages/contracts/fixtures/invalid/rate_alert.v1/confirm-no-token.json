@@ -1,0 +1,9 @@
+{
+  "schema": "canonical",
+  "note": "A confirm without its token.",
+  "data": {
+    "action": "confirm",
+    "ref": "ALR-20261110-0A1B2C3E",
+    "receivedAt": "2026-11-10T09:31:00.000Z"
+  }
+}

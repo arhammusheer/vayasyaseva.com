@@ -22,12 +22,13 @@ const { setIdempotencyStore, memoryIdempotencyStore } = await importTs('src/serv
 const routes = {
   ...(await importTs('src/server/submissions/types/business-enquiry.ts')),
   ...(await importTs('src/server/submissions/types/job-application.ts')),
+  ...(await importTs('src/server/submissions/types/rate-alert.ts')),
 };
 const { issueTicket } = await importTs('src/lib/talent-intake/server.ts');
 
 // --- The outside world -------------------------------------------------------------
 
-const world = { emails: 0, emailFails: false, uploads: new Map(), deleted: [], applications: [], leads: [], applicationFails: false, notified: [] };
+const world = { emails: 0, emailFails: false, uploads: new Map(), deleted: [], applications: [], leads: [], applicationFails: false, notified: [], alerts: [], alertAnswer: { status: 202 } };
 const deferred = [];
 setDeferForTests((task) => deferred.push(task));
 setTransport({
@@ -38,6 +39,10 @@ setTransport({
   async lead(payload, meta) {
     world.leads.push({ payload, meta });
     return true;
+  },
+  async alert(payload) {
+    world.alerts.push(payload);
+    return world.alertAnswer;
   },
 });
 globalThis.fetch = async (input, init = {}) => {
@@ -85,7 +90,7 @@ async function post(route, { body, headers = {}, ip = freshIp(), raw } = {}) {
 }
 
 function reset() {
-  Object.assign(world, { emails: 0, emailFails: false, deleted: [], applications: [], leads: [], applicationFails: false, notified: [] });
+  Object.assign(world, { emails: 0, emailFails: false, deleted: [], applications: [], leads: [], applicationFails: false, notified: [], alerts: [], alertAnswer: { status: 202 } });
   world.uploads.clear();
   deferred.length = 0;
   setIdempotencyStore(memoryIdempotencyStore());
@@ -250,6 +255,69 @@ test('contact routes: a failed staff email tells the notification hub after the 
     delete process.env.NOTIFY_URL;
     delete process.env.NOTIFY_INGEST_SECRET;
   }
+});
+
+// --- /api/alerts/* (minimum wage rate alerts) ----------------------------------------
+
+const ALERT_TOKEN = 'hT3kq9ZxW2mVb7PcJ4nRs8Ld6YfGa1Ue0oQiXyNzKw5';
+
+test('rate alerts: subscribe needs Turnstile and a published state; the address is lower-cased; the answer says nothing of the list', async () => {
+  reset();
+  const body = { email: ' HR@Example.com ', states: ['uttarakhand'], sourcePath: '/minimum-wages/uttarakhand' };
+  const noToken = await post(routes.alertSubscribeRoute, { body: { ...body, email: 'hr@example.com' }, headers: formHeaders({ 'x-turnstile-token': '' }) });
+  assert.equal(noToken.status, 403);
+  for (const bad of [{ ...body, email: 'not an address' }, { ...body, email: 'hr@example.com', states: [] }, { ...body, email: 'hr@example.com', states: ['atlantis'] }, { email: 'hr@example.com' }]) {
+    assert.equal((await post(routes.alertSubscribeRoute, { body: bad, headers: formHeaders() })).status, 400);
+  }
+  assert.equal(world.alerts.length, 0);
+  const ok = await post(routes.alertSubscribeRoute, { body: { ...body, email: 'HR@Example.com' }, headers: formHeaders() });
+  assert.equal(ok.status, 200);
+  assert.deepEqual(ok.json, { success: true });
+  const [sent] = world.alerts;
+  assert.equal(sent.action, 'subscribe');
+  assert.match(sent.ref, /^ALR-\d{8}-[0-9A-F]{8}$/);
+  assert.deepEqual([sent.email, sent.states, sent.sourcePath, sent.noticeVersion], ['hr@example.com', ['uttarakhand'], '/minimum-wages/uttarakhand', '2026-11-10']);
+  // What the site forwards is the contract's canonical shape.
+  const { rateAlertCanonicalSchema } = await import('@vspl/contracts/rate-alert');
+  assert.equal(rateAlertCanonicalSchema.safeParse(sent).success, true);
+});
+
+test('rate alerts: 502 when the confirmation email could not go; 429 for the honeypot and a fourth try for one address', async () => {
+  reset();
+  const body = { email: 'limit@example.com', states: ['punjab'] };
+  world.alertAnswer = { status: 502 };
+  const failed = await post(routes.alertSubscribeRoute, { body, headers: formHeaders() });
+  assert.equal(failed.status, 502);
+  assert.equal(failed.json.error, 'We could not send the confirmation email. Please try again in a few minutes.');
+  world.alertAnswer = { status: 202 };
+  assert.equal((await post(routes.alertSubscribeRoute, { body, headers: formHeaders({ 'x-contact-form-honeypot': 'bot' }) })).status, 429);
+  assert.equal((await post(routes.alertSubscribeRoute, { body, headers: formHeaders() })).status, 200);
+  assert.equal((await post(routes.alertSubscribeRoute, { body, headers: formHeaders() })).status, 200);
+  assert.equal((await post(routes.alertSubscribeRoute, { body, headers: formHeaders() })).status, 429, 'three an hour per address');
+});
+
+test('rate alerts: confirm and unsubscribe relay the token; a one-click unsubscribe carries it in the query; an unknown link is 404', async () => {
+  reset();
+  world.alertAnswer = { status: 200, states: ['punjab', 'uttarakhand'] };
+  const confirmed = await post(routes.alertConfirmRoute, { body: { token: ALERT_TOKEN } });
+  assert.equal(confirmed.status, 200);
+  assert.deepEqual(confirmed.json, { success: true, states: ['punjab', 'uttarakhand'] });
+  assert.deepEqual([world.alerts[0].action, world.alerts[0].token], ['confirm', ALERT_TOKEN]);
+  // RFC 8058: the mail client posts "List-Unsubscribe=One-Click" as a form, with the token in the URL.
+  const request = new NextRequest(`https://www.vayasyaseva.com/api/alerts/unsubscribe?t=${ALERT_TOKEN}`, {
+    method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded', 'x-forwarded-for': freshIp() }, body: 'List-Unsubscribe=One-Click',
+  });
+  const oneClick = await runSubmission(routes.alertUnsubscribeRoute, request);
+  assert.equal(oneClick.status, 200);
+  assert.deepEqual([world.alerts[1].action, world.alerts[1].token], ['unsubscribe', ALERT_TOKEN]);
+  world.alertAnswer = { status: 404 };
+  const gone = await post(routes.alertUnsubscribeRoute, { body: { token: ALERT_TOKEN } });
+  assert.equal(gone.status, 404);
+  assert.deepEqual(gone.json, { error: 'This link is no longer valid.' });
+  assert.equal((await post(routes.alertConfirmRoute, { body: { token: 'short' } })).status, 400);
+  assert.equal(world.alerts.length, 3, 'a malformed token is never forwarded');
+  world.alertAnswer = { status: 503 };
+  assert.equal((await post(routes.alertConfirmRoute, { body: { token: ALERT_TOKEN } })).status, 502);
 });
 
 // --- /api/agent/contact (no Turnstile) --------------------------------------------------
@@ -493,6 +561,14 @@ test('envelope transport: signed envelope.v1 to webhook/vspl-submission; the old
     assert.equal(await flaky.lead(lead, { idempotencyKey: null }), true);
     assert.equal(tries, 2);
     assert.equal(JSON.parse(sent[0].i.body).type, 'compliance_help.v1');
+    // A rate alert action: its own type, the answer's status and states; the older routes cannot carry it.
+    const alertSent = [];
+    const alerts = envelopeTransport(async (u, i) => (alertSent.push(JSON.parse(i.body)), Response.json({ ok: true, states: ['punjab'] }, { status: 200 })), [0, 0]);
+    const confirm = { action: 'confirm', ref: 'ALR-20261110-0A1B2C3D', receivedAt: '2026-11-10T09:30:00.000Z', token: 'hT3kq9ZxW2mVb7PcJ4nRs8Ld6YfGa1Ue0oQiXyNzKw5' };
+    assert.deepEqual(await alerts.alert(confirm), { status: 200, states: ['punjab'] });
+    assert.deepEqual([alertSent[0].type, alertSent[0].id, alertSent[0].payload.action], ['rate_alert.v1', 'ALR-20261110-0A1B2C3D', 'confirm']);
+    assert.deepEqual(await envelopeTransport(async () => { throw new Error('down'); }, [0, 0]).alert(confirm), { status: 502 });
+    assert.deepEqual(await webhookTransport.alert(confirm), { status: 503 });
     // A lead the contract refuses is never sent, and never retried.
     assert.equal(await flaky.lead({ ...lead, caseId: 'nope' }, { idempotencyKey: null }), false);
     assert.equal(tries, 2);

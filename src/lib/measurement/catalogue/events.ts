@@ -63,6 +63,8 @@ const TRACKER = "src/components/analytics-tracker.tsx";
 const QUICK = "src/components/jobs/quick-apply.tsx";
 const CONTACT = "src/app/[locale]/(marketing)/contact/contact-form.tsx";
 const REPORT = "src/context/report.ts";
+const ALERT = "src/components/reference/rate-alert-signup.tsx";
+const ALERT_LINK = "src/app/[locale]/(reference)/alerts/alert-link.tsx";
 const CONSENT = "src/components/measurement/consent-banner.tsx";
 
 const FORM_TIMING = anon("form_seconds field_seconds corrections pastes");
@@ -154,6 +156,13 @@ export const EVENTS = {
     source: CONTACT,
   },
 
+  // Minimum wage rate alerts (docs/rate-alerts.md): the state and fixed labels, never the address.
+  rate_alert_open: { purpose: "form-behaviour", sinks: TRACKED, props: anon("state"), consumers: ["form-funnel"], source: ALERT },
+  rate_alert_subscribe: { purpose: "form-behaviour", sinks: TRACKED, props: anon("state"), consumers: ["form-funnel"], source: ALERT },
+  rate_alert_error: { purpose: "form-behaviour", sinks: TRACKED, props: anon("state reason"), consumers: ["form-funnel"], source: ALERT },
+  rate_alert_confirm: { purpose: "form-behaviour", sinks: TRACKED, props: anon("states"), consumers: ["form-funnel"], source: ALERT_LINK },
+  rate_alert_unsubscribe: { purpose: "form-behaviour", sinks: TRACKED, props: anon("states"), consumers: ["form-funnel"], source: ALERT_LINK },
+
   // Visitor context (docs/visitor-context.md): the detailed events, also to GA4 with Allow All.
   area_intent: {
     purpose: "area-intent",
@@ -222,6 +231,13 @@ export const EVENTS = {
     props: anon("channel cluster qualified request_type"),
     consumers: [],
     source: "src/app/api/contact/route.ts, src/app/api/agent/contact/route.ts",
+  },
+  rate_alert: {
+    purpose: "server-counts",
+    sinks: ["umami-server"],
+    props: anon("action states result"),
+    consumers: [],
+    source: "src/server/submissions/types/rate-alert.ts",
   },
   // A crawler or assistant, never a person: which AI read which page (src/lib/ai-fetch.ts).
   ai_fetch: {

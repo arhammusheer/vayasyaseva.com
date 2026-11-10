@@ -13,7 +13,7 @@ export const analyticsSummary = noticeRows();
 export const privacyContent = `
 # Privacy Policy
 
-*Last updated: 19 October 2026*
+*Last updated: 10 November 2026*
 
 ## 1. Who this notice covers
 
@@ -24,6 +24,8 @@ Our contact details are in Section 11. The Site is intended for businesses and f
 ## 2. Information we handle
 
 **Enquiries you send us.** The business enquiry form (www.vayasyaseva.com/contact) asks for your requirement (the work, headcount, site, start and duration and, optionally, shifts and other details) and your contact details (name, company and phone number and, optionally, designation and email address). It also records the page you came from, any area that page is about, the technical information needed to deliver and protect the enquiry, and the version of this notice in force. Please do not put sensitive personal information in the free-text field.
+
+**Minimum wage alerts.** On a state's minimum wage page you can ask for an email when that state's rates change. We keep the email address you give, the states you follow, the page you signed up on and the version of this notice in force. We first send one email with a link to confirm the address; if the link is not opened, nothing else is sent and the address is deleted after 7 days. We use the address only to send these alerts: we do not add it to our enquiry records, use it for other messages or share it. Every alert has a link that stops them, and stopping deletes the address.
 
 **Job applications.** Details you send through the jobs pages are described in Section 10.
 
@@ -65,13 +67,13 @@ Where a legal basis is required, we rely on your request and the applicable lawf
 
 ## 5. Who receives information
 
-Our authorised team and service providers access information only as needed for the purposes above. Providers include our website host and security services (including Cloudflare Turnstile on the forms), Vercel Web Analytics, Google Analytics and Google Ads when additional measurement is allowed, and the email delivery provider used to send your enquiry to our team and a copy to you. We do not sell enquiry details or share them with other businesses for their own marketing. We may also disclose information when required by law, to professional advisers under appropriate duties, or as part of a legitimate business transfer.
+Our authorised team and service providers access information only as needed for the purposes above. Providers include our website host and security services (including Cloudflare Turnstile on the forms), Vercel Web Analytics, Google Analytics and Google Ads when additional measurement is allowed, the email delivery provider used to send your enquiry to our team and a copy to you, and Resend, which delivers the minimum wage alerts. We do not sell enquiry details or share them with other businesses for their own marketing. We may also disclose information when required by law, to professional advisers under appropriate duties, or as part of a legitimate business transfer.
 
 The providers that handle job applications are listed in Section 10. These providers may process data outside India. Their own privacy documentation describes their infrastructure and practices: [Vercel Web Analytics](https://vercel.com/docs/analytics/privacy-policy), [Google Analytics](https://support.google.com/analytics/answer/6004245), [Google Ads](https://policies.google.com/technologies/ads) and, for recordings made until 3 October 2026, [Microsoft Clarity](https://learn.microsoft.com/en-us/clarity/setup-and-installation/privacy-disclosure). A link to another website is governed by that site's own notice.
 
 ## 6. How long we keep it
 
-Job applications are kept as described in Section 10. We keep enquiries and the correspondence about them for up to 24 months after our last contact with you, and then delete them. If an enquiry leads to a contract, the records needed for that contract are kept for as long as the contract, any dispute and our legal duties require. Operational logs are retained according to our hosting and security configurations. Vercel says the visitor hash used by Web Analytics is discarded after 24 hours; aggregate reports remain subject to the project's retention settings. Google Analytics data is retained according to the property's configured retention settings. Google Ads conversion data is kept for the periods Google sets for its advertising products. Microsoft Clarity recordings made until 3 October 2026 are kept for the periods Microsoft sets (about 30 days, and up to 13 months for heatmaps and saved recordings). Umami keeps recordings and heatmaps for one year, unless we save a recording to investigate a problem; a nightly job deletes older ones. Unfinished-form records are deleted after 30 days. We review these settings and delete or anonymise information when it is no longer needed, subject to legal requirements.
+Job applications are kept as described in Section 10. We keep enquiries and the correspondence about them for up to 24 months after our last contact with you, and then delete them. If an enquiry leads to a contract, the records needed for that contract are kept for as long as the contract, any dispute and our legal duties require. An address signed up for minimum wage alerts is kept until you stop the alerts, and is then deleted. Operational logs are retained according to our hosting and security configurations. Vercel says the visitor hash used by Web Analytics is discarded after 24 hours; aggregate reports remain subject to the project's retention settings. Google Analytics data is retained according to the property's configured retention settings. Google Ads conversion data is kept for the periods Google sets for its advertising products. Microsoft Clarity recordings made until 3 October 2026 are kept for the periods Microsoft sets (about 30 days, and up to 13 months for heatmaps and saved recordings). Umami keeps recordings and heatmaps for one year, unless we save a recording to investigate a problem; a nightly job deletes older ones. Unfinished-form records are deleted after 30 days. We review these settings and delete or anonymise information when it is no longer needed, subject to legal requirements.
 
 Your browser keeps an analytics preference until you change it or clear local storage. An affirmative site-measurement choice stops being valid after 180 days, even if the preference entry remains in storage.
 

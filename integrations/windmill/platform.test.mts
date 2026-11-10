@@ -159,6 +159,7 @@ test("the envelope route saves a job application in the talent database and a le
     leads: <T,>(fn: (q: Query) => Promise<T>) => fn(leads.query),
     startDispatch: async (id: string) => void started.push(`dispatch:${id}`),
     startLeadSync: async (id: string) => void started.push(`leads:${id}`),
+    alertMail: async () => ({ send: async () => ({ ok: true, retryable: false }) }),
   };
   assert.deepEqual(await runSubmission(false, {}, d), { wm_status_code: 403, result: { ok: false, error: "Forbidden" } });
   const accepted = await runSubmission(true, envelope("job_application.v1", "VS-J-ENV001", job), d);
@@ -169,7 +170,7 @@ test("the envelope route saves a job application in the talent database and a le
   assert.deepEqual(enquiry, { wm_status_code: 202, result: { ok: true, caseId: lead.caseId, created: true } });
   assert.deepEqual(started.map((s) => s.split(":")[0]), ["dispatch", "leads"]);
   const replay = await runSubmission(true, envelope("business_enquiry.v1", lead.caseId, lead), d);
-  assert.equal((replay.result as { created: boolean }).created, false);
+  assert.equal((replay.result as unknown as { created: boolean }).created, false);
   // The id must be the payload's own reference; the payload must match its type.
   assert.equal((await runSubmission(true, envelope("job_application.v1", "VS-J-OTHER1", job), d)).wm_status_code, 400);
   assert.equal((await runSubmission(true, envelope("job_application.v1", lead.caseId, lead), d)).wm_status_code, 400);

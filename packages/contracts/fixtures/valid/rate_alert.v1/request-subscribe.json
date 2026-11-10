@@ -1,0 +1,11 @@
+{
+  "schema": "RateAlertSubscribeRequest",
+  "note": "The form on a wage page.",
+  "data": {
+    "email": "hr@example.com",
+    "states": [
+      "uttarakhand"
+    ],
+    "sourcePath": "/minimum-wages/uttarakhand"
+  }
+}

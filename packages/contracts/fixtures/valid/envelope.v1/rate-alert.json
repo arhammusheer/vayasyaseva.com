@@ -1,0 +1,22 @@
+{
+  "schema": "canonical",
+  "note": "A rate alert subscription.",
+  "data": {
+    "v": 1,
+    "sentAt": "2026-11-10T09:30:01.000Z",
+    "idempotencyKey": null,
+    "type": "rate_alert.v1",
+    "id": "ALR-20261110-0A1B2C3D",
+    "payload": {
+      "action": "subscribe",
+      "ref": "ALR-20261110-0A1B2C3D",
+      "receivedAt": "2026-11-10T09:30:00.000Z",
+      "email": "hr@example.com",
+      "states": [
+        "uttarakhand"
+      ],
+      "sourcePath": null,
+      "noticeVersion": "2026-11-10"
+    }
+  }
+}

@@ -84,6 +84,9 @@ const TALENT_DB_HOST = "pg-main-rw.data.svc.cluster.local";
 const NOTIFY_SECRET = "windmill-notify";
 const NTFY_BASE_URL = "http://ntfy.growth.svc.cluster.local";
 const NOTIFY_EMAIL_FROM = "VSPL notifications <notify@notify.vayasyaseva.com>";
+// The public rate alerts: the same verified Resend domain as the hub, their own sender; replies go to the shared inbox.
+const ALERTS_EMAIL_FROM = "Vayasya Seva <alerts@notify.vayasyaseva.com>";
+const ALERTS_REPLY_TO = "help@vayasyaseva.com";
 
 function step(message: string) {
   console.log(`${DRY_RUN ? "[dry run] " : ""}- ${message}`);
@@ -123,6 +126,8 @@ function readValues(): Record<ConfigName, string> {
     fast2sms_dlr_secret: secretValue("growth", "windmill-fast2sms", "FAST2SMS_DLR_SECRET"),
     leads_pg_url: `postgres://leads:${encodeURIComponent(leadsPassword)}@${TALENT_DB_HOST}:5432/leads`,
     submission_signing_secret: signingSecret(),
+    alerts_email_from: ALERTS_EMAIL_FROM,
+    alerts_reply_to: ALERTS_REPLY_TO,
   };
 }
 

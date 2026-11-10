@@ -1,0 +1,16 @@
+{
+  "schema": "canonical",
+  "note": "A new subscriber, two states.",
+  "data": {
+    "action": "subscribe",
+    "ref": "ALR-20261110-0A1B2C3D",
+    "receivedAt": "2026-11-10T09:30:00.000Z",
+    "email": "hr@example.com",
+    "states": [
+      "uttarakhand",
+      "punjab"
+    ],
+    "sourcePath": "/minimum-wages/uttarakhand",
+    "noticeVersion": "2026-11-10"
+  }
+}

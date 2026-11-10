@@ -94,6 +94,7 @@ Scripts read `f/talent/<name>` with `wmill.getVariable` (`talent/lib/config.ts`)
 | `twenty_base_url` | no | `http://twenty.growth.svc.cluster.local` |
 | `lead_webhook_secret` | yes | `LEAD_WEBHOOK_SECRET` in `growth/windmill-leads`; the website has the same value as Vercel `LEAD_WEBHOOK_SECRET` |
 | `leads_pg_url` | yes | `data/pg-main-leads` password (vayasya-infra, RUNBOOK "Leads inbox"), as `postgres://leads:…@pg-main-rw.data.svc.cluster.local:5432/leads` |
+| `alerts_email_from`, `alerts_reply_to` | no | Constants in `deploy.mts`: the rate alerts' sender (on the hub's verified Resend domain) and reply address. The alerts send with `f/notify/resend_api_key` |
 | `submission_signing_secret` | yes | `SUBMISSION_SIGNING_SECRET` in `growth/windmill-submission`; Vercel has the same value. Until that Secret exists, deploy sets a random value nobody knows, so the signed routes refuse everything |
 | `fast2sms_dlr_secret` | yes | `FAST2SMS_DLR_SECRET` in `growth/windmill-fast2sms`; the `x-vspl-dlr-secret` header of the Fast2SMS webhook |
 
@@ -133,6 +134,10 @@ Cron is Windmill's six-field form (seconds first), timezone Asia/Kolkata: dispat
 - **SMS as the fallback.** The dispatcher looks the WhatsApp report up each minute (`GET /dev/whatsapp/{request_id}`; there is no WhatsApp webhook). Delivered or read: done, and the SMS is `skipped`. A refused or unclear send, a failure report, or 10 minutes with neither delivered nor read: the DLT SMS goes as before. Waiting does not use the delivery's three attempts. A language without an approved template in `WA_TEMPLATES` gets the SMS straight away.
 - **Columns.** `sms_acknowledgements.wa_status` (`sending`, `accepted`, `failed`, `unknown`, `skipped`), `wa_request_id`, `wa_delivery` (`read`, `delivered`, `failed`, `pending`) with Fast2SMS's text in `wa_detail`. In Twenty the WhatsApp message is its own Communication (channel WhatsApp, Delivery up to **Read**); the SMS has one only when it was sent.
 - **Templates.** `node integrations/windmill/whatsapp-templates.mts` shows each language's status and Fast2SMS message id; `--create` submits any missing (submitted 20 Oct 2026, all five approved by 22 Oct 2026 and live in `WA_TEMPLATES`: 38422 en-IN, 38423 hi-IN, 38424 hi-Latn-IN, 38425 pa-IN, 38426 kn-IN). A new language's approved id goes in `WA_TEMPLATES`, then deploy. The WhatsApp apply chat that ran on this number (19 Oct 2026) was removed the same day, before its webhook existed; deploy deletes its route, script and variable.
+
+## Minimum wage rate alerts (10 November 2026)
+
+`docs/rate-alerts.md` has the flow. Here: the subscriber list is two tables in the lead inbox (`alert_subscribers`, `alert_sends`, `leads/schema.sql`); `f/platform/submission` runs the site's subscribe, confirm and unsubscribe actions (`rate_alert.v1`, `leads/lib/run-alerts.ts`) and sends the confirmation email through Resend (`leads/lib/alert-mail.ts`); `f/leads/alerts_send` has no schedule and is run by hand with `pnpm alerts:send <state>` (`alerts-send.mts`) after a wage update is live. A confirmed address raises `alert.subscribed` in the hub (digest only, states but no address).
 
 ## Deliveries and the lead inbox (roadmap 1F)
 

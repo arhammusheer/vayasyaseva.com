@@ -22,6 +22,8 @@ const VARIABLES = {
     fast2sms_dlr_secret: { secret: true },
     leads_pg_url: { secret: true },
     submission_signing_secret: { secret: true },
+    alerts_email_from: { secret: false },
+    alerts_reply_to: { secret: false },
 };
 const variablePath = (name) => `f/talent/${name}`;
 let override = null;

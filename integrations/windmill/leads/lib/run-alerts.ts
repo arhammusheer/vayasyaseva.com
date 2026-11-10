@@ -40,7 +40,6 @@ interface SubscriberRow {
   states: string[];
   token: string;
   last_mail_at: Date | string | null;
-  created: boolean;
 }
 
 export async function runAlertAction(payload: RateAlertCanonical, deps: AlertDeps) {
@@ -87,7 +86,7 @@ export async function runAlertAction(payload: RateAlertCanonical, deps: AlertDep
     console.error("rate alert email not sent:", payload.ref, sent.error?.match(/HTTP \d{3}|not configured/)?.[0] ?? "error");
     return respond(sent.retryable ? 502 : 503, { ok: false, error: "email_not_sent" });
   }
-  await deps.query(ALERTS_MAILED, [row.id]);
+  await deps.query(ALERTS_MAILED, [row.id, new Date(now).toISOString()]);
   return respond(202, { ok: true });
 }
 

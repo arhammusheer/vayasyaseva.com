@@ -12,8 +12,7 @@ export const ALERTS_BY_EMAIL = `SELECT id, status, states, token, last_mail_at F
 /**
  * $1 email, $2 states (a JSON array), $3 a fresh token (kept only for a new
  * row: an earlier email's links stay good), $4 source path, $5 notice
- * version, $6 reference. A known address gains the new states; `added` says
- * whether any were new to it.
+ * version, $6 reference. A known address gains the new states.
  */
 export const ALERTS_UPSERT = `
 INSERT INTO alert_subscribers AS s (email, states, token, source_path, notice_version, ref)
@@ -22,16 +21,19 @@ ON CONFLICT (email) DO UPDATE
   SET states = ARRAY(SELECT DISTINCT e FROM unnest(s.states || EXCLUDED.states) AS e ORDER BY 1),
       notice_version = EXCLUDED.notice_version,
       updated_at = now()
-RETURNING s.id, s.status, s.states, s.token, s.last_mail_at, (s.created_at = s.updated_at) AS created;`;
+RETURNING s.id, s.status, s.states, s.token, s.last_mail_at;`;
 
-/** $1 subscriber id: an email went out just now. */
-export const ALERTS_MAILED = `UPDATE alert_subscribers SET last_mail_at = now() WHERE id = $1;`;
+/** $1 subscriber id, $2 when: an email went out. */
+export const ALERTS_MAILED = `UPDATE alert_subscribers SET last_mail_at = $2::timestamptz WHERE id = $1;`;
 
 /** $1 token. Confirming twice is the same as once. */
 export const ALERTS_CONFIRM = `
-UPDATE alert_subscribers SET status = 'confirmed', confirmed_at = coalesce(confirmed_at, now()), updated_at = now()
-WHERE token = $1
-RETURNING id, states, (confirmed_at = updated_at) AS first_time;`;
+WITH before AS (
+  SELECT id, confirmed_at IS NULL AS first_time FROM alert_subscribers WHERE token = $1 FOR UPDATE
+)
+UPDATE alert_subscribers s SET status = 'confirmed', confirmed_at = coalesce(s.confirmed_at, now()), updated_at = now()
+FROM before WHERE s.id = before.id
+RETURNING s.id, s.states, before.first_time;`;
 
 /** $1 token. The row and, by cascade, its sends. */
 export const ALERTS_UNSUBSCRIBE = `DELETE FROM alert_subscribers WHERE token = $1 RETURNING states;`;

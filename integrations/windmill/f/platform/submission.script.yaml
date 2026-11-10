@@ -1,6 +1,6 @@
 {
   "summary": "Platform · submission",
-  "description": "One signed route for every submission (POST /webhook/vspl-submission, envelope.v1): checks the HMAC over timestamp and raw body (five minutes of skew), saves a job application (talent) or a lead (inbox), answers 202.",
+  "description": "One signed route for every submission (POST /webhook/vspl-submission, envelope.v1): checks the HMAC over timestamp and raw body (five minutes of skew), saves a job application (talent) or a lead (inbox) and answers 202, or runs a rate alert action (subscribe, confirm, unsubscribe) on the subscriber list.",
   "lock": "",
   "kind": "script",
   "language": "bun",

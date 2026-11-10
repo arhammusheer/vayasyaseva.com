@@ -176,11 +176,31 @@ export const SCRIPTS: ScriptSpec[] = [
     schedule: { cron: "0 30 * * * *", summary: "Hourly: enquiry erasure requests" },
   },
   {
+    name: "alerts_send",
+    folder: "leads",
+    summary: "Leads · send a rate alert",
+    description:
+      "One state's new minimum wage rates to its confirmed alert subscribers, each once per revision (the in-force date). Run by hand after the wage update is live: pnpm alerts:send <state>. dry_run (the default) only counts.",
+    schema: {
+      $schema: "https://json-schema.org/draft/2020-12/schema",
+      type: "object",
+      properties: {
+        state: { type: "string", description: "The wage page's state slug, e.g. uttarakhand." },
+        revision: { type: "string", description: "What makes this change one alert: the date the new rates are in force from, e.g. 2026-10-01." },
+        subject: { type: "string", description: "The email's subject." },
+        lines: { type: "array", items: { type: "string" }, description: "What changed, a paragraph each, as the wage page states it." },
+        dry_run: { type: "boolean", default: true, description: "Count who would get it; send nothing." },
+        limit: { type: "integer", description: "At most this many in one run (default 500)." },
+      },
+      required: ["state", "revision", "subject", "lines"],
+    },
+  },
+  {
     name: "submission",
     folder: "platform",
     summary: "Platform · submission",
     description:
-      "One signed route for every submission (POST /webhook/vspl-submission, envelope.v1): checks the HMAC over timestamp and raw body (five minutes of skew), saves a job application (talent) or a lead (inbox), answers 202.",
+      "One signed route for every submission (POST /webhook/vspl-submission, envelope.v1): checks the HMAC over timestamp and raw body (five minutes of skew), saves a job application (talent) or a lead (inbox) and answers 202, or runs a rate alert action (subscribe, confirm, unsubscribe) on the subscriber list.",
     schema: {
       $schema: "https://json-schema.org/draft/2020-12/schema",
       type: "object",

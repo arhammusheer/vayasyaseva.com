@@ -1,0 +1,7 @@
+{
+  "schema": "RateAlertTokenRequest",
+  "note": "Not one of our tokens.",
+  "data": {
+    "token": "abc"
+  }
+}

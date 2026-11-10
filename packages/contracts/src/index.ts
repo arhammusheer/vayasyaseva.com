@@ -30,11 +30,13 @@ import {
   leadCanonicalSchema,
 } from "./business-enquiry.v1.ts";
 import { ENVELOPE_V1, envelopeSchema } from "./envelope.v1.ts";
+import { RATE_ALERT_V1, rateAlertCanonicalSchema, rateAlertSubscribeRequestSchema, rateAlertTokenRequestSchema } from "./rate-alert.v1.ts";
 import { UPLOAD_TICKET, uploadTicketSchema } from "./upload-ticket.ts";
 
 export * from "./job-application.v1.ts";
 export * from "./business-enquiry.v1.ts";
 export * from "./envelope.v1.ts";
+export * from "./rate-alert.v1.ts";
 export * from "./upload-ticket.ts";
 
 /**
@@ -54,6 +56,10 @@ export const CONTRACTS = {
   },
   [BUSINESS_ENQUIRY_V1]: { requests: { ContactInquiryRequest: contactSchema }, canonical: leadCanonicalSchema },
   [COMPLIANCE_HELP_V1]: { requests: { ComplianceHelpRequest: complianceHelpSchema }, canonical: complianceHelpCanonicalSchema },
+  [RATE_ALERT_V1]: {
+    requests: { RateAlertSubscribeRequest: rateAlertSubscribeRequestSchema, RateAlertTokenRequest: rateAlertTokenRequestSchema },
+    canonical: rateAlertCanonicalSchema,
+  },
   [ENVELOPE_V1]: { requests: {}, canonical: envelopeSchema },
   [UPLOAD_TICKET]: { requests: {}, canonical: uploadTicketSchema },
 } as const satisfies Record<string, { requests: Record<string, z.ZodType>; canonical: z.ZodType }>;

@@ -1,0 +1,10 @@
+{
+  "schema": "RateAlertSubscribeRequest",
+  "note": "Not an address.",
+  "data": {
+    "email": "hr at example",
+    "states": [
+      "uttarakhand"
+    ]
+  }
+}

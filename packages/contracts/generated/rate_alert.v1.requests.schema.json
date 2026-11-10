@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.vayasyaseva.com/contracts/rate_alert.v1.requests.schema.json",
+  "title": "rate_alert.v1 (wire requests)",
+  "$defs": {
+    "RateAlertSubscribeRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "maxLength": 200,
+          "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+          "description": "Where the alerts go. Confirmed from a link before anything else is sent.",
+          "example": "hr@example.com"
+        },
+        "states": {
+          "minItems": 1,
+          "maxItems": 40,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z-]{1,31}$"
+          },
+          "uniqueItems": true,
+          "description": "Wage page state slugs to follow.",
+          "example": [
+            "uttarakhand"
+          ]
+        },
+        "sourcePath": {
+          "description": "Set by the website: the page the form was on.",
+          "type": "string",
+          "maxLength": 200,
+          "pattern": "^\\/[A-Za-z0-9/_-]*$"
+        }
+      },
+      "required": [
+        "email",
+        "states"
+      ],
+      "additionalProperties": false
+    },
+    "RateAlertTokenRequest": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{32,64}$"
+        }
+      },
+      "required": [
+        "token"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -85,5 +85,37 @@ BEGIN
     PRIMARY KEY (scope, key)
   );
   CREATE INDEX IF NOT EXISTS idempotency_keys_updated_idx ON idempotency_keys (updated_at);
+
+  -- Minimum wage rate alerts (rate_alert.v1, 10 Nov 2026): one row per email
+  -- address, with the wage page states it follows. 'pending' until the link
+  -- in the first email is opened; a pending row is deleted after 7 days.
+  -- Unsubscribing deletes the row (and its sends). The token is the one in
+  -- the confirm and unsubscribe links.
+  CREATE TABLE IF NOT EXISTS alert_subscribers (
+    id             uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    email          text NOT NULL UNIQUE,
+    states         text[] NOT NULL,
+    status         text NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed')),
+    token          text NOT NULL UNIQUE,
+    source_path    text,
+    notice_version text NOT NULL,
+    ref            text NOT NULL,
+    last_mail_at   timestamptz,
+    created_at     timestamptz NOT NULL DEFAULT now(),
+    confirmed_at   timestamptz,
+    updated_at     timestamptz NOT NULL DEFAULT now()
+  );
+  CREATE INDEX IF NOT EXISTS alert_subscribers_pending_idx ON alert_subscribers (created_at) WHERE status = 'pending';
+
+  -- Which alert each subscriber has had: one per state and revision (the
+  -- date the new rates are in force from), so f/leads/alerts_send can be
+  -- run again after a failure without mailing anyone twice.
+  CREATE TABLE IF NOT EXISTS alert_sends (
+    subscriber_id uuid NOT NULL REFERENCES alert_subscribers (id) ON DELETE CASCADE,
+    state         text NOT NULL,
+    revision      text NOT NULL,
+    sent_at       timestamptz NOT NULL DEFAULT now(),
+    PRIMARY KEY (subscriber_id, state, revision)
+  );
 END
 $$;

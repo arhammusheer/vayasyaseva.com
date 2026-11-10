@@ -2,11 +2,13 @@
  * envelope.v1: one submission of any type, as the site delivers it to the
  * signed Windmill route (webhook/vspl-submission). The `type` names the
  * payload's canonical contract; `id` is the reference the person was given
- * (VS-J-… or REQ-/AGT-…), the key Windmill files it under once.
+ * (VS-J-… or REQ-/AGT-…), the key Windmill files it under once; for a rate
+ * alert action (ALR-…) it only names the request in the logs.
  */
 import { z } from "zod/v4";
 import { JOB_APPLICATION_V1, jobApplicationCanonicalSchema } from "./job-application.v1.ts";
 import { BUSINESS_ENQUIRY_V1, COMPLIANCE_HELP_V1, CASE_ID_PATTERN, complianceHelpCanonicalSchema, leadCanonicalSchema } from "./business-enquiry.v1.ts";
+import { ALERT_REF_PATTERN, RATE_ALERT_V1, rateAlertCanonicalSchema } from "./rate-alert.v1.ts";
 import { REF_PATTERN } from "./rules.ts";
 
 export const ENVELOPE_V1 = "envelope.v1";
@@ -27,9 +29,10 @@ export const envelopeSchema = z
     z.object({ ...common, type: z.literal(JOB_APPLICATION_V1), id: z.string().regex(REF_PATTERN), payload: jobApplicationCanonicalSchema }).strict(),
     z.object({ ...common, type: z.literal(BUSINESS_ENQUIRY_V1), id: z.string().regex(CASE_ID_PATTERN), payload: leadCanonicalSchema }).strict(),
     z.object({ ...common, type: z.literal(COMPLIANCE_HELP_V1), id: z.string().regex(CASE_ID_PATTERN), payload: complianceHelpCanonicalSchema }).strict(),
+    z.object({ ...common, type: z.literal(RATE_ALERT_V1), id: z.string().regex(ALERT_REF_PATTERN), payload: rateAlertCanonicalSchema }).strict(),
   ])
   .meta({ title: "envelope.v1", description: "One submission, as the site delivers it to Windmill webhook/vspl-submission." });
 
 export type Envelope = z.output<typeof envelopeSchema>;
 export type SubmissionType = Envelope["type"];
-export const SUBMISSION_TYPES = [JOB_APPLICATION_V1, BUSINESS_ENQUIRY_V1, COMPLIANCE_HELP_V1] as const;
+export const SUBMISSION_TYPES = [JOB_APPLICATION_V1, BUSINESS_ENQUIRY_V1, COMPLIANCE_HELP_V1, RATE_ALERT_V1] as const;

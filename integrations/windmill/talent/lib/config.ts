@@ -34,6 +34,13 @@ export const VARIABLES = {
    * the signed routes webhook/vspl-submission and webhook/vspl-idempotency (packages/contracts/src/signing.ts).
    */
   submission_signing_secret: { secret: true },
+  /**
+   * The sender and the reply address of the minimum wage rate alerts
+   * (leads/lib/alert-mail.ts). They go out with the notification hub's Resend
+   * key (f/notify/resend_api_key), so the sender is on its verified domain.
+   */
+  alerts_email_from: { secret: false },
+  alerts_reply_to: { secret: false },
 } as const;
 
 export type ConfigName = keyof typeof VARIABLES;

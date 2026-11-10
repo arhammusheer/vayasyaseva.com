@@ -1,0 +1,11 @@
+{
+  "schema": "RateAlertSubscribeRequest",
+  "note": "A state twice.",
+  "data": {
+    "email": "hr@example.com",
+    "states": [
+      "punjab",
+      "punjab"
+    ]
+  }
+}

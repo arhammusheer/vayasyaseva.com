@@ -1,0 +1,10 @@
+{
+  "schema": "canonical",
+  "note": "The link in every email.",
+  "data": {
+    "action": "unsubscribe",
+    "ref": "ALR-20261110-0A1B2C3F",
+    "receivedAt": "2026-11-10T09:32:00.000Z",
+    "token": "hT3kq9ZxW2mVb7PcJ4nRs8Ld6YfGa1Ue0oQiXyNzKw5"
+  }
+}

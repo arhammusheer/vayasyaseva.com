@@ -3,7 +3,8 @@
 import Script from "next/script";
 import { useEffect, useRef, useState } from "react";
 import { z } from "zod/v4";
-import { ArrowUpRight, Loader2 } from "lucide-react";
+import { ArrowUpRight, Loader2, PhoneCall, X } from "lucide-react";
+import { Dialog } from "radix-ui";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,7 +25,10 @@ import { useContactMode } from "./contact-mode";
 /**
  * The short way to ask for a crew (10 Nov 2026): a name, the company, a
  * phone and the number of workers, and we phone back. For a buyer who will
- * not fill in the requirement. It is a business enquiry like the long form
+ * not fill in the requirement. On the page it is one button; the four
+ * fields open in a dialog, so the page shows one form (owner direction,
+ * 10 Nov 2026: with both forms open the page was all inputs).
+ * It is a business enquiry like the long form
  * (/api/contact, requestType "callback", contract 1.4.0): the same staff
  * email, case ID and Twenty record; the rest is asked on the call.
  *
@@ -34,7 +38,6 @@ import { useContactMode } from "./contact-mode";
 
 type Values = { name: string; company: string; phone: string; headcountBand: string };
 type Field = keyof Values;
-const EMPTY: Values = { name: "", company: "", phone: "", headcountBand: "" };
 const ORDER: Field[] = ["name", "company", "phone", "headcountBand"];
 const SCHEMA = z.object({
   name: contactFieldSchema("name"),
@@ -45,22 +48,16 @@ const SCHEMA = z.object({
 const IDEMPOTENCY = "vayasya-callback:idempotency";
 const FORM_TYPE = "callback";
 
+type Origin = { pageCluster?: string; sourcePath?: string };
+
+/** The button on /contact, and the dialog it opens. Crew requests only. */
 export function CallbackForm() {
   const mode = useContactMode();
-  const [values, setValues] = useState<Values>(EMPTY);
-  const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
-  const [submitting, setSubmitting] = useState(false);
-  const [reference, setReference] = useState<string | null>(null);
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [honeypot, setHoneypot] = useState("");
-  const [formStartedAt] = useState(() => Date.now());
+  const [open, setOpen] = useState(false);
+  const [reference, setReference] = useState<string | null | undefined>(undefined);
   // Set by the page or link (#location=…), never typed: the market and the page they came from.
-  const [origin, setOrigin] = useState<{ pageCluster?: string; sourcePath?: string }>({});
-  const { token, box, onReady, reset } = useTurnstile("contact", "callback");
-  const started = useRef(false);
-  const done = useRef<HTMLParagraphElement>(null);
-  const problem = useRef<HTMLParagraphElement>(null);
+  const [origin, setOrigin] = useState<Origin>({});
+  const [prefilled, setPrefilled] = useState<Partial<Values>>({});
 
   useEffect(() => {
     // Reads the browser once on mount: the referrer and the link's fragment
@@ -69,24 +66,90 @@ export function CallbackForm() {
     const prefill = readEnquiryPrefill();
     const mapped = prefill ? crewPrefill(prefill).fields : {};
     setOrigin({ pageCluster: mapped.pageCluster, sourcePath: referringPath() ?? undefined });
-    if (mapped.name || mapped.company || mapped.phone || mapped.headcountBand) {
-      setValues((current) => ({
-        name: mapped.name ?? current.name,
-        company: mapped.company ?? current.company,
-        phone: mapped.phone ?? current.phone,
-        headcountBand: mapped.headcountBand ?? current.headcountBand,
-      }));
-    }
+    setPrefilled({ name: mapped.name, company: mapped.company, phone: mapped.phone, headcountBand: mapped.headcountBand });
     /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
-  useEffect(() => {
-    if (submitted) return revealFormTarget(done.current, { instant: true });
-    if (error) return revealFormTarget(problem.current);
-  }, [submitted, error]);
-
   // The other requests (a site assessment, compliance help) have their own questions.
   if (mode !== "crew") return null;
+
+  const sent = reference !== undefined;
+  return (
+    <div className="callback">
+      {sent ? (
+        <p role="status" className="callback-sent">
+          We will call you. {CALLBACK_WINDOW}.
+          {reference && (
+            <>
+              {" "}
+              Your reference: <span className="font-data text-foreground">{reference}</span>
+            </>
+          )}
+        </p>
+      ) : (
+        <p className="callback-note">Short on time? Leave your number and we call you.</p>
+      )}
+      <Dialog.Root open={open} onOpenChange={setOpen}>
+        {!sent && (
+          <Dialog.Trigger asChild>
+            <Button type="button" size="lg" variant="outline" className="callback-open">
+              <PhoneCall className="h-4 w-4" aria-hidden="true" />
+              Request a call back
+            </Button>
+          </Dialog.Trigger>
+        )}
+        <Dialog.Portal>
+          <Dialog.Overlay className="callback-overlay" />
+          <Dialog.Content className="callback-dialog" aria-describedby="callback-window">
+            <Dialog.Title className="callback-title">{sent ? "We will call you." : "We\u2019ll call you."}</Dialog.Title>
+            <Dialog.Description id="callback-window" className="callback-note">
+              {CALLBACK_WINDOW}
+              {sent ? ", on the number you gave." : "."}
+            </Dialog.Description>
+            {sent ? (
+              <>
+                {reference && (
+                  <p className="callback-note">
+                    Your reference: <span className="font-data text-foreground">{reference}</span>
+                  </p>
+                )}
+                <Dialog.Close asChild>
+                  <Button type="button" size="lg" variant="outline" className="callback-send">Close</Button>
+                </Dialog.Close>
+              </>
+            ) : (
+              <CallbackFields origin={origin} prefilled={prefilled} onSent={setReference} />
+            )}
+            <Dialog.Close className="callback-close" aria-label="Close">
+              <X size={20} aria-hidden="true" />
+            </Dialog.Close>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
+    </div>
+  );
+}
+
+/** The four fields, mounted while the dialog is open. */
+function CallbackFields({ origin, prefilled, onSent }: { origin: Origin; prefilled: Partial<Values>; onSent: (reference: string | null) => void }) {
+  const [values, setValues] = useState<Values>(() => ({
+    name: prefilled.name ?? "",
+    company: prefilled.company ?? "",
+    phone: prefilled.phone ?? "",
+    headcountBand: prefilled.headcountBand ?? "",
+  }));
+  const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [honeypot, setHoneypot] = useState("");
+  const [formStartedAt] = useState(() => Date.now());
+  const { token, box, onReady, reset } = useTurnstile("contact", "callback");
+  const started = useRef(false);
+  const problem = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    if (error) return revealFormTarget(problem.current);
+  }, [error]);
 
   function markStarted() {
     if (started.current) return;
@@ -147,8 +210,6 @@ export function CallbackForm() {
         return;
       }
       forgetIdempotencyKey(IDEMPOTENCY);
-      if (typeof result.caseId === "string" && /^[A-Z]{3}-[0-9A-Z-]{6,40}$/.test(result.caseId)) setReference(result.caseId);
-      setSubmitted(true);
       trackConversion("businessEnquiry");
       track("generate_lead", {
         form_type: FORM_TYPE,
@@ -158,6 +219,7 @@ export function CallbackForm() {
         // No duration yet, so not judged (src/lib/crew-request.ts).
         qualified: "no",
       });
+      onSent(typeof result.caseId === "string" && /^[A-Z]{3}-[0-9A-Z-]{6,40}$/.test(result.caseId) ? result.caseId : null);
     } catch {
       reset(); // the server may have used the token before the connection dropped
       track("contact_form_error", { form_type: FORM_TYPE, reason: "network" });
@@ -167,25 +229,11 @@ export function CallbackForm() {
     }
   }
 
-  if (submitted) {
-    return (
-      <div role="status" className="callback">
-        <p ref={done} tabIndex={-1} className="form-scroll-target callback-title">We will call you.</p>
-        <p className="callback-note">{CALLBACK_WINDOW}, on the number you gave.</p>
-        {reference && (
-          <p className="callback-note">
-            Your reference: <span className="font-data text-foreground">{reference}</span>
-          </p>
-        )}
-      </div>
-    );
-  }
-
   const invalid = (key: Field) => Boolean(errors[key]) || undefined;
   const describedBy = (key: Field) => (errors[key] ? `cb-${key}-error` : undefined);
 
   return (
-    <form aria-busy={submitting} aria-labelledby="callback-title" onSubmit={onSubmit} noValidate className="callback">
+    <form aria-busy={submitting} onSubmit={onSubmit} noValidate>
       {/* onLoad as well: two forms on this page ask for the script, and
           next/script calls only onLoad on the one that waited for the other. */}
       <Script src={TURNSTILE_SCRIPT_URL} onReady={onReady} onLoad={onReady} />
@@ -193,8 +241,6 @@ export function CallbackForm() {
         <Label htmlFor="cb-website">Website</Label>
         <Input id="cb-website" autoComplete="new-password" tabIndex={-1} value={honeypot} onChange={(event) => setHoneypot(event.target.value)} />
       </div>
-      <h2 id="callback-title" className="callback-title">Short on time? We&rsquo;ll call you.</h2>
-      <p className="callback-note">{CALLBACK_WINDOW}.</p>
       <div className="callback-fields">
         <div>
           <Label htmlFor="cb-name" className="text-sm font-medium">Your name</Label>
@@ -236,7 +282,7 @@ export function CallbackForm() {
           {error}
         </p>
       )}
-      <Button type="submit" size="lg" variant="outline" className="callback-send" disabled={submitting}>
+      <Button type="submit" size="lg" className="callback-send" disabled={submitting}>
         {submitting ? (
           <>
             <Loader2 className="h-4 w-4 animate-spin" />

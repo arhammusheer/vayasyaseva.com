@@ -82,9 +82,9 @@ export default function ContactPage() {
         ])}
       />
       <Section className="pt-8 sm:pt-14 lg:pt-16">
-        {/* Phone order: intro, the short call-back form, the full form,
-            contact lines. Desktop: intro, call back and lines on the left,
-            the full form on the right. */}
+        {/* Phone order: intro, the call-back button (its fields open in a
+            dialog), the form, contact lines. Desktop: intro, call back and
+            lines on the left, the form on the right. */}
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] lg:grid-rows-[auto_auto_1fr] lg:gap-x-20 lg:gap-y-0">
           <div className="lg:col-start-1 lg:row-start-1">
             {/* One quiet line for job seekers, a full thumb target (48px), to
@@ -103,7 +103,7 @@ export default function ContactPage() {
             <p className="crew-reply max-w-sm">{RESPONSE_LINE}</p>
           </div>
           {/* The crew request only (callback-form.tsx): empty in the other modes. */}
-          <div className="empty:hidden lg:col-start-1 lg:row-start-2 lg:pt-12">
+          <div className="-mt-6 empty:hidden lg:col-start-1 lg:row-start-2 lg:mt-0 lg:pt-8">
             <Suspense fallback={null}>
               <CallbackForm />
             </Suspense>

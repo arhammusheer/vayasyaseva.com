@@ -217,6 +217,8 @@ try {
   async function requirement(){
     await pill('roles','Packing').click();await pill('headcountBand','50 to 99').click();
     await page.locator('#siteState').selectOption('UK');await page.locator('#siteCity').fill('SIDCUL Haridwar');
+    // Start and duration are optional, behind one line (a restored draft that has them shows them already).
+    const more=page.locator('.crew-more-open');if(await more.count())await more.click();
     await pill('startWindow','In 2 to 4 weeks').click();await pill('durationBand','Ongoing').click();
   }
   for(const query of ['', '?type=assessment']) {
@@ -224,6 +226,12 @@ try {
     assert.equal(await page.locator('main h1').textContent(),query?'Request a site assessment.':'Request a crew.');
     await page.locator('.crew-form button[type=submit]').click();await visible('#roles');
     assert.ok(await page.locator('#roles-error').isVisible());assert.ok(await page.locator('#siteCity-error').isVisible());
+    // Step 1 asks three things: the work (eight choices), how many, and where. The rest waits behind one line.
+    assert.equal(await page.locator('[aria-labelledby=roles-q] button').count(),8);
+    assert.equal(await pill('roles','Forklift').count(),0);
+    for(const id of ['startWindow-q','durationBand-q','shiftPattern-q','sitePincode','details']) assert.equal(await page.locator('#'+id).count(),0,id+' hidden until asked for');
+    assert.equal(await page.locator('.crew-form [id$=-error]').count(),4,'only the work, the workers, the state and the city are asked');
+    assert.equal(await page.locator('.crew-more-open').getAttribute('aria-expanded'),'false');
     await pill('roles','Packing').click();assert.equal(await page.locator('#roles-error').count(),0);
     assert.equal(await pill('roles','Packing').getAttribute('aria-pressed'),'true');
     await pill('roles','Packing').click();
@@ -278,7 +286,8 @@ try {
     await page.locator('#cb-phone').fill('9999900003');await page.locator('#cb-headcountBand').selectOption('20-49');
     assert.equal(await page.locator('#cb-phone-error').count(),0);
     await dialog.locator('button[type=submit]').click();
-    await dialog.getByRole('button',{name:'Close',exact:true}).first().waitFor();
+    // (The dialog's X is also named Close, so wait for the words, not the button.)
+    await dialog.getByText('We will call you.').waitFor();
     const done=await dialog.textContent();
     assert.ok(done.includes('We will call you.'));assert.ok(done.includes('within one working day'));assert.ok(done.includes('REQ-20261016-1A2B3C4D'));
     const body=contactBodies.at(-1);
@@ -314,7 +323,7 @@ try {
     await page.locator('#ra-email').fill('not an address');await dialog.locator('button[type=submit]').click();await page.locator('#ra-email-error').waitFor();
     assert.equal(alertCalls.length,0,'nothing sent while invalid');
     await page.locator('#ra-email').fill('hr@example.test');await page.locator('#ra-email').press('Enter');
-    await dialog.getByRole('button',{name:'Close',exact:true}).first().waitFor();
+    await dialog.getByText('Check your inbox.').waitFor();
     assert.ok((await dialog.textContent()).includes('hr@example.test'));
     const call=alertCalls.at(-1);
     assert.equal(call.path,'/api/alerts/subscribe');
@@ -377,15 +386,25 @@ try {
   await page.waitForFunction(()=>document.querySelector('#siteCity')?.value==='Haridwar');assert.equal(await page.locator('#siteState').inputValue(),'UK');
   assert.equal(await pill('roles','Warehouse').getAttribute('aria-pressed'),'true');assert.equal(await pill('headcountBand','50 to 99').getAttribute('aria-pressed'),'true');
   assert.equal(new URL(page.url()).hash,'');
+  // A link that names a start opens the optional answers with it chosen; a kind of work the form no longer lists is still shown when a link chose it.
+  assert.equal(await pill('startWindow','Within a week').getAttribute('aria-pressed'),'true');assert.equal(await page.locator('.crew-more-open').count(),0);
+  await page.evaluate(()=>sessionStorage.clear());await page.goto('about:blank');
+  await open('/en-in/contact#roles=forklift');
+  await pill('roles','Forklift').waitFor();assert.equal(await pill('roles','Forklift').getAttribute('aria-pressed'),'true');
+  assert.equal(await page.locator('[aria-labelledby=roles-q] button').count(),9);
   await page.evaluate(()=>sessionStorage.clear());
   await open('/en-in/locations/haridwar');
   await page.locator('main a[href="/en-in/contact#location=haridwar"]:visible').first().click();await page.waitForURL('**/en-in/contact');
   await page.locator('#siteCity').waitFor();await page.waitForFunction(()=>document.querySelector('#siteCity')?.value==='Haridwar');
-  await pill('roles','Packing').click();await pill('headcountBand','20 to 49').click();await pill('startWindow','Just planning').click();await pill('durationBand','3 to 12').click();
+  // The short path: the work and the workers (the place came with the link), nothing else.
+  await pill('roles','Packing').click();await pill('headcountBand','20 to 49').click();
+  assert.equal(await page.locator('.crew-more-open').count(),1);
   await page.locator('.crew-form button[type=submit]').click();await page.locator('#name').waitFor();
+  assert.doesNotMatch(await page.locator('.crew-recap').textContent(),/Start|Duration|Shifts/);
   await page.locator('#name').fill('Hub Test');await page.locator('#company').fill('Hub Company');await page.locator('#phone').fill('9999900001');
   await page.locator('.crew-form button[type=submit]').click();await visible('[role=status] h2');
   assert.equal(contactBodies.at(-1).pageCluster,'haridwar');assert.equal(contactBodies.at(-1).siteState,'UK');
+  for(const key of ['startWindow','durationBand','shiftPattern','sitePincode','details']) assert.equal(key in contactBodies.at(-1),false,key);
   // Job seekers who land here get one quiet line to /jobs (every market), in the language they last
   // picked, else English: never the neutral picker URL, which the client router cannot enter.
   await open('/en-in/contact');assert.equal(await page.locator('main a[href="/en-in/jobs"]').count(),1);
@@ -393,7 +412,7 @@ try {
   await open('/en-in/contact');await page.locator('main a[href="/hi-in/jobs"]').waitFor();
   assert.equal(await page.locator('a[href="/jobs"]').count(),0);
   await context.clearCookies({name:'vspl_lang'});
-  console.log('Request a crew: two steps, drafts stay separate, prefills from links and the Haridwar hub, no lead flags on the page');
+  console.log('Request a crew: two steps, three required answers with the rest behind one line, drafts stay separate, prefills from links and the Haridwar hub, no lead flags on the page');
   // Image metadata varies with public page/role data, never personal prefills.
   const image=await page.goto(origin+'/en-in/jobs/apply?role=packing&name=PrivateName&phone=9999900001');await page.locator('meta[property="og:image"]').waitFor({state:'attached'});
   const packing=await page.locator('meta[property="og:image"]').getAttribute('content');

@@ -9,7 +9,7 @@ Roadmap 1D. Every form and agent submission goes through one pipeline in
 | Contract | Wire (what callers send) | Canonical (what Windmill gets) |
 |---|---|---|
 | `job_application.v1` | `/api/jobs/start`, `/submit`, `/api/agent/jobs`, `/start`, `/submit` | `f/talent/intake` |
-| `business_enquiry.v1` | `/api/contact`, `/api/agent/contact` (contact contract 1.4.0; `requestType: "callback"` is the short call-back form) | `f/leads/intake` (the lead) |
+| `business_enquiry.v1` | `/api/contact`, `/api/agent/contact` (contact contract 1.5.0: the requirement is the work, the workers and the site; `requestType: "callback"` is the short call-back form) | `f/leads/intake` (the lead) |
 | `compliance_help.v1` | the same wire contract, `requestType: "compliance-help"` | the lead, `requestType` fixed |
 | `rate_alert.v1` | `/api/alerts/subscribe` (Turnstile), `/api/alerts/confirm`, `/api/alerts/unsubscribe` | one action on the subscriber list (`docs/rate-alerts.md`); the signed route only |
 | `envelope.v1` | none | one submission of any type, for the signed route (1F) |

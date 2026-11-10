@@ -105,6 +105,12 @@ export interface CrewAssessment {
   callback: boolean;
   /** 20+ workers and 3+ months. */
   qualified: boolean;
+  /**
+   * Whether `qualified` could be judged: a crew request that gave its
+   * duration. Since 10 Nov 2026 the form asks only the work, the workers and
+   * the site; start and duration are optional, so many leads are not judged.
+   */
+  judged: boolean;
   /** Starting within 4 weeks (soft label). */
   soon: boolean;
   /** Out-of-scope hints, by id. */
@@ -122,7 +128,8 @@ export function assessCrewRequest(data: ContactFormData): CrewAssessment {
   const soon = crew && Boolean(data.startWindow && SOON.has(data.startWindow));
   const text = [data.details, data.industry, data.shiftRequirement].filter(Boolean).join("\n");
   const outOfScope = OUT_OF_SCOPE.filter((rule) => rule.pattern.test(text)).map((rule) => rule.id);
-  return { crew, callback: data.requestType === "callback", qualified, soon, outOfScope, headcountBand };
+  const callback = data.requestType === "callback";
+  return { crew, callback, qualified, judged: crew && !callback && Boolean(data.durationBand), soon, outOfScope, headcountBand };
 }
 
 export function outOfScopeLabel(id: string) {

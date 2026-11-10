@@ -2718,6 +2718,39 @@ a:hover > svg {
 .crew-form {
   max-width: 680px;
 }
+/* The short call-back form beside the full one: a name, a phone, a number. */
+.callback {
+  max-width: 420px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+.callback-title {
+  font-family: var(--stack-display);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.callback-note {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+.callback-fields {
+  display: grid;
+  gap: 16px;
+  margin-top: 20px;
+}
+.callback-send {
+  width: 100%;
+  margin-top: 20px;
+}
+@media (max-width: 1023px) {
+  .callback {
+    max-width: 680px;
+  }
+}
 .crew-step {
   margin-top: 14px;
 }

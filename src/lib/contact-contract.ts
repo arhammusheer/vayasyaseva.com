@@ -45,6 +45,7 @@ export const REQUEST_TYPE_OPTIONS = enumValues("requestType");
 export const CONTACT_AGENT_REQUIRED = (() => {
   const [free, structured] = contactContract.request.requireOneOf;
   const always = Object.entries(fields).filter(([, d]) => d.required).map(([n]) => n);
+  // The third group (a call back) is the website's short form; agents send the requirement.
   return `${always.join(", ")}, and either the requirement (${structured.join(", ")}) or ${free.join(", ")}`;
 })();
 export const CONTACT_AGENT_COMPANY = "Include company when the person gives it (ask for it)";

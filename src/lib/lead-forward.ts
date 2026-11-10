@@ -30,6 +30,7 @@ export function buildLeadPayload(
   // market (src/markets siteMarket).
   const cluster = siteMarket(data.siteState, data.siteCity, data.pageCluster);
   const flags = [
+    assessment.callback ? "call back requested (phone within one working day)" : null,
     assessment.qualified ? "qualified (20+ workers, a month or more)" : null,
     assessment.soon ? "starts soon" : null,
     assessment.outOfScope.length ? `check scope: ${assessment.outOfScope.join(", ")}` : null,

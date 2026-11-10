@@ -5,7 +5,7 @@
     "title": "Vayasya Seva API",
     "summary": "Public API contract for vayasyaseva.com",
     "description": "Submission routes for vayasyaseva.com. The /api/agent/* routes are open to AI agents and assistants acting for a person: plain JSON, no CAPTCHA, no key, validated and rate limited server-side. /api/contact serves the website's own contact form and needs a Cloudflare Turnstile token from a browser; agents should use /api/agent/contact instead. See https://www.vayasyaseva.com/llms.txt and https://www.vayasyaseva.com/ai-access-policy.txt.",
-    "version": "1.3.0"
+    "version": "1.4.0"
   },
   "servers": [
     {
@@ -610,13 +610,14 @@
             ]
           },
           "requestType": {
-            "description": "What the person is asking for: a crew (the default), a site assessment first, or help getting their own site compliant (EPF, ESIC, PT, LWF, contract labour licence, registers, minimum wage; send details and siteState). Values: crew (A crew), site-assessment (A site assessment), compliance-help (Compliance help).",
+            "description": "What the person is asking for: a crew (the default), a site assessment first, help getting their own site compliant (EPF, ESIC, PT, LWF, contract labour licence, registers, minimum wage; send details and siteState), or a call back about a crew (send headcountBand; the rest is taken on the call). Values: crew (A crew), site-assessment (A site assessment), compliance-help (Compliance help), callback (A call back).",
             "example": "crew",
             "type": "string",
             "enum": [
               "crew",
               "site-assessment",
-              "compliance-help"
+              "compliance-help",
+              "callback"
             ]
           },
           "pageCluster": {
@@ -645,7 +646,7 @@
           "phone"
         ],
         "additionalProperties": false,
-        "description": "Send either details, or the requirement fields roles, headcountBand, siteState, siteCity, startWindow and durationBand.",
+        "description": "Send either details, or the requirement fields roles, headcountBand, siteState, siteCity, startWindow and durationBand, or, for a call back, requestType callback with headcountBand.",
         "anyOf": [
           {
             "required": [
@@ -661,6 +662,17 @@
               "startWindow",
               "durationBand"
             ]
+          },
+          {
+            "required": [
+              "requestType",
+              "headcountBand"
+            ],
+            "properties": {
+              "requestType": {
+                "const": "callback"
+              }
+            }
           }
         ]
       },
@@ -863,13 +875,14 @@
             ]
           },
           "requestType": {
-            "description": "What the person is asking for: a crew (the default), a site assessment first, or help getting their own site compliant (EPF, ESIC, PT, LWF, contract labour licence, registers, minimum wage; send details and siteState). Values: crew (A crew), site-assessment (A site assessment), compliance-help (Compliance help).",
+            "description": "What the person is asking for: a crew (the default), a site assessment first, help getting their own site compliant (EPF, ESIC, PT, LWF, contract labour licence, registers, minimum wage; send details and siteState), or a call back about a crew (send headcountBand; the rest is taken on the call). Values: crew (A crew), site-assessment (A site assessment), compliance-help (Compliance help), callback (A call back).",
             "example": "crew",
             "type": "string",
             "enum": [
               "crew",
               "site-assessment",
-              "compliance-help"
+              "compliance-help",
+              "callback"
             ]
           },
           "details": {
@@ -887,7 +900,7 @@
           "phone"
         ],
         "additionalProperties": false,
-        "description": "Send either details, or the requirement fields roles, headcountBand, siteState, siteCity, startWindow and durationBand.",
+        "description": "Send either details, or the requirement fields roles, headcountBand, siteState, siteCity, startWindow and durationBand, or, for a call back, requestType callback with headcountBand.",
         "anyOf": [
           {
             "required": [
@@ -903,6 +916,17 @@
               "startWindow",
               "durationBand"
             ]
+          },
+          {
+            "required": [
+              "requestType",
+              "headcountBand"
+            ],
+            "properties": {
+              "requestType": {
+                "const": "callback"
+              }
+            }
           }
         ]
       },

@@ -6,6 +6,7 @@ import { businessPhone, businessPhoneHref } from "@/content/business-contact";
 import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { HEADINGS } from "./contact-headings";
 import { ContactFormForMode, ContactHeading } from "./contact-mode";
+import { CallbackForm } from "./callback-form";
 import { AgentGuidance } from "@/components/agent-guidance";
 import { JobsLink } from "@/components/i18n/jobs-link";
 import { localeParams } from "@/lib/i18n";
@@ -81,9 +82,10 @@ export default function ContactPage() {
         ])}
       />
       <Section className="pt-8 sm:pt-14 lg:pt-16">
-        {/* Phone order: intro, form, contact lines. Desktop: intro and lines
-            on the left, the form on the right. */}
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] lg:grid-rows-[auto_1fr] lg:gap-x-20 lg:gap-y-0">
+        {/* Phone order: intro, the short call-back form, the full form,
+            contact lines. Desktop: intro, call back and lines on the left,
+            the full form on the right. */}
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] lg:grid-rows-[auto_auto_1fr] lg:gap-x-20 lg:gap-y-0">
           <div className="lg:col-start-1 lg:row-start-1">
             {/* One quiet line for job seekers, a full thumb target (48px), to
                 /jobs, every market, in their saved language (JobsLink). */}
@@ -100,12 +102,18 @@ export default function ContactPage() {
             </Suspense>
             <p className="crew-reply max-w-sm">{RESPONSE_LINE}</p>
           </div>
-          <div className="lg:col-start-2 lg:row-start-1 lg:row-span-2">
+          {/* The crew request only (callback-form.tsx): empty in the other modes. */}
+          <div className="empty:hidden lg:col-start-1 lg:row-start-2 lg:pt-12">
+            <Suspense fallback={null}>
+              <CallbackForm />
+            </Suspense>
+          </div>
+          <div className="lg:col-start-2 lg:row-start-1 lg:row-span-3">
             <Suspense fallback={<ContactFormFallback />}>
               <ContactFormForMode />
             </Suspense>
           </div>
-          <div className="lg:col-start-1 lg:row-start-2 lg:pt-12">
+          <div className="lg:col-start-1 lg:row-start-3 lg:pt-12">
             <p className="text-sm text-muted-foreground">Prefer to write or call?</p>
             <dl className="mt-3">
               {lines.map((l, i) => (

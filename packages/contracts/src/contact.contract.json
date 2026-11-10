@@ -1,5 +1,5 @@
 {
-  "version": "1.3.0",
+  "version": "1.4.0",
   "request": {
     "fields": {
       "name": {
@@ -229,11 +229,12 @@
       "requestType": {
         "type": "enum",
         "required": false,
-        "description": "What the person is asking for: a crew (the default), a site assessment first, or help getting their own site compliant (EPF, ESIC, PT, LWF, contract labour licence, registers, minimum wage; send details and siteState).",
+        "description": "What the person is asking for: a crew (the default), a site assessment first, help getting their own site compliant (EPF, ESIC, PT, LWF, contract labour licence, registers, minimum wage; send details and siteState), or a call back about a crew (send headcountBand; the rest is taken on the call).",
         "values": {
           "crew": "A crew",
           "site-assessment": "A site assessment",
-          "compliance-help": "Compliance help"
+          "compliance-help": "Compliance help",
+          "callback": "A call back"
         },
         "example": "crew"
       },
@@ -273,12 +274,17 @@
         "siteCity",
         "startWindow",
         "durationBand"
+      ],
+      [
+        "requestType=callback",
+        "headcountBand"
       ]
     ],
-    "requireOneOfMessage": "Send either details, or the requirement fields roles, headcountBand, siteState, siteCity, startWindow and durationBand."
+    "requireOneOfMessage": "Send either details, or the requirement fields roles, headcountBand, siteState, siteCity, startWindow and durationBand, or, for a call back, requestType callback with headcountBand."
   },
   "responses": {
     "successMessage": "Requirement received. Our team will review it and reply. We aim to reply within two working days (Monday to Saturday, IST).",
+    "callbackSuccessMessage": "Call back requested. We aim to call you within one working day (Monday to Saturday, IST).",
     "validationError": "Invalid form data.",
     "rateLimitError": "Too many submissions. Please try again shortly.",
     "verificationError": "We couldn't verify this browser. Please complete the check and try again, or call us.",

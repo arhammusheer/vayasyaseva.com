@@ -138,6 +138,27 @@ test('contact form: 200 with a case ID; the staff email goes first, then the lea
   assert.equal(world.leads[0].payload.caseId, r.json.caseId);
 });
 
+test('contact form: a call back (name, company, phone, workers) is a lead like any other, answered with its own promise', async () => {
+  reset();
+  const callback = { name: 'Asha Rawat', company: 'Acme Foods', phone: '+91 98765 43210', requestType: 'callback', headcountBand: '20-49', sourcePath: '/services/factory-labour' };
+  const r = await post(routes.contactFormRoute, { body: callback, headers: formHeaders() });
+  assert.equal(r.status, 200);
+  assert.match(r.json.caseId, /^REQ-\d{8}-[0-9A-F]{8}$/);
+  assert.equal(r.json.message, 'Call back requested. We aim to call you within one working day (Monday to Saturday, IST).');
+  assert.equal(world.emails, 1, 'the staff email only: no address for a copy');
+  await drain();
+  assert.equal(world.leads.length, 1);
+  const lead = world.leads[0].payload;
+  assert.equal(lead.requestType, 'callback');
+  assert.equal(lead.headcountBand, '20-49');
+  assert.equal(lead.email, null);
+  assert.match(lead.enquiry, /Request: A call back/);
+  assert.match(lead.enquiry, /Flags: call back requested \(phone within one working day\)/);
+  // Without the number of workers it is not a request.
+  const bare = await post(routes.contactFormRoute, { body: { ...callback, headcountBand: undefined }, headers: formHeaders() });
+  assert.equal(bare.status, 400);
+});
+
 test('contact form: 429 for the honeypot, a form sent too fast, and a second enquiry from the same IP', async () => {
   reset();
   assert.equal((await post(routes.contactFormRoute, { body: enquiry, headers: formHeaders({ 'x-contact-form-honeypot': 'bot' }) })).status, 429);

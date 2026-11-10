@@ -34,6 +34,23 @@ export const ENQUIRY_PREFILL_FIELDS = [
 
 const MAX_LENGTH = 2000;
 
+let lastEnquiry: { at: number; values: Partial<Record<(typeof ENQUIRY_PREFILL_FIELDS)[number], string>> } | null = null;
+
+/**
+ * The enquiry prefill for /contact, which has two forms (the full one and
+ * the short call back). Reading clears the fragment, so the form that
+ * mounts second would find nothing: it gets what the first one read, in the
+ * same moment.
+ */
+export function readEnquiryPrefill() {
+  const fresh = readPrefill(ENQUIRY_PREFILL_FIELDS);
+  if (fresh) {
+    lastEnquiry = { at: performance.now(), values: fresh };
+    return fresh;
+  }
+  return lastEnquiry && performance.now() - lastEnquiry.at < 1_000 ? lastEnquiry.values : null;
+}
+
 export function readPrefill<K extends string>(fields: readonly K[]): Partial<Record<K, string>> | null {
   const hash = window.location.hash.slice(1);
   if (!hash.includes("=")) return null;

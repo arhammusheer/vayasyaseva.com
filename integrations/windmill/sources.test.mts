@@ -21,6 +21,7 @@ import { runSyncCrm } from "./talent/lib/run-sync-crm.ts";
 import { CRM_SYNC_LOCK, RECORD_CRM_SYNC, SYNC_CANDIDATES } from "./talent/lib/sql.ts";
 import type { SyncCandidate } from "./talent/lib/crm.ts";
 import { crewSummary, isQualified, leadForwardFailedEvent, leadReceivedEvent } from "./leads/lib/lead-notify.ts";
+import { opportunityName } from "./leads/lib/lead.ts";
 import { runLeadsSync, saveLead } from "./leads/lib/run-leads.ts";
 import type { Lead } from "./leads/lib/lead.ts";
 import { HEALTH_KEY_PREFIX, healthConditions, notifyHealth } from "./platform/lib/health-notify.ts";
@@ -230,6 +231,12 @@ test("lead.received: qualified is notice, from the site's Flags line only; the t
   assert.equal(isQualified({ enquiry: "Case X\nWork: Packing\n\nFlags: qualified, honestly" }), false, "the person's own text is not read");
   assert.equal(crewSummary(lead), "50-99 packers +1, Haridwar");
   assert.equal(crewSummary({ ...lead, requestType: "compliance-help" }), "compliance help, Haridwar");
+  // The short form (contract 1.4.0): no services yet, only the number of workers.
+  const callback = { ...lead, requestType: "callback", services: [], enquiry: "Case X\nRequest: A call back\nFlags: call back requested (phone within one working day)" };
+  assert.equal(crewSummary(callback), "call back: 50-99 workers, Haridwar");
+  assert.equal(leadReceivedEvent(callback, "opp-1").title, "New call back request: call back: 50-99 workers, Haridwar");
+  assert.equal(isQualified(callback), false);
+  assert.equal(opportunityName(callback), "Example Industries · 50-99 call back");
   const e = leadReceivedEvent(lead, "opp-1");
   assert.equal(e.severity, "notice");
   assert.equal(e.title, "New crew request (qualified): 50-99 packers +1, Haridwar");

@@ -1,4 +1,4 @@
-// Request a crew (PLAN §8.1): contract v1.3.0 is additive (older enquiries
+// Request a crew (PLAN §8.1): contract v1.4.0 is additive (older enquiries
 // stay valid), enum fields are checked against fixed ids, the lead flags
 // reach the staff email only, and prefilled links map onto the form.
 import { registerHooks } from 'node:module';
@@ -33,8 +33,8 @@ const requirement = {
   durationBand: 'ongoing',
 };
 
-test('contract is v1.3.0 and older enquiries stay valid', () => {
-  assert.equal(contactContract.version, '1.3.0');
+test('contract is v1.4.0 and older enquiries stay valid', () => {
+  assert.equal(contactContract.version, '1.4.0');
   const legacy = { ...person, details: 'Need 40 packers for a new line', company: 'Acme', location: 'Haridwar', industry: 'FMCG', headcount: '40', shiftRequirement: '2 shifts', targetStartDate: '2026-11-01' };
   assert.equal(parseContactRequest(legacy).success, true);
 });
@@ -89,6 +89,51 @@ test('compliance help needs only details, and is not judged as a crew lead', () 
   assert.equal(lead.qualified, false);
   assert.equal(assessCrewRequest({ ...person, ...requirement }).crew, true);
   assert.equal(requirementLines({ ...person, ...requirement, requestType: 'crew' })[0], 'Work: Packing, Loading and unloading');
+});
+
+test('a call back needs only the number of workers, and only when requestType says so (1.4.0)', async () => {
+  const result = parseContactRequest({ ...person, company: 'Acme', requestType: 'callback', headcountBand: '20-49' });
+  assert.equal(result.success, true);
+  assert.deepEqual(requirementLines(result.data), ['Request: A call back', 'Workers: 20 to 49']);
+  // Without the number of workers the error points at that field.
+  const missing = contactSchema.safeParse({ ...person, requestType: 'callback' });
+  assert.equal(missing.success, false);
+  assert.deepEqual(missing.error.issues.map((issue) => issue.path[0]), ['headcountBand']);
+  // The number of workers alone is still not an enquiry, nor with another request type.
+  assert.equal(contactSchema.safeParse({ ...person, headcountBand: '20-49' }).success, false);
+  assert.equal(contactSchema.safeParse({ ...person, requestType: 'site-assessment', headcountBand: '20-49' }).success, false);
+  // A crew lead, flagged as a call back; not "qualified" (no duration yet).
+  const lead = assessCrewRequest(result.data);
+  assert.deepEqual([lead.crew, lead.callback, lead.qualified], [true, true, false]);
+  assert.equal(assessCrewRequest({ ...person, ...requirement }).callback, false);
+});
+
+test('a call back: the staff email says to phone within one working day', async () => {
+  Object.assign(process.env, {
+    MSG91_AUTH_KEY: 'unit', MSG91_DOMAIN: 'mail.example.test', MSG91_FROM_EMAIL: 'from@example.test', MSG91_FROM_NAME: 'Unit',
+    MSG91_INTERNAL_TEMPLATE_ID: 'internal_tpl', MSG91_AUTOREPLY_TEMPLATE_ID: 'autoreply_tpl', CONTACT_INTERNAL_RECIPIENT_EMAIL: 'team@example.test',
+  });
+  const { sendInternalContactEmail, canSendContactAutoReply } = await import('../src/lib/msg91.ts');
+  const sent = [];
+  const realFetch = globalThis.fetch;
+  const realInfo = console.info;
+  globalThis.fetch = async (url, init) => { sent.push(JSON.parse(init.body)); return new Response(JSON.stringify({ status: 'success', data: { message_id: 'm1' } }), { status: 200 }); };
+  console.info = () => {};
+  const data = { ...person, company: 'Acme', requestType: 'callback', headcountBand: '20-49', sourcePath: '/services/factory-labour' };
+  try {
+    await sendInternalContactEmail(data, { caseId: 'REQ-UNIT' });
+  } finally {
+    globalThis.fetch = realFetch;
+    console.info = realInfo;
+  }
+  const details = sent[0].recipients[0].variables.details;
+  assert.match(details, /CALL BACK REQUESTED: phone them within one working day/);
+  assert.match(details, /20 or more workers: YES/);
+  assert.match(details, /Came from: \/services\/factory-labour/);
+  assert.match(details, /Request: A call back/);
+  assert.doesNotMatch(details, /Qualified \(20\+ workers, 3\+ months\)/);
+  // No email is asked for, so no copy goes to the buyer.
+  assert.equal(canSendContactAutoReply(data), false);
 });
 
 test('empty optional values count as not given', () => {

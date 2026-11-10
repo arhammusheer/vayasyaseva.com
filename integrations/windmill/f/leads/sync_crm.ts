@@ -1028,7 +1028,13 @@ function crewSize(lead) {
 function opportunityName(lead) {
     const who = lead.company ?? lead.name;
     const size = lead.headcount ?? lead.headcountBand;
-    const what = lead.requestType === "compliance-help" ? "compliance help" : lead.requestType === "site-assessment" ? "site assessment" : "crew";
+    const what = lead.requestType === "compliance-help"
+        ? "compliance help"
+        : lead.requestType === "site-assessment"
+            ? "site assessment"
+            : lead.requestType === "callback"
+                ? "call back"
+                : "crew";
     return `${who} · ${size ? `${size} ` : ""}${what}`.slice(0, 200);
 }
 const isoDate = (v) => (v && /^\d{4}-\d{2}-\d{2}/.test(v) && !Number.isNaN(Date.parse(v)) ? v.slice(0, 10) : null);
@@ -1217,10 +1223,10 @@ function crewSummary(lead) {
     const size = /^[\d+\s-]{1,12}$/.test(lead.headcountBand ?? "") ? lead.headcountBand : /^\d{1,5}$/.test(lead.headcount?.trim() ?? "") ? lead.headcount.trim() : null;
     const first = lead.services[0];
     const what = first ? (SERVICE_WORDS[first] ?? "workers") + (lead.services.length > 1 ? ` +${lead.services.length - 1}` : "") : "workers";
-    const kind = lead.requestType === "site-assessment" ? "site assessment: " : "";
+    const kind = lead.requestType === "site-assessment" ? "site assessment: " : lead.requestType === "callback" ? "call back: " : "";
     return `${kind}${size ? `${size} ` : ""}${what}${lead.cluster ? `, ${clusterLabel(lead.cluster)}` : ""}`;
 }
-const requestWord = (lead) => (lead.requestType === "compliance-help" ? "compliance help request" : "crew request");
+const requestWord = (lead) => lead.requestType === "compliance-help" ? "compliance help request" : lead.requestType === "callback" ? "call back request" : "crew request";
 function leadReceivedEvent(lead, opportunityId) {
     const qualified = isQualified(lead);
     const from = lead.channel === "agent" ? "AI agent" : (lead.sourcePath ?? "/contact");

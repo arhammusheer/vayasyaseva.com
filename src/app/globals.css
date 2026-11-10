@@ -2718,18 +2718,26 @@ a:hover > svg {
 .crew-form {
   max-width: 680px;
 }
-/* The short call-back form beside the full one: a name, a phone, a number. */
+/* The call back: one button beside the full form; its four fields open in a dialog. */
 .callback {
   max-width: 420px;
-  padding-top: 28px;
-  border-top: 1px solid var(--border);
+}
+.callback-open {
+  margin-top: 12px;
+}
+.callback-sent {
+  padding-left: 14px;
+  border-left: 2px solid var(--gold-500);
+  font-size: 16px;
+  line-height: 1.5;
 }
 .callback-title {
+  padding-right: 40px;
   font-family: var(--stack-display);
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 500;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 .callback-note {
   margin-top: 8px;
@@ -2746,9 +2754,51 @@ a:hover > svg {
   width: 100%;
   margin-top: 20px;
 }
-@media (max-width: 1023px) {
-  .callback {
-    max-width: 680px;
+.callback-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgb(17 17 17 / 0.55);
+}
+.callback-dialog {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 81;
+  width: min(440px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  transform: translate(-50%, -50%);
+  padding: 28px;
+  border-radius: 12px;
+  background: var(--background);
+  color: var(--foreground);
+  box-shadow: 0 24px 64px rgb(17 17 17 / 0.28);
+}
+.callback-dialog:focus {
+  outline: none;
+}
+.callback-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  color: var(--muted-foreground);
+}
+.callback-close:hover {
+  color: var(--foreground);
+  background: var(--muted);
+}
+/* On a phone the dialog sits at the top, clear of the keyboard. */
+@media (max-width: 640px) {
+  .callback-dialog {
+    top: 16px;
+    transform: translateX(-50%);
+    padding: 24px 20px;
   }
 }
 .crew-step {

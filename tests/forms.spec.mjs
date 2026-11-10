@@ -246,46 +246,61 @@ try {
     for(const key of ['qualified','priority','outOfScope']) assert.equal(key in body,false);
     assert.doesNotMatch(await page.locator('main').textContent(),/qualified|out of scope/i);
   }
-  // The short call-back form beside the full one (contract 1.4.0): four fields, sent as requestType callback.
+  // The call back (contract 1.4.0): one button on the page; its four fields open in a dialog, sent as requestType callback.
   await page.evaluate(()=>sessionStorage.clear());
   await open('/en-in/services/factory-labour');
   // A service page's hero now carries Request a crew, not only the job seekers' line.
   await page.locator('main section').first().locator('a[href="/en-in/contact"]').click();await page.waitForURL('**/en-in/contact');
-  await page.locator('#cb-name').waitFor();
+  const callBack=page.getByRole('button',{name:'Request a call back'});
+  await callBack.waitFor();
   {
-    // On a phone it comes before the full form.
-    const [cb,full]=await Promise.all(['.callback','.crew-form'].map(s=>page.locator(s).evaluate(el=>el.getBoundingClientRect().top)));
-    assert.ok(cb<full,'call back first');
-    assert.ok((await page.locator('.callback').textContent()).includes('within one working day'));
+    // The page shows one form: the call-back fields are not on it until asked for.
+    assert.equal(await page.locator('#cb-name').count(),0);
+    const [cb,full]=await Promise.all([callBack.evaluate(el=>el.getBoundingClientRect().top),page.locator('.crew-form').evaluate(el=>el.getBoundingClientRect().top)]);
+    assert.ok(cb<full,'call back before the form on a phone');
+    await callBack.click();
+    const dialog=page.getByRole('dialog');await dialog.waitFor();
+    assert.ok((await dialog.textContent()).includes('within one working day'));
+    // The dialog fits the phone screen.
+    const box=await dialog.boundingBox();assert.ok(box.x>=0&&box.x+box.width<=390&&box.y>=0,'dialog on screen');
     const before=contactBodies.length;
-    await page.locator('.callback button[type=submit]').click();await visible('#cb-name');
+    await dialog.locator('button[type=submit]').click();
+    await page.waitForFunction(()=>document.activeElement?.id==='cb-name');
     for(const id of ['name','company','phone','headcountBand']) assert.ok(await page.locator(`#cb-${id}-error`).isVisible(),id);
     assert.equal(contactBodies.length,before,'nothing sent while invalid');
-    // The full form's own errors are untouched.
+    // Escape closes it; what was typed is not kept, and the full form is untouched.
+    await page.locator('#cb-name').fill('Gone');await page.keyboard.press('Escape');await dialog.waitFor({state:'detached'});
     assert.equal(await page.locator('#roles-error').count(),0);
+    await callBack.click();await dialog.waitFor();assert.equal(await page.locator('#cb-name').inputValue(),'');
     await page.locator('#cb-name').fill('Callback Test');await page.locator('#cb-company').fill('Callback Company');
     await page.locator('#cb-phone').fill('9999900003');await page.locator('#cb-headcountBand').selectOption('20-49');
     assert.equal(await page.locator('#cb-phone-error').count(),0);
-    await page.locator('.callback button[type=submit]').click();
-    await page.locator('.callback[role=status]').waitFor();
-    const done=await page.locator('.callback[role=status]').textContent();
+    await dialog.locator('button[type=submit]').click();
+    await dialog.getByRole('button',{name:'Close',exact:true}).first().waitFor();
+    const done=await dialog.textContent();
     assert.ok(done.includes('We will call you.'));assert.ok(done.includes('within one working day'));assert.ok(done.includes('REQ-20261016-1A2B3C4D'));
     const body=contactBodies.at(-1);
     assert.deepEqual(body,{requestType:'callback',name:'Callback Test',company:'Callback Company',phone:'9999900003',headcountBand:'20-49'});
-    // The full form is still there for someone who wants to say more.
+    // Closed, the page says it was sent, in place of the button; the full form is still there.
+    await dialog.getByRole('button',{name:'Close',exact:true}).first().click();await dialog.waitFor({state:'detached'});
+    assert.equal(await callBack.count(),0);
+    assert.ok((await page.locator('.callback [role=status]').textContent()).includes('REQ-20261016-1A2B3C4D'));
     assert.ok(await page.locator('.crew-form #roles').isVisible());
   }
-  // A place page's link carries its market into the call back too.
+  // A place page's link carries its market into the call back too, and the full form still gets its prefill.
   // (Leaves the page first: a URL that differs only in its fragment does not reload it.)
   await page.evaluate(()=>sessionStorage.clear());await page.goto('about:blank');
-  await open('/en-in/contact#location=haridwar');
-  await page.locator('#cb-name').fill('Callback Place');await page.locator('#cb-company').fill('Place Company');
+  await open('/en-in/contact#location=haridwar&name=Callback%20Place');
+  await page.waitForFunction(()=>document.querySelector('#siteCity')?.value==='Haridwar');
+  await page.getByRole('button',{name:'Request a call back'}).click();
+  assert.equal(await page.locator('#cb-name').inputValue(),'Callback Place');
+  await page.locator('#cb-company').fill('Place Company');
   await page.locator('#cb-phone').fill('9999900004');await page.locator('#cb-headcountBand').selectOption('50-99');
-  await page.locator('.callback button[type=submit]').click();await page.locator('.callback[role=status]').waitFor();
+  await page.getByRole('dialog').locator('button[type=submit]').click();await page.locator('.callback [role=status]').waitFor();
   assert.equal(contactBodies.at(-1).pageCluster,'haridwar');assert.equal(contactBodies.at(-1).requestType,'callback');
   // The other requests have their own questions: no call back there.
   for(const type of ['assessment','compliance']){await open('/en-in/contact?type='+type);await page.locator('.crew-form').waitFor();assert.equal(await page.locator('.callback').count(),0,type);}
-  console.log('Call back: four fields beside the full form, sent as requestType callback with the page market; service heroes link to Request a crew');
+  console.log('Call back: a button beside the form opens a dialog with four fields, sent as requestType callback with the page market; service heroes link to Request a crew');
   // Compliance help: its own step 1 (needs, state, workers, where stuck), its own draft, sent as details.
   await page.evaluate(()=>sessionStorage.clear());
   await open('/en-in/contact?type=compliance');

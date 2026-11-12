@@ -16,6 +16,7 @@
 //
 // Search data goes to the hub's email body only, never to logs
 // or a push: the repository and its CI are public.
+import { readFileSync } from "node:fs";
 import { parseArgs } from "node:util";
 import { hubFromEnv } from "../lib/notify-hub.mjs";
 import { seoEvents, seoFailedEvent } from "./hub.mjs";

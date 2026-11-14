@@ -277,9 +277,19 @@ export const LEAD_LIMITS = {
   requestType: 40,
   enquiry: 8000,
   sourcePath: 300,
+  mailSubject: 300,
+  mailText: 12000,
 } as const;
 
 const optionalText = (max: number) => z.string().min(1).max(max).nullable();
+
+/** One plain-text email of a lead (subject and body). */
+const leadMailShape = z
+  .object({
+    subject: z.string().min(1).max(LEAD_LIMITS.mailSubject),
+    text: z.string().min(1).max(LEAD_LIMITS.mailText),
+  })
+  .strict();
 
 const leadShape = {
   caseId: z.string().regex(CASE_ID_PATTERN),
@@ -303,6 +313,19 @@ const leadShape = {
   /** The whole enquiry as our team reads it: every answer, then the free text. */
   enquiry: z.string().min(1).max(LEAD_LIMITS.enquiry),
   sourcePath: optionalText(LEAD_LIMITS.sourcePath),
+  /**
+   * The lead's emails, written by the site (src/lib/contact-email.ts) and
+   * sent by Windmill through Resend: `staff` to the shared inbox, `buyer` to
+   * the lead's email (only when the person gave one on our own form). Plain
+   * text. Optional: older senders leave it out and no email goes.
+   */
+  mail: z
+    .object({
+      staff: leadMailShape,
+      buyer: leadMailShape.nullable(),
+    })
+    .strict()
+    .optional(),
 };
 
 export const leadCanonicalSchema = z

@@ -31,7 +31,11 @@ WHERE target = 'sms' AND submission_id = (SELECT id FROM submissions WHERE ref =
 Run history and errors are in Windmill (Runs, filter by `f/talent/dispatch`).
 
 The lead inbox (the `leads` database) has the same shape: `leads` and
-`deliveries` (target `crm`, eight attempts), worked by `f/leads/sync_crm`.
+`deliveries` (targets `crm`, `staff_mail` and `buyer_mail`, eight attempts
+each), worked by `f/leads/sync_crm`. `staff_mail` is the shared inbox's email
+and `buyer_mail` the person's copy (leads/lib/lead-mail.ts, Resend); a dead
+`staff_mail` raises `lead.email_failed`. To resend one, reset only that
+target (add `AND target = 'staff_mail'`).
 
 ```sql
 -- In the leads database

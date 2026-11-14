@@ -4,19 +4,19 @@
  * enquiry with a name, a phone and the number of workers): the website's contact form (/api/contact, Turnstile) and
  * the open agent route (/api/agent/contact).
  *
- * The staff email goes first, as before: it carries the lead flags and is
- * the inbox staff work from. The lead goes to Windmill (Twenty CRM) after
- * the response whether or not that email worked, so a failed email no longer
- * loses the lead. The answer the person sees is unchanged: 500 when the
- * email failed (they are asked to try again or call), and the retry, if it
- * sends the same Idempotency-Key, keeps the same case ID, which Windmill
- * files once.
+ * The lead goes to Windmill before the route answers (14 Nov 2026), with
+ * its two emails written here (src/lib/contact-email.ts): Windmill saves it,
+ * sends the shared inbox's email (which carries the lead flags) and the
+ * buyer's copy through Resend, and files it in Twenty, retrying each on its
+ * own. The person sees 500 when Windmill does not take it (they are asked to
+ * try again or call), and the retry, if it sends the same Idempotency-Key,
+ * keeps the same case ID, which Windmill files once.
  */
 import { NextResponse } from "next/server";
 import { reportServerCount } from "@/lib/measurement/server";
 import { contactContract, parseContactRequest, type ContactFormData } from "@/lib/contact-contract";
 import { BUSINESS_NOTICE_VERSION, assessCrewRequest } from "@/lib/crew-request";
-import { canSendContactAutoReply, createContactCaseId, sendContactAutoReply, sendInternalContactEmail } from "@/lib/contact-email";
+import { createContactCaseId } from "@/lib/contact-email";
 import { buildLeadPayload } from "@/lib/lead-forward";
 import { agentInfoSchema } from "@/lib/talent-intake/contract";
 import { normaliseIndianMobile } from "@/lib/talent-intake/rules";
@@ -30,53 +30,34 @@ import { notifyHub, type WebsiteEvent } from "@/server/notify";
 const responses = contactContract.responses;
 
 /**
- * lead.email_failed for the notification hub: the case ID and the route,
- * never the person or the error text (which may quote the enquiry).
+ * lead.email_failed for the notification hub when Windmill does not take a
+ * lead: then neither the shared inbox's email nor Twenty has it. The case ID
+ * and the route only, never the person.
  */
-export function emailFailedEvent(caseId: string, route: string): WebsiteEvent {
+export function leadNotTakenEvent(caseId: string, route: string): WebsiteEvent {
   return {
     type: "lead.email_failed",
     severity: "warning",
     dedupeKey: `lead-email:${caseId}`,
-    title: `Enquiry email not sent: ${caseId}`,
-    summary: `The staff email for ${caseId} (${route}) failed, so the shared inbox does not have it. The lead still goes to Twenty; the person was asked to try again or call. Check Resend.`,
-    link: { label: "Leads in Twenty", url: "https://crm.vayasyaseva.com/objects/opportunities" },
+    title: `Enquiry not received: ${caseId}`,
+    summary: `Windmill did not take ${caseId} (${route}), so the shared inbox email and Twenty do not have it. The person was asked to try again or call. Check the Vercel logs and Windmill.`,
+    link: { label: "Windmill runs", url: "https://windmill.vayasyaseva.com/runs?workspace=vspl" },
   };
 }
 
 /**
- * Sends the staff email, then hands the lead to the transport after the
- * response, even if the email failed. Rethrows the email's error so the
- * route answers as it always has.
+ * Hands the lead to Windmill before the route answers: Windmill saves it,
+ * then sends its emails (the lead's `mail`) and files it in Twenty. When it
+ * is not taken (after the transport's retries) the route answers 500, as a
+ * failed email used to, and a retry with the same Idempotency-Key keeps the
+ * case ID, which Windmill files once.
  */
-async function emailThenLead(
-  email: ContactFormData,
-  lead: ReturnType<typeof buildLeadPayload>,
-  ctx: SubmissionContext,
-  caseId: string,
-  route: string,
-  agentName?: string | null,
-) {
-  let delivery: Awaited<ReturnType<typeof sendInternalContactEmail>> | undefined;
-  let emailError: unknown;
-  try {
-    delivery = await sendInternalContactEmail(email, { caseId, agentName });
-  } catch (error) {
-    emailError = error;
-  }
-  // Into Twenty CRM too, after the response: never delays the form.
-  ctx.defer(() => transport().lead(lead, { idempotencyKey: ctx.idempotencyKey }));
-  if (emailError !== undefined) {
-    console.error("[CONTACT EMAIL FAILED; LEAD STILL FORWARDED]", {
-      caseId,
-      error: emailError instanceof Error ? emailError.message : "Unknown error",
-    });
-    // The shared inbox did not get it: tell the hub (after the response; no-op without NOTIFY_*).
-    // A retry with the same case ID that fails again is one notification (the dedupeKey).
-    ctx.defer(() => notifyHub(emailFailedEvent(caseId, route)));
-    throw emailError;
-  }
-  return delivery!;
+async function handOff(lead: ReturnType<typeof buildLeadPayload>, ctx: SubmissionContext, route: string) {
+  if (await transport().lead(lead, { idempotencyKey: ctx.idempotencyKey })) return;
+  console.error("[LEAD NOT TAKEN]", { caseId: lead.caseId, route });
+  // After the response; no-op without NOTIFY_*. A retry that fails again is one notification (the dedupeKey).
+  ctx.defer(() => notifyHub(leadNotTakenEvent(lead.caseId, route)));
+  throw new Error("Windmill did not take the lead");
 }
 
 // --- /api/contact (the website form) -------------------------------------------
@@ -135,38 +116,24 @@ export const contactFormRoute: SubmissionRoute<ContactFormData> = {
     ctx.keep({ caseId });
     const dup = duplicateKey(ip, data.email ?? "", data.phone ?? "");
 
-    // The staff email first, always: it carries the lead flags (qualified,
-    // starts soon, out of scope), which never reach the buyer.
+    // Windmill first, always: it sends the staff email (with the lead flags,
+    // which never reach the buyer) and the buyer's copy, and files the lead.
     const assessment = assessCrewRequest(data);
     const lead = buildLeadPayload(data, { caseId, channel: "web", receivedAt: new Date(now) });
-    const sharedInboxDelivery = await emailThenLead(data, lead, ctx, caseId, "/api/contact");
+    await handOff(lead, ctx, "/api/contact");
 
     console.info("[CONTACT SUBMISSION DELIVERED]", {
       timestamp: new Date().toISOString(),
       caseId,
-      deliveryPath: "shared-inbox-intake",
+      deliveryPath: "windmill-lead-inbox",
       duplicateKey: dup,
       ip,
-      name: data.name,
-      company: data.company,
-      email: data.email,
       headcountBand: assessment.headcountBand,
       qualified: assessment.qualified,
-      // The privacy notice the buyer saw (also in the staff email's flags).
+      // The privacy notice the buyer saw (also in the staff email).
       privacyVersion: BUSINESS_NOTICE_VERSION,
-      messageId: sharedInboxDelivery.messageId,
+      buyerCopy: Boolean(lead.mail?.buyer),
     });
-
-    // Then the buyer's copy, if they gave an email. The enquiry is already
-    // with our team, so a failure here doesn't fail the request.
-    if (canSendContactAutoReply(data)) {
-      try {
-        const acknowledgement = await sendContactAutoReply(data, { caseId });
-        console.info("[CONTACT ACKNOWLEDGEMENT SENT]", { caseId, messageId: acknowledgement.messageId });
-      } catch (error) {
-        console.error("[CONTACT ACKNOWLEDGEMENT FAILED]", { caseId, error: error instanceof Error ? error.message : "Unknown error" });
-      }
-    }
 
     reportServerCount("enquiry_received", "/api/contact", {
       channel: "web",
@@ -258,10 +225,10 @@ export const agentContactRoute: SubmissionRoute<AgentEnquiry> = {
     const caseId = ctx.carry?.caseId ?? createContactCaseId().replace(/^REQ-/, "AGT-");
     ctx.keep({ caseId });
     const note = `[Sent by an AI agent${agent ? ` (${agent.name})` : ""} on the person's behalf through /api/agent/contact. Confirm the details with them when you reply.]`;
-    const lead = buildLeadPayload(data, { caseId, channel: "agent", note });
     // The staff email says an agent sent it in its own line (and replies go to us, not the address given).
-    const delivery = await emailThenLead(data, lead, ctx, caseId, "/api/agent/contact", agent?.name ?? null);
-    console.info("[AGENT CONTACT DELIVERED]", { caseId, ip: ctx.ip ?? "unknown", agent: agent?.name ?? null, messageId: delivery.messageId });
+    const lead = buildLeadPayload(data, { caseId, channel: "agent", note, agentName: agent?.name ?? null });
+    await handOff(lead, ctx, "/api/agent/contact");
+    console.info("[AGENT CONTACT DELIVERED]", { caseId, ip: ctx.ip ?? "unknown", agent: agent?.name ?? null });
     reportServerCount("enquiry_received", "/api/agent/contact", {
       channel: "agent",
       cluster: "none",

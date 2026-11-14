@@ -1,6 +1,6 @@
 {
-  "summary": "Leads · sync to Twenty CRM",
-  "description": "Files the inbox's due leads in Twenty (company, contact, crew request, enquiry; each found before it is created), with backoff and an attempt cap. Started by intake for a new lead.",
+  "summary": "Leads · emails and sync to Twenty CRM",
+  "description": "Sends the leads' due emails through Resend (the shared inbox's and the buyer's copy, written by the website), then files the inbox's due leads in Twenty (company, contact, crew request, enquiry; each found before it is created), with backoff and an attempt cap. Started by intake for a new lead.",
   "lock": "",
   "kind": "script",
   "language": "bun",

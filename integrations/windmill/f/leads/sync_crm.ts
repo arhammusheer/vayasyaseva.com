@@ -26,6 +26,9 @@ const VARIABLES = {
     submission_signing_secret: { secret: true },
     alerts_email_from: { secret: false },
     alerts_reply_to: { secret: false },
+    lead_staff_email_from: { secret: false },
+    lead_buyer_email_from: { secret: false },
+    lead_inbox_email: { secret: false },
 };
 const variablePath = (name) => `f/talent/${name}`;
 let override = null;
@@ -219,6 +222,75 @@ async function twentyFilesFromConfig() {
     return twentyFilesClient(await config("twenty_base_url"), await config("twenty_api_key"));
 }
   return { eq, twentyClient, twentyFromConfig, TwentyGraphqlError, inClusterUploadUrl, twentyFilesClient, twentyFilesFromConfig };
+})();
+
+// integrations/windmill/notify/lib/config.ts
+const { NOTIFY_VARIABLES, notifyVariablePath, setNotifyConfigForTests, notifyConfig, OWNER_PLACEHOLDER } = (() => {
+const NOTIFY_VARIABLES = {
+    notify_pg_url: { secret: true },
+    ingest_secret: { secret: true },
+    alertmanager_secret: { secret: true },
+    ntfy_token: { secret: true },
+    ntfy_base_url: { secret: false },
+    resend_api_key: { secret: true },
+    email_from: { secret: false },
+    email_to: { secret: true },
+    policy: { secret: false },
+};
+const notifyVariablePath = (name) => `f/notify/${name}`;
+let notifyOverride = null;
+function setNotifyConfigForTests(values) {
+    notifyOverride = values;
+}
+async function notifyConfig(name) {
+    if (notifyOverride) {
+        const value = notifyOverride[name];
+        if (value === undefined)
+            throw new Error(`test config has no ${name}`);
+        return value;
+    }
+    const value = await wmill.getVariable(notifyVariablePath(name));
+    if (!value)
+        throw new Error(`variable ${notifyVariablePath(name)} is empty`);
+    return value;
+}
+const OWNER_PLACEHOLDER = "set-by-owner";
+  return { NOTIFY_VARIABLES, notifyVariablePath, setNotifyConfigForTests, notifyConfig, OWNER_PLACEHOLDER };
+})();
+
+// integrations/windmill/notify/lib/ntfy.ts
+const { retryableStatus, responseDetail, ntfyClient } = (() => {
+const retryableStatus = (status) => status === 408 || status === 429 || status >= 500;
+async function responseDetail(res) {
+    try {
+        return (await res.text()).replace(/\s+/g, " ").slice(0, 200);
+    }
+    catch {
+        return "";
+    }
+}
+function ntfyClient(baseUrl, token, fetchImpl = fetch) {
+    const base = baseUrl.replace(/\/$/, "");
+    return {
+        async publish(message) {
+            try {
+                const res = await fetchImpl(`${base}/`, {
+                    method: "POST",
+                    headers: { authorization: `Bearer ${token}`, "content-type": "application/json" },
+                    body: JSON.stringify(message),
+                    signal: AbortSignal.timeout(15_000),
+                });
+                if (res.ok)
+                    return { ok: true, retryable: false };
+                return { ok: false, retryable: retryableStatus(res.status), error: `ntfy HTTP ${res.status} ${await responseDetail(res)}`.trim() };
+            }
+            catch (err) {
+                return { ok: false, retryable: true, error: `ntfy ${err instanceof Error ? err.name : "error"}` };
+            }
+        },
+    };
+}
+  return { retryableStatus, responseDetail, ntfyClient };
 })();
 
 // packages/contracts/src/rules.ts
@@ -543,6 +615,158 @@ function normaliseIndianMobile(input) {
     return null;
 }
   return { REF_PATTERN, INTAKE_SOURCES, WEB_SOURCE, WHATSAPP_SOURCE, isSubmissionSource, INTAKE_LOCALES, isIntakeLocale, LEGACY_SOURCE_LOCALES, INTAKE_CLUSTERS, isIntakeCluster, PAGE_PATH_PATTERN, MAX_PAGE_PATH_LENGTH, isPagePath, INTAKE_CHANNELS, AGENT_LANGUAGE_SOURCES, MAX_AGENT_NAME_LENGTH, JOB_ROLES, JOB_ROLE_SLUGS, isJobRole, JOB_HUBS, JOB_HUB_SLUGS, isJobHub, INTAKE_FORMS, INTAKE_FORM_KEYS, MAX_APPLICANT_NAME_LENGTH, HOME_STATES, HOME_CITIES, homeStateOf, QUICK_ANSWERS, AREA_CLUSTERS, FORMLESS_AREAS, submissionCluster, QUICK_QUESTIONS, cleanQuickAnswers, ATTACHMENT_KINDS, ATTACHMENT_MIME, INTAKE_LIMITS, attachmentKeyPrefix, isAttachmentKeyFor, normaliseIndianMobile };
+})();
+
+// integrations/windmill/talent/lib/notify-application.ts
+const { TWENTY_APP_URL, CLUSTER_LABELS, roleLabel, areaLabel, clusterLabel, applicationEvent } = (() => {
+const TWENTY_APP_URL = "https://crm.vayasyaseva.com";
+const CLUSTER_LABELS = {
+    haridwar: "Haridwar",
+    uttarakhand: "Uttarakhand",
+    "delhi-ncr": "Delhi NCR",
+    bengaluru: "Bengaluru",
+    jalandhar: "Jalandhar",
+    saharanpur: "Saharanpur",
+    punjab: "Punjab",
+    dehradun: "Dehradun",
+    kapurthala: "Kapurthala",
+    visakhapatnam: "Visakhapatnam",
+    "andhra-pradesh": "Andhra Pradesh",
+    hyderabad: "Hyderabad",
+    telangana: "Telangana",
+    other: "other area",
+};
+const LANGUAGE_LABELS = {
+    en: "English",
+    "en-IN": "English",
+    hi: "Hindi",
+    "hi-IN": "Hindi",
+    hinglish: "Hinglish",
+    "hi-Latn-IN": "Hinglish",
+    "pa-IN": "Punjabi",
+    "kn-IN": "Kannada",
+};
+const has = (table, key) => typeof key === "string" && Object.hasOwn(table, key);
+const firstAnswer = (c, question) => {
+    const value = c.answers?.[question];
+    return Array.isArray(value) && typeof value[0] === "string" ? value[0] : null;
+};
+function roleLabel(c) {
+    if (has(JOB_ROLES, c.role))
+        return JOB_ROLES[c.role];
+    const work = firstAnswer(c, "work");
+    if (has(QUICK_ANSWERS.work, work))
+        return QUICK_ANSWERS.work[work];
+    return "any work";
+}
+function areaLabel(c) {
+    const home = firstAnswer(c, "home");
+    if (has(QUICK_ANSWERS.home, home))
+        return `lives in ${QUICK_ANSWERS.home[home]}`;
+    const area = firstAnswer(c, "area");
+    return has(QUICK_ANSWERS.area, area) ? QUICK_ANSWERS.area[area] : null;
+}
+const clusterLabel = (cluster) => (cluster && has(CLUSTER_LABELS, cluster) ? CLUSTER_LABELS[cluster] : "no area");
+function formLabel(c) {
+    if (c.channel === "agent")
+        return "AI agent";
+    if (c.channel === "whatsapp")
+        return "WhatsApp chat";
+    if (c.answers && Object.keys(c.answers).length)
+        return "quick form";
+    if (c.source === "web" || c.source.startsWith("web_"))
+        return "website form";
+    return c.source;
+}
+function applicationEvent(c, personId) {
+    const role = roleLabel(c);
+    const cluster = clusterLabel(c.cluster);
+    const area = areaLabel(c);
+    const language = LANGUAGE_LABELS[c.person_locale ?? c.locale] ?? LANGUAGE_LABELS[c.locale] ?? c.locale;
+    const name = (c.applicant_name ?? c.person_name ?? "").trim();
+    return {
+        source: "talent",
+        type: "application.received",
+        severity: "info",
+        dedupeKey: `application:${c.ref}`,
+        title: `New job application: ${role}, ${cluster}`,
+        summary: [c.ref, role, area, cluster, formLabel(c), language].filter(Boolean).join(" · "),
+        link: { label: "View in Twenty", url: `${TWENTY_APP_URL}/object/person/${encodeURIComponent(personId)}` },
+        pii: { ...(name ? { name } : {}), phone: c.phone },
+    };
+}
+  return { TWENTY_APP_URL, CLUSTER_LABELS, roleLabel, areaLabel, clusterLabel, applicationEvent };
+})();
+
+// integrations/windmill/leads/lib/lead-notify.ts
+const { WINDMILL_APP_URL, isQualified, crewSummary, leadReceivedEvent, leadForwardFailedEvent, leadEmailFailedEvent } = (() => {
+const WINDMILL_APP_URL = "https://windmill.vayasyaseva.com";
+function isQualified(lead) {
+    const header = lead.enquiry.split(/\n\s*\n/)[0] ?? "";
+    return /^Flags: (?:.*; )?qualified\b/m.test(header);
+}
+const SERVICE_WORDS = {
+    "loading-unloading": "loaders",
+    warehouse: "warehouse staff",
+    forklift: "forklift operators",
+    housekeeping: "housekeeping",
+    gardening: "gardeners",
+    "factory-helpers": "factory helpers",
+    packing: "packers",
+    "machine-operators": "machine operators",
+    "iti-trades": "ITI trades",
+    maintenance: "maintenance staff",
+    "fabrication-civil": "fabrication and civil",
+    "data-entry": "data entry",
+};
+function crewSummary(lead) {
+    if (lead.requestType === "compliance-help")
+        return `compliance help${lead.cluster ? `, ${clusterLabel(lead.cluster)}` : ""}`;
+    const size = /^[\d+\s-]{1,12}$/.test(lead.headcountBand ?? "") ? lead.headcountBand : /^\d{1,5}$/.test(lead.headcount?.trim() ?? "") ? lead.headcount.trim() : null;
+    const first = lead.services[0];
+    const what = first ? (SERVICE_WORDS[first] ?? "workers") + (lead.services.length > 1 ? ` +${lead.services.length - 1}` : "") : "workers";
+    const kind = lead.requestType === "site-assessment" ? "site assessment: " : lead.requestType === "callback" ? "call back: " : "";
+    return `${kind}${size ? `${size} ` : ""}${what}${lead.cluster ? `, ${clusterLabel(lead.cluster)}` : ""}`;
+}
+const requestWord = (lead) => lead.requestType === "compliance-help" ? "compliance help request" : lead.requestType === "callback" ? "call back request" : "crew request";
+function leadReceivedEvent(lead, opportunityId) {
+    const qualified = isQualified(lead);
+    const from = lead.channel === "agent" ? "AI agent" : (lead.sourcePath ?? "/contact");
+    return {
+        source: "leads",
+        type: "lead.received",
+        severity: qualified ? "notice" : "info",
+        dedupeKey: `lead:${lead.caseId}`,
+        title: `New ${requestWord(lead)}${qualified ? " (qualified)" : ""}: ${crewSummary(lead)}`,
+        summary: `${lead.caseId} · from ${from}`,
+        link: { label: "View in Twenty", url: `${TWENTY_APP_URL}/object/opportunity/${encodeURIComponent(opportunityId)}` },
+        pii: { name: lead.name, ...(lead.company ? { company: lead.company } : {}), phone: lead.phone },
+    };
+}
+const errorKind = (error) => error?.match(/HTTP \d{3}/)?.[0] ?? (error ? "an error" : "no answer");
+function leadForwardFailedEvent(caseId, attempts, error) {
+    return {
+        source: "leads",
+        type: "lead.forward_failed",
+        severity: "warning",
+        dedupeKey: `lead-dead:${caseId}`,
+        title: `Lead not filed in Twenty: ${caseId}`,
+        summary: `${caseId} stopped after ${attempts} attempts (last: ${errorKind(error)}). It is safe in the lead inbox; fix the cause, then reset its delivery (OPERATIONS.md, lead inbox).`,
+        link: { label: "Windmill runs", url: `${WINDMILL_APP_URL}/runs/f/leads/sync_crm?workspace=vspl` },
+    };
+}
+function leadEmailFailedEvent(caseId, attempts, error) {
+    return {
+        source: "leads",
+        type: "lead.email_failed",
+        severity: "warning",
+        dedupeKey: `lead-email:${caseId}`,
+        title: `Enquiry email not sent: ${caseId}`,
+        summary: `The shared inbox email for ${caseId} stopped after ${attempts} attempts (last: ${errorKind(error)}). The lead is in the lead inbox and Twenty; check Resend, then reset its staff_mail delivery (OPERATIONS.md, lead inbox).`,
+        link: { label: "Windmill runs", url: `${WINDMILL_APP_URL}/runs/f/leads/sync_crm?workspace=vspl` },
+    };
+}
+  return { WINDMILL_APP_URL, isQualified, crewSummary, leadReceivedEvent, leadForwardFailedEvent, leadEmailFailedEvent };
 })();
 
 // integrations/windmill/talent/lib/crm.ts
@@ -960,8 +1184,8 @@ async function erasePerson(crm, phone) {
 // integrations/windmill/contracts/validate.ts
 const { check, SCHEMAS } = (() => {
 const jobApplicationSchema = {"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://www.vayasyaseva.com/contracts/job_application.v1.canonical.schema.json","type":"object","properties":{"ref":{"type":"string","pattern":"^VS-J-[A-Z0-9]{6}$"},"source":{"anyOf":[{"type":"string","const":"web"},{"type":"string","const":"whatsapp"},{"type":"string","enum":["web_en","web_hi","web_hinglish"]}]},"locale":{"anyOf":[{"type":"string","enum":["en-IN","hi-IN","hi-Latn-IN","pa-IN","kn-IN"]},{"type":"null"}]},"cluster":{"anyOf":[{"type":"string","enum":["haridwar","uttarakhand","delhi-ncr","bengaluru","jalandhar","saharanpur","other","punjab","dehradun","kapurthala","visakhapatnam","andhra-pradesh","hyderabad","telangana"]},{"type":"null"}]},"pageCluster":{"anyOf":[{"type":"string","enum":["haridwar","uttarakhand","delhi-ncr","bengaluru","jalandhar","saharanpur","other","punjab","dehradun","kapurthala","visakhapatnam","andhra-pradesh","hyderabad","telangana"]},{"type":"null"}]},"pagePath":{"anyOf":[{"type":"string","maxLength":200,"pattern":"^\\/([a-z0-9]+(-[a-z0-9]+)*(\\/[a-z0-9]+(-[a-z0-9]+)*)*)?$"},{"type":"null"}]},"role":{"anyOf":[{"type":"string","enum":["factory-helper","packing","machine-operator","warehouse","forklift-operator","data-entry-operator","housekeeping","iti-trades","electrician","welder","fitter"]},{"type":"null"}]},"hub":{"anyOf":[{"type":"string","enum":["freshers","10th-pass","12th-pass"]},{"type":"null"}]},"channel":{"type":"string","enum":["web","agent","whatsapp"]},"agentName":{"anyOf":[{"type":"string","maxLength":100},{"type":"null"}]},"phone":{"type":"string","pattern":"^\\+91[6-9]\\d{9}$"},"adult":{"type":"boolean","const":true},"consent":{"type":"object","properties":{"version":{"type":"string","minLength":1,"maxLength":40},"at":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"}},"required":["version","at"],"additionalProperties":false},"text":{"anyOf":[{"type":"string","maxLength":4000},{"type":"null"}]},"attachments":{"maxItems":8,"type":"array","items":{"oneOf":[{"type":"object","properties":{"kind":{"type":"string","const":"image"},"key":{"type":"string","minLength":1,"maxLength":300},"mime":{"type":"string","pattern":"^image\\/(jpeg|png|webp)$"},"size":{"type":"integer","minimum":1,"maximum":10485760},"name":{"anyOf":[{"type":"string","maxLength":200},{"type":"null"}]}},"required":["kind","key","mime","size","name"],"additionalProperties":false},{"type":"object","properties":{"kind":{"type":"string","const":"document"},"key":{"type":"string","minLength":1,"maxLength":300},"mime":{"type":"string","pattern":"^application\\/(pdf|msword|vnd\\.openxmlformats-officedocument\\.wordprocessingml\\.document)$"},"size":{"type":"integer","minimum":1,"maximum":20971520},"name":{"anyOf":[{"type":"string","maxLength":200},{"type":"null"}]}},"required":["kind","key","mime","size","name"],"additionalProperties":false}]}},"form":{"anyOf":[{"type":"string","enum":["long","quick"]},{"type":"null"}]},"applicantName":{"anyOf":[{"type":"string","minLength":1,"maxLength":80},{"type":"null"}]},"answers":{"anyOf":[{"type":"object","properties":{"work":{"minItems":1,"type":"array","items":{"type":"string","enum":["factory-helper","packing","warehouse","machine-operator","iti-trades","housekeeping","data-entry-operator","forklift-operator","any"]},"uniqueItems":true},"trade":{"minItems":1,"type":"array","items":{"type":"string","enum":["electrician","welder","fitter","machinist","other-trade"]},"uniqueItems":true},"iti":{"minItems":1,"type":"array","items":{"type":"string","enum":["iti-pass","iti-pursuing","no-iti"]},"uniqueItems":true},"machines":{"minItems":1,"type":"array","items":{"type":"string","enum":["packing-machine","moulding","press","cnc-vmc","other-machine"]},"uniqueItems":true},"forklift":{"minItems":1,"type":"array","items":{"type":"string","enum":["licence-experience","experience-only","want-to-learn"]},"uniqueItems":true},"computer":{"minItems":1,"type":"array","items":{"type":"string","enum":["typing","excel","tally","sap-erp"]},"uniqueItems":true},"experience":{"minItems":1,"type":"array","items":{"type":"string","enum":["fresher","under-1","1-3","3-plus"]},"uniqueItems":true},"education":{"minItems":1,"type":"array","items":{"type":"string","enum":["below-10th","10th","12th","iti-diploma","graduate"]},"uniqueItems":true},"shift":{"minItems":1,"type":"array","items":{"type":"string","enum":["day","night","rotating"]},"uniqueItems":true},"start":{"minItems":1,"type":"array","items":{"type":"string","enum":["now","week","month"]},"uniqueItems":true},"area":{"minItems":1,"type":"array","items":{"type":"string","enum":["sidcul-bahadrabad","haridwar-jwalapur","roorkee-bhagwanpur","laksar","outside","bengaluru:north","bengaluru:south","bengaluru:east","bengaluru:west","bengaluru:outside","jalandhar:kapurthala","jalandhar:city","jalandhar:phagwara-goraya","jalandhar:outside","jalandhar:goraya-phillaur","uttarakhand:haridwar","uttarakhand:dehradun-selaqui","uttarakhand:udham-singh-nagar","uttarakhand:other","uttarakhand:outside","punjab:jalandhar-kapurthala","punjab:ludhiana","punjab:mohali","punjab:amritsar","punjab:other","punjab:outside","punjab:jalandhar","punjab:kapurthala","dehradun:selaqui-sahaspur","dehradun:city","dehradun:rishikesh-doiwala","dehradun:vikasnagar","dehradun:outside","kapurthala:city","kapurthala:phagwara","kapurthala:sultanpur-lodhi","kapurthala:outside","kapurthala:jalandhar","visakhapatnam:city","visakhapatnam:gajuwaka","visakhapatnam:pendurthi","visakhapatnam:anakapalli","visakhapatnam:outside","andhra-pradesh:visakhapatnam","andhra-pradesh:vijayawada-guntur","andhra-pradesh:kakinada-rajahmundry","andhra-pradesh:nellore-tirupati","andhra-pradesh:other","andhra-pradesh:outside","hyderabad:city","hyderabad:patancheru","hyderabad:jeedimetla-medchal","hyderabad:uppal-cherlapally","hyderabad:shamshabad-kothur","hyderabad:outside","telangana:hyderabad","telangana:warangal","telangana:karimnagar-ramagundam","telangana:nalgonda-suryapet","telangana:mahabubnagar-jadcherla","telangana:other","telangana:outside","market:haridwar","market:uttarakhand","market:jalandhar","market:punjab","market:bengaluru","market:other","market:dehradun","market:kapurthala","market:visakhapatnam","market:andhra-pradesh","market:hyderabad","market:telangana","haridwar:rest-of-uttarakhand","jalandhar:rest-of-punjab","dehradun:rest-of-uttarakhand","kapurthala:rest-of-punjab","visakhapatnam:rest-of-andhra-pradesh","hyderabad:rest-of-telangana"]},"uniqueItems":true},"home":{"minItems":1,"type":"array","items":{"type":"string","enum":["an","ap","ar","as","br","ch","cg","dh","dl","ga","gj","hr","hp","jk","jh","ka","kl","la","ld","mp","mh","mn","ml","mz","nl","od","py","pb","rj","sk","tn","ts","tr","up","uk","wb","uk:haridwar","uk:sidcul","uk:roorkee","uk:laksar","uk:dehradun","uk:selaqui","uk:rishikesh","uk:vikasnagar","uk:rudrapur","uk:kashipur","uk:sitarganj","uk:haldwani","pb:jalandhar","pb:kapurthala","pb:phagwara","pb:sultanpur-lodhi","pb:goraya","pb:ludhiana","pb:mohali","pb:amritsar","pb:patiala","pb:bathinda","pb:hoshiarpur","pb:gobindgarh","ka:bengaluru","ka:peenya","ka:electronic-city","ka:whitefield","ka:kengeri","ka:tumakuru","ka:mysuru","ka:hubballi","ka:belagavi","ka:mangaluru","ka:kalaburagi","ka:ballari","ap:visakhapatnam","ap:gajuwaka","ap:pendurthi","ap:anakapalli","ap:vijayawada","ap:guntur","ap:kakinada","ap:rajahmundry","ap:nellore","ap:tirupati","ap:sri-city","ap:kurnool","ap:anantapur","ts:hyderabad","ts:patancheru","ts:jeedimetla","ts:uppal","ts:shamshabad","ts:warangal","ts:karimnagar","ts:nalgonda","ts:mahabubnagar","ts:khammam","ts:nizamabad","dl:bawana","dl:okhla","up:noida","up:greater-noida","up:ghaziabad","up:meerut","up:saharanpur","up:muzaffarnagar","up:bijnor","up:moradabad","up:bareilly","up:aligarh","up:agra","up:lucknow","up:kanpur","up:prayagraj","up:varanasi","up:gorakhpur","up:azamgarh","hr:gurugram","hr:manesar","hr:faridabad","hr:sonipat","hr:panipat","hr:karnal","hr:yamunanagar","hr:ambala","hr:hisar","hr:bawal","hp:baddi","hp:paonta-sahib","hp:shimla","hp:una","jk:jammu","jk:srinagar","jk:kathua","rj:jaipur","rj:jodhpur","rj:kota","rj:udaipur","rj:bhiwadi","rj:neemrana","rj:alwar","rj:bhilwara","gj:ahmedabad","gj:sanand","gj:surat","gj:vadodara","gj:rajkot","gj:vapi","gj:ankleshwar","gj:morbi","mh:mumbai","mh:thane","mh:navi-mumbai","mh:bhiwandi","mh:pune","mh:chakan","mh:nashik","mh:sambhajinagar","mh:nagpur","mh:kolhapur","mp:indore","mp:pithampur","mp:dewas","mp:bhopal","mp:jabalpur","mp:gwalior","cg:raipur","cg:bhilai","cg:bilaspur","br:patna","br:gaya","br:muzaffarpur","br:bhagalpur","br:darbhanga","br:purnia","jh:ranchi","jh:jamshedpur","jh:dhanbad","jh:bokaro","wb:kolkata","wb:howrah","wb:durgapur","wb:asansol","wb:siliguri","wb:kharagpur","wb:haldia","od:bhubaneswar","od:cuttack","od:rourkela","od:jharsuguda","od:angul","od:berhampur","as:guwahati","as:dibrugarh","tr:agartala","mn:imphal","ml:shillong","tn:chennai","tn:sriperumbudur","tn:hosur","tn:coimbatore","tn:tiruppur","tn:madurai","tn:trichy","tn:salem","kl:kochi","kl:thiruvananthapuram","kl:kozhikode","dh:silvassa","dh:daman"]},"uniqueItems":true}},"additionalProperties":false,"minProperties":1},{"type":"null"}]}},"required":["ref","source","locale","cluster","pageCluster","pagePath","role","hub","channel","agentName","phone","adult","consent","text","attachments","form","applicantName","answers"],"additionalProperties":false,"title":"job_application.v1 (canonical)","description":"A job application as the website forwards it to Windmill f/talent/intake.","allOf":[{"anyOf":[{"properties":{"text":{"type":"string","minLength":1}},"required":["text"]},{"properties":{"attachments":{"minItems":1}},"required":["attachments"]},{"properties":{"answers":{"type":"object"}},"required":["answers"]}]},{"if":{"properties":{"source":{"const":"web"}},"required":["source"]},"then":{"properties":{"locale":{"type":"string"}}}},{"if":{"properties":{"source":{"const":"whatsapp"}},"required":["source"]},"then":{"properties":{"channel":{"const":"whatsapp"},"locale":{"type":"string"}}}}]};
-const businessEnquirySchema = {"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://www.vayasyaseva.com/contracts/business_enquiry.v1.canonical.schema.json","type":"object","properties":{"caseId":{"type":"string","pattern":"^(REQ|AGT)-\\d{8}-[0-9A-F]{8}$"},"receivedAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"channel":{"type":"string","enum":["web","agent"]},"name":{"type":"string","minLength":1,"maxLength":120},"company":{"anyOf":[{"type":"string","minLength":1,"maxLength":160},{"type":"null"}]},"jobTitle":{"anyOf":[{"type":"string","minLength":1,"maxLength":120},{"type":"null"}]},"phone":{"type":"string","maxLength":30,"pattern":"^\\D*(?:\\d\\D*){10,}$"},"email":{"anyOf":[{"type":"string","maxLength":200,"pattern":"^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"},{"type":"null"}]},"services":{"maxItems":20,"type":"array","items":{"type":"string","minLength":1,"maxLength":40}},"headcount":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"headcountBand":{"anyOf":[{"type":"string","minLength":1,"maxLength":20},{"type":"null"}]},"site":{"anyOf":[{"type":"string","minLength":1,"maxLength":300},{"type":"null"}]},"cluster":{"anyOf":[{"type":"string","enum":["haridwar","uttarakhand","delhi-ncr","bengaluru","jalandhar","saharanpur","other","punjab","dehradun","kapurthala","visakhapatnam","andhra-pradesh","hyderabad","telangana"]},{"type":"null"}]},"startWindow":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"targetStartDate":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"requestType":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"enquiry":{"type":"string","minLength":1,"maxLength":8000},"sourcePath":{"anyOf":[{"type":"string","minLength":1,"maxLength":300},{"type":"null"}]}},"required":["caseId","receivedAt","channel","name","company","jobTitle","phone","email","services","headcount","headcountBand","site","cluster","startWindow","targetStartDate","requestType","enquiry","sourcePath"],"additionalProperties":false,"title":"business_enquiry.v1 (canonical)","description":"A business enquiry as the website forwards it to Windmill f/leads/intake."};
-const envelopeSchema = {"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://www.vayasyaseva.com/contracts/envelope.v1.canonical.schema.json","oneOf":[{"type":"object","properties":{"v":{"type":"number","const":1},"sentAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"idempotencyKey":{"anyOf":[{"type":"string","pattern":"^[A-Za-z0-9_.:-]{8,128}$"},{"type":"null"}]},"type":{"type":"string","const":"job_application.v1"},"id":{"type":"string","pattern":"^VS-J-[A-Z0-9]{6}$"},"payload":{"type":"object","properties":{"ref":{"type":"string","pattern":"^VS-J-[A-Z0-9]{6}$"},"source":{"anyOf":[{"type":"string","const":"web"},{"type":"string","const":"whatsapp"},{"type":"string","enum":["web_en","web_hi","web_hinglish"]}]},"locale":{"anyOf":[{"type":"string","enum":["en-IN","hi-IN","hi-Latn-IN","pa-IN","kn-IN"]},{"type":"null"}]},"cluster":{"anyOf":[{"type":"string","enum":["haridwar","uttarakhand","delhi-ncr","bengaluru","jalandhar","saharanpur","other","punjab","dehradun","kapurthala","visakhapatnam","andhra-pradesh","hyderabad","telangana"]},{"type":"null"}]},"pageCluster":{"anyOf":[{"type":"string","enum":["haridwar","uttarakhand","delhi-ncr","bengaluru","jalandhar","saharanpur","other","punjab","dehradun","kapurthala","visakhapatnam","andhra-pradesh","hyderabad","telangana"]},{"type":"null"}]},"pagePath":{"anyOf":[{"type":"string","maxLength":200,"pattern":"^\\/([a-z0-9]+(-[a-z0-9]+)*(\\/[a-z0-9]+(-[a-z0-9]+)*)*)?$"},{"type":"null"}]},"role":{"anyOf":[{"type":"string","enum":["factory-helper","packing","machine-operator","warehouse","forklift-operator","data-entry-operator","housekeeping","iti-trades","electrician","welder","fitter"]},{"type":"null"}]},"hub":{"anyOf":[{"type":"string","enum":["freshers","10th-pass","12th-pass"]},{"type":"null"}]},"channel":{"type":"string","enum":["web","agent","whatsapp"]},"agentName":{"anyOf":[{"type":"string","maxLength":100},{"type":"null"}]},"phone":{"type":"string","pattern":"^\\+91[6-9]\\d{9}$"},"adult":{"type":"boolean","const":true},"consent":{"type":"object","properties":{"version":{"type":"string","minLength":1,"maxLength":40},"at":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"}},"required":["version","at"],"additionalProperties":false},"text":{"anyOf":[{"type":"string","maxLength":4000},{"type":"null"}]},"attachments":{"maxItems":8,"type":"array","items":{"oneOf":[{"type":"object","properties":{"kind":{"type":"string","const":"image"},"key":{"type":"string","minLength":1,"maxLength":300},"mime":{"type":"string","pattern":"^image\\/(jpeg|png|webp)$"},"size":{"type":"integer","minimum":1,"maximum":10485760},"name":{"anyOf":[{"type":"string","maxLength":200},{"type":"null"}]}},"required":["kind","key","mime","size","name"],"additionalProperties":false},{"type":"object","properties":{"kind":{"type":"string","const":"document"},"key":{"type":"string","minLength":1,"maxLength":300},"mime":{"type":"string","pattern":"^application\\/(pdf|msword|vnd\\.openxmlformats-officedocument\\.wordprocessingml\\.document)$"},"size":{"type":"integer","minimum":1,"maximum":20971520},"name":{"anyOf":[{"type":"string","maxLength":200},{"type":"null"}]}},"required":["kind","key","mime","size","name"],"additionalProperties":false}]}},"form":{"anyOf":[{"type":"string","enum":["long","quick"]},{"type":"null"}]},"applicantName":{"anyOf":[{"type":"string","minLength":1,"maxLength":80},{"type":"null"}]},"answers":{"anyOf":[{"type":"object","properties":{"work":{"minItems":1,"type":"array","items":{"type":"string","enum":["factory-helper","packing","warehouse","machine-operator","iti-trades","housekeeping","data-entry-operator","forklift-operator","any"]},"uniqueItems":true},"trade":{"minItems":1,"type":"array","items":{"type":"string","enum":["electrician","welder","fitter","machinist","other-trade"]},"uniqueItems":true},"iti":{"minItems":1,"type":"array","items":{"type":"string","enum":["iti-pass","iti-pursuing","no-iti"]},"uniqueItems":true},"machines":{"minItems":1,"type":"array","items":{"type":"string","enum":["packing-machine","moulding","press","cnc-vmc","other-machine"]},"uniqueItems":true},"forklift":{"minItems":1,"type":"array","items":{"type":"string","enum":["licence-experience","experience-only","want-to-learn"]},"uniqueItems":true},"computer":{"minItems":1,"type":"array","items":{"type":"string","enum":["typing","excel","tally","sap-erp"]},"uniqueItems":true},"experience":{"minItems":1,"type":"array","items":{"type":"string","enum":["fresher","under-1","1-3","3-plus"]},"uniqueItems":true},"education":{"minItems":1,"type":"array","items":{"type":"string","enum":["below-10th","10th","12th","iti-diploma","graduate"]},"uniqueItems":true},"shift":{"minItems":1,"type":"array","items":{"type":"string","enum":["day","night","rotating"]},"uniqueItems":true},"start":{"minItems":1,"type":"array","items":{"type":"string","enum":["now","week","month"]},"uniqueItems":true},"area":{"minItems":1,"type":"array","items":{"type":"string","enum":["sidcul-bahadrabad","haridwar-jwalapur","roorkee-bhagwanpur","laksar","outside","bengaluru:north","bengaluru:south","bengaluru:east","bengaluru:west","bengaluru:outside","jalandhar:kapurthala","jalandhar:city","jalandhar:phagwara-goraya","jalandhar:outside","jalandhar:goraya-phillaur","uttarakhand:haridwar","uttarakhand:dehradun-selaqui","uttarakhand:udham-singh-nagar","uttarakhand:other","uttarakhand:outside","punjab:jalandhar-kapurthala","punjab:ludhiana","punjab:mohali","punjab:amritsar","punjab:other","punjab:outside","punjab:jalandhar","punjab:kapurthala","dehradun:selaqui-sahaspur","dehradun:city","dehradun:rishikesh-doiwala","dehradun:vikasnagar","dehradun:outside","kapurthala:city","kapurthala:phagwara","kapurthala:sultanpur-lodhi","kapurthala:outside","kapurthala:jalandhar","visakhapatnam:city","visakhapatnam:gajuwaka","visakhapatnam:pendurthi","visakhapatnam:anakapalli","visakhapatnam:outside","andhra-pradesh:visakhapatnam","andhra-pradesh:vijayawada-guntur","andhra-pradesh:kakinada-rajahmundry","andhra-pradesh:nellore-tirupati","andhra-pradesh:other","andhra-pradesh:outside","hyderabad:city","hyderabad:patancheru","hyderabad:jeedimetla-medchal","hyderabad:uppal-cherlapally","hyderabad:shamshabad-kothur","hyderabad:outside","telangana:hyderabad","telangana:warangal","telangana:karimnagar-ramagundam","telangana:nalgonda-suryapet","telangana:mahabubnagar-jadcherla","telangana:other","telangana:outside","market:haridwar","market:uttarakhand","market:jalandhar","market:punjab","market:bengaluru","market:other","market:dehradun","market:kapurthala","market:visakhapatnam","market:andhra-pradesh","market:hyderabad","market:telangana","haridwar:rest-of-uttarakhand","jalandhar:rest-of-punjab","dehradun:rest-of-uttarakhand","kapurthala:rest-of-punjab","visakhapatnam:rest-of-andhra-pradesh","hyderabad:rest-of-telangana"]},"uniqueItems":true},"home":{"minItems":1,"type":"array","items":{"type":"string","enum":["an","ap","ar","as","br","ch","cg","dh","dl","ga","gj","hr","hp","jk","jh","ka","kl","la","ld","mp","mh","mn","ml","mz","nl","od","py","pb","rj","sk","tn","ts","tr","up","uk","wb","uk:haridwar","uk:sidcul","uk:roorkee","uk:laksar","uk:dehradun","uk:selaqui","uk:rishikesh","uk:vikasnagar","uk:rudrapur","uk:kashipur","uk:sitarganj","uk:haldwani","pb:jalandhar","pb:kapurthala","pb:phagwara","pb:sultanpur-lodhi","pb:goraya","pb:ludhiana","pb:mohali","pb:amritsar","pb:patiala","pb:bathinda","pb:hoshiarpur","pb:gobindgarh","ka:bengaluru","ka:peenya","ka:electronic-city","ka:whitefield","ka:kengeri","ka:tumakuru","ka:mysuru","ka:hubballi","ka:belagavi","ka:mangaluru","ka:kalaburagi","ka:ballari","ap:visakhapatnam","ap:gajuwaka","ap:pendurthi","ap:anakapalli","ap:vijayawada","ap:guntur","ap:kakinada","ap:rajahmundry","ap:nellore","ap:tirupati","ap:sri-city","ap:kurnool","ap:anantapur","ts:hyderabad","ts:patancheru","ts:jeedimetla","ts:uppal","ts:shamshabad","ts:warangal","ts:karimnagar","ts:nalgonda","ts:mahabubnagar","ts:khammam","ts:nizamabad","dl:bawana","dl:okhla","up:noida","up:greater-noida","up:ghaziabad","up:meerut","up:saharanpur","up:muzaffarnagar","up:bijnor","up:moradabad","up:bareilly","up:aligarh","up:agra","up:lucknow","up:kanpur","up:prayagraj","up:varanasi","up:gorakhpur","up:azamgarh","hr:gurugram","hr:manesar","hr:faridabad","hr:sonipat","hr:panipat","hr:karnal","hr:yamunanagar","hr:ambala","hr:hisar","hr:bawal","hp:baddi","hp:paonta-sahib","hp:shimla","hp:una","jk:jammu","jk:srinagar","jk:kathua","rj:jaipur","rj:jodhpur","rj:kota","rj:udaipur","rj:bhiwadi","rj:neemrana","rj:alwar","rj:bhilwara","gj:ahmedabad","gj:sanand","gj:surat","gj:vadodara","gj:rajkot","gj:vapi","gj:ankleshwar","gj:morbi","mh:mumbai","mh:thane","mh:navi-mumbai","mh:bhiwandi","mh:pune","mh:chakan","mh:nashik","mh:sambhajinagar","mh:nagpur","mh:kolhapur","mp:indore","mp:pithampur","mp:dewas","mp:bhopal","mp:jabalpur","mp:gwalior","cg:raipur","cg:bhilai","cg:bilaspur","br:patna","br:gaya","br:muzaffarpur","br:bhagalpur","br:darbhanga","br:purnia","jh:ranchi","jh:jamshedpur","jh:dhanbad","jh:bokaro","wb:kolkata","wb:howrah","wb:durgapur","wb:asansol","wb:siliguri","wb:kharagpur","wb:haldia","od:bhubaneswar","od:cuttack","od:rourkela","od:jharsuguda","od:angul","od:berhampur","as:guwahati","as:dibrugarh","tr:agartala","mn:imphal","ml:shillong","tn:chennai","tn:sriperumbudur","tn:hosur","tn:coimbatore","tn:tiruppur","tn:madurai","tn:trichy","tn:salem","kl:kochi","kl:thiruvananthapuram","kl:kozhikode","dh:silvassa","dh:daman"]},"uniqueItems":true}},"additionalProperties":false,"minProperties":1},{"type":"null"}]}},"required":["ref","source","locale","cluster","pageCluster","pagePath","role","hub","channel","agentName","phone","adult","consent","text","attachments","form","applicantName","answers"],"additionalProperties":false,"title":"job_application.v1 (canonical)","description":"A job application as the website forwards it to Windmill f/talent/intake.","allOf":[{"anyOf":[{"properties":{"text":{"type":"string","minLength":1}},"required":["text"]},{"properties":{"attachments":{"minItems":1}},"required":["attachments"]},{"properties":{"answers":{"type":"object"}},"required":["answers"]}]},{"if":{"properties":{"source":{"const":"web"}},"required":["source"]},"then":{"properties":{"locale":{"type":"string"}}}},{"if":{"properties":{"source":{"const":"whatsapp"}},"required":["source"]},"then":{"properties":{"channel":{"const":"whatsapp"},"locale":{"type":"string"}}}}]}},"required":["v","sentAt","idempotencyKey","type","id","payload"],"additionalProperties":false},{"type":"object","properties":{"v":{"type":"number","const":1},"sentAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"idempotencyKey":{"anyOf":[{"type":"string","pattern":"^[A-Za-z0-9_.:-]{8,128}$"},{"type":"null"}]},"type":{"type":"string","const":"business_enquiry.v1"},"id":{"type":"string","pattern":"^(REQ|AGT)-\\d{8}-[0-9A-F]{8}$"},"payload":{"type":"object","properties":{"caseId":{"type":"string","pattern":"^(REQ|AGT)-\\d{8}-[0-9A-F]{8}$"},"receivedAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"channel":{"type":"string","enum":["web","agent"]},"name":{"type":"string","minLength":1,"maxLength":120},"company":{"anyOf":[{"type":"string","minLength":1,"maxLength":160},{"type":"null"}]},"jobTitle":{"anyOf":[{"type":"string","minLength":1,"maxLength":120},{"type":"null"}]},"phone":{"type":"string","maxLength":30,"pattern":"^\\D*(?:\\d\\D*){10,}$"},"email":{"anyOf":[{"type":"string","maxLength":200,"pattern":"^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"},{"type":"null"}]},"services":{"maxItems":20,"type":"array","items":{"type":"string","minLength":1,"maxLength":40}},"headcount":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"headcountBand":{"anyOf":[{"type":"string","minLength":1,"maxLength":20},{"type":"null"}]},"site":{"anyOf":[{"type":"string","minLength":1,"maxLength":300},{"type":"null"}]},"cluster":{"anyOf":[{"type":"string","enum":["haridwar","uttarakhand","delhi-ncr","bengaluru","jalandhar","saharanpur","other","punjab","dehradun","kapurthala","visakhapatnam","andhra-pradesh","hyderabad","telangana"]},{"type":"null"}]},"startWindow":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"targetStartDate":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"requestType":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"enquiry":{"type":"string","minLength":1,"maxLength":8000},"sourcePath":{"anyOf":[{"type":"string","minLength":1,"maxLength":300},{"type":"null"}]}},"required":["caseId","receivedAt","channel","name","company","jobTitle","phone","email","services","headcount","headcountBand","site","cluster","startWindow","targetStartDate","requestType","enquiry","sourcePath"],"additionalProperties":false,"title":"business_enquiry.v1 (canonical)","description":"A business enquiry as the website forwards it to Windmill f/leads/intake."}},"required":["v","sentAt","idempotencyKey","type","id","payload"],"additionalProperties":false},{"type":"object","properties":{"v":{"type":"number","const":1},"sentAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"idempotencyKey":{"anyOf":[{"type":"string","pattern":"^[A-Za-z0-9_.:-]{8,128}$"},{"type":"null"}]},"type":{"type":"string","const":"compliance_help.v1"},"id":{"type":"string","pattern":"^(REQ|AGT)-\\d{8}-[0-9A-F]{8}$"},"payload":{"type":"object","properties":{"caseId":{"type":"string","pattern":"^(REQ|AGT)-\\d{8}-[0-9A-F]{8}$"},"receivedAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"channel":{"type":"string","enum":["web","agent"]},"name":{"type":"string","minLength":1,"maxLength":120},"company":{"anyOf":[{"type":"string","minLength":1,"maxLength":160},{"type":"null"}]},"jobTitle":{"anyOf":[{"type":"string","minLength":1,"maxLength":120},{"type":"null"}]},"phone":{"type":"string","maxLength":30,"pattern":"^\\D*(?:\\d\\D*){10,}$"},"email":{"anyOf":[{"type":"string","maxLength":200,"pattern":"^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"},{"type":"null"}]},"services":{"maxItems":20,"type":"array","items":{"type":"string","minLength":1,"maxLength":40}},"headcount":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"headcountBand":{"anyOf":[{"type":"string","minLength":1,"maxLength":20},{"type":"null"}]},"site":{"anyOf":[{"type":"string","minLength":1,"maxLength":300},{"type":"null"}]},"cluster":{"anyOf":[{"type":"string","enum":["haridwar","uttarakhand","delhi-ncr","bengaluru","jalandhar","saharanpur","other","punjab","dehradun","kapurthala","visakhapatnam","andhra-pradesh","hyderabad","telangana"]},{"type":"null"}]},"startWindow":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"targetStartDate":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"requestType":{"type":"string","const":"compliance-help"},"enquiry":{"type":"string","minLength":1,"maxLength":8000},"sourcePath":{"anyOf":[{"type":"string","minLength":1,"maxLength":300},{"type":"null"}]}},"required":["caseId","receivedAt","channel","name","company","jobTitle","phone","email","services","headcount","headcountBand","site","cluster","startWindow","targetStartDate","requestType","enquiry","sourcePath"],"additionalProperties":false,"title":"compliance_help.v1 (canonical)","description":"A compliance help request: a lead with requestType compliance-help."}},"required":["v","sentAt","idempotencyKey","type","id","payload"],"additionalProperties":false},{"type":"object","properties":{"v":{"type":"number","const":1},"sentAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"idempotencyKey":{"anyOf":[{"type":"string","pattern":"^[A-Za-z0-9_.:-]{8,128}$"},{"type":"null"}]},"type":{"type":"string","const":"rate_alert.v1"},"id":{"type":"string","pattern":"^ALR-\\d{8}-[0-9A-F]{8}$"},"payload":{"oneOf":[{"type":"object","properties":{"ref":{"type":"string","pattern":"^ALR-\\d{8}-[0-9A-F]{8}$"},"receivedAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"action":{"type":"string","const":"subscribe"},"email":{"type":"string","maxLength":200,"pattern":"^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"},"states":{"minItems":1,"maxItems":40,"type":"array","items":{"type":"string","pattern":"^[a-z][a-z-]{1,31}$"},"uniqueItems":true},"sourcePath":{"anyOf":[{"type":"string","minLength":1,"maxLength":200},{"type":"null"}]},"noticeVersion":{"type":"string","minLength":1,"maxLength":40}},"required":["ref","receivedAt","action","email","states","sourcePath","noticeVersion"],"additionalProperties":false},{"type":"object","properties":{"ref":{"type":"string","pattern":"^ALR-\\d{8}-[0-9A-F]{8}$"},"receivedAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"action":{"type":"string","const":"confirm"},"token":{"type":"string","pattern":"^[A-Za-z0-9_-]{32,64}$"}},"required":["ref","receivedAt","action","token"],"additionalProperties":false},{"type":"object","properties":{"ref":{"type":"string","pattern":"^ALR-\\d{8}-[0-9A-F]{8}$"},"receivedAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"action":{"type":"string","const":"unsubscribe"},"token":{"type":"string","pattern":"^[A-Za-z0-9_-]{32,64}$"}},"required":["ref","receivedAt","action","token"],"additionalProperties":false}],"title":"rate_alert.v1 (canonical)","description":"One action on the rate alert subscriber list, as the website forwards it to Windmill."}},"required":["v","sentAt","idempotencyKey","type","id","payload"],"additionalProperties":false}],"title":"envelope.v1","description":"One submission, as the site delivers it to Windmill webhook/vspl-submission."};
+const businessEnquirySchema = {"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://www.vayasyaseva.com/contracts/business_enquiry.v1.canonical.schema.json","type":"object","properties":{"caseId":{"type":"string","pattern":"^(REQ|AGT)-\\d{8}-[0-9A-F]{8}$"},"receivedAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"channel":{"type":"string","enum":["web","agent"]},"name":{"type":"string","minLength":1,"maxLength":120},"company":{"anyOf":[{"type":"string","minLength":1,"maxLength":160},{"type":"null"}]},"jobTitle":{"anyOf":[{"type":"string","minLength":1,"maxLength":120},{"type":"null"}]},"phone":{"type":"string","maxLength":30,"pattern":"^\\D*(?:\\d\\D*){10,}$"},"email":{"anyOf":[{"type":"string","maxLength":200,"pattern":"^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"},{"type":"null"}]},"services":{"maxItems":20,"type":"array","items":{"type":"string","minLength":1,"maxLength":40}},"headcount":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"headcountBand":{"anyOf":[{"type":"string","minLength":1,"maxLength":20},{"type":"null"}]},"site":{"anyOf":[{"type":"string","minLength":1,"maxLength":300},{"type":"null"}]},"cluster":{"anyOf":[{"type":"string","enum":["haridwar","uttarakhand","delhi-ncr","bengaluru","jalandhar","saharanpur","other","punjab","dehradun","kapurthala","visakhapatnam","andhra-pradesh","hyderabad","telangana"]},{"type":"null"}]},"startWindow":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"targetStartDate":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"requestType":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"enquiry":{"type":"string","minLength":1,"maxLength":8000},"sourcePath":{"anyOf":[{"type":"string","minLength":1,"maxLength":300},{"type":"null"}]},"mail":{"type":"object","properties":{"staff":{"type":"object","properties":{"subject":{"type":"string","minLength":1,"maxLength":300},"text":{"type":"string","minLength":1,"maxLength":12000}},"required":["subject","text"],"additionalProperties":false},"buyer":{"anyOf":[{"type":"object","properties":{"subject":{"type":"string","minLength":1,"maxLength":300},"text":{"type":"string","minLength":1,"maxLength":12000}},"required":["subject","text"],"additionalProperties":false},{"type":"null"}]}},"required":["staff","buyer"],"additionalProperties":false}},"required":["caseId","receivedAt","channel","name","company","jobTitle","phone","email","services","headcount","headcountBand","site","cluster","startWindow","targetStartDate","requestType","enquiry","sourcePath"],"additionalProperties":false,"title":"business_enquiry.v1 (canonical)","description":"A business enquiry as the website forwards it to Windmill f/leads/intake."};
+const envelopeSchema = {"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://www.vayasyaseva.com/contracts/envelope.v1.canonical.schema.json","oneOf":[{"type":"object","properties":{"v":{"type":"number","const":1},"sentAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"idempotencyKey":{"anyOf":[{"type":"string","pattern":"^[A-Za-z0-9_.:-]{8,128}$"},{"type":"null"}]},"type":{"type":"string","const":"job_application.v1"},"id":{"type":"string","pattern":"^VS-J-[A-Z0-9]{6}$"},"payload":{"type":"object","properties":{"ref":{"type":"string","pattern":"^VS-J-[A-Z0-9]{6}$"},"source":{"anyOf":[{"type":"string","const":"web"},{"type":"string","const":"whatsapp"},{"type":"string","enum":["web_en","web_hi","web_hinglish"]}]},"locale":{"anyOf":[{"type":"string","enum":["en-IN","hi-IN","hi-Latn-IN","pa-IN","kn-IN"]},{"type":"null"}]},"cluster":{"anyOf":[{"type":"string","enum":["haridwar","uttarakhand","delhi-ncr","bengaluru","jalandhar","saharanpur","other","punjab","dehradun","kapurthala","visakhapatnam","andhra-pradesh","hyderabad","telangana"]},{"type":"null"}]},"pageCluster":{"anyOf":[{"type":"string","enum":["haridwar","uttarakhand","delhi-ncr","bengaluru","jalandhar","saharanpur","other","punjab","dehradun","kapurthala","visakhapatnam","andhra-pradesh","hyderabad","telangana"]},{"type":"null"}]},"pagePath":{"anyOf":[{"type":"string","maxLength":200,"pattern":"^\\/([a-z0-9]+(-[a-z0-9]+)*(\\/[a-z0-9]+(-[a-z0-9]+)*)*)?$"},{"type":"null"}]},"role":{"anyOf":[{"type":"string","enum":["factory-helper","packing","machine-operator","warehouse","forklift-operator","data-entry-operator","housekeeping","iti-trades","electrician","welder","fitter"]},{"type":"null"}]},"hub":{"anyOf":[{"type":"string","enum":["freshers","10th-pass","12th-pass"]},{"type":"null"}]},"channel":{"type":"string","enum":["web","agent","whatsapp"]},"agentName":{"anyOf":[{"type":"string","maxLength":100},{"type":"null"}]},"phone":{"type":"string","pattern":"^\\+91[6-9]\\d{9}$"},"adult":{"type":"boolean","const":true},"consent":{"type":"object","properties":{"version":{"type":"string","minLength":1,"maxLength":40},"at":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"}},"required":["version","at"],"additionalProperties":false},"text":{"anyOf":[{"type":"string","maxLength":4000},{"type":"null"}]},"attachments":{"maxItems":8,"type":"array","items":{"oneOf":[{"type":"object","properties":{"kind":{"type":"string","const":"image"},"key":{"type":"string","minLength":1,"maxLength":300},"mime":{"type":"string","pattern":"^image\\/(jpeg|png|webp)$"},"size":{"type":"integer","minimum":1,"maximum":10485760},"name":{"anyOf":[{"type":"string","maxLength":200},{"type":"null"}]}},"required":["kind","key","mime","size","name"],"additionalProperties":false},{"type":"object","properties":{"kind":{"type":"string","const":"document"},"key":{"type":"string","minLength":1,"maxLength":300},"mime":{"type":"string","pattern":"^application\\/(pdf|msword|vnd\\.openxmlformats-officedocument\\.wordprocessingml\\.document)$"},"size":{"type":"integer","minimum":1,"maximum":20971520},"name":{"anyOf":[{"type":"string","maxLength":200},{"type":"null"}]}},"required":["kind","key","mime","size","name"],"additionalProperties":false}]}},"form":{"anyOf":[{"type":"string","enum":["long","quick"]},{"type":"null"}]},"applicantName":{"anyOf":[{"type":"string","minLength":1,"maxLength":80},{"type":"null"}]},"answers":{"anyOf":[{"type":"object","properties":{"work":{"minItems":1,"type":"array","items":{"type":"string","enum":["factory-helper","packing","warehouse","machine-operator","iti-trades","housekeeping","data-entry-operator","forklift-operator","any"]},"uniqueItems":true},"trade":{"minItems":1,"type":"array","items":{"type":"string","enum":["electrician","welder","fitter","machinist","other-trade"]},"uniqueItems":true},"iti":{"minItems":1,"type":"array","items":{"type":"string","enum":["iti-pass","iti-pursuing","no-iti"]},"uniqueItems":true},"machines":{"minItems":1,"type":"array","items":{"type":"string","enum":["packing-machine","moulding","press","cnc-vmc","other-machine"]},"uniqueItems":true},"forklift":{"minItems":1,"type":"array","items":{"type":"string","enum":["licence-experience","experience-only","want-to-learn"]},"uniqueItems":true},"computer":{"minItems":1,"type":"array","items":{"type":"string","enum":["typing","excel","tally","sap-erp"]},"uniqueItems":true},"experience":{"minItems":1,"type":"array","items":{"type":"string","enum":["fresher","under-1","1-3","3-plus"]},"uniqueItems":true},"education":{"minItems":1,"type":"array","items":{"type":"string","enum":["below-10th","10th","12th","iti-diploma","graduate"]},"uniqueItems":true},"shift":{"minItems":1,"type":"array","items":{"type":"string","enum":["day","night","rotating"]},"uniqueItems":true},"start":{"minItems":1,"type":"array","items":{"type":"string","enum":["now","week","month"]},"uniqueItems":true},"area":{"minItems":1,"type":"array","items":{"type":"string","enum":["sidcul-bahadrabad","haridwar-jwalapur","roorkee-bhagwanpur","laksar","outside","bengaluru:north","bengaluru:south","bengaluru:east","bengaluru:west","bengaluru:outside","jalandhar:kapurthala","jalandhar:city","jalandhar:phagwara-goraya","jalandhar:outside","jalandhar:goraya-phillaur","uttarakhand:haridwar","uttarakhand:dehradun-selaqui","uttarakhand:udham-singh-nagar","uttarakhand:other","uttarakhand:outside","punjab:jalandhar-kapurthala","punjab:ludhiana","punjab:mohali","punjab:amritsar","punjab:other","punjab:outside","punjab:jalandhar","punjab:kapurthala","dehradun:selaqui-sahaspur","dehradun:city","dehradun:rishikesh-doiwala","dehradun:vikasnagar","dehradun:outside","kapurthala:city","kapurthala:phagwara","kapurthala:sultanpur-lodhi","kapurthala:outside","kapurthala:jalandhar","visakhapatnam:city","visakhapatnam:gajuwaka","visakhapatnam:pendurthi","visakhapatnam:anakapalli","visakhapatnam:outside","andhra-pradesh:visakhapatnam","andhra-pradesh:vijayawada-guntur","andhra-pradesh:kakinada-rajahmundry","andhra-pradesh:nellore-tirupati","andhra-pradesh:other","andhra-pradesh:outside","hyderabad:city","hyderabad:patancheru","hyderabad:jeedimetla-medchal","hyderabad:uppal-cherlapally","hyderabad:shamshabad-kothur","hyderabad:outside","telangana:hyderabad","telangana:warangal","telangana:karimnagar-ramagundam","telangana:nalgonda-suryapet","telangana:mahabubnagar-jadcherla","telangana:other","telangana:outside","market:haridwar","market:uttarakhand","market:jalandhar","market:punjab","market:bengaluru","market:other","market:dehradun","market:kapurthala","market:visakhapatnam","market:andhra-pradesh","market:hyderabad","market:telangana","haridwar:rest-of-uttarakhand","jalandhar:rest-of-punjab","dehradun:rest-of-uttarakhand","kapurthala:rest-of-punjab","visakhapatnam:rest-of-andhra-pradesh","hyderabad:rest-of-telangana"]},"uniqueItems":true},"home":{"minItems":1,"type":"array","items":{"type":"string","enum":["an","ap","ar","as","br","ch","cg","dh","dl","ga","gj","hr","hp","jk","jh","ka","kl","la","ld","mp","mh","mn","ml","mz","nl","od","py","pb","rj","sk","tn","ts","tr","up","uk","wb","uk:haridwar","uk:sidcul","uk:roorkee","uk:laksar","uk:dehradun","uk:selaqui","uk:rishikesh","uk:vikasnagar","uk:rudrapur","uk:kashipur","uk:sitarganj","uk:haldwani","pb:jalandhar","pb:kapurthala","pb:phagwara","pb:sultanpur-lodhi","pb:goraya","pb:ludhiana","pb:mohali","pb:amritsar","pb:patiala","pb:bathinda","pb:hoshiarpur","pb:gobindgarh","ka:bengaluru","ka:peenya","ka:electronic-city","ka:whitefield","ka:kengeri","ka:tumakuru","ka:mysuru","ka:hubballi","ka:belagavi","ka:mangaluru","ka:kalaburagi","ka:ballari","ap:visakhapatnam","ap:gajuwaka","ap:pendurthi","ap:anakapalli","ap:vijayawada","ap:guntur","ap:kakinada","ap:rajahmundry","ap:nellore","ap:tirupati","ap:sri-city","ap:kurnool","ap:anantapur","ts:hyderabad","ts:patancheru","ts:jeedimetla","ts:uppal","ts:shamshabad","ts:warangal","ts:karimnagar","ts:nalgonda","ts:mahabubnagar","ts:khammam","ts:nizamabad","dl:bawana","dl:okhla","up:noida","up:greater-noida","up:ghaziabad","up:meerut","up:saharanpur","up:muzaffarnagar","up:bijnor","up:moradabad","up:bareilly","up:aligarh","up:agra","up:lucknow","up:kanpur","up:prayagraj","up:varanasi","up:gorakhpur","up:azamgarh","hr:gurugram","hr:manesar","hr:faridabad","hr:sonipat","hr:panipat","hr:karnal","hr:yamunanagar","hr:ambala","hr:hisar","hr:bawal","hp:baddi","hp:paonta-sahib","hp:shimla","hp:una","jk:jammu","jk:srinagar","jk:kathua","rj:jaipur","rj:jodhpur","rj:kota","rj:udaipur","rj:bhiwadi","rj:neemrana","rj:alwar","rj:bhilwara","gj:ahmedabad","gj:sanand","gj:surat","gj:vadodara","gj:rajkot","gj:vapi","gj:ankleshwar","gj:morbi","mh:mumbai","mh:thane","mh:navi-mumbai","mh:bhiwandi","mh:pune","mh:chakan","mh:nashik","mh:sambhajinagar","mh:nagpur","mh:kolhapur","mp:indore","mp:pithampur","mp:dewas","mp:bhopal","mp:jabalpur","mp:gwalior","cg:raipur","cg:bhilai","cg:bilaspur","br:patna","br:gaya","br:muzaffarpur","br:bhagalpur","br:darbhanga","br:purnia","jh:ranchi","jh:jamshedpur","jh:dhanbad","jh:bokaro","wb:kolkata","wb:howrah","wb:durgapur","wb:asansol","wb:siliguri","wb:kharagpur","wb:haldia","od:bhubaneswar","od:cuttack","od:rourkela","od:jharsuguda","od:angul","od:berhampur","as:guwahati","as:dibrugarh","tr:agartala","mn:imphal","ml:shillong","tn:chennai","tn:sriperumbudur","tn:hosur","tn:coimbatore","tn:tiruppur","tn:madurai","tn:trichy","tn:salem","kl:kochi","kl:thiruvananthapuram","kl:kozhikode","dh:silvassa","dh:daman"]},"uniqueItems":true}},"additionalProperties":false,"minProperties":1},{"type":"null"}]}},"required":["ref","source","locale","cluster","pageCluster","pagePath","role","hub","channel","agentName","phone","adult","consent","text","attachments","form","applicantName","answers"],"additionalProperties":false,"title":"job_application.v1 (canonical)","description":"A job application as the website forwards it to Windmill f/talent/intake.","allOf":[{"anyOf":[{"properties":{"text":{"type":"string","minLength":1}},"required":["text"]},{"properties":{"attachments":{"minItems":1}},"required":["attachments"]},{"properties":{"answers":{"type":"object"}},"required":["answers"]}]},{"if":{"properties":{"source":{"const":"web"}},"required":["source"]},"then":{"properties":{"locale":{"type":"string"}}}},{"if":{"properties":{"source":{"const":"whatsapp"}},"required":["source"]},"then":{"properties":{"channel":{"const":"whatsapp"},"locale":{"type":"string"}}}}]}},"required":["v","sentAt","idempotencyKey","type","id","payload"],"additionalProperties":false},{"type":"object","properties":{"v":{"type":"number","const":1},"sentAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"idempotencyKey":{"anyOf":[{"type":"string","pattern":"^[A-Za-z0-9_.:-]{8,128}$"},{"type":"null"}]},"type":{"type":"string","const":"business_enquiry.v1"},"id":{"type":"string","pattern":"^(REQ|AGT)-\\d{8}-[0-9A-F]{8}$"},"payload":{"type":"object","properties":{"caseId":{"type":"string","pattern":"^(REQ|AGT)-\\d{8}-[0-9A-F]{8}$"},"receivedAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"channel":{"type":"string","enum":["web","agent"]},"name":{"type":"string","minLength":1,"maxLength":120},"company":{"anyOf":[{"type":"string","minLength":1,"maxLength":160},{"type":"null"}]},"jobTitle":{"anyOf":[{"type":"string","minLength":1,"maxLength":120},{"type":"null"}]},"phone":{"type":"string","maxLength":30,"pattern":"^\\D*(?:\\d\\D*){10,}$"},"email":{"anyOf":[{"type":"string","maxLength":200,"pattern":"^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"},{"type":"null"}]},"services":{"maxItems":20,"type":"array","items":{"type":"string","minLength":1,"maxLength":40}},"headcount":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"headcountBand":{"anyOf":[{"type":"string","minLength":1,"maxLength":20},{"type":"null"}]},"site":{"anyOf":[{"type":"string","minLength":1,"maxLength":300},{"type":"null"}]},"cluster":{"anyOf":[{"type":"string","enum":["haridwar","uttarakhand","delhi-ncr","bengaluru","jalandhar","saharanpur","other","punjab","dehradun","kapurthala","visakhapatnam","andhra-pradesh","hyderabad","telangana"]},{"type":"null"}]},"startWindow":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"targetStartDate":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"requestType":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"enquiry":{"type":"string","minLength":1,"maxLength":8000},"sourcePath":{"anyOf":[{"type":"string","minLength":1,"maxLength":300},{"type":"null"}]},"mail":{"type":"object","properties":{"staff":{"type":"object","properties":{"subject":{"type":"string","minLength":1,"maxLength":300},"text":{"type":"string","minLength":1,"maxLength":12000}},"required":["subject","text"],"additionalProperties":false},"buyer":{"anyOf":[{"type":"object","properties":{"subject":{"type":"string","minLength":1,"maxLength":300},"text":{"type":"string","minLength":1,"maxLength":12000}},"required":["subject","text"],"additionalProperties":false},{"type":"null"}]}},"required":["staff","buyer"],"additionalProperties":false}},"required":["caseId","receivedAt","channel","name","company","jobTitle","phone","email","services","headcount","headcountBand","site","cluster","startWindow","targetStartDate","requestType","enquiry","sourcePath"],"additionalProperties":false,"title":"business_enquiry.v1 (canonical)","description":"A business enquiry as the website forwards it to Windmill f/leads/intake."}},"required":["v","sentAt","idempotencyKey","type","id","payload"],"additionalProperties":false},{"type":"object","properties":{"v":{"type":"number","const":1},"sentAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"idempotencyKey":{"anyOf":[{"type":"string","pattern":"^[A-Za-z0-9_.:-]{8,128}$"},{"type":"null"}]},"type":{"type":"string","const":"compliance_help.v1"},"id":{"type":"string","pattern":"^(REQ|AGT)-\\d{8}-[0-9A-F]{8}$"},"payload":{"type":"object","properties":{"caseId":{"type":"string","pattern":"^(REQ|AGT)-\\d{8}-[0-9A-F]{8}$"},"receivedAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"channel":{"type":"string","enum":["web","agent"]},"name":{"type":"string","minLength":1,"maxLength":120},"company":{"anyOf":[{"type":"string","minLength":1,"maxLength":160},{"type":"null"}]},"jobTitle":{"anyOf":[{"type":"string","minLength":1,"maxLength":120},{"type":"null"}]},"phone":{"type":"string","maxLength":30,"pattern":"^\\D*(?:\\d\\D*){10,}$"},"email":{"anyOf":[{"type":"string","maxLength":200,"pattern":"^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"},{"type":"null"}]},"services":{"maxItems":20,"type":"array","items":{"type":"string","minLength":1,"maxLength":40}},"headcount":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"headcountBand":{"anyOf":[{"type":"string","minLength":1,"maxLength":20},{"type":"null"}]},"site":{"anyOf":[{"type":"string","minLength":1,"maxLength":300},{"type":"null"}]},"cluster":{"anyOf":[{"type":"string","enum":["haridwar","uttarakhand","delhi-ncr","bengaluru","jalandhar","saharanpur","other","punjab","dehradun","kapurthala","visakhapatnam","andhra-pradesh","hyderabad","telangana"]},{"type":"null"}]},"startWindow":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"targetStartDate":{"anyOf":[{"type":"string","minLength":1,"maxLength":40},{"type":"null"}]},"requestType":{"type":"string","const":"compliance-help"},"enquiry":{"type":"string","minLength":1,"maxLength":8000},"sourcePath":{"anyOf":[{"type":"string","minLength":1,"maxLength":300},{"type":"null"}]},"mail":{"type":"object","properties":{"staff":{"type":"object","properties":{"subject":{"type":"string","minLength":1,"maxLength":300},"text":{"type":"string","minLength":1,"maxLength":12000}},"required":["subject","text"],"additionalProperties":false},"buyer":{"anyOf":[{"type":"object","properties":{"subject":{"type":"string","minLength":1,"maxLength":300},"text":{"type":"string","minLength":1,"maxLength":12000}},"required":["subject","text"],"additionalProperties":false},{"type":"null"}]}},"required":["staff","buyer"],"additionalProperties":false}},"required":["caseId","receivedAt","channel","name","company","jobTitle","phone","email","services","headcount","headcountBand","site","cluster","startWindow","targetStartDate","requestType","enquiry","sourcePath"],"additionalProperties":false,"title":"compliance_help.v1 (canonical)","description":"A compliance help request: a lead with requestType compliance-help."}},"required":["v","sentAt","idempotencyKey","type","id","payload"],"additionalProperties":false},{"type":"object","properties":{"v":{"type":"number","const":1},"sentAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"idempotencyKey":{"anyOf":[{"type":"string","pattern":"^[A-Za-z0-9_.:-]{8,128}$"},{"type":"null"}]},"type":{"type":"string","const":"rate_alert.v1"},"id":{"type":"string","pattern":"^ALR-\\d{8}-[0-9A-F]{8}$"},"payload":{"oneOf":[{"type":"object","properties":{"ref":{"type":"string","pattern":"^ALR-\\d{8}-[0-9A-F]{8}$"},"receivedAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"action":{"type":"string","const":"subscribe"},"email":{"type":"string","maxLength":200,"pattern":"^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"},"states":{"minItems":1,"maxItems":40,"type":"array","items":{"type":"string","pattern":"^[a-z][a-z-]{1,31}$"},"uniqueItems":true},"sourcePath":{"anyOf":[{"type":"string","minLength":1,"maxLength":200},{"type":"null"}]},"noticeVersion":{"type":"string","minLength":1,"maxLength":40}},"required":["ref","receivedAt","action","email","states","sourcePath","noticeVersion"],"additionalProperties":false},{"type":"object","properties":{"ref":{"type":"string","pattern":"^ALR-\\d{8}-[0-9A-F]{8}$"},"receivedAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"action":{"type":"string","const":"confirm"},"token":{"type":"string","pattern":"^[A-Za-z0-9_-]{32,64}$"}},"required":["ref","receivedAt","action","token"],"additionalProperties":false},{"type":"object","properties":{"ref":{"type":"string","pattern":"^ALR-\\d{8}-[0-9A-F]{8}$"},"receivedAt":{"type":"string","format":"date-time","pattern":"^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"},"action":{"type":"string","const":"unsubscribe"},"token":{"type":"string","pattern":"^[A-Za-z0-9_-]{32,64}$"}},"required":["ref","receivedAt","action","token"],"additionalProperties":false}],"title":"rate_alert.v1 (canonical)","description":"One action on the rate alert subscriber list, as the website forwards it to Windmill."}},"required":["v","sentAt","idempotencyKey","type","id","payload"],"additionalProperties":false}],"title":"envelope.v1","description":"One submission, as the site delivers it to Windmill webhook/vspl-submission."};
 let ajv;
 const compiled = new Map();
 function validator(schema) {
@@ -1117,149 +1341,8 @@ async function recordEnquiry(crm, lead, personId, opportunityId) {
   return { checkLead, serviceValues, crewSize, opportunityName, recordLead };
 })();
 
-// integrations/windmill/talent/lib/notify-application.ts
-const { TWENTY_APP_URL, CLUSTER_LABELS, roleLabel, areaLabel, clusterLabel, applicationEvent } = (() => {
-const TWENTY_APP_URL = "https://crm.vayasyaseva.com";
-const CLUSTER_LABELS = {
-    haridwar: "Haridwar",
-    uttarakhand: "Uttarakhand",
-    "delhi-ncr": "Delhi NCR",
-    bengaluru: "Bengaluru",
-    jalandhar: "Jalandhar",
-    saharanpur: "Saharanpur",
-    punjab: "Punjab",
-    dehradun: "Dehradun",
-    kapurthala: "Kapurthala",
-    visakhapatnam: "Visakhapatnam",
-    "andhra-pradesh": "Andhra Pradesh",
-    hyderabad: "Hyderabad",
-    telangana: "Telangana",
-    other: "other area",
-};
-const LANGUAGE_LABELS = {
-    en: "English",
-    "en-IN": "English",
-    hi: "Hindi",
-    "hi-IN": "Hindi",
-    hinglish: "Hinglish",
-    "hi-Latn-IN": "Hinglish",
-    "pa-IN": "Punjabi",
-    "kn-IN": "Kannada",
-};
-const has = (table, key) => typeof key === "string" && Object.hasOwn(table, key);
-const firstAnswer = (c, question) => {
-    const value = c.answers?.[question];
-    return Array.isArray(value) && typeof value[0] === "string" ? value[0] : null;
-};
-function roleLabel(c) {
-    if (has(JOB_ROLES, c.role))
-        return JOB_ROLES[c.role];
-    const work = firstAnswer(c, "work");
-    if (has(QUICK_ANSWERS.work, work))
-        return QUICK_ANSWERS.work[work];
-    return "any work";
-}
-function areaLabel(c) {
-    const home = firstAnswer(c, "home");
-    if (has(QUICK_ANSWERS.home, home))
-        return `lives in ${QUICK_ANSWERS.home[home]}`;
-    const area = firstAnswer(c, "area");
-    return has(QUICK_ANSWERS.area, area) ? QUICK_ANSWERS.area[area] : null;
-}
-const clusterLabel = (cluster) => (cluster && has(CLUSTER_LABELS, cluster) ? CLUSTER_LABELS[cluster] : "no area");
-function formLabel(c) {
-    if (c.channel === "agent")
-        return "AI agent";
-    if (c.channel === "whatsapp")
-        return "WhatsApp chat";
-    if (c.answers && Object.keys(c.answers).length)
-        return "quick form";
-    if (c.source === "web" || c.source.startsWith("web_"))
-        return "website form";
-    return c.source;
-}
-function applicationEvent(c, personId) {
-    const role = roleLabel(c);
-    const cluster = clusterLabel(c.cluster);
-    const area = areaLabel(c);
-    const language = LANGUAGE_LABELS[c.person_locale ?? c.locale] ?? LANGUAGE_LABELS[c.locale] ?? c.locale;
-    const name = (c.applicant_name ?? c.person_name ?? "").trim();
-    return {
-        source: "talent",
-        type: "application.received",
-        severity: "info",
-        dedupeKey: `application:${c.ref}`,
-        title: `New job application: ${role}, ${cluster}`,
-        summary: [c.ref, role, area, cluster, formLabel(c), language].filter(Boolean).join(" · "),
-        link: { label: "View in Twenty", url: `${TWENTY_APP_URL}/object/person/${encodeURIComponent(personId)}` },
-        pii: { ...(name ? { name } : {}), phone: c.phone },
-    };
-}
-  return { TWENTY_APP_URL, CLUSTER_LABELS, roleLabel, areaLabel, clusterLabel, applicationEvent };
-})();
-
-// integrations/windmill/leads/lib/lead-notify.ts
-const { WINDMILL_APP_URL, isQualified, crewSummary, leadReceivedEvent, leadForwardFailedEvent } = (() => {
-const WINDMILL_APP_URL = "https://windmill.vayasyaseva.com";
-function isQualified(lead) {
-    const header = lead.enquiry.split(/\n\s*\n/)[0] ?? "";
-    return /^Flags: (?:.*; )?qualified\b/m.test(header);
-}
-const SERVICE_WORDS = {
-    "loading-unloading": "loaders",
-    warehouse: "warehouse staff",
-    forklift: "forklift operators",
-    housekeeping: "housekeeping",
-    gardening: "gardeners",
-    "factory-helpers": "factory helpers",
-    packing: "packers",
-    "machine-operators": "machine operators",
-    "iti-trades": "ITI trades",
-    maintenance: "maintenance staff",
-    "fabrication-civil": "fabrication and civil",
-    "data-entry": "data entry",
-};
-function crewSummary(lead) {
-    if (lead.requestType === "compliance-help")
-        return `compliance help${lead.cluster ? `, ${clusterLabel(lead.cluster)}` : ""}`;
-    const size = /^[\d+\s-]{1,12}$/.test(lead.headcountBand ?? "") ? lead.headcountBand : /^\d{1,5}$/.test(lead.headcount?.trim() ?? "") ? lead.headcount.trim() : null;
-    const first = lead.services[0];
-    const what = first ? (SERVICE_WORDS[first] ?? "workers") + (lead.services.length > 1 ? ` +${lead.services.length - 1}` : "") : "workers";
-    const kind = lead.requestType === "site-assessment" ? "site assessment: " : lead.requestType === "callback" ? "call back: " : "";
-    return `${kind}${size ? `${size} ` : ""}${what}${lead.cluster ? `, ${clusterLabel(lead.cluster)}` : ""}`;
-}
-const requestWord = (lead) => lead.requestType === "compliance-help" ? "compliance help request" : lead.requestType === "callback" ? "call back request" : "crew request";
-function leadReceivedEvent(lead, opportunityId) {
-    const qualified = isQualified(lead);
-    const from = lead.channel === "agent" ? "AI agent" : (lead.sourcePath ?? "/contact");
-    return {
-        source: "leads",
-        type: "lead.received",
-        severity: qualified ? "notice" : "info",
-        dedupeKey: `lead:${lead.caseId}`,
-        title: `New ${requestWord(lead)}${qualified ? " (qualified)" : ""}: ${crewSummary(lead)}`,
-        summary: `${lead.caseId} · from ${from}`,
-        link: { label: "View in Twenty", url: `${TWENTY_APP_URL}/object/opportunity/${encodeURIComponent(opportunityId)}` },
-        pii: { name: lead.name, ...(lead.company ? { company: lead.company } : {}), phone: lead.phone },
-    };
-}
-const errorKind = (error) => error?.match(/HTTP \d{3}/)?.[0] ?? (error ? "an error" : "no answer");
-function leadForwardFailedEvent(caseId, attempts, error) {
-    return {
-        source: "leads",
-        type: "lead.forward_failed",
-        severity: "warning",
-        dedupeKey: `lead-dead:${caseId}`,
-        title: `Lead not filed in Twenty: ${caseId}`,
-        summary: `${caseId} stopped after ${attempts} attempts (last: ${errorKind(error)}). It is safe in the lead inbox; fix the cause, then reset its delivery (OPERATIONS.md, lead inbox).`,
-        link: { label: "Windmill runs", url: `${WINDMILL_APP_URL}/runs/f/leads/sync_crm?workspace=vspl` },
-    };
-}
-  return { WINDMILL_APP_URL, isQualified, crewSummary, leadReceivedEvent, leadForwardFailedEvent };
-})();
-
 // integrations/windmill/leads/lib/sql.ts
-const { LEADS_SAVE, LEADS_SYNC_LOCK, LEADS_RECOVER_STUCK, LEADS_CLAIM, LEADS_FINISH, LEADS_SYNC_UNLOCK, LEADS_ERASURE_RECOVER, LEADS_ERASURE_CLAIM, LEADS_ERASURE_DONE, LEADS_ERASURE_FAIL } = (() => {
+const { LEADS_SAVE, LEADS_SYNC_LOCK, LEADS_RECOVER_STUCK, LEADS_CLAIM, LEADS_FINISH, LEAD_MAIL_CLAIM, LEAD_MAIL_FINISH, LEADS_SYNC_UNLOCK, LEADS_ERASURE_RECOVER, LEADS_ERASURE_CLAIM, LEADS_ERASURE_DONE, LEADS_ERASURE_FAIL } = (() => {
 const LEADS_SAVE = `
 WITH l AS (
   INSERT INTO leads (case_id, type, channel, payload, idempotency_key, received_at)
@@ -1267,7 +1350,7 @@ WITH l AS (
   ON CONFLICT (case_id) DO NOTHING
   RETURNING id
 ), d AS (
-  INSERT INTO deliveries (lead_id, target) SELECT id, 'crm' FROM l RETURNING 1
+  INSERT INTO deliveries (lead_id, target) SELECT l.id, t.target FROM l, unnest($7::text[]) AS t(target) RETURNING 1
 )
 SELECT (SELECT id FROM l) AS lead_id, (SELECT count(*) FROM d) AS deliveries;`;
 const LEADS_SYNC_LOCK = `SELECT pg_try_advisory_lock(hashtext('leads:sync_crm')) AS locked;`;
@@ -1296,6 +1379,26 @@ SET status = CASE WHEN $2 = 'retry' THEN (CASE WHEN attempts >= max_attempts THE
     last_error = $3, result = coalesce($5::jsonb, result),
     done_at = CASE WHEN $2 = 'done' THEN now() ELSE done_at END, updated_at = now()
 WHERE lead_id = $1::uuid AND target = 'crm' AND status = 'running'
+RETURNING status;`;
+const LEAD_MAIL_CLAIM = `
+WITH c AS (
+  SELECT lead_id, target FROM deliveries
+  WHERE target IN ('staff_mail', 'buyer_mail') AND status = 'pending' AND next_attempt_at <= now()
+    AND ($1::uuid IS NULL OR lead_id = $1::uuid)
+  ORDER BY next_attempt_at, created_at, target DESC LIMIT 1 FOR UPDATE SKIP LOCKED
+), claimed AS (
+  UPDATE deliveries d SET status = 'running', attempts = d.attempts + 1, updated_at = now()
+  FROM c WHERE d.lead_id = c.lead_id AND d.target = c.target
+  RETURNING d.lead_id, d.target, d.attempts
+)
+SELECT claimed.lead_id, claimed.target, claimed.attempts, l.case_id, l.payload
+FROM claimed JOIN leads l ON l.id = claimed.lead_id;`;
+const LEAD_MAIL_FINISH = `
+UPDATE deliveries
+SET status = CASE WHEN $3 = 'retry' THEN (CASE WHEN attempts >= max_attempts THEN 'dead' ELSE 'pending' END) ELSE $3 END,
+    next_attempt_at = CASE WHEN $3 = 'retry' THEN now() + make_interval(secs => $5::int) ELSE next_attempt_at END,
+    last_error = $4, done_at = CASE WHEN $3 = 'done' THEN now() ELSE done_at END, updated_at = now()
+WHERE lead_id = $1::uuid AND target = $2 AND status = 'running'
 RETURNING status;`;
 const LEADS_SYNC_UNLOCK = `SELECT pg_advisory_unlock(hashtext('leads:sync_crm')) AS unlocked;`;
 const LEADS_ERASURE_RECOVER = `
@@ -1335,11 +1438,14 @@ const LEADS_ERASURE_FAIL = `
 UPDATE erasure_requests
 SET status = CASE WHEN attempts >= 3 THEN 'failed' ELSE 'pending' END, last_error = $2, updated_at = now()
 WHERE id = $1::uuid AND status = 'running';`;
-  return { LEADS_SAVE, LEADS_SYNC_LOCK, LEADS_RECOVER_STUCK, LEADS_CLAIM, LEADS_FINISH, LEADS_SYNC_UNLOCK, LEADS_ERASURE_RECOVER, LEADS_ERASURE_CLAIM, LEADS_ERASURE_DONE, LEADS_ERASURE_FAIL };
+  return { LEADS_SAVE, LEADS_SYNC_LOCK, LEADS_RECOVER_STUCK, LEADS_CLAIM, LEADS_FINISH, LEAD_MAIL_CLAIM, LEAD_MAIL_FINISH, LEADS_SYNC_UNLOCK, LEADS_ERASURE_RECOVER, LEADS_ERASURE_CLAIM, LEADS_ERASURE_DONE, LEADS_ERASURE_FAIL };
 })();
 
 // integrations/windmill/leads/lib/run-leads.ts
-const { saveLead, LEADS_BATCH, leadBackoffSeconds, runLeadsSync } = (() => {
+const { leadTargets, saveLead, LEADS_BATCH, leadBackoffSeconds, runLeadsSync } = (() => {
+function leadTargets(lead) {
+    return ["crm", ...(lead.mail ? ["staff_mail"] : []), ...(lead.mail?.buyer && lead.email ? ["buyer_mail"] : [])];
+}
 async function saveLead(query, lead, idempotencyKey = null) {
     const type = lead.requestType === "compliance-help" ? "compliance_help.v1" : "business_enquiry.v1";
     const [row] = await query(LEADS_SAVE, [
@@ -1349,6 +1455,7 @@ async function saveLead(query, lead, idempotencyKey = null) {
         JSON.stringify(lead),
         idempotencyKey,
         lead.receivedAt,
+        leadTargets(lead),
     ]);
     return { leadId: row?.lead_id ?? null, created: Boolean(row?.lead_id) };
 }
@@ -1402,41 +1509,77 @@ async function runLeadsSync(deps, options = {}) {
     }
     return result;
 }
-  return { saveLead, LEADS_BATCH, leadBackoffSeconds, runLeadsSync };
+  return { leadTargets, saveLead, LEADS_BATCH, leadBackoffSeconds, runLeadsSync };
 })();
 
-// integrations/windmill/notify/lib/config.ts
-const { NOTIFY_VARIABLES, notifyVariablePath, setNotifyConfigForTests, notifyConfig, OWNER_PLACEHOLDER } = (() => {
-const NOTIFY_VARIABLES = {
-    notify_pg_url: { secret: true },
-    ingest_secret: { secret: true },
-    alertmanager_secret: { secret: true },
-    ntfy_token: { secret: true },
-    ntfy_base_url: { secret: false },
-    resend_api_key: { secret: true },
-    email_from: { secret: false },
-    email_to: { secret: true },
-    policy: { secret: false },
-};
-const notifyVariablePath = (name) => `f/notify/${name}`;
-let notifyOverride = null;
-function setNotifyConfigForTests(values) {
-    notifyOverride = values;
+// integrations/windmill/leads/lib/lead-mail.ts
+const { leadMailer, leadEmail, runLeadMail } = (() => {
+const RESEND_EMAILS = "https://api.resend.com/emails";
+function leadMailer(apiKey, fetchImpl = fetch) {
+    return async (email, idempotencyKey) => {
+        if (!apiKey || apiKey === "set-by-owner")
+            return { ok: false, retryable: true, error: "resend is not configured" };
+        try {
+            const res = await fetchImpl(RESEND_EMAILS, {
+                method: "POST",
+                headers: { authorization: `Bearer ${apiKey}`, "content-type": "application/json", "idempotency-key": idempotencyKey },
+                body: JSON.stringify({ from: email.from, to: [email.to], reply_to: email.replyTo, subject: email.subject, text: email.text }),
+                signal: AbortSignal.timeout(20_000),
+            });
+            if (res.ok)
+                return { ok: true, retryable: false };
+            return { ok: false, retryable: retryableStatus(res.status), error: `resend HTTP ${res.status} ${await responseDetail(res)}`.trim() };
+        }
+        catch (err) {
+            return { ok: false, retryable: true, error: `resend ${err instanceof Error ? err.name : "error"}` };
+        }
+    };
 }
-async function notifyConfig(name) {
-    if (notifyOverride) {
-        const value = notifyOverride[name];
-        if (value === undefined)
-            throw new Error(`test config has no ${name}`);
-        return value;
+function leadEmail(lead, target, deps) {
+    if (target === "staff_mail") {
+        if (!lead.mail)
+            return "the lead carries no emails";
+        const replyTo = lead.channel === "web" && lead.email ? lead.email : deps.inbox;
+        return { from: deps.staffFrom, to: deps.inbox, replyTo, ...lead.mail.staff };
     }
-    const value = await wmill.getVariable(notifyVariablePath(name));
-    if (!value)
-        throw new Error(`variable ${notifyVariablePath(name)} is empty`);
-    return value;
+    if (!lead.mail?.buyer || !lead.email)
+        return "the lead carries no buyer copy";
+    return { from: deps.buyerFrom, to: lead.email, replyTo: deps.inbox, ...lead.mail.buyer };
 }
-const OWNER_PLACEHOLDER = "set-by-owner";
-  return { NOTIFY_VARIABLES, notifyVariablePath, setNotifyConfigForTests, notifyConfig, OWNER_PLACEHOLDER };
+async function runLeadMail(deps, options = {}) {
+    const log = deps.log ?? ((m) => console.error(m));
+    const result = { sent: 0, retried: 0, dead: 0 };
+    const batch = options.batch ?? 20;
+    for (let n = 0; n < batch; n++) {
+        const [claim] = await deps.query(LEAD_MAIL_CLAIM, [
+            options.leadId ?? null,
+        ]);
+        if (!claim)
+            break;
+        const email = leadEmail(claim.payload, claim.target, deps);
+        const outcome = typeof email === "string" ? { ok: false, retryable: false, error: email } : await deps.send(email, `lead-mail:${claim.target}:${claim.case_id}`);
+        const [finished] = await deps.query(LEAD_MAIL_FINISH, [
+            claim.lead_id,
+            claim.target,
+            outcome.ok ? "done" : outcome.retryable ? "retry" : "dead",
+            outcome.ok ? null : (outcome.error ?? "unknown error").slice(0, 500),
+            leadBackoffSeconds(claim.attempts),
+        ]);
+        if (finished?.status === "done")
+            result.sent++;
+        else if (finished?.status === "dead")
+            result.dead++;
+        else
+            result.retried++;
+        if (!outcome.ok)
+            log(`lead ${claim.case_id} ${claim.target} not sent: ${outcome.error ?? "unknown error"}`);
+        if (finished?.status === "dead" && claim.target === "staff_mail" && deps.notify) {
+            await deps.notify(leadEmailFailedEvent(claim.case_id, claim.attempts, outcome.error ?? null));
+        }
+    }
+    return result;
+}
+  return { leadMailer, leadEmail, runLeadMail };
 })();
 
 // integrations/windmill/notify/lib/db.ts
@@ -1814,7 +1957,25 @@ async function tryEmit(input, options = {}) {
 })();
 
 export async function main(lead_id) {
-    const crm = await twentyFromConfig();
-    return withDatabase("leads_pg_url", (query) => runLeadsSync({ query, crm, notify: tryEmit }, { leadId: lead_id || null }));
+    const leadId = lead_id || null;
+    return withDatabase("leads_pg_url", async (query) => {
+        let mail;
+        try {
+            mail = await runLeadMail({
+                query,
+                send: leadMailer(await notifyConfig("resend_api_key").catch(() => "")),
+                staffFrom: await config("lead_staff_email_from"),
+                buyerFrom: await config("lead_buyer_email_from"),
+                inbox: await config("lead_inbox_email"),
+                notify: tryEmit,
+            }, { leadId });
+        }
+        catch (err) {
+            mail = { error: err instanceof Error ? err.name : "error" };
+            console.error("lead emails not run:", mail.error);
+        }
+        const crm = await twentyFromConfig();
+        return { ...(await runLeadsSync({ query, crm, notify: tryEmit }, { leadId })), mail };
+    });
 }
 

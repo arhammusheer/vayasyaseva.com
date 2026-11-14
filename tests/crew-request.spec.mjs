@@ -233,33 +233,11 @@ test('the requirement recap uses labels, not ids', () => {
 });
 
 test('lead flags reach the staff email only, never the buyer copy', async () => {
-  Object.assign(process.env, { RESEND_API_KEY: 're_unit', CONTACT_INTERNAL_RECIPIENT_EMAIL: 'team@example.test' });
-  const { staffEmail, sendInternalContactEmail, sendContactAutoReply } = await import('../src/lib/contact-email.ts');
-  const sent = [];
-  const realFetch = globalThis.fetch;
-  const realInfo = console.info;
-  globalThis.fetch = async (url, init) => { sent.push({ url, auth: init.headers.authorization, body: JSON.parse(init.body) }); return Response.json({ id: 'm1' }); };
-  console.info = () => {};
+  const { staffEmail, leadMail } = await import('../src/lib/contact-email.ts');
   const data = { ...person, company: 'Acme', email: 'buyer@example.test', ...requirement, details: 'Also need 2 security guards', pageCluster: 'haridwar', sourcePath: '/locations/haridwar' };
-  try {
-    await sendInternalContactEmail(data, { caseId: 'REQ-UNIT' });
-    await sendContactAutoReply(data, { caseId: 'REQ-UNIT' });
-    await sendInternalContactEmail(data, { caseId: 'AGT-UNIT', agentName: 'Helper' });
-  } finally {
-    globalThis.fetch = realFetch;
-    console.info = realInfo;
-  }
-  const [staff, buyer, agent] = sent;
-  assert.equal(staff.url, 'https://api.resend.com/emails');
-  assert.equal(staff.auth, 'Bearer re_unit');
-  assert.deepEqual(staff.body.to, ['team@example.test']);
-  // Reply goes straight to the buyer; an agent's address is unconfirmed, so it replies to us.
-  assert.equal(staff.body.reply_to, 'buyer@example.test');
-  assert.equal(agent.body.reply_to, 'team@example.test');
-  assert.match(agent.body.text, /Sent by an AI agent \(Helper\) on their behalf/);
-  assert.equal(staff.body.subject, 'Crew request: Asha Rawat, Acme');
-  assert.equal(staff.body.html, undefined, 'plain text only');
-  const text = staff.body.text;
+  const { staff, buyer } = leadMail(data, { caseId: 'REQ-UNIT' });
+  assert.equal(staff.subject, 'Crew request: Asha Rawat, Acme');
+  const text = staff.text;
   assert.match(text, /^Crew request\n\nQualified lead: 20 or more workers for 3 months or more\.\nWants to start within 4 weeks\.\nCheck: Security guards/);
   assert.match(text, /Email: buyer@example\.test/);
   assert.match(text, /Work: Packing, Loading and unloading\nWorkers: 50 to 99\nSite: SIDCUL Haridwar, Uttarakhand/);
@@ -270,10 +248,12 @@ test('lead flags reach the staff email only, never the buyer copy', async () => 
   const short = staffEmail({ ...person, company: 'Acme', roles: ['packing'], headcountBand: '50-99', siteState: 'UK', siteCity: 'Haridwar' }, { caseId: 'REQ-UNIT2' }).text;
   assert.doesNotMatch(short, /Qualified|Wants to start/);
   // The buyer's copy: what they sent, never the flags.
-  assert.deepEqual(buyer.body.to, ['buyer@example.test']);
-  assert.equal(buyer.body.reply_to, 'team@example.test');
-  assert.equal(buyer.body.subject, 'We have your crew request (REQ-UNIT)');
-  assert.doesNotMatch(buyer.body.text, /Qualified|Check:|Starts within|Wants to start|Came from|Privacy notice/i);
-  assert.match(buyer.body.text, /^Hello Asha,\n\nThank you\. We aim to reply within two working days \(Monday to Saturday, IST\)\./);
-  assert.match(buyer.body.text, /What you sent:\nWork: Packing, Loading and unloading/);
+  assert.equal(buyer.subject, 'We have your crew request (REQ-UNIT)');
+  assert.doesNotMatch(buyer.text, /Qualified|Check:|Starts within|Wants to start|Came from|Privacy notice/i);
+  assert.match(buyer.text, /^Hello Asha,\n\nThank you\. We aim to reply within two working days \(Monday to Saturday, IST\)\./);
+  assert.match(buyer.text, /What you sent:\nWork: Packing, Loading and unloading/);
+  // An agent's enquiry: said in the staff email, and no copy to the address it gave.
+  const agent = leadMail(data, { caseId: 'AGT-UNIT', agentName: 'Helper' });
+  assert.match(agent.staff.text, /Sent by an AI agent \(Helper\) on their behalf/);
+  assert.equal(agent.buyer, null);
 });

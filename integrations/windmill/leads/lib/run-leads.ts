@@ -2,8 +2,9 @@
  * The lead inbox, step by step, with the database and Twenty injected so the
  * tests can drive every path (roadmap 1F).
  *
- *   saveLead      intake: the lead and its CRM delivery, in one statement,
- *                 before the route answers 202; a replayed case ID saves nothing
+ *   saveLead      intake: the lead and its deliveries (Twenty, and the emails
+ *                 it carries, lead-mail.ts), in one statement, before the
+ *                 route answers 202; a replayed case ID saves nothing
  *   runLeadsSync  f/leads/sync_crm: due CRM deliveries into Twenty (recordLead,
  *                 where each record is found before it is created, so a retry
  *                 never files twice), with backoff and a cap; raises
@@ -22,6 +23,11 @@ export interface SavedLead {
   created: boolean;
 }
 
+/** Where a new lead has to go: Twenty, and the emails it carries (a buyer copy only with an address). */
+export function leadTargets(lead: Lead): string[] {
+  return ["crm", ...(lead.mail ? ["staff_mail"] : []), ...(lead.mail?.buyer && lead.email ? ["buyer_mail"] : [])];
+}
+
 export async function saveLead(query: Query, lead: Lead, idempotencyKey: string | null = null): Promise<SavedLead> {
   const type = lead.requestType === "compliance-help" ? "compliance_help.v1" : "business_enquiry.v1";
   const [row] = await query<{ lead_id: string | null }>(LEADS_SAVE, [
@@ -31,6 +37,7 @@ export async function saveLead(query: Query, lead: Lead, idempotencyKey: string 
     JSON.stringify(lead),
     idempotencyKey,
     lead.receivedAt,
+    leadTargets(lead),
   ]);
   return { leadId: row?.lead_id ?? null, created: Boolean(row?.lead_id) };
 }

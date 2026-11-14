@@ -24,6 +24,9 @@ const VARIABLES = {
     submission_signing_secret: { secret: true },
     alerts_email_from: { secret: false },
     alerts_reply_to: { secret: false },
+    lead_staff_email_from: { secret: false },
+    lead_buyer_email_from: { secret: false },
+    lead_inbox_email: { secret: false },
 };
 const variablePath = (name) => `f/talent/${name}`;
 let override = null;
@@ -956,7 +959,7 @@ async function erasePerson(crm, phone) {
 })();
 
 // integrations/windmill/leads/lib/sql.ts
-const { LEADS_SAVE, LEADS_SYNC_LOCK, LEADS_RECOVER_STUCK, LEADS_CLAIM, LEADS_FINISH, LEADS_SYNC_UNLOCK, LEADS_ERASURE_RECOVER, LEADS_ERASURE_CLAIM, LEADS_ERASURE_DONE, LEADS_ERASURE_FAIL } = (() => {
+const { LEADS_SAVE, LEADS_SYNC_LOCK, LEADS_RECOVER_STUCK, LEADS_CLAIM, LEADS_FINISH, LEAD_MAIL_CLAIM, LEAD_MAIL_FINISH, LEADS_SYNC_UNLOCK, LEADS_ERASURE_RECOVER, LEADS_ERASURE_CLAIM, LEADS_ERASURE_DONE, LEADS_ERASURE_FAIL } = (() => {
 const LEADS_SAVE = `
 WITH l AS (
   INSERT INTO leads (case_id, type, channel, payload, idempotency_key, received_at)
@@ -964,7 +967,7 @@ WITH l AS (
   ON CONFLICT (case_id) DO NOTHING
   RETURNING id
 ), d AS (
-  INSERT INTO deliveries (lead_id, target) SELECT id, 'crm' FROM l RETURNING 1
+  INSERT INTO deliveries (lead_id, target) SELECT l.id, t.target FROM l, unnest($7::text[]) AS t(target) RETURNING 1
 )
 SELECT (SELECT id FROM l) AS lead_id, (SELECT count(*) FROM d) AS deliveries;`;
 const LEADS_SYNC_LOCK = `SELECT pg_try_advisory_lock(hashtext('leads:sync_crm')) AS locked;`;
@@ -993,6 +996,26 @@ SET status = CASE WHEN $2 = 'retry' THEN (CASE WHEN attempts >= max_attempts THE
     last_error = $3, result = coalesce($5::jsonb, result),
     done_at = CASE WHEN $2 = 'done' THEN now() ELSE done_at END, updated_at = now()
 WHERE lead_id = $1::uuid AND target = 'crm' AND status = 'running'
+RETURNING status;`;
+const LEAD_MAIL_CLAIM = `
+WITH c AS (
+  SELECT lead_id, target FROM deliveries
+  WHERE target IN ('staff_mail', 'buyer_mail') AND status = 'pending' AND next_attempt_at <= now()
+    AND ($1::uuid IS NULL OR lead_id = $1::uuid)
+  ORDER BY next_attempt_at, created_at, target DESC LIMIT 1 FOR UPDATE SKIP LOCKED
+), claimed AS (
+  UPDATE deliveries d SET status = 'running', attempts = d.attempts + 1, updated_at = now()
+  FROM c WHERE d.lead_id = c.lead_id AND d.target = c.target
+  RETURNING d.lead_id, d.target, d.attempts
+)
+SELECT claimed.lead_id, claimed.target, claimed.attempts, l.case_id, l.payload
+FROM claimed JOIN leads l ON l.id = claimed.lead_id;`;
+const LEAD_MAIL_FINISH = `
+UPDATE deliveries
+SET status = CASE WHEN $3 = 'retry' THEN (CASE WHEN attempts >= max_attempts THEN 'dead' ELSE 'pending' END) ELSE $3 END,
+    next_attempt_at = CASE WHEN $3 = 'retry' THEN now() + make_interval(secs => $5::int) ELSE next_attempt_at END,
+    last_error = $4, done_at = CASE WHEN $3 = 'done' THEN now() ELSE done_at END, updated_at = now()
+WHERE lead_id = $1::uuid AND target = $2 AND status = 'running'
 RETURNING status;`;
 const LEADS_SYNC_UNLOCK = `SELECT pg_advisory_unlock(hashtext('leads:sync_crm')) AS unlocked;`;
 const LEADS_ERASURE_RECOVER = `
@@ -1032,7 +1055,7 @@ const LEADS_ERASURE_FAIL = `
 UPDATE erasure_requests
 SET status = CASE WHEN attempts >= 3 THEN 'failed' ELSE 'pending' END, last_error = $2, updated_at = now()
 WHERE id = $1::uuid AND status = 'running';`;
-  return { LEADS_SAVE, LEADS_SYNC_LOCK, LEADS_RECOVER_STUCK, LEADS_CLAIM, LEADS_FINISH, LEADS_SYNC_UNLOCK, LEADS_ERASURE_RECOVER, LEADS_ERASURE_CLAIM, LEADS_ERASURE_DONE, LEADS_ERASURE_FAIL };
+  return { LEADS_SAVE, LEADS_SYNC_LOCK, LEADS_RECOVER_STUCK, LEADS_CLAIM, LEADS_FINISH, LEAD_MAIL_CLAIM, LEAD_MAIL_FINISH, LEADS_SYNC_UNLOCK, LEADS_ERASURE_RECOVER, LEADS_ERASURE_CLAIM, LEADS_ERASURE_DONE, LEADS_ERASURE_FAIL };
 })();
 
 // integrations/windmill/leads/lib/erase.ts

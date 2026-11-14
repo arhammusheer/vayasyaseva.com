@@ -15,7 +15,7 @@ WITH l AS (
   ON CONFLICT (case_id) DO NOTHING
   RETURNING id
 ), d AS (
-  INSERT INTO deliveries (lead_id, target) SELECT id, 'crm' FROM l RETURNING 1
+  INSERT INTO deliveries (lead_id, target) SELECT l.id, t.target FROM l, unnest($7::text[]) AS t(target) RETURNING 1
 )
 SELECT (SELECT id FROM l) AS lead_id, (SELECT count(*) FROM d) AS deliveries;`;
 
@@ -52,6 +52,32 @@ SET status = CASE WHEN $2 = 'retry' THEN (CASE WHEN attempts >= max_attempts THE
     last_error = $3, result = coalesce($5::jsonb, result),
     done_at = CASE WHEN $2 = 'done' THEN now() ELSE done_at END, updated_at = now()
 WHERE lead_id = $1::uuid AND target = 'crm' AND status = 'running'
+RETURNING status;`;
+
+// --- the lead's emails (leads/lib/lead-mail.ts) --------------------------------
+
+/** $1 lead id or null. The oldest due email delivery, claimed, with its lead. */
+export const LEAD_MAIL_CLAIM = `
+WITH c AS (
+  SELECT lead_id, target FROM deliveries
+  WHERE target IN ('staff_mail', 'buyer_mail') AND status = 'pending' AND next_attempt_at <= now()
+    AND ($1::uuid IS NULL OR lead_id = $1::uuid)
+  ORDER BY next_attempt_at, created_at, target DESC LIMIT 1 FOR UPDATE SKIP LOCKED
+), claimed AS (
+  UPDATE deliveries d SET status = 'running', attempts = d.attempts + 1, updated_at = now()
+  FROM c WHERE d.lead_id = c.lead_id AND d.target = c.target
+  RETURNING d.lead_id, d.target, d.attempts
+)
+SELECT claimed.lead_id, claimed.target, claimed.attempts, l.case_id, l.payload
+FROM claimed JOIN leads l ON l.id = claimed.lead_id;`;
+
+/** $1 lead, $2 target, $3 outcome (done, retry, dead), $4 error, $5 seconds before a retry. */
+export const LEAD_MAIL_FINISH = `
+UPDATE deliveries
+SET status = CASE WHEN $3 = 'retry' THEN (CASE WHEN attempts >= max_attempts THEN 'dead' ELSE 'pending' END) ELSE $3 END,
+    next_attempt_at = CASE WHEN $3 = 'retry' THEN now() + make_interval(secs => $5::int) ELSE next_attempt_at END,
+    last_error = $4, done_at = CASE WHEN $3 = 'done' THEN now() ELSE done_at END, updated_at = now()
+WHERE lead_id = $1::uuid AND target = $2 AND status = 'running'
 RETURNING status;`;
 
 // --- erasure (f/leads/erase, leads/lib/erase.ts) ------------------------------

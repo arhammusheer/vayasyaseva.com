@@ -87,6 +87,10 @@ const NOTIFY_EMAIL_FROM = "VSPL notifications <notify@notify.vayasyaseva.com>";
 // The public rate alerts: the same verified Resend domain as the hub, their own sender; replies go to the shared inbox.
 const ALERTS_EMAIL_FROM = "Vayasya Seva <alerts@notify.vayasyaseva.com>";
 const ALERTS_REPLY_TO = "help@vayasyaseva.com";
+// The contact forms' emails (leads/lib/lead-mail.ts): the same verified domain; every enquiry to the shared inbox.
+const LEAD_STAFF_EMAIL_FROM = "Vayasya Seva website <website@notify.vayasyaseva.com>";
+const LEAD_BUYER_EMAIL_FROM = "Vayasya Seva <enquiries@notify.vayasyaseva.com>";
+const LEAD_INBOX_EMAIL = "help@vayasyaseva.com";
 
 function step(message: string) {
   console.log(`${DRY_RUN ? "[dry run] " : ""}- ${message}`);
@@ -128,6 +132,9 @@ function readValues(): Record<ConfigName, string> {
     submission_signing_secret: signingSecret(),
     alerts_email_from: ALERTS_EMAIL_FROM,
     alerts_reply_to: ALERTS_REPLY_TO,
+    lead_staff_email_from: LEAD_STAFF_EMAIL_FROM,
+    lead_buyer_email_from: LEAD_BUYER_EMAIL_FROM,
+    lead_inbox_email: LEAD_INBOX_EMAIL,
   };
 }
 

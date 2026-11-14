@@ -1,18 +1,18 @@
 /**
- * Business enquiries into Twenty CRM (crm.vayasyaseva.com). After /api/contact
- * or /api/agent/contact has validated and emailed an enquiry, the route
- * hands it here, in next/server's after(): the lead is posted to Windmill's
- * `webhook/vspl-lead` route (integrations/windmill, f/leads/intake), which
- * files the company, the contact, the crew request and the enquiry.
- *
- * The email to the shared inbox stays the primary path: a failure here is
- * logged and never reaches the person filling in the form.
+ * Business enquiries into Windmill's lead inbox. After /api/contact or
+ * /api/agent/contact has validated an enquiry, the route hands it here
+ * before it answers: Windmill saves it, sends its two emails (the shared
+ * inbox's and the buyer's copy, carried in `mail`; src/lib/contact-email.ts)
+ * and files the company, the contact, the crew request and the enquiry in
+ * Twenty CRM (crm.vayasyaseva.com). The route answers 500 when Windmill
+ * does not take it, so the person can try again or call.
  */
 import type { ContactFormData } from "@/lib/contact-contract";
 import { assessCrewRequest, requirementLines, siteLine } from "@/lib/crew-request";
 import { siteMarket } from "@/markets/index";
 import { LEAD_LIMITS, type LeadCanonical } from "@vspl/contracts/business-enquiry";
 import { isIntakeCluster } from "@/lib/talent-intake/rules";
+import { leadMail } from "@/lib/contact-email";
 
 const DEFAULT_URL = "https://hooks.vayasyaseva.com/api/r/webhook/vspl-lead";
 const TIMEOUT_MS = 8_000;
@@ -22,7 +22,7 @@ export type LeadPayload = LeadCanonical;
 
 export function buildLeadPayload(
   data: ContactFormData,
-  options: { caseId: string; channel: "web" | "agent"; receivedAt?: Date; note?: string },
+  options: { caseId: string; channel: "web" | "agent"; receivedAt?: Date; note?: string; agentName?: string | null },
 ): LeadPayload {
   const assessment = assessCrewRequest(data);
   // The market the site is in: a place named in the city, else the page the
@@ -71,6 +71,10 @@ export function buildLeadPayload(
     requestType: cut(data.requestType, LEAD_LIMITS.requestType),
     enquiry: enquiry.slice(0, LEAD_LIMITS.enquiry),
     sourcePath: cut(data.sourcePath, LEAD_LIMITS.sourcePath),
+    mail: leadMail(data, {
+      caseId: options.caseId,
+      ...(options.channel === "agent" ? { agentName: options.agentName ?? null } : {}),
+    }),
   };
 }
 

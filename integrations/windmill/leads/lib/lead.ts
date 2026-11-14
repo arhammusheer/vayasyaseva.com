@@ -1,7 +1,7 @@
 /**
  * A crew request from the website's contact form (src/lib/lead-forward.ts
- * builds it after /api/contact or /api/agent/contact has validated and
- * emailed it) as Twenty CRM records: the company, the client contact, the
+ * builds it after /api/contact or /api/agent/contact has validated
+ * it) as Twenty CRM records: the company, the client contact, the
  * crew request (an opportunity at stage NEW) and the enquiry itself as an
  * inbound communication. The case ID makes it replay-safe.
  */

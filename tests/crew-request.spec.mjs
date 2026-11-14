@@ -117,15 +117,24 @@ test('a call back needs only the number of workers, and only when requestType sa
 test('a call back: the staff email names the form and says to phone within one working day', async () => {
   const { staffEmail, canSendContactAutoReply } = await import('../src/lib/contact-email.ts');
   const data = { ...person, company: 'Acme', requestType: 'callback', headcountBand: '20-49', sourcePath: '/services/factory-labour' };
-  const email = staffEmail(data, { caseId: 'REQ-UNIT' });
-  assert.equal(email.subject, 'Call back request: Asha Rawat, Acme');
+  const email = staffEmail(data, { caseId: 'REQ-UNIT', receivedAt: new Date('2026-11-14T10:12:00Z') });
+  // The inbox list shows the form, the person and the size.
+  assert.equal(email.subject, 'Call back request: Asha Rawat, Acme · 20 to 49 workers');
   assert.equal(email.text, [
     'Call back request',
     'Phone them within one working day.',
     'Name: Asha Rawat\nPhone: +91 98765 43210\nCompany: Acme',
     'Workers: 20 to 49',
-    'Came from: https://www.vayasyaseva.com/services/factory-labour\nReference: REQ-UNIT\nPrivacy notice: 2026-10-16',
+    'Came from: https://www.vayasyaseva.com/services/factory-labour\nReceived: 14 Nov 2026, 3:42 pm IST\nReference: REQ-UNIT\nPrivacy notice: 2026-10-16',
   ].join('\n\n'));
+  // The HTML part: the form, the person, a tap-to-call number, the action; no email line when none was given.
+  const html = email.html;
+  assert.match(html, />Call back request</);
+  assert.match(html, /<h1[^>]*>Asha Rawat<\/h1>/);
+  assert.match(html, /href="tel:\+919876543210"/);
+  assert.match(html, /Phone them within one working day\./);
+  assert.doesNotMatch(html, /mailto:/);
+  assert.match(html, /No email given: phone them\./);
   // No email is asked for, so no copy goes to the buyer.
   assert.equal(canSendContactAutoReply(data), false);
 });
@@ -234,26 +243,39 @@ test('the requirement recap uses labels, not ids', () => {
 
 test('lead flags reach the staff email only, never the buyer copy', async () => {
   const { staffEmail, leadMail } = await import('../src/lib/contact-email.ts');
-  const data = { ...person, company: 'Acme', email: 'buyer@example.test', ...requirement, details: 'Also need 2 security guards', pageCluster: 'haridwar', sourcePath: '/locations/haridwar' };
+  const data = { ...person, company: 'Acme', email: 'buyer@example.test', ...requirement, details: 'Also need 2 security guards <b>now</b>', pageCluster: 'haridwar', sourcePath: '/locations/haridwar' };
   const { staff, buyer } = leadMail(data, { caseId: 'REQ-UNIT' });
-  assert.equal(staff.subject, 'Crew request: Asha Rawat, Acme');
+  assert.equal(staff.subject, 'Crew request: Asha Rawat, Acme · 50 to 99 workers');
   const text = staff.text;
-  assert.match(text, /^Crew request\n\nQualified lead: 20 or more workers for 3 months or more\.\nWants to start within 4 weeks\.\nCheck: Security guards/);
+  assert.match(text, /^Crew request\n\nReply within two working days\.\nQualified: 20\+ workers, 3\+ months\.\nStarts within 4 weeks\.\nCheck: Security guards: they mention security staff\n/);
+  assert.doesNotMatch(text, /cannot supply/);
   assert.match(text, /Email: buyer@example\.test/);
   assert.match(text, /Work: Packing, Loading and unloading\nWorkers: 50 to 99\nSite: SIDCUL Haridwar, Uttarakhand/);
   assert.match(text, /Message:\nAlso need 2 security guards/);
   assert.match(text, /Came from: https:\/\/www\.vayasyaseva\.com\/locations\/haridwar/);
   assert.doesNotMatch(text, /Not provided|Not specified|Page cluster/);
-  // Without a duration the lead is not judged: no qualified line, no "no".
+  // The HTML part: flags as tags, the check outlined, the request as rows, the person's text escaped.
+  const html = staff.html;
+  assert.match(html, />Qualified: 20\+ workers, 3\+ months</);
+  assert.match(html, />Starts within 4 weeks</);
+  assert.match(html, />Check<\/span><strong[^>]*>Security guards<\/strong>: they mention security staff/);
+  assert.match(html, />Workers<\/td><td[^>]*>50 to 99</);
+  assert.match(html, /href="mailto:buyer@example\.test"/);
+  assert.match(html, /&lt;b&gt;now&lt;\/b&gt;/);
+  assert.doesNotMatch(html, /<b>now/);
+  assert.match(html, /Reply to this email to answer Asha directly\./);
+  // Without a duration the lead is not judged: no qualified tag, no "no".
   const short = staffEmail({ ...person, company: 'Acme', roles: ['packing'], headcountBand: '50-99', siteState: 'UK', siteCity: 'Haridwar' }, { caseId: 'REQ-UNIT2' }).text;
-  assert.doesNotMatch(short, /Qualified|Wants to start/);
-  // The buyer's copy: what they sent, never the flags.
+  assert.doesNotMatch(short, /Qualified|Starts within/);
+  // The buyer's copy: plain text, what they sent, never the flags.
+  assert.equal(buyer.html, undefined);
   assert.equal(buyer.subject, 'We have your crew request (REQ-UNIT)');
-  assert.doesNotMatch(buyer.text, /Qualified|Check:|Starts within|Wants to start|Came from|Privacy notice/i);
+  assert.doesNotMatch(buyer.text, /Qualified|Check:|Starts within|Came from|Privacy notice/i);
   assert.match(buyer.text, /^Hello Asha,\n\nThank you\. We aim to reply within two working days \(Monday to Saturday, IST\)\./);
   assert.match(buyer.text, /What you sent:\nWork: Packing, Loading and unloading/);
-  // An agent's enquiry: said in the staff email, and no copy to the address it gave.
+  // An agent's enquiry: said in the staff email, replies go to the inbox, and no copy to the address it gave.
   const agent = leadMail(data, { caseId: 'AGT-UNIT', agentName: 'Helper' });
-  assert.match(agent.staff.text, /Sent by an AI agent \(Helper\) on their behalf/);
+  assert.match(agent.staff.text, /Check: Sent by an AI agent \(Helper\) on their behalf: confirm the details when you reply\./);
+  assert.match(agent.staff.html, /Replies go to the shared inbox/);
   assert.equal(agent.buyer, null);
 });

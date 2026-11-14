@@ -1,6 +1,6 @@
 /**
  * The lead's two emails (owner, 14 Nov 2026: out of MSG91, into Resend from
- * here, where the key already is). The website writes them as plain text
+ * here, where the key already is). The website writes them (the staff email as HTML with a text part, the buyer copy as plain text)
  * (src/lib/contact-email.ts) and sends them inside the lead (`mail`);
  * saveLead queues one delivery each, and f/leads/sync_crm sends them:
  *
@@ -30,11 +30,13 @@ export interface LeadEmail {
   replyTo: string;
   subject: string;
   text: string;
+  /** The site's HTML part, when it wrote one (the staff email); sent beside the text. */
+  html?: string;
 }
 
 export type LeadMailSend = (email: LeadEmail, idempotencyKey: string) => Promise<SendResult>;
 
-/** Resend, plain text only. No key yet (or the infra placeholder): kept for a later try. */
+/** Resend: the text part, and the HTML part when there is one. No key yet (or the infra placeholder): kept for a later try. */
 export function leadMailer(apiKey: string, fetchImpl: Fetch = fetch): LeadMailSend {
   return async (email, idempotencyKey) => {
     if (!apiKey || apiKey === "set-by-owner") return { ok: false, retryable: true, error: "resend is not configured" };
@@ -42,7 +44,14 @@ export function leadMailer(apiKey: string, fetchImpl: Fetch = fetch): LeadMailSe
       const res = await fetchImpl(RESEND_EMAILS, {
         method: "POST",
         headers: { authorization: `Bearer ${apiKey}`, "content-type": "application/json", "idempotency-key": idempotencyKey },
-        body: JSON.stringify({ from: email.from, to: [email.to], reply_to: email.replyTo, subject: email.subject, text: email.text }),
+        body: JSON.stringify({
+          from: email.from,
+          to: [email.to],
+          reply_to: email.replyTo,
+          subject: email.subject,
+          text: email.text,
+          ...(email.html ? { html: email.html } : {}),
+        }),
         signal: AbortSignal.timeout(20_000),
       });
       if (res.ok) return { ok: true, retryable: false };

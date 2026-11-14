@@ -279,15 +279,17 @@ export const LEAD_LIMITS = {
   sourcePath: 300,
   mailSubject: 300,
   mailText: 12000,
+  mailHtml: 60000,
 } as const;
 
 const optionalText = (max: number) => z.string().min(1).max(max).nullable();
 
-/** One plain-text email of a lead (subject and body). */
+/** One email of a lead: subject, plain text, and an optional HTML part (the staff email's). */
 const leadMailShape = z
   .object({
     subject: z.string().min(1).max(LEAD_LIMITS.mailSubject),
     text: z.string().min(1).max(LEAD_LIMITS.mailText),
+    html: z.string().min(1).max(LEAD_LIMITS.mailHtml).optional(),
   })
   .strict();
 
@@ -317,7 +319,8 @@ const leadShape = {
    * The lead's emails, written by the site (src/lib/contact-email.ts) and
    * sent by Windmill through Resend: `staff` to the shared inbox, `buyer` to
    * the lead's email (only when the person gave one on our own form). Plain
-   * text. Optional: older senders leave it out and no email goes.
+   * text, with an HTML part when the site wrote one. Optional: older senders
+   * leave it out and no email goes.
    */
   mail: z
     .object({

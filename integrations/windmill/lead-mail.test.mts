@@ -31,7 +31,7 @@ const lead: Lead = {
   enquiry: "Case REQ-20261114-0A1B2C3D\nWork: Packing",
   sourcePath: null,
   mail: {
-    staff: { subject: "Crew request: Asha Rawat, Acme Foods", text: "Crew request\n\nName: Asha Rawat" },
+    staff: { subject: "Crew request: Asha Rawat, Acme Foods", text: "Crew request\n\nName: Asha Rawat", html: "<!doctype html><h1>Asha Rawat</h1>" },
     buyer: { subject: "We have your crew request (REQ-20261114-0A1B2C3D)", text: "Hello Asha," },
   },
 };
@@ -153,6 +153,9 @@ test("leadMailer: plain text through Resend with the Idempotency-Key; no key is 
   const headers = calls[0].init.headers as Record<string, string>;
   assert.equal(headers["idempotency-key"], "k1");
   assert.deepEqual(JSON.parse(String(calls[0].init.body)), { from: senders.staffFrom, to: [senders.inbox], reply_to: "asha@acme.example", subject: "S", text: "T" });
+  // With an HTML part, both go (Resend sends multipart/alternative).
+  await leadMailer("re_test", fake)({ ...email, html: "<p>H</p>" }, "k3");
+  assert.equal(JSON.parse(String(calls[1].init.body)).html, "<p>H</p>");
   assert.equal((await leadMailer("set-by-owner", fake)(email, "k2")).retryable, true);
-  assert.equal(calls.length, 1);
+  assert.equal(calls.length, 2);
 });

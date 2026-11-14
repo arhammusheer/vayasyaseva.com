@@ -56,7 +56,7 @@ Windmill does not answer within 2.5 s, this instance's memory takes over for
 that call. Without the secret, memory only.
 
 **The contact emails go through Windmill** (14 Nov 2026). The site writes
-the shared inbox's email and the buyer's copy as plain text
+the shared inbox's email (HTML laid out to be read at a glance, with a text part) and the buyer's copy (plain text)
 (`src/lib/contact-email.ts`) and hands them over inside the lead (`mail`)
 before it answers. Windmill saves the lead with one delivery per email and
 sends them through Resend (`leads/lib/lead-mail.ts`), with backoff and a

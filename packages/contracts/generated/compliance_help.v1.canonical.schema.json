@@ -196,6 +196,11 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 12000
+            },
+            "html": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 60000
             }
           },
           "required": [
@@ -218,6 +223,11 @@
                   "type": "string",
                   "minLength": 1,
                   "maxLength": 12000
+                },
+                "html": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 60000
                 }
               },
               "required": [

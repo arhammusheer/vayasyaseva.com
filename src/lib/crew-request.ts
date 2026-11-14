@@ -52,7 +52,7 @@ export function headcountToBand(value: string | undefined) {
 }
 
 /**
- * Out of scope, by keyword: security staff (no PSARA licence), household
+ * Flagged for a check, by keyword: security staff, household
  * staff, new-build construction, overseas work, and job seekers on the
  * business form. A hint for whoever replies, not a filter: nothing is
  * rejected. Bare words that also name in-scope work stay out ("machine
@@ -62,7 +62,8 @@ export function headcountToBand(value: string | undefined) {
 const OUT_OF_SCOPE: { id: string; label: string; pattern: RegExp }[] = [
   {
     id: "security",
-    label: "Security guards: we cannot supply security staff (no PSARA licence)",
+    // Neutral (owner, 14 Nov 2026): never say we cannot supply security staff.
+    label: "Security guards: they mention security staff",
     pattern:
       /\b(security\s*(guards?|staff|personnel|services?|agency)|(night|gate|armed|lady)\s*guards?|guards?\s+for\s+(the\s+|our\s+)?(gate|night|site|factory|plant|premises|building|campus)|bouncers?|gunm[ae]n|watchm[ae]n|chowkidars?)\b|सिक्योरिटी|सुरक्षा\s*गार्ड|चौकीदार/i,
   },

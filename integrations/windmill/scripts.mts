@@ -155,9 +155,9 @@ export const SCRIPTS: ScriptSpec[] = [
   {
     name: "sync_crm",
     folder: "leads",
-    summary: "Leads · sync to Twenty CRM",
+    summary: "Leads · emails and sync to Twenty CRM",
     description:
-      "Files the inbox's due leads in Twenty (company, contact, crew request, enquiry; each found before it is created), with backoff and an attempt cap. Started by intake for a new lead.",
+      "Sends the leads' due emails through Resend (the shared inbox's and the buyer's copy, written by the website), then files the inbox's due leads in Twenty (company, contact, crew request, enquiry; each found before it is created), with backoff and an attempt cap. Started by intake for a new lead.",
     schema: {
       $schema: "https://json-schema.org/draft/2020-12/schema",
       type: "object",

@@ -19,11 +19,13 @@ BEGIN
   CREATE INDEX IF NOT EXISTS leads_received_idx ON leads (received_at);
 
   -- Where each lead still has to go: Twenty CRM (company, contact, crew
-  -- request, enquiry; f/leads/sync_crm). Retries back off 1, 2, 4… minutes,
-  -- at most an hour, and stop at max_attempts ('dead').
+  -- request, enquiry), and since 14 Nov 2026 its two emails through Resend
+  -- (staff_mail to the shared inbox, buyer_mail to the person; leads/lib/lead-mail.ts),
+  -- all by f/leads/sync_crm. Retries back off 1, 2, 4… minutes, at most an
+  -- hour, and stop at max_attempts ('dead').
   CREATE TABLE IF NOT EXISTS deliveries (
     lead_id         uuid NOT NULL REFERENCES leads (id) ON DELETE CASCADE,
-    target          text NOT NULL CHECK (target IN ('crm')),
+    target          text NOT NULL CHECK (target IN ('crm', 'staff_mail', 'buyer_mail')),
     status          text NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'running', 'done', 'dead')),
     attempts        int NOT NULL DEFAULT 0,
     max_attempts    int NOT NULL DEFAULT 8,
@@ -36,6 +38,9 @@ BEGIN
     PRIMARY KEY (lead_id, target)
   );
   CREATE INDEX IF NOT EXISTS deliveries_due_idx ON deliveries (target, next_attempt_at) WHERE status = 'pending';
+  -- Databases made before the emails moved here allow 'crm' only.
+  ALTER TABLE deliveries DROP CONSTRAINT IF EXISTS deliveries_target_check;
+  ALTER TABLE deliveries ADD CONSTRAINT deliveries_target_check CHECK (target IN ('crm', 'staff_mail', 'buyer_mail'));
 
   -- Dead rows, rows stuck running, and rows overdue by an hour (f/platform/health).
   CREATE OR REPLACE VIEW deliveries_attention AS

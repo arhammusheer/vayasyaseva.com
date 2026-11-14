@@ -41,6 +41,14 @@ export const VARIABLES = {
    */
   alerts_email_from: { secret: false },
   alerts_reply_to: { secret: false },
+  /**
+   * The contact forms' emails (leads/lib/lead-mail.ts), with the hub's Resend
+   * key too: the staff email's sender, the buyer copy's sender, and the
+   * shared inbox that gets every enquiry (and the buyer's replies).
+   */
+  lead_staff_email_from: { secret: false },
+  lead_buyer_email_from: { secret: false },
+  lead_inbox_email: { secret: false },
 } as const;
 
 export type ConfigName = keyof typeof VARIABLES;

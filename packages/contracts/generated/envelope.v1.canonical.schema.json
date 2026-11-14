@@ -1154,6 +1154,63 @@
                   "type": "null"
                 }
               ]
+            },
+            "mail": {
+              "type": "object",
+              "properties": {
+                "staff": {
+                  "type": "object",
+                  "properties": {
+                    "subject": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 300
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 12000
+                    }
+                  },
+                  "required": [
+                    "subject",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                },
+                "buyer": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "subject": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 300
+                        },
+                        "text": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 12000
+                        }
+                      },
+                      "required": [
+                        "subject",
+                        "text"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "staff",
+                "buyer"
+              ],
+              "additionalProperties": false
             }
           },
           "required": [
@@ -1402,6 +1459,63 @@
                   "type": "null"
                 }
               ]
+            },
+            "mail": {
+              "type": "object",
+              "properties": {
+                "staff": {
+                  "type": "object",
+                  "properties": {
+                    "subject": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 300
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 12000
+                    }
+                  },
+                  "required": [
+                    "subject",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                },
+                "buyer": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "subject": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 300
+                        },
+                        "text": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 12000
+                        }
+                      },
+                      "required": [
+                        "subject",
+                        "text"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "staff",
+                "buyer"
+              ],
+              "additionalProperties": false
             }
           },
           "required": [

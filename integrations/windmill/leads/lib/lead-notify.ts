@@ -7,6 +7,7 @@
  *                        the policy pushes at a higher priority
  *   lead.forward_failed  when a lead hits its attempt cap (dead): it is in the
  *                        inbox but not in Twenty
+ *   lead.email_failed    when its staff email hits the cap (lead-mail.ts)
  *
  * Titles and summaries come from fixed lists (the service ids, the headcount
  * band, the cluster) and the case ID. The site, which the person typed, and
@@ -82,6 +83,23 @@ export function leadForwardFailedEvent(caseId: string, attempts: number, error: 
     dedupeKey: `lead-dead:${caseId}`,
     title: `Lead not filed in Twenty: ${caseId}`,
     summary: `${caseId} stopped after ${attempts} attempts (last: ${errorKind(error)}). It is safe in the lead inbox; fix the cause, then reset its delivery (OPERATIONS.md, lead inbox).`,
+    link: { label: "Windmill runs", url: `${WINDMILL_APP_URL}/runs/f/leads/sync_crm?workspace=vspl` },
+  };
+}
+
+/**
+ * lead.email_failed: the staff email (lead-mail.ts) stopped at its cap, so
+ * the shared inbox does not have the lead. It is in the lead inbox, and in
+ * Twenty once the CRM delivery is done.
+ */
+export function leadEmailFailedEvent(caseId: string, attempts: number, error: string | null): EmitInput {
+  return {
+    source: "leads",
+    type: "lead.email_failed",
+    severity: "warning",
+    dedupeKey: `lead-email:${caseId}`,
+    title: `Enquiry email not sent: ${caseId}`,
+    summary: `The shared inbox email for ${caseId} stopped after ${attempts} attempts (last: ${errorKind(error)}). The lead is in the lead inbox and Twenty; check Resend, then reset its staff_mail delivery (OPERATIONS.md, lead inbox).`,
     link: { label: "Windmill runs", url: `${WINDMILL_APP_URL}/runs/f/leads/sync_crm?workspace=vspl` },
   };
 }

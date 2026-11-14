@@ -55,10 +55,13 @@ the lead inbox), so a retry on another Vercel instance still replays; if
 Windmill does not answer within 2.5 s, this instance's memory takes over for
 that call. Without the secret, memory only.
 
-**A failed staff email** (MSG91) no longer loses the lead: the lead goes to
-Windmill after the response either way, and Windmill saves it in the lead
-inbox before it answers 202 (roadmap 1F). The person still sees the error
-(500) and is asked to try again or call, as before.
+**The contact emails go through Windmill** (14 Nov 2026). The site writes
+the shared inbox's email and the buyer's copy as plain text
+(`src/lib/contact-email.ts`) and hands them over inside the lead (`mail`)
+before it answers. Windmill saves the lead with one delivery per email and
+sends them through Resend (`leads/lib/lead-mail.ts`), with backoff and a
+cap, next to the CRM delivery. When Windmill does not take the lead the
+person sees 500 and is asked to try again or call, as a failed email used to.
 
 **Transport.** With `SUBMISSION_SIGNING_SECRET` set, every submission goes
 as `envelope.v1` to the one signed route `webhook/vspl-submission` (HMAC over

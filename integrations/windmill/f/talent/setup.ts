@@ -24,6 +24,9 @@ const VARIABLES = {
     submission_signing_secret: { secret: true },
     alerts_email_from: { secret: false },
     alerts_reply_to: { secret: false },
+    lead_staff_email_from: { secret: false },
+    lead_buyer_email_from: { secret: false },
+    lead_inbox_email: { secret: false },
 };
 const variablePath = (name) => `f/talent/${name}`;
 let override = null;

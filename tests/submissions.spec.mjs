@@ -12,8 +12,6 @@ process.env.TALENT_INTAKE_WEB_SOURCE = '1';
 process.env.TALENT_R2_ACCESS_KEY_ID = 'unit-key';
 process.env.TALENT_R2_SECRET_ACCESS_KEY = 'unit-secret';
 process.env.TURNSTILE_SECRET_KEY = 'unit-turnstile';
-const MSG91 = { MSG91_AUTH_KEY: 'k', MSG91_DOMAIN: 'mail.test', MSG91_FROM_EMAIL: 'from@mail.test', MSG91_FROM_NAME: 'VSPL', MSG91_INTERNAL_TEMPLATE_ID: 'internal_tpl', CONTACT_INTERNAL_RECIPIENT_EMAIL: 'inbox@mail.test' };
-Object.assign(process.env, MSG91);
 
 const { NextRequest } = await import('next/server.js');
 const { runSubmission, setDeferForTests } = await importTs('src/server/submissions/pipeline.ts');
@@ -28,7 +26,7 @@ const { issueTicket } = await importTs('src/lib/talent-intake/server.ts');
 
 // --- The outside world -------------------------------------------------------------
 
-const world = { emails: 0, emailFails: false, uploads: new Map(), deleted: [], applications: [], leads: [], applicationFails: false, notified: [], alerts: [], alertAnswer: { status: 202 } };
+const world = { leadFails: false, uploads: new Map(), deleted: [], applications: [], leads: [], applicationFails: false, notified: [], alerts: [], alertAnswer: { status: 202 } };
 const deferred = [];
 setDeferForTests((task) => deferred.push(task));
 setTransport({
@@ -37,6 +35,8 @@ setTransport({
     world.applications.push({ payload, meta });
   },
   async lead(payload, meta) {
+    // Windmill not taking it: the transport has already retried and answers false.
+    if (world.leadFails) return false;
     world.leads.push({ payload, meta });
     return true;
   },
@@ -54,11 +54,6 @@ globalThis.fetch = async (input, init = {}) => {
   if (url === 'https://hooks.test/api/r/webhook/vspl-notify') {
     world.notified.push({ secret: init.headers['x-vspl-notify-secret'], event: JSON.parse(String(init.body)) });
     return new Response(JSON.stringify({ ok: true }), { status: 202 });
-  }
-  if (url.startsWith('https://control.msg91.com/')) {
-    world.emails++;
-    if (world.emailFails) return Response.json({ message: 'down' }, { status: 503 });
-    return Response.json({ status: 'success', data: { unique_id: 'u1', message_id: 'm1', thread_id: 't1' } });
   }
   if (url.includes('.r2.cloudflarestorage.com/')) {
     const key = decodeURIComponent(new URL(url).pathname.split('/').slice(2).join('/'));
@@ -90,11 +85,10 @@ async function post(route, { body, headers = {}, ip = freshIp(), raw } = {}) {
 }
 
 function reset() {
-  Object.assign(world, { emails: 0, emailFails: false, deleted: [], applications: [], leads: [], applicationFails: false, notified: [], alerts: [], alertAnswer: { status: 202 } });
+  Object.assign(world, { leadFails: false, deleted: [], applications: [], leads: [], applicationFails: false, notified: [], alerts: [], alertAnswer: { status: 202 } });
   world.uploads.clear();
   deferred.length = 0;
   setIdempotencyStore(memoryIdempotencyStore());
-  Object.assign(process.env, MSG91);
 }
 
 const enquiry = { name: 'Asha Rawat', phone: '+91 98765 43210', email: 'asha@acme.example', company: 'Acme Foods', roles: ['packing'], headcountBand: '50-99', siteState: 'UK', siteCity: 'SIDCUL Haridwar', startWindow: '2-4-weeks', durationBand: 'ongoing' };
@@ -127,20 +121,22 @@ test('contact form: Turnstile is required (403 without or with a failed token, 5
   } finally {
     process.env.TURNSTILE_SECRET_KEY = 'unit-turnstile';
   }
-  assert.equal(world.emails, 0);
+  assert.equal(world.leads.length, 0);
 });
 
-test('contact form: 200 with a case ID; the staff email goes first, then the lead after the response', async () => {
+test('contact form: 200 with a case ID once Windmill has the lead, its two emails inside', async () => {
   reset();
   const r = await post(routes.contactFormRoute, { body: enquiry, headers: formHeaders() });
   assert.equal(r.status, 200);
   assert.equal(r.json.success, true);
   assert.match(r.json.caseId, /^REQ-\d{8}-[0-9A-F]{8}$/);
-  assert.equal(world.emails, 1);
-  assert.equal(world.leads.length, 0, 'the lead waits for after()');
-  await drain();
-  assert.equal(world.leads.length, 1);
-  assert.equal(world.leads[0].payload.caseId, r.json.caseId);
+  assert.equal(world.leads.length, 1, 'handed over before the answer');
+  const { mail, caseId } = world.leads[0].payload;
+  assert.equal(caseId, r.json.caseId);
+  assert.equal(mail.staff.subject, 'Crew request: Asha Rawat, Acme Foods');
+  assert.match(mail.staff.text, /^Crew request\n/);
+  assert.match(mail.buyer.subject, /^We have your crew request \(REQ-/);
+  assert.doesNotMatch(mail.buyer.text, /Qualified|Privacy notice/);
 });
 
 test('contact form: a call back (name, company, phone, workers) is a lead like any other, answered with its own promise', async () => {
@@ -150,10 +146,10 @@ test('contact form: a call back (name, company, phone, workers) is a lead like a
   assert.equal(r.status, 200);
   assert.match(r.json.caseId, /^REQ-\d{8}-[0-9A-F]{8}$/);
   assert.equal(r.json.message, 'Call back requested. We aim to call you within one working day (Monday to Saturday, IST).');
-  assert.equal(world.emails, 1, 'the staff email only: no address for a copy');
-  await drain();
   assert.equal(world.leads.length, 1);
   const lead = world.leads[0].payload;
+  assert.equal(lead.mail.buyer, null, 'the staff email only: no address for a copy');
+  assert.match(lead.mail.staff.text, /^Call back request\n\nPhone them within one working day\./);
   assert.equal(lead.requestType, 'callback');
   assert.equal(lead.headcountBand, '20-49');
   assert.equal(lead.email, null);
@@ -175,29 +171,22 @@ test('contact form: 429 for the honeypot, a form sent too fast, and a second enq
   assert.deepEqual(again.json, { error: 'Too many submissions. Please try again shortly.' });
 });
 
-test('contact form: when the staff email fails the answer is still 500, but the lead is forwarded', async () => {
+test('contact form: 500 when Windmill does not take the lead; the retry keeps the case ID', async () => {
   reset();
-  world.emailFails = true;
+  world.leadFails = true;
   const ip = freshIp();
   const key = 'contact-retry-key-0001';
   const r = await post(routes.contactFormRoute, { body: enquiry, headers: formHeaders({ 'idempotency-key': key }), ip });
   assert.equal(r.status, 500);
   assert.deepEqual(r.json, { error: 'Something went wrong. Please try again or contact us directly.' });
   await drain();
-  assert.equal(world.leads.length, 1, 'forwardLead still runs');
-  const firstCase = world.leads[0].payload.caseId;
   assert.equal(world.notified.length, 0, 'no hub configured: nothing sent');
   // The slot was given back, and the retry with the same key keeps the case ID (Windmill files it once).
-  world.emailFails = false;
+  world.leadFails = false;
   const retry = await post(routes.contactFormRoute, { body: enquiry, headers: formHeaders({ 'idempotency-key': key }), ip });
   assert.equal(retry.status, 200);
-  assert.equal(retry.json.caseId, firstCase);
-  // MSG91 missing entirely (a configuration error) behaves the same way.
-  reset();
-  delete process.env.MSG91_AUTH_KEY;
-  assert.equal((await post(routes.contactFormRoute, { body: enquiry, headers: formHeaders() })).status, 500);
-  await drain();
   assert.equal(world.leads.length, 1);
+  assert.equal(world.leads[0].payload.caseId, retry.json.caseId);
 });
 
 test('contact form: an Idempotency-Key replays the first answer; reused for another request it is 422', async () => {
@@ -210,7 +199,7 @@ test('contact form: an Idempotency-Key replays the first answer; reused for anot
   assert.equal(again.status, 200);
   assert.equal(again.json.caseId, first.json.caseId);
   assert.equal(again.headers.get('idempotent-replayed'), 'true');
-  assert.equal(world.emails, 1);
+  assert.equal(world.leads.length, 1);
   const other = await post(routes.contactFormRoute, { body: { ...enquiry, company: 'Other' }, headers: formHeaders({ 'idempotency-key': key }) });
   assert.equal(other.status, 422);
   assert.deepEqual(other.json, { error: 'idempotency_key_reused' });
@@ -219,12 +208,12 @@ test('contact form: an Idempotency-Key replays the first answer; reused for anot
   assert.deepEqual(bad.json, { error: 'invalid_idempotency_key' });
 });
 
-test('contact routes: a failed staff email tells the notification hub after the response, without personal data', async () => {
+test('contact routes: a lead Windmill did not take tells the notification hub after the response, without personal data', async () => {
   reset();
   process.env.NOTIFY_URL = 'https://hooks.test/api/r/webhook/vspl-notify';
   process.env.NOTIFY_INGEST_SECRET = 'unit-notify-secret';
   try {
-    world.emailFails = true;
+    world.leadFails = true;
     const r = await post(routes.contactFormRoute, { body: enquiry, headers: formHeaders() });
     assert.equal(r.status, 500);
     assert.equal(world.notified.length, 0, 'waits for after()');
@@ -235,11 +224,11 @@ test('contact routes: a failed staff email tells the notification hub after the 
     assert.equal(event.v, 1);
     assert.equal(event.source, 'website');
     assert.equal(event.type, 'lead.email_failed');
-    assert.equal(event.dedupeKey, `lead-email:${world.leads[0].payload.caseId}`);
+    assert.match(event.dedupeKey, /^lead-email:REQ-\d{8}-[0-9A-F]{8}$/);
     assert.equal(event.pii, undefined);
     assert.doesNotMatch(JSON.stringify(event), /Asha|Rawat|Acme|98765|asha@/);
     assert.match(event.summary, /\/api\/contact/);
-    // The agent route too; a delivered email sends nothing.
+    // The agent route too; a lead Windmill takes sends nothing.
     world.notified.length = 0;
     const agent = await post(routes.agentContactRoute, { body: enquiry });
     assert.equal(agent.status, 500);
@@ -331,6 +320,9 @@ test('agent contact: no Turnstile; 200 with an AGT- case ID, website-only fields
   assert.equal(world.leads[0].payload.channel, 'agent');
   assert.equal(world.leads[0].payload.sourcePath, null);
   assert.match(world.leads[0].payload.enquiry, /Sent by an AI agent \(Example Assistant\)/);
+  // The staff email says so too, and no copy goes to an address an agent gave.
+  assert.match(world.leads[0].payload.mail.staff.text, /Sent by an AI agent \(Example Assistant\) on their behalf/);
+  assert.equal(world.leads[0].payload.mail.buyer, null);
 });
 
 test('agent contact: 400 with details (agent issues under agent.*), 429 for a repeated sender', async () => {
@@ -347,14 +339,13 @@ test('agent contact: 400 with details (agent issues under agent.*), 429 for a re
   assert.equal(again.headers.get('retry-after'), '600');
 });
 
-test('agent contact: a failed staff email answers 500 and still forwards the lead', async () => {
+test('agent contact: 500 when Windmill does not take the lead', async () => {
   reset();
-  world.emailFails = true;
+  world.leadFails = true;
   const r = await post(routes.agentContactRoute, { body: { ...enquiry, email: 'agent-fail@acme.example' } });
   assert.equal(r.status, 500);
   await drain();
-  assert.equal(world.leads.length, 1);
-  assert.match(world.leads[0].payload.caseId, /^AGT-/);
+  assert.equal(world.leads.length, 0);
 });
 
 // --- /api/jobs/start and /submit (the jobs form: Turnstile on start) -------------------

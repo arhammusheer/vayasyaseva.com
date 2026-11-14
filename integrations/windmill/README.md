@@ -95,6 +95,7 @@ Scripts read `f/talent/<name>` with `wmill.getVariable` (`talent/lib/config.ts`)
 | `lead_webhook_secret` | yes | `LEAD_WEBHOOK_SECRET` in `growth/windmill-leads`; the website has the same value as Vercel `LEAD_WEBHOOK_SECRET` |
 | `leads_pg_url` | yes | `data/pg-main-leads` password (vayasya-infra, RUNBOOK "Leads inbox"), as `postgres://leads:…@pg-main-rw.data.svc.cluster.local:5432/leads` |
 | `alerts_email_from`, `alerts_reply_to` | no | Constants in `deploy.mts`: the rate alerts' sender (on the hub's verified Resend domain) and reply address. The alerts send with `f/notify/resend_api_key` |
+| `lead_staff_email_from`, `lead_buyer_email_from`, `lead_inbox_email` | no | Constants in `deploy.mts`: the contact forms' emails (leads/lib/lead-mail.ts): the shared inbox email's sender, the buyer copy's sender, and the shared inbox (help@). They send with `f/notify/resend_api_key` |
 | `submission_signing_secret` | yes | `SUBMISSION_SIGNING_SECRET` in `growth/windmill-submission`; Vercel has the same value. Until that Secret exists, deploy sets a random value nobody knows, so the signed routes refuse everything |
 | `fast2sms_dlr_secret` | yes | `FAST2SMS_DLR_SECRET` in `growth/windmill-fast2sms`; the `x-vspl-dlr-secret` header of the Fast2SMS webhook |
 

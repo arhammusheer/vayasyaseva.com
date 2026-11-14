@@ -12,8 +12,8 @@ process.env.TALENT_INTAKE_WEB_SOURCE = '1';
 process.env.TALENT_R2_ACCESS_KEY_ID = 'unit-key';
 process.env.TALENT_R2_SECRET_ACCESS_KEY = 'unit-secret';
 process.env.TURNSTILE_SECRET_KEY = 'unit-turnstile';
-const MSG91 = { MSG91_AUTH_KEY: 'k', MSG91_DOMAIN: 'mail.test', MSG91_FROM_EMAIL: 'from@mail.test', MSG91_FROM_NAME: 'VSPL', MSG91_INTERNAL_TEMPLATE_ID: 'internal_tpl', CONTACT_INTERNAL_RECIPIENT_EMAIL: 'inbox@mail.test' };
-Object.assign(process.env, MSG91);
+const EMAIL_ENV = { RESEND_API_KEY: 're_unit', CONTACT_INTERNAL_RECIPIENT_EMAIL: 'inbox@mail.test' };
+Object.assign(process.env, EMAIL_ENV);
 
 const { NextRequest } = await import('next/server.js');
 const { runSubmission, setDeferForTests } = await importTs('src/server/submissions/pipeline.ts');
@@ -28,7 +28,7 @@ const { issueTicket } = await importTs('src/lib/talent-intake/server.ts');
 
 // --- The outside world -------------------------------------------------------------
 
-const world = { emails: 0, emailFails: false, uploads: new Map(), deleted: [], applications: [], leads: [], applicationFails: false, notified: [], alerts: [], alertAnswer: { status: 202 } };
+const world = { emails: 0, acks: 0, emailFails: false, uploads: new Map(), deleted: [], applications: [], leads: [], applicationFails: false, notified: [], alerts: [], alertAnswer: { status: 202 } };
 const deferred = [];
 setDeferForTests((task) => deferred.push(task));
 setTransport({
@@ -55,10 +55,12 @@ globalThis.fetch = async (input, init = {}) => {
     world.notified.push({ secret: init.headers['x-vspl-notify-secret'], event: JSON.parse(String(init.body)) });
     return new Response(JSON.stringify({ ok: true }), { status: 202 });
   }
-  if (url.startsWith('https://control.msg91.com/')) {
+  if (url === 'https://api.resend.com/emails') {
+    // Staff emails to the shared inbox; the buyer's copy is counted apart.
+    if (JSON.parse(String(init.body)).to[0] !== 'inbox@mail.test') return world.acks++, Response.json({ id: 'a1' });
     world.emails++;
-    if (world.emailFails) return Response.json({ message: 'down' }, { status: 503 });
-    return Response.json({ status: 'success', data: { unique_id: 'u1', message_id: 'm1', thread_id: 't1' } });
+    if (world.emailFails) return Response.json({ name: 'internal_server_error', message: 'down' }, { status: 503 });
+    return Response.json({ id: 'm1' });
   }
   if (url.includes('.r2.cloudflarestorage.com/')) {
     const key = decodeURIComponent(new URL(url).pathname.split('/').slice(2).join('/'));
@@ -90,11 +92,11 @@ async function post(route, { body, headers = {}, ip = freshIp(), raw } = {}) {
 }
 
 function reset() {
-  Object.assign(world, { emails: 0, emailFails: false, deleted: [], applications: [], leads: [], applicationFails: false, notified: [], alerts: [], alertAnswer: { status: 202 } });
+  Object.assign(world, { emails: 0, acks: 0, emailFails: false, deleted: [], applications: [], leads: [], applicationFails: false, notified: [], alerts: [], alertAnswer: { status: 202 } });
   world.uploads.clear();
   deferred.length = 0;
   setIdempotencyStore(memoryIdempotencyStore());
-  Object.assign(process.env, MSG91);
+  Object.assign(process.env, EMAIL_ENV);
 }
 
 const enquiry = { name: 'Asha Rawat', phone: '+91 98765 43210', email: 'asha@acme.example', company: 'Acme Foods', roles: ['packing'], headcountBand: '50-99', siteState: 'UK', siteCity: 'SIDCUL Haridwar', startWindow: '2-4-weeks', durationBand: 'ongoing' };
@@ -137,6 +139,7 @@ test('contact form: 200 with a case ID; the staff email goes first, then the lea
   assert.equal(r.json.success, true);
   assert.match(r.json.caseId, /^REQ-\d{8}-[0-9A-F]{8}$/);
   assert.equal(world.emails, 1);
+  assert.equal(world.acks, 1, 'the buyer gave an email, so they get a copy');
   assert.equal(world.leads.length, 0, 'the lead waits for after()');
   await drain();
   assert.equal(world.leads.length, 1);
@@ -192,9 +195,9 @@ test('contact form: when the staff email fails the answer is still 500, but the 
   const retry = await post(routes.contactFormRoute, { body: enquiry, headers: formHeaders({ 'idempotency-key': key }), ip });
   assert.equal(retry.status, 200);
   assert.equal(retry.json.caseId, firstCase);
-  // MSG91 missing entirely (a configuration error) behaves the same way.
+  // No Resend key (a configuration error) behaves the same way.
   reset();
-  delete process.env.MSG91_AUTH_KEY;
+  delete process.env.RESEND_API_KEY;
   assert.equal((await post(routes.contactFormRoute, { body: enquiry, headers: formHeaders() })).status, 500);
   await drain();
   assert.equal(world.leads.length, 1);

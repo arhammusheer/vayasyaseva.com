@@ -55,7 +55,7 @@ the lead inbox), so a retry on another Vercel instance still replays; if
 Windmill does not answer within 2.5 s, this instance's memory takes over for
 that call. Without the secret, memory only.
 
-**A failed staff email** (MSG91) no longer loses the lead: the lead goes to
+**A failed staff email** (Resend) no longer loses the lead: the lead goes to
 Windmill after the response either way, and Windmill saves it in the lead
 inbox before it answers 202 (roadmap 1F). The person still sees the error
 (500) and is asked to try again or call, as before.

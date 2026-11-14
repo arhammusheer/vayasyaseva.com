@@ -114,30 +114,18 @@ test('a call back needs only the number of workers, and only when requestType sa
   assert.equal(assessCrewRequest({ ...person, ...requirement }).callback, false);
 });
 
-test('a call back: the staff email says to phone within one working day', async () => {
-  Object.assign(process.env, {
-    MSG91_AUTH_KEY: 'unit', MSG91_DOMAIN: 'mail.example.test', MSG91_FROM_EMAIL: 'from@example.test', MSG91_FROM_NAME: 'Unit',
-    MSG91_INTERNAL_TEMPLATE_ID: 'internal_tpl', MSG91_AUTOREPLY_TEMPLATE_ID: 'autoreply_tpl', CONTACT_INTERNAL_RECIPIENT_EMAIL: 'team@example.test',
-  });
-  const { sendInternalContactEmail, canSendContactAutoReply } = await import('../src/lib/msg91.ts');
-  const sent = [];
-  const realFetch = globalThis.fetch;
-  const realInfo = console.info;
-  globalThis.fetch = async (url, init) => { sent.push(JSON.parse(init.body)); return new Response(JSON.stringify({ status: 'success', data: { message_id: 'm1' } }), { status: 200 }); };
-  console.info = () => {};
+test('a call back: the staff email names the form and says to phone within one working day', async () => {
+  const { staffEmail, canSendContactAutoReply } = await import('../src/lib/contact-email.ts');
   const data = { ...person, company: 'Acme', requestType: 'callback', headcountBand: '20-49', sourcePath: '/services/factory-labour' };
-  try {
-    await sendInternalContactEmail(data, { caseId: 'REQ-UNIT' });
-  } finally {
-    globalThis.fetch = realFetch;
-    console.info = realInfo;
-  }
-  const details = sent[0].recipients[0].variables.details;
-  assert.match(details, /CALL BACK REQUESTED: phone them within one working day/);
-  assert.match(details, /20 or more workers: YES/);
-  assert.match(details, /Came from: \/services\/factory-labour/);
-  assert.match(details, /Request: A call back/);
-  assert.doesNotMatch(details, /Qualified \(20\+ workers, 3\+ months\)/);
+  const email = staffEmail(data, { caseId: 'REQ-UNIT' });
+  assert.equal(email.subject, 'Call back request: Asha Rawat, Acme');
+  assert.equal(email.text, [
+    'Call back request',
+    'Phone them within one working day.',
+    'Name: Asha Rawat\nPhone: +91 98765 43210\nCompany: Acme',
+    'Workers: 20 to 49',
+    'Came from: https://www.vayasyaseva.com/services/factory-labour\nReference: REQ-UNIT\nPrivacy notice: 2026-10-16',
+  ].join('\n\n'));
   // No email is asked for, so no copy goes to the buyer.
   assert.equal(canSendContactAutoReply(data), false);
 });
@@ -245,51 +233,47 @@ test('the requirement recap uses labels, not ids', () => {
 });
 
 test('lead flags reach the staff email only, never the buyer copy', async () => {
-  Object.assign(process.env, {
-    MSG91_AUTH_KEY: 'unit', MSG91_DOMAIN: 'mail.example.test', MSG91_FROM_EMAIL: 'from@example.test', MSG91_FROM_NAME: 'Unit',
-    MSG91_INTERNAL_TEMPLATE_ID: 'internal_tpl', MSG91_AUTOREPLY_TEMPLATE_ID: 'autoreply_tpl', CONTACT_INTERNAL_RECIPIENT_EMAIL: 'team@example.test',
-  });
-  const { sendInternalContactEmail, sendContactAutoReply } = await import('../src/lib/msg91.ts');
+  Object.assign(process.env, { RESEND_API_KEY: 're_unit', CONTACT_INTERNAL_RECIPIENT_EMAIL: 'team@example.test' });
+  const { staffEmail, sendInternalContactEmail, sendContactAutoReply } = await import('../src/lib/contact-email.ts');
   const sent = [];
   const realFetch = globalThis.fetch;
   const realInfo = console.info;
-  globalThis.fetch = async (url, init) => { sent.push(JSON.parse(init.body)); return new Response(JSON.stringify({ status: 'success', data: { message_id: 'm1' } }), { status: 200 }); };
+  globalThis.fetch = async (url, init) => { sent.push({ url, auth: init.headers.authorization, body: JSON.parse(init.body) }); return Response.json({ id: 'm1' }); };
   console.info = () => {};
+  const data = { ...person, company: 'Acme', email: 'buyer@example.test', ...requirement, details: 'Also need 2 security guards', pageCluster: 'haridwar', sourcePath: '/locations/haridwar' };
   try {
-    const data = { ...person, company: 'Acme', email: 'buyer@example.test', ...requirement, details: 'Also need 2 security guards', pageCluster: 'haridwar', sourcePath: '/locations/haridwar' };
     await sendInternalContactEmail(data, { caseId: 'REQ-UNIT' });
     await sendContactAutoReply(data, { caseId: 'REQ-UNIT' });
+    await sendInternalContactEmail(data, { caseId: 'AGT-UNIT', agentName: 'Helper' });
   } finally {
     globalThis.fetch = realFetch;
     console.info = realInfo;
   }
-  const [staff, buyer] = sent;
-  const staffDetails = staff.recipients[0].variables.details;
-  assert.match(staffDetails, /Qualified \(20\+ workers, 3\+ months\): YES/);
-  // Without a duration the lead is not judged, and the email says so rather than "no".
-  {
-    const sentShort = [];
-    globalThis.fetch = async (url, init) => { sentShort.push(JSON.parse(init.body)); return new Response(JSON.stringify({ status: 'success', data: { message_id: 'm2' } }), { status: 200 }); };
-    console.info = () => {};
-    try {
-      await sendInternalContactEmail({ ...person, company: 'Acme', roles: ['packing'], headcountBand: '50-99', siteState: 'UK', siteCity: 'Haridwar' }, { caseId: 'REQ-UNIT2' });
-    } finally {
-      globalThis.fetch = realFetch;
-      console.info = realInfo;
-    }
-    const short = sentShort[0].recipients[0].variables.details;
-    assert.match(short, /Qualified \(20\+ workers, 3\+ months\): not judged \(no duration given; ask on the call\)/);
-    assert.match(short, /20 or more workers: YES/);
-    assert.doesNotMatch(short, /Starts within 4 weeks/);
-  }
-  assert.match(staffDetails, /Starts within 4 weeks: yes/);
-  assert.match(staffDetails, /Possibly out of scope: Security guards/);
-  assert.match(staffDetails, /Came from: \/locations\/haridwar/);
-  const buyerVariables = JSON.stringify(buyer.recipients[0].variables);
-  assert.doesNotMatch(buyerVariables, /Qualified|out of scope|Starts within|Page cluster|Came from/i);
-  assert.match(buyer.recipients[0].variables.details, /Work: Packing, Loading and unloading/);
-  assert.equal(buyer.recipients[0].bcc, undefined);
-  assert.equal(buyer.recipients[0].variables.response_window, 'We aim to reply within two working days (Monday to Saturday, IST)');
-  assert.equal(staff.recipients[0].variables.location, 'SIDCUL Haridwar, Uttarakhand');
-  assert.equal(staff.recipients[0].variables.headcount, '50 to 99 workers');
+  const [staff, buyer, agent] = sent;
+  assert.equal(staff.url, 'https://api.resend.com/emails');
+  assert.equal(staff.auth, 'Bearer re_unit');
+  assert.deepEqual(staff.body.to, ['team@example.test']);
+  // Reply goes straight to the buyer; an agent's address is unconfirmed, so it replies to us.
+  assert.equal(staff.body.reply_to, 'buyer@example.test');
+  assert.equal(agent.body.reply_to, 'team@example.test');
+  assert.match(agent.body.text, /Sent by an AI agent \(Helper\) on their behalf/);
+  assert.equal(staff.body.subject, 'Crew request: Asha Rawat, Acme');
+  assert.equal(staff.body.html, undefined, 'plain text only');
+  const text = staff.body.text;
+  assert.match(text, /^Crew request\n\nQualified lead: 20 or more workers for 3 months or more\.\nWants to start within 4 weeks\.\nCheck: Security guards/);
+  assert.match(text, /Email: buyer@example\.test/);
+  assert.match(text, /Work: Packing, Loading and unloading\nWorkers: 50 to 99\nSite: SIDCUL Haridwar, Uttarakhand/);
+  assert.match(text, /Message:\nAlso need 2 security guards/);
+  assert.match(text, /Came from: https:\/\/www\.vayasyaseva\.com\/locations\/haridwar/);
+  assert.doesNotMatch(text, /Not provided|Not specified|Page cluster/);
+  // Without a duration the lead is not judged: no qualified line, no "no".
+  const short = staffEmail({ ...person, company: 'Acme', roles: ['packing'], headcountBand: '50-99', siteState: 'UK', siteCity: 'Haridwar' }, { caseId: 'REQ-UNIT2' }).text;
+  assert.doesNotMatch(short, /Qualified|Wants to start/);
+  // The buyer's copy: what they sent, never the flags.
+  assert.deepEqual(buyer.body.to, ['buyer@example.test']);
+  assert.equal(buyer.body.reply_to, 'team@example.test');
+  assert.equal(buyer.body.subject, 'We have your crew request (REQ-UNIT)');
+  assert.doesNotMatch(buyer.body.text, /Qualified|Check:|Starts within|Wants to start|Came from|Privacy notice/i);
+  assert.match(buyer.body.text, /^Hello Asha,\n\nThank you\. We aim to reply within two working days \(Monday to Saturday, IST\)\./);
+  assert.match(buyer.body.text, /What you sent:\nWork: Packing, Loading and unloading/);
 });

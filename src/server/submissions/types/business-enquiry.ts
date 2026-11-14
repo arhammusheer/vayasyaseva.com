@@ -16,7 +16,7 @@ import { NextResponse } from "next/server";
 import { reportServerCount } from "@/lib/measurement/server";
 import { contactContract, parseContactRequest, type ContactFormData } from "@/lib/contact-contract";
 import { BUSINESS_NOTICE_VERSION, assessCrewRequest } from "@/lib/crew-request";
-import { canSendContactAutoReply, createContactCaseId, sendContactAutoReply, sendInternalContactEmail } from "@/lib/msg91";
+import { canSendContactAutoReply, createContactCaseId, sendContactAutoReply, sendInternalContactEmail } from "@/lib/contact-email";
 import { buildLeadPayload } from "@/lib/lead-forward";
 import { agentInfoSchema } from "@/lib/talent-intake/contract";
 import { normaliseIndianMobile } from "@/lib/talent-intake/rules";
@@ -39,7 +39,7 @@ export function emailFailedEvent(caseId: string, route: string): WebsiteEvent {
     severity: "warning",
     dedupeKey: `lead-email:${caseId}`,
     title: `Enquiry email not sent: ${caseId}`,
-    summary: `The staff email for ${caseId} (${route}) failed, so the shared inbox does not have it. The lead still goes to Twenty; the person was asked to try again or call. Check MSG91.`,
+    summary: `The staff email for ${caseId} (${route}) failed, so the shared inbox does not have it. The lead still goes to Twenty; the person was asked to try again or call. Check Resend.`,
     link: { label: "Leads in Twenty", url: "https://crm.vayasyaseva.com/objects/opportunities" },
   };
 }
@@ -55,11 +55,12 @@ async function emailThenLead(
   ctx: SubmissionContext,
   caseId: string,
   route: string,
+  agentName?: string | null,
 ) {
   let delivery: Awaited<ReturnType<typeof sendInternalContactEmail>> | undefined;
   let emailError: unknown;
   try {
-    delivery = await sendInternalContactEmail(email, { caseId });
+    delivery = await sendInternalContactEmail(email, { caseId, agentName });
   } catch (error) {
     emailError = error;
   }
@@ -154,8 +155,6 @@ export const contactFormRoute: SubmissionRoute<ContactFormData> = {
       // The privacy notice the buyer saw (also in the staff email's flags).
       privacyVersion: BUSINESS_NOTICE_VERSION,
       messageId: sharedInboxDelivery.messageId,
-      threadId: sharedInboxDelivery.threadId,
-      uniqueId: sharedInboxDelivery.uniqueId,
     });
 
     // Then the buyer's copy, if they gave an email. The enquiry is already
@@ -260,7 +259,8 @@ export const agentContactRoute: SubmissionRoute<AgentEnquiry> = {
     ctx.keep({ caseId });
     const note = `[Sent by an AI agent${agent ? ` (${agent.name})` : ""} on the person's behalf through /api/agent/contact. Confirm the details with them when you reply.]`;
     const lead = buildLeadPayload(data, { caseId, channel: "agent", note });
-    const delivery = await emailThenLead({ ...data, details: [note, data.details].filter(Boolean).join("\n\n") }, lead, ctx, caseId, "/api/agent/contact");
+    // The staff email says an agent sent it in its own line (and replies go to us, not the address given).
+    const delivery = await emailThenLead(data, lead, ctx, caseId, "/api/agent/contact", agent?.name ?? null);
     console.info("[AGENT CONTACT DELIVERED]", { caseId, ip: ctx.ip ?? "unknown", agent: agent?.name ?? null, messageId: delivery.messageId });
     reportServerCount("enquiry_received", "/api/agent/contact", {
       channel: "agent",

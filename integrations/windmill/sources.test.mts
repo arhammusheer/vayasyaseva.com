@@ -269,7 +269,7 @@ test("lead.received: one instant push with a masked phone once the opportunity e
   assert.doesNotMatch(push.message, /98765 ?43211/);
   assert.deepEqual(push.actions.map((a) => a.label), ["View in Twenty"]);
   assert.equal(push.actions[0].url, `https://crm.vayasyaseva.com/object/opportunity/${t.rows.opportunities[0].id}`);
-  assert.equal(h.emails.length, 0, "the MSG91 shared-inbox mail stays the lead's email");
+  assert.equal(h.emails.length, 0, "the website's shared-inbox mail stays the lead's email");
 });
 
 test("lead.forward_failed: raised once when a lead hits its cap, with the error's kind only", async () => {

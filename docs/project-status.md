@@ -22,7 +22,7 @@
 | Phase 6 | Services + Industries pages | DONE | 6 services with included/not-included, 5 industries with staffing/risk/reporting |
 | Phase 7 | How We Operate + Compliance | DONE | 5-step process, escalation framework, documentation matrix, governance blocks |
 | Phase 8 | Vayasya Setu page | DONE | Capabilities, outputs, integration options, data governance |
-| Phase 9 | Lead capture & contact | DONE | Live form + API route + MSG91 delivery + asynchronous acknowledgement |
+| Phase 9 | Lead capture & contact | DONE | Live form + API route + Resend delivery (plain text) + acknowledgement |
 | Phase 10 | SEO, analytics, performance | PARTIAL | Metadata + sitemap done; **analytics not set up** |
 | Phase 11 | Legal/policy & QA hardening | NOT STARTED | Privacy, terms, accessibility, error pages all missing |
 | Phase 12 | Launch & iteration | NOT STARTED | CI/CD, monitoring, A/B testing |
@@ -48,16 +48,16 @@ The `public/` directory contains only `robots.txt` and `favicon.ico` (default Ne
 
 **Action needed:** Supply all logo/image files, or set `visible: false` on trust clients until logos are available.
 
-### 2. Contact form submission is live via MSG91
+### 2. Contact form submission is live via Resend
 
 **Files:** `src/app/(marketing)/contact/contact-form.tsx`, `src/app/api/contact/route.ts`
 
 - Valid inquiries are posted to `POST /api/contact`
 - Server-side validation and lightweight abuse protection are enabled
-- Internal notification is delivered through MSG91
+- Internal notification is delivered through Resend as plain text (`src/lib/contact-email.ts`; MSG91 removed 14 Nov 2026)
 - Submitter acknowledgement is scheduled asynchronously after successful internal delivery
 
-**Action needed:** Configure the MSG91 environment variables and run `pnpm msg91:setup-contact-templates` before deployment.
+**Configuration:** `RESEND_API_KEY` (sending access to notify.vayasyaseva.com) and `CONTACT_INTERNAL_RECIPIENT_EMAIL` in Vercel. No templates: both emails are written in code.
 
 ### 3. Privacy Policy and Terms pages don't exist
 
@@ -124,14 +124,14 @@ console.log("Form submitted:", data);
 
 ### 9. `.env.example` now documents runtime configuration
 
-- `.env.example` includes MSG91 and MCP variables
+- `.env.example` includes the Resend and MCP variables
 - Contact form delivery can be configured consistently across local and Vercel environments
 
 ### 10. Package.json scripts are minimal
 
 Current:
 ```json
-"dev", "build", "start", "lint", "type-check", "msg91:setup-contact-templates"
+"dev", "build", "start", "lint", "type-check"
 ```
 
 Missing:
@@ -203,7 +203,7 @@ The hero secondary CTA to `/contact?type=assessment` now pre-fills the requireme
 - `/vayasya-setu` — Capabilities, outputs, integration, data governance
 - `/about` — Overview, philosophy, governance, footprint
 - `/contact` — Lead form (11 fields) + direct contact info
-- `/api/contact` — Public inquiry endpoint with validation, abuse protection, and MSG91 delivery
+- `/api/contact` — Public inquiry endpoint with validation, abuse protection, and Resend delivery
 
 ### Brand system
 - Color tokens: Vayasya Gold 500 (#DAA236), slate neutrals, white backgrounds

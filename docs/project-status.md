@@ -22,7 +22,7 @@
 | Phase 6 | Services + Industries pages | DONE | 6 services with included/not-included, 5 industries with staffing/risk/reporting |
 | Phase 7 | How We Operate + Compliance | DONE | 5-step process, escalation framework, documentation matrix, governance blocks |
 | Phase 8 | Vayasya Setu page | DONE | Capabilities, outputs, integration options, data governance |
-| Phase 9 | Lead capture & contact | DONE | Live form + API route + Windmill lead inbox + plain-text emails via Resend |
+| Phase 9 | Lead capture & contact | DONE | Live form + API route + Windmill lead inbox + emails via Resend (glanceable HTML staff email) |
 | Phase 10 | SEO, analytics, performance | PARTIAL | Metadata + sitemap done; **analytics not set up** |
 | Phase 11 | Legal/policy & QA hardening | NOT STARTED | Privacy, terms, accessibility, error pages all missing |
 | Phase 12 | Launch & iteration | NOT STARTED | CI/CD, monitoring, A/B testing |
@@ -54,7 +54,7 @@ The `public/` directory contains only `robots.txt` and `favicon.ico` (default Ne
 
 - Valid inquiries are posted to `POST /api/contact`
 - Server-side validation and lightweight abuse protection are enabled
-- Internal notification and the acknowledgement are written as plain text by the site (`src/lib/contact-email.ts`) and sent by Windmill through Resend (`integrations/windmill/leads/lib/lead-mail.ts`); MSG91 removed 14 Nov 2026
+- Internal notification and the acknowledgement are written by the site (the staff email as glanceable HTML with a text part, the acknowledgement as plain text) (`src/lib/contact-email.ts`) and sent by Windmill through Resend (`integrations/windmill/leads/lib/lead-mail.ts`); MSG91 removed 14 Nov 2026
 - Submitter acknowledgement is scheduled asynchronously after successful internal delivery
 
 **Configuration:** none on the site. Windmill uses the notification hub's Resend key; senders and the inbox are constants in `integrations/windmill/deploy.mts`.

@@ -133,7 +133,8 @@ test('contact form: 200 with a case ID once Windmill has the lead, its two email
   assert.equal(world.leads.length, 1, 'handed over before the answer');
   const { mail, caseId } = world.leads[0].payload;
   assert.equal(caseId, r.json.caseId);
-  assert.equal(mail.staff.subject, 'Crew request: Asha Rawat, Acme Foods');
+  assert.equal(mail.staff.subject, 'Crew request: Asha Rawat, Acme Foods · 50 to 99 workers');
+  assert.match(mail.staff.html, /^<!doctype html>/);
   assert.match(mail.staff.text, /^Crew request\n/);
   assert.match(mail.buyer.subject, /^We have your crew request \(REQ-/);
   assert.doesNotMatch(mail.buyer.text, /Qualified|Privacy notice/);

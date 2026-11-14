@@ -73,6 +73,7 @@ export function buildLeadPayload(
     sourcePath: cut(data.sourcePath, LEAD_LIMITS.sourcePath),
     mail: leadMail(data, {
       caseId: options.caseId,
+      receivedAt: options.receivedAt,
       ...(options.channel === "agent" ? { agentName: options.agentName ?? null } : {}),
     }),
   };

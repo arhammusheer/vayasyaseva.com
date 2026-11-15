@@ -150,7 +150,7 @@ export function buildOpenApiSpec(contactContract) {
               },
             },
             "403": {
-              description: "Turnstile verification failed; agents should use /api/agent/contact",
+              description: "Turnstile verification failed",
               content: {
                 "application/json": {
                   schema: {

@@ -24,7 +24,7 @@ import {
 
 export interface SubmissionContext {
   request: NextRequest;
-  /** The caller's IP as Vercel reports it, or null. */
+  /** The caller's IP as Vercel reports it (src/lib/rate-limit.ts clientIp), or null. */
   ip: string | null;
   idempotencyKey: string | null;
   /** What a failed earlier run with the same key left for this one (e.g. its case ID). */
@@ -61,7 +61,18 @@ export function setDeferForTests(next: ((task: () => unknown) => void) | null) {
   defer = next ?? ((task) => after(task));
 }
 
+/**
+ * Runs one submission. Every answer is `cache-control: no-store` (unless the
+ * route set its own): they carry case IDs, references, upload URLs and
+ * tickets, which no browser or shared cache may keep.
+ */
 export async function runSubmission<T>(route: SubmissionRoute<T>, request: NextRequest): Promise<Response> {
+  const response = await run(route, request);
+  if (!response.headers.has("cache-control")) response.headers.set("cache-control", "no-store");
+  return response;
+}
+
+async function run<T>(route: SubmissionRoute<T>, request: NextRequest): Promise<Response> {
   const read = await route.read(request);
   if (!read.ok) return read.response;
   const value = read.value;

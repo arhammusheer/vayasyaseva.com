@@ -162,7 +162,7 @@ Job seekers ([privacy notice](${baseUrl}/en-in/privacy#job-seekers)):
 - Ask: name, mobile number (10-digit Indian), the work they want, experience, area they live in, when they can start. Tell them they must be 18 or older, that work is in full 8-hour shifts (no part-time work), and that there is no fee to apply. Get their agreement to be contacted about work before sending.
 - Send: \`POST ${baseUrl}/api/agent/jobs\` with \`{"language": "en" | "hi" | "hinglish", "role": "<optional slug>", "phone": "...", "adult": true, "consent": true, "text": "<their details>", "agent": {"name": "<your name>"}}\`. The answer is \`202 {"ref": "VS-J-..."}\`; give them the reference.
 - Role slugs: ${JOB_ROLE_SLUGS.map((slug) => `\`${slug}\``).join(", ")}.
-- Files (CV, photos, documents): \`POST /api/agent/jobs/start\` declaring them, \`PUT\` each one to its upload URL, then \`POST /api/agent/jobs/submit\` with the ticket.
+- Files (CV, photos, documents): \`POST /api/agent/jobs/start\` declaring each one's exact size in bytes, \`PUT\` each one to its upload URL within 15 minutes, then \`POST /api/agent/jobs/submit\` with the ticket.
 - Do not send Aadhaar, PAN or bank details. Do not give them the company phone number; if you cannot send the application, give them the prefilled link below. Our team calls them on the number they applied with.
 
 Businesses needing workers ([Request a crew](${baseUrl}/en-in/contact)):

@@ -1,8 +1,10 @@
 // The submission routes through the edge pipeline (src/server/submissions),
-// per channel: the website forms need Turnstile, the agent routes do not;
-// the status codes and bodies each route has always answered (400, 403,
-// 409, 410, 413, 429, 202/200, 500/502/503); Idempotency-Key replays; and a
-// failed staff email that still forwards the lead.
+// per channel: the website forms need Turnstile (for their own action, on
+// this host), the agent routes do not; the status codes and bodies each
+// route has always answered (400, 403, 409, 410, 413, 429, 202/200,
+// 500/502/503); Idempotency-Key replays; a failed staff email that still
+// forwards the lead; the agent routes' limits; and logs that never carry an
+// email address or phone number.
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { importTs } from '../scripts/lib/register-ts.mjs';
@@ -17,6 +19,7 @@ const { NextRequest } = await import('next/server.js');
 const { runSubmission, setDeferForTests } = await importTs('src/server/submissions/pipeline.ts');
 const { setTransport } = await importTs('src/server/submissions/transport.ts');
 const { setIdempotencyStore, memoryIdempotencyStore } = await importTs('src/server/submissions/policies/idempotency.ts');
+const { resetRateLimitsForTests } = await importTs('src/server/submissions/policies/rate-limit.ts');
 const routes = {
   ...(await importTs('src/server/submissions/types/business-enquiry.ts')),
   ...(await importTs('src/server/submissions/types/job-application.ts')),
@@ -26,10 +29,10 @@ const { issueTicket } = await importTs('src/lib/talent-intake/server.ts');
 
 // --- The outside world -------------------------------------------------------------
 
-const world = { leadFails: false, uploads: new Map(), deleted: [], applications: [], leads: [], applicationFails: false, notified: [], alerts: [], alertAnswer: { status: 202 } };
+const world = { leadFails: false, uploads: new Map(), deleted: [], applications: [], leads: [], applicationFails: false, notified: [], alerts: [], alertAnswer: { status: 202 }, siteverify: [] };
 const deferred = [];
 setDeferForTests((task) => deferred.push(task));
-setTransport({
+const fakeTransport = {
   async application(payload, meta) {
     if (world.applicationFails) throw new Error('intake webhook answered 500');
     world.applications.push({ payload, meta });
@@ -44,12 +47,16 @@ setTransport({
     world.alerts.push(payload);
     return world.alertAnswer;
   },
-});
+};
+setTransport(fakeTransport);
 globalThis.fetch = async (input, init = {}) => {
   const url = String(input instanceof Request ? input.url : input);
   const method = init.method ?? (input instanceof Request ? input.method : 'GET');
   if (url.startsWith('https://challenges.cloudflare.com/')) {
-    return Response.json({ success: new URLSearchParams(String(init.body)).get('response') === 'pass' });
+    // A test token is "pass:<action>[:<hostname>]": Cloudflare's answer for a widget with that action on that page.
+    world.siteverify.push({ signal: init.signal });
+    const [verdict, action = '', hostname = 'www.vayasyaseva.com'] = (new URLSearchParams(String(init.body)).get('response') ?? '').split(':');
+    return Response.json({ success: verdict === 'pass', action, hostname });
   }
   if (url === 'https://hooks.test/api/r/webhook/vspl-notify') {
     world.notified.push({ secret: init.headers['x-vspl-notify-secret'], event: JSON.parse(String(init.body)) });
@@ -74,7 +81,7 @@ const freshIp = () => `203.0.113.${++ipCounter}`;
 async function post(route, { body, headers = {}, ip = freshIp(), raw } = {}) {
   const request = new NextRequest(`https://www.vayasyaseva.com${route.name}`, {
     method: 'POST',
-    headers: { 'content-type': 'application/json', 'x-forwarded-for': ip, ...headers },
+    headers: { 'content-type': 'application/json', 'x-real-ip': ip, ...headers },
     body: raw ?? JSON.stringify(body),
   });
   const response = await runSubmission(route, request);
@@ -85,14 +92,19 @@ async function post(route, { body, headers = {}, ip = freshIp(), raw } = {}) {
 }
 
 function reset() {
-  Object.assign(world, { leadFails: false, deleted: [], applications: [], leads: [], applicationFails: false, notified: [], alerts: [], alertAnswer: { status: 202 } });
+  Object.assign(world, { leadFails: false, deleted: [], applications: [], leads: [], applicationFails: false, notified: [], alerts: [], alertAnswer: { status: 202 }, siteverify: [] });
   world.uploads.clear();
   deferred.length = 0;
   setIdempotencyStore(memoryIdempotencyStore());
+  // The envelope transport test swaps the real one in; every other test talks to this world.
+  setTransport(fakeTransport);
+  resetRateLimitsForTests();
 }
 
 const enquiry = { name: 'Asha Rawat', phone: '+91 98765 43210', email: 'asha@acme.example', company: 'Acme Foods', roles: ['packing'], headcountBand: '50-99', siteState: 'UK', siteCity: 'SIDCUL Haridwar', startWindow: '2-4-weeks', durationBand: 'ongoing' };
-const formHeaders = (extra = {}) => ({ 'x-turnstile-token': 'pass', 'x-contact-form-started-at': String(Date.now() - 60_000), ...extra });
+const formHeaders = (extra = {}) => ({ 'x-turnstile-token': 'pass:contact', 'x-contact-form-started-at': String(Date.now() - 60_000), ...extra });
+const alertHeaders = (extra = {}) => formHeaders({ 'x-turnstile-token': 'pass:alerts', ...extra });
+const JOBS_TOKEN = 'pass:jobs_start';
 
 // --- /api/contact (website form: Turnstile) ----------------------------------------
 
@@ -112,7 +124,8 @@ test('contact form: Turnstile is required (403 without or with a failed token, 5
   for (const token of [undefined, 'fail']) {
     const r = await post(routes.contactFormRoute, { body: enquiry, headers: formHeaders({ 'x-turnstile-token': token ?? '' }) });
     assert.equal(r.status, 403);
-    assert.deepEqual(r.json, { error: "We couldn't verify this browser. Please complete the check and try again, or call us.", agentRoute: '/api/agent/contact' });
+    // The refusal does not point a script at the open agent route.
+    assert.deepEqual(r.json, { error: "We couldn't verify this browser. Please complete the check and try again, or call us." });
   }
   delete process.env.TURNSTILE_SECRET_KEY;
   try {
@@ -254,13 +267,13 @@ const ALERT_TOKEN = 'hT3kq9ZxW2mVb7PcJ4nRs8Ld6YfGa1Ue0oQiXyNzKw5';
 test('rate alerts: subscribe needs Turnstile and a published state; the address is lower-cased; the answer says nothing of the list', async () => {
   reset();
   const body = { email: ' HR@Example.com ', states: ['uttarakhand'], sourcePath: '/minimum-wages/uttarakhand' };
-  const noToken = await post(routes.alertSubscribeRoute, { body: { ...body, email: 'hr@example.com' }, headers: formHeaders({ 'x-turnstile-token': '' }) });
+  const noToken = await post(routes.alertSubscribeRoute, { body: { ...body, email: 'hr@example.com' }, headers: alertHeaders({ 'x-turnstile-token': '' }) });
   assert.equal(noToken.status, 403);
   for (const bad of [{ ...body, email: 'not an address' }, { ...body, email: 'hr@example.com', states: [] }, { ...body, email: 'hr@example.com', states: ['atlantis'] }, { email: 'hr@example.com' }]) {
-    assert.equal((await post(routes.alertSubscribeRoute, { body: bad, headers: formHeaders() })).status, 400);
+    assert.equal((await post(routes.alertSubscribeRoute, { body: bad, headers: alertHeaders() })).status, 400);
   }
   assert.equal(world.alerts.length, 0);
-  const ok = await post(routes.alertSubscribeRoute, { body: { ...body, email: 'HR@Example.com' }, headers: formHeaders() });
+  const ok = await post(routes.alertSubscribeRoute, { body: { ...body, email: 'HR@Example.com' }, headers: alertHeaders() });
   assert.equal(ok.status, 200);
   assert.deepEqual(ok.json, { success: true });
   const [sent] = world.alerts;
@@ -276,14 +289,14 @@ test('rate alerts: 502 when the confirmation email could not go; 429 for the hon
   reset();
   const body = { email: 'limit@example.com', states: ['punjab'] };
   world.alertAnswer = { status: 502 };
-  const failed = await post(routes.alertSubscribeRoute, { body, headers: formHeaders() });
+  const failed = await post(routes.alertSubscribeRoute, { body, headers: alertHeaders() });
   assert.equal(failed.status, 502);
   assert.equal(failed.json.error, 'We could not send the confirmation email. Please try again in a few minutes.');
   world.alertAnswer = { status: 202 };
-  assert.equal((await post(routes.alertSubscribeRoute, { body, headers: formHeaders({ 'x-contact-form-honeypot': 'bot' }) })).status, 429);
-  assert.equal((await post(routes.alertSubscribeRoute, { body, headers: formHeaders() })).status, 200);
-  assert.equal((await post(routes.alertSubscribeRoute, { body, headers: formHeaders() })).status, 200);
-  assert.equal((await post(routes.alertSubscribeRoute, { body, headers: formHeaders() })).status, 429, 'three an hour per address');
+  assert.equal((await post(routes.alertSubscribeRoute, { body, headers: alertHeaders({ 'x-contact-form-honeypot': 'bot' }) })).status, 429);
+  assert.equal((await post(routes.alertSubscribeRoute, { body, headers: alertHeaders() })).status, 200);
+  assert.equal((await post(routes.alertSubscribeRoute, { body, headers: alertHeaders() })).status, 200);
+  assert.equal((await post(routes.alertSubscribeRoute, { body, headers: alertHeaders() })).status, 429, 'three an hour per address');
 });
 
 test('rate alerts: confirm and unsubscribe relay the token; a one-click unsubscribe carries it in the query; an unknown link is 404', async () => {
@@ -359,8 +372,8 @@ test('jobs start: 400, 403 without Turnstile, 200 with the reference, upload URL
   assert.deepEqual((await post(routes.jobsStartRoute, { body: { source: 'web' } })).json, { error: 'invalid_request' });
   const refused = await post(routes.jobsStartRoute, { body: { ...jobsStart, turnstileToken: 'fail' } });
   assert.equal(refused.status, 403);
-  assert.deepEqual(refused.json, { error: 'verification_failed', agentRoute: '/api/agent/jobs' });
-  const ok = await post(routes.jobsStartRoute, { body: { ...jobsStart, turnstileToken: 'pass' } });
+  assert.deepEqual(refused.json, { error: 'verification_failed' });
+  const ok = await post(routes.jobsStartRoute, { body: { ...jobsStart, turnstileToken: JOBS_TOKEN } });
   assert.equal(ok.status, 200);
   assert.match(ok.json.ref, /^VS-J-[A-Z0-9]{6}$/);
   assert.equal(ok.json.uploads.length, 1);
@@ -371,13 +384,13 @@ test('jobs start: 400, 403 without Turnstile, 200 with the reference, upload URL
 test('jobs start: a retry with the same Idempotency-Key and a fresh Turnstile token keeps the reference', async () => {
   reset();
   const headers = { 'idempotency-key': 'jobs-start-key-0001' };
-  const first = await post(routes.jobsStartRoute, { body: { ...jobsStart, turnstileToken: 'pass' }, headers });
-  const again = await post(routes.jobsStartRoute, { body: { ...jobsStart, turnstileToken: 'pass' }, headers });
+  const first = await post(routes.jobsStartRoute, { body: { ...jobsStart, turnstileToken: JOBS_TOKEN }, headers });
+  const again = await post(routes.jobsStartRoute, { body: { ...jobsStart, turnstileToken: JOBS_TOKEN }, headers });
   assert.equal(again.json.ref, first.json.ref);
   assert.equal(again.headers.get('idempotent-replayed'), 'true');
 });
 
-async function started(route = routes.jobsStartRoute, body = { ...jobsStart, turnstileToken: 'pass' }) {
+async function started(route = routes.jobsStartRoute, body = { ...jobsStart, turnstileToken: JOBS_TOKEN }) {
   const r = await post(route, { body });
   assert.equal(r.status, 200);
   return r.json;
@@ -594,4 +607,200 @@ test('durable Idempotency-Key store: Windmill answers; when it cannot, this inst
   } finally {
     delete process.env.SUBMISSION_SIGNING_SECRET;
   }
+});
+
+// --- Security: bot checks, Turnstile's host and action, logs, limits, caching -------
+
+test('website forms: a request without the form-started header is refused (429), whatever else it carries', async (t) => {
+  reset();
+  const warned = t.mock.method(console, 'warn', () => {});
+  const noStart = formHeaders();
+  delete noStart['x-contact-form-started-at'];
+  const contact = await post(routes.contactFormRoute, { body: enquiry, headers: noStart });
+  assert.equal(contact.status, 429);
+  const alert = await post(routes.alertSubscribeRoute, { body: { email: 'nostart@example.com', states: ['punjab'] }, headers: { ...noStart, 'x-turnstile-token': 'pass:alerts' } });
+  assert.equal(alert.status, 429);
+  assert.equal((await post(routes.contactFormRoute, { body: enquiry, headers: formHeaders({ 'x-contact-form-started-at': 'soon' }) })).status, 429);
+  assert.deepEqual(warned.mock.calls.map((c) => c.arguments[1].reason), ['missing-started-at', 'missing-started-at', 'invalid-started-at']);
+  assert.equal(world.leads.length + world.alerts.length, 0);
+  // The agent routes send no such header and are not affected.
+  assert.equal((await post(routes.agentContactRoute, { body: enquiry })).status, 200);
+});
+
+test('Turnstile: a token for another action or another host is refused; siteverify has a timeout', async () => {
+  reset();
+  // A token solved on the rate alert widget is not one for the contact form.
+  const otherAction = await post(routes.contactFormRoute, { body: enquiry, headers: formHeaders({ 'x-turnstile-token': 'pass:alerts' }) });
+  assert.equal(otherAction.status, 403);
+  // Nor one solved on another site.
+  const otherHost = await post(routes.contactFormRoute, { body: enquiry, headers: formHeaders({ 'x-turnstile-token': 'pass:contact:evil.example' }) });
+  assert.equal(otherHost.status, 403);
+  const jobsOther = await post(routes.jobsStartRoute, { body: { ...jobsStart, turnstileToken: 'pass:contact' } });
+  assert.equal(jobsOther.status, 403);
+  // The host is compared without its port or case.
+  const sameHost = await post(routes.contactFormRoute, { body: enquiry, headers: formHeaders({ 'x-turnstile-token': 'pass:contact:WWW.vayasyaseva.com' }) });
+  assert.equal(sameHost.status, 200);
+  assert.equal(world.leads.length, 1);
+  assert.ok(world.siteverify.length > 0 && world.siteverify.every((call) => call.signal instanceof AbortSignal), 'every siteverify call can time out');
+});
+
+test('Turnstile: a siteverify that does not answer in time is an error on our side (500), not a pass', async (t) => {
+  reset();
+  t.mock.method(console, 'error', () => {});
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async (input, init = {}) => {
+    if (String(input).startsWith('https://challenges.cloudflare.com/')) throw new DOMException('The operation timed out.', 'TimeoutError');
+    return realFetch(input, init);
+  };
+  try {
+    const r = await post(routes.contactFormRoute, { body: enquiry, headers: formHeaders() });
+    assert.equal(r.status, 500);
+    assert.equal(world.leads.length, 0);
+  } finally {
+    globalThis.fetch = realFetch;
+  }
+});
+
+test('logs: no email address or phone number in any line, blocked or delivered; the same sender has the same pseudonym', async (t) => {
+  reset();
+  const lines = [];
+  for (const level of ['info', 'warn', 'error', 'log']) t.mock.method(console, level, (...args) => lines.push(args));
+  const ip = freshIp();
+  assert.equal((await post(routes.contactFormRoute, { body: enquiry, headers: formHeaders(), ip })).status, 200);
+  // The same sender again from the same IP: blocked, logged with the same duplicate key.
+  assert.equal((await post(routes.contactFormRoute, { body: { ...enquiry, phone: '9876543210' }, headers: formHeaders(), ip })).status, 429);
+  const agentIp = freshIp();
+  assert.equal((await post(routes.agentContactRoute, { body: enquiry, ip: agentIp })).status, 200);
+  assert.equal((await post(routes.agentContactRoute, { body: enquiry, ip: agentIp })).status, 429);
+  for (let i = 0; i < 4; i++) await post(routes.agentJobsRoute, { body: { ...agentApplication, phone: '98765 43277' } });
+  const text = JSON.stringify(lines);
+  assert.doesNotMatch(text, /asha|acme\.example|98765|9876543210|Rawat/i);
+  const delivered = lines.find(([label]) => label === '[CONTACT SUBMISSION DELIVERED]')[1];
+  const blocked = lines.find(([label, fields]) => label === '[CONTACT SUBMISSION BLOCKED]' && fields.duplicateKey)[1];
+  assert.match(delivered.duplicateKey, /^[A-Za-z0-9_-]{16}$/);
+  assert.equal(blocked.duplicateKey, delivered.duplicateKey, '"+91 98765 43210" and "9876543210" are one sender');
+  assert.match(lines.find(([label]) => label === '[AGENT CONTACT RATE LIMITED]')[1].sender, /^[A-Za-z0-9_-]{16}$/);
+});
+
+test('pseudonyms: keyed by the site secret, stable for one key, never the input', async () => {
+  const { pseudonym } = await importTs('src/server/submissions/policies/pseudonym.ts');
+  const { duplicateKey, senderKey } = await importTs('src/server/submissions/policies/abuse.ts');
+  const { createHash } = await import('node:crypto');
+  const a = pseudonym('sender', 'asha@acme.example', '+919876543210');
+  assert.equal(pseudonym('sender', 'asha@acme.example', '+919876543210'), a);
+  assert.match(a, /^[A-Za-z0-9_-]{16}$/);
+  assert.notEqual(a, createHash('sha256').update('sender\u0000asha@acme.example\u0000+919876543210').digest('base64url').slice(0, 16), 'not a plain hash anyone can recompute');
+  assert.equal(senderKey(' Asha@Acme.example ', '+91 98765 43210'), senderKey('asha@acme.example', '09876543210'));
+  assert.notEqual(duplicateKey('203.0.113.1', 'asha@acme.example', '9876543210'), duplicateKey('203.0.113.2', 'asha@acme.example', '9876543210'));
+  process.env.TICKET_SIGNING_KEY = 'another-site-secret';
+  try {
+    assert.notEqual(pseudonym('sender', 'asha@acme.example', '+919876543210'), a, 'another key, another pseudonym');
+  } finally {
+    delete process.env.TICKET_SIGNING_KEY;
+  }
+  assert.equal(pseudonym('sender', 'asha@acme.example', '+919876543210'), a);
+});
+
+test('client IP: x-real-ip (set by Vercel) first, then the first x-forwarded-for entry; IPv6 counts per /64', async () => {
+  const { clientIp } = await importTs('src/lib/rate-limit.ts');
+  const { ipKey } = await importTs('src/server/submissions/policies/rate-limit.ts');
+  const ip = (headers) => clientIp({ headers: new Headers(headers) });
+  assert.equal(ip({ 'x-real-ip': '198.51.100.7', 'x-forwarded-for': '203.0.113.9, 10.0.0.1' }), '198.51.100.7');
+  assert.equal(ip({ 'x-forwarded-for': ' 203.0.113.9 , 10.0.0.1' }), '203.0.113.9');
+  assert.equal(ip({}), null);
+  assert.equal(ipKey('2001:db8:1:2:aaaa::1'), '2001:db8:1:2::/64');
+  assert.equal(ipKey('2001:DB8:1:2:ffff:ffff:ffff:fffe'), '2001:db8:1:2::/64');
+  assert.equal(ipKey('2001:db8::1'), '2001:db8:0:0::/64');
+  assert.equal(ipKey('::ffff:203.0.113.5'), '203.0.113.5');
+  assert.equal(ipKey('203.0.113.5'), '203.0.113.5');
+  assert.equal(ipKey(null), 'unknown');
+  // Two addresses in one /64 share the agent route's limit.
+  reset();
+  for (let i = 1; i <= 3; i++) assert.equal((await post(routes.agentContactRoute, { body: { ...enquiry, email: `v6-${i}@acme.example` }, ip: `2001:db8:5:6::${i}` })).status, 200);
+  assert.equal((await post(routes.agentContactRoute, { body: { ...enquiry, email: 'v6-4@acme.example' }, ip: '2001:db8:5:6:ffff::4' })).status, 429);
+});
+
+test('agent contact: 3 per IP in ten minutes, and a budget for the whole route that many addresses cannot get around', async (t) => {
+  reset();
+  t.mock.method(console, 'warn', () => {});
+  const ip = freshIp();
+  for (let i = 1; i <= 3; i++) assert.equal((await post(routes.agentContactRoute, { body: { ...enquiry, email: `ip-${i}@acme.example` }, ip })).status, 200);
+  assert.equal((await post(routes.agentContactRoute, { body: { ...enquiry, email: 'ip-4@acme.example' }, ip })).status, 429);
+  reset();
+  for (let i = 1; i <= 20; i++) assert.equal((await post(routes.agentContactRoute, { body: { ...enquiry, email: `spread-${i}@acme.example` } })).status, 200);
+  const over = await post(routes.agentContactRoute, { body: { ...enquiry, email: 'spread-21@acme.example' } });
+  assert.equal(over.status, 429);
+  assert.equal(over.headers.get('retry-after'), '600');
+  assert.equal(world.leads.length, 20);
+});
+
+test('agent jobs start: upload URLs are counted per file; each URL is bound to the declared type and exact size', async (t) => {
+  reset();
+  t.mock.method(console, 'warn', () => {});
+  const ip = freshIp();
+  const eight = Array.from({ length: 8 }, (_, i) => ({ kind: 'document', mime: 'application/pdf', size: 1000 + i, name: `cv-${i}.pdf` }));
+  const first = await post(routes.agentJobsStartRoute, { body: { language: 'en', files: eight }, ip });
+  assert.equal(first.status, 200);
+  for (const [i, upload] of first.json.uploads.entries()) {
+    const url = new URL(upload.url);
+    assert.deepEqual(url.searchParams.get('X-Amz-SignedHeaders').split(';'), ['content-length', 'content-type', 'host']);
+    assert.equal(url.searchParams.get('X-Amz-Expires'), '900');
+    assert.deepEqual(upload.headers, { 'Content-Type': 'application/pdf' }, 'a browser may not set Content-Length; the body sets it');
+    assert.match(upload.key, new RegExp(`/${first.json.ref}/${i}\\.pdf$`));
+  }
+  assert.equal((await post(routes.agentJobsStartRoute, { body: { language: 'en', files: eight }, ip })).status, 200);
+  // Sixteen URLs an hour per IP: a third start, even for one file, waits.
+  const third = await post(routes.agentJobsStartRoute, { body: { language: 'en', files: eight.slice(0, 1) }, ip });
+  assert.equal(third.status, 429);
+  assert.deepEqual(third.json, { error: 'rate_limited', retryAfterSeconds: 600 });
+});
+
+test('upload URLs: the signature covers the size, so a URL for 1000 bytes is not one for 1001', async () => {
+  const { presignUpload } = await importTs('src/lib/talent-intake/server.ts');
+  const signature = async (size) => new URL((await presignUpload('intake/2026/11/VS-J-SIZE01/0.pdf', 'application/pdf', size)).url).searchParams.get('X-Amz-Signature');
+  assert.notEqual(await signature(1000), await signature(1001));
+  await assert.rejects(presignUpload('intake/2026/11/VS-J-SIZE01/0.pdf', 'application/pdf', 0), /invalid size/);
+});
+
+test('agent jobs: 6 per IP in ten minutes across the three routes', async (t) => {
+  reset();
+  t.mock.method(console, 'warn', () => {});
+  const ip = freshIp();
+  for (let i = 0; i < 6; i++) assert.equal((await post(routes.agentJobsRoute, { body: { ...agentApplication, phone: `98765 4330${i}` }, ip })).status, 202);
+  assert.equal((await post(routes.agentJobsStartRoute, { body: { language: 'en', files: [{ kind: 'image', mime: 'image/png', size: 10, name: null }] }, ip })).status, 429);
+});
+
+test('every submission answer is no-store: success, refusal, rate limit and invalid body alike', async (t) => {
+  reset();
+  t.mock.method(console, 'warn', () => {});
+  const answers = [
+    await post(routes.contactFormRoute, { body: enquiry, headers: formHeaders() }),
+    await post(routes.contactFormRoute, { body: enquiry, headers: formHeaders({ 'x-turnstile-token': 'fail' }) }),
+    await post(routes.contactFormRoute, { raw: '{', headers: formHeaders() }),
+    await post(routes.contactFormRoute, { body: enquiry, headers: formHeaders({ 'x-contact-form-honeypot': 'bot' }) }),
+    await post(routes.agentJobsRoute, { body: agentApplication }),
+  ];
+  assert.deepEqual(answers.map((a) => a.status), [200, 403, 400, 429, 202]);
+  for (const answer of answers) assert.equal(answer.headers.get('cache-control'), 'no-store');
+});
+
+test('memory limiter: costs, given-back slots, and a cap on the keys it keeps', async () => {
+  const { memoryRateLimiter, takeAll } = await importTs('src/server/submissions/policies/rate-limit.ts');
+  const limiter = memoryRateLimiter({ windowMs: 1000, max: 3, maxKeys: 2 });
+  assert.equal(await limiter.take('a', 0, 2), true);
+  assert.equal(await limiter.take('a', 1, 2), false);
+  await limiter.release('a', 2);
+  assert.equal(await limiter.take('a', 2), true);
+  assert.equal(await limiter.take('a', 1000), true, 'a new window');
+  // A third key pushes out the oldest window.
+  await limiter.take('b', 1001);
+  await limiter.take('c', 1002);
+  assert.equal(await limiter.take('a', 1003, 3), true, '"a" was dropped, so it starts over');
+  // takeAll gives back what it took when asked to, cost included.
+  const one = memoryRateLimiter({ windowMs: 1000, max: 1 });
+  const files = memoryRateLimiter({ windowMs: 1000, max: 8 });
+  await one.take('x', 0);
+  const refused = await takeAll([[files, 'k', 8], [one, 'x']], { releaseOnRefusal: true, now: 1 });
+  assert.equal(refused.allowed, false);
+  assert.equal(await files.take('k', 2, 8), true, 'the eight slots were given back');
 });

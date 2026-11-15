@@ -681,7 +681,7 @@
               },
               "size": {
                 "type": "integer",
-                "description": "Bytes. At most 10485760 for images, 20971520 for documents.",
+                "description": "The file's exact size in bytes: its upload URL accepts exactly this many. At most 10485760 for images, 20971520 for documents.",
                 "minimum": 1
               },
               "name": {
@@ -743,7 +743,7 @@
               "headers"
             ]
           },
-          "description": "Same order as `files`. PUT each file's bytes to `url` with exactly these `headers`, within 15 minutes."
+          "description": "Same order as `files`. PUT each file's bytes to `url` with exactly these `headers`, within 15 minutes. The body must be exactly the declared `size` (sent with its Content-Length); any other size is refused."
         }
       },
       "required": [

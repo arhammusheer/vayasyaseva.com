@@ -24,7 +24,8 @@ import { attachmentKey, issueTicket, newRef, presignUpload, type Ticket } from "
 import { forwardSubmission, submitWithTicket, unavailable } from "@/lib/talent-intake/submit";
 import { adClickToReport, reportAdClickConversion } from "@/lib/measurement/server";
 import type { SubmissionContext, SubmissionRoute } from "../pipeline";
-import { agentJobsLimits, takeAll, type RateLimiter } from "../policies/rate-limit";
+import { ROUTE_BUDGET, agentJobsLimits, ipKey, takeAll, type Slot } from "../policies/rate-limit";
+import { pseudonym } from "../policies/pseudonym";
 import { checkTurnstile } from "../policies/turnstile";
 import type { z } from "zod/v4";
 
@@ -41,15 +42,25 @@ function agentInvalid(error: z.ZodError) {
 
 export const AGENT_RATE_LIMITED = { error: "rate_limited", retryAfterSeconds: 600 };
 
-/** One slot for the caller's IP and, when given, the phone number. */
-async function agentLimits(ctx: SubmissionContext, phone?: string) {
-  const ip = ctx.ip ?? "unknown";
+/**
+ * The agent routes' slots (policies/rate-limit.ts): the caller's IP over ten
+ * minutes and a day, the phone number when given (as a pseudonym, so the
+ * limiter never holds it), the three routes' budget on this instance, and
+ * for /start the upload URLs it is about to hand out.
+ */
+async function agentLimits(ctx: SubmissionContext, { phone, files = 0 }: { phone?: string; files?: number } = {}) {
+  const ip = ipKey(ctx.ip);
   const phoneKey = phone ? normaliseIndianMobile(phone) : null;
-  const wanted: [RateLimiter, string][] = [[agentJobsLimits.perIp, ip]];
-  if (phoneKey) wanted.push([agentJobsLimits.perPhone, phoneKey]);
+  const wanted: Slot[] = [
+    [agentJobsLimits.perIp, ip],
+    [agentJobsLimits.perIpDaily, ip],
+  ];
+  if (phoneKey) wanted.push([agentJobsLimits.perPhone, pseudonym("phone", phoneKey)]);
+  wanted.push([agentJobsLimits.route, ROUTE_BUDGET]);
+  if (files > 0) wanted.push([agentJobsLimits.filesPerIp, ip, files], [agentJobsLimits.files, ROUTE_BUDGET, files]);
   const slots = await takeAll(wanted);
   if (!slots.allowed) {
-    console.warn("[AGENT JOBS RATE LIMITED]", { ip });
+    console.warn("[AGENT JOBS RATE LIMITED]", { ip: ctx.ip ?? "unknown" });
     return { response: NextResponse.json(AGENT_RATE_LIMITED, { status: 429, headers: { "retry-after": "600" } }) };
   }
   return { release: slots.release };
@@ -62,12 +73,17 @@ function reference(ctx: SubmissionContext) {
   return ref;
 }
 
-/** Issues the reference, one upload URL per declared file and the signed ticket. */
+/**
+ * Issues the reference, one upload URL per declared file and the signed
+ * ticket. Each URL is a presigned PUT for one key that lasts 15 minutes and
+ * accepts only the declared Content-Type and exactly the declared size
+ * (presignUpload), which the contract caps per kind.
+ */
 async function start(ctx: SubmissionContext, draft: Omit<Ticket, "exp" | "files" | "ref">, files: { kind: Ticket["files"][number]["kind"]; mime: string; size: number; name: string | null }[]) {
   const ref = reference(ctx);
   const now = new Date();
   const ticketFiles = files.map((f, position) => ({ ...f, key: attachmentKey(ref, position, f.mime, now) }));
-  const uploads = await Promise.all(ticketFiles.map(async (f) => ({ key: f.key, ...(await presignUpload(f.key, f.mime)) })));
+  const uploads = await Promise.all(ticketFiles.map(async (f) => ({ key: f.key, ...(await presignUpload(f.key, f.mime, f.size)) })));
   const response: JobsStartResponse = { ref, ticket: issueTicket({ ...draft, ref, files: ticketFiles }), uploads };
   return NextResponse.json(response, { headers: { "cache-control": "no-store" } });
 }
@@ -81,7 +97,8 @@ type JobsStart = z.output<typeof jobsStartRequestSchema>;
 /**
  * Step 1 of a jobs submission: checks Turnstile, issues the reference, and
  * returns one short-lived upload URL per declared file plus a signed ticket.
- * AI agents use /api/agent/jobs instead, which needs no Turnstile.
+ * AI agents use /api/agent/jobs instead, which needs no Turnstile; a failed
+ * check here does not point there (see contactFormRoute.verify).
  */
 export const jobsStartRoute: SubmissionRoute<JobsStart> = {
   name: "/api/jobs/start",
@@ -92,9 +109,9 @@ export const jobsStartRoute: SubmissionRoute<JobsStart> = {
   // A retry brings a fresh Turnstile token; it is the same request.
   fingerprint: (value) => ({ ...value, turnstileToken: undefined }),
   async verify(value, ctx) {
-    const outcome = await checkTurnstile(value.turnstileToken, ctx.ip);
+    const outcome = await checkTurnstile(value.turnstileToken, ctx.ip, { action: "jobs_start", request: ctx.request });
     if (outcome === "not_configured") return NextResponse.json({ error: "unavailable" }, { status: 503 });
-    if (outcome === "failed") return NextResponse.json({ error: "verification_failed", agentRoute: "/api/agent/jobs" }, { status: 403 });
+    if (outcome === "failed") return NextResponse.json({ error: "verification_failed" }, { status: 403 });
     return null;
   },
   handle: ({ source, locale, pageCluster, pagePath, role, hub, files }, ctx) => start(ctx, { source, locale, pageCluster, pagePath, role, hub }, files),
@@ -146,7 +163,7 @@ export const agentJobsRoute: SubmissionRoute<AgentJobs> = {
     const parsed = agentJobsRequestSchema.safeParse(await body(request));
     return parsed.success ? { ok: true, value: parsed.data } : { ok: false, response: agentInvalid(parsed.error) };
   },
-  screen: (value, ctx) => agentLimits(ctx, value.phone),
+  screen: (value, ctx) => agentLimits(ctx, { phone: value.phone }),
   handle: ({ language, role, agent, phone, text }, ctx) =>
     forwardSubmission(
       {
@@ -179,7 +196,7 @@ export const agentJobsStartRoute: SubmissionRoute<AgentJobsStart> = {
     const parsed = agentJobsStartRequestSchema.safeParse(await body(request));
     return parsed.success ? { ok: true, value: parsed.data } : { ok: false, response: agentInvalid(parsed.error) };
   },
-  screen: (_value, ctx) => agentLimits(ctx),
+  screen: (value, ctx) => agentLimits(ctx, { files: value.files.length }),
   handle: ({ language, role, agent, files }, ctx) =>
     start(ctx, { source: AGENT_LANGUAGE_SOURCES[language], role: role as JobRole | null, hub: null, channel: "agent", agentName: agent?.name ?? null }, files),
   fail: (error) => unavailable("agent/jobs/start", error),
@@ -197,7 +214,7 @@ export const agentJobsSubmitRoute: SubmissionRoute<AgentJobsSubmit> = {
     const parsed = agentJobsSubmitRequestSchema.safeParse(await body(request));
     return parsed.success ? { ok: true, value: parsed.data } : { ok: false, response: agentInvalid(parsed.error) };
   },
-  screen: (value, ctx) => agentLimits(ctx, value.phone),
+  screen: (value, ctx) => agentLimits(ctx, { phone: value.phone }),
   handle: ({ ticket, phone, text }, ctx) => submitWithTicket(ticket, phone, text, "agent", {}, meta(ctx)),
   fail: (error) => unavailable("agent/jobs/submit", error),
 };

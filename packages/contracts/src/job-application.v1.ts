@@ -390,7 +390,9 @@ const agentFileDeclarationSchema = z
       .number()
       .int()
       .positive()
-      .meta({ description: `Bytes. At most ${INTAKE_LIMITS.maxBytes.image} for images, ${INTAKE_LIMITS.maxBytes.document} for documents.` }),
+      .meta({
+        description: `The file's exact size in bytes: its upload URL accepts exactly this many. At most ${INTAKE_LIMITS.maxBytes.image} for images, ${INTAKE_LIMITS.maxBytes.document} for documents.`,
+      }),
     name: z.string().max(INTAKE_LIMITS.maxFileNameLength).nullable(),
   })
   .refine((f) => ATTACHMENT_MIME[f.kind].test(f.mime), { message: "Unsupported file type", path: ["mime"] })
@@ -430,7 +432,10 @@ export const agentJobsStartResponseSchema = z.object({
         headers: z.record(z.string(), z.string()),
       }),
     )
-    .meta({ description: "Same order as `files`. PUT each file's bytes to `url` with exactly these `headers`, within 15 minutes." }),
+    .meta({
+      description:
+        "Same order as `files`. PUT each file's bytes to `url` with exactly these `headers`, within 15 minutes. The body must be exactly the declared `size` (sent with its Content-Length); any other size is refused.",
+    }),
 });
 
 export const agentJobsAcceptedSchema = z.object({

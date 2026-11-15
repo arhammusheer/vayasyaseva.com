@@ -19,7 +19,8 @@ import { reportServerCount } from "@/lib/measurement/server";
 import { ALERT_NOTICE_VERSION, alertStates, createAlertRef } from "@/lib/rate-alerts";
 import { jsonBody, type SubmissionRoute } from "../pipeline";
 import { formAbuseReason } from "../policies/abuse";
-import { alertLimits, takeAll } from "../policies/rate-limit";
+import { pseudonym } from "../policies/pseudonym";
+import { alertLimits, ipKey, takeAll } from "../policies/rate-limit";
 import { checkTurnstile } from "../policies/turnstile";
 import { transport } from "../transport";
 
@@ -48,7 +49,7 @@ export const alertSubscribeRoute: SubmissionRoute<RateAlertSubscribeRequest> = {
   },
 
   async verify(_data, ctx) {
-    const outcome = await checkTurnstile(ctx.request.headers.get("x-turnstile-token")?.trim(), ctx.ip);
+    const outcome = await checkTurnstile(ctx.request.headers.get("x-turnstile-token")?.trim(), ctx.ip, { action: "alerts", request: ctx.request });
     if (outcome === "not_configured") return refuse(503, ALERT_RESPONSES.unknownError);
     return outcome === "failed" ? refuse(403, ALERT_RESPONSES.verificationError) : null;
   },
@@ -61,8 +62,9 @@ export const alertSubscribeRoute: SubmissionRoute<RateAlertSubscribeRequest> = {
       return { response: refuse(429, ALERT_RESPONSES.rateLimitError) };
     }
     const slots = await takeAll([
-      [alertLimits.perIp, ip],
-      [alertLimits.perEmail, data.email],
+      [alertLimits.perIp, ipKey(ctx.ip)],
+      // A pseudonym: the limiter never holds the address.
+      [alertLimits.perEmail, pseudonym("email", data.email)],
     ]);
     return slots.allowed ? { release: slots.release } : { response: refuse(429, ALERT_RESPONSES.rateLimitError) };
   },
@@ -107,7 +109,7 @@ function linkRoute(action: "confirm" | "unsubscribe"): SubmissionRoute<string> {
     name,
     read: readToken,
     async screen(_token, ctx) {
-      const slots = await takeAll([[alertLimits.links, ctx.ip ?? "unknown"]]);
+      const slots = await takeAll([[alertLimits.links, ipKey(ctx.ip)]]);
       return slots.allowed ? { release: slots.release } : { response: refuse(429, ALERT_RESPONSES.rateLimitError) };
     },
     async handle(token) {

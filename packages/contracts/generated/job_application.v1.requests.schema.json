@@ -496,7 +496,7 @@
                 "type": "integer",
                 "exclusiveMinimum": 0,
                 "maximum": 9007199254740991,
-                "description": "Bytes. At most 10485760 for images, 20971520 for documents."
+                "description": "The file's exact size in bytes: its upload URL accepts exactly this many. At most 10485760 for images, 20971520 for documents."
               },
               "name": {
                 "anyOf": [

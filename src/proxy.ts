@@ -3,6 +3,7 @@ import { AI_READ_FILES, aiFetchOf } from "@/lib/ai-fetch";
 import { reportAiFetch } from "@/lib/measurement/server";
 import { FALLBACK_LOCALE, fromLegacyPrefix, isGone, localePath, localesOf, movedPathname, neutralTarget, splitLocalePath } from "@/lib/i18n";
 import { LANGUAGE_COOKIE, isRankSegment, rankSegmentFor, visitorCity, visitorRegion } from "@/lib/language-rank";
+import { clientIp } from "@/lib/rate-limit";
 import { parsePicksCookie } from "@/context/collect";
 import { geoCookieValue, requestGeo } from "@/context/geo";
 import { GEO_COOKIE, PICKS_COOKIE } from "@/context/keys";
@@ -28,9 +29,7 @@ function umami(request: NextRequest) {
     return NextResponse.rewrite(new URL("/api/umami-recorder", request.url));
   }
   const headers = new Headers(request.headers);
-  const ip =
-    request.headers.get("x-real-ip") ??
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  const ip = clientIp(request);
 
   // Never pass through a value the visitor sent themselves.
   headers.delete(CLIENT_IP_HEADER);

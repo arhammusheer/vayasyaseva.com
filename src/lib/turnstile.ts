@@ -26,13 +26,41 @@ declare global {
   }
 }
 
-export async function verifyTurnstile(token: string, ip: string | null): Promise<boolean> {
+/** Cloudflare answers siteverify in well under a second; a hung call must not hold the route. */
+const SITEVERIFY_TIMEOUT_MS = 5_000;
+
+/** What the token must have been issued for: the widget's action, and the page's host. */
+export interface TurnstileExpectation {
+  /** The action the widget was rendered with (useTurnstile). */
+  action: string;
+  /** The host the form was on: this site's own, as the request reached it. Its port is ignored. */
+  hostname: string | null;
+}
+
+const bareHost = (host: string) => host.trim().toLowerCase().replace(/:\d+$/, "").replace(/\.$/, "");
+
+/**
+ * True when Cloudflare says the token is valid and it was solved on this
+ * host for this form's action, so a token from another page or another form
+ * (or another site using the key) does not pass. With the always-pass test
+ * secret (local development) the host and action are not checked, as
+ * Cloudflare's test answers carry neither. A timeout or an unreadable answer
+ * throws, for the route to handle as any other error from Cloudflare.
+ */
+export async function verifyTurnstile(token: string, ip: string | null, expected: TurnstileExpectation): Promise<boolean> {
   const secret = process.env.TURNSTILE_SECRET_KEY ?? (process.env.NODE_ENV === "development" ? TURNSTILE_TEST_SECRET : undefined);
   if (!secret) throw new TurnstileNotConfigured("TURNSTILE_SECRET_KEY is not set");
   const form = new URLSearchParams({ secret, response: token });
   if (ip) form.set("remoteip", ip);
-  const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", { method: "POST", body: form });
+  const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+    method: "POST",
+    body: form,
+    signal: AbortSignal.timeout(SITEVERIFY_TIMEOUT_MS),
+  });
   if (!res.ok) return false;
-  const data = (await res.json()) as { success?: boolean };
-  return data.success === true;
+  const data = (await res.json()) as { success?: boolean; hostname?: string; action?: string };
+  if (data.success !== true) return false;
+  if (secret === TURNSTILE_TEST_SECRET) return true;
+  if (data.action !== expected.action) return false;
+  return Boolean(expected.hostname && data.hostname && bareHost(data.hostname) === bareHost(expected.hostname));
 }

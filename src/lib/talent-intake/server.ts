@@ -169,11 +169,21 @@ export function readTicket(value: string): Ticket | null {
 
 // --- R2 ---------------------------------------------------------------------
 
-/** Presigned PUT; the Content-Type is signed, so the upload must declare it. */
-export async function presignUpload(key: string, mime: string) {
+/**
+ * Presigned PUT for one key, valid for UPLOAD_URL_SECONDS. Content-Type and
+ * Content-Length are signed (X-Amz-SignedHeaders), so R2 refuses an upload of
+ * another type or of any size but the declared one, which the contract caps
+ * per kind: without the length a URL would take up to R2's 5 GiB, as often
+ * as it was replayed before it expired. Browsers and HTTP clients send
+ * Content-Length from the body themselves, and a browser may not set it, so
+ * only Content-Type is handed back to send. /submit still checks each
+ * object's size (submit.ts).
+ */
+export async function presignUpload(key: string, mime: string, size: number) {
+  if (!Number.isSafeInteger(size) || size <= 0) throw new Error(`presignUpload: invalid size ${size}`);
   const url = new URL(objectUrl(key));
   url.searchParams.set("X-Amz-Expires", String(UPLOAD_URL_SECONDS));
-  const signed = await r2Client().sign(new Request(url, { method: "PUT", headers: { "Content-Type": mime } }), {
+  const signed = await r2Client().sign(new Request(url, { method: "PUT", headers: { "Content-Type": mime, "Content-Length": String(size) } }), {
     aws: { signQuery: true, allHeaders: true },
   });
   return { url: signed.url, headers: { "Content-Type": mime } };

@@ -75,25 +75,66 @@ are signed with a key derived from `TALENT_INTAKE_WEBHOOK_SECRET`, as
 before. Once it is set, tickets signed the old way are accepted until they
 expire (an hour at most).
 
+## Bot checks and Turnstile
+
+The website forms (contact, call back, rate alert sign-up) send
+`x-contact-form-started-at` with every submission; a request without it, or
+sent less than 1.5 s after the form opened, is refused with 429, as is one
+with the honeypot header filled. Turnstile is checked first: the token must
+be valid, solved for the form's own action (`contact`, `jobs_start`,
+`alerts`, as `useTurnstile` renders it) and on the host the request reached;
+siteverify has a 5 s timeout (an error, 500, not a pass). A failed check
+answers 403 without pointing at the agent routes.
+
+**Client IP.** `src/lib/rate-limit.ts` `clientIp`, used by the pipeline and
+the Umami proxy: `x-real-ip` (set by Vercel) first, then the first
+`x-forwarded-for` entry, which only a proxy that overwrites it (Vercel does)
+makes trustworthy.
+
+**Logs.** No log line carries an email address or phone number. Where a
+line needs to say "the same sender", it carries a pseudonym
+(`policies/pseudonym.ts`): HMAC-SHA-256 under a key derived from
+`TICKET_SIGNING_KEY`, else `TALENT_INTAKE_WEBHOOK_SECRET`, else
+`SUBMISSION_SIGNING_SECRET`. The limiters key senders, phones and alert
+addresses by the same pseudonyms.
+
+**Upload URLs** (`/api/jobs/start`, `/api/agent/jobs/start`, `/api/jobs/resume`):
+one presigned PUT per declared file, valid 15 minutes, with Content-Type and
+Content-Length signed, so R2 takes only the declared type at exactly the
+declared size (at most 10 MB for an image, 20 MB for a document). `/submit`
+still checks each object's size.
+
 ## Rate limits
 
-The routes' own limits (`policies/rate-limit.ts`, unchanged) count per
-Vercel instance, so they slow one source rather than enforce a global cap.
-A `RateLimiter` interface lets a shared counter replace them later.
+The routes' own limits (`policies/rate-limit.ts`) count per Vercel
+instance, so they slow one source rather than enforce a global cap. A
+`RateLimiter` interface lets a shared counter replace them later. The site
+has no shared store for one: no KV or Redis, and Postgres only behind
+Windmill, where a call per request would put a flood in front of real leads.
+A shared counter needs a store the owner provisions (for example Upstash
+Redis from the Vercel Marketplace) and an implementation of `RateLimiter`
+over it.
+
+The open agent routes have no Turnstile by design, so their limits are the
+tight ones, and each also has a budget for the whole route on the instance,
+which a spread of addresses cannot get around. IPv6 addresses count per /64.
+Agents share egress addresses (an assistant's servers), so a busy agent can
+reach the per-IP limit; the answer is 429 with `retryAfterSeconds`.
 
 **Vercel WAF rules for the owner to add** (Project → Firewall → Custom
 rules; not applied by this change). One rule per row: "Request path equals",
 method POST, action **Rate limit**, fixed window, keyed on IP, answering
 429. The limits sit above what one person can reach, so they only stop
-floods that the per-instance counters cannot see.
+floods that the per-instance counters cannot see. The WAF is the only limit
+here that holds across instances.
 
 | Path | Window | Limit per IP | App limit (per instance) |
 |---|---|---|---|
-| `/api/contact` | 60 s | 10 | 1 a minute; same email and phone once in 5 minutes |
-| `/api/agent/contact` | 10 min | 20 | 5 per IP, 1 per sender |
-| `/api/agent/jobs` | 10 min | 30 | 10 per IP, 3 per phone an hour |
-| `/api/agent/jobs/start` | 10 min | 30 | 10 per IP |
-| `/api/agent/jobs/submit` | 10 min | 30 | 10 per IP, 3 per phone an hour |
+| `/api/contact` | 60 s | 10 | Turnstile; 1 a minute; same email and phone once in 5 minutes |
+| `/api/agent/contact` | 10 min | 20 | 3 per IP (10 a day), 1 per sender (3 a day), 20 for the route |
+| `/api/agent/jobs` | 10 min | 30 | with /start and /submit: 6 per IP (20 a day), 3 per phone an hour, 40 for the three routes |
+| `/api/agent/jobs/start` | 10 min | 30 | as above, and 16 upload URLs per IP an hour, 120 for the route |
+| `/api/agent/jobs/submit` | 10 min | 30 | as `/api/agent/jobs` |
 | `/api/jobs/start` | 10 min | 20 | Turnstile |
 | `/api/jobs/submit` | 10 min | 30 | the ticket |
 | `/api/jobs/resume` | 10 min | 30 | the ticket |
@@ -101,3 +142,9 @@ floods that the per-instance counters cannot see.
 | `/api/alerts/confirm`, `/api/alerts/unsubscribe` | 10 min | 60 | 30 per IP |
 
 Leave `/api/context` and `/api/umami-recorder` out: pages call them on load.
+
+## Caching
+
+Every answer of the pipeline is `cache-control: no-store`, and `next.config.ts`
+sets the same on `/api/contact`, `/api/agent/*`, `/api/jobs/*` and
+`/api/alerts/*`.

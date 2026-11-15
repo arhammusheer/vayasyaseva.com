@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     if (ticket.files.length > 0 && present.every((size) => size !== null)) {
       return NextResponse.json({ error: "already_uploaded" }, { status: 409 });
     }
-    const uploads = await Promise.all(ticket.files.map(async (f) => ({ key: f.key, ...await presignUpload(f.key, f.mime) })));
+    const uploads = await Promise.all(ticket.files.map(async (f) => ({ key: f.key, ...await presignUpload(f.key, f.mime, f.size) })));
     const response: JobsStartResponse = { ref: ticket.ref, ticket: body.ticket, uploads };
     return NextResponse.json(response, { headers: { "cache-control": "no-store" } });
   } catch (error) { return unavailable("jobs/resume", error); }

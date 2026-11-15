@@ -19,10 +19,9 @@ import { BUSINESS_NOTICE_VERSION, assessCrewRequest } from "@/lib/crew-request";
 import { createContactCaseId } from "@/lib/contact-email";
 import { buildLeadPayload } from "@/lib/lead-forward";
 import { agentInfoSchema } from "@/lib/talent-intake/contract";
-import { normaliseIndianMobile } from "@/lib/talent-intake/rules";
 import { jsonBody, type SubmissionContext, type SubmissionRoute } from "../pipeline";
-import { duplicateKey, formAbuseReason } from "../policies/abuse";
-import { agentContactLimits, contactFormLimits, takeAll } from "../policies/rate-limit";
+import { duplicateKey, formAbuseReason, senderKey } from "../policies/abuse";
+import { ROUTE_BUDGET, agentContactLimits, contactFormLimits, ipKey, takeAll } from "../policies/rate-limit";
 import { checkTurnstile } from "../policies/turnstile";
 import { transport } from "../transport";
 import { notifyHub, type WebsiteEvent } from "@/server/notify";
@@ -76,12 +75,12 @@ export const contactFormRoute: SubmissionRoute<ContactFormData> = {
   },
 
   // Human form only: AI agents use /api/agent/contact, which has no Turnstile.
+  // The refusal does not point there: a script that fails the check here is
+  // not an agent acting for a person, and gets nothing to try next.
   async verify(_data, ctx) {
-    const outcome = await checkTurnstile(ctx.request.headers.get("x-turnstile-token")?.trim(), ctx.ip);
+    const outcome = await checkTurnstile(ctx.request.headers.get("x-turnstile-token")?.trim(), ctx.ip, { action: "contact", request: ctx.request });
     if (outcome === "not_configured") return NextResponse.json({ error: responses.unknownError }, { status: 503 });
-    if (outcome === "failed") {
-      return NextResponse.json({ error: responses.verificationError, agentRoute: "/api/agent/contact" }, { status: 403 });
-    }
+    if (outcome === "failed") return NextResponse.json({ error: responses.verificationError }, { status: 403 });
     return null;
   },
 
@@ -93,10 +92,11 @@ export const contactFormRoute: SubmissionRoute<ContactFormData> = {
       console.warn("[CONTACT SUBMISSION BLOCKED]", { ip, reason: abuseReason });
       return { response: NextResponse.json({ error: responses.rateLimitError }, { status: 429 }) };
     }
+    // A pseudonym of the IP, email and phone (policies/pseudonym.ts): safe to log.
     const dup = duplicateKey(ip, data.email ?? "", data.phone ?? "");
     const slots = await takeAll(
       [
-        [contactFormLimits.perIp, ip],
+        [contactFormLimits.perIp, ipKey(ctx.ip)],
         [contactFormLimits.duplicate, dup],
       ],
       { releaseOnRefusal: true, now },
@@ -201,16 +201,19 @@ export const agentContactRoute: SubmissionRoute<AgentEnquiry> = {
   },
 
   async screen({ data }, ctx) {
-    const ip = ctx.ip ?? "unknown";
-    // Normalised, so "+91 98765 43210" and "9876543210" count as one sender.
-    const phone = String(data.phone ?? "");
-    const sender = `${String(data.email ?? "").trim().toLowerCase()}:${normaliseIndianMobile(phone) ?? phone.replace(/\D/g, "")}`;
+    const ip = ipKey(ctx.ip);
+    // Normalised, so "+91 98765 43210" and "9876543210" count as one sender;
+    // a pseudonym, so the limiter never holds the email or phone.
+    const sender = senderKey(String(data.email ?? ""), String(data.phone ?? ""));
     const slots = await takeAll([
       [agentContactLimits.perIp, ip],
+      [agentContactLimits.perIpDaily, ip],
       [agentContactLimits.perSender, sender],
+      [agentContactLimits.perSenderDaily, sender],
+      [agentContactLimits.route, ROUTE_BUDGET],
     ]);
     if (!slots.allowed) {
-      console.warn("[AGENT CONTACT RATE LIMITED]", { ip });
+      console.warn("[AGENT CONTACT RATE LIMITED]", { ip: ctx.ip ?? "unknown", sender });
       return {
         response: NextResponse.json(
           { error: responses.rateLimitError, retryAfterSeconds: 600 },

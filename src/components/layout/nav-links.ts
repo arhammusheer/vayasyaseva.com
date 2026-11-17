@@ -118,7 +118,7 @@ export const JOB_GROUPS: Record<Locale, { id: JobGroupId; label: string }[]> = {
   "hi-IN": [
     { id: "helper", label: "हेल्पर, पैकिंग और वेयरहाउस" },
     { id: "machine", label: "मशीन और फ़ोर्कलिफ़्ट" },
-    { id: "iti", label: "ITI ट्रेड" },
+    { id: "iti", label: "आईटीआई ट्रेड" },
     { id: "office", label: "ऑफ़िस और डेटा एंट्री" },
   ],
   "hi-Latn-IN": [
@@ -130,7 +130,7 @@ export const JOB_GROUPS: Record<Locale, { id: JobGroupId; label: string }[]> = {
   "pa-IN": [
     { id: "helper", label: "ਹੈਲਪਰ, ਪੈਕਿੰਗ ਅਤੇ ਵੇਅਰਹਾਊਸ" },
     { id: "machine", label: "ਮਸ਼ੀਨ ਅਤੇ ਫ਼ੋਰਕਲਿਫ਼ਟ" },
-    { id: "iti", label: "ITI ਟ੍ਰੇਡ" },
+    { id: "iti", label: "ਆਈਟੀਆਈ ਟ੍ਰੇਡ" },
     { id: "office", label: "ਦਫ਼ਤਰ ਅਤੇ ਡਾਟਾ ਐਂਟਰੀ" },
   ],
   "kn-IN": [

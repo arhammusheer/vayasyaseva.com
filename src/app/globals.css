@@ -1956,9 +1956,19 @@ a:hover > svg {
     padding-top: 0;
   }
 }
+.jobs-top-apply {
+  margin-top: 28px;
+}
 @media (min-width: 1024px) {
   .jobs-top {
     padding-block: 56px 80px;
+  }
+  .jobs-top-lead {
+    position: sticky;
+    top: 112px;
+  }
+  .jobs-top .jobs-markets-label {
+    margin-top: 16px;
   }
 }
 
@@ -3497,6 +3507,32 @@ a:hover > svg {
   max-width: 1040px;
   overflow-x: auto;
 }
+/* Scroll cue: while a table is wider than its box (phones), its right edge
+   fades out until scrolled to the end, so it doesn't read as cut off. The
+   fade width is a registered property driven by the box's own scroll
+   timeline; a box that doesn't scroll has no active timeline, so the fade
+   stays 0 and nothing is masked. Browsers without scroll timelines get the
+   plain scroll box. */
+@property --scroll-fade {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@keyframes scroll-fade-out {
+  from {
+    --scroll-fade: 48px;
+  }
+  to {
+    --scroll-fade: 0px;
+  }
+}
+@supports (animation-timeline: scroll()) {
+  .wage-table-scroll {
+    mask-image: linear-gradient(to right, #000 calc(100% - var(--scroll-fade)), transparent);
+    animation: scroll-fade-out linear both;
+    animation-timeline: scroll(self inline);
+  }
+}
 .wage-table {
   width: 100%;
   border-collapse: collapse;
@@ -4656,8 +4692,16 @@ a:hover > svg {
     padding: 0;
     border: 0;
   }
+  /* Stacked, the table must fit its box: the desktop cells' nowrap made the
+     longest value ("12% + 0.5% EDLI + 0.5% admin") set the width, and the
+     explanations ran off the screen with it. */
+  .dues-table,
+  .dues-table tbody {
+    display: block;
+  }
   .dues-table td {
     margin-top: 4px;
+    white-space: normal;
   }
   .dues-table tr.dues-explain {
     padding-top: 0;

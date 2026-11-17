@@ -50,13 +50,16 @@ export function JobsPage({ locale }: { locale: Locale }) {
       />
       <Breadcrumbs path={PATH} locale={locale} name={t.breadcrumb} />
       <section className="jobs-top">
-        <div className="site-shell grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1fr] lg:items-end lg:gap-16">
-          <div>
+        {/* Desktop: the heading, lede and Apply stay top-left (sticky) beside
+            the market list; with a dozen markets, bottom-aligning them left a
+            screen of white above the heading. Phone order is unchanged. */}
+        <div className="site-shell grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1fr] lg:items-start lg:gap-16">
+          <div className="jobs-top-lead">
             <h1 className="jobs-title">{t.heading}</h1>
             <p className="jobs-lede">{t.lede}</p>
+            <DecidedApplyLink hubs={hubs} fallback={localePath("/jobs/apply", locale)} label={t.apply} className="jobs-submit jobs-top-apply" />
           </div>
           <div>
-            <DecidedApplyLink hubs={hubs} fallback={localePath("/jobs/apply", locale)} label={t.apply} className="jobs-submit" />
             <p className="jobs-markets-label">{t.markets}</p>
             <MarketList items={markets} side="jobs" surface="jobs-index" className="location-areas jobs-markets" />
           </div>

@@ -140,7 +140,7 @@ try {
   console.log('The applicant notice opens beside the form, and the draft survives a round trip through it');
   // A role link should override a conflicting saved work preference.
   await open('/en-in/jobs/apply'+complete);await tick();await open('/hi-in/jobs/electrician');
-  assert.equal(await page.locator('[data-step=work] .is-selected').textContent(),'ITI ट्रेड');
+  assert.equal(await page.locator('[data-step=work] .is-selected').textContent(),'आईटीआई ट्रेड');
   assert.ok(await page.locator('[data-step=trade] .is-selected').count());
   for(const locale of ['hi-in','hi-latn-in']) {
     await page.evaluate(()=>sessionStorage.clear());await open('/'+locale+'/jobs/apply'+complete);await page.locator('#quick-name').fill('Draft Test');await page.locator('#quick-phone').fill('9999900001');await tick();await page.reload();await page.locator('[data-draft-notice]').waitFor();assert.equal(await page.locator('#quick-name').inputValue(),'Draft Test');

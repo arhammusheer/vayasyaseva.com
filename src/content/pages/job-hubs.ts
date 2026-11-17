@@ -128,7 +128,7 @@ export const jobHubs: CopyIn<JobHubCopy[]> = {
         { role: "warehouse", note: "लोडिंग, पिकिंग और पैकिंग, मेहनत का काम कर सकने वालों के लिए।" },
         { role: "housekeeping", note: "फ़ैक्टरी, ऑफ़िस, कैंटीन और कैंपस।" },
         { role: "data-entry-operator", note: "उन फ़्रेशर के लिए जो कंप्यूटर चला सकें और टाइप कर सकें।" },
-        { role: "iti-trades", note: "ITI फ़्रेशर के लिए: अपने ट्रेड में हेल्पर और ट्रेनी का काम।" },
+        { role: "iti-trades", note: "आईटीआई फ़्रेशर के लिए: अपने ट्रेड में हेल्पर और ट्रेनी का काम।" },
       ],
     },
     {
@@ -144,7 +144,7 @@ export const jobHubs: CopyIn<JobHubCopy[]> = {
         { role: "warehouse", note: "लोडिंग, अनलोडिंग, पिकिंग और डिस्पैच।" },
         { role: "housekeeping", note: "फ़ैक्टरी, ऑफ़िस, कैंटीन और कैंपस।" },
         { role: "forklift-operator", note: "अगर फ़ोर्कलिफ़्ट का अनुभव और ड्राइविंग लाइसेंस है।" },
-        { role: "iti-trades", note: "10वीं के बाद ITI किया है तो: वेल्डर, फ़िटर, इलेक्ट्रीशियन।" },
+        { role: "iti-trades", note: "10वीं के बाद आईटीआई किया है तो: वेल्डर, फ़िटर, इलेक्ट्रीशियन।" },
       ],
     },
     {

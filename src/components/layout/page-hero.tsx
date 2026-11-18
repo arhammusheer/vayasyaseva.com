@@ -26,6 +26,25 @@ export function PageHero({
   className,
 }: PageHeroProps) {
   const dark = tone !== "light";
+  // No aside: on wide screens the lede and footnote take the right column,
+  // level with the H1's last line, so the hero has no empty right half.
+  const split = !aside && Boolean(lede || footnote);
+  const body = (
+    <>
+      {lede && (
+        <p
+          className={cn(
+            "rise rise-2 mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl",
+            split && "xl:mt-0",
+            dark ? "text-background/75" : "text-muted-foreground",
+          )}
+        >
+          {lede}
+        </p>
+      )}
+      {footnote && <div className={cn("rise rise-2 mt-4", split && !lede && "xl:mt-0")}>{footnote}</div>}
+    </>
+  );
   return (
     <section
       data-header-theme={dark ? "dark" : undefined}
@@ -37,26 +56,21 @@ export function PageHero({
       )}
     >
       <div className="site-shell">
+        {crumbs}
         <div
-          className={cn("grid gap-10", aside && "lg:grid-cols-12 lg:items-end")}
+          className={cn(
+            "grid gap-10",
+            aside && "lg:grid-cols-12 lg:items-end",
+            split && "xl:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] xl:items-end xl:gap-x-20 xl:gap-y-0",
+          )}
         >
           <div className={cn(aside && "lg:col-span-8")}>
-            {crumbs}
             <h1 className="rise rise-1 max-w-4xl text-balance text-[2.5rem] font-medium leading-[1.06] tracking-[-0.03em] sm:text-6xl lg:text-[4.5rem]">
               {title}
             </h1>
-            {lede && (
-              <p
-                className={cn(
-                  "rise rise-2 mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl",
-                  dark ? "text-background/75" : "text-muted-foreground",
-                )}
-              >
-                {lede}
-              </p>
-            )}
-            {footnote && <div className="rise rise-2 mt-4">{footnote}</div>}
+            {!split && body}
           </div>
+          {split && <div className="-mt-10 xl:mt-0 xl:pb-2">{body}</div>}
           {aside && <div className="rise rise-3 lg:col-span-4">{aside}</div>}
         </div>
       </div>

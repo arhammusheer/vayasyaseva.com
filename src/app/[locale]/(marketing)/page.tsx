@@ -167,7 +167,14 @@ export default function HomePage() {
         <p className="eyebrow">WHERE WE SUPPLY</p>
         <div>
           <h2>Crews near your site.</h2>
-          <MarketList items={locationHubItems()} side="business" surface="home" className="location-areas" />
+          {/* Names only: each place's line is on its own page, and eight
+              near-identical lines read as a wall of text here. */}
+          <MarketList
+            items={locationHubItems().map((item) => ({ ...item, text: undefined }))}
+            side="business"
+            surface="home"
+            className="location-areas location-grid"
+          />
           <Link href={LOCATIONS_PATH} className="text-link">
             All locations <ArrowRight size={18} aria-hidden="true" />
           </Link>

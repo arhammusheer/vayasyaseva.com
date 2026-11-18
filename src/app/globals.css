@@ -720,8 +720,8 @@ a:hover > svg {
   align-items: center;
 }
 .client-logo {
-  width: 100px;
-  height: 60px;
+  width: 120px;
+  height: 68px;
   object-fit: contain;
   filter: grayscale(1);
 }
@@ -816,32 +816,33 @@ a:hover > svg {
   font-weight: 500;
   margin: 30px 0 20px;
 }
-.round-link {
-  width: 150px;
-  height: 150px;
-  border: 1px solid var(--gold-700);
-  border-radius: 50%;
-  display: flex;
-  flex-direction: column;
+/* The band's one action: an 8px button, dark on the gold band. */
+.band-button {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 12px;
-  color: var(--gold-700);
-  transition:
-    background 180ms,
-    color 180ms;
-  margin-right: 70px;
+  gap: 14px;
+  height: 56px;
+  padding: 0 24px 0 28px;
+  border-radius: 8px;
+  background: var(--neutral-900);
+  color: var(--neutral-0);
+  font-size: 17px;
+  font-weight: 600;
+  white-space: nowrap;
   flex-shrink: 0;
+  transition:
+    background 160ms ease,
+    transform 160ms ease;
 }
-.round-link svg {
-  width: 42px;
-  height: 42px;
-  stroke-width: 1;
+.band-button svg {
+  order: 2;
+  width: 20px;
+  height: 20px;
+  color: var(--gold-400);
 }
-.round-link:hover {
-  background: var(--gold-500);
-  border-color: var(--gold-500);
-  color: var(--neutral-900);
+.band-button:hover {
+  background: var(--neutral-800);
+  transform: translateY(-1px);
 }
 .section-subtle {
   background: var(--subtle);
@@ -938,9 +939,6 @@ a:hover > svg {
   .client-section > div {
     gap: 32px;
   }
-  .round-link {
-    margin-right: 0;
-  }
 }
 @media (max-width: 700px) {
   .site-shell {
@@ -1015,8 +1013,8 @@ a:hover > svg {
   .client-section {
     flex-direction: column;
     align-items: start;
-    gap: 24px;
-    padding-bottom: 40px;
+    gap: 20px;
+    padding-bottom: 28px;
   }
   .client-section > div {
     width: 100%;
@@ -1024,8 +1022,8 @@ a:hover > svg {
     gap: 20px;
   }
   .client-logo {
-    width: 80px;
-    height: 48px;
+    width: 96px;
+    height: 60px;
   }
   .capability-section {
     padding-block: 65px 50px;
@@ -1078,15 +1076,9 @@ a:hover > svg {
   .invitation-inner h2 {
     font-size: 52px;
   }
-  .round-link {
-    width: 105px;
-    height: 105px;
-    gap: 3px;
-    font-size: 14px;
-  }
-  .round-link svg {
-    width: 30px;
-    height: 30px;
+  .band-button {
+    height: 52px;
+    font-size: 16px;
   }
   .detail-list summary {
     font-size: 24px;
@@ -1313,15 +1305,6 @@ a:hover > svg {
   background: var(--gold-500);
   color: var(--neutral-900);
 }
-.round-link {
-  color: var(--neutral-900);
-  border-color: var(--neutral-900);
-}
-.round-link:hover {
-  background: var(--neutral-900);
-  border-color: var(--neutral-900);
-  color: var(--gold-500);
-}
 /* Footer: one dark surface, two rows, one rule. */
 .site-footer {
   background: var(--neutral-950);
@@ -1477,13 +1460,24 @@ a:hover > svg {
      the base .footer-main rule, which would otherwise win. */
   .footer-main {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 40px 24px;
+    gap: 32px 24px;
   }
   .footer-about {
     grid-column: 1 / -1;
   }
   .footer-main nav a {
     white-space: normal;
+  }
+  /* A third column (Resources) runs full width in two columns of links,
+     so the footer is not one long list on a phone. */
+  .footer-main nav:nth-of-type(3) {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 12px 24px;
+  }
+  .footer-main nav:nth-of-type(3) .footer-label {
+    grid-column: 1 / -1;
   }
   .header-inner {
     height: 58px;
@@ -1504,10 +1498,13 @@ a:hover > svg {
     width: 36px;
     height: 40px;
   }
+  /* Phones: the hero ends under its buttons (no empty strip of photo),
+     with the photo showing above the headline. */
   .home-hero {
     margin-top: -58px;
-    padding-top: 58px;
-    height: 100svh;
+    padding-top: 200px;
+    height: auto;
+    min-height: 0;
   }
   .site-footer {
     padding-top: 48px;
@@ -1779,6 +1776,16 @@ a:hover > svg {
 }
 .jobs-submit:disabled {
   opacity: 0.6;
+}
+/* Phones: once an option is picked, a multi-choice step's Next stays in reach
+   while its long option list scrolls (sticky inside its own section). */
+@media (max-width: 700px) {
+  .quick-next:not(:disabled) {
+    position: sticky;
+    bottom: 12px;
+    z-index: 2;
+    box-shadow: 0 8px 24px -8px rgba(15, 23, 42, 0.35);
+  }
 }
 .jobs-error,
 .jobs-errors {
@@ -3318,13 +3325,6 @@ a:hover > svg {
   }
 }
 
-/* The CTA circle holds "Request a crew": centred, wrapping inside the ring. */
-.round-link span {
-  max-width: 80%;
-  text-align: center;
-  line-height: 1.2;
-}
-
 /* Home FAQ: a link after an answer (not part of the FAQPage text). */
 .faq-prose .text-link {
   margin-top: 12px;
@@ -3650,6 +3650,11 @@ a:hover > svg {
 .wage-note + .wage-note {
   margin-top: 6px;
 }
+/* LWF: the cited titles are whole sentences, so they wrap inside the column. */
+.lwf-state .wage-source a {
+  display: inline;
+  white-space: normal;
+}
 .wage-sources {
   margin-top: 16px;
   padding: 0;
@@ -3756,8 +3761,9 @@ a:hover > svg {
   line-height: 1.6;
   color: var(--muted-foreground);
 }
+/* The stale-rates note: plain emphasis, not an orange alarm under the H1. */
 .wage-checked strong {
-  color: var(--warning);
+  color: var(--foreground);
   font-weight: 600;
 }
 .wage-checked a {
@@ -4770,6 +4776,15 @@ a:hover > svg {
 .ctx-b {
   display: flex;
   flex-direction: column;
+}
+/* Home: the market names in two columns on wider screens, one on phones
+   (order still set by the context). */
+@media (min-width: 701px) {
+  .location-grid.ctx-b {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 32px;
+  }
 }
 
 /* "Jobs in Haridwar · More places" on jobs pages with no market of their own. */

@@ -176,14 +176,14 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     breadcrumb: "नौकरी",
     eyebrow: "नौकरी",
     heading: "फ़ैक्टरी और वेयरहाउस का काम ढूँढें।",
-    lede: "फ़ैक्टरी, पैकिंग, वेयरहाउस, हाउसकीपिंग और ITI का काम।",
+    lede: "फ़ैक्टरी, पैकिंग, वेयरहाउस, हाउसकीपिंग और आईटीआई का काम।",
     apply: "आवेदन करें",
     markets: "आप कहाँ काम करना चाहते हैं?",
     form: {
       steps: {
         files: {
           title: "फ़ोटो या कागज़ जोड़ें",
-          hint: "सर्टिफ़िकेट, ITI, लाइसेंस, सैलरी स्लिप या रिज़्यूमे।",
+          hint: "सर्टिफ़िकेट, आईटीआई, लाइसेंस, सैलरी स्लिप या रिज़्यूमे।",
           warning: "आधार या बैंक के कागज़ न भेजें।",
         },
         phone: {
@@ -235,7 +235,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       { title: "इलेक्ट्रीशियन", role: "electrician" },
       { title: "वेल्डर", role: "welder" },
       { title: "फ़िटर", role: "fitter" },
-      { title: "दूसरे ITI ट्रेड", role: "iti-trades" },
+      { title: "दूसरे आईटीआई ट्रेड", role: "iti-trades" },
       { title: "डेटा एंट्री ऑपरेटर", role: "data-entry-operator" },
     ],
     who: "कौन आवेदन कर सकता है",
@@ -318,14 +318,14 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     breadcrumb: "ਨੌਕਰੀਆਂ",
     eyebrow: "ਨੌਕਰੀ",
     heading: "ਫ਼ੈਕਟਰੀ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ ਲੱਭੋ।",
-    lede: "ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ, ਵੇਅਰਹਾਊਸ, ਹਾਊਸਕੀਪਿੰਗ ਅਤੇ ITI ਦਾ ਕੰਮ।",
+    lede: "ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ, ਵੇਅਰਹਾਊਸ, ਹਾਊਸਕੀਪਿੰਗ ਅਤੇ ਆਈਟੀਆਈ ਦਾ ਕੰਮ।",
     apply: "ਅਪਲਾਈ ਕਰੋ",
     markets: "ਤੁਸੀਂ ਕਿੱਥੇ ਕੰਮ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?",
     form: {
       steps: {
         files: {
           title: "ਫ਼ੋਟੋ ਜਾਂ ਕਾਗਜ਼ ਜੋੜੋ",
-          hint: "ਸਰਟੀਫ਼ਿਕੇਟ, ITI, ਲਾਇਸੈਂਸ, ਸੈਲਰੀ ਸਲਿੱਪ ਜਾਂ ਰਿਜ਼ਿਊਮ।",
+          hint: "ਸਰਟੀਫ਼ਿਕੇਟ, ਆਈਟੀਆਈ, ਲਾਇਸੈਂਸ, ਸੈਲਰੀ ਸਲਿੱਪ ਜਾਂ ਰਿਜ਼ਿਊਮ।",
           warning: "ਆਧਾਰ ਜਾਂ ਬੈਂਕ ਦੇ ਕਾਗਜ਼ ਨਾ ਭੇਜੋ।",
         },
         phone: {
@@ -377,7 +377,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       { title: "ਇਲੈਕਟ੍ਰੀਸ਼ੀਅਨ", role: "electrician" },
       { title: "ਵੈਲਡਰ", role: "welder" },
       { title: "ਫ਼ਿਟਰ", role: "fitter" },
-      { title: "ਹੋਰ ITI ਟ੍ਰੇਡ", role: "iti-trades" },
+      { title: "ਹੋਰ ਆਈਟੀਆਈ ਟ੍ਰੇਡ", role: "iti-trades" },
       { title: "ਡਾਟਾ ਐਂਟਰੀ ਆਪਰੇਟਰ", role: "data-entry-operator" },
     ],
     who: "ਕੌਣ ਅਪਲਾਈ ਕਰ ਸਕਦਾ ਹੈ",

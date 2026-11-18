@@ -477,7 +477,7 @@ export function QuickApply({
               />
             )}
             {step.kind === "multi" && (
-              <button type="button" className="jobs-submit mt-6" disabled={locked || values.length === 0} onClick={() => confirm(step)}>
+              <button type="button" className="jobs-submit quick-next mt-6" disabled={locked || values.length === 0} onClick={() => confirm(step)}>
                 {t.next}
               </button>
             )}

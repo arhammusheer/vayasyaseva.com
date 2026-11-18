@@ -28,10 +28,10 @@ const SERVICE_HREFS = ["/services/factory-labour", "/services/loading-unloading-
  * The page's own words in each language a location page can have. The
  * service landings and /faq are English, so their links say so elsewhere.
  */
-const UI: Partial<Record<Locale, { crew: string; seeker: string; clients: string; servicesLabel: string; services: readonly [string, string, string]; faqHeading: string; moreFaqs: string; and: string }>> = {
-  "en-IN": { crew: "Request a crew", seeker: "Looking for work?", clients: "Our experience includes work with", servicesLabel: "Crews we supply", services: ["Factory labour", "Loading and unloading", "Housekeeping and grounds"], faqHeading: "Questions.", moreFaqs: "More questions", and: "and" },
-  "hi-IN": { crew: "कामगार माँगें", seeker: "काम चाहिए?", clients: "हमारे अनुभव में इनके साथ काम शामिल है", servicesLabel: "हमारी टीमें (अंग्रेज़ी में)", services: ["फ़ैक्टरी लेबर", "लोडिंग और अनलोडिंग", "हाउसकीपिंग और ग्राउंड्स"], faqHeading: "सवाल।", moreFaqs: "और सवाल (English)", and: "और" },
-  "hi-Latn-IN": { crew: "Workers maangein", seeker: "Kaam chahiye?", clients: "Hamare experience mein inke saath kaam", servicesLabel: "Hamari teams (English mein)", services: ["Factory labour", "Loading aur unloading", "Housekeeping aur grounds"], faqHeading: "Sawaal.", moreFaqs: "Aur sawaal (English)", and: "aur" },
+const UI: Partial<Record<Locale, { crew: string; seeker: string; clients: string; servicesLabel: string; services: readonly [string, string, string]; faqHeading: string; moreFaqs: string; and: string; areasLabel: string }>> = {
+  "en-IN": { areasLabel: "Areas we cover", crew: "Request a crew", seeker: "Looking for work?", clients: "Our experience includes work with", servicesLabel: "Crews we supply", services: ["Factory labour", "Loading and unloading", "Housekeeping and grounds"], faqHeading: "Questions.", moreFaqs: "More questions", and: "and" },
+  "hi-IN": { areasLabel: "इलाके जहाँ हम काम करते हैं", crew: "कामगार माँगें", seeker: "काम चाहिए?", clients: "हमारे अनुभव में इनके साथ काम शामिल है", servicesLabel: "हमारी टीमें (अंग्रेज़ी में)", services: ["फ़ैक्टरी लेबर", "लोडिंग और अनलोडिंग", "हाउसकीपिंग और ग्राउंड्स"], faqHeading: "सवाल।", moreFaqs: "और सवाल (English)", and: "और" },
+  "hi-Latn-IN": { areasLabel: "Ilaake jahan hum kaam karte hain", crew: "Workers maangein", seeker: "Kaam chahiye?", clients: "Hamare experience mein inke saath kaam", servicesLabel: "Hamari teams (English mein)", services: ["Factory labour", "Loading aur unloading", "Housekeeping aur grounds"], faqHeading: "Sawaal.", moreFaqs: "Aur sawaal (English)", and: "aur" },
 };
 const uiIn = (locale: Locale) => UI[locale] ?? UI["en-IN"]!;
 
@@ -40,21 +40,20 @@ export function locationMetadata(p: LocationCopy, locale: Locale = "en-IN") {
   return pageMetadata({ title: t.metaTitle, description: t.description, alternates: { canonical: localePath(pathOf(p), locale) }, locale });
 }
 
-/** "A, B and C" at the paragraph's {areas}: a link where the area has a page, else its name. */
+/** "A, B and C" at the paragraph's {areas}: names only; the ones with a page are linked in the row below. */
 function Areas({ areas, and }: { areas: NonNullable<LocationCopy["areas"]>; and: string }) {
   const shown = areas.filter((a) => !a.href || linkable(a.href, "en-IN"));
   return shown.map((a, i) => (
     <span key={a.href ?? a.name}>
       {i > 0 && (i === shown.length - 1 ? ` ${and} ` : ", ")}
-      {a.href ? (
-        <Link href={a.href} className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700">
-          {a.name}
-        </Link>
-      ) : (
-        a.name
-      )}
+      {a.name}
     </span>
   ));
+}
+
+/** The areas with a page of their own, as a row of links (not underlined words inside the paragraph). */
+function areaLinks(areas: LocationCopy["areas"]) {
+  return (areas ?? []).filter((a): a is typeof a & { href: string } => Boolean(a.href) && linkable(a.href!, "en-IN"));
 }
 
 /**
@@ -154,7 +153,21 @@ export function LocationPage({ page: source, locale = "en-IN" }: { page: Locatio
               {page.areas && <Areas areas={page.areas} and={ui.and} />}
               {after}
             </p>
-            <nav aria-label={ui.servicesLabel} className="mt-10">
+            {areaLinks(page.areas).length > 0 && (
+              <nav aria-label={ui.areasLabel} className="mt-10">
+                <p className="text-sm text-muted-foreground">{ui.areasLabel}</p>
+                <ul className="link-row mt-2">
+                  {areaLinks(page.areas).map((a) => (
+                    <li key={a.href}>
+                      <Link href={a.href} className="text-link">
+                        {a.name} <ArrowRight size={18} aria-hidden="true" />
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            )}
+            <nav aria-label={ui.servicesLabel} className="mt-8">
               <p className="text-sm text-muted-foreground">{ui.servicesLabel}</p>
               <ul className="link-row mt-2">
                 {SERVICE_HREFS.map((href, i) => (

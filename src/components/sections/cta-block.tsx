@@ -64,7 +64,7 @@ export function CtaBlock({
             {t.heading[1]}
           </h2>
         </div>
-        <Link href={href} className="round-link" aria-label={t.aria}>
+        <Link href={href} className="band-button" aria-label={t.aria}>
           <ArrowUpRight aria-hidden="true" />
           <span>{t.link}</span>
         </Link>

@@ -40,42 +40,32 @@ function statePage(slug: string) {
   return linkable(path, "en-IN") ? path : undefined;
 }
 
+/**
+ * One state under its own heading (for "labour welfare fund <state>"
+ * searches). The table above already gives who it covers, both shares and
+ * when it is due, so the section adds only what the table can't: the
+ * state's extra notes, its cited documents and its two links on one row.
+ */
 function StateSection({ fund }: { fund: StateFund }) {
   const { row, due } = fund;
   const wagePage = wageStatePath(fund.slug);
   const full = statePage(fund.slug);
+  // "When" is in the table's due column where the state has a due date.
+  const extras = row.explain?.filter(([label]) => !(due && label === "When")) ?? [];
   return (
     <section id={fund.slug} className="wage-split lwf-state">
       <h2 className="wage-h2">{l.state.heading(fund.name)}</h2>
       <div className="wage-prose">
-        <dl className="lwf-facts">
-          <div>
-            <dt>{l.state.covers}</dt>
-            <dd>{row.applies}</dd>
-          </div>
-          <div>
-            <dt>{l.state.worker}</dt>
-            <dd>{share(fund, row.worker)}</dd>
-          </div>
-          <div>
-            <dt>{l.state.employer}</dt>
-            <dd>{row.employer}</dd>
-          </div>
-          {due && !row.explain?.some(([label]) => label === "When") && (
-            <div>
-              <dt>{l.state.due}</dt>
-              <dd>
-                {due.when}, {due.detail}
-              </dd>
-            </div>
-          )}
-          {row.explain?.map(([label, text]) => (
-            <div key={label}>
-              <dt>{label}</dt>
-              <dd>{text}</dd>
-            </div>
-          ))}
-        </dl>
+        {extras.length > 0 && (
+          <dl className="lwf-facts">
+            {extras.map(([label, text]) => (
+              <div key={label}>
+                <dt>{label}</dt>
+                <dd>{text}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
         <p className="wage-source">
           {l.state.sources}:{" "}
           {fund.sources.map((s, i) => (
@@ -89,20 +79,18 @@ function StateSection({ fund }: { fund: StateFund }) {
           ))}
           .
         </p>
-        {full && (
-          <p>
+        <p className="link-row">
+          {full && (
             <Link href={full} className="text-link">
               {l.state.full(fund.name)} <ArrowRight size={18} aria-hidden="true" />
             </Link>
-          </p>
-        )}
-        {linkable(wagePage, "en-IN") && (
-          <p>
+          )}
+          {linkable(wagePage, "en-IN") && (
             <Link href={wagePage} className="text-link">
               {l.state.wages(fund.name)} <ArrowRight size={18} aria-hidden="true" />
             </Link>
-          </p>
-        )}
+          )}
+        </p>
       </div>
     </section>
   );

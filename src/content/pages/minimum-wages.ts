@@ -468,6 +468,8 @@ export const wageUi = {
     /** Under "Skill" in a zoned table: what the two figures in each cell are. */
     units: "a month, then a day",
     unitsDerived: "a month, then a day (÷ 26)",
+    /** A zoned table whose notification sets no daily rate. */
+    unitsMonth: "a month",
     notSet: "Not set",
     breakdown: "Show breakdown",
     source: (date: string, kind: string, number: string) => `In force from ${date}. ${kind} ${number}.`,

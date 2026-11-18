@@ -176,6 +176,9 @@ function RateTable({ state, table }: { state: WageState; table: WageTable }) {
   const derived = table.daily === "derived";
   const caption = <caption className="sr-only">{x.table.caption(table.title, state.name, formatDate(table.effectiveFrom))}</caption>;
   const day = (v: number | null) => (v === null ? <span className="wage-none">{x.table.notSet}</span> : formatRupees(v));
+  // A notification with no daily rate at all (Andhra Pradesh) gets no
+  // "Per day" column: a column of "Not set" is noise.
+  const hasDay = table.rates.some((r) => r.daily !== null);
   return (
     <div className="wage-table-block" id={table.id}>
       <h3>{table.title}</h3>
@@ -187,7 +190,7 @@ function RateTable({ state, table }: { state: WageState; table: WageTable }) {
               <tr>
                 <th scope="col">
                   {x.table.skill}
-                  <span className="wage-th-unit">{derived ? x.table.unitsDerived : x.table.units}</span>
+                  <span className="wage-th-unit">{!hasDay ? x.table.unitsMonth : derived ? x.table.unitsDerived : x.table.units}</span>
                 </th>
                 {table.zones.map((z) => (
                   <th scope="col" key={z.id}>
@@ -205,7 +208,7 @@ function RateTable({ state, table }: { state: WageState; table: WageTable }) {
                     return (
                       <td key={z.id}>
                         <strong>{formatRupees(r.monthly)}</strong>
-                        <span className="wage-day">{day(r.daily)}</span>
+                        {hasDay && <span className="wage-day">{day(r.daily)}</span>}
                       </td>
                     );
                   })}
@@ -220,7 +223,7 @@ function RateTable({ state, table }: { state: WageState; table: WageTable }) {
               <tr>
                 <th scope="col">{x.table.skill}</th>
                 <th scope="col">{x.table.month}</th>
-                <th scope="col">{derived ? x.table.dayDerived : x.table.day}</th>
+                {hasDay && <th scope="col">{derived ? x.table.dayDerived : x.table.day}</th>}
                 {split && (
                   <>
                     <th scope="col" className="col-split is-quiet">{table.basicLabel}</th>
@@ -238,7 +241,7 @@ function RateTable({ state, table }: { state: WageState; table: WageTable }) {
                     <td>
                       <strong>{formatRupees(r.monthly)}</strong>
                     </td>
-                    <td>{day(r.daily)}</td>
+                    {hasDay && <td>{day(r.daily)}</td>}
                     {split && (
                       <>
                         <td className="col-split is-quiet">{formatRupees(r.basic)}</td>

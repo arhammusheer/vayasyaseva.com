@@ -50,7 +50,7 @@ Every offer says Vayasya Seva charges no fee.
 
 ## The "Offer job" button in Twenty
 
-A Twenty workflow, made once in the UI (Workflows, + New):
+A Twenty workflow, made in the UI (v2.43 lets only a signed-in user edit or activate a workflow's steps; the API key cannot). Live since 19 November 2026 as:
 
 1. Trigger: **Manual**, object **People**, availability **Bulk** (one run for the selection).
 2. Action **Form**: one field, type a record of **Crew requests**, label "Crew request".
@@ -62,7 +62,7 @@ Twenty forms cannot make a field required: a run with no crew request picked mak
 
 ## Going live
 
-Done on 19 November 2026: steps 1 (with the record pages laid out by `--reset-view`), 3 and 4 (`--enable-crew` on), and step 2's submission (message ids 46002 to 46013, pending Meta). Left: the approved ids into `CREW_TEMPLATES` and a deploy, the "Offer job" workflow, and the test on a staff number.
+Done on 19 November 2026: steps 1 (with the record pages laid out by `--reset-view`), 3 and 4 (`--enable-crew` on), and step 2's submission (message ids 46002 to 46013, pending Meta). The "Offer job" workflow is built and active (Workflows, "Offer job": the button shows in the People view's action bar when workers are selected). Left: the approved ids into `CREW_TEMPLATES` and a deploy, and the test on a staff number.
 
 1. Twenty: `node integrations/twenty/setup.mts --dry-run`, then without `--dry-run`. New views appear. Views that already exist are laid out again only on request: `--reset-view="opportunity/Opportunity Record Page Fields"` (repeatable) for one, `--reset-layout` for all (staff's changes to views are lost).
 2. Templates: `node integrations/windmill/whatsapp-templates.mts --create --only=crew` submits them to Meta (Utility). When approved, put each Fast2SMS message id in `CREW_TEMPLATES`. Meta may file the offer as Marketing; if it does, it still sends, at a higher price, and workers who opted out of marketing will not get it.

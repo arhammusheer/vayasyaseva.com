@@ -359,7 +359,8 @@ async function main() {
             if (!DRY_RUN) await updateOptions(gql, have, f.options);
           }
           // Labels and descriptions follow the model (staff read them in Twenty).
-          if (have.label !== f.label || (f.description ?? null) !== (have.description ?? null)) {
+          // Twenty keeps a missing description as "": the same as none.
+          if (have.label !== f.label || (f.description || null) !== (have.description || null)) {
             step(`relabelling ${spec.nameSingular}.${f.name} as "${f.label}"`);
             if (!DRY_RUN) {
               await gql("/metadata", `mutation($input: UpdateOneFieldMetadataInput!) { updateOneField(input: $input) { id } }`, {

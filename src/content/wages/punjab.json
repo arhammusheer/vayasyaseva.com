@@ -7,7 +7,7 @@
   "basis": "Until 2025 Punjab adjusted its rates with the consumer price index twice a year, from 1 March and 1 September (the department's own compilation of adjustments, 1995 to 2025). The 1 May 2026 notification under the Code on Wages resets the base rates and leaves later adjustments to 'such intervals and in such manner as prescribed by the Punjab Government' (note 10). Rule 5 of the draft Code on Wages (Punjab) Rules, 2026 (notification Labour-Lab0MISC/193/2025-42/1080 of 29 December 2025) has the Labour Commissioner review and adjust the rates twice a year, before 1 April and before 1 October. The rules were still a draft when checked, so no revision is treated as overdue; 1 April 2027 is the next date under the draft."
  },
  "checked": {
-  "on": "2026-10-17"
+  "on": "2026-11-19"
  },
  "sources": [
   {
@@ -391,6 +391,7 @@
   }
  ],
  "verification": [
+  "2026-11-19: hand check after the monitor's first listing read (4 November 2026) counted every link as new. pblabour.gov.in home page: its only document matching the monitor's wage pattern is the cited 1 May 2026 notification (8ec9bd9d..._Basic Minimum rates of wages.pdf); of its other 20 documents none is a wage notification, adjustment or final Code on Wages (Punjab) Rules (the brick-kiln piece rates of May 2026 are still linked). The 1995-2025 compilation is no longer linked from the home page; the file still loads. The three cited files match the sha256 in this file. SGCMS's newest Punjab wage post is the May 2026 one. The rules are still a draft, so no revision is treated as overdue.",
   "2026-10-17: pblabour.gov.in home page (the department's notifications block; /Profile/Notification renders its list by script and shows no documents to a plain fetch) links 'Notification on No. Labour-Lab0MIWA/1/2021-4L (260032)/166.-In Dated 1st MAY,2026 Notification Regarding Bye Basic Minimum rates of wages w.e.f 1st May 2026', the brick-kiln piece rates from the same date, and the 1995-2025 compilation. No later wage notification or adjustment was listed.",
   "2026-10-17: 8ec9bd9d..._Basic Minimum rates of wages.pdf, Punjab Government Gazette (Extraordinary), 1 May 2026, 3 pages, Code on Wages s. 8(3), signed Manvesh Singh Sidhu, Secretary, Labour. The rate tables are images; read at 260 dpi. Per month / per day / per hour: unskilled 13486 / 518.69 / 64.83; semi-skilled 14383 / 553.19 / 69.14; skilled 15414 / 592.84 / 74.10; highly skilled 16601 / 638.50 / 79.81. Staff Category A 19431 / 747.34 / 93.41; B 17510 / 673.46 / 84.18; C 15786 / 607.15 / 75.89; D 14406 / 554.07 / 69.25. Attached agricultural labour 90973.28 a year with meals; other agricultural labour 486.588 a day with meals, 540.983 without.",
   "2026-10-17: Notes in the notification: rates are basic rates that may not be split into allowances (1, 9); full neutralisation of CPI movement, adjustment as prescribed under the Code (1, 10); daily rate is the monthly rate / 26 and includes the weekly rest day, but a day's deduction for absence is monthly / 30 (7, 16); the principal employer is responsible for contractors paying these rates (5, 11); 30% / 10% less in hotels, restaurants, tea stalls, halwais, ahatas and households where meals and lodging are given (13); 8-hour normal day (15).",

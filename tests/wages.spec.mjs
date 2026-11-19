@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { importTs } from '../scripts/lib/register-ts.mjs';
 
-const { wageStates, wageStatus, lastCheck, parseListingChecks, withListingChecks, wageRecords, dailyFromMonthly, formatRupees, headlineRate, headlineRange, checkedByLine, unpublishedRevisions, formatSize, employmentFigure, vdaPoints } = await importTs('src/content/wages/index.ts');
+const { wageStates, wageStatus, lastCheck, titleDate, parseListingChecks, withListingChecks, wageRecords, dailyFromMonthly, formatRupees, headlineRate, headlineRange, checkedByLine, unpublishedRevisions, formatSize, employmentFigure, vdaPoints } = await importTs('src/content/wages/index.ts');
 const { wageStateSchema, wageIntegrityProblems } = await importTs('src/content/wages/schema.ts');
 const { pathAliases, statusOf } = await importTs('src/content/registry/index.ts');
 
@@ -44,6 +44,50 @@ test("the monitor's clean listing read counts as a check: no cliff while it keep
   assert.equal(wageStatus(read, '2026-11-13').checkedOn, '2026-11-12');
   assert.equal(wageStatus(read, '2026-11-26').stale, false);
   assert.equal(wageStatus(read, '2026-11-27').stale, true, 'the monitor stops counting (blocked or down): 14 days from its last clean read');
+});
+
+test('titles carry the month only while the last check is this month, and never lose the year', () => {
+  // Delhi's case: revision expected 1 Oct, unpublished; checked by hand on 29 Oct.
+  const s = withDates('2026-10-01', '2026-10-29');
+  assert.deepEqual(titleDate(s, '2026-10-30'), { year: '2026', month: 'October 2026' });
+  assert.deepEqual(titleDate(s, '2026-11-02'), { year: '2026', month: null }, 'a new month: the year, not last month');
+  assert.equal(wageStatus(s, '2026-11-13').stale, true);
+  assert.deepEqual(titleDate(s, '2026-11-13'), { year: '2026', month: null }, 'stale: the year stays');
+  const read = { ...s, listingCheck: { on: '2026-11-19', datasetCheckedOn: '2026-10-29' } };
+  assert.deepEqual(titleDate(read, '2026-11-19'), { year: '2026', month: 'November 2026' }, "the monitor's clean read moves the month on");
+  assert.deepEqual(titleDate(withDates('2026-10-01', '2026-12-31'), '2027-01-05'), { year: '2026', month: null }, 'the year of the last check, not of today');
+});
+
+test("every state title fits seo-check's 55 characters in every month, and with the year alone", async () => {
+  // Punjab's "(India)" (1 Nov 2026) pushed "/month" past 55 once the title carried "November 2026".
+  const { getWageStateCopy, wageHubCopy } = await importTs('src/content/pages/minimum-wages.ts');
+  const { wageVdaCopy } = await importTs('src/content/pages/wage-vda.ts');
+  const { formatMonth } = await importTs('src/content/wages/index.ts');
+  const months = Array.from({ length: 12 }, (_, i) => formatMonth(`2026-${String(i + 1).padStart(2, '0')}-01`));
+  const tooLong = [];
+  for (const state of wageStates) {
+    const copy = getWageStateCopy(state.state);
+    if (!copy) continue;
+    for (const title of [copy.title('2026', null), ...months.map((m) => copy.title('2026', m))]) if (title.length > 55) tooLong.push(`${state.state}: ${title} (${title.length})`);
+  }
+  for (const title of [wageHubCopy.title('2026'), wageVdaCopy.title('2026')]) if (title.length > 55) tooLong.push(`${title} (${title.length})`);
+  assert.deepEqual(tooLong, []);
+});
+
+test('a quashed notification is marked, dated within the check, and never quoted as the rate', async () => {
+  const ka = wageStates.find((s) => s.state === 'karnataka');
+  const quashed = ka.employments.groups.filter((g) => g.quashed).map((g) => g.id).sort();
+  assert.deepEqual(quashed, ['garments', 'silk'], 'the January 2023 notifications quashed on 3 June 2026, with no earlier rates entered yet');
+  const restored = ka.employments.groups.filter((g) => g.restored).map((g) => g.id).sort();
+  assert.deepEqual(restored, ['dyeing', 'spinning'], 'the 30 December 2017 notifications that apply again');
+  // The 2017 scale plus the 2026-27 VDA (3,791 points x 4 paise x 30): the same totals as the 2017 shops notification.
+  const spin = ka.employments.groups.find((g) => g.id === 'spinning');
+  assert.deepEqual(spin.rows.find((r) => r.label.startsWith('Unskilled')).values, [16137.03, 15585.23, 15059.7, 14559.2]);
+  const late = { ...ka, employments: { ...ka.employments, groups: ka.employments.groups.map((g) => (g.id === 'garments' ? { ...g, quashed: { ...g.quashed, on: '2099-01-01' } } : g)) } };
+  assert.ok(wageIntegrityProblems(late).some((p) => p.includes('garments: quashed after the check')));
+  // The copy builds without quoting a quashed group's figures (listed() throws if it does).
+  const { getWageStateCopy } = await importTs('src/content/pages/minimum-wages.ts');
+  assert.ok(getWageStateCopy('karnataka'));
 });
 
 test('a listing check counts only against the dataset it was compared with, after the hand check, and not in the future', () => {

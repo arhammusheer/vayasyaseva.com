@@ -7,7 +7,7 @@
   "basis": "Variable dearness allowance for the scheduled employments is adjusted every 1 April and 1 October, from the average consumer price index of July to December and January to June. The rates for engineering units with 50 or more workers are interim relief, in force until further orders. The state notified the Uttarakhand Code on Wages Rules, 2026 on 25 August 2026, so new rates may also come under the Code."
  },
  "checked": {
-  "on": "2026-10-17"
+  "on": "2026-11-19"
  },
  "sources": [
   {
@@ -1561,6 +1561,7 @@
   }
  ],
  "verification": [
+  "2026-11-19: hand check after the monitor's first listing read (4 November 2026) counted every link as new. labour.uk.gov.in 'Minimum Wages Notification' (30 links: the April 2025 uploads of the employment-wise notifications and 'Uttarakhand Minimum Wages 2026' of 29 April 2026), 'Circulars / Notifications' (30 links) and the home page notices (14 wage links): nothing uploaded after 17 October 2026; the newest are the October 2026 DA orders already cited (agriculture and engineering of 16 October, other employments of 17 October). The 24 cited files match the sha256 in this file. SGCMS's newest Uttarakhand wage post is the October 2026 one.",
   "2026-10-16: labour.uk.gov.in 'Minimum Wages Notification' list shows 'Uttarakhand Minimum Wages 2026', dated 29/04/2026, as its newest entry; the 'Circulars / Notifications' list (last updated 24 September 2026) shows the DA orders for other employments dated 23-24/04/2026 and no later minimum wage or DA order.",
   "2026-10-16: 202605021122219431.pdf (5 pages, scanned Hindi, read by eye). Order 391604/VIII-1/26-228(Shram)/2001, Dehradun, 29 April 2026, digitally signed by Dr. Sridhar Babu Addanki, Secretary: interim minimum wages for workers in engineering units and industries employing 50 or more workers, basic wage with DA merged, effective 01.04.2026: unskilled 13,800; semi-skilled 15,000; skilled 16,900. Page 5: amendment 510/VIII-1/2026-228(Shram)/2001 dated 30 April 2026 reads the semi-skilled figure as 15,100. The order also records that the Code on Wages, 2019 came into force on 21.11.2025.",
   "2026-10-16, re-read: 202605021122219431.pdf page 1, para 1 names the scope as 'अभियन्त्रण इकाईयों तथा उद्योगों' (engineering units and industries, the 2000 engineering notification 2492). Page 3, para 6: 'राज्य में गैर अभियन्त्रण इकाईयों हेतु वर्ष 2024 में यह पुनरीक्षण किया जा चुका है। अतः वर्तमान पुनरीक्षण अभियन्त्रण इकाईयों (50 से अधिक कर्मकार नियोजित करने वाले) हेतु किया जाए।' So the interim rates cover engineering units and engineering industries with 50 or more workers only; non-engineering units stay on the 2024 notifications. Para 7 table: unskilled 13,800, semi-skilled 15,000, skilled 16,900, basic with DA merged, from 01.04.2026.",

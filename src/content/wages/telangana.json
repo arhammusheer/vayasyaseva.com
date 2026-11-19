@@ -7,10 +7,10 @@
   "missed": [
    "2026-10-01"
   ],
-  "basis": "G.O.Ms. No. 6 of 30 May 2026 has the Commissioner of Labour declare a cost of living allowance every 1 April and 1 October, from the state consumer price index for the half-years ending December and June. None had been declared under the order when we checked on 27 October 2026, including the one due from 1 October 2026."
+  "basis": "G.O.Ms. No. 6 of 30 May 2026 has the Commissioner of Labour declare a cost of living allowance every 1 April and 1 October, from the state consumer price index for the half-years ending December and June. None had been declared under the order when we checked on 19 November 2026, including the one due from 1 October 2026."
  },
  "checked": {
-  "on": "2026-10-27"
+  "on": "2026-11-19"
  },
  "sources": [
   {
@@ -275,6 +275,7 @@
  },
  "history": [],
  "verification": [
+  "2026-11-19: hand check after the monitor's first listing read (4 November 2026) counted every link as new. labour.telangana.gov.in/MinRatesWages.do has 1,218 links: 1,183 wage sheets in 15 period folders from 1 April 2017 to 1 April 2026, the newest still 1 April to 30 September 2026 (74 sheets), plus 35 CPI gazettes, guideline G.O.s, contract labour VDA circulars (newest 1 October 2024 to 31 March 2025) and notes; there is no folder for 1 October 2026, and 451 older links (1 October 2020 to 1 October 2023) return 404. The home page's newest wage item is the minutes of the June 2026 consultations on the draft state rules; no final Code on Wages rules. SGCMS's newest Telangana wage post is G.O. 6 (1 June 2026). G.O. 6 re-downloaded with matching sha256. Nothing changes; the 1 October 2026 cost of living allowance is still not declared.",
   "2026-10-27: G.O.Ms. No. 6, LET&F (Lab-I), 30 May 2026, read from the United Consultancy copy (252,621 bytes, 10 pages, text layer). SHA-256 9607b5ae…01b2 matches the file the Government Orders portal (goir.telangana.gov.in, department LETF, type MS, 2026) serves. Figures read from Table 1: per month, Zone I / II / III: unskilled 16,000 / 15,000 / 14,000; semi-skilled 17,000 / 16,000 / 15,000; skilled 18,500 / 17,500 / 16,500; highly skilled 20,000 / 19,000 / 18,000.",
   "2026-10-27: Para 1(c): basic rates linked to the consumer price index at 443 points (2001 = 100); ₹33.86 a month per point above 443; cost of living allowance declared every 1 April and 1 October. Para 5: monthly ÷ 26 for a day's wage, rest day included; trainees 75%, not below unskilled; overtime and rest-day work at double rate; pay rounded to the nearest 50 paise; principal employer responsible for a contractor's workers.",
   "2026-10-27: Para 5(4) and (10): where existing notified wages are higher, a 10% enhancement over them applies, and anyone already paid more keeps it. The order does not say whether 'existing wages' means basic or basic plus VDA under the old notifications, or which old category maps to which skill level, so the page does not work out the 10%.",

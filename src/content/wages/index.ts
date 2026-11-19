@@ -151,6 +151,21 @@ export type EmploymentGroup = {
   /** An allowance of the employment's own, in place of the schedule's VDA (agriculture). */
   allowance?: { amount: number; label: string; effectiveFrom: string; source: string };
   note?: string;
+  /**
+   * A court has quashed the notification the rows come from (Karnataka's
+   * January 2023 textile notifications, June 2026). The rows stay, marked,
+   * for reference: on (the order's date), court (the court and cases),
+   * upheld (an appeal that confirmed it), meanwhile (what applies until the
+   * state revises), link (a copy of the judgment).
+   */
+  quashed?: { on: string; court: string; upheld?: string; meanwhile: string; link?: string };
+  /**
+   * A court quashed a later notification for this work and its order makes
+   * this earlier one apply until the state revises it (Karnataka's spinning
+   * mills and cloth dyeing: the 30 December 2017 notifications, after KE 2
+   * LWA 2023 was quashed on 3 June 2026). replaced: the quashed notification.
+   */
+  restored?: { on: string; court: string; replaced: string; link?: string };
 };
 
 export type EmploymentSchedule = {
@@ -328,7 +343,7 @@ export function wageStatus(state: WageState, today = todayIso()) {
   return {
     /** The revision date has passed (a newer notification may be due or late). */
     revisionDue: today >= expected,
-    /** The page shows the "may have been revised" notice and drops the year from its title. */
+    /** The page shows the "may have been revised" notice; its title keeps the year (titleDate). */
     stale: today >= staleFrom,
     staleFrom,
     /** The last check, by hand or by the monitor. */
@@ -336,8 +351,24 @@ export function wageStatus(state: WageState, today = todayIso()) {
   };
 }
 
-/** The year the rates were last confirmed in force; only on pages that are not stale. */
+/** The year the rates were last confirmed in force. */
 export const ratesYear = (state: WageState, today = todayIso()) => lastCheck(state, today).slice(0, 4);
+
+/**
+ * The date in a state page's title and H1 (owner, 19 November 2026): the
+ * month of the last check while that is this month and the page is current
+ * ("November 2026"), otherwise the year the rates were last confirmed
+ * ("2026"). Never an earlier month, which reads as out of date in search
+ * results for the whole of the next month, and never nothing: a stale page
+ * keeps its year, because the notice under the H1 already says the rates may
+ * have been revised, and a title without the year stops matching the searches
+ * that carry it (Delhi, 13 November 2026: position 8-12 to 23-37).
+ */
+export function titleDate(state: WageState, today = todayIso()) {
+  const checkedOn = lastCheck(state, today);
+  const thisMonth = !wageStatus(state, today).stale && checkedOn.slice(0, 7) === today.slice(0, 7);
+  return { year: ratesYear(state, today), month: thisMonth ? formatMonth(checkedOn) : null };
+}
 
 const longDate = new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
 const shortDate = new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });

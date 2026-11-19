@@ -6,7 +6,7 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { deflateSync } from 'node:zlib';
 import { importTs, root } from '../scripts/lib/register-ts.mjs';
-import { describeDocument, diffLines, documentLinks, htmlText, sha256, spaBundleLinks, spaScript, wpDocumentLinks } from '../scripts/wage-monitor/extract.mjs';
+import { describeDocument, diffLines, documentLinks, htmlText, sha256, spaBundleLinks, spaLinkId, spaScript, wpDocumentLinks } from '../scripts/wage-monitor/extract.mjs';
 import { ARCHIVED, buildTargets, coverageProblems, fetchSource, fingerprint, istDate, locationTargets, pageLines, registryProblems, relayFetch, runMonitor, targetKey } from '../scripts/wage-monitor/monitor.mjs';
 import { extractPdfText, parseCMap } from '../scripts/wage-monitor/pdf-text.mjs';
 import { CHECKS_KEY, checksDocument, checksNote, listingChecks } from '../scripts/wage-monitor/checks.mjs';
@@ -787,6 +787,53 @@ test("Andhra Pradesh's labour site is read from its app bundle: the documents it
   // A shell without its bundle is a failed load, not every document removed.
   const day3 = await runMonitor({ targets: [target], previous: day2.state, fetcher: async () => ({ ok: true, status: 200, contentType: 'text/html', body: Buffer.from('<html>maintenance</html>') }), now: at('2027-03-29') });
   assert.equal(day3.results[0].outcome, 'failed');
+});
+
+test("a new download host for Andhra Pradesh's bundle is invisible to the listing checks; a new path is still new", async () => {
+  const oldBase = 'https://api.example/pdf-file-download/';
+  const newBase = 'https://api.example/file-download/bucket/docs.example/';
+  const shell = '<!doctype html><html><head><script src="/static/js/main.d4edcfa0.js"></script></head><body></body></html>';
+  const notices = [
+    '{text:"VDA Gazette as on 01.10.2026",link:DU+"labour/1790751054626_VDAGazetteason01.10.2026.pdf"}',
+    '{text:"Contract labour wages from 01.10.2026",link:DU+"labour/1790751099999_CL wages 2026.pdf"}',
+  ];
+  const site = (list) => async (url) => ({ ok: true, status: 200, contentType: url.endsWith('.js') ? 'text/javascript' : 'text/html', body: Buffer.from(url.endsWith('.js') ? `[${list.join(',')}];` : shell) });
+  const target = (publicBase) => ({ kind: 'listing', url: 'https://labour.ap.gov.in/', name: 'AP labour', topic: 'wages', format: 'spa-bundle', publicBase, match: 'vda|wage', state: 'andhra-pradesh', stateName: 'Andhra Pradesh' });
+  const apState = { state: 'andhra-pradesh', name: 'Andhra Pradesh', checked: { on: '2026-11-19' }, sources: [] };
+  const run = async (publicBase, previous, list, iso) => {
+    const targets = [target(publicBase)];
+    const r = await runMonitor({ targets, previous, fetcher: site(list), now: at(iso), describeNew: false });
+    r.state.checks = listingChecks({ wageStates: [apState], targets, snapshot: r.state, today: iso, previous: previous?.checks ?? {} });
+    return r;
+  };
+  const path = (n) => /"(labour\/[^"]+)"/.exec(notices[n])[1];
+  assert.equal(spaLinkId(`${newBase}${encodeURI(path(1))}`), 'labour/1790751099999_CL%20wages%202026.pdf');
+  assert.equal(spaLinkId('https://api.example/elsewhere.pdf'), null);
+
+  const day1 = await run(oldBase, null, notices, '2026-11-04');
+  const key = targetKey(target(oldBase));
+  assert.equal(key, targetKey(target(newBase)), 'the listing is the same source on either host');
+  // Snapshots before 19 Nov 2026: links without ids, first-seen days keyed by full URL.
+  const legacy = structuredClone(day1.state);
+  for (const l of legacy.sources[key].links) delete l.id;
+  legacy.sources[key].firstSeen = Object.fromEntries(legacy.sources[key].links.map((l) => [l.url, '2026-11-04']));
+  assert.ok(Object.keys(legacy.sources[key].firstSeen).every((u) => u.startsWith(oldBase)));
+
+  for (const [name, previous] of [['legacy snapshot', legacy], ['current snapshot', day1.state]]) {
+    const moved = await run(newBase, previous, notices, '2026-11-20');
+    assert.deepEqual(moved.events, [], `${name}: no link reported as removed or new`);
+    assert.equal(moved.results[0].outcome, 'unchanged', name);
+    const entry = moved.state.sources[key];
+    assert.ok(entry.links.every((l) => l.url.startsWith(newBase)), `${name}: links are fetched from the new host`);
+    assert.deepEqual(entry.firstSeen, { [path(0)]: '2026-11-04', 'labour/1790751099999_CL%20wages%202026.pdf': '2026-11-04' }, `${name}: first-seen days kept, by path`);
+    assert.deepEqual(moved.state.checks['andhra-pradesh'], { on: '2026-11-20', datasetCheckedOn: '2026-11-19' }, `${name}: AP still checked clean`);
+
+    const april = '{text:"VDA Gazette as on 01.04.2027",link:DU+"labour/1806000000000_VDAGazette01.04.2027.pdf"}';
+    const added = await run(newBase, moved.state, [...notices, april], '2026-11-21');
+    assert.deepEqual(added.events.map((e) => [e.type, e.added.map((l) => l.url), e.removed.length]), [['listing-changed', [`${newBase}labour/1806000000000_VDAGazette01.04.2027.pdf`], 0]], `${name}: a new path is new`);
+    assert.equal(added.state.sources[key].firstSeen['labour/1806000000000_VDAGazette01.04.2027.pdf'], '2026-11-21');
+    assert.deepEqual(added.state.checks['andhra-pradesh'].blocked.problems, ['AP labour: 1 document first seen after the hand check of 2026-11-19'], `${name}: and it blocks the check`);
+  }
 });
 
 test('an Internet Archive capture is cited but never fetched: it cannot change', () => {

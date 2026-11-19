@@ -95,8 +95,10 @@ const jsString = (s) => {
  * acts are object literals in the main script, such as
  * `{text:"VDA Gazette as on 01.10.2026",link:DU+"labour/1790751054626_VDA….pdf"}`).
  * Each path under `labour/` becomes `publicBase` + path, labelled by the
- * object's text or name, else by its file name. Sorted and unique, like
- * documentLinks.
+ * object's text or name, else by its file name. Each link also carries an
+ * `id`, its path from `labour/` on (spaLinkId), which the monitor keys it by:
+ * the site moves its download host (November 2026), the paths stay. Sorted
+ * and unique, like documentLinks.
  */
 export function spaBundleLinks(js, publicBase, match) {
   const found = new Map();
@@ -105,13 +107,29 @@ export function spaBundleLinks(js, publicBase, match) {
     const url = urlOf(path);
     const text = decodeEntities(jsString(label ?? path.split("/").pop())).replace(/\s+/g, " ").trim().slice(0, 300);
     if (match && !match.test(text) && !match.test(path)) return;
-    if (!found.has(url) || text.length > found.get(url).label.length) found.set(url, { url, label: text });
+    if (!found.has(url) || text.length > found.get(url).label.length) found.set(url, { url, label: text, id: spaLinkId(url) ?? url });
   };
   for (const m of js.matchAll(/\{\s*(?:text|name)\s*:\s*"((?:[^"\\]|\\.){1,300})"\s*,\s*(?:link|url)\s*:\s*(?:[A-Za-z_$][\w$]*\s*\+\s*)?"((?:labour\/)[^"]+\.(?:pdf|xlsx?))"/g)) add(m[2], m[1]);
   // Paths in other shapes (the acts tree, menus) that no labelled literal covered: labelled by file name.
   for (const m of js.matchAll(/"(labour\/\d{10,}_[^"]+\.(?:pdf|xlsx?))"/g)) if (!found.has(urlOf(m[1]))) add(m[1]);
   return [...found.values()].sort((a, b) => a.url.localeCompare(b.url));
 }
+
+/**
+ * A spa-bundle link's identity: its URL path from `labour/` on, as the URL
+ * encodes it (`labour/1790751054626_VDA….pdf`), whatever host serves it.
+ * Null when the URL has no `labour/` path.
+ */
+export function spaLinkId(url) {
+  try {
+    return /\/(labour\/.+)$/.exec(new URL(url).pathname)?.[1] ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/** What a listing link is known by from run to run: its `id` when it has one (spa-bundle), else its URL. */
+export const linkKey = (link) => link.id ?? link.url;
 
 export function documentLinks(html, baseUrl, match) {
   const clean = html.replace(/<!--[\s\S]*?-->/g, " ").replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, " ");

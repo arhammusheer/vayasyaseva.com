@@ -10,6 +10,7 @@
 // the pages read it when they regenerate.
 import { targetKey } from "./monitor.mjs";
 import { CDN } from "./archive.mjs";
+import { linkKey } from "./extract.mjs";
 
 /** Where the record is published, in the cdn-vspl bucket. */
 export const CHECKS_KEY = "monitor/wage-listing-checks.json";
@@ -19,7 +20,8 @@ export const CHECKS_VERSION = 1;
 /**
  * Why a state's listings do not count as checked today, or [] when they do.
  * `snapshot` is the run's next snapshot (runMonitor's `state`): every
- * listing entry carries `lastOk` and, per link, `firstSeen`.
+ * listing entry carries `lastOk` and, per link, `firstSeen` (keyed by
+ * linkKey: the URL, or a spa-bundle link's path).
  */
 export function checkProblems(state, targets, snapshot, today) {
   const mine = targets.filter((t) => t.state === state.state && t.topic === "wages");
@@ -32,7 +34,7 @@ export function checkProblems(state, targets, snapshot, today) {
       problems.push(`${t.name}: not read today`);
       continue;
     }
-    const added = entry.links.filter((l) => (entry.firstSeen?.[l.url] ?? today) > state.checked.on);
+    const added = entry.links.filter((l) => (entry.firstSeen?.[linkKey(l)] ?? today) > state.checked.on);
     if (added.length) problems.push(`${t.name}: ${added.length} document${added.length === 1 ? "" : "s"} first seen after the hand check of ${state.checked.on}`);
   }
   // A cited file replaced at the same URL is a change too, until the dataset records its new hash.

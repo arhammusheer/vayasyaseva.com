@@ -441,7 +441,7 @@
           "url": "https://labour.ap.gov.in/",
           "name": "Labour Department, Andhra Pradesh: notices, VDA notifications, contract labour wages and the wage sheets (read from the site's app bundle)",
           "format": "spa-bundle",
-          "publicBase": "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/pdf-file-download/",
+          "publicBase": "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/file-download/bucket/documents.socialwlfare.apcfss.in/",
           "match": "wage|vda|cpi|gazette|g\\.?o\\.?\\s*(ms|rt)|\\.xlsx?$"
         },
         {
@@ -449,7 +449,7 @@
           "name": "Labour Department, Andhra Pradesh: Labour Welfare Fund acts, rules and orders",
           "topic": "lwf",
           "format": "spa-bundle",
-          "publicBase": "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/pdf-file-download/",
+          "publicBase": "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/file-download/bucket/documents.socialwlfare.apcfss.in/",
           "match": "welfare ?fund|LWF"
         },
         {
@@ -457,7 +457,7 @@
           "name": "Labour Department, Andhra Pradesh: labour code rules and contract labour (OSH rules, licence)",
           "topic": "licence",
           "format": "spa-bundle",
-          "publicBase": "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/pdf-file-download/",
+          "publicBase": "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/file-download/bucket/documents.socialwlfare.apcfss.in/",
           "match": "contract ?labour|occupational|safety|\\bOSH\\b|RT146|labour codes?|code on"
         }
       ],

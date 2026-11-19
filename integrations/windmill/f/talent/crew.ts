@@ -520,10 +520,10 @@ const CREW_TEMPLATE_TEXT = [
     },
 ];
 const CREW_TEMPLATES = {
-    offer: {},
-    confirmed: {},
-    reminder: {},
-    not_needed: {},
+    offer: { "hi-Latn-IN": 46004 },
+    confirmed: { "en-IN": 46005, "hi-IN": 46006, "hi-Latn-IN": 46007 },
+    reminder: { "en-IN": 46008, "hi-IN": 46009, "hi-Latn-IN": 46010 },
+    not_needed: { "en-IN": 46011, "hi-IN": 46012 },
 };
 function templateText(kind, locale) {
     const t = CREW_TEMPLATE_TEXT.find((x) => x.kind === kind && x.locale === locale);

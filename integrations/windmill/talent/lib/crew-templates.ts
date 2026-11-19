@@ -165,14 +165,19 @@ export const CREW_TEMPLATE_TEXT: CrewTemplate[] = [
 
 /**
  * Fast2SMS message ids of the approved templates, by kind and language
- * (`whatsapp-templates.mts` prints them). Empty until Meta approves: a crew
- * member whose message has no id here waits, with a note in Twenty.
+ * (`whatsapp-templates.mts` prints them). Only approved ones go here: a crew
+ * member whose message has no id waits, with a note in Twenty.
+ *
+ * Submitted 19 Nov 2026; approved the same day as Utility, except the Hindi
+ * not_needed, which Meta filed as Marketing (it sends, at the marketing rate,
+ * and not to workers who opted out of marketing). Still pending on 19 Nov:
+ * offer en-IN (46002) and hi-IN (46003), not_needed hi-Latn-IN (46013).
  */
 export const CREW_TEMPLATES: Record<CrewKind, Partial<Record<CrewLocale, number>>> = {
-  offer: {},
-  confirmed: {},
-  reminder: {},
-  not_needed: {},
+  offer: { "hi-Latn-IN": 46004 },
+  confirmed: { "en-IN": 46005, "hi-IN": 46006, "hi-Latn-IN": 46007 },
+  reminder: { "en-IN": 46008, "hi-IN": 46009, "hi-Latn-IN": 46010 },
+  not_needed: { "en-IN": 46011, "hi-IN": 46012 },
 };
 
 export function templateText(kind: CrewKind, locale: CrewLocale): CrewTemplate {

@@ -32,6 +32,7 @@ node integrations/twenty/setup.mts --dry-run       # what it would add
 node integrations/twenty/setup.mts                 # add missing objects, fields, options, views
 node integrations/twenty/setup.mts --remove-demo   # also remove Twenty's sample records (done once, 17 Oct 2026)
 node integrations/twenty/setup.mts --reset-layout  # put every view, record page, the dashboard and the sidebar back as layout.mts says
+node integrations/twenty/setup.mts --reset-view="opportunity/Opportunity Record Page Fields"  # one view only (repeatable)
 node integrations/twenty/backfill-applications.mts # fill new application fields from Answers (done once, 17 Oct 2026)
 ```
 

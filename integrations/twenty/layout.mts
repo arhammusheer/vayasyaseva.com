@@ -17,6 +17,8 @@ type Step = (message: string) => void;
 interface Options {
   dryRun: boolean;
   reset: boolean;
+  /** Lay out only these views again ("<object>/<view name>"), leaving staff's changes to the others. */
+  resetViews?: string[];
   step: Step;
 }
 
@@ -665,7 +667,10 @@ async function retireViews(gql: Gql, objects: MetaObject[], o: Options) {
 export async function applyLayout(gql: Gql, objects: MetaObject[], o: Options) {
   await ensureLabels(gql, o);
   await retireViews(gql, objects, o);
-  for (const spec of VIEWS) await ensureView(gql, objects, spec, o);
+  for (const spec of VIEWS) {
+    const named = o.resetViews?.includes(`${spec.object}/${spec.name}`) ?? false;
+    await ensureView(gql, objects, spec, named ? { ...o, reset: true } : o);
+  }
   const dashboardId = await ensureDashboard(gql, objects, o);
   await ensureSidebar(gql, dashboardId, o);
 }

@@ -3,7 +3,7 @@
  * creates what is missing, updates select options, never deletes data
  * except the demo records with --remove-demo.
  *
- *   node integrations/twenty/setup.mts [--dry-run] [--remove-demo] [--reset-layout]
+ *   node integrations/twenty/setup.mts [--dry-run] [--remove-demo] [--reset-layout] [--reset-view="<object>/<view name>"]...
  *
  * Reaches Twenty through `kubectl port-forward svc/twenty` (it has no public
  * API route; the UI is behind Access) with the workspace API key in
@@ -28,6 +28,8 @@ import { client, loadObjects, portForward, secret, type Gql, type MetaField, typ
 const DRY_RUN = process.argv.includes("--dry-run");
 const REMOVE_DEMO = process.argv.includes("--remove-demo");
 const RESET_LAYOUT = process.argv.includes("--reset-layout");
+/** --reset-view="crewMember/All Crew members" (repeatable): lay out that view again, and no other. */
+const RESET_VIEWS = process.argv.filter((a) => a.startsWith("--reset-view=")).map((a) => a.slice("--reset-view=".length));
 
 // --- the model ----------------------------------------------------------------
 
@@ -373,7 +375,7 @@ async function main() {
 
     // 4. Views, record pages, the Jobs dashboard and the sidebar (layout.mts)
     if (!DRY_RUN) objects = await load();
-    await applyLayout(gql, objects, { dryRun: DRY_RUN, reset: RESET_LAYOUT, step });
+    await applyLayout(gql, objects, { dryRun: DRY_RUN, reset: RESET_LAYOUT, resetViews: RESET_VIEWS, step });
 
     // 5. Demo records (Twenty's seed for a new workspace)
     if (REMOVE_DEMO) await removeDemo(gql);

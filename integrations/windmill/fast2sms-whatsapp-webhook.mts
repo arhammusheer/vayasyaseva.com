@@ -8,9 +8,13 @@
  *   node integrations/windmill/fast2sms-whatsapp-webhook.mts --copy-secret  the x-vspl-wa-secret value to the clipboard
  *   node integrations/windmill/fast2sms-whatsapp-webhook.mts --copy-url     the URL with ?key= (for a form without headers)
  *
- * Made once in the Fast2SMS dashboard (Dev API → Webhooks → Create webhook),
- * as the SMS one is (fast2sms-webhook.mts): Standard format, event Incoming
- * Messages, this number's id, the body below. The body names only what the
+ * Live since 19 Nov 2026: webhook wh_D01yonHxK01J6oRB, the retired apply
+ * chat's (it still posted every WhatsApp event to the removed route), repointed
+ * with PUT /dev/webhook/v2/whatsapp/{id}: Standard format, event received,
+ * this number's id, the body below. Fast2SMS's API takes custom headers but
+ * keeps none (it answers headers: []), so the secret rides in the URL as
+ * ?key= (--copy-url). To make it again: the dashboard (Dev API → Webhooks →
+ * Create webhook) or POST /dev/webhook/v2/whatsapp with the same values. The body names only what the
  * route reads (docs.fast2sms.com "WhatsApp Webhook Overview": a button tap
  * arrives as message_type "button" with the label as body). Reads the
  * Fast2SMS key and the secret from the cluster, as deploy.mts does
@@ -74,10 +78,8 @@ console.log(`In the Fast2SMS dashboard (Dev API → Webhooks), Create webhook wi
   Select Event     Incoming Messages
   Phone Number Id  ${WA_PHONE_NUMBER_ID}
   Method           POST
-  URL              ${WEBHOOK_URL}
-                   (if the form takes no custom header: the URL from --copy-url instead)
+  URL              ${WEBHOOK_URL}?key=… (run with --copy-url; Fast2SMS keeps no custom header)
   Content-Type     JSON
-  Header           x-vspl-wa-secret: (run with --copy-secret)
   Status           Active
   Body
 ${PAYLOAD}`);

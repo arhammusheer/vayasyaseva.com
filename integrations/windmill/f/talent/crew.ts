@@ -520,7 +520,7 @@ const CREW_TEMPLATE_TEXT = [
     },
 ];
 const CREW_TEMPLATES = {
-    offer: { "hi-Latn-IN": 46004 },
+    offer: { "en-IN": 46002, "hi-IN": 46003, "hi-Latn-IN": 46004 },
     confirmed: { "en-IN": 46005, "hi-IN": 46006, "hi-Latn-IN": 46007 },
     reminder: { "en-IN": 46008, "hi-IN": 46009, "hi-Latn-IN": 46010 },
     not_needed: { "en-IN": 46011, "hi-IN": 46012 },

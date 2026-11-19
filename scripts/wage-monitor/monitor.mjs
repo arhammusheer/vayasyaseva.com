@@ -4,7 +4,7 @@
 // tests run it against fixtures; fetchSource is the real one. No GitHub here.
 import https from "node:https";
 import { constants as cryptoConstants } from "node:crypto";
-import { clipText, describeDocument, diffLines, documentLinks, htmlText, sha256, spaBundleLinks, spaScript, withFigures, wpDocumentLinks } from "./extract.mjs";
+import { clipText, describeDocument, diffLines, documentLinks, htmlText, linkKey, sha256, spaBundleLinks, spaLinkId, spaScript, withFigures, wpDocumentLinks } from "./extract.mjs";
 
 export const STATE_VERSION = 1;
 /** A source that fails on this many consecutive days is an alert. */
@@ -169,6 +169,21 @@ function implausible(target, res, prev, links, allCount) {
   if (allCount === 0) return "listing looks empty (no document links)";
   if (before != null && before >= 4 && allCount < before / 2) return `listing lost most of its links (${allCount} of ${before})`;
   return null;
+}
+
+/**
+ * A listing's first-seen days, carried to this run. Snapshots written before
+ * November 2026 keyed spa-bundle links by full URL; those keys move to the
+ * link's path (spaLinkId), keeping the earlier day if both exist.
+ */
+export function migrateFirstSeen(firstSeen, target) {
+  if (target.format !== "spa-bundle") return { ...firstSeen };
+  const out = {};
+  for (const [k, day] of Object.entries(firstSeen ?? {})) {
+    const id = (/^https?:\/\//.test(k) && spaLinkId(k)) || k;
+    if (!out[id] || day < out[id]) out[id] = day;
+  }
+  return out;
 }
 
 /** The extra sources of one registry entry (a state or "national"): documents, listings and pages, each with its topic. */
@@ -443,21 +458,26 @@ export async function runMonitor({ targets, previous, fetcher, now = new Date(),
       continue;
     }
 
+    // A link is known by linkKey: its URL, or for a spa-bundle listing its path, so a new download host
+    // (Andhra Pradesh, November 2026) is not every link removed and added again. Snapshots from before
+    // keyed spa-bundle links by URL; keyOf reads those as paths too.
+    const keyOf = (l) => (l.id ?? (target.format === "spa-bundle" ? spaLinkId(l.url) : null)) || l.url;
     // The day each link was first seen (checks.mjs): a link already there at the hand check is not news.
     // A link missing from the snapshot, including every link on a first run, counts as seen today.
-    const firstSeen = { ...prev?.firstSeen };
-    for (const l of links) firstSeen[l.url] ??= today;
+    const firstSeen = migrateFirstSeen(prev?.firstSeen, target);
+    for (const l of links) firstSeen[linkKey(l)] ??= today;
     sources[key] = { ...base, links, allCount, textSha256: sha256(htmlText(html)), firstSeen };
     const cited = target.state ? [...citedUrls.values()].filter((d) => d.state === target.state && d.listings.includes(target.url)) : [];
-    const missingCited = cited.filter((d) => !links.some((l) => l.url === d.url));
+    const linked = new Set(links.map(keyOf));
+    const missingCited = cited.filter((d) => !linked.has(keyOf({ url: d.url })));
     if (!prev?.links) {
       results.push({ target, outcome: "baseline", detail: `${links.length} documents linked${missingCited.length ? `; ${missingCited.length} cited not linked` : ""}` });
       continue;
     }
-    const before = new Map(prev.links.map((l) => [l.url, l]));
-    const after = new Map(links.map((l) => [l.url, l]));
-    const added = links.filter((l) => !before.has(l.url));
-    const removed = prev.links.filter((l) => !after.has(l.url)).map((l) => ({ ...l, citedAs: citedUrls.get(l.url)?.sourceIds ?? [] }));
+    const citedByKey = new Map([...citedUrls.values()].filter((d) => !target.state || d.state === target.state).map((d) => [keyOf({ url: d.url }), d]));
+    const before = new Set(prev.links.map(keyOf));
+    const added = links.filter((l) => !before.has(keyOf(l)));
+    const removed = prev.links.filter((l) => !linked.has(keyOf(l))).map((l) => ({ ...l, citedAs: (citedUrls.get(l.url) ?? citedByKey.get(keyOf(l)))?.sourceIds ?? [] }));
     if (added.length || removed.length) {
       const event = { type: "listing-changed", state: target.state, stateName: target.stateName, url: target.url, name: target.name, added: added.map((l) => ({ ...l })), removed };
       events.push(event);

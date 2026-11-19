@@ -81,7 +81,16 @@ literal in its main script (`/static/js/main.<hash>.js`), served from
 fetches the shell, follows it to the current main script (the hash changes
 with each release) and reads the documents the script links, labelled by
 their notice text (`spaBundleLinks`, with `publicBase` the download prefix).
-A shell without its script counts as a failed load. The department publishes
+A shell without its script counts as a failed load. Each link is known by its
+path from `labour/` on (`spaLinkId`, as the link's `id`), not by its full
+URL: in November 2026 the department moved its downloads from
+`user-defined-path/pdf-file-download/` (now HTTP 500) to
+`user-defined-path/file-download/bucket/documents.socialwlfare.apcfss.in/`,
+and a new `publicBase` changes every URL but no path. So a change of download
+host raises no listing change and keeps each link's first-seen day; the URL
+stays the address the monitor fetches. Snapshots written before this change
+keyed these links by full URL; the monitor reads those keys as paths
+(`migrateFirstSeen`), keeping the earlier day. The department publishes
 its per-employment wage tables as Excel sheets, so those sources are watched
 by hash like PDFs and hosted as they are.
 
@@ -208,7 +217,9 @@ clean** that day when:
   `listing` pages; not the leads) loaded today and passed the usual sanity
   checks (an empty or half-empty listing is a failed load);
 - no link on those listings was first seen after the dataset's `checked.on`
-  (the monitor keeps a `firstSeen` day per link in the snapshot); and
+  (the monitor keeps a `firstSeen` day per link in the snapshot, keyed by
+  `linkKey`: the URL, or for Andhra Pradesh's bundle the path, so a new
+  download host is not a new link); and
 - every cited wage document last seen matches the `sha256` in the dataset.
 
 Otherwise the state is **blocked**: it keeps its last clean day (that read

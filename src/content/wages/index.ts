@@ -159,6 +159,13 @@ export type EmploymentGroup = {
    * state revises), link (a copy of the judgment).
    */
   quashed?: { on: string; court: string; upheld?: string; meanwhile: string; link?: string };
+  /**
+   * A court quashed a later notification for this work and its order makes
+   * this earlier one apply until the state revises it (Karnataka's spinning
+   * mills and cloth dyeing: the 30 December 2017 notifications, after KE 2
+   * LWA 2023 was quashed on 3 June 2026). replaced: the quashed notification.
+   */
+  restored?: { on: string; court: string; replaced: string; link?: string };
 };
 
 export type EmploymentSchedule = {

@@ -77,7 +77,12 @@ test("every state title fits seo-check's 55 characters in every month, and with 
 test('a quashed notification is marked, dated within the check, and never quoted as the rate', async () => {
   const ka = wageStates.find((s) => s.state === 'karnataka');
   const quashed = ka.employments.groups.filter((g) => g.quashed).map((g) => g.id).sort();
-  assert.deepEqual(quashed, ['dyeing', 'garments', 'silk', 'spinning'], 'the January 2023 textile notifications (WP 18020/2023 and connected, 3 June 2026)');
+  assert.deepEqual(quashed, ['garments', 'silk'], 'the January 2023 notifications quashed on 3 June 2026, with no earlier rates entered yet');
+  const restored = ka.employments.groups.filter((g) => g.restored).map((g) => g.id).sort();
+  assert.deepEqual(restored, ['dyeing', 'spinning'], 'the 30 December 2017 notifications that apply again');
+  // The 2017 scale plus the 2026-27 VDA (3,791 points x 4 paise x 30): the same totals as the 2017 shops notification.
+  const spin = ka.employments.groups.find((g) => g.id === 'spinning');
+  assert.deepEqual(spin.rows.find((r) => r.label.startsWith('Unskilled')).values, [16137.03, 15585.23, 15059.7, 14559.2]);
   const late = { ...ka, employments: { ...ka.employments, groups: ka.employments.groups.map((g) => (g.id === 'garments' ? { ...g, quashed: { ...g.quashed, on: '2099-01-01' } } : g)) } };
   assert.ok(wageIntegrityProblems(late).some((p) => p.includes('garments: quashed after the check')));
   // The copy builds without quoting a quashed group's figures (listed() throws if it does).

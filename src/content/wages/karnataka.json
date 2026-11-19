@@ -314,6 +314,36 @@
    "retrievedOn": "2026-11-02",
    "copy": "https://cdn.vayasyaseva.com/sources/karnataka/ka-2627-loading-14b175a6.pdf",
    "copyKb": 201
+  },
+  {
+   "id": "ka-2017-spinning",
+   "kind": "notification",
+   "title": "Spinning mills: final notification of minimum wages (Karnataka Gazette, 1 March 2018)",
+   "number": "KAE 21 LMW 2017",
+   "date": "2017-12-30",
+   "authority": "Labour Department, Government of Karnataka",
+   "legalBasis": "Minimum Wages Act, 1948, sections 3(1)(b) and 5(1)(b). Withdrawn by the government on 22 March 2018; the withdrawal was set aside in WA 1520/2019 (13 April 2020). It applies again to this work since the High Court quashed KE 2 LWA 2023 of 17 January 2023 on 3 June 2026 (WP 18020/2023 and connected petitions), until the government revises the rates.",
+   "url": "https://karmikaspandana.karnataka.gov.in/storage/pdf-files/minimum%20wages/Spinning%20Mills-30-12-2017.pdf",
+   "listing": "https://karmikaspandana.karnataka.gov.in/47/minimum-wages-final-notification/en",
+   "language": "kn",
+   "sha256": "a577f885df0f8186b13bb7687871907fcb2b48aa174db594f6b28a9d4584ec29",
+   "sizeKb": 782,
+   "retrievedOn": "2026-11-19"
+  },
+  {
+   "id": "ka-2017-dyeing",
+   "kind": "notification",
+   "title": "Cloth dyeing and printing: final notification of minimum wages",
+   "number": "KAE 29 LMW 2017",
+   "date": "2017-12-30",
+   "authority": "Labour Department, Government of Karnataka",
+   "legalBasis": "Minimum Wages Act, 1948, sections 3(1)(b) and 5(1)(b). Withdrawn by the government on 22 March 2018; the withdrawal was set aside in WA 1520/2019 (13 April 2020). It applies again to this work since the High Court quashed KE 2 LWA 2023 of 17 January 2023 on 3 June 2026 (WP 18020/2023 and connected petitions), until the government revises the rates.",
+   "url": "https://karmikaspandana.karnataka.gov.in/storage/pdf-files/MWFinal/Cloth%20Dyeing%20and%20Printing.pdf",
+   "listing": "https://karmikaspandana.karnataka.gov.in/47/minimum-wages-final-notification/en",
+   "language": "kn",
+   "sha256": "029c3208c6a27f9e12a1067a2a20f7e3daf02492dc43f265c8189683683d2282",
+   "sizeKb": 6796,
+   "retrievedOn": "2026-11-19"
   }
  ],
  "tables": [
@@ -574,6 +604,7 @@
   }
  ],
  "verification": [
+  "2026-11-19: 30 December 2017 rates entered for spinning mills and cloth dyeing, which the 3 June 2026 order makes apply again after quashing KE 2 LWA 2023. Sources on karmikaspandana.karnataka.gov.in/47/: 'Spinning Mills-30-12-2017.pdf' (KAE 21 LMW 2017 of 30 December 2017, Karnataka Gazette Part IVA of 1 March 2018, 7 pages, sha256 a577f885...) and 'Cloth Dyeing and Printing.pdf' (KAE 29 LMW 2017 of 30 December 2017, 9 pages, sha256 029c3208...). Both read from page images (the Kannada text layer is garbled; its figures were checked against the images). Both use one scale, four zones (BBMP; other city corporations; district headquarters; all other areas), month and day rates: highly skilled 15423.40/14688.95/13989.48/13323.31 (593.21/564.96/538.06/512.44 a day), skilled 14021.27/13353.59/12717.71/12112.10 (539.28/513.60/489.14/465.85), semi-skilled 12746.61/12139.63/11561.55/11011.00 (490.25/466.91/444.68/423.50), unskilled 11587.83/11036.03/10510.50/10010.00 (445.69/424.46/404.25/385.00); managers and equivalent posts 16423.00/15688.00/14989.00/14323.00 (631.00/603.38/576.50/550.88); other office posts and drivers on the four skill rates. Condition 1 of each: a variable DA of 4 paise a day for each CPI point above 6,537 (the 2016 average), worked out every 1 April from the previous calendar year's average; monthly VDA = points x rate x 30, day VDA = that / 26. With the 2026-27 index the Labour Department's sheets use (10,328), the VDA is 3,791 points, ₹4,549.20 a month, ₹174.97 a day: worked out by us, not read from a department sheet for these notifications. The totals equal those of the 2017 shops notification (KAE 20 LMW 2017) already in this file, which the department's 2026-27 sheet prints. Silk's 2017 notification (KAE 21 LMW 2017 (E), 'Textiles.pdf', sha256 da70d753...) is not entered: it has one zone, its own day and month scale, and adds 10% to the total wage two years after issue, with no stated rule for the VDA after that step-up.",
   "2026-11-19: hand check after the monitor's first listing read (4 November 2026) counted every link as new. karmikaspandana.karnataka.gov.in/47/ lists 125 items, newest the two 22-05-2026 entries (uploaded 1 June 2026); /54/ lists 37, newest the 11-04-2025 draft; /64/ lists 81 rate sheets, all uploaded 24 March to 7 April 2026; the home page's news still leads with the single notification. Nothing about wages published after 3 November 2026; all 19 cited files re-downloaded with matching sha256. SGCMS's newest Karnataka wage post is still the 25 May 2026 one. No final ruling on and no stay of the 22 May 2026 notification found.",
   "2026-11-19: court status corrected. Writ Appeals 1684-1685/2026 are not about the 22 May 2026 notification. WA 1684/2026 (Karnataka Textile Mills Association and Clothing Manufacturers Association of India v. Garment and Textile Workers Union) was dismissed on 1 October 2026 by D K Singh and H. Shanthi Bhushan JJ (judgment read in full; LiveLaw's copy, livelaw.in/pdf_upload/2026/10/09/minimum-wages-705414.pdf, 28 pages, digitally signed, sha256 039d94aa...). It confirms Justice Anant Ramanath Hegde's order of 3 June 2026 in WP 18020/2023 with WP 14466, 17959 and 17984/2023 (67 pages, digitally signed; read from a copy at fhwzizvulsqxfzkaqeia.supabase.co, sha256 7b11de7f..., not the court's own site; case, judge, date and result match lawtext.in's listing, 2026 LawText (KAR) (06) 6, and the appeal's account). The operative order quashes notification KE 2 LWA 2023 of 17 January 2023 (spinning mills, silk textiles, cloth dyeing and printing) and entitles those workers to the rates of the three notifications of 30 December 2017 until revised, with 6% interest on unpaid wages; it holds the garments notification KE 1 LWA 2023 of 17 January 2023 to be quashed (para 42) and directs a fresh garments revision from the draft of 22 February 2018 within six months, effective from a date within five years of 21 February 2014. The garments rate sheet prints the number as 'KAE 1 LWA20223'; it is KE 1 LWA 2023 in the judgments. The four groups built on those notifications carry `quashed` and stay, marked, for reference. WA 1685/2026 was not found; the 30 December 2017 rates are not entered yet.",
   "2026-10-16: karmikaspandana.karnataka.gov.in 'Minimum Wages Final Notification' lists the single notification LD 411 LWA 2023 dated 22.05.2026 (Gazette Part IVA No. 389, 25 May 2026), in force from 22 May 2026.",
@@ -2474,150 +2505,159 @@
    },
    {
     "id": "spinning",
-    "number": "KAE 2 LWA 2023",
-    "date": "2023-01-17",
+    "number": "KAE 21 LMW 2017",
+    "date": "2017-12-30",
     "employments": [
      "Spinning mills"
     ],
-    "source": "ka-2627-spinning",
-    "quashed": {
+    "source": "ka-2017-spinning",
+    "restored": {
      "on": "2026-06-03",
      "court": "WP 18020/2023, 17959/2023 and 17984/2023",
-     "meanwhile": "Until the government revises them, workers are entitled to the rates of the notification of 30 December 2017, which this page does not list yet."
+     "replaced": "KAE 2 LWA 2023 of 17 January 2023"
     },
     "unit": "A month",
     "columns": [
      {
       "name": "Zone I",
-      "areas": "Bengaluru (BBMP) and its agglomeration, and the other city corporations"
+      "areas": "Notified areas of the Bruhat Bengaluru Mahanagara Palike (BBMP)"
      },
      {
       "name": "Zone II",
+      "areas": "Notified areas of the other city corporations"
+     },
+     {
+      "name": "Zone III",
+      "areas": "Every district headquarters outside Zones I and II"
+     },
+     {
+      "name": "Zone IV",
       "areas": "All other areas"
      }
     ],
     "rows": [
      {
-      "label": "Highly skilled: Maistry and other Highly Skilled Work",
+      "label": "Highly skilled: supervisor, maistry and other highly skilled work",
       "values": [
-       14229.03,
-       14015.29
+       19972.6,
+       19238.15,
+       18538.68,
+       17872.51
       ],
-      "group": "A month"
+      "group": "Workers"
      },
      {
-      "label": "Skilled: Electrician, Generator Operator, Turner, Welder, Cone Winder, Winding Fitter, Carding Fitter, Preparatory Fitter, Fitter Blowroom, Spinning Fitter, Fitter Ring Prewar, Spindle Gaggers, Shapers, Presser, Stripper, Stitcher & any other skilled labourer",
+      "label": "Skilled: electrician, generator operator, turner, welder, winding, carding, preparatory, blow room, spinning and ring frame fitters, spindle gaugers, shapers, pressers, strippers, stitchers and other skilled work",
       "values": [
-       13984.04,
-       13896.08
+       18570.47,
+       17902.79,
+       17266.91,
+       16661.3
       ],
-      "group": "A month"
+      "group": "Workers"
      },
      {
-      "label": "Semi-skilled: Carding Assistant, Assistant Fitter, Preparatory Asst. Fitter, Yarn Conditioner, Carding Worker, Simpletex Tentors, III Drawing Tentors, Oilers, Sider, Resuck Weavers, Asst. Peepers, Cois Grinders, Buttling Peepers & other Semi Skilled Labourers",
+      "label": "Semi-skilled: carding assistant, assistant fitter, yarn conditioner, carding worker, tenters, oilers, assistant weavers and other semi-skilled work",
       "values": [
-       13570.63,
-       13511.21
+       17295.81,
+       16688.83,
+       16110.75,
+       15560.2
       ],
-      "group": "A month"
+      "group": "Workers"
      },
      {
-      "label": "Unskilled: Bell Brusher, Work Gap Attender, Motor Attender, Stitcher Attender, Spinning Tape Stitcher, Blowroom Attender, Carding Attender, Comber Tentor, Doffing Boys, Half Carrier, Mixing Attender / Helper, Spinning Jobber, Reelers, Mixing Mazdoors, Fitter Helper, Maintenance Helper, Binding worker, Weigher, Waste Pickers, Mazdoors, Helper.cum.Winder, Cleaning Gang, and any other unskilled labourer",
+      "label": "Unskilled: attenders, doffing boys, reelers, mixing and fitter helpers, mazdoors, waste pickers, cleaning gang and other unskilled work",
       "values": [
-       13326.72,
-       13264.62
+       16137.03,
+       15585.23,
+       15059.7,
+       14559.2
       ],
-      "group": "A month"
+      "group": "Workers"
      },
      {
-      "label": "Accountant, Cashier, Stenographer and similar post",
+      "label": "Manager, personnel officer, marketing manager, office superintendent and equivalent posts",
       "values": [
-       15789.52,
-       15599.71
+       20972.2,
+       20237.2,
+       19538.2,
+       18872.2
       ],
-      "group": "A month"
+      "group": "Office staff"
      },
      {
-      "label": "Clerk, Typist, Store Keeper and similar post",
+      "label": "Assistant manager, assistant personnel manager, senior accountant and equivalent posts",
       "values": [
-       14128.3,
-       13941.91
+       19972.6,
+       19238.15,
+       18538.68,
+       17872.51
       ],
-      "group": "A month"
+      "group": "Office staff"
      },
      {
-      "label": "Watchman, Office Boy, Peon, Attender,and similar post",
+      "label": "Senior clerk, cashier, stenographer, store keeper, receptionist and equivalent posts",
       "values": [
-       13619.46,
-       13433.07
+       18570.47,
+       17902.79,
+       17266.91,
+       16661.3
       ],
-      "group": "A month"
+      "group": "Office staff"
      },
      {
-      "label": "Highly skilled: Maistry and other Highly Skilled Work",
+      "label": "Junior clerk, booking clerk, computer operator, typist, telephone operator, data entry operator and equivalent posts",
       "values": [
-       547.27,
-       539.05
+       17295.81,
+       16688.83,
+       16110.75,
+       15560.2
       ],
-      "group": "A day",
-      "unit": "A day"
+      "group": "Office staff"
      },
      {
-      "label": "Skilled: Electrician, Generator Operator, Turner, Welder, Cone Winder, Winding Fitter, Carding Fitter, Preparatory Fitter, Fitter Blowroom, Spinning Fitter, Fitter Ring Prewar, Spindle Gaggers, Shapers, Presser, Stripper, Stitcher & any other skilled labourer",
+      "label": "Jawan, watchman, lift operator, office boy, attender, helper, dalayat, mazdoor, sweeper and equivalent posts",
       "values": [
-       537.85,
-       534.46
+       16137.03,
+       15585.23,
+       15059.7,
+       14559.2
       ],
-      "group": "A day",
-      "unit": "A day"
+      "group": "Office staff"
      },
      {
-      "label": "Semi-skilled: Carding Assistant, Assistant Fitter, Preparatory Asst. Fitter, Yarn Conditioner, Carding Worker, Simpletex Tentors, III Drawing Tentors, Oilers, Sider, Resuck Weavers, Asst. Peepers, Cois Grinders, Buttling Peepers & other Semi Skilled Labourers",
+      "label": "Heavy vehicle, tractor, multi-axle and heavy goods vehicle, earth mover, crane, road roller and road construction vehicle drivers",
       "values": [
-       521.95,
-       519.66
+       18570.47,
+       17902.79,
+       17266.91,
+       16661.3
       ],
-      "group": "A day",
-      "unit": "A day"
+      "group": "Drivers"
      },
      {
-      "label": "Unskilled: Bell Brusher, Work Gap Attender, Motor Attender, Stitcher Attender, Spinning Tape Stitcher, Blowroom Attender, Carding Attender, Comber Tentor, Doffing Boys, Half Carrier, Mixing Attender / Helper, Spinning Jobber, Reelers, Mixing Mazdoors, Fitter Helper, Maintenance Helper, Binding worker, Weigher, Waste Pickers, Mazdoors, Helper.cum.Winder, Cleaning Gang, and any other unskilled labourer",
+      "label": "Car, jeep and light vehicle drivers",
       "values": [
-       512.57,
-       510.18
+       17295.81,
+       16688.83,
+       16110.75,
+       15560.2
       ],
-      "group": "A day",
-      "unit": "A day"
+      "group": "Drivers"
      },
      {
-      "label": "Accountant, Cashier, Stenographer and similar post",
+      "label": "Tum-tum and three-wheeler drivers",
       "values": [
-       607.29,
-       599.99
+       16137.03,
+       15585.23,
+       15059.7,
+       14559.2
       ],
-      "group": "A day",
-      "unit": "A day"
-     },
-     {
-      "label": "Clerk, Typist, Store Keeper and similar post",
-      "values": [
-       543.4,
-       536.23
-      ],
-      "group": "A day",
-      "unit": "A day"
-     },
-     {
-      "label": "Watchman, Office Boy, Peon, Attender,and similar post",
-      "values": [
-       523.83,
-       516.66
-      ],
-      "group": "A day",
-      "unit": "A day"
+      "group": "Drivers"
      }
     ],
-    "note": "Figures are the basic wage plus the VDA for 1 April 2026 to 31 March 2027, ₹174.97 a day (₹4,549.20 a month): 3,791 points above 6,537, as the Labour Department works it out."
+    "note": "Figures are the notification's basic wage plus the VDA for 1 April 2026 to 31 March 2027, ₹4,549.20 a month (₹174.97 a day): 3,791 points above 6,537 at 4 paise a day a point, the notification's own formula, worked out by us with the index the Labour Department uses for 2026-27 (10,328). Day rates are the notification's day rate plus ₹174.97 (unskilled Zone I: ₹445.69 + ₹174.97 = ₹620.66)."
    },
    {
     "id": "garments",
@@ -2854,7 +2894,7 @@
     "quashed": {
      "on": "2026-06-03",
      "court": "WP 18020/2023, 17959/2023 and 17984/2023",
-     "meanwhile": "Until the government revises them, workers are entitled to the rates of the notification of 30 December 2017, which this page does not list yet."
+     "meanwhile": "Until the government revises them, workers are entitled to the rates of its notification of 30 December 2017 (KAE 21 LMW 2017 (E)). That notification adds 10% to the total wage two years after issue, and this page does not yet work out its current figure."
     },
     "unit": "A day",
     "columns": [
@@ -2983,71 +3023,159 @@
    },
    {
     "id": "dyeing",
-    "number": "KAE 2 LWA 2023",
-    "date": "2023-01-17",
+    "number": "KAE 29 LMW 2017",
+    "date": "2017-12-30",
     "employments": [
      "Cloth dyeing and printing"
     ],
-    "source": "ka-2627-dyeing",
-    "quashed": {
+    "source": "ka-2017-dyeing",
+    "restored": {
      "on": "2026-06-03",
      "court": "WP 18020/2023, 17959/2023 and 17984/2023",
-     "meanwhile": "Until the government revises them, workers are entitled to the rates of the notification of 30 December 2017, which this page does not list yet."
+     "replaced": "KAE 2 LWA 2023 of 17 January 2023"
     },
-    "unit": "A day",
+    "unit": "A month",
     "columns": [
      {
-      "name": "A day"
+      "name": "Zone I",
+      "areas": "Notified areas of the Bruhat Bengaluru Mahanagara Palike (BBMP)"
      },
      {
-      "name": "A month"
+      "name": "Zone II",
+      "areas": "Notified areas of the other city corporations"
+     },
+     {
+      "name": "Zone III",
+      "areas": "Every district headquarters outside Zones I and II"
+     },
+     {
+      "name": "Zone IV",
+      "areas": "All other areas"
      }
     ],
     "rows": [
      {
-      "label": "Highly skilled: Designer/ Printers, Chemicals Mixers, Heating the yarns in chemicals",
+      "label": "Highly skilled: manager, production and printing manager, supervisor, assistant manager, designers, printers, chemical mixers, yarn boilers",
       "values": [
-       597.96,
-       15546.86
-      ]
+       19972.6,
+       19238.15,
+       18538.68,
+       17872.51
+      ],
+      "group": "Workers"
      },
      {
-      "label": "Skilled: Electrician, Winder / Fitter / Fireman, Spinning / Spinning Maintenance, Chording / Zone Clearing, Tanning of yarns, Cloth Dyers, Rotor Operator / Roll coverers, Threshers",
+      "label": "Skilled: electrician, winder, fitter, fireman, spinning and its maintenance, carding, zone clearing, yarn conditioners, cloth dyers, rotor operator, roll coverer",
       "values": [
-       579,
-       15053.87
-      ]
+       18570.47,
+       17902.79,
+       17266.91,
+       16661.3
+      ],
+      "group": "Workers"
      },
      {
-      "label": "Semi-skilled: Printing Helper / Operator Attender, Separators of the yarns / Tape man",
+      "label": "Semi-skilled: printing helper, assistant operator, yarn separators, tape man",
       "values": [
-       543.14,
-       14121.52
-      ]
+       17295.81,
+       16688.83,
+       16110.75,
+       15560.2
+      ],
+      "group": "Workers"
      },
      {
-      "label": "Unskilled: Spinning Helpers /Packers, Mixers /Frame Coolies / Dryers, Assistant Cleaners",
+      "label": "Unskilled: spinning helpers, packers, mixers, frame coolies, dryers",
       "values": [
-       529.47,
-       13766.13
-      ]
+       16137.03,
+       15585.23,
+       15059.7,
+       14559.2
+      ],
+      "group": "Workers"
      },
      {
-      "label": "Drivers: Lorry Driver, Car / Jeep Driver, Light vehicle Drivers",
+      "label": "Manager, personnel officer, marketing manager, office superintendent and equivalent posts",
       "values": [
-       572.67,
-       14889.36
-      ]
+       20972.2,
+       20237.2,
+       19538.2,
+       18872.2
+      ],
+      "group": "Office staff"
      },
      {
-      "label": "Cleaners: Lorry / Jeep / Car Cleaner",
+      "label": "Assistant manager, assistant personnel manager, senior accountant and equivalent posts",
       "values": [
-       522.01,
-       13572.24
-      ]
+       19972.6,
+       19238.15,
+       18538.68,
+       17872.51
+      ],
+      "group": "Office staff"
+     },
+     {
+      "label": "Senior clerk, cashier, stenographer, store keeper, receptionist and equivalent posts",
+      "values": [
+       18570.47,
+       17902.79,
+       17266.91,
+       16661.3
+      ],
+      "group": "Office staff"
+     },
+     {
+      "label": "Junior clerk, booking clerk, computer operator, typist, telephone operator, data entry operator and equivalent posts",
+      "values": [
+       17295.81,
+       16688.83,
+       16110.75,
+       15560.2
+      ],
+      "group": "Office staff"
+     },
+     {
+      "label": "Jawan, watchman, lift operator, office boy, attender, helper, dalayat, mazdoor, sweeper and equivalent posts",
+      "values": [
+       16137.03,
+       15585.23,
+       15059.7,
+       14559.2
+      ],
+      "group": "Office staff"
+     },
+     {
+      "label": "Heavy vehicle, tractor, multi-axle and heavy goods vehicle, earth mover, crane, road roller and road construction vehicle drivers",
+      "values": [
+       18570.47,
+       17902.79,
+       17266.91,
+       16661.3
+      ],
+      "group": "Drivers"
+     },
+     {
+      "label": "Car, jeep and light vehicle drivers",
+      "values": [
+       17295.81,
+       16688.83,
+       16110.75,
+       15560.2
+      ],
+      "group": "Drivers"
+     },
+     {
+      "label": "Tum-tum and three-wheeler drivers",
+      "values": [
+       16137.03,
+       15585.23,
+       15059.7,
+       14559.2
+      ],
+      "group": "Drivers"
      }
     ],
-    "note": "Figures are the basic wage plus the VDA for 1 April 2026 to 31 March 2027, ₹174.97 a day (₹4,549.20 a month): 3,791 points above 6,537, as the Labour Department works it out."
+    "note": "Figures are the notification's basic wage plus the VDA for 1 April 2026 to 31 March 2027, ₹4,549.20 a month (₹174.97 a day): 3,791 points above 6,537 at 4 paise a day a point, the notification's own formula, worked out by us with the index the Labour Department uses for 2026-27 (10,328). Day rates are the notification's day rate plus ₹174.97 (unskilled Zone I: ₹445.69 + ₹174.97 = ₹620.66)."
    },
    {
     "id": "loading",

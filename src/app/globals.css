@@ -3657,6 +3657,13 @@ a:hover > svg {
 .wage-note.is-warning strong {
   color: var(--warning);
 }
+/* A notification a court order makes apply again (Karnataka's 2017 textile notifications). */
+.wage-note.is-restored {
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--foreground);
+}
 .wage-note + .wage-note {
   margin-top: 6px;
 }

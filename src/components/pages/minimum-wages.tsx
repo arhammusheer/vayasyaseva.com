@@ -446,6 +446,20 @@ function EmploymentSchedule({ state, intro: own }: { state: WageState; intro?: s
                             )}
                           </p>
                         )}
+                        {g.restored && (
+                          <p className="wage-note is-restored" role="note">
+                            <strong>{s.restoredLead}</strong> {s.restored(formatDate(g.restored.on), g.restored.court, g.restored.replaced, `${g.number} of ${date}`)}
+                            {g.restored.link && (
+                              <>
+                                {" "}
+                                <a href={g.restored.link} className="wage-inline-link">
+                                  {s.judgment}
+                                </a>
+                                .
+                              </>
+                            )}
+                          </p>
+                        )}
                         {g.rows && (
                           <div className="wage-table-scroll">
                             <table className="wage-table is-compact">

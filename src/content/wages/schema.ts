@@ -108,6 +108,14 @@ const employmentGroupSchema = z.strictObject({
       link: z.url({ protocol: /^https$/ }).optional(),
     })
     .optional(),
+  restored: z
+    .strictObject({
+      on: isoDate,
+      court: z.string().min(1),
+      replaced: z.string().min(1),
+      link: z.url({ protocol: /^https$/ }).optional(),
+    })
+    .optional(),
 });
 
 export const wageStateSchema = z.strictObject({
@@ -210,6 +218,8 @@ export function wageIntegrityProblems(state: WageState): string[] {
       if (g.allowance && g.allowance.effectiveFrom > state.checked.on) problems.push(`${where}: allowance effective after the check`);
       if (g.quashed && g.quashed.on > state.checked.on) problems.push(`${where}: quashed after the check`);
       if (g.quashed && g.quashed.on < g.date) problems.push(`${where}: quashed before the notification's date`);
+      if (g.restored && g.restored.on > state.checked.on) problems.push(`${where}: restored after the check`);
+      if (g.restored && g.quashed) problems.push(`${where}: restored and quashed at once`);
       const width = g.columns?.length ?? 1;
       for (const r of g.rows ?? []) if (r.values.length !== width) problems.push(`${where} "${r.label}": ${r.values.length} figures for ${width} column(s)`);
       for (const name of g.employments) {

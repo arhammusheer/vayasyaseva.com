@@ -6,18 +6,18 @@
  * and the talent database's ledger (crew_messages), so the tests can drive
  * every case.
  *
- * The flow (docs/crew-offers.md):
- *   recruiter adds a worker to a crew request   status Offered     -> offer
+ * The flow (docs/crew-offers.md; Twenty's labels in brackets):
+ *   recruiter invites a worker to interview      Offered (Invited)          -> offer: the invitation
  *   worker taps Yes / No                         Said yes / Said no
  *   no answer in 24 hours                        No reply
- *   recruiter calls, then sets                   Confirmed         -> confirmed
- *   the evening before the reporting day                           -> reminder
+ *   recruiter calls, then sets                   Confirmed (Interview fixed) -> confirmed: interview details
+ *   the evening before the interview                                         -> reminder
  *   worker taps Can't come                       Can't come (the recruiter is told)
- *   crew full, recruiter sets                    Not needed        -> not_needed (only to those who said yes)
- *   on the day the supervisor tells the recruiter: Reported / Didn't come
+ *   interviews full, recruiter sets              Not needed                 -> not_needed (only to those who said yes)
+ *   after the interview                          Reported (Came) / Didn't come
  */
 import { normaliseIndianMobile } from "../../../../packages/contracts/src/rules.ts";
-import { CREW_TEMPLATE_TEXT, CREW_TEMPLATES, crewLocale, variableValue, type CrewKind, type CrewLocale } from "./crew-templates.ts";
+import { CREW_TEMPLATE_TEXT, CREW_TEMPLATES, STAY_TEXT, crewLocale, templateKey, variableValue, type CrewKind, type CrewLocale } from "./crew-templates.ts";
 
 export const CREW_STATUSES = ["OFFERED", "SAID_YES", "SAID_NO", "NO_REPLY", "CONFIRMED", "CANT_COME", "REPORTED", "DIDNT_COME", "NOT_NEEDED"] as const;
 export type CrewStatus = (typeof CREW_STATUSES)[number];
@@ -56,7 +56,8 @@ export interface CrewRequest {
   offerPlace?: string | null;
   offerPay?: string | null;
   offerShift?: string | null;
-  offerStay?: string | null;
+  /** ROOM, FOOD, ROOM_AND_FOOD; empty when nothing is given (the invitation then has no stay and food line). */
+  stayAndFood?: string | null;
   reportAddress?: string | null;
   reportAt?: string | null;
   siteContact?: string | null;
@@ -113,11 +114,14 @@ export function formatTime(value: string | Date, locale: CrewLocale): string {
 
 /** The crew request's fields each message reads, with the label staff see in Twenty. */
 const NEEDS: Record<CrewKind, [keyof CrewRequest, string][]> = {
-  offer: [["offerJob", "Job (offer)"], ["offerPlace", "Place (offer)"], ["offerPay", "Pay (offer)"], ["offerShift", "Shift (offer)"], ["offerStay", "Stay and food (offer)"], ["startDate", "Start"]],
-  confirmed: [["reportAddress", "Report at"], ["reportAt", "Report time"], ["siteContact", "Site contact"]],
-  reminder: [["reportAddress", "Report at"], ["reportAt", "Report time"]],
-  not_needed: [["offerJob", "Job (offer)"]],
+  offer: [["offerJob", "Job (for workers)"], ["offerPlace", "Place (for workers)"], ["startDate", "Start"]],
+  confirmed: [["reportAddress", "Interview at"], ["reportAt", "Interview time"], ["siteContact", "Ask for"]],
+  reminder: [["reportAddress", "Interview at"], ["reportAt", "Interview time"]],
+  not_needed: [["offerJob", "Job (for workers)"]],
 };
+
+/** The stay and food line's words, or null when nothing is given. */
+export const stayText = (req: CrewRequest, locale: CrewLocale): string | null => STAY_TEXT[req.stayAndFood ?? ""]?.[locale] ?? null;
 
 const filled = (v: unknown) => typeof v === "string" && v.trim() !== "";
 
@@ -125,12 +129,18 @@ export function missingFields(kind: CrewKind, req: CrewRequest): string[] {
   return NEEDS[kind].filter(([field]) => !filled(req[field])).map(([, label]) => label);
 }
 
-/** The template's variable values, in order. Assumes missingFields is empty. */
-export function templateValues(kind: CrewKind, req: CrewRequest, locale: CrewLocale): string[] {
+/**
+ * The template's variable values, in order. Assumes missingFields is empty.
+ * `reference` is the worker's application (VS-J-...), for the invitation and
+ * the interviews-full message.
+ */
+export function templateValues(kind: CrewKind, req: CrewRequest, locale: CrewLocale, reference = ""): string[] {
   const s = (v: string | null | undefined) => v ?? "";
   switch (kind) {
-    case "offer":
-      return [s(req.offerJob), s(req.offerPlace), s(req.offerPay), s(req.offerShift), s(req.offerStay), formatDay(s(req.startDate), locale)].map(variableValue);
+    case "offer": {
+      const stay = stayText(req, locale);
+      return [reference, s(req.offerJob), s(req.offerPlace), formatDay(s(req.startDate), locale), ...(stay ? [stay] : [])].map(variableValue);
+    }
     case "confirmed": {
       const where = filled(req.mapLink) ? `${s(req.reportAddress)} (map: ${s(req.mapLink).trim()})` : s(req.reportAddress);
       return [where, `${formatDay(s(req.reportAt), locale)}, ${formatTime(s(req.reportAt), locale)}`, s(req.siteContact)].map(variableValue);
@@ -138,7 +148,7 @@ export function templateValues(kind: CrewKind, req: CrewRequest, locale: CrewLoc
     case "reminder":
       return [formatTime(s(req.reportAt), locale), s(req.reportAddress)].map(variableValue);
     case "not_needed":
-      return [variableValue(s(req.offerJob))];
+      return [reference, s(req.offerJob)].map(variableValue);
   }
 }
 
@@ -179,6 +189,8 @@ export interface PlanContext {
   templates?: typeof CREW_TEMPLATES;
   /** False when WhatsApp is not set up (tests, another workspace). */
   canSend?: boolean;
+  /** The worker's latest job application reference (VS-J-...): the invitation and the interviews-full message carry it. */
+  reference?: string | null;
   /**
    * A staff test number (Windmill f/talent/crew_test_phones): no quiet hours,
    * and the reminder is due a minute after the confirmation went, so the whole
@@ -252,7 +264,7 @@ export function planMember(c: PlanContext): Plan {
   if (!p) return { kind: "wait", note: "Pick the worker (Person) on this crew member" };
   if (!c.request) return { kind: "wait", note: "Pick the crew request on this crew member" };
   if (p.workerStatus === "DO_NOT_CONTACT") return { kind: "wait", note: "Do not contact: no message sent" };
-  if (p.workerStatus === "NOT_AVAILABLE" && due === "offer") return { kind: "wait", note: "Marked not available: no offer sent" };
+  if (p.workerStatus === "NOT_AVAILABLE" && due === "offer") return { kind: "wait", note: "Marked not available: no invite sent" };
   if (!p.consentedAt) return { kind: "wait", note: "No consent on record (they have not applied on the website): call them instead" };
   const phone = personPhone(p);
   if (!phone) return { kind: "wait", note: "No Indian mobile number on the person" };
@@ -264,24 +276,30 @@ export function planMember(c: PlanContext): Plan {
         kind: "wait",
         note: other.opportunityId === c.member.opportunityId
           ? "Already on this crew request (another crew member record)"
-          : "Already has an open offer on another crew request: one at a time",
+          : "Already has an open interview invite on another crew request: one at a time",
       };
     }
   }
 
   const missing = missingFields(due, c.request);
   if (missing.length) return { kind: "wait", note: `Fill in on the crew request: ${missing.join(", ")}` };
+  // The invitation and the interviews-full message are updates on the worker's own application (Utility, not Marketing).
+  const reference = c.reference?.trim() ?? "";
+  if ((due === "offer" || due === "not_needed") && !reference) {
+    return { kind: "wait", note: "No job application on record for this worker: call them instead" };
+  }
 
   const locale = crewLocale(p.language);
-  const templateId = (c.templates ?? CREW_TEMPLATES)[due][locale];
-  if (!templateId || c.canSend === false) return { kind: "wait", note: `WhatsApp template not approved yet (${due}, ${locale})` };
+  const key = templateKey(due, due === "offer" && !!stayText(c.request, locale));
+  const templateId = (c.templates ?? CREW_TEMPLATES)[key][locale];
+  if (!templateId || c.canSend === false) return { kind: "wait", note: `WhatsApp template not approved yet (${key}, ${locale})` };
 
   if (due !== "reminder" && !c.test) {
     const [from, to] = SEND_HOURS[due];
     const hour = istHour(c.now);
     if (hour < from || hour >= to) return { kind: "wait", note: `Waiting for ${from}:00 to send (no messages ${to}:00 to ${from}:00)` };
   }
-  return { kind: "send", message: due, locale, templateId, values: templateValues(due, c.request, locale), phone };
+  return { kind: "send", message: due, locale, templateId, values: templateValues(due, c.request, locale, reference), phone };
 }
 
 // --- replies ---------------------------------------------------------------------------
@@ -351,7 +369,7 @@ export function crewDeliveryStatus(status: string, delivery: string | null): str
   return status === "failed" ? "FAILED" : status === "unknown" ? "UNKNOWN" : "QUEUED";
 }
 
-const KIND_LABEL: Record<CrewKind, string> = { offer: "job offer", confirmed: "job confirmed", reminder: "reminder", not_needed: "crew full" };
+const KIND_LABEL: Record<CrewKind, string> = { offer: "interview invite", confirmed: "interview details", reminder: "interview reminder", not_needed: "interviews full" };
 export const kindLabel = (kind: CrewKind) => KIND_LABEL[kind];
 
 /** The crew member's field each message's send time goes in. */
@@ -359,7 +377,7 @@ export const SENT_FIELD: Partial<Record<CrewKind, string>> = { offer: "offerSent
 
 /** The Message note after a message's outcome: null when it went (or is on its way), else what to do. */
 export function noteAfterSend(kind: CrewKind, status: string, delivery: string | null): string | null {
-  const what = kind === "offer" ? "offer" : kind === "confirmed" ? "confirmation" : kind === "reminder" ? "reminder" : "crew full message";
+  const what = kind === "offer" ? "interview invite" : kind === "confirmed" ? "interview details" : kind === "reminder" ? "reminder" : "interviews-full message";
   if (status === "failed" || delivery === "failed") return `The WhatsApp ${what} did not reach them: call them`;
   if (status === "unknown") return `The WhatsApp ${what} may not have gone: call them`;
   return null;

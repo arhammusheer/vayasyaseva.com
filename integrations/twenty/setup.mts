@@ -222,15 +222,22 @@ const MODEL: ObjectSpec[] = [
       { name: "leadSource", label: "Lead source", type: "SELECT", icon: "IconWorld", options: options([["WEBSITE_FORM", "Website form"], ["PHONE", "Phone"], ["EMAIL", "Email"], ["WHATSAPP", "WhatsApp"], ["REFERRAL", "Referral"], ["OTHER", "Other"]]) },
       { name: "enquiry", label: "Enquiry", type: "TEXT", icon: "IconMessage", description: "What the client asked for, as sent." },
       { name: "caseId", label: "Case ID", type: "TEXT", icon: "IconHash", isUnique: true, description: "The contact form's case ID (the sync key)." },
-      // What workers are told on WhatsApp (docs/crew-offers.md): the offer, then where and when to report.
-      { name: "offerJob", label: "Job (offer)", type: "TEXT", icon: "IconTool", description: "The work, as workers read it in the offer: \"Packing helper\"." },
-      { name: "offerPlace", label: "Place (offer)", type: "TEXT", icon: "IconMapPin", description: "Town or estate, as workers know it: \"SIDCUL, Haridwar\"." },
-      { name: "offerPay", label: "Pay (offer)", type: "TEXT", icon: "IconCurrencyRupee", description: "Take-home pay as it is said: \"₹13,500 a month, PF and ESIC extra\"." },
-      { name: "offerShift", label: "Shift (offer)", type: "TEXT", icon: "IconClock", description: "\"8 am to 8 pm\"." },
-      { name: "offerStay", label: "Stay and food (offer)", type: "TEXT", icon: "IconHome", description: "\"Room given, food your own\"." },
-      { name: "reportAddress", label: "Report at", type: "TEXT", icon: "IconMapPin", description: "Where a confirmed worker goes on day 1: gate, plot, estate." },
-      { name: "reportAt", label: "Report time", type: "DATE_TIME", icon: "IconCalendarTime", description: "Day 1, date and time. The reminder goes at 6 pm the evening before." },
-      { name: "siteContact", label: "Site contact", type: "TEXT", icon: "IconUser", description: "Whom to ask for at the gate, with a phone: \"Ramesh, 98765 43210\"." },
+      // What workers are told on WhatsApp (docs/crew-offers.md): the interview invitation, then where and when to come.
+      { name: "offerJob", label: "Job (for workers)", type: "TEXT", icon: "IconTool", description: "The work, as workers read it in the interview invitation: \"Packing helper\"." },
+      { name: "offerPlace", label: "Place (for workers)", type: "TEXT", icon: "IconMapPin", description: "Town or estate, as workers know it: \"SIDCUL, Haridwar\"." },
+      {
+        name: "stayAndFood",
+        label: "Stay and food",
+        type: "SELECT",
+        icon: "IconHome",
+        description: "What is given. Empty when nothing is: the invitation then has no stay and food line.",
+        options: options([["ROOM", "Room given"], ["FOOD", "Food given"], ["ROOM_AND_FOOD", "Room and food given"]], ["sky", "yellow", "green"]),
+      },
+      { name: "offerPay", label: "Pay", type: "TEXT", icon: "IconCurrencyRupee", description: "Take-home pay, for the recruiter's call and the interview (not in the WhatsApp invitation)." },
+      { name: "offerShift", label: "Shift", type: "TEXT", icon: "IconClock", description: "\"8 am to 8 pm\", for the recruiter's call and the interview (not in the WhatsApp invitation)." },
+      { name: "reportAddress", label: "Interview at", type: "TEXT", icon: "IconMapPin", description: "Where an invited worker comes for the interview: gate, plot, estate." },
+      { name: "reportAt", label: "Interview time", type: "DATE_TIME", icon: "IconCalendarTime", description: "Date and time of the interview. The reminder goes at 6 pm the evening before." },
+      { name: "siteContact", label: "Ask for", type: "TEXT", icon: "IconUser", description: "Whom to ask for at the gate, with a phone: \"Ramesh, 98765 43210\"." },
       { name: "mapLink", label: "Map link", type: "TEXT", icon: "IconMap", description: "A Google Maps link to the gate (optional)." },
     ],
   },
@@ -240,7 +247,7 @@ const MODEL: ObjectSpec[] = [
     labelSingular: "Crew member",
     labelPlural: "Crew members",
     icon: "IconUserCheck",
-    description: "A worker offered a place on a crew request. Its status drives the WhatsApp messages (docs/crew-offers.md).",
+    description: "A worker invited to interview for a crew request. Its status drives the WhatsApp messages (docs/crew-offers.md).",
     custom: true,
     fields: [
       {
@@ -248,11 +255,11 @@ const MODEL: ObjectSpec[] = [
         label: "Status",
         type: "SELECT",
         icon: "IconProgressCheck",
-        description: "Offered sends the offer; Confirmed sends where and when; Not needed thanks those who said yes. Said yes, Said no, No reply and Can't come are set from replies.",
+        description: "Invited sends the interview invitation; Interview fixed sends where and when; Not needed tells those who said yes the interviews are full. Said yes, Said no, No reply and Can't come are set from replies.",
         options: options(
           [
-            ["OFFERED", "Offered"], ["SAID_YES", "Said yes"], ["SAID_NO", "Said no"], ["NO_REPLY", "No reply"], ["CONFIRMED", "Confirmed"],
-            ["CANT_COME", "Can't come"], ["REPORTED", "Reported"], ["DIDNT_COME", "Didn't come"], ["NOT_NEEDED", "Not needed"],
+            ["OFFERED", "Invited"], ["SAID_YES", "Said yes"], ["SAID_NO", "Said no"], ["NO_REPLY", "No reply"], ["CONFIRMED", "Interview fixed"],
+            ["CANT_COME", "Can't come"], ["REPORTED", "Came"], ["DIDNT_COME", "Didn't come"], ["NOT_NEEDED", "Not needed"],
           ],
           ["sky", "turquoise", "gray", "gray", "green", "orange", "purple", "red", "gray"],
         ),
@@ -260,16 +267,22 @@ const MODEL: ObjectSpec[] = [
       { name: "messageNote", label: "Message note", type: "TEXT", icon: "IconAlertTriangle", description: "Why a message has not gone, or what to do (set by the automation)." },
       { name: "lastReply", label: "Last reply", type: "TEXT", icon: "IconMessageReply", description: "What the worker last sent on WhatsApp." },
       { name: "repliedAt", label: "Replied", type: "DATE_TIME", icon: "IconMessageReply" },
-      { name: "offerSentAt", label: "Offer sent", type: "DATE_TIME", icon: "IconSend" },
-      { name: "confirmationSentAt", label: "Confirmation sent", type: "DATE_TIME", icon: "IconSend" },
+      { name: "offerSentAt", label: "Invite sent", type: "DATE_TIME", icon: "IconSend" },
+      { name: "confirmationSentAt", label: "Interview details sent", type: "DATE_TIME", icon: "IconSend" },
       { name: "reminderSentAt", label: "Reminder sent", type: "DATE_TIME", icon: "IconBell" },
     ],
     relations: [
-      { name: "person", label: "Worker", target: "person", inverseName: "crewMembers", inverseLabel: "Crew offers", icon: "IconUser", inverseIcon: "IconUserCheck" },
+      { name: "person", label: "Worker", target: "person", inverseName: "crewMembers", inverseLabel: "Interview invites", icon: "IconUser", inverseIcon: "IconUserCheck" },
       { name: "opportunity", label: "Crew request", target: "opportunity", inverseName: "crewMembers", inverseLabel: "Crew members", icon: "IconUsersGroup", inverseIcon: "IconUserCheck" },
     ],
   },
 ];
+
+/**
+ * Fields taken out of the model: deactivated, then deleted with their data.
+ * opportunity.offerStay (free text) became the stayAndFood select on 19 Nov 2026.
+ */
+const RETIRED_FIELDS: [string, string][] = [["opportunity", "offerStay"]];
 
 /** The crew request pipeline, replacing Twenty's demo stages. */
 const OPPORTUNITY_STAGES = options(
@@ -339,9 +352,21 @@ async function main() {
               },
             });
           }
-        } else if (f.options && JSON.stringify((have.options ?? []).map((o) => o.value)) !== JSON.stringify(f.options.map((o) => o.value))) {
-          step(`updating options of ${spec.nameSingular}.${f.name}`);
-          if (!DRY_RUN) await updateOptions(gql, have, f.options);
+        } else {
+          const optionKey = (os: Option[] | null | undefined) => JSON.stringify((os ?? []).map((o) => [o.value, o.label]));
+          if (f.options && optionKey(have.options) !== optionKey(f.options)) {
+            step(`updating options of ${spec.nameSingular}.${f.name}`);
+            if (!DRY_RUN) await updateOptions(gql, have, f.options);
+          }
+          // Labels and descriptions follow the model (staff read them in Twenty).
+          if (have.label !== f.label || (f.description ?? null) !== (have.description ?? null)) {
+            step(`relabelling ${spec.nameSingular}.${f.name} as "${f.label}"`);
+            if (!DRY_RUN) {
+              await gql("/metadata", `mutation($input: UpdateOneFieldMetadataInput!) { updateOneField(input: $input) { id } }`, {
+                input: { id: have.id, update: { label: f.label, description: f.description ?? null } },
+              });
+            }
+          }
         }
       }
       for (const r of spec.relations ?? []) {
@@ -364,6 +389,20 @@ async function main() {
           },
         });
       }
+    }
+
+    // 2b. Retired fields: deactivated, then deleted
+    for (const [objectName, fieldName] of RETIRED_FIELDS) {
+      const field = byName(objectName)?.fields.edges.map((e) => e.node).find((f) => f.name === fieldName);
+      if (!field) continue;
+      step(`removing retired field ${objectName}.${fieldName}`);
+      if (DRY_RUN) continue;
+      if (field.isActive) {
+        await gql("/metadata", `mutation($input: UpdateOneFieldMetadataInput!) { updateOneField(input: $input) { id } }`, {
+          input: { id: field.id, update: { isActive: false } },
+        });
+      }
+      await gql("/metadata", `mutation($input: DeleteOneFieldInput!) { deleteOneField(input: $input) { id } }`, { input: { id: field.id } });
     }
 
     // 3. The crew request pipeline

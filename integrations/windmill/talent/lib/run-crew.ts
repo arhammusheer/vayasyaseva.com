@@ -240,6 +240,22 @@ async function byIds(crm: Twenty, plural: string, ids: string[]): Promise<Map<st
   return out;
 }
 
+/** Each person's latest job application reference (its name, VS-J-...), by person id. */
+async function latestApplications(crm: Twenty, personIds: string[]): Promise<Map<string, string>> {
+  const out = new Map<string, { name: string; at: number }>();
+  for (let i = 0; i < personIds.length; i += 50) {
+    for (const app of await findEvery(crm, "applications", isIn("personId", personIds.slice(i, i + 50)))) {
+      const personId = typeof app.personId === "string" ? app.personId : null;
+      const name = typeof app.name === "string" ? app.name.trim() : "";
+      if (!personId || !name) continue;
+      const at = new Date(String(app.submittedAt ?? app.createdAt ?? 0)).getTime() || 0;
+      const have = out.get(personId);
+      if (!have || at > have.at) out.set(personId, { name, at });
+    }
+  }
+  return new Map([...out].map(([id, v]) => [id, v.name]));
+}
+
 const unique = (xs: (string | null | undefined)[]) => [...new Set(xs.filter((x): x is string => !!x))];
 const createdMs = (m: CrewMember) => (m.createdAt ? new Date(m.createdAt).getTime() : 0);
 
@@ -258,6 +274,7 @@ async function planAndSend(deps: CrewDeps, crm: Twenty, result: CrewResult) {
   if (!members.length) return;
   const people = await byIds(crm, "people", unique(members.map((m) => m.personId)));
   const requests = await byIds(crm, "opportunities", unique(members.map((m) => m.opportunityId)));
+  const references = await latestApplications(crm, unique(members.map((m) => m.personId)));
   const ledger = await deps.query<LedgerRow>(CREW_LEDGER, [members.map((m) => m.id)]);
 
   for (const m of members) {
@@ -273,6 +290,7 @@ async function planAndSend(deps: CrewDeps, crm: Twenty, result: CrewResult) {
       templates: deps.templates,
       canSend: !!deps.sendWhatsApp,
       test: !!person && !!deps.testPhones?.has(personPhone(person) ?? ""),
+      reference: m.personId ? (references.get(m.personId) ?? null) : null,
     });
 
     // A crew member added by hand has no name: the worker and the crew request.
@@ -337,8 +355,9 @@ interface CrmRow {
 }
 
 export function crewCommunicationFields(r: CrmRow): Record<string, unknown> {
-  const template = templateText(r.kind, r.locale);
   const values = (typeof r.variables === "string" ? JSON.parse(r.variables) : r.variables) as string[];
+  // The invitation with the stay and food line has a fifth value.
+  const template = templateText(r.kind, r.locale, r.kind === "offer" && values.length === 5);
   return {
     name: `WhatsApp · ${kindLabel(r.kind)}`,
     channel: "WHATSAPP",

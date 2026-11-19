@@ -61,10 +61,10 @@ test("every crew message exists in every language, buttons on the offer and the 
 });
 
 test("the submission carries the examples and the quick-reply buttons", () => {
-  const offer = TEMPLATES.find((t) => t.group === "crew" && t.name === "vspl_application_offer" && t.language === "hi")!;
+  const offer = TEMPLATES.find((t) => t.group === "crew" && t.name === "vspl_interview_invite_stay" && t.language === "hi")!;
   const [body, buttons] = templateComponents(offer);
-  assert.equal((body.example as { body_text: string[][] }).body_text[0].length, 6);
-  assert.deepEqual(buttons, { type: "BUTTONS", buttons: [{ type: "QUICK_REPLY", text: "हाँ, करना है" }, { type: "QUICK_REPLY", text: "नहीं" }] });
+  assert.equal((body.example as { body_text: string[][] }).body_text[0].length, 5, "reference, job, place, start, stay and food");
+  assert.deepEqual(buttons, { type: "BUTTONS", buttons: [{ type: "QUICK_REPLY", text: "हाँ, इंटरव्यू देना है" }, { type: "QUICK_REPLY", text: "नहीं" }] });
   const ack = TEMPLATES.find((t) => t.group === "ack" && t.language === "en")!;
   assert.equal(templateComponents(ack).length, 1);
 });
@@ -101,6 +101,7 @@ test("dates and times read as people say them, in India time", () => {
 const IST = (s: string) => new Date(`${s}+05:30`);
 const TEMPLATE_IDS = {
   offer: { "hi-IN": 101, "en-IN": 102, "hi-Latn-IN": 103 },
+  offer_stay: { "hi-IN": 111, "en-IN": 112, "hi-Latn-IN": 113 },
   confirmed: { "hi-IN": 201, "en-IN": 202, "hi-Latn-IN": 203 },
   reminder: { "hi-IN": 301, "en-IN": 302, "hi-Latn-IN": 303 },
   not_needed: { "hi-IN": 401, "en-IN": 402, "hi-Latn-IN": 403 },
@@ -124,7 +125,7 @@ const request = (over: Partial<CrewRequest> = {}): CrewRequest => ({
   offerPlace: "SIDCUL, Haridwar",
   offerPay: "₹13,500 महीना, PF और ESIC अलग",
   offerShift: "सुबह 8 से शाम 8",
-  offerStay: "कमरा मिलेगा, खाना अपना",
+  stayAndFood: "ROOM_AND_FOOD",
   reportAddress: "Gate 2, Plot 12, Sector 4, SIDCUL",
   reportAt: "2026-11-25T02:30:00.000Z",
   siteContact: "Ramesh, 98765 43210",
@@ -142,18 +143,23 @@ const row = (over: Partial<LedgerRow>): LedgerRow => ({
 
 const ctx = (over: Partial<PlanContext> = {}): PlanContext => {
   const m = over.member ?? member();
-  return { member: m, person: person(), request: request(), ledger: [], others: [m], now: IST("2026-11-19T11:00:00"), templates: TEMPLATE_IDS, ...over };
+  return {
+    member: m, person: person(), request: request(), ledger: [], others: [m], now: IST("2026-11-19T11:00:00"), templates: TEMPLATE_IDS, reference: "VS-J-ABC234", ...over,
+  };
 };
 
 test("an offered worker is sent the offer, in their language, with the crew request's words", () => {
   const plan = planMember(ctx());
   assert.equal(plan.kind, "send");
   if (plan.kind !== "send") return;
-  assert.deepEqual([plan.message, plan.locale, plan.templateId, plan.phone], ["offer", "hi-IN", 101, "+919876543210"]);
-  assert.deepEqual(plan.values, ["Packing helper", "SIDCUL, Haridwar", "₹13,500 महीना, PF और ESIC अलग", "सुबह 8 से शाम 8", "कमरा मिलेगा, खाना अपना", "बुधवार, 25 नवंबर"]);
-  const text = renderTemplate(templateText("offer", "hi-IN"), plan.values);
+  assert.deepEqual([plan.message, plan.locale, plan.templateId, plan.phone], ["offer", "hi-IN", 111, "+919876543210"]);
+  assert.deepEqual(plan.values, ["VS-J-ABC234", "Packing helper", "SIDCUL, Haridwar", "बुधवार, 25 नवंबर", "कमरा और खाना मिलेगा"]);
+  const text = renderTemplate(templateText("offer", "hi-IN", true), plan.values);
   assert.match(text, /काम: Packing helper\nजगह: SIDCUL, Haridwar/);
-  assert.match(text, /\[हाँ, करना है\] \[नहीं\]$/);
+  assert.match(text, /आवेदन VS-J-ABC234 पर अपडेट/);
+  assert.match(text, /रहना और खाना: कमरा और खाना मिलेगा/);
+  assert.doesNotMatch(text, /तनख़्वाह|शिफ़्ट/, "no pay or shift in the invitation");
+  assert.match(text, /\[हाँ, इंटरव्यू देना है\] \[नहीं\]$/);
 });
 
 test("nothing goes, with a note saying why, when the worker or the crew request is not ready", () => {
@@ -163,16 +169,17 @@ test("nothing goes, with a note saying why, when the worker or the crew request 
     return plan.kind === "wait" ? plan.note : null;
   };
   assert.equal(note({ person: person({ workerStatus: "DO_NOT_CONTACT" }) }), "Do not contact: no message sent");
-  assert.equal(note({ person: person({ workerStatus: "NOT_AVAILABLE" }) }), "Marked not available: no offer sent");
+  assert.equal(note({ person: person({ workerStatus: "NOT_AVAILABLE" }) }), "Marked not available: no invite sent");
   assert.match(note({ person: person({ consentedAt: null }) })!, /No consent on record/);
   assert.equal(note({ person: person({ phones: { primaryPhoneNumber: "12345" } }) }), "No Indian mobile number on the person");
   assert.equal(note({ person: null }), "Pick the worker (Person) on this crew member");
-  assert.equal(note({ request: request({ offerPay: "", offerStay: null }) }), "Fill in on the crew request: Pay (offer), Stay and food (offer)");
-  assert.equal(note({ templates: { ...TEMPLATE_IDS, offer: {} } }), "WhatsApp template not approved yet (offer, hi-IN)");
-  assert.equal(note({ canSend: false }), "WhatsApp template not approved yet (offer, hi-IN)");
+  assert.equal(note({ request: request({ offerJob: "", startDate: null }) }), "Fill in on the crew request: Job (for workers), Start");
+  assert.equal(note({ templates: { ...TEMPLATE_IDS, offer_stay: {} } }), "WhatsApp template not approved yet (offer_stay, hi-IN)");
+  assert.equal(note({ canSend: false }), "WhatsApp template not approved yet (offer_stay, hi-IN)");
+  assert.equal(note({ reference: null }), "No job application on record for this worker: call them instead");
   assert.match(note({ now: IST("2026-11-19T21:30:00") })!, /Waiting for 8:00/);
   assert.match(note({ now: IST("2026-11-20T07:59:00") })!, /Waiting for 8:00/);
-  assert.deepEqual(missingFields("confirmed", request({ siteContact: " " })), ["Site contact"]);
+  assert.deepEqual(missingFields("confirmed", request({ siteContact: " " })), ["Ask for"]);
 });
 
 test("one open offer per worker: the earlier crew member goes, the later one waits", () => {
@@ -182,7 +189,7 @@ test("one open offer per worker: the earlier crew member goes, the later one wai
   const others = [first, elsewhere, twice];
   assert.equal(planMember(ctx({ member: first, others })).kind, "send");
   const a = planMember(ctx({ member: elsewhere, others }));
-  assert.deepEqual(a, { kind: "wait", note: "Already has an open offer on another crew request: one at a time" });
+  assert.deepEqual(a, { kind: "wait", note: "Already has an open interview invite on another crew request: one at a time" });
   const b = planMember(ctx({ member: twice, others }));
   assert.deepEqual(b, { kind: "wait", note: "Already on this crew request (another crew member record)" });
   // Once the first is answered no, the next one can go.
@@ -195,8 +202,8 @@ test("an offer goes once; 24 hours without an answer is No reply", () => {
   assert.deepEqual(planMember(ctx({ ledger: sent, now: IST("2026-11-20T10:00:00") })), { kind: "no_reply" });
   assert.deepEqual(planMember(ctx({ ledger: [row({ replied: true })], now: IST("2026-11-21T10:00:00") })), { kind: "wait", note: null });
   // A failed offer keeps its note (set when it failed) and is not marked No reply.
-  const failed = planMember(ctx({ member: member({ messageNote: "The WhatsApp offer did not reach them: call them" }), ledger: [row({ status: "failed", sent_at: null })] }));
-  assert.deepEqual(failed, { kind: "wait", note: "The WhatsApp offer did not reach them: call them" });
+  const failed = planMember(ctx({ member: member({ messageNote: "The WhatsApp interview invite did not reach them: call them" }), ledger: [row({ status: "failed", sent_at: null })] }));
+  assert.deepEqual(failed, { kind: "wait", note: "The WhatsApp interview invite did not reach them: call them" });
 });
 
 test("confirmed sends where and when; a do-not-contact worker gets nothing at all", () => {
@@ -261,13 +268,13 @@ test("a reply moves the crew member on only where it makes sense", () => {
 });
 
 test("the webhook: an incoming message on our number from an Indian mobile; placeholders count as empty", () => {
-  const msg = parseInbound({ webhook_type: "incoming_message", from: "919876543210", message_type: "button", body: "हाँ, करना है", phone_number_id: "1426644927192285" });
+  const msg = parseInbound({ webhook_type: "incoming_message", from: "919876543210", message_type: "button", body: "हाँ, इंटरव्यू देना है", phone_number_id: "1426644927192285" });
   assert.ok(msg);
   assert.equal(msg!.phone, "+919876543210");
   assert.equal(msg!.type, "button");
   assert.match(msg!.key, /^sha256:[0-9a-f]{64}$/);
   // A retry of the same message has the same key; Fast2SMS's own id wins when it sends one.
-  assert.equal(parseInbound({ webhook_type: "incoming_message", from: "919876543210", message_type: "button", body: "हाँ, करना है" })!.key, msg!.key);
+  assert.equal(parseInbound({ webhook_type: "incoming_message", from: "919876543210", message_type: "button", body: "हाँ, इंटरव्यू देना है" })!.key, msg!.key);
   assert.equal(parseInbound({ from: "919876543210", body: "haan", request_id: "abc" })!.key, "f2s:abc");
   assert.equal(parseInbound({ from: "919876543210", body: "haan", request_id: "@{{request_id}}" })!.key.startsWith("sha256:"), true);
   assert.equal(parseInbound({ webhook_type: "status_update", from: "919876543210", body: "x" }), null);
@@ -278,9 +285,9 @@ test("the webhook: an incoming message on our number from an Indian mobile; plac
 
 // --- whole runs ----------------------------------------------------------------------------
 
-function fakeTwenty(seed: { people?: TwentyRecord[]; opportunities?: TwentyRecord[]; crewMembers?: TwentyRecord[] } = {}) {
+function fakeTwenty(seed: { people?: TwentyRecord[]; opportunities?: TwentyRecord[]; crewMembers?: TwentyRecord[]; applications?: TwentyRecord[] } = {}) {
   const store: Record<string, TwentyRecord[]> = {
-    people: seed.people ?? [], opportunities: seed.opportunities ?? [], crewMembers: seed.crewMembers ?? [], communications: [], applications: [], attachments: [],
+    people: seed.people ?? [], opportunities: seed.opportunities ?? [], crewMembers: seed.crewMembers ?? [], communications: [], applications: seed.applications ?? [], attachments: [],
   };
   let limited = false;
   const match = (r: TwentyRecord, filter: string): boolean => {
@@ -337,6 +344,10 @@ async function setup(status = "OFFERED") {
     people: [{ ...person(), id: PERSON_ID } as unknown as TwentyRecord],
     opportunities: [{ ...request(), id: REQUEST_ID } as unknown as TwentyRecord],
     crewMembers: [{ id: MEMBER_ID, name: "", status, personId: PERSON_ID, opportunityId: REQUEST_ID, createdAt: "2026-11-19T05:00:00.000Z", messageNote: "" }],
+    applications: [
+      { id: "a-old", name: "VS-J-OLD111", personId: PERSON_ID, submittedAt: "2026-10-01T05:00:00.000Z" },
+      { id: "a-new", name: "VS-J-ABC234", personId: PERSON_ID, submittedAt: "2026-11-01T05:00:00.000Z" },
+    ],
   });
   const db = await testDb(TALENT_SCHEMA);
   const sends: { phone: string; values: string[]; udf1: string; templateId: number }[] = [];
@@ -372,14 +383,15 @@ test("a run sends the offer once and writes it to Twenty; the next run sends not
   const first = await runCrew(s.deps());
   assert.equal(first.sent, 1);
   assert.equal(s.sends.length, 1);
-  assert.equal(s.sends[0].templateId, 101);
+  assert.equal(s.sends[0].templateId, 111, "the invitation with the stay and food line");
   assert.equal(s.sends[0].phone, "+919876543210");
   const [msg] = await s.db.query<{ id: string; status: string; request_id: string; crm_state: string }>("SELECT id, status, request_id, crm_state FROM crew_messages");
   assert.deepEqual([msg.status, msg.request_id, msg.crm_state], ["accepted", "wa-1", "accepted"]);
   assert.equal(s.sends[0].udf1, msg.id);
   const [comm] = s.t.store.communications;
   assert.deepEqual([comm.channel, comm.direction, comm.deliveryStatus, comm.externalKey, comm.opportunityId], ["WHATSAPP", "OUTBOUND", "SENT", `crew:${msg.id}`, REQUEST_ID]);
-  assert.match(String(comm.body), /तनख़्वाह \(हाथ में\): ₹13,500/);
+  assert.match(String(comm.body), /आवेदन VS-J-ABC234 पर अपडेट/, "the latest application's reference");
+  assert.match(String(comm.body), /रहना और खाना: कमरा और खाना मिलेगा/);
   assert.ok(s.member().offerSentAt);
   assert.equal(s.member().name, "Ravi Kumar · ITC Haridwar packing");
   assert.equal(s.member().messageNote, "");
@@ -395,16 +407,16 @@ test("a yes tap on WhatsApp: saved by the route, then Said yes in Twenty and the
   await runCrew(s.deps());
   // Someone with no crew message: ignored.
   assert.deepEqual(await saveInbound(s.db.query, parseInbound({ from: "919811111111", body: "haan" })!), { saved: false, reason: "no open crew message" });
-  const tap = parseInbound({ webhook_type: "incoming_message", from: "919876543210", message_type: "button", body: "हाँ, करना है" })!;
+  const tap = parseInbound({ webhook_type: "incoming_message", from: "919876543210", message_type: "button", body: "हाँ, इंटरव्यू देना है" })!;
   assert.deepEqual(await saveInbound(s.db.query, tap), { saved: true, answer: "yes", kind: "offer" });
   assert.deepEqual(await saveInbound(s.db.query, tap), { saved: false, reason: "already saved" });
 
   const run = await runCrew(s.deps());
   assert.equal(run.replies, 1);
   assert.equal(s.member().status, "SAID_YES");
-  assert.equal(s.member().lastReply, "हाँ, करना है");
+  assert.equal(s.member().lastReply, "हाँ, इंटरव्यू देना है");
   const inbound = s.t.store.communications.find((c) => c.direction === "INBOUND")!;
-  assert.equal(inbound.body, "हाँ, करना है");
+  assert.equal(inbound.body, "हाँ, इंटरव्यू देना है");
   assert.equal(s.notes.length, 1);
   assert.deepEqual([s.notes[0].type, s.notes[0].severity, s.notes[0].pii?.phone], ["crew.said_yes", "info", "+919876543210"]);
   assert.match(s.notes[0].link!.url, /\/object\/crewMember\//);
@@ -449,7 +461,7 @@ test("a refused send leaves a note to call; an interrupted one is never resent",
   const s = await setup();
   s.answer({ statusCode: 400, body: { status: false, message: "Template paused" } });
   await runCrew(s.deps());
-  assert.equal(s.member().messageNote, "The WhatsApp offer did not reach them: call them");
+  assert.equal(s.member().messageNote, "The WhatsApp interview invite did not reach them: call them");
   assert.equal(s.t.store.communications[0].deliveryStatus, "FAILED");
   await runCrew(s.deps());
   assert.equal(s.sends.length, 1, "a failed offer is not tried again: the recruiter calls");
@@ -462,7 +474,7 @@ test("a refused send leaves a note to call; an interrupted one is never resent",
   );
   await runCrew(r.deps());
   assert.equal(r.sends.length, 0);
-  assert.equal(r.member().messageNote, "The WhatsApp offer may not have gone: call them");
+  assert.equal(r.member().messageNote, "The WhatsApp interview invite may not have gone: call them");
 });
 
 test("delivery reports reach the Communication: delivered, then read", async () => {
@@ -553,4 +565,36 @@ test("a run treats a number on the test list as a test, and only that one", asyn
   assert.equal(s.sends.length, 0);
   await runCrew({ ...s.deps(), testPhones: parseTestPhones("98765 43210") });
   assert.equal(s.sends.length, 1);
+});
+
+test("nothing given for stay and food: the invitation without that line", () => {
+  const plan = planMember(ctx({ request: request({ stayAndFood: null }) }));
+  assert.equal(plan.kind, "send");
+  if (plan.kind !== "send") return;
+  assert.equal(plan.templateId, 101);
+  assert.deepEqual(plan.values, ["VS-J-ABC234", "Packing helper", "SIDCUL, Haridwar", "बुधवार, 25 नवंबर"]);
+  const text = renderTemplate(templateText("offer", "hi-IN"), plan.values);
+  assert.doesNotMatch(text, /रहना और खाना/);
+  const en = planMember(ctx({ person: person({ language: "EN" }), request: request({ stayAndFood: "FOOD" }) }));
+  assert.equal(en.kind === "send" && en.values[4], "Food given");
+});
+
+test("interviews full carries the application reference too", () => {
+  const full = member({ status: "NOT_NEEDED" });
+  const plan = planMember(ctx({ member: full, others: [full], ledger: [row({ said_yes: true, replied: true })] }));
+  assert.equal(plan.kind === "send" && plan.values.join("|"), "VS-J-ABC234|Packing helper");
+  assert.deepEqual(planMember(ctx({ member: full, others: [full], ledger: [row({ said_yes: true, replied: true })], reference: "" })), {
+    kind: "wait", note: "No job application on record for this worker: call them instead",
+  });
+});
+
+test("every crew template reads as an update on the worker's own application or interview (Utility, not Marketing)", () => {
+  // Meta filed earlier wordings as Marketing for opening like an announcement or promising more messages.
+  const PROMOTIONAL = /offer|opportunit|hurry|don't miss|limited|next job|new jobs|we will tell you|बताएँगे|batayenge|अगला काम|agla kaam|ख़बर|khabar/i;
+  for (const t of CREW_TEMPLATE_TEXT) {
+    assert.doesNotMatch(t.text, PROMOTIONAL, `${t.name}/${t.language}`);
+    // The invitation and the interviews-full message open with the application they are about.
+    if (t.kind === "offer" || t.kind === "not_needed") assert.match(t.text.split("\n")[0], /\{\{1\}\}/, `${t.name}/${t.language} opens with the reference`);
+  }
+  assert.equal(CREW_TEMPLATE_TEXT.filter((t) => t.kind === "offer").length, 6, "with and without stay and food, three languages");
 });

@@ -185,8 +185,8 @@ export const VIEWS: ViewSpec[] = [
     name: "Opportunity Record Page Fields",
     type: "FIELDS_WIDGET",
     columns: [
-      "stage", "company", "pointOfContact", "crewSize", "services", "cluster", "siteLocation", "startDate",
-      "offerJob", "offerPlace", "offerPay", "offerShift", "offerStay", "reportAddress", "reportAt", "siteContact", "mapLink",
+      "stage", "company", "pointOfContact", "crewSize", "services", "cluster", "siteLocation",
+      "offerJob", "offerPlace", "stayAndFood", "startDate", "reportAddress", "reportAt", "siteContact", "mapLink", "offerPay", "offerShift",
       "crewMembers", "leadSource", "enquiry", "communications", "caseId", "createdAt",
     ],
   },

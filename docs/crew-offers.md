@@ -62,9 +62,11 @@ Twenty forms cannot make a field required: a run with no crew request picked mak
 
 ## Going live
 
-1. Twenty: `node integrations/twenty/setup.mts --dry-run`, then without `--dry-run`. New views appear; the crew request's record page shows the new fields after `--reset-layout` (which resets every view to `layout.mts`) or when added by hand.
+Done on 19 November 2026: steps 1 (with the record pages laid out by `--reset-view`), 3 and 4 (`--enable-crew` on), and step 2's submission (message ids 46002 to 46013, pending Meta). Left: the approved ids into `CREW_TEMPLATES` and a deploy, the "Offer job" workflow, and the test on a staff number.
+
+1. Twenty: `node integrations/twenty/setup.mts --dry-run`, then without `--dry-run`. New views appear. Views that already exist are laid out again only on request: `--reset-view="opportunity/Opportunity Record Page Fields"` (repeatable) for one, `--reset-layout` for all (staff's changes to views are lost).
 2. Templates: `node integrations/windmill/whatsapp-templates.mts --create --only=crew` submits them to Meta (Utility). When approved, put each Fast2SMS message id in `CREW_TEMPLATES`. Meta may file the offer as Marketing; if it does, it still sends, at a higher price, and workers who opted out of marketing will not get it.
-3. Webhook: `node integrations/windmill/fast2sms-whatsapp-webhook.mts` prints the dashboard values; make it in the Fast2SMS dashboard. Optional: add `FAST2SMS_WA_SECRET` to `growth/windmill-fast2sms` (until then the delivery report secret is used).
+3. Webhook: `node integrations/windmill/fast2sms-whatsapp-webhook.mts` prints the values; the secret goes in the URL as `?key=` because Fast2SMS keeps no custom header. Optional: add `FAST2SMS_WA_SECRET` to `growth/windmill-fast2sms` (until then the delivery report secret is used), then deploy and update the webhook's URL.
 4. Windmill: `pnpm windmill:build && pnpm windmill:deploy --reset-notify-policy` (the policy reset adds the Crew reply rule and overwrites hand edits to the policy), then `--enable-crew` when ready to message workers.
 5. Try it on a staff member's own number first: a crew request with every field filled, one crew member, a Yes tap, Confirmed, then a reminder (set Report time to tomorrow).
 

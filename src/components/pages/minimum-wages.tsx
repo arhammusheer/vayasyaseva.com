@@ -25,6 +25,7 @@ import {
   listingCheckOn,
   ratesYear,
   sourceById,
+  titleDate,
   todayIso,
   unpublishedRevisions,
   vdaPoints,
@@ -63,10 +64,8 @@ import { checkedWageStates } from "@/lib/wage-listing-checks";
  */
 export const listedStates = (states: readonly WageState[] = wageStates) => states.filter((s) => linkable(wageStatePath(s.state), "en-IN"));
 
-/** The year shows in titles and headings only while the figures are current (PLAN §5.5). */
-const yearOf = (state: WageState, today: string) => (wageStatus(state, today).stale ? null : ratesYear(state, today));
-/** The month of the last check ("October 2026"), on the same terms as the year. */
-const monthOf = (state: WageState, today: string) => (wageStatus(state, today).stale ? null : formatMonth(lastCheck(state, today)));
+/** The month of the last check ("October 2026") while the figures are current: the dated answer under the H1. */
+const checkMonth = (state: WageState, today: string) => (wageStatus(state, today).stale ? null : formatMonth(lastCheck(state, today)));
 
 /**
  * The answer to a dated search ("haryana minimum wages october 2026") when
@@ -75,13 +74,13 @@ const monthOf = (state: WageState, today: string) => (wageStatus(state, today).s
  * under the H1 already says which ones were not notified.
  */
 function stillApplies(state: WageState, today: string) {
-  const month = monthOf(state, today);
+  const month = checkMonth(state, today);
   const latest = state.tables.map((t) => t.effectiveFrom).sort().at(-1)!;
   if (!month || unpublishedRevisions(state, today).length || formatMonth(latest) === month) return null;
   return x.stillApplies(month);
 }
+/** The year in the hub's and the VDA tracker's titles: the latest year any listed state was confirmed. It stays when a state goes stale (titleDate). */
 export const hubYear = (states = listedStates(), today = todayIso()) => states.map((s) => ratesYear(s, today)).sort().at(-1) ?? null;
-export const hubStale = (today: string, states = listedStates()) => states.some((s) => wageStatus(s, today).stale);
 
 /** A shorter hero than a business page's, so the first rates show on the first screen. */
 export const HERO_TIGHT = "pb-8 pt-6 sm:pb-10 sm:pt-14 lg:pb-12 lg:pt-14";
@@ -97,9 +96,9 @@ function stateOrThrow(slug: WageStateSlug, states: readonly WageState[]) {
 
 export async function wageStateMetadata(slug: WageStateSlug) {
   const { state, t } = stateOrThrow(slug, await checkedWageStates());
-  const today = todayIso();
+  const { year, month } = titleDate(state, todayIso());
   return pageMetadata({
-    title: t.title(yearOf(state, today), monthOf(state, today)),
+    title: t.title(year, month),
     description: t.description,
     alternates: { canonical: localePath(wageStatePath(slug), "en-IN") },
     locale: "en-IN",
@@ -109,7 +108,7 @@ export async function wageStateMetadata(slug: WageStateSlug) {
 export async function wageHubMetadata(locale: Locale = "en-IN") {
   const today = todayIso();
   const states = listedStates(await checkedWageStates());
-  const year = hubStale(today, states) ? null : hubYear(states, today);
+  const year = hubYear(states, today);
   const hindi = locale === "hi-IN";
   return pageMetadata({
     title: hindi ? wageHubHi.title(year) : wageHubCopy.title(year),
@@ -800,8 +799,7 @@ function TableChooser({ state, which }: { state: WageState; which: NonNullable<W
 export async function WageStatePage({ slug }: { slug: WageStateSlug }) {
   const { state, t } = stateOrThrow(slug, await checkedWageStates());
   const today = todayIso();
-  const year = yearOf(state, today);
-  const month = monthOf(state, today);
+  const { year, month } = titleDate(state, today);
   const still = stillApplies(state, today);
   const doors = stateDoors(slug, state.name, t.labourDepartment);
   return (
@@ -810,7 +808,7 @@ export async function WageStatePage({ slug }: { slug: WageStateSlug }) {
       <JsonLd data={faqSchema(t.faqs)} />
       <PageHero
         crumbs={<Breadcrumbs path={wageStatePath(slug)} locale="en-IN" name={state.name} />}
-        title={x.stateHeading(t.headingPlace ?? state.name, month)}
+        title={x.stateHeading(t.headingPlace ?? state.name, month ?? year)}
         lede={still ? `${t.answer} ${still}` : t.answer}
         footnote={<CheckedLine state={state} today={today} />}
         className={HERO_TIGHT}
@@ -869,7 +867,7 @@ export async function WageHubPage({ locale = "en-IN" }: { locale?: Locale }) {
   if (locale === "hi-IN") return <WageHubPageHi all={all} />;
   const today = todayIso();
   const states = listedStates(all);
-  const year = hubStale(today, states) ? null : hubYear(states, today);
+  const year = hubYear(states, today);
   const headlines = states.map((s) => ({ state: s, ...headlineRate(s) }));
   const lowest = [...headlines].sort((a, b) => a.low.monthly - b.low.monthly)[0];
   const highest = [...headlines].sort((a, b) => b.high.monthly - a.high.monthly)[0];
@@ -958,7 +956,7 @@ export async function WageHubPage({ locale = "en-IN" }: { locale?: Locale }) {
 function WageHubPageHi({ all }: { all: readonly WageState[] }) {
   const today = todayIso();
   const states = listedStates(all).filter((s) => WAGE_HUB_HI[s.state]);
-  const year = hubStale(today, listedStates(all)) ? null : hubYear(listedStates(all), today);
+  const year = hubYear(listedStates(all), today);
   const h = wageHubHi;
   const lastChecked = states.map((s) => s.checked.on).sort()[0];
   const overdue = states.some((s) => !wageStatus(s, today).stale && unpublishedRevisions(s, today).length);

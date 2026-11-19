@@ -11,7 +11,7 @@
 //       monthly rate is basic + VDA, daily rates follow the state's rule,
 //       every rate cites a source, and every built wage page has a file.
 //       A revision that is due or overdue is a warning: the page shows its
-//       own notice and drops the year (PLAN §5.5), so CI never breaks on a date.
+//       own notice (its title keeps the year), so CI never breaks on a date.
 //   C10 guides: a published guide names its legal reviewer and carries a
 //       publish date no earlier than the review; citations resolve;
 //       contractor terms in titles, H1s, headings and metas; three agency

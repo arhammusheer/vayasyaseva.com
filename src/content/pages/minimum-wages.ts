@@ -41,7 +41,7 @@ function listed(state: WageState, group: string, label: string, column = 0) {
 export const stamp = (states: readonly WageState[]) =>
   `${states.every((s) => s.checked.by) ? "Checked" : "Updated"} ${formatShortMonth(states.map((s) => s.checked.on).sort()[0])}`;
 
-/** " October 2026" in a title, or " 2026", or nothing on a stale page. */
+/** " November 2026" in a title while the last check is this month, else " 2026" (titleDate). */
 const dated = (year: string | null, month: string | null) => (month ? ` ${month}` : year ? ` ${year}` : "");
 
 type FaqItem = { question: string; answer: string };
@@ -435,7 +435,7 @@ export function stateDoors(slug: WageStateSlug, name: string, department: LinkIt
 /** Labels the wage page components use. */
 export const wageUi = {
   minimumWages: "Minimum wages",
-  /** The H1, dated with the month of the last check ("October 2026") while the page is current. */
+  /** The H1, dated as the title is (titleDate): "November 2026" while the last check is this month, else "2026". */
   stateHeading: (name: string, when: string | null) => `Minimum wages in ${name}${when ? `, ${when}` : ""}.`,
   /** After the answer when the rates predate the month of the check and no revision is overdue: the dated search's answer. */
   stillApplies: (month: string) => `No newer notification was listed when we checked in ${month}, so these rates still apply.`,

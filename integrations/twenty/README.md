@@ -10,16 +10,18 @@ VSPL's back office: job seekers as people with their applications and every mess
 | **Application** (custom) | A job application; name = its reference VS-J-XXXXXX | Phone, Source, Role (`jobRole`), Work wanted, Area, Experience, Education, Can start, Shifts, Skills (the quick form's answers as real fields), Cluster, Message, Answers (raw), Submitted, Consent version, Page, Talent DB id (unique sync key); → Person |
 | **Communication** (custom) | Every SMS, WhatsApp, call or email, with delivery status | Channel, Direction, Delivery (Queued, Sent, Delivered, Read, Failed, Unknown), Template, Message, Provider, Provider ID, Status at, Error, Sync key (unique); → Person, Application, Crew request |
 | **Company** | Client companies | (standard) |
-| **Opportunity**, labelled **Crew request** | A crew request | Stage replaced with New → Contacted → Site visit → Quoted → Won / Lost; Crew size, Services, Site, Cluster, Start, Lead source, Enquiry, Case ID (unique sync key); what workers are told: Job, Place, Pay, Shift, Stay and food (offer), Report at, Report time, Site contact, Map link |
-| **Crew member** (custom) | A worker offered a place on a crew request (docs/crew-offers.md) | Status (Offered, Said yes, Said no, No reply, Confirmed, Can't come, Reported, Didn't come, Not needed), Message note, Last reply, Replied, Offer sent, Confirmation sent, Reminder sent; → Person (Worker), Crew request |
+| **Opportunity**, labelled **Crew request** | A crew request | Crew size, Services, Site, Cluster, Start, Lead source, Enquiry, Case ID (unique sync key), from the lead; what workers are told: Job and Place (for workers), Stay and food (select), Interview at, Interview time, Ask for, Map link. No sales stage (removed 19 Nov 2026) |
+| **Crew member** (custom) | A worker invited to interview for a crew request (docs/crew-offers.md) | Status (Invited, Said yes, Said no, No reply, Interview fixed, Can't come, Came, Didn't come, Not needed), Message note, Last reply, Replied, Invite sent, Interview details sent, Reminder sent; → Person (Worker), Crew request |
 
 ## How it is laid out (`layout.mts`)
+
+**Only what the automation fills** (owner, 19 Nov 2026), plus what inviting workers to interview needs (the crew request's worker fields, a crew member's status) and a worker's Do not contact / Not available. Twenty's own unused fields (crew request stage, amount, close date, owner; company domain, address, revenue, account owner, LinkedIn; person LinkedIn) are deactivated, not deleted (`DEACTIVATED_FIELDS` in setup.mts); the sidebar has no Tasks, Notes, Dashboards or Workflows (`HIDDEN_SIDEBAR` in layout.mts).
 
 Applications read as a **log, not a pipeline** (owner, 17 Oct 2026): nothing asks staff to move cards or work a queue.
 
 - **Sidebar**: Job applications dashboard, Applications, People, Communications, Crew requests, Companies, Tasks, Notes, Dashboards; Workflows after.
 - **Applications**: **Applications log** (every application newest first: reference, submitted, person, phone, role, area, experience, can start, work wanted, shifts, education, skills, source, message), **Last 7 days**, **Calendar** (by submitted date). Raw answers, sync key and consent stay on the record only.
-- **People**: **Workers** (newest applicant first), **Client contacts**. **Communications**: newest first; **Needs attention** (failed or unknown SMS). **Crew requests**: the list and the **By Stage** board. **Crew members**: all, **To call** (Said yes and Can't come, oldest reply first), **By status**.
+- **People**: **Workers** (newest applicant first), **Client contacts**. **Communications**: newest first; **Needs attention** (failed or unknown SMS). **Crew requests**: the list. **Crew members**: all, **To call** (Said yes and Can't come, oldest reply first), **By status**.
 - **Record pages**: submitted, person, phone and the answers first; bookkeeping last.
 - **Job applications dashboard**: today / 7 days / 30 days / all-time counts; applications per day by role (30 days); per week; cumulative over time; role and area for the last 30 days; the latest applications, newest first.
 

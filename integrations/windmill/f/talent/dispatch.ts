@@ -1186,7 +1186,6 @@ function applicationFields(c, personId) {
         ...screeningFields(c.answers),
         phone: phoneValue(c.phone),
         name: c.ref,
-        status: "NEW",
         source: sourceValue(c),
         jobRole: roleValue(c.role),
         cluster: clusterValue(c.cluster),

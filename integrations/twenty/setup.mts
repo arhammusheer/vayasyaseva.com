@@ -143,13 +143,6 @@ const MODEL: ObjectSpec[] = [
     description: "A job application from the website, an agent or a call. Name = the reference (VS-J-XXXXXX).",
     custom: true,
     fields: [
-      {
-        name: "status",
-        label: "Status",
-        type: "SELECT",
-        icon: "IconProgressCheck",
-        options: options([["NEW", "New"], ["SCREENED", "Screened"], ["CALLABLE", "Callable"], ["PLACED", "Placed"], ["ARCHIVED", "Archived"]], ["sky", "yellow", "green", "purple", "gray"]),
-      },
       { name: "phone", label: "Phone", type: "PHONES", icon: "IconPhone", description: "The applicant's mobile, to call from the list or board." },
       { name: "workWanted", label: "Work wanted", type: "MULTI_SELECT", icon: "IconTool", options: ROLES, description: "Every kind of work the quick form ticked." },
       { name: "area", label: "Area", type: "SELECT", icon: "IconMapPin", options: answerOptions("area") },
@@ -233,8 +226,6 @@ const MODEL: ObjectSpec[] = [
         description: "What is given. Empty when nothing is: the invitation then has no stay and food line.",
         options: options([["ROOM", "Room given"], ["FOOD", "Food given"], ["ROOM_AND_FOOD", "Room and food given"]], ["sky", "yellow", "green"]),
       },
-      { name: "offerPay", label: "Pay", type: "TEXT", icon: "IconCurrencyRupee", description: "Take-home pay, for the recruiter's call and the interview (not in the WhatsApp invitation)." },
-      { name: "offerShift", label: "Shift", type: "TEXT", icon: "IconClock", description: "\"8 am to 8 pm\", for the recruiter's call and the interview (not in the WhatsApp invitation)." },
       { name: "reportAddress", label: "Interview at", type: "TEXT", icon: "IconMapPin", description: "Where an invited worker comes for the interview: gate, plot, estate." },
       { name: "reportAt", label: "Interview time", type: "DATE_TIME", icon: "IconCalendarTime", description: "Date and time of the interview. The reminder goes at 6 pm the evening before." },
       { name: "siteContact", label: "Ask for", type: "TEXT", icon: "IconUser", description: "Whom to ask for at the gate, with a phone: \"Ramesh, 98765 43210\"." },
@@ -282,13 +273,32 @@ const MODEL: ObjectSpec[] = [
  * Fields taken out of the model: deactivated, then deleted with their data.
  * opportunity.offerStay (free text) became the stayAndFood select on 19 Nov 2026.
  */
-const RETIRED_FIELDS: [string, string][] = [["opportunity", "offerStay"]];
+const RETIRED_FIELDS: [string, string][] = [
+  ["opportunity", "offerStay"],
+  // The owner, 19 Nov 2026: Twenty shows only what the automation fills, plus what inviting workers needs.
+  ["opportunity", "offerPay"],
+  ["opportunity", "offerShift"],
+  ["application", "status"],
+];
 
-/** The crew request pipeline, replacing Twenty's demo stages. */
-const OPPORTUNITY_STAGES = options(
-  [["NEW", "New"], ["CONTACTED", "Contacted"], ["SITE_VISIT", "Site visit"], ["QUOTED", "Quoted"], ["WON", "Won"], ["LOST", "Lost"]],
-  ["sky", "blue", "purple", "orange", "green", "red"],
-);
+/**
+ * Twenty's own fields nobody fills (the owner, 19 Nov 2026: only fields the
+ * automation fills, plus what inviting workers needs). Deactivated, not
+ * deleted: their data stays and they can be turned back on in Settings.
+ * The crew request's sales Stage goes too; leads no longer set it.
+ */
+const DEACTIVATED_FIELDS: [string, string][] = [
+  ["opportunity", "stage"],
+  ["opportunity", "amount"],
+  ["opportunity", "closeDate"],
+  ["opportunity", "owner"],
+  ["company", "domainName"],
+  ["company", "address"],
+  ["company", "annualRevenue"],
+  ["company", "accountOwner"],
+  ["company", "linkedinLink"],
+  ["person", "linkedinLink"],
+];
 
 const step = (s: string) => console.log(`${DRY_RUN ? "[dry run] " : ""}- ${s}`);
 
@@ -406,16 +416,21 @@ async function main() {
       await gql("/metadata", `mutation($input: DeleteOneFieldInput!) { deleteOneField(input: $input) { id } }`, { input: { id: field.id } });
     }
 
-    // 3. The crew request pipeline
-    const stage = byName("opportunity")?.fields.edges.map((e) => e.node).find((f) => f.name === "stage");
-    if (stage && JSON.stringify((stage.options ?? []).map((o) => o.value)) !== JSON.stringify(OPPORTUNITY_STAGES.map((o) => o.value))) {
-      step("setting the opportunity stages (crew request pipeline)");
-      if (!DRY_RUN) await updateOptions(gql, stage, OPPORTUNITY_STAGES, "NEW");
-    }
-
     // 4. Views, record pages, the Jobs dashboard and the sidebar (layout.mts)
     if (!DRY_RUN) objects = await load();
     await applyLayout(gql, objects, { dryRun: DRY_RUN, reset: RESET_LAYOUT, resetViews: RESET_VIEWS, step });
+
+    // 4b. Twenty's own fields nobody fills: deactivated, after the views that used them are gone
+    if (!DRY_RUN) objects = await load();
+    for (const [objectName, fieldName] of DEACTIVATED_FIELDS) {
+      const field = byName(objectName)?.fields.edges.map((e) => e.node).find((f) => f.name === fieldName);
+      if (!field?.isActive) continue;
+      step(`deactivating ${objectName}.${fieldName}`);
+      if (DRY_RUN) continue;
+      await gql("/metadata", `mutation($input: UpdateOneFieldMetadataInput!) { updateOneField(input: $input) { id } }`, {
+        input: { id: field.id, update: { isActive: false } },
+      });
+    }
 
     // 5. Demo records (Twenty's seed for a new workspace)
     if (REMOVE_DEMO) await removeDemo(gql);

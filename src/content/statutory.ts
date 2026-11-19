@@ -389,7 +389,7 @@ export const statutorySources: StatutorySource[] = [
     number: "A.P. Act 34 of 1987",
     date: "1987-08-14",
     authority: "Labour Department, Andhra Pradesh",
-    url: "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/pdf-file-download/labour/1755841991986_LABOUR_WELFAREFUNDACT1987.pdf",
+    url: "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/file-download/bucket/documents.socialwlfare.apcfss.in/labour/1755841991986_LABOUR_WELFAREFUNDACT1987.pdf",
   },
   {
     id: "ap-lwf-rules",
@@ -397,7 +397,7 @@ export const statutorySources: StatutorySource[] = [
     number: "G.O.Ms. No. 131, Labour (Labour-III)",
     date: "1988-06-25",
     authority: "Labour Department, Andhra Pradesh",
-    url: "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/pdf-file-download/labour/1755842059305_THEANDHRAPRADESHLABOURWELFAREFUNDRULES1988.pdf",
+    url: "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/file-download/bucket/documents.socialwlfare.apcfss.in/labour/1755842059305_THEANDHRAPRADESHLABOURWELFAREFUNDRULES1988.pdf",
   },
   {
     id: "ap-lwf-2020",
@@ -405,7 +405,7 @@ export const statutorySources: StatutorySource[] = [
     number: "G.O.Ms. No. 9, LFB&IMS (Lab-II)",
     date: "2020-12-07",
     authority: "Government of Andhra Pradesh",
-    url: "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/pdf-file-download/labour/1755842286840_GO.Ms.No9OnlinepaymentfacilityforAPLWFFund.pdf",
+    url: "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/file-download/bucket/documents.socialwlfare.apcfss.in/labour/1755842286840_GO.Ms.No9OnlinepaymentfacilityforAPLWFFund.pdf",
   },
   {
     id: "ap-osh-rules-2026",
@@ -413,7 +413,7 @@ export const statutorySources: StatutorySource[] = [
     number: "G.O.Rt. No. 146, LFB&IMS (Lab.II)",
     date: "2026-08-06",
     authority: "Government of Andhra Pradesh",
-    url: "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/pdf-file-download/labour/1788951638393_2026LFBI_43333_RT146_E(1).pdf",
+    url: "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/file-download/bucket/documents.socialwlfare.apcfss.in/labour/1788951638393_2026LFBI_43333_RT146_E(1).pdf",
   },
   {
     id: "ap-wages-rules-2026",
@@ -421,7 +421,7 @@ export const statutorySources: StatutorySource[] = [
     number: "G.O.Rt. No. 124, LFB&IMS (Lab.II)",
     date: "2026-06-29",
     authority: "Government of Andhra Pradesh",
-    url: "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/pdf-file-download/labour/1785390770144_2026LFBI_42412_RT124_E.pdf",
+    url: "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/file-download/bucket/documents.socialwlfare.apcfss.in/labour/1785390770144_2026LFBI_42412_RT124_E.pdf",
   },
   {
     id: "ap-ir-rules-2026",
@@ -429,7 +429,7 @@ export const statutorySources: StatutorySource[] = [
     number: "G.O.Rt. No. 111, LFB&IMS (Lab.II)",
     date: "2026-06-12",
     authority: "Government of Andhra Pradesh",
-    url: "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/pdf-file-download/labour/1785390673551_2026LFBI_42175_RT111_E.pdf",
+    url: "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/file-download/bucket/documents.socialwlfare.apcfss.in/labour/1785390673551_2026LFBI_42175_RT111_E.pdf",
   },
   {
     id: "ap-ss-rules-2026",
@@ -437,7 +437,7 @@ export const statutorySources: StatutorySource[] = [
     number: "G.O.Rt. No. 126, LFB&IMS (Lab.II)",
     date: "2026-07-07",
     authority: "Government of Andhra Pradesh",
-    url: "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/pdf-file-download/labour/1785390829133_2026LFBI_42556_RT126_E.pdf",
+    url: "https://api.apfd.apcfss.in/socialwelfaredms/user-defined-path/file-download/bucket/documents.socialwlfare.apcfss.in/labour/1785390829133_2026LFBI_42556_RT126_E.pdf",
   },
   {
     id: "esic-ap-2026",

@@ -122,8 +122,8 @@ export const WAGE_STATE_UPDATED: Readonly<Partial<Record<WageStateSlug, string>>
   karnataka: "2026-11-03",
   haryana: "2026-11-19",
   punjab: "2026-11-19",
-  "andhra-pradesh": "2026-10-22",
-  telangana: "2026-10-27",
+  "andhra-pradesh": "2026-11-19",
+  telangana: "2026-11-19",
 };
 const wageUpdated = (state: WageStateSlug) => {
   const updated = WAGE_STATE_UPDATED[state];

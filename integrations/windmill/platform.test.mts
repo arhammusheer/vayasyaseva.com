@@ -189,7 +189,10 @@ test("scripts: the signed routes take the raw body; one dispatcher per database;
   assert.equal(find("leads", "sync_crm")?.schedule?.cron, "15 * * * * *");
   for (const name of ["acknowledge", "sync_crm", "delivery_check"]) assert.equal(find("talent", name)?.retiredSchedule, true, name);
   const scheduled = SCRIPTS.filter((s) => s.schedule && (s.folder ?? "talent") === "talent").map((s) => s.name);
-  assert.deepEqual(scheduled.sort(), ["dispatch", "retention"]);
+  assert.deepEqual(scheduled.sort(), ["crew", "dispatch", "retention"]);
+  // Crew offers message workers: only --enable-crew turns the schedule on.
+  assert.equal(find("talent", "crew")?.messagesWorkers, true);
+  assert.deepEqual(find("talent", "whatsapp_inbound")?.route, { path: "webhook/fast2sms-whatsapp-in", method: "post", secretHeader: "x-vspl-wa-secret" });
 });
 
 // --- The durable Idempotency-Key store ----------------------------------------------------

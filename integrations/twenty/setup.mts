@@ -17,6 +17,9 @@
  *   communication  every SMS, WhatsApp, call or email, linked to a person and
  *                  optionally an application or opportunity, with delivery status
  *   company + opportunity  leads: the client and its crew request pipeline
+ *                  (+ what workers are told: offer and reporting fields)
+ *   crewMember     a worker offered a place on a crew request; its status
+ *                  drives the WhatsApp messages (Windmill f/talent/crew)
  */
 import { ANSWER_OPTIONS } from "../windmill/talent/lib/crm.ts";
 import { applyLayout } from "./layout.mts";
@@ -217,6 +220,51 @@ const MODEL: ObjectSpec[] = [
       { name: "leadSource", label: "Lead source", type: "SELECT", icon: "IconWorld", options: options([["WEBSITE_FORM", "Website form"], ["PHONE", "Phone"], ["EMAIL", "Email"], ["WHATSAPP", "WhatsApp"], ["REFERRAL", "Referral"], ["OTHER", "Other"]]) },
       { name: "enquiry", label: "Enquiry", type: "TEXT", icon: "IconMessage", description: "What the client asked for, as sent." },
       { name: "caseId", label: "Case ID", type: "TEXT", icon: "IconHash", isUnique: true, description: "The contact form's case ID (the sync key)." },
+      // What workers are told on WhatsApp (docs/crew-offers.md): the offer, then where and when to report.
+      { name: "offerJob", label: "Job (offer)", type: "TEXT", icon: "IconTool", description: "The work, as workers read it in the offer: \"Packing helper\"." },
+      { name: "offerPlace", label: "Place (offer)", type: "TEXT", icon: "IconMapPin", description: "Town or estate, as workers know it: \"SIDCUL, Haridwar\"." },
+      { name: "offerPay", label: "Pay (offer)", type: "TEXT", icon: "IconCurrencyRupee", description: "Take-home pay as it is said: \"₹13,500 a month, PF and ESIC extra\"." },
+      { name: "offerShift", label: "Shift (offer)", type: "TEXT", icon: "IconClock", description: "\"8 am to 8 pm\"." },
+      { name: "offerStay", label: "Stay and food (offer)", type: "TEXT", icon: "IconHome", description: "\"Room given, food your own\"." },
+      { name: "reportAddress", label: "Report at", type: "TEXT", icon: "IconMapPin", description: "Where a confirmed worker goes on day 1: gate, plot, estate." },
+      { name: "reportAt", label: "Report time", type: "DATE_TIME", icon: "IconCalendarTime", description: "Day 1, date and time. The reminder goes at 6 pm the evening before." },
+      { name: "siteContact", label: "Site contact", type: "TEXT", icon: "IconUser", description: "Whom to ask for at the gate, with a phone: \"Ramesh, 98765 43210\"." },
+      { name: "mapLink", label: "Map link", type: "TEXT", icon: "IconMap", description: "A Google Maps link to the gate (optional)." },
+    ],
+  },
+  {
+    nameSingular: "crewMember",
+    namePlural: "crewMembers",
+    labelSingular: "Crew member",
+    labelPlural: "Crew members",
+    icon: "IconUserCheck",
+    description: "A worker offered a place on a crew request. Its status drives the WhatsApp messages (docs/crew-offers.md).",
+    custom: true,
+    fields: [
+      {
+        name: "status",
+        label: "Status",
+        type: "SELECT",
+        icon: "IconProgressCheck",
+        description: "Offered sends the offer; Confirmed sends where and when; Not needed thanks those who said yes. Said yes, Said no, No reply and Can't come are set from replies.",
+        options: options(
+          [
+            ["OFFERED", "Offered"], ["SAID_YES", "Said yes"], ["SAID_NO", "Said no"], ["NO_REPLY", "No reply"], ["CONFIRMED", "Confirmed"],
+            ["CANT_COME", "Can't come"], ["REPORTED", "Reported"], ["DIDNT_COME", "Didn't come"], ["NOT_NEEDED", "Not needed"],
+          ],
+          ["sky", "turquoise", "gray", "gray", "green", "orange", "purple", "red", "gray"],
+        ),
+      },
+      { name: "messageNote", label: "Message note", type: "TEXT", icon: "IconAlertTriangle", description: "Why a message has not gone, or what to do (set by the automation)." },
+      { name: "lastReply", label: "Last reply", type: "TEXT", icon: "IconMessageReply", description: "What the worker last sent on WhatsApp." },
+      { name: "repliedAt", label: "Replied", type: "DATE_TIME", icon: "IconMessageReply" },
+      { name: "offerSentAt", label: "Offer sent", type: "DATE_TIME", icon: "IconSend" },
+      { name: "confirmationSentAt", label: "Confirmation sent", type: "DATE_TIME", icon: "IconSend" },
+      { name: "reminderSentAt", label: "Reminder sent", type: "DATE_TIME", icon: "IconBell" },
+    ],
+    relations: [
+      { name: "person", label: "Worker", target: "person", inverseName: "crewMembers", inverseLabel: "Crew offers", icon: "IconUser", inverseIcon: "IconUserCheck" },
+      { name: "opportunity", label: "Crew request", target: "opportunity", inverseName: "crewMembers", inverseLabel: "Crew members", icon: "IconUsersGroup", inverseIcon: "IconUserCheck" },
     ],
   },
 ];

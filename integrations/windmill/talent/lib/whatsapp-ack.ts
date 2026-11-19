@@ -76,6 +76,47 @@ export function whatsAppRequestUrl(claim: { ref: string; phone: string }, messag
   return `${WA_SEND_URL}?${params}`;
 }
 
+/**
+ * Any approved template with several variables (the crew messages,
+ * crew-templates.ts): the values joined with "|" as Fast2SMS takes them
+ * (each already one line, without "|": variableValue). udf1 is our own id
+ * for the message, returned in Fast2SMS's reports.
+ */
+export function templateRequestUrl(message: { phone: string; values: string[]; udf1: string }, messageId: number): string {
+  const params = new URLSearchParams({
+    message_id: String(messageId),
+    phone_number_id: WA_PHONE_NUMBER_ID,
+    numbers: message.phone.slice(-10),
+    ...(message.values.length ? { variables_values: message.values.join("|") } : {}),
+    udf1: message.udf1,
+  });
+  return `${WA_SEND_URL}?${params}`;
+}
+
+/** Sends a template (templateRequestUrl). Never throws, like sendWhatsAppAck. */
+export async function sendWhatsAppTemplate(
+  message: { phone: string; values: string[]; udf1: string },
+  messageId: number,
+  apiKey: string,
+  fetchImpl: typeof fetch = fetch,
+): Promise<WhatsAppResponse> {
+  try {
+    const res = await fetchImpl(templateRequestUrl(message, messageId), {
+      headers: { authorization: apiKey },
+      signal: AbortSignal.timeout(WA_TIMEOUT_MS),
+    });
+    let body: WhatsAppResponse["body"];
+    try {
+      body = (await res.json()) as WhatsAppResponse["body"];
+    } catch {
+      body = undefined;
+    }
+    return { statusCode: res.status, body };
+  } catch {
+    return { error: "request failed" };
+  }
+}
+
 /** Like the SMS: only an explicit rejection is a failure; anything unclear is "unknown" (the SMS then goes). */
 export function classifyWhatsApp(response: WhatsAppResponse): WhatsAppResult {
   const body = response.body;

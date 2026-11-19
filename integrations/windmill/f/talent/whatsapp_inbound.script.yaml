@@ -1,0 +1,26 @@
+{
+  "summary": "Talent · WhatsApp replies",
+  "description": "Fast2SMS's WhatsApp webhook for incoming messages (POST /webhook/fast2sms-whatsapp-in): checks x-vspl-wa-secret (or ?key=), saves a reply to a crew message and starts f/talent/crew; ignores everything else.",
+  "lock": "",
+  "kind": "script",
+  "language": "bun",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "authorized": {
+        "type": "boolean",
+        "description": "Set by the preprocessor: the secret matched."
+      },
+      "body": {
+        "type": "object",
+        "description": "The message's fields from Fast2SMS's Standard payload."
+      }
+    },
+    "required": [
+      "authorized",
+      "body"
+    ]
+  },
+  "has_preprocessor": true
+}

@@ -402,6 +402,12 @@ const DEFAULT_POLICY = {
             email: "digest",
         },
         {
+            name: "Crew reply: instant, name and full phone, Call",
+            match: { type: ["crew.said_yes", "crew.cant_come"] },
+            push: { mode: "instant", pii: "full", call: true, topic: "vspl-jobs", priority: { info: 4, warning: 5 } },
+            email: "none",
+        },
+        {
             name: "Business lead: instant, masked phone; qualified (notice) higher",
             match: { type: "lead.received" },
             push: { mode: "instant", pii: "masked", topic: "vspl-leads", priority: { info: 3, notice: 4 } },

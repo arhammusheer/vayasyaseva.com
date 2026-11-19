@@ -352,5 +352,62 @@ BEGIN
   -- its webhook was ever made: its two tables never held a row.
   DROP TABLE IF EXISTS whatsapp_chats;
   DROP TABLE IF EXISTS whatsapp_messages;
+
+  -- Crew offers (19 Nov 2026, talent/lib/run-crew.ts). A recruiter adds a
+  -- worker to a crew request in Twenty (a Crew member record); f/talent/crew
+  -- sends them WhatsApp messages about it. One row per crew member and kind
+  -- (offer, confirmed, reminder, not_needed), ever: the row is claimed
+  -- before the send, so no message goes twice. A send interrupted mid-way is
+  -- 'unknown' and is never sent again (the recruiter calls instead).
+  -- crm_state is what was last written to Twenty (status and delivery);
+  -- the CRM step runs again whenever it differs.
+  CREATE TABLE IF NOT EXISTS crew_messages (
+    id               uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    crew_member_id   uuid NOT NULL,
+    kind             text NOT NULL CHECK (kind IN ('offer', 'confirmed', 'reminder', 'not_needed')),
+    phone            text NOT NULL,
+    person_id        uuid,
+    opportunity_id   uuid,
+    locale           text NOT NULL,
+    template_id      int NOT NULL,
+    -- The template's variable values, in order (job, place, pay...): no applicant data.
+    variables        jsonb NOT NULL DEFAULT '[]'::jsonb,
+    status           text NOT NULL DEFAULT 'sending' CHECK (status IN ('sending', 'accepted', 'failed', 'unknown')),
+    request_id       text,
+    error            text,
+    sent_at          timestamptz,
+    delivery         text CHECK (delivery IN ('read', 'delivered', 'failed', 'pending')),
+    delivery_detail  text,
+    delivered_at     timestamptz,
+    checked_at       timestamptz,
+    communication_id uuid,
+    crm_state        text,
+    created_at       timestamptz NOT NULL DEFAULT now(),
+    updated_at       timestamptz NOT NULL DEFAULT now(),
+    UNIQUE (crew_member_id, kind)
+  );
+  CREATE INDEX IF NOT EXISTS crew_messages_phone_idx ON crew_messages (phone, sent_at);
+  CREATE INDEX IF NOT EXISTS crew_messages_report_idx ON crew_messages (sent_at) WHERE status = 'accepted';
+
+  -- A worker's reply to a crew message (f/talent/whatsapp_inbound): a button
+  -- tap or a typed answer, read as yes, no or other. Saved by the route,
+  -- written to Twenty by f/talent/crew (status, Last reply, a Communication);
+  -- the text is kept only until then. key: Fast2SMS's id for the message,
+  -- else a hash of it, so a retried webhook is saved once.
+  CREATE TABLE IF NOT EXISTS crew_replies (
+    key          text PRIMARY KEY,
+    phone        text NOT NULL,
+    message_id   uuid NOT NULL REFERENCES crew_messages (id) ON DELETE CASCADE,
+    answer       text NOT NULL CHECK (answer IN ('yes', 'no', 'other')),
+    message_type text,
+    body         text,
+    status       text NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'done', 'failed')),
+    attempts     int NOT NULL DEFAULT 0,
+    last_error   text,
+    received_at  timestamptz NOT NULL DEFAULT now(),
+    applied_at   timestamptz
+  );
+  CREATE INDEX IF NOT EXISTS crew_replies_pending_idx ON crew_replies (received_at) WHERE status = 'pending';
+  CREATE INDEX IF NOT EXISTS crew_replies_phone_idx ON crew_replies (phone);
 END
 $$;

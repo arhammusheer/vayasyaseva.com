@@ -182,7 +182,47 @@ export const VIEWS: ViewSpec[] = [
     object: "opportunity",
     name: "Opportunity Record Page Fields",
     type: "FIELDS_WIDGET",
-    columns: ["stage", "company", "pointOfContact", "crewSize", "services", "cluster", "siteLocation", "startDate", "leadSource", "enquiry", "communications", "caseId", "createdAt"],
+    columns: [
+      "stage", "company", "pointOfContact", "crewSize", "services", "cluster", "siteLocation", "startDate",
+      "offerJob", "offerPlace", "offerPay", "offerShift", "offerStay", "reportAddress", "reportAt", "siteContact", "mapLink",
+      "crewMembers", "leadSource", "enquiry", "communications", "caseId", "createdAt",
+    ],
+  },
+
+  // Crew members: workers offered a place on a crew request (docs/crew-offers.md).
+  {
+    object: "crewMember",
+    index: true,
+    name: "All Crew members",
+    type: "TABLE",
+    columns: [
+      ["name", 220], ["person", 170], ["opportunity", 200], "status", ["lastReply", 220], ["repliedAt", 150], ["messageNote", 280],
+      ["offerSentAt", 150], ["confirmationSentAt", 150], ["createdAt", 150],
+    ],
+    sort: ["createdAt", "DESC"],
+  },
+  {
+    object: "crewMember",
+    name: "To call",
+    type: "TABLE",
+    icon: "IconPhone",
+    columns: [["person", 170], ["opportunity", 200], "status", ["lastReply", 220], ["repliedAt", 150], ["messageNote", 280]],
+    sort: ["repliedAt", "ASC"],
+    filters: [{ field: "status", operand: "IS", values: ["SAID_YES", "CANT_COME"] }],
+  },
+  {
+    object: "crewMember",
+    name: "By status",
+    type: "KANBAN",
+    groupBy: "status",
+    columns: ["person", "opportunity", "lastReply", "messageNote"],
+    sort: ["createdAt", "DESC"],
+  },
+  {
+    object: "crewMember",
+    name: "Crew member Record Page Fields",
+    type: "FIELDS_WIDGET",
+    columns: ["status", "person", "opportunity", "messageNote", "lastReply", "repliedAt", "offerSentAt", "confirmationSentAt", "reminderSentAt", "createdAt"],
   },
   {
     object: "company",
@@ -546,6 +586,7 @@ const SIDEBAR: ({ dashboard: true } | { view: [string, string] } | { object: str
   { object: "person" },
   { object: "communication" },
   { object: "opportunity" },
+  { object: "crewMember" },
   { object: "company" },
   { object: "task" },
   { object: "note" },

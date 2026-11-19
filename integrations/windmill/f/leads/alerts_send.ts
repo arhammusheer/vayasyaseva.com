@@ -24,6 +24,7 @@ const VARIABLES = {
     fast2sms_dlr_secret: { secret: true },
     leads_pg_url: { secret: true },
     submission_signing_secret: { secret: true },
+    fast2sms_whatsapp_secret: { secret: true },
     alerts_email_from: { secret: false },
     alerts_reply_to: { secret: false },
     lead_staff_email_from: { secret: false },

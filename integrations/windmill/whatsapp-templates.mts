@@ -1,22 +1,39 @@
 /**
- * The WhatsApp acknowledgement templates (talent/lib/whatsapp-ack.ts), as
- * submitted to Meta through Fast2SMS: Utility category, the reference as the
- * only variable. Wording approved by the owner on 20 Oct 2026 (English); the
- * other languages follow it and are drafts pending native review, like the site.
+ * The WhatsApp templates, as submitted to Meta through Fast2SMS (Utility):
+ *   - the acknowledgement (talent/lib/whatsapp-ack.ts), the reference as the
+ *     only variable. Wording approved by the owner on 20 Oct 2026 (English);
+ *     the other languages follow it and are drafts pending native review.
+ *   - the crew messages (talent/lib/crew-templates.ts): offer, confirmed,
+ *     reminder, not needed, with quick-reply buttons on the offer and the
+ *     reminder. Drafted 19 Nov 2026.
  *
- *   node integrations/windmill/whatsapp-templates.mts            each template's status and Fast2SMS message id
- *   node integrations/windmill/whatsapp-templates.mts --create   submits the ones not there yet
+ *   node integrations/windmill/whatsapp-templates.mts                       each template's status and Fast2SMS message id
+ *   node integrations/windmill/whatsapp-templates.mts --create              submits the ones not there yet
+ *   node integrations/windmill/whatsapp-templates.mts --create --only=crew  only the crew messages
  *
  * Once a template is approved, put its message id in WA_TEMPLATES
- * (talent/lib/whatsapp-ack.ts) and deploy: that language then gets WhatsApp first.
+ * (whatsapp-ack.ts) or CREW_TEMPLATES (crew-templates.ts) and deploy.
  * Reads the Fast2SMS key from the cluster (growth/windmill-talent, as deploy.mts) and never prints it.
  */
 import { execFileSync } from "node:child_process";
+import { CREW_TEMPLATE_TEXT } from "./talent/lib/crew-templates.ts";
 
 export const WABA_ID = "1402225688528309";
 const API = "https://www.fast2sms.com/dev";
 
-export const TEMPLATES: { locale: string; name: string; language: string; text: string }[] = [
+export interface Template {
+  locale: string;
+  name: string;
+  language: string;
+  text: string;
+  /** Quick-reply buttons. */
+  buttons?: readonly string[];
+  /** One example per variable, for Meta's review. */
+  example?: string[];
+  group: "ack" | "crew";
+}
+
+export const ACK_TEMPLATES: Omit<Template, "group">[] = [
   {
     locale: "en-IN",
     name: "vspl_application_received",
@@ -49,6 +66,29 @@ export const TEMPLATES: { locale: string; name: string; language: string; text: 
   },
 ];
 
+/** Every template this script knows: the acknowledgement's, then the crew messages'. */
+export const TEMPLATES: Template[] = [
+  ...ACK_TEMPLATES.map((t) => ({ ...t, example: ["VS-J-ABC234"], group: "ack" as const })),
+  ...CREW_TEMPLATE_TEXT.map((t) => ({
+    locale: t.locale,
+    name: t.name,
+    language: t.language,
+    text: t.text,
+    buttons: t.buttons,
+    example: t.example,
+    group: "crew" as const,
+  })),
+];
+
+/** The Meta template body Fast2SMS takes: the text with its examples, and the quick-reply buttons. */
+export function templateComponents(t: Template): Record<string, unknown>[] {
+  const components: Record<string, unknown>[] = [
+    { type: "BODY", text: t.text, ...(t.example?.length ? { example: { body_text: [t.example] } } : {}) },
+  ];
+  if (t.buttons?.length) components.push({ type: "BUTTONS", buttons: t.buttons.map((text) => ({ type: "QUICK_REPLY", text })) });
+  return components;
+}
+
 interface Listed {
   message_id: number;
   template_name: string;
@@ -72,7 +112,7 @@ async function listed(key: string): Promise<Listed[]> {
   return (body.data ?? []).flatMap((n) => n.templates ?? []);
 }
 
-async function create(key: string, t: (typeof TEMPLATES)[number]) {
+async function create(key: string, t: Template) {
   const res = await fetch(`${API}/whatsapp/v26.0/${WABA_ID}/message_templates`, {
     method: "POST",
     headers: { authorization: key, "content-type": "application/json" },
@@ -80,7 +120,7 @@ async function create(key: string, t: (typeof TEMPLATES)[number]) {
       name: t.name,
       language: t.language,
       category: "UTILITY",
-      components: [{ type: "BODY", text: t.text, example: { body_text: [["VS-J-ABC234"]] } }],
+      components: templateComponents(t),
     }),
   });
   const text = await res.text();
@@ -90,11 +130,13 @@ async function create(key: string, t: (typeof TEMPLATES)[number]) {
 if (import.meta.main) {
   const key = apiKey();
   const have = await listed(key);
-  const find = (t: (typeof TEMPLATES)[number]) => have.find((h) => h.template_name === t.name && h.language === t.language);
+  const find = (t: Template) => have.find((h) => h.template_name === t.name && h.language === t.language);
+  const only = process.argv.find((a) => a.startsWith("--only="))?.split("=")[1];
+  const chosen = TEMPLATES.filter((t) => !only || t.group === only);
   if (process.argv.includes("--create")) {
-    for (const t of TEMPLATES) if (!find(t)) await create(key, t);
+    for (const t of chosen) if (!find(t)) await create(key, t);
   } else {
-    for (const t of TEMPLATES) {
+    for (const t of chosen) {
       const h = find(t);
       console.log(`${t.locale.padEnd(11)} ${t.name}/${t.language}: ${h ? `${h.status} ${h.category}, message id ${h.message_id}` : "not submitted"}`);
     }

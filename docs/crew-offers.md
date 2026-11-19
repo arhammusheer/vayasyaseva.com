@@ -41,7 +41,7 @@ Each message goes at most once per crew member, ever. A refused or failed send s
 
 | Message | Variables | Buttons |
 |---|---|---|
-| `vspl_job_offer` | job, place, pay, shift, stay and food, start | Yes / No |
+| `vspl_application_offer` (English, Hindi), `vspl_job_offer_hinglish` | job, place, pay, shift, stay and food, start | Yes / No |
 | `vspl_job_confirmed` | where (with the map link), when, whom to ask | |
 | `vspl_job_reminder` | time, place | Yes, coming / Can't come |
 | `vspl_job_not_needed` | job | |

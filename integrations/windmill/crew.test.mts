@@ -61,7 +61,7 @@ test("every crew message exists in every language, buttons on the offer and the 
 });
 
 test("the submission carries the examples and the quick-reply buttons", () => {
-  const offer = TEMPLATES.find((t) => t.group === "crew" && t.name === "vspl_job_offer" && t.language === "hi")!;
+  const offer = TEMPLATES.find((t) => t.group === "crew" && t.name === "vspl_application_offer" && t.language === "hi")!;
   const [body, buttons] = templateComponents(offer);
   assert.equal((body.example as { body_text: string[][] }).body_text[0].length, 6);
   assert.deepEqual(buttons, { type: "BUTTONS", buttons: [{ type: "QUICK_REPLY", text: "हाँ, करना है" }, { type: "QUICK_REPLY", text: "नहीं" }] });

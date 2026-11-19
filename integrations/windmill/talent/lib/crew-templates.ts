@@ -44,22 +44,26 @@ export const CREW_TEMPLATE_TEXT: CrewTemplate[] = [
   {
     kind: "offer",
     locale: "en-IN",
-    name: "vspl_job_offer",
+    // Reworded 19 Nov 2026 as an update on the worker's own application:
+    // vspl_job_offer (46002) was filed as Marketing.
+    name: "vspl_application_offer",
     language: "en",
     text:
-      "Work from Vayasya Seva.\n\nJob: {{1}}\nPlace: {{2}}\nPay (in hand): {{3}}\nShift: {{4}}\nStay and food: {{5}}\nStarts: {{6}}\n\n" +
-      "Tap \"Yes\" if you want this job and our team will call you.\nVayasya Seva never charges a fee. If anyone asks you for money, tell us here.",
+      "Update on your job application with Vayasya Seva.\n\nThis job matches your application:\nJob: {{1}}\nPlace: {{2}}\nPay (in hand): {{3}}\nShift: {{4}}\nStay and food: {{5}}\nStarts: {{6}}\n\n" +
+      "Tap \"Yes\" to take it and our team will call you to confirm.\nVayasya Seva never charges a fee. If anyone asks you for money, tell us here.",
     buttons: ["Yes, I want it", "No"],
     example: ["Packing helper", "SIDCUL, Haridwar", "₹13,500 a month, PF and ESIC extra", "8 am to 8 pm", "Room given, food your own", "Wednesday, 25 November"],
   },
   {
     kind: "offer",
     locale: "hi-IN",
-    name: "vspl_job_offer",
+    // Reworded 19 Nov 2026 as an update on the worker's own application:
+    // vspl_job_offer (46003) was filed as Marketing.
+    name: "vspl_application_offer",
     language: "hi",
     text:
-      "Vayasya Seva से काम की ख़बर।\n\nकाम: {{1}}\nजगह: {{2}}\nतनख़्वाह (हाथ में): {{3}}\nशिफ़्ट: {{4}}\nरहना और खाना: {{5}}\nशुरू: {{6}}\n\n" +
-      "यह काम करना है तो \"हाँ\" दबाएँ। हमारी टीम आपको कॉल करेगी।\nVayasya Seva कोई फ़ीस नहीं लेती। कोई पैसे माँगे तो हमें यहीं बताएँ।",
+      "Vayasya Seva में आपके नौकरी के आवेदन पर अपडेट।\n\nयह काम आपके आवेदन से मेल खाता है:\nकाम: {{1}}\nजगह: {{2}}\nतनख़्वाह (हाथ में): {{3}}\nशिफ़्ट: {{4}}\nरहना और खाना: {{5}}\nशुरू: {{6}}\n\n" +
+      "यह काम करना है तो \"हाँ\" दबाएँ। हमारी टीम कॉल करके पक्का करेगी।\nVayasya Seva कोई फ़ीस नहीं लेती। कोई पैसे माँगे तो हमें यहीं बताएँ।",
     buttons: ["हाँ, करना है", "नहीं"],
     example: ["Packing helper", "SIDCUL, हरिद्वार", "₹13,500 महीना, PF और ESIC अलग", "सुबह 8 से शाम 8", "कमरा मिलेगा, खाना अपना", "बुधवार, 25 नवंबर"],
   },

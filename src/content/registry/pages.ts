@@ -120,7 +120,7 @@ export const WAGE_STATE_UPDATED: Readonly<Partial<Record<WageStateSlug, string>>
   "uttar-pradesh": "2026-11-19",
   delhi: "2026-11-19",
   karnataka: "2026-11-03",
-  haryana: "2026-10-17",
+  haryana: "2026-11-19",
   punjab: "2026-11-19",
   "andhra-pradesh": "2026-10-22",
   telangana: "2026-10-27",

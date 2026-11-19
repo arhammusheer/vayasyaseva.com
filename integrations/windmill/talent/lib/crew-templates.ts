@@ -172,15 +172,17 @@ export const CREW_TEMPLATE_TEXT: CrewTemplate[] = [
  * (`whatsapp-templates.mts` prints them). Only approved ones go here: a crew
  * member whose message has no id waits, with a note in Twenty.
  *
- * Submitted 19 Nov 2026; approved the same day as Utility, except three that
- * Meta filed as Marketing: the English and Hindi offers and the Hindi
- * not_needed. Those send at the marketing rate, not to workers who opted out
- * of marketing, and within Meta's cap on marketing messages per person; a
- * refused one shows "call them" in Message note. Still pending on 19 Nov:
- * not_needed hi-Latn-IN (46013).
+ * Submitted 19 Nov 2026; approved the same day as Utility, except the Hindi
+ * not_needed, which Meta filed as Marketing (it sends at the marketing rate,
+ * not to workers who opted out of marketing, and within Meta's cap on
+ * marketing messages per person; a refused one shows "call them" in Message
+ * note). The English and Hindi offers were first filed as Marketing too
+ * (vspl_job_offer, 46002 and 46003, now unused); reworded as
+ * vspl_application_offer, they were approved as Utility. Still pending on
+ * 19 Nov: not_needed hi-Latn-IN (46013).
  */
 export const CREW_TEMPLATES: Record<CrewKind, Partial<Record<CrewLocale, number>>> = {
-  offer: { "en-IN": 46002, "hi-IN": 46003, "hi-Latn-IN": 46004 },
+  offer: { "en-IN": 46017, "hi-IN": 46018, "hi-Latn-IN": 46004 },
   confirmed: { "en-IN": 46005, "hi-IN": 46006, "hi-Latn-IN": 46007 },
   reminder: { "en-IN": 46008, "hi-IN": 46009, "hi-Latn-IN": 46010 },
   not_needed: { "en-IN": 46011, "hi-IN": 46012 },

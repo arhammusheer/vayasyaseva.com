@@ -58,6 +58,22 @@ test('titles carry the month only while the last check is this month, and never 
   assert.deepEqual(titleDate(withDates('2026-10-01', '2026-12-31'), '2027-01-05'), { year: '2026', month: null }, 'the year of the last check, not of today');
 });
 
+test("every state title fits seo-check's 55 characters in every month, and with the year alone", async () => {
+  // Punjab's "(India)" (1 Nov 2026) pushed "/month" past 55 once the title carried "November 2026".
+  const { getWageStateCopy, wageHubCopy } = await importTs('src/content/pages/minimum-wages.ts');
+  const { wageVdaCopy } = await importTs('src/content/pages/wage-vda.ts');
+  const { formatMonth } = await importTs('src/content/wages/index.ts');
+  const months = Array.from({ length: 12 }, (_, i) => formatMonth(`2026-${String(i + 1).padStart(2, '0')}-01`));
+  const tooLong = [];
+  for (const state of wageStates) {
+    const copy = getWageStateCopy(state.state);
+    if (!copy) continue;
+    for (const title of [copy.title('2026', null), ...months.map((m) => copy.title('2026', m))]) if (title.length > 55) tooLong.push(`${state.state}: ${title} (${title.length})`);
+  }
+  for (const title of [wageHubCopy.title('2026'), wageVdaCopy.title('2026')]) if (title.length > 55) tooLong.push(`${title} (${title.length})`);
+  assert.deepEqual(tooLong, []);
+});
+
 test('a listing check counts only against the dataset it was compared with, after the hand check, and not in the future', () => {
   const s = withDates('2026-10-01', '2026-10-29');
   const at = (check) => lastCheck({ ...s, listingCheck: check }, '2026-11-13');

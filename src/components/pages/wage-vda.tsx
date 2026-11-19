@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { PageHero } from "@/components/layout/page-hero";
 import { Section } from "@/components/layout/section";
-import { Doors, Faqs, HERO_TIGHT, hubStale, hubYear, listedStates } from "@/components/pages/minimum-wages";
+import { Doors, Faqs, HERO_TIGHT, hubYear, listedStates } from "@/components/pages/minimum-wages";
 import { EDITORIAL_HREF } from "@/content/editorial";
 import { WAGE_HUB_PATH, WAGE_VDA_PATH, wageStatePath } from "@/content/registry/identifiers";
 import { stamp, wageDoors } from "@/content/pages/minimum-wages";
@@ -25,7 +25,7 @@ export async function wageVdaMetadata() {
   const today = todayIso();
   const states = listedStates(await checkedWageStates());
   return pageMetadata({
-    title: v.title(hubStale(today, states) ? null : hubYear(states, today)),
+    title: v.title(hubYear(states, today)),
     description: v.description(
       states.map((s) => s.name),
       stamp(states),
@@ -84,7 +84,7 @@ export async function WageVdaPage() {
   const withDa = rows.filter((r) => r.allowance?.isDa).map((r) => r.state.name);
   const allInclusive = rows.filter((r) => !r.allowance).map((r) => r.state.name);
   const faqs = v.faqs(states, today);
-  const title = v.title(hubStale(today, states) ? null : hubYear(states, today));
+  const title = v.title(hubYear(states, today));
   return (
     <>
       <JsonLd data={webPageSchema({ name: title, description: v.description(states.map((s) => s.name), stamp(states)), url: localePath(WAGE_VDA_PATH, "en-IN") })} />

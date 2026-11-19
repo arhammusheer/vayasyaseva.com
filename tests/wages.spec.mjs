@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { importTs } from '../scripts/lib/register-ts.mjs';
 
-const { wageStates, wageStatus, lastCheck, parseListingChecks, withListingChecks, wageRecords, dailyFromMonthly, formatRupees, headlineRate, headlineRange, checkedByLine, unpublishedRevisions, formatSize, employmentFigure, vdaPoints } = await importTs('src/content/wages/index.ts');
+const { wageStates, wageStatus, lastCheck, titleDate, parseListingChecks, withListingChecks, wageRecords, dailyFromMonthly, formatRupees, headlineRate, headlineRange, checkedByLine, unpublishedRevisions, formatSize, employmentFigure, vdaPoints } = await importTs('src/content/wages/index.ts');
 const { wageStateSchema, wageIntegrityProblems } = await importTs('src/content/wages/schema.ts');
 const { pathAliases, statusOf } = await importTs('src/content/registry/index.ts');
 
@@ -44,6 +44,18 @@ test("the monitor's clean listing read counts as a check: no cliff while it keep
   assert.equal(wageStatus(read, '2026-11-13').checkedOn, '2026-11-12');
   assert.equal(wageStatus(read, '2026-11-26').stale, false);
   assert.equal(wageStatus(read, '2026-11-27').stale, true, 'the monitor stops counting (blocked or down): 14 days from its last clean read');
+});
+
+test('titles carry the month only while the last check is this month, and never lose the year', () => {
+  // Delhi's case: revision expected 1 Oct, unpublished; checked by hand on 29 Oct.
+  const s = withDates('2026-10-01', '2026-10-29');
+  assert.deepEqual(titleDate(s, '2026-10-30'), { year: '2026', month: 'October 2026' });
+  assert.deepEqual(titleDate(s, '2026-11-02'), { year: '2026', month: null }, 'a new month: the year, not last month');
+  assert.equal(wageStatus(s, '2026-11-13').stale, true);
+  assert.deepEqual(titleDate(s, '2026-11-13'), { year: '2026', month: null }, 'stale: the year stays');
+  const read = { ...s, listingCheck: { on: '2026-11-19', datasetCheckedOn: '2026-10-29' } };
+  assert.deepEqual(titleDate(read, '2026-11-19'), { year: '2026', month: 'November 2026' }, "the monitor's clean read moves the month on");
+  assert.deepEqual(titleDate(withDates('2026-10-01', '2026-12-31'), '2027-01-05'), { year: '2026', month: null }, 'the year of the last check, not of today');
 });
 
 test('a listing check counts only against the dataset it was compared with, after the hand check, and not in the future', () => {

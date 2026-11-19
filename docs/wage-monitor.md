@@ -193,8 +193,8 @@ new.
 ## Listing checks: keeping a quiet page current
 
 A wage page goes stale 14 days after the later of its expected revision and
-its last check (`wageStatus` in `src/content/wages/index.ts`): the title and
-H1 lose their date and the "may have been revised" notice shows. A state
+its last check (`wageStatus` in `src/content/wages/index.ts`): the "may have
+been revised" notice shows under the H1 (see "Dates in titles" below). A state
 whose revision is overdue and unpublished (Delhi from 1 October 2026) would
 hit that 14 days after every hand check, at the April and October search
 peaks, although the monitor reads its listing every morning. So a clean
@@ -230,6 +230,26 @@ state's listing showed nothing new on <date>." under the H1, and the title
 and H1 carry that month. If the file cannot be read, the pages fall back to
 the hand check. `pnpm content:check` knows only the hand check, so its
 "re-check before" warning assumes the monitor stops counting.
+
+### Dates in titles
+
+`titleDate` (`src/content/wages/index.ts`, owner, 19 November 2026) dates a
+state page's title and H1:
+
+- the month of the last check ("November 2026") while that check is in the
+  current month and the page is not stale, so a monitor that reads the
+  listing every morning keeps the month current;
+- otherwise the year the rates were last confirmed ("2026"), stale or not.
+
+A title never shows an earlier month, and never loses its year. Before this,
+titles carried the month of the last check, which still said "October 2026"
+in late November while every state waited for its first hand check after
+the 4 November listing-check baseline. A stale page also dropped its date
+altogether. Delhi went stale on 13 November and lost "2026" from its title,
+and its average position fell from 8-12 to 23-37 that week. The hub and the
+VDA tracker keep the latest confirmed year too; they used to drop it when
+any one state went stale. The notice under the H1 is what says a page may be
+out of date.
 
 **GitHub issues** (`--notify github`): one open issue per state titled
 `Wage monitor: <State> sources changed`, label `wage-monitor`, with hidden

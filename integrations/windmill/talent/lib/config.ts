@@ -41,6 +41,14 @@ export const VARIABLES = {
    */
   fast2sms_whatsapp_secret: { secret: true },
   /**
+   * Staff test numbers for crew offers (talent/lib/run-crew.ts): Indian
+   * mobiles separated by commas or new lines ("+91 98765 43210" is one). Their messages skip the quiet hours and
+   * their reminder is due a minute after the confirmation, so the whole path
+   * can be tried at any time. Created once by deploy ("-": none) and then
+   * edited by hand in Windmill; deploy never overwrites it.
+   */
+  crew_test_phones: { secret: true, kept: true },
+  /**
    * The sender and the reply address of the minimum wage rate alerts
    * (leads/lib/alert-mail.ts). They go out with the notification hub's Resend
    * key (f/notify/resend_api_key), so the sender is on its verified domain.
@@ -58,6 +66,8 @@ export const VARIABLES = {
 } as const;
 
 export type ConfigName = keyof typeof VARIABLES;
+/** A variable deploy creates once and then leaves to hand edits. */
+export const isKept = (name: ConfigName) => "kept" in VARIABLES[name];
 export const variablePath = (name: ConfigName) => `f/talent/${name}`;
 
 let override: Partial<Record<ConfigName, string>> | null = null;

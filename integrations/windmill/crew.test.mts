@@ -31,7 +31,7 @@ import {
   type PlanContext,
 } from "./talent/lib/crew.ts";
 import { parseInbound, saveInbound } from "./talent/lib/crew-inbound.ts";
-import { runCrew, type CrewDeps } from "./talent/lib/run-crew.ts";
+import { parseTestPhones, runCrew, type CrewDeps } from "./talent/lib/run-crew.ts";
 import { templateRequestUrl, type WhatsAppReport } from "./talent/lib/whatsapp-ack.ts";
 import { DELETE_ROWS } from "./talent/lib/sql.ts";
 import { erasePerson } from "./talent/lib/crm.ts";
@@ -527,5 +527,30 @@ test("the run reads crew members of the last 60 days only", async () => {
   assert.equal(s.sends.length, 0);
   s.t.store.crewMembers[0].createdAt = "2026-09-25T05:00:00.000Z";
   await runCrew(s.deps());
+  assert.equal(s.sends.length, 1);
+});
+
+test("a staff test number skips the quiet hours, and its reminder follows the confirmation", () => {
+  assert.deepEqual([...parseTestPhones("+91 98765 43210, 9123456789\nx, -")], ["+919876543210", "+919123456789"]);
+  assert.equal(parseTestPhones("-").size, 0);
+  const night = IST("2026-11-19T23:30:00");
+  assert.equal(planMember(ctx({ now: night })).kind, "wait");
+  assert.equal(planMember(ctx({ now: night, test: true })).kind, "send");
+  const confirmed = member({ status: "CONFIRMED" });
+  const ledger = [row({ kind: "confirmed", sent_at: IST("2026-11-19T23:30:00") })];
+  const at = (s: string) => planMember(ctx({ member: confirmed, others: [confirmed], ledger, now: IST(s), test: true }));
+  assert.equal(at("2026-11-19T23:30:30").kind, "wait");
+  const due = at("2026-11-19T23:31:00");
+  assert.equal(due.kind === "send" && due.message, "reminder");
+  // Every other check still applies.
+  assert.equal(planMember(ctx({ now: night, test: true, person: person({ consentedAt: null }) })).kind, "wait");
+});
+
+test("a run treats a number on the test list as a test, and only that one", async () => {
+  const s = await setup();
+  s.setNow(IST("2026-11-19T23:30:00"));
+  await runCrew({ ...s.deps(), testPhones: parseTestPhones("9000000000") });
+  assert.equal(s.sends.length, 0);
+  await runCrew({ ...s.deps(), testPhones: parseTestPhones("98765 43210") });
   assert.equal(s.sends.length, 1);
 });

@@ -7,7 +7,7 @@
  */
 import { config } from "../lib/config.ts";
 import { withTalentDb } from "../lib/db.ts";
-import { runCrew } from "../lib/run-crew.ts";
+import { parseTestPhones, runCrew } from "../lib/run-crew.ts";
 import { twentyFromConfig } from "../lib/twenty.ts";
 import { lookupWhatsAppReport, sendWhatsAppTemplate } from "../lib/whatsapp-ack.ts";
 import { tryEmit } from "../../notify/lib/emit.ts";
@@ -15,6 +15,8 @@ import { tryEmit } from "../../notify/lib/emit.ts";
 export async function main() {
   const apiKey = await config("fast2sms_api_key");
   const crm = await twentyFromConfig().catch(() => null);
+  // Staff test numbers (config.ts crew_test_phones); none when unset.
+  const testPhones = parseTestPhones(await config("crew_test_phones").catch(() => ""));
   const result = await withTalentDb((query) =>
     runCrew({
       query,
@@ -22,6 +24,7 @@ export async function main() {
       sendWhatsApp: (message, templateId) => sendWhatsAppTemplate(message, templateId, apiKey),
       lookupWhatsApp: (id) => lookupWhatsAppReport(id, apiKey),
       notify: tryEmit,
+      testPhones,
     }),
   );
   if (result.errors.length) console.error(`crew: ${result.errors.length} error(s): ${result.errors.join(" | ")}`);

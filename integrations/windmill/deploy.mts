@@ -19,7 +19,8 @@
  *    password (data/pg-main-notify) and growth/windmill-notify
  *    (vayasya-infra apps/windmill/overlays/growth/secrets-notify.sops.yaml).
  * 2. Ensures the workspace `vspl` and folders `talent`, `leads`, `platform`, `notify`.
- * 3. Upserts the f/talent/* variables (config.ts VARIABLES: which are secret)
+ * 3. Upserts the f/talent/* variables (config.ts VARIABLES: which are secret;
+ *    a "kept" one, such as crew_test_phones, is created once and left to hand edits)
  *    and the f/notify/* ones (notify/lib/config.ts). f/notify/policy is
  *    created from DEFAULT_POLICY once and then left to hand edits;
  *    --reset-notify-policy writes the default again.
@@ -64,7 +65,7 @@ import { readFileSync } from "node:fs";
 import { createServer } from "node:net";
 import { dirname, resolve } from "node:path";
 import { FOLDER, FOLDERS, SCRIPTS, TIMEZONE, WORKSPACE, specPath, type ScriptSpec } from "./scripts.mts";
-import { VARIABLES, variablePath, type ConfigName } from "./talent/lib/config.ts";
+import { VARIABLES, isKept, variablePath, type ConfigName } from "./talent/lib/config.ts";
 import { NOTIFY_VARIABLES, OWNER_PLACEHOLDER, notifyVariablePath, type NotifyConfigName } from "./notify/lib/config.ts";
 import { DEFAULT_POLICY } from "./notify/lib/policy.ts";
 import { metadata } from "./build.mts";
@@ -146,6 +147,8 @@ function readValues(): Record<ConfigName, string> {
     lead_webhook_secret: secretValue("growth", "windmill-leads", "LEAD_WEBHOOK_SECRET"),
     fast2sms_dlr_secret: secretValue("growth", "windmill-fast2sms", "FAST2SMS_DLR_SECRET"),
     fast2sms_whatsapp_secret: whatsAppSecret(),
+    // Hand-edited in Windmill after the first deploy (config.ts): "-" is none.
+    crew_test_phones: "-",
     leads_pg_url: `postgres://leads:${encodeURIComponent(leadsPassword)}@${TALENT_DB_HOST}:5432/leads`,
     submission_signing_secret: signingSecret(),
     alerts_email_from: ALERTS_EMAIL_FROM,
@@ -335,7 +338,13 @@ async function main() {
     for (const [name, { secret }] of Object.entries(VARIABLES) as [ConfigName, { secret: boolean }][]) {
       const path = variablePath(name);
       const description = `Talent scripts (integrations/windmill). Set by deploy.mts${secret ? "; secret" : ""}.`;
-      if (await exists(`/w/{ws}/variables/exists/${path}`)) {
+      const present = await exists(`/w/{ws}/variables/exists/${path}`);
+      if (isKept(name)) {
+        if (!present) await w.write("/w/{ws}/variables/create", { path, value: values[name], is_secret: secret, description: "Talent scripts (integrations/windmill/talent/lib/config.ts). Created by deploy.mts, then edited by hand; deploy never overwrites it." }, `creating variable ${path}`);
+        else step(`variable ${path} kept (hand edits stay)`);
+        continue;
+      }
+      if (present) {
         await w.write(`/w/{ws}/variables/update/${path}`, { value: values[name], is_secret: secret, description }, `updating variable ${path}`);
       } else {
         await w.write("/w/{ws}/variables/create", { path, value: values[name], is_secret: secret, description }, `creating variable ${path}`);

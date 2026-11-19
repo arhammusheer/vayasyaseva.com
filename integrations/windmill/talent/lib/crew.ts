@@ -155,7 +155,7 @@ export const personName = (p: CrewPerson | null | undefined) =>
 
 // --- the plan for one crew member ---------------------------------------------------
 
-/** India-time hours (start inclusive, end exclusive) each message may go in. The reminder has its own window. */
+/** India-time hours (start inclusive, end exclusive) each message may go in. The reminder has its own window. Test numbers skip both. */
 export const SEND_HOURS: Record<Exclude<CrewKind, "reminder">, [number, number]> = {
   offer: [8, 21],
   not_needed: [8, 21],
@@ -179,7 +179,16 @@ export interface PlanContext {
   templates?: typeof CREW_TEMPLATES;
   /** False when WhatsApp is not set up (tests, another workspace). */
   canSend?: boolean;
+  /**
+   * A staff test number (Windmill f/talent/crew_test_phones): no quiet hours,
+   * and the reminder is due a minute after the confirmation went, so the whole
+   * path can be tried at any time. Every other check still applies.
+   */
+  test?: boolean;
 }
+
+/** How long a test number's reminder waits after the confirmation. */
+export const TEST_REMINDER_AFTER_MS = 60_000;
 
 export type Plan =
   | { kind: "send"; message: CrewKind; locale: CrewLocale; templateId: number; values: string[]; phone: string }
@@ -204,6 +213,7 @@ function dueMessage(c: PlanContext): CrewKind | "no_reply" | null {
       const confirmed = sent("confirmed");
       if (!confirmed) return "confirmed";
       if (sent("reminder") || !c.request?.reportAt) return null;
+      if (c.test) return confirmed.status === "accepted" && c.now.getTime() - ms(confirmed.sent_at) >= TEST_REMINDER_AFTER_MS ? "reminder" : null;
       const report = new Date(c.request.reportAt);
       const eve = new Date(report.getTime() - 24 * 3600_000);
       const day = istDay(eve);
@@ -266,7 +276,7 @@ export function planMember(c: PlanContext): Plan {
   const templateId = (c.templates ?? CREW_TEMPLATES)[due][locale];
   if (!templateId || c.canSend === false) return { kind: "wait", note: `WhatsApp template not approved yet (${due}, ${locale})` };
 
-  if (due !== "reminder") {
+  if (due !== "reminder" && !c.test) {
     const [from, to] = SEND_HOURS[due];
     const hour = istHour(c.now);
     if (hour < from || hour >= to) return { kind: "wait", note: `Waiting for ${from}:00 to send (no messages ${to}:00 to ${from}:00)` };

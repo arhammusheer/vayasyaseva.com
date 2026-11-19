@@ -33,6 +33,8 @@ Each refusal is written in the crew member's **Message note**, and nothing is se
 - The template for that message and language is not approved yet.
 - Quiet hours: offers and crew-full messages go 08:00 to 21:00, confirmations 07:00 to 22:00, reminders 18:00 to 21:00 the evening before (and at least 2 hours before reporting, and not within 3 hours of the confirmation). They wait, and go when the window opens.
 
+**Test numbers.** Staff numbers listed in the Windmill variable `f/talent/crew_test_phones` (separated by commas or new lines; edited by hand, deploy never overwrites it) skip the quiet hours, and their reminder goes a minute after the confirmation, so the whole path can be tried at any time. Every other check applies to them.
+
 Each message goes at most once per crew member, ever. A refused or failed send says "call them" in Message note; a send cut off midway is never repeated (it may have gone).
 
 ## The messages

@@ -24,6 +24,7 @@ const VARIABLES = {
     fast2sms_dlr_secret: { secret: true },
     leads_pg_url: { secret: true },
     submission_signing_secret: { secret: true },
+    fast2sms_whatsapp_secret: { secret: true },
     alerts_email_from: { secret: false },
     alerts_reply_to: { secret: false },
     lead_staff_email_from: { secret: false },
@@ -228,6 +229,10 @@ FROM claimed c;`;
 const DELETE_ROWS = `
 WITH gone AS (
   DELETE FROM submissions WHERE phone = $2 AND id = ANY($5::uuid[]) RETURNING id
+), crew AS (
+  DELETE FROM crew_messages WHERE phone = $2
+    AND NOT EXISTS (SELECT 1 FROM submissions s WHERE s.phone = $2 AND s.id <> ALL($5::uuid[]))
+  RETURNING 1
 ), person AS (
   DELETE FROM people WHERE phone = $2
     AND NOT EXISTS (SELECT 1 FROM submissions s WHERE s.phone = $2 AND s.id <> ALL($5::uuid[]))

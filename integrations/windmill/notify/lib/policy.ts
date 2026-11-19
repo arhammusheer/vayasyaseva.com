@@ -82,6 +82,13 @@ export const DEFAULT_POLICY: Policy = {
       push: { mode: "instant", pii: "full", call: true, topic: "vspl-jobs", priority: { info: 4, notice: 4 } },
       email: "digest",
     },
+    // Crew offers (talent/lib/run-crew.ts): a worker said yes (call to confirm), or a confirmed one can't come.
+    {
+      name: "Crew reply: instant, name and full phone, Call",
+      match: { type: ["crew.said_yes", "crew.cant_come"] },
+      push: { mode: "instant", pii: "full", call: true, topic: "vspl-jobs", priority: { info: 4, warning: 5 } },
+      email: "none",
+    },
     {
       name: "Business lead: instant, masked phone; qualified (notice) higher",
       match: { type: "lead.received" },

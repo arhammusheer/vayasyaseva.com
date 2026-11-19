@@ -27,7 +27,7 @@ import { main as leadMain } from "./leads/scripts/intake.ts";
 import { INTAKE_CLUSTERS, JOB_ROLE_SLUGS, QUICK_ANSWERS } from "../../packages/contracts/src/rules.ts";
 
 function fakeTwenty() {
-  const store: Record<string, TwentyRecord[]> = { people: [], applications: [], communications: [], companies: [], opportunities: [], attachments: [] };
+  const store: Record<string, TwentyRecord[]> = { people: [], applications: [], communications: [], companies: [], opportunities: [], attachments: [], crewMembers: [] };
   let n = 0;
   const get = (r: TwentyRecord, path: string) => path.split(".").reduce<unknown>((v, k) => (v as Record<string, unknown> | undefined)?.[k], r);
   const calls: string[] = [];

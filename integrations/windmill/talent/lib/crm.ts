@@ -516,9 +516,16 @@ export async function erasePerson(crm: Twenty, phone: string): Promise<ErasedCrm
       for (const comm of await findAll(crm, "communications", eq("applicationId", app.id))) await crm.remove("communications", comm.id);
       await crm.remove("applications", app.id);
     }
+    // Crew offers (run-crew.ts): the worker on crew requests.
+    for (const member of await findAll(crm, "crewMembers", eq("personId", person.id))) await crm.remove("crewMembers", member.id);
     const clientContact = !person.deletedAt &&
       (person.personType === "CLIENT_CONTACT" || (await crm.find("opportunities", eq("pointOfContactId", person.id))).length > 0);
     for (const comm of await findAll(crm, "communications", eq("personId", person.id))) {
+      // Crew messages are the worker's, even on a crew request: they go too.
+      if (typeof comm.externalKey === "string" && comm.externalKey.startsWith("crew")) {
+        await crm.remove("communications", comm.id);
+        continue;
+      }
       if (!clientContact || !comm.opportunityId) await crm.remove("communications", comm.id);
     }
     if (clientContact) {

@@ -21,6 +21,24 @@ export interface Twenty {
   update(plural: string, id: string, body: Record<string, unknown>): Promise<void>;
   /** True when it was removed, false when it was already gone. */
   remove(plural: string, id: string): Promise<boolean>;
+  /** One page of up to 60 records, from `after` (the previous page's cursor); next is null on the last page. */
+  findPage?(plural: string, filter: string, after?: string | null): Promise<{ records: TwentyRecord[]; next: string | null }>;
+}
+
+/** `field[in]:["a","b"]`. */
+export const isIn = (field: string, values: string[]) => `${field}[in]:${JSON.stringify(values)}`;
+
+/** Every record matching `filter`, page by page (findPage), up to `max`. */
+export async function findEvery(crm: Twenty, plural: string, filter: string, max = 600): Promise<TwentyRecord[]> {
+  if (!crm.findPage) return crm.find(plural, filter);
+  const out: TwentyRecord[] = [];
+  let after: string | null = null;
+  do {
+    const page: { records: TwentyRecord[]; next: string | null } = await crm.findPage(plural, filter, after);
+    out.push(...page.records);
+    after = page.next;
+  } while (after && out.length < max);
+  return out;
 }
 
 /** `field[eq]:"value"`, quoting the value as Twenty's filter parser expects. */
@@ -51,6 +69,13 @@ export function twentyClient(baseUrl: string, apiKey: string, fetchImpl: Fetch =
     async find(plural, filter) {
       const { json } = await call("GET", `/${plural}?limit=60&filter=${encodeURIComponent(filter)}`);
       return ((json as { data: Record<string, TwentyRecord[]> }).data[plural] ?? []) as TwentyRecord[];
+    },
+    async findPage(plural, filter, after) {
+      const cursor = after ? `&starting_after=${encodeURIComponent(after)}` : "";
+      const { json } = await call("GET", `/${plural}?limit=60&filter=${encodeURIComponent(filter)}${cursor}`);
+      const body = json as { data: Record<string, TwentyRecord[]>; pageInfo?: { hasNextPage?: boolean; endCursor?: string | null } };
+      const records = (body.data[plural] ?? []) as TwentyRecord[];
+      return { records, next: body.pageInfo?.hasNextPage && body.pageInfo.endCursor ? body.pageInfo.endCursor : null };
     },
     async create(plural, singular, body) {
       const { json } = await call("POST", `/${plural}`, body);

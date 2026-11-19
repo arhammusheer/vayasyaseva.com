@@ -24,6 +24,7 @@ const VARIABLES = {
     fast2sms_dlr_secret: { secret: true },
     leads_pg_url: { secret: true },
     submission_signing_secret: { secret: true },
+    fast2sms_whatsapp_secret: { secret: true },
     alerts_email_from: { secret: false },
     alerts_reply_to: { secret: false },
     lead_staff_email_from: { secret: false },
@@ -228,6 +229,10 @@ FROM claimed c;`;
 const DELETE_ROWS = `
 WITH gone AS (
   DELETE FROM submissions WHERE phone = $2 AND id = ANY($5::uuid[]) RETURNING id
+), crew AS (
+  DELETE FROM crew_messages WHERE phone = $2
+    AND NOT EXISTS (SELECT 1 FROM submissions s WHERE s.phone = $2 AND s.id <> ALL($5::uuid[]))
+  RETURNING 1
 ), person AS (
   DELETE FROM people WHERE phone = $2
     AND NOT EXISTS (SELECT 1 FROM submissions s WHERE s.phone = $2 AND s.id <> ALL($5::uuid[]))
@@ -454,7 +459,20 @@ async function deleteObject(key) {
 })();
 
 // integrations/windmill/talent/lib/twenty.ts
-const { eq, twentyClient, twentyFromConfig, TwentyGraphqlError, inClusterUploadUrl, twentyFilesClient, twentyFilesFromConfig } = (() => {
+const { isIn, findEvery, eq, twentyClient, twentyFromConfig, TwentyGraphqlError, inClusterUploadUrl, twentyFilesClient, twentyFilesFromConfig } = (() => {
+const isIn = (field, values) => `${field}[in]:${JSON.stringify(values)}`;
+async function findEvery(crm, plural, filter, max = 600) {
+    if (!crm.findPage)
+        return crm.find(plural, filter);
+    const out = [];
+    let after = null;
+    do {
+        const page = await crm.findPage(plural, filter, after);
+        out.push(...page.records);
+        after = page.next;
+    } while (after && out.length < max);
+    return out;
+}
 const eq = (field, value) => `${field}[eq]:${JSON.stringify(value)}`;
 function twentyClient(baseUrl, apiKey, fetchImpl = fetch) {
     const base = baseUrl.replace(/\/$/, "");
@@ -481,6 +499,13 @@ function twentyClient(baseUrl, apiKey, fetchImpl = fetch) {
         async find(plural, filter) {
             const { json } = await call("GET", `/${plural}?limit=60&filter=${encodeURIComponent(filter)}`);
             return (json.data[plural] ?? []);
+        },
+        async findPage(plural, filter, after) {
+            const cursor = after ? `&starting_after=${encodeURIComponent(after)}` : "";
+            const { json } = await call("GET", `/${plural}?limit=60&filter=${encodeURIComponent(filter)}${cursor}`);
+            const body = json;
+            const records = (body.data[plural] ?? []);
+            return { records, next: body.pageInfo?.hasNextPage && body.pageInfo.endCursor ? body.pageInfo.endCursor : null };
         },
         async create(plural, singular, body) {
             const { json } = await call("POST", `/${plural}`, body);
@@ -593,7 +618,7 @@ function twentyFilesClient(baseUrl, apiKey, fetchImpl = fetch) {
 async function twentyFilesFromConfig() {
     return twentyFilesClient(await config("twenty_base_url"), await config("twenty_api_key"));
 }
-  return { eq, twentyClient, twentyFromConfig, TwentyGraphqlError, inClusterUploadUrl, twentyFilesClient, twentyFilesFromConfig };
+  return { isIn, findEvery, eq, twentyClient, twentyFromConfig, TwentyGraphqlError, inClusterUploadUrl, twentyFilesClient, twentyFilesFromConfig };
 })();
 
 // packages/contracts/src/rules.ts
@@ -1311,9 +1336,15 @@ async function erasePerson(crm, phone) {
                 await crm.remove("communications", comm.id);
             await crm.remove("applications", app.id);
         }
+        for (const member of await findAll(crm, "crewMembers", eq("personId", person.id)))
+            await crm.remove("crewMembers", member.id);
         const clientContact = !person.deletedAt &&
             (person.personType === "CLIENT_CONTACT" || (await crm.find("opportunities", eq("pointOfContactId", person.id))).length > 0);
         for (const comm of await findAll(crm, "communications", eq("personId", person.id))) {
+            if (typeof comm.externalKey === "string" && comm.externalKey.startsWith("crew")) {
+                await crm.remove("communications", comm.id);
+                continue;
+            }
             if (!clientContact || !comm.opportunityId)
                 await crm.remove("communications", comm.id);
         }
@@ -1409,7 +1440,7 @@ async function runAcknowledge(submissionId, deps) {
 })();
 
 // integrations/windmill/talent/lib/whatsapp-ack.ts
-const { WA_SEND_URL, WA_REPORT_URL, WA_TIMEOUT_MS, WA_PHONE_NUMBER_ID, WA_FALLBACK_MS, WA_CHECK_SECONDS, WA_TEMPLATES, templateFor, whatsAppRequestUrl, classifyWhatsApp, sendWhatsAppAck, parseWhatsAppReport, lookupWhatsAppReport, runWhatsAppAck } = (() => {
+const { WA_SEND_URL, WA_REPORT_URL, WA_TIMEOUT_MS, WA_PHONE_NUMBER_ID, WA_FALLBACK_MS, WA_CHECK_SECONDS, WA_TEMPLATES, templateFor, whatsAppRequestUrl, templateRequestUrl, sendWhatsAppTemplate, classifyWhatsApp, sendWhatsAppAck, parseWhatsAppReport, lookupWhatsAppReport, runWhatsAppAck } = (() => {
 const WA_SEND_URL = "https://www.fast2sms.com/dev/whatsapp";
 const WA_REPORT_URL = "https://www.fast2sms.com/dev/whatsapp/";
 const WA_TIMEOUT_MS = 15_000;
@@ -1434,6 +1465,35 @@ function whatsAppRequestUrl(claim, messageId) {
         udf1: claim.ref,
     });
     return `${WA_SEND_URL}?${params}`;
+}
+function templateRequestUrl(message, messageId) {
+    const params = new URLSearchParams({
+        message_id: String(messageId),
+        phone_number_id: WA_PHONE_NUMBER_ID,
+        numbers: message.phone.slice(-10),
+        ...(message.values.length ? { variables_values: message.values.join("|") } : {}),
+        udf1: message.udf1,
+    });
+    return `${WA_SEND_URL}?${params}`;
+}
+async function sendWhatsAppTemplate(message, messageId, apiKey, fetchImpl = fetch) {
+    try {
+        const res = await fetchImpl(templateRequestUrl(message, messageId), {
+            headers: { authorization: apiKey },
+            signal: AbortSignal.timeout(WA_TIMEOUT_MS),
+        });
+        let body;
+        try {
+            body = (await res.json());
+        }
+        catch {
+            body = undefined;
+        }
+        return { statusCode: res.status, body };
+    }
+    catch {
+        return { error: "request failed" };
+    }
 }
 function classifyWhatsApp(response) {
     const body = response.body;
@@ -1551,7 +1611,7 @@ async function runWhatsAppAck(submissionId, deps) {
     }
     return wait;
 }
-  return { WA_SEND_URL, WA_REPORT_URL, WA_TIMEOUT_MS, WA_PHONE_NUMBER_ID, WA_FALLBACK_MS, WA_CHECK_SECONDS, WA_TEMPLATES, templateFor, whatsAppRequestUrl, classifyWhatsApp, sendWhatsAppAck, parseWhatsAppReport, lookupWhatsAppReport, runWhatsAppAck };
+  return { WA_SEND_URL, WA_REPORT_URL, WA_TIMEOUT_MS, WA_PHONE_NUMBER_ID, WA_FALLBACK_MS, WA_CHECK_SECONDS, WA_TEMPLATES, templateFor, whatsAppRequestUrl, templateRequestUrl, sendWhatsAppTemplate, classifyWhatsApp, sendWhatsAppAck, parseWhatsAppReport, lookupWhatsAppReport, runWhatsAppAck };
 })();
 
 // integrations/windmill/talent/lib/notify-application.ts

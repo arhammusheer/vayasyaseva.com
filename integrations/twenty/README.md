@@ -10,7 +10,8 @@ VSPL's back office: job seekers as people with their applications and every mess
 | **Application** (custom) | A job application; name = its reference VS-J-XXXXXX | Phone, Source, Role (`jobRole`), Work wanted, Area, Experience, Education, Can start, Shifts, Skills (the quick form's answers as real fields), Cluster, Message, Answers (raw), Submitted, Consent version, Page, Talent DB id (unique sync key); → Person |
 | **Communication** (custom) | Every SMS, WhatsApp, call or email, with delivery status | Channel, Direction, Delivery (Queued, Sent, Delivered, Read, Failed, Unknown), Template, Message, Provider, Provider ID, Status at, Error, Sync key (unique); → Person, Application, Crew request |
 | **Company** | Client companies | (standard) |
-| **Opportunity**, labelled **Crew request** | A crew request | Stage replaced with New → Contacted → Site visit → Quoted → Won / Lost; Crew size, Services, Site, Cluster, Start, Lead source, Enquiry, Case ID (unique sync key) |
+| **Opportunity**, labelled **Crew request** | A crew request | Stage replaced with New → Contacted → Site visit → Quoted → Won / Lost; Crew size, Services, Site, Cluster, Start, Lead source, Enquiry, Case ID (unique sync key); what workers are told: Job, Place, Pay, Shift, Stay and food (offer), Report at, Report time, Site contact, Map link |
+| **Crew member** (custom) | A worker offered a place on a crew request (docs/crew-offers.md) | Status (Offered, Said yes, Said no, No reply, Confirmed, Can't come, Reported, Didn't come, Not needed), Message note, Last reply, Replied, Offer sent, Confirmation sent, Reminder sent; → Person (Worker), Crew request |
 
 ## How it is laid out (`layout.mts`)
 
@@ -18,7 +19,7 @@ Applications read as a **log, not a pipeline** (owner, 17 Oct 2026): nothing ask
 
 - **Sidebar**: Job applications dashboard, Applications, People, Communications, Crew requests, Companies, Tasks, Notes, Dashboards; Workflows after.
 - **Applications**: **Applications log** (every application newest first: reference, submitted, person, phone, role, area, experience, can start, work wanted, shifts, education, skills, source, message), **Last 7 days**, **Calendar** (by submitted date). Raw answers, sync key and consent stay on the record only.
-- **People**: **Workers** (newest applicant first), **Client contacts**. **Communications**: newest first; **Needs attention** (failed or unknown SMS). **Crew requests**: the list and the **By Stage** board.
+- **People**: **Workers** (newest applicant first), **Client contacts**. **Communications**: newest first; **Needs attention** (failed or unknown SMS). **Crew requests**: the list and the **By Stage** board. **Crew members**: all, **To call** (Said yes and Can't come, oldest reply first), **By status**.
 - **Record pages**: submitted, person, phone and the answers first; bookkeeping last.
 - **Job applications dashboard**: today / 7 days / 30 days / all-time counts; applications per day by role (30 days); per week; cumulative over time; role and area for the last 30 days; the latest applications, newest first.
 

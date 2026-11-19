@@ -3,7 +3,7 @@
  * `vspl`), over its API through a kubectl port-forward.
  *
  *   pnpm windmill:build && pnpm windmill:deploy [--dry-run] [--enable-schedules] [--enable-retention]
- *                                               [--enable-notify] [--reset-notify-policy]
+ *                                               [--enable-notify] [--reset-notify-policy] [--enable-crew]
  *
  * Needs kubectl access to the cluster (WARP on). Idempotent; a re-run
  * updates in place. Nothing secret is printed or written locally: secrets
@@ -32,7 +32,8 @@
  *    hand-run check, as with n8n), --enable-notify turns f/notify/dispatch,
  *    digest and f/platform/health (every 15 minutes, into the hub) on (after
  *    the owner has set NTFY_TOKEN and RESEND_NOTIFY_API_KEY;
- *    --enable-schedules never turns them on). A re-run without the flags
+ *    --enable-schedules never turns them on), --enable-crew turns f/talent/crew
+ *    on (it sends WhatsApp messages to workers). A re-run without the flags
  *    leaves them as they are. The schedules the dispatcher replaced
  *    (acknowledge, sync_crm, delivery_check) are turned off; the
  *    scripts stay, for hand runs. RETIRED's schedules, routes, scripts and
@@ -74,6 +75,8 @@ const DRY_RUN = args.includes("--dry-run");
 const ENABLE_SCHEDULES = args.includes("--enable-schedules");
 const ENABLE_RETENTION = args.includes("--enable-retention");
 const ENABLE_NOTIFY = args.includes("--enable-notify");
+/** f/talent/crew messages workers: its schedule goes on only when asked for by name, never with --enable-schedules. */
+const ENABLE_CREW = args.includes("--enable-crew");
 const RESET_NOTIFY_POLICY = args.includes("--reset-notify-policy");
 const SECRETS_FROM = args.find((a) => a.startsWith("--secrets-from="))?.split("=")[1] ?? "windmill-talent";
 const BASE_URL_ARG = args.find((a) => a.startsWith("--base-url="))?.split("=")[1];
@@ -108,6 +111,20 @@ function secretValue(namespace: string, secret: string, key: string): string {
 
 // --- 1. Values from the cluster ---------------------------------------------------
 
+/**
+ * The WhatsApp webhook's secret (f/talent/whatsapp_inbound): FAST2SMS_WA_SECRET
+ * in growth/windmill-fast2sms, else that Secret's delivery report secret, so
+ * the route works before its own value is added.
+ */
+function whatsAppSecret(): string {
+  try {
+    return secretValue("growth", "windmill-fast2sms", "FAST2SMS_WA_SECRET");
+  } catch {
+    step("growth/windmill-fast2sms has no FAST2SMS_WA_SECRET: the WhatsApp webhook uses FAST2SMS_DLR_SECRET");
+    return secretValue("growth", "windmill-fast2sms", "FAST2SMS_DLR_SECRET");
+  }
+}
+
 function readValues(): Record<ConfigName, string> {
   step("reading secrets from the cluster");
   const talentPassword = secretValue("data", "pg-main-talent", "password");
@@ -128,6 +145,7 @@ function readValues(): Record<ConfigName, string> {
     twenty_api_key: secretValue("growth", "twenty-api", "TWENTY_API_KEY"),
     lead_webhook_secret: secretValue("growth", "windmill-leads", "LEAD_WEBHOOK_SECRET"),
     fast2sms_dlr_secret: secretValue("growth", "windmill-fast2sms", "FAST2SMS_DLR_SECRET"),
+    fast2sms_whatsapp_secret: whatsAppSecret(),
     leads_pg_url: `postgres://leads:${encodeURIComponent(leadsPassword)}@${TALENT_DB_HOST}:5432/leads`,
     submission_signing_secret: signingSecret(),
     alerts_email_from: ALERTS_EMAIL_FROM,
@@ -239,14 +257,15 @@ function api(base: string, token: string) {
  * schedule and route first, then the script, then its variables. The
  * WhatsApp apply chat (19 Oct 2026) went the same day; acknowledgements go
  * out on WhatsApp instead. Chatwoot's deliver script and variables went with
- * Chatwoot (24 Oct 2026).
+ * Chatwoot (24 Oct 2026). The apply chat's webhook secret
+ * (f/talent/fast2sms_whatsapp_secret) is in use again since 19 Nov 2026, by
+ * f/talent/whatsapp_inbound (crew replies).
  */
 const RETIRED = {
   schedules: ["f/talent/deliver"],
   routes: ["f/talent/whatsapp"],
   scripts: ["f/talent/whatsapp", "f/talent/deliver"],
   variables: [
-    "f/talent/fast2sms_whatsapp_secret",
     "f/talent/chatwoot_admin_token",
     "f/talent/chatwoot_inbox_identifier",
     "f/talent/chatwoot_base_url",
@@ -458,9 +477,11 @@ async function schedule(w: Api, exists: (path: string) => Promise<boolean>, spec
   const enable =
     spec.folder === "notify" || spec.notifySchedule
       ? ENABLE_NOTIFY
-      : spec.name === "retention" || (spec.folder === "leads" && spec.name === "erase")
-        ? ENABLE_RETENTION
-        : ENABLE_SCHEDULES || (replacedWereOn && REPLACEMENTS.has(`${spec.folder ?? FOLDER}/${spec.name}`));
+      : spec.messagesWorkers
+        ? ENABLE_CREW
+        : spec.name === "retention" || (spec.folder === "leads" && spec.name === "erase")
+          ? ENABLE_RETENTION
+          : ENABLE_SCHEDULES || (replacedWereOn && REPLACEMENTS.has(`${spec.folder ?? FOLDER}/${spec.name}`));
   const body = { schedule: spec.schedule.cron, timezone: TIMEZONE, args: {}, summary: spec.schedule.summary };
   if (await exists(`/w/{ws}/schedules/exists/${path}`)) {
     await w.write(`/w/{ws}/schedules/update/${path}`, body, `updating schedule ${path} (${spec.schedule.cron})`);

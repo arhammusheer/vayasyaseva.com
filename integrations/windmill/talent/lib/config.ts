@@ -35,6 +35,12 @@ export const VARIABLES = {
    */
   submission_signing_secret: { secret: true },
   /**
+   * The x-vspl-wa-secret header (or ?key=) of Fast2SMS's WhatsApp webhook into
+   * f/talent/whatsapp_inbound: FAST2SMS_WA_SECRET in growth/windmill-fast2sms,
+   * else FAST2SMS_DLR_SECRET (deploy.mts).
+   */
+  fast2sms_whatsapp_secret: { secret: true },
+  /**
    * The sender and the reply address of the minimum wage rate alerts
    * (leads/lib/alert-mail.ts). They go out with the notification hub's Resend
    * key (f/notify/resend_api_key), so the sender is on its verified domain.

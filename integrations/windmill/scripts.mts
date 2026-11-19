@@ -33,6 +33,8 @@ export interface ScriptSpec {
   retiredSchedule?: true;
   /** A schedule that raises notifications: turned on with --enable-notify, like the notify folder's own. */
   notifySchedule?: true;
+  /** A schedule that sends WhatsApp messages to workers: turned on only with --enable-crew. */
+  messagesWorkers?: true;
 }
 
 const noArgs = { $schema: "https://json-schema.org/draft/2020-12/schema", type: "object", properties: {}, required: [] };
@@ -126,6 +128,32 @@ export const SCRIPTS: ScriptSpec[] = [
       required: [],
     },
     schedule: { cron: "0 * * * * *", summary: "Every minute: SMS and Twenty deliveries" },
+  },
+  {
+    name: "crew",
+    summary: "Talent · crew offers",
+    description:
+      "Crew offers on WhatsApp (docs/crew-offers.md): reads the crew members recruiters set in Twenty, sends each the message it is due (offer, confirmed, reminder, crew full), marks unanswered offers No reply, and writes replies and delivery back to Twenty. Holds the dispatcher's lock.",
+    schema: noArgs,
+    schedule: { cron: "40 * * * * *", summary: "Every minute: crew offers on WhatsApp" },
+    messagesWorkers: true,
+  },
+  {
+    name: "whatsapp_inbound",
+    summary: "Talent · WhatsApp replies",
+    description:
+      "Fast2SMS's WhatsApp webhook for incoming messages (POST /webhook/fast2sms-whatsapp-in): checks x-vspl-wa-secret (or ?key=), saves a reply to a crew message and starts f/talent/crew; ignores everything else.",
+    schema: {
+      $schema: "https://json-schema.org/draft/2020-12/schema",
+      type: "object",
+      properties: {
+        authorized: { type: "boolean", description: "Set by the preprocessor: the secret matched." },
+        body: { type: "object", description: "The message's fields from Fast2SMS's Standard payload." },
+      },
+      required: ["authorized", "body"],
+    },
+    hasPreprocessor: true,
+    route: { path: "webhook/fast2sms-whatsapp-in", method: "post", secretHeader: "x-vspl-wa-secret" },
   },
   {
     name: "setup",

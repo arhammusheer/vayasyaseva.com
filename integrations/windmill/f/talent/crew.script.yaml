@@ -1,0 +1,13 @@
+{
+  "summary": "Talent · crew offers",
+  "description": "Crew offers on WhatsApp (docs/crew-offers.md): reads the crew members recruiters set in Twenty, sends each the message it is due (offer, confirmed, reminder, crew full), marks unanswered offers No reply, and writes replies and delivery back to Twenty. Holds the dispatcher's lock.",
+  "lock": "",
+  "kind": "script",
+  "language": "bun",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {},
+    "required": []
+  }
+}

@@ -203,11 +203,16 @@ FROM claimed c;`;
 
 /**
  * $1 request id, $2 phone, $3 files removed, $4 Twenty attachments removed, $5 the claimed submission ids.
- * The person's row goes only when no later application is left. Keeps counts only: phone and ref are cleared.
+ * The person's row and their crew messages (with the replies) go only when no later application is left.
+ * Keeps counts only: phone and ref are cleared.
  */
 export const DELETE_ROWS = `
 WITH gone AS (
   DELETE FROM submissions WHERE phone = $2 AND id = ANY($5::uuid[]) RETURNING id
+), crew AS (
+  DELETE FROM crew_messages WHERE phone = $2
+    AND NOT EXISTS (SELECT 1 FROM submissions s WHERE s.phone = $2 AND s.id <> ALL($5::uuid[]))
+  RETURNING 1
 ), person AS (
   DELETE FROM people WHERE phone = $2
     AND NOT EXISTS (SELECT 1 FROM submissions s WHERE s.phone = $2 AND s.id <> ALL($5::uuid[]))

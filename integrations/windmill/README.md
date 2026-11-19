@@ -28,6 +28,14 @@ lead inbox (leads DB)
                                         (company, contact, crew request, enquiry), backoff, cap 8
                   f/leads/setup         the schema (leads/schema.sql), run by every deploy
 
+crew offers       f/talent/crew         every minute (on only with --enable-crew), and started by
+                                        whatsapp_inbound: crew members in Twenty → WhatsApp offer,
+                                        confirmation, reminder, crew full; replies and delivery back
+                                        into Twenty (docs/crew-offers.md)
+Fast2SMS WhatsApp, incoming ──POST──► hooks.vayasyaseva.com/api/r/webhook/fast2sms-whatsapp-in
+                  f/talent/whatsapp_inbound  checks x-vspl-wa-secret (or ?key=), saves a reply to a
+                                        crew message, starts f/talent/crew; ignores the rest
+
 Fast2SMS delivery reports ──POST──► hooks.vayasyaseva.com/api/r/webhook/fast2sms-dlr
                   f/talent/delivery_report  checks x-vspl-dlr-secret (or ?key=), marks the
                                         acknowledgement delivered / failed; the CRM delivery reruns
@@ -60,6 +68,7 @@ The Sarvam transcribe workflow is not ported (voice notes ended 16 October 2026)
 | `talent/lib/{twenty,crm}.ts`, `run-sync-crm.ts` | Twenty's REST API, the talent→Twenty mapping and erasure, and the sync step by step. |
 | `leads/scripts/*.ts`, `leads/lib/{lead,run-leads,sql}.ts`, `leads/schema.sql` | The lead inbox: intake checks business_enquiry.v1 and saves the lead, sync_crm files it in Twenty (company, contact, crew request, enquiry), each record found before it is created. |
 | `talent/lib/run-dispatch.ts` | The one dispatcher: claims due `deliveries` rows (SKIP LOCKED, one run at a time by advisory lock) and runs the SMS, CRM and files steps. |
+| `talent/lib/crew*.ts`, `run-crew.ts` | Crew offers (docs/crew-offers.md): the templates and their Fast2SMS ids (`crew-templates.ts`), the decisions (`crew.ts`), the incoming webhook (`crew-inbound.ts`), the queries (`crew-sql.ts`) and the run. |
 | `talent/lib/run-files.ts` | The files step: an application's R2 files into Twenty as attachments on its Application (`twenty.ts` `twentyFilesClient` for the upload). |
 | `platform/scripts/*.ts`, `platform/lib/*.ts` | The signed envelope route, the Idempotency-Key store and health. `signed.ts` checks `packages/contracts/src/signing.ts`'s HMAC over the raw body. |
 | `notify/` | The notification hub (ntfy pushes, Resend email, daily digest): `docs/notification-hub.md`. Other scripts raise notifications with `notify/lib/emit.ts`. |
@@ -98,6 +107,7 @@ Scripts read `f/talent/<name>` with `wmill.getVariable` (`talent/lib/config.ts`)
 | `lead_staff_email_from`, `lead_buyer_email_from`, `lead_inbox_email` | no | Constants in `deploy.mts`: the contact forms' emails (leads/lib/lead-mail.ts): the shared inbox email's sender, the buyer copy's sender, and the shared inbox (help@). They send with `f/notify/resend_api_key` |
 | `submission_signing_secret` | yes | `SUBMISSION_SIGNING_SECRET` in `growth/windmill-submission`; Vercel has the same value. Until that Secret exists, deploy sets a random value nobody knows, so the signed routes refuse everything |
 | `fast2sms_dlr_secret` | yes | `FAST2SMS_DLR_SECRET` in `growth/windmill-fast2sms`; the `x-vspl-dlr-secret` header of the Fast2SMS webhook |
+| `fast2sms_whatsapp_secret` | yes | `FAST2SMS_WA_SECRET` in `growth/windmill-fast2sms`, else `FAST2SMS_DLR_SECRET`; the `x-vspl-wa-secret` header (or `?key=`) of the WhatsApp webhook into f/talent/whatsapp_inbound |
 
 The `TALENT_*` and `FAST2SMS_*` keys are read from `growth/windmill-talent` (vayasya-infra `apps/windmill/overlays/growth/secrets-talent.sops.yaml`); `--secrets-from=<secret>` reads another Secret in `growth` with the same keys. The hand-run `whatsapp-templates.mts` and `fast2sms-webhook.mts` read the Fast2SMS key from the same Secret. The `chatwoot_*` variables went with Chatwoot (24 October 2026); deploy deletes them (`RETIRED` in `deploy.mts`). The API token is `SUPERADMIN_SECRET` in `growth/windmill-env`.
 
@@ -113,7 +123,7 @@ The `TALENT_*` and `FAST2SMS_*` keys are read from `growth/windmill-talent` (vay
 6. creates or updates the schedules and the route `/api/r/webhook/vspl-talent-intake` (sync, no Windmill auth: the script checks the secret);
 7. warms the route with a wrong secret and expects 403 (the first call after a new version installs dependencies, ~7.5 s).
 
-**Schedules are created disabled.** `--enable-schedules` turns on `f/talent/dispatch` and `f/leads/sync_crm`; `--enable-retention` turns on retention (after a hand-run check, as with n8n). A later deploy without the flags leaves each schedule as it is. The schedules the dispatcher replaced (acknowledge, sync_crm, delivery_check) are turned off by every deploy; if any of them was on, the dispatcher and the lead sync are turned on in the same deploy, so deliveries never stop in between. Retired scripts (`RETIRED` in `deploy.mts`: the WhatsApp apply chat, and Chatwoot's `f/talent/deliver`) lose their schedule, route, script and variables.
+**Schedules are created disabled.** `--enable-schedules` turns on `f/talent/dispatch` and `f/leads/sync_crm`; `--enable-crew` turns on `f/talent/crew`, which messages workers (never with `--enable-schedules`); `--enable-retention` turns on retention (after a hand-run check, as with n8n). A later deploy without the flags leaves each schedule as it is. The schedules the dispatcher replaced (acknowledge, sync_crm, delivery_check) are turned off by every deploy; if any of them was on, the dispatcher and the lead sync are turned on in the same deploy, so deliveries never stop in between. Retired scripts (`RETIRED` in `deploy.mts`: the WhatsApp apply chat, and Chatwoot's `f/talent/deliver`) lose their schedule, route, script and variables.
 
 Cron is Windmill's six-field form (seconds first), timezone Asia/Kolkata: dispatch (and acknowledge, before it) `0 * * * * *`, sync_crm `30 * * * * *`, delivery_check `0 */15 * * * *`, retention `0 0 * * * *`.
 
@@ -135,6 +145,18 @@ Cron is Windmill's six-field form (seconds first), timezone Asia/Kolkata: dispat
 - **SMS as the fallback.** The dispatcher looks the WhatsApp report up each minute (`GET /dev/whatsapp/{request_id}`; there is no WhatsApp webhook). Delivered or read: done, and the SMS is `skipped`. A refused or unclear send, a failure report, or 10 minutes with neither delivered nor read: the DLT SMS goes as before. Waiting does not use the delivery's three attempts. A language without an approved template in `WA_TEMPLATES` gets the SMS straight away.
 - **Columns.** `sms_acknowledgements.wa_status` (`sending`, `accepted`, `failed`, `unknown`, `skipped`), `wa_request_id`, `wa_delivery` (`read`, `delivered`, `failed`, `pending`) with Fast2SMS's text in `wa_detail`. In Twenty the WhatsApp message is its own Communication (channel WhatsApp, Delivery up to **Read**); the SMS has one only when it was sent.
 - **Templates.** `node integrations/windmill/whatsapp-templates.mts` shows each language's status and Fast2SMS message id; `--create` submits any missing (submitted 20 Oct 2026, all five approved by 22 Oct 2026 and live in `WA_TEMPLATES`: 38422 en-IN, 38423 hi-IN, 38424 hi-Latn-IN, 38425 pa-IN, 38426 kn-IN). A new language's approved id goes in `WA_TEMPLATES`, then deploy. The WhatsApp apply chat that ran on this number (19 Oct 2026) was removed the same day, before its webhook existed; deploy deletes its route, script and variable.
+
+## Crew offers (19 November 2026)
+
+The procedure, the refusals and going live are in `docs/crew-offers.md`. Here:
+
+- **Who decides what.** Recruiters set a Crew member's status in Twenty; `f/talent/crew` reads the watched ones (Offered, Said yes, Confirmed, Not needed) each minute with the people and crew requests they point to (`findEvery`, `isIn` in `twenty.ts`), and sends what each is due (`crew.ts` `planMember`). It holds the dispatcher's lock, so it never runs beside the dispatcher or an erasure.
+- **Once each.** `crew_messages` has one row per crew member and kind, claimed before the send (`CLAIM_CREW_MESSAGE`). `sending` cut off for 5 minutes becomes `unknown` and is never resent. Ten sends a run.
+- **Reports.** No WhatsApp report webhook on this number: accepted messages are looked up (`GET /dev/whatsapp/{request_id}`) every minute for half an hour, then every 15 minutes, for two days.
+- **Into Twenty.** Each message is a Communication (`crew:<id>`, Delivery up to Read) on the person and the crew request; the crew member gets its sent time and Message note. `crm_state` remembers what was written, so a change in status or delivery writes again.
+- **Replies.** The route keeps a reply only when the number had a crew message in the last 7 days (`OPEN_CREW_MESSAGE`; the latest one is what it answers), saves it once per Fast2SMS id or message hash, renews the person's retention clock, and starts `f/talent/crew`. The run sets Said yes / Said no (offer) or Can't come (reminder), Last reply and an inbound Communication (`crew-reply:<key>`), pushes Said yes and Can't come to the hub (`crew.said_yes`, `crew.cant_come`), then drops the text from the database. Everything else on the number stays in the WhatsApp Business app.
+- **Erasure.** `DELETE_ROWS` removes the phone's crew messages and replies with the person's last application; `erasePerson` removes their crew members and crew Communications in Twenty.
+- **Templates.** `node integrations/windmill/whatsapp-templates.mts --create --only=crew` submits them with their quick-reply buttons; approved ids go in `CREW_TEMPLATES`, then deploy.
 
 ## Minimum wage rate alerts (10 November 2026)
 

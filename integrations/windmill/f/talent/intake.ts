@@ -9,7 +9,7 @@ import { Ajv2020 } from "ajv/dist/2020.js";
 import { timingSafeEqual } from "node:crypto";
 
 // integrations/windmill/talent/lib/config.ts
-const { VARIABLES, variablePath, setConfigForTests, config } = (() => {
+const { VARIABLES, isKept, variablePath, setConfigForTests, config } = (() => {
 const VARIABLES = {
     talent_pg_url: { secret: true },
     fast2sms_api_key: { secret: true },
@@ -27,12 +27,14 @@ const VARIABLES = {
     leads_pg_url: { secret: true },
     submission_signing_secret: { secret: true },
     fast2sms_whatsapp_secret: { secret: true },
+    crew_test_phones: { secret: true, kept: true },
     alerts_email_from: { secret: false },
     alerts_reply_to: { secret: false },
     lead_staff_email_from: { secret: false },
     lead_buyer_email_from: { secret: false },
     lead_inbox_email: { secret: false },
 };
+const isKept = (name) => "kept" in VARIABLES[name];
 const variablePath = (name) => `f/talent/${name}`;
 let override = null;
 function setConfigForTests(values) {
@@ -50,7 +52,7 @@ async function config(name) {
         throw new Error(`variable ${variablePath(name)} is empty`);
     return value;
 }
-  return { VARIABLES, variablePath, setConfigForTests, config };
+  return { VARIABLES, isKept, variablePath, setConfigForTests, config };
 })();
 
 // integrations/windmill/talent/lib/db.ts

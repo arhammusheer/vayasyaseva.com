@@ -21,11 +21,13 @@
  * run's Twenty work quietly: the key's 100 requests a minute are shared.
  */
 import type { Notify } from "../../notify/lib/emit.ts";
+import { normaliseIndianMobile } from "../../../../packages/contracts/src/rules.ts";
 import {
   crewDeliveryStatus,
   kindLabel,
   noteAfterSend,
   personName,
+  personPhone,
   planMember,
   SENT_FIELD,
   statusAfterReply,
@@ -74,6 +76,18 @@ export interface CrewDeps {
   notify: Notify;
   now?: () => Date;
   templates?: typeof CREW_TEMPLATES;
+  /** Staff test numbers (+91XXXXXXXXXX): no quiet hours, reminder a minute after the confirmation (crew.ts PlanContext.test). */
+  testPhones?: ReadonlySet<string>;
+}
+
+/** The f/talent/crew_test_phones value as numbers: separated by commas or new lines (a number may contain spaces); anything that is not an Indian mobile is ignored. */
+export function parseTestPhones(value: string | null | undefined): Set<string> {
+  return new Set(
+    (value ?? "")
+      .split(/[,;\n]+/)
+      .map((v) => normaliseIndianMobile(v))
+      .filter((v): v is string => !!v),
+  );
 }
 
 export interface CrewResult {
@@ -258,6 +272,7 @@ async function planAndSend(deps: CrewDeps, crm: Twenty, result: CrewResult) {
       now,
       templates: deps.templates,
       canSend: !!deps.sendWhatsApp,
+      test: !!person && !!deps.testPhones?.has(personPhone(person) ?? ""),
     });
 
     // A crew member added by hand has no name: the worker and the crew request.

@@ -9,7 +9,7 @@ import postgres from "postgres";
 import { timingSafeEqual } from "node:crypto";
 
 // integrations/windmill/talent/lib/config.ts
-const { VARIABLES, variablePath, setConfigForTests, config } = (() => {
+const { VARIABLES, isKept, variablePath, setConfigForTests, config } = (() => {
 const VARIABLES = {
     talent_pg_url: { secret: true },
     fast2sms_api_key: { secret: true },
@@ -27,12 +27,14 @@ const VARIABLES = {
     leads_pg_url: { secret: true },
     submission_signing_secret: { secret: true },
     fast2sms_whatsapp_secret: { secret: true },
+    crew_test_phones: { secret: true, kept: true },
     alerts_email_from: { secret: false },
     alerts_reply_to: { secret: false },
     lead_staff_email_from: { secret: false },
     lead_buyer_email_from: { secret: false },
     lead_inbox_email: { secret: false },
 };
+const isKept = (name) => "kept" in VARIABLES[name];
 const variablePath = (name) => `f/talent/${name}`;
 let override = null;
 function setConfigForTests(values) {
@@ -50,7 +52,7 @@ async function config(name) {
         throw new Error(`variable ${variablePath(name)} is empty`);
     return value;
 }
-  return { VARIABLES, variablePath, setConfigForTests, config };
+  return { VARIABLES, isKept, variablePath, setConfigForTests, config };
 })();
 
 // packages/contracts/src/rules.ts
@@ -528,7 +530,7 @@ const variableCount = (t) => new Set(t.text.match(/\{\{\d+\}\}/g) ?? []).size;
 })();
 
 // integrations/windmill/talent/lib/crew.ts
-const { CREW_STATUSES, WATCHED_STATUSES, istHour, formatDay, formatTime, missingFields, templateValues, personPhone, personName, SEND_HOURS, REMINDER, NO_REPLY_AFTER_MS, planMember, normaliseReply, interpretReply, statusAfterReply, crewDeliveryStatus, kindLabel, SENT_FIELD, noteAfterSend } = (() => {
+const { CREW_STATUSES, WATCHED_STATUSES, istHour, formatDay, formatTime, missingFields, templateValues, personPhone, personName, SEND_HOURS, REMINDER, NO_REPLY_AFTER_MS, TEST_REMINDER_AFTER_MS, planMember, normaliseReply, interpretReply, statusAfterReply, crewDeliveryStatus, kindLabel, SENT_FIELD, noteAfterSend } = (() => {
 const CREW_STATUSES = ["OFFERED", "SAID_YES", "SAID_NO", "NO_REPLY", "CONFIRMED", "CANT_COME", "REPORTED", "DIDNT_COME", "NOT_NEEDED"];
 const WATCHED_STATUSES = ["OFFERED", "SAID_YES", "CONFIRMED", "NOT_NEEDED"];
 const OPEN = ["OFFERED", "SAID_YES", "CONFIRMED"];
@@ -596,6 +598,7 @@ const SEND_HOURS = {
 };
 const REMINDER = { fromHour: 18, toHour: 21, beforeReportMs: 2 * 3600_000, afterConfirmedMs: 3 * 3600_000 };
 const NO_REPLY_AFTER_MS = 24 * 3600_000;
+const TEST_REMINDER_AFTER_MS = 60_000;
 const ms = (v) => (v ? new Date(v).getTime() : 0);
 function dueMessage(c) {
     const sent = (k) => c.ledger.find((r) => r.kind === k);
@@ -614,6 +617,8 @@ function dueMessage(c) {
                 return "confirmed";
             if (sent("reminder") || !c.request?.reportAt)
                 return null;
+            if (c.test)
+                return confirmed.status === "accepted" && c.now.getTime() - ms(confirmed.sent_at) >= TEST_REMINDER_AFTER_MS ? "reminder" : null;
             const report = new Date(c.request.reportAt);
             const eve = new Date(report.getTime() - 24 * 3600_000);
             const day = istDay(eve);
@@ -674,7 +679,7 @@ function planMember(c) {
     const templateId = (c.templates ?? CREW_TEMPLATES)[due][locale];
     if (!templateId || c.canSend === false)
         return { kind: "wait", note: `WhatsApp template not approved yet (${due}, ${locale})` };
-    if (due !== "reminder") {
+    if (due !== "reminder" && !c.test) {
         const [from, to] = SEND_HOURS[due];
         const hour = istHour(c.now);
         if (hour < from || hour >= to)
@@ -743,7 +748,7 @@ function noteAfterSend(kind, status, delivery) {
         return `The WhatsApp ${what} may not have gone: call them`;
     return null;
 }
-  return { CREW_STATUSES, WATCHED_STATUSES, istHour, formatDay, formatTime, missingFields, templateValues, personPhone, personName, SEND_HOURS, REMINDER, NO_REPLY_AFTER_MS, planMember, normaliseReply, interpretReply, statusAfterReply, crewDeliveryStatus, kindLabel, SENT_FIELD, noteAfterSend };
+  return { CREW_STATUSES, WATCHED_STATUSES, istHour, formatDay, formatTime, missingFields, templateValues, personPhone, personName, SEND_HOURS, REMINDER, NO_REPLY_AFTER_MS, TEST_REMINDER_AFTER_MS, planMember, normaliseReply, interpretReply, statusAfterReply, crewDeliveryStatus, kindLabel, SENT_FIELD, noteAfterSend };
 })();
 
 // integrations/windmill/talent/lib/sql.ts

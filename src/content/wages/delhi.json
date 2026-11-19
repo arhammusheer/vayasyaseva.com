@@ -8,10 +8,10 @@
    "2025-10-01",
    "2026-04-01"
   ],
-  "basis": "The 22 October 2019 notification adds dearness allowance twice a year, on 1 April and 1 October, from the six-monthly average consumer price index. The Labour Department's current-rates page, last checked on 29 October 2026, lists no order after the one effective from 1 April 2025, so the revisions due on 1 October 2025, 1 April 2026 and 1 October 2026 had not been published by then."
+  "basis": "The 22 October 2019 notification adds dearness allowance twice a year, on 1 April and 1 October, from the six-monthly average consumer price index. The Labour Department's current-rates page, last checked on 19 November 2026, lists no order after the one effective from 1 April 2025, so the revisions due on 1 October 2025, 1 April 2026 and 1 October 2026 had not been published by then."
  },
  "checked": {
-  "on": "2026-10-29"
+  "on": "2026-11-19"
  },
  "sources": [
   {
@@ -249,6 +249,7 @@
   }
  ],
  "verification": [
+  "2026-11-19: hand check after the monitor's first listing read (4 November 2026) counted every link as new. Labour Department, GNCTD, 'Current Minimum Wage Rate' page (labour.delhi.gov.in/labour/current-minimum-wage-rate, page last updated 19/11/2026) lists eleven orders, the newest still F.No.(142)/02/MW/VII/Part file/211-241 dated 15/04/2025, w.e.f. 01/04/2025; the twelfth link is the site-wide i4c handbook. The 22 October 2019 and 26 July 2011 notification pages link only their notification and the same handbook. da15april2025.pdf, da_oct_2024.pdf, gazette_notification.pdf and notification_minimum_wages.pdf match the sha256 in this file. No revision for 1 October 2025, 1 April 2026 or 1 October 2026 is listed. SGCMS's Delhi posts add nothing after its 16 October 2025 post, which the 14 October 2025 circular on the forged order already answers.",
   "2026-10-29: Labour Department, GNCTD, 'Current Minimum Wage Rate' page (labour.delhi.gov.in/labour/current-minimum-wage-rate, page last updated 28/10/2026) still lists the order dated 15/04/2025, w.e.f. 01/04/2025, as its most recent minimum wage order. No revision for 1 October 2025, 1 April 2026 or 1 October 2026 is listed.",
   "2026-10-16: Labour Department, GNCTD, 'Current Minimum Wage Rate' page (labour.delhi.gov.in/labour/current-minimum-wage-rate, page last updated 14/10/2026) lists order F.No.(142)/02/MW/VII/Part file/211-241 dated 15/04/2025, w.e.f. 01/04/2025, as its most recent minimum wage order.",
   "2026-10-31: Delhi government circular Lab-L011/5/2025-Addl.LC-II-LABOUR DEPARTMENT/3616 of 14 October 2025 (delhi.gov.in/sites/default/files/centralized-cos/circular3616.pdf, one scanned page, sha256 11ea144d..., read by eye; signed U. K. Sinha, Additional Labour Commissioner) says a DA revision order F.No.(143)/02/MW/VII/Partfile/212-261 dated 13.10.2025 circulating online is forged, that the department had not issued any DA order for the period from 1 October 2025, and that the last official increase was effective from 1 April 2025. Sites quoting October 2025 or later Delhi rates rely on that forgery or on no order at all; the 15 April 2025 order stays the current one.",

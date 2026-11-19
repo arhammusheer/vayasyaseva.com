@@ -424,10 +424,28 @@ function EmploymentSchedule({ state, intro: own }: { state: WageState; intro?: s
                     <details className="wage-emp">
                       <summary>
                         <span className="wage-emp-name">{g.title ?? names}</span>
-                        <span className={lowest === null && !g.allowance ? "wage-emp-rate is-quiet" : "wage-emp-rate"}>{summary}</span>
+                        {g.quashed ? (
+                          <span className="wage-emp-rate is-warning">{s.quashedSummary}</span>
+                        ) : (
+                          <span className={lowest === null && !g.allowance ? "wage-emp-rate is-quiet" : "wage-emp-rate"}>{summary}</span>
+                        )}
                       </summary>
                       <div className="wage-emp-body">
                         {g.title && <p className="wage-emp-names">{names}.</p>}
+                        {g.quashed && (
+                          <p className="wage-note is-warning" role="note">
+                            <strong>{s.quashedLead}</strong> {s.quashed(formatDate(g.quashed.on), g.quashed.court, g.quashed.upheld)} {g.quashed.meanwhile} {s.quashedRates}
+                            {g.quashed.link && (
+                              <>
+                                {" "}
+                                <a href={g.quashed.link} className="wage-inline-link">
+                                  {s.judgment}
+                                </a>
+                                .
+                              </>
+                            )}
+                          </p>
+                        )}
                         {g.rows && (
                           <div className="wage-table-scroll">
                             <table className="wage-table is-compact">

@@ -3647,6 +3647,16 @@ a:hover > svg {
   align-items: center;
   min-height: 44px;
 }
+.wage-note.is-warning {
+  padding: 12px 14px;
+  border: 1px solid var(--gold-200);
+  border-radius: 8px;
+  background: var(--gold-50);
+  color: var(--foreground);
+}
+.wage-note.is-warning strong {
+  color: var(--warning);
+}
 .wage-note + .wage-note {
   margin-top: 6px;
 }
@@ -4474,6 +4484,11 @@ a:hover > svg {
 .wage-emp-rate.is-quiet {
   font-weight: 400;
   color: var(--muted-foreground);
+}
+/* A quashed notification (Karnataka's 2023 textile notifications): the summary says so in place of a rate. */
+.wage-emp-rate.is-warning {
+  font-weight: 600;
+  color: var(--warning);
 }
 .wage-emp-body {
   padding: 0 0 20px;

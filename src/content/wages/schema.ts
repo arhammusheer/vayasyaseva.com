@@ -99,6 +99,15 @@ const employmentGroupSchema = z.strictObject({
     .optional(),
   allowance: z.strictObject({ amount: rupees, label: z.string().min(1), effectiveFrom: isoDate, source: z.string().min(1) }).optional(),
   note: z.string().min(1).optional(),
+  quashed: z
+    .strictObject({
+      on: isoDate,
+      court: z.string().min(1),
+      upheld: z.string().min(1).optional(),
+      meanwhile: z.string().min(1),
+      link: z.url({ protocol: /^https$/ }).optional(),
+    })
+    .optional(),
 });
 
 export const wageStateSchema = z.strictObject({
@@ -199,6 +208,8 @@ export function wageIntegrityProblems(state: WageState): string[] {
       for (const r of g.rows ?? []) if (r.perPoint && !g.linkedTo) problems.push(`${where} "${r.label}": a rate per point needs linkedTo`);
       for (const id of [g.source, g.allowance?.source]) if (id && !sourceIds.has(id)) problems.push(`${where}: unknown source ${id}`);
       if (g.allowance && g.allowance.effectiveFrom > state.checked.on) problems.push(`${where}: allowance effective after the check`);
+      if (g.quashed && g.quashed.on > state.checked.on) problems.push(`${where}: quashed after the check`);
+      if (g.quashed && g.quashed.on < g.date) problems.push(`${where}: quashed before the notification's date`);
       const width = g.columns?.length ?? 1;
       for (const r of g.rows ?? []) if (r.values.length !== width) problems.push(`${where} "${r.label}": ${r.values.length} figures for ${width} column(s)`);
       for (const name of g.employments) {

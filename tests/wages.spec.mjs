@@ -74,6 +74,17 @@ test("every state title fits seo-check's 55 characters in every month, and with 
   assert.deepEqual(tooLong, []);
 });
 
+test('a quashed notification is marked, dated within the check, and never quoted as the rate', async () => {
+  const ka = wageStates.find((s) => s.state === 'karnataka');
+  const quashed = ka.employments.groups.filter((g) => g.quashed).map((g) => g.id).sort();
+  assert.deepEqual(quashed, ['dyeing', 'garments', 'silk', 'spinning'], 'the January 2023 textile notifications (WP 18020/2023 and connected, 3 June 2026)');
+  const late = { ...ka, employments: { ...ka.employments, groups: ka.employments.groups.map((g) => (g.id === 'garments' ? { ...g, quashed: { ...g.quashed, on: '2099-01-01' } } : g)) } };
+  assert.ok(wageIntegrityProblems(late).some((p) => p.includes('garments: quashed after the check')));
+  // The copy builds without quoting a quashed group's figures (listed() throws if it does).
+  const { getWageStateCopy } = await importTs('src/content/pages/minimum-wages.ts');
+  assert.ok(getWageStateCopy('karnataka'));
+});
+
 test('a listing check counts only against the dataset it was compared with, after the hand check, and not in the future', () => {
   const s = withDates('2026-10-01', '2026-10-29');
   const at = (check) => lastCheck({ ...s, listingCheck: check }, '2026-11-13');

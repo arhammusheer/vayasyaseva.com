@@ -30,6 +30,7 @@ function listed(state: WageState, group: string, label: string, column = 0) {
   const g = schedule?.groups.find((x) => x.id === group);
   const row = g?.rows?.find((r) => r.label === label || r.label.startsWith(`${label}:`));
   if (!schedule || !g || !row) throw new Error(`${state.state}: no "${label}" in employments ${group}`);
+  if (g.quashed) throw new Error(`${state.state}: employments ${group} rests on a quashed notification; do not quote its figures as the rate`);
   return formatRupees(employmentFigure(schedule, g, row, column));
 }
 
@@ -220,16 +221,17 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
         text: "Zone 1 is the Greater Bengaluru Authority area. Industrial areas outside it, such as Bommasandra, Jigani and Attibele, are Zone 3 unless they fall in a city corporation or district headquarters.",
         link: { href: "/jobs/bengaluru", label: "Jobs in Bengaluru" },
       },
-      scheduleIntro: `Karnataka sets minimum wages for 102 kinds of work. The 22 May 2026 notification covers 83 of them, in the table above or at a higher rate of their own; those figures are its basic rate plus the VDA of ${formatRupees(u1.vda)} a month. It leaves 19 piece-rated employments to a committee, and until the committee reports, their earlier notifications apply: their figures are the Labour Department's rates for 1 April 2026 to 31 March 2027, basic plus that notification's own VDA; piece rates are shown as set, with the VDA added to them in each note. The department lists rates for ${own} of the 19.`,
+      scheduleIntro: `Karnataka sets minimum wages for 102 kinds of work. The 22 May 2026 notification covers 83 of them, in the table above or at a higher rate of their own; those figures are its basic rate plus the VDA of ${formatRupees(u1.vda)} a month. It leaves 19 piece-rated employments to a committee, and until the committee reports, their earlier notifications apply: their figures are the Labour Department's rates for 1 April 2026 to 31 March 2027, basic plus that notification's own VDA; piece rates are shown as set, with the VDA added to them in each note. The department lists rates for ${own} of the 19. Four of those rest on January 2023 notifications the High Court has quashed; each is marked.`,
       standing: {
         heading: "The court challenge",
         paragraphs: [
           "Employers, among them the Karnataka Employers' Association, have challenged the 22 May 2026 notification in the Karnataka High Court. They argue it was issued under the Minimum Wages Act, 1948 after the Code on Wages, 2019 had repealed that Act on 21 November 2025.",
-          "The court has not stayed it. On 21 September 2026 Justice H.T. Narendra Prasad refused the employers interim relief, and their petitions are tagged with Writ Appeals 1684 and 1685 of 2026, in which a Division Bench has reserved judgment. There is no final ruling yet.",
+          "The court has not stayed it. On 21 September 2026 Justice H.T. Narendra Prasad refused the employers interim relief. There is no final ruling yet.",
           "State circulars of 29 July, 10 August and 9 October 2026 put off the new rates for government departments, local bodies and urban development authorities. The High Court stayed the first two on 18 September 2026, on a petition by the AITUC, AICCTU and CITU unions, and the October circular in mid-October 2026.",
-          "So the notification is in force, as found on 3 November 2026. An employer still paying the earlier rates risks arrears from 22 May 2026, and a principal employer is liable for wages its contractor does not pay. This page will change if the court rules otherwise.",
+          "So the notification is in force, as found on 19 November 2026. An employer still paying the earlier rates risks arrears from 22 May 2026, and a principal employer is liable for wages its contractor does not pay. This page will change if the court rules otherwise.",
+          "A separate case concerns four employments the notification leaves to the committee. On 3 June 2026 the High Court quashed the January 2023 notifications for garments, spinning mills, silk textiles and cloth dyeing and printing, because the proposed rates had not been published for objections; a Division Bench upheld the garments part on 1 October 2026. Until the government revises them, workers in spinning, silk and dyeing are entitled to the rates of 30 December 2017, and the government has to revise garment wages afresh. Each of the four is marked in the list above.",
           `Some sites give ${basicDay(semi1)} a day as the Zone 1 unskilled rate. That is the semi-skilled basic; the unskilled basic in Zone 1 is ${basicDay(u1)} a day, before VDA.`,
-          "Court reports: LiveLaw, 21 September 2026; Bar & Bench, 19 September 2026.",
+          "Court reports: LiveLaw, 21 September 2026; Bar & Bench, 19 September 2026. Judgments: WP 18020/2023 and connected petitions, 3 June 2026; WA 1684/2026, 1 October 2026.",
         ],
         earlier: "Rates before 22 May 2026: shops and commercial establishments",
       },
@@ -240,7 +242,7 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
         },
         {
           question: "Does the 22 May 2026 rate apply to garment factories, farms and plantations?",
-          answer: `No. The notification leaves 19 piece-rated, labour-intensive employments to a committee, among them garments and tailoring, agriculture, plantations, beedi, cashew, spinning mills, loading and unloading, and micro, small and medium enterprises. Until the committee reports, their earlier notifications apply: an unskilled garment worker in Zone I gets ${listed(s, "garments", "Unskilled", 0)} a month, and farm work pays ${listed(s, "agriculture", "Category A", 0)} a day, each basic plus that notification's VDA. Every one is in the list above.`,
+          answer: `No. The notification leaves 19 piece-rated, labour-intensive employments to a committee, among them garments and tailoring, agriculture, plantations, beedi, cashew, spinning mills, loading and unloading, and micro, small and medium enterprises. Until the committee reports, their earlier notifications apply: farm work, for example, pays ${listed(s, "agriculture", "Category A", 0)} a day, basic plus that notification's VDA. Garments, spinning mills, silk and cloth dyeing are the exception: the High Court quashed their January 2023 notifications in June 2026, so their listed rates are marked. Every one is in the list above.`,
         },
       ],
       labourDepartment: { href: "https://karmikaspandana.karnataka.gov.in/en", label: "Labour Department, Karnataka" },
@@ -496,6 +498,11 @@ export const wageUi = {
     inTable: "In the table above",
     notOnline: "Rates not online",
     seeTable: "These rates are in the table above:",
+    quashedSummary: "Notification quashed",
+    quashedLead: "Notification quashed.",
+    quashed: (date: string, court: string, upheld?: string) => `The High Court quashed this notification on ${date} (${court})${upheld ? `, and its order was upheld on appeal (${upheld})` : ""}.`,
+    quashedRates: "The rates below are the Labour Commissioner's 2026-27 sheet under the quashed notification, kept for reference.",
+    judgment: "Read the judgment",
     unpublished: (number: string, date: string, vda: string) =>
       `The labour department cites notification ${number} of ${date} for this work but has not put it on its website; the 2019 notification it replaced is the one still listed there. The minimum is the basic wage in notification ${number} plus the VDA of ${vda}.`,
     notification: (number: string, date: string) => `Notification ${number} of ${date}`,

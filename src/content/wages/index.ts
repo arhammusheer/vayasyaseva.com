@@ -151,6 +151,14 @@ export type EmploymentGroup = {
   /** An allowance of the employment's own, in place of the schedule's VDA (agriculture). */
   allowance?: { amount: number; label: string; effectiveFrom: string; source: string };
   note?: string;
+  /**
+   * A court has quashed the notification the rows come from (Karnataka's
+   * January 2023 textile notifications, June 2026). The rows stay, marked,
+   * for reference: on (the order's date), court (the court and cases),
+   * upheld (an appeal that confirmed it), meanwhile (what applies until the
+   * state revises), link (a copy of the judgment).
+   */
+  quashed?: { on: string; court: string; upheld?: string; meanwhile: string; link?: string };
 };
 
 export type EmploymentSchedule = {

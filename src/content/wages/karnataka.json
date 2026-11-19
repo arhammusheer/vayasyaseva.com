@@ -7,7 +7,7 @@
   "basis": "The 22 May 2026 notification sets the variable dearness allowance once a year, from 1 April, from the average consumer price index of the previous calendar year, so the next VDA is due on 1 April 2027. No October revision is due."
  },
  "checked": {
-  "on": "2026-11-03"
+  "on": "2026-11-19"
  },
  "sources": [
   {
@@ -574,6 +574,8 @@
   }
  ],
  "verification": [
+  "2026-11-19: hand check after the monitor's first listing read (4 November 2026) counted every link as new. karmikaspandana.karnataka.gov.in/47/ lists 125 items, newest the two 22-05-2026 entries (uploaded 1 June 2026); /54/ lists 37, newest the 11-04-2025 draft; /64/ lists 81 rate sheets, all uploaded 24 March to 7 April 2026; the home page's news still leads with the single notification. Nothing about wages published after 3 November 2026; all 19 cited files re-downloaded with matching sha256. SGCMS's newest Karnataka wage post is still the 25 May 2026 one. No final ruling on and no stay of the 22 May 2026 notification found.",
+  "2026-11-19: court status corrected. Writ Appeals 1684-1685/2026 are not about the 22 May 2026 notification. WA 1684/2026 (Karnataka Textile Mills Association and Clothing Manufacturers Association of India v. Garment and Textile Workers Union) was dismissed on 1 October 2026 by D K Singh and H. Shanthi Bhushan JJ (judgment read in full; LiveLaw's copy, livelaw.in/pdf_upload/2026/10/09/minimum-wages-705414.pdf, 28 pages, digitally signed, sha256 039d94aa...). It confirms Justice Anant Ramanath Hegde's order of 3 June 2026 in WP 18020/2023 with WP 14466, 17959 and 17984/2023 (67 pages, digitally signed; read from a copy at fhwzizvulsqxfzkaqeia.supabase.co, sha256 7b11de7f..., not the court's own site; case, judge, date and result match lawtext.in's listing, 2026 LawText (KAR) (06) 6, and the appeal's account). The operative order quashes notification KE 2 LWA 2023 of 17 January 2023 (spinning mills, silk textiles, cloth dyeing and printing) and entitles those workers to the rates of the three notifications of 30 December 2017 until revised, with 6% interest on unpaid wages; it holds the garments notification KE 1 LWA 2023 of 17 January 2023 to be quashed (para 42) and directs a fresh garments revision from the draft of 22 February 2018 within six months, effective from a date within five years of 21 February 2014. The garments rate sheet prints the number as 'KAE 1 LWA20223'; it is KE 1 LWA 2023 in the judgments. The four groups built on those notifications carry `quashed` and stay, marked, for reference. WA 1685/2026 was not found; the 30 December 2017 rates are not entered yet.",
   "2026-10-16: karmikaspandana.karnataka.gov.in 'Minimum Wages Final Notification' lists the single notification LD 411 LWA 2023 dated 22.05.2026 (Gazette Part IVA No. 389, 25 May 2026), in force from 22 May 2026.",
   "2026-10-16: Rates read from the gazette's Annexure 4 page images (the Kannada text layer is garbled) and from the department's English summary sheet. Zone 1 basic: highly skilled 31114.02 (1196.69 a day), skilled 28285.47 (1087.90), semi-skilled 25714.07 (989.00), unskilled 23376.43 (899.09); Zone 2 one step lower; Zone 3 two steps lower. VDA: 859 points x 0.04 x 30 = 1030.80 a month, 39.64 a day, payable from 22-05-2026.",
   "2026-10-16, resolved 2026-10-31: Zone 3 unskilled basic reads 19319.36 in the gazette image and 19319.35 in the summary sheet's (poorly scanned) text layer. Re-read 2026-10-31 from a 400 dpi render of the sheet's image: it prints 19319.36, so 19319.35 was an OCR error in the text layer. 19319.36 is used (21251.30 / 1.1 = 19319.36).",
@@ -2478,6 +2480,11 @@
      "Spinning mills"
     ],
     "source": "ka-2627-spinning",
+    "quashed": {
+     "on": "2026-06-03",
+     "court": "WP 18020/2023, 17959/2023 and 17984/2023",
+     "meanwhile": "Until the government revises them, workers are entitled to the rates of the notification of 30 December 2017, which this page does not list yet."
+    },
     "unit": "A month",
     "columns": [
      {
@@ -2620,6 +2627,13 @@
      "Garments, costumes and tailoring"
     ],
     "source": "ka-2627-garments",
+    "quashed": {
+     "on": "2026-06-03",
+     "court": "WP 14466/2023, heard with WP 18020/2023",
+     "upheld": "WA 1684/2026, 1 October 2026",
+     "meanwhile": "The court directed the government to revise garment wages afresh from its draft of 22 February 2018, within six months; no new notification had been issued when we checked on 19 November 2026.",
+     "link": "https://www.livelaw.in/pdf_upload/2026/10/09/minimum-wages-705414.pdf"
+    },
     "unit": "A month",
     "columns": [
      {
@@ -2837,6 +2851,11 @@
      "Silk textiles"
     ],
     "source": "ka-2627-silk",
+    "quashed": {
+     "on": "2026-06-03",
+     "court": "WP 18020/2023, 17959/2023 and 17984/2023",
+     "meanwhile": "Until the government revises them, workers are entitled to the rates of the notification of 30 December 2017, which this page does not list yet."
+    },
     "unit": "A day",
     "columns": [
      {
@@ -2970,6 +2989,11 @@
      "Cloth dyeing and printing"
     ],
     "source": "ka-2627-dyeing",
+    "quashed": {
+     "on": "2026-06-03",
+     "court": "WP 18020/2023, 17959/2023 and 17984/2023",
+     "meanwhile": "Until the government revises them, workers are entitled to the rates of the notification of 30 December 2017, which this page does not list yet."
+    },
     "unit": "A day",
     "columns": [
      {

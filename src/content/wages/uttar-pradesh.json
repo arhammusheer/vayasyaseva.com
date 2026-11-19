@@ -7,7 +7,7 @@
   "basis": "Uttar Pradesh adjusts the variable dearness allowance for the 74 scheduled employments every 1 April and 1 October, from the six-monthly average consumer price index. The basic rates are interim relief under the 17 April 2026 order. The state notified the Uttar Pradesh Code on Wages Rules, 2026 on 12 August 2026, so new rates may also come under the Code."
  },
  "checked": {
-  "on": "2026-10-26"
+  "on": "2026-11-19"
  },
  "sources": [
   {
@@ -508,6 +508,7 @@
   }
  ],
  "verification": [
+  "2026-11-19: hand check after the monitor's first listing read (4 November 2026) counted every link as new. Minimum Wages Act orders (uplabour.gov.in/Pages/MWA.aspx): 33 circulars, the newest of 19 February 2025 (VDA, engineering units of 50 or more). Department home page: the 1 April 2026 rates, English and Hindi (document-34.pdf, document-33.pdf). Labour Commissioner home page: the Uttar Pradesh Code on Wages Rules, 2026 of 12 August 2026 and the VDA order of 21 October 2026 for 1 October 2026 to 31 March 2027 (its link text says 13-03-2027). No later wage order. The six cited files match the sha256 in this file. SGCMS's newest Uttar Pradesh wage post is the October 2026 one.",
   "2026-10-16: uplabour.gov.in home page news ticker links 'Revised minimum wages basic rates with VDA in 74 scheduled employment, effective from 01/04/2026' (document-34.pdf, English) and the Hindi original (document-33.pdf). Both PDFs carry a text layer, created 17 April 2026.",
   "2026-10-16: document-34.pdf read in full. Order No. 374/36-2-2026-2041256, Lucknow, 17-04-2026, signed Dr. M.K. Shanmuga Sundaram, Principal Secretary. Category I (Gautam Buddha Nagar and Ghaziabad): unskilled 12885 + 805 = 13690; semi-skilled 14173 + 886 = 15059; skilled 15876 + 992 = 16868. Category II (districts having Nagar Nigam, other than those two): 12241 + 765 = 13006; 13464 + 842 = 14306; 15082 + 943 = 16025. Category III (other districts): 11629 + 727 = 12356; 12791 + 799 = 13590; 14328 + 896 = 15224. Effective from 01-04-2026.",
   "2026-10-16, re-read: document-34.pdf preamble. Para 1 cites the outcome of talks 'arising out of the labour unrest in Noida and Greater Noida in Gautam Buddha Nagar district'. The classification para: 'keeping in view the geographical diversification of Uttar Pradesh, status of industries, urban infrastructure and cost of living, the Department of Labour has proposed classification of the State into three categories ... This proposal has been agreed upon by both employers and workers'. The operative para supersedes Labour Commissioner's order 1477-84 (M.W.)/15 dated 25.03.2026, 'except in respect of employment in brick kilns where wages are fixed on piece-rate basis', and applies 'in those employments where minimum wages are otherwise fixed under the Minimum Wages Act, 1948'. The order names no districts beyond Category I and has no annexure.",

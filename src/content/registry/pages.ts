@@ -116,12 +116,12 @@ const RATE_ALERTS_NOTICE = "2026-11-10";
  * fails when a dataset moves on and this map does not.
  */
 export const WAGE_STATE_UPDATED: Readonly<Partial<Record<WageStateSlug, string>>> = {
-  uttarakhand: "2026-10-17",
-  "uttar-pradesh": "2026-10-26",
+  uttarakhand: "2026-11-19",
+  "uttar-pradesh": "2026-11-19",
   delhi: "2026-10-29",
   karnataka: "2026-11-03",
   haryana: "2026-10-17",
-  punjab: "2026-10-17",
+  punjab: "2026-11-19",
   "andhra-pradesh": "2026-10-22",
   telangana: "2026-10-27",
 };

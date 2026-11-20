@@ -531,8 +531,8 @@ const CREW_TEMPLATE_TEXT = [
     },
 ];
 const CREW_TEMPLATES = {
-    offer: { "en-IN": 46026, "hi-Latn-IN": 46030 },
-    offer_stay: { "en-IN": 46027, "hi-Latn-IN": 46031 },
+    offer: { "en-IN": 46026, "hi-IN": 46028, "hi-Latn-IN": 46030 },
+    offer_stay: { "en-IN": 46027, "hi-IN": 46029, "hi-Latn-IN": 46031 },
     confirmed: { "en-IN": 46032, "hi-IN": 46033, "hi-Latn-IN": 46034 },
     reminder: { "en-IN": 46035, "hi-IN": 46036, "hi-Latn-IN": 46037 },
     not_needed: { "en-IN": 46038, "hi-IN": 46039, "hi-Latn-IN": 46040 },

@@ -191,15 +191,15 @@ export const CREW_TEMPLATE_TEXT: CrewTemplate[] = [
  * member whose message has no id waits, with a note in Twenty, unless its
  * language has a stand-in (crew.ts LOCALE_STAND_IN: Hindi borrows Hinglish).
  *
- * The interview templates were submitted on 19 Nov 2026, all approved as
- * Utility except the two Hindi invitations (offer and offer_stay hi-IN,
- * 46028 and 46029), still pending on 20 Nov: Hindi readers get the Hinglish
- * invitation meanwhile. They replace the job-offer templates (vspl_job_*,
- * vspl_application_offer, 46002 to 46018), which are no longer used.
+ * The interview templates were submitted on 19 Nov 2026 and all approved as
+ * Utility; the two Hindi invitations (46028, 46029) last, on 20 Nov, after a
+ * day in which Hindi readers got the Hinglish invitation. They replace the
+ * job-offer templates (vspl_job_*, vspl_application_offer, 46002 to 46018),
+ * which are no longer used.
  */
 export const CREW_TEMPLATES: Record<TemplateKey, Partial<Record<CrewLocale, number>>> = {
-  offer: { "en-IN": 46026, "hi-Latn-IN": 46030 },
-  offer_stay: { "en-IN": 46027, "hi-Latn-IN": 46031 },
+  offer: { "en-IN": 46026, "hi-IN": 46028, "hi-Latn-IN": 46030 },
+  offer_stay: { "en-IN": 46027, "hi-IN": 46029, "hi-Latn-IN": 46031 },
   confirmed: { "en-IN": 46032, "hi-IN": 46033, "hi-Latn-IN": 46034 },
   reminder: { "en-IN": 46035, "hi-IN": 46036, "hi-Latn-IN": 46037 },
   not_needed: { "en-IN": 46038, "hi-IN": 46039, "hi-Latn-IN": 46040 },

@@ -55,7 +55,7 @@ export function client(base: string, key: string) {
 
 export type Gql = ReturnType<typeof client>;
 
-export type Option = { value: string; label: string; color: string };
+export type Option = { value: string; label: string; color: string; id?: string; position?: number };
 export type MetaField = { id: string; name: string; label: string; description: string | null; type: string; options: Option[] | null; isActive: boolean };
 export type MetaObject = { id: string; nameSingular: string; fields: { edges: { node: MetaField }[] } };
 

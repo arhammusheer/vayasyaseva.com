@@ -452,8 +452,12 @@ async function updateOptions(gql: Gql, field: MetaField, wanted: Option[], fallb
       data: { stage: fallback },
     });
   }
+  // An option keeps its id: without it Twenty takes it for a new option, drops the old one and clears
+  // every record that held it (crewMember.status lost its values that way on 20 Nov 2026).
+  const idOf = (value: string) => (field.options ?? []).find((o) => o.value === value)?.id;
+  const options = wanted.map((o, position) => ({ ...o, position, ...(idOf(o.value) ? { id: idOf(o.value) } : {}) }));
   await gql("/metadata", `mutation($input: UpdateOneFieldMetadataInput!) { updateOneField(input: $input) { id } }`, {
-    input: { id: field.id, update: { options: wanted.map((o, position) => ({ ...o, position })), ...(fallback ? { defaultValue: `'${fallback}'` } : {}) } },
+    input: { id: field.id, update: { options, ...(fallback ? { defaultValue: `'${fallback}'` } : {}) } },
   });
 }
 

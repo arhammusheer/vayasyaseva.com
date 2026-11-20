@@ -52,6 +52,8 @@ Each message goes at most once per crew member, ever. A refused or failed send s
 | `vspl_interview_reminder` | time, place | Yes, coming / Can't come |
 | `vspl_interview_full` | reference, job | |
 
+While a language's template waits for Meta, a Hindi reader gets the Hinglish one instead (`LOCALE_STAND_IN` in `crew.ts`); since 20 November 2026 that covers the two Hindi invitations, still pending at Meta.
+
 Templates are fixed text, so a line cannot be left out at send time: the invitation has two versions, and the one with the stay and food line goes when the crew request's Stay and food is set. Every invitation says Vayasya Seva charges no fee. The Hindi and Hinglish names end in `_hinglish` for Hinglish.
 
 ## The "Offer job" button in Twenty

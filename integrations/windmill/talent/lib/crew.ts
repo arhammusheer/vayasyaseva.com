@@ -199,6 +199,13 @@ export interface PlanContext {
   test?: boolean;
 }
 
+/**
+ * While a language's template waits for Meta, the message goes in this one
+ * instead (the owner, 20 Nov 2026: the Hindi invitations were held up, and
+ * Hinglish is Hindi in Roman letters).
+ */
+export const LOCALE_STAND_IN: Partial<Record<CrewLocale, CrewLocale>> = { "hi-IN": "hi-Latn-IN" };
+
 /** How long a test number's reminder waits after the confirmation. */
 export const TEST_REMINDER_AFTER_MS = 60_000;
 
@@ -289,9 +296,13 @@ export function planMember(c: PlanContext): Plan {
     return { kind: "wait", note: "No job application on record for this worker: call them instead" };
   }
 
-  const locale = crewLocale(p.language);
+  const ids = c.templates ?? CREW_TEMPLATES;
+  let locale = crewLocale(p.language);
   const key = templateKey(due, due === "offer" && !!stayText(c.request, locale));
-  const templateId = (c.templates ?? CREW_TEMPLATES)[key][locale];
+  // A language whose template is not approved yet borrows its stand-in's (Hindi readers get Hinglish).
+  const standIn = LOCALE_STAND_IN[locale];
+  if (!ids[key][locale] && standIn && ids[key][standIn]) locale = standIn;
+  const templateId = ids[key][locale];
   if (!templateId || c.canSend === false) return { kind: "wait", note: `WhatsApp template not approved yet (${key}, ${locale})` };
 
   if (due !== "reminder" && !c.test) {

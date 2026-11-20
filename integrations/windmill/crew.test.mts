@@ -598,3 +598,19 @@ test("every crew template reads as an update on the worker's own application or 
   }
   assert.equal(CREW_TEMPLATE_TEXT.filter((t) => t.kind === "offer").length, 6, "with and without stay and food, three languages");
 });
+
+test("a Hindi reader gets the Hinglish invitation while the Hindi one waits for Meta", () => {
+  const noHindiInvite = { ...TEMPLATE_IDS, offer: { "en-IN": 102, "hi-Latn-IN": 103 }, offer_stay: { "en-IN": 112, "hi-Latn-IN": 113 } };
+  const plan = planMember(ctx({ templates: noHindiInvite }));
+  assert.equal(plan.kind, "send");
+  if (plan.kind !== "send") return;
+  assert.deepEqual([plan.locale, plan.templateId], ["hi-Latn-IN", 113]);
+  assert.deepEqual(plan.values, ["VS-J-ABC234", "Packing helper", "SIDCUL, Haridwar", "Wednesday, 25 November", "Kamra aur khana milega"]);
+  // Other messages in Hindi still go in Hindi.
+  const confirmed = member({ status: "CONFIRMED" });
+  const details = planMember(ctx({ member: confirmed, others: [confirmed], templates: noHindiInvite }));
+  assert.equal(details.kind === "send" && details.locale, "hi-IN");
+  // No stand-in for English: it waits.
+  const en = planMember(ctx({ person: person({ language: "EN" }), templates: { ...noHindiInvite, offer_stay: { "hi-Latn-IN": 113 } } }));
+  assert.equal(en.kind, "wait");
+});

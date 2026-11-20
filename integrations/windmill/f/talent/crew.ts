@@ -531,11 +531,11 @@ const CREW_TEMPLATE_TEXT = [
     },
 ];
 const CREW_TEMPLATES = {
-    offer: {},
-    offer_stay: {},
-    confirmed: {},
-    reminder: {},
-    not_needed: {},
+    offer: { "en-IN": 46026, "hi-Latn-IN": 46030 },
+    offer_stay: { "en-IN": 46027, "hi-Latn-IN": 46031 },
+    confirmed: { "en-IN": 46032, "hi-IN": 46033, "hi-Latn-IN": 46034 },
+    reminder: { "en-IN": 46035, "hi-IN": 46036, "hi-Latn-IN": 46037 },
+    not_needed: { "en-IN": 46038, "hi-IN": 46039, "hi-Latn-IN": 46040 },
 };
 function templateText(kind, locale, stay = false) {
     const withStay = kind === "offer" && stay;
@@ -573,7 +573,7 @@ const variableCount = (t) => new Set(t.text.match(/\{\{\d+\}\}/g) ?? []).size;
 })();
 
 // integrations/windmill/talent/lib/crew.ts
-const { CREW_STATUSES, WATCHED_STATUSES, istHour, formatDay, formatTime, stayText, missingFields, templateValues, personPhone, personName, SEND_HOURS, REMINDER, NO_REPLY_AFTER_MS, TEST_REMINDER_AFTER_MS, planMember, normaliseReply, interpretReply, statusAfterReply, crewDeliveryStatus, kindLabel, SENT_FIELD, noteAfterSend } = (() => {
+const { CREW_STATUSES, WATCHED_STATUSES, istHour, formatDay, formatTime, stayText, missingFields, templateValues, personPhone, personName, SEND_HOURS, REMINDER, NO_REPLY_AFTER_MS, LOCALE_STAND_IN, TEST_REMINDER_AFTER_MS, planMember, normaliseReply, interpretReply, statusAfterReply, crewDeliveryStatus, kindLabel, SENT_FIELD, noteAfterSend } = (() => {
 const CREW_STATUSES = ["OFFERED", "SAID_YES", "SAID_NO", "NO_REPLY", "CONFIRMED", "CANT_COME", "REPORTED", "DIDNT_COME", "NOT_NEEDED"];
 const WATCHED_STATUSES = ["OFFERED", "SAID_YES", "CONFIRMED", "NOT_NEEDED"];
 const OPEN = ["OFFERED", "SAID_YES", "CONFIRMED"];
@@ -644,6 +644,7 @@ const SEND_HOURS = {
 };
 const REMINDER = { fromHour: 18, toHour: 21, beforeReportMs: 2 * 3600_000, afterConfirmedMs: 3 * 3600_000 };
 const NO_REPLY_AFTER_MS = 24 * 3600_000;
+const LOCALE_STAND_IN = { "hi-IN": "hi-Latn-IN" };
 const TEST_REMINDER_AFTER_MS = 60_000;
 const ms = (v) => (v ? new Date(v).getTime() : 0);
 function dueMessage(c) {
@@ -725,9 +726,13 @@ function planMember(c) {
     if ((due === "offer" || due === "not_needed") && !reference) {
         return { kind: "wait", note: "No job application on record for this worker: call them instead" };
     }
-    const locale = crewLocale(p.language);
+    const ids = c.templates ?? CREW_TEMPLATES;
+    let locale = crewLocale(p.language);
     const key = templateKey(due, due === "offer" && !!stayText(c.request, locale));
-    const templateId = (c.templates ?? CREW_TEMPLATES)[key][locale];
+    const standIn = LOCALE_STAND_IN[locale];
+    if (!ids[key][locale] && standIn && ids[key][standIn])
+        locale = standIn;
+    const templateId = ids[key][locale];
     if (!templateId || c.canSend === false)
         return { kind: "wait", note: `WhatsApp template not approved yet (${key}, ${locale})` };
     if (due !== "reminder" && !c.test) {
@@ -799,7 +804,7 @@ function noteAfterSend(kind, status, delivery) {
         return `The WhatsApp ${what} may not have gone: call them`;
     return null;
 }
-  return { CREW_STATUSES, WATCHED_STATUSES, istHour, formatDay, formatTime, stayText, missingFields, templateValues, personPhone, personName, SEND_HOURS, REMINDER, NO_REPLY_AFTER_MS, TEST_REMINDER_AFTER_MS, planMember, normaliseReply, interpretReply, statusAfterReply, crewDeliveryStatus, kindLabel, SENT_FIELD, noteAfterSend };
+  return { CREW_STATUSES, WATCHED_STATUSES, istHour, formatDay, formatTime, stayText, missingFields, templateValues, personPhone, personName, SEND_HOURS, REMINDER, NO_REPLY_AFTER_MS, LOCALE_STAND_IN, TEST_REMINDER_AFTER_MS, planMember, normaliseReply, interpretReply, statusAfterReply, crewDeliveryStatus, kindLabel, SENT_FIELD, noteAfterSend };
 })();
 
 // integrations/windmill/talent/lib/sql.ts

@@ -362,7 +362,7 @@ test("a lead becomes company, client contact, crew request at New, and the enqui
   assert.equal(person.personType, "CLIENT_CONTACT");
   assert.equal(person.companyId, t.store.companies[0].id);
   const opp = t.store.opportunities[0];
-  assert.equal(opp.stage, "NEW");
+  assert.equal(opp.stage, undefined, "crew requests have no sales stage (removed 19 Nov 2026)");
   assert.equal(opp.caseId, "REQ-20261017-0A1B2C3D");
   assert.equal(opp.crewSize, 20);
   assert.equal(opp.cluster, "HARIDWAR");

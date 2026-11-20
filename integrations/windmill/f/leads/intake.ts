@@ -824,7 +824,6 @@ function applicationFields(c, personId) {
         ...screeningFields(c.answers),
         phone: phoneValue(c.phone),
         name: c.ref,
-        status: "NEW",
         source: sourceValue(c),
         jobRole: roleValue(c.role),
         cluster: clusterValue(c.cluster),
@@ -1128,7 +1127,6 @@ async function recordLead(crm, lead) {
     }
     const opportunity = await crm.create("opportunities", "Opportunity", {
         name: opportunityName(lead),
-        stage: "NEW",
         leadSource: lead.channel === "agent" ? "OTHER" : "WEBSITE_FORM",
         caseId: lead.caseId,
         crewSize: crewSize(lead),

@@ -55,15 +55,15 @@ export function client(base: string, key: string) {
 
 export type Gql = ReturnType<typeof client>;
 
-export type Option = { value: string; label: string; color: string };
-export type MetaField = { id: string; name: string; type: string; options: Option[] | null; isActive: boolean };
+export type Option = { value: string; label: string; color: string; id?: string; position?: number };
+export type MetaField = { id: string; name: string; label: string; description: string | null; type: string; options: Option[] | null; isActive: boolean };
 export type MetaObject = { id: string; nameSingular: string; fields: { edges: { node: MetaField }[] } };
 
 export async function loadObjects(gql: Gql): Promise<MetaObject[]> {
   return (
     await gql<{ objects: { edges: { node: MetaObject }[] } }>(
       "/metadata",
-      `{ objects(paging:{first:500}) { edges { node { id nameSingular fields(paging:{first:500}) { edges { node { id name type options isActive } } } } } } }`,
+      `{ objects(paging:{first:500}) { edges { node { id nameSingular fields(paging:{first:500}) { edges { node { id name label description type options isActive } } } } } } }`,
     )
   ).objects.edges.map((e) => e.node);
 }

@@ -56,6 +56,8 @@ const WORKER_COLUMNS: Column[] = [
 
 /** Views of the earlier pipeline layout (17 Oct 2026), removed: the owner wants a log, not recruitment management. */
 const RETIRED: [string, string][] = [
+  // The crew request's sales stage went on 19 Nov 2026.
+  ["opportunity", "By Stage"],
   ["application", "To call"], ["application", "Pipeline"], ["application", "By status"], ["application", "Callable pool"],
   ["application", "By role"], ["application", "By area"], ["person", "Callable workers"], ["person", "Workers by status"],
 ];
@@ -168,16 +170,8 @@ export const VIEWS: ViewSpec[] = [
     was: ["All Opportunities"],
     type: "TABLE",
     columns: [
-      ["name", 220], ["company", 170], "stage", "crewSize", ["services", 220], "cluster", ["siteLocation", 180], "startDate", ["pointOfContact", 170], "leadSource", ["createdAt", 150],
+      ["name", 220], ["company", 170], "crewSize", ["services", 220], "cluster", ["siteLocation", 180], "startDate", ["pointOfContact", 170], "leadSource", ["createdAt", 150],
     ],
-    sort: ["createdAt", "DESC"],
-  },
-  {
-    object: "opportunity",
-    name: "By Stage",
-    type: "KANBAN",
-    groupBy: "stage",
-    columns: ["name", "company", "crewSize", "cluster", "siteLocation", "startDate", "pointOfContact"],
     sort: ["createdAt", "DESC"],
   },
   {
@@ -185,8 +179,8 @@ export const VIEWS: ViewSpec[] = [
     name: "Opportunity Record Page Fields",
     type: "FIELDS_WIDGET",
     columns: [
-      "stage", "company", "pointOfContact", "crewSize", "services", "cluster", "siteLocation", "startDate",
-      "offerJob", "offerPlace", "offerPay", "offerShift", "offerStay", "reportAddress", "reportAt", "siteContact", "mapLink",
+      "company", "pointOfContact", "crewSize", "services", "cluster", "siteLocation",
+      "offerJob", "offerPlace", "stayAndFood", "startDate", "reportAddress", "reportAt", "siteContact", "mapLink",
       "crewMembers", "leadSource", "enquiry", "communications", "caseId", "createdAt",
     ],
   },
@@ -231,8 +225,14 @@ export const VIEWS: ViewSpec[] = [
     index: true,
     name: "All Companies",
     type: "TABLE",
-    columns: [["name", 200], ["people", 200], ["opportunities", 220], ["domainName", 180], ["address", 220], ["createdAt", 150]],
+    columns: [["name", 200], ["people", 200], ["opportunities", 220], ["createdAt", 150]],
     sort: ["createdAt", "DESC"],
+  },
+  {
+    object: "company",
+    name: "Company Record Page Fields",
+    type: "FIELDS_WIDGET",
+    columns: ["people", "opportunities", "createdAt"],
   },
 ];
 
@@ -586,14 +586,18 @@ const SIDEBAR: ({ dashboard: true } | { view: [string, string] } | { object: str
   { dashboard: true },
   { object: "application" },
   { object: "person" },
-  { object: "communication" },
   { object: "opportunity" },
   { object: "crewMember" },
+  { object: "communication" },
   { object: "company" },
-  { object: "task" },
-  { object: "note" },
-  { object: "dashboard" },
 ];
+
+/**
+ * Workspace sidebar items removed (the owner, 19 Nov 2026: nothing staff do
+ * not use). The objects stay reachable through search; the "Offer job"
+ * button runs from People, so the Workflows folder goes too.
+ */
+const HIDDEN_SIDEBAR = { objects: ["task", "note", "dashboard"], folders: ["Workflows"] };
 
 async function ensureSidebar(gql: Gql, dashboardId: string | null, o: Options) {
   const objects = (
@@ -606,6 +610,26 @@ async function ensureSidebar(gql: Gql, dashboardId: string | null, o: Options) {
       `{ navigationMenuItems { id type name viewId targetObjectMetadataId targetRecordId folderId position userWorkspaceId } }`,
     )
   ).navigationMenuItems.filter((i) => !i.userWorkspaceId && !i.folderId);
+  // Items staff do not use: removed (a folder with what is in it).
+  const hiddenObjectIds = new Set(HIDDEN_SIDEBAR.objects.map(objectId).filter(Boolean));
+  const hidden = items.filter(
+    (i) => (i.type === "OBJECT" && hiddenObjectIds.has(i.targetObjectMetadataId ?? "")) || (i.type === "FOLDER" && HIDDEN_SIDEBAR.folders.includes(i.name ?? "")),
+  );
+  if (hidden.length) {
+    const allItems = (
+      await gql<{ navigationMenuItems: NavItem[] }>("/metadata", `{ navigationMenuItems { id type name viewId targetObjectMetadataId targetRecordId folderId position userWorkspaceId } }`)
+    ).navigationMenuItems;
+    const inside = allItems.filter((i) => !i.userWorkspaceId && i.folderId && hidden.some((h) => h.id === i.folderId));
+    const objectName = (id: string | null) => objects.find((x) => x.id === id)?.nameSingular;
+    o.step(`removing ${hidden.map((h) => h.name ?? objectName(h.targetObjectMetadataId) ?? "item").join(", ")} from the sidebar`);
+    if (!o.dryRun) {
+      for (const i of [...inside, ...hidden]) {
+        await gql("/metadata", `mutation($id: UUID!) { deleteNavigationMenuItem(id: $id) { id } }`, { id: i.id });
+      }
+    }
+  }
+  const shown = items.filter((i) => !hidden.includes(i));
+
   const order: string[] = [];
   for (const entry of SIDEBAR) {
     let item: NavItem | undefined;
@@ -636,7 +660,7 @@ async function ensureSidebar(gql: Gql, dashboardId: string | null, o: Options) {
       order.push(createNavigationMenuItem.id);
     } else if (item) order.push(item.id);
   }
-  const rest = items.filter((i) => !order.includes(i.id)).sort((a, b) => a.position - b.position);
+  const rest = shown.filter((i) => !order.includes(i.id)).sort((a, b) => a.position - b.position);
   const all = [...order, ...rest.map((i) => i.id)];
   const moves = all.map((id, position) => ({ id, position })).filter(({ id, position }) => items.find((i) => i.id === id)?.position !== position);
   if (!moves.length) return;

@@ -407,132 +407,148 @@ function normaliseIndianMobile(input) {
 })();
 
 // integrations/windmill/talent/lib/crew-templates.ts
-const { CREW_KINDS, CREW_LOCALES, CREW_TEMPLATE_TEXT, CREW_TEMPLATES, templateText, crewLocale, variableValue, renderTemplate, variableCount } = (() => {
+const { CREW_KINDS, templateKey, CREW_LOCALES, CREW_TEMPLATE_TEXT, CREW_TEMPLATES, templateText, STAY_TEXT, crewLocale, variableValue, renderTemplate, variableCount } = (() => {
 const CREW_KINDS = ["offer", "confirmed", "reminder", "not_needed"];
+const templateKey = (kind, stay = false) => (kind === "offer" && stay ? "offer_stay" : kind);
 const CREW_LOCALES = ["en-IN", "hi-IN", "hi-Latn-IN"];
 const hinglish = (name) => `${name}_hinglish`;
+const INVITE = {
+    "en-IN": {
+        head: "Update on your job application {{1}} with Vayasya Seva.\n\nYou are shortlisted for an interview for this job:\nJob: {{2}}\nPlace: {{3}}\nStarts: {{4}}",
+        stay: "\nStay and food: {{5}}",
+        tail: "\n\nTap \"Yes\" if you want the interview. Our team will call you to fix the time.\nVayasya Seva never charges a fee. If anyone asks you for money, tell us here.",
+        buttons: ["Yes, I'm interested", "No"],
+        example: ["VS-J-ABC234", "Packing helper", "SIDCUL, Haridwar", "Wednesday, 25 November", "Room and food given"],
+    },
+    "hi-IN": {
+        head: "Vayasya Seva में आपके नौकरी के आवेदन {{1}} पर अपडेट।\n\nइस काम के इंटरव्यू के लिए आपका नाम चुना गया है:\nकाम: {{2}}\nजगह: {{3}}\nशुरू: {{4}}",
+        stay: "\nरहना और खाना: {{5}}",
+        tail: "\n\nइंटरव्यू देना है तो \"हाँ\" दबाएँ। हमारी टीम कॉल करके समय तय करेगी।\nVayasya Seva कोई फ़ीस नहीं लेती। कोई पैसे माँगे तो हमें यहीं बताएँ।",
+        buttons: ["हाँ, इंटरव्यू देना है", "नहीं"],
+        example: ["VS-J-ABC234", "Packing helper", "SIDCUL, हरिद्वार", "बुधवार, 25 नवंबर", "कमरा और खाना मिलेगा"],
+    },
+    "hi-Latn-IN": {
+        head: "Vayasya Seva mein aapke job application {{1}} par update.\n\nIs kaam ke interview ke liye aapka naam chuna gaya hai:\nKaam: {{2}}\nJagah: {{3}}\nShuru: {{4}}",
+        stay: "\nRehna aur khana: {{5}}",
+        tail: "\n\nInterview dena hai to \"Haan\" dabayein. Hamari team call karke samay tay karegi.\nVayasya Seva koi fees nahi leti. Koi paise maange to humein yahin batayein.",
+        buttons: ["Haan, interview dena hai", "Nahi"],
+        example: ["VS-J-ABC234", "Packing helper", "SIDCUL, Haridwar", "Wednesday, 25 November", "Kamra aur khana milega"],
+    },
+};
+const invite = (locale, stay) => {
+    const w = INVITE[locale];
+    const base = stay ? "vspl_interview_invite_stay" : "vspl_interview_invite";
+    return {
+        kind: "offer",
+        ...(stay ? { stay: true } : {}),
+        locale,
+        name: locale === "hi-Latn-IN" ? hinglish(base) : base,
+        language: locale === "en-IN" ? "en" : "hi",
+        text: w.head + (stay ? w.stay : "") + w.tail,
+        buttons: w.buttons,
+        example: stay ? w.example : w.example.slice(0, 4),
+    };
+};
 const CREW_TEMPLATE_TEXT = [
-    {
-        kind: "offer",
-        locale: "en-IN",
-        name: "vspl_application_offer",
-        language: "en",
-        text: "Update on your job application with Vayasya Seva.\n\nThis job matches your application:\nJob: {{1}}\nPlace: {{2}}\nPay (in hand): {{3}}\nShift: {{4}}\nStay and food: {{5}}\nStarts: {{6}}\n\n" +
-            "Tap \"Yes\" to take it and our team will call you to confirm.\nVayasya Seva never charges a fee. If anyone asks you for money, tell us here.",
-        buttons: ["Yes, I want it", "No"],
-        example: ["Packing helper", "SIDCUL, Haridwar", "₹13,500 a month, PF and ESIC extra", "8 am to 8 pm", "Room given, food your own", "Wednesday, 25 November"],
-    },
-    {
-        kind: "offer",
-        locale: "hi-IN",
-        name: "vspl_application_offer",
-        language: "hi",
-        text: "Vayasya Seva में आपके नौकरी के आवेदन पर अपडेट।\n\nयह काम आपके आवेदन से मेल खाता है:\nकाम: {{1}}\nजगह: {{2}}\nतनख़्वाह (हाथ में): {{3}}\nशिफ़्ट: {{4}}\nरहना और खाना: {{5}}\nशुरू: {{6}}\n\n" +
-            "यह काम करना है तो \"हाँ\" दबाएँ। हमारी टीम कॉल करके पक्का करेगी।\nVayasya Seva कोई फ़ीस नहीं लेती। कोई पैसे माँगे तो हमें यहीं बताएँ।",
-        buttons: ["हाँ, करना है", "नहीं"],
-        example: ["Packing helper", "SIDCUL, हरिद्वार", "₹13,500 महीना, PF और ESIC अलग", "सुबह 8 से शाम 8", "कमरा मिलेगा, खाना अपना", "बुधवार, 25 नवंबर"],
-    },
-    {
-        kind: "offer",
-        locale: "hi-Latn-IN",
-        name: hinglish("vspl_job_offer"),
-        language: "hi",
-        text: "Vayasya Seva se kaam ki khabar.\n\nKaam: {{1}}\nJagah: {{2}}\nTankhwah (haath mein): {{3}}\nShift: {{4}}\nRehna aur khana: {{5}}\nShuru: {{6}}\n\n" +
-            "Yeh kaam karna hai to \"Haan\" dabayein. Hamari team aapko call karegi.\nVayasya Seva koi fees nahi leti. Koi paise maange to humein yahin batayein.",
-        buttons: ["Haan, karna hai", "Nahi"],
-        example: ["Packing helper", "SIDCUL, Haridwar", "₹13,500 mahina, PF aur ESIC alag", "Subah 8 se shaam 8", "Kamra milega, khana apna", "Wednesday, 25 November"],
-    },
+    ...CREW_LOCALES.flatMap((locale) => [invite(locale, false), invite(locale, true)]),
     {
         kind: "confirmed",
         locale: "en-IN",
-        name: "vspl_job_confirmed",
+        name: "vspl_interview_details",
         language: "en",
-        text: "Your job is confirmed.\n\nWhere: {{1}}\nWhen: {{2}}\nAsk for: {{3}}\n\n" +
+        text: "Your interview with Vayasya Seva is fixed.\n\nWhere: {{1}}\nWhen: {{2}}\nAsk for: {{3}}\n\n" +
             "Bring your Aadhaar card, bank passbook, 2 photos, and your PF UAN number if you have one.\nIf you cannot come, tell us here before the day.",
         example: ["Gate 2, Plot 12, Sector 4, SIDCUL Haridwar (map: https://maps.app.goo.gl/abc)", "Wednesday, 25 November, 8:00 am", "Ramesh, 98765 43210"],
     },
     {
         kind: "confirmed",
         locale: "hi-IN",
-        name: "vspl_job_confirmed",
+        name: "vspl_interview_details",
         language: "hi",
-        text: "आपका काम पक्का हुआ।\n\nकहाँ आना है: {{1}}\nकब: {{2}}\nकिससे मिलना है: {{3}}\n\n" +
+        text: "Vayasya Seva के साथ आपका इंटरव्यू तय हुआ।\n\nकहाँ आना है: {{1}}\nकब: {{2}}\nकिससे मिलना है: {{3}}\n\n" +
             "साथ लाएँ: आधार कार्ड, बैंक पासबुक, 2 फ़ोटो। PF का UAN नंबर हो तो वह भी।\nनहीं आ पाएँ तो पहले यहीं बता दें।",
         example: ["गेट 2, प्लॉट 12, सेक्टर 4, SIDCUL हरिद्वार (map: https://maps.app.goo.gl/abc)", "बुधवार, 25 नवंबर, सुबह 8:00 बजे", "रमेश, 98765 43210"],
     },
     {
         kind: "confirmed",
         locale: "hi-Latn-IN",
-        name: hinglish("vspl_job_confirmed"),
+        name: hinglish("vspl_interview_details"),
         language: "hi",
-        text: "Aapka kaam pakka hua.\n\nKahan aana hai: {{1}}\nKab: {{2}}\nKisse milna hai: {{3}}\n\n" +
+        text: "Vayasya Seva ke saath aapka interview tay hua.\n\nKahan aana hai: {{1}}\nKab: {{2}}\nKisse milna hai: {{3}}\n\n" +
             "Saath laayein: Aadhaar card, bank passbook, 2 photo. PF ka UAN number ho to woh bhi.\nNahi aa paayein to pehle yahin bata dein.",
         example: ["Gate 2, Plot 12, Sector 4, SIDCUL Haridwar (map: https://maps.app.goo.gl/abc)", "Wednesday, 25 November, subah 8:00 baje", "Ramesh, 98765 43210"],
     },
     {
         kind: "reminder",
         locale: "en-IN",
-        name: "vspl_job_reminder",
+        name: "vspl_interview_reminder",
         language: "en",
-        text: "A reminder from Vayasya Seva: tomorrow at {{1}} you need to be at {{2}}.\n\nAre you coming?",
+        text: "A reminder from Vayasya Seva: your interview is tomorrow at {{1}}, at {{2}}.\n\nAre you coming?",
         buttons: ["Yes, coming", "Can't come"],
         example: ["8:00 am", "Gate 2, Plot 12, Sector 4, SIDCUL Haridwar"],
     },
     {
         kind: "reminder",
         locale: "hi-IN",
-        name: "vspl_job_reminder",
+        name: "vspl_interview_reminder",
         language: "hi",
-        text: "Vayasya Seva से याद दिला रहे हैं: कल {{1}} आपको {{2}} पहुँचना है।\n\nक्या आप आ रहे हैं?",
+        text: "Vayasya Seva से याद दिला रहे हैं: कल {{1}} आपका इंटरव्यू है, {{2}} पर।\n\nक्या आप आ रहे हैं?",
         buttons: ["हाँ, आ रहे हैं", "नहीं आ पाएँगे"],
         example: ["सुबह 8:00 बजे", "गेट 2, प्लॉट 12, सेक्टर 4, SIDCUL हरिद्वार"],
     },
     {
         kind: "reminder",
         locale: "hi-Latn-IN",
-        name: hinglish("vspl_job_reminder"),
+        name: hinglish("vspl_interview_reminder"),
         language: "hi",
-        text: "Vayasya Seva se yaad dila rahe hain: kal {{1}} aapko {{2}} pahunchna hai.\n\nKya aap aa rahe hain?",
+        text: "Vayasya Seva se yaad dila rahe hain: kal {{1}} aapka interview hai, {{2}} par.\n\nKya aap aa rahe hain?",
         buttons: ["Haan, aa rahe hain", "Nahi aa paayenge"],
         example: ["subah 8:00 baje", "Gate 2, Plot 12, Sector 4, SIDCUL Haridwar"],
     },
     {
         kind: "not_needed",
         locale: "en-IN",
-        name: "vspl_job_not_needed",
+        name: "vspl_interview_full",
         language: "en",
-        text: "Thank you for saying yes. The {{1}} job is full this time.\n\nWe have your name and will tell you about the next job.",
-        example: ["Packing helper"],
+        text: "Update on your job application {{1}} with Vayasya Seva.\n\nThe interviews for {{2}} are full, so we will not call you for this one. Your application stays open with us.",
+        example: ["VS-J-ABC234", "Packing helper"],
     },
     {
         kind: "not_needed",
         locale: "hi-IN",
-        name: "vspl_job_not_needed",
+        name: "vspl_interview_full",
         language: "hi",
-        text: "हाँ कहने के लिए धन्यवाद। {{1}} का काम इस बार भर गया।\n\nआपका नाम हमारे पास है। अगला काम आने पर बताएँगे।",
-        example: ["Packing helper"],
+        text: "Vayasya Seva में आपके नौकरी के आवेदन {{1}} पर अपडेट।\n\n{{2}} के इंटरव्यू पूरे हो गए हैं, इसलिए इसके लिए हम आपको कॉल नहीं करेंगे। आपका आवेदन हमारे पास खुला रहेगा।",
+        example: ["VS-J-ABC234", "Packing helper"],
     },
     {
         kind: "not_needed",
         locale: "hi-Latn-IN",
-        name: hinglish("vspl_job_not_needed"),
+        name: hinglish("vspl_interview_full"),
         language: "hi",
-        text: "Haan kehne ke liye dhanyavaad. {{1}} ka kaam is baar bhar gaya.\n\nAapka naam hamare paas hai. Agla kaam aane par batayenge.",
-        example: ["Packing helper"],
+        text: "Vayasya Seva mein aapke job application {{1}} par update.\n\n{{2}} ke interview poore ho gaye hain, isliye iske liye hum aapko call nahi karenge. Aapka application hamare paas khula rahega.",
+        example: ["VS-J-ABC234", "Packing helper"],
     },
 ];
 const CREW_TEMPLATES = {
-    offer: { "en-IN": 46017, "hi-IN": 46018, "hi-Latn-IN": 46004 },
-    confirmed: { "en-IN": 46005, "hi-IN": 46006, "hi-Latn-IN": 46007 },
-    reminder: { "en-IN": 46008, "hi-IN": 46009, "hi-Latn-IN": 46010 },
-    not_needed: { "en-IN": 46011, "hi-IN": 46012 },
+    offer: { "en-IN": 46026, "hi-Latn-IN": 46030 },
+    offer_stay: { "en-IN": 46027, "hi-Latn-IN": 46031 },
+    confirmed: { "en-IN": 46032, "hi-IN": 46033, "hi-Latn-IN": 46034 },
+    reminder: { "en-IN": 46035, "hi-IN": 46036, "hi-Latn-IN": 46037 },
+    not_needed: { "en-IN": 46038, "hi-IN": 46039, "hi-Latn-IN": 46040 },
 };
-function templateText(kind, locale) {
-    const t = CREW_TEMPLATE_TEXT.find((x) => x.kind === kind && x.locale === locale);
+function templateText(kind, locale, stay = false) {
+    const withStay = kind === "offer" && stay;
+    const t = CREW_TEMPLATE_TEXT.find((x) => x.kind === kind && x.locale === locale && Boolean(x.stay) === withStay);
     if (!t)
-        throw new Error(`no ${kind} template for ${locale}`);
+        throw new Error(`no ${kind}${withStay ? " (stay)" : ""} template for ${locale}`);
     return t;
 }
+const STAY_TEXT = {
+    ROOM: { "en-IN": "Room given", "hi-IN": "कमरा मिलेगा", "hi-Latn-IN": "Kamra milega" },
+    FOOD: { "en-IN": "Food given", "hi-IN": "खाना मिलेगा", "hi-Latn-IN": "Khana milega" },
+    ROOM_AND_FOOD: { "en-IN": "Room and food given", "hi-IN": "कमरा और खाना मिलेगा", "hi-Latn-IN": "Kamra aur khana milega" },
+};
 function crewLocale(language) {
     switch (language) {
         case "EN":
@@ -553,11 +569,11 @@ function renderTemplate(t, values) {
     return t.buttons ? `${body}\n[${t.buttons[0]}] [${t.buttons[1]}]` : body;
 }
 const variableCount = (t) => new Set(t.text.match(/\{\{\d+\}\}/g) ?? []).size;
-  return { CREW_KINDS, CREW_LOCALES, CREW_TEMPLATE_TEXT, CREW_TEMPLATES, templateText, crewLocale, variableValue, renderTemplate, variableCount };
+  return { CREW_KINDS, templateKey, CREW_LOCALES, CREW_TEMPLATE_TEXT, CREW_TEMPLATES, templateText, STAY_TEXT, crewLocale, variableValue, renderTemplate, variableCount };
 })();
 
 // integrations/windmill/talent/lib/crew.ts
-const { CREW_STATUSES, WATCHED_STATUSES, istHour, formatDay, formatTime, missingFields, templateValues, personPhone, personName, SEND_HOURS, REMINDER, NO_REPLY_AFTER_MS, TEST_REMINDER_AFTER_MS, planMember, normaliseReply, interpretReply, statusAfterReply, crewDeliveryStatus, kindLabel, SENT_FIELD, noteAfterSend } = (() => {
+const { CREW_STATUSES, WATCHED_STATUSES, istHour, formatDay, formatTime, stayText, missingFields, templateValues, personPhone, personName, SEND_HOURS, REMINDER, NO_REPLY_AFTER_MS, LOCALE_STAND_IN, TEST_REMINDER_AFTER_MS, planMember, normaliseReply, interpretReply, statusAfterReply, crewDeliveryStatus, kindLabel, SENT_FIELD, noteAfterSend } = (() => {
 const CREW_STATUSES = ["OFFERED", "SAID_YES", "SAID_NO", "NO_REPLY", "CONFIRMED", "CANT_COME", "REPORTED", "DIDNT_COME", "NOT_NEEDED"];
 const WATCHED_STATUSES = ["OFFERED", "SAID_YES", "CONFIRMED", "NOT_NEEDED"];
 const OPEN = ["OFFERED", "SAID_YES", "CONFIRMED"];
@@ -586,20 +602,23 @@ function formatTime(value, locale) {
     return `${part} ${clock} ${locale === "hi-IN" ? "बजे" : "baje"}`;
 }
 const NEEDS = {
-    offer: [["offerJob", "Job (offer)"], ["offerPlace", "Place (offer)"], ["offerPay", "Pay (offer)"], ["offerShift", "Shift (offer)"], ["offerStay", "Stay and food (offer)"], ["startDate", "Start"]],
-    confirmed: [["reportAddress", "Report at"], ["reportAt", "Report time"], ["siteContact", "Site contact"]],
-    reminder: [["reportAddress", "Report at"], ["reportAt", "Report time"]],
-    not_needed: [["offerJob", "Job (offer)"]],
+    offer: [["offerJob", "Job (for workers)"], ["offerPlace", "Place (for workers)"], ["startDate", "Start"]],
+    confirmed: [["reportAddress", "Interview at"], ["reportAt", "Interview time"], ["siteContact", "Ask for"]],
+    reminder: [["reportAddress", "Interview at"], ["reportAt", "Interview time"]],
+    not_needed: [["offerJob", "Job (for workers)"]],
 };
+const stayText = (req, locale) => STAY_TEXT[req.stayAndFood ?? ""]?.[locale] ?? null;
 const filled = (v) => typeof v === "string" && v.trim() !== "";
 function missingFields(kind, req) {
     return NEEDS[kind].filter(([field]) => !filled(req[field])).map(([, label]) => label);
 }
-function templateValues(kind, req, locale) {
+function templateValues(kind, req, locale, reference = "") {
     const s = (v) => v ?? "";
     switch (kind) {
-        case "offer":
-            return [s(req.offerJob), s(req.offerPlace), s(req.offerPay), s(req.offerShift), s(req.offerStay), formatDay(s(req.startDate), locale)].map(variableValue);
+        case "offer": {
+            const stay = stayText(req, locale);
+            return [reference, s(req.offerJob), s(req.offerPlace), formatDay(s(req.startDate), locale), ...(stay ? [stay] : [])].map(variableValue);
+        }
         case "confirmed": {
             const where = filled(req.mapLink) ? `${s(req.reportAddress)} (map: ${s(req.mapLink).trim()})` : s(req.reportAddress);
             return [where, `${formatDay(s(req.reportAt), locale)}, ${formatTime(s(req.reportAt), locale)}`, s(req.siteContact)].map(variableValue);
@@ -607,7 +626,7 @@ function templateValues(kind, req, locale) {
         case "reminder":
             return [formatTime(s(req.reportAt), locale), s(req.reportAddress)].map(variableValue);
         case "not_needed":
-            return [variableValue(s(req.offerJob))];
+            return [reference, s(req.offerJob)].map(variableValue);
     }
 }
 function personPhone(p) {
@@ -625,6 +644,7 @@ const SEND_HOURS = {
 };
 const REMINDER = { fromHour: 18, toHour: 21, beforeReportMs: 2 * 3600_000, afterConfirmedMs: 3 * 3600_000 };
 const NO_REPLY_AFTER_MS = 24 * 3600_000;
+const LOCALE_STAND_IN = { "hi-IN": "hi-Latn-IN" };
 const TEST_REMINDER_AFTER_MS = 60_000;
 const ms = (v) => (v ? new Date(v).getTime() : 0);
 function dueMessage(c) {
@@ -682,7 +702,7 @@ function planMember(c) {
     if (p.workerStatus === "DO_NOT_CONTACT")
         return { kind: "wait", note: "Do not contact: no message sent" };
     if (p.workerStatus === "NOT_AVAILABLE" && due === "offer")
-        return { kind: "wait", note: "Marked not available: no offer sent" };
+        return { kind: "wait", note: "Marked not available: no invite sent" };
     if (!p.consentedAt)
         return { kind: "wait", note: "No consent on record (they have not applied on the website): call them instead" };
     const phone = personPhone(p);
@@ -695,24 +715,33 @@ function planMember(c) {
                 kind: "wait",
                 note: other.opportunityId === c.member.opportunityId
                     ? "Already on this crew request (another crew member record)"
-                    : "Already has an open offer on another crew request: one at a time",
+                    : "Already has an open interview invite on another crew request: one at a time",
             };
         }
     }
     const missing = missingFields(due, c.request);
     if (missing.length)
         return { kind: "wait", note: `Fill in on the crew request: ${missing.join(", ")}` };
-    const locale = crewLocale(p.language);
-    const templateId = (c.templates ?? CREW_TEMPLATES)[due][locale];
+    const reference = c.reference?.trim() ?? "";
+    if ((due === "offer" || due === "not_needed") && !reference) {
+        return { kind: "wait", note: "No job application on record for this worker: call them instead" };
+    }
+    const ids = c.templates ?? CREW_TEMPLATES;
+    let locale = crewLocale(p.language);
+    const key = templateKey(due, due === "offer" && !!stayText(c.request, locale));
+    const standIn = LOCALE_STAND_IN[locale];
+    if (!ids[key][locale] && standIn && ids[key][standIn])
+        locale = standIn;
+    const templateId = ids[key][locale];
     if (!templateId || c.canSend === false)
-        return { kind: "wait", note: `WhatsApp template not approved yet (${due}, ${locale})` };
+        return { kind: "wait", note: `WhatsApp template not approved yet (${key}, ${locale})` };
     if (due !== "reminder" && !c.test) {
         const [from, to] = SEND_HOURS[due];
         const hour = istHour(c.now);
         if (hour < from || hour >= to)
             return { kind: "wait", note: `Waiting for ${from}:00 to send (no messages ${to}:00 to ${from}:00)` };
     }
-    return { kind: "send", message: due, locale, templateId, values: templateValues(due, c.request, locale), phone };
+    return { kind: "send", message: due, locale, templateId, values: templateValues(due, c.request, locale, reference), phone };
 }
 const YES_WORDS = new Set([
     "yes", "y", "yeah", "yep", "ok", "okay", "haan", "han", "haa", "ha", "hn", "hanji", "haanji", "ji", "jee", "theek", "thik", "sure", "coming",
@@ -764,18 +793,18 @@ function crewDeliveryStatus(status, delivery) {
         return delivery === "read" ? "READ" : delivery === "delivered" ? "DELIVERED" : delivery === "failed" ? "FAILED" : "SENT";
     return status === "failed" ? "FAILED" : status === "unknown" ? "UNKNOWN" : "QUEUED";
 }
-const KIND_LABEL = { offer: "job offer", confirmed: "job confirmed", reminder: "reminder", not_needed: "crew full" };
+const KIND_LABEL = { offer: "interview invite", confirmed: "interview details", reminder: "interview reminder", not_needed: "interviews full" };
 const kindLabel = (kind) => KIND_LABEL[kind];
 const SENT_FIELD = { offer: "offerSentAt", confirmed: "confirmationSentAt", reminder: "reminderSentAt" };
 function noteAfterSend(kind, status, delivery) {
-    const what = kind === "offer" ? "offer" : kind === "confirmed" ? "confirmation" : kind === "reminder" ? "reminder" : "crew full message";
+    const what = kind === "offer" ? "interview invite" : kind === "confirmed" ? "interview details" : kind === "reminder" ? "reminder" : "interviews-full message";
     if (status === "failed" || delivery === "failed")
         return `The WhatsApp ${what} did not reach them: call them`;
     if (status === "unknown")
         return `The WhatsApp ${what} may not have gone: call them`;
     return null;
 }
-  return { CREW_STATUSES, WATCHED_STATUSES, istHour, formatDay, formatTime, missingFields, templateValues, personPhone, personName, SEND_HOURS, REMINDER, NO_REPLY_AFTER_MS, TEST_REMINDER_AFTER_MS, planMember, normaliseReply, interpretReply, statusAfterReply, crewDeliveryStatus, kindLabel, SENT_FIELD, noteAfterSend };
+  return { CREW_STATUSES, WATCHED_STATUSES, istHour, formatDay, formatTime, stayText, missingFields, templateValues, personPhone, personName, SEND_HOURS, REMINDER, NO_REPLY_AFTER_MS, LOCALE_STAND_IN, TEST_REMINDER_AFTER_MS, planMember, normaliseReply, interpretReply, statusAfterReply, crewDeliveryStatus, kindLabel, SENT_FIELD, noteAfterSend };
 })();
 
 // integrations/windmill/talent/lib/sql.ts
@@ -1687,6 +1716,22 @@ async function byIds(crm, plural, ids) {
     }
     return out;
 }
+async function latestApplications(crm, personIds) {
+    const out = new Map();
+    for (let i = 0; i < personIds.length; i += 50) {
+        for (const app of await findEvery(crm, "applications", isIn("personId", personIds.slice(i, i + 50)))) {
+            const personId = typeof app.personId === "string" ? app.personId : null;
+            const name = typeof app.name === "string" ? app.name.trim() : "";
+            if (!personId || !name)
+                continue;
+            const at = new Date(String(app.submittedAt ?? app.createdAt ?? 0)).getTime() || 0;
+            const have = out.get(personId);
+            if (!have || at > have.at)
+                out.set(personId, { name, at });
+        }
+    }
+    return new Map([...out].map(([id, v]) => [id, v.name]));
+}
 const unique = (xs) => [...new Set(xs.filter((x) => !!x))];
 const createdMs = (m) => (m.createdAt ? new Date(m.createdAt).getTime() : 0);
 const WATCH_DAYS = 60;
@@ -1698,6 +1743,7 @@ async function planAndSend(deps, crm, result) {
         return;
     const people = await byIds(crm, "people", unique(members.map((m) => m.personId)));
     const requests = await byIds(crm, "opportunities", unique(members.map((m) => m.opportunityId)));
+    const references = await latestApplications(crm, unique(members.map((m) => m.personId)));
     const ledger = await deps.query(CREW_LEDGER, [members.map((m) => m.id)]);
     for (const m of members) {
         const person = (m.personId ? people.get(m.personId) : null);
@@ -1712,6 +1758,7 @@ async function planAndSend(deps, crm, result) {
             templates: deps.templates,
             canSend: !!deps.sendWhatsApp,
             test: !!person && !!deps.testPhones?.has(personPhone(person) ?? ""),
+            reference: m.personId ? (references.get(m.personId) ?? null) : null,
         });
         const patch = {};
         if (!m.name?.trim() && person && request)
@@ -1752,8 +1799,8 @@ async function lookupReports(deps, result) {
     }
 }
 function crewCommunicationFields(r) {
-    const template = templateText(r.kind, r.locale);
     const values = (typeof r.variables === "string" ? JSON.parse(r.variables) : r.variables);
+    const template = templateText(r.kind, r.locale, r.kind === "offer" && values.length === 5);
     return {
         name: `WhatsApp · ${kindLabel(r.kind)}`,
         channel: "WHATSAPP",

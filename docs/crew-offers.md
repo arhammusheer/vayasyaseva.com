@@ -1,23 +1,23 @@
 # Crew offers on WhatsApp
 
-How a job applicant is offered a place on a crew request and kept informed, from Twenty CRM, on WhatsApp from the Business number (+91 78958 50598). Built 19 November 2026. Code: `integrations/windmill/talent/lib/crew*.ts`, `run-crew.ts`; Twenty model: `integrations/twenty/setup.mts` (`crewMember`, the crew request's offer fields).
+How a job applicant is invited to interview for a crew request and kept informed, from Twenty CRM, on WhatsApp from the Business number (+91 78958 50598). Built 19 November 2026. Code: `integrations/windmill/talent/lib/crew*.ts`, `run-crew.ts`; Twenty model: `integrations/twenty/setup.mts` (`crewMember`, the crew request's offer fields).
 
 ## The procedure
 
-The phone call decides; WhatsApp carries the details to many people at once and records the answers.
+Since 19 November 2026 the first message invites the worker to an interview; the job is decided at the interview, not on WhatsApp. The phone call fixes the interview; WhatsApp carries the details to many people at once and records the answers.
 
 | Step | Who | In Twenty | What the worker gets |
 |---|---|---|---|
-| 1. Fill in the crew request | Recruiter | Job, Place, Pay, Shift, Stay and food (offer), Start; for confirmed workers Report at, Report time, Site contact, Map link | |
-| 2. Offer | Recruiter | Select workers, "Offer job" (below), or add a Crew member on the crew request. Status **Offered** | The offer, with Yes / No buttons |
+| 1. Fill in the crew request | Recruiter | Job and Place (for workers), Start, Stay and food (empty when nothing is given); Interview at, Interview time, Ask for, Map link; Pay and Shift for the call | |
+| 2. Invite | Recruiter | Select workers, "Offer job" (below), or add a Crew member on the crew request. Status **Invited** | An update on their application (VS-J-...): shortlisted for an interview, the job, place, start (and stay and food when given), Yes / No |
 | 3. Answer | Automatic | **Said yes** or **Said no** from the tap or a typed haan / nahi; **No reply** after 24 hours | |
-| 4. Call | Recruiter, same day | "To call" view: Said yes, oldest first. Check they are free, can reach the site, are 18 or older; say the pay. Set **Confirmed** | Where, when, whom to ask, what to bring |
+| 4. Call | Recruiter, same day | "To call" view: Said yes, oldest first. Check they are free, can reach the site, are 18 or older; tell them the pay and shift. Set **Interview fixed** | Where and when the interview is, whom to ask for, what to bring |
 | 5. Evening before | Automatic, 6 to 9 pm | | A reminder with Yes / Can't come |
 | 6. Can't come | Automatic | **Can't come**, and a push to the recruiters | |
-| 7. Day 1 | Site supervisor tells the recruiter | **Reported** or **Didn't come** | |
-| 8. Crew full | Recruiter | **Not needed** on those who said yes and were not taken | A thank-you; their name stays on file |
+| 7. Interview | Site supervisor tells the recruiter | **Came** or **Didn't come** | |
+| 8. Interviews full | Recruiter | **Not needed** on those who said yes and were not called | An update on their application: the interviews are full; the application stays open |
 
-Offer about two people per seat for helpers and packers, about 1.5 for skilled trades *(a starting point; adjust from what turns up)*. Confirm the headcount plus 10 to 20%.
+Invite about two people per place for helpers and packers, about 1.5 for skilled trades *(a starting point; adjust from what turns up)*.
 
 Said yes and Can't come each push to the jobs topic in ntfy (name, phone, Call button), rule "Crew reply" in `notify/lib/policy.ts`.
 
@@ -25,13 +25,14 @@ Said yes and Can't come each push to the jobs topic in ntfy (name, phone, Call b
 
 Each refusal is written in the crew member's **Message note**, and nothing is sent:
 
-- Do not contact (any message), Not available (the offer).
+- Do not contact (any message), Not available (the invitation).
+- No job application on record (the invitation and the interviews-full message carry its reference).
 - No consent on record: the person never applied through the website or an agent. Call them instead.
 - No Indian mobile number.
-- A worker already holding an open offer (Offered, Said yes or Confirmed) on another crew request, or a second crew member for the same worker on the same request: one at a time, the earlier one goes.
+- A worker already holding an open invitation (Invited, Said yes or Interview fixed) on another crew request, or a second crew member for the same worker on the same request: one at a time, the earlier one goes.
 - A crew request field the message needs is empty.
 - The template for that message and language is not approved yet.
-- Quiet hours: offers and crew-full messages go 08:00 to 21:00, confirmations 07:00 to 22:00, reminders 18:00 to 21:00 the evening before (and at least 2 hours before reporting, and not within 3 hours of the confirmation). They wait, and go when the window opens.
+- Quiet hours: invitations and interviews-full messages go 08:00 to 21:00, interview details 07:00 to 22:00, reminders 18:00 to 21:00 the evening before (and at least 2 hours before the interview, and not within 3 hours of the details). They wait, and go when the window opens.
 
 **Test numbers.** Staff numbers listed in the Windmill variable `f/talent/crew_test_phones` (separated by commas or new lines; edited by hand, deploy never overwrites it) skip the quiet hours, and their reminder goes a minute after the confirmation, so the whole path can be tried at any time. Every other check applies to them.
 
@@ -39,16 +40,21 @@ Each message goes at most once per crew member, ever. A refused or failed send s
 
 ## The messages
 
-`talent/lib/crew-templates.ts` holds the words, in English, Hindi and Hinglish. A worker's language comes from their person record: Punjabi readers get Hindi and Kannada readers English until templates in those languages exist. The Hindi and Hinglish need a native speaker's read before they are submitted.
+`talent/lib/crew-templates.ts` holds the words, in English, Hindi and Hinglish. A worker's language comes from their person record: Punjabi readers get Hindi and Kannada readers English until templates in those languages exist.
+
+**Utility, never Marketing** (the owner's rule, 19 November 2026). Each message is a status update on the worker's own application or interview: the invitation and the interviews-full message open with the application's reference; none advertises other work, promises future messages or urges action. Meta filed earlier wordings as Marketing when they opened like an announcement ("Work from Vayasya Seva") or promised to "tell you about the next job". `crew.test.mts` checks every template against those phrases.
 
 | Message | Variables | Buttons |
 |---|---|---|
-| `vspl_application_offer` (English, Hindi), `vspl_job_offer_hinglish` | job, place, pay, shift, stay and food, start | Yes / No |
-| `vspl_job_confirmed` | where (with the map link), when, whom to ask | |
-| `vspl_job_reminder` | time, place | Yes, coming / Can't come |
-| `vspl_job_not_needed` | job | |
+| `vspl_interview_invite` | reference, job, place, start | Yes / No |
+| `vspl_interview_invite_stay` | reference, job, place, start, stay and food | Yes / No |
+| `vspl_interview_details` | where (with the map link), when, whom to ask | |
+| `vspl_interview_reminder` | time, place | Yes, coming / Can't come |
+| `vspl_interview_full` | reference, job | |
 
-Every offer says Vayasya Seva charges no fee.
+While a language's template waits for Meta, a Hindi reader gets the Hinglish one instead (`LOCALE_STAND_IN` in `crew.ts`); since 20 November 2026 that covers the two Hindi invitations, still pending at Meta.
+
+Templates are fixed text, so a line cannot be left out at send time: the invitation has two versions, and the one with the stay and food line goes when the crew request's Stay and food is set. Every invitation says Vayasya Seva charges no fee. The Hindi and Hinglish names end in `_hinglish` for Hinglish.
 
 ## The "Offer job" button in Twenty
 
@@ -57,7 +63,7 @@ A Twenty workflow, made in the UI (v2.43 lets only a signed-in user edit or acti
 1. Trigger: **Manual**, object **People**, availability **Bulk** (one run for the selection).
 2. Action **Form**: one field, type a record of **Crew requests**, label "Crew request".
 3. Action **Iterator** over the trigger's records.
-4. Inside it, action **Create Record**: object Crew members; Worker = the current item; Crew request = the form's answer; Status = Offered.
+4. Inside it, action **Create Record**: object Crew members; Worker = the current item; Crew request = the form's answer; Status = Invited (value OFFERED).
 5. Activate. Select workers in the Workers view; the button is in the top bar and in Cmd+K.
 
 Twenty forms cannot make a field required: a run with no crew request picked makes crew members with none, and they say "Pick the crew request" in Message note. Adding a crew member from the crew request's own page works the same way, without the workflow.

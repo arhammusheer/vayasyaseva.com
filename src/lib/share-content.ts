@@ -1,4 +1,5 @@
 import { allLocales, localePath, localesOf, type Locale } from "./i18n";
+import { jobsLocale } from "@/lib/i18n";
 import { quickApplyCopy } from "@/content/pages/quick-apply";
 import { jobsCopy } from "@/content/pages/jobs";
 import { getJobRole } from "@/content/pages/job-roles";
@@ -52,15 +53,15 @@ export function getShareContent(path: string, locale: Locale = "en-IN", variant 
   let description = COMMON[path]?.description ?? "Contract labour and industrial services.";
   let eyebrow = path.startsWith("/minimum-wages") ? "MINIMUM WAGES · REFERENCE" : "VAYASYA SEVA";
   if (path === "/jobs") {
-    const t = jobsCopy[locale]; heading = t.heading; description = t.lede; eyebrow = t.eyebrow;
+    const t = jobsCopy[jobsLocale(locale)]; heading = t.heading; description = t.lede; eyebrow = t.eyebrow;
   } else if (path.startsWith("/jobs/") && path !== "/jobs/apply") {
     const slug = path.slice("/jobs/".length);
     const cluster = getJobCluster(slug, locale);
     const content = getJobRole(slug, locale) ?? getJobHub(slug, locale);
     if (cluster) { heading = cluster.heading; description = cluster.lede; eyebrow = cluster.eyebrow; }
-    else if (content) { heading = content.heading; description = content.lede; eyebrow = jobsCopy[locale].eyebrow; }
+    else if (content) { heading = content.heading; description = content.lede; eyebrow = jobsCopy[jobsLocale(locale)].eyebrow; }
   } else if (path === "/jobs/apply") {
-    const t = quickApplyCopy[locale];
+    const t = quickApplyCopy[jobsLocale(locale)];
     heading = t.heading; description = t.lede; eyebrow = t.eyebrow;
     const slug = variant.replace(/^role-/, "");
     const role = isJobRole(slug) ? getJobRole(slug, locale) : undefined;

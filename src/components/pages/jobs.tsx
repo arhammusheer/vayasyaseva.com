@@ -9,14 +9,14 @@ import { jobsLinkLabel } from "@/markets/labels";
 import { JsonLd, webPageSchema } from "@/lib/structured-data";
 import { JOB_GROUP_ROLES, jobsCopy } from "@/content/pages/jobs";
 import { jobRolePath } from "@/components/pages/job-role";
-import { localePath, locales, nearestLocalePath, type Locale } from "@/lib/i18n";
+import { localePath, locales, nearestLocalePath, type Locale, jobsLocale } from "@/lib/i18n";
 import { orderedJobMarkets } from "@/context/surfaces";
 import { DecidedApplyLink, MarketList, type MarketItem } from "@/components/sections/market-list";
 
 const PATH = "/jobs";
 
 export function jobsMetadata(locale: Locale) {
-  const t = jobsCopy[locale];
+  const t = jobsCopy[jobsLocale(locale)];
   return pageMetadata({
     title: { absolute: `${t.title} | Vayasya Seva` },
     description: t.description,
@@ -34,7 +34,7 @@ export function jobsMetadata(locale: Locale) {
  * pages carry the rest.
  */
 export function JobsPage({ locale }: { locale: Locale }) {
-  const t = jobsCopy[locale];
+  const t = jobsCopy[jobsLocale(locale)];
   const url = localePath(PATH, locale);
   // Every market's hub in MARKET_ORDER; the visitor context's CSS orders them before paint.
   const markets: MarketItem[] = orderedJobMarkets().flatMap((id) => {

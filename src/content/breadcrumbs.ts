@@ -18,6 +18,7 @@ export const BREADCRUMB_NAMES: Readonly<Record<string, { "en-IN": string } & Par
   // English only: the home page is English only.
   "/": { "en-IN": "Home" },
   "/services": { "en-IN": "Services" },
+  "/services/housekeeping": { "en-IN": "Housekeeping" },
   "/about": { "en-IN": "About" },
   "/locations": { "en-IN": "Locations" },
   "/locations/uttarakhand": { "en-IN": "Uttarakhand" },

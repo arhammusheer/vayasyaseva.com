@@ -69,10 +69,11 @@ const CREW_LABEL: Record<Locale, string> = {
   "hi-Latn-IN": "Company ke liye workers",
   "pa-IN": "ਕੰਪਨੀ ਲਈ ਕਾਮੇ",
   "kn-IN": "ಕಂಪನಿಗಾಗಿ ಕಾರ್ಮಿಕರು",
+  "te-IN": "కంపెనీ కోసం కార్మికులు",
 };
 
 /** The quick switch's "More" (languages outside the page's regional set). */
-const MORE_LABEL: Record<Locale, string> = { "en-IN": "More", "hi-IN": "और भाषाएँ", "hi-Latn-IN": "Aur bhasha", "pa-IN": "ਹੋਰ ਭਾਸ਼ਾਵਾਂ", "kn-IN": "ಇನ್ನಷ್ಟು ಭಾಷೆಗಳು" };
+const MORE_LABEL: Record<Locale, string> = { "en-IN": "More", "hi-IN": "और भाषाएँ", "hi-Latn-IN": "Aur bhasha", "pa-IN": "ਹੋਰ ਭਾਸ਼ਾਵਾਂ", "kn-IN": "ಇನ್ನಷ್ಟು ಭಾಷೆಗಳು", "te-IN": "మరిన్ని భాషలు" };
 
 /** Legal pages sit in the reference layout (no phone) but take the business header. */
 const LEGAL = new Set(["/privacy", "/terms"]);

@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
+import { jobsLocale } from "@/lib/i18n";
 import { FileText, ImageIcon, Paperclip, X } from "lucide-react";
 import { track } from "@/lib/measurement/gateway";
 import { jobsCopy } from "@/content/pages/jobs";
@@ -88,7 +89,7 @@ export async function uploadAll(
 
 /** The picked files and the message for any that were turned away. */
 export function useJobFiles(locale: Locale, onAdd?: () => void) {
-  const t = jobsCopy[locale].form;
+  const t = jobsCopy[jobsLocale(locale)].form;
   const [files, setFiles] = useState<PickedFile[]>([]);
   const [error, setError] = useState<string | null>(null);
 
@@ -139,7 +140,7 @@ export function JobFilePicker({
   compact?: boolean;
   optionalLabel?: string;
 }) {
-  const t = jobsCopy[locale].form;
+  const t = jobsCopy[jobsLocale(locale)].form;
   const optionalId = useId();
   const list = (
     <>

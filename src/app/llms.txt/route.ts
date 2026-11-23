@@ -82,7 +82,7 @@ const businessMarkets = MARKET_ORDER.flatMap((id) => {
 });
 const marketNames = businessMarkets.map((m) => m.name).join(", ");
 const businessLines = businessMarkets.map((m) => `- [${m.name}](${baseUrl}/en-in${m.hub}): ${m.text}`).join("\n");
-const LANGUAGE_NOTE: Record<Exclude<Locale, "en-IN">, string> = { "hi-IN": "Hindi", "hi-Latn-IN": "Hindi in Latin script", "pa-IN": "Punjabi", "kn-IN": "Kannada" };
+const LANGUAGE_NOTE: Record<Exclude<Locale, "en-IN">, string> = { "hi-IN": "Hindi", "hi-Latn-IN": "Hindi in Latin script", "pa-IN": "Punjabi", "kn-IN": "Kannada", "te-IN": "Telugu" };
 const jobsLines = orderedJobMarkets()
   .flatMap((id) => {
     const hub = getJobCluster(id, "en-IN");

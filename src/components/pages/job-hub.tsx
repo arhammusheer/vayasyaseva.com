@@ -9,7 +9,7 @@ import { JsonLd, webPageSchema } from "@/lib/structured-data";
 import { getJobHub, jobHubLabels } from "@/content/pages/job-hubs";
 import { getJobRole } from "@/content/pages/job-roles";
 import { jobsCopy } from "@/content/pages/jobs";
-import { localePath, locales, localesOf, type Locale } from "@/lib/i18n";
+import { localePath, locales, localesOf, type Locale, jobsLocale } from "@/lib/i18n";
 import { JOB_HUB_SLUGS } from "@/lib/talent-intake/rules";
 import { jobRolePath } from "@/components/pages/job-role";
 
@@ -40,7 +40,7 @@ export function jobHubMetadata(slug: string, locale: Locale) {
  */
 export function JobHubPage({ slug, locale }: { slug: string; locale: Locale }) {
   const hub = hubOrThrow(slug, locale);
-  const t = jobHubLabels[locale];
+  const t = jobHubLabels[jobsLocale(locale)];
   const url = localePath(`/jobs/${hub.slug}`, locale);
   return (
     <>
@@ -69,7 +69,7 @@ export function JobHubPage({ slug, locale }: { slug: string; locale: Locale }) {
                 <li key={role}>
                   <h3>
                     <Link href={localePath(jobRolePath(role), locale)} className="jobs-work-link">
-                      {jobsCopy[locale].work.find((w) => w.role === role)?.title ?? getJobRole(role, locale)?.name ?? role} <ArrowUpRight size={20} aria-hidden="true" />
+                      {jobsCopy[jobsLocale(locale)].work.find((w) => w.role === role)?.title ?? getJobRole(role, locale)?.name ?? role} <ArrowUpRight size={20} aria-hidden="true" />
                     </Link>
                   </h3>
                   <p>{note}</p>
@@ -77,7 +77,7 @@ export function JobHubPage({ slug, locale }: { slug: string; locale: Locale }) {
               ))}
             </ul>
             <Link href={localePath("/jobs", locale)} className="text-link mt-10">
-              {jobsCopy[locale].heading} <ArrowRight size={18} aria-hidden="true" />
+              {jobsCopy[jobsLocale(locale)].heading} <ArrowRight size={18} aria-hidden="true" />
             </Link>
           </div>
         </div>

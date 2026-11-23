@@ -1,5 +1,5 @@
 import type { JobRole } from "@/lib/talent-intake/rules";
-import type { Locale } from "@/lib/i18n";
+import type { JobsLocale } from "@/lib/i18n";
 
 /** Strings the jobs form shows while it works (client component). */
 export interface JobsFormCopy {
@@ -69,7 +69,7 @@ export const JOB_GROUP_ROLES: Record<JobGroupId, JobRole[]> = {
  * no-fee mention on a jobs page. Plain text, no link: the "Spot a fake
  * offer" link drew applicants off the form (owner, 19 Oct 2026).
  */
-export const NO_FEE: Record<Locale, string> = {
+export const NO_FEE: Record<JobsLocale, string> = {
   "en-IN": "No fee to apply.",
   "hi-IN": "आवेदन की कोई फ़ीस नहीं।",
   "hi-Latn-IN": "Apply ki koi fee nahi.",
@@ -78,7 +78,7 @@ export const NO_FEE: Record<Locale, string> = {
 };
 
 /** Work is shift-wise only: say so plainly (owner, 16 October 2026). The form's header line. */
-export const SHIFTS_LINE: Record<Locale, string> = {
+export const SHIFTS_LINE: Record<JobsLocale, string> = {
   "en-IN": "Work is in full 8-hour shifts. There is no part-time work.",
   "hi-IN": "काम पूरी 8 घंटे की शिफ्ट में होता है। पार्ट-टाइम काम नहीं है।",
   "hi-Latn-IN": "Kaam poori 8 ghante ki shift mein hota hai. Part-time kaam nahi hai.",
@@ -97,7 +97,7 @@ export const SHIFTS_LINE: Record<Locale, string> = {
  * Punjabi jobs pages.
  * Claims discipline: no promised call-back times, no guarantees of work.
  */
-export const jobsCopy: Record<Locale, JobsCopy> = {
+export const jobsCopy: Record<JobsLocale, JobsCopy> = {
   "en-IN": {
     title: "Factory, Packing and Warehouse Jobs: No Fee to Apply",
     description:

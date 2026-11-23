@@ -1,5 +1,5 @@
 import type { FaqItem } from "../types";
-import type { CopyIn, Locale } from "@/lib/i18n";
+import type { CopyIn, JobsLocale, Locale } from "@/lib/i18n";
 import type { JobHub, JobRole } from "@/lib/talent-intake/rules";
 
 /**
@@ -24,7 +24,7 @@ export interface JobHubCopy {
 }
 
 /** Heading of the role rows. */
-export const jobHubLabels: Record<Locale, { rolesHeading: string }> = {
+export const jobHubLabels: Record<JobsLocale, { rolesHeading: string }> = {
   "en-IN": { rolesHeading: "Where you can start." },
   "hi-IN": { rolesHeading: "आप कहाँ से शुरू कर सकते हैं।" },
   "hi-Latn-IN": { rolesHeading: "Aap kahan se shuru kar sakte hain." },
@@ -33,7 +33,7 @@ export const jobHubLabels: Record<Locale, { rolesHeading: string }> = {
 };
 
 /** The age question, asked once on the jobs side: each market hub's FAQ. */
-export const AGE_FAQ: Record<Locale, FaqItem> = {
+export const AGE_FAQ: Record<JobsLocale, FaqItem> = {
   "en-IN": {
     question: "Is there an age limit?",
     answer:

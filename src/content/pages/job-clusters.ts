@@ -1,5 +1,6 @@
 import type { FaqItem } from "../types";
-import type { Locale } from "@/lib/i18n";
+import { jobsLocale } from "@/lib/i18n";
+import type { JobsLocale, Locale } from "@/lib/i18n";
 import type { ClusterId } from "@/content/registry/identifiers";
 import type { PayBasis } from "@/content/pay";
 import { AGE_FAQ } from "./job-hubs";
@@ -131,12 +132,12 @@ const KAPURTHALA_PAY: Record<"en-IN" | "hi-IN" | "hi-Latn-IN" | "pa-IN", Cluster
   },
 };
 
-export const jobClusters: Record<Locale, JobClusterCopy[]> = {
+export const jobClusters: Record<JobsLocale, JobClusterCopy[]> = {
   "en-IN": [
     {
       slug: "haridwar",
       name: "Haridwar",
-      metaTitle: "Haridwar Job Vacancy: SIDCUL Factory and Warehouse Jobs",
+      metaTitle: "Haridwar and Roorkee Job Vacancy: SIDCUL Factory Jobs",
       description:
         "Haridwar job vacancy in SIDCUL and Roorkee. No fee. Full 8-hour shifts. Factory, packing, warehouse and housekeeping work. Apply online, a few short questions.",
       eyebrow: "JOBS · HARIDWAR",
@@ -162,7 +163,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "bengaluru",
       name: "Bengaluru",
-      metaTitle: "Factory Jobs in Bengaluru (Bangalore): Join Our List",
+      metaTitle: "Bangalore Job Vacancy: Factory Jobs for Freshers",
       description:
         "Factory, warehouse and housekeeping work in Bengaluru (Bangalore). Join our worker list: no fee, full 8-hour shifts. We call when a site needs your work.",
       eyebrow: "JOBS · BENGALURU",
@@ -196,7 +197,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       // "jalandhar job" ~5,400 a month locally (Keyword Planner, 18 Oct 2026).
       slug: "jalandhar",
       name: "Jalandhar",
-      metaTitle: "Jobs in Jalandhar: Factory, Packing and Warehouse Work",
+      metaTitle: "Jalandhar Job Vacancy: Factory, Packing, Warehouse",
       description:
         "Factory, packing and warehouse work in Jalandhar, its focal points, Kartarpur, Goraya and Phillaur. Join our worker list: no fee, full 8-hour shifts.",
       eyebrow: "JOBS · JALANDHAR",
@@ -246,7 +247,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       name: "Uttarakhand",
       // Outside Haridwar and Dehradun since 18 Oct 2026: titled for the rest
       // of the state's searches (Haldwani, Rudrapur, Kashipur job).
-      metaTitle: "Rudrapur, Kashipur, Haldwani Jobs: Join Our Worker List",
+      metaTitle: "Rudrapur and Kashipur Jobs: Factory Vacancy List",
       description:
         "Factory and warehouse work in Rudrapur, Kashipur, Sitarganj, Haldwani and across Uttarakhand. Join our worker list: no fee, full 8-hour shifts.",
       eyebrow: "JOBS · UTTARAKHAND",
@@ -266,7 +267,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       // in the title (PLAN §5.3). "dehradun job" ~12,100 a month locally.
       slug: "dehradun",
       name: "Dehradun",
-      metaTitle: "Jobs in Dehradun: Selaqui Factory and Warehouse Work",
+      metaTitle: "Dehradun Jobs for Freshers: Selaqui Factory Vacancy",
       description:
         "Factory, packing and warehouse work in Dehradun, Selaqui and Rishikesh. Join our worker list: no fee, full 8-hour shifts. We call when a site needs you.",
       eyebrow: "JOBS · DEHRADUN",
@@ -286,7 +287,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       // 2026 packing requirement: drop it once that is filled.
       slug: "punjab",
       name: "Punjab",
-      metaTitle: "Factory Jobs in Punjab: Join Our Worker List",
+      metaTitle: "Job Vacancy in Punjab: Factory Work, Join Our List",
       description:
         "Factory, packing and warehouse work across Punjab. Join our worker list: no fee, full 8-hour shifts. We call when a site near you needs your work.",
       eyebrow: "JOBS · PUNJAB",
@@ -307,7 +308,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       // seekers there search in English and say "Vizag" as often as not.
       slug: "visakhapatnam",
       name: "Visakhapatnam",
-      metaTitle: "Jobs in Visakhapatnam (Vizag): Factory and Pharma Work",
+      metaTitle: "Jobs in Vizag (Visakhapatnam): Factory, Pharma Vacancy",
       description:
         "Factory, pharma, packing and warehouse work in Vizag: Gajuwaka, Duvvada, Parawada and Atchutapuram. Join our worker list: no fee, full 8-hour shifts.",
       eyebrow: "JOBS · VISAKHAPATNAM",
@@ -345,7 +346,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       // Hyderabad (owner direction, 27 Oct 2026): a worker list, like Visakhapatnam's.
       slug: "hyderabad",
       name: "Hyderabad",
-      metaTitle: "Jobs in Hyderabad: Factory, Pharma and Warehouse Work",
+      metaTitle: "Jobs in Hyderabad for Freshers: Factory, Pharma Vacancy",
       description:
         "Factory, pharma, packing and warehouse work in Hyderabad: Patancheru, Jeedimetla, Uppal and Shamshabad. Join our worker list: no fee, full 8-hour shifts.",
       eyebrow: "JOBS · HYDERABAD",
@@ -614,7 +615,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "haridwar",
       name: "Haridwar",
-      metaTitle: "Haridwar Job Vacancy: SIDCUL Factory, Warehouse ka Kaam",
+      metaTitle: "Haridwar, Roorkee Job Vacancy: SIDCUL Factory ka Kaam",
       description:
         "Haridwar job vacancy SIDCUL aur Roorkee mein. Koi fee nahi. Poori 8 ghante ki shift. Factory, packing, warehouse aur housekeeping. Online apply karein.",
       eyebrow: "Jobs · Haridwar",
@@ -640,7 +641,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "bengaluru",
       name: "Bengaluru",
-      metaTitle: "Bengaluru (Bangalore) Factory Job: List mein Judein",
+      metaTitle: "Bangalore Job Vacancy: Freshers ke liye Factory Job",
       description:
         "Bengaluru (Bangalore) mein factory, warehouse, housekeeping ka kaam. Worker list mein judein: koi fee nahi, 8 ghante ki shift. Zaroorat par hum call karenge.",
       eyebrow: "Jobs · Bengaluru",
@@ -671,7 +672,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "jalandhar",
       name: "Jalandhar",
-      metaTitle: "Jalandhar Job: Factory, Packing aur Warehouse ka Kaam",
+      metaTitle: "Jalandhar Job Vacancy: Factory aur Packing ka Kaam",
       description:
         "Jalandhar, Kartarpur, Goraya aur Phillaur mein factory, packing aur warehouse ka kaam. Worker list mein judein: koi fee nahi, 8 ghante ki shift.",
       eyebrow: "Jobs · Jalandhar",
@@ -716,7 +717,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "uttarakhand",
       name: "Uttarakhand",
-      metaTitle: "Rudrapur, Kashipur, Haldwani Job: List mein Judein",
+      metaTitle: "Rudrapur, Kashipur Job Vacancy: List mein Judein",
       description:
         "Rudrapur, Kashipur, Sitarganj, Haldwani aur poore Uttarakhand mein factory aur warehouse ka kaam. Worker list mein judein: koi fee nahi, 8 ghante ki shift.",
       eyebrow: "Jobs · Uttarakhand",
@@ -734,7 +735,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "dehradun",
       name: "Dehradun",
-      metaTitle: "Dehradun Job: Selaqui Factory aur Warehouse ka Kaam",
+      metaTitle: "Dehradun Job Vacancy: Selaqui Factory ka Kaam",
       description:
         "Dehradun, Selaqui, Rishikesh mein factory, packing aur warehouse ka kaam. Worker list mein judein: koi fee nahi, 8 ghante ki shift. Zaroorat par call karenge.",
       eyebrow: "Jobs · Dehradun",
@@ -752,7 +753,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "punjab",
       name: "Punjab",
-      metaTitle: "Punjab Factory Job: Worker List mein Judein",
+      metaTitle: "Punjab Job Vacancy: Factory Worker List mein Judein",
       description:
         "Poore Punjab mein factory, packing aur warehouse ka kaam. Worker list mein judein: koi fee nahi, 8 ghante ki shift. Zaroorat par hum call karenge.",
       eyebrow: "Jobs · Punjab",
@@ -770,7 +771,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "visakhapatnam",
       name: "Visakhapatnam",
-      metaTitle: "Vizag (Visakhapatnam) Job: Factory aur Pharma ka Kaam",
+      metaTitle: "Vizag Job Vacancy: Factory aur Pharma ka Kaam",
       description:
         "Vizag ke Gajuwaka, Duvvada, Parawada aur Atchutapuram mein factory, pharma, packing aur warehouse ka kaam. List mein judein: koi fee nahi, 8 ghante ki shift.",
       eyebrow: "Jobs · Visakhapatnam",
@@ -806,7 +807,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "hyderabad",
       name: "Hyderabad",
-      metaTitle: "Hyderabad Job: Factory, Pharma aur Warehouse ka Kaam",
+      metaTitle: "Hyderabad Job Vacancy: Factory aur Pharma ka Kaam",
       description:
         "Hyderabad ke Patancheru, Jeedimetla, Uppal aur Shamshabad mein factory, pharma, packing, warehouse ka kaam. List mein judein: koi fee nahi, 8 ghante ki shift.",
       eyebrow: "Jobs · Hyderabad",
@@ -934,5 +935,5 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
 };
 
 export function getJobCluster(slug: string, locale: Locale) {
-  return jobClusters[locale].find((c) => c.slug === slug);
+  return jobClusters[jobsLocale(locale)].find((c) => c.slug === slug);
 }

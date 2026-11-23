@@ -26,7 +26,7 @@ export const haridwarPages: LocationCopy[] = [
     cluster: "haridwar",
     name: "SIDCUL Haridwar",
     placeId: "haridwar",
-    metaTitle: "Labour Contractor in SIDCUL Haridwar",
+    metaTitle: "Labour Contractor and Manpower Supply, SIDCUL Haridwar",
     description:
       "Labour contractor for factories and warehouses in SIDCUL Haridwar, Bahadrabad, Bhagwanpur and Roorkee. Supervised crews with EPF and ESIC records.",
     heading: "Labour contractor in SIDCUL Haridwar.",

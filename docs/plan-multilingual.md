@@ -9,6 +9,9 @@ Status: live. हिंदी (hi-IN) and Hindi in Latin script (hi-Latn-IN) are
 | `en-IN` | English | `/en-in` | Latin |
 | `hi-IN` | हिंदी | `/hi-in` | Devanagari |
 | `hi-Latn-IN` | Hindi | `/hi-latn-in` | Hindi in Latin script |
+| `pa-IN` | ਪੰਜਾਬੀ | `/pa-in` | Gurmukhi |
+| `kn-IN` | ಕನ್ನಡ | `/kn-in` | Kannada |
+| `te-IN` | తెలుగు | `/te-in` | Telugu (24 Nov 2026: the Visakhapatnam and Hyderabad location pages; jobs pages fall back to English through `jobsLocale`) |
 
 The locale code is the BCP 47 tag, used as is in `<html lang>`, hreflang and JSON-LD `inLanguage`. `hi-Latn-IN` reads as language Hindi, script Latin, region India. URL segments are the lowercase tag. Other casings (`/hi-IN/jobs`) redirect permanently to the lowercase URL.
 
@@ -52,7 +55,7 @@ The homepage and every business-facing page stay English. Translate a page only 
 | Page | Languages | Neutral URL | Reason |
 |------|-----------|-------------|--------|
 | `/`, `/services`, `/services/factory-labour`, `/services/loading-unloading-labour`, `/services/housekeeping`, `/about`, `/vayasya-setu`, `/compliance`, `/contact`, `/brand`, `/privacy`, `/terms` | en-IN | English | Business buyers; legal text in one reviewed version. Business pages are English only since 16 Oct 2026: the Hinglish service landings 308 to English |
-| `/locations/haridwar` (was `/haridwar-sidcul`) | en-IN, hi-IN, hi-Latn-IN | English | Core local search terms in every script; the one location page with translations so far (any Hindi-belt hub may join: `LOCATION_HUB_LOCALES`) |
+| `/locations/<region>` and its estates | Per region (`LOCATION_LOCALES`, 24 Nov 2026): Haridwar, Uttarakhand, Dehradun and Delhi NCR in en-IN, hi-IN, hi-Latn-IN; the Jalandhar region also in pa-IN; Visakhapatnam and Hyderabad in en-IN and te-IN; Bengaluru English only | English | Core local search terms in each region's scripts. Each page also lists the state's reference pages (`StateReference`): links only, never their figures |
 | `/jobs`, `/jobs/<role>` | en-IN, hi-IN, hi-Latn-IN; hi-IN first | Language picker | Workers read हिंदी and type in Latin script; skilled roles use English. The link is often shared on a call |
 
 Later: `/privacy` in hi-IN, so worker applicants can read the data notice (DPDP). Latin-script Hindi is too loose for legal text.
@@ -71,7 +74,7 @@ Revisit this split with Search Console data.
 - `src/app/(picker)/` is a second root layout for the language picker (`<html lang="en-IN">`, each choice marked with its own language). `src/app/global-not-found.tsx` serves URLs no route matches.
 - `src/content/registry/` holds the page registry (every page, its languages and each one's status), the clusters with public pages, and the canonical identifiers. `src/lib/i18n.ts` holds the locales, the publish flags and the link helpers, and derives `pages` from the registry. `pageMetadata({ locale })` adds the canonical, hreflang and `noindex` unless both the locale and the page's status are published. The sitemap lists each page once per published locale, with `xhtml:link` alternates.
 - Every translated page uses one shared template for all locales. The three service landings are English only and share `ServiceLanding`, with content in `src/content/service-pages.ts`. The Haridwar and jobs pages use `src/components/pages/*` with all three locales in `src/content/pages/*.ts`. When the English copy changes, update the others in the same file.
-- Fonts: WOFF2 subsets of Hind containing only Devanagari (Regular, SemiBold for weights 500–600, Bold) with `unicode-range`. Devanagari headings use Hind SemiBold, not Anek Devanagari, to keep a first Hindi visit light (16 October 2026). Pages without Devanagari never download them.
+- Fonts: WOFF2 subsets of Hind containing only Devanagari (Regular, SemiBold for weights 500–600, Bold) with `unicode-range`. Devanagari headings use Hind SemiBold, not Anek Devanagari, to keep a first Hindi visit light (16 October 2026). Pages without Devanagari never download them. Every other script takes its own cut of the two brand families, also script-only subsets: Anek Gurmukhi and Hind Jalandhar, Anek Kannada and Hind Mysuru, Anek Telugu and Hind Guntur (`scripts/build-web-fonts.py`, `src/lib/fonts.ts`).
 - Devanagari type rules in `globals.css` apply to `:lang(hi)` but not `:lang(hi-Latn)`: no letter-spacing, and a taller line-height on headings.
 - The jobs form still sends the intake source `web_hinglish` for hi-Latn-IN. It is a stored value shared with n8n and its database (`integrations/n8n/schema.sql`); renaming it needs a migration and an n8n deploy.
 

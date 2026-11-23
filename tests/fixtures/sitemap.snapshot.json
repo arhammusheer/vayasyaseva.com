@@ -30,6 +30,30 @@
     "priority": 0.8
   },
   {
+    "url": "https://www.vayasyaseva.com/en-in/services/housekeeping/delhi-ncr",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/services/housekeeping/bengaluru",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/services/housekeeping/hyderabad",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
+    "url": "https://www.vayasyaseva.com/en-in/services/housekeeping/dehradun",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7
+  },
+  {
     "url": "https://www.vayasyaseva.com/en-in/jobs",
     "lastModified": "2026-10-16T00:00:00.000Z",
     "changeFrequency": "monthly",
@@ -1319,9 +1343,45 @@
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/uttarakhand",
-    "lastModified": "2026-10-18T00:00:00.000Z",
+    "lastModified": "2026-11-24T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.8
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/uttarakhand",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/uttarakhand",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/uttarakhand",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/uttarakhand"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/locations/uttarakhand",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/uttarakhand",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/uttarakhand",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/uttarakhand",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/uttarakhand"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/locations/uttarakhand",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/uttarakhand",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/uttarakhand",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/uttarakhand",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/uttarakhand"
+      }
+    }
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/bengaluru",
@@ -1355,57 +1415,453 @@
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr",
-    "lastModified": "2026-10-16T00:00:00.000Z",
+    "lastModified": "2026-11-24T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.8
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/delhi-ncr",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/delhi-ncr",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/locations/delhi-ncr",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/delhi-ncr",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/delhi-ncr",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/locations/delhi-ncr",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/delhi-ncr",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/delhi-ncr",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr"
+      }
+    }
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/gurugram-manesar",
-    "lastModified": "2026-10-16T00:00:00.000Z",
+    "lastModified": "2026-11-24T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.7
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/gurugram-manesar",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/delhi-ncr/gurugram-manesar",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/delhi-ncr/gurugram-manesar",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/gurugram-manesar"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/locations/delhi-ncr/gurugram-manesar",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/gurugram-manesar",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/delhi-ncr/gurugram-manesar",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/delhi-ncr/gurugram-manesar",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/gurugram-manesar"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/locations/delhi-ncr/gurugram-manesar",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/gurugram-manesar",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/delhi-ncr/gurugram-manesar",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/delhi-ncr/gurugram-manesar",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/gurugram-manesar"
+      }
+    }
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/noida-greater-noida",
-    "lastModified": "2026-10-16T00:00:00.000Z",
+    "lastModified": "2026-11-24T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.7
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/noida-greater-noida",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/delhi-ncr/noida-greater-noida",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/delhi-ncr/noida-greater-noida",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/noida-greater-noida"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/locations/delhi-ncr/noida-greater-noida",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/noida-greater-noida",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/delhi-ncr/noida-greater-noida",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/delhi-ncr/noida-greater-noida",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/noida-greater-noida"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/locations/delhi-ncr/noida-greater-noida",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/noida-greater-noida",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/delhi-ncr/noida-greater-noida",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/delhi-ncr/noida-greater-noida",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/noida-greater-noida"
+      }
+    }
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/faridabad-ghaziabad",
-    "lastModified": "2026-10-16T00:00:00.000Z",
+    "lastModified": "2026-11-24T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.7
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/faridabad-ghaziabad",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/delhi-ncr/faridabad-ghaziabad",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/delhi-ncr/faridabad-ghaziabad",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/faridabad-ghaziabad"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/locations/delhi-ncr/faridabad-ghaziabad",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/faridabad-ghaziabad",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/delhi-ncr/faridabad-ghaziabad",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/delhi-ncr/faridabad-ghaziabad",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/faridabad-ghaziabad"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/locations/delhi-ncr/faridabad-ghaziabad",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/faridabad-ghaziabad",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/delhi-ncr/faridabad-ghaziabad",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/delhi-ncr/faridabad-ghaziabad",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/faridabad-ghaziabad"
+      }
+    }
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/delhi-industrial-areas",
-    "lastModified": "2026-10-16T00:00:00.000Z",
+    "lastModified": "2026-11-24T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.7
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/delhi-industrial-areas",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/delhi-ncr/delhi-industrial-areas",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/delhi-ncr/delhi-industrial-areas",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/delhi-industrial-areas"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/locations/delhi-ncr/delhi-industrial-areas",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/delhi-industrial-areas",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/delhi-ncr/delhi-industrial-areas",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/delhi-ncr/delhi-industrial-areas",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/delhi-industrial-areas"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/locations/delhi-ncr/delhi-industrial-areas",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/delhi-industrial-areas",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/delhi-ncr/delhi-industrial-areas",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/delhi-ncr/delhi-industrial-areas",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/delhi-ncr/delhi-industrial-areas"
+      }
+    }
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/jalandhar",
-    "lastModified": "2026-10-17T00:00:00.000Z",
+    "lastModified": "2026-11-24T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.8
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/jalandhar",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/jalandhar",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/jalandhar",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/locations/jalandhar",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/jalandhar"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/locations/jalandhar",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/jalandhar",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/jalandhar",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/jalandhar",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/locations/jalandhar",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/jalandhar"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/locations/jalandhar",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/jalandhar",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/jalandhar",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/jalandhar",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/locations/jalandhar",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/jalandhar"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/pa-in/locations/jalandhar",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/jalandhar",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/jalandhar",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/jalandhar",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/locations/jalandhar",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/jalandhar"
+      }
+    }
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/jalandhar/kapurthala",
-    "lastModified": "2026-10-17T00:00:00.000Z",
+    "lastModified": "2026-11-24T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.7
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/jalandhar/kapurthala",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/jalandhar/kapurthala",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/jalandhar/kapurthala",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/locations/jalandhar/kapurthala",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/jalandhar/kapurthala"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/locations/jalandhar/kapurthala",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/jalandhar/kapurthala",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/jalandhar/kapurthala",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/jalandhar/kapurthala",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/locations/jalandhar/kapurthala",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/jalandhar/kapurthala"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/locations/jalandhar/kapurthala",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/jalandhar/kapurthala",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/jalandhar/kapurthala",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/jalandhar/kapurthala",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/locations/jalandhar/kapurthala",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/jalandhar/kapurthala"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/pa-in/locations/jalandhar/kapurthala",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/jalandhar/kapurthala",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/jalandhar/kapurthala",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/jalandhar/kapurthala",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/locations/jalandhar/kapurthala",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/jalandhar/kapurthala"
+      }
+    }
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/jalandhar/jalandhar-focal-point",
-    "lastModified": "2026-10-17T00:00:00.000Z",
+    "lastModified": "2026-11-24T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.7
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/jalandhar/jalandhar-focal-point",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/jalandhar/jalandhar-focal-point",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/jalandhar/jalandhar-focal-point",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/locations/jalandhar/jalandhar-focal-point",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/jalandhar/jalandhar-focal-point"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/locations/jalandhar/jalandhar-focal-point",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/jalandhar/jalandhar-focal-point",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/jalandhar/jalandhar-focal-point",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/jalandhar/jalandhar-focal-point",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/locations/jalandhar/jalandhar-focal-point",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/jalandhar/jalandhar-focal-point"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/locations/jalandhar/jalandhar-focal-point",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/jalandhar/jalandhar-focal-point",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/jalandhar/jalandhar-focal-point",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/jalandhar/jalandhar-focal-point",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/locations/jalandhar/jalandhar-focal-point",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/jalandhar/jalandhar-focal-point"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/pa-in/locations/jalandhar/jalandhar-focal-point",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/jalandhar/jalandhar-focal-point",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/jalandhar/jalandhar-focal-point",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/jalandhar/jalandhar-focal-point",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/locations/jalandhar/jalandhar-focal-point",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/jalandhar/jalandhar-focal-point"
+      }
+    }
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/jalandhar/phagwara-goraya",
-    "lastModified": "2026-10-17T00:00:00.000Z",
+    "lastModified": "2026-11-24T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.7
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/jalandhar/phagwara-goraya",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/jalandhar/phagwara-goraya",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/jalandhar/phagwara-goraya",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/locations/jalandhar/phagwara-goraya",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/jalandhar/phagwara-goraya"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/locations/jalandhar/phagwara-goraya",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/jalandhar/phagwara-goraya",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/jalandhar/phagwara-goraya",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/jalandhar/phagwara-goraya",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/locations/jalandhar/phagwara-goraya",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/jalandhar/phagwara-goraya"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/locations/jalandhar/phagwara-goraya",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/jalandhar/phagwara-goraya",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/jalandhar/phagwara-goraya",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/jalandhar/phagwara-goraya",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/locations/jalandhar/phagwara-goraya",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/jalandhar/phagwara-goraya"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/pa-in/locations/jalandhar/phagwara-goraya",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/jalandhar/phagwara-goraya",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/jalandhar/phagwara-goraya",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/jalandhar/phagwara-goraya",
+        "pa-IN": "https://www.vayasyaseva.com/pa-in/locations/jalandhar/phagwara-goraya",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/jalandhar/phagwara-goraya"
+      }
+    }
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/haridwar",
@@ -1451,81 +1907,373 @@
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/dehradun",
-    "lastModified": "2026-10-18T00:00:00.000Z",
+    "lastModified": "2026-11-24T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.8
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/dehradun",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/dehradun",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/dehradun",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/dehradun"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/locations/dehradun",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/dehradun",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/dehradun",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/dehradun",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/dehradun"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/locations/dehradun",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/dehradun",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/dehradun",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/dehradun",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/dehradun"
+      }
+    }
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/dehradun/selaqui",
-    "lastModified": "2026-10-18T00:00:00.000Z",
+    "lastModified": "2026-11-24T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.7
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/dehradun/selaqui",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/dehradun/selaqui",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/dehradun/selaqui",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/dehradun/selaqui"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-in/locations/dehradun/selaqui",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/dehradun/selaqui",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/dehradun/selaqui",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/dehradun/selaqui",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/dehradun/selaqui"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/hi-latn-in/locations/dehradun/selaqui",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/dehradun/selaqui",
+        "hi-IN": "https://www.vayasyaseva.com/hi-in/locations/dehradun/selaqui",
+        "hi-Latn-IN": "https://www.vayasyaseva.com/hi-latn-in/locations/dehradun/selaqui",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/dehradun/selaqui"
+      }
+    }
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam",
-    "lastModified": "2026-10-22T00:00:00.000Z",
+    "lastModified": "2026-11-24T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.8
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam",
+        "te-IN": "https://www.vayasyaseva.com/te-in/locations/visakhapatnam",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/te-in/locations/visakhapatnam",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam",
+        "te-IN": "https://www.vayasyaseva.com/te-in/locations/visakhapatnam",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam"
+      }
+    }
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam/parawada-pharma-city",
-    "lastModified": "2026-10-22T00:00:00.000Z",
+    "lastModified": "2026-11-24T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.7
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam/parawada-pharma-city",
+        "te-IN": "https://www.vayasyaseva.com/te-in/locations/visakhapatnam/parawada-pharma-city",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam/parawada-pharma-city"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/te-in/locations/visakhapatnam/parawada-pharma-city",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam/parawada-pharma-city",
+        "te-IN": "https://www.vayasyaseva.com/te-in/locations/visakhapatnam/parawada-pharma-city",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam/parawada-pharma-city"
+      }
+    }
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam/atchutapuram-rambilli",
-    "lastModified": "2026-10-22T00:00:00.000Z",
+    "lastModified": "2026-11-24T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.7
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam/atchutapuram-rambilli",
+        "te-IN": "https://www.vayasyaseva.com/te-in/locations/visakhapatnam/atchutapuram-rambilli",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam/atchutapuram-rambilli"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/te-in/locations/visakhapatnam/atchutapuram-rambilli",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam/atchutapuram-rambilli",
+        "te-IN": "https://www.vayasyaseva.com/te-in/locations/visakhapatnam/atchutapuram-rambilli",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam/atchutapuram-rambilli"
+      }
+    }
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam/duvvada-vsez",
-    "lastModified": "2026-10-22T00:00:00.000Z",
+    "lastModified": "2026-11-24T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.7
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam/duvvada-vsez",
+        "te-IN": "https://www.vayasyaseva.com/te-in/locations/visakhapatnam/duvvada-vsez",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam/duvvada-vsez"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/te-in/locations/visakhapatnam/duvvada-vsez",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam/duvvada-vsez",
+        "te-IN": "https://www.vayasyaseva.com/te-in/locations/visakhapatnam/duvvada-vsez",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam/duvvada-vsez"
+      }
+    }
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam/gajuwaka",
-    "lastModified": "2026-10-22T00:00:00.000Z",
+    "lastModified": "2026-11-24T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.7
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam/gajuwaka",
+        "te-IN": "https://www.vayasyaseva.com/te-in/locations/visakhapatnam/gajuwaka",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam/gajuwaka"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/te-in/locations/visakhapatnam/gajuwaka",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam/gajuwaka",
+        "te-IN": "https://www.vayasyaseva.com/te-in/locations/visakhapatnam/gajuwaka",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/visakhapatnam/gajuwaka"
+      }
+    }
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/hyderabad",
-    "lastModified": "2026-10-27T00:00:00.000Z",
+    "lastModified": "2026-11-24T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.8
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/hyderabad",
+        "te-IN": "https://www.vayasyaseva.com/te-in/locations/hyderabad",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/hyderabad"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/te-in/locations/hyderabad",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.8,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/hyderabad",
+        "te-IN": "https://www.vayasyaseva.com/te-in/locations/hyderabad",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/hyderabad"
+      }
+    }
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/hyderabad/patancheru-pashamylaram",
-    "lastModified": "2026-10-27T00:00:00.000Z",
+    "lastModified": "2026-11-24T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.7
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/hyderabad/patancheru-pashamylaram",
+        "te-IN": "https://www.vayasyaseva.com/te-in/locations/hyderabad/patancheru-pashamylaram",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/hyderabad/patancheru-pashamylaram"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/te-in/locations/hyderabad/patancheru-pashamylaram",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/hyderabad/patancheru-pashamylaram",
+        "te-IN": "https://www.vayasyaseva.com/te-in/locations/hyderabad/patancheru-pashamylaram",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/hyderabad/patancheru-pashamylaram"
+      }
+    }
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/hyderabad/jeedimetla-medchal",
-    "lastModified": "2026-10-27T00:00:00.000Z",
+    "lastModified": "2026-11-24T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.7
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/hyderabad/jeedimetla-medchal",
+        "te-IN": "https://www.vayasyaseva.com/te-in/locations/hyderabad/jeedimetla-medchal",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/hyderabad/jeedimetla-medchal"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/te-in/locations/hyderabad/jeedimetla-medchal",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/hyderabad/jeedimetla-medchal",
+        "te-IN": "https://www.vayasyaseva.com/te-in/locations/hyderabad/jeedimetla-medchal",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/hyderabad/jeedimetla-medchal"
+      }
+    }
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/hyderabad/cherlapally-nacharam",
-    "lastModified": "2026-10-27T00:00:00.000Z",
+    "lastModified": "2026-11-24T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.7
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/hyderabad/cherlapally-nacharam",
+        "te-IN": "https://www.vayasyaseva.com/te-in/locations/hyderabad/cherlapally-nacharam",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/hyderabad/cherlapally-nacharam"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/te-in/locations/hyderabad/cherlapally-nacharam",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/hyderabad/cherlapally-nacharam",
+        "te-IN": "https://www.vayasyaseva.com/te-in/locations/hyderabad/cherlapally-nacharam",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/hyderabad/cherlapally-nacharam"
+      }
+    }
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/hyderabad/genome-valley",
-    "lastModified": "2026-10-27T00:00:00.000Z",
+    "lastModified": "2026-11-24T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.7
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/hyderabad/genome-valley",
+        "te-IN": "https://www.vayasyaseva.com/te-in/locations/hyderabad/genome-valley",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/hyderabad/genome-valley"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/te-in/locations/hyderabad/genome-valley",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/hyderabad/genome-valley",
+        "te-IN": "https://www.vayasyaseva.com/te-in/locations/hyderabad/genome-valley",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/hyderabad/genome-valley"
+      }
+    }
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/locations/hyderabad/shamshabad-kothur",
-    "lastModified": "2026-10-27T00:00:00.000Z",
+    "lastModified": "2026-11-24T00:00:00.000Z",
     "changeFrequency": "monthly",
-    "priority": 0.7
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/hyderabad/shamshabad-kothur",
+        "te-IN": "https://www.vayasyaseva.com/te-in/locations/hyderabad/shamshabad-kothur",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/hyderabad/shamshabad-kothur"
+      }
+    }
+  },
+  {
+    "url": "https://www.vayasyaseva.com/te-in/locations/hyderabad/shamshabad-kothur",
+    "lastModified": "2026-11-24T00:00:00.000Z",
+    "changeFrequency": "monthly",
+    "priority": 0.7,
+    "alternates": {
+      "languages": {
+        "en-IN": "https://www.vayasyaseva.com/en-in/locations/hyderabad/shamshabad-kothur",
+        "te-IN": "https://www.vayasyaseva.com/te-in/locations/hyderabad/shamshabad-kothur",
+        "x-default": "https://www.vayasyaseva.com/en-in/locations/hyderabad/shamshabad-kothur"
+      }
+    }
   },
   {
     "url": "https://www.vayasyaseva.com/en-in/compliance",

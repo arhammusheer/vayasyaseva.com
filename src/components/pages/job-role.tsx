@@ -9,7 +9,7 @@ import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { JsonLd, webPageSchema } from "@/lib/structured-data";
 import { RELATED_ROLES, getJobRole, jobRoleLabels, jobRoles } from "@/content/pages/job-roles";
 import { jobsCopy } from "@/content/pages/jobs";
-import { copyIn, localePath, locales, localesOf, type Locale } from "@/lib/i18n";
+import { copyIn, localePath, locales, localesOf, type Locale, jobsLocale } from "@/lib/i18n";
 import type { JobRole } from "@/lib/talent-intake/rules";
 
 export const jobRolePath = (slug: JobRole) => `/jobs/${slug}`;
@@ -45,7 +45,7 @@ export function JobRolePage({ slug, locale }: { slug: string; locale: Locale }) 
   const t = copyIn(jobRoleLabels, locale, "job role pages");
   const url = localePath(jobRolePath(role.slug), locale);
   // Role names as /jobs lists them, so every row uses one naming.
-  const title = (r: JobRole) => jobsCopy[locale].work.find((w) => w.role === r)?.title ?? roleOrThrow(r, locale).name;
+  const title = (r: JobRole) => jobsCopy[jobsLocale(locale)].work.find((w) => w.role === r)?.title ?? roleOrThrow(r, locale).name;
   return (
     <>
       <JsonLd

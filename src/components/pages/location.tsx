@@ -19,6 +19,8 @@ import { localePath, localizeHref, locales, type Locale } from "@/lib/i18n";
 import { MARKET_IDS as MARKET_ORDER } from "@/markets/index";
 import { MarketList, type MarketItem } from "@/components/sections/market-list";
 import { PausedNotice } from "@/components/sections/paused-notice";
+import { StateReference } from "@/components/sections/state-reference";
+import { serviceMarketPath } from "@/content/service-markets";
 
 const pathOf = (p: LocationCopy) => (p.estate ? estatePath(p.cluster, p.estate) : locationPath(p.cluster));
 
@@ -32,6 +34,8 @@ const UI: Partial<Record<Locale, { crew: string; seeker: string; clients: string
   "en-IN": { areasLabel: "Areas we cover", crew: "Request a crew", seeker: "Looking for work?", clients: "Our experience includes work with", servicesLabel: "Crews we supply", services: ["Factory labour", "Loading and unloading", "Housekeeping and grounds"], faqHeading: "Questions.", moreFaqs: "More questions", and: "and" },
   "hi-IN": { areasLabel: "इलाके जहाँ हम काम करते हैं", crew: "कामगार माँगें", seeker: "काम चाहिए?", clients: "हमारे अनुभव में इनके साथ काम शामिल है", servicesLabel: "हमारी टीमें (अंग्रेज़ी में)", services: ["फ़ैक्टरी लेबर", "लोडिंग और अनलोडिंग", "हाउसकीपिंग और ग्राउंड्स"], faqHeading: "सवाल।", moreFaqs: "और सवाल (English)", and: "और" },
   "hi-Latn-IN": { areasLabel: "Ilaake jahan hum kaam karte hain", crew: "Workers maangein", seeker: "Kaam chahiye?", clients: "Hamare experience mein inke saath kaam", servicesLabel: "Hamari teams (English mein)", services: ["Factory labour", "Loading aur unloading", "Housekeeping aur grounds"], faqHeading: "Sawaal.", moreFaqs: "Aur sawaal (English)", and: "aur" },
+  "pa-IN": { areasLabel: "ਇਲਾਕੇ ਜਿੱਥੇ ਅਸੀਂ ਕੰਮ ਕਰਦੇ ਹਾਂ", crew: "ਕਾਮੇ ਮੰਗੋ", seeker: "ਕੰਮ ਚਾਹੀਦਾ ਹੈ?", clients: "ਸਾਡੇ ਤਜਰਬੇ ਵਿੱਚ ਇਨ੍ਹਾਂ ਨਾਲ ਕੰਮ ਸ਼ਾਮਲ ਹੈ", servicesLabel: "ਸਾਡੀਆਂ ਟੀਮਾਂ (ਅੰਗਰੇਜ਼ੀ ਵਿੱਚ)", services: ["ਫ਼ੈਕਟਰੀ ਲੇਬਰ", "ਲੋਡਿੰਗ ਅਤੇ ਅਨਲੋਡਿੰਗ", "ਹਾਊਸਕੀਪਿੰਗ ਅਤੇ ਗਰਾਊਂਡਜ਼"], faqHeading: "ਸਵਾਲ।", moreFaqs: "ਹੋਰ ਸਵਾਲ (English)", and: "ਅਤੇ" },
+  "te-IN": { areasLabel: "మేము పనిచేసే ప్రాంతాలు", crew: "కార్మికులను అడగండి", seeker: "పని కావాలా?", clients: "మా అనుభవంలో వీరితో చేసిన పని ఉంది", servicesLabel: "మా బృందాలు (ఇంగ్లీష్‌లో)", services: ["ఫ్యాక్టరీ లేబర్", "లోడింగ్ మరియు అన్‌లోడింగ్", "హౌస్‌కీపింగ్ మరియు గ్రౌండ్స్"], faqHeading: "ప్రశ్నలు.", moreFaqs: "మరిన్ని ప్రశ్నలు (English)", and: "మరియు" },
 };
 const uiIn = (locale: Locale) => UI[locale] ?? UI["en-IN"]!;
 
@@ -67,6 +71,8 @@ function areaLinks(areas: LocationCopy["areas"]) {
  * one to a visitor it reads as a job seeker (src/context/css.ts).
  */
 export function LocationPage({ page: source, locale = "en-IN" }: { page: LocationCopy; locale?: Locale }) {
+  // The registry builds a language only where the region's copy has it; never serve English under another language's URL.
+  if (locale !== "en-IN" && !source.translations?.[locale]) throw new Error(`${pathOf(source)} has no ${locale} translation; write it or remove ${locale} from LOCATION_LOCALES`);
   const page = locationCopyIn(source, locale);
   const ui = uiIn(locale);
   const path = pathOf(page);
@@ -170,15 +176,21 @@ export function LocationPage({ page: source, locale = "en-IN" }: { page: Locatio
             <nav aria-label={ui.servicesLabel} className="mt-8">
               <p className="text-sm text-muted-foreground">{ui.servicesLabel}</p>
               <ul className="link-row mt-2">
-                {SERVICE_HREFS.map((href, i) => (
+                {SERVICE_HREFS.map((base, i) => {
+                  // The service's own page for this market where it has one (housekeeping by city).
+                  const local = serviceMarketPath(base.split("/").pop() as "housekeeping", page.cluster);
+                  const href = linkable(local, "en-IN") ? local : base;
+                  return (
                   <li key={href}>
                     <Link href={href} className="text-link" hrefLang={englishOnly}>
                       {ui.services[i]} <ArrowUpRight size={18} aria-hidden="true" />
                     </Link>
                   </li>
-                ))}
+                  );
+                })}
               </ul>
             </nav>
+            <StateReference market={jobsMarket} locale={locale} />
           </div>
         </div>
       </Section>

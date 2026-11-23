@@ -1,4 +1,4 @@
-import type { Locale } from "@/lib/i18n";
+import type { JobsLocale } from "@/lib/i18n";
 import { QUICK_ANSWERS, type JobRole, type QuickQuestion } from "@/lib/talent-intake/rules";
 import { areaFilesUnder, formAreas, marketAreaAnswers, type JobsMarketId } from "@/markets/index";
 import { NO_FEE, SHIFTS_LINE } from "@/content/pages/jobs";
@@ -153,7 +153,7 @@ export interface QuickApplyCopy {
 }
 
 
-export const quickApplyCopy: Record<Locale, QuickApplyCopy> = {
+export const quickApplyCopy: Record<JobsLocale, QuickApplyCopy> = {
   "en-IN": {
     title: "Apply for Factory and Warehouse Work: Quick Form",
     description: "Apply for factory, packing, warehouse and ITI work. No fee to apply. Full 8-hour shifts. Tap a few answers, then your name and number.",

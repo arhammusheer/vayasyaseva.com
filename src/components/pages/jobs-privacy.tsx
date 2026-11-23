@@ -6,12 +6,12 @@ import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { BackToApply } from "@/components/jobs/back-to-apply";
 import { JsonLd, webPageSchema } from "@/lib/structured-data";
 import { jobsPrivacyCopy } from "@/content/pages/jobs-privacy";
-import { localePath, locales, type Locale } from "@/lib/i18n";
+import { localePath, locales, type Locale, jobsLocale } from "@/lib/i18n";
 
 const PATH = "/jobs/privacy";
 
 export function jobsPrivacyMetadata(locale: Locale) {
-  const t = jobsPrivacyCopy[locale];
+  const t = jobsPrivacyCopy[jobsLocale(locale)];
   return pageMetadata({
     title: { absolute: `${t.title} | Vayasya Seva` },
     description: t.description,
@@ -26,7 +26,7 @@ export function jobsPrivacyMetadata(locale: Locale) {
  * place on the jobs side that talks about data.
  */
 export function JobsPrivacyPage({ locale }: { locale: Locale }) {
-  const t = jobsPrivacyCopy[locale];
+  const t = jobsPrivacyCopy[jobsLocale(locale)];
   const url = localePath(PATH, locale);
   return (
     <>

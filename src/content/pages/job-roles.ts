@@ -67,7 +67,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "factory-helper",
       name: "Factory helper",
-      metaTitle: "Factory Helper Jobs: Line and Production Helper Work",
+      metaTitle: "Helper Job in Factory: Line and Production Helper",
       description: "Factory helper and production helper jobs: line work, material handling and packing. Pick your area when you apply. Full 8-hour shifts. Apply online, no fee.",
       heading: "Factory helper jobs.",
       lede: "Production helper work on the factory line, open to freshers and to anyone who has worked on a line.",
@@ -93,7 +93,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "packing",
       name: "Packing jobs",
-      metaTitle: "Packing Jobs: Pharma and FMCG Line Packing",
+      metaTitle: "Packing Job: Medicine, Pharma and FMCG Line Packing",
       description: "Packing jobs at pharma and FMCG plants: line packing, cartons, labelling and checks. Pick your area when you apply. Full 8-hour shifts. Apply online, no fee.",
       heading: "Packing jobs.",
       lede: "Packing, labelling and checks on factory lines, open to freshers and to people with packing experience.",
@@ -211,7 +211,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "data-entry-operator",
       name: "Data entry operator",
-      metaTitle: "Data Entry Operator Jobs (ERP, SAP)",
+      metaTitle: "Data Entry Job: Operator Vacancy, ERP and SAP",
       description: "Data entry operator (DEO) jobs: ERP and SAP entry for stores, dispatch and production. Pick your area when you apply. Full 8-hour shifts. No fee to apply.",
       heading: "Data entry operator jobs.",
       lede: "Computer entries in ERP systems such as SAP at factories and warehouses, for 12th pass or graduates who can type and use Excel.",
@@ -268,7 +268,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "iti-trades",
       name: "ITI trades",
-      metaTitle: "ITI Jobs: Welder, Fitter, Electrician",
+      metaTitle: "ITI Jobs 2026: Welder, Fitter, Electrician Vacancy",
       description: "Jobs for ITI welders, fitters and electricians: fabrication, installation and maintenance work. Pick your area when you apply. No fee to apply.",
       heading: "ITI jobs: welder, fitter, electrician.",
       lede: "Fabrication, installation and maintenance work at plants, for ITI pass in welder, fitter, electrician or a related trade.",
@@ -358,7 +358,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "fitter",
       name: "Fitter",
-      metaTitle: "Fitter Jobs: Maintenance and Machine Fitter",
+      metaTitle: "Fitter Job Vacancy: Maintenance and Machine Fitter",
       description: "Fitter jobs: maintenance, machine fitting and installation for ITI fitters. Pick your area when you apply. Full 8-hour shifts. No fee to apply.",
       heading: "Fitter jobs.",
       lede: "Mechanical maintenance and fitting at plants, for ITI fitters and maintenance helpers ready to move up.",
@@ -717,7 +717,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "factory-helper",
       name: "Factory helper",
-      metaTitle: "Factory Helper Job",
+      metaTitle: "Helper Job: Factory Line aur Production",
       description: "Factory helper aur production helper ki naukri: line ka kaam, maal uthana-rakhna aur packing. Apply karte waqt apna area chunein. Koi fee nahi.",
       heading: "Factory helper ki naukri.",
       lede: "Factory ki line par production helper ka kaam, fresher aur line par kaam kar chuke logon ke liye.",
@@ -861,7 +861,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "data-entry-operator",
       name: "Data entry operator",
-      metaTitle: "Data Entry Operator Job (ERP, SAP)",
+      metaTitle: "Data Entry Job: Operator Vacancy (ERP, SAP)",
       description: "Data entry operator (DEO) ki naukri: stores, dispatch, production ke liye ERP, SAP entry. Apply karte waqt apna area chunein. Koi fee nahi lagti.",
       heading: "Data entry operator ki naukri.",
       lede: "Factory aur warehouse mein SAP jaise ERP par computer entry, typing aur Excel jaanne wale 12th pass ya graduate ke liye.",

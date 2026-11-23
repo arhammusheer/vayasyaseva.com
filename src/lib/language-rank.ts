@@ -52,7 +52,7 @@ export { PICKER_TOP };
 const ALWAYS: Locale = "en-IN";
 
 /** Short codes for the order key in the picker variant's URL ("hi-hl-en"). */
-const KEY_CODES = { "en-IN": "en", "hi-IN": "hi", "hi-Latn-IN": "hl", "pa-IN": "pa", "kn-IN": "kn" } as const satisfies Record<Locale, string>;
+const KEY_CODES = { "en-IN": "en", "hi-IN": "hi", "hi-Latn-IN": "hl", "pa-IN": "pa", "kn-IN": "kn", "te-IN": "te" } as const satisfies Record<Locale, string>;
 const CODE_LOCALES = Object.fromEntries(Object.entries(KEY_CODES).map(([l, c]) => [c, l])) as Record<string, Locale>;
 
 /**

@@ -10,7 +10,7 @@ import { payBreakdown } from "@/content/pay";
 import { formatRupees } from "@/content/wages";
 import { isPaused, pageEntries } from "@/content/registry";
 import { PausedNotice } from "@/components/sections/paused-notice";
-import { localePath, locales, localesOf, nearestLocalePath, type Locale } from "@/lib/i18n";
+import { localePath, locales, localesOf, nearestLocalePath, type Locale, jobsLocale } from "@/lib/i18n";
 import { jobRolePath } from "@/components/pages/job-role";
 
 const clusterPath = (slug: string) => `/jobs/${slug}`;
@@ -90,7 +90,7 @@ function PayLine({ pay }: { pay: ClusterPay }) {
  */
 export function JobClusterPage({ slug, locale }: { slug: string; locale: Locale }) {
   const c = clusterOrThrow(slug, locale);
-  const jobs = jobsCopy[locale];
+  const jobs = jobsCopy[jobsLocale(locale)];
   const url = localePath(clusterPath(c.slug), locale);
   const paused = isPaused(clusterPath(c.slug), locale);
   return (

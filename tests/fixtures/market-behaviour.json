@@ -8361,226 +8361,259 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=UK|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=UK|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=UK|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=UT|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=UT|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=UT|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=UT|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=PB|accept=null": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=PB|accept=hi": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=PB|accept=kn": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=PB|accept=pa": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=KA|accept=null": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=KA|accept=hi": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=KA|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=KA|accept=pa": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=DL|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=DL|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=DL|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=DL|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=HR|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=HR|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=HR|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=HR|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=UP|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=UP|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=UP|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=UP|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=MH|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=MH|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=MH|accept=kn": [
       "kn-IN",
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=MH|accept=pa": [
       "pa-IN",
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=AP|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -8588,6 +8621,7 @@
       "kn-IN"
     ],
     "cluster=haridwar|region=AP|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -8595,6 +8629,7 @@
       "kn-IN"
     ],
     "cluster=haridwar|region=AP|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -8602,6 +8637,7 @@
       "pa-IN"
     ],
     "cluster=haridwar|region=AP|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -8613,30 +8649,35 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=OD|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=OD|accept=kn": [
       "kn-IN",
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=OD|accept=pa": [
       "pa-IN",
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=TS|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -8644,6 +8685,7 @@
       "kn-IN"
     ],
     "cluster=haridwar|region=TS|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -8651,6 +8693,7 @@
       "kn-IN"
     ],
     "cluster=haridwar|region=TS|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -8658,6 +8701,7 @@
       "pa-IN"
     ],
     "cluster=haridwar|region=TS|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -8665,6 +8709,7 @@
       "kn-IN"
     ],
     "cluster=haridwar|region=TG|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -8672,6 +8717,7 @@
       "kn-IN"
     ],
     "cluster=haridwar|region=TG|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -8679,6 +8725,7 @@
       "kn-IN"
     ],
     "cluster=haridwar|region=TG|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -8686,6 +8733,7 @@
       "pa-IN"
     ],
     "cluster=haridwar|region=TG|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -8697,254 +8745,291 @@
       "hi-IN",
       "hi-Latn-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=null|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=null|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=haridwar|region=null|accept=pa": [
       "pa-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=UK|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=UK|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=UK|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=UK|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=UT|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=UT|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=UT|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=UT|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=PB|accept=null": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=PB|accept=hi": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=PB|accept=kn": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=PB|accept=pa": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=KA|accept=null": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=KA|accept=hi": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=KA|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=KA|accept=pa": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=DL|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=DL|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=DL|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=DL|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=HR|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=HR|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=HR|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=HR|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=UP|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=UP|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=UP|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=UP|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=MH|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=MH|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=MH|accept=kn": [
       "kn-IN",
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=MH|accept=pa": [
       "pa-IN",
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=AP|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -8952,6 +9037,7 @@
       "kn-IN"
     ],
     "cluster=uttarakhand|region=AP|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -8959,6 +9045,7 @@
       "kn-IN"
     ],
     "cluster=uttarakhand|region=AP|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -8966,6 +9053,7 @@
       "pa-IN"
     ],
     "cluster=uttarakhand|region=AP|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -8977,30 +9065,35 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=OD|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=OD|accept=kn": [
       "kn-IN",
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=OD|accept=pa": [
       "pa-IN",
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=TS|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9008,6 +9101,7 @@
       "kn-IN"
     ],
     "cluster=uttarakhand|region=TS|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9015,6 +9109,7 @@
       "kn-IN"
     ],
     "cluster=uttarakhand|region=TS|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9022,6 +9117,7 @@
       "pa-IN"
     ],
     "cluster=uttarakhand|region=TS|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9029,6 +9125,7 @@
       "kn-IN"
     ],
     "cluster=uttarakhand|region=TG|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9036,6 +9133,7 @@
       "kn-IN"
     ],
     "cluster=uttarakhand|region=TG|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9043,6 +9141,7 @@
       "kn-IN"
     ],
     "cluster=uttarakhand|region=TG|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9050,6 +9149,7 @@
       "pa-IN"
     ],
     "cluster=uttarakhand|region=TG|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9061,254 +9161,291 @@
       "hi-IN",
       "hi-Latn-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=null|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=null|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=uttarakhand|region=null|accept=pa": [
       "pa-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=UK|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=UK|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=UK|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=UK|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=UT|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=UT|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=UT|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=UT|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=PB|accept=null": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=PB|accept=hi": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=PB|accept=kn": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=PB|accept=pa": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=KA|accept=null": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=KA|accept=hi": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=KA|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=KA|accept=pa": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=DL|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=DL|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=DL|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=DL|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=HR|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=HR|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=HR|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=HR|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=UP|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=UP|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=UP|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=UP|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=MH|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=MH|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=MH|accept=kn": [
       "kn-IN",
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=MH|accept=pa": [
       "pa-IN",
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=AP|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9316,6 +9453,7 @@
       "kn-IN"
     ],
     "cluster=delhi-ncr|region=AP|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9323,6 +9461,7 @@
       "kn-IN"
     ],
     "cluster=delhi-ncr|region=AP|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9330,6 +9469,7 @@
       "pa-IN"
     ],
     "cluster=delhi-ncr|region=AP|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9341,30 +9481,35 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=OD|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=OD|accept=kn": [
       "kn-IN",
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=OD|accept=pa": [
       "pa-IN",
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=TS|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9372,6 +9517,7 @@
       "kn-IN"
     ],
     "cluster=delhi-ncr|region=TS|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9379,6 +9525,7 @@
       "kn-IN"
     ],
     "cluster=delhi-ncr|region=TS|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9386,6 +9533,7 @@
       "pa-IN"
     ],
     "cluster=delhi-ncr|region=TS|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9393,6 +9541,7 @@
       "kn-IN"
     ],
     "cluster=delhi-ncr|region=TG|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9400,6 +9549,7 @@
       "kn-IN"
     ],
     "cluster=delhi-ncr|region=TG|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9407,6 +9557,7 @@
       "kn-IN"
     ],
     "cluster=delhi-ncr|region=TG|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9414,6 +9565,7 @@
       "pa-IN"
     ],
     "cluster=delhi-ncr|region=TG|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9425,254 +9577,291 @@
       "hi-IN",
       "hi-Latn-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=null|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=null|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=delhi-ncr|region=null|accept=pa": [
       "pa-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=UK|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=UK|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=UK|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=UK|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=UT|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=UT|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=UT|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=UT|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=PB|accept=null": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=PB|accept=hi": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=PB|accept=kn": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=PB|accept=pa": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=KA|accept=null": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=KA|accept=hi": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=KA|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=KA|accept=pa": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=DL|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=DL|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=DL|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=DL|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=HR|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=HR|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=HR|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=HR|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=UP|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=UP|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=UP|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=UP|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=MH|accept=null": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=MH|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "kn-IN",
       "en-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=MH|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=MH|accept=pa": [
       "pa-IN",
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
-      "hi-IN"
+      "hi-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=AP|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9680,6 +9869,7 @@
       "pa-IN"
     ],
     "cluster=bengaluru|region=AP|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9687,6 +9877,7 @@
       "pa-IN"
     ],
     "cluster=bengaluru|region=AP|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9694,6 +9885,7 @@
       "pa-IN"
     ],
     "cluster=bengaluru|region=AP|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9705,30 +9897,35 @@
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=OD|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "kn-IN",
       "en-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=OD|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=OD|accept=pa": [
       "pa-IN",
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
-      "hi-IN"
+      "hi-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=TS|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9736,6 +9933,7 @@
       "pa-IN"
     ],
     "cluster=bengaluru|region=TS|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9743,6 +9941,7 @@
       "pa-IN"
     ],
     "cluster=bengaluru|region=TS|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9750,6 +9949,7 @@
       "pa-IN"
     ],
     "cluster=bengaluru|region=TS|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9757,6 +9957,7 @@
       "kn-IN"
     ],
     "cluster=bengaluru|region=TG|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9764,6 +9965,7 @@
       "pa-IN"
     ],
     "cluster=bengaluru|region=TG|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9771,6 +9973,7 @@
       "pa-IN"
     ],
     "cluster=bengaluru|region=TG|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9778,6 +9981,7 @@
       "pa-IN"
     ],
     "cluster=bengaluru|region=TG|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -9789,254 +9993,291 @@
       "hi-IN",
       "hi-Latn-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=null|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=null|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=bengaluru|region=null|accept=pa": [
       "pa-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=UK|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=UK|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=UK|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=UK|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=UT|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=UT|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=UT|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=UT|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=PB|accept=null": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=PB|accept=hi": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=PB|accept=kn": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=PB|accept=pa": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=KA|accept=null": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=KA|accept=hi": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=KA|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=KA|accept=pa": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=DL|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=DL|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=DL|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=DL|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=HR|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=HR|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=HR|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=HR|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=UP|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=UP|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=UP|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=UP|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=MH|accept=null": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=MH|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "pa-IN",
       "en-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=MH|accept=kn": [
       "kn-IN",
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
-      "hi-IN"
+      "hi-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=MH|accept=pa": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=AP|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10044,6 +10285,7 @@
       "kn-IN"
     ],
     "cluster=jalandhar|region=AP|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10051,6 +10293,7 @@
       "kn-IN"
     ],
     "cluster=jalandhar|region=AP|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10058,6 +10301,7 @@
       "pa-IN"
     ],
     "cluster=jalandhar|region=AP|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10069,30 +10313,35 @@
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=OD|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "pa-IN",
       "en-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=OD|accept=kn": [
       "kn-IN",
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
-      "hi-IN"
+      "hi-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=OD|accept=pa": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=TS|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10100,6 +10349,7 @@
       "kn-IN"
     ],
     "cluster=jalandhar|region=TS|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10107,6 +10357,7 @@
       "kn-IN"
     ],
     "cluster=jalandhar|region=TS|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10114,6 +10365,7 @@
       "pa-IN"
     ],
     "cluster=jalandhar|region=TS|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10121,6 +10373,7 @@
       "kn-IN"
     ],
     "cluster=jalandhar|region=TG|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10128,6 +10381,7 @@
       "kn-IN"
     ],
     "cluster=jalandhar|region=TG|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10135,6 +10389,7 @@
       "kn-IN"
     ],
     "cluster=jalandhar|region=TG|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10142,6 +10397,7 @@
       "pa-IN"
     ],
     "cluster=jalandhar|region=TG|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10153,254 +10409,291 @@
       "hi-IN",
       "hi-Latn-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=null|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=null|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=jalandhar|region=null|accept=pa": [
       "pa-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=UK|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=UK|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=UK|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=UK|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=UT|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=UT|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=UT|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=UT|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=PB|accept=null": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=PB|accept=hi": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=PB|accept=kn": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=PB|accept=pa": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=KA|accept=null": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=KA|accept=hi": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=KA|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=KA|accept=pa": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=DL|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=DL|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=DL|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=DL|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=HR|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=HR|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=HR|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=HR|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=UP|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=UP|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=UP|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=UP|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=MH|accept=null": [
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=MH|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=MH|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=MH|accept=pa": [
       "pa-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=AP|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10408,6 +10701,7 @@
       "kn-IN"
     ],
     "cluster=saharanpur|region=AP|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10415,6 +10709,7 @@
       "kn-IN"
     ],
     "cluster=saharanpur|region=AP|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10422,6 +10717,7 @@
       "pa-IN"
     ],
     "cluster=saharanpur|region=AP|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10433,30 +10729,35 @@
       "hi-IN",
       "hi-Latn-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=OD|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=OD|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=OD|accept=pa": [
       "pa-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=TS|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10464,6 +10765,7 @@
       "kn-IN"
     ],
     "cluster=saharanpur|region=TS|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10471,6 +10773,7 @@
       "kn-IN"
     ],
     "cluster=saharanpur|region=TS|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10478,6 +10781,7 @@
       "pa-IN"
     ],
     "cluster=saharanpur|region=TS|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10485,6 +10789,7 @@
       "kn-IN"
     ],
     "cluster=saharanpur|region=TG|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10492,6 +10797,7 @@
       "kn-IN"
     ],
     "cluster=saharanpur|region=TG|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10499,6 +10805,7 @@
       "kn-IN"
     ],
     "cluster=saharanpur|region=TG|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10506,6 +10813,7 @@
       "pa-IN"
     ],
     "cluster=saharanpur|region=TG|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10517,254 +10825,291 @@
       "hi-IN",
       "hi-Latn-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=null|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=null|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=saharanpur|region=null|accept=pa": [
       "pa-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=UK|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=UK|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=UK|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=other|region=UK|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=UT|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=UT|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=UT|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=other|region=UT|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=PB|accept=null": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=PB|accept=hi": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=PB|accept=kn": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=PB|accept=pa": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=KA|accept=null": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=other|region=KA|accept=hi": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=other|region=KA|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=other|region=KA|accept=pa": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=other|region=DL|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=DL|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=DL|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=other|region=DL|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=HR|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=HR|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=HR|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=other|region=HR|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=UP|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=UP|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=UP|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=other|region=UP|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=MH|accept=null": [
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=MH|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=MH|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=other|region=MH|accept=pa": [
       "pa-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=AP|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10772,6 +11117,7 @@
       "kn-IN"
     ],
     "cluster=other|region=AP|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10779,6 +11125,7 @@
       "kn-IN"
     ],
     "cluster=other|region=AP|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10786,6 +11133,7 @@
       "pa-IN"
     ],
     "cluster=other|region=AP|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10797,30 +11145,35 @@
       "hi-IN",
       "hi-Latn-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=OD|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=OD|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=other|region=OD|accept=pa": [
       "pa-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=TS|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10828,6 +11181,7 @@
       "kn-IN"
     ],
     "cluster=other|region=TS|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10835,6 +11189,7 @@
       "kn-IN"
     ],
     "cluster=other|region=TS|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10842,6 +11197,7 @@
       "pa-IN"
     ],
     "cluster=other|region=TS|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10849,6 +11205,7 @@
       "kn-IN"
     ],
     "cluster=other|region=TG|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10856,6 +11213,7 @@
       "kn-IN"
     ],
     "cluster=other|region=TG|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10863,6 +11221,7 @@
       "kn-IN"
     ],
     "cluster=other|region=TG|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10870,6 +11229,7 @@
       "pa-IN"
     ],
     "cluster=other|region=TG|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -10881,254 +11241,291 @@
       "hi-IN",
       "hi-Latn-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=null|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=other|region=null|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=other|region=null|accept=pa": [
       "pa-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=UK|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=UK|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=UK|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=UK|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=UT|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=UT|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=UT|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=UT|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=PB|accept=null": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=PB|accept=hi": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=PB|accept=kn": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=PB|accept=pa": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=KA|accept=null": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=KA|accept=hi": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=KA|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=KA|accept=pa": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=DL|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=DL|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=DL|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=DL|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=HR|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=HR|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=HR|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=HR|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=UP|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=UP|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=UP|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=UP|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=MH|accept=null": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=MH|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "pa-IN",
       "en-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=MH|accept=kn": [
       "kn-IN",
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
-      "hi-IN"
+      "hi-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=MH|accept=pa": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=AP|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11136,6 +11533,7 @@
       "kn-IN"
     ],
     "cluster=punjab|region=AP|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11143,6 +11541,7 @@
       "kn-IN"
     ],
     "cluster=punjab|region=AP|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11150,6 +11549,7 @@
       "pa-IN"
     ],
     "cluster=punjab|region=AP|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11161,30 +11561,35 @@
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=OD|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "pa-IN",
       "en-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=OD|accept=kn": [
       "kn-IN",
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
-      "hi-IN"
+      "hi-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=OD|accept=pa": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=TS|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11192,6 +11597,7 @@
       "kn-IN"
     ],
     "cluster=punjab|region=TS|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11199,6 +11605,7 @@
       "kn-IN"
     ],
     "cluster=punjab|region=TS|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11206,6 +11613,7 @@
       "pa-IN"
     ],
     "cluster=punjab|region=TS|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11213,6 +11621,7 @@
       "kn-IN"
     ],
     "cluster=punjab|region=TG|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11220,6 +11629,7 @@
       "kn-IN"
     ],
     "cluster=punjab|region=TG|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11227,6 +11637,7 @@
       "kn-IN"
     ],
     "cluster=punjab|region=TG|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11234,6 +11645,7 @@
       "pa-IN"
     ],
     "cluster=punjab|region=TG|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11245,254 +11657,291 @@
       "hi-IN",
       "hi-Latn-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=null|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=null|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=punjab|region=null|accept=pa": [
       "pa-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=UK|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=UK|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=UK|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=UK|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=UT|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=UT|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=UT|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=UT|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=PB|accept=null": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=PB|accept=hi": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=PB|accept=kn": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=PB|accept=pa": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=KA|accept=null": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=KA|accept=hi": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=KA|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=KA|accept=pa": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=DL|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=DL|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=DL|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=DL|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=HR|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=HR|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=HR|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=HR|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=UP|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=UP|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=UP|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=UP|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=MH|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=MH|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=MH|accept=kn": [
       "kn-IN",
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=MH|accept=pa": [
       "pa-IN",
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=AP|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11500,6 +11949,7 @@
       "kn-IN"
     ],
     "cluster=dehradun|region=AP|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11507,6 +11957,7 @@
       "kn-IN"
     ],
     "cluster=dehradun|region=AP|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11514,6 +11965,7 @@
       "pa-IN"
     ],
     "cluster=dehradun|region=AP|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11525,30 +11977,35 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=OD|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=OD|accept=kn": [
       "kn-IN",
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=OD|accept=pa": [
       "pa-IN",
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=TS|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11556,6 +12013,7 @@
       "kn-IN"
     ],
     "cluster=dehradun|region=TS|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11563,6 +12021,7 @@
       "kn-IN"
     ],
     "cluster=dehradun|region=TS|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11570,6 +12029,7 @@
       "pa-IN"
     ],
     "cluster=dehradun|region=TS|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11577,6 +12037,7 @@
       "kn-IN"
     ],
     "cluster=dehradun|region=TG|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11584,6 +12045,7 @@
       "kn-IN"
     ],
     "cluster=dehradun|region=TG|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11591,6 +12053,7 @@
       "kn-IN"
     ],
     "cluster=dehradun|region=TG|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11598,6 +12061,7 @@
       "pa-IN"
     ],
     "cluster=dehradun|region=TG|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11609,254 +12073,291 @@
       "hi-IN",
       "hi-Latn-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=null|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=null|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=dehradun|region=null|accept=pa": [
       "pa-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=UK|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=UK|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=UK|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=UK|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=UT|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=UT|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=UT|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=UT|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=PB|accept=null": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=PB|accept=hi": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=PB|accept=kn": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=PB|accept=pa": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=KA|accept=null": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=KA|accept=hi": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=KA|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=KA|accept=pa": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=DL|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=DL|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=DL|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=DL|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=HR|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=HR|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=HR|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=HR|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=UP|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=UP|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=UP|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=UP|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=MH|accept=null": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=MH|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "pa-IN",
       "en-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=MH|accept=kn": [
       "kn-IN",
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
-      "hi-IN"
+      "hi-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=MH|accept=pa": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=AP|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11864,6 +12365,7 @@
       "kn-IN"
     ],
     "cluster=kapurthala|region=AP|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11871,6 +12373,7 @@
       "kn-IN"
     ],
     "cluster=kapurthala|region=AP|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11878,6 +12381,7 @@
       "pa-IN"
     ],
     "cluster=kapurthala|region=AP|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11889,30 +12393,35 @@
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=OD|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "pa-IN",
       "en-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=OD|accept=kn": [
       "kn-IN",
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
-      "hi-IN"
+      "hi-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=OD|accept=pa": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=TS|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11920,6 +12429,7 @@
       "kn-IN"
     ],
     "cluster=kapurthala|region=TS|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11927,6 +12437,7 @@
       "kn-IN"
     ],
     "cluster=kapurthala|region=TS|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11934,6 +12445,7 @@
       "pa-IN"
     ],
     "cluster=kapurthala|region=TS|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11941,6 +12453,7 @@
       "kn-IN"
     ],
     "cluster=kapurthala|region=TG|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11948,6 +12461,7 @@
       "kn-IN"
     ],
     "cluster=kapurthala|region=TG|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11955,6 +12469,7 @@
       "kn-IN"
     ],
     "cluster=kapurthala|region=TG|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11962,6 +12477,7 @@
       "pa-IN"
     ],
     "cluster=kapurthala|region=TG|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -11973,33 +12489,38 @@
       "hi-IN",
       "hi-Latn-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=null|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=null|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=kapurthala|region=null|accept=pa": [
       "pa-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=visakhapatnam|region=UK|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12007,6 +12528,7 @@
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12015,6 +12537,7 @@
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=visakhapatnam|region=UK|accept=pa": [
@@ -12022,12 +12545,14 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=visakhapatnam|region=UT|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12035,6 +12560,7 @@
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12043,6 +12569,7 @@
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=visakhapatnam|region=UT|accept=pa": [
@@ -12050,6 +12577,7 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=visakhapatnam|region=PB|accept=null": [
@@ -12057,6 +12585,7 @@
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=visakhapatnam|region=PB|accept=hi": [
@@ -12064,6 +12593,7 @@
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=visakhapatnam|region=PB|accept=kn": [
@@ -12071,13 +12601,15 @@
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=visakhapatnam|region=PB|accept=pa": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=visakhapatnam|region=KA|accept=null": [
@@ -12085,6 +12617,7 @@
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=visakhapatnam|region=KA|accept=hi": [
@@ -12092,6 +12625,7 @@
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=visakhapatnam|region=KA|accept=kn": [
@@ -12099,6 +12633,7 @@
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=visakhapatnam|region=KA|accept=pa": [
@@ -12106,12 +12641,14 @@
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=visakhapatnam|region=DL|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12119,6 +12656,7 @@
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12127,6 +12665,7 @@
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=visakhapatnam|region=DL|accept=pa": [
@@ -12134,12 +12673,14 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=visakhapatnam|region=HR|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12147,6 +12688,7 @@
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12155,6 +12697,7 @@
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=visakhapatnam|region=HR|accept=pa": [
@@ -12162,12 +12705,14 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=visakhapatnam|region=UP|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12175,6 +12720,7 @@
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12183,6 +12729,7 @@
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=visakhapatnam|region=UP|accept=pa": [
@@ -12190,9 +12737,11 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=visakhapatnam|region=MH|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12202,12 +12751,14 @@
     "cluster=visakhapatnam|region=MH|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
+      "te-IN",
       "en-IN",
       "pa-IN",
       "kn-IN"
     ],
     "cluster=visakhapatnam|region=MH|accept=kn": [
       "kn-IN",
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12215,12 +12766,14 @@
     ],
     "cluster=visakhapatnam|region=MH|accept=pa": [
       "pa-IN",
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
       "kn-IN"
     ],
     "cluster=visakhapatnam|region=AP|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12228,6 +12781,7 @@
       "kn-IN"
     ],
     "cluster=visakhapatnam|region=AP|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12235,6 +12789,7 @@
       "kn-IN"
     ],
     "cluster=visakhapatnam|region=AP|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12242,6 +12797,7 @@
       "pa-IN"
     ],
     "cluster=visakhapatnam|region=AP|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12249,6 +12805,7 @@
       "kn-IN"
     ],
     "cluster=visakhapatnam|region=OD|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12258,12 +12815,14 @@
     "cluster=visakhapatnam|region=OD|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
+      "te-IN",
       "en-IN",
       "pa-IN",
       "kn-IN"
     ],
     "cluster=visakhapatnam|region=OD|accept=kn": [
       "kn-IN",
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12271,12 +12830,14 @@
     ],
     "cluster=visakhapatnam|region=OD|accept=pa": [
       "pa-IN",
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
       "kn-IN"
     ],
     "cluster=visakhapatnam|region=TS|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12284,6 +12845,7 @@
       "kn-IN"
     ],
     "cluster=visakhapatnam|region=TS|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12291,6 +12853,7 @@
       "kn-IN"
     ],
     "cluster=visakhapatnam|region=TS|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12298,6 +12861,7 @@
       "pa-IN"
     ],
     "cluster=visakhapatnam|region=TS|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12305,6 +12869,7 @@
       "kn-IN"
     ],
     "cluster=visakhapatnam|region=TG|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12312,6 +12877,7 @@
       "kn-IN"
     ],
     "cluster=visakhapatnam|region=TG|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12319,6 +12885,7 @@
       "kn-IN"
     ],
     "cluster=visakhapatnam|region=TG|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12326,6 +12893,7 @@
       "pa-IN"
     ],
     "cluster=visakhapatnam|region=TG|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12336,6 +12904,7 @@
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12343,6 +12912,7 @@
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12351,6 +12921,7 @@
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=visakhapatnam|region=null|accept=pa": [
@@ -12358,12 +12929,14 @@
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=andhra-pradesh|region=UK|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12371,6 +12944,7 @@
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12379,6 +12953,7 @@
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=andhra-pradesh|region=UK|accept=pa": [
@@ -12386,12 +12961,14 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=andhra-pradesh|region=UT|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12399,6 +12976,7 @@
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12407,6 +12985,7 @@
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=andhra-pradesh|region=UT|accept=pa": [
@@ -12414,6 +12993,7 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=andhra-pradesh|region=PB|accept=null": [
@@ -12421,6 +13001,7 @@
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=andhra-pradesh|region=PB|accept=hi": [
@@ -12428,6 +13009,7 @@
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=andhra-pradesh|region=PB|accept=kn": [
@@ -12435,13 +13017,15 @@
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=andhra-pradesh|region=PB|accept=pa": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=andhra-pradesh|region=KA|accept=null": [
@@ -12449,6 +13033,7 @@
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=andhra-pradesh|region=KA|accept=hi": [
@@ -12456,6 +13041,7 @@
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=andhra-pradesh|region=KA|accept=kn": [
@@ -12463,6 +13049,7 @@
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=andhra-pradesh|region=KA|accept=pa": [
@@ -12470,12 +13057,14 @@
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=andhra-pradesh|region=DL|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12483,6 +13072,7 @@
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12491,6 +13081,7 @@
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=andhra-pradesh|region=DL|accept=pa": [
@@ -12498,12 +13089,14 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=andhra-pradesh|region=HR|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12511,6 +13104,7 @@
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12519,6 +13113,7 @@
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=andhra-pradesh|region=HR|accept=pa": [
@@ -12526,12 +13121,14 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=andhra-pradesh|region=UP|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12539,6 +13136,7 @@
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12547,6 +13145,7 @@
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=andhra-pradesh|region=UP|accept=pa": [
@@ -12554,9 +13153,11 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=andhra-pradesh|region=MH|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12566,12 +13167,14 @@
     "cluster=andhra-pradesh|region=MH|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
+      "te-IN",
       "en-IN",
       "pa-IN",
       "kn-IN"
     ],
     "cluster=andhra-pradesh|region=MH|accept=kn": [
       "kn-IN",
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12579,12 +13182,14 @@
     ],
     "cluster=andhra-pradesh|region=MH|accept=pa": [
       "pa-IN",
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
       "kn-IN"
     ],
     "cluster=andhra-pradesh|region=AP|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12592,6 +13197,7 @@
       "kn-IN"
     ],
     "cluster=andhra-pradesh|region=AP|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12599,6 +13205,7 @@
       "kn-IN"
     ],
     "cluster=andhra-pradesh|region=AP|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12606,6 +13213,7 @@
       "pa-IN"
     ],
     "cluster=andhra-pradesh|region=AP|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12613,6 +13221,7 @@
       "kn-IN"
     ],
     "cluster=andhra-pradesh|region=OD|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12622,12 +13231,14 @@
     "cluster=andhra-pradesh|region=OD|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
+      "te-IN",
       "en-IN",
       "pa-IN",
       "kn-IN"
     ],
     "cluster=andhra-pradesh|region=OD|accept=kn": [
       "kn-IN",
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12635,12 +13246,14 @@
     ],
     "cluster=andhra-pradesh|region=OD|accept=pa": [
       "pa-IN",
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
       "kn-IN"
     ],
     "cluster=andhra-pradesh|region=TS|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12648,6 +13261,7 @@
       "kn-IN"
     ],
     "cluster=andhra-pradesh|region=TS|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12655,6 +13269,7 @@
       "kn-IN"
     ],
     "cluster=andhra-pradesh|region=TS|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12662,6 +13277,7 @@
       "pa-IN"
     ],
     "cluster=andhra-pradesh|region=TS|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12669,6 +13285,7 @@
       "kn-IN"
     ],
     "cluster=andhra-pradesh|region=TG|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12676,6 +13293,7 @@
       "kn-IN"
     ],
     "cluster=andhra-pradesh|region=TG|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12683,6 +13301,7 @@
       "kn-IN"
     ],
     "cluster=andhra-pradesh|region=TG|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12690,6 +13309,7 @@
       "pa-IN"
     ],
     "cluster=andhra-pradesh|region=TG|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12700,6 +13320,7 @@
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12707,6 +13328,7 @@
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12715,6 +13337,7 @@
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=andhra-pradesh|region=null|accept=pa": [
@@ -12722,12 +13345,14 @@
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=hyderabad|region=UK|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12735,6 +13360,7 @@
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12743,6 +13369,7 @@
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=hyderabad|region=UK|accept=pa": [
@@ -12750,12 +13377,14 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=hyderabad|region=UT|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12763,6 +13392,7 @@
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12771,6 +13401,7 @@
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=hyderabad|region=UT|accept=pa": [
@@ -12778,6 +13409,7 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=hyderabad|region=PB|accept=null": [
@@ -12785,6 +13417,7 @@
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=hyderabad|region=PB|accept=hi": [
@@ -12792,6 +13425,7 @@
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=hyderabad|region=PB|accept=kn": [
@@ -12799,13 +13433,15 @@
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=hyderabad|region=PB|accept=pa": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=hyderabad|region=KA|accept=null": [
@@ -12813,6 +13449,7 @@
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=hyderabad|region=KA|accept=hi": [
@@ -12820,6 +13457,7 @@
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=hyderabad|region=KA|accept=kn": [
@@ -12827,6 +13465,7 @@
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=hyderabad|region=KA|accept=pa": [
@@ -12834,12 +13473,14 @@
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=hyderabad|region=DL|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12847,6 +13488,7 @@
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12855,6 +13497,7 @@
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=hyderabad|region=DL|accept=pa": [
@@ -12862,12 +13505,14 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=hyderabad|region=HR|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12875,6 +13520,7 @@
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12883,6 +13529,7 @@
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=hyderabad|region=HR|accept=pa": [
@@ -12890,12 +13537,14 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=hyderabad|region=UP|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12903,6 +13552,7 @@
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -12911,6 +13561,7 @@
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=hyderabad|region=UP|accept=pa": [
@@ -12918,9 +13569,11 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=hyderabad|region=MH|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12930,12 +13583,14 @@
     "cluster=hyderabad|region=MH|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
+      "te-IN",
       "en-IN",
       "pa-IN",
       "kn-IN"
     ],
     "cluster=hyderabad|region=MH|accept=kn": [
       "kn-IN",
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12943,12 +13598,14 @@
     ],
     "cluster=hyderabad|region=MH|accept=pa": [
       "pa-IN",
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
       "kn-IN"
     ],
     "cluster=hyderabad|region=AP|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12956,6 +13613,7 @@
       "kn-IN"
     ],
     "cluster=hyderabad|region=AP|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12963,6 +13621,7 @@
       "kn-IN"
     ],
     "cluster=hyderabad|region=AP|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12970,6 +13629,7 @@
       "pa-IN"
     ],
     "cluster=hyderabad|region=AP|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12977,6 +13637,7 @@
       "kn-IN"
     ],
     "cluster=hyderabad|region=OD|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12986,12 +13647,14 @@
     "cluster=hyderabad|region=OD|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
+      "te-IN",
       "en-IN",
       "pa-IN",
       "kn-IN"
     ],
     "cluster=hyderabad|region=OD|accept=kn": [
       "kn-IN",
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -12999,12 +13662,14 @@
     ],
     "cluster=hyderabad|region=OD|accept=pa": [
       "pa-IN",
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
       "kn-IN"
     ],
     "cluster=hyderabad|region=TS|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13012,6 +13677,7 @@
       "kn-IN"
     ],
     "cluster=hyderabad|region=TS|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13019,6 +13685,7 @@
       "kn-IN"
     ],
     "cluster=hyderabad|region=TS|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13026,6 +13693,7 @@
       "pa-IN"
     ],
     "cluster=hyderabad|region=TS|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13033,6 +13701,7 @@
       "kn-IN"
     ],
     "cluster=hyderabad|region=TG|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13040,6 +13709,7 @@
       "kn-IN"
     ],
     "cluster=hyderabad|region=TG|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13047,6 +13717,7 @@
       "kn-IN"
     ],
     "cluster=hyderabad|region=TG|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13054,6 +13725,7 @@
       "pa-IN"
     ],
     "cluster=hyderabad|region=TG|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13064,6 +13736,7 @@
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -13071,6 +13744,7 @@
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -13079,6 +13753,7 @@
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=hyderabad|region=null|accept=pa": [
@@ -13086,12 +13761,14 @@
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=telangana|region=UK|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -13099,6 +13776,7 @@
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -13107,6 +13785,7 @@
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=telangana|region=UK|accept=pa": [
@@ -13114,12 +13793,14 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=telangana|region=UT|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -13127,6 +13808,7 @@
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -13135,6 +13817,7 @@
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=telangana|region=UT|accept=pa": [
@@ -13142,6 +13825,7 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=telangana|region=PB|accept=null": [
@@ -13149,6 +13833,7 @@
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=telangana|region=PB|accept=hi": [
@@ -13156,6 +13841,7 @@
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=telangana|region=PB|accept=kn": [
@@ -13163,13 +13849,15 @@
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=telangana|region=PB|accept=pa": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=telangana|region=KA|accept=null": [
@@ -13177,6 +13865,7 @@
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=telangana|region=KA|accept=hi": [
@@ -13184,6 +13873,7 @@
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=telangana|region=KA|accept=kn": [
@@ -13191,6 +13881,7 @@
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=telangana|region=KA|accept=pa": [
@@ -13198,12 +13889,14 @@
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=telangana|region=DL|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -13211,6 +13904,7 @@
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -13219,6 +13913,7 @@
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=telangana|region=DL|accept=pa": [
@@ -13226,12 +13921,14 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=telangana|region=HR|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -13239,6 +13936,7 @@
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -13247,6 +13945,7 @@
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=telangana|region=HR|accept=pa": [
@@ -13254,12 +13953,14 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=telangana|region=UP|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -13267,6 +13968,7 @@
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -13275,6 +13977,7 @@
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=telangana|region=UP|accept=pa": [
@@ -13282,9 +13985,11 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=telangana|region=MH|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13294,12 +13999,14 @@
     "cluster=telangana|region=MH|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
+      "te-IN",
       "en-IN",
       "pa-IN",
       "kn-IN"
     ],
     "cluster=telangana|region=MH|accept=kn": [
       "kn-IN",
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13307,12 +14014,14 @@
     ],
     "cluster=telangana|region=MH|accept=pa": [
       "pa-IN",
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
       "kn-IN"
     ],
     "cluster=telangana|region=AP|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13320,6 +14029,7 @@
       "kn-IN"
     ],
     "cluster=telangana|region=AP|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13327,6 +14037,7 @@
       "kn-IN"
     ],
     "cluster=telangana|region=AP|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13334,6 +14045,7 @@
       "pa-IN"
     ],
     "cluster=telangana|region=AP|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13341,6 +14053,7 @@
       "kn-IN"
     ],
     "cluster=telangana|region=OD|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13350,12 +14063,14 @@
     "cluster=telangana|region=OD|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
+      "te-IN",
       "en-IN",
       "pa-IN",
       "kn-IN"
     ],
     "cluster=telangana|region=OD|accept=kn": [
       "kn-IN",
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13363,12 +14078,14 @@
     ],
     "cluster=telangana|region=OD|accept=pa": [
       "pa-IN",
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
       "kn-IN"
     ],
     "cluster=telangana|region=TS|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13376,6 +14093,7 @@
       "kn-IN"
     ],
     "cluster=telangana|region=TS|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13383,6 +14101,7 @@
       "kn-IN"
     ],
     "cluster=telangana|region=TS|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13390,6 +14109,7 @@
       "pa-IN"
     ],
     "cluster=telangana|region=TS|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13397,6 +14117,7 @@
       "kn-IN"
     ],
     "cluster=telangana|region=TG|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13404,6 +14125,7 @@
       "kn-IN"
     ],
     "cluster=telangana|region=TG|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13411,6 +14133,7 @@
       "kn-IN"
     ],
     "cluster=telangana|region=TG|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13418,6 +14141,7 @@
       "pa-IN"
     ],
     "cluster=telangana|region=TG|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13428,6 +14152,7 @@
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -13435,6 +14160,7 @@
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
+      "te-IN",
       "pa-IN",
       "kn-IN"
     ],
@@ -13443,6 +14169,7 @@
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
+      "te-IN",
       "pa-IN"
     ],
     "cluster=telangana|region=null|accept=pa": [
@@ -13450,6 +14177,7 @@
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
+      "te-IN",
       "kn-IN"
     ],
     "cluster=null|region=UK|accept=null": [
@@ -13457,226 +14185,259 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=UK|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=UK|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=null|region=UK|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=UT|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=UT|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=UT|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=null|region=UT|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=PB|accept=null": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=PB|accept=hi": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=PB|accept=kn": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=PB|accept=pa": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=KA|accept=null": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=null|region=KA|accept=hi": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=null|region=KA|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=null|region=KA|accept=pa": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=null|region=DL|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=DL|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=DL|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=null|region=DL|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=HR|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=HR|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=HR|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=null|region=HR|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=UP|accept=null": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=UP|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=UP|accept=kn": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "kn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=null|region=UP|accept=pa": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=MH|accept=null": [
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=MH|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=MH|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=null|region=MH|accept=pa": [
       "pa-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=AP|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13684,6 +14445,7 @@
       "kn-IN"
     ],
     "cluster=null|region=AP|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13691,6 +14453,7 @@
       "kn-IN"
     ],
     "cluster=null|region=AP|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13698,6 +14461,7 @@
       "pa-IN"
     ],
     "cluster=null|region=AP|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13709,30 +14473,35 @@
       "hi-IN",
       "hi-Latn-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=OD|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=OD|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=null|region=OD|accept=pa": [
       "pa-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=TS|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13740,6 +14509,7 @@
       "kn-IN"
     ],
     "cluster=null|region=TS|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13747,6 +14517,7 @@
       "kn-IN"
     ],
     "cluster=null|region=TS|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13754,6 +14525,7 @@
       "pa-IN"
     ],
     "cluster=null|region=TS|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13761,6 +14533,7 @@
       "kn-IN"
     ],
     "cluster=null|region=TG|accept=null": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13768,6 +14541,7 @@
       "kn-IN"
     ],
     "cluster=null|region=TG|accept=hi": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13775,6 +14549,7 @@
       "kn-IN"
     ],
     "cluster=null|region=TG|accept=kn": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13782,6 +14557,7 @@
       "pa-IN"
     ],
     "cluster=null|region=TG|accept=pa": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13793,28 +14569,32 @@
       "hi-IN",
       "hi-Latn-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=null|accept=hi": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "cluster=null|region=null|accept=kn": [
       "kn-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "cluster=null|region=null|accept=pa": [
       "pa-IN",
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ]
   },
   "rankLocalesByIntent": {
@@ -13823,72 +14603,83 @@
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "uttarakhand": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "delhi-ncr": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "bengaluru": [
       "kn-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
-      "pa-IN"
+      "pa-IN",
+      "te-IN"
     ],
     "jalandhar": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "saharanpur": [
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "other": [
       "en-IN",
       "hi-IN",
       "hi-Latn-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "punjab": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "dehradun": [
       "hi-IN",
       "hi-Latn-IN",
       "en-IN",
       "pa-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "kapurthala": [
       "pa-IN",
       "hi-Latn-IN",
       "en-IN",
       "hi-IN",
-      "kn-IN"
+      "kn-IN",
+      "te-IN"
     ],
     "visakhapatnam": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13896,6 +14687,7 @@
       "kn-IN"
     ],
     "andhra-pradesh": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13903,6 +14695,7 @@
       "kn-IN"
     ],
     "hyderabad": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -13910,6 +14703,7 @@
       "kn-IN"
     ],
     "telangana": [
+      "te-IN",
       "en-IN",
       "hi-Latn-IN",
       "hi-IN",
@@ -14908,6 +15702,19 @@
         "telangana": "ತೆಲಂಗಾಣದಾದ್ಯಂತ ಉದ್ಯೋಗ",
         "uttarakhand": "ಉತ್ತರಾಖಂಡದಾದ್ಯಂತ ಉದ್ಯೋಗ",
         "visakhapatnam": "ವಿಶಾಖಪಟ್ಟಣದಲ್ಲಿ ಉದ್ಯೋಗ"
+      },
+      "te-IN": {
+        "andhra-pradesh": "ఆంధ్రప్రదేశ్ అంతటా ఉద్యోగాలు",
+        "bengaluru": "బెంగళూరులో ఉద్యోగాలు",
+        "dehradun": "డెహ్రాడూన్‌లో ఉద్యోగాలు",
+        "haridwar": "హరిద్వార్‌లో ఉద్యోగాలు",
+        "hyderabad": "హైదరాబాద్‌లో ఉద్యోగాలు",
+        "jalandhar": "జలంధర్‌లో ఉద్యోగాలు",
+        "kapurthala": "కపుర్తలా మరియు ఫగ్వారాలో ఉద్యోగాలు",
+        "punjab": "పంజాబ్ అంతటా ఉద్యోగాలు",
+        "telangana": "తెలంగాణ అంతటా ఉద్యోగాలు",
+        "uttarakhand": "ఉత్తరాఖండ్ అంతటా ఉద్యోగాలు",
+        "visakhapatnam": "విశాఖపట్నంలో ఉద్యోగాలు"
       }
     },
     "clusterNames": {
@@ -14957,22 +15764,26 @@
       "visakhapatnam": {
         "en-IN": "Visakhapatnam",
         "hi-IN": "विशाखापत्तनम",
-        "hi-Latn-IN": "Visakhapatnam"
+        "hi-Latn-IN": "Visakhapatnam",
+        "te-IN": "విశాఖపట్నం"
       },
       "andhra-pradesh": {
         "en-IN": "Andhra Pradesh",
         "hi-IN": "आंध्र प्रदेश",
-        "hi-Latn-IN": "Andhra Pradesh"
+        "hi-Latn-IN": "Andhra Pradesh",
+        "te-IN": "ఆంధ్రప్రదేశ్"
       },
       "hyderabad": {
         "en-IN": "Hyderabad",
         "hi-IN": "हैदराबाद",
-        "hi-Latn-IN": "Hyderabad"
+        "hi-Latn-IN": "Hyderabad",
+        "te-IN": "హైదరాబాద్"
       },
       "telangana": {
         "en-IN": "Telangana",
         "hi-IN": "तेलंगाना",
-        "hi-Latn-IN": "Telangana"
+        "hi-Latn-IN": "Telangana",
+        "te-IN": "తెలంగాణ"
       }
     },
     "quickSwitch": {
@@ -15017,24 +15828,24 @@
         "en-IN"
       ],
       "visakhapatnam": [
+        "te-IN",
         "en-IN",
-        "hi-Latn-IN",
-        "hi-IN"
+        "hi-Latn-IN"
       ],
       "andhra-pradesh": [
+        "te-IN",
         "en-IN",
-        "hi-Latn-IN",
-        "hi-IN"
+        "hi-Latn-IN"
       ],
       "hyderabad": [
+        "te-IN",
         "en-IN",
-        "hi-Latn-IN",
-        "hi-IN"
+        "hi-Latn-IN"
       ],
       "telangana": [
+        "te-IN",
         "en-IN",
-        "hi-Latn-IN",
-        "hi-IN"
+        "hi-Latn-IN"
       ]
     }
   },

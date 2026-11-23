@@ -59,7 +59,7 @@ export function contextTables(): ContextTables {
 }
 
 /** Locale tag → the two-letter code in the boot data (and the picker's order keys). */
-export const LOCALE_CODES = { "en-IN": "en", "hi-IN": "hi", "hi-Latn-IN": "hl", "pa-IN": "pa", "kn-IN": "kn" } as const satisfies Record<Locale, string>;
+export const LOCALE_CODES = { "en-IN": "en", "hi-IN": "hi", "hi-Latn-IN": "hl", "pa-IN": "pa", "kn-IN": "kn", "te-IN": "te" } as const satisfies Record<Locale, string>;
 
 /** Session length: 30 idle minutes (mobile browsers keep tabs, and their sessionStorage, for weeks). */
 export const SESSION_IDLE_MS = 30 * 60 * 1000;

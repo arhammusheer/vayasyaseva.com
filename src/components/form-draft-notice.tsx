@@ -5,6 +5,7 @@ const COPY = {
   "hi-IN": { saved: "इस टैब में सेव है।", restored: "आपका अधूरा फ़ॉर्म वापस आ गया है।", resume: "जारी रखें", clear: "ड्राफ़्ट हटाएँ", files: "फ़ाइलें फिर से जोड़ें।" },
   "hi-Latn-IN": { saved: "Is tab mein save hai.", restored: "Aapka adhoora form wapas aa gaya hai.", resume: "Jaari rakhein", clear: "Draft hataayein", files: "Files phir se jodein." },
   "kn-IN": { saved: "ಈ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ಉಳಿಸಲಾಗಿದೆ.", restored: "ನಿಮ್ಮ ಅಪೂರ್ಣ ಫಾರ್ಮ್ ಮರಳಿ ಬಂದಿದೆ.", resume: "ಮುಂದುವರಿಸಿ", clear: "ಡ್ರಾಫ್ಟ್ ಅಳಿಸಿ", files: "ದಯವಿಟ್ಟು ನಿಮ್ಮ ಫೈಲ್‌ಗಳನ್ನು ಮತ್ತೆ ಸೇರಿಸಿ." },
+  "te-IN": { saved: "ఈ ట్యాబ్‌లో సేవ్ అయింది.", restored: "మీరు పూర్తి చేయని ఫారం తిరిగి వచ్చింది.", resume: "కొనసాగించండి", clear: "డ్రాఫ్ట్ తీసివేయండి", files: "దయచేసి మీ ఫైళ్లను మళ్లీ జోడించండి." },
   "pa-IN": { saved: "ਇਸ ਟੈਬ ਵਿੱਚ ਸੇਵ ਹੈ।", restored: "ਤੁਹਾਡਾ ਅਧੂਰਾ ਫ਼ਾਰਮ ਵਾਪਸ ਆ ਗਿਆ ਹੈ।", resume: "ਜਾਰੀ ਰੱਖੋ", clear: "ਡਰਾਫ਼ਟ ਹਟਾਓ", files: "ਫ਼ਾਈਲਾਂ ਦੁਬਾਰਾ ਜੋੜੋ।" },
 };
 

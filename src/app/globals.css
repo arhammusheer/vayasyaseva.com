@@ -21,12 +21,17 @@
    On body, not :root: next/font sets the --font-* variables on body, and a
    custom property resolves the variables it names where it is declared. */
 body {
-  --stack-display: var(--font-anek), var(--font-anek-deva), var(--font-anek-knda), var(--font-anek-guru);
-  --stack-body: var(--font-hind), var(--font-hind-deva), var(--font-hind-knda), var(--font-hind-guru);
+  --stack-display: var(--font-anek), var(--font-anek-deva), var(--font-anek-knda), var(--font-anek-guru), var(--font-anek-telu);
+  --stack-body: var(--font-hind), var(--font-hind-deva), var(--font-hind-knda), var(--font-hind-guru), var(--font-hind-telu);
 }
 body:lang(pa) {
-  --stack-display: var(--font-anek), var(--font-anek-guru), var(--font-anek-deva), var(--font-anek-knda);
-  --stack-body: var(--font-hind), var(--font-hind-guru), var(--font-hind-deva), var(--font-hind-knda);
+  --stack-display: var(--font-anek), var(--font-anek-guru), var(--font-anek-deva), var(--font-anek-knda), var(--font-anek-telu);
+  --stack-body: var(--font-hind), var(--font-hind-guru), var(--font-hind-deva), var(--font-hind-knda), var(--font-hind-telu);
+}
+/* Telugu pages put Telugu first: the danda (U+0964-0965) is in its range too. */
+body:lang(te) {
+  --stack-display: var(--font-anek), var(--font-anek-telu), var(--font-anek-deva), var(--font-anek-knda), var(--font-anek-guru);
+  --stack-body: var(--font-hind), var(--font-hind-telu), var(--font-hind-deva), var(--font-hind-knda), var(--font-hind-guru);
 }
 
 @theme inline {
@@ -1194,21 +1199,22 @@ a:hover > svg {
   letter-spacing: 0;
   line-height: 1.3;
 }
-/* Gurmukhi (pa-IN) and Kannada (kn-IN): Anek Gurmukhi and Anek Kannada for
-   headings, Hind Jalandhar and Hind Mysuru for body. Like Devanagari, they
-   break apart under letter-spacing and need taller lines. */
-.eyebrow:is(:lang(pa), :lang(kn)) {
+/* Gurmukhi (pa-IN), Kannada (kn-IN) and Telugu (te-IN): Anek Gurmukhi, Anek
+   Kannada and Anek Telugu for headings, Hind Jalandhar, Hind Mysuru and Hind
+   Guntur for body. Like Devanagari, they break apart under letter-spacing and
+   need taller lines. */
+.eyebrow:is(:lang(pa), :lang(kn), :lang(te)) {
   font-size: 13px;
   letter-spacing: 0;
 }
-:is(h1, h2, h3, summary):is(:lang(pa), :lang(kn)),
-.jobs-title:is(:lang(pa), :lang(kn)),
-.quick-title:is(:lang(pa), :lang(kn)) {
+:is(h1, h2, h3, summary):is(:lang(pa), :lang(kn), :lang(te)),
+.jobs-title:is(:lang(pa), :lang(kn), :lang(te)),
+.quick-title:is(:lang(pa), :lang(kn), :lang(te)) {
   letter-spacing: 0;
   line-height: 1.3;
 }
-.language-picker :is(:lang(pa), :lang(kn)),
-.header-lang a:is(:lang(pa), :lang(kn)) {
+.language-picker :is(:lang(pa), :lang(kn), :lang(te)),
+.header-lang a:is(:lang(pa), :lang(kn), :lang(te)) {
   letter-spacing: 0;
 }
 /* Buttons: 8px radius, weight 600, hover darkens with a slight lift, press settles. */
@@ -2155,7 +2161,7 @@ a:hover > svg {
 /* Indic labels on the picker use the phone's own font: a page whose only job
    is "tap your language" should not download a font per script to draw one
    word in each. */
-.language-picker :is(:lang(hi):not(:lang(hi-Latn)), :lang(pa), :lang(kn)) {
+.language-picker :is(:lang(hi):not(:lang(hi-Latn)), :lang(pa), :lang(kn), :lang(te)) {
   font-family: system-ui, sans-serif;
   letter-spacing: 0;
 }

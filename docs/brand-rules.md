@@ -112,6 +112,17 @@ The rest of this section moved off `/brand` on 16 October 2026 (the page keeps d
 - Hind carries everything people read: paragraphs, labels, interface copy.
 - JetBrains Mono is for values that need alignment or character distinction: IDs, tables, figures.
 - Sentence case by default. No new fonts or local fallbacks to fix a surface quickly.
+- Every script has its own cut of the two families; a new script takes the matching Anek and Hind cuts, never another family:
+
+| Script | Display (Anek) | Body (Hind) | Pages |
+|---|---|---|---|
+| Latin | Anek Latin | Hind | Every page |
+| Devanagari | Anek Devanagari (Hind SemiBold on web headings, to keep a first Hindi visit light) | Hind | हिंदी pages |
+| Gurmukhi | Anek Gurmukhi | Hind Jalandhar | ਪੰਜਾਬੀ pages |
+| Kannada | Anek Kannada | Hind Mysuru | ಕನ್ನಡ pages |
+| Telugu | Anek Telugu | Hind Guntur | తెలుగు pages (added 24 Nov 2026) |
+
+Indic scripts take no letter-spacing and a 1.3 heading line-height (`globals.css`). Web files are script-only subsets with a `unicode-range` (`scripts/build-web-fonts.py`), so a page downloads only the scripts it shows.
 
 | Level | Family | Weight | Size / line | Use |
 |---|---|---|---|---|

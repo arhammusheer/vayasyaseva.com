@@ -58,6 +58,16 @@ export const locales = {
     hint: "ಈ ಪುಟವನ್ನು ಕನ್ನಡದಲ್ಲಿ ಓದಿ",
     published: true,
   },
+  // Telugu (owner direction, 24 Nov 2026): the Visakhapatnam and Hyderabad
+  // location pages. Drafts pending native review, like pa-IN and kn-IN.
+  "te-IN": {
+    segment: "te-in",
+    hreflang: "te-IN",
+    ogLocale: "te_IN",
+    label: "తెలుగు",
+    hint: "ఈ పేజీని తెలుగులో చదవండి",
+    published: true,
+  },
 } as const satisfies Record<LocaleTag, unknown>;
 
 export type Locale = keyof typeof locales;
@@ -67,7 +77,19 @@ export const allLocales = Object.keys(locales) as Locale[];
  * The languages every multi-language page is written in. Punjabi covers only
  * the pages that list it in the registry (the Jalandhar region's jobs pages).
  */
-export type CoreLocale = Exclude<Locale, "pa-IN" | "kn-IN">;
+export type CoreLocale = Exclude<Locale, "pa-IN" | "kn-IN" | "te-IN">;
+/**
+ * Languages the jobs funnel is written in. Telugu covers the Visakhapatnam
+ * and Hyderabad location pages only; the jobs pages, form and intake
+ * (Windmill, n8n, Twenty) have no te-IN yet, so a Telugu reader's jobs
+ * copy is the English (jobsLocale).
+ */
+export type JobsLocale = Exclude<Locale, "te-IN">;
+/** The jobs-copy language for a page language. */
+export function jobsLocale(locale: Locale): JobsLocale {
+  return locale === "te-IN" ? FALLBACK_LOCALE_JOBS : locale;
+}
+const FALLBACK_LOCALE_JOBS: JobsLocale = "en-IN";
 /** Copy for pages not written in every language: the core three, and others where a page has them. */
 export type CopyIn<T> = Record<CoreLocale, T> & Partial<Record<Locale, T>>;
 /** A page's copy in one language. Throws if the registry builds a page in a language it has no copy for. */

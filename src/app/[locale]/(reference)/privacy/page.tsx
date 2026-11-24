@@ -3,8 +3,9 @@ import { pageMetadata } from "@/lib/metadata";
 import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { LegalPage } from "@/components/layout/legal-page";
 import { analyticsSummary, privacyContent } from "@/content/privacy";
-import { linkable } from "@/content/registry";
-import { localeParams } from "@/lib/i18n";
+import { Fragment } from "react";
+import { linkable, publishedLocales } from "@/content/registry";
+import { localeParams, locales } from "@/lib/i18n";
 
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/privacy");
@@ -15,6 +16,21 @@ export const metadata = pageMetadata({
     "How Vayasya Seva Private Limited collects, uses, shares and keeps information from vayasyaseva.com and its subdomains, your rights and the Grievance Officer.",
   alternates: { canonical: "/privacy" },
 });
+
+/**
+ * Every language the applicant notice is published in, each in its own
+ * name and marked with its language ("English, हिंदी, Hindi, ਪੰਜਾਬੀ or ಕನ್ನਡ").
+ * A typed list had stopped at three after Punjabi and Kannada shipped.
+ */
+function ApplicantLanguages() {
+  const tags = publishedLocales("/jobs/privacy").filter((l) => locales[l].published);
+  return tags.map((l, i) => (
+    <Fragment key={l}>
+      {i === 0 ? "" : i === tags.length - 1 ? " or " : ", "}
+      <span lang={l}>{locales[l].label}</span>
+    </Fragment>
+  ));
+}
 
 /** §3 at a glance: what runs, when, and what it receives. The detail stays in §2. */
 function AnalyticsTable() {
@@ -67,7 +83,7 @@ export default function PrivacyPage() {
           // The applicant notice in their own language, once it is published.
           "jobs-privacy": linkable("/jobs/privacy") ? (
             <p>
-              <strong>Applying for work?</strong> Read the short version in English, हिंदी or Hindi:{" "}
+              <strong>Applying for work?</strong> Read the short version in <ApplicantLanguages />:{" "}
               <Link href="/jobs/privacy">what happens to your details</Link>. The full applicant terms follow, for the record.
             </p>
           ) : null,

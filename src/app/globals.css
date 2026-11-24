@@ -3107,6 +3107,16 @@ a:hover > svg {
     gap: 6px;
   }
 }
+/* 320px phones: the Hinglish button ("Company ke liye workers") beside the
+   Jobs door ran 4px past the screen and clipped the menu button. */
+@media (max-width: 340px) {
+  .site-header[data-door="business"]:not([data-locale="en-IN"]) .header-doors {
+    font-size: 14px;
+  }
+  .site-header[data-door="business"]:not([data-locale="en-IN"]) .header-contact {
+    padding-inline: 8px;
+  }
+}
 
 /* Home: the hero's second door, quiet beside the gold button. */
 .hero-doors {
@@ -5078,6 +5088,8 @@ a:hover > svg {
 /* Calculator: one input, preset amounts, a ruled result. */
 .ref-calc {
   display: grid;
+  /* One shrinkable column on phones: an auto column grew past 320px screens. */
+  grid-template-columns: minmax(0, 1fr);
   gap: 24px;
 }
 .ref-calc label {

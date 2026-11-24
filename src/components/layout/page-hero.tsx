@@ -59,7 +59,9 @@ export function PageHero({
         {crumbs}
         <div
           className={cn(
-            "grid gap-10",
+            // A single shrinkable column below the breakpoints: a long word in the
+            // title must not widen the lede and buttons past a 320px screen.
+            "grid grid-cols-[minmax(0,1fr)] gap-10",
             aside && "lg:grid-cols-12 lg:items-end",
             split && "xl:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] xl:items-end xl:gap-x-20 xl:gap-y-0",
           )}

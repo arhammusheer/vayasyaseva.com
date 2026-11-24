@@ -188,7 +188,7 @@ export function BonusCalculator({ places }: { places: BonusPlace[] }) {
   const rates: [string, number][] = [["8.33%", 100 / 12], ["12%", 12], ["20%", 20]];
   return (
     <div className="ref-calc">
-      <div className="grid gap-6">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-6">
         <div>
           <label htmlFor={placeId}>Where the worker works</label>
           <select
@@ -254,7 +254,7 @@ export function GratuityCalculator({ places }: { places: BonusPlace[] }) {
   const short = exit === "fixed-term" ? "one year under the contract" : "five years of continuous service";
   return (
     <div className="ref-calc">
-      <div className="grid gap-6">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-6">
         <div>
           <label htmlFor={placeId}>Where the worker works</label>
           <select
@@ -275,7 +275,7 @@ export function GratuityCalculator({ places }: { places: BonusPlace[] }) {
         </div>
         {/* Keyed by place, so the field shows the new state's minimum wage. */}
         <AmountField key={place} label="Last wages a month (basic + DA)" value={wages} onChange={setWages} presets={[Math.round(minimumWage), 25000, 40000]} />
-        <div className="grid gap-6 sm:grid-cols-2">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-6 sm:grid-cols-2">
           <AmountField label="Years of service" prefix="" value={years} onChange={setYears} presets={[1, 5, 10]} format={(n) => `${n} yr`} />
           <AmountField label="And months" prefix="" value={months} onChange={(n) => setMonths(Math.min(n, 11))} presets={[0, 6, 7]} format={(n) => `${n} mo`} />
         </div>

@@ -1,0 +1,8058 @@
+[
+ {
+  "id": "hr:ambala",
+  "name": "Ambala",
+  "state": "HR",
+  "kind": "city",
+  "district": "Ambala",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "electronics"
+  ],
+  "aka": [
+   "ambala cantt",
+   "ambala city"
+  ],
+  "lat": 30.38,
+  "lon": 76.78
+ },
+ {
+  "id": "hr:bhiwani",
+  "name": "Bhiwani",
+  "state": "HR",
+  "kind": "city",
+  "district": "Bhiwani",
+  "scale": 1,
+  "sectors": [
+   "textile",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 28.79,
+  "lon": 76.14
+ },
+ {
+  "id": "hr:charkhi-dadri",
+  "name": "Charkhi Dadri",
+  "state": "HR",
+  "kind": "city",
+  "district": "Charkhi Dadri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "dadri"
+  ],
+  "lat": 28.59,
+  "lon": 76.27
+ },
+ {
+  "id": "hr:faridabad",
+  "name": "Faridabad",
+  "state": "HR",
+  "kind": "city",
+  "district": "Faridabad",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "fbd",
+   "nit faridabad"
+  ],
+  "lat": 28.41,
+  "lon": 77.32
+ },
+ {
+  "id": "hr:fatehabad",
+  "name": "Fatehabad",
+  "state": "HR",
+  "kind": "city",
+  "district": "Fatehabad",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [],
+  "lat": 29.52,
+  "lon": 75.45
+ },
+ {
+  "id": "hr:gurugram",
+  "name": "Gurugram",
+  "state": "HR",
+  "kind": "city",
+  "district": "Gurugram",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "garments",
+   "it-campus",
+   "logistics",
+   "engineering"
+  ],
+  "aka": [
+   "ggn",
+   "gurgaon"
+  ],
+  "lat": 28.46,
+  "lon": 77.03
+ },
+ {
+  "id": "hr:hisar",
+  "name": "Hisar",
+  "state": "HR",
+  "kind": "city",
+  "district": "Hisar",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "metal",
+   "textile"
+  ],
+  "aka": [
+   "hissar"
+  ],
+  "lat": 29.15,
+  "lon": 75.72
+ },
+ {
+  "id": "hr:jhajjar",
+  "name": "Jhajjar",
+  "state": "HR",
+  "kind": "city",
+  "district": "Jhajjar",
+  "scale": 1,
+  "sectors": [
+   "mixed",
+   "logistics"
+  ],
+  "aka": [],
+  "lat": 28.61,
+  "lon": 76.65
+ },
+ {
+  "id": "hr:jind",
+  "name": "Jind",
+  "state": "HR",
+  "kind": "city",
+  "district": "Jind",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 29.32,
+  "lon": 76.31
+ },
+ {
+  "id": "hr:kaithal",
+  "name": "Kaithal",
+  "state": "HR",
+  "kind": "city",
+  "district": "Kaithal",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [],
+  "lat": 29.8,
+  "lon": 76.4
+ },
+ {
+  "id": "hr:karnal",
+  "name": "Karnal",
+  "state": "HR",
+  "kind": "city",
+  "district": "Karnal",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 29.69,
+  "lon": 76.99
+ },
+ {
+  "id": "hr:kurukshetra",
+  "name": "Kurukshetra",
+  "state": "HR",
+  "kind": "city",
+  "district": "Kurukshetra",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "thanesar"
+  ],
+  "lat": 29.97,
+  "lon": 76.85
+ },
+ {
+  "id": "hr:narnaul",
+  "name": "Narnaul",
+  "state": "HR",
+  "kind": "city",
+  "district": "Mahendragarh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "mahendragarh district"
+  ],
+  "lat": 28.04,
+  "lon": 76.11
+ },
+ {
+  "id": "hr:nuh",
+  "name": "Nuh",
+  "state": "HR",
+  "kind": "city",
+  "district": "Nuh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "mewat"
+  ],
+  "lat": 28.11,
+  "lon": 77.01
+ },
+ {
+  "id": "hr:palwal",
+  "name": "Palwal",
+  "state": "HR",
+  "kind": "city",
+  "district": "Palwal",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "logistics"
+  ],
+  "aka": [],
+  "lat": 28.14,
+  "lon": 77.33
+ },
+ {
+  "id": "hr:panchkula",
+  "name": "Panchkula",
+  "state": "HR",
+  "kind": "city",
+  "district": "Panchkula",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "it-campus"
+  ],
+  "aka": [
+   "pkl"
+  ],
+  "lat": 30.69,
+  "lon": 76.86
+ },
+ {
+  "id": "hr:panipat",
+  "name": "Panipat",
+  "state": "HR",
+  "kind": "city",
+  "district": "Panipat",
+  "scale": 3,
+  "sectors": [
+   "textile",
+   "chemical"
+  ],
+  "aka": [
+   "pnp"
+  ],
+  "lat": 29.39,
+  "lon": 76.97
+ },
+ {
+  "id": "hr:rewari",
+  "name": "Rewari",
+  "state": "HR",
+  "kind": "city",
+  "district": "Rewari",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 28.19,
+  "lon": 76.62
+ },
+ {
+  "id": "hr:rohtak",
+  "name": "Rohtak",
+  "state": "HR",
+  "kind": "city",
+  "district": "Rohtak",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 28.9,
+  "lon": 76.61
+ },
+ {
+  "id": "hr:sirsa",
+  "name": "Sirsa",
+  "state": "HR",
+  "kind": "city",
+  "district": "Sirsa",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [],
+  "lat": 29.53,
+  "lon": 75.03
+ },
+ {
+  "id": "hr:sonipat",
+  "name": "Sonipat",
+  "state": "HR",
+  "kind": "city",
+  "district": "Sonipat",
+  "scale": 3,
+  "sectors": [
+   "mixed",
+   "food",
+   "engineering"
+  ],
+  "aka": [
+   "sonepat"
+  ],
+  "lat": 28.99,
+  "lon": 77.02
+ },
+ {
+  "id": "hr:yamunanagar",
+  "name": "Yamunanagar",
+  "state": "HR",
+  "kind": "city",
+  "district": "Yamunanagar",
+  "scale": 2,
+  "sectors": [
+   "paper",
+   "metal",
+   "engineering"
+  ],
+  "aka": [
+   "jagadhri",
+   "yamuna nagar",
+   "ynr"
+  ],
+  "lat": 30.13,
+  "lon": 77.28
+ },
+ {
+  "id": "hr:hansi",
+  "name": "Hansi",
+  "state": "HR",
+  "kind": "city",
+  "district": "Hansi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 29.1,
+  "lon": 75.96
+ },
+ {
+  "id": "hr:manesar",
+  "name": "Manesar",
+  "state": "HR",
+  "kind": "city",
+  "district": "Gurugram",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "logistics",
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 28.36,
+  "lon": 76.94
+ },
+ {
+  "id": "hr:bahadurgarh",
+  "name": "Bahadurgarh",
+  "state": "HR",
+  "kind": "city",
+  "district": "Jhajjar",
+  "scale": 3,
+  "sectors": [
+   "leather",
+   "engineering",
+   "plastics"
+  ],
+  "aka": [
+   "bdg"
+  ],
+  "lat": 28.69,
+  "lon": 76.93
+ },
+ {
+  "id": "hr:dharuhera",
+  "name": "Dharuhera",
+  "state": "HR",
+  "kind": "city",
+  "district": "Rewari",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 28.21,
+  "lon": 76.8
+ },
+ {
+  "id": "hr:bawal",
+  "name": "Bawal",
+  "state": "HR",
+  "kind": "city",
+  "district": "Rewari",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 28.08,
+  "lon": 76.58
+ },
+ {
+  "id": "hr:sohna",
+  "name": "Sohna",
+  "state": "HR",
+  "kind": "city",
+  "district": "Gurugram",
+  "scale": 2,
+  "sectors": [
+   "electronics",
+   "logistics",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 28.25,
+  "lon": 77.07
+ },
+ {
+  "id": "hr:ballabgarh",
+  "name": "Ballabgarh",
+  "state": "HR",
+  "kind": "city",
+  "district": "Faridabad",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "auto"
+  ],
+  "aka": [
+   "ballabhgarh"
+  ],
+  "lat": 28.33,
+  "lon": 77.32
+ },
+ {
+  "id": "hr:kundli",
+  "name": "Kundli",
+  "state": "HR",
+  "kind": "city",
+  "district": "Sonipat",
+  "scale": 3,
+  "sectors": [
+   "mixed",
+   "food",
+   "engineering"
+  ],
+  "aka": [
+   "kundali"
+  ],
+  "lat": 28.88,
+  "lon": 77.13
+ },
+ {
+  "id": "hr:samalkha",
+  "name": "Samalkha",
+  "state": "HR",
+  "kind": "city",
+  "district": "Panipat",
+  "scale": 1,
+  "sectors": [
+   "metal",
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 29.24,
+  "lon": 77.01
+ },
+ {
+  "id": "hr:kalka",
+  "name": "Kalka",
+  "state": "HR",
+  "kind": "city",
+  "district": "Panchkula",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 30.84,
+  "lon": 76.94
+ },
+ {
+  "id": "hr:tohana",
+  "name": "Tohana",
+  "state": "HR",
+  "kind": "city",
+  "district": "Fatehabad",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [],
+  "lat": 29.71,
+  "lon": 75.9
+ },
+ {
+  "id": "hr:narwana",
+  "name": "Narwana",
+  "state": "HR",
+  "kind": "city",
+  "district": "Jind",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [],
+  "lat": 29.59,
+  "lon": 76.13
+ },
+ {
+  "id": "hr:hodal",
+  "name": "Hodal",
+  "state": "HR",
+  "kind": "city",
+  "district": "Palwal",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 27.9,
+  "lon": 77.37
+ },
+ {
+  "id": "hr:taoru",
+  "name": "Taoru",
+  "state": "HR",
+  "kind": "city",
+  "district": "Nuh",
+  "scale": 1,
+  "sectors": [
+   "logistics",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 28.2,
+  "lon": 76.95
+ },
+ {
+  "id": "hr:pataudi",
+  "name": "Pataudi",
+  "state": "HR",
+  "kind": "city",
+  "district": "Gurugram",
+  "scale": 1,
+  "sectors": [
+   "logistics"
+  ],
+  "aka": [],
+  "lat": 28.33,
+  "lon": 76.78
+ },
+ {
+  "id": "hr:farrukhnagar",
+  "name": "Farrukhnagar",
+  "state": "HR",
+  "kind": "city",
+  "district": "Gurugram",
+  "scale": 2,
+  "sectors": [
+   "logistics"
+  ],
+  "aka": [
+   "farukhnagar"
+  ],
+  "lat": 28.45,
+  "lon": 76.82
+ },
+ {
+  "id": "hr:kharkhoda",
+  "name": "Kharkhoda",
+  "state": "HR",
+  "kind": "city",
+  "district": "Sonipat",
+  "scale": 2,
+  "sectors": [
+   "auto"
+  ],
+  "aka": [
+   "kharkhauda"
+  ],
+  "lat": 28.88,
+  "lon": 76.91
+ },
+ {
+  "id": "hr:gohana",
+  "name": "Gohana",
+  "state": "HR",
+  "kind": "city",
+  "district": "Sonipat",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 29.14,
+  "lon": 76.7
+ },
+ {
+  "id": "hr:nangal-chaudhary",
+  "name": "Nangal Chaudhary",
+  "state": "HR",
+  "kind": "city",
+  "district": "Mahendragarh",
+  "scale": 1,
+  "sectors": [
+   "logistics"
+  ],
+  "aka": [
+   "nangal choudhary"
+  ],
+  "lat": 27.89,
+  "lon": 76.13
+ },
+ {
+  "id": "pb:amritsar",
+  "name": "Amritsar",
+  "state": "PB",
+  "kind": "city",
+  "district": "Amritsar",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "food",
+   "engineering"
+  ],
+  "aka": [
+   "asr"
+  ],
+  "lat": 31.63,
+  "lon": 74.87
+ },
+ {
+  "id": "pb:barnala",
+  "name": "Barnala",
+  "state": "PB",
+  "kind": "city",
+  "district": "Barnala",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "paper"
+  ],
+  "aka": [],
+  "lat": 30.38,
+  "lon": 75.54
+ },
+ {
+  "id": "pb:bathinda",
+  "name": "Bathinda",
+  "state": "PB",
+  "kind": "city",
+  "district": "Bathinda",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "bhatinda"
+  ],
+  "lat": 30.21,
+  "lon": 74.95
+ },
+ {
+  "id": "pb:faridkot",
+  "name": "Faridkot",
+  "state": "PB",
+  "kind": "city",
+  "district": "Faridkot",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [],
+  "lat": 30.67,
+  "lon": 74.75
+ },
+ {
+  "id": "pb:fatehgarh-sahib",
+  "name": "Fatehgarh Sahib",
+  "state": "PB",
+  "kind": "city",
+  "district": "Fatehgarh Sahib",
+  "scale": 1,
+  "sectors": [
+   "steel",
+   "mixed"
+  ],
+  "aka": [
+   "sirhind-fatehgarh"
+  ],
+  "lat": 30.65,
+  "lon": 76.39
+ },
+ {
+  "id": "pb:fazilka",
+  "name": "Fazilka",
+  "state": "PB",
+  "kind": "city",
+  "district": "Fazilka",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [],
+  "lat": 30.4,
+  "lon": 74.03
+ },
+ {
+  "id": "pb:firozpur",
+  "name": "Firozpur",
+  "state": "PB",
+  "kind": "city",
+  "district": "Firozpur",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "ferozepur",
+   "ferozpur"
+  ],
+  "lat": 30.93,
+  "lon": 74.61
+ },
+ {
+  "id": "pb:gurdaspur",
+  "name": "Gurdaspur",
+  "state": "PB",
+  "kind": "city",
+  "district": "Gurdaspur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 32.04,
+  "lon": 75.4
+ },
+ {
+  "id": "pb:hoshiarpur",
+  "name": "Hoshiarpur",
+  "state": "PB",
+  "kind": "city",
+  "district": "Hoshiarpur",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "food"
+  ],
+  "aka": [],
+  "lat": 31.53,
+  "lon": 75.9
+ },
+ {
+  "id": "pb:jalandhar",
+  "name": "Jalandhar",
+  "state": "PB",
+  "kind": "city",
+  "district": "Jalandhar",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "leather",
+   "plastics",
+   "mixed"
+  ],
+  "aka": [
+   "jalandhar city",
+   "jullundur"
+  ],
+  "lat": 31.33,
+  "lon": 75.58
+ },
+ {
+  "id": "pb:kapurthala",
+  "name": "Kapurthala",
+  "state": "PB",
+  "kind": "city",
+  "district": "Kapurthala",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "food"
+  ],
+  "aka": [],
+  "lat": 31.38,
+  "lon": 75.38
+ },
+ {
+  "id": "pb:ludhiana",
+  "name": "Ludhiana",
+  "state": "PB",
+  "kind": "city",
+  "district": "Ludhiana",
+  "scale": 3,
+  "sectors": [
+   "textile",
+   "garments",
+   "engineering",
+   "auto",
+   "steel"
+  ],
+  "aka": [
+   "ldh"
+  ],
+  "lat": 30.9,
+  "lon": 75.85
+ },
+ {
+  "id": "pb:malerkotla",
+  "name": "Malerkotla",
+  "state": "PB",
+  "kind": "city",
+  "district": "Malerkotla",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 30.53,
+  "lon": 75.88
+ },
+ {
+  "id": "pb:mansa",
+  "name": "Mansa",
+  "state": "PB",
+  "kind": "city",
+  "district": "Mansa",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [],
+  "lat": 29.99,
+  "lon": 75.4
+ },
+ {
+  "id": "pb:moga",
+  "name": "Moga",
+  "state": "PB",
+  "kind": "city",
+  "district": "Moga",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "fmcg"
+  ],
+  "aka": [],
+  "lat": 30.82,
+  "lon": 75.17
+ },
+ {
+  "id": "pb:muktsar",
+  "name": "Sri Muktsar Sahib",
+  "state": "PB",
+  "kind": "city",
+  "district": "Sri Muktsar Sahib",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "mukatsar",
+   "muktsar"
+  ],
+  "lat": 30.47,
+  "lon": 74.52
+ },
+ {
+  "id": "pb:pathankot",
+  "name": "Pathankot",
+  "state": "PB",
+  "kind": "city",
+  "district": "Pathankot",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 32.27,
+  "lon": 75.65
+ },
+ {
+  "id": "pb:patiala",
+  "name": "Patiala",
+  "state": "PB",
+  "kind": "city",
+  "district": "Patiala",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "food"
+  ],
+  "aka": [],
+  "lat": 30.33,
+  "lon": 76.4
+ },
+ {
+  "id": "pb:rupnagar",
+  "name": "Rupnagar",
+  "state": "PB",
+  "kind": "city",
+  "district": "Rupnagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "ropar"
+  ],
+  "lat": 30.97,
+  "lon": 76.53
+ },
+ {
+  "id": "pb:mohali",
+  "name": "Mohali",
+  "state": "PB",
+  "kind": "city",
+  "district": "SAS Nagar",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering",
+   "pharma",
+   "electronics",
+   "it-campus"
+  ],
+  "aka": [
+   "s.a.s. nagar",
+   "sahibzada ajit singh nagar",
+   "sas nagar"
+  ],
+  "lat": 30.7,
+  "lon": 76.72
+ },
+ {
+  "id": "pb:sangrur",
+  "name": "Sangrur",
+  "state": "PB",
+  "kind": "city",
+  "district": "Sangrur",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [],
+  "lat": 30.24,
+  "lon": 75.84
+ },
+ {
+  "id": "pb:nawanshahr",
+  "name": "Nawanshahr",
+  "state": "PB",
+  "kind": "city",
+  "district": "Shahid Bhagat Singh Nagar",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "nawashahr",
+   "sbs nagar",
+   "shaheed bhagat singh nagar"
+  ],
+  "lat": 31.12,
+  "lon": 76.12
+ },
+ {
+  "id": "pb:tarn-taran",
+  "name": "Tarn Taran",
+  "state": "PB",
+  "kind": "city",
+  "district": "Tarn Taran",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "tarntaran"
+  ],
+  "lat": 31.45,
+  "lon": 74.93
+ },
+ {
+  "id": "pb:khanna",
+  "name": "Khanna",
+  "state": "PB",
+  "kind": "city",
+  "district": "Ludhiana",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "steel",
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 30.7,
+  "lon": 76.22
+ },
+ {
+  "id": "pb:mandi-gobindgarh",
+  "name": "Mandi Gobindgarh",
+  "state": "PB",
+  "kind": "city",
+  "district": "Fatehgarh Sahib",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "metal"
+  ],
+  "aka": [
+   "gobindgarh",
+   "steel town"
+  ],
+  "lat": 30.67,
+  "lon": 76.3
+ },
+ {
+  "id": "pb:rajpura",
+  "name": "Rajpura",
+  "state": "PB",
+  "kind": "city",
+  "district": "Patiala",
+  "scale": 2,
+  "sectors": [
+   "fmcg",
+   "engineering",
+   "food"
+  ],
+  "aka": [],
+  "lat": 30.48,
+  "lon": 76.59
+ },
+ {
+  "id": "pb:dera-bassi",
+  "name": "Dera Bassi",
+  "state": "PB",
+  "kind": "city",
+  "district": "SAS Nagar",
+  "scale": 2,
+  "sectors": [
+   "pharma",
+   "chemical",
+   "engineering"
+  ],
+  "aka": [
+   "derabassi"
+  ],
+  "lat": 30.59,
+  "lon": 76.84
+ },
+ {
+  "id": "pb:lalru",
+  "name": "Lalru",
+  "state": "PB",
+  "kind": "city",
+  "district": "SAS Nagar",
+  "scale": 2,
+  "sectors": [
+   "pharma",
+   "textile",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 30.49,
+  "lon": 76.8
+ },
+ {
+  "id": "pb:zirakpur",
+  "name": "Zirakpur",
+  "state": "PB",
+  "kind": "city",
+  "district": "SAS Nagar",
+  "scale": 1,
+  "sectors": [
+   "logistics"
+  ],
+  "aka": [],
+  "lat": 30.66,
+  "lon": 76.82
+ },
+ {
+  "id": "pb:kharar",
+  "name": "Kharar",
+  "state": "PB",
+  "kind": "city",
+  "district": "SAS Nagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 30.75,
+  "lon": 76.64
+ },
+ {
+  "id": "pb:kurali",
+  "name": "Kurali",
+  "state": "PB",
+  "kind": "city",
+  "district": "SAS Nagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 30.83,
+  "lon": 76.58
+ },
+ {
+  "id": "pb:banur",
+  "name": "Banur",
+  "state": "PB",
+  "kind": "city",
+  "district": "SAS Nagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 30.56,
+  "lon": 76.72
+ },
+ {
+  "id": "pb:phagwara",
+  "name": "Phagwara",
+  "state": "PB",
+  "kind": "city",
+  "district": "Kapurthala",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "food",
+   "textile"
+  ],
+  "aka": [],
+  "lat": 31.22,
+  "lon": 75.77
+ },
+ {
+  "id": "pb:batala",
+  "name": "Batala",
+  "state": "PB",
+  "kind": "city",
+  "district": "Gurdaspur",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "metal"
+  ],
+  "aka": [],
+  "lat": 31.82,
+  "lon": 75.2
+ },
+ {
+  "id": "pb:abohar",
+  "name": "Abohar",
+  "state": "PB",
+  "kind": "city",
+  "district": "Fazilka",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [],
+  "lat": 30.15,
+  "lon": 74.2
+ },
+ {
+  "id": "pb:malout",
+  "name": "Malout",
+  "state": "PB",
+  "kind": "city",
+  "district": "Sri Muktsar Sahib",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [],
+  "lat": 30.19,
+  "lon": 74.5
+ },
+ {
+  "id": "pb:kotkapura",
+  "name": "Kotkapura",
+  "state": "PB",
+  "kind": "city",
+  "district": "Faridkot",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "kot kapura",
+   "kotakpura"
+  ],
+  "lat": 30.58,
+  "lon": 74.83
+ },
+ {
+  "id": "pb:nabha",
+  "name": "Nabha",
+  "state": "PB",
+  "kind": "city",
+  "district": "Patiala",
+  "scale": 1,
+  "sectors": [
+   "engineering",
+   "food"
+  ],
+  "aka": [],
+  "lat": 30.37,
+  "lon": 76.15
+ },
+ {
+  "id": "pb:goraya",
+  "name": "Goraya",
+  "state": "PB",
+  "kind": "city",
+  "district": "Jalandhar",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 31.12,
+  "lon": 75.78
+ },
+ {
+  "id": "pb:sahnewal",
+  "name": "Sahnewal",
+  "state": "PB",
+  "kind": "city",
+  "district": "Ludhiana",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "logistics"
+  ],
+  "aka": [],
+  "lat": 30.84,
+  "lon": 75.98
+ },
+ {
+  "id": "pb:doraha",
+  "name": "Doraha",
+  "state": "PB",
+  "kind": "city",
+  "district": "Ludhiana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 30.8,
+  "lon": 76.04
+ },
+ {
+  "id": "pb:samrala",
+  "name": "Samrala",
+  "state": "PB",
+  "kind": "city",
+  "district": "Ludhiana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 30.84,
+  "lon": 76.19
+ },
+ {
+  "id": "pb:raikot",
+  "name": "Raikot",
+  "state": "PB",
+  "kind": "city",
+  "district": "Ludhiana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 30.65,
+  "lon": 75.6
+ },
+ {
+  "id": "pb:jagraon",
+  "name": "Jagraon",
+  "state": "PB",
+  "kind": "city",
+  "district": "Ludhiana",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [],
+  "lat": 30.8,
+  "lon": 75.48
+ },
+ {
+  "id": "pb:nangal",
+  "name": "Nangal",
+  "state": "PB",
+  "kind": "city",
+  "district": "Rupnagar",
+  "scale": 1,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": [
+   "naya nangal"
+  ],
+  "lat": 31.38,
+  "lon": 76.38
+ },
+ {
+  "id": "pb:sirhind",
+  "name": "Sirhind",
+  "state": "PB",
+  "kind": "city",
+  "district": "Fatehgarh Sahib",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 30.63,
+  "lon": 76.39
+ },
+ {
+  "id": "pb:goindwal-sahib",
+  "name": "Goindwal Sahib",
+  "state": "PB",
+  "kind": "city",
+  "district": "Tarn Taran",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "goindwal"
+  ],
+  "lat": 31.38,
+  "lon": 75.15
+ },
+ {
+  "id": "pb:tanda",
+  "name": "Tanda",
+  "state": "PB",
+  "kind": "city",
+  "district": "Hoshiarpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "tanda urmar"
+  ],
+  "lat": 31.67,
+  "lon": 75.63
+ },
+ {
+  "id": "pb:dhariwal",
+  "name": "Dhariwal",
+  "state": "PB",
+  "kind": "city",
+  "district": "Gurdaspur",
+  "scale": 1,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [],
+  "lat": 31.95,
+  "lon": 75.32
+ },
+ {
+  "id": "pb:sunam",
+  "name": "Sunam",
+  "state": "PB",
+  "kind": "city",
+  "district": "Sangrur",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [],
+  "lat": 30.13,
+  "lon": 75.81
+ },
+ {
+  "id": "pb:talwandi-sabo",
+  "name": "Talwandi Sabo",
+  "state": "PB",
+  "kind": "city",
+  "district": "Bathinda",
+  "scale": 1,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": [],
+  "lat": 29.98,
+  "lon": 75.08
+ },
+ {
+  "id": "rj:ajmer",
+  "name": "Ajmer",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Ajmer",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.45,
+  "lon": 74.64
+ },
+ {
+  "id": "rj:alwar",
+  "name": "Alwar",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Alwar",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering",
+   "food"
+  ],
+  "aka": [],
+  "lat": 27.56,
+  "lon": 76.6
+ },
+ {
+  "id": "rj:balotra",
+  "name": "Balotra",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Balotra",
+  "scale": 2,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [],
+  "lat": 25.83,
+  "lon": 72.24
+ },
+ {
+  "id": "rj:banswara",
+  "name": "Banswara",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Banswara",
+  "scale": 1,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [],
+  "lat": 23.55,
+  "lon": 74.44
+ },
+ {
+  "id": "rj:baran",
+  "name": "Baran",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Baran",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [],
+  "lat": 25.1,
+  "lon": 76.51
+ },
+ {
+  "id": "rj:barmer",
+  "name": "Barmer",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Barmer",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "mixed"
+  ],
+  "aka": [
+   "badmer"
+  ],
+  "lat": 25.75,
+  "lon": 71.39
+ },
+ {
+  "id": "rj:beawar",
+  "name": "Beawar",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Beawar",
+  "scale": 2,
+  "sectors": [
+   "cement",
+   "textile"
+  ],
+  "aka": [
+   "byawar"
+  ],
+  "lat": 26.1,
+  "lon": 74.32
+ },
+ {
+  "id": "rj:bharatpur",
+  "name": "Bharatpur",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Bharatpur",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [],
+  "lat": 27.22,
+  "lon": 77.49
+ },
+ {
+  "id": "rj:bhilwara",
+  "name": "Bhilwara",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Bhilwara",
+  "scale": 3,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [],
+  "lat": 25.35,
+  "lon": 74.63
+ },
+ {
+  "id": "rj:bikaner",
+  "name": "Bikaner",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Bikaner",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "ceramics"
+  ],
+  "aka": [],
+  "lat": 28.02,
+  "lon": 73.31
+ },
+ {
+  "id": "rj:bundi",
+  "name": "Bundi",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Bundi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 25.44,
+  "lon": 75.64
+ },
+ {
+  "id": "rj:chittorgarh",
+  "name": "Chittorgarh",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Chittorgarh",
+  "scale": 2,
+  "sectors": [
+   "cement",
+   "metal"
+  ],
+  "aka": [
+   "chittaurgarh",
+   "chittor"
+  ],
+  "lat": 24.88,
+  "lon": 74.62
+ },
+ {
+  "id": "rj:churu",
+  "name": "Churu",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Churu",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 28.3,
+  "lon": 74.95
+ },
+ {
+  "id": "rj:dausa",
+  "name": "Dausa",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Dausa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.89,
+  "lon": 76.34
+ },
+ {
+  "id": "rj:deeg",
+  "name": "Deeg",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Deeg",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "dig"
+  ],
+  "lat": 27.47,
+  "lon": 77.33
+ },
+ {
+  "id": "rj:dholpur",
+  "name": "Dholpur",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Dholpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "dhaulpur"
+  ],
+  "lat": 26.7,
+  "lon": 77.89
+ },
+ {
+  "id": "rj:didwana",
+  "name": "Didwana",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Didwana-Kuchaman",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "deedwana",
+   "didwana-kuchaman"
+  ],
+  "lat": 27.4,
+  "lon": 74.58
+ },
+ {
+  "id": "rj:dungarpur",
+  "name": "Dungarpur",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Dungarpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "dungerpur"
+  ],
+  "lat": 23.84,
+  "lon": 73.71
+ },
+ {
+  "id": "rj:hanumangarh",
+  "name": "Hanumangarh",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Hanumangarh",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "hanumangarh junction"
+  ],
+  "lat": 29.58,
+  "lon": 74.32
+ },
+ {
+  "id": "rj:jaipur",
+  "name": "Jaipur",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Jaipur",
+  "scale": 3,
+  "sectors": [
+   "garments",
+   "textile",
+   "engineering",
+   "logistics",
+   "it-campus"
+  ],
+  "aka": [
+   "jpr",
+   "pink city"
+  ],
+  "lat": 26.92,
+  "lon": 75.82
+ },
+ {
+  "id": "rj:jaisalmer",
+  "name": "Jaisalmer",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Jaisalmer",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.91,
+  "lon": 70.91
+ },
+ {
+  "id": "rj:jalore",
+  "name": "Jalore",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Jalore",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "jalor"
+  ],
+  "lat": 25.35,
+  "lon": 72.62
+ },
+ {
+  "id": "rj:jhalawar",
+  "name": "Jhalawar",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Jhalawar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 24.6,
+  "lon": 76.16
+ },
+ {
+  "id": "rj:jhunjhunu",
+  "name": "Jhunjhunu",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Jhunjhunu",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "jhunjhunun"
+  ],
+  "lat": 28.13,
+  "lon": 75.4
+ },
+ {
+  "id": "rj:jodhpur",
+  "name": "Jodhpur",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Jodhpur",
+  "scale": 3,
+  "sectors": [
+   "textile",
+   "engineering",
+   "food",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.24,
+  "lon": 73.02
+ },
+ {
+  "id": "rj:karauli",
+  "name": "Karauli",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Karauli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.5,
+  "lon": 77.02
+ },
+ {
+  "id": "rj:khairthal",
+  "name": "Khairthal",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Khairthal-Tijara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "khairthal-tijara"
+  ],
+  "lat": 27.8,
+  "lon": 76.64
+ },
+ {
+  "id": "rj:kota",
+  "name": "Kota",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Kota",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 25.18,
+  "lon": 75.84
+ },
+ {
+  "id": "rj:kotputli",
+  "name": "Kotputli",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Kotputli-Behror",
+  "scale": 2,
+  "sectors": [
+   "cement",
+   "mixed"
+  ],
+  "aka": [
+   "kotputli-behror"
+  ],
+  "lat": 27.7,
+  "lon": 76.2
+ },
+ {
+  "id": "rj:nagaur",
+  "name": "Nagaur",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Nagaur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 27.2,
+  "lon": 73.73
+ },
+ {
+  "id": "rj:pali",
+  "name": "Pali",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Pali",
+  "scale": 2,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [
+   "pali marwar"
+  ],
+  "lat": 25.77,
+  "lon": 73.32
+ },
+ {
+  "id": "rj:phalodi",
+  "name": "Phalodi",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Phalodi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 27.13,
+  "lon": 72.36
+ },
+ {
+  "id": "rj:pratapgarh",
+  "name": "Pratapgarh",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Pratapgarh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "partapgarh"
+  ],
+  "lat": 24.03,
+  "lon": 74.78
+ },
+ {
+  "id": "rj:rajsamand",
+  "name": "Rajsamand",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Rajsamand",
+  "scale": 2,
+  "sectors": [
+   "metal",
+   "mixed"
+  ],
+  "aka": [
+   "kankroli"
+  ],
+  "lat": 25.07,
+  "lon": 73.88
+ },
+ {
+  "id": "rj:salumbar",
+  "name": "Salumbar",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Salumbar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "salumber"
+  ],
+  "lat": 24.14,
+  "lon": 74.05
+ },
+ {
+  "id": "rj:sawai-madhopur",
+  "name": "Sawai Madhopur",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Sawai Madhopur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "swm"
+  ],
+  "lat": 26.02,
+  "lon": 76.35
+ },
+ {
+  "id": "rj:sikar",
+  "name": "Sikar",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Sikar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 27.61,
+  "lon": 75.14
+ },
+ {
+  "id": "rj:sirohi",
+  "name": "Sirohi",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Sirohi",
+  "scale": 1,
+  "sectors": [
+   "cement",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 24.89,
+  "lon": 72.86
+ },
+ {
+  "id": "rj:sri-ganganagar",
+  "name": "Sri Ganganagar",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Sri Ganganagar",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "ganganagar",
+   "shri ganganagar"
+  ],
+  "lat": 29.91,
+  "lon": 73.88
+ },
+ {
+  "id": "rj:tonk",
+  "name": "Tonk",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Tonk",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.17,
+  "lon": 75.79
+ },
+ {
+  "id": "rj:udaipur",
+  "name": "Udaipur",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Udaipur",
+  "scale": 2,
+  "sectors": [
+   "metal",
+   "chemical",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 24.58,
+  "lon": 73.69
+ },
+ {
+  "id": "rj:bhiwadi",
+  "name": "Bhiwadi",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Khairthal-Tijara",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering",
+   "electronics",
+   "plastics"
+  ],
+  "aka": [],
+  "lat": 28.2,
+  "lon": 76.84
+ },
+ {
+  "id": "rj:neemrana",
+  "name": "Neemrana",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Kotputli-Behror",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "electronics",
+   "fmcg",
+   "engineering"
+  ],
+  "aka": [
+   "nimrana"
+  ],
+  "lat": 27.99,
+  "lon": 76.39
+ },
+ {
+  "id": "rj:behror",
+  "name": "Behror",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Kotputli-Behror",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 27.89,
+  "lon": 76.29
+ },
+ {
+  "id": "rj:tijara",
+  "name": "Tijara",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Khairthal-Tijara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 27.94,
+  "lon": 76.85
+ },
+ {
+  "id": "rj:kishangarh",
+  "name": "Kishangarh",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Ajmer",
+  "scale": 2,
+  "sectors": [
+   "mixed",
+   "textile"
+  ],
+  "aka": [
+   "madanganj-kishangarh",
+   "marble city"
+  ],
+  "lat": 26.59,
+  "lon": 74.86
+ },
+ {
+  "id": "rj:makrana",
+  "name": "Makrana",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Didwana-Kuchaman",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 27.04,
+  "lon": 74.73
+ },
+ {
+  "id": "rj:abu-road",
+  "name": "Abu Road",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Sirohi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 24.48,
+  "lon": 72.78
+ },
+ {
+  "id": "rj:nimbahera",
+  "name": "Nimbahera",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Chittorgarh",
+  "scale": 2,
+  "sectors": [
+   "cement"
+  ],
+  "aka": [],
+  "lat": 24.63,
+  "lon": 74.69
+ },
+ {
+  "id": "rj:bhawani-mandi",
+  "name": "Bhawani Mandi",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Jhalawar",
+  "scale": 1,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [
+   "bhawanimandi"
+  ],
+  "lat": 24.42,
+  "lon": 75.83
+ },
+ {
+  "id": "rj:ramganj-mandi",
+  "name": "Ramganj Mandi",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Kota",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 24.65,
+  "lon": 75.94
+ },
+ {
+  "id": "rj:sumerpur",
+  "name": "Sumerpur",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Pali",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 25.15,
+  "lon": 73.08
+ },
+ {
+  "id": "rj:falna",
+  "name": "Falna",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Pali",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 25.23,
+  "lon": 73.24
+ },
+ {
+  "id": "rj:sojat",
+  "name": "Sojat",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Pali",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "sojat city"
+  ],
+  "lat": 25.92,
+  "lon": 73.67
+ },
+ {
+  "id": "rj:kuchaman-city",
+  "name": "Kuchaman City",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Didwana-Kuchaman",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kuchaman"
+  ],
+  "lat": 27.15,
+  "lon": 74.86
+ },
+ {
+  "id": "rj:hindaun",
+  "name": "Hindaun City",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Karauli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "hindaun"
+  ],
+  "lat": 26.73,
+  "lon": 77.04
+ },
+ {
+  "id": "rj:gangapur-city",
+  "name": "Gangapur City",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Sawai Madhopur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "gangapur"
+  ],
+  "lat": 26.48,
+  "lon": 76.72
+ },
+ {
+  "id": "rj:niwai",
+  "name": "Niwai",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Tonk",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "newai"
+  ],
+  "lat": 26.36,
+  "lon": 75.93
+ },
+ {
+  "id": "rj:malpura",
+  "name": "Malpura",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Tonk",
+  "scale": 1,
+  "sectors": [
+   "textile",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.29,
+  "lon": 75.37
+ },
+ {
+  "id": "rj:phulera",
+  "name": "Phulera",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Jaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.88,
+  "lon": 75.25
+ },
+ {
+  "id": "rj:bagru",
+  "name": "Bagru",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Jaipur",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "garments",
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 26.81,
+  "lon": 75.54
+ },
+ {
+  "id": "rj:chomu",
+  "name": "Chomu",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Jaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 27.17,
+  "lon": 75.72
+ },
+ {
+  "id": "rj:reengus",
+  "name": "Reengus",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Sikar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "ringas"
+  ],
+  "lat": 27.37,
+  "lon": 75.57
+ },
+ {
+  "id": "rj:gulabpura",
+  "name": "Gulabpura",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Bhilwara",
+  "scale": 1,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [],
+  "lat": 25.91,
+  "lon": 74.66
+ },
+ {
+  "id": "rj:bijainagar",
+  "name": "Bijainagar",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Beawar",
+  "scale": 1,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [
+   "vijaynagar"
+  ],
+  "lat": 25.93,
+  "lon": 74.65
+ },
+ {
+  "id": "rj:kekri",
+  "name": "Kekri",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Ajmer",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 25.97,
+  "lon": 75.15
+ },
+ {
+  "id": "rj:dudu",
+  "name": "Dudu",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Jaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.68,
+  "lon": 75.23
+ },
+ {
+  "id": "rj:khetri",
+  "name": "Khetri",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Jhunjhunu",
+  "scale": 1,
+  "sectors": [
+   "metal"
+  ],
+  "aka": [
+   "khetri nagar"
+  ],
+  "lat": 28.0,
+  "lon": 75.78
+ },
+ {
+  "id": "rj:chirawa",
+  "name": "Chirawa",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Jhunjhunu",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 28.24,
+  "lon": 75.64
+ },
+ {
+  "id": "rj:neem-ka-thana",
+  "name": "Neem Ka Thana",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Sikar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "neemkathana"
+  ],
+  "lat": 27.74,
+  "lon": 75.79
+ },
+ {
+  "id": "rj:sardarshahar",
+  "name": "Sardarshahar",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Churu",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sardarshahr"
+  ],
+  "lat": 28.44,
+  "lon": 74.49
+ },
+ {
+  "id": "rj:ratangarh",
+  "name": "Ratangarh",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Churu",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 28.07,
+  "lon": 74.62
+ },
+ {
+  "id": "rj:sujangarh",
+  "name": "Sujangarh",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Churu",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 27.7,
+  "lon": 74.47
+ },
+ {
+  "id": "rj:nokha",
+  "name": "Nokha",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Bikaner",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [],
+  "lat": 27.56,
+  "lon": 73.47
+ },
+ {
+  "id": "rj:suratgarh",
+  "name": "Suratgarh",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Sri Ganganagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 29.32,
+  "lon": 73.9
+ },
+ {
+  "id": "rj:anupgarh",
+  "name": "Anupgarh",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Sri Ganganagar",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [],
+  "lat": 29.19,
+  "lon": 73.21
+ },
+ {
+  "id": "rj:sanchore",
+  "name": "Sanchore",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Jalore",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sanchor"
+  ],
+  "lat": 24.75,
+  "lon": 71.77
+ },
+ {
+  "id": "rj:bhinmal",
+  "name": "Bhinmal",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Jalore",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 25.01,
+  "lon": 72.27
+ },
+ {
+  "id": "rj:pokaran",
+  "name": "Pokaran",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Jaisalmer",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "pokhran"
+  ],
+  "lat": 26.92,
+  "lon": 71.92
+ },
+ {
+  "id": "rj:shahpura-bhilwara",
+  "name": "Shahpura (Bhilwara)",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Bhilwara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "shahpura"
+  ],
+  "lat": 25.63,
+  "lon": 74.93
+ },
+ {
+  "id": "rj:kapasan",
+  "name": "Kapasan",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Chittorgarh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 24.89,
+  "lon": 74.31
+ },
+ {
+  "id": "rj:bayana",
+  "name": "Bayana",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Bharatpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.91,
+  "lon": 77.29
+ },
+ {
+  "id": "rj:sagwara",
+  "name": "Sagwara",
+  "state": "RJ",
+  "kind": "city",
+  "district": "Dungarpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 23.67,
+  "lon": 74.02
+ },
+ {
+  "id": "hr:imt-manesar",
+  "name": "IMT Manesar",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Gurugram",
+  "near": "hr:manesar",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering",
+   "logistics"
+  ],
+  "aka": [
+   "hsiidc manesar",
+   "imt manesar phase 1",
+   "manesar industrial area",
+   "patli hazipur",
+   "transport hub manesar"
+  ]
+ },
+ {
+  "id": "hr:imt-bawal",
+  "name": "IMT Bawal",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Rewari",
+  "near": "hr:bawal",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "bawal growth centre",
+   "bawal industrial area",
+   "hsiidc bawal"
+  ]
+ },
+ {
+  "id": "hr:imt-rohtak",
+  "name": "IMT Rohtak",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Rohtak",
+  "near": "hr:rohtak",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering",
+   "leather",
+   "food"
+  ],
+  "aka": [
+   "footwear park rohtak",
+   "mega food park rohtak",
+   "rohtak industrial area"
+  ]
+ },
+ {
+  "id": "hr:imt-faridabad",
+  "name": "IMT Faridabad",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Faridabad",
+  "near": "hr:faridabad",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "hsiidc faridabad",
+   "imt fbd"
+  ]
+ },
+ {
+  "id": "hr:imt-sohna",
+  "name": "IMT Sohna",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Nuh",
+  "near": "hr:sohna",
+  "scale": 2,
+  "sectors": [
+   "electronics",
+   "engineering"
+  ],
+  "aka": [
+   "electronics manufacturing cluster sohna",
+   "emc sohna",
+   "hsiidc sohna",
+   "indecor city"
+  ]
+ },
+ {
+  "id": "hr:imt-kharkhoda",
+  "name": "IMT Kharkhoda",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Sonipat",
+  "near": "hr:kharkhoda",
+  "scale": 2,
+  "sectors": [
+   "auto"
+  ],
+  "aka": [
+   "imt kharkhauda",
+   "maruti kharkhoda"
+  ]
+ },
+ {
+  "id": "hr:udyog-vihar-gurugram",
+  "name": "Udyog Vihar, Gurugram",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Gurugram",
+  "near": "hr:gurugram",
+  "scale": 3,
+  "sectors": [
+   "garments",
+   "engineering",
+   "it-campus"
+  ],
+  "aka": [
+   "udyog vihar phase 1",
+   "udyog vihar phase 4",
+   "udyog vihar phase 5",
+   "uv gurgaon"
+  ]
+ },
+ {
+  "id": "hr:udyog-vihar-phase-6-gurugram",
+  "name": "Udyog Vihar Phase VI (Sector 37), Gurugram",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Gurugram",
+  "near": "hr:gurugram",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering",
+   "garments"
+  ],
+  "aka": [
+   "phase 6 udyog vihar",
+   "sector 37 gurgaon",
+   "sector 37 gurugram"
+  ]
+ },
+ {
+  "id": "hr:ie-sector-34-35-gurugram",
+  "name": "Industrial Area Sector 34 and 35, Gurugram",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Gurugram",
+  "near": "hr:gurugram",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "sector 34 gurgaon",
+   "sector 35 gurgaon"
+  ]
+ },
+ {
+  "id": "hr:sector-18-gurugram",
+  "name": "Industrial Area Sector 18, Gurugram",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Gurugram",
+  "near": "hr:gurugram",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "maruti udyog gurgaon",
+   "old delhi gurgaon road",
+   "sector 18 gurgaon"
+  ]
+ },
+ {
+  "id": "hr:ie-faridabad-sector-31",
+  "name": "Industrial Area Sector 31, Faridabad",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Faridabad",
+  "near": "hr:faridabad",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "auto"
+  ],
+  "aka": [
+   "sector 31 faridabad"
+  ]
+ },
+ {
+  "id": "hr:ie-faridabad-sector-58",
+  "name": "Industrial Area Sector 58, Faridabad",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Faridabad",
+  "near": "hr:ballabgarh",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "auto"
+  ],
+  "aka": [
+   "sector 58 faridabad"
+  ]
+ },
+ {
+  "id": "hr:ie-faridabad-sector-59",
+  "name": "Industrial Area Sector 59, Faridabad",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Faridabad",
+  "near": "hr:ballabgarh",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "auto"
+  ],
+  "aka": [
+   "sector 59 faridabad",
+   "sector 59 ph 2"
+  ]
+ },
+ {
+  "id": "hr:ie-faridabad-sector-24",
+  "name": "Industrial Area Sector 24, Faridabad",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Faridabad",
+  "near": "hr:faridabad",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "auto"
+  ],
+  "aka": [
+   "sector 24 faridabad"
+  ]
+ },
+ {
+  "id": "hr:ie-faridabad-sector-25",
+  "name": "Industrial Area Sector 25, Faridabad",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Faridabad",
+  "near": "hr:ballabgarh",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "auto"
+  ],
+  "aka": [
+   "sector 25 faridabad"
+  ]
+ },
+ {
+  "id": "hr:nit-faridabad",
+  "name": "NIT Industrial Area, Faridabad",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Faridabad",
+  "near": "hr:faridabad",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "new industrial township faridabad",
+   "nit faridabad"
+  ]
+ },
+ {
+  "id": "hr:dlf-industrial-area-faridabad",
+  "name": "DLF Industrial Area, Faridabad",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Faridabad",
+  "near": "hr:faridabad",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "dlf industrial estate",
+   "dlf phase 1 faridabad"
+  ]
+ },
+ {
+  "id": "hr:ie-kundli",
+  "name": "HSIIDC Industrial Estate Kundli",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Sonipat",
+  "near": "hr:kundli",
+  "scale": 3,
+  "sectors": [
+   "mixed",
+   "food",
+   "engineering"
+  ],
+  "aka": [
+   "hsiidc kundli",
+   "kundli industrial area",
+   "kundli phase 1 to 5"
+  ]
+ },
+ {
+  "id": "hr:epip-kundli",
+  "name": "EPIP Kundli",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Sonipat",
+  "near": "hr:kundli",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "export promotion industrial park kundli"
+  ]
+ },
+ {
+  "id": "hr:ehtp-kundli",
+  "name": "Electronic Hardware Technology Park, Kundli",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Sonipat",
+  "near": "hr:kundli",
+  "scale": 1,
+  "sectors": [
+   "electronics"
+  ],
+  "aka": [
+   "ehtp kundli"
+  ]
+ },
+ {
+  "id": "hr:ie-rai",
+  "name": "HSIIDC Industrial Estate Rai",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Sonipat",
+  "near": "hr:sonipat",
+  "scale": 2,
+  "sectors": [
+   "mixed",
+   "food"
+  ],
+  "aka": [
+   "rai industrial area",
+   "rai sector 38",
+   "rai sector 39"
+  ]
+ },
+ {
+  "id": "hr:mega-food-park-rai",
+  "name": "Food Park Rai",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Sonipat",
+  "near": "hr:sonipat",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "mega food park rai"
+  ]
+ },
+ {
+  "id": "hr:ie-barhi",
+  "name": "HSIIDC Industrial Estate Barhi",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Sonipat",
+  "near": "hr:sonipat",
+  "scale": 2,
+  "sectors": [
+   "mixed",
+   "garments",
+   "food"
+  ],
+  "aka": [
+   "barhi industrial area",
+   "barhi phase 1 to 3"
+  ]
+ },
+ {
+  "id": "hr:mega-food-park-barhi",
+  "name": "Mega Food Park Barhi",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Sonipat",
+  "near": "hr:sonipat",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "barhi food park"
+  ]
+ },
+ {
+  "id": "hr:apparel-park-barhi",
+  "name": "Apparel Park Barhi",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Sonipat",
+  "near": "hr:sonipat",
+  "scale": 1,
+  "sectors": [
+   "garments"
+  ],
+  "aka": []
+ },
+ {
+  "id": "hr:ie-murthal",
+  "name": "Industrial Estate Murthal",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Sonipat",
+  "near": "hr:sonipat",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "murthal industrial area"
+  ]
+ },
+ {
+  "id": "hr:ie-sonipat",
+  "name": "HSIIDC Industrial Estate Sonipat",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Sonipat",
+  "near": "hr:sonipat",
+  "scale": 2,
+  "sectors": [
+   "mixed",
+   "engineering"
+  ],
+  "aka": [
+   "sonepat industrial area"
+  ]
+ },
+ {
+  "id": "hr:ie-bahadurgarh",
+  "name": "HSIIDC Industrial Estate Bahadurgarh",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Jhajjar",
+  "near": "hr:bahadurgarh",
+  "scale": 3,
+  "sectors": [
+   "leather",
+   "engineering",
+   "plastics"
+  ],
+  "aka": [
+   "sector 16 bahadurgarh",
+   "sector 17 bahadurgarh",
+   "sector 18 bahadurgarh",
+   "sector 4b bahadurgarh"
+  ]
+ },
+ {
+  "id": "hr:mie-bahadurgarh",
+  "name": "Modern Industrial Estate (MIE), Bahadurgarh",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Jhajjar",
+  "near": "hr:bahadurgarh",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "plastics",
+   "mixed"
+  ],
+  "aka": [
+   "mie bahadurgarh",
+   "mie part a",
+   "mie part b"
+  ]
+ },
+ {
+  "id": "hr:footwear-park-bahadurgarh",
+  "name": "Footwear Park, Bahadurgarh",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Jhajjar",
+  "near": "hr:bahadurgarh",
+  "scale": 2,
+  "sectors": [
+   "leather"
+  ],
+  "aka": [
+   "bahadurgarh footwear park"
+  ]
+ },
+ {
+  "id": "hr:ie-dharuhera",
+  "name": "Industrial Estate Dharuhera",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Rewari",
+  "near": "hr:dharuhera",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "dharuhera industrial area"
+  ]
+ },
+ {
+  "id": "hr:ie-rewari",
+  "name": "Industrial Area Rewari",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Rewari",
+  "near": "hr:rewari",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": []
+ },
+ {
+  "id": "hr:ie-karnal",
+  "name": "HSIIDC Industrial Estate Karnal",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Karnal",
+  "near": "hr:karnal",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "engineering"
+  ],
+  "aka": [
+   "sector 3 karnal",
+   "sector 37 karnal",
+   "sector 3a karnal"
+  ]
+ },
+ {
+  "id": "hr:ie-manakpur",
+  "name": "Industrial Estate Manakpur",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Yamunanagar",
+  "near": "hr:yamunanagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "hr:ie-yamunanagar",
+  "name": "Industrial Estate Yamunanagar (Jagadhri)",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Yamunanagar",
+  "near": "hr:yamunanagar",
+  "scale": 2,
+  "sectors": [
+   "metal",
+   "paper",
+   "engineering"
+  ],
+  "aka": [
+   "ie jagadhri",
+   "iidc yamunanagar"
+  ]
+ },
+ {
+  "id": "hr:ie-panipat",
+  "name": "Industrial Area Panipat",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Panipat",
+  "near": "hr:panipat",
+  "scale": 3,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [
+   "hsiidc panipat",
+   "sector 25 panipat",
+   "sector 29 panipat",
+   "textile hub panipat"
+  ]
+ },
+ {
+  "id": "hr:ie-samalkha",
+  "name": "Industrial Estate Samalkha",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Panipat",
+  "near": "hr:samalkha",
+  "scale": 1,
+  "sectors": [
+   "metal",
+   "engineering"
+  ],
+  "aka": []
+ },
+ {
+  "id": "hr:ie-narnaul",
+  "name": "Industrial Estate Narnaul",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Mahendragarh",
+  "near": "hr:narnaul",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "narnaul informal sector"
+  ]
+ },
+ {
+  "id": "hr:imlh-nangal-chaudhary",
+  "name": "Integrated Multi-Modal Logistics Hub, Nangal Chaudhary",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Mahendragarh",
+  "near": "hr:nangal-chaudhary",
+  "scale": 1,
+  "sectors": [
+   "logistics"
+  ],
+  "aka": [
+   "immlh",
+   "immlh narnaul"
+  ]
+ },
+ {
+  "id": "hr:igc-saha",
+  "name": "Industrial Growth Centre Saha",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Ambala",
+  "near": "hr:ambala",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "engineering"
+  ],
+  "aka": [
+   "food park saha",
+   "growth centre saha",
+   "igc saha"
+  ]
+ },
+ {
+  "id": "hr:ie-ambala-cantt",
+  "name": "Industrial Estate Ambala Cantt",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Ambala",
+  "near": "hr:ambala",
+  "scale": 1,
+  "sectors": [
+   "engineering",
+   "electronics"
+  ],
+  "aka": [
+   "ambala industrial area"
+  ]
+ },
+ {
+  "id": "hr:ie-roz-ka-meo",
+  "name": "Industrial Estate Roz-ka-Meo",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Nuh",
+  "near": "hr:sohna",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "rojka meo",
+   "roz ka meo"
+  ]
+ },
+ {
+  "id": "hr:iidc-sirsa",
+  "name": "IIDC Sirsa",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Sirsa",
+  "near": "hr:sirsa",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "industrial estate sirsa"
+  ]
+ },
+ {
+  "id": "hr:ie-barwala",
+  "name": "Industrial Estate Barwala",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Panchkula",
+  "near": "hr:panchkula",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "barwala panchkula"
+  ]
+ },
+ {
+  "id": "hr:ie-tohana",
+  "name": "Industrial Estate Tohana",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Fatehabad",
+  "near": "hr:tohana",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "hr:ie-jind",
+  "name": "Industrial Estate Jind",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Jind",
+  "near": "hr:jind",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "hr:iidc-narwana",
+  "name": "IIDC Narwana",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Jind",
+  "near": "hr:narwana",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "industrial estate narwana"
+  ]
+ },
+ {
+  "id": "hr:ie-kalka",
+  "name": "Industrial Estate Kalka",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Panchkula",
+  "near": "hr:kalka",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "hr:ie-kutana",
+  "name": "Industrial Estate Kutana",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Rohtak",
+  "near": "hr:rohtak",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "hr:ie-panchkula",
+  "name": "Industrial Area Panchkula (Phase I and II)",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Panchkula",
+  "near": "hr:panchkula",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "electronics"
+  ],
+  "aka": [
+   "industrial area phase 1 panchkula",
+   "industrial area phase 2 panchkula"
+  ]
+ },
+ {
+  "id": "hr:ie-panchkula-ext-2",
+  "name": "Industrial Estate Panchkula Extension II",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Panchkula",
+  "near": "hr:panchkula",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "hr:it-park-panchkula",
+  "name": "Technology Park Panchkula (Sector 22)",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Panchkula",
+  "near": "hr:panchkula",
+  "scale": 1,
+  "sectors": [
+   "it-campus"
+  ],
+  "aka": [
+   "it park panchkula",
+   "sector 22 panchkula"
+  ]
+ },
+ {
+  "id": "hr:ie-hisar",
+  "name": "Industrial Area Hisar",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Hisar",
+  "near": "hr:hisar",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "metal"
+  ],
+  "aka": []
+ },
+ {
+  "id": "hr:ie-bhiwani",
+  "name": "Industrial Area Bhiwani",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Bhiwani",
+  "near": "hr:bhiwani",
+  "scale": 1,
+  "sectors": [
+   "textile",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "hr:reliance-met-city",
+  "name": "Model Economic Township (MET City), Jhajjar",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Jhajjar",
+  "near": "hr:jhajjar",
+  "scale": 2,
+  "sectors": [
+   "mixed",
+   "logistics"
+  ],
+  "aka": [
+   "met city jhajjar",
+   "reliance met city"
+  ]
+ },
+ {
+  "id": "hr:dlf-cyber-city",
+  "name": "DLF Cyber City, Gurugram",
+  "state": "HR",
+  "kind": "estate",
+  "district": "Gurugram",
+  "near": "hr:gurugram",
+  "scale": 2,
+  "sectors": [
+   "it-campus"
+  ],
+  "aka": [
+   "cyber city gurgaon"
+  ]
+ },
+ {
+  "id": "hr:bilaspur-gurugram",
+  "name": "Bilaspur (NH-48) warehousing belt",
+  "state": "HR",
+  "kind": "cluster",
+  "district": "Gurugram",
+  "near": "hr:gurugram",
+  "scale": 2,
+  "sectors": [
+   "logistics"
+  ],
+  "aka": [
+   "bilaspur chowk",
+   "bilaspur tauru road"
+  ]
+ },
+ {
+  "id": "hr:kmp-warehousing-belt",
+  "name": "KMP Expressway warehousing belt",
+  "state": "HR",
+  "kind": "cluster",
+  "district": "Gurugram",
+  "near": "hr:farrukhnagar",
+  "scale": 2,
+  "sectors": [
+   "logistics"
+  ],
+  "aka": [
+   "kmp expressway",
+   "kundli manesar palwal"
+  ]
+ },
+ {
+  "id": "pb:focal-point-ludhiana",
+  "name": "Industrial Focal Point Ludhiana",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Ludhiana",
+  "near": "pb:ludhiana",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "auto",
+   "textile",
+   "steel"
+  ],
+  "aka": [
+   "dhandari kalan",
+   "focal point ludhiana",
+   "focal point phase 4",
+   "focal point phase 5",
+   "focal point phase 6",
+   "focal point phase 7",
+   "focal point phase 8",
+   "phase iv a"
+  ]
+ },
+ {
+  "id": "pb:tajpur-road-ludhiana",
+  "name": "Industrial Park Tajpur Road, Ludhiana",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Ludhiana",
+  "near": "pb:ludhiana",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "engineering"
+  ],
+  "aka": [
+   "tajpur road"
+  ]
+ },
+ {
+  "id": "pb:hi-tech-cycle-valley",
+  "name": "Hi-Tech Cycle Valley, Dhanansu",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Ludhiana",
+  "near": "pb:ludhiana",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "cycle valley",
+   "dhanansu",
+   "hi tech valley ludhiana"
+  ]
+ },
+ {
+  "id": "pb:kadiana-khurd",
+  "name": "Industrial Park Kadiana Khurd",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Ludhiana",
+  "near": "pb:ludhiana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kadiyana khurad"
+  ]
+ },
+ {
+  "id": "pb:industrial-area-a-ludhiana",
+  "name": "Industrial Area-A, Ludhiana",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Ludhiana",
+  "near": "pb:ludhiana",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "textile"
+  ],
+  "aka": [
+   "industrial area a ludhiana"
+  ]
+ },
+ {
+  "id": "pb:industrial-area-b-ludhiana",
+  "name": "Industrial Area-B, Ludhiana",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Ludhiana",
+  "near": "pb:ludhiana",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "textile"
+  ],
+  "aka": [
+   "industrial area b ludhiana"
+  ]
+ },
+ {
+  "id": "pb:giaspura",
+  "name": "Giaspura",
+  "state": "PB",
+  "kind": "cluster",
+  "district": "Ludhiana",
+  "near": "pb:ludhiana",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "auto"
+  ],
+  "aka": [
+   "gyaspura"
+  ]
+ },
+ {
+  "id": "pb:bahadur-ke-road",
+  "name": "Bahadur Ke Road dyeing cluster",
+  "state": "PB",
+  "kind": "cluster",
+  "district": "Ludhiana",
+  "near": "pb:ludhiana",
+  "scale": 2,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [
+   "bahadurke road"
+  ]
+ },
+ {
+  "id": "pb:focal-point-raikot",
+  "name": "Industrial Focal Point Raikot",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Ludhiana",
+  "near": "pb:raikot",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "pb:focal-point-khanna",
+  "name": "Industrial Focal Point Khanna",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Ludhiana",
+  "near": "pb:khanna",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "engineering"
+  ],
+  "aka": []
+ },
+ {
+  "id": "pb:focal-point-moga",
+  "name": "Industrial Focal Point Moga",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Moga",
+  "near": "pb:moga",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "pb:mohali-phase-5",
+  "name": "Industrial Area Phase V, Mohali",
+  "state": "PB",
+  "kind": "estate",
+  "district": "SAS Nagar",
+  "near": "pb:mohali",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "electronics"
+  ],
+  "aka": [
+   "focal point phase 5 mohali",
+   "phase 5 mohali"
+  ]
+ },
+ {
+  "id": "pb:mohali-phase-7",
+  "name": "Industrial Area Phase VII, Mohali",
+  "state": "PB",
+  "kind": "estate",
+  "district": "SAS Nagar",
+  "near": "pb:mohali",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "auto"
+  ],
+  "aka": [
+   "industrial area phase 7",
+   "phase 7 mohali"
+  ]
+ },
+ {
+  "id": "pb:mohali-phase-8a",
+  "name": "Industrial Area Phase VIII-A, Mohali",
+  "state": "PB",
+  "kind": "estate",
+  "district": "SAS Nagar",
+  "near": "pb:mohali",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "electronics",
+   "it-campus"
+  ],
+  "aka": [
+   "phase 8 mohali",
+   "phase 8a mohali"
+  ]
+ },
+ {
+  "id": "pb:mohali-phase-8b",
+  "name": "Industrial Area Phase VIII-B, Mohali",
+  "state": "PB",
+  "kind": "estate",
+  "district": "SAS Nagar",
+  "near": "pb:mohali",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "it-campus"
+  ],
+  "aka": [
+   "ifp phase 8 infotech",
+   "phase 8b mohali",
+   "punjab infotech"
+  ]
+ },
+ {
+  "id": "pb:mohali-phase-9",
+  "name": "Industrial Area Phase IX, Mohali",
+  "state": "PB",
+  "kind": "estate",
+  "district": "SAS Nagar",
+  "near": "pb:mohali",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "pharma"
+  ],
+  "aka": [
+   "phase 9 mohali"
+  ]
+ },
+ {
+  "id": "pb:mohali-sector-82",
+  "name": "Industrial Area Sector 82, Mohali",
+  "state": "PB",
+  "kind": "estate",
+  "district": "SAS Nagar",
+  "near": "pb:mohali",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "jlpl industrial area",
+   "sector 82 mohali"
+  ]
+ },
+ {
+  "id": "pb:mohali-sector-67",
+  "name": "Industrial Area Sector 67, Mohali",
+  "state": "PB",
+  "kind": "estate",
+  "district": "SAS Nagar",
+  "near": "pb:mohali",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sector 67 mohali"
+  ]
+ },
+ {
+  "id": "pb:quark-city-mohali",
+  "name": "Quark City SEZ, Mohali",
+  "state": "PB",
+  "kind": "estate",
+  "district": "SAS Nagar",
+  "near": "pb:mohali",
+  "scale": 1,
+  "sectors": [
+   "it-campus",
+   "sez"
+  ],
+  "aka": [
+   "quark city"
+  ]
+ },
+ {
+  "id": "pb:focal-point-dera-bassi",
+  "name": "Industrial Focal Point Dera Bassi",
+  "state": "PB",
+  "kind": "estate",
+  "district": "SAS Nagar",
+  "near": "pb:dera-bassi",
+  "scale": 2,
+  "sectors": [
+   "pharma",
+   "chemical",
+   "engineering"
+  ],
+  "aka": [
+   "derabassi focal point"
+  ]
+ },
+ {
+  "id": "pb:focal-point-chanalon",
+  "name": "Industrial Focal Point Chanalon (Kurali)",
+  "state": "PB",
+  "kind": "estate",
+  "district": "SAS Nagar",
+  "near": "pb:kurali",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "chanalon"
+  ]
+ },
+ {
+  "id": "pb:focal-point-naya-nangal",
+  "name": "Industrial Focal Point Naya Nangal",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Rupnagar",
+  "near": "pb:nangal",
+  "scale": 1,
+  "sectors": [
+   "chemical",
+   "mixed"
+  ],
+  "aka": [
+   "naya nangal"
+  ]
+ },
+ {
+  "id": "pb:focal-point-patiala",
+  "name": "Industrial Focal Point Patiala",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Patiala",
+  "near": "pb:patiala",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "pb:focal-point-rajpura",
+  "name": "Industrial Focal Point Rajpura",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Patiala",
+  "near": "pb:rajpura",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "pb:focal-point-nabha",
+  "name": "Industrial Focal Point Nabha (Old and New)",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Patiala",
+  "near": "pb:nabha",
+  "scale": 1,
+  "sectors": [
+   "engineering",
+   "food"
+  ],
+  "aka": [
+   "nabha new",
+   "nabha old"
+  ]
+ },
+ {
+  "id": "pb:imc-rajpura",
+  "name": "Integrated Manufacturing Cluster, Rajpura",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Patiala",
+  "near": "pb:rajpura",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "akic rajpura",
+   "imc rajpura"
+  ]
+ },
+ {
+  "id": "pb:focal-point-sangrur",
+  "name": "Industrial Focal Point Sangrur",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Sangrur",
+  "near": "pb:sangrur",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "pb:focal-point-malerkotla",
+  "name": "Industrial Focal Point Malerkotla",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Malerkotla",
+  "near": "pb:malerkotla",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "pb:focal-point-mandi-gobindgarh",
+  "name": "Industrial Focal Point Mandi Gobindgarh",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Fatehgarh Sahib",
+  "near": "pb:mandi-gobindgarh",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "metal"
+  ],
+  "aka": []
+ },
+ {
+  "id": "pb:focal-point-wazirabad",
+  "name": "Industrial Focal Point Wazirabad",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Fatehgarh Sahib",
+  "near": "pb:mandi-gobindgarh",
+  "scale": 1,
+  "sectors": [
+   "steel",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "pb:focal-point-bathinda",
+  "name": "Industrial Focal Point Bathinda (Old and New)",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Bathinda",
+  "near": "pb:bathinda",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "bathinda new",
+   "bathinda old",
+   "bhatinda focal point"
+  ]
+ },
+ {
+  "id": "pb:igc-bathinda",
+  "name": "Industrial Growth Centre Bathinda",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Bathinda",
+  "near": "pb:bathinda",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "growth centre bathinda",
+   "igc bhatinda"
+  ]
+ },
+ {
+  "id": "pb:hmel-refinery-bathinda",
+  "name": "Guru Gobind Singh Refinery (HMEL), Phulokhari",
+  "state": "PB",
+  "kind": "cluster",
+  "district": "Bathinda",
+  "near": "pb:talwandi-sabo",
+  "scale": 2,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": [
+   "bathinda refinery",
+   "hmel bathinda",
+   "phulokhari"
+  ]
+ },
+ {
+  "id": "pb:focal-point-malout",
+  "name": "Industrial Focal Point Malout",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Sri Muktsar Sahib",
+  "near": "pb:malout",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "pb:focal-point-abohar",
+  "name": "Industrial Focal Point Abohar",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Fazilka",
+  "near": "pb:abohar",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "pb:focal-point-muktsar",
+  "name": "Industrial Focal Point Sri Muktsar Sahib",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Sri Muktsar Sahib",
+  "near": "pb:muktsar",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "mukatsar focal point"
+  ]
+ },
+ {
+  "id": "pb:focal-point-kotkapura",
+  "name": "Industrial Focal Point Kotkapura",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Faridkot",
+  "near": "pb:kotkapura",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "pb:mega-food-park-fazilka",
+  "name": "International Mega Food Park, Fazilka",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Fazilka",
+  "near": "pb:fazilka",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "dabwala kalan"
+  ]
+ },
+ {
+  "id": "pb:focal-point-amritsar",
+  "name": "Industrial Focal Point Amritsar (Old, New and Expansion)",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Amritsar",
+  "near": "pb:amritsar",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "food",
+   "engineering"
+  ],
+  "aka": [
+   "focal point amritsar",
+   "focal point extension amritsar",
+   "new focal point amritsar"
+  ]
+ },
+ {
+  "id": "pb:focal-point-goindwal-sahib",
+  "name": "Industrial Focal Point Goindwal Sahib",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Tarn Taran",
+  "near": "pb:goindwal-sahib",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "goindwal industrial area"
+  ]
+ },
+ {
+  "id": "pb:focal-point-tarn-taran",
+  "name": "Industrial Focal Point Tarn Taran",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Tarn Taran",
+  "near": "pb:tarn-taran",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "pb:focal-point-batala",
+  "name": "Industrial Focal Point Batala",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Gurdaspur",
+  "near": "pb:batala",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "metal"
+  ],
+  "aka": []
+ },
+ {
+  "id": "pb:focal-point-pathankot",
+  "name": "Industrial Focal Point Pathankot",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Pathankot",
+  "near": "pb:pathankot",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "pb:focal-point-gurdaspur",
+  "name": "Industrial Focal Point Gurdaspur",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Gurdaspur",
+  "near": "pb:gurdaspur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "pb:focal-point-jalandhar",
+  "name": "Industrial Focal Point Jalandhar (Old and Extension)",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Jalandhar",
+  "near": "pb:jalandhar",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "plastics",
+   "mixed"
+  ],
+  "aka": [
+   "focal point extension jalandhar",
+   "focal point jalandhar"
+  ]
+ },
+ {
+  "id": "pb:leather-complex-jalandhar",
+  "name": "Leather Complex, Jalandhar",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Jalandhar",
+  "near": "pb:jalandhar",
+  "scale": 2,
+  "sectors": [
+   "leather"
+  ],
+  "aka": [
+   "jalandhar leather complex"
+  ]
+ },
+ {
+  "id": "pb:ssgc-jalandhar",
+  "name": "Surgical and Sports Goods Complex, Jalandhar",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Jalandhar",
+  "near": "pb:jalandhar",
+  "scale": 2,
+  "sectors": [
+   "plastics",
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "sports and surgical complex",
+   "ssgc jalandhar"
+  ]
+ },
+ {
+  "id": "pb:focal-point-kapurthala",
+  "name": "Industrial Focal Point Kapurthala",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Kapurthala",
+  "near": "pb:kapurthala",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "pb:sukhjit-mega-food-park",
+  "name": "Sukhjit Mega Food Park, Kapurthala",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Kapurthala",
+  "near": "pb:phagwara",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "rehana jattan"
+  ]
+ },
+ {
+  "id": "pb:focal-point-hoshiarpur",
+  "name": "Industrial Focal Point Hoshiarpur",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Hoshiarpur",
+  "near": "pb:hoshiarpur",
+  "scale": 1,
+  "sectors": [
+   "auto",
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "pb:focal-point-nawanshahr",
+  "name": "Industrial Focal Point Nawanshahr",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Shahid Bhagat Singh Nagar",
+  "near": "pb:nawanshahr",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "nawashehr focal point"
+  ]
+ },
+ {
+  "id": "pb:focal-point-tanda",
+  "name": "Industrial Focal Point Tanda",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Hoshiarpur",
+  "near": "pb:tanda",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "pb:mega-food-park-ludhiana",
+  "name": "Ludhiana Mega Food Park, Ladhowal",
+  "state": "PB",
+  "kind": "estate",
+  "district": "Ludhiana",
+  "near": "pb:ludhiana",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "ladhowal food park"
+  ]
+ },
+ {
+  "id": "rj:gc-abu-road",
+  "name": "RIICO Growth Centre Abu Road (I and II)",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sirohi",
+  "near": "rj:abu-road",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "abu road growth centre",
+   "gc abu road"
+  ]
+ },
+ {
+  "id": "rj:ambaji-abu-road",
+  "name": "RIICO Industrial Area Ambaji, Abu Road",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sirohi",
+  "near": "rj:abu-road",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:swaroopganj",
+  "name": "RIICO Industrial Area Swaroopganj",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sirohi",
+  "near": "rj:abu-road",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "swarupganj"
+  ]
+ },
+ {
+  "id": "rj:mandar",
+  "name": "RIICO Industrial Area Mandar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sirohi",
+  "near": "rj:abu-road",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:udwariya",
+  "name": "RIICO Industrial Area Udwariya",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sirohi",
+  "near": "rj:abu-road",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:sarneshwar",
+  "name": "RIICO Industrial Area Sarneshwar, Sirohi",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sirohi",
+  "near": "rj:sirohi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:sheoganj",
+  "name": "RIICO Industrial Area Sheoganj",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sirohi",
+  "near": "rj:sirohi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "shivganj"
+  ]
+ },
+ {
+  "id": "rj:sirohi-road",
+  "name": "RIICO Industrial Area Sirohi Road",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sirohi",
+  "near": "rj:sirohi",
+  "scale": 1,
+  "sectors": [
+   "cement",
+   "mixed"
+  ],
+  "aka": [
+   "pindwara"
+  ]
+ },
+ {
+  "id": "rj:ia-sirohi",
+  "name": "RIICO Industrial Area Sirohi",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sirohi",
+  "near": "rj:sirohi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:palra-ajmer",
+  "name": "RIICO Industrial Area Palra, Ajmer",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Ajmer",
+  "near": "rj:ajmer",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "palra"
+  ]
+ },
+ {
+  "id": "rj:parbatpura-ajmer",
+  "name": "RIICO Industrial Area Parbatpura, Ajmer",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Ajmer",
+  "near": "rj:ajmer",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "makhupura parbatpura",
+   "parbatpura"
+  ]
+ },
+ {
+  "id": "rj:makhupura-ajmer",
+  "name": "RIICO Industrial Area Makhupura, Ajmer",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Ajmer",
+  "near": "rj:ajmer",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "makhupura"
+  ]
+ },
+ {
+  "id": "rj:saradhana",
+  "name": "RIICO Industrial Area Saradhana",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Ajmer",
+  "near": "rj:ajmer",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:gegal",
+  "name": "RIICO Industrial Area Gegal",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Ajmer",
+  "near": "rj:ajmer",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:srinagar-ajmer",
+  "name": "RIICO Industrial Area Srinagar, Ajmer",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Ajmer",
+  "near": "rj:ajmer",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "shrinagar ajmer"
+  ]
+ },
+ {
+  "id": "rj:bewanja",
+  "name": "RIICO Industrial Area Bewanja",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Ajmer",
+  "near": "rj:ajmer",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:kalesara",
+  "name": "RIICO Industrial Area Kalesara",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Ajmer",
+  "near": "rj:ajmer",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:sarwar",
+  "name": "RIICO Industrial Area Sarwar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Ajmer",
+  "near": "rj:kekri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:sawar",
+  "name": "RIICO Industrial Area Sawar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Ajmer",
+  "near": "rj:kekri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-kekri",
+  "name": "RIICO Industrial Area Kekri",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Ajmer",
+  "near": "rj:kekri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-beawar",
+  "name": "RIICO Industrial Area Beawar (I to III)",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Beawar",
+  "near": "rj:beawar",
+  "scale": 2,
+  "sectors": [
+   "cement",
+   "textile",
+   "mixed"
+  ],
+  "aka": [
+   "beawar industrial area"
+  ]
+ },
+ {
+  "id": "rj:gohana-beawar",
+  "name": "RIICO Industrial Area Gohana, Beawar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Beawar",
+  "near": "rj:beawar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:masuda",
+  "name": "RIICO Industrial Area Masuda",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Beawar",
+  "near": "rj:beawar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:sathana",
+  "name": "RIICO Industrial Area Sathana",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Beawar",
+  "near": "rj:bijainagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-bijainagar",
+  "name": "RIICO Industrial Area Bijainagar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Beawar",
+  "near": "rj:bijainagar",
+  "scale": 1,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [
+   "vijaynagar industrial area"
+  ]
+ },
+ {
+  "id": "rj:ia-kishangarh",
+  "name": "RIICO Industrial Area Kishangarh (Phases I to VI)",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Ajmer",
+  "near": "rj:kishangarh",
+  "scale": 2,
+  "sectors": [
+   "mixed",
+   "textile"
+  ],
+  "aka": [
+   "kishangarh phase 1",
+   "kishangarh phase 5"
+  ]
+ },
+ {
+  "id": "rj:marble-mandi-kishangarh",
+  "name": "Marble Mandi, Kishangarh",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Ajmer",
+  "near": "rj:kishangarh",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kishangarh marble mandi",
+   "marble market kishangarh"
+  ]
+ },
+ {
+  "id": "rj:silora",
+  "name": "RIICO Industrial Area Silora",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Ajmer",
+  "near": "rj:kishangarh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "silora phase 1",
+   "silora phase 2"
+  ]
+ },
+ {
+  "id": "rj:raghunathpura",
+  "name": "RIICO Industrial Area Raghunathpura, Kishangarh",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Ajmer",
+  "near": "rj:kishangarh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:rupangarh",
+  "name": "RIICO Industrial Area Rupangarh",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Ajmer",
+  "near": "rj:kishangarh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:khoda-kishangarh",
+  "name": "RIICO Industrial Area Khoda, Kishangarh",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Ajmer",
+  "near": "rj:kishangarh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:mia-alwar",
+  "name": "Matsya Industrial Area (MIA), Alwar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Alwar",
+  "near": "rj:alwar",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering",
+   "food"
+  ],
+  "aka": [
+   "matsya",
+   "mia alwar",
+   "mia north extension",
+   "south east zone alwar"
+  ]
+ },
+ {
+  "id": "rj:old-ia-alwar",
+  "name": "Old Industrial Area, Alwar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Alwar",
+  "near": "rj:alwar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:agro-food-park-alwar",
+  "name": "RIICO Agro Food Park, Alwar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Alwar",
+  "near": "rj:alwar",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-khairthal",
+  "name": "RIICO Industrial Area Khairthal",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Khairthal-Tijara",
+  "near": "rj:khairthal",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-rajgarh-alwar",
+  "name": "RIICO Industrial Area Rajgarh (Alwar)",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Alwar",
+  "near": "rj:alwar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-thanagazi",
+  "name": "RIICO Industrial Area Thanagazi",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Alwar",
+  "near": "rj:alwar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-kherli",
+  "name": "RIICO Industrial Area Kherli",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Alwar",
+  "near": "rj:alwar",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-balotra",
+  "name": "RIICO Industrial Area Balotra (Phases I to IV)",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Balotra",
+  "near": "rj:balotra",
+  "scale": 2,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [
+   "balotra phase 1",
+   "balotra phase 3",
+   "balotra textile"
+  ]
+ },
+ {
+  "id": "rj:ia-barmer",
+  "name": "RIICO Industrial Area Barmer (Phases I and II)",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Barmer",
+  "near": "rj:barmer",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:mokalsar",
+  "name": "RIICO Industrial Area Mokalsar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Balotra",
+  "near": "rj:balotra",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:samdari",
+  "name": "RIICO Industrial Area Samdari",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Balotra",
+  "near": "rj:balotra",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:shiv-barmer",
+  "name": "RIICO Industrial Area Shiv",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Barmer",
+  "near": "rj:barmer",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:chohtan",
+  "name": "RIICO Industrial Area Chohtan",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Barmer",
+  "near": "rj:barmer",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "chauhtan"
+  ]
+ },
+ {
+  "id": "rj:ramsar-barmer",
+  "name": "RIICO Industrial Area Ramsar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Barmer",
+  "near": "rj:barmer",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-banswara",
+  "name": "RIICO Industrial Area Banswara",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Banswara",
+  "near": "rj:banswara",
+  "scale": 1,
+  "sectors": [
+   "textile"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ghatol",
+  "name": "RIICO Industrial Area Ghatol",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Banswara",
+  "near": "rj:banswara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:kushalgarh",
+  "name": "RIICO Industrial Area Kushalgarh",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Banswara",
+  "near": "rj:banswara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:partapur",
+  "name": "RIICO Industrial Area Partapur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Banswara",
+  "near": "rj:banswara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-dungarpur",
+  "name": "RIICO Industrial Area Dungarpur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Dungarpur",
+  "near": "rj:dungarpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "dungerpur industrial area"
+  ]
+ },
+ {
+  "id": "rj:bichhiwara",
+  "name": "RIICO Industrial Area Bichhiwara",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Dungarpur",
+  "near": "rj:dungarpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "bichwara"
+  ]
+ },
+ {
+  "id": "rj:sagwara-ia",
+  "name": "RIICO Industrial Area Sagwara",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Dungarpur",
+  "near": "rj:sagwara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sangwara"
+  ]
+ },
+ {
+  "id": "rj:aspur",
+  "name": "RIICO Industrial Area Aspur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Dungarpur",
+  "near": "rj:dungarpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "rama aspur"
+  ]
+ },
+ {
+  "id": "rj:ia-pratapgarh",
+  "name": "RIICO Industrial Area Pratapgarh",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Pratapgarh",
+  "near": "rj:pratapgarh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "partapgarh industrial area"
+  ]
+ },
+ {
+  "id": "rj:ia-bharatpur",
+  "name": "RIICO Industrial Area Bharatpur (I and II)",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Bharatpur",
+  "near": "rj:bharatpur",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "old industrial area bharatpur"
+  ]
+ },
+ {
+  "id": "rj:ia-bayana",
+  "name": "RIICO Industrial Area Bayana",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Bharatpur",
+  "near": "rj:bayana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-deeg",
+  "name": "RIICO Industrial Area Deeg",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Deeg",
+  "near": "rj:deeg",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:jurhara",
+  "name": "RIICO Industrial Area Jurhara",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Deeg",
+  "near": "rj:deeg",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "jurehra"
+  ]
+ },
+ {
+  "id": "rj:gc-dholpur",
+  "name": "RIICO Growth Centre Dholpur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Dholpur",
+  "near": "rj:dholpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "growth centre dholpur",
+   "odela road dholpur"
+  ]
+ },
+ {
+  "id": "rj:ia-dholpur",
+  "name": "RIICO Industrial Area Dholpur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Dholpur",
+  "near": "rj:dholpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-bhilwara",
+  "name": "RIICO Industrial Area Bhilwara (Phases I to IV)",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Bhilwara",
+  "near": "rj:bhilwara",
+  "scale": 3,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [
+   "bhilwara extension",
+   "bhilwara phase 1",
+   "bhilwara phase 3",
+   "bhilwara phase 4"
+  ]
+ },
+ {
+  "id": "rj:gc-hamirgarh",
+  "name": "RIICO Growth Centre Hamirgarh",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Bhilwara",
+  "near": "rj:bhilwara",
+  "scale": 2,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [
+   "gc hamirgarh",
+   "hamirgarh growth centre"
+  ]
+ },
+ {
+  "id": "rj:bigod",
+  "name": "RIICO Industrial Area Bigod",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Bhilwara",
+  "near": "rj:bhilwara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:bijoliya",
+  "name": "RIICO Industrial Area Bijoliya",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Bhilwara",
+  "near": "rj:bhilwara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "bijolia"
+  ]
+ },
+ {
+  "id": "rj:jahajpur",
+  "name": "RIICO Industrial Area Jahajpur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Bhilwara",
+  "near": "rj:bhilwara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "jahazpur"
+  ]
+ },
+ {
+  "id": "rj:raila",
+  "name": "RIICO Industrial Area Raila",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Bhilwara",
+  "near": "rj:gulabpura",
+  "scale": 1,
+  "sectors": [
+   "textile"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ukhaliya",
+  "name": "RIICO Industrial Area Ukhaliya",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Bhilwara",
+  "near": "rj:gulabpura",
+  "scale": 1,
+  "sectors": [
+   "textile"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-chittorgarh",
+  "name": "RIICO Industrial Area Chittorgarh (and Extension)",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Chittorgarh",
+  "near": "rj:chittorgarh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "chittorgarh extension"
+  ]
+ },
+ {
+  "id": "rj:ajoliya-ka-khera",
+  "name": "RIICO Industrial Area Ajoliya Ka Khera",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Chittorgarh",
+  "near": "rj:chittorgarh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-kapasan",
+  "name": "RIICO Industrial Area Kapasan",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Chittorgarh",
+  "near": "rj:kapasan",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-nimbahera",
+  "name": "RIICO Industrial Area Nimbahera",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Chittorgarh",
+  "near": "rj:nimbahera",
+  "scale": 1,
+  "sectors": [
+   "cement",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:mandpiya",
+  "name": "RIICO Industrial Area Mandpiya",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Chittorgarh",
+  "near": "rj:chittorgarh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "mandphiya"
+  ]
+ },
+ {
+  "id": "rj:ia-bhiwadi",
+  "name": "RIICO Industrial Area Bhiwadi",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Khairthal-Tijara",
+  "near": "rj:bhiwadi",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering",
+   "electronics",
+   "plastics"
+  ],
+  "aka": [
+   "bhiwadi industrial area",
+   "bhiwadi phase 1",
+   "bhiwadi phase 2",
+   "bhiwadi phase 3"
+  ]
+ },
+ {
+  "id": "rj:kaharani",
+  "name": "RIICO Industrial Area Kaharani",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Khairthal-Tijara",
+  "near": "rj:bhiwadi",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "kahrani"
+  ]
+ },
+ {
+  "id": "rj:chopanki",
+  "name": "RIICO Industrial Area Chopanki",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Khairthal-Tijara",
+  "near": "rj:bhiwadi",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "chopanki bhiwadi"
+  ]
+ },
+ {
+  "id": "rj:khushkhera",
+  "name": "RIICO Industrial Area Khushkhera",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Khairthal-Tijara",
+  "near": "rj:bhiwadi",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering",
+   "fmcg"
+  ],
+  "aka": [
+   "iid khushkhera",
+   "kushkhera"
+  ]
+ },
+ {
+  "id": "rj:karoli-bhiwadi",
+  "name": "RIICO Industrial Area Karoli",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Khairthal-Tijara",
+  "near": "rj:bhiwadi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:pathredi",
+  "name": "RIICO Industrial Area Pathredi",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Khairthal-Tijara",
+  "near": "rj:bhiwadi",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "pathredi bhiwadi"
+  ]
+ },
+ {
+  "id": "rj:tapukara",
+  "name": "RIICO Industrial Area Tapukara",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Khairthal-Tijara",
+  "near": "rj:bhiwadi",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "tapukda"
+  ]
+ },
+ {
+  "id": "rj:salarpur",
+  "name": "RIICO Industrial Area Salarpur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Khairthal-Tijara",
+  "near": "rj:bhiwadi",
+  "scale": 1,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:sare-khurd",
+  "name": "RIICO Industrial Area Sare Khurd",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Khairthal-Tijara",
+  "near": "rj:bhiwadi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sarekhurd"
+  ]
+ },
+ {
+  "id": "rj:bandapur",
+  "name": "RIICO Industrial Area Bandapur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Khairthal-Tijara",
+  "near": "rj:bhiwadi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:karni-bikaner",
+  "name": "RIICO Karni Industrial Area, Bikaner",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Bikaner",
+  "near": "rj:bikaner",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "ceramics"
+  ],
+  "aka": [
+   "karni extension",
+   "karni industrial area",
+   "sgc karni"
+  ]
+ },
+ {
+  "id": "rj:bichhwal-bikaner",
+  "name": "RIICO Industrial Area Bichhwal, Bikaner",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Bikaner",
+  "near": "rj:bikaner",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "bichhwal 2nd phase",
+   "bichwal"
+  ]
+ },
+ {
+  "id": "rj:khara-bikaner",
+  "name": "RIICO Industrial Area Khara, Bikaner",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Bikaner",
+  "near": "rj:bikaner",
+  "scale": 1,
+  "sectors": [
+   "ceramics",
+   "mixed"
+  ],
+  "aka": [
+   "khara"
+  ]
+ },
+ {
+  "id": "rj:rani-bazar-bikaner",
+  "name": "RIICO Industrial Area Rani Bazar, Bikaner",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Bikaner",
+  "near": "rj:bikaner",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "rani bazaar"
+  ]
+ },
+ {
+  "id": "rj:napasar",
+  "name": "RIICO Industrial Area Napasar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Bikaner",
+  "near": "rj:bikaner",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-nokha",
+  "name": "RIICO Industrial Area Nokha",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Bikaner",
+  "near": "rj:nokha",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "nokha extension"
+  ]
+ },
+ {
+  "id": "rj:sri-dungargarh",
+  "name": "RIICO Industrial Area Sri Dungargarh",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Bikaner",
+  "near": "rj:bikaner",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "dungargarh"
+  ]
+ },
+ {
+  "id": "rj:gajner",
+  "name": "RIICO Industrial Area Gajner",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Bikaner",
+  "near": "rj:bikaner",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:khajuwala",
+  "name": "RIICO Industrial Area Khajuwala",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Bikaner",
+  "near": "rj:bikaner",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:lunkaransar",
+  "name": "RIICO Industrial Area Lunkaransar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Bikaner",
+  "near": "rj:bikaner",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "loonkaransar"
+  ]
+ },
+ {
+  "id": "rj:pugal",
+  "name": "RIICO Industrial Area Pugal",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Bikaner",
+  "near": "rj:bikaner",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:boranada",
+  "name": "RIICO Industrial Area Boranada",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jodhpur",
+  "near": "rj:jodhpur",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "textile",
+   "mixed"
+  ],
+  "aka": [
+   "boranada phase 1",
+   "boranada phase 2",
+   "boranada phase 3",
+   "boranada phase 4"
+  ]
+ },
+ {
+  "id": "rj:epip-boranada",
+  "name": "EPIP Boranada",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jodhpur",
+  "near": "rj:jodhpur",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "export promotion industrial park jodhpur"
+  ]
+ },
+ {
+  "id": "rj:agro-food-park-boranada",
+  "name": "RIICO Agro Food Park, Boranada",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jodhpur",
+  "near": "rj:jodhpur",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:medical-devices-park-jodhpur",
+  "name": "Medical Devices Park, Boranada",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jodhpur",
+  "near": "rj:jodhpur",
+  "scale": 1,
+  "sectors": [
+   "pharma",
+   "engineering"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:shilpgram-pal",
+  "name": "Shilpgram Pal, Jodhpur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jodhpur",
+  "near": "rj:jodhpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "pal shilpgram"
+  ]
+ },
+ {
+  "id": "rj:basni-jodhpur",
+  "name": "RIICO Industrial Area Basni, Jodhpur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jodhpur",
+  "near": "rj:jodhpur",
+  "scale": 3,
+  "sectors": [
+   "textile",
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "basni industrial area",
+   "basni phase 1",
+   "basni phase 2"
+  ]
+ },
+ {
+  "id": "rj:mia-jodhpur",
+  "name": "Marudhar Industrial Area (MIA), Jodhpur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jodhpur",
+  "near": "rj:jodhpur",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "marudhar industrial area",
+   "mia jodhpur"
+  ]
+ },
+ {
+  "id": "rj:sangariya-jodhpur",
+  "name": "RIICO Industrial Area Sangariya, Jodhpur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jodhpur",
+  "near": "rj:jodhpur",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "sangariya phase 1",
+   "sangariya phase 2"
+  ]
+ },
+ {
+  "id": "rj:mandore",
+  "name": "RIICO Industrial Area Mandore",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jodhpur",
+  "near": "rj:jodhpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:khudiyala",
+  "name": "RIICO Industrial Area Khudiyala",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jodhpur",
+  "near": "rj:jodhpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:mathania",
+  "name": "RIICO Industrial Area Mathania",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jodhpur",
+  "near": "rj:jodhpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:tinwari",
+  "name": "RIICO Industrial Area Tinwari",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jodhpur",
+  "near": "rj:jodhpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:sopra",
+  "name": "RIICO Industrial Area Sopra",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jodhpur",
+  "near": "rj:jodhpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:chataliya",
+  "name": "RIICO Industrial Area Chataliya",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jodhpur",
+  "near": "rj:jodhpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-phalodi",
+  "name": "RIICO Industrial Area Phalodi",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Phalodi",
+  "near": "rj:phalodi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:bap",
+  "name": "RIICO Industrial Area Bap",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Phalodi",
+  "near": "rj:phalodi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:lohawat",
+  "name": "RIICO Industrial Area Lohawat",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Phalodi",
+  "near": "rj:phalodi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:khichan",
+  "name": "RIICO Industrial Area Khichan",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Phalodi",
+  "near": "rj:phalodi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-jaisalmer",
+  "name": "RIICO Industrial Area Jaisalmer",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaisalmer",
+  "near": "rj:jaisalmer",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-pokaran",
+  "name": "RIICO Industrial Area Pokaran",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaisalmer",
+  "near": "rj:pokaran",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "pokhran"
+  ]
+ },
+ {
+  "id": "rj:jpmia",
+  "name": "Jodhpur Pali Marwar Industrial Area (JPMIA)",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Pali",
+  "near": "rj:pali",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "dmic jodhpur pali",
+   "jodhpur pali marwar",
+   "jpmia"
+  ]
+ },
+ {
+  "id": "rj:ia-churu",
+  "name": "RIICO Industrial Area Churu",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Churu",
+  "near": "rj:churu",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-ratangarh",
+  "name": "RIICO Industrial Area Ratangarh",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Churu",
+  "near": "rj:ratangarh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-sadulpur",
+  "name": "RIICO Industrial Area Sadulpur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Churu",
+  "near": "rj:churu",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "rajgarh churu"
+  ]
+ },
+ {
+  "id": "rj:ia-sardarshahar",
+  "name": "RIICO Industrial Area Sardarshahar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Churu",
+  "near": "rj:sardarshahar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-sujangarh",
+  "name": "RIICO Industrial Area Sujangarh",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Churu",
+  "near": "rj:sujangarh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-taranagar",
+  "name": "RIICO Industrial Area Taranagar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Churu",
+  "near": "rj:churu",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-bidasar",
+  "name": "RIICO Industrial Area Bidasar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Churu",
+  "near": "rj:sujangarh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-dausa",
+  "name": "RIICO Industrial Area Dausa",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Dausa",
+  "near": "rj:dausa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:bapi-dausa",
+  "name": "RIICO Industrial Area Bapi",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Dausa",
+  "near": "rj:dausa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:kolana",
+  "name": "RIICO Industrial Area Kolana",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Dausa",
+  "near": "rj:dausa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-lalsot",
+  "name": "RIICO Industrial Area Lalsot",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Dausa",
+  "near": "rj:dausa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-mahwa",
+  "name": "RIICO Industrial Area Mahwa",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Dausa",
+  "near": "rj:dausa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "mahuwa"
+  ]
+ },
+ {
+  "id": "rj:ralawas",
+  "name": "RIICO Industrial Area Ralawas",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Dausa",
+  "near": "rj:dausa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ghiloth",
+  "name": "RIICO Industrial Area Ghiloth (Japanese Zone)",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Kotputli-Behror",
+  "near": "rj:neemrana",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "ghiloth japanese zone",
+   "greenfield ghiloth"
+  ]
+ },
+ {
+  "id": "rj:neemrana-japanese-zone",
+  "name": "Neemrana Japanese Investment Zone",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Kotputli-Behror",
+  "near": "rj:neemrana",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "electronics",
+   "fmcg",
+   "engineering"
+  ],
+  "aka": [
+   "japanese zone neemrana",
+   "majrakath",
+   "neemrana industrial complex majrakath",
+   "nic majrakath"
+  ]
+ },
+ {
+  "id": "rj:ia-neemrana",
+  "name": "RIICO Industrial Area Neemrana (Phases I and II)",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Kotputli-Behror",
+  "near": "rj:neemrana",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering",
+   "fmcg",
+   "electronics"
+  ],
+  "aka": [
+   "neemrana industrial area",
+   "neemrana phase 1",
+   "neemrana phase 2"
+  ]
+ },
+ {
+  "id": "rj:epip-neemrana",
+  "name": "EPIP Neemrana",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Kotputli-Behror",
+  "near": "rj:neemrana",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-behror",
+  "name": "RIICO Industrial Area Behror",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Kotputli-Behror",
+  "near": "rj:behror",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:kolila-joga",
+  "name": "RIICO Industrial Area Kolila Joga",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Kotputli-Behror",
+  "near": "rj:neemrana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:keshwana",
+  "name": "RIICO Industrial Area Keshwana",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Kotputli-Behror",
+  "near": "rj:kotputli",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "keshwana kotputli"
+  ]
+ },
+ {
+  "id": "rj:sotanala",
+  "name": "RIICO Industrial Area Sotanala",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Kotputli-Behror",
+  "near": "rj:behror",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:sitapura",
+  "name": "RIICO Industrial Area Sitapura, Jaipur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:jaipur",
+  "scale": 3,
+  "sectors": [
+   "garments",
+   "engineering",
+   "electronics",
+   "pharma"
+  ],
+  "aka": [
+   "sitapura industrial area",
+   "sitapura phase 1",
+   "sitapura phase 2",
+   "sitapura phase 3",
+   "sitapura phase 4"
+  ]
+ },
+ {
+  "id": "rj:sitapura-sez",
+  "name": "Gems and Jewellery SEZ Sitapura (I and II)",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:jaipur",
+  "scale": 2,
+  "sectors": [
+   "sez",
+   "mixed"
+  ],
+  "aka": [
+   "sez 1 sitapura",
+   "sez 2 sitapura",
+   "sitapura sez"
+  ]
+ },
+ {
+  "id": "rj:epip-sitapura",
+  "name": "EPIP Sitapura, Jaipur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:jaipur",
+  "scale": 2,
+  "sectors": [
+   "garments",
+   "mixed"
+  ],
+  "aka": [
+   "epip jaipur"
+  ]
+ },
+ {
+  "id": "rj:prahladpura",
+  "name": "RIICO Industrial Area Prahladpura",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:jaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "prahaladpura"
+  ]
+ },
+ {
+  "id": "rj:ramchandrapura",
+  "name": "RIICO Industrial Area Ramchandrapura",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:jaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:vkia",
+  "name": "Vishwakarma Industrial Area (VKIA), Jaipur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:jaipur",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "garments",
+   "mixed"
+  ],
+  "aka": [
+   "badarna vkia extension",
+   "vishwakarma industrial area",
+   "vki",
+   "vki jaipur",
+   "vkia"
+  ]
+ },
+ {
+  "id": "rj:jhotwara",
+  "name": "RIICO Industrial Area Jhotwara",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:jaipur",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "jhotwara extension",
+   "sarna jhotwara"
+  ]
+ },
+ {
+  "id": "rj:sarna-dungar",
+  "name": "RIICO Industrial Area Sarna Dungar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:jaipur",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "sarna doongar"
+  ]
+ },
+ {
+  "id": "rj:jaitpura",
+  "name": "RIICO Industrial Area Jaitpura",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:chomu",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:akera",
+  "name": "RIICO Industrial Area Akera",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:jaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:kaladera",
+  "name": "RIICO Industrial Area Kaladera",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:chomu",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:manda-jaipur",
+  "name": "RIICO Industrial Area Manda (I and II)",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:chomu",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:kishangarh-renwal",
+  "name": "RIICO Industrial Area Kishangarh Renwal",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:jaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "renwal"
+  ]
+ },
+ {
+  "id": "rj:bagru-ia",
+  "name": "RIICO Industrial Area Bagru (Old, Extension and Phase II)",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:bagru",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "engineering"
+  ],
+  "aka": [
+   "bagru extension",
+   "bagru phase 2"
+  ]
+ },
+ {
+  "id": "rj:bindayaka",
+  "name": "RIICO Industrial Area Bindayaka",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:jaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "bindayka"
+  ]
+ },
+ {
+  "id": "rj:ia-dudu",
+  "name": "RIICO Industrial Area Dudu",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:dudu",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:kant-kalwar",
+  "name": "RIICO Industrial Area Kant Kalwar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:jaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:kukas",
+  "name": "RIICO Industrial Area Kukas",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:jaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kukas extension"
+  ]
+ },
+ {
+  "id": "rj:manpur-macheri",
+  "name": "RIICO Industrial Area Manpur Macheri",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:jaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "manpur manchari"
+  ]
+ },
+ {
+  "id": "rj:mathasoola",
+  "name": "RIICO Industrial Area Mathasoola",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:jaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-phulera",
+  "name": "RIICO Industrial Area Phulera",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:phulera",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-shahpura-jaipur",
+  "name": "RIICO Industrial Area Shahpura (Jaipur)",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:jaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:tholai",
+  "name": "RIICO Industrial Area Tholai",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:jaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:apparel-park-jaipur",
+  "name": "RIICO Apparel Park, Jaipur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:jaipur",
+  "scale": 1,
+  "sectors": [
+   "garments"
+  ],
+  "aka": [
+   "apparel park jagatpura"
+  ]
+ },
+ {
+  "id": "rj:ia-bassi",
+  "name": "RIICO Industrial Area Bassi",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:jaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "bassi extension"
+  ]
+ },
+ {
+  "id": "rj:hirawala",
+  "name": "RIICO Industrial Area Hirawala",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:jaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:malviya-nagar-jaipur",
+  "name": "RIICO Industrial Area Malviya Nagar, Jaipur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:jaipur",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "malviya industrial area"
+  ]
+ },
+ {
+  "id": "rj:mansarovar-jaipur",
+  "name": "RIICO Industrial Area Mansarovar, Jaipur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:jaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "mansarovar industrial area"
+  ]
+ },
+ {
+  "id": "rj:tunga",
+  "name": "RIICO Industrial Area Toonga",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:jaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "tunga"
+  ]
+ },
+ {
+  "id": "rj:mahindra-world-city-jaipur",
+  "name": "Mahindra World City, Jaipur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jaipur",
+  "near": "rj:jaipur",
+  "scale": 2,
+  "sectors": [
+   "sez",
+   "it-campus",
+   "engineering"
+  ],
+  "aka": [
+   "mahindra sez jaipur",
+   "mwc jaipur"
+  ]
+ },
+ {
+  "id": "rj:ia-jalore",
+  "name": "RIICO Industrial Area Jalore (Phases I to III)",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jalore",
+  "near": "rj:jalore",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "jalore granite"
+  ]
+ },
+ {
+  "id": "rj:ia-bhinmal",
+  "name": "RIICO Industrial Area Bhinmal",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jalore",
+  "near": "rj:bhinmal",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-sanchore",
+  "name": "RIICO Industrial Area Sanchore",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jalore",
+  "near": "rj:sanchore",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:bishangarh",
+  "name": "RIICO Industrial Area Bishangarh",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jalore",
+  "near": "rj:jalore",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:gc-jhalawar",
+  "name": "RIICO Growth Centre Jhalawar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jhalawar",
+  "near": "rj:jhalawar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "growth centre jhalawar"
+  ]
+ },
+ {
+  "id": "rj:ia-jhalrapatan",
+  "name": "RIICO Industrial Area Jhalrapatan",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jhalawar",
+  "near": "rj:jhalawar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-bhawani-mandi",
+  "name": "RIICO Industrial Area Bhawani Mandi",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jhalawar",
+  "near": "rj:bhawani-mandi",
+  "scale": 1,
+  "sectors": [
+   "textile"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-aklera",
+  "name": "RIICO Industrial Area Aklera",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jhalawar",
+  "near": "rj:jhalawar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-jhunjhunu",
+  "name": "RIICO Industrial Area Jhunjhunu",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jhunjhunu",
+  "near": "rj:jhunjhunu",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "jhunjhunu 2nd phase"
+  ]
+ },
+ {
+  "id": "rj:ia-chirawa",
+  "name": "RIICO Industrial Area Chirawa",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jhunjhunu",
+  "near": "rj:chirawa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-pilani",
+  "name": "RIICO Industrial Area Pilani",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jhunjhunu",
+  "near": "rj:chirawa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-singhana",
+  "name": "RIICO Industrial Area Singhana",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Jhunjhunu",
+  "near": "rj:khetri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ipia-kota",
+  "name": "Indraprastha Industrial Area (IPIA), Kota",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Kota",
+  "near": "rj:kota",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "engineering"
+  ],
+  "aka": [
+   "ipia",
+   "ipia kota"
+  ]
+ },
+ {
+  "id": "rj:large-scale-ia-kota",
+  "name": "Large Scale Industrial Area, Kota",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Kota",
+  "near": "rj:kota",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "engineering"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:chambal-ia-kota",
+  "name": "RIICO Industrial Area Chambal, Kota",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Kota",
+  "near": "rj:kota",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:kuber-ia-kota",
+  "name": "RIICO Kuber Industrial Area, Kota",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Kota",
+  "near": "rj:kota",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kuber ranpur"
+  ]
+ },
+ {
+  "id": "rj:hadoti-ia-kota",
+  "name": "RIICO Hadoti Industrial Area, Kota",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Kota",
+  "near": "rj:kota",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "hadoti phase 1",
+   "hadoti phase 2"
+  ]
+ },
+ {
+  "id": "rj:ranpur-kota",
+  "name": "RIICO Agro Food Park Ranpur, Kota",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Kota",
+  "near": "rj:kota",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "afp ranpur",
+   "ranpur"
+  ]
+ },
+ {
+  "id": "rj:nanta-kota",
+  "name": "RIICO Industrial Area Nanta",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Kota",
+  "near": "rj:kota",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:suket",
+  "name": "RIICO Industrial Area Suket",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Kota",
+  "near": "rj:ramganj-mandi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-ramganj-mandi",
+  "name": "RIICO Industrial Area Ramganj Mandi",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Kota",
+  "near": "rj:ramganj-mandi",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:bapawar",
+  "name": "RIICO Industrial Area Bapawar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Kota",
+  "near": "rj:kota",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-baran",
+  "name": "RIICO Industrial Area Baran",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Baran",
+  "near": "rj:baran",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "iid centre baran"
+  ]
+ },
+ {
+  "id": "rj:ia-chhabra",
+  "name": "RIICO Industrial Area Chhabra",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Baran",
+  "near": "rj:baran",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-bundi",
+  "name": "RIICO Industrial Area Bundi",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Bundi",
+  "near": "rj:bundi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:sumerganj-mandi",
+  "name": "RIICO Industrial Area Sumerganj Mandi",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Bundi",
+  "near": "rj:bundi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-didwana",
+  "name": "RIICO Industrial Area Didwana",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Didwana-Kuchaman",
+  "near": "rj:didwana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "deedwana"
+  ]
+ },
+ {
+  "id": "rj:ia-makrana",
+  "name": "RIICO Industrial Area Makrana",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Didwana-Kuchaman",
+  "near": "rj:makrana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:igc-parbatsar",
+  "name": "RIICO Industrial Growth Centre Parbatsar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Didwana-Kuchaman",
+  "near": "rj:makrana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "parbatsar",
+   "sgc parbatsar"
+  ]
+ },
+ {
+  "id": "rj:ia-jayal",
+  "name": "RIICO Industrial Area Jayal",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Nagaur",
+  "near": "rj:nagaur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-merta-city",
+  "name": "RIICO Industrial Area Merta City",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Nagaur",
+  "near": "rj:nagaur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "merta"
+  ]
+ },
+ {
+  "id": "rj:gogelav",
+  "name": "RIICO Industrial Area Gogelav",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Nagaur",
+  "near": "rj:nagaur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-pali",
+  "name": "RIICO Industrial Area Pali (Phases I to IV)",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Pali",
+  "near": "rj:pali",
+  "scale": 2,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [
+   "pali phase 1",
+   "pali phase 4",
+   "pali textile"
+  ]
+ },
+ {
+  "id": "rj:mandia-road-pali",
+  "name": "RIICO Industrial Area Mandia Road, Pali",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Pali",
+  "near": "rj:pali",
+  "scale": 2,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [
+   "mandia road"
+  ]
+ },
+ {
+  "id": "rj:punayta-pali",
+  "name": "RIICO Industrial Area Punayta, Pali",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Pali",
+  "near": "rj:pali",
+  "scale": 1,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [
+   "punaita"
+  ]
+ },
+ {
+  "id": "rj:ia-sojat",
+  "name": "RIICO Industrial Area Sojat (Phases I to III)",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Pali",
+  "near": "rj:sojat",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-falna",
+  "name": "RIICO Industrial Area Falna",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Pali",
+  "near": "rj:falna",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-sumerpur",
+  "name": "RIICO Industrial Area Sumerpur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Pali",
+  "near": "rj:sumerpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-marwar-junction",
+  "name": "RIICO Industrial Area Marwar Junction",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Pali",
+  "near": "rj:pali",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:dhoinda",
+  "name": "RIICO Industrial Area Dhoinda",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Rajsamand",
+  "near": "rj:rajsamand",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:rajnagar-rajsamand",
+  "name": "RIICO Industrial Area Rajnagar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Rajsamand",
+  "near": "rj:rajsamand",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:kuraj",
+  "name": "RIICO Industrial Area Kuraj",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Rajsamand",
+  "near": "rj:rajsamand",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:baggad",
+  "name": "RIICO Industrial Area Baggad",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Rajsamand",
+  "near": "rj:rajsamand",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-tonk",
+  "name": "RIICO Industrial Area Tonk",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Tonk",
+  "near": "rj:tonk",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-deoli",
+  "name": "RIICO Industrial Area Deoli",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Tonk",
+  "near": "rj:tonk",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-malpura",
+  "name": "RIICO Industrial Area Malpura",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Tonk",
+  "near": "rj:malpura",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-niwai",
+  "name": "RIICO Industrial Area Niwai (and IID Centre)",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Tonk",
+  "near": "rj:niwai",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "iid centre newai",
+   "newai",
+   "niwai phase 2"
+  ]
+ },
+ {
+  "id": "rj:ia-uniara",
+  "name": "RIICO Industrial Area Uniara",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Tonk",
+  "near": "rj:tonk",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-gangapur-city",
+  "name": "RIICO Industrial Area Gangapur City",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sawai Madhopur",
+  "near": "rj:gangapur-city",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:kherda",
+  "name": "RIICO Industrial Area Kherda, Sawai Madhopur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sawai Madhopur",
+  "near": "rj:sawai-madhopur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-hindaun",
+  "name": "RIICO Industrial Area Hindaun City (and IID Centre)",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Karauli",
+  "near": "rj:hindaun",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "iid centre hindaun"
+  ]
+ },
+ {
+  "id": "rj:ia-karauli",
+  "name": "RIICO Industrial Area Karauli",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Karauli",
+  "near": "rj:karauli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:stone-park-masalpur",
+  "name": "RIICO Stone Park Masalpur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Karauli",
+  "near": "rj:karauli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "masalpur"
+  ]
+ },
+ {
+  "id": "rj:ia-sikar",
+  "name": "RIICO Industrial Area Sikar (Phases I and II)",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sikar",
+  "near": "rj:sikar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:palsana",
+  "name": "RIICO IID and Growth Centre Palsana",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sikar",
+  "near": "rj:sikar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "igc palsana",
+   "iid palsana"
+  ]
+ },
+ {
+  "id": "rj:ia-fatehpur-sikar",
+  "name": "RIICO Industrial Area Fatehpur (Sikar)",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sikar",
+  "near": "rj:sikar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "fatehpur shekhawati"
+  ]
+ },
+ {
+  "id": "rj:ia-khandela",
+  "name": "RIICO Industrial Area Khandela",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sikar",
+  "near": "rj:sikar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-neem-ka-thana",
+  "name": "RIICO Industrial Area Neem Ka Thana",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sikar",
+  "near": "rj:neem-ka-thana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-ramgarh-shekhawati",
+  "name": "RIICO Industrial Area Ramgarh Shekhawati",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sikar",
+  "near": "rj:sikar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-reengus",
+  "name": "RIICO Industrial Area Reengus",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sikar",
+  "near": "rj:reengus",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "ringas"
+  ]
+ },
+ {
+  "id": "rj:ia-ajeetgarh",
+  "name": "RIICO Industrial Area Ajeetgarh",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sikar",
+  "near": "rj:neem-ka-thana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "ajitgarh"
+  ]
+ },
+ {
+  "id": "rj:ia-sri-madhopur",
+  "name": "RIICO Industrial Area Sri Madhopur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sikar",
+  "near": "rj:reengus",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "shrimadhopur"
+  ]
+ },
+ {
+  "id": "rj:udyog-vihar-sri-ganganagar",
+  "name": "RIICO Udyog Vihar, Sri Ganganagar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sri Ganganagar",
+  "near": "rj:sri-ganganagar",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "udyog vihar 1 ganganagar",
+   "udyog vihar 2 ganganagar"
+  ]
+ },
+ {
+  "id": "rj:agro-food-park-sri-ganganagar",
+  "name": "RIICO Agro Food Park, Sri Ganganagar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sri Ganganagar",
+  "near": "rj:sri-ganganagar",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-hanumangarh",
+  "name": "RIICO Industrial Area Hanumangarh (I and II)",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Hanumangarh",
+  "near": "rj:hanumangarh",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-anupgarh",
+  "name": "RIICO Industrial Area Anupgarh",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sri Ganganagar",
+  "near": "rj:anupgarh",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-gharsana",
+  "name": "RIICO Industrial Area Gharsana",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sri Ganganagar",
+  "near": "rj:anupgarh",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-raisinghnagar",
+  "name": "RIICO Industrial Area Raisinghnagar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sri Ganganagar",
+  "near": "rj:sri-ganganagar",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-rawla",
+  "name": "RIICO Industrial Area Rawla",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sri Ganganagar",
+  "near": "rj:anupgarh",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-suratgarh",
+  "name": "RIICO Industrial Area Suratgarh",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sri Ganganagar",
+  "near": "rj:suratgarh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-padampur",
+  "name": "RIICO Industrial Area Padampur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sri Ganganagar",
+  "near": "rj:sri-ganganagar",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-sadulshahar",
+  "name": "RIICO Industrial Area Sadulshahar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Sri Ganganagar",
+  "near": "rj:sri-ganganagar",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-nohar",
+  "name": "RIICO Industrial Area Nohar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Hanumangarh",
+  "near": "rj:hanumangarh",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-sangaria",
+  "name": "RIICO Industrial Area Sangaria",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Hanumangarh",
+  "near": "rj:hanumangarh",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-bhadra",
+  "name": "RIICO Industrial Area Bhadra",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Hanumangarh",
+  "near": "rj:hanumangarh",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-pilibanga",
+  "name": "RIICO Industrial Area Pilibanga",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Hanumangarh",
+  "near": "rj:hanumangarh",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:ia-rawatsar",
+  "name": "RIICO Industrial Area Rawatsar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Hanumangarh",
+  "near": "rj:hanumangarh",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:madri-udaipur",
+  "name": "Madri Industrial Area (MIA), Udaipur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Udaipur",
+  "near": "rj:udaipur",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "madri",
+   "mia extension udaipur",
+   "mia udaipur"
+  ]
+ },
+ {
+  "id": "rj:bhamashah-udaipur",
+  "name": "Bhamashah Industrial Area, Kaladwas",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Udaipur",
+  "near": "rj:udaipur",
+  "scale": 2,
+  "sectors": [
+   "pharma",
+   "mixed"
+  ],
+  "aka": [
+   "bia kaladwas",
+   "iid centre kaladwas",
+   "kaladwas",
+   "kaladwas extension"
+  ]
+ },
+ {
+  "id": "rj:sukher",
+  "name": "RIICO Industrial Area Sukher",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Udaipur",
+  "near": "rj:udaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:gudli",
+  "name": "RIICO Industrial Area Gudli",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Udaipur",
+  "near": "rj:udaipur",
+  "scale": 1,
+  "sectors": [
+   "chemical",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:pratapnagar-udaipur",
+  "name": "RIICO Industrial Area Pratap Nagar, Udaipur",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Udaipur",
+  "near": "rj:udaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "pratapnagar"
+  ]
+ },
+ {
+  "id": "rj:fatehnagar",
+  "name": "RIICO Industrial Area Fatehnagar",
+  "state": "RJ",
+  "kind": "estate",
+  "district": "Udaipur",
+  "near": "rj:udaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "rj:chanderiya",
+  "name": "Chanderiya smelter complex",
+  "state": "RJ",
+  "kind": "cluster",
+  "district": "Chittorgarh",
+  "near": "rj:chittorgarh",
+  "scale": 2,
+  "sectors": [
+   "metal"
+  ],
+  "aka": [
+   "chanderia",
+   "hindustan zinc chanderiya"
+  ]
+ },
+ {
+  "id": "rj:rampura-agucha",
+  "name": "Rampura Agucha",
+  "state": "RJ",
+  "kind": "cluster",
+  "district": "Bhilwara",
+  "near": "rj:bhilwara",
+  "scale": 2,
+  "sectors": [
+   "metal"
+  ],
+  "aka": [
+   "agucha mine",
+   "hzl rampura agucha"
+  ]
+ }
+]

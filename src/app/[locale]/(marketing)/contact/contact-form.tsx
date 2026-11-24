@@ -30,6 +30,7 @@ import {
   type ContactFormData,
 } from "@/lib/contact-contract";
 import { assessCrewRequest, crewPrefill, requirementLines } from "@/lib/crew-request";
+import { SiteCityInput } from "./site-city-input";
 // The site's place is the client's market: strong evidence for the visitor
 // context, never a pick of what to show (owner decision, 18 Oct 2026; src/context).
 import { isMarketId, siteMarket, statesOf } from "@/markets/index";
@@ -528,7 +529,7 @@ export function ContactForm() {
       <div role="status" className="crew-done">
         <h2 ref={doneHeading} tabIndex={-1} className="form-scroll-target crew-question">Received. Thank you.</h2>
         <p className="mt-3 max-w-md text-muted-foreground leading-relaxed">
-          We aim to reply within two working days (Monday to Saturday, IST). We will contact you on the phone
+          We aim to reply within one working day (Monday to Saturday, IST). We will contact you on the phone
           number or email you gave.
         </p>
         {reference && (
@@ -679,18 +680,17 @@ export function ContactForm() {
               </div>
               <div>
                 <Label htmlFor="siteCity" className="text-sm font-medium">City or industrial area</Label>
-                <Input
-                  id="siteCity"
-                  name="siteCity"
+                <SiteCityInput
                   value={values.siteCity}
-                  aria-invalid={invalid("siteCity")}
-                  aria-describedby={describedBy("siteCity")}
-                  enterKeyHint="next"
-                  autoComplete="address-level2"
-                  placeholder="Town or industrial area"
-                  maxLength={120}
-                  onChange={(event) => set("siteCity", event.target.value)}
+                  state={values.siteState}
+                  roles={values.roles}
+                  headcountBand={values.headcountBand}
+                  originMarket={isMarketId(values.pageCluster) ? values.pageCluster : null}
+                  invalid={invalid("siteCity")}
+                  describedBy={describedBy("siteCity")}
                   className={cn(field, errors.siteCity && "border-destructive")}
+                  onChange={(value) => set("siteCity", value)}
+                  onPickState={(code) => set("siteState", code)}
                 />
                 <FieldError id="siteCity" error={errors.siteCity} />
               </div>
@@ -824,7 +824,7 @@ export function ContactForm() {
         </div>
       )}
 
-      <div ref={turnstileBox} className="mt-6" />
+      <div ref={turnstileBox} className={step === 2 ? "mt-6" : "hidden"} />
 
       {error && (
         <p ref={errorSummary} tabIndex={-1} role="alert" className="form-scroll-target mt-6 text-sm text-destructive">

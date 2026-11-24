@@ -281,7 +281,7 @@
     "requireOneOfMessage": "Send either details, or the requirement fields roles, headcountBand, siteState and siteCity (startWindow, durationBand and shiftPattern when known), or, for a call back, requestType callback with headcountBand."
   },
   "responses": {
-    "successMessage": "Requirement received. Our team will review it and reply. We aim to reply within two working days (Monday to Saturday, IST).",
+    "successMessage": "Requirement received. Our team will review it and reply. We aim to reply within one working day (Monday to Saturday, IST).",
     "callbackSuccessMessage": "Call back requested. We aim to call you within one working day (Monday to Saturday, IST).",
     "validationError": "Invalid form data.",
     "rateLimitError": "Too many submissions. Please try again shortly.",

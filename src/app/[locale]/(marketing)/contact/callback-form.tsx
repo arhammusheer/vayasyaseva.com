@@ -51,7 +51,7 @@ const FORM_TYPE = "callback";
 type Origin = { pageCluster?: string; sourcePath?: string };
 
 /** The button on /contact, and the dialog it opens. Crew requests only. */
-export function CallbackForm() {
+export function CallbackForm({ variant = "button" }: { variant?: "button" | "row" } = {}) {
   const mode = useContactMode();
   const [open, setOpen] = useState(false);
   const [reference, setReference] = useState<string | null | undefined>(undefined);
@@ -75,7 +75,7 @@ export function CallbackForm() {
 
   const sent = reference !== undefined;
   return (
-    <div className="callback">
+    <div className={variant === "row" ? "talk-callback" : "callback"}>
       {sent ? (
         <p role="status" className="callback-sent">
           We will call you. {CALLBACK_WINDOW}.
@@ -87,10 +87,18 @@ export function CallbackForm() {
           )}
         </p>
       ) : (
-        <p className="callback-note">Short on time? Leave your number and we call you.</p>
+        variant === "button" && <p className="callback-note">Short on time? Leave your number and we call you.</p>
       )}
       <Dialog.Root open={open} onOpenChange={setOpen}>
-        {!sent && (
+        {!sent && variant === "row" && (
+          // The call-back as a row of the "Talk to us" card (page.tsx).
+          <Dialog.Trigger className="talk-row">
+            <PhoneCall className="talk-row-icon" aria-hidden="true" />
+            <span className="talk-row-label">Call me back</span>
+            <span className="talk-row-note">Within one working day</span>
+          </Dialog.Trigger>
+        )}
+        {!sent && variant === "button" && (
           <Dialog.Trigger asChild>
             <Button type="button" size="lg" variant="outline" className="callback-open">
               <PhoneCall className="h-4 w-4" aria-hidden="true" />

@@ -27,7 +27,7 @@ import { normaliseIndianMobile } from "@/lib/talent-intake/rules";
 
 const SITE_URL = "https://www.vayasyaseva.com";
 // The response-time wording (PLAN §8.1): a target, never a promise.
-const DEFAULT_RESPONSE_WINDOW = "We aim to reply within two working days (Monday to Saturday, IST)";
+const DEFAULT_RESPONSE_WINDOW = "We aim to reply within one working day (Monday to Saturday, IST)";
 
 /** Which form the person filled, as the emails name it. */
 const FORM_NAMES: Record<string, string> = {
@@ -127,7 +127,7 @@ function staffModel(data: ContactFormData, options: ContactEmailOptions): StaffM
     action: callback
       ? "Phone them within one working day."
       : crew
-        ? "Reply within two working days."
+        ? "Reply within one working day."
         : "Compliance help, not a crew: guide them and connect them with the Vayasya Network.",
     tags: [
       ...(crew && !callback && judged && qualified ? [{ text: "Qualified: 20+ workers, 3+ months", tone: "success" as const }] : []),

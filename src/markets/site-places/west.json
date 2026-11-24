@@ -1,0 +1,9600 @@
+[
+ {
+  "id": "gj:ahmedabad",
+  "name": "Ahmedabad",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Ahmedabad",
+  "scale": 3,
+  "sectors": [
+   "textile",
+   "pharma",
+   "engineering",
+   "auto",
+   "chemical",
+   "logistics"
+  ],
+  "aka": [
+   "ahmadabad",
+   "amdavad"
+  ],
+  "lat": 23.02,
+  "lon": 72.57
+ },
+ {
+  "id": "gj:amreli",
+  "name": "Amreli",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Amreli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 21.6,
+  "lon": 71.22
+ },
+ {
+  "id": "gj:anand",
+  "name": "Anand",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Anand",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 22.56,
+  "lon": 72.95
+ },
+ {
+  "id": "gj:modasa",
+  "name": "Modasa",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Aravalli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "aravalli"
+  ],
+  "lat": 23.46,
+  "lon": 73.3
+ },
+ {
+  "id": "gj:palanpur",
+  "name": "Palanpur",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Banaskantha",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "banaskantha"
+  ],
+  "lat": 24.17,
+  "lon": 72.43
+ },
+ {
+  "id": "gj:bharuch",
+  "name": "Bharuch",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Bharuch",
+  "scale": 3,
+  "sectors": [
+   "chemical",
+   "pharma",
+   "engineering"
+  ],
+  "aka": [
+   "broach"
+  ],
+  "lat": 21.71,
+  "lon": 72.98
+ },
+ {
+  "id": "gj:bhavnagar",
+  "name": "Bhavnagar",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Bhavnagar",
+  "scale": 2,
+  "sectors": [
+   "metal",
+   "plastics",
+   "engineering",
+   "chemical"
+  ],
+  "aka": [],
+  "lat": 21.76,
+  "lon": 72.15
+ },
+ {
+  "id": "gj:botad",
+  "name": "Botad",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Botad",
+  "scale": 1,
+  "sectors": [
+   "textile",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 22.17,
+  "lon": 71.67
+ },
+ {
+  "id": "gj:chhota-udaipur",
+  "name": "Chhota Udaipur",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Chhota Udaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "chhota udepur",
+   "chhotaudepur"
+  ],
+  "lat": 22.31,
+  "lon": 74.01
+ },
+ {
+  "id": "gj:dahod",
+  "name": "Dahod",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Dahod",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "dohad"
+  ],
+  "lat": 22.84,
+  "lon": 74.25
+ },
+ {
+  "id": "gj:ahwa",
+  "name": "Ahwa",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Dang",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "ahva",
+   "dang",
+   "dangs"
+  ],
+  "lat": 20.76,
+  "lon": 73.69
+ },
+ {
+  "id": "gj:jam-khambhalia",
+  "name": "Jam Khambhalia",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Devbhoomi Dwarka",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "devbhumi dwarka",
+   "dwarka",
+   "khambhalia"
+  ],
+  "lat": 22.2,
+  "lon": 69.65
+ },
+ {
+  "id": "gj:gandhinagar",
+  "name": "Gandhinagar",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Gandhinagar",
+  "scale": 2,
+  "sectors": [
+   "electronics",
+   "it-campus",
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 23.22,
+  "lon": 72.65
+ },
+ {
+  "id": "gj:veraval",
+  "name": "Veraval",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Gir Somnath",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "chemical"
+  ],
+  "aka": [
+   "gir somnath",
+   "somnath"
+  ],
+  "lat": 20.91,
+  "lon": 70.37
+ },
+ {
+  "id": "gj:jamnagar",
+  "name": "Jamnagar",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Jamnagar",
+  "scale": 3,
+  "sectors": [
+   "metal",
+   "engineering",
+   "chemical"
+  ],
+  "aka": [
+   "brass city"
+  ],
+  "lat": 22.47,
+  "lon": 70.06
+ },
+ {
+  "id": "gj:junagadh",
+  "name": "Junagadh",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Junagadh",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "junagarh"
+  ],
+  "lat": 21.52,
+  "lon": 70.46
+ },
+ {
+  "id": "gj:nadiad",
+  "name": "Nadiad",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Kheda",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kheda"
+  ],
+  "lat": 22.69,
+  "lon": 72.86
+ },
+ {
+  "id": "gj:bhuj",
+  "name": "Bhuj",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Kutch",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kachchh",
+   "kachh",
+   "kutch"
+  ],
+  "lat": 23.25,
+  "lon": 69.67
+ },
+ {
+  "id": "gj:lunawada",
+  "name": "Lunawada",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Mahisagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "mahisagar"
+  ],
+  "lat": 23.13,
+  "lon": 73.61
+ },
+ {
+  "id": "gj:mehsana",
+  "name": "Mehsana",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Mehsana",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "food",
+   "pharma"
+  ],
+  "aka": [
+   "mahesana"
+  ],
+  "lat": 23.59,
+  "lon": 72.37
+ },
+ {
+  "id": "gj:morbi",
+  "name": "Morbi",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Morbi",
+  "scale": 3,
+  "sectors": [
+   "ceramics",
+   "engineering"
+  ],
+  "aka": [
+   "morvi"
+  ],
+  "lat": 22.82,
+  "lon": 70.84
+ },
+ {
+  "id": "gj:rajpipla",
+  "name": "Rajpipla",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Narmada",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "narmada"
+  ],
+  "lat": 21.87,
+  "lon": 73.5
+ },
+ {
+  "id": "gj:navsari",
+  "name": "Navsari",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Navsari",
+  "scale": 1,
+  "sectors": [
+   "textile",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 20.95,
+  "lon": 72.92
+ },
+ {
+  "id": "gj:godhra",
+  "name": "Godhra",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Panchmahal",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "panchmahals"
+  ],
+  "lat": 22.78,
+  "lon": 73.61
+ },
+ {
+  "id": "gj:patan",
+  "name": "Patan",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Patan",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 23.85,
+  "lon": 72.13
+ },
+ {
+  "id": "gj:porbandar",
+  "name": "Porbandar",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Porbandar",
+  "scale": 1,
+  "sectors": [
+   "cement",
+   "chemical"
+  ],
+  "aka": [],
+  "lat": 21.64,
+  "lon": 69.61
+ },
+ {
+  "id": "gj:rajkot",
+  "name": "Rajkot",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Rajkot",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "auto",
+   "metal"
+  ],
+  "aka": [],
+  "lat": 22.3,
+  "lon": 70.8
+ },
+ {
+  "id": "gj:himmatnagar",
+  "name": "Himmatnagar",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Sabarkantha",
+  "scale": 1,
+  "sectors": [
+   "ceramics",
+   "mixed"
+  ],
+  "aka": [
+   "himatnagar",
+   "sabarkantha"
+  ],
+  "lat": 23.6,
+  "lon": 72.97
+ },
+ {
+  "id": "gj:surat",
+  "name": "Surat",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Surat",
+  "scale": 3,
+  "sectors": [
+   "textile",
+   "chemical",
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 21.17,
+  "lon": 72.83
+ },
+ {
+  "id": "gj:surendranagar",
+  "name": "Surendranagar",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Surendranagar",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "ceramics",
+   "engineering"
+  ],
+  "aka": [
+   "wadhwan"
+  ],
+  "lat": 22.73,
+  "lon": 71.64
+ },
+ {
+  "id": "gj:vyara",
+  "name": "Vyara",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Tapi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "tapi"
+  ],
+  "lat": 21.11,
+  "lon": 73.39
+ },
+ {
+  "id": "gj:vadodara",
+  "name": "Vadodara",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Vadodara",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "chemical",
+   "pharma"
+  ],
+  "aka": [
+   "baroda"
+  ],
+  "lat": 22.31,
+  "lon": 73.18
+ },
+ {
+  "id": "gj:valsad",
+  "name": "Valsad",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Valsad",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "engineering"
+  ],
+  "aka": [
+   "bulsar"
+  ],
+  "lat": 20.61,
+  "lon": 72.93
+ },
+ {
+  "id": "gj:tharad",
+  "name": "Tharad",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Vav-Tharad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "vav",
+   "vav tharad"
+  ],
+  "lat": 24.4,
+  "lon": 71.63
+ },
+ {
+  "id": "mh:ahilyanagar",
+  "name": "Ahilyanagar",
+  "state": "MH",
+  "kind": "city",
+  "district": "Ahilyanagar",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "ahmadnagar",
+   "ahmednagar",
+   "nagar"
+  ],
+  "lat": 19.09,
+  "lon": 74.74
+ },
+ {
+  "id": "mh:akola",
+  "name": "Akola",
+  "state": "MH",
+  "kind": "city",
+  "district": "Akola",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "textile"
+  ],
+  "aka": [],
+  "lat": 20.7,
+  "lon": 77.0
+ },
+ {
+  "id": "mh:amravati",
+  "name": "Amravati",
+  "state": "MH",
+  "kind": "city",
+  "district": "Amravati",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "food"
+  ],
+  "aka": [
+   "amraoti",
+   "amrawati"
+  ],
+  "lat": 20.93,
+  "lon": 77.75
+ },
+ {
+  "id": "mh:chhatrapati-sambhajinagar",
+  "name": "Chhatrapati Sambhajinagar",
+  "state": "MH",
+  "kind": "city",
+  "district": "Chhatrapati Sambhajinagar",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering",
+   "pharma"
+  ],
+  "aka": [
+   "abad",
+   "aurangabad",
+   "sambhajinagar"
+  ],
+  "lat": 19.88,
+  "lon": 75.34
+ },
+ {
+  "id": "mh:beed",
+  "name": "Beed",
+  "state": "MH",
+  "kind": "city",
+  "district": "Beed",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "bid"
+  ],
+  "lat": 18.99,
+  "lon": 75.76
+ },
+ {
+  "id": "mh:bhandara",
+  "name": "Bhandara",
+  "state": "MH",
+  "kind": "city",
+  "district": "Bhandara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 21.17,
+  "lon": 79.65
+ },
+ {
+  "id": "mh:buldhana",
+  "name": "Buldhana",
+  "state": "MH",
+  "kind": "city",
+  "district": "Buldhana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "buldana"
+  ],
+  "lat": 20.53,
+  "lon": 76.18
+ },
+ {
+  "id": "mh:chandrapur",
+  "name": "Chandrapur",
+  "state": "MH",
+  "kind": "city",
+  "district": "Chandrapur",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "cement",
+   "metal"
+  ],
+  "aka": [
+   "chanda"
+  ],
+  "lat": 19.96,
+  "lon": 79.3
+ },
+ {
+  "id": "mh:dhule",
+  "name": "Dhule",
+  "state": "MH",
+  "kind": "city",
+  "district": "Dhule",
+  "scale": 1,
+  "sectors": [
+   "textile",
+   "food"
+  ],
+  "aka": [
+   "dhulia"
+  ],
+  "lat": 20.9,
+  "lon": 74.77
+ },
+ {
+  "id": "mh:gadchiroli",
+  "name": "Gadchiroli",
+  "state": "MH",
+  "kind": "city",
+  "district": "Gadchiroli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 20.18,
+  "lon": 80.0
+ },
+ {
+  "id": "mh:gondia",
+  "name": "Gondia",
+  "state": "MH",
+  "kind": "city",
+  "district": "Gondia",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "gondiya"
+  ],
+  "lat": 21.46,
+  "lon": 80.19
+ },
+ {
+  "id": "mh:hingoli",
+  "name": "Hingoli",
+  "state": "MH",
+  "kind": "city",
+  "district": "Hingoli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 19.72,
+  "lon": 77.15
+ },
+ {
+  "id": "mh:jalgaon",
+  "name": "Jalgaon",
+  "state": "MH",
+  "kind": "city",
+  "district": "Jalgaon",
+  "scale": 2,
+  "sectors": [
+   "plastics",
+   "food"
+  ],
+  "aka": [],
+  "lat": 21.01,
+  "lon": 75.56
+ },
+ {
+  "id": "mh:jalna",
+  "name": "Jalna",
+  "state": "MH",
+  "kind": "city",
+  "district": "Jalna",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "food"
+  ],
+  "aka": [],
+  "lat": 19.84,
+  "lon": 75.88
+ },
+ {
+  "id": "mh:kolhapur",
+  "name": "Kolhapur",
+  "state": "MH",
+  "kind": "city",
+  "district": "Kolhapur",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "auto",
+   "food"
+  ],
+  "aka": [],
+  "lat": 16.7,
+  "lon": 74.24
+ },
+ {
+  "id": "mh:latur",
+  "name": "Latur",
+  "state": "MH",
+  "kind": "city",
+  "district": "Latur",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [],
+  "lat": 18.4,
+  "lon": 76.56
+ },
+ {
+  "id": "mh:mumbai",
+  "name": "Mumbai",
+  "state": "MH",
+  "kind": "city",
+  "district": "Mumbai City",
+  "scale": 3,
+  "sectors": [
+   "mixed",
+   "logistics"
+  ],
+  "aka": [
+   "bombay"
+  ],
+  "lat": 18.94,
+  "lon": 72.83
+ },
+ {
+  "id": "mh:bandra",
+  "name": "Bandra",
+  "state": "MH",
+  "kind": "city",
+  "district": "Mumbai Suburban",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "bandra east",
+   "mumbai suburban"
+  ],
+  "lat": 19.06,
+  "lon": 72.84
+ },
+ {
+  "id": "mh:nagpur",
+  "name": "Nagpur",
+  "state": "MH",
+  "kind": "city",
+  "district": "Nagpur",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "auto",
+   "logistics"
+  ],
+  "aka": [],
+  "lat": 21.15,
+  "lon": 79.09
+ },
+ {
+  "id": "mh:nanded",
+  "name": "Nanded",
+  "state": "MH",
+  "kind": "city",
+  "district": "Nanded",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 19.15,
+  "lon": 77.31
+ },
+ {
+  "id": "mh:nandurbar",
+  "name": "Nandurbar",
+  "state": "MH",
+  "kind": "city",
+  "district": "Nandurbar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 21.37,
+  "lon": 74.24
+ },
+ {
+  "id": "mh:nashik",
+  "name": "Nashik",
+  "state": "MH",
+  "kind": "city",
+  "district": "Nashik",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering",
+   "electronics"
+  ],
+  "aka": [
+   "nasik"
+  ],
+  "lat": 20.0,
+  "lon": 73.79
+ },
+ {
+  "id": "mh:dharashiv",
+  "name": "Dharashiv",
+  "state": "MH",
+  "kind": "city",
+  "district": "Dharashiv",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "osmanabad"
+  ],
+  "lat": 18.18,
+  "lon": 76.04
+ },
+ {
+  "id": "mh:palghar",
+  "name": "Palghar",
+  "state": "MH",
+  "kind": "city",
+  "district": "Palghar",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 19.7,
+  "lon": 72.77
+ },
+ {
+  "id": "mh:parbhani",
+  "name": "Parbhani",
+  "state": "MH",
+  "kind": "city",
+  "district": "Parbhani",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 19.27,
+  "lon": 76.77
+ },
+ {
+  "id": "mh:pune",
+  "name": "Pune",
+  "state": "MH",
+  "kind": "city",
+  "district": "Pune",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering",
+   "it-campus",
+   "logistics"
+  ],
+  "aka": [
+   "poona"
+  ],
+  "lat": 18.52,
+  "lon": 73.86
+ },
+ {
+  "id": "mh:alibag",
+  "name": "Alibag",
+  "state": "MH",
+  "kind": "city",
+  "district": "Raigad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "alibaug",
+   "raigad"
+  ],
+  "lat": 18.64,
+  "lon": 72.87
+ },
+ {
+  "id": "mh:ratnagiri",
+  "name": "Ratnagiri",
+  "state": "MH",
+  "kind": "city",
+  "district": "Ratnagiri",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 16.99,
+  "lon": 73.31
+ },
+ {
+  "id": "mh:sangli",
+  "name": "Sangli",
+  "state": "MH",
+  "kind": "city",
+  "district": "Sangli",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 16.85,
+  "lon": 74.58
+ },
+ {
+  "id": "mh:satara",
+  "name": "Satara",
+  "state": "MH",
+  "kind": "city",
+  "district": "Satara",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 17.68,
+  "lon": 74.0
+ },
+ {
+  "id": "mh:oros",
+  "name": "Oros",
+  "state": "MH",
+  "kind": "city",
+  "district": "Sindhudurg",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sindhudurg",
+   "sindhudurgnagari"
+  ],
+  "lat": 16.12,
+  "lon": 73.69
+ },
+ {
+  "id": "mh:solapur",
+  "name": "Solapur",
+  "state": "MH",
+  "kind": "city",
+  "district": "Solapur",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "engineering"
+  ],
+  "aka": [
+   "sholapur"
+  ],
+  "lat": 17.66,
+  "lon": 75.91
+ },
+ {
+  "id": "mh:thane",
+  "name": "Thane",
+  "state": "MH",
+  "kind": "city",
+  "district": "Thane",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "chemical",
+   "pharma"
+  ],
+  "aka": [
+   "thana"
+  ],
+  "lat": 19.2,
+  "lon": 72.97
+ },
+ {
+  "id": "mh:wardha",
+  "name": "Wardha",
+  "state": "MH",
+  "kind": "city",
+  "district": "Wardha",
+  "scale": 1,
+  "sectors": [
+   "textile",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 20.74,
+  "lon": 78.6
+ },
+ {
+  "id": "mh:washim",
+  "name": "Washim",
+  "state": "MH",
+  "kind": "city",
+  "district": "Washim",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 20.11,
+  "lon": 77.13
+ },
+ {
+  "id": "mh:yavatmal",
+  "name": "Yavatmal",
+  "state": "MH",
+  "kind": "city",
+  "district": "Yavatmal",
+  "scale": 1,
+  "sectors": [
+   "textile",
+   "mixed"
+  ],
+  "aka": [
+   "yeotmal"
+  ],
+  "lat": 20.39,
+  "lon": 78.12
+ },
+ {
+  "id": "ga:panaji",
+  "name": "Panaji",
+  "state": "GA",
+  "kind": "city",
+  "district": "North Goa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "panjim",
+   "ponnje"
+  ],
+  "lat": 15.49,
+  "lon": 73.83
+ },
+ {
+  "id": "ga:margao",
+  "name": "Margao",
+  "state": "GA",
+  "kind": "city",
+  "district": "South Goa",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "madgaon",
+   "margaon"
+  ],
+  "lat": 15.28,
+  "lon": 73.96
+ },
+ {
+  "id": "ga:quepem",
+  "name": "Quepem",
+  "state": "GA",
+  "kind": "city",
+  "district": "Kushavati",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kepem",
+   "kushavati"
+  ],
+  "lat": 15.21,
+  "lon": 74.08
+ },
+ {
+  "id": "dh:silvassa",
+  "name": "Silvassa",
+  "state": "DH",
+  "kind": "city",
+  "district": "Dadra and Nagar Haveli",
+  "scale": 3,
+  "sectors": [
+   "textile",
+   "plastics",
+   "pharma",
+   "engineering",
+   "chemical"
+  ],
+  "aka": [
+   "dadra nagar haveli",
+   "dnh"
+  ],
+  "lat": 20.27,
+  "lon": 73.01
+ },
+ {
+  "id": "dh:daman",
+  "name": "Daman",
+  "state": "DH",
+  "kind": "city",
+  "district": "Daman",
+  "scale": 2,
+  "sectors": [
+   "plastics",
+   "pharma",
+   "textile",
+   "chemical"
+  ],
+  "aka": [
+   "moti daman",
+   "nani daman"
+  ],
+  "lat": 20.41,
+  "lon": 72.83
+ },
+ {
+  "id": "dh:diu",
+  "name": "Diu",
+  "state": "DH",
+  "kind": "city",
+  "district": "Diu",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 20.71,
+  "lon": 70.98
+ },
+ {
+  "id": "gj:vapi",
+  "name": "Vapi",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Valsad",
+  "scale": 3,
+  "sectors": [
+   "chemical",
+   "pharma",
+   "paper",
+   "plastics",
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 20.37,
+  "lon": 72.9
+ },
+ {
+  "id": "gj:ankleshwar",
+  "name": "Ankleshwar",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Bharuch",
+  "scale": 3,
+  "sectors": [
+   "chemical",
+   "pharma"
+  ],
+  "aka": [
+   "anklesvar"
+  ],
+  "lat": 21.63,
+  "lon": 73.0
+ },
+ {
+  "id": "gj:sanand",
+  "name": "Sanand",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Ahmedabad",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering",
+   "fmcg",
+   "logistics"
+  ],
+  "aka": [],
+  "lat": 22.99,
+  "lon": 72.38
+ },
+ {
+  "id": "gj:halol",
+  "name": "Halol",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Panchmahal",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 22.5,
+  "lon": 73.47
+ },
+ {
+  "id": "gj:gandhidham",
+  "name": "Gandhidham",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Kutch",
+  "scale": 3,
+  "sectors": [
+   "logistics",
+   "textile",
+   "engineering"
+  ],
+  "aka": [
+   "kandla"
+  ],
+  "lat": 23.08,
+  "lon": 70.13
+ },
+ {
+  "id": "gj:mundra",
+  "name": "Mundra",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Kutch",
+  "scale": 2,
+  "sectors": [
+   "logistics",
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 22.84,
+  "lon": 69.72
+ },
+ {
+  "id": "gj:anjar",
+  "name": "Anjar",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Kutch",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 23.11,
+  "lon": 70.03
+ },
+ {
+  "id": "gj:kalol",
+  "name": "Kalol",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Gandhinagar",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "chemical"
+  ],
+  "aka": [],
+  "lat": 23.24,
+  "lon": 72.5
+ },
+ {
+  "id": "gj:kadi",
+  "name": "Kadi",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Mehsana",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "food"
+  ],
+  "aka": [],
+  "lat": 23.3,
+  "lon": 72.33
+ },
+ {
+  "id": "gj:jetpur",
+  "name": "Jetpur",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Rajkot",
+  "scale": 2,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [
+   "jetpur navagadh"
+  ],
+  "lat": 21.75,
+  "lon": 70.62
+ },
+ {
+  "id": "gj:gondal",
+  "name": "Gondal",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Rajkot",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 21.96,
+  "lon": 70.8
+ },
+ {
+  "id": "gj:bardoli",
+  "name": "Bardoli",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Surat",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 21.12,
+  "lon": 73.11
+ },
+ {
+  "id": "gj:wankaner",
+  "name": "Wankaner",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Morbi",
+  "scale": 1,
+  "sectors": [
+   "ceramics"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:unjha",
+  "name": "Unjha",
+  "state": "GJ",
+  "kind": "city",
+  "district": "Mehsana",
+  "scale": 2,
+  "sectors": [
+   "food"
+  ],
+  "aka": [],
+  "lat": 23.8,
+  "lon": 72.39
+ },
+ {
+  "id": "mh:pimpri-chinchwad",
+  "name": "Pimpri-Chinchwad",
+  "state": "MH",
+  "kind": "city",
+  "district": "Pune",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "chinchwad",
+   "pcmc",
+   "pimpri"
+  ],
+  "lat": 18.63,
+  "lon": 73.8
+ },
+ {
+  "id": "mh:bhiwandi",
+  "name": "Bhiwandi",
+  "state": "MH",
+  "kind": "city",
+  "district": "Thane",
+  "scale": 3,
+  "sectors": [
+   "logistics",
+   "textile"
+  ],
+  "aka": [
+   "bhiwandi nizampur"
+  ],
+  "lat": 19.3,
+  "lon": 73.06
+ },
+ {
+  "id": "mh:kalyan",
+  "name": "Kalyan",
+  "state": "MH",
+  "kind": "city",
+  "district": "Thane",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kalyan dombivli"
+  ],
+  "lat": 19.24,
+  "lon": 73.13
+ },
+ {
+  "id": "mh:navi-mumbai",
+  "name": "Navi Mumbai",
+  "state": "MH",
+  "kind": "city",
+  "district": "Thane",
+  "scale": 3,
+  "sectors": [
+   "chemical",
+   "engineering",
+   "logistics",
+   "it-campus"
+  ],
+  "aka": [
+   "new bombay"
+  ],
+  "lat": 19.03,
+  "lon": 73.03
+ },
+ {
+  "id": "mh:vasai-virar",
+  "name": "Vasai-Virar",
+  "state": "MH",
+  "kind": "city",
+  "district": "Palghar",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "plastics"
+  ],
+  "aka": [
+   "bassein",
+   "vasai",
+   "virar"
+  ],
+  "lat": 19.46,
+  "lon": 72.81
+ },
+ {
+  "id": "mh:panvel",
+  "name": "Panvel",
+  "state": "MH",
+  "kind": "city",
+  "district": "Raigad",
+  "scale": 2,
+  "sectors": [
+   "logistics",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 18.99,
+  "lon": 73.12
+ },
+ {
+  "id": "mh:khopoli",
+  "name": "Khopoli",
+  "state": "MH",
+  "kind": "city",
+  "district": "Raigad",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 18.79,
+  "lon": 73.34
+ },
+ {
+  "id": "mh:ambernath",
+  "name": "Ambernath",
+  "state": "MH",
+  "kind": "city",
+  "district": "Thane",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 19.21,
+  "lon": 73.19
+ },
+ {
+  "id": "mh:badlapur",
+  "name": "Badlapur",
+  "state": "MH",
+  "kind": "city",
+  "district": "Thane",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "pharma"
+  ],
+  "aka": [
+   "kulgaon badlapur"
+  ],
+  "lat": 19.16,
+  "lon": 73.26
+ },
+ {
+  "id": "mh:boisar",
+  "name": "Boisar",
+  "state": "MH",
+  "kind": "city",
+  "district": "Palghar",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "steel",
+   "pharma"
+  ],
+  "aka": [],
+  "lat": 19.8,
+  "lon": 72.75
+ },
+ {
+  "id": "mh:ichalkaranji",
+  "name": "Ichalkaranji",
+  "state": "MH",
+  "kind": "city",
+  "district": "Kolhapur",
+  "scale": 3,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [],
+  "lat": 16.7,
+  "lon": 74.46
+ },
+ {
+  "id": "mh:malegaon",
+  "name": "Malegaon",
+  "state": "MH",
+  "kind": "city",
+  "district": "Nashik",
+  "scale": 2,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [
+   "malegaon nashik"
+  ],
+  "lat": 20.55,
+  "lon": 74.53
+ },
+ {
+  "id": "mh:baramati",
+  "name": "Baramati",
+  "state": "MH",
+  "kind": "city",
+  "district": "Pune",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "auto"
+  ],
+  "aka": [],
+  "lat": 18.15,
+  "lon": 74.58
+ },
+ {
+  "id": "mh:karad",
+  "name": "Karad",
+  "state": "MH",
+  "kind": "city",
+  "district": "Satara",
+  "scale": 1,
+  "sectors": [
+   "engineering",
+   "food"
+  ],
+  "aka": [],
+  "lat": 17.29,
+  "lon": 74.18
+ },
+ {
+  "id": "mh:hinganghat",
+  "name": "Hinganghat",
+  "state": "MH",
+  "kind": "city",
+  "district": "Wardha",
+  "scale": 1,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [],
+  "lat": 20.55,
+  "lon": 78.84
+ },
+ {
+  "id": "mh:chiplun",
+  "name": "Chiplun",
+  "state": "MH",
+  "kind": "city",
+  "district": "Ratnagiri",
+  "scale": 1,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": [],
+  "lat": 17.53,
+  "lon": 73.51
+ },
+ {
+  "id": "mh:bhusawal",
+  "name": "Bhusawal",
+  "state": "MH",
+  "kind": "city",
+  "district": "Jalgaon",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "bhusaval"
+  ],
+  "lat": 21.05,
+  "lon": 75.78
+ },
+ {
+  "id": "ga:vasco-da-gama",
+  "name": "Vasco da Gama",
+  "state": "GA",
+  "kind": "city",
+  "district": "South Goa",
+  "scale": 2,
+  "sectors": [
+   "logistics",
+   "mixed"
+  ],
+  "aka": [
+   "marmagao",
+   "mormugao",
+   "vasco"
+  ],
+  "lat": 15.4,
+  "lon": 73.81
+ },
+ {
+  "id": "ga:ponda",
+  "name": "Ponda",
+  "state": "GA",
+  "kind": "city",
+  "district": "North Goa",
+  "scale": 1,
+  "sectors": [
+   "pharma",
+   "mixed"
+  ],
+  "aka": [
+   "fonda"
+  ],
+  "lat": 15.4,
+  "lon": 74.01
+ },
+ {
+  "id": "ga:mapusa",
+  "name": "Mapusa",
+  "state": "GA",
+  "kind": "city",
+  "district": "North Goa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "mhapsa"
+  ],
+  "lat": 15.59,
+  "lon": 73.81
+ },
+ {
+  "id": "gj:apparel-park-gidc-ahmedabad",
+  "name": "Apparel Park GIDC (Ahmedabad)",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Ahmedabad",
+  "near": "gj:ahmedabad",
+  "scale": 1,
+  "sectors": [
+   "garments"
+  ],
+  "aka": [
+   "apparel park ahmedabad"
+  ]
+ },
+ {
+  "id": "gj:behrampura-gidc",
+  "name": "Behrampura GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Ahmedabad",
+  "near": "gj:ahmedabad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:bhagapura-gidc",
+  "name": "Bhagapura GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Ahmedabad",
+  "near": "gj:ahmedabad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:bhiloda-gidc",
+  "name": "Bhiloda GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Aravalli",
+  "near": "gj:modasa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:chharodi-gidc",
+  "name": "Chharodi GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Ahmedabad",
+  "near": "gj:sanand",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "chharodi sanand"
+  ]
+ },
+ {
+  "id": "gj:dhandhuka-gidc",
+  "name": "Dhandhuka GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Ahmedabad",
+  "near": "gj:ahmedabad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:dholka-gidc",
+  "name": "Dholka GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Ahmedabad",
+  "near": "gj:ahmedabad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:hanspura-gidc",
+  "name": "Hanspura GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Ahmedabad",
+  "near": "gj:ahmedabad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:himmatnagar-gidc",
+  "name": "Himmatnagar GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Sabarkantha",
+  "near": "gj:himmatnagar",
+  "scale": 1,
+  "sectors": [
+   "ceramics",
+   "mixed"
+  ],
+  "aka": [
+   "himatnagar gidc"
+  ]
+ },
+ {
+  "id": "gj:idar-gidc",
+  "name": "Idar GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Sabarkantha",
+  "near": "gj:himmatnagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:kathwada-gidc",
+  "name": "Kathwada GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Ahmedabad",
+  "near": "gj:ahmedabad",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "chemical"
+  ],
+  "aka": [
+   "kathwada"
+  ]
+ },
+ {
+  "id": "gj:kerala-gidc-bavla",
+  "name": "Kerala GIDC (Bavla)",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Ahmedabad",
+  "near": "gj:ahmedabad",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "kerala bavla",
+   "kerala gidc"
+  ]
+ },
+ {
+  "id": "gj:khoraj-gidc",
+  "name": "Khoraj GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Ahmedabad",
+  "near": "gj:ahmedabad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:malpur-gidc",
+  "name": "Malpur GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Aravalli",
+  "near": "gj:modasa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:vithalapur-gidc-mandal",
+  "name": "Vithalapur GIDC (Mandal)",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Ahmedabad",
+  "near": "gj:ahmedabad",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "mandal gidc",
+   "vithlapur",
+   "viththlapur",
+   "vitthalapur"
+  ]
+ },
+ {
+  "id": "gj:modasa-gidc",
+  "name": "Modasa GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Aravalli",
+  "near": "gj:modasa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:naroda-gidc",
+  "name": "Naroda GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Ahmedabad",
+  "near": "gj:ahmedabad",
+  "scale": 3,
+  "sectors": [
+   "chemical",
+   "pharma",
+   "engineering"
+  ],
+  "aka": [
+   "naroda"
+  ]
+ },
+ {
+  "id": "gj:odhav-gidc",
+  "name": "Odhav GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Ahmedabad",
+  "near": "gj:ahmedabad",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "chemical",
+   "plastics"
+  ],
+  "aka": [
+   "odhav"
+  ]
+ },
+ {
+  "id": "gj:sanand-gidc",
+  "name": "Sanand GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Ahmedabad",
+  "near": "gj:sanand",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering",
+   "fmcg"
+  ],
+  "aka": [
+   "sanand 2",
+   "sanand ridc",
+   "sanand-i",
+   "sanand-ii"
+  ]
+ },
+ {
+  "id": "gj:shinawada-gidc",
+  "name": "Shinawada GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Sabarkantha",
+  "near": "gj:himmatnagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "shinawad"
+  ]
+ },
+ {
+  "id": "gj:talod-gidc",
+  "name": "Talod GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Sabarkantha",
+  "near": "gj:himmatnagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:vani-gidc",
+  "name": "Vani GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Ahmedabad",
+  "near": "gj:ahmedabad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:vatva-gidc",
+  "name": "Vatva GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Ahmedabad",
+  "near": "gj:ahmedabad",
+  "scale": 3,
+  "sectors": [
+   "chemical",
+   "pharma",
+   "engineering"
+  ],
+  "aka": [
+   "vatva",
+   "vatwa"
+  ]
+ },
+ {
+  "id": "gj:viramgam-gidc",
+  "name": "Viramgam GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Ahmedabad",
+  "near": "gj:ahmedabad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:aithor-gidc",
+  "name": "Aithor GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Mehsana",
+  "near": "gj:unjha",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "aithor unjha"
+  ]
+ },
+ {
+  "id": "gj:ambaji-gidc",
+  "name": "Ambaji GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Banaskantha",
+  "near": "gj:palanpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:amirgadh-tribal-park-gidc",
+  "name": "Amirgadh Tribal Park GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Banaskantha",
+  "near": "gj:palanpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "amirgadh"
+  ]
+ },
+ {
+  "id": "gj:balisana-gidc",
+  "name": "Balisana GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Patan",
+  "near": "gj:patan",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:chanasma-gidc",
+  "name": "Chanasma GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Patan",
+  "near": "gj:patan",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:chandisar-gidc",
+  "name": "Chandisar GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Banaskantha",
+  "near": "gj:palanpur",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:charup-gidc",
+  "name": "Charup GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Mehsana",
+  "near": "gj:mehsana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:deesa-gidc",
+  "name": "Deesa GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Banaskantha",
+  "near": "gj:palanpur",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "disa"
+  ]
+ },
+ {
+  "id": "gj:deodar-gidc",
+  "name": "Deodar GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Vav-Tharad",
+  "near": "gj:tharad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:gozaria-gidc",
+  "name": "Gozaria GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Mehsana",
+  "near": "gj:mehsana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "gozariya"
+  ]
+ },
+ {
+  "id": "gj:kadi-gidc",
+  "name": "Kadi GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Mehsana",
+  "near": "gj:kadi",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:kheralu-gidc",
+  "name": "Kheralu GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Mehsana",
+  "near": "gj:mehsana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:kukarwada-gidc",
+  "name": "Kukarwada GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Mehsana",
+  "near": "gj:mehsana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kukarvada",
+   "kukkarwaada"
+  ]
+ },
+ {
+  "id": "gj:lanva-gidc",
+  "name": "Lanva GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Patan",
+  "near": "gj:patan",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:mehsana-gidc",
+  "name": "Mehsana GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Mehsana",
+  "near": "gj:mehsana",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "pharma",
+   "food"
+  ],
+  "aka": [
+   "mahesana gidc",
+   "mehsana-1",
+   "mehsana-ii"
+  ]
+ },
+ {
+  "id": "gj:mudetha-agro-park-gidc",
+  "name": "Mudetha Agro Park GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Banaskantha",
+  "near": "gj:palanpur",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "mudetha"
+  ]
+ },
+ {
+  "id": "gj:palanpur-gidc",
+  "name": "Palanpur GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Banaskantha",
+  "near": "gj:palanpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:patan-gidc",
+  "name": "Patan GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Patan",
+  "near": "gj:patan",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:radhanpur-gidc",
+  "name": "Radhanpur GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Patan",
+  "near": "gj:patan",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:ranasan-gidc",
+  "name": "Ranasan GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Mehsana",
+  "near": "gj:mehsana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:shihori-gidc",
+  "name": "Shihori GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Banaskantha",
+  "near": "gj:palanpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:siddhpur-gidc",
+  "name": "Siddhpur GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Patan",
+  "near": "gj:patan",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidhpur"
+  ]
+ },
+ {
+  "id": "gj:visnagar-gidc",
+  "name": "Visnagar GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Mehsana",
+  "near": "gj:mehsana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:balasinor-gidc",
+  "name": "Balasinor GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Mahisagar",
+  "near": "gj:lunawada",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:borsad-gidc",
+  "name": "Borsad GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Anand",
+  "near": "gj:anand",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "borasad"
+  ]
+ },
+ {
+  "id": "gj:indranaj-gidc",
+  "name": "Indranaj GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Anand",
+  "near": "gj:anand",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:kapadwanj-gidc",
+  "name": "Kapadwanj GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Kheda",
+  "near": "gj:nadiad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:khambhat-gidc",
+  "name": "Khambhat GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Anand",
+  "near": "gj:anand",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "cambay"
+  ]
+ },
+ {
+  "id": "gj:matar-gidc",
+  "name": "Matar GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Kheda",
+  "near": "gj:nadiad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:nadiad-gidc",
+  "name": "Nadiad GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Kheda",
+  "near": "gj:nadiad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "nadiad-i",
+   "nadiad-ii",
+   "nadiyad"
+  ]
+ },
+ {
+  "id": "gj:ode-gidc",
+  "name": "Ode GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Anand",
+  "near": "gj:anand",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:petlad-gidc",
+  "name": "Petlad GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Anand",
+  "near": "gj:anand",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:sojitra-gidc",
+  "name": "Sojitra GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Anand",
+  "near": "gj:anand",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:thasra-gidc",
+  "name": "Thasra GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Kheda",
+  "near": "gj:nadiad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:umreth-gidc",
+  "name": "Umreth GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Anand",
+  "near": "gj:anand",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:vitthal-udyognagar-gidc",
+  "name": "Vitthal Udyognagar GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Anand",
+  "near": "gj:anand",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "food"
+  ],
+  "aka": [
+   "v u nagar",
+   "vallabh vidyanagar",
+   "vitthal udyog nagar",
+   "vu nagar"
+  ]
+ },
+ {
+  "id": "gj:asayadi-gidc",
+  "name": "Asayadi GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Dahod",
+  "near": "gj:dahod",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:dabhoi-gidc",
+  "name": "Dabhoi GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Vadodara",
+  "near": "gj:vadodara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:dahod-gidc",
+  "name": "Dahod GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Dahod",
+  "near": "gj:dahod",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "dahod expansion",
+   "dahod-i",
+   "dahod-ii",
+   "kharedi"
+  ]
+ },
+ {
+  "id": "gj:godhra-gidc",
+  "name": "Godhra GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Panchmahal",
+  "near": "gj:godhra",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:halol-gidc",
+  "name": "Halol GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Panchmahal",
+  "near": "gj:halol",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering",
+   "pharma"
+  ],
+  "aka": [
+   "halol-1"
+  ]
+ },
+ {
+  "id": "gj:halol-2-masvad-gidc",
+  "name": "Halol-2 Masvad GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Panchmahal",
+  "near": "gj:halol",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "halol ii",
+   "halol-2",
+   "masvad"
+  ]
+ },
+ {
+  "id": "gj:jambughoda-gidc",
+  "name": "Jambughoda GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Panchmahal",
+  "near": "gj:godhra",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:kalol-gidc-panchmahal",
+  "name": "Kalol GIDC (Panchmahal)",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Panchmahal",
+  "near": "gj:godhra",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "kalol panchmahal",
+   "kalol pms"
+  ]
+ },
+ {
+  "id": "gj:makarpura-gidc",
+  "name": "Makarpura GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Vadodara",
+  "near": "gj:vadodara",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "electronics"
+  ],
+  "aka": [
+   "makarpura"
+  ]
+ },
+ {
+  "id": "gj:nandesari-gidc",
+  "name": "Nandesari GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Vadodara",
+  "near": "gj:vadodara",
+  "scale": 2,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": [
+   "nandesari"
+  ]
+ },
+ {
+  "id": "gj:pavi-jetpur-gidc",
+  "name": "Pavi Jetpur GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Chhota Udaipur",
+  "near": "gj:chhota-udaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:pcc-gidc-vadodara",
+  "name": "PCC GIDC (Vadodara)",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Vadodara",
+  "near": "gj:vadodara",
+  "scale": 1,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": [
+   "petrochemical complex vadodara"
+  ]
+ },
+ {
+  "id": "gj:por-ramangamdi-gidc",
+  "name": "Por Ramangamdi GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Vadodara",
+  "near": "gj:vadodara",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "chemical"
+  ],
+  "aka": [
+   "por gidc",
+   "ramangamdi"
+  ]
+ },
+ {
+  "id": "gj:ranoli-gidc",
+  "name": "Ranoli GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Vadodara",
+  "near": "gj:vadodara",
+  "scale": 1,
+  "sectors": [
+   "chemical",
+   "engineering"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:sankheda-gidc",
+  "name": "Sankheda GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Chhota Udaipur",
+  "near": "gj:chhota-udaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:savli-gidc",
+  "name": "Savli GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Vadodara",
+  "near": "gj:vadodara",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "pharma",
+   "auto"
+  ],
+  "aka": [
+   "manjusar",
+   "savali",
+   "savli epip"
+  ]
+ },
+ {
+  "id": "gj:savli-biotech-park-sez",
+  "name": "Savli Biotech Park SEZ",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Vadodara",
+  "near": "gj:vadodara",
+  "scale": 1,
+  "sectors": [
+   "pharma",
+   "sez"
+  ],
+  "aka": [
+   "savli biotech sez"
+  ]
+ },
+ {
+  "id": "gj:sehra-gidc",
+  "name": "Sehra GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Panchmahal",
+  "near": "gj:godhra",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:waghodia-gidc",
+  "name": "Waghodia GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Vadodara",
+  "near": "gj:vadodara",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "pharma",
+   "chemical"
+  ],
+  "aka": [
+   "vaghodia"
+  ]
+ },
+ {
+  "id": "gj:ankleshwar-gidc",
+  "name": "Ankleshwar GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bharuch",
+  "near": "gj:ankleshwar",
+  "scale": 3,
+  "sectors": [
+   "chemical",
+   "pharma",
+   "engineering"
+  ],
+  "aka": [
+   "ankleshwar"
+  ]
+ },
+ {
+  "id": "gj:atali-gidc",
+  "name": "Atali GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bharuch",
+  "near": "gj:bharuch",
+  "scale": 1,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:bharuch-gidc",
+  "name": "Bharuch GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bharuch",
+  "near": "gj:bharuch",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "engineering"
+  ],
+  "aka": [
+   "narmadanagar"
+  ]
+ },
+ {
+  "id": "gj:bulk-drug-park-jambusar",
+  "name": "Bulk Drug Park Jambusar",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bharuch",
+  "near": "gj:bharuch",
+  "scale": 1,
+  "sectors": [
+   "pharma"
+  ],
+  "aka": [
+   "jambusar",
+   "jambusar bulk drug park"
+  ]
+ },
+ {
+  "id": "gj:dahej-gidc",
+  "name": "Dahej GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bharuch",
+  "near": "gj:bharuch",
+  "scale": 3,
+  "sectors": [
+   "chemical",
+   "pharma",
+   "engineering"
+  ],
+  "aka": [
+   "dahej 1",
+   "dahej 2",
+   "dahej 3",
+   "dahej-i",
+   "dahej-ii",
+   "dahej-iii",
+   "pcpir dahej"
+  ]
+ },
+ {
+  "id": "gj:dahej-sez",
+  "name": "Dahej SEZ",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bharuch",
+  "near": "gj:bharuch",
+  "scale": 3,
+  "sectors": [
+   "chemical",
+   "sez"
+  ],
+  "aka": [
+   "dahej sez limited",
+   "dsl"
+  ]
+ },
+ {
+  "id": "gj:saykha-gidc",
+  "name": "Saykha GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bharuch",
+  "near": "gj:bharuch",
+  "scale": 2,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": [
+   "sayakha",
+   "saykha"
+  ]
+ },
+ {
+  "id": "gj:vilayat-gidc",
+  "name": "Vilayat GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bharuch",
+  "near": "gj:bharuch",
+  "scale": 2,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": [
+   "vilayat"
+  ]
+ },
+ {
+  "id": "gj:dediyapada-gidc",
+  "name": "Dediyapada GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Narmada",
+  "near": "gj:rajpipla",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "dediapada"
+  ]
+ },
+ {
+  "id": "gj:dodwada-gidc",
+  "name": "Dodwada GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bharuch",
+  "near": "gj:bharuch",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:jambusar-gidc",
+  "name": "Jambusar GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bharuch",
+  "near": "gj:bharuch",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "jambusar ridc"
+  ]
+ },
+ {
+  "id": "gj:jhagadia-gidc",
+  "name": "Jhagadia GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bharuch",
+  "near": "gj:ankleshwar",
+  "scale": 3,
+  "sectors": [
+   "chemical",
+   "pharma"
+  ],
+  "aka": [
+   "jhagadia",
+   "kharchi",
+   "zagadia"
+  ]
+ },
+ {
+  "id": "gj:kosamdi-gidc",
+  "name": "Kosamdi GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bharuch",
+  "near": "gj:ankleshwar",
+  "scale": 1,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": [
+   "kosambdi"
+  ]
+ },
+ {
+  "id": "gj:palej-gidc",
+  "name": "Palej GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bharuch",
+  "near": "gj:bharuch",
+  "scale": 1,
+  "sectors": [
+   "chemical",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:panoli-gidc",
+  "name": "Panoli GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bharuch",
+  "near": "gj:ankleshwar",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "pharma"
+  ],
+  "aka": [
+   "panoli",
+   "panoli expansion"
+  ]
+ },
+ {
+  "id": "gj:rajpipla-gidc",
+  "name": "Rajpipla GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Narmada",
+  "near": "gj:rajpipla",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:sagbara-gidc",
+  "name": "Sagbara GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Narmada",
+  "near": "gj:rajpipla",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:tilakwada-gidc",
+  "name": "Tilakwada GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Narmada",
+  "near": "gj:rajpipla",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:vagra-gidc",
+  "name": "Vagra GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bharuch",
+  "near": "gj:bharuch",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:valia-gidc",
+  "name": "Valia GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bharuch",
+  "near": "gj:ankleshwar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:bardoli-gidc",
+  "name": "Bardoli GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Surat",
+  "near": "gj:bardoli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "bardoli-ii",
+   "miyawadi"
+  ]
+ },
+ {
+  "id": "gj:doswada-gidc",
+  "name": "Doswada GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Tapi",
+  "near": "gj:vyara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:gavier-magdalla-gidc",
+  "name": "Gavier Magdalla GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Surat",
+  "near": "gj:surat",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "magdalla"
+  ]
+ },
+ {
+  "id": "gj:hazira-gidc",
+  "name": "Hazira GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Surat",
+  "near": "gj:surat",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:ichhapore-gidc",
+  "name": "Ichhapore GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Surat",
+  "near": "gj:surat",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "textile"
+  ],
+  "aka": [
+   "ichchhapor",
+   "ichhapor"
+  ]
+ },
+ {
+  "id": "gj:katargam-gidc",
+  "name": "Katargam GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Surat",
+  "near": "gj:surat",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "engineering"
+  ],
+  "aka": [
+   "katargam"
+  ]
+ },
+ {
+  "id": "gj:khatodara-gidc",
+  "name": "Khatodara GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Surat",
+  "near": "gj:surat",
+  "scale": 1,
+  "sectors": [
+   "textile"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:nizar-gidc",
+  "name": "Nizar GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Tapi",
+  "near": "gj:vyara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:olpad-gidc",
+  "name": "Olpad GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Surat",
+  "near": "gj:surat",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:pandesara-gidc",
+  "name": "Pandesara GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Surat",
+  "near": "gj:surat",
+  "scale": 3,
+  "sectors": [
+   "textile",
+   "chemical"
+  ],
+  "aka": [
+   "pandesara",
+   "pandesra"
+  ]
+ },
+ {
+  "id": "gj:sachin-gidc",
+  "name": "Sachin GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Surat",
+  "near": "gj:surat",
+  "scale": 3,
+  "sectors": [
+   "textile",
+   "chemical",
+   "engineering"
+  ],
+  "aka": [
+   "sachin"
+  ]
+ },
+ {
+  "id": "gj:surat-apparel-park-sachin",
+  "name": "Surat Apparel Park (Sachin)",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Surat",
+  "near": "gj:surat",
+  "scale": 1,
+  "sectors": [
+   "garments",
+   "sez"
+  ],
+  "aka": [
+   "sachin apparel park",
+   "surat apparel park sez"
+  ]
+ },
+ {
+  "id": "gj:valod-gidc",
+  "name": "Valod GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Tapi",
+  "near": "gj:vyara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:ambheti-gidc",
+  "name": "Ambheti GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Valsad",
+  "near": "gj:valsad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:bhilad-gidc",
+  "name": "Bhilad GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Valsad",
+  "near": "gj:valsad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:bilimora-gidc",
+  "name": "Bilimora GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Navsari",
+  "near": "gj:navsari",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:dungra-gidc",
+  "name": "Dungra GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Valsad",
+  "near": "gj:vapi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:navsari-gidc",
+  "name": "Navsari GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Navsari",
+  "near": "gj:navsari",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:pardi-gidc",
+  "name": "Pardi GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Valsad",
+  "near": "gj:valsad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:sarigam-gidc",
+  "name": "Sarigam GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Valsad",
+  "near": "gj:vapi",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "pharma",
+   "plastics"
+  ],
+  "aka": [
+   "sarigam"
+  ]
+ },
+ {
+  "id": "gj:umbergaon-gidc",
+  "name": "Umbergaon GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Valsad",
+  "near": "gj:valsad",
+  "scale": 2,
+  "sectors": [
+   "plastics",
+   "engineering",
+   "textile",
+   "pharma"
+  ],
+  "aka": [
+   "umargam",
+   "umbergaon"
+  ]
+ },
+ {
+  "id": "gj:unai-gidc",
+  "name": "Unai GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Navsari",
+  "near": "gj:navsari",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:valsad-gidc-gundlav",
+  "name": "Valsad GIDC (Gundlav)",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Valsad",
+  "near": "gj:valsad",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "pharma"
+  ],
+  "aka": [
+   "gundlav",
+   "valsad gidc"
+  ]
+ },
+ {
+  "id": "gj:vapi-gidc",
+  "name": "Vapi GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Valsad",
+  "near": "gj:vapi",
+  "scale": 3,
+  "sectors": [
+   "chemical",
+   "pharma",
+   "paper",
+   "plastics"
+  ],
+  "aka": [
+   "vapi"
+  ]
+ },
+ {
+  "id": "gj:chotila-gidc",
+  "name": "Chotila GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Surendranagar",
+  "near": "gj:surendranagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:dhrangadhra-gidc",
+  "name": "Dhrangadhra GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Surendranagar",
+  "near": "gj:surendranagar",
+  "scale": 1,
+  "sectors": [
+   "chemical",
+   "mixed"
+  ],
+  "aka": [
+   "dhangadhra"
+  ]
+ },
+ {
+  "id": "gj:halvad-gidc",
+  "name": "Halvad GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Morbi",
+  "near": "gj:morbi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:lakhtar-gidc",
+  "name": "Lakhtar GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Surendranagar",
+  "near": "gj:surendranagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "lakhatar"
+  ]
+ },
+ {
+  "id": "gj:limbdi-gidc",
+  "name": "Limbdi GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Surendranagar",
+  "near": "gj:surendranagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:sayla-gidc",
+  "name": "Sayla GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Surendranagar",
+  "near": "gj:surendranagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:wadhwan-gidc",
+  "name": "Wadhwan GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Surendranagar",
+  "near": "gj:surendranagar",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "textile"
+  ],
+  "aka": [
+   "surendranagar gidc",
+   "wadhwan"
+  ]
+ },
+ {
+  "id": "gj:thangadh-gidc",
+  "name": "Thangadh GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Surendranagar",
+  "near": "gj:surendranagar",
+  "scale": 1,
+  "sectors": [
+   "ceramics"
+  ],
+  "aka": [
+   "thangadh ceramic"
+  ]
+ },
+ {
+  "id": "gj:vanod-gidc",
+  "name": "Vanod GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Surendranagar",
+  "near": "gj:surendranagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:amreli-gidc",
+  "name": "Amreli GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Amreli",
+  "near": "gj:amreli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:babra-gidc",
+  "name": "Babra GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Amreli",
+  "near": "gj:amreli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "babra-i",
+   "babra-ii"
+  ]
+ },
+ {
+  "id": "gj:botad-gidc",
+  "name": "Botad GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Botad",
+  "near": "gj:botad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:chitra-gidc",
+  "name": "Chitra GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bhavnagar",
+  "near": "gj:bhavnagar",
+  "scale": 2,
+  "sectors": [
+   "plastics",
+   "metal",
+   "engineering"
+  ],
+  "aka": [
+   "chitra bhavnagar"
+  ]
+ },
+ {
+  "id": "gj:damnagar-gidc",
+  "name": "Damnagar GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Amreli",
+  "near": "gj:amreli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:dhasa-gidc",
+  "name": "Dhasa GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Botad",
+  "near": "gj:botad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:jafrabad-gidc",
+  "name": "Jafrabad GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Amreli",
+  "near": "gj:amreli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:kaniyad-gidc",
+  "name": "Kaniyad GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Botad",
+  "near": "gj:botad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:liliya-gidc",
+  "name": "Liliya GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Amreli",
+  "near": "gj:amreli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:mahuva-gidc",
+  "name": "Mahuva GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bhavnagar",
+  "near": "gj:bhavnagar",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:narigam-gidc",
+  "name": "Narigam GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bhavnagar",
+  "near": "gj:bhavnagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:nava-madhiya-gidc",
+  "name": "Nava Madhiya GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bhavnagar",
+  "near": "gj:bhavnagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:palitana-gidc",
+  "name": "Palitana GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bhavnagar",
+  "near": "gj:bhavnagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:rajula-gidc",
+  "name": "Rajula GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Amreli",
+  "near": "gj:amreli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:sihor-gidc",
+  "name": "Sihor GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bhavnagar",
+  "near": "gj:bhavnagar",
+  "scale": 1,
+  "sectors": [
+   "metal",
+   "steel"
+  ],
+  "aka": [
+   "sihor-i",
+   "sihor-ii",
+   "sihore"
+  ]
+ },
+ {
+  "id": "gj:vallabhipur-gidc",
+  "name": "Vallabhipur GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bhavnagar",
+  "near": "gj:bhavnagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:vartej-gidc",
+  "name": "Vartej GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bhavnagar",
+  "near": "gj:bhavnagar",
+  "scale": 1,
+  "sectors": [
+   "plastics",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:vithalwadi-gidc",
+  "name": "Vithalwadi GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Bhavnagar",
+  "near": "gj:bhavnagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:aanandpar-gidc",
+  "name": "Aanandpar GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Jamnagar",
+  "near": "gj:jamnagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "anandpar"
+  ]
+ },
+ {
+  "id": "gj:arambhada-gidc",
+  "name": "Arambhada GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Devbhoomi Dwarka",
+  "near": "gj:jam-khambhalia",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "arambhada-i",
+   "arambhada-ii"
+  ]
+ },
+ {
+  "id": "gj:bhanvad-gidc",
+  "name": "Bhanvad GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Devbhoomi Dwarka",
+  "near": "gj:jam-khambhalia",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:bhatiya-gidc",
+  "name": "Bhatiya GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Devbhoomi Dwarka",
+  "near": "gj:jam-khambhalia",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:dhrol-gidc",
+  "name": "Dhrol GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Jamnagar",
+  "near": "gj:jamnagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:jam-khambhalia-gidc",
+  "name": "Jam Khambhalia GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Devbhoomi Dwarka",
+  "near": "gj:jam-khambhalia",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "jamkhambhalia gidc",
+   "khambhalia gidc"
+  ]
+ },
+ {
+  "id": "gj:jamnagar-gidc",
+  "name": "Jamnagar GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Jamnagar",
+  "near": "gj:jamnagar",
+  "scale": 3,
+  "sectors": [
+   "metal",
+   "engineering"
+  ],
+  "aka": [
+   "dared",
+   "jamnagar-i",
+   "jamnagar-ii",
+   "jamnagar-iii",
+   "shankar tekri",
+   "udyognagar jamnagar"
+  ]
+ },
+ {
+  "id": "gj:kalavad-gidc",
+  "name": "Kalavad GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Jamnagar",
+  "near": "gj:jamnagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kalawad"
+  ]
+ },
+ {
+  "id": "gj:shekhpat-gidc",
+  "name": "Shekhpat GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Jamnagar",
+  "near": "gj:jamnagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:aji-gidc",
+  "name": "Aji GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Rajkot",
+  "near": "gj:rajkot",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "auto"
+  ],
+  "aka": [
+   "aji industrial area",
+   "aji vasahat"
+  ]
+ },
+ {
+  "id": "gj:bamanbor-gidc",
+  "name": "Bamanbor GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Rajkot",
+  "near": "gj:rajkot",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:bhaktinagar-gidc",
+  "name": "Bhaktinagar GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Rajkot",
+  "near": "gj:rajkot",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "bhakti nagar"
+  ]
+ },
+ {
+  "id": "gj:ceramic-park-gidc-jambudiya-paneli",
+  "name": "Ceramic Park GIDC (Jambudiya Paneli)",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Morbi",
+  "near": "gj:morbi",
+  "scale": 2,
+  "sectors": [
+   "ceramics"
+  ],
+  "aka": [
+   "jambudiya",
+   "morbi ceramic park",
+   "paneli"
+  ]
+ },
+ {
+  "id": "gj:chhapara-gidc",
+  "name": "Chhapara GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Rajkot",
+  "near": "gj:rajkot",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:chhatar-gidc",
+  "name": "Chhatar GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Rajkot",
+  "near": "gj:rajkot",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:dhoraji-gidc",
+  "name": "Dhoraji GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Rajkot",
+  "near": "gj:rajkot",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:gondal-gidc",
+  "name": "Gondal GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Rajkot",
+  "near": "gj:gondal",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "engineering"
+  ],
+  "aka": [
+   "gondal-i",
+   "gondal-ii"
+  ]
+ },
+ {
+  "id": "gj:jasdan-gidc",
+  "name": "Jasdan GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Rajkot",
+  "near": "gj:rajkot",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "jasadan"
+  ]
+ },
+ {
+  "id": "gj:jetpur-gidc",
+  "name": "Jetpur GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Rajkot",
+  "near": "gj:jetpur",
+  "scale": 1,
+  "sectors": [
+   "textile"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:khirasara-gidc",
+  "name": "Khirasara GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Rajkot",
+  "near": "gj:rajkot",
+  "scale": 2,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "khirasara 2"
+  ]
+ },
+ {
+  "id": "gj:kotda-sangani-gidc",
+  "name": "Kotda Sangani GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Rajkot",
+  "near": "gj:rajkot",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kotda sangani"
+  ]
+ },
+ {
+  "id": "gj:kuvadva-gidc",
+  "name": "Kuvadva GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Rajkot",
+  "near": "gj:rajkot",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "kuvadwa"
+  ]
+ },
+ {
+  "id": "gj:lodhika-gidc-metoda",
+  "name": "Lodhika GIDC (Metoda)",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Rajkot",
+  "near": "gj:rajkot",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "auto"
+  ],
+  "aka": [
+   "lodhika",
+   "metoda"
+  ]
+ },
+ {
+  "id": "gj:medical-device-park-rajkot",
+  "name": "Medical Device Park Rajkot",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Rajkot",
+  "near": "gj:rajkot",
+  "scale": 1,
+  "sectors": [
+   "pharma",
+   "engineering"
+  ],
+  "aka": [
+   "medical devices park",
+   "nagalpar"
+  ]
+ },
+ {
+  "id": "gj:morbi-gidc",
+  "name": "Morbi GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Morbi",
+  "near": "gj:morbi",
+  "scale": 1,
+  "sectors": [
+   "ceramics",
+   "engineering"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:mota-dahisara-gidc",
+  "name": "Mota Dahisara GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Morbi",
+  "near": "gj:morbi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:paddhari-gidc",
+  "name": "Paddhari GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Rajkot",
+  "near": "gj:rajkot",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:piparadi-gidc",
+  "name": "Piparadi GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Rajkot",
+  "near": "gj:rajkot",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:rafaleshwar-gidc",
+  "name": "Rafaleshwar GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Morbi",
+  "near": "gj:morbi",
+  "scale": 1,
+  "sectors": [
+   "ceramics",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:upleta-gidc",
+  "name": "Upleta GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Rajkot",
+  "near": "gj:rajkot",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:vaghasiya-gidc",
+  "name": "Vaghasiya GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Rajkot",
+  "near": "gj:rajkot",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:wankaner-gidc",
+  "name": "Wankaner GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Morbi",
+  "near": "gj:wankaner",
+  "scale": 1,
+  "sectors": [
+   "ceramics",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:junagadh-gidc",
+  "name": "Junagadh GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Junagadh",
+  "near": "gj:junagadh",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "junagadh-i",
+   "junagadh-ii"
+  ]
+ },
+ {
+  "id": "gj:miyani-gidc",
+  "name": "Miyani GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Porbandar",
+  "near": "gj:porbandar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:porbandar-gidc",
+  "name": "Porbandar GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Porbandar",
+  "near": "gj:porbandar",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:shil-gidc",
+  "name": "Shil GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Junagadh",
+  "near": "gj:junagadh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:sutrapada-gidc",
+  "name": "Sutrapada GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Gir Somnath",
+  "near": "gj:veraval",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:vanana-gidc",
+  "name": "Vanana GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Porbandar",
+  "near": "gj:porbandar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:veraval-gidc",
+  "name": "Veraval GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Gir Somnath",
+  "near": "gj:veraval",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:visavadar-gidc",
+  "name": "Visavadar GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Junagadh",
+  "near": "gj:junagadh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:anjar-gidc",
+  "name": "Anjar GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Kutch",
+  "near": "gj:anjar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:bhadreshwar-gidc",
+  "name": "Bhadreshwar GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Kutch",
+  "near": "gj:mundra",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:bhuj-gidc",
+  "name": "Bhuj GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Kutch",
+  "near": "gj:bhuj",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:chitrod-gidc",
+  "name": "Chitrod GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Kutch",
+  "near": "gj:bhuj",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:dhrub-gidc",
+  "name": "Dhrub GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Kutch",
+  "near": "gj:mundra",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:gandhidham-gidc",
+  "name": "Gandhidham GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Kutch",
+  "near": "gj:gandhidham",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:madhapar-gidc",
+  "name": "Madhapar GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Kutch",
+  "near": "gj:bhuj",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "madhapur"
+  ]
+ },
+ {
+  "id": "gj:makhel-gidc-rapar",
+  "name": "Makhel GIDC (Rapar)",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Kutch",
+  "near": "gj:bhuj",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "rapar"
+  ]
+ },
+ {
+  "id": "gj:mandvi-gidc",
+  "name": "Mandvi GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Kutch",
+  "near": "gj:bhuj",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:mithi-rohar-gidc",
+  "name": "Mithi Rohar GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Kutch",
+  "near": "gj:gandhidham",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "mithirohar"
+  ]
+ },
+ {
+  "id": "gj:mundra-gidc",
+  "name": "Mundra GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Kutch",
+  "near": "gj:mundra",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:nagor-gidc",
+  "name": "Nagor GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Kutch",
+  "near": "gj:bhuj",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:nakhatrana-gidc",
+  "name": "Nakhatrana GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Kutch",
+  "near": "gj:bhuj",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:bhat-gidc",
+  "name": "Bhat GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Gandhinagar",
+  "near": "gj:gandhinagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:chhatral-gidc",
+  "name": "Chhatral GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Gandhinagar",
+  "near": "gj:kalol",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "pharma",
+   "plastics"
+  ],
+  "aka": [
+   "chhatral"
+  ]
+ },
+ {
+  "id": "gj:dehgam-gidc",
+  "name": "Dehgam GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Gandhinagar",
+  "near": "gj:gandhinagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:gandhinagar-gidc",
+  "name": "Gandhinagar GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Gandhinagar",
+  "near": "gj:gandhinagar",
+  "scale": 2,
+  "sectors": [
+   "electronics",
+   "engineering"
+  ],
+  "aka": [
+   "gandhinagar electronic estate",
+   "gandhinagar engineering",
+   "sector 25 gidc",
+   "sector 28 gidc"
+  ]
+ },
+ {
+  "id": "gj:gandhinagar-gidc-it-and-sez",
+  "name": "Gandhinagar GIDC IT and SEZ",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Gandhinagar",
+  "near": "gj:gandhinagar",
+  "scale": 1,
+  "sectors": [
+   "it-campus",
+   "sez"
+  ],
+  "aka": [
+   "gandhinagar mega it",
+   "gandhinagar sez"
+  ]
+ },
+ {
+  "id": "gj:kalol-gidc-gandhinagar",
+  "name": "Kalol GIDC (Gandhinagar)",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Gandhinagar",
+  "near": "gj:kalol",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "chemical"
+  ],
+  "aka": [
+   "iffco kalol",
+   "kalol gidc"
+  ]
+ },
+ {
+  "id": "gj:mansa-gidc",
+  "name": "Mansa GIDC",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Gandhinagar",
+  "near": "gj:gandhinagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:mundra-sez",
+  "name": "Mundra SEZ",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Kutch",
+  "near": "gj:mundra",
+  "scale": 3,
+  "sectors": [
+   "sez",
+   "logistics",
+   "engineering"
+  ],
+  "aka": [
+   "adani ports sez",
+   "apsez",
+   "mundra port"
+  ]
+ },
+ {
+  "id": "gj:kandla-sez",
+  "name": "Kandla SEZ",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Kutch",
+  "near": "gj:gandhidham",
+  "scale": 3,
+  "sectors": [
+   "sez",
+   "textile",
+   "engineering"
+  ],
+  "aka": [
+   "gandhidham sez",
+   "kandla free trade zone",
+   "kasez"
+  ]
+ },
+ {
+  "id": "gj:dholera-sir",
+  "name": "Dholera SIR",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Ahmedabad",
+  "near": "gj:ahmedabad",
+  "scale": 2,
+  "sectors": [
+   "electronics",
+   "mixed"
+  ],
+  "aka": [
+   "dholera",
+   "dholera special investment region"
+  ]
+ },
+ {
+  "id": "gj:mandal-becharaji-sir",
+  "name": "Mandal-Becharaji SIR",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Ahmedabad",
+  "near": "gj:ahmedabad",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "becharaji",
+   "bechraji",
+   "hansalpur",
+   "mbsir"
+  ]
+ },
+ {
+  "id": "gj:gift-city",
+  "name": "GIFT City",
+  "state": "GJ",
+  "kind": "estate",
+  "district": "Gandhinagar",
+  "near": "gj:gandhinagar",
+  "scale": 2,
+  "sectors": [
+   "it-campus",
+   "sez"
+  ],
+  "aka": [
+   "gift",
+   "gujarat international finance tec-city"
+  ]
+ },
+ {
+  "id": "gj:changodar",
+  "name": "Changodar",
+  "state": "GJ",
+  "kind": "cluster",
+  "district": "Ahmedabad",
+  "near": "gj:ahmedabad",
+  "scale": 3,
+  "sectors": [
+   "pharma",
+   "engineering",
+   "fmcg",
+   "logistics"
+  ],
+  "aka": [
+   "changodar industrial area"
+  ]
+ },
+ {
+  "id": "gj:moraiya",
+  "name": "Moraiya",
+  "state": "GJ",
+  "kind": "cluster",
+  "district": "Ahmedabad",
+  "near": "gj:ahmedabad",
+  "scale": 2,
+  "sectors": [
+   "pharma",
+   "engineering"
+  ],
+  "aka": [
+   "moraiya changodar"
+  ]
+ },
+ {
+  "id": "gj:bavla",
+  "name": "Bavla",
+  "state": "GJ",
+  "kind": "cluster",
+  "district": "Ahmedabad",
+  "near": "gj:ahmedabad",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "pharma",
+   "logistics"
+  ],
+  "aka": [
+   "bavala"
+  ]
+ },
+ {
+  "id": "gj:santej",
+  "name": "Santej",
+  "state": "GJ",
+  "kind": "cluster",
+  "district": "Gandhinagar",
+  "near": "gj:kalol",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "plastics"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:rakanpur",
+  "name": "Rakanpur",
+  "state": "GJ",
+  "kind": "cluster",
+  "district": "Gandhinagar",
+  "near": "gj:kalol",
+  "scale": 2,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:shapar-veraval",
+  "name": "Shapar-Veraval",
+  "state": "GJ",
+  "kind": "cluster",
+  "district": "Rajkot",
+  "near": "gj:rajkot",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "auto",
+   "metal"
+  ],
+  "aka": [
+   "shapar",
+   "veraval shapar"
+  ]
+ },
+ {
+  "id": "gj:hazira",
+  "name": "Hazira",
+  "state": "GJ",
+  "kind": "cluster",
+  "district": "Surat",
+  "near": "gj:surat",
+  "scale": 3,
+  "sectors": [
+   "steel",
+   "engineering",
+   "chemical"
+  ],
+  "aka": [
+   "hazira industrial area"
+  ]
+ },
+ {
+  "id": "gj:kim",
+  "name": "Kim",
+  "state": "GJ",
+  "kind": "cluster",
+  "district": "Surat",
+  "near": "gj:surat",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "engineering"
+  ],
+  "aka": [
+   "kim char rasta"
+  ]
+ },
+ {
+  "id": "gj:palsana",
+  "name": "Palsana",
+  "state": "GJ",
+  "kind": "cluster",
+  "district": "Surat",
+  "near": "gj:surat",
+  "scale": 2,
+  "sectors": [
+   "textile"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:kadodara",
+  "name": "Kadodara",
+  "state": "GJ",
+  "kind": "cluster",
+  "district": "Surat",
+  "near": "gj:surat",
+  "scale": 2,
+  "sectors": [
+   "textile"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:pipodara",
+  "name": "Pipodara",
+  "state": "GJ",
+  "kind": "cluster",
+  "district": "Surat",
+  "near": "gj:surat",
+  "scale": 2,
+  "sectors": [
+   "textile"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:udhna",
+  "name": "Udhna",
+  "state": "GJ",
+  "kind": "cluster",
+  "district": "Surat",
+  "near": "gj:surat",
+  "scale": 2,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [
+   "udhna udyognagar"
+  ]
+ },
+ {
+  "id": "gj:alang",
+  "name": "Alang",
+  "state": "GJ",
+  "kind": "cluster",
+  "district": "Bhavnagar",
+  "near": "gj:bhavnagar",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "metal"
+  ],
+  "aka": [
+   "alang ship breaking yard",
+   "alang sosiya"
+  ]
+ },
+ {
+  "id": "gj:pipavav",
+  "name": "Pipavav",
+  "state": "GJ",
+  "kind": "cluster",
+  "district": "Amreli",
+  "near": "gj:amreli",
+  "scale": 2,
+  "sectors": [
+   "logistics"
+  ],
+  "aka": [
+   "pipavav port"
+  ]
+ },
+ {
+  "id": "gj:mithapur",
+  "name": "Mithapur",
+  "state": "GJ",
+  "kind": "cluster",
+  "district": "Devbhoomi Dwarka",
+  "near": "gj:jam-khambhalia",
+  "scale": 2,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": []
+ },
+ {
+  "id": "gj:motikhavdi",
+  "name": "Motikhavdi",
+  "state": "GJ",
+  "kind": "cluster",
+  "district": "Jamnagar",
+  "near": "gj:jamnagar",
+  "scale": 3,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": [
+   "moti khavdi",
+   "reliance jamnagar refinery",
+   "sikka"
+  ]
+ },
+ {
+  "id": "mh:ahilyanagar-midc",
+  "name": "Ahilyanagar MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Ahilyanagar",
+  "near": "mh:ahilyanagar",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "addl ahilyanagar",
+   "ahmednagar midc",
+   "nagar midc"
+  ]
+ },
+ {
+  "id": "mh:supa-midc",
+  "name": "Supa MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Ahilyanagar",
+  "near": "mh:ahilyanagar",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "supa industrial park",
+   "supa japanese industrial park",
+   "supa parner",
+   "supa-parner"
+  ]
+ },
+ {
+  "id": "mh:newasa-midc",
+  "name": "Newasa MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Ahilyanagar",
+  "near": "mh:ahilyanagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:rahuri-midc",
+  "name": "Rahuri MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Ahilyanagar",
+  "near": "mh:ahilyanagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:jamkhed-midc",
+  "name": "Jamkhed MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Ahilyanagar",
+  "near": "mh:ahilyanagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:shrirampur-midc",
+  "name": "Shrirampur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Ahilyanagar",
+  "near": "mh:ahilyanagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:shirdi-midc",
+  "name": "Shirdi MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Ahilyanagar",
+  "near": "mh:ahilyanagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:shrigonda-midc",
+  "name": "Shrigonda MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Ahilyanagar",
+  "near": "mh:ahilyanagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:akola-midc",
+  "name": "Akola MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Akola",
+  "near": "mh:akola",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "textile"
+  ],
+  "aka": [
+   "akola growth center",
+   "akola growth centre"
+  ]
+ },
+ {
+  "id": "mh:balapur-midc",
+  "name": "Balapur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Akola",
+  "near": "mh:akola",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:patur-midc",
+  "name": "Patur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Akola",
+  "near": "mh:akola",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:barshi-takli-midc",
+  "name": "Barshi Takli MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Akola",
+  "near": "mh:akola",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "barshitakli"
+  ]
+ },
+ {
+  "id": "mh:murtizapur-midc",
+  "name": "Murtizapur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Akola",
+  "near": "mh:akola",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "murtijapur"
+  ]
+ },
+ {
+  "id": "mh:akot-midc",
+  "name": "Akot MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Akola",
+  "near": "mh:akola",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:telhara-midc",
+  "name": "Telhara MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Akola",
+  "near": "mh:akola",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:amravati-midc",
+  "name": "Amravati MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Amravati",
+  "near": "mh:amravati",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "food"
+  ],
+  "aka": [
+   "amrawati midc"
+  ]
+ },
+ {
+  "id": "mh:nandgaon-peth-midc",
+  "name": "Nandgaon Peth MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Amravati",
+  "near": "mh:amravati",
+  "scale": 2,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [
+   "addl amravati",
+   "amravati textile park",
+   "nandgaonpeth"
+  ]
+ },
+ {
+  "id": "mh:pm-mitra-park-amravati",
+  "name": "PM MITRA Park Amravati",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Amravati",
+  "near": "mh:amravati",
+  "scale": 1,
+  "sectors": [
+   "textile",
+   "garments"
+  ],
+  "aka": [
+   "pm mitra amravati"
+  ]
+ },
+ {
+  "id": "mh:morshi-midc",
+  "name": "Morshi MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Amravati",
+  "near": "mh:amravati",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:daryapur-midc",
+  "name": "Daryapur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Amravati",
+  "near": "mh:amravati",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:tiwasa-midc",
+  "name": "Tiwasa MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Amravati",
+  "near": "mh:amravati",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:dharni-midc",
+  "name": "Dharni MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Amravati",
+  "near": "mh:amravati",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:achalpur-midc",
+  "name": "Achalpur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Amravati",
+  "near": "mh:amravati",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "paratwada"
+  ]
+ },
+ {
+  "id": "mh:dhamangaon-midc",
+  "name": "Dhamangaon MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Amravati",
+  "near": "mh:amravati",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "dhamangaon railway"
+  ]
+ },
+ {
+  "id": "mh:warud-midc",
+  "name": "Warud MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Amravati",
+  "near": "mh:amravati",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:chandur-railway-midc",
+  "name": "Chandur Railway MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Amravati",
+  "near": "mh:amravati",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:bhatkuli-midc",
+  "name": "Bhatkuli MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Amravati",
+  "near": "mh:amravati",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:anjangaon-midc",
+  "name": "Anjangaon MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Amravati",
+  "near": "mh:amravati",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "anjangaon surji"
+  ]
+ },
+ {
+  "id": "mh:nandgaon-khandeshwar-midc",
+  "name": "Nandgaon Khandeshwar MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Amravati",
+  "near": "mh:amravati",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:waluj-midc",
+  "name": "Waluj MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Chhatrapati Sambhajinagar",
+  "near": "mh:chhatrapati-sambhajinagar",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "aurangabad waluj",
+   "bajaj nagar",
+   "waluj"
+  ]
+ },
+ {
+  "id": "mh:shendra-midc",
+  "name": "Shendra MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Chhatrapati Sambhajinagar",
+  "near": "mh:chhatrapati-sambhajinagar",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering",
+   "fmcg"
+  ],
+  "aka": [
+   "addl shendra",
+   "aurangabad shendra",
+   "shendra five star",
+   "shendra sez"
+  ]
+ },
+ {
+  "id": "mh:chikalthana-midc",
+  "name": "Chikalthana MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Chhatrapati Sambhajinagar",
+  "near": "mh:chhatrapati-sambhajinagar",
+  "scale": 2,
+  "sectors": [
+   "pharma",
+   "engineering",
+   "auto"
+  ],
+  "aka": [
+   "aurangabad chikalthana",
+   "chikalthana"
+  ]
+ },
+ {
+  "id": "mh:chhatrapati-sambhajinagar-industrial-estate",
+  "name": "Chhatrapati Sambhajinagar Industrial Estate",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Chhatrapati Sambhajinagar",
+  "near": "mh:chhatrapati-sambhajinagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "aurangabad industrial estate"
+  ]
+ },
+ {
+  "id": "mh:paithan-midc",
+  "name": "Paithan MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Chhatrapati Sambhajinagar",
+  "near": "mh:chhatrapati-sambhajinagar",
+  "scale": 1,
+  "sectors": [
+   "pharma",
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:vaijapur-midc",
+  "name": "Vaijapur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Chhatrapati Sambhajinagar",
+  "near": "mh:chhatrapati-sambhajinagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:khultabad-midc",
+  "name": "Khultabad MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Chhatrapati Sambhajinagar",
+  "near": "mh:chhatrapati-sambhajinagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:kannad-midc",
+  "name": "Kannad MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Chhatrapati Sambhajinagar",
+  "near": "mh:chhatrapati-sambhajinagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:sillod-midc",
+  "name": "Sillod MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Chhatrapati Sambhajinagar",
+  "near": "mh:chhatrapati-sambhajinagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:auric-shendra-bidkin",
+  "name": "AURIC (Shendra-Bidkin)",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Chhatrapati Sambhajinagar",
+  "near": "mh:chhatrapati-sambhajinagar",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering",
+   "electronics"
+  ],
+  "aka": [
+   "aurangabad industrial city",
+   "auric",
+   "bidkin",
+   "dmic aurangabad"
+  ]
+ },
+ {
+  "id": "mh:bhandara-midc",
+  "name": "Bhandara MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Bhandara",
+  "near": "mh:bhandara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:mohadi-midc",
+  "name": "Mohadi MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Bhandara",
+  "near": "mh:bhandara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:tumsar-midc",
+  "name": "Tumsar MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Bhandara",
+  "near": "mh:bhandara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:lakhandur-midc",
+  "name": "Lakhandur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Bhandara",
+  "near": "mh:bhandara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:pauni-midc",
+  "name": "Pauni MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Bhandara",
+  "near": "mh:bhandara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:sakoli-midc",
+  "name": "Sakoli MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Bhandara",
+  "near": "mh:bhandara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:beed-midc",
+  "name": "Beed MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Beed",
+  "near": "mh:beed",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:ashti-midc",
+  "name": "Ashti MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Beed",
+  "near": "mh:beed",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:patoda-midc",
+  "name": "Patoda MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Beed",
+  "near": "mh:beed",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:dharur-midc",
+  "name": "Dharur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Beed",
+  "near": "mh:beed",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:majalgaon-midc",
+  "name": "Majalgaon MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Beed",
+  "near": "mh:beed",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:georai-midc",
+  "name": "Georai MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Beed",
+  "near": "mh:beed",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:buldhana-midc",
+  "name": "Buldhana MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Buldhana",
+  "near": "mh:buldhana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:malkapur-midc",
+  "name": "Malkapur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Buldhana",
+  "near": "mh:buldhana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "malakapur"
+  ]
+ },
+ {
+  "id": "mh:mehkar-midc",
+  "name": "Mehkar MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Buldhana",
+  "near": "mh:buldhana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "mehekar"
+  ]
+ },
+ {
+  "id": "mh:sangrampur-midc",
+  "name": "Sangrampur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Buldhana",
+  "near": "mh:buldhana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:lonar-midc",
+  "name": "Lonar MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Buldhana",
+  "near": "mh:buldhana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:deulgaon-raja-midc",
+  "name": "Deulgaon Raja MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Buldhana",
+  "near": "mh:buldhana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "deoulgaon raja"
+  ]
+ },
+ {
+  "id": "mh:khamgaon-midc",
+  "name": "Khamgaon MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Buldhana",
+  "near": "mh:buldhana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:chikhli-midc",
+  "name": "Chikhli MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Buldhana",
+  "near": "mh:buldhana",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "chikhali"
+  ]
+ },
+ {
+  "id": "mh:chandrapur-midc",
+  "name": "Chandrapur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Chandrapur",
+  "near": "mh:chandrapur",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "mixed"
+  ],
+  "aka": [
+   "addl chandrapur"
+  ]
+ },
+ {
+  "id": "mh:tadali-growth-centre",
+  "name": "Tadali Growth Centre",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Chandrapur",
+  "near": "mh:chandrapur",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "metal"
+  ],
+  "aka": [
+   "chandrapur tadali",
+   "tadali",
+   "tadali midc"
+  ]
+ },
+ {
+  "id": "mh:ghugus-midc",
+  "name": "Ghugus MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Chandrapur",
+  "near": "mh:chandrapur",
+  "scale": 1,
+  "sectors": [
+   "cement",
+   "steel"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:bhadravati-midc",
+  "name": "Bhadravati MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Chandrapur",
+  "near": "mh:chandrapur",
+  "scale": 1,
+  "sectors": [
+   "steel",
+   "mixed"
+  ],
+  "aka": [
+   "bhadrawati"
+  ]
+ },
+ {
+  "id": "mh:nagbhid-midc",
+  "name": "Nagbhid MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Chandrapur",
+  "near": "mh:chandrapur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:sindewahi-midc",
+  "name": "Sindewahi MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Chandrapur",
+  "near": "mh:chandrapur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:chimur-midc",
+  "name": "Chimur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Chandrapur",
+  "near": "mh:chandrapur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:rajura-midc",
+  "name": "Rajura MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Chandrapur",
+  "near": "mh:chandrapur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:gondpipri-midc",
+  "name": "Gondpipri MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Chandrapur",
+  "near": "mh:chandrapur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "gondpimpri"
+  ]
+ },
+ {
+  "id": "mh:warora-midc",
+  "name": "Warora MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Chandrapur",
+  "near": "mh:chandrapur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:mul-midc",
+  "name": "Mul MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Chandrapur",
+  "near": "mh:chandrapur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "mool"
+  ]
+ },
+ {
+  "id": "mh:dhule-midc",
+  "name": "Dhule MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Dhule",
+  "near": "mh:dhule",
+  "scale": 1,
+  "sectors": [
+   "textile",
+   "food"
+  ],
+  "aka": [
+   "addl dhule",
+   "avdhan"
+  ]
+ },
+ {
+  "id": "mh:nardana-midc",
+  "name": "Nardana MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Dhule",
+  "near": "mh:dhule",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "nardana ph-1",
+   "nardana ph-2",
+   "nardana ph-3"
+  ]
+ },
+ {
+  "id": "mh:brahmanvel-midc",
+  "name": "Brahmanvel MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Dhule",
+  "near": "mh:dhule",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:ubharandi-midc",
+  "name": "Ubharandi MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Dhule",
+  "near": "mh:dhule",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:gadchiroli-midc",
+  "name": "Gadchiroli MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Gadchiroli",
+  "near": "mh:gadchiroli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:aheri-midc",
+  "name": "Aheri MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Gadchiroli",
+  "near": "mh:gadchiroli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:kurkheda-midc",
+  "name": "Kurkheda MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Gadchiroli",
+  "near": "mh:gadchiroli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:chamorshi-midc",
+  "name": "Chamorshi MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Gadchiroli",
+  "near": "mh:gadchiroli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:gondia-midc",
+  "name": "Gondia MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Gondia",
+  "near": "mh:gondia",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "gondiya"
+  ]
+ },
+ {
+  "id": "mh:arjuni-morgaon-midc",
+  "name": "Arjuni Morgaon MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Gondia",
+  "near": "mh:gondia",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "morgaon arjuni"
+  ]
+ },
+ {
+  "id": "mh:goregaon-midc-gondia",
+  "name": "Goregaon MIDC (Gondia)",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Gondia",
+  "near": "mh:gondia",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:tiroda-midc",
+  "name": "Tiroda MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Gondia",
+  "near": "mh:gondia",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "addl tiroda"
+  ]
+ },
+ {
+  "id": "mh:deori-midc",
+  "name": "Deori MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Gondia",
+  "near": "mh:gondia",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:hingoli-midc",
+  "name": "Hingoli MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Hingoli",
+  "near": "mh:hingoli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:kalamnuri-midc",
+  "name": "Kalamnuri MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Hingoli",
+  "near": "mh:hingoli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:basmat-midc",
+  "name": "Basmat MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Hingoli",
+  "near": "mh:hingoli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "vasmat"
+  ]
+ },
+ {
+  "id": "mh:jalgaon-midc",
+  "name": "Jalgaon MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Jalgaon",
+  "near": "mh:jalgaon",
+  "scale": 2,
+  "sectors": [
+   "plastics",
+   "food"
+  ],
+  "aka": [
+   "addl jalgaon"
+  ]
+ },
+ {
+  "id": "mh:bhusawal-midc",
+  "name": "Bhusawal MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Jalgaon",
+  "near": "mh:bhusawal",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "bhusaval"
+  ]
+ },
+ {
+  "id": "mh:chalisgaon-midc",
+  "name": "Chalisgaon MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Jalgaon",
+  "near": "mh:jalgaon",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:jamner-midc",
+  "name": "Jamner MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Jalgaon",
+  "near": "mh:jalgaon",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:chopda-midc",
+  "name": "Chopda MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Jalgaon",
+  "near": "mh:jalgaon",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:bhadgaon-midc",
+  "name": "Bhadgaon MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Jalgaon",
+  "near": "mh:jalgaon",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:jalna-midc",
+  "name": "Jalna MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Jalna",
+  "near": "mh:jalna",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "food"
+  ],
+  "aka": [
+   "addl jalna"
+  ]
+ },
+ {
+  "id": "mh:jalna-seed-park",
+  "name": "Jalna Seed Park",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Jalna",
+  "near": "mh:jalna",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:ambad-midc-jalna",
+  "name": "Ambad MIDC (Jalna)",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Jalna",
+  "near": "mh:jalna",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:partur-midc",
+  "name": "Partur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Jalna",
+  "near": "mh:jalna",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:bhokardan-midc",
+  "name": "Bhokardan MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Jalna",
+  "near": "mh:jalna",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:jafrabad-midc",
+  "name": "Jafrabad MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Jalna",
+  "near": "mh:jalna",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:shiroli-midc",
+  "name": "Shiroli MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Kolhapur",
+  "near": "mh:kolhapur",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "shiroli pulachi"
+  ]
+ },
+ {
+  "id": "mh:gokul-shirgaon-midc",
+  "name": "Gokul Shirgaon MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Kolhapur",
+  "near": "mh:kolhapur",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "auto"
+  ],
+  "aka": [
+   "gokul-shirgaon"
+  ]
+ },
+ {
+  "id": "mh:kagal-hatkanangale-midc",
+  "name": "Kagal-Hatkanangale MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Kolhapur",
+  "near": "mh:kolhapur",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "auto",
+   "textile"
+  ],
+  "aka": [
+   "hatkanangale midc",
+   "kagal five star",
+   "kagal midc"
+  ]
+ },
+ {
+  "id": "mh:halkarni-midc",
+  "name": "Halkarni MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Kolhapur",
+  "near": "mh:kolhapur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:ajara-midc",
+  "name": "Ajara MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Kolhapur",
+  "near": "mh:kolhapur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:gadhinglaj-midc",
+  "name": "Gadhinglaj MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Kolhapur",
+  "near": "mh:kolhapur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:kolhapur-it-park",
+  "name": "Kolhapur IT Park",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Kolhapur",
+  "near": "mh:kolhapur",
+  "scale": 1,
+  "sectors": [
+   "it-campus"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:latur-midc",
+  "name": "Latur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Latur",
+  "near": "mh:latur",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "addl latur"
+  ]
+ },
+ {
+  "id": "mh:ausa-midc",
+  "name": "Ausa MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Latur",
+  "near": "mh:latur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:ahmedpur-midc",
+  "name": "Ahmedpur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Latur",
+  "near": "mh:latur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:nilanga-midc",
+  "name": "Nilanga MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Latur",
+  "near": "mh:latur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:marol-midc",
+  "name": "Marol MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Mumbai Suburban",
+  "near": "mh:bandra",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "pharma",
+   "it-campus"
+  ],
+  "aka": [
+   "andheri midc",
+   "midc andheri east",
+   "samruddhi venture park"
+  ]
+ },
+ {
+  "id": "mh:seepz-sez",
+  "name": "SEEPZ SEZ",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Mumbai Suburban",
+  "near": "mh:bandra",
+  "scale": 2,
+  "sectors": [
+   "sez",
+   "electronics",
+   "it-campus"
+  ],
+  "aka": [
+   "santacruz electronics export processing zone",
+   "seepz"
+  ]
+ },
+ {
+  "id": "mh:navapur-midc",
+  "name": "Navapur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nandurbar",
+  "near": "mh:nandurbar",
+  "scale": 1,
+  "sectors": [
+   "textile",
+   "mixed"
+  ],
+  "aka": [
+   "addl navapur"
+  ]
+ },
+ {
+  "id": "mh:nandurbar-midc",
+  "name": "Nandurbar MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nandurbar",
+  "near": "mh:nandurbar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "bhaler",
+   "tokartale"
+  ]
+ },
+ {
+  "id": "mh:shahada-midc",
+  "name": "Shahada MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nandurbar",
+  "near": "mh:nandurbar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "shahade"
+  ]
+ },
+ {
+  "id": "mh:nanded-midc",
+  "name": "Nanded MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nanded",
+  "near": "mh:nanded",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:krushnoor-midc",
+  "name": "Krushnoor MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nanded",
+  "near": "mh:nanded",
+  "scale": 1,
+  "sectors": [
+   "mixed",
+   "sez"
+  ],
+  "aka": [
+   "krushnur",
+   "krushnur growth centre",
+   "krushnur sez"
+  ]
+ },
+ {
+  "id": "mh:deglur-midc",
+  "name": "Deglur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nanded",
+  "near": "mh:nanded",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:kandhar-midc",
+  "name": "Kandhar MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nanded",
+  "near": "mh:nanded",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:kinwat-midc",
+  "name": "Kinwat MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nanded",
+  "near": "mh:nanded",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:bhokar-midc",
+  "name": "Bhokar MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nanded",
+  "near": "mh:nanded",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:mudkhed-midc",
+  "name": "Mudkhed MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nanded",
+  "near": "mh:nanded",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:hingna-midc",
+  "name": "Hingna MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nagpur",
+  "near": "mh:nagpur",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "hingna",
+   "hingna road"
+  ]
+ },
+ {
+  "id": "mh:butibori-midc",
+  "name": "Butibori MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nagpur",
+  "near": "mh:nagpur",
+  "scale": 3,
+  "sectors": [
+   "textile",
+   "engineering",
+   "steel",
+   "fmcg"
+  ],
+  "aka": [
+   "addl butibori",
+   "butibori",
+   "butibori five star",
+   "butibori ph-2"
+  ]
+ },
+ {
+  "id": "mh:mihan-sez",
+  "name": "MIHAN SEZ",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nagpur",
+  "near": "mh:nagpur",
+  "scale": 2,
+  "sectors": [
+   "sez",
+   "it-campus",
+   "engineering",
+   "logistics"
+  ],
+  "aka": [
+   "mihan",
+   "multi-modal international cargo hub"
+  ]
+ },
+ {
+  "id": "mh:kalmeshwar-midc",
+  "name": "Kalmeshwar MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nagpur",
+  "near": "mh:nagpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:kamptee-kanhan-midc",
+  "name": "Kamptee-Kanhan MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nagpur",
+  "near": "mh:nagpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kamptee",
+   "kamti kanhan"
+  ]
+ },
+ {
+  "id": "mh:nagpur-it-park-parsodi",
+  "name": "Nagpur IT Park (Parsodi)",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nagpur",
+  "near": "mh:nagpur",
+  "scale": 1,
+  "sectors": [
+   "it-campus"
+  ],
+  "aka": [
+   "parsodi"
+  ]
+ },
+ {
+  "id": "mh:mouda-midc",
+  "name": "Mouda MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nagpur",
+  "near": "mh:nagpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "ntpc mouda"
+  ]
+ },
+ {
+  "id": "mh:katol-midc",
+  "name": "Katol MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nagpur",
+  "near": "mh:nagpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "addl katol"
+  ]
+ },
+ {
+  "id": "mh:umred-midc",
+  "name": "Umred MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nagpur",
+  "near": "mh:nagpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:saoner-midc",
+  "name": "Saoner MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nagpur",
+  "near": "mh:nagpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:narkhed-midc",
+  "name": "Narkhed MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nagpur",
+  "near": "mh:nagpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:parseoni-midc",
+  "name": "Parseoni MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nagpur",
+  "near": "mh:nagpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "parshivni"
+  ]
+ },
+ {
+  "id": "mh:kuhi-midc",
+  "name": "Kuhi MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nagpur",
+  "near": "mh:nagpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:bhiwapur-midc",
+  "name": "Bhiwapur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nagpur",
+  "near": "mh:nagpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:makardhokda-midc",
+  "name": "Makardhokda MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nagpur",
+  "near": "mh:nagpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:satpur-midc",
+  "name": "Satpur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nashik",
+  "near": "mh:nashik",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "auto",
+   "electronics"
+  ],
+  "aka": [
+   "nashik satpur",
+   "satpur"
+  ]
+ },
+ {
+  "id": "mh:ambad-midc-nashik",
+  "name": "Ambad MIDC (Nashik)",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nashik",
+  "near": "mh:nashik",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "addl ambad",
+   "ambad nashik",
+   "nashik ambad"
+  ]
+ },
+ {
+  "id": "mh:sinnar-midc",
+  "name": "Sinnar MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nashik",
+  "near": "mh:nashik",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "auto"
+  ],
+  "aka": [
+   "addl sinnar",
+   "musalgaon",
+   "sinnar",
+   "sinnar sez"
+  ]
+ },
+ {
+  "id": "mh:malegaon-midc-nashik",
+  "name": "Malegaon MIDC (Nashik)",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nashik",
+  "near": "mh:malegaon",
+  "scale": 1,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [
+   "ajang ravalgaon",
+   "malegaon textile park"
+  ]
+ },
+ {
+  "id": "mh:vinchur-midc",
+  "name": "Vinchur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nashik",
+  "near": "mh:nashik",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "addl vinchur",
+   "vinchur wine park"
+  ]
+ },
+ {
+  "id": "mh:dindori-midc",
+  "name": "Dindori MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nashik",
+  "near": "mh:nashik",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "addl dindori"
+  ]
+ },
+ {
+  "id": "mh:yeola-midc",
+  "name": "Yeola MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nashik",
+  "near": "mh:nashik",
+  "scale": 1,
+  "sectors": [
+   "textile"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:nashik-it-park",
+  "name": "Nashik IT Park",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nashik",
+  "near": "mh:nashik",
+  "scale": 1,
+  "sectors": [
+   "it-campus"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:surgana-midc",
+  "name": "Surgana MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nashik",
+  "near": "mh:nashik",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:peth-midc",
+  "name": "Peth MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nashik",
+  "near": "mh:nashik",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:rajur-bahula-midc",
+  "name": "Rajur Bahula MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nashik",
+  "near": "mh:nashik",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:jambutke-midc",
+  "name": "Jambutke MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Nashik",
+  "near": "mh:nashik",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:dharashiv-midc",
+  "name": "Dharashiv MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Dharashiv",
+  "near": "mh:dharashiv",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "addl dharashiv",
+   "osmanabad midc"
+  ]
+ },
+ {
+  "id": "mh:umarga-midc",
+  "name": "Umarga MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Dharashiv",
+  "near": "mh:dharashiv",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:kalamb-midc",
+  "name": "Kalamb MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Dharashiv",
+  "near": "mh:dharashiv",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:bhoom-midc",
+  "name": "Bhoom MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Dharashiv",
+  "near": "mh:dharashiv",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:kaudgaon-midc",
+  "name": "Kaudgaon MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Dharashiv",
+  "near": "mh:dharashiv",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:parbhani-midc",
+  "name": "Parbhani MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Parbhani",
+  "near": "mh:parbhani",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "addl parbhani"
+  ]
+ },
+ {
+  "id": "mh:gangakhed-midc",
+  "name": "Gangakhed MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Parbhani",
+  "near": "mh:parbhani",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:jintur-midc",
+  "name": "Jintur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Parbhani",
+  "near": "mh:parbhani",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:selu-midc",
+  "name": "Selu MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Parbhani",
+  "near": "mh:parbhani",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:pimpri-chinchwad-midc",
+  "name": "Pimpri-Chinchwad MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Pune",
+  "near": "mh:pimpri-chinchwad",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "bhosari",
+   "bhosari midc",
+   "chinchwad midc",
+   "pcmc midc",
+   "pimpri midc"
+  ]
+ },
+ {
+  "id": "mh:chakan-midc",
+  "name": "Chakan MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Pune",
+  "near": "mh:pune",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering",
+   "logistics"
+  ],
+  "aka": [
+   "chakan",
+   "chakan ph-1",
+   "chakan ph-2",
+   "chakan ph-3",
+   "chakan ph-4",
+   "chakan ph-5",
+   "mahalunge"
+  ]
+ },
+ {
+  "id": "mh:talegaon-midc",
+  "name": "Talegaon MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Pune",
+  "near": "mh:pune",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering",
+   "logistics"
+  ],
+  "aka": [
+   "iia talegaon",
+   "talegaon",
+   "talegaon dabhade",
+   "talegaon floriculture park"
+  ]
+ },
+ {
+  "id": "mh:ranjangaon-midc",
+  "name": "Ranjangaon MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Pune",
+  "near": "mh:pune",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "fmcg",
+   "electronics"
+  ],
+  "aka": [
+   "karegaon",
+   "ranjangaon",
+   "ranjangaon ganpati"
+  ]
+ },
+ {
+  "id": "mh:kurkumbh-midc",
+  "name": "Kurkumbh MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Pune",
+  "near": "mh:pune",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "pharma"
+  ],
+  "aka": [
+   "addl kurkumbh",
+   "kurkumbh",
+   "patas"
+  ]
+ },
+ {
+  "id": "mh:jejuri-midc",
+  "name": "Jejuri MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Pune",
+  "near": "mh:pune",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "engineering"
+  ],
+  "aka": [
+   "addl jejuri"
+  ]
+ },
+ {
+  "id": "mh:baramati-midc",
+  "name": "Baramati MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Pune",
+  "near": "mh:baramati",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "auto"
+  ],
+  "aka": [
+   "baramati ph-2"
+  ]
+ },
+ {
+  "id": "mh:hinjewadi-it-park",
+  "name": "Hinjewadi IT Park",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Pune",
+  "near": "mh:pune",
+  "scale": 3,
+  "sectors": [
+   "it-campus"
+  ],
+  "aka": [
+   "hinjawadi",
+   "maan",
+   "pune infotech park",
+   "rajiv gandhi infotech park"
+  ]
+ },
+ {
+  "id": "mh:kharadi-knowledge-park",
+  "name": "Kharadi Knowledge Park",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Pune",
+  "near": "mh:pune",
+  "scale": 2,
+  "sectors": [
+   "it-campus"
+  ],
+  "aka": [
+   "kharadi"
+  ]
+ },
+ {
+  "id": "mh:talawade-software-park",
+  "name": "Talawade Software Park",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Pune",
+  "near": "mh:pimpri-chinchwad",
+  "scale": 1,
+  "sectors": [
+   "it-campus"
+  ],
+  "aka": [
+   "talawade",
+   "talawade it park"
+  ]
+ },
+ {
+  "id": "mh:khed-city-sez",
+  "name": "Khed City SEZ",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Pune",
+  "near": "mh:pune",
+  "scale": 2,
+  "sectors": [
+   "sez",
+   "engineering"
+  ],
+  "aka": [
+   "kalyani khed city",
+   "keipl",
+   "khed sez"
+  ]
+ },
+ {
+  "id": "mh:bhigwan-midc",
+  "name": "Bhigwan MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Pune",
+  "near": "mh:pune",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:pandare-midc",
+  "name": "Pandare MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Pune",
+  "near": "mh:pune",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:indapur-midc",
+  "name": "Indapur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Pune",
+  "near": "mh:pune",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:taloja-midc",
+  "name": "Taloja MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Raigad",
+  "near": "mh:panvel",
+  "scale": 3,
+  "sectors": [
+   "chemical",
+   "pharma",
+   "steel",
+   "plastics"
+  ],
+  "aka": [
+   "addl taloja",
+   "taloja"
+  ]
+ },
+ {
+  "id": "mh:patalganga-midc",
+  "name": "Patalganga MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Raigad",
+  "near": "mh:khopoli",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "textile"
+  ],
+  "aka": [
+   "addl patalganga",
+   "patalganga",
+   "rasayani"
+  ]
+ },
+ {
+  "id": "mh:mahad-midc",
+  "name": "Mahad MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Raigad",
+  "near": "mh:alibag",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "pharma"
+  ],
+  "aka": [
+   "addl mahad",
+   "mahad five star"
+  ]
+ },
+ {
+  "id": "mh:roha-midc",
+  "name": "Roha MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Raigad",
+  "near": "mh:alibag",
+  "scale": 2,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": [
+   "dhatav"
+  ]
+ },
+ {
+  "id": "mh:vile-bhagad-midc",
+  "name": "Vile Bhagad MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Raigad",
+  "near": "mh:alibag",
+  "scale": 1,
+  "sectors": [
+   "steel",
+   "mixed"
+  ],
+  "aka": [
+   "mangaon midc",
+   "vile-bhagad"
+  ]
+ },
+ {
+  "id": "mh:khalapur-midc",
+  "name": "Khalapur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Raigad",
+  "near": "mh:khopoli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "khalapur"
+  ]
+ },
+ {
+  "id": "mh:dighi-port-industrial-area",
+  "name": "Dighi Port Industrial Area",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Raigad",
+  "near": "mh:alibag",
+  "scale": 1,
+  "sectors": [
+   "logistics",
+   "leather"
+  ],
+  "aka": [
+   "dighi port",
+   "mangaon leather cluster"
+  ]
+ },
+ {
+  "id": "mh:usar-midc",
+  "name": "Usar MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Raigad",
+  "near": "mh:alibag",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:nagothane-midc",
+  "name": "Nagothane MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Raigad",
+  "near": "mh:alibag",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:isambe-midc",
+  "name": "Isambe MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Raigad",
+  "near": "mh:alibag",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:dherand-shahapur-midc",
+  "name": "Dherand Shahapur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Raigad",
+  "near": "mh:alibag",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:aajivali-midc",
+  "name": "Aajivali MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Raigad",
+  "near": "mh:panvel",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:lote-parshuram-midc",
+  "name": "Lote-Parshuram MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Ratnagiri",
+  "near": "mh:chiplun",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "pharma"
+  ],
+  "aka": [
+   "addl lote",
+   "lote",
+   "lote midc",
+   "lote parshuram"
+  ]
+ },
+ {
+  "id": "mh:kherdi-chiplun-midc",
+  "name": "Kherdi-Chiplun MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Ratnagiri",
+  "near": "mh:chiplun",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "chiplun midc",
+   "kherdi"
+  ]
+ },
+ {
+  "id": "mh:gane-khadpoli-midc",
+  "name": "Gane-Khadpoli MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Ratnagiri",
+  "near": "mh:chiplun",
+  "scale": 1,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": [
+   "khadpoli"
+  ]
+ },
+ {
+  "id": "mh:ratnagiri-midc-mirjole",
+  "name": "Ratnagiri MIDC (Mirjole)",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Ratnagiri",
+  "near": "mh:ratnagiri",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "mirjole"
+  ]
+ },
+ {
+  "id": "mh:zadgaon-midc",
+  "name": "Zadgaon MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Ratnagiri",
+  "near": "mh:ratnagiri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "ratnagiri-zadgao",
+   "zadgao"
+  ]
+ },
+ {
+  "id": "mh:sadavali-midc",
+  "name": "Sadavali MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Ratnagiri",
+  "near": "mh:ratnagiri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:dapoli-midc",
+  "name": "Dapoli MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Ratnagiri",
+  "near": "mh:ratnagiri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:sangameshwar-midc",
+  "name": "Sangameshwar MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Ratnagiri",
+  "near": "mh:ratnagiri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:dabhol-midc",
+  "name": "Dabhol MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Ratnagiri",
+  "near": "mh:ratnagiri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:kudal-midc",
+  "name": "Kudal MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Sindhudurg",
+  "near": "mh:oros",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:adali-midc",
+  "name": "Adali MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Sindhudurg",
+  "near": "mh:oros",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:sangli-miraj-midc",
+  "name": "Sangli-Miraj MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Sangli",
+  "near": "mh:sangli",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "food"
+  ],
+  "aka": [
+   "miraj midc",
+   "sangli it park"
+  ]
+ },
+ {
+  "id": "mh:kupwad-midc",
+  "name": "Kupwad MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Sangli",
+  "near": "mh:sangli",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "food"
+  ],
+  "aka": [
+   "sangli-kupwad"
+  ]
+ },
+ {
+  "id": "mh:palus-midc",
+  "name": "Palus MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Sangli",
+  "near": "mh:sangli",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "addl palus",
+   "palus wine park"
+  ]
+ },
+ {
+  "id": "mh:kadegaon-midc",
+  "name": "Kadegaon MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Sangli",
+  "near": "mh:sangli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kadegaon-shivajinagar"
+  ]
+ },
+ {
+  "id": "mh:islampur-midc",
+  "name": "Islampur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Sangli",
+  "near": "mh:sangli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "urun islampur"
+  ]
+ },
+ {
+  "id": "mh:jath-midc",
+  "name": "Jath MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Sangli",
+  "near": "mh:sangli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:kavathe-mahankal-midc",
+  "name": "Kavathe Mahankal MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Sangli",
+  "near": "mh:sangli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kavathe-mahankal"
+  ]
+ },
+ {
+  "id": "mh:shirala-midc",
+  "name": "Shirala MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Sangli",
+  "near": "mh:sangli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:vita-midc",
+  "name": "Vita MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Sangli",
+  "near": "mh:sangli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:shalgaon-bombalewadi-midc",
+  "name": "Shalgaon-Bombalewadi MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Sangli",
+  "near": "mh:sangli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "shalgaon"
+  ]
+ },
+ {
+  "id": "mh:kavlapur-midc",
+  "name": "Kavlapur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Sangli",
+  "near": "mh:sangli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:kasegaon-midc",
+  "name": "Kasegaon MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Sangli",
+  "near": "mh:sangli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:yogewadi-manerajuri-midc",
+  "name": "Yogewadi-Manerajuri MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Sangli",
+  "near": "mh:sangli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "yogewadi"
+  ]
+ },
+ {
+  "id": "mh:solapur-midc-akkalkot-road",
+  "name": "Solapur MIDC (Akkalkot Road)",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Solapur",
+  "near": "mh:solapur",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "engineering"
+  ],
+  "aka": [
+   "akkalkot road midc",
+   "solapur midc"
+  ]
+ },
+ {
+  "id": "mh:chincholi-midc",
+  "name": "Chincholi MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Solapur",
+  "near": "mh:solapur",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "engineering"
+  ],
+  "aka": [
+   "addl chincholi"
+  ]
+ },
+ {
+  "id": "mh:karmala-midc",
+  "name": "Karmala MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Solapur",
+  "near": "mh:solapur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:kurduwadi-midc",
+  "name": "Kurduwadi MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Solapur",
+  "near": "mh:solapur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:tembhurni-midc",
+  "name": "Tembhurni MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Solapur",
+  "near": "mh:solapur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:mangalwedha-midc",
+  "name": "Mangalwedha MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Solapur",
+  "near": "mh:solapur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:barshi-midc",
+  "name": "Barshi MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Solapur",
+  "near": "mh:solapur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:modnimb-midc",
+  "name": "Modnimb MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Solapur",
+  "near": "mh:solapur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:satara-midc",
+  "name": "Satara MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Satara",
+  "near": "mh:satara",
+  "scale": 2,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "addl satara",
+   "satara it park"
+  ]
+ },
+ {
+  "id": "mh:khandala-midc",
+  "name": "Khandala MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Satara",
+  "near": "mh:satara",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "fmcg",
+   "engineering"
+  ],
+  "aka": [
+   "kesurdi",
+   "kesurdi sez",
+   "khandala",
+   "khandala sez"
+  ]
+ },
+ {
+  "id": "mh:phaltan-midc",
+  "name": "Phaltan MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Satara",
+  "near": "mh:satara",
+  "scale": 1,
+  "sectors": [
+   "engineering",
+   "sez"
+  ],
+  "aka": [
+   "addl phaltan",
+   "phaltan sez"
+  ]
+ },
+ {
+  "id": "mh:karad-midc",
+  "name": "Karad MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Satara",
+  "near": "mh:karad",
+  "scale": 1,
+  "sectors": [
+   "engineering",
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:lonand-midc",
+  "name": "Lonand MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Satara",
+  "near": "mh:satara",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:wai-midc",
+  "name": "Wai MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Satara",
+  "near": "mh:satara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:koregaon-midc",
+  "name": "Koregaon MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Satara",
+  "near": "mh:satara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:mhaswad-midc",
+  "name": "Mhaswad MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Satara",
+  "near": "mh:satara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:patan-midc",
+  "name": "Patan MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Satara",
+  "near": "mh:satara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "patan satara"
+  ]
+ },
+ {
+  "id": "mh:thane-midc-wagle-estate",
+  "name": "Thane MIDC (Wagle Estate)",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Thane",
+  "near": "mh:thane",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "pharma"
+  ],
+  "aka": [
+   "thane midc",
+   "wagle estate"
+  ]
+ },
+ {
+  "id": "mh:dombivli-midc",
+  "name": "Dombivli MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Thane",
+  "near": "mh:kalyan",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "engineering"
+  ],
+  "aka": [
+   "dombivali midc",
+   "dombivli"
+  ]
+ },
+ {
+  "id": "mh:mira-midc",
+  "name": "Mira MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Thane",
+  "near": "mh:thane",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "mira road midc"
+  ]
+ },
+ {
+  "id": "mh:ambernath-midc",
+  "name": "Ambernath MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Thane",
+  "near": "mh:ambernath",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "engineering"
+  ],
+  "aka": [
+   "addl ambernath",
+   "anand nagar midc",
+   "jambhivali",
+   "pale midc"
+  ]
+ },
+ {
+  "id": "mh:badlapur-midc",
+  "name": "Badlapur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Thane",
+  "near": "mh:badlapur",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "pharma"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:kalyan-bhiwandi-midc",
+  "name": "Kalyan-Bhiwandi MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Thane",
+  "near": "mh:kalyan",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "addl kalyan-bhiwandi"
+  ]
+ },
+ {
+  "id": "mh:murbad-midc",
+  "name": "Murbad MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Thane",
+  "near": "mh:thane",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "plastics"
+  ],
+  "aka": [
+   "addl murbad"
+  ]
+ },
+ {
+  "id": "mh:ttc-midc-navi-mumbai",
+  "name": "TTC MIDC (Navi Mumbai)",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Thane",
+  "near": "mh:navi-mumbai",
+  "scale": 3,
+  "sectors": [
+   "chemical",
+   "engineering",
+   "it-campus"
+  ],
+  "aka": [
+   "ghansoli",
+   "mahape",
+   "millennium business park",
+   "pawne",
+   "rabale",
+   "thane belapur",
+   "ttc",
+   "turbhe"
+  ]
+ },
+ {
+  "id": "mh:khardi-midc",
+  "name": "Khardi MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Thane",
+  "near": "mh:thane",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:wardha-midc",
+  "name": "Wardha MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Wardha",
+  "near": "mh:wardha",
+  "scale": 1,
+  "sectors": [
+   "textile",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:hinganghat-midc",
+  "name": "Hinganghat MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Wardha",
+  "near": "mh:hinganghat",
+  "scale": 1,
+  "sectors": [
+   "textile"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:deoli-midc",
+  "name": "Deoli MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Wardha",
+  "near": "mh:wardha",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:samudrapur-midc",
+  "name": "Samudrapur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Wardha",
+  "near": "mh:wardha",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:karanja-midc",
+  "name": "Karanja MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Wardha",
+  "near": "mh:wardha",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "karanja ghadge"
+  ]
+ },
+ {
+  "id": "mh:borgaon-meghe-midc",
+  "name": "Borgaon Meghe MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Wardha",
+  "near": "mh:wardha",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:washim-midc",
+  "name": "Washim MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Washim",
+  "near": "mh:washim",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:risod-midc",
+  "name": "Risod MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Washim",
+  "near": "mh:washim",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:malegaon-midc-washim",
+  "name": "Malegaon MIDC (Washim)",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Washim",
+  "near": "mh:washim",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "malegaon washim"
+  ]
+ },
+ {
+  "id": "mh:manora-midc",
+  "name": "Manora MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Washim",
+  "near": "mh:washim",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:mangrulpir-midc",
+  "name": "Mangrulpir MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Washim",
+  "near": "mh:washim",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "mangalurpir"
+  ]
+ },
+ {
+  "id": "mh:yavatmal-midc",
+  "name": "Yavatmal MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Yavatmal",
+  "near": "mh:yavatmal",
+  "scale": 1,
+  "sectors": [
+   "textile",
+   "mixed"
+  ],
+  "aka": [
+   "addl yavatmal"
+  ]
+ },
+ {
+  "id": "mh:wani-midc",
+  "name": "Wani MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Yavatmal",
+  "near": "mh:yavatmal",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:pusad-midc",
+  "name": "Pusad MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Yavatmal",
+  "near": "mh:yavatmal",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:darwha-midc",
+  "name": "Darwha MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Yavatmal",
+  "near": "mh:yavatmal",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:digras-midc",
+  "name": "Digras MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Yavatmal",
+  "near": "mh:yavatmal",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:ghatanji-midc",
+  "name": "Ghatanji MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Yavatmal",
+  "near": "mh:yavatmal",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:mahagaon-midc",
+  "name": "Mahagaon MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Yavatmal",
+  "near": "mh:yavatmal",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:umarkhed-midc",
+  "name": "Umarkhed MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Yavatmal",
+  "near": "mh:yavatmal",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:maregaon-midc",
+  "name": "Maregaon MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Yavatmal",
+  "near": "mh:yavatmal",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:pandharkawada-midc",
+  "name": "Pandharkawada MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Yavatmal",
+  "near": "mh:yavatmal",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kelapur",
+   "kelapur pandharkawada"
+  ]
+ },
+ {
+  "id": "mh:tarapur-midc",
+  "name": "Tarapur MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Palghar",
+  "near": "mh:boisar",
+  "scale": 3,
+  "sectors": [
+   "chemical",
+   "pharma",
+   "steel",
+   "textile"
+  ],
+  "aka": [
+   "boisar midc",
+   "tarapur"
+  ]
+ },
+ {
+  "id": "mh:dapchari-midc",
+  "name": "Dapchari MIDC",
+  "state": "MH",
+  "kind": "estate",
+  "district": "Palghar",
+  "near": "mh:palghar",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:sanaswadi-shikrapur",
+  "name": "Sanaswadi-Shikrapur",
+  "state": "MH",
+  "kind": "cluster",
+  "district": "Pune",
+  "near": "mh:pune",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "koregaon bhima",
+   "sanaswadi",
+   "shikrapur"
+  ]
+ },
+ {
+  "id": "mh:shirwal",
+  "name": "Shirwal",
+  "state": "MH",
+  "kind": "cluster",
+  "district": "Satara",
+  "near": "mh:satara",
+  "scale": 2,
+  "sectors": [
+   "fmcg",
+   "auto",
+   "engineering"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mh:hadapsar-industrial-estate",
+  "name": "Hadapsar Industrial Estate",
+  "state": "MH",
+  "kind": "cluster",
+  "district": "Pune",
+  "near": "mh:pune",
+  "scale": 2,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "hadapsar"
+  ]
+ },
+ {
+  "id": "mh:wagholi-lonikand",
+  "name": "Wagholi-Lonikand",
+  "state": "MH",
+  "kind": "cluster",
+  "district": "Pune",
+  "near": "mh:pune",
+  "scale": 2,
+  "sectors": [
+   "logistics"
+  ],
+  "aka": [
+   "lonikand",
+   "wagholi"
+  ]
+ },
+ {
+  "id": "mh:uran-jnpa",
+  "name": "Uran-JNPA",
+  "state": "MH",
+  "kind": "cluster",
+  "district": "Raigad",
+  "near": "mh:panvel",
+  "scale": 3,
+  "sectors": [
+   "logistics"
+  ],
+  "aka": [
+   "dronagiri",
+   "jnpa",
+   "jnpt",
+   "nhava sheva",
+   "uran"
+  ]
+ },
+ {
+  "id": "mh:kalamboli",
+  "name": "Kalamboli",
+  "state": "MH",
+  "kind": "cluster",
+  "district": "Raigad",
+  "near": "mh:panvel",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "logistics"
+  ],
+  "aka": [
+   "kalamboli steel market"
+  ]
+ },
+ {
+  "id": "mh:wada",
+  "name": "Wada",
+  "state": "MH",
+  "kind": "cluster",
+  "district": "Palghar",
+  "near": "mh:palghar",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "fmcg",
+   "steel"
+  ],
+  "aka": [
+   "wada industrial area"
+  ]
+ },
+ {
+  "id": "mh:vasai-east-industrial-belt",
+  "name": "Vasai East Industrial Belt",
+  "state": "MH",
+  "kind": "cluster",
+  "district": "Palghar",
+  "near": "mh:vasai-virar",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "plastics"
+  ],
+  "aka": [
+   "golani",
+   "sativali",
+   "vasai industrial area",
+   "waliv"
+  ]
+ },
+ {
+  "id": "mh:padgha",
+  "name": "Padgha",
+  "state": "MH",
+  "kind": "cluster",
+  "district": "Thane",
+  "near": "mh:bhiwandi",
+  "scale": 2,
+  "sectors": [
+   "logistics"
+  ],
+  "aka": [
+   "padgha logistics"
+  ]
+ },
+ {
+  "id": "mh:gonde-igatpuri",
+  "name": "Gonde (Igatpuri)",
+  "state": "MH",
+  "kind": "cluster",
+  "district": "Nashik",
+  "near": "mh:nashik",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "fmcg",
+   "plastics"
+  ],
+  "aka": [
+   "gonde",
+   "igatpuri",
+   "wadivarhe"
+  ]
+ },
+ {
+  "id": "ga:verna-industrial-estate",
+  "name": "Verna Industrial Estate",
+  "state": "GA",
+  "kind": "estate",
+  "district": "South Goa",
+  "near": "ga:margao",
+  "scale": 2,
+  "sectors": [
+   "pharma",
+   "electronics",
+   "engineering"
+  ],
+  "aka": [
+   "verna",
+   "verna plateau"
+  ]
+ },
+ {
+  "id": "ga:kundaim-industrial-estate",
+  "name": "Kundaim Industrial Estate",
+  "state": "GA",
+  "kind": "estate",
+  "district": "North Goa",
+  "near": "ga:ponda",
+  "scale": 2,
+  "sectors": [
+   "pharma",
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "kundaim"
+  ]
+ },
+ {
+  "id": "ga:madkaim-industrial-estate",
+  "name": "Madkaim Industrial Estate",
+  "state": "GA",
+  "kind": "estate",
+  "district": "North Goa",
+  "near": "ga:ponda",
+  "scale": 1,
+  "sectors": [
+   "pharma",
+   "mixed"
+  ],
+  "aka": [
+   "madkai",
+   "madkaim",
+   "marcaim"
+  ]
+ },
+ {
+  "id": "ga:cuncolim-industrial-estate",
+  "name": "Cuncolim Industrial Estate",
+  "state": "GA",
+  "kind": "estate",
+  "district": "South Goa",
+  "near": "ga:margao",
+  "scale": 2,
+  "sectors": [
+   "metal",
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "cuncolim",
+   "kunkolim"
+  ]
+ },
+ {
+  "id": "ga:corlim-industrial-estate",
+  "name": "Corlim Industrial Estate",
+  "state": "GA",
+  "kind": "estate",
+  "district": "North Goa",
+  "near": "ga:panaji",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "corlim"
+  ]
+ },
+ {
+  "id": "ga:pilerne-industrial-estate",
+  "name": "Pilerne Industrial Estate",
+  "state": "GA",
+  "kind": "estate",
+  "district": "North Goa",
+  "near": "ga:mapusa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "pilerne"
+  ]
+ },
+ {
+  "id": "ga:tivim-industrial-estate",
+  "name": "Tivim Industrial Estate",
+  "state": "GA",
+  "kind": "estate",
+  "district": "North Goa",
+  "near": "ga:mapusa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "thivim",
+   "tivim"
+  ]
+ },
+ {
+  "id": "ga:colvale-industrial-estate",
+  "name": "Colvale Industrial Estate",
+  "state": "GA",
+  "kind": "estate",
+  "district": "North Goa",
+  "near": "ga:mapusa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "colvale"
+  ]
+ },
+ {
+  "id": "ga:tuem-industrial-estate",
+  "name": "Tuem Industrial Estate",
+  "state": "GA",
+  "kind": "estate",
+  "district": "North Goa",
+  "near": "ga:mapusa",
+  "scale": 1,
+  "sectors": [
+   "electronics",
+   "mixed"
+  ],
+  "aka": [
+   "tuem"
+  ]
+ },
+ {
+  "id": "ga:mapusa-industrial-estate",
+  "name": "Mapusa Industrial Estate",
+  "state": "GA",
+  "kind": "estate",
+  "district": "North Goa",
+  "near": "ga:mapusa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ga:honda-industrial-estate",
+  "name": "Honda Industrial Estate",
+  "state": "GA",
+  "kind": "estate",
+  "district": "North Goa",
+  "near": "ga:panaji",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "honda sattari"
+  ]
+ },
+ {
+  "id": "ga:pissurlem-industrial-estate",
+  "name": "Pissurlem Industrial Estate",
+  "state": "GA",
+  "kind": "estate",
+  "district": "North Goa",
+  "near": "ga:panaji",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "pissurlem"
+  ]
+ },
+ {
+  "id": "ga:bicholim-industrial-estate",
+  "name": "Bicholim Industrial Estate",
+  "state": "GA",
+  "kind": "estate",
+  "district": "North Goa",
+  "near": "ga:panaji",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "bicholim"
+  ]
+ },
+ {
+  "id": "ga:bethora-industrial-estate",
+  "name": "Bethora Industrial Estate",
+  "state": "GA",
+  "kind": "estate",
+  "district": "North Goa",
+  "near": "ga:ponda",
+  "scale": 1,
+  "sectors": [
+   "pharma",
+   "mixed"
+  ],
+  "aka": [
+   "bethora"
+  ]
+ },
+ {
+  "id": "ga:shiroda-industrial-estate",
+  "name": "Shiroda Industrial Estate",
+  "state": "GA",
+  "kind": "estate",
+  "district": "North Goa",
+  "near": "ga:ponda",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "shiroda"
+  ]
+ },
+ {
+  "id": "ga:sancoale-industrial-estate",
+  "name": "Sancoale Industrial Estate",
+  "state": "GA",
+  "kind": "estate",
+  "district": "South Goa",
+  "near": "ga:vasco-da-gama",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sancoale"
+  ]
+ },
+ {
+  "id": "ga:margao-industrial-estate",
+  "name": "Margao Industrial Estate",
+  "state": "GA",
+  "kind": "estate",
+  "district": "South Goa",
+  "near": "ga:margao",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ga:kakoda-industrial-estate",
+  "name": "Kakoda Industrial Estate",
+  "state": "GA",
+  "kind": "estate",
+  "district": "Kushavati",
+  "near": "ga:quepem",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "cacora",
+   "kakoda curchorem"
+  ]
+ },
+ {
+  "id": "ga:sanguem-industrial-estate",
+  "name": "Sanguem Industrial Estate",
+  "state": "GA",
+  "kind": "estate",
+  "district": "Kushavati",
+  "near": "ga:quepem",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sanguem"
+  ]
+ },
+ {
+  "id": "ga:canacona-industrial-estate",
+  "name": "Canacona Industrial Estate",
+  "state": "GA",
+  "kind": "estate",
+  "district": "Kushavati",
+  "near": "ga:quepem",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "canacona"
+  ]
+ },
+ {
+  "id": "dh:silvassa-industrial-estate",
+  "name": "Silvassa Industrial Estate",
+  "state": "DH",
+  "kind": "estate",
+  "district": "Dadra and Nagar Haveli",
+  "near": "dh:silvassa",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "plastics",
+   "engineering"
+  ],
+  "aka": [
+   "silvassa i",
+   "silvassa phase 1"
+  ]
+ },
+ {
+  "id": "dh:khadoli-industrial-estate",
+  "name": "Khadoli Industrial Estate",
+  "state": "DH",
+  "kind": "estate",
+  "district": "Dadra and Nagar Haveli",
+  "near": "dh:silvassa",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "plastics",
+   "mixed"
+  ],
+  "aka": [
+   "amli",
+   "amli-khadoli",
+   "khadoli",
+   "silvassa ii"
+  ]
+ },
+ {
+  "id": "dh:masat-industrial-estate",
+  "name": "Masat Industrial Estate",
+  "state": "DH",
+  "kind": "estate",
+  "district": "Dadra and Nagar Haveli",
+  "near": "dh:silvassa",
+  "scale": 2,
+  "sectors": [
+   "plastics",
+   "textile",
+   "mixed"
+  ],
+  "aka": [
+   "masat"
+  ]
+ },
+ {
+  "id": "dh:piparia-industrial-estate",
+  "name": "Piparia Industrial Estate",
+  "state": "DH",
+  "kind": "estate",
+  "district": "Dadra and Nagar Haveli",
+  "near": "dh:silvassa",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "piparia"
+  ]
+ },
+ {
+  "id": "dh:naroli",
+  "name": "Naroli",
+  "state": "DH",
+  "kind": "cluster",
+  "district": "Dadra and Nagar Haveli",
+  "near": "dh:silvassa",
+  "scale": 2,
+  "sectors": [
+   "pharma",
+   "chemical",
+   "mixed"
+  ],
+  "aka": [
+   "naroli silvassa"
+  ]
+ },
+ {
+  "id": "dh:dadra",
+  "name": "Dadra",
+  "state": "DH",
+  "kind": "cluster",
+  "district": "Dadra and Nagar Haveli",
+  "near": "dh:silvassa",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "dadra village"
+  ]
+ },
+ {
+  "id": "dh:velugam-industrial-estate",
+  "name": "Velugam Industrial Estate",
+  "state": "DH",
+  "kind": "estate",
+  "district": "Dadra and Nagar Haveli",
+  "near": "dh:silvassa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "velugam"
+  ]
+ },
+ {
+  "id": "dh:kachigam",
+  "name": "Kachigam",
+  "state": "DH",
+  "kind": "cluster",
+  "district": "Daman",
+  "near": "dh:daman",
+  "scale": 2,
+  "sectors": [
+   "plastics",
+   "chemical",
+   "pharma"
+  ],
+  "aka": []
+ },
+ {
+  "id": "dh:dabhel-industrial-estate",
+  "name": "Dabhel Industrial Estate",
+  "state": "DH",
+  "kind": "estate",
+  "district": "Daman",
+  "near": "dh:daman",
+  "scale": 2,
+  "sectors": [
+   "plastics",
+   "pharma",
+   "textile"
+  ],
+  "aka": [
+   "dabhel",
+   "mahatma gandhi udyog nagar"
+  ]
+ },
+ {
+  "id": "dh:somnath-industrial-estate-daman",
+  "name": "Somnath Industrial Estate (Daman)",
+  "state": "DH",
+  "kind": "estate",
+  "district": "Daman",
+  "near": "dh:daman",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "daman industrial estate",
+   "somnath daman"
+  ]
+ },
+ {
+  "id": "dh:bhimpore",
+  "name": "Bhimpore",
+  "state": "DH",
+  "kind": "cluster",
+  "district": "Daman",
+  "near": "dh:daman",
+  "scale": 2,
+  "sectors": [
+   "plastics",
+   "mixed"
+  ],
+  "aka": [
+   "bhimpore daman",
+   "panchal udyog nagar"
+  ]
+ },
+ {
+  "id": "dh:kadaiya",
+  "name": "Kadaiya",
+  "state": "DH",
+  "kind": "cluster",
+  "district": "Daman",
+  "near": "dh:daman",
+  "scale": 2,
+  "sectors": [
+   "plastics",
+   "pharma",
+   "mixed"
+  ],
+  "aka": [
+   "kadaiya nani daman"
+  ]
+ },
+ {
+  "id": "dh:ringanwada-industrial-estate",
+  "name": "Ringanwada Industrial Estate",
+  "state": "DH",
+  "kind": "estate",
+  "district": "Daman",
+  "near": "dh:daman",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "oidc ringanwada",
+   "ringanwada"
+  ]
+ }
+]

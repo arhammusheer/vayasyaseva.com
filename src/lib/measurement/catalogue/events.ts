@@ -145,6 +145,8 @@ export const EVENTS = {
   contact_form_start: { purpose: "form-behaviour", sinks: TRACKED, props: anon("form_type"), consumers: ["form-funnel"], source: CONTACT },
   contact_form_step: { purpose: "form-behaviour", sinks: TRACKED, props: anon("form_type step headcount_band needs start_window duration_band roles"), consumers: ["form-funnel"], source: CONTACT },
   contact_form_more: { purpose: "form-behaviour", sinks: TRACKED, props: anon("form_type"), consumers: ["form-funnel"], source: CONTACT },
+  // A suggestion picked for the site (src/markets/site-suggest.ts): its rank and kind tune the ranking.
+  site_suggestion_pick: { purpose: "form-behaviour", sinks: TRACKED, props: anon("rank kind typed state_chosen"), consumers: ["form-funnel"], source: CONTACT },
   contact_form_error: { purpose: "form-behaviour", sinks: TRACKED, props: anon("form_type reason step checks"), consumers: ["form-funnel"], source: CONTACT },
   generate_lead: {
     purpose: "form-behaviour",

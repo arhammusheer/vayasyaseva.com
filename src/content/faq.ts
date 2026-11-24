@@ -58,7 +58,7 @@ export const WORKING_WITH_US: FaqItem[] = [
   {
     question: "How do we start?",
     answer:
-      "Request a crew with the roles, headcount, shifts and start date. We aim to reply within two working days, and we visit the site before a crew starts.",
+      "Request a crew with the roles, headcount, shifts and start date. We aim to reply within one working day, and we visit the site before a crew starts.",
     link: { href: "/contact", label: "Request a crew" },
     category: "commercial",
   },

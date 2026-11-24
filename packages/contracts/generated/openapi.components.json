@@ -529,7 +529,7 @@
         },
         "message": {
           "type": "string",
-          "example": "Requirement received. Our team will review it and reply. We aim to reply within two working days (Monday to Saturday, IST)."
+          "example": "Requirement received. Our team will review it and reply. We aim to reply within one working day (Monday to Saturday, IST)."
         }
       },
       "required": [
@@ -840,7 +840,7 @@
         },
         "message": {
           "type": "string",
-          "example": "Requirement received. Our team will review it and reply. We aim to reply within two working days (Monday to Saturday, IST)."
+          "example": "Requirement received. Our team will review it and reply. We aim to reply within one working day (Monday to Saturday, IST)."
         }
       },
       "required": [

@@ -225,13 +225,15 @@ const RETIRED_EN = { "en-IN": "retired" } as const;
 const RETIRED_REGIONAL = { "en-IN": "retired", "hi-IN": "retired", "hi-Latn-IN": "retired", "pa-IN": "retired", "kn-IN": "retired" } as const;
 const RETIRED_EN_HINGLISH = { "en-IN": "retired", "hi-Latn-IN": "retired" } as const;
 
-const WITH_TELUGU = { "en-IN": "published", "te-IN": "published" } as const satisfies Partial<Record<LocaleTag, PageStatus>>;
+const WITH_TELUGU = { ...ALL, "te-IN": "published" } as const satisfies Partial<Record<LocaleTag, PageStatus>>;
 /**
  * Location pages in the region's languages (owner direction, 24 Nov 2026):
  * hub and estates alike, from the market's language set. Hindi and Hinglish
  * in the Hindi belt, Punjabi plus both Hindi forms in the Jalandhar region,
  * Telugu in Visakhapatnam and Hyderabad. Drafts pending native review, like
  * the other translations; LocationPage throws if a listed language has no copy.
+ * Hindi has the same standing as English, so Telugu pages carry both Hindi
+ * forms too (owner direction, 24 Nov 2026).
  */
 const LOCATION_LOCALES: Partial<Record<LocationCluster, Partial<Record<LocaleTag, PageStatus>>>> = {
   haridwar: ALL,

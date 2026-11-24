@@ -204,6 +204,21 @@ test("urlIntent reads Hyderabad and Telangana UTM tags; TG orders as TS (27 Oct 
   }
 });
 
+test("a page in its market's own language ranks it above Hindi; a Hindi pick still leads", () => {
+  const PUNJAB = ["en-IN", "hi-IN", "hi-Latn-IN", "pa-IN"];
+  const ANDHRA = ["en-IN", "hi-IN", "hi-Latn-IN", "te-IN"];
+  // A Hindi phone in Delhi on a Kapurthala page: ਪੰਜਾਬੀ before हिंदी and Hindi.
+  assert.deepEqual(order({ country: "IN", region: "DL", acceptLanguage: "hi", cluster: "kapurthala" }, PUNJAB), ["pa-IN", "hi-IN", "hi-Latn-IN", "en-IN"]);
+  // Outside India English stays first; ਪੰਜਾਬੀ still comes before Hindi.
+  assert.deepEqual(order({ country: "US", cluster: "kapurthala" }, PUNJAB), ["en-IN", "pa-IN", "hi-IN", "hi-Latn-IN"]);
+  // A visitor from UP on a Hyderabad page: తెలుగు before Hindi.
+  assert.equal(order({ country: "IN", region: "UP", cluster: "hyderabad" }, ANDHRA)[0], "te-IN");
+  // Someone who picked हिंदी on the picker keeps it first.
+  assert.equal(order({ country: "IN", region: "PB", chosen: "hi-IN", cluster: "kapurthala" }, PUNJAB)[0], "hi-IN");
+  // Pages without a market of their own (/jobs, /jobs/apply) are unchanged.
+  assert.deepEqual(order({ country: "IN", region: "DL" }, PUNJAB).slice(0, 3), ["hi-IN", "hi-Latn-IN", "en-IN"]);
+});
+
 test("Punjabi readers fall back to Hinglish on pages without Punjabi", () => {
   assert.equal(i18n.nearestLocalePath("/jobs/jalandhar", "pa-IN"), "/pa-in/jobs/jalandhar");
   assert.equal(i18n.nearestLocalePath("/jobs/haridwar", "pa-IN"), "/hi-latn-in/jobs/haridwar");

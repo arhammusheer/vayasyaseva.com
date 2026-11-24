@@ -63,6 +63,41 @@ const VISIT_FAQ_TE: FaqItem = {
   category: "operations",
 };
 
+/** The hi-IN and hi-Latn-IN wages and visit answers (docs/hindi-glossary.md); the pages they link to are English. */
+const WAGES_LINK_HI = linkable(AP_WAGES, "en-IN")
+  ? { href: AP_WAGES, label: "आंध्र प्रदेश न्यूनतम मज़दूरी (अंग्रेज़ी में)" }
+  : { href: "/compliance", label: "हम कंप्लायंस कैसे संभालते हैं (अंग्रेज़ी में)" };
+
+const wagesFaqHi = (zone: string): FaqItem => ({
+  question: "कौन-सी न्यूनतम मज़दूरी और नियम लागू होते हैं?",
+  answer: `आंध्र प्रदेश की, काम के प्रकार, ज़ोन और स्किल के हिसाब से: बेसिक रेट और उसके ऊपर महँगाई भत्ता (VDA), जो 1 अप्रैल और 1 अक्टूबर को बदलता है। प्रोफ़ेशनल टैक्स और लेबर वेलफ़ेयर फ़ंड भी लागू होते हैं। ${zone}`,
+  link: WAGES_LINK_HI,
+  category: "compliance",
+});
+
+const VISIT_FAQ_HI: FaqItem = {
+  question: "क्या आप पहले हमारी साइट देखने आएँगे?",
+  answer: "हाँ। टीम शुरू होने से पहले हम साइट पर आकर काम, शिफ्ट और आपके हाइजीन और सेफ़्टी नियम देखते हैं।",
+  category: "operations",
+};
+
+const WAGES_LINK_LATN = linkable(AP_WAGES, "en-IN")
+  ? { href: AP_WAGES, label: "Andhra Pradesh minimum wages (English)" }
+  : { href: "/compliance", label: "Hum compliance kaise sambhalte hain (English)" };
+
+const wagesFaqLatn = (zone: string): FaqItem => ({
+  question: "Kaunsi minimum wage aur rules laagu hote hain?",
+  answer: `Andhra Pradesh ki, kaam ke type, zone aur skill ke hisaab se: basic rate aur uske upar dearness allowance (VDA), jo 1 April aur 1 October ko badalta hai. Professional Tax aur Labour Welfare Fund bhi laagu hote hain. ${zone}`,
+  link: WAGES_LINK_LATN,
+  category: "compliance",
+});
+
+const VISIT_FAQ_LATN: FaqItem = {
+  question: "Kya aap pehle hamari site dekhne aayenge?",
+  answer: "Haan. Team ke kaam shuru karne se pehle hum site par aakar kaam, shifts aur aapke hygiene aur safety rules dekhte hain.",
+  category: "operations",
+};
+
 const SRC = {
   vizag: { label: "Visakhapatnam", url: "https://en.wikipedia.org/wiki/Visakhapatnam" },
   vizagDistrict: { label: "Visakhapatnam district (mandals since April 2022)", url: "https://en.wikipedia.org/wiki/Visakhapatnam_district" },
@@ -157,6 +192,78 @@ export const visakhapatnamPages: LocationCopy[] = [
           },
         ],
       },
+      "hi-IN": {
+        name: "विशाखापत्तनम",
+        metaTitle: "विशाखापत्तनम (वाइज़ैग) में लेबर ठेकेदार",
+        description:
+          "विशाखापत्तनम की फ़ैक्टरियों, फ़ार्मा और पोर्ट के पास की यूनिटों के लिए सुपरवाइज़र के साथ कॉन्ट्रैक्ट लेबर: परवाड़ा JN Pharma City, APSEZ, VSEZ और गाजुवाका।",
+        heading: "विशाखापत्तनम में लेबर ठेकेदार।",
+        lede: "वाइज़ैग के इंडस्ट्रियल बेल्ट में फ़ार्मा, इंजीनियरिंग, गारमेंट और पोर्ट के पास की यूनिटों के लिए सुपरवाइज़र के साथ कामगारों की टीम।",
+        paragraph:
+          "विशाखापत्तनम पोर्ट और स्टील का शहर है, और इसके आस-पास फ़ार्मा, पेट्रोकेमिकल और इंजीनियरिंग की यूनिटें हैं। ज़्यादातर इंडस्ट्री शहर के दक्षिण-पश्चिम में है: गाजुवाका के पास स्टील प्लांट और गंगावरम पोर्ट, दुव्वाडा में VSEZ, और फिर अनकापल्ली ज़िले में (2022 से) परवाड़ा की फ़ार्मा सिटी और अच्युतापुरम और रामबिल्ली में APIIC का SEZ। हम {areas} की यूनिटों से रिक्वायरमेंट लेते हैं।",
+        areas: [
+          { href: "/locations/visakhapatnam/parawada-pharma-city", name: "परवाड़ा JN Pharma City" },
+          { href: "/locations/visakhapatnam/atchutapuram-rambilli", name: "APSEZ अच्युतापुरम और रामबिल्ली" },
+          { href: "/locations/visakhapatnam/duvvada-vsez", name: "VSEZ दुव्वाडा" },
+          { href: "/locations/visakhapatnam/gajuwaka", name: "गाजुवाका" },
+        ],
+        faqs: [
+          {
+            question: "क्या आप विशाखापत्तनम में कॉन्ट्रैक्ट लेबर देते हैं?",
+            answer:
+              "हाँ। फ़ैक्टरी, लोडिंग-अनलोडिंग और हाउसकीपिंग के लिए टीमें। कामगार हमारे पेरोल पर रहते हैं, और आपकी साइट पर हमारा सुपरवाइज़र उन्हें देखता है।",
+            category: "commercial",
+          },
+          {
+            question: "क्या विशाखापत्तनम में आपके पास कामगार हैं?",
+            answer:
+              "वाइज़ैग के लिए हमारे पास कामगारों की लिस्ट है। शहर, गाजुवाका, पेंदुर्ती और अनकापल्ली में काम ढूँढने वाले लोग हमारे विशाखापत्तनम जॉब्स पेज पर इस लिस्ट में नाम लिखवाते हैं। आपकी साइट के लिए हर टीम हम इसी लिस्ट से बनाते हैं।",
+            category: "operations",
+          },
+          wagesFaqHi("रेट बताने से पहले हम आपके पते का ज़ोन पक्का करते हैं।"),
+          {
+            question: "क्या आप सिक्योरिटी गार्ड देते हैं?",
+            answer: "नहीं। सिक्योरिटी के काम के लिए प्राइवेट सिक्योरिटी एजेंसी का लाइसेंस चाहिए, जो हमारे पास नहीं है।",
+            category: "commercial",
+          },
+        ],
+      },
+      "hi-Latn-IN": {
+        name: "Visakhapatnam",
+        metaTitle: "Visakhapatnam (Vizag) mein Labour Thekedar (Contractor)",
+        description:
+          "Vizag ki factories, pharma aur port ke paas ki units ke liye supervised contract labour: Parawada JN Pharma City, APSEZ Atchutapuram, VSEZ aur Gajuwaka.",
+        heading: "Visakhapatnam mein labour contractor.",
+        lede: "Vizag ke industrial belt mein pharma, engineering, garment aur port ke paas ki units ke liye supervisor ke saath workers ki team.",
+        paragraph:
+          "Visakhapatnam port aur steel ka shehar hai, aur iske aas-paas pharma, petrochemical aur engineering ki units hain. Zyadatar industry shehar ke south-west mein hai: Gajuwaka ke paas steel plant aur Gangavaram Port, Duvvada mein VSEZ, aur phir Anakapalli district mein (2022 se) Parawada ki pharma city aur Atchutapuram aur Rambilli mein APIIC ka SEZ. Hum {areas} ki units se requirements lete hain.",
+        areas: [
+          { href: "/locations/visakhapatnam/parawada-pharma-city", name: "JN Pharma City, Parawada" },
+          { href: "/locations/visakhapatnam/atchutapuram-rambilli", name: "APSEZ Atchutapuram aur Rambilli" },
+          { href: "/locations/visakhapatnam/duvvada-vsez", name: "VSEZ Duvvada" },
+          { href: "/locations/visakhapatnam/gajuwaka", name: "Gajuwaka" },
+        ],
+        faqs: [
+          {
+            question: "Kya aap Visakhapatnam mein contract labour dete hain?",
+            answer:
+              "Haan. Factory, loading-unloading aur housekeeping ke liye teams. Workers hamare payroll par rehte hain, aur aapki site par kaam hamara supervisor chalata hai.",
+            category: "commercial",
+          },
+          {
+            question: "Kya Visakhapatnam mein aapke paas workers hain?",
+            answer:
+              "Vizag ke liye hamare paas workers ki list hai. Shehar, Gajuwaka, Pendurthi aur Anakapalli ke job seekers hamare Visakhapatnam jobs page par is list mein naam likhwate hain. Aapki site ke liye har team hum isi list se banate hain.",
+            category: "operations",
+          },
+          wagesFaqLatn("Rate batane se pehle hum aapke address ka zone confirm karte hain."),
+          {
+            question: "Kya aap security guards dete hain?",
+            answer: "Nahi. Security ke kaam ke liye private security agency ka licence chahiye, jo hamare paas nahi hai.",
+            category: "commercial",
+          },
+        ],
+      },
     },
   },
   {
@@ -212,6 +319,58 @@ export const visakhapatnamPages: LocationCopy[] = [
           },
           wagesFaqTe("రేటు చెప్పే ముందు పరవాడ ఏ జోన్‌లోకి వస్తుందో కన్ఫర్మ్ చేస్తాం."),
           VISIT_FAQ_TE,
+        ],
+      },
+      "hi-IN": {
+        name: "JN Pharma City, परवाड़ा",
+        metaTitle: "JN Pharma City, परवाड़ा में कॉन्ट्रैक्ट लेबर",
+        description:
+          "वाइज़ैग के पास परवाड़ा की जवाहरलाल नेहरू फ़ार्मा सिटी में बल्क ड्रग और API यूनिटों के लिए सुपरवाइज़र के साथ प्रोडक्शन सपोर्ट, पैकिंग, स्टोर और हाउसकीपिंग टीमें।",
+        heading: "JN Pharma City, परवाड़ा में कॉन्ट्रैक्ट लेबर।",
+        lede: "परवाड़ा की बल्क ड्रग और API यूनिटों के लिए सुपरवाइज़र के साथ कामगारों की टीम, आपके प्लांट के हाइजीन और सेफ़्टी नियमों की ट्रेनिंग के साथ।",
+        paragraph:
+          "जवाहरलाल नेहरू फ़ार्मा सिटी सिर्फ़ बल्क ड्रग, दवाओं और फ़ाइन केमिकल के लिए बना पार्क है: परवाड़ा में करीब 2,100 एकड़, जिसे APIIC के साथ पब्लिक-प्राइवेट पार्टनरशिप में डेवलप किया गया। इसका अपना एफ़्लुएंट ट्रीटमेंट प्लांट है, और इसके अंदर एक नोटिफ़ाइड फ़ार्मा SEZ भी है। यह अनकापल्ली ज़िले में है, दुव्वाडा स्टेशन से करीब 8 किलोमीटर दूर।",
+        faqs: [
+          {
+            question: "क्या आप JN Pharma City में कॉन्ट्रैक्ट लेबर देते हैं?",
+            answer:
+              "हाँ। प्रोडक्शन सपोर्ट, पैकिंग, स्टोर और डिस्पैच, और हाउसकीपिंग के लिए टीमें, आपकी साइट टीम के साथ प्लान की हुई और हमारे सुपरवाइज़र की देखरेख में।",
+            category: "operations",
+          },
+          {
+            question: "क्या आपकी टीमें GMP ट्रेनिंग के नियम पूरे कर सकती हैं?",
+            answer:
+              "हाँ। रिवाइज़्ड Schedule M में कॉन्ट्रैक्ट स्टाफ़ का साफ़ ज़िक्र है, सफ़ाई स्टाफ़ भी। हम हर टीम आपके प्लांट की ट्रेनिंग, गाउनिंग और हेल्थ चेक के हिसाब से प्लान करते हैं, और ट्रेनिंग रिकॉर्ड रखते हैं।",
+            category: "operations",
+          },
+          wagesFaqHi("रेट बताने से पहले हम परवाड़ा का ज़ोन पक्का करते हैं।"),
+          VISIT_FAQ_HI,
+        ],
+      },
+      "hi-Latn-IN": {
+        name: "JN Pharma City, Parawada",
+        metaTitle: "JN Pharma City, Parawada mein Contract Labour",
+        description:
+          "Vizag ke paas Parawada ki Jawaharlal Nehru Pharma City mein bulk drug, API units ke liye supervised production support, packing, stores aur housekeeping teams.",
+        heading: "JN Pharma City, Parawada mein contract labour.",
+        lede: "Parawada ki bulk drug aur API units ke liye supervisor ke saath workers ki team, aapke plant ke hygiene aur safety rules ki training ke saath.",
+        paragraph:
+          "Jawaharlal Nehru Pharma City sirf bulk drugs, pharmaceuticals aur fine chemicals ke liye bana park hai: Parawada mein kareeb 2,100 acre, jise APIIC ke saath public-private partnership mein develop kiya gaya. Iska apna effluent treatment plant hai, aur iske andar ek notified pharma SEZ bhi hai. Ye Anakapalli district mein hai, Duvvada station se kareeb 8 km door.",
+        faqs: [
+          {
+            question: "Kya aap JN Pharma City mein contract labour dete hain?",
+            answer:
+              "Haan. Production support, packing, stores aur dispatch, aur housekeeping ke liye teams. Plan aapki site team ke saath banta hai, aur kaam hamara supervisor chalata hai.",
+            category: "operations",
+          },
+          {
+            question: "Kya aapki teams GMP training ke rules poore kar sakti hain?",
+            answer:
+              "Haan. Revised Schedule M mein contract staff ka zikr hai, cleaners bhi. Hum har team aapke plant ki training, gowning aur health checks ke hisaab se plan karte hain, aur training records rakhte hain.",
+            category: "operations",
+          },
+          wagesFaqLatn("Rate batane se pehle hum Parawada ka zone confirm karte hain."),
+          VISIT_FAQ_LATN,
         ],
       },
     },
@@ -277,6 +436,66 @@ export const visakhapatnamPages: LocationCopy[] = [
           },
         ],
       },
+      "hi-IN": {
+        name: "APSEZ अच्युतापुरम और रामबिल्ली",
+        metaTitle: "APSEZ अच्युतापुरम, रामबिल्ली में कॉन्ट्रैक्ट लेबर",
+        description:
+          "अनकापल्ली ज़िले में अच्युतापुरम और रामबिल्ली के आंध्र प्रदेश SEZ के लिए सुपरवाइज़र के साथ फ़ैक्टरी, लोडिंग और हाउसकीपिंग टीमें: फ़ार्मा, इंजीनियरिंग, गारमेंट।",
+        heading: "APSEZ अच्युतापुरम और रामबिल्ली में कॉन्ट्रैक्ट लेबर।",
+        lede: "वाइज़ैग के दक्षिण में SEZ बेल्ट की फ़ार्मा, इंजीनियरिंग और गारमेंट यूनिटों के लिए सुपरवाइज़र के साथ कामगारों की टीम।",
+        paragraph:
+          "आंध्र प्रदेश स्पेशल इकोनॉमिक ज़ोन APIIC का मल्टी-प्रोडक्ट SEZ है, जो अनकापल्ली ज़िले के अच्युतापुरम और रामबिल्ली मंडलों में फैला है। इसे विशाखापत्तनम-काकीनाडा पेट्रोकेमिकल रीजन के अंदर प्लान किया गया, और विशाखापत्तनम और गंगावरम, दोनों पोर्ट इससे जुड़े हैं। यहाँ की यूनिटें फ़ार्मा, इंजीनियरिंग, लॉजिस्टिक्स और पेट्रोकेमिकल का काम करती हैं, और बगल में एक गारमेंट SEZ है। रामबिल्ली और नक्कापल्ली में नए कॉरिडोर क्लस्टर बन रहे हैं।",
+        faqs: [
+          {
+            question: "क्या आप APSEZ में कॉन्ट्रैक्ट लेबर देते हैं?",
+            answer:
+              "हाँ। सुपरवाइज़र के साथ फ़ैक्टरी, लोडिंग-अनलोडिंग और हाउसकीपिंग टीमें, जो आपकी साइट के इंडक्शन, हाइजीन और PPE नियमों के हिसाब से काम करती हैं।",
+            category: "commercial",
+          },
+          {
+            question: "इतनी दूर की साइटों तक टीमें कैसे पहुँचती हैं?",
+            answer: "टीम शुरू होने से पहले हम आपके साथ कंपनी ट्रांसपोर्ट या टीम के रहने का इंतज़ाम प्लान करते हैं।",
+            category: "operations",
+          },
+          wagesFaqHi("रेट बताने से पहले हम आपके पते का ज़ोन पक्का करते हैं।"),
+          {
+            question: "शुरुआत कैसे करें?",
+            answer:
+              "साइट का पता और कौन-से रोल चाहिए, यह लिखकर टीम के लिए रिक्वेस्ट भेजें। हम साफ़ बताएँगे कि हम कामगार दे सकते हैं या नहीं, और फिर वहीं से टीम प्लान करेंगे।",
+            category: "commercial",
+          },
+        ],
+      },
+      "hi-Latn-IN": {
+        name: "APSEZ Atchutapuram aur Rambilli",
+        metaTitle: "APSEZ Atchutapuram, Rambilli mein Contract Labour",
+        description:
+          "Atchutapuram aur Rambilli, Anakapalli district ke Andhra Pradesh SEZ ke liye supervised factory, loading aur housekeeping teams: pharma, engineering, garment.",
+        heading: "APSEZ Atchutapuram aur Rambilli mein contract labour.",
+        lede: "Vizag ke south mein SEZ belt ki pharma, engineering aur garment units ke liye supervisor ke saath workers ki team.",
+        paragraph:
+          "Andhra Pradesh Special Economic Zone APIIC ka multi-product SEZ hai, jo Anakapalli district ke Atchutapuram aur Rambilli mandals mein faila hai. Ise Visakhapatnam-Kakinada petrochemical region ke andar plan kiya gaya, aur Visakhapatnam aur Gangavaram, dono ports isse jude hain. Yahan ki units pharma, engineering, logistics aur petrochemicals ka kaam karti hain, aur bagal mein ek apparel SEZ hai. Rambilli aur Nakkapalli mein naye corridor clusters ban rahe hain.",
+        faqs: [
+          {
+            question: "Kya aap APSEZ mein contract labour dete hain?",
+            answer:
+              "Haan. Supervisor ke saath factory, loading-unloading aur housekeeping teams, jo aapki site ke induction, hygiene aur PPE rules ke hisaab se kaam karti hain.",
+            category: "commercial",
+          },
+          {
+            question: "Itni door ki sites tak teams kaise pahunchti hain?",
+            answer: "Team ke kaam shuru karne se pehle hum aapke saath company transport ya team ke rehne ka intezaam plan karte hain.",
+            category: "operations",
+          },
+          wagesFaqLatn("Rate batane se pehle hum aapke address ka zone confirm karte hain."),
+          {
+            question: "Shuruaat kaise karein?",
+            answer:
+              "Site ka address aur kaunse roles chahiye, ye likhkar team ke liye request bhejein. Hum saaf bataenge ki hum workers de sakte hain ya nahi, aur phir wahin se team plan karenge.",
+            category: "commercial",
+          },
+        ],
+      },
     },
   },
   {
@@ -330,6 +549,58 @@ export const visakhapatnamPages: LocationCopy[] = [
           },
           wagesFaqTe("రేటు చెప్పే ముందు దువ్వాడ ఏ జోన్‌లోకి వస్తుందో కన్ఫర్మ్ చేస్తాం."),
           VISIT_FAQ_TE,
+        ],
+      },
+      "hi-IN": {
+        name: "VSEZ दुव्वाडा",
+        metaTitle: "VSEZ दुव्वाडा, विशाखापत्तनम में कॉन्ट्रैक्ट लेबर",
+        description:
+          "दुव्वाडा के विशाखापत्तनम स्पेशल इकोनॉमिक ज़ोन के लिए सुपरवाइज़र के साथ फ़ैक्टरी, पैकिंग, लोडिंग और हाउसकीपिंग टीम: इलेक्ट्रॉनिक्स, सॉफ़्टवेयर, फ़ार्मा यूनिटें।",
+        heading: "VSEZ दुव्वाडा में कॉन्ट्रैक्ट लेबर।",
+        lede: "विशाखापत्तनम SEZ के अंदर इलेक्ट्रॉनिक्स, फ़ार्मा और एक्सपोर्ट यूनिटों के लिए सुपरवाइज़र के साथ कामगारों की टीम।",
+        paragraph:
+          "दुव्वाडा का विशाखापत्तनम स्पेशल इकोनॉमिक ज़ोन 1989 में एक्सपोर्ट प्रोसेसिंग ज़ोन के रूप में शुरू हुआ और 2003 में SEZ बना। यह भारत सरकार का है, और इसे कॉमर्स मंत्रालय के तहत एक डेवलपमेंट कमिश्नर चलाता है। करीब 146 हेक्टेयर में इलेक्ट्रॉनिक्स, सॉफ़्टवेयर और फ़ार्मा यूनिटें हैं, और यह शहर से करीब 20 किलोमीटर दूर है।",
+        faqs: [
+          {
+            question: "क्या आप VSEZ में कॉन्ट्रैक्ट लेबर देते हैं?",
+            answer:
+              "हाँ। ज़ोन की यूनिटों के लिए हेल्पर, पैकर, लोडर और हाउसकीपिंग टीमें, आपकी साइट टीम के साथ प्लान की हुई और हमारे सुपरवाइज़र की देखरेख में।",
+            category: "commercial",
+          },
+          {
+            question: "क्या आपकी टीमें ज़ोन के एंट्री नियमों के हिसाब से काम कर सकती हैं?",
+            answer:
+              "हाँ। टीम शुरू होने से पहले हम आपकी साइट टीम के साथ पास और ID तैयार करवाते हैं, और लोग बदलने पर हमारा सुपरवाइज़र लिस्ट अपडेट रखता है।",
+            category: "operations",
+          },
+          wagesFaqHi("रेट बताने से पहले हम दुव्वाडा का ज़ोन पक्का करते हैं।"),
+          VISIT_FAQ_HI,
+        ],
+      },
+      "hi-Latn-IN": {
+        name: "VSEZ Duvvada",
+        metaTitle: "VSEZ Duvvada, Visakhapatnam mein Contract Labour",
+        description:
+          "Duvvada ke Visakhapatnam Special Economic Zone ke liye supervised factory, packing, loading aur housekeeping teams: electronics, software aur pharma units.",
+        heading: "VSEZ Duvvada mein contract labour.",
+        lede: "Visakhapatnam SEZ ke andar electronics, pharma aur export units ke liye supervisor ke saath workers ki team.",
+        paragraph:
+          "Duvvada ka Visakhapatnam Special Economic Zone 1989 mein export processing zone ke roop mein shuru hua aur 2003 mein SEZ bana. Ye Government of India ka hai, aur ise Commerce Ministry ke under ek Development Commissioner chalata hai. Kareeb 146 hectare mein electronics, software aur pharma units hain, aur ye shehar se kareeb 20 km door hai.",
+        faqs: [
+          {
+            question: "Kya aap VSEZ mein contract labour dete hain?",
+            answer:
+              "Haan. Zone ki units ke liye helpers, packers, loaders aur housekeeping teams. Plan aapki site team ke saath banta hai, aur kaam hamara supervisor chalata hai.",
+            category: "commercial",
+          },
+          {
+            question: "Kya aapki teams zone ke entry rules ke hisaab se kaam kar sakti hain?",
+            answer:
+              "Haan. Team ke kaam shuru karne se pehle hum aapki site team ke saath passes aur IDs tayyar karwate hain, aur log badalne par hamara supervisor list update rakhta hai.",
+            category: "operations",
+          },
+          wagesFaqLatn("Rate batane se pehle hum Duvvada ka zone confirm karte hain."),
+          VISIT_FAQ_LATN,
         ],
       },
     },
@@ -386,6 +657,56 @@ export const visakhapatnamPages: LocationCopy[] = [
           },
           wagesFaqTe("రేటు చెప్పే ముందు మీ అడ్రస్ ఏ జోన్‌లోకి వస్తుందో కన్ఫర్మ్ చేస్తాం."),
           VISIT_FAQ_TE,
+        ],
+      },
+      "hi-IN": {
+        name: "गाजुवाका",
+        metaTitle: "गाजुवाका, विशाखापत्तनम में लेबर ठेकेदार",
+        description:
+          "गाजुवाका और दक्षिण विशाखापत्तनम की यूनिटों के लिए सुपरवाइज़र के साथ लोडिंग, फ़ैक्टरी और हाउसकीपिंग टीमें, स्टील प्लांट, गंगावरम पोर्ट और NH-16 के पास।",
+        heading: "गाजुवाका में लेबर ठेकेदार।",
+        lede: "दक्षिण विशाखापत्तनम के इंडस्ट्रियल एरिया में इंजीनियरिंग, लॉजिस्टिक्स और पोर्ट के पास की यूनिटों के लिए सुपरवाइज़र के साथ कामगारों की टीम।",
+        paragraph:
+          "गाजुवाका दक्षिण विशाखापत्तनम का केंद्र है, जहाँ घर, दुकानें और इंडस्ट्री साथ-साथ हैं, और स्टील प्लांट और गंगावरम पोर्ट पास में हैं। NH-16 इस मंडल से होकर जाता है, और इसके आस-पास कूर्मन्नपालेम, अगनमपूडी, मल्कापुरम और स्टील प्लांट टाउनशिप हैं।",
+        faqs: [
+          {
+            question: "क्या आप गाजुवाका में कॉन्ट्रैक्ट लेबर देते हैं?",
+            answer: "हाँ। गाजुवाका और आस-पास की यूनिटों और यार्ड के लिए सुपरवाइज़र के साथ लोडिंग-अनलोडिंग, फ़ैक्टरी और हाउसकीपिंग टीमें।",
+            category: "commercial",
+          },
+          {
+            question: "कामगार यहाँ की साइटों तक कैसे पहुँचते हैं?",
+            answer:
+              "ज़्यादातर APSRTC बस से आते हैं: गाजुवाका का अपना बस स्टेशन है, और सिटी बसें कूर्मन्नपालेम और स्टील प्लांट से होकर जाती हैं। नाइट शिफ्ट के लिए हम आपके साथ ट्रांसपोर्ट प्लान करते हैं।",
+            category: "operations",
+          },
+          wagesFaqHi("रेट बताने से पहले हम आपके पते का ज़ोन पक्का करते हैं।"),
+          VISIT_FAQ_HI,
+        ],
+      },
+      "hi-Latn-IN": {
+        name: "Gajuwaka",
+        metaTitle: "Gajuwaka, Visakhapatnam mein Labour Thekedar",
+        description:
+          "Gajuwaka aur south Visakhapatnam ki units ke liye supervised loading, factory aur housekeeping teams, steel plant, Gangavaram Port aur NH-16 ke paas.",
+        heading: "Gajuwaka mein labour contractor.",
+        lede: "Visakhapatnam ke industrial south mein engineering, logistics aur port ke paas ki units ke liye supervisor ke saath workers ki team.",
+        paragraph:
+          "Gajuwaka south Visakhapatnam ka centre hai, jahan ghar, dukaanein aur industry saath-saath hain, aur steel plant aur Gangavaram Port paas mein hain. NH-16 is mandal se hokar jaata hai, aur iske aas-paas Kurmannapalem, Aganampudi, Malkapuram aur Steel Plant township hain.",
+        faqs: [
+          {
+            question: "Kya aap Gajuwaka mein contract labour dete hain?",
+            answer: "Haan. Gajuwaka aur aas-paas ki units aur yards ke liye supervisor ke saath loading-unloading, factory aur housekeeping teams.",
+            category: "commercial",
+          },
+          {
+            question: "Workers yahan ki sites tak kaise pahunchte hain?",
+            answer:
+              "Zyadatar APSRTC bus se aate hain: Gajuwaka ka apna bus station hai, aur city buses Kurmannapalem aur Steel Plant se hokar jaati hain. Night shift ke liye hum aapke saath transport plan karte hain.",
+            category: "operations",
+          },
+          wagesFaqLatn("Rate batane se pehle hum aapke address ka zone confirm karte hain."),
+          VISIT_FAQ_LATN,
         ],
       },
     },

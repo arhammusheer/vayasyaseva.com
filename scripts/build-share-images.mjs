@@ -15,12 +15,12 @@ registerHooks({ resolve(specifier, context, next) {
   return next(specifier, context);
 } });
 const { allShareContent, shareLanding } = await import('../src/lib/share-content.ts');
-const fonts = Object.fromEntries(['AnekLatin-SemiBold', 'AnekDevanagari-SemiBold', 'AnekGurmukhi-Variable', 'AnekKannada-Variable', 'Hind-Regular', 'JetBrainsMono-Regular'].map(name => [name, readFileSync(resolve(root, `src/assets/fonts/og/${name}.ttf`)).toString('base64')]));
+const fonts = Object.fromEntries(['AnekLatin-SemiBold', 'AnekDevanagari-SemiBold', 'AnekGurmukhi-Variable', 'AnekKannada-Variable', 'AnekTelugu-Variable', 'Hind-Regular', 'JetBrainsMono-Regular'].map(name => [name, readFileSync(resolve(root, `src/assets/fonts/og/${name}.ttf`)).toString('base64')]));
 const mark = readFileSync(resolve(root, 'public/brand/downloads/vayasya-seva-mark.svg')).toString('base64');
 const escape = value => value.replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 function html(content) {
-  // Gurmukhi (pa-IN) and Kannada (kn-IN) only: other pages' markup, and so their image hashes, stay as they were.
-  const script = { 'pa-IN': ['AnekGuru', 'AnekGurmukhi-Variable'], 'kn-IN': ['AnekKann', 'AnekKannada-Variable'] }[content.locale];
+  // Gurmukhi (pa-IN), Kannada (kn-IN) and Telugu (te-IN) only: other pages' markup, and so their image hashes, stay as they were.
+  const script = { 'pa-IN': ['AnekGuru', 'AnekGurmukhi-Variable'], 'kn-IN': ['AnekKann', 'AnekKannada-Variable'], 'te-IN': ['AnekTelu', 'AnekTelugu-Variable'] }[content.locale];
   const guru = Boolean(script);
   return `<!doctype html><html lang="${content.locale}"><meta charset="utf-8"><style>
   @font-face{font-family:Anek;src:url(data:font/ttf;base64,${fonts['AnekLatin-SemiBold']});font-weight:600}

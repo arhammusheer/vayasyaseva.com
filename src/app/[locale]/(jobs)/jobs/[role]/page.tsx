@@ -1,7 +1,7 @@
 import { JobRolePage, jobRoleMetadata, jobRoleParams } from "@/components/pages/job-role";
 import { JobHubPage, jobHubMetadata, jobHubParams } from "@/components/pages/job-hub";
 import { JobClusterPage, isJobClusterSlug, jobClusterMetadata, jobClusterParams } from "@/components/pages/job-cluster";
-import { localeOfParams } from "@/lib/i18n";
+import { allLocales, locales, localeOfParams } from "@/lib/i18n";
 import { isJobHub } from "@/lib/talent-intake/rules";
 
 /**
@@ -10,11 +10,14 @@ import { isJobHub } from "@/lib/talent-intake/rules";
  * sets apart.
  */
 export const dynamicParams = false;
-// Runs once per locale from app/[locale]/layout.tsx; only versions the
-// registry builds in that language get a page, so the rest 404.
-export function generateStaticParams({ params }: { params: { locale: string } }) {
-  const locale = localeOfParams(params);
-  return [...jobRoleParams(locale), ...jobHubParams(locale), ...jobClusterParams(locale)];
+// Locale and slug pairs, as the location routes do: only versions the
+// registry builds in a language get a page, so the rest 404. Not per parent
+// locale: a locale with no jobs pages (te-IN) returned [] and the build then
+// emitted no /jobs/[role] page in any language.
+export function generateStaticParams() {
+  return allLocales.flatMap((locale) =>
+    [...jobRoleParams(locale), ...jobHubParams(locale), ...jobClusterParams(locale)].map((p) => ({ locale: locales[locale].segment, ...p })),
+  );
 }
 
 type Props = { params: Promise<{ locale: string; role: string }> };

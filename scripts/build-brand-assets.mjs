@@ -47,9 +47,20 @@ await render(1024)
   .png()
   .toFile(path.join(tmp, "logo/vayasya-seva-mark-1024-on-navy.png"));
 
+// Small-size cuts: the master's 7.8 stroke drops under a pixel below about 32 px, so the
+// tiny icons use heavier cuts of the same drawing (every edge pushed away from the ink).
+// vspl-small (+3 per edge) for 16-24 px, vspl-medium (+2) for 32-48 px, the master above.
+const cut = async (name) => (await readFile(path.join(root, `public/brand/logos/${name}.svg`), "utf8")).trim();
+const small = await cut("vspl-small");
+const medium = await cut("vspl-medium");
+await writeFile(path.join(tmp, "logo/vayasya-seva-mark-small.svg"), small);
+await writeFile(path.join(tmp, "logo/vayasya-seva-mark-medium.svg"), medium);
+const renderFrom = (src, size) => sharp(Buffer.from(src), { density: 300 }).resize(size, size);
+
 // Favicon-scale set for app tiles and manifests.
 for (const size of [16, 32, 48, 180, 192, 512]) {
-  await render(size)
+  const src = size <= 24 ? small : size <= 48 ? medium : svg;
+  await renderFrom(src, size)
     .png()
     .toFile(path.join(tmp, "logo", `icon-${size}.png`));
 }
@@ -63,7 +74,9 @@ Files
   vayasya-seva-mark-{256,512,1024,2048} Transparent PNG (documents, slides, office tools)
   vayasya-seva-mark-1024-on-white.png   Plated on white
   vayasya-seva-mark-1024-on-navy.png    Plated on brand navy #0F172A
-  icon-{16…512}.png                     Favicon, touch and manifest icons
+  vayasya-seva-mark-small.svg           Heavier cut for 16-24 px (favicons, tiny UI)
+  vayasya-seva-mark-medium.svg          Heavier cut for 32-48 px
+  icon-{16…512}.png                     Favicon, touch and manifest icons (16 small, 32-48 medium, rest master)
 
 Rules
   Keep clear space equal to the height of the mark's inner V on all sides.

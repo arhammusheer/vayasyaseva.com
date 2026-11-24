@@ -112,7 +112,7 @@ export async function wageHubMetadata(locale: Locale = "en-IN") {
   const hindi = locale === "hi-IN";
   return pageMetadata({
     title: hindi ? wageHubHi.title(year) : wageHubCopy.title(year),
-    description: hindi ? wageHubHi.description() : wageHubCopy.description(),
+    description: hindi ? wageHubHi.description(states.filter((s) => WAGE_HUB_HI[s.state])) : wageHubCopy.description(states),
     alternates: { canonical: localePath(WAGE_HUB_PATH, hindi ? "hi-IN" : "en-IN") },
     locale: hindi ? "hi-IN" : "en-IN",
   });
@@ -910,7 +910,7 @@ export async function WageHubPage({ locale = "en-IN" }: { locale?: Locale }) {
       <JsonLd
         data={wageHubSchema({
           name: wageHubCopy.title(year),
-          description: wageHubCopy.description(),
+          description: wageHubCopy.description(states),
           url: localePath(WAGE_HUB_PATH, "en-IN"),
           dateModified: lastChecked,
           reviewed: states.every((s) => s.checked.by),
@@ -994,7 +994,7 @@ function WageHubPageHi({ all }: { all: readonly WageState[] }) {
   const overdue = states.some((s) => !wageStatus(s, today).stale && unpublishedRevisions(s, today).length);
   return (
     <>
-      <JsonLd data={webPageSchema({ name: h.title(year), description: h.description(), url: localePath(WAGE_HUB_PATH, "hi-IN"), inLanguage: "hi-IN" })} />
+      <JsonLd data={webPageSchema({ name: h.title(year), description: h.description(states), url: localePath(WAGE_HUB_PATH, "hi-IN"), inLanguage: "hi-IN" })} />
       <Breadcrumbs path={WAGE_HUB_PATH} locale="hi-IN" name="न्यूनतम मज़दूरी" />
       <PageHero
         title={h.heading(year)}

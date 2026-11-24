@@ -12,6 +12,7 @@ import { localeParams } from "@/lib/i18n";
 import { locationHubItems } from "@/components/pages/location";
 import { MarketList } from "@/components/sections/market-list";
 import { LOCATIONS_PATH } from "@/content/registry/identifiers";
+import { siteConfig } from "@/content/site";
 export const dynamicParams = false;
 export const generateStaticParams = localeParams("/");
 
@@ -20,8 +21,9 @@ export const generateStaticParams = localeParams("/");
 // taken before this retitle is kept outside the repo, with the rollback rule
 // in PLAN §9.5. Keep the title, the H1 and the three capability rows.
 const TITLE = "Labour Contractor and Manpower Supply Company";
-const DESCRIPTION =
-  "Supervised crews for factories, warehouses and facilities on 8-hour shifts. Absentees replaced, EPF and ESIC handled, one monthly invoice for the crew.";
+// The service words and every region we supply, so the snippet answers
+// "contract labour in <city>" as well as the title answers the company query.
+const DESCRIPTION = `Contract labour for factories and warehouses in ${siteConfig.region}: supervised crews, EPF and ESIC handled.`;
 
 export const metadata = pageMetadata({
   title: { absolute: `${TITLE} | Vayasya Seva` },

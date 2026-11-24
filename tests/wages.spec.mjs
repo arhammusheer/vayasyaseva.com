@@ -74,6 +74,19 @@ test("every state title fits seo-check's 55 characters in every month, and with 
   assert.deepEqual(tooLong, []);
 });
 
+test('the hub description names every state it is given and fits 160 characters with all of them', async () => {
+  // A hand-typed list left Karnataka and Telangana out of the snippet after both were published (Nov 2026).
+  const { wageHubCopy, shortStateName } = await importTs('src/content/pages/minimum-wages.ts');
+  const { wageHubHi, WAGE_HUB_HI } = await importTs('src/content/pages/minimum-wages.hi.ts');
+  const en = wageHubCopy.description(wageStates);
+  for (const state of wageStates) assert.ok(en.includes(shortStateName(state)), `${state.state} missing: ${en}`);
+  assert.ok(en.length <= 160, `${en} (${en.length})`);
+  const hi = wageHubHi.description(wageStates);
+  for (const state of wageStates) assert.ok(state.state === 'uttar-pradesh' ? hi.includes('UP') : hi.includes(WAGE_HUB_HI[state.state].name), `${state.state} missing: ${hi}`);
+  const graphemes = [...new Intl.Segmenter('hi', { granularity: 'grapheme' }).segment(hi)].length;
+  assert.ok(graphemes <= 160, `${hi} (${graphemes} graphemes)`);
+});
+
 test('a quashed notification is marked, dated within the check, and never quoted as the rate', async () => {
   const ka = wageStates.find((s) => s.state === 'karnataka');
   const quashed = ka.employments.groups.filter((g) => g.quashed).map((g) => g.id).sort();

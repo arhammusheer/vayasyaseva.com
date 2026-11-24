@@ -7,7 +7,7 @@ import test from 'node:test';
 import { deflateSync } from 'node:zlib';
 import { importTs, root } from '../scripts/lib/register-ts.mjs';
 import { describeDocument, diffLines, documentLinks, htmlText, sha256, spaBundleLinks, spaLinkId, spaScript, wpDocumentLinks } from '../scripts/wage-monitor/extract.mjs';
-import { ARCHIVED, buildTargets, coverageProblems, fetchSource, fingerprint, istDate, locationTargets, pageLines, registryProblems, relayFetch, runMonitor, targetKey } from '../scripts/wage-monitor/monitor.mjs';
+import { ARCHIVED, buildTargets, coverageProblems, fetchSource, fingerprint, istDate, locationTargets, pageLines, registryProblems, relayFetch, runMonitor, targetKey, tshcCaseLines } from '../scripts/wage-monitor/monitor.mjs';
 import { extractPdfText, parseCMap } from '../scripts/wage-monitor/pdf-text.mjs';
 import { CHECKS_KEY, checksDocument, checksNote, listingChecks } from '../scripts/wage-monitor/checks.mjs';
 import { issueTitle, monitorFailedEvent, renderTopicMessage, reportEvents, reportToHub, safe } from '../scripts/wage-monitor/report.mjs';
@@ -169,6 +169,64 @@ test('documentLinks reads files linked through a forceDownload script (Telangana
       ['https://labour.telangana.gov.in/content/minimumWages/Gazzette%20Notification%20on%20CPI%20numbers%20for%20VDA%20calculations/A01_04_2025.pdf', 'A01_04_2025'],
     ],
   );
+});
+
+test('documentLinks reads the Telangana eGazette listing: extensionless viewDocument links, labelled by their row', () => {
+  const row = (n, dept, abstract, date, id) =>
+    `<tr><td>${n}</td><td> Extraordinary / PART I </td><td style="word-wrap: break-word"> ${dept} <br> / Commissioner Of Printing </td><td> ${abstract}... ${abstract}... </td><td> ${date} </td><td> 110 </td><td> 287 </td><td style="text-align: center;"><a href="viewDocument/${id}" target="_blank"><img src="images/download.png" /></a></td></tr>`;
+  const html = `<table><tr><th>S.No.</th><th>Download</th></tr>${row(1, 'Change of Name', 'CHANGE OF NAMES', '14-Nov-2026', '1795244457572')}${row(2, 'Labour, Employment, Training and Factories', 'REVISION OF MINIMUM RATES OF WAGES IN THE EMP', '30-Jan-2024', '1524726015469')}</table><a href="gtgw/img/telanganalogo.png">logo</a>`;
+  const links = documentLinks(html, 'https://tggazette.cgg.gov.in/homeAllGazetteSearch?type=1', /minimum (rates of )?wages/i);
+  assert.equal(links.length, 1);
+  assert.equal(links[0].url, 'https://tggazette.cgg.gov.in/viewDocument/1524726015469');
+  assert.match(links[0].label, /Labour, Employment, Training and Factories .* REVISION OF MINIMUM RATES OF WAGES .* 30-Jan-2024/);
+  assert.equal(documentLinks(html, 'https://tggazette.cgg.gov.in/homeAllGazetteSearch?type=1').length, 2);
+});
+
+test('a Telangana High Court case is watched as lines: a new order or a ruling on an application alerts, a new hearing date does not', async () => {
+  const CASE = 'https://causelist.tshc.gov.in/causelist/proxy-fetch-data?casedet=WP%28PIL%29%2F14%2F2023';
+  const record = (extra = {}) => [
+    {
+      maincasenum: 'WP(PIL) 14/2023',
+      pdrstatus: 'PENDING',
+      purname: 'ADMISSION',
+      nexthdate: '20/11/2026',
+      dispdate: '-',
+      judname: 'Bench A',
+      mpdetails: [{ mpcasenum: 'IA 2/2026', papertype: 'Suspension Petition', reliefoffense: 'pleased to suspend an impugned G O Ms No 6', order: 'Pending', dateofiafiling: '04/08/2026', orderdate: '-' }],
+      orderdetails: [{ caseno: 'WP(PIL) 14/2023', orderno: '206400000142023_10', myear: '2023', docuname: 'DAILY ORDER', orderdt: '2026-08-20' }],
+      vakalathdetails1: [{ usrnum: ' WP(PIL)USR 102916/2026', usradv: 'ADDL ADVOCATE GENERAL', usrtype: 'Counter Affidavit', usrdate: '19/08/2026' }],
+      ...extra,
+    },
+  ];
+  const lines = tshcCaseLines(JSON.stringify(record()));
+  assert.deepEqual(lines, [
+    'WP(PIL) 14/2023 IA 2/2026 (Suspension Petition, filed 04/08/2026): Pending. pleased to suspend an impugned G O Ms No 6',
+    'WP(PIL) 14/2023 filing WP(PIL)USR 102916/2026: Counter Affidavit of 19/08/2026 by ADDL ADVOCATE GENERAL',
+    'WP(PIL) 14/2023 order of 2026-08-20 (DAILY ORDER): https://csis.tshc.gov.in/hcorders/2023/206400000142023_10.pdf',
+    'WP(PIL) 14/2023: PENDING, stage ADMISSION',
+  ]);
+  assert.deepEqual(tshcCaseLines('[]'), []);
+  assert.deepEqual(tshcCaseLines('<html>error</html>'), []);
+
+  const targets = [{ state: 'telangana', stateName: 'Telangana', kind: 'page', topic: 'wages', url: CASE, name: 'W.P.(PIL) No. 14 of 2023', format: 'tshc-case' }];
+  const day1 = await runMonitor({ targets, previous: null, fetcher: fakeFetcher({ [CASE]: JSON.stringify(record()) }), now: at('2026-11-24') });
+  assert.equal(day1.results[0].outcome, 'baseline');
+  // Listed again before another bench: nothing to report.
+  const day2 = await runMonitor({ targets, previous: day1.state, fetcher: fakeFetcher({ [CASE]: JSON.stringify(record({ nexthdate: '04/12/2026', judname: 'Bench B' })) }), now: at('2026-11-25') });
+  assert.equal(day2.events.length, 0);
+  // The suspension application is decided and its order uploaded.
+  const ruled = record({
+    mpdetails: [{ ...record()[0].mpdetails[0], order: 'Dismissed', orderdate: '04/12/2026' }],
+    orderdetails: [...record()[0].orderdetails, { caseno: 'WP(PIL) 14/2023', orderno: '206400000142023_11', myear: '2023', docuname: 'DAILY ORDER', orderdt: '2026-12-04' }],
+  });
+  const day3 = await runMonitor({ targets, previous: day2.state, fetcher: fakeFetcher({ [CASE]: JSON.stringify(ruled) }), now: at('2026-12-05') });
+  assert.equal(day3.events.length, 1);
+  assert.equal(day3.events[0].type, 'page-changed');
+  assert.ok(day3.events[0].added.some((l) => /IA 2\/2026 .*: Dismissed on 04\/12\/2026/.test(l)));
+  assert.ok(day3.events[0].added.some((l) => l.endsWith('206400000142023_11.pdf')));
+  // An empty answer (an unknown case number) is a failed load, not a quiet day.
+  const empty = await runMonitor({ targets, previous: day3.state, fetcher: fakeFetcher({ [CASE]: '[]' }), now: at('2026-12-06') });
+  assert.equal(empty.results[0].outcome, 'failed');
 });
 
 test('htmlText keeps visible text only', () => {

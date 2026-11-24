@@ -66,7 +66,7 @@ Sources by state today (`scripts/wage-monitor/sources.json`):
 | Haryana | News and notifications (wage pattern) | News and notifications (PT pattern) | Same listing (LWF pattern); the LWF Act as amended by Haryana; the Board's 2026 ceiling notice (SGCMS copy) | Same listing (OSH pattern); draft OSH rules, 2026 |
 | Punjab | Home page notifications | Development tax site downloads; the 2018 Act and 2021 amendment rules | Acts and rules (LWF pattern); LWF Act, 1965; Amendment Act, 2014 (PRS copy) | Acts and rules (OSH pattern); contract labour licence page |
 | Andhra Pradesh | Labour Department site, read from its app bundle (`spa-bundle`: VDA notifications, contract labour wages, the wage sheets) | Tax on Professions Act (PRS copy); the 2013 amendment's slabs (LegitQuest copy: the Commercial Taxes Department's own schedule PDF is down) | Same site (LWF pattern); LWF Act, 1987; LWF Rules, 1988; G.O.Ms. 9 of 2020 | Same site (codes and contract labour pattern); OSH (AP) Rules, 2026 (G.O.Rt. 146); the other three final code rules |
-| Telangana | Labour Department minimum wages page (wage sheets, price index notifications; its PDFs are linked through `forceDownload` scripts, which `documentLinks` reads); G.O.Ms. No. 6 of 2026 (copy matching the GOIR file) | Commercial Taxes Department: PT schedule, Act sections 5 and 7 (pages) | Acts and rules listing (LWF pattern); the LWF Act, 1987 (page) | Home page notices (draft and final labour code rules) |
+| Telangana | Labour Department minimum wages page (wage sheets, price index notifications; its PDFs are linked through `forceDownload` scripts, which `documentLinks` reads); G.O.Ms. No. 6 of 2026 (copy matching the GOIR file); the state e-Gazette's list of every extraordinary gazette (wage and cost of living pattern); the three High Court cases on G.O. 6 (`tshc-case`, below) | Commercial Taxes Department: PT schedule, Act sections 5 and 7 (pages); its PT G.O.s list (a new date); e-Gazette (PT pattern) | Acts and rules listing (LWF pattern); the LWF Act, 1987 and LWF Rules, 1988 (LegitQuest copy) (pages); e-Gazette (LWF pattern) | Home page notices (draft and final labour code rules); procedures and fees page (Contract Labour Act licence); e-Gazette (codes and contract labour pattern) |
 | National | | | | Labour codes handbook |
 
 National EPF, ESIC and codes: EPFO circulars; wage ceiling circular and FAQs;
@@ -107,6 +107,32 @@ pattern matches both. Compliance firms often post an order before the state does
 brick-kiln and agriculture orders were never on uplabour.gov.in), so a new
 line there is a prompt to find the order, not a source in itself. A week
 with nothing on a state is not a failure.
+
+**Telangana's e-Gazette** (tggazette.cgg.gov.in/homeAllGazetteSearch?type=1)
+is one 11 MB page listing every extraordinary gazette since 2014 (about
+8,000 rows, newest first), each linked as `viewDocument/<number>` with no
+file extension; `documentLinks` treats those as documents and labels each by
+its row (department, the first 45 characters of the abstract, the date). The
+serial number in each label shifts as rows are added, but links are compared
+by URL, so that is not a change. The list is incomplete: G.O.Ms. No. 6's own
+issue (No. 111-A of 1 June 2026, per the High Court filings) and the January
+2026 draft OSH rules are not in it, so a quiet gazette proves nothing; a new
+row is still the earliest sign of a VDA or a revision. The Government Orders
+portal (goir.telangana.gov.in) serves orders only through its search form
+(ASP.NET postback), so it is not watched; the e-Gazette and the lead pages
+stand in for it.
+
+**High Court cases** (`format: "tshc-case"`, pages): the Telangana High
+Court's cause list site answers a case lookup without a captcha
+(causelist.tshc.gov.in/causelist/proxy-fetch-data?casedet=WP%28PIL%29%2F14%2F2023,
+JSON). `tshcCaseLines` turns the record into lines: the status or disposal,
+each interlocutory application with its order, each uploaded order with its
+PDF (csis.tshc.gov.in/hcorders/<year>/<order no>.pdf) and each filing. The
+next hearing date and the bench are left out, since they change at every
+listing; the order that follows a hearing is the news. An empty answer (`[]`,
+an unknown case number) is a failed load. Watched: W.P.(PIL) No. 14 of 2023
+(the union's case, with its applications to suspend G.O. 6), W.A. No. 717 of
+2026 and C.C. No. 2624 of 2023, heard together.
 
 **Hosts that need help** (`sources.json`): `plainUserAgentHosts` refuse the
 monitor's user agent and get a browser's; `legacyTlsHosts` (SIIDCUL, the

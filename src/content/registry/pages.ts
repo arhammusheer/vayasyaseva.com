@@ -123,7 +123,7 @@ export const WAGE_STATE_UPDATED: Readonly<Partial<Record<WageStateSlug, string>>
   haryana: "2026-11-19",
   punjab: "2026-11-19",
   "andhra-pradesh": "2026-11-19",
-  telangana: "2026-11-19",
+  telangana: "2026-11-24",
 };
 const wageUpdated = (state: WageStateSlug) => {
   const updated = WAGE_STATE_UPDATED[state];
@@ -170,13 +170,14 @@ const WAGE_STATE_STATUS: Partial<Record<WageStateSlug, PageStatus>> = {
   // and the notifications behind the sheets, which the department no longer
   // hosts (andhra-pradesh.json, verification).
   "andhra-pradesh": "published",
-  // Built and in review (owner, 27 Oct 2026): G.O.Ms. No. 6 of 30 May 2026
-  // replaced every notification with one table, but it is subject to writ
-  // petitions before the High Court, it is not in the state eGazette (none
-  // of the extraordinary gazettes listed to 26 Oct 2026; checked 1 Nov 2026)
-  // and no VDA has been declared under it (telangana.json, verification).
-  // Publish once it is gazetted or the court settles its status.
-  telangana: "review",
+  // Published 24 Nov 2026 (owner, with the Hyderabad business pages): G.O.Ms.
+  // No. 6 of 30 May 2026 is in force from 1 June 2026, published in the
+  // extraordinary gazette of 1 June 2026 on the State's own statement to the
+  // High Court (the issue is not on the e-Gazette portal), and no order
+  // suspends it. Still open: the union's suspension applications in
+  // W.P.(PIL) 14 of 2023 (watched daily by the monitor), no VDA declared
+  // under the order, a named checker (telangana.json, verification).
+  telangana: "published",
 };
 
 /**

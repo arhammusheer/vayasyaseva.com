@@ -7,10 +7,10 @@
   "missed": [
    "2026-10-01"
   ],
-  "basis": "G.O.Ms. No. 6 of 30 May 2026 has the Commissioner of Labour declare a cost of living allowance every 1 April and 1 October, from the state consumer price index for the half-years ending December and June. None had been declared under the order when we checked on 19 November 2026, including the one due from 1 October 2026."
+  "basis": "G.O.Ms. No. 6 of 30 May 2026 has the Commissioner of Labour declare a cost of living allowance every 1 April and 1 October, from the state consumer price index for the half-years ending December and June. None had been declared under the order when we checked on 24 November 2026, including the one due from 1 October 2026."
  },
  "checked": {
-  "on": "2026-11-19"
+  "on": "2026-11-24"
  },
  "sources": [
   {
@@ -20,14 +20,14 @@
    "number": "G.O.Ms. No. 6, LET&F (Lab-I)",
    "date": "2026-05-30",
    "authority": "Labour, Employment, Training and Factories Department, Government of Telangana",
-   "legalBasis": "Code on Wages, 2019, sections 6 to 8. In force from 1 June 2026, in supersession of every notification under the Minimum Wages Act, 1948, and, in its words, subject to the outcome of writ petitions and contempt cases then pending before the Telangana High Court. The contempt cases were reported closed on 19 June 2026; a trade union PIL against the order is still pending. The order directs publication in an Extraordinary Telangana Gazette of 1 June 2026.",
+   "legalBasis": "Code on Wages, 2019, sections 6 to 8. In force from 1 June 2026, in supersession of every notification under the Minimum Wages Act, 1948, and, in its words, subject to the outcome of writ petitions and contempt cases then pending before the Telangana High Court. Published in the Telangana Gazette Extraordinary of 1 June 2026 (No. 111-A, as cited in filings before the High Court; the issue is not on the state's e-Gazette portal). A trade union's public interest case asks the High Court to suspend it; when we checked on 24 November 2026 no order had suspended it.",
    "url": "https://unitedconsultancy.com/wp-content/uploads/2026/06/Telangana-New-Minimum-Wages-GO-No-6-Date-30-May-2026.pdf",
    "listing": "https://goir.telangana.gov.in/Default.aspx",
    "language": "en",
    "sha256": "9607b5ae1a93f9c5b9d14df6f9fb796415b2d4de44d659a3edec392fcfeb01b2",
    "sizeKb": 247,
    "retrievedOn": "2026-10-27",
-   "via": "The government's copy is on the Government Orders portal (goir.telangana.gov.in), which serves files only through its search form, with no address to link. This copy, published by United Consultancy, a compliance firm, is the same file byte for byte (SHA-256 matches the portal's).",
+   "via": "The government's copy is on the Government Orders portal (goir.telangana.gov.in), which serves files only through its search form, with no address to link. This copy, published by United Consultancy, a compliance firm, is the same file byte for byte (SHA-256 matches the file the portal served on 24 November 2026).",
    "copy": "https://cdn.vayasyaseva.com/sources/telangana/tg-go6-9607b5ae.pdf",
    "copyKb": 247
   }
@@ -56,7 +56,7 @@
     {
      "id": "zone-3",
      "name": "Zone III",
-     "areas": "Rural and all other areas."
+     "areas": "Rural and other areas."
     }
    ],
    "daily": "derived",
@@ -275,6 +275,13 @@
  },
  "history": [],
  "verification": [
+  "2026-11-24: publication check for the owner's go-ahead. G.O. 6 downloaded again from the Government Orders portal itself (30052026LETF_MS6.PDF, 252,621 bytes, 10 pages): SHA-256 9607b5ae…01b2, identical to the United Consultancy copy we cite and host. GOIR searches of LETF and SHAKTI, MS and RT orders for 2026 (wages, minimum, Code on Wages, dearness, cost of living, zone, labour code, rules) find G.O. 6 as the only wage order; nothing amends, clarifies, suspends or withdraws it. SHAKTI MS orders listed for 2026: No. 14 (14 August, unrelated), No. 16 (5 October, 'Not Issued'), No. 18 (14 November, final Platform Based Gig Workers Rules); Nos. 15 and 17 are not on the portal.",
+  "2026-11-24: High Court, read from the court's own records (causelist.tshc.gov.in case lookup; orders from csis.tshc.gov.in/hcorders). W.P.(PIL) No. 14 of 2023 (CNR HBHC010140352023), Telangana Regional Trade Union Council v. State of Telangana: pending at admission. IA 2/2026 (to suspend G.O. 6) and IA 3/2026 (to suspend 'Gazette No 111A, dated 01 06 2026 published the G O Ms No 6') were filed on 4 August 2026 and are pending, with no order on either; IA 1/2026 (to amend the prayer) is also pending. Filings since: the State's counter affidavit (19 August), the State's memo (20 August), the petitioner's reply affidavit (8 September), a posting slip (9 October). Heard with W.A. No. 717 of 2026 (Telangana State Multiple Contractors Labour Union, an appeal against the 19 June 2026 recall of the 2024 directions in W.P. No. 34997 of 2022) and C.C. No. 2624 of 2023 (contempt).",
+  "2026-11-24: High Court orders, Division Bench of the Chief Justice and Justice G.M. Mohiuddin. 20 July 2026 (W.A. 717, 206200007172026_1.pdf, sha256 d0551934…): the State said that since the Code on Wages took effect on 21 November 2025, 'the notifications revising the wages have been issued … by Gazette Notification dated 01.06.2026'; the court stayed further proceedings in W.P. No. 34997 of 2022. 4 August 2026 (206400000142023_9.pdf, sha256 b5b74353…): the State said a notification was issued on 30 May 2026 with effect from 1 June 2026; listed for 20 August, 'no further time would be granted'. 20 August 2026 (206400000142023_10.pdf, sha256 e0114170…): a week for the petitioner's reply affidavit; the interim order in W.A. 717 continues. The only interim order in the three cases is that stay of W.P. 34997 of 2022; nothing suspends G.O. 6. The cases were last listed on 20 November 2026 (items 39 to 41 before the Acting Chief Justice's bench); no order from that day was uploaded by 24 November and none of them is on the 23 or 25 November lists. The monitor now watches all three case records daily.",
+  "2026-11-24: Gazette. The Telangana e-Gazette lists Part I extraordinary issues 111, 111-B, 111-E and 111-F around 1 June 2026, but not 111-A, 111-C or 111-D, so the issue the court filings cite cannot be read there; a search of all 764 extraordinary entries from 20 May to 14 November 2026 has no wage, minimum rates, Code on Wages or cost of living entry. We rely on the State's statement to the High Court (20 July 2026) and the petitioner's IA 3/2026 for publication on 1 June 2026, and cite the gazette as not available online.",
+  "2026-11-24: VDA. labour.telangana.gov.in/MinRatesWages.do: newest folder 01042026 (old-structure sheets), no 01102026 folder; no cost of living circular on the home page; GOIR has no dearness or cost of living order. Two HR trackers (secondary) list Telangana's 1 October 2026 revision as due and not notified. The page shows the basic rates alone, as before; no VDA figure is shown.",
+  "2026-11-24: State rules. The Code on Wages (Telangana State) Rules, 2026 are still a draft: the department hosts the draft (code_on_wages_state_draft_rule_2021.pdf, last modified 6 June 2026, sha256 32e023d3…) and the minutes of the June 2026 stakeholder meetings (MoM_Code_Wages_Rules.pdf, sha256 a9daba4d…), where unions asked for the zones to be removed and AITUC said G.O. 6 was issued without consulting them or the Advisory Board. No final rules found. In the Assembly (LAQ 2402, answered 10 September 2026; papers in G.O.Rt. No. 362, SHAKTI, 30 September 2026) the Labour Minister said the revised wages took effect from 1 June 2026 under G.O. 6 (reported by The Rahnuma Daily; secondary).",
+  "2026-11-24: Published (owner, 24 November 2026: publish Telangana's reference pages with the Hyderabad business pages). Basis: G.O. 6 is in force, was published in the extraordinary gazette of 1 June 2026 on the State's own statement to the High Court, and no court order suspends it; the page says the suspension applications are pending and that no VDA has been declared. Still open: a named checker; the outcome of the 20 November 2026 hearing; the 10% protection clause (para 5(4) and (10)), not worked out on the page; rates for the 8 committee employments.",
   "2026-11-19: hand check after the monitor's first listing read (4 November 2026) counted every link as new. labour.telangana.gov.in/MinRatesWages.do has 1,218 links: 1,183 wage sheets in 15 period folders from 1 April 2017 to 1 April 2026, the newest still 1 April to 30 September 2026 (74 sheets), plus 35 CPI gazettes, guideline G.O.s, contract labour VDA circulars (newest 1 October 2024 to 31 March 2025) and notes; there is no folder for 1 October 2026, and 451 older links (1 October 2020 to 1 October 2023) return 404. The home page's newest wage item is the minutes of the June 2026 consultations on the draft state rules; no final Code on Wages rules. SGCMS's newest Telangana wage post is G.O. 6 (1 June 2026). G.O. 6 re-downloaded with matching sha256. Nothing changes; the 1 October 2026 cost of living allowance is still not declared.",
   "2026-10-27: G.O.Ms. No. 6, LET&F (Lab-I), 30 May 2026, read from the United Consultancy copy (252,621 bytes, 10 pages, text layer). SHA-256 9607b5ae…01b2 matches the file the Government Orders portal (goir.telangana.gov.in, department LETF, type MS, 2026) serves. Figures read from Table 1: per month, Zone I / II / III: unskilled 16,000 / 15,000 / 14,000; semi-skilled 17,000 / 16,000 / 15,000; skilled 18,500 / 17,500 / 16,500; highly skilled 20,000 / 19,000 / 18,000.",
   "2026-10-27: Para 1(c): basic rates linked to the consumer price index at 443 points (2001 = 100); ₹33.86 a month per point above 443; cost of living allowance declared every 1 April and 1 October. Para 5: monthly ÷ 26 for a day's wage, rest day included; trainees 75%, not below unskilled; overtime and rest-day work at double rate; pay rounded to the nearest 50 paise; principal employer responsible for a contractor's workers.",

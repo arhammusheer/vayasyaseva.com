@@ -50,6 +50,44 @@ export const targetKey = (t) => {
 export const pageLines = (html, match, ignore = null) =>
   [...new Set(htmlText(html).split("\n").map((l) => l.trim()).filter((l) => l && match.test(l) && !ignore?.test(l)))].sort();
 
+/**
+ * A Telangana High Court case, read from the cause list site's case lookup
+ * (causelist.tshc.gov.in/causelist/proxy-fetch-data?casedet=WP(PIL)/14/2023,
+ * JSON, no captcha), as lines a page target compares: its status or disposal,
+ * each interlocutory application and its order, each uploaded order (with its
+ * PDF on csis.tshc.gov.in) and each filing. The next hearing date and the
+ * bench are left out: they change at every listing and are not news; the
+ * order that follows a hearing is.
+ */
+export function tshcCaseLines(body) {
+  let cases;
+  try {
+    cases = JSON.parse(body);
+  } catch {
+    return [];
+  }
+  const out = [];
+  const clip = (s, n = 160) => {
+    const t = String(s ?? "").replace(/\s+/g, " ").trim();
+    return t.length > n ? `${t.slice(0, n - 1)}…` : t;
+  };
+  for (const c of Array.isArray(cases) ? cases : []) {
+    const name = clip(c.maincasenum, 40);
+    if (!name) continue;
+    out.push(c.dispdate && c.dispdate !== "-" ? `${name}: disposed on ${c.dispdate} (${clip(c.disptype, 60)})` : `${name}: ${clip(c.pdrstatus, 30)}${c.purname ? `, stage ${clip(c.purname, 40)}` : ""}`);
+    for (const ia of c.mpdetails ?? []) {
+      const order = clip(ia.order, 60) || "no order";
+      out.push(`${name} ${clip(ia.mpcasenum, 20)} (${clip(ia.papertype, 40)}, filed ${clip(ia.dateofiafiling, 12)}): ${order}${ia.orderdate && ia.orderdate !== "-" ? ` on ${clip(ia.orderdate, 12)}` : ""}. ${clip(ia.reliefoffense)}`);
+    }
+    for (const o of c.orderdetails ?? []) {
+      if (!/^\w+$/.test(o.orderno ?? "") || !/^\d{4}$/.test(o.myear ?? "")) continue;
+      out.push(`${name} order of ${clip(o.orderdt, 12)} (${clip(o.docuname, 30)}${o.caseno && o.caseno !== c.maincasenum ? `, ${clip(o.caseno, 20)}` : ""}): https://csis.tshc.gov.in/hcorders/${o.myear}/${o.orderno}.pdf`);
+    }
+    for (const f of c.vakalathdetails1 ?? []) out.push(`${name} filing ${clip(f.usrnum, 40)}: ${clip(f.usrtype, 40)} of ${clip(f.usrdate, 12)} by ${clip(f.usradv, 40)}`);
+  }
+  return [...new Set(out)].sort();
+}
+
 const USER_AGENT = "vayasyaseva.com wage source monitor (+https://vayasyaseva.com/minimum-wages)";
 /** Per request, body included. A host that hangs costs this once per run (see fetchAll). */
 export const TIMEOUT_MS = 45_000;
@@ -191,7 +229,7 @@ function registryTargets(entry, scope) {
   const out = [];
   for (const d of entry?.documents ?? []) out.push({ ...scope, kind: "document", url: d.url, name: d.name, topic: d.topic ?? "wages", sourceIds: d.sourceIds ?? [], listings: [] });
   for (const l of entry?.listings ?? []) out.push({ ...scope, kind: "listing", url: l.url, name: l.name, match: l.match, topic: l.topic ?? "wages", ...(l.format && { format: l.format, publicBase: l.publicBase }) });
-  for (const pg of entry?.pages ?? []) out.push({ ...scope, kind: "page", url: pg.url, name: pg.name, match: pg.match, topic: pg.topic ?? "wages", allowEmpty: Boolean(pg.allowEmpty), ...(pg.ignore && { ignore: pg.ignore }) });
+  for (const pg of entry?.pages ?? []) out.push({ ...scope, kind: "page", url: pg.url, name: pg.name, match: pg.match, topic: pg.topic ?? "wages", allowEmpty: Boolean(pg.allowEmpty), ...(pg.ignore && { ignore: pg.ignore }), ...(pg.format && { format: pg.format }) });
   return out;
 }
 
@@ -258,7 +296,9 @@ export function coverageProblems(wageStates, registry, citedUrls = []) {
   for (const url of citedUrls) if (!watched.has(url) && !ARCHIVED.test(url)) problems.push(`${url} is cited on the site but not watched`);
   for (const t of buildTargets(wageStates, registry)) {
     if (!TOPICS[t.topic]) problems.push(`${t.url}: unknown topic "${t.topic}"`);
-    if (t.kind === "page" && !t.match) problems.push(`${t.url}: a page needs a match pattern (the lines to compare)`);
+    // A tshc-case page is structured data, read whole into lines (tshcCaseLines); any other page needs a pattern.
+    if (t.kind === "page" && !t.match && t.format !== "tshc-case") problems.push(`${t.url}: a page needs a match pattern (the lines to compare)`);
+    if (t.format && !["spa-bundle", "wp-documents", "tshc-case"].includes(t.format)) problems.push(`${t.url}: unknown format "${t.format}"`);
   }
   return problems;
 }
@@ -366,7 +406,10 @@ export async function runMonitor({ targets, previous, fetcher, now = new Date(),
     if (res.ok) {
       if (target.kind === "page") {
         const body = res.body.toString("utf8");
-        lines = pageLines(body, new RegExp(target.match, "i"), target.ignore ? new RegExp(target.ignore, "i") : null);
+        lines =
+          target.format === "tshc-case"
+            ? tshcCaseLines(body).filter((l) => !target.match || new RegExp(target.match, "i").test(l))
+            : pageLines(body, new RegExp(target.match, "i"), target.ignore ? new RegExp(target.ignore, "i") : null);
         // A lead page (allowEmpty: a compliance firm's latest posts) may have nothing on a state this week,
         // but a page with no text at all is a refused request (AscentHR sends an empty 200), not a quiet week.
         if (!htmlText(body).trim()) bogus = "the page came back empty";

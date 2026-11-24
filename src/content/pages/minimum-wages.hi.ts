@@ -118,6 +118,19 @@ export const WAGE_HUB_HI: Partial<Record<WageStateSlug, WageHubStateHi>> = {
       "22 मई 2026 के नोटिफ़िकेशन में 79 कामों की दर: इंजीनियरिंग, कंस्ट्रक्शन, दुकानें, होटल, सिक्योरिटी और दूसरे। महीने की दर, बेसिक और VDA मिलाकर। ज़ोन 1: बेंगलुरु शहर। ज़ोन 2: दूसरे नगर निगम और ज़िला मुख्यालय। ज़ोन 3: बाकी इलाके। फ़ाउंड्री, बिजलीघर और सफ़ाई के काम की दर ज़्यादा है। गारमेंट (सिलाई), खेती, बागान, बीड़ी, काजू और लोडिंग जैसे 19 कामों की अपनी अलग दरें हैं।",
     department: { href: "https://karmikaspandana.karnataka.gov.in/en", label: "श्रम विभाग, कर्नाटक" },
   },
+  telangana: {
+    name: "तेलंगाना",
+    table: "all-employments",
+    zones: [
+      { id: "zone-1", name: "ज़ोन I" },
+      { id: "zone-2", name: "ज़ोन II" },
+      { id: "zone-3", name: "ज़ोन III" },
+    ],
+    skills: ["unskilled", "semi-skilled", "skilled", "highly-skilled"],
+    key: () =>
+      "30 मई 2026 के आदेश में 76 कामों की एक ही दर: फ़ैक्टरी, फ़ार्मा, इंजीनियरिंग, कंस्ट्रक्शन, दुकानें, होटल, सिक्योरिटी और दूसरे। महीने की बेसिक दर; VDA अभी घोषित नहीं हुआ है। ज़ोन I: नगर निगम, जैसे हैदराबाद। ज़ोन II: नगरपालिकाएँ। ज़ोन III: गाँव और बाकी इलाके। गारमेंट, स्पिनिंग, पावरलूम, हैंडलूम, ईंट भट्टे और बीड़ी की दरें एक अलग समिति तय करेगी।",
+    department: { href: "https://labour.telangana.gov.in/", label: "श्रम विभाग, तेलंगाना" },
+  },
 };
 
 /**
@@ -133,6 +146,7 @@ export const HUB_HI_SOURCE_HASH: Partial<Record<WageStateSlug, string>> = {
   punjab: "2196ab5cd3f7",
   "andhra-pradesh": "c13c14de10cf",
   karnataka: "1373b905d51d",
+  telangana: "a87140c72edd",
 };
 
 export const wageHubHi = {

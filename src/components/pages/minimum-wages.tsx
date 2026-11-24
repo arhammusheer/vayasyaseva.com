@@ -331,7 +331,7 @@ function Documents({ state, slug }: { state: WageState; slug: WageStateSlug }) {
               {g.items.map((d) => (
                 <li key={d.id}>
                   {/* Our copy first: government portals move and drop files. */}
-                  <a href={d.copy ?? d.url} lang={langTag(d.language)}>
+                  <a href={d.copy ?? d.url} hrefLang={langTag(d.language)} lang={inOwnScript(d.title) ? langTag(d.language) : undefined}>
                     {d.title}
                   </a>
                   <span>
@@ -535,7 +535,7 @@ function EmploymentSchedule({ state, intro: own }: { state: WageState; intro?: s
                             {g.linkedTo && cpi ? `${pointsLine(g)} ` : ""}
                             {s.notification(g.number, date)}.{" "}
                             {source && (
-                              <a href={source.copy ?? source.url} lang={langTag(source.language)}>
+                              <a href={source.copy ?? source.url} hrefLang={langTag(source.language)}>
                                 {x.file(fileKind(source.url), source.language, source.copyKb ? formatSize(source.copyKb) : source.sizeKb ? formatSize(source.sizeKb) : null)}
                               </a>
                             )}
@@ -555,18 +555,29 @@ function EmploymentSchedule({ state, intro: own }: { state: WageState; intro?: s
 }
 
 const hostOf = (url: string) => new URL(url).host.replace(/^www\./, "");
-/** The page language of a source document, for its link's lang attribute. */
+/**
+ * The language of a source document, for its link's hrefLang. Not lang: the
+ * link text is our English title, so lang="hi-IN" made screen readers read
+ * English in a Hindi voice.
+ */
 const langTag = (language: "en" | "hi" | "kn" | "te") => ({ en: "en-IN", hi: "hi-IN", kn: "kn-IN", te: "te-IN" })[language];
+/** A title quoted in the document's own script (some UP orders keep their Hindi title): it gets the document's lang too. */
+const inOwnScript = (title: string) => /[\u0900-\u0DFF]/.test(title);
 /** "PDF" or "Excel": Andhra Pradesh's department publishes its wage tables as spreadsheets. */
 const fileKind = (url: string) => (/\.xlsx?(?:$|[?#])/i.test(url) ? "xls" : "pdf");
 
-/** An order number that breaks only after a slash, never at a hyphen, so it is copied whole. */
+/**
+ * An order number that breaks only after a slash, never at a hyphen, so it is
+ * copied whole. Some "numbers" are a citation in words ("Punjab Act 17 of
+ * 1965, Labour Department copy with..."): a part with spaces wraps normally,
+ * or it ran off a phone screen.
+ */
 function OrderNumber({ value }: { value: string }) {
   const parts = value.split("/");
   return (
     <>
       {parts.map((part, i) => (
-        <span key={i} className="whitespace-nowrap">
+        <span key={i} className={/\s/.test(part) ? undefined : "whitespace-nowrap"}>
           {part}
           {i < parts.length - 1 && "/"}
           {i < parts.length - 1 && <wbr />}

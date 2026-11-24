@@ -120,7 +120,8 @@ export function LocationPage({ page: source, locale = "en-IN" }: { page: Locatio
                 CSS shows this one before paint (owner decision, 18 Oct 2026; src/context/css.ts). */}
             {jobsHub && (
               <div className={`flex flex-wrap gap-3 pt-2 ${jobsFirst ? "" : "ctx-aud-jobs"}`}>
-                <Button asChild size="lg">
+                {/* Wraps on a 320px phone: "Kapurthala aur Phagwara mein job" is wider than the screen. */}
+                <Button asChild size="lg" className="h-auto min-h-12 max-w-full whitespace-normal py-3">
                   <JobsLink path={jobsHubPath(jobsMarket)} locale={locale}>
                     {jobsLabel} <ArrowRight aria-hidden="true" />
                   </JobsLink>

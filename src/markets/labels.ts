@@ -18,21 +18,21 @@ type MarketLabel = {
 };
 
 export const MARKET_LABELS = {
-  "andhra-pradesh": { name: { "en-IN": "Andhra Pradesh", "hi-IN": "आंध्र प्रदेश", "hi-Latn-IN": "Andhra Pradesh", "te-IN": "ఆంధ్రప్రదేశ్" } },
-  bengaluru: { name: { "en-IN": "Bengaluru", "hi-IN": "बेंगलुरु", "hi-Latn-IN": "Bengaluru" } },
-  dehradun: { name: { "en-IN": "Dehradun", "hi-IN": "देहरादून", "hi-Latn-IN": "Dehradun" } },
-  "delhi-ncr": { name: { "en-IN": "Delhi NCR", "hi-IN": "दिल्ली NCR", "hi-Latn-IN": "Delhi NCR" } },
-  haridwar: { name: { "en-IN": "Haridwar", "hi-IN": "हरिद्वार", "hi-Latn-IN": "Haridwar" } },
-  hyderabad: { name: { "en-IN": "Hyderabad", "hi-IN": "हैदराबाद", "hi-Latn-IN": "Hyderabad", "te-IN": "హైదరాబాద్" } },
+  "andhra-pradesh": { name: { "en-IN": "Andhra Pradesh", "hi-IN": "आंध्र प्रदेश", "hi-Latn-IN": "Andhra Pradesh", "te-IN": "ఆంధ్రప్రదేశ్", "pa-IN": "ਆਂਧਰਾ ਪ੍ਰਦੇਸ਼", "kn-IN": "ಆಂಧ್ರ ಪ್ರದೇಶ" } },
+  bengaluru: { name: { "en-IN": "Bengaluru", "hi-IN": "बेंगलुरु", "hi-Latn-IN": "Bengaluru", "pa-IN": "ਬੈਂਗਲੁਰੂ", "kn-IN": "ಬೆಂಗಳೂರು" } },
+  dehradun: { name: { "en-IN": "Dehradun", "hi-IN": "देहरादून", "hi-Latn-IN": "Dehradun", "pa-IN": "ਦੇਹਰਾਦੂਨ", "kn-IN": "ಡೆಹ್ರಾಡೂನ್" } },
+  "delhi-ncr": { name: { "en-IN": "Delhi NCR", "hi-IN": "दिल्ली NCR", "hi-Latn-IN": "Delhi NCR", "pa-IN": "ਦਿੱਲੀ NCR", "kn-IN": "ದೆಹಲಿ NCR" } },
+  haridwar: { name: { "en-IN": "Haridwar", "hi-IN": "हरिद्वार", "hi-Latn-IN": "Haridwar", "pa-IN": "ਹਰਿਦੁਆਰ", "kn-IN": "ಹರಿದ್ವಾರ" } },
+  hyderabad: { name: { "en-IN": "Hyderabad", "hi-IN": "हैदराबाद", "hi-Latn-IN": "Hyderabad", "te-IN": "హైదరాబాద్", "pa-IN": "ਹੈਦਰਾਬਾਦ", "kn-IN": "ಹೈದರಾಬಾದ್" } },
   jalandhar: {
-    name: { "en-IN": "Jalandhar", "hi-IN": "जालंधर", "hi-Latn-IN": "Jalandhar", "pa-IN": "ਜਲੰਧਰ" },
+    name: { "en-IN": "Jalandhar", "hi-IN": "जालंधर", "hi-Latn-IN": "Jalandhar", "pa-IN": "ਜਲੰਧਰ", "kn-IN": "ಜಲಂಧರ್" },
     short: "Jalandhar–Kapurthala",
   },
-  kapurthala: { name: { "en-IN": "Kapurthala", "hi-IN": "कपूरथला", "hi-Latn-IN": "Kapurthala", "pa-IN": "ਕਪੂਰਥਲਾ" } },
-  punjab: { name: { "en-IN": "Punjab", "hi-IN": "पंजाब", "hi-Latn-IN": "Punjab", "pa-IN": "ਪੰਜਾਬ" } },
-  telangana: { name: { "en-IN": "Telangana", "hi-IN": "तेलंगाना", "hi-Latn-IN": "Telangana", "te-IN": "తెలంగాణ" } },
-  uttarakhand: { name: { "en-IN": "Uttarakhand", "hi-IN": "उत्तराखंड", "hi-Latn-IN": "Uttarakhand" } },
-  visakhapatnam: { name: { "en-IN": "Visakhapatnam", "hi-IN": "विशाखापत्तनम", "hi-Latn-IN": "Visakhapatnam", "te-IN": "విశాఖపట్నం" } },
+  kapurthala: { name: { "en-IN": "Kapurthala", "hi-IN": "कपूरथला", "hi-Latn-IN": "Kapurthala", "pa-IN": "ਕਪੂਰਥਲਾ", "kn-IN": "ಕಪೂರ್ಥಲಾ" } },
+  punjab: { name: { "en-IN": "Punjab", "hi-IN": "पंजाब", "hi-Latn-IN": "Punjab", "pa-IN": "ਪੰਜਾਬ", "kn-IN": "ಪಂಜಾಬ್" } },
+  telangana: { name: { "en-IN": "Telangana", "hi-IN": "तेलंगाना", "hi-Latn-IN": "Telangana", "te-IN": "తెలంగాణ", "pa-IN": "ਤੇਲੰਗਾਨਾ", "kn-IN": "ತೆಲಂಗಾಣ" } },
+  uttarakhand: { name: { "en-IN": "Uttarakhand", "hi-IN": "उत्तराखंड", "hi-Latn-IN": "Uttarakhand", "pa-IN": "ਉੱਤਰਾਖੰਡ", "kn-IN": "ಉತ್ತರಾಖಂಡ" } },
+  visakhapatnam: { name: { "en-IN": "Visakhapatnam", "hi-IN": "विशाखापत्तनम", "hi-Latn-IN": "Visakhapatnam", "te-IN": "విశాఖపట్నం", "pa-IN": "ਵਿਸ਼ਾਖਾਪਟਨਮ", "kn-IN": "ವಿಶಾಖಪಟ್ಟಣ" } },
 } as const satisfies Record<MarketId, MarketLabel>;
 
 /** The jobs door, menu and link label for a market's jobs hub, in every language. */

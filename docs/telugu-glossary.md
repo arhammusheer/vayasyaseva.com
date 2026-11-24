@@ -169,7 +169,7 @@ Notes from the search data (coordinator, 24 Nov 2026):
 | Shamirpet / Shameerpet | శామీర్‌పేట | One spelling for both English forms; checked: Telangana "-pet" names take -పేట |
 | Turkapally | తుర్కపల్లి | |
 | Kolthur | కొల్తూరు | Checked: correct |
-| Lalgadi Malakpet | లాలగడి మలక్‌పేట | *open*: likely లాల్‌గడి మలక్‌పేట; confirm against the Medchal-Malkajgiri district village list before changing |
+| Lalgadi Malakpet | లాల్‌గడి మలక్‌పేట | Checked 24 Nov 2026: Namasthe Telangana writes లాల్‌గడి మలక్‌పేట; Eenadu and Telugu Wikipedia write లాల్‌గాడి. All sources have లాల్‌, none లాలగడి |
 | Outer Ring Road | ఔటర్ రింగ్ రోడ్ | |
 | Shamshabad | శంషాబాద్ | Paired page name: శంషాబాద్-కొత్తూరు |
 | Kothur | కొత్తూరు | |
@@ -184,6 +184,6 @@ Notes from the search data (coordinator, 24 Nov 2026):
 ## Open (from the audit, not applied)
 
 - The 15 nit rows (jobs-only labels and nav to జాబ్స్ / అప్లై చేయండి, ఇంటర్ పాస్, form-draft notice wording, Duvvada word order, VISIT question wording, Gajuwaka షాపులు, the APSEZ metaTitle).
-- లాల్‌గడి and కపూర్తలా spellings (confirm first).
+- కపూర్తలా spelling (confirm first).
 - The seeker jobs link on te-IN location pages opens an English page without an "(English)" marker; adding one is a code change in `location.tsx`.
 - The Patancheru (Hyderabad) FAQ question "... మీ బృందాలు సురక్షితంగా ఎలా పనిచేస్తాయి?" was not in the audit and still says బృందాలు (glossary now says టీమ్‌లు).

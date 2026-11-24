@@ -34,7 +34,7 @@ export const locales = {
     segment: "hi-latn-in",
     hreflang: "hi-Latn-IN",
     ogLocale: "hi_IN",
-    label: "Hinglish",
+    label: "Hindi",
     hint: "Ye page Hindi mein padhein, English letters mein",
     published: true,
   },

@@ -53,6 +53,7 @@ The November 2026 language audit answered the loanword question: keep them (ਪ�
 | Ferozepur | ਫ਼ਿਰੋਜ਼ਪੁਰ | |
 | Amritsar / Delhi | ਅੰਮ੍ਰਿਤਸਰ / ਦਿੱਲੀ | |
 | Vayasya Seva | Vayasya Seva | Kept in Latin, as on the Hindi pages |
+| South-east of Jalandhar (Phagwara, Goraya) | ਜਲੰਧਰ ਤੋਂ ਲੁਧਿਆਣੇ ਵੱਲ | Name the road and the next city, not a compass point. NH-44 runs Jalandhar, Phagwara, Goraya, Phillaur, Ludhiana |
 
 ## Language order
 

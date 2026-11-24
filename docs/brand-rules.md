@@ -105,6 +105,13 @@ The rest of this section moved off `/brand` on 16 October 2026 (the page keeps d
 - If it is too small to read clearly, use a larger placement rather than forcing it smaller.
 - A product name sits beside the mark in Anek at weight 500, in one weight. Use the supplied lockup file.
 - Setu has no colour of its own: in a lockup the name takes the text colour of its surface.
+- Below 64 px, use the heavier cuts of the same drawing: `public/brand/logos/vspl-medium.svg` for 32–48 px and `vspl-small.svg` for 16–24 px. Favicons, extension icons and email marks use them.
+- The master is the refined mark (cleanup_8, live 25 Nov 2026). Its history and the scripts that rebuild it and its cuts are in `docs/brand/logo-candidates/`. Never redraw it.
+- Copies live outside this repo too, so update them together:
+  - ID, Setu and Matra in `vayasyaseva/platform` (`staging`), plus the legacy app's favicon on `main`;
+  - the browser extension (`vayasyaseva/harness`);
+  - the CDN: `cdn.vayasyaseva.com/logo/vspl.svg` (BIMI, SVG Tiny-PS on a white square) and `logo/logo.png` (Cloudflare Access sign-in);
+  - the Word letterhead templates.
 
 ### Type rules
 

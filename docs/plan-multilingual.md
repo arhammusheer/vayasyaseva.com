@@ -15,6 +15,8 @@ Status: live. हिंदी (hi-IN) and Hindi in Latin script (hi-Latn-IN) are
 
 The locale code is the BCP 47 tag, used as is in `<html lang>`, hreflang and JSON-LD `inLanguage`. `hi-Latn-IN` reads as language Hindi, script Latin, region India. URL segments are the lowercase tag. Other casings (`/hi-IN/jobs`) redirect permanently to the lowercase URL.
 
+Local languages only (owner direction, 24 Nov 2026): a page gets a regional language only where that language is local, so the site does not sprawl into every language everywhere. Kapurthala and the Jalandhar region: English, हिंदी, Hindi and ਪੰਜਾਬੀ. Visakhapatnam and Hyderabad: English and తెలుగు. Bengaluru: English plus ಕನ್ನಡ on its jobs hub. Hindi pages are kept where they exist, including the jobs pages in non-Hindi markets. Anything built per language (share images, sitemaps, pickers) follows the page's own languages (`localesOf`), never every site locale.
+
 Labels: readers see "English", "हिंदी" and "Hindi". Don't call hi-Latn-IN anything else on the site. In code and docs, use the locale code or "Hindi in Latin script".
 
 Google does not treat Hindi in Latin script as its own search language and may read these pages as English or Hindi. The hreflang tags tell it the pages are translations of each other, so they don't compete.

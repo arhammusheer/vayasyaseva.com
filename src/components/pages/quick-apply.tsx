@@ -5,7 +5,7 @@ import { JobsInRow } from "@/components/jobs/jobs-in-row";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { JsonLd, webPageSchema } from "@/lib/structured-data";
 import { quickApplyCopy } from "@/content/pages/quick-apply";
-import { localePath, locales, type Locale } from "@/lib/i18n";
+import { localePath, locales, type Locale, jobsLocale } from "@/lib/i18n";
 import type { JobsMarketId } from "@/markets/index";
 
 const PATH = "/jobs/apply";
@@ -17,10 +17,10 @@ const PATH = "/jobs/apply";
  */
 /** The heading and title for ?cluster=<id>, when that cluster has its own (quick-apply.ts inCluster). */
 const inCluster = (locale: Locale, cluster?: string) =>
-  cluster && Object.hasOwn(quickApplyCopy[locale].inCluster, cluster) ? quickApplyCopy[locale].inCluster[cluster as JobsMarketId] : undefined;
+  cluster && Object.hasOwn(quickApplyCopy[jobsLocale(locale)].inCluster, cluster) ? quickApplyCopy[jobsLocale(locale)].inCluster[cluster as JobsMarketId] : undefined;
 
 export function quickApplyMetadata(locale: Locale, query: { role?: string; hub?: string; work?: string; cluster?: string } = {}) {
-  const t = quickApplyCopy[locale];
+  const t = quickApplyCopy[jobsLocale(locale)];
   const local = inCluster(locale, query.cluster);
   // Role share variants name Haridwar, so another cluster keeps the default image.
   const variant = local ? undefined : quickShareVariant(query);
@@ -36,7 +36,7 @@ export function quickApplyMetadata(locale: Locale, query: { role?: string; hub?:
 
 /** An H1, one line and the guided form; nothing else competes for attention. */
 export function QuickApplyPage({ locale, prefillKey = "", cluster }: { locale: Locale; prefillKey?: string; cluster?: string }) {
-  const t = quickApplyCopy[locale];
+  const t = quickApplyCopy[jobsLocale(locale)];
   const heading = inCluster(locale, cluster)?.heading ?? t.heading;
   const url = localePath(PATH, locale);
   return (

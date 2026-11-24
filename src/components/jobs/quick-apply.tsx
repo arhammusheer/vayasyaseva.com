@@ -15,7 +15,7 @@ import { STEP_DEFS, areaOptions, quickApplyCopy, roleFor, type Answers, type Are
 import { CONTEXT_VERSION } from "@/context/weights";
 import { reportChoice } from "@/context/report";
 import { readPrefill } from "@/lib/prefill";
-import { localePath, splitLocalePath, type Locale } from "@/lib/i18n";
+import { localePath, splitLocalePath, type Locale, jobsLocale } from "@/lib/i18n";
 import { clusterById } from "@/content/registry/clusters";
 import { noteAudience, notePick } from "@/context/runtime";
 import { useVisitorContext } from "@/context/use-context";
@@ -88,8 +88,8 @@ export function QuickApply({
   /** The cluster of the page the form sits on, sent with the application. */
   cluster?: IntakeCluster;
 }) {
-  const t = quickApplyCopy[locale];
-  const form = jobsCopy[locale].form;
+  const t = quickApplyCopy[jobsLocale(locale)];
+  const form = jobsCopy[jobsLocale(locale)].form;
   // Where no market is the page's own (or the link's), the visitor context
   // (src/context) gives the area answers: one decided market's areas (and
   // every other market), else which market, the visitor's markets and
@@ -354,7 +354,7 @@ export function QuickApply({
     setPhase({ name: "sending", message: form.sending });
     try {
       const ref = await submission.send({
-        start: { source: WEB_SOURCE, locale, pageCluster: cluster, pagePath, role, hub, turnstileToken: turnstileToken ?? "", files: declared },
+        start: { source: WEB_SOURCE, locale: jobsLocale(locale), pageCluster: cluster, pagePath, role, hub, turnstileToken: turnstileToken ?? "", files: declared },
         payload: { phone, adult: true, consent: true, text: null, form: "quick", name: name.trim().slice(0, MAX_APPLICANT_NAME_LENGTH), answers: sent, adClick: currentAdClick(), measurement: measurementClaim() },
         resetVerification: resetTurnstile,
         upload: async (uploads) => {

@@ -36,7 +36,8 @@ async function forwarded(draft, extras, text = null) {
 const answers = { work: ['packing'], area: ['laksar'] };
 
 test('rules mirror the canonical locale and cluster ids', () => {
-  assert.deepEqual([...INTAKE_LOCALES], [...LOCALE_TAGS]);
+  // te-IN has location pages but no jobs funnel or intake (jobsLocale in src/lib/i18n.ts).
+  assert.deepEqual([...INTAKE_LOCALES], LOCALE_TAGS.filter((l) => l !== 'te-IN'));
   assert.deepEqual([...INTAKE_CLUSTERS], [...CLUSTER_IDS]);
 });
 

@@ -120,11 +120,11 @@ const HINDI_BELT_SWITCH = ["en-IN", "hi-IN", "hi-Latn-IN"] as const satisfies re
 // Punjabi first where a page has it (owner direction, 17 Oct 2026), then
 // PLAN §6.4's Punjab order: Hinglish · English · हिंदी.
 const PUNJAB_SWITCH = ["pa-IN", "hi-Latn-IN", "en-IN"] as const satisfies readonly LocaleTag[];
-// Andhra Pradesh and Telangana: English first (owner direction, 22 Oct 2026:
-// most of Visakhapatnam's job searches are in English; Hyderabad's are 96%
-// English, Keyword Planner, 27 Oct 2026), then Hinglish and Hindi for workers
-// from the Hindi belt. Telugu is not a site language yet.
-const ANDHRA_SWITCH = ["en-IN", "hi-Latn-IN", "hi-IN"] as const satisfies readonly LocaleTag[];
+// Andhra Pradesh and Telangana: Telugu first where a page has it (owner
+// direction, 24 Nov 2026: the location pages), then English (most of the
+// region's job searches are in English, Keyword Planner, 27 Oct 2026), then
+// Hinglish for workers from the Hindi belt.
+const ANDHRA_SWITCH = ["te-IN", "en-IN", "hi-Latn-IN"] as const satisfies readonly LocaleTag[];
 
 export const MARKETS = {
   "andhra-pradesh": {

@@ -67,7 +67,7 @@ export default function PrivacyPage() {
           // The applicant notice in their own language, once it is published.
           "jobs-privacy": linkable("/jobs/privacy") ? (
             <p>
-              <strong>Applying for work?</strong> Read the short version in English, Hindi or Hinglish:{" "}
+              <strong>Applying for work?</strong> Read the short version in English, हिंदी or Hindi:{" "}
               <Link href="/jobs/privacy">what happens to your details</Link>. The full applicant terms follow, for the record.
             </p>
           ) : null,

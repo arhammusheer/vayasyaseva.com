@@ -11,6 +11,7 @@ import { JsonLd, serviceLandingSchema, webPageSchema } from "@/lib/structured-da
 import { nextServicePage, type ServiceLandingContent } from "@/content/service-pages";
 import { faqHref } from "@/content/faq";
 import { Button } from "@/components/ui/button";
+import { serviceMarketLinks } from "@/components/pages/service-market";
 
 export function serviceLandingMetadata(page: ServiceLandingContent) {
   return pageMetadata({
@@ -67,6 +68,20 @@ export function ServiceLanding({ page }: { page: ServiceLandingContent }) {
               ))}
             </ul>
             <p className="mt-10 border-t pt-8 text-lg leading-relaxed text-muted-foreground">{page.planning}</p>
+            {page.slug === "housekeeping" && serviceMarketLinks("housekeeping").length > 0 && (
+              <nav aria-label="By city" className="mt-8">
+                <p className="text-sm text-muted-foreground">By city</p>
+                <ul className="link-row mt-2">
+                  {serviceMarketLinks("housekeeping").map((m) => (
+                    <li key={m.href}>
+                      <Link href={m.href} className="text-link">
+                        {m.name} <ArrowRight size={18} aria-hidden="true" />
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            )}
           </div>
         </div>
       </Section>

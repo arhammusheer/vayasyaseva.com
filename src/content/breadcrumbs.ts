@@ -18,6 +18,7 @@ export const BREADCRUMB_NAMES: Readonly<Record<string, { "en-IN": string } & Par
   // English only: the home page is English only.
   "/": { "en-IN": "Home" },
   "/services": { "en-IN": "Services" },
+  "/services/housekeeping": { "en-IN": "Housekeeping" },
   "/about": { "en-IN": "About" },
   "/locations": { "en-IN": "Locations" },
   "/locations/uttarakhand": { "en-IN": "Uttarakhand" },
@@ -27,7 +28,7 @@ export const BREADCRUMB_NAMES: Readonly<Record<string, { "en-IN": string } & Par
   "/locations/dehradun": { "en-IN": "Dehradun" },
   "/locations/visakhapatnam": { "en-IN": "Visakhapatnam" },
   "/locations/hyderabad": { "en-IN": "Hyderabad" },
-  "/minimum-wages": { "en-IN": "Minimum wages", "hi-IN": "न्यूनतम मजदूरी" },
+  "/minimum-wages": { "en-IN": "Minimum wages", "hi-IN": "न्यूनतम मज़दूरी" },
   "/labour-welfare-fund": { "en-IN": "Labour Welfare Fund" },
   "/epf": { "en-IN": "EPF" },
   "/esic": { "en-IN": "ESIC" },

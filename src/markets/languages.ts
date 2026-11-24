@@ -13,9 +13,10 @@ import type { LanguageSetName } from "./data";
  * gets a set only if it is promoted (with mr-IN).
  */
 export const LANGUAGE_SETS = {
-  // Andhra Pradesh (22 Oct 2026): English first, then Hinglish and Hindi for
-  // workers from the Hindi belt. No Telugu until it is a site language.
-  andhra: ["en-IN", "hi-Latn-IN", "hi-IN"],
+  // Andhra Pradesh and Telangana: Telugu first where a page has it (owner
+  // direction, 24 Nov 2026: the location pages), then English, then Hinglish
+  // and Hindi for workers from the Hindi belt.
+  andhra: ["te-IN", "en-IN", "hi-Latn-IN", "hi-IN"],
   hindi: ["hi-IN", "hi-Latn-IN", "en-IN"],
   karnataka: ["kn-IN", "en-IN", "hi-Latn-IN", "hi-IN"],
   punjab: ["pa-IN", "hi-Latn-IN", "en-IN", "hi-IN"],

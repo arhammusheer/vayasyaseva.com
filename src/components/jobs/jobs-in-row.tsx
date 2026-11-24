@@ -16,6 +16,7 @@ const COPY: Record<Locale, { label: string; more: string; all: string }> = {
   "hi-Latn-IN": { label: "Job kahan:", more: "Aur jagah", all: "Saari naukriyan" },
   "pa-IN": { label: "ਨੌਕਰੀ ਕਿੱਥੇ:", more: "ਹੋਰ ਥਾਵਾਂ", all: "ਸਾਰੀਆਂ ਨੌਕਰੀਆਂ" },
   "kn-IN": { label: "ಉದ್ಯೋಗ ಎಲ್ಲಿ:", more: "ಇನ್ನಷ್ಟು ಸ್ಥಳಗಳು", all: "ಎಲ್ಲಾ ಉದ್ಯೋಗಗಳು" },
+  "te-IN": { label: "ఉద్యోగాలు ఎక్కడ:", more: "మరిన్ని ప్రదేశాలు", all: "అన్ని ఉద్యోగాలు" },
 };
 
 /**

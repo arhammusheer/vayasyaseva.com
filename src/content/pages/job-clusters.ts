@@ -1,5 +1,6 @@
 import type { FaqItem } from "../types";
-import type { Locale } from "@/lib/i18n";
+import { jobsLocale } from "@/lib/i18n";
+import type { JobsLocale, Locale } from "@/lib/i18n";
 import type { ClusterId } from "@/content/registry/identifiers";
 import type { PayBasis } from "@/content/pay";
 import { AGE_FAQ } from "./job-hubs";
@@ -94,9 +95,9 @@ const KAPURTHALA_PAY: Record<"en-IN" | "hi-IN" | "hi-Latn-IN" | "pa-IN", Cluster
       employerPf: "एम्प्लॉयर का PF, EDLI और एडमिन के साथ",
       employerEsic: "एम्प्लॉयर का ESI",
       total: "कुल रोज़ाना",
-      workerShare: "आपका अपना PF (12%) और ESI (0.75%), मज़दूरी से कटता है",
+      workerShare: "आपका अपना PF (12%) और ESI (0.75%), मज़दूरी से कटते हैं",
       takeHome: "न्यूनतम मज़दूरी पर हाथ में रोज़ाना",
-      note: "क्लाइंट कंपनी कम से कम इतना देती है। सही मज़दूरी आपके ऑफ़र लेटर में होगी।",
+      note: "क्लाइंट कंपनी कम से कम इतना देती है। पक्की रकम आपके ऑफ़र लेटर में लिखी होगी।",
     },
   },
   "hi-Latn-IN": {
@@ -120,23 +121,23 @@ const KAPURTHALA_PAY: Record<"en-IN" | "hi-IN" | "hi-Latn-IN" | "pa-IN", Cluster
     includes: "PF + ESI ਸਮੇਤ",
     how: {
       summary: "₹600+ ਕਿਵੇਂ ਬਣਦਾ ਹੈ",
-      wage: (m) => `ਪੰਜਾਬ ਦੀ ਘੱਟੋ-ਘੱਟ ਤਨਖਾਹ, ਅਕੁਸ਼ਲ (${m} ਮਹੀਨਾ ÷ 26 ਦਿਨ)`,
+      wage: (m) => `ਪੰਜਾਬ ਦੀ ਘੱਟੋ-ਘੱਟ ਤਨਖ਼ਾਹ, ਅਨਸਕਿੱਲਡ (${m} ਮਹੀਨਾ ÷ 26 ਦਿਨ)`,
       employerPf: "ਐਂਪਲਾਇਰ ਦਾ PF, EDLI ਅਤੇ ਐਡਮਿਨ ਸਮੇਤ",
       employerEsic: "ਐਂਪਲਾਇਰ ਦਾ ESI",
       total: "ਕੁੱਲ ਰੋਜ਼ਾਨਾ",
-      workerShare: "ਤੁਹਾਡਾ ਆਪਣਾ PF (12%) ਅਤੇ ESI (0.75%), ਤਨਖਾਹ ਵਿੱਚੋਂ ਕੱਟਦਾ ਹੈ",
-      takeHome: "ਘੱਟੋ-ਘੱਟ ਤਨਖਾਹ 'ਤੇ ਹੱਥ ਵਿੱਚ ਰੋਜ਼ਾਨਾ",
-      note: "ਕਲਾਇੰਟ ਕੰਪਨੀ ਘੱਟੋ-ਘੱਟ ਇੰਨਾ ਦਿੰਦੀ ਹੈ। ਪੱਕੀ ਤਨਖਾਹ ਤੁਹਾਡੇ ਆਫ਼ਰ ਲੈਟਰ ਵਿੱਚ ਹੋਵੇਗੀ।",
+      workerShare: "ਤੁਹਾਡਾ ਆਪਣਾ PF (12%) ਅਤੇ ESI (0.75%), ਜੋ ਤਨਖ਼ਾਹ ਵਿੱਚੋਂ ਕੱਟੇ ਜਾਂਦੇ ਹਨ",
+      takeHome: "ਘੱਟੋ-ਘੱਟ ਤਨਖ਼ਾਹ 'ਤੇ ਰੋਜ਼ ਹੱਥ ਵਿੱਚ",
+      note: "ਕਲਾਇੰਟ ਕੰਪਨੀ ਘੱਟੋ-ਘੱਟ ਇੰਨਾ ਦਿੰਦੀ ਹੈ। ਤੁਹਾਡੀ ਤਨਖ਼ਾਹ ਕਿੰਨੀ ਹੋਵੇਗੀ, ਇਹ ਆਫ਼ਰ ਲੈਟਰ ਵਿੱਚ ਲਿਖਿਆ ਹੋਵੇਗਾ।",
     },
   },
 };
 
-export const jobClusters: Record<Locale, JobClusterCopy[]> = {
+export const jobClusters: Record<JobsLocale, JobClusterCopy[]> = {
   "en-IN": [
     {
       slug: "haridwar",
       name: "Haridwar",
-      metaTitle: "Haridwar Job Vacancy: SIDCUL Factory and Warehouse Jobs",
+      metaTitle: "Haridwar and Roorkee Job Vacancy: SIDCUL Factory Jobs",
       description:
         "Haridwar job vacancy in SIDCUL and Roorkee. No fee. Full 8-hour shifts. Factory, packing, warehouse and housekeeping work. Apply online, a few short questions.",
       eyebrow: "JOBS · HARIDWAR",
@@ -162,7 +163,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "bengaluru",
       name: "Bengaluru",
-      metaTitle: "Factory Jobs in Bengaluru (Bangalore): Join Our List",
+      metaTitle: "Bangalore Job Vacancy: Factory Jobs for Freshers",
       description:
         "Factory, warehouse and housekeeping work in Bengaluru (Bangalore). Join our worker list: no fee, full 8-hour shifts. We call when a site needs your work.",
       eyebrow: "JOBS · BENGALURU",
@@ -196,7 +197,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       // "jalandhar job" ~5,400 a month locally (Keyword Planner, 18 Oct 2026).
       slug: "jalandhar",
       name: "Jalandhar",
-      metaTitle: "Jobs in Jalandhar: Factory, Packing and Warehouse Work",
+      metaTitle: "Jalandhar Job Vacancy: Factory, Packing, Warehouse",
       description:
         "Factory, packing and warehouse work in Jalandhar, its focal points, Kartarpur, Goraya and Phillaur. Join our worker list: no fee, full 8-hour shifts.",
       eyebrow: "JOBS · JALANDHAR",
@@ -246,7 +247,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       name: "Uttarakhand",
       // Outside Haridwar and Dehradun since 18 Oct 2026: titled for the rest
       // of the state's searches (Haldwani, Rudrapur, Kashipur job).
-      metaTitle: "Rudrapur, Kashipur, Haldwani Jobs: Join Our Worker List",
+      metaTitle: "Rudrapur and Kashipur Jobs: Factory Vacancy List",
       description:
         "Factory and warehouse work in Rudrapur, Kashipur, Sitarganj, Haldwani and across Uttarakhand. Join our worker list: no fee, full 8-hour shifts.",
       eyebrow: "JOBS · UTTARAKHAND",
@@ -266,7 +267,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       // in the title (PLAN §5.3). "dehradun job" ~12,100 a month locally.
       slug: "dehradun",
       name: "Dehradun",
-      metaTitle: "Jobs in Dehradun: Selaqui Factory and Warehouse Work",
+      metaTitle: "Dehradun Jobs for Freshers: Selaqui Factory Vacancy",
       description:
         "Factory, packing and warehouse work in Dehradun, Selaqui and Rishikesh. Join our worker list: no fee, full 8-hour shifts. We call when a site needs you.",
       eyebrow: "JOBS · DEHRADUN",
@@ -286,7 +287,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       // 2026 packing requirement: drop it once that is filled.
       slug: "punjab",
       name: "Punjab",
-      metaTitle: "Factory Jobs in Punjab: Join Our Worker List",
+      metaTitle: "Job Vacancy in Punjab: Factory Work, Join Our List",
       description:
         "Factory, packing and warehouse work across Punjab. Join our worker list: no fee, full 8-hour shifts. We call when a site near you needs your work.",
       eyebrow: "JOBS · PUNJAB",
@@ -307,7 +308,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       // seekers there search in English and say "Vizag" as often as not.
       slug: "visakhapatnam",
       name: "Visakhapatnam",
-      metaTitle: "Jobs in Visakhapatnam (Vizag): Factory and Pharma Work",
+      metaTitle: "Jobs in Vizag (Visakhapatnam): Factory, Pharma Vacancy",
       description:
         "Factory, pharma, packing and warehouse work in Vizag: Gajuwaka, Duvvada, Parawada and Atchutapuram. Join our worker list: no fee, full 8-hour shifts.",
       eyebrow: "JOBS · VISAKHAPATNAM",
@@ -345,7 +346,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       // Hyderabad (owner direction, 27 Oct 2026): a worker list, like Visakhapatnam's.
       slug: "hyderabad",
       name: "Hyderabad",
-      metaTitle: "Jobs in Hyderabad: Factory, Pharma and Warehouse Work",
+      metaTitle: "Jobs in Hyderabad for Freshers: Factory, Pharma Vacancy",
       description:
         "Factory, pharma, packing and warehouse work in Hyderabad: Patancheru, Jeedimetla, Uppal and Shamshabad. Join our worker list: no fee, full 8-hour shifts.",
       eyebrow: "JOBS · HYDERABAD",
@@ -386,23 +387,23 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       name: "हरिद्वार",
       metaTitle: "हरिद्वार जॉब वैकेंसी: सिडकुल फ़ैक्टरी और वेयरहाउस का काम",
       description:
-        "सिडकुल हरिद्वार और रुड़की में फ़ैक्टरी, वेयरहाउस की वैकेंसी। कोई फ़ीस नहीं। पूरी 8 घंटे की शिफ्ट। कुछ आसान सवाल, ऑनलाइन आवेदन।",
+        "सिडकुल हरिद्वार और रुड़की में फ़ैक्टरी, वेयरहाउस की वैकेंसी। कोई फ़ीस नहीं। पूरी 8 घंटे की शिफ्ट। कुछ आसान सवाल, ऑनलाइन अप्लाई।",
       eyebrow: "नौकरी · हरिद्वार",
       heading: "हरिद्वार और रुड़की में फ़ैक्टरी और वेयरहाउस की नौकरी।",
       lede: "सिडकुल, बहादराबाद, भगवानपुर और रुड़की में काम।",
-      after: { label: "आवेदन के बाद", steps: ["WhatsApp या SMS", "काम लायक हुआ तो हम कॉल करते हैं", "फ़ैसला आपका"] },
+      after: { label: "अप्लाई करने के बाद", steps: ["WhatsApp या SMS", "आपके लायक काम हुआ तो हम कॉल करते हैं", "फ़ैसला आपका"] },
       faqTitle: "सवाल।",
       faqs: [
         {
           question: "कौन-से कागज़ चाहिए?",
           answer:
-            "10वीं या 12वीं की मार्कशीट। आईटीआई सर्टिफ़िकेट, अगर है। जॉइनिंग पर साइट जो आईडी माँगे। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।",
+            "10वीं या 12वीं की मार्कशीट, और आईटीआई किया है तो उसका सर्टिफ़िकेट। जॉइनिंग पर साइट जो आईडी माँगे, वह भी। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।",
           category: "operations",
         },
         AGE_FAQ["hi-IN"],
         {
-          question: "वेतन कौन देता है?",
-          answer: "हम देते हैं, लागू होने पर EPF और ESIC के साथ।",
+          question: "सैलरी कौन देता है?",
+          answer: "सैलरी हम देते हैं, और जहाँ लागू हो वहाँ EPF और ESIC भी।",
           category: "operations",
         },
       ],
@@ -410,30 +411,30 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "bengaluru",
       name: "बेंगलुरु",
-      metaTitle: "बेंगलुरु (बैंगलोर) में फ़ैक्टरी का काम: हमारी लिस्ट में जुड़ें",
+      metaTitle: "बेंगलुरु (बैंगलोर) में फ़ैक्टरी का काम: हमारी लिस्ट में नाम लिखवाएँ",
       description:
-        "बेंगलुरु (बैंगलोर) में फ़ैक्टरी, वेयरहाउस और हाउसकीपिंग का काम। हमारी वर्कर लिस्ट में जुड़ें: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट। साइट पर ज़रूरत होने पर हम कॉल करते हैं।",
+        "बेंगलुरु (बैंगलोर) में फ़ैक्टरी, वेयरहाउस और हाउसकीपिंग का काम। हमारी लिस्ट में नाम लिखवाएँ: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट। किसी साइट पर लोग चाहिए होंगे तो हम कॉल करेंगे।",
       eyebrow: "नौकरी · बेंगलुरु",
       heading: "बेंगलुरु में फ़ैक्टरी और वेयरहाउस का काम।",
       lede: "हम बेंगलुरु में वर्करों की लिस्ट बना रहे हैं। वहाँ किसी साइट को लोग चाहिए होंगे तो हम आपको कॉल करेंगे।",
-      after: { label: "आवेदन के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
+      after: { label: "अप्लाई करने के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
       faqTitle: "सवाल।",
       faqs: [
         {
           question: "क्या अभी जगह खाली है?",
-          answer: "हर हफ़्ते नहीं। आप हमारी लिस्ट में जुड़ते हैं, और बेंगलुरु की किसी साइट को आपके जैसे काम की ज़रूरत होने पर हम कॉल करते हैं।",
+          answer: "हर हफ़्ते जगह नहीं निकलती। आप हमारी लिस्ट में नाम लिखवाएँ, और बेंगलुरु की किसी साइट को आपके जैसे काम के लिए लोग चाहिए होंगे तो हम कॉल करेंगे।",
           category: "operations",
         },
         {
           question: "कौन-से कागज़ चाहिए?",
           answer:
-            "10वीं या 12वीं की मार्कशीट। आईटीआई सर्टिफ़िकेट, अगर है। जॉइनिंग पर साइट जो आईडी माँगे। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।",
+            "10वीं या 12वीं की मार्कशीट, और आईटीआई किया है तो उसका सर्टिफ़िकेट। जॉइनिंग पर साइट जो आईडी माँगे, वह भी। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।",
           category: "operations",
         },
         AGE_FAQ["hi-IN"],
         {
-          question: "वेतन कौन देता है?",
-          answer: "हम देते हैं, लागू होने पर EPF और ESIC के साथ।",
+          question: "सैलरी कौन देता है?",
+          answer: "सैलरी हम देते हैं, और जहाँ लागू हो वहाँ EPF और ESIC भी।",
           category: "operations",
         },
       ],
@@ -443,17 +444,17 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       name: "जालंधर",
       metaTitle: "जालंधर में नौकरी: फ़ैक्टरी, पैकिंग और वेयरहाउस का काम",
       description:
-        "जालंधर, उसके फ़ोकल पॉइंट, करतारपुर, गुराया और फिल्लौर में फ़ैक्टरी, पैकिंग और वेयरहाउस का काम। हमारी वर्कर लिस्ट में जुड़ें: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट।",
+        "जालंधर (फ़ोकल पॉइंट समेत), करतारपुर, गुराया और फिल्लौर में फ़ैक्टरी, पैकिंग और वेयरहाउस का काम। हमारी लिस्ट में नाम लिखवाएँ: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट।",
       eyebrow: "नौकरी · जालंधर",
       heading: "जालंधर में फ़ैक्टरी और वेयरहाउस का काम।",
       lede: "हम जालंधर, करतारपुर, गुराया और फिल्लौर में वर्करों की लिस्ट बना रहे हैं। वहाँ किसी साइट को लोग चाहिए होंगे तो हम आपको कॉल करेंगे।",
-      after: { label: "आवेदन के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
+      after: { label: "अप्लाई करने के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
       faqTitle: "सवाल।",
       faqs: [
-        { question: "क्या अभी जगह खाली है?", answer: "कपूरथला में हाँ: पैकिंग का काम। जालंधर में हर हफ़्ते नहीं: आप हमारी लिस्ट में जुड़ते हैं, और वहाँ की किसी साइट को आपके जैसे काम की ज़रूरत होने पर हम कॉल करते हैं।", category: "operations" },
-        { question: "कौन-से कागज़ चाहिए?", answer: "10वीं या 12वीं की मार्कशीट। आईटीआई सर्टिफ़िकेट, अगर है। जॉइनिंग पर साइट जो आईडी माँगे। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।", category: "operations" },
+        { question: "क्या अभी जगह खाली है?", answer: "कपूरथला में हाँ, पैकिंग का काम है। जालंधर में हर हफ़्ते जगह नहीं निकलती। आप हमारी लिस्ट में नाम लिखवाएँ, और वहाँ की किसी साइट को आपके जैसे काम के लिए लोग चाहिए होंगे तो हम कॉल करेंगे।", category: "operations" },
+        { question: "कौन-से कागज़ चाहिए?", answer: "10वीं या 12वीं की मार्कशीट, और आईटीआई किया है तो उसका सर्टिफ़िकेट। जॉइनिंग पर साइट जो आईडी माँगे, वह भी। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।", category: "operations" },
         AGE_FAQ["hi-IN"],
-        { question: "वेतन कौन देता है?", answer: "हम देते हैं, लागू होने पर EPF और ESIC के साथ।", category: "operations" },
+        { question: "सैलरी कौन देता है?", answer: "सैलरी हम देते हैं, और जहाँ लागू हो वहाँ EPF और ESIC भी।", category: "operations" },
       ],
     },
     {
@@ -461,24 +462,24 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       name: "कपूरथला",
       metaTitle: "कपूरथला जॉब वैकेंसी: पैकिंग और फ़ैक्टरी का काम, फगवाड़ा",
       description:
-        "कपूरथला और फगवाड़ा में नौकरी की वैकेंसी। कोई फ़ीस नहीं। पूरी 8 घंटे की शिफ्ट। पैकिंग, फ़ैक्टरी और वेयरहाउस का काम। कुछ आसान सवाल, ऑनलाइन आवेदन।",
+        "कपूरथला और फगवाड़ा में नौकरी की वैकेंसी। कोई फ़ीस नहीं। पूरी 8 घंटे की शिफ्ट। पैकिंग, फ़ैक्टरी और वेयरहाउस का काम। कुछ आसान सवाल, ऑनलाइन अप्लाई।",
       eyebrow: "नौकरी · कपूरथला",
       heading: "कपूरथला और फगवाड़ा में पैकिंग और फ़ैक्टरी की नौकरी।",
       lede: "कपूरथला में अभी पैकिंग का काम है। फगवाड़ा और सुल्तानपुर लोधी में फ़ैक्टरी और वेयरहाउस का काम।",
       pay: KAPURTHALA_PAY["hi-IN"],
-      after: { label: "आवेदन के बाद", steps: ["WhatsApp या SMS", "काम लायक हुआ तो हम कॉल करते हैं", "फ़ैसला आपका"] },
+      after: { label: "अप्लाई करने के बाद", steps: ["WhatsApp या SMS", "आपके लायक काम हुआ तो हम कॉल करते हैं", "फ़ैसला आपका"] },
       faqTitle: "सवाल।",
       faqs: [
         {
           question: "कौन-से कागज़ चाहिए?",
           answer:
-            "10वीं या 12वीं की मार्कशीट। आईटीआई सर्टिफ़िकेट, अगर है। जॉइनिंग पर साइट जो आईडी माँगे। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।",
+            "10वीं या 12वीं की मार्कशीट, और आईटीआई किया है तो उसका सर्टिफ़िकेट। जॉइनिंग पर साइट जो आईडी माँगे, वह भी। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।",
           category: "operations",
         },
         AGE_FAQ["hi-IN"],
         {
-          question: "वेतन कौन देता है?",
-          answer: "हम देते हैं, लागू होने पर EPF और ESIC के साथ।",
+          question: "सैलरी कौन देता है?",
+          answer: "सैलरी हम देते हैं, और जहाँ लागू हो वहाँ EPF और ESIC भी।",
           category: "operations",
         },
       ],
@@ -486,19 +487,19 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "uttarakhand",
       name: "उत्तराखंड",
-      metaTitle: "रुद्रपुर, काशीपुर, हल्द्वानी में फ़ैक्टरी का काम: लिस्ट में जुड़ें",
+      metaTitle: "रुद्रपुर, काशीपुर, हल्द्वानी में फ़ैक्टरी का काम: लिस्ट में नाम लिखवाएँ",
       description:
-        "रुद्रपुर, काशीपुर, सितारगंज, हल्द्वानी और पूरे उत्तराखंड में फ़ैक्टरी और वेयरहाउस का काम। हमारी वर्कर लिस्ट में जुड़ें: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट।",
+        "रुद्रपुर, काशीपुर, सितारगंज, हल्द्वानी और पूरे उत्तराखंड में फ़ैक्टरी और वेयरहाउस का काम। हमारी लिस्ट में नाम लिखवाएँ: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट।",
       eyebrow: "नौकरी · उत्तराखंड",
       heading: "रुद्रपुर, काशीपुर और पूरे उत्तराखंड में फ़ैक्टरी और वेयरहाउस का काम।",
-      lede: "हम पूरे उत्तराखंड में वर्करों की लिस्ट बना रहे हैं। आपके पास किसी साइट को लोग चाहिए होंगे तो हम आपको कॉल करेंगे।",
-      after: { label: "आवेदन के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
+      lede: "हम पूरे उत्तराखंड में वर्करों की लिस्ट बना रहे हैं। आपके आस-पास किसी साइट को लोग चाहिए होंगे तो हम आपको कॉल करेंगे।",
+      after: { label: "अप्लाई करने के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
       faqTitle: "सवाल।",
       faqs: [
-        { question: "क्या अभी जगह खाली है?", answer: "हर हफ़्ते नहीं। आप हमारी लिस्ट में जुड़ते हैं, और आपके पास की किसी साइट को आपके जैसे काम की ज़रूरत होने पर हम कॉल करते हैं।", category: "operations" },
-        { question: "कौन-से कागज़ चाहिए?", answer: "10वीं या 12वीं की मार्कशीट। आईटीआई सर्टिफ़िकेट, अगर है। जॉइनिंग पर साइट जो आईडी माँगे। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।", category: "operations" },
+        { question: "क्या अभी जगह खाली है?", answer: "हर हफ़्ते जगह नहीं निकलती। आप हमारी लिस्ट में नाम लिखवाएँ, और आपके आस-पास की किसी साइट को आपके जैसे काम के लिए लोग चाहिए होंगे तो हम कॉल करेंगे।", category: "operations" },
+        { question: "कौन-से कागज़ चाहिए?", answer: "10वीं या 12वीं की मार्कशीट, और आईटीआई किया है तो उसका सर्टिफ़िकेट। जॉइनिंग पर साइट जो आईडी माँगे, वह भी। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।", category: "operations" },
         AGE_FAQ["hi-IN"],
-        { question: "वेतन कौन देता है?", answer: "हम देते हैं, लागू होने पर EPF और ESIC के साथ।", category: "operations" },
+        { question: "सैलरी कौन देता है?", answer: "सैलरी हम देते हैं, और जहाँ लागू हो वहाँ EPF और ESIC भी।", category: "operations" },
       ],
     },
     {
@@ -506,35 +507,35 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       name: "देहरादून",
       metaTitle: "देहरादून में नौकरी: सेलाकुई में फ़ैक्टरी और वेयरहाउस का काम",
       description:
-        "देहरादून, सेलाकुई और ऋषिकेश में फ़ैक्टरी, पैकिंग और वेयरहाउस का काम। हमारी वर्कर लिस्ट में जुड़ें: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट। ज़रूरत होने पर हम कॉल करते हैं।",
+        "देहरादून, सेलाकुई और ऋषिकेश में फ़ैक्टरी, पैकिंग और वेयरहाउस का काम। हमारी लिस्ट में नाम लिखवाएँ: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट। लोग चाहिए होंगे तो हम कॉल करेंगे।",
       eyebrow: "नौकरी · देहरादून",
       heading: "देहरादून में फ़ैक्टरी और वेयरहाउस का काम।",
       lede: "हम देहरादून, सेलाकुई, विकासनगर और ऋषिकेश में वर्करों की लिस्ट बना रहे हैं। वहाँ किसी साइट को लोग चाहिए होंगे तो हम आपको कॉल करेंगे।",
-      after: { label: "आवेदन के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
+      after: { label: "अप्लाई करने के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
       faqTitle: "सवाल।",
       faqs: [
-        { question: "क्या अभी जगह खाली है?", answer: "हर हफ़्ते नहीं। आप हमारी लिस्ट में जुड़ते हैं, और देहरादून या सेलाकुई की किसी साइट को आपके जैसे काम की ज़रूरत होने पर हम कॉल करते हैं।", category: "operations" },
-        { question: "कौन-से कागज़ चाहिए?", answer: "10वीं या 12वीं की मार्कशीट। आईटीआई सर्टिफ़िकेट, अगर है। जॉइनिंग पर साइट जो आईडी माँगे। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।", category: "operations" },
+        { question: "क्या अभी जगह खाली है?", answer: "हर हफ़्ते जगह नहीं निकलती। आप हमारी लिस्ट में नाम लिखवाएँ, और देहरादून या सेलाकुई की किसी साइट को आपके जैसे काम के लिए लोग चाहिए होंगे तो हम कॉल करेंगे।", category: "operations" },
+        { question: "कौन-से कागज़ चाहिए?", answer: "10वीं या 12वीं की मार्कशीट, और आईटीआई किया है तो उसका सर्टिफ़िकेट। जॉइनिंग पर साइट जो आईडी माँगे, वह भी। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।", category: "operations" },
         AGE_FAQ["hi-IN"],
-        { question: "वेतन कौन देता है?", answer: "हम देते हैं, लागू होने पर EPF और ESIC के साथ।", category: "operations" },
+        { question: "सैलरी कौन देता है?", answer: "सैलरी हम देते हैं, और जहाँ लागू हो वहाँ EPF और ESIC भी।", category: "operations" },
       ],
     },
     {
       slug: "punjab",
       name: "पंजाब",
-      metaTitle: "पंजाब में फ़ैक्टरी का काम: हमारी वर्कर लिस्ट में जुड़ें",
+      metaTitle: "पंजाब में फ़ैक्टरी का काम: हमारी लिस्ट में नाम लिखवाएँ",
       description:
-        "पूरे पंजाब में फ़ैक्टरी, पैकिंग और वेयरहाउस का काम। हमारी वर्कर लिस्ट में जुड़ें: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट। साइट पर ज़रूरत होने पर हम कॉल करते हैं।",
+        "पूरे पंजाब में फ़ैक्टरी, पैकिंग और वेयरहाउस का काम। हमारी लिस्ट में नाम लिखवाएँ: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट। किसी साइट पर लोग चाहिए होंगे तो हम कॉल करेंगे।",
       eyebrow: "नौकरी · पंजाब",
       heading: "पूरे पंजाब में फ़ैक्टरी और पैकिंग का काम।",
-      lede: "हम पूरे पंजाब में वर्करों की लिस्ट बना रहे हैं। आपके पास किसी साइट को लोग चाहिए होंगे तो हम आपको कॉल करेंगे।",
-      after: { label: "आवेदन के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
+      lede: "हम पूरे पंजाब में वर्करों की लिस्ट बना रहे हैं। आपके आस-पास किसी साइट को लोग चाहिए होंगे तो हम आपको कॉल करेंगे।",
+      after: { label: "अप्लाई करने के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
       faqTitle: "सवाल।",
       faqs: [
-        { question: "क्या अभी जगह खाली है?", answer: "कपूरथला में हाँ: पैकिंग का काम। बाकी जगह हर हफ़्ते नहीं। आप हमारी लिस्ट में जुड़ते हैं, और आपके पास की किसी साइट को आपके जैसे काम की ज़रूरत होने पर हम कॉल करते हैं।", category: "operations" },
-        { question: "कौन-से कागज़ चाहिए?", answer: "10वीं या 12वीं की मार्कशीट। आईटीआई सर्टिफ़िकेट, अगर है। जॉइनिंग पर साइट जो आईडी माँगे। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।", category: "operations" },
+        { question: "क्या अभी जगह खाली है?", answer: "कपूरथला में हाँ, पैकिंग का काम है। बाकी इलाकों में हर हफ़्ते जगह नहीं निकलती। आप हमारी लिस्ट में नाम लिखवाएँ, और आपके आस-पास की किसी साइट को आपके जैसे काम के लिए लोग चाहिए होंगे तो हम कॉल करेंगे।", category: "operations" },
+        { question: "कौन-से कागज़ चाहिए?", answer: "10वीं या 12वीं की मार्कशीट, और आईटीआई किया है तो उसका सर्टिफ़िकेट। जॉइनिंग पर साइट जो आईडी माँगे, वह भी। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।", category: "operations" },
         AGE_FAQ["hi-IN"],
-        { question: "वेतन कौन देता है?", answer: "हम देते हैं, लागू होने पर EPF और ESIC के साथ।", category: "operations" },
+        { question: "सैलरी कौन देता है?", answer: "सैलरी हम देते हैं, और जहाँ लागू हो वहाँ EPF और ESIC भी।", category: "operations" },
       ],
     },
     {
@@ -542,35 +543,35 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       name: "विशाखापत्तनम",
       metaTitle: "विशाखापत्तनम (वाइज़ैग) में नौकरी: फ़ैक्टरी और फ़ार्मा का काम",
       description:
-        "वाइज़ैग के गाजुवाका, दुव्वाडा, परवाड़ा और अच्युतापुरम में फ़ैक्टरी, फ़ार्मा, पैकिंग और वेयरहाउस का काम। हमारी वर्कर लिस्ट में जुड़ें: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट।",
+        "वाइज़ैग के गाजुवाका, दुव्वाडा, परवाड़ा और अच्युतापुरम में फ़ैक्टरी, फ़ार्मा, पैकिंग और वेयरहाउस का काम। हमारी लिस्ट में नाम लिखवाएँ: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट।",
       eyebrow: "नौकरी · विशाखापत्तनम",
       heading: "विशाखापत्तनम में फ़ैक्टरी और वेयरहाउस का काम।",
       lede: "हम विशाखापत्तनम, गाजुवाका, परवाड़ा और अच्युतापुरम में वर्करों की लिस्ट बना रहे हैं। वहाँ किसी साइट को लोग चाहिए होंगे तो हम आपको कॉल करेंगे।",
-      after: { label: "आवेदन के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
+      after: { label: "अप्लाई करने के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
       faqTitle: "सवाल।",
       faqs: [
-        { question: "क्या अभी जगह खाली है?", answer: "हर हफ़्ते नहीं। आप हमारी लिस्ट में जुड़ते हैं, और वाइज़ैग या अनकापल्ली की किसी साइट को आपके जैसे काम की ज़रूरत होने पर हम कॉल करते हैं।", category: "operations" },
-        { question: "कौन-से कागज़ चाहिए?", answer: "10वीं या 12वीं की मार्कशीट। आईटीआई सर्टिफ़िकेट, अगर है। जॉइनिंग पर साइट जो आईडी माँगे। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।", category: "operations" },
+        { question: "क्या अभी जगह खाली है?", answer: "हर हफ़्ते जगह नहीं निकलती। आप हमारी लिस्ट में नाम लिखवाएँ, और वाइज़ैग या अनकापल्ली की किसी साइट को आपके जैसे काम के लिए लोग चाहिए होंगे तो हम कॉल करेंगे।", category: "operations" },
+        { question: "कौन-से कागज़ चाहिए?", answer: "10वीं या 12वीं की मार्कशीट, और आईटीआई किया है तो उसका सर्टिफ़िकेट। जॉइनिंग पर साइट जो आईडी माँगे, वह भी। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।", category: "operations" },
         AGE_FAQ["hi-IN"],
-        { question: "वेतन कौन देता है?", answer: "हम देते हैं, लागू होने पर EPF और ESIC के साथ।", category: "operations" },
+        { question: "सैलरी कौन देता है?", answer: "सैलरी हम देते हैं, और जहाँ लागू हो वहाँ EPF और ESIC भी।", category: "operations" },
       ],
     },
     {
       slug: "andhra-pradesh",
       name: "आंध्र प्रदेश",
-      metaTitle: "आंध्र प्रदेश में फ़ैक्टरी का काम: हमारी वर्कर लिस्ट में जुड़ें",
+      metaTitle: "आंध्र प्रदेश में फ़ैक्टरी का काम: हमारी लिस्ट में नाम लिखवाएँ",
       description:
-        "विजयवाड़ा, गुंटूर, काकीनाडा, नेल्लोर और पूरे आंध्र प्रदेश में फ़ैक्टरी, पैकिंग और वेयरहाउस का काम। हमारी वर्कर लिस्ट में जुड़ें: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट।",
+        "विजयवाड़ा, गुंटूर, काकीनाडा, नेल्लोर और पूरे आंध्र प्रदेश में फ़ैक्टरी, पैकिंग और वेयरहाउस का काम। हमारी लिस्ट में नाम लिखवाएँ: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट।",
       eyebrow: "नौकरी · आंध्र प्रदेश",
       heading: "पूरे आंध्र प्रदेश में फ़ैक्टरी और वेयरहाउस का काम।",
-      lede: "हम पूरे आंध्र प्रदेश में वर्करों की लिस्ट बना रहे हैं। आपके पास किसी साइट को लोग चाहिए होंगे तो हम आपको कॉल करेंगे।",
-      after: { label: "आवेदन के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
+      lede: "हम पूरे आंध्र प्रदेश में वर्करों की लिस्ट बना रहे हैं। आपके आस-पास किसी साइट को लोग चाहिए होंगे तो हम आपको कॉल करेंगे।",
+      after: { label: "अप्लाई करने के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
       faqTitle: "सवाल।",
       faqs: [
-        { question: "क्या अभी जगह खाली है?", answer: "हर हफ़्ते नहीं। आप हमारी लिस्ट में जुड़ते हैं, और आपके पास की किसी साइट को आपके जैसे काम की ज़रूरत होने पर हम कॉल करते हैं।", category: "operations" },
-        { question: "कौन-से कागज़ चाहिए?", answer: "10वीं या 12वीं की मार्कशीट। आईटीआई सर्टिफ़िकेट, अगर है। जॉइनिंग पर साइट जो आईडी माँगे। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।", category: "operations" },
+        { question: "क्या अभी जगह खाली है?", answer: "हर हफ़्ते जगह नहीं निकलती। आप हमारी लिस्ट में नाम लिखवाएँ, और आपके आस-पास की किसी साइट को आपके जैसे काम के लिए लोग चाहिए होंगे तो हम कॉल करेंगे।", category: "operations" },
+        { question: "कौन-से कागज़ चाहिए?", answer: "10वीं या 12वीं की मार्कशीट, और आईटीआई किया है तो उसका सर्टिफ़िकेट। जॉइनिंग पर साइट जो आईडी माँगे, वह भी। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।", category: "operations" },
         AGE_FAQ["hi-IN"],
-        { question: "वेतन कौन देता है?", answer: "हम देते हैं, लागू होने पर EPF और ESIC के साथ।", category: "operations" },
+        { question: "सैलरी कौन देता है?", answer: "सैलरी हम देते हैं, और जहाँ लागू हो वहाँ EPF और ESIC भी।", category: "operations" },
       ],
     },
     {
@@ -578,35 +579,35 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       name: "हैदराबाद",
       metaTitle: "हैदराबाद में नौकरी: फ़ैक्टरी, फ़ार्मा और वेयरहाउस का काम",
       description:
-        "हैदराबाद के पटनचेरु, जीडीमेटला, उप्पल और शमशाबाद में फ़ैक्टरी, फ़ार्मा, पैकिंग और वेयरहाउस का काम। हमारी वर्कर लिस्ट में जुड़ें: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट।",
+        "हैदराबाद के पटनचेरु, जीडीमेटला, उप्पल और शमशाबाद में फ़ैक्टरी, फ़ार्मा, पैकिंग और वेयरहाउस का काम। हमारी लिस्ट में नाम लिखवाएँ: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट।",
       eyebrow: "नौकरी · हैदराबाद",
       heading: "हैदराबाद में फ़ैक्टरी और वेयरहाउस का काम।",
       lede: "हम हैदराबाद, पटनचेरु, जीडीमेटला, उप्पल और शमशाबाद में वर्करों की लिस्ट बना रहे हैं। वहाँ किसी साइट को लोग चाहिए होंगे तो हम आपको कॉल करेंगे।",
-      after: { label: "आवेदन के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
+      after: { label: "अप्लाई करने के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
       faqTitle: "सवाल।",
       faqs: [
-        { question: "क्या अभी जगह खाली है?", answer: "हर हफ़्ते नहीं। आप हमारी लिस्ट में जुड़ते हैं, और हैदराबाद या उसके आसपास की किसी साइट को आपके जैसे काम की ज़रूरत होने पर हम कॉल करते हैं।", category: "operations" },
-        { question: "कौन-से कागज़ चाहिए?", answer: "10वीं या 12वीं की मार्कशीट। आईटीआई सर्टिफ़िकेट, अगर है। जॉइनिंग पर साइट जो आईडी माँगे। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।", category: "operations" },
+        { question: "क्या अभी जगह खाली है?", answer: "हर हफ़्ते जगह नहीं निकलती। आप हमारी लिस्ट में नाम लिखवाएँ, और हैदराबाद या उसके आसपास की किसी साइट को आपके जैसे काम के लिए लोग चाहिए होंगे तो हम कॉल करेंगे।", category: "operations" },
+        { question: "कौन-से कागज़ चाहिए?", answer: "10वीं या 12वीं की मार्कशीट, और आईटीआई किया है तो उसका सर्टिफ़िकेट। जॉइनिंग पर साइट जो आईडी माँगे, वह भी। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।", category: "operations" },
         AGE_FAQ["hi-IN"],
-        { question: "वेतन कौन देता है?", answer: "हम देते हैं, लागू होने पर EPF और ESIC के साथ।", category: "operations" },
+        { question: "सैलरी कौन देता है?", answer: "सैलरी हम देते हैं, और जहाँ लागू हो वहाँ EPF और ESIC भी।", category: "operations" },
       ],
     },
     {
       slug: "telangana",
       name: "तेलंगाना",
-      metaTitle: "तेलंगाना में फ़ैक्टरी का काम: हमारी वर्कर लिस्ट में जुड़ें",
+      metaTitle: "तेलंगाना में फ़ैक्टरी का काम: हमारी लिस्ट में नाम लिखवाएँ",
       description:
-        "वरंगल, करीमनगर, नलगोंडा, महबूबनगर और पूरे तेलंगाना में फ़ैक्टरी, पैकिंग और वेयरहाउस का काम। हमारी वर्कर लिस्ट में जुड़ें: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट।",
+        "वरंगल, करीमनगर, नलगोंडा, महबूबनगर और पूरे तेलंगाना में फ़ैक्टरी, पैकिंग और वेयरहाउस का काम। हमारी लिस्ट में नाम लिखवाएँ: कोई फ़ीस नहीं, पूरी 8 घंटे की शिफ्ट।",
       eyebrow: "नौकरी · तेलंगाना",
       heading: "पूरे तेलंगाना में फ़ैक्टरी और वेयरहाउस का काम।",
-      lede: "हम पूरे तेलंगाना में वर्करों की लिस्ट बना रहे हैं। आपके पास किसी साइट को लोग चाहिए होंगे तो हम आपको कॉल करेंगे।",
-      after: { label: "आवेदन के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
+      lede: "हम पूरे तेलंगाना में वर्करों की लिस्ट बना रहे हैं। आपके आस-पास किसी साइट को लोग चाहिए होंगे तो हम आपको कॉल करेंगे।",
+      after: { label: "अप्लाई करने के बाद", steps: ["WhatsApp या SMS", "साइट को ज़रूरत होने पर हम कॉल करते हैं", "फ़ैसला आपका"] },
       faqTitle: "सवाल।",
       faqs: [
-        { question: "क्या अभी जगह खाली है?", answer: "हर हफ़्ते नहीं। आप हमारी लिस्ट में जुड़ते हैं, और आपके पास की किसी साइट को आपके जैसे काम की ज़रूरत होने पर हम कॉल करते हैं।", category: "operations" },
-        { question: "कौन-से कागज़ चाहिए?", answer: "10वीं या 12वीं की मार्कशीट। आईटीआई सर्टिफ़िकेट, अगर है। जॉइनिंग पर साइट जो आईडी माँगे। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।", category: "operations" },
+        { question: "क्या अभी जगह खाली है?", answer: "हर हफ़्ते जगह नहीं निकलती। आप हमारी लिस्ट में नाम लिखवाएँ, और आपके आस-पास की किसी साइट को आपके जैसे काम के लिए लोग चाहिए होंगे तो हम कॉल करेंगे।", category: "operations" },
+        { question: "कौन-से कागज़ चाहिए?", answer: "10वीं या 12वीं की मार्कशीट, और आईटीआई किया है तो उसका सर्टिफ़िकेट। जॉइनिंग पर साइट जो आईडी माँगे, वह भी। क्या लाना है, जॉइन से पहले हम बताते हैं। फ़ॉर्म में आधार या बैंक के कागज़ न भेजें।", category: "operations" },
         AGE_FAQ["hi-IN"],
-        { question: "वेतन कौन देता है?", answer: "हम देते हैं, लागू होने पर EPF और ESIC के साथ।", category: "operations" },
+        { question: "सैलरी कौन देता है?", answer: "सैलरी हम देते हैं, और जहाँ लागू हो वहाँ EPF और ESIC भी।", category: "operations" },
       ],
     },
   ],
@@ -614,17 +615,17 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "haridwar",
       name: "Haridwar",
-      metaTitle: "Haridwar Job Vacancy: SIDCUL Factory, Warehouse ka Kaam",
+      metaTitle: "Haridwar, Roorkee Job Vacancy: SIDCUL Factory ka Kaam",
       description:
         "Haridwar job vacancy SIDCUL aur Roorkee mein. Koi fee nahi. Poori 8 ghante ki shift. Factory, packing, warehouse aur housekeeping. Online apply karein.",
       eyebrow: "Jobs · Haridwar",
       heading: "Haridwar aur Roorkee mein factory aur warehouse ki job.",
       lede: "SIDCUL, Bahadrabad, Bhagwanpur aur Roorkee mein kaam.",
-      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Kaam laayak hua to hum call karte hain", "Faisla aapka"] },
+      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Kaam aapke hisaab ka hua to hum call karte hain", "Faisla aapka"] },
       faqTitle: "Sawaal.",
       faqs: [
         {
-          question: "Kaun-se documents chahiye?",
+          question: "Kaunse documents chahiye?",
           answer:
             "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.",
           category: "operations",
@@ -632,7 +633,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
         AGE_FAQ["hi-Latn-IN"],
         {
           question: "Salary kaun deta hai?",
-          answer: "Hum dete hain, laagu hone par EPF aur ESIC ke saath.",
+          answer: "Hum dete hain. Jahan laagu ho, EPF aur ESIC bhi.",
           category: "operations",
         },
       ],
@@ -640,22 +641,22 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "bengaluru",
       name: "Bengaluru",
-      metaTitle: "Bengaluru (Bangalore) Factory Job: List mein Judein",
+      metaTitle: "Bangalore Job Vacancy: Freshers ke liye Factory Job",
       description:
         "Bengaluru (Bangalore) mein factory, warehouse, housekeeping ka kaam. Worker list mein judein: koi fee nahi, 8 ghante ki shift. Zaroorat par hum call karenge.",
       eyebrow: "Jobs · Bengaluru",
       heading: "Bengaluru mein factory aur warehouse ka kaam.",
       lede: "Hum Bengaluru mein workers ki list bana rahe hain. Wahan kisi site ko log chahiye honge to hum aapko call karenge.",
-      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
+      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hui to hum call karte hain", "Faisla aapka"] },
       faqTitle: "Sawaal.",
       faqs: [
         {
           question: "Kya abhi jagah khaali hai?",
-          answer: "Har hafte nahi. Aap hamari list mein judte hain, aur Bengaluru ki kisi site ko aapke jaise kaam ki zaroorat hone par hum call karte hain.",
+          answer: "Har hafte nahi. Aap hamari list mein jud jaate hain, aur jab Bengaluru ki kisi site ko aapke jaise kaam ke liye log chahiye hon, hum call karte hain.",
           category: "operations",
         },
         {
-          question: "Kaun-se documents chahiye?",
+          question: "Kaunse documents chahiye?",
           answer:
             "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.",
           category: "operations",
@@ -663,7 +664,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
         AGE_FAQ["hi-Latn-IN"],
         {
           question: "Salary kaun deta hai?",
-          answer: "Hum dete hain, laagu hone par EPF aur ESIC ke saath.",
+          answer: "Hum dete hain. Jahan laagu ho, EPF aur ESIC bhi.",
           category: "operations",
         },
       ],
@@ -671,19 +672,19 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "jalandhar",
       name: "Jalandhar",
-      metaTitle: "Jalandhar Job: Factory, Packing aur Warehouse ka Kaam",
+      metaTitle: "Jalandhar Job Vacancy: Factory aur Packing ka Kaam",
       description:
         "Jalandhar, Kartarpur, Goraya aur Phillaur mein factory, packing aur warehouse ka kaam. Worker list mein judein: koi fee nahi, 8 ghante ki shift.",
       eyebrow: "Jobs · Jalandhar",
       heading: "Jalandhar mein factory aur warehouse ka kaam.",
       lede: "Hum Jalandhar, Kartarpur, Goraya aur Phillaur mein workers ki list bana rahe hain. Wahan kisi site ko log chahiye honge to hum aapko call karenge.",
-      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
+      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hui to hum call karte hain", "Faisla aapka"] },
       faqTitle: "Sawaal.",
       faqs: [
-        { question: "Kya abhi jagah khaali hai?", answer: "Kapurthala mein haan: packing ka kaam. Jalandhar mein har hafte nahi: aap hamari list mein judte hain, aur wahan ki kisi site ko aapke jaise kaam ki zaroorat hone par hum call karte hain.", category: "operations" },
-        { question: "Kaun-se documents chahiye?", answer: "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.", category: "operations" },
+        { question: "Kya abhi jagah khaali hai?", answer: "Kapurthala mein haan, packing ka kaam hai. Jalandhar mein har hafte nahi. Aap hamari list mein jud jaate hain, aur jab wahan ki kisi site ko aapke jaise kaam ke liye log chahiye hon, hum call karte hain.", category: "operations" },
+        { question: "Kaunse documents chahiye?", answer: "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.", category: "operations" },
         AGE_FAQ["hi-Latn-IN"],
-        { question: "Salary kaun deta hai?", answer: "Hum dete hain, laagu hone par EPF aur ESIC ke saath.", category: "operations" },
+        { question: "Salary kaun deta hai?", answer: "Hum dete hain. Jahan laagu ho, EPF aur ESIC bhi.", category: "operations" },
       ],
     },
     {
@@ -696,11 +697,11 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       heading: "Kapurthala aur Phagwara mein packing aur factory ki job.",
       lede: "Kapurthala mein abhi packing ka kaam hai. Phagwara aur Sultanpur Lodhi mein factory aur warehouse ka kaam.",
       pay: KAPURTHALA_PAY["hi-Latn-IN"],
-      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Kaam laayak hua to hum call karte hain", "Faisla aapka"] },
+      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Kaam aapke hisaab ka hua to hum call karte hain", "Faisla aapka"] },
       faqTitle: "Sawaal.",
       faqs: [
         {
-          question: "Kaun-se documents chahiye?",
+          question: "Kaunse documents chahiye?",
           answer:
             "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.",
           category: "operations",
@@ -708,7 +709,7 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
         AGE_FAQ["hi-Latn-IN"],
         {
           question: "Salary kaun deta hai?",
-          answer: "Hum dete hain, laagu hone par EPF aur ESIC ke saath.",
+          answer: "Hum dete hain. Jahan laagu ho, EPF aur ESIC bhi.",
           category: "operations",
         },
       ],
@@ -716,73 +717,73 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "uttarakhand",
       name: "Uttarakhand",
-      metaTitle: "Rudrapur, Kashipur, Haldwani Job: List mein Judein",
+      metaTitle: "Rudrapur, Kashipur Job Vacancy: List mein Judein",
       description:
         "Rudrapur, Kashipur, Sitarganj, Haldwani aur poore Uttarakhand mein factory aur warehouse ka kaam. Worker list mein judein: koi fee nahi, 8 ghante ki shift.",
       eyebrow: "Jobs · Uttarakhand",
       heading: "Rudrapur, Kashipur aur poore Uttarakhand mein factory aur warehouse ka kaam.",
-      lede: "Hum poore Uttarakhand mein workers ki list bana rahe hain. Aapke paas kisi site ko log chahiye honge to hum aapko call karenge.",
-      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
+      lede: "Hum poore Uttarakhand mein workers ki list bana rahe hain. Aapke aas-paas kisi site ko log chahiye honge to hum aapko call karenge.",
+      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hui to hum call karte hain", "Faisla aapka"] },
       faqTitle: "Sawaal.",
       faqs: [
-        { question: "Kya abhi jagah khaali hai?", answer: "Har hafte nahi. Aap hamari list mein judte hain, aur aapke paas ki kisi site ko aapke jaise kaam ki zaroorat hone par hum call karte hain.", category: "operations" },
-        { question: "Kaun-se documents chahiye?", answer: "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.", category: "operations" },
+        { question: "Kya abhi jagah khaali hai?", answer: "Har hafte nahi. Aap hamari list mein jud jaate hain, aur jab aapke aas-paas ki kisi site ko aapke jaise kaam ke liye log chahiye hon, hum call karte hain.", category: "operations" },
+        { question: "Kaunse documents chahiye?", answer: "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.", category: "operations" },
         AGE_FAQ["hi-Latn-IN"],
-        { question: "Salary kaun deta hai?", answer: "Hum dete hain, laagu hone par EPF aur ESIC ke saath.", category: "operations" },
+        { question: "Salary kaun deta hai?", answer: "Hum dete hain. Jahan laagu ho, EPF aur ESIC bhi.", category: "operations" },
       ],
     },
     {
       slug: "dehradun",
       name: "Dehradun",
-      metaTitle: "Dehradun Job: Selaqui Factory aur Warehouse ka Kaam",
+      metaTitle: "Dehradun Job Vacancy: Selaqui Factory ka Kaam",
       description:
         "Dehradun, Selaqui, Rishikesh mein factory, packing aur warehouse ka kaam. Worker list mein judein: koi fee nahi, 8 ghante ki shift. Zaroorat par call karenge.",
       eyebrow: "Jobs · Dehradun",
       heading: "Dehradun mein factory aur warehouse ka kaam.",
       lede: "Hum Dehradun, Selaqui, Vikasnagar aur Rishikesh mein workers ki list bana rahe hain. Wahan kisi site ko log chahiye honge to hum aapko call karenge.",
-      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
+      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hui to hum call karte hain", "Faisla aapka"] },
       faqTitle: "Sawaal.",
       faqs: [
-        { question: "Kya abhi jagah khaali hai?", answer: "Har hafte nahi. Aap hamari list mein judte hain, aur Dehradun ya Selaqui ki kisi site ko aapke jaise kaam ki zaroorat hone par hum call karte hain.", category: "operations" },
-        { question: "Kaun-se documents chahiye?", answer: "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.", category: "operations" },
+        { question: "Kya abhi jagah khaali hai?", answer: "Har hafte nahi. Aap hamari list mein jud jaate hain, aur jab Dehradun ya Selaqui ki kisi site ko aapke jaise kaam ke liye log chahiye hon, hum call karte hain.", category: "operations" },
+        { question: "Kaunse documents chahiye?", answer: "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.", category: "operations" },
         AGE_FAQ["hi-Latn-IN"],
-        { question: "Salary kaun deta hai?", answer: "Hum dete hain, laagu hone par EPF aur ESIC ke saath.", category: "operations" },
+        { question: "Salary kaun deta hai?", answer: "Hum dete hain. Jahan laagu ho, EPF aur ESIC bhi.", category: "operations" },
       ],
     },
     {
       slug: "punjab",
       name: "Punjab",
-      metaTitle: "Punjab Factory Job: Worker List mein Judein",
+      metaTitle: "Punjab Job Vacancy: Factory Worker List mein Judein",
       description:
         "Poore Punjab mein factory, packing aur warehouse ka kaam. Worker list mein judein: koi fee nahi, 8 ghante ki shift. Zaroorat par hum call karenge.",
       eyebrow: "Jobs · Punjab",
       heading: "Poore Punjab mein factory aur packing ka kaam.",
-      lede: "Hum poore Punjab mein workers ki list bana rahe hain. Aapke paas kisi site ko log chahiye honge to hum aapko call karenge.",
-      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
+      lede: "Hum poore Punjab mein workers ki list bana rahe hain. Aapke aas-paas kisi site ko log chahiye honge to hum aapko call karenge.",
+      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hui to hum call karte hain", "Faisla aapka"] },
       faqTitle: "Sawaal.",
       faqs: [
-        { question: "Kya abhi jagah khaali hai?", answer: "Kapurthala mein haan: packing ka kaam. Baaki jagah har hafte nahi. Aap hamari list mein judte hain, aur aapke paas ki kisi site ko aapke jaise kaam ki zaroorat hone par hum call karte hain.", category: "operations" },
-        { question: "Kaun-se documents chahiye?", answer: "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.", category: "operations" },
+        { question: "Kya abhi jagah khaali hai?", answer: "Kapurthala mein haan, packing ka kaam hai. Baaki jagah har hafte nahi. Aap hamari list mein jud jaate hain, aur jab aapke aas-paas ki kisi site ko aapke jaise kaam ke liye log chahiye hon, hum call karte hain.", category: "operations" },
+        { question: "Kaunse documents chahiye?", answer: "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.", category: "operations" },
         AGE_FAQ["hi-Latn-IN"],
-        { question: "Salary kaun deta hai?", answer: "Hum dete hain, laagu hone par EPF aur ESIC ke saath.", category: "operations" },
+        { question: "Salary kaun deta hai?", answer: "Hum dete hain. Jahan laagu ho, EPF aur ESIC bhi.", category: "operations" },
       ],
     },
     {
       slug: "visakhapatnam",
       name: "Visakhapatnam",
-      metaTitle: "Vizag (Visakhapatnam) Job: Factory aur Pharma ka Kaam",
+      metaTitle: "Vizag Job Vacancy: Factory aur Pharma ka Kaam",
       description:
         "Vizag ke Gajuwaka, Duvvada, Parawada aur Atchutapuram mein factory, pharma, packing aur warehouse ka kaam. List mein judein: koi fee nahi, 8 ghante ki shift.",
       eyebrow: "Jobs · Visakhapatnam",
       heading: "Visakhapatnam mein factory aur warehouse ka kaam.",
       lede: "Hum Visakhapatnam, Gajuwaka, Parawada aur Atchutapuram mein workers ki list bana rahe hain. Wahan kisi site ko log chahiye honge to hum aapko call karenge.",
-      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
+      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hui to hum call karte hain", "Faisla aapka"] },
       faqTitle: "Sawaal.",
       faqs: [
-        { question: "Kya abhi jagah khaali hai?", answer: "Har hafte nahi. Aap hamari list mein judte hain, aur Vizag ya Anakapalli ki kisi site ko aapke jaise kaam ki zaroorat hone par hum call karte hain.", category: "operations" },
-        { question: "Kaun-se documents chahiye?", answer: "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.", category: "operations" },
+        { question: "Kya abhi jagah khaali hai?", answer: "Har hafte nahi. Aap hamari list mein jud jaate hain, aur jab Vizag ya Anakapalli ki kisi site ko aapke jaise kaam ke liye log chahiye hon, hum call karte hain.", category: "operations" },
+        { question: "Kaunse documents chahiye?", answer: "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.", category: "operations" },
         AGE_FAQ["hi-Latn-IN"],
-        { question: "Salary kaun deta hai?", answer: "Hum dete hain, laagu hone par EPF aur ESIC ke saath.", category: "operations" },
+        { question: "Salary kaun deta hai?", answer: "Hum dete hain. Jahan laagu ho, EPF aur ESIC bhi.", category: "operations" },
       ],
     },
     {
@@ -793,32 +794,32 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
         "Vijayawada, Guntur, Kakinada, Nellore aur poore Andhra Pradesh mein factory, packing, warehouse ka kaam. List mein judein: koi fee nahi, 8 ghante ki shift.",
       eyebrow: "Jobs · Andhra Pradesh",
       heading: "Poore Andhra Pradesh mein factory aur warehouse ka kaam.",
-      lede: "Hum poore Andhra Pradesh mein workers ki list bana rahe hain. Aapke paas kisi site ko log chahiye honge to hum aapko call karenge.",
-      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
+      lede: "Hum poore Andhra Pradesh mein workers ki list bana rahe hain. Aapke aas-paas kisi site ko log chahiye honge to hum aapko call karenge.",
+      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hui to hum call karte hain", "Faisla aapka"] },
       faqTitle: "Sawaal.",
       faqs: [
-        { question: "Kya abhi jagah khaali hai?", answer: "Har hafte nahi. Aap hamari list mein judte hain, aur aapke paas ki kisi site ko aapke jaise kaam ki zaroorat hone par hum call karte hain.", category: "operations" },
-        { question: "Kaun-se documents chahiye?", answer: "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.", category: "operations" },
+        { question: "Kya abhi jagah khaali hai?", answer: "Har hafte nahi. Aap hamari list mein jud jaate hain, aur jab aapke aas-paas ki kisi site ko aapke jaise kaam ke liye log chahiye hon, hum call karte hain.", category: "operations" },
+        { question: "Kaunse documents chahiye?", answer: "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.", category: "operations" },
         AGE_FAQ["hi-Latn-IN"],
-        { question: "Salary kaun deta hai?", answer: "Hum dete hain, laagu hone par EPF aur ESIC ke saath.", category: "operations" },
+        { question: "Salary kaun deta hai?", answer: "Hum dete hain. Jahan laagu ho, EPF aur ESIC bhi.", category: "operations" },
       ],
     },
     {
       slug: "hyderabad",
       name: "Hyderabad",
-      metaTitle: "Hyderabad Job: Factory, Pharma aur Warehouse ka Kaam",
+      metaTitle: "Hyderabad Job Vacancy: Factory aur Pharma ka Kaam",
       description:
         "Hyderabad ke Patancheru, Jeedimetla, Uppal aur Shamshabad mein factory, pharma, packing, warehouse ka kaam. List mein judein: koi fee nahi, 8 ghante ki shift.",
       eyebrow: "Jobs · Hyderabad",
       heading: "Hyderabad mein factory aur warehouse ka kaam.",
       lede: "Hum Hyderabad, Patancheru, Jeedimetla, Uppal aur Shamshabad mein workers ki list bana rahe hain. Wahan kisi site ko log chahiye honge to hum aapko call karenge.",
-      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
+      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hui to hum call karte hain", "Faisla aapka"] },
       faqTitle: "Sawaal.",
       faqs: [
-        { question: "Kya abhi jagah khaali hai?", answer: "Har hafte nahi. Aap hamari list mein judte hain, aur Hyderabad ya uske aaspaas ki kisi site ko aapke jaise kaam ki zaroorat hone par hum call karte hain.", category: "operations" },
-        { question: "Kaun-se documents chahiye?", answer: "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.", category: "operations" },
+        { question: "Kya abhi jagah khaali hai?", answer: "Har hafte nahi. Aap hamari list mein jud jaate hain, aur jab Hyderabad ya uske aas-paas ki kisi site ko aapke jaise kaam ke liye log chahiye hon, hum call karte hain.", category: "operations" },
+        { question: "Kaunse documents chahiye?", answer: "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.", category: "operations" },
         AGE_FAQ["hi-Latn-IN"],
-        { question: "Salary kaun deta hai?", answer: "Hum dete hain, laagu hone par EPF aur ESIC ke saath.", category: "operations" },
+        { question: "Salary kaun deta hai?", answer: "Hum dete hain. Jahan laagu ho, EPF aur ESIC bhi.", category: "operations" },
       ],
     },
     {
@@ -829,14 +830,14 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
         "Warangal, Karimnagar, Nalgonda, Mahabubnagar aur poore Telangana mein factory, packing, warehouse ka kaam. List mein judein: koi fee nahi, 8 ghante ki shift.",
       eyebrow: "Jobs · Telangana",
       heading: "Poore Telangana mein factory aur warehouse ka kaam.",
-      lede: "Hum poore Telangana mein workers ki list bana rahe hain. Aapke paas kisi site ko log chahiye honge to hum aapko call karenge.",
-      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hone par hum call karte hain", "Faisla aapka"] },
+      lede: "Hum poore Telangana mein workers ki list bana rahe hain. Aapke aas-paas kisi site ko log chahiye honge to hum aapko call karenge.",
+      after: { label: "Apply ke baad", steps: ["WhatsApp ya SMS", "Site ko zaroorat hui to hum call karte hain", "Faisla aapka"] },
       faqTitle: "Sawaal.",
       faqs: [
-        { question: "Kya abhi jagah khaali hai?", answer: "Har hafte nahi. Aap hamari list mein judte hain, aur aapke paas ki kisi site ko aapke jaise kaam ki zaroorat hone par hum call karte hain.", category: "operations" },
-        { question: "Kaun-se documents chahiye?", answer: "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.", category: "operations" },
+        { question: "Kya abhi jagah khaali hai?", answer: "Har hafte nahi. Aap hamari list mein jud jaate hain, aur jab aapke aas-paas ki kisi site ko aapke jaise kaam ke liye log chahiye hon, hum call karte hain.", category: "operations" },
+        { question: "Kaunse documents chahiye?", answer: "10th ya 12th ki marksheet. ITI certificate, agar hai. Joining par site jo ID maange. Kya lana hai, join se pehle hum batate hain. Form mein Aadhaar ya bank ke kaagaz na bhejein.", category: "operations" },
         AGE_FAQ["hi-Latn-IN"],
-        { question: "Salary kaun deta hai?", answer: "Hum dete hain, laagu hone par EPF aur ESIC ke saath.", category: "operations" },
+        { question: "Salary kaun deta hai?", answer: "Hum dete hain. Jahan laagu ho, EPF aur ESIC bhi.", category: "operations" },
       ],
     },
   ],
@@ -847,17 +848,17 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       name: "ਜਲੰਧਰ",
       metaTitle: "ਜਲੰਧਰ ਵਿੱਚ ਨੌਕਰੀ: ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ",
       description:
-        "ਜਲੰਧਰ, ਇਸਦੇ ਫ਼ੋਕਲ ਪੁਆਇੰਟ, ਕਰਤਾਰਪੁਰ, ਗੁਰਾਇਆ ਅਤੇ ਫਿਲੌਰ ਵਿੱਚ ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ। ਸਾਡੀ ਵਰਕਰ ਲਿਸਟ ਵਿੱਚ ਜੁੜੋ: ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ, ਪੂਰੀ 8 ਘੰਟੇ ਦੀ ਸ਼ਿਫ਼ਟ।",
+        "ਜਲੰਧਰ, ਇਸਦੇ ਫ਼ੋਕਲ ਪੁਆਇੰਟ, ਕਰਤਾਰਪੁਰ, ਗੁਰਾਇਆ ਅਤੇ ਫਿਲੌਰ ਵਿੱਚ ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ। ਸਾਡੀ ਵਰਕਰ ਲਿਸਟ ਵਿੱਚ ਨਾਮ ਲਿਖਵਾਓ: ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ, ਪੂਰੀ 8 ਘੰਟੇ ਦੀ ਸ਼ਿਫ਼ਟ।",
       eyebrow: "ਨੌਕਰੀ · ਜਲੰਧਰ",
       heading: "ਜਲੰਧਰ ਵਿੱਚ ਫ਼ੈਕਟਰੀ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ।",
       lede: "ਅਸੀਂ ਜਲੰਧਰ, ਕਰਤਾਰਪੁਰ, ਗੁਰਾਇਆ ਅਤੇ ਫਿਲੌਰ ਵਿੱਚ ਵਰਕਰਾਂ ਦੀ ਲਿਸਟ ਬਣਾ ਰਹੇ ਹਾਂ। ਉੱਥੇ ਕਿਸੇ ਸਾਈਟ ਨੂੰ ਲੋਕ ਚਾਹੀਦੇ ਹੋਣਗੇ ਤਾਂ ਅਸੀਂ ਤੁਹਾਨੂੰ ਕਾਲ ਕਰਾਂਗੇ।",
-      after: { label: "ਅਪਲਾਈ ਕਰਨ ਤੋਂ ਬਾਅਦ", steps: ["VAYSPL ਤੋਂ SMS", "ਸਾਈਟ ਨੂੰ ਲੋੜ ਹੋਣ 'ਤੇ ਅਸੀਂ ਕਾਲ ਕਰਦੇ ਹਾਂ", "ਫ਼ੈਸਲਾ ਤੁਹਾਡਾ"] },
+      after: { label: "ਅਪਲਾਈ ਕਰਨ ਤੋਂ ਬਾਅਦ", steps: ["WhatsApp ਜਾਂ SMS", "ਸਾਈਟ ਨੂੰ ਲੋੜ ਹੋਣ 'ਤੇ ਅਸੀਂ ਕਾਲ ਕਰਦੇ ਹਾਂ", "ਫ਼ੈਸਲਾ ਤੁਹਾਡਾ"] },
       faqTitle: "ਸਵਾਲ।",
       faqs: [
-        { question: "ਕੀ ਹੁਣ ਜਗ੍ਹਾ ਖ਼ਾਲੀ ਹੈ?", answer: "ਕਪੂਰਥਲਾ ਵਿੱਚ ਹਾਂ: ਪੈਕਿੰਗ ਦਾ ਕੰਮ। ਜਲੰਧਰ ਵਿੱਚ ਹਰ ਹਫ਼ਤੇ ਨਹੀਂ: ਤੁਸੀਂ ਸਾਡੀ ਲਿਸਟ ਵਿੱਚ ਜੁੜਦੇ ਹੋ, ਅਤੇ ਉੱਥੇ ਦੀ ਕਿਸੇ ਸਾਈਟ ਨੂੰ ਤੁਹਾਡੇ ਵਰਗੇ ਕੰਮ ਦੀ ਲੋੜ ਹੋਣ 'ਤੇ ਅਸੀਂ ਕਾਲ ਕਰਦੇ ਹਾਂ।", category: "operations" },
-        { question: "ਕਿਹੜੇ ਕਾਗਜ਼ ਚਾਹੀਦੇ ਹਨ?", answer: "10ਵੀਂ ਜਾਂ 12ਵੀਂ ਦੀ ਮਾਰਕਸ਼ੀਟ। ਆਈਟੀਆਈ ਸਰਟੀਫ਼ਿਕੇਟ, ਜੇ ਹੈ। ਜੁਆਇਨਿੰਗ 'ਤੇ ਸਾਈਟ ਜੋ ਆਈਡੀ ਮੰਗੇ। ਕੀ ਲਿਆਉਣਾ ਹੈ, ਜੁਆਇਨ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਅਸੀਂ ਦੱਸਦੇ ਹਾਂ। ਫ਼ਾਰਮ ਵਿੱਚ ਆਧਾਰ ਜਾਂ ਬੈਂਕ ਦੇ ਕਾਗਜ਼ ਨਾ ਭੇਜੋ।", category: "operations" },
+        { question: "ਕੀ ਹੁਣ ਕੋਈ ਵੈਕੈਂਸੀ ਹੈ?", answer: "ਕਪੂਰਥਲਾ ਵਿੱਚ ਹਾਂ: ਪੈਕਿੰਗ ਦਾ ਕੰਮ। ਜਲੰਧਰ ਵਿੱਚ ਹਰ ਹਫ਼ਤੇ ਨਹੀਂ ਹੁੰਦੀ: ਤੁਸੀਂ ਸਾਡੀ ਲਿਸਟ ਵਿੱਚ ਨਾਮ ਲਿਖਵਾ ਦਿਓ, ਅਤੇ ਜਦੋਂ ਉੱਥੇ ਕਿਸੇ ਸਾਈਟ 'ਤੇ ਤੁਹਾਡੇ ਵਾਲਾ ਕੰਮ ਨਿਕਲਦਾ ਹੈ, ਅਸੀਂ ਕਾਲ ਕਰਦੇ ਹਾਂ।", category: "operations" },
+        { question: "ਕਿਹੜੇ ਕਾਗਜ਼ ਚਾਹੀਦੇ ਹਨ?", answer: "10ਵੀਂ ਜਾਂ 12ਵੀਂ ਦੀ ਮਾਰਕਸ਼ੀਟ। ਆਈਟੀਆਈ ਦਾ ਸਰਟੀਫ਼ਿਕੇਟ, ਜੇ ਹੈ ਤਾਂ। ਜੁਆਇਨਿੰਗ ਵੇਲੇ ਸਾਈਟ ਵਾਲੇ ਜਿਹੜੀ ਆਈਡੀ ਮੰਗਣ। ਕੀ ਲੈ ਕੇ ਆਉਣਾ ਹੈ, ਇਹ ਅਸੀਂ ਜੁਆਇਨ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਦੱਸ ਦਿੰਦੇ ਹਾਂ। ਫ਼ਾਰਮ ਵਿੱਚ ਆਧਾਰ ਜਾਂ ਬੈਂਕ ਦੇ ਕਾਗਜ਼ ਨਾ ਭੇਜੋ।", category: "operations" },
         AGE_FAQ["pa-IN"],
-        { question: "ਤਨਖ਼ਾਹ ਕੌਣ ਦਿੰਦਾ ਹੈ?", answer: "ਅਸੀਂ ਦਿੰਦੇ ਹਾਂ, ਲਾਗੂ ਹੋਣ 'ਤੇ EPF ਅਤੇ ESIC ਦੇ ਨਾਲ।", category: "operations" },
+        { question: "ਤਨਖ਼ਾਹ ਕੌਣ ਦਿੰਦਾ ਹੈ?", answer: "ਅਸੀਂ ਦਿੰਦੇ ਹਾਂ, ਅਤੇ ਜਿੱਥੇ ਬਣਦਾ ਹੈ ਉੱਥੇ EPF ਅਤੇ ESIC ਵੀ।", category: "operations" },
       ],
     },
     {
@@ -870,19 +871,19 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       heading: "ਕਪੂਰਥਲਾ ਅਤੇ ਫਗਵਾੜਾ ਵਿੱਚ ਪੈਕਿੰਗ ਅਤੇ ਫ਼ੈਕਟਰੀ ਦੀ ਨੌਕਰੀ।",
       lede: "ਕਪੂਰਥਲਾ ਵਿੱਚ ਹੁਣ ਪੈਕਿੰਗ ਦਾ ਕੰਮ ਹੈ। ਫਗਵਾੜਾ ਅਤੇ ਸੁਲਤਾਨਪੁਰ ਲੋਧੀ ਵਿੱਚ ਫ਼ੈਕਟਰੀ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ।",
       pay: KAPURTHALA_PAY["pa-IN"],
-      after: { label: "ਅਪਲਾਈ ਕਰਨ ਤੋਂ ਬਾਅਦ", steps: ["VAYSPL ਤੋਂ SMS", "ਕੰਮ ਲਾਇਕ ਹੋਇਆ ਤਾਂ ਅਸੀਂ ਕਾਲ ਕਰਦੇ ਹਾਂ", "ਫ਼ੈਸਲਾ ਤੁਹਾਡਾ"] },
+      after: { label: "ਅਪਲਾਈ ਕਰਨ ਤੋਂ ਬਾਅਦ", steps: ["WhatsApp ਜਾਂ SMS", "ਕੰਮ ਲਾਇਕ ਹੋਇਆ ਤਾਂ ਅਸੀਂ ਕਾਲ ਕਰਦੇ ਹਾਂ", "ਫ਼ੈਸਲਾ ਤੁਹਾਡਾ"] },
       faqTitle: "ਸਵਾਲ।",
       faqs: [
         {
           question: "ਕਿਹੜੇ ਕਾਗਜ਼ ਚਾਹੀਦੇ ਹਨ?",
           answer:
-            "10ਵੀਂ ਜਾਂ 12ਵੀਂ ਦੀ ਮਾਰਕਸ਼ੀਟ। ਆਈਟੀਆਈ ਸਰਟੀਫ਼ਿਕੇਟ, ਜੇ ਹੈ। ਜੁਆਇਨਿੰਗ 'ਤੇ ਸਾਈਟ ਜੋ ਆਈਡੀ ਮੰਗੇ। ਕੀ ਲਿਆਉਣਾ ਹੈ, ਜੁਆਇਨ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਅਸੀਂ ਦੱਸਦੇ ਹਾਂ। ਫ਼ਾਰਮ ਵਿੱਚ ਆਧਾਰ ਜਾਂ ਬੈਂਕ ਦੇ ਕਾਗਜ਼ ਨਾ ਭੇਜੋ।",
+            "10ਵੀਂ ਜਾਂ 12ਵੀਂ ਦੀ ਮਾਰਕਸ਼ੀਟ। ਆਈਟੀਆਈ ਦਾ ਸਰਟੀਫ਼ਿਕੇਟ, ਜੇ ਹੈ ਤਾਂ। ਜੁਆਇਨਿੰਗ ਵੇਲੇ ਸਾਈਟ ਵਾਲੇ ਜਿਹੜੀ ਆਈਡੀ ਮੰਗਣ। ਕੀ ਲੈ ਕੇ ਆਉਣਾ ਹੈ, ਇਹ ਅਸੀਂ ਜੁਆਇਨ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਦੱਸ ਦਿੰਦੇ ਹਾਂ। ਫ਼ਾਰਮ ਵਿੱਚ ਆਧਾਰ ਜਾਂ ਬੈਂਕ ਦੇ ਕਾਗਜ਼ ਨਾ ਭੇਜੋ।",
           category: "operations",
         },
         AGE_FAQ["pa-IN"],
         {
           question: "ਤਨਖ਼ਾਹ ਕੌਣ ਦਿੰਦਾ ਹੈ?",
-          answer: "ਅਸੀਂ ਦਿੰਦੇ ਹਾਂ, ਲਾਗੂ ਹੋਣ 'ਤੇ EPF ਅਤੇ ESIC ਦੇ ਨਾਲ।",
+          answer: "ਅਸੀਂ ਦਿੰਦੇ ਹਾਂ, ਅਤੇ ਜਿੱਥੇ ਬਣਦਾ ਹੈ ਉੱਥੇ EPF ਅਤੇ ESIC ਵੀ।",
           category: "operations",
         },
       ],
@@ -890,19 +891,19 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
     {
       slug: "punjab",
       name: "ਪੰਜਾਬ",
-      metaTitle: "ਪੰਜਾਬ ਵਿੱਚ ਫ਼ੈਕਟਰੀ ਦਾ ਕੰਮ: ਸਾਡੀ ਵਰਕਰ ਲਿਸਟ ਵਿੱਚ ਜੁੜੋ",
+      metaTitle: "ਪੰਜਾਬ ਵਿੱਚ ਫ਼ੈਕਟਰੀ ਦਾ ਕੰਮ: ਵਰਕਰ ਲਿਸਟ ਵਿੱਚ ਨਾਮ ਲਿਖਵਾਓ",
       description:
-        "ਪੂਰੇ ਪੰਜਾਬ ਵਿੱਚ ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ। ਸਾਡੀ ਵਰਕਰ ਲਿਸਟ ਵਿੱਚ ਜੁੜੋ: ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ, ਪੂਰੀ 8 ਘੰਟੇ ਦੀ ਸ਼ਿਫ਼ਟ। ਸਾਈਟ ਨੂੰ ਲੋੜ ਹੋਣ 'ਤੇ ਅਸੀਂ ਕਾਲ ਕਰਦੇ ਹਾਂ।",
+        "ਪੂਰੇ ਪੰਜਾਬ ਵਿੱਚ ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ ਅਤੇ ਵੇਅਰਹਾਊਸ ਦਾ ਕੰਮ। ਸਾਡੀ ਵਰਕਰ ਲਿਸਟ ਵਿੱਚ ਨਾਮ ਲਿਖਵਾਓ: ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ, ਪੂਰੀ 8 ਘੰਟੇ ਦੀ ਸ਼ਿਫ਼ਟ। ਤੁਹਾਡੇ ਨੇੜੇ ਕਿਸੇ ਸਾਈਟ ਨੂੰ ਲੋੜ ਹੋਣ 'ਤੇ ਅਸੀਂ ਕਾਲ ਕਰਦੇ ਹਾਂ।",
       eyebrow: "ਨੌਕਰੀ · ਪੰਜਾਬ",
       heading: "ਪੂਰੇ ਪੰਜਾਬ ਵਿੱਚ ਫ਼ੈਕਟਰੀ ਅਤੇ ਪੈਕਿੰਗ ਦਾ ਕੰਮ।",
       lede: "ਅਸੀਂ ਪੂਰੇ ਪੰਜਾਬ ਵਿੱਚ ਵਰਕਰਾਂ ਦੀ ਲਿਸਟ ਬਣਾ ਰਹੇ ਹਾਂ। ਤੁਹਾਡੇ ਨੇੜੇ ਕਿਸੇ ਸਾਈਟ ਨੂੰ ਲੋਕ ਚਾਹੀਦੇ ਹੋਣਗੇ ਤਾਂ ਅਸੀਂ ਤੁਹਾਨੂੰ ਕਾਲ ਕਰਾਂਗੇ।",
-      after: { label: "ਅਪਲਾਈ ਕਰਨ ਤੋਂ ਬਾਅਦ", steps: ["VAYSPL ਤੋਂ SMS", "ਸਾਈਟ ਨੂੰ ਲੋੜ ਹੋਣ 'ਤੇ ਅਸੀਂ ਕਾਲ ਕਰਦੇ ਹਾਂ", "ਫ਼ੈਸਲਾ ਤੁਹਾਡਾ"] },
+      after: { label: "ਅਪਲਾਈ ਕਰਨ ਤੋਂ ਬਾਅਦ", steps: ["WhatsApp ਜਾਂ SMS", "ਸਾਈਟ ਨੂੰ ਲੋੜ ਹੋਣ 'ਤੇ ਅਸੀਂ ਕਾਲ ਕਰਦੇ ਹਾਂ", "ਫ਼ੈਸਲਾ ਤੁਹਾਡਾ"] },
       faqTitle: "ਸਵਾਲ।",
       faqs: [
-        { question: "ਕੀ ਹੁਣ ਜਗ੍ਹਾ ਖ਼ਾਲੀ ਹੈ?", answer: "ਕਪੂਰਥਲਾ ਵਿੱਚ ਹਾਂ: ਪੈਕਿੰਗ ਦਾ ਕੰਮ। ਬਾਕੀ ਥਾਵਾਂ 'ਤੇ ਹਰ ਹਫ਼ਤੇ ਨਹੀਂ। ਤੁਸੀਂ ਸਾਡੀ ਲਿਸਟ ਵਿੱਚ ਜੁੜਦੇ ਹੋ, ਅਤੇ ਤੁਹਾਡੇ ਨੇੜੇ ਦੀ ਕਿਸੇ ਸਾਈਟ ਨੂੰ ਤੁਹਾਡੇ ਵਰਗੇ ਕੰਮ ਦੀ ਲੋੜ ਹੋਣ 'ਤੇ ਅਸੀਂ ਕਾਲ ਕਰਦੇ ਹਾਂ।", category: "operations" },
-        { question: "ਕਿਹੜੇ ਕਾਗਜ਼ ਚਾਹੀਦੇ ਹਨ?", answer: "10ਵੀਂ ਜਾਂ 12ਵੀਂ ਦੀ ਮਾਰਕਸ਼ੀਟ। ਆਈਟੀਆਈ ਸਰਟੀਫ਼ਿਕੇਟ, ਜੇ ਹੈ। ਜੁਆਇਨਿੰਗ 'ਤੇ ਸਾਈਟ ਜੋ ਆਈਡੀ ਮੰਗੇ। ਕੀ ਲਿਆਉਣਾ ਹੈ, ਜੁਆਇਨ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਅਸੀਂ ਦੱਸਦੇ ਹਾਂ। ਫ਼ਾਰਮ ਵਿੱਚ ਆਧਾਰ ਜਾਂ ਬੈਂਕ ਦੇ ਕਾਗਜ਼ ਨਾ ਭੇਜੋ।", category: "operations" },
+        { question: "ਕੀ ਹੁਣ ਕੋਈ ਵੈਕੈਂਸੀ ਹੈ?", answer: "ਕਪੂਰਥਲਾ ਵਿੱਚ ਹਾਂ: ਪੈਕਿੰਗ ਦਾ ਕੰਮ। ਬਾਕੀ ਥਾਵਾਂ 'ਤੇ ਹਰ ਹਫ਼ਤੇ ਨਹੀਂ ਹੁੰਦੀ। ਤੁਸੀਂ ਸਾਡੀ ਲਿਸਟ ਵਿੱਚ ਨਾਮ ਲਿਖਵਾ ਦਿਓ, ਅਤੇ ਜਦੋਂ ਤੁਹਾਡੇ ਨੇੜੇ ਕਿਸੇ ਸਾਈਟ 'ਤੇ ਤੁਹਾਡੇ ਵਾਲਾ ਕੰਮ ਨਿਕਲਦਾ ਹੈ, ਅਸੀਂ ਕਾਲ ਕਰਦੇ ਹਾਂ।", category: "operations" },
+        { question: "ਕਿਹੜੇ ਕਾਗਜ਼ ਚਾਹੀਦੇ ਹਨ?", answer: "10ਵੀਂ ਜਾਂ 12ਵੀਂ ਦੀ ਮਾਰਕਸ਼ੀਟ। ਆਈਟੀਆਈ ਦਾ ਸਰਟੀਫ਼ਿਕੇਟ, ਜੇ ਹੈ ਤਾਂ। ਜੁਆਇਨਿੰਗ ਵੇਲੇ ਸਾਈਟ ਵਾਲੇ ਜਿਹੜੀ ਆਈਡੀ ਮੰਗਣ। ਕੀ ਲੈ ਕੇ ਆਉਣਾ ਹੈ, ਇਹ ਅਸੀਂ ਜੁਆਇਨ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਦੱਸ ਦਿੰਦੇ ਹਾਂ। ਫ਼ਾਰਮ ਵਿੱਚ ਆਧਾਰ ਜਾਂ ਬੈਂਕ ਦੇ ਕਾਗਜ਼ ਨਾ ਭੇਜੋ।", category: "operations" },
         AGE_FAQ["pa-IN"],
-        { question: "ਤਨਖ਼ਾਹ ਕੌਣ ਦਿੰਦਾ ਹੈ?", answer: "ਅਸੀਂ ਦਿੰਦੇ ਹਾਂ, ਲਾਗੂ ਹੋਣ 'ਤੇ EPF ਅਤੇ ESIC ਦੇ ਨਾਲ।", category: "operations" },
+        { question: "ਤਨਖ਼ਾਹ ਕੌਣ ਦਿੰਦਾ ਹੈ?", answer: "ਅਸੀਂ ਦਿੰਦੇ ਹਾਂ, ਅਤੇ ਜਿੱਥੇ ਬਣਦਾ ਹੈ ਉੱਥੇ EPF ਅਤੇ ESIC ਵੀ।", category: "operations" },
       ],
     },
   ],
@@ -913,26 +914,26 @@ export const jobClusters: Record<Locale, JobClusterCopy[]> = {
       name: "ಬೆಂಗಳೂರು",
       metaTitle: "ಬೆಂಗಳೂರಿನಲ್ಲಿ ಫ್ಯಾಕ್ಟರಿ ಕೆಲಸ: ನಮ್ಮ ಪಟ್ಟಿಗೆ ಸೇರಿ",
       description:
-        "ಬೆಂಗಳೂರಿನಲ್ಲಿ ಫ್ಯಾಕ್ಟರಿ, ವೇರ್‌ಹೌಸ್ ಮತ್ತು ಹೌಸ್‌ಕೀಪಿಂಗ್ ಕೆಲಸ. ನಮ್ಮ ಕಾರ್ಮಿಕರ ಪಟ್ಟಿಗೆ ಸೇರಿ: ಯಾವುದೇ ಶುಲ್ಕವಿಲ್ಲ, 8 ಗಂಟೆಗಳ ಶಿಫ್ಟ್. ಬೇಕಾದಾಗ ನಾವು ಕರೆ ಮಾಡುತ್ತೇವೆ.",
+        "ಬೆಂಗಳೂರಿನಲ್ಲಿ ಫ್ಯಾಕ್ಟರಿ, ವೇರ್‌ಹೌಸ್ ಮತ್ತು ಹೌಸ್‌ಕೀಪಿಂಗ್ ಕೆಲಸ. ನಮ್ಮ ಪಟ್ಟಿಗೆ ಸೇರಿ: ಯಾವುದೇ ಫೀಸ್ ಇಲ್ಲ, ಪೂರ್ತಿ 8 ಗಂಟೆಯ ಶಿಫ್ಟ್. ಕೆಲಸ ಇದ್ದಾಗ ನಾವು ಕರೆ ಮಾಡುತ್ತೇವೆ.",
       eyebrow: "ಉದ್ಯೋಗಗಳು · ಬೆಂಗಳೂರು",
       heading: "ಬೆಂಗಳೂರಿನಲ್ಲಿ ಫ್ಯಾಕ್ಟರಿ ಮತ್ತು ವೇರ್‌ಹೌಸ್ ಕೆಲಸ.",
-      lede: "ನಾವು ಬೆಂಗಳೂರಿನಲ್ಲಿ ಕಾರ್ಮಿಕರ ಪಟ್ಟಿಯನ್ನು ಮಾಡುತ್ತಿದ್ದೇವೆ. ಅಲ್ಲಿನ ಸೈಟ್‌ಗೆ ಜನ ಬೇಕಾದಾಗ, ನಾವು ನಿಮಗೆ ಕರೆ ಮಾಡುತ್ತೇವೆ.",
-      after: { label: "ಅರ್ಜಿ ಸಲ್ಲಿಸಿದ ನಂತರ", steps: ["VAYSPL ಇಂದ SMS", "ಸೈಟ್‌ಗೆ ಬೇಕಾದಾಗ ನಾವು ಕರೆ ಮಾಡುತ್ತೇವೆ", "ನಿರ್ಧಾರ ನಿಮ್ಮದು"] },
+      lede: "ನಾವು ಬೆಂಗಳೂರಿನಲ್ಲಿ ಕೆಲಸಗಾರರ ಪಟ್ಟಿ ಮಾಡುತ್ತಿದ್ದೇವೆ. ಇಲ್ಲಿನ ಯಾವುದಾದರೂ ಕಂಪನಿಗೆ ಜನ ಬೇಕಾದಾಗ, ನಿಮಗೆ ಕರೆ ಮಾಡುತ್ತೇವೆ.",
+      after: { label: "ಅರ್ಜಿ ಹಾಕಿದ ಮೇಲೆ", steps: ["VAYSPL ನಿಂದ WhatsApp ಅಥವಾ SMS", "ಕಂಪನಿಗೆ ನೀವು ಬೇಕಾದಾಗ ನಾವು ಕರೆ ಮಾಡುತ್ತೇವೆ", "ತೀರ್ಮಾನ ನಿಮ್ಮದು"] },
       faqTitle: "ಪ್ರಶ್ನೆಗಳು.",
       faqs: [
-        { question: "ಈಗ ಖಾಲಿ ಹುದ್ದೆಗಳಿವೆಯೇ?", answer: "ಪ್ರತಿ ವಾರ ಅಲ್ಲ. ನೀವು ನಮ್ಮ ಪಟ್ಟಿಗೆ ಸೇರುತ್ತೀರಿ, ಮತ್ತು ಬೆಂಗಳೂರಿನ ಸೈಟ್‌ಗೆ ನಿಮ್ಮಂತಹ ಕೆಲಸ ಬೇಕಾದಾಗ ನಾವು ಕರೆ ಮಾಡುತ್ತೇವೆ.", category: "operations" },
+        { question: "ಈಗ ಕೆಲಸ ಖಾಲಿ ಇದೆಯೇ?", answer: "ಪ್ರತಿ ವಾರ ಇರುವುದಿಲ್ಲ. ನೀವು ನಮ್ಮ ಪಟ್ಟಿಗೆ ಸೇರುತ್ತೀರಿ, ಮತ್ತು ಬೆಂಗಳೂರಿನ ಯಾವುದಾದರೂ ಕಂಪನಿಗೆ ನೀವು ಮಾಡುವಂಥ ಕೆಲಸ ಬೇಕಾದಾಗ ನಾವು ಕರೆ ಮಾಡುತ್ತೇವೆ.", category: "operations" },
         {
           question: "ಯಾವ ದಾಖಲೆಗಳು ಬೇಕು?",
-          answer: "ನಿಮ್ಮ 10ನೇ ಅಥವಾ 12ನೇ ತರಗತಿಯ ಅಂಕಪಟ್ಟಿ. ITI ಪ್ರಮಾಣಪತ್ರ, ಇದ್ದರೆ. ಸೇರುವಾಗ ಸೈಟ್ ಕೇಳುವ ID. ಏನು ತರಬೇಕು ಎಂದು ಸೇರುವ ಮೊದಲು ನಾವು ಹೇಳುತ್ತೇವೆ. ಫಾರ್ಮ್‌ನಲ್ಲಿ ಆಧಾರ್ ಅಥವಾ ಬ್ಯಾಂಕ್ ದಾಖಲೆಗಳನ್ನು ಕಳುಹಿಸಬೇಡಿ.",
+          answer: "ನಿಮ್ಮ SSLC ಅಥವಾ PUC ಮಾರ್ಕ್ಸ್ ಕಾರ್ಡ್. ITI ಸರ್ಟಿಫಿಕೇಟ್ ಇದ್ದರೆ ಅದು. ಸೇರುವಾಗ ಕಂಪನಿ ಕೇಳುವ ID. ಏನು ತರಬೇಕು ಎಂದು ಸೇರುವ ಮೊದಲು ನಾವು ಹೇಳುತ್ತೇವೆ. ಫಾರ್ಮ್‌ನಲ್ಲಿ ಆಧಾರ್ ಅಥವಾ ಬ್ಯಾಂಕ್ ದಾಖಲೆಗಳನ್ನು ಕಳುಹಿಸಬೇಡಿ.",
           category: "operations",
         },
         AGE_FAQ["kn-IN"],
-        { question: "ಸಂಬಳ ಯಾರು ಕೊಡುತ್ತಾರೆ?", answer: "ನಾವು ಕೊಡುತ್ತೇವೆ, ಅನ್ವಯವಾದಲ್ಲಿ EPF ಮತ್ತು ESIC ಜೊತೆ.", category: "operations" },
+        { question: "ಸಂಬಳ ಯಾರು ಕೊಡುತ್ತಾರೆ?", answer: "ನಾವೇ ಕೊಡುತ್ತೇವೆ. ಅನ್ವಯವಾದರೆ EPF ಮತ್ತು ESIC ಕೂಡ ಇರುತ್ತದೆ.", category: "operations" },
       ],
     },
   ],
 };
 
 export function getJobCluster(slug: string, locale: Locale) {
-  return jobClusters[locale].find((c) => c.slug === slug);
+  return jobClusters[jobsLocale(locale)].find((c) => c.slug === slug);
 }

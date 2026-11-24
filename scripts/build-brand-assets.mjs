@@ -95,6 +95,10 @@ const fonts = {
     ["anekgurmukhi/AnekGurmukhi[wdth,wght].ttf", "AnekGurmukhi-Variable.ttf"],
     ["anekgurmukhi/OFL.txt", "OFL.txt"],
   ],
+  "Anek Telugu": [
+    ["anektelugu/AnekTelugu[wdth,wght].ttf", "AnekTelugu-Variable.ttf"],
+    ["anektelugu/OFL.txt", "OFL.txt"],
+  ],
   Hind: [
     ["hind/Hind-Light.ttf", "Hind-Light.ttf"],
     ["hind/Hind-Regular.ttf", "Hind-Regular.ttf"],
@@ -118,6 +122,14 @@ const fonts = {
     ["hindjalandhar/HindJalandhar-SemiBold.ttf", "HindJalandhar-SemiBold.ttf"],
     ["hindjalandhar/HindJalandhar-Bold.ttf", "HindJalandhar-Bold.ttf"],
     ["hindjalandhar/OFL.txt", "OFL.txt"],
+  ],
+  "Hind Guntur": [
+    ["hindguntur/HindGuntur-Light.ttf", "HindGuntur-Light.ttf"],
+    ["hindguntur/HindGuntur-Regular.ttf", "HindGuntur-Regular.ttf"],
+    ["hindguntur/HindGuntur-Medium.ttf", "HindGuntur-Medium.ttf"],
+    ["hindguntur/HindGuntur-SemiBold.ttf", "HindGuntur-SemiBold.ttf"],
+    ["hindguntur/HindGuntur-Bold.ttf", "HindGuntur-Bold.ttf"],
+    ["hindguntur/OFL.txt", "OFL.txt"],
   ],
   "JetBrains Mono": [
     ["jetbrainsmono/JetBrainsMono[wght].ttf", "JetBrainsMono-Variable.ttf"],
@@ -145,6 +157,7 @@ Every script the brand writes in has its own cut of the same two families:
   Devanagari    Anek Devanagari               Hind (includes Devanagari)
   Kannada       Anek Kannada                  Hind Mysuru
   Gurmukhi      Anek Gurmukhi                 Hind Jalandhar
+  Telugu        Anek Telugu                   Hind Guntur
 
 JetBrains Mono    Data: identifiers, tables and aligned values (400–500)
 
@@ -153,7 +166,7 @@ Install
   macOS    Open the .ttf files and click "Install Font", or drop them into Font Book.
 
 The Anek fonts and JetBrains Mono are variable: one file holds every weight.
-Hind, Hind Mysuru and Hind Jalandhar ship as five static weights.
+Hind, Hind Mysuru, Hind Jalandhar and Hind Guntur ship as five static weights.
 
 All families are published under the SIL Open Font License; the OFL.txt in
 each folder is the licence. Fonts are unchanged from the google/fonts release.

@@ -14,6 +14,7 @@ import {
   neutralTarget,
   pages,
   type Locale,
+  jobsLocale,
 } from "@/lib/i18n";
 import { parseRankSegment, PICKER_TOP, rankSegments } from "@/lib/language-rank";
 import { notFound } from "next/navigation";
@@ -66,9 +67,9 @@ function pageSummary(path: string): { title: string; text?: string } {
  * market (no market is the default, owner direction 17 Oct 2026).
  */
 function pageName(path: string, locale: Locale): { title: string; href?: string } {
-  if (path === "/jobs") return { title: jobsCopy[locale].heading };
-  if (path === "/jobs/apply") return { title: quickApplyCopy[locale].breadcrumb };
-  if (path === "/jobs/privacy") return { title: jobsPrivacyCopy[locale].breadcrumb };
+  if (path === "/jobs") return { title: jobsCopy[jobsLocale(locale)].heading };
+  if (path === "/jobs/apply") return { title: quickApplyCopy[jobsLocale(locale)].breadcrumb };
+  if (path === "/jobs/privacy") return { title: jobsPrivacyCopy[jobsLocale(locale)].breadcrumb };
   const slug = /^\/jobs\/([^/]+)$/.exec(path)?.[1];
   if (slug) {
     const name = (getJobCluster(slug, locale) ? jobsLinkLabel(slug, locale) : undefined) ?? getJobRole(slug, locale)?.name ?? getJobHub(slug, locale)?.name;
@@ -83,7 +84,8 @@ const PROMPT: Record<Locale, string> = {
   "hi-IN": "अपनी भाषा चुनें",
   "hi-Latn-IN": "Apni bhasha chunein",
   "pa-IN": "ਆਪਣੀ ਭਾਸ਼ਾ ਚੁਣੋ",
-  "kn-IN": "ನಿಮ್ಮ ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+  "kn-IN": "ನಿಮ್ಮ ಭಾಷೆ ಆರಿಸಿ",
+  "te-IN": "మీ భాషను ఎంచుకోండి",
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

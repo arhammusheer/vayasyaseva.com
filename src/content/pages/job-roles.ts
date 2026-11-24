@@ -67,7 +67,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "factory-helper",
       name: "Factory helper",
-      metaTitle: "Factory Helper Jobs: Line and Production Helper Work",
+      metaTitle: "Helper Job in Factory: Line and Production Helper",
       description: "Factory helper and production helper jobs: line work, material handling and packing. Pick your area when you apply. Full 8-hour shifts. Apply online, no fee.",
       heading: "Factory helper jobs.",
       lede: "Production helper work on the factory line, open to freshers and to anyone who has worked on a line.",
@@ -93,7 +93,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "packing",
       name: "Packing jobs",
-      metaTitle: "Packing Jobs: Pharma and FMCG Line Packing",
+      metaTitle: "Packing Job: Medicine, Pharma and FMCG Line Packing",
       description: "Packing jobs at pharma and FMCG plants: line packing, cartons, labelling and checks. Pick your area when you apply. Full 8-hour shifts. Apply online, no fee.",
       heading: "Packing jobs.",
       lede: "Packing, labelling and checks on factory lines, open to freshers and to people with packing experience.",
@@ -211,7 +211,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "data-entry-operator",
       name: "Data entry operator",
-      metaTitle: "Data Entry Operator Jobs (ERP, SAP)",
+      metaTitle: "Data Entry Job: Operator Vacancy, ERP and SAP",
       description: "Data entry operator (DEO) jobs: ERP and SAP entry for stores, dispatch and production. Pick your area when you apply. Full 8-hour shifts. No fee to apply.",
       heading: "Data entry operator jobs.",
       lede: "Computer entries in ERP systems such as SAP at factories and warehouses, for 12th pass or graduates who can type and use Excel.",
@@ -268,7 +268,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "iti-trades",
       name: "ITI trades",
-      metaTitle: "ITI Jobs: Welder, Fitter, Electrician",
+      metaTitle: "ITI Jobs 2026: Welder, Fitter, Electrician Vacancy",
       description: "Jobs for ITI welders, fitters and electricians: fabrication, installation and maintenance work. Pick your area when you apply. No fee to apply.",
       heading: "ITI jobs: welder, fitter, electrician.",
       lede: "Fabrication, installation and maintenance work at plants, for ITI pass in welder, fitter, electrician or a related trade.",
@@ -358,7 +358,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "fitter",
       name: "Fitter",
-      metaTitle: "Fitter Jobs: Maintenance and Machine Fitter",
+      metaTitle: "Fitter Job Vacancy: Maintenance and Machine Fitter",
       description: "Fitter jobs: maintenance, machine fitting and installation for ITI fitters. Pick your area when you apply. Full 8-hour shifts. No fee to apply.",
       heading: "Fitter jobs.",
       lede: "Mechanical maintenance and fitting at plants, for ITI fitters and maintenance helpers ready to move up.",
@@ -393,7 +393,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "factory-helper",
       name: "फ़ैक्टरी हेल्पर",
       metaTitle: "फ़ैक्टरी हेल्पर की नौकरी",
-      description: "फ़ैक्टरी हेल्पर और प्रोडक्शन हेल्पर की नौकरी: लाइन का काम, माल उठाना-रखना और पैकिंग। आवेदन में अपना इलाका चुनें। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
+      description: "फ़ैक्टरी हेल्पर और प्रोडक्शन हेल्पर की नौकरी: लाइन का काम, माल उठाना-रखना और पैकिंग। ऑनलाइन अप्लाई करें और फ़ॉर्म में अपना इलाका चुनें। कोई फ़ीस नहीं।",
       heading: "फ़ैक्टरी हेल्पर की नौकरी।",
       lede: "फ़ैक्टरी की लाइन पर प्रोडक्शन हेल्पर का काम, फ़्रेशर और लाइन पर काम कर चुके लोगों के लिए।",
       work: [
@@ -419,7 +419,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "packing",
       name: "पैकिंग की नौकरी",
       metaTitle: "पैकिंग की नौकरी: फ़ार्मा, FMCG और लाइन पैकिंग",
-      description: "पैकिंग की नौकरी: फ़ार्मा, FMCG और दूसरी फ़ैक्टरियों में लाइन पैकिंग, कार्टन, लेबलिंग और चेकिंग। आवेदन में अपना इलाका चुनें। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
+      description: "पैकिंग की नौकरी: फ़ार्मा, FMCG और दूसरी फ़ैक्टरियों में लाइन पैकिंग, कार्टन, लेबलिंग और चेकिंग। ऑनलाइन अप्लाई करें और फ़ॉर्म में अपना इलाका चुनें। कोई फ़ीस नहीं।",
       heading: "पैकिंग की नौकरी।",
       lede: "फ़ैक्टरी की लाइन पर पैकिंग, लेबलिंग और चेकिंग, फ़्रेशर और पैकिंग का अनुभव रखने वालों के लिए।",
       work: [
@@ -451,9 +451,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "machine-operator",
       name: "मशीन ऑपरेटर",
       metaTitle: "मशीन ऑपरेटर की नौकरी",
-      description: "मशीन ऑपरेटर की नौकरी: प्लांट में पैकिंग, मोल्डिंग, प्रेस और प्रोडक्शन मशीनें। आवेदन में अपना इलाका चुनें। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
+      description: "मशीन ऑपरेटर की नौकरी: प्लांट में पैकिंग, मोल्डिंग, प्रेस और प्रोडक्शन मशीनें। ऑनलाइन अप्लाई करें और फ़ॉर्म में अपना इलाका चुनें। कोई फ़ीस नहीं।",
       heading: "मशीन ऑपरेटर की नौकरी।",
-      lede: "प्रोडक्शन और पैकिंग मशीनें चलाना, उनके लिए जिन्होंने मशीन चलाई है या ऑपरेटर की मदद की है।",
+      lede: "प्रोडक्शन और पैकिंग मशीनें चलाने का काम। जिन्होंने मशीन चलाई है या ऑपरेटर के साथ काम किया है, वे अप्लाई करें।",
       work: [
         "पैकिंग मशीनें चलाना: ब्लिस्टर, फ़िलिंग, सीलिंग और कार्टनिंग",
         "इंजेक्शन मोल्डिंग, प्रेस और दूसरी प्रोडक्शन मशीनें",
@@ -474,7 +474,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
         },
         {
           question: "क्या आप CNC या VMC ऑपरेटर रखते हैं?",
-          answer: "जब किसी साइट को ज़रूरत हो। बताइए आपने कौन-सी मशीनें चलाई हैं, कौन-से पार्ट बनाए हैं, और आप जॉब सेट कर सकते हैं या सिर्फ़ चलाते हैं।",
+          answer: "हाँ, जब किसी साइट को ज़रूरत हो। बताइए आपने कौन-सी मशीनें चलाई हैं, कौन-से पार्ट बनाए हैं, और आप जॉब सेट कर सकते हैं या सिर्फ़ चलाते हैं।",
           category: "operations",
         },
       ],
@@ -483,9 +483,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "warehouse",
       name: "वेयरहाउस की नौकरी",
       metaTitle: "वेयरहाउस की नौकरी: लोडिंग, पिकिंग, पैकिंग",
-      description: "वेयरहाउस की नौकरी: लोडिंग, अनलोडिंग, पिकिंग, पैकिंग, स्टैकिंग और डिस्पैच। आवेदन में अपना इलाका चुनें। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
+      description: "वेयरहाउस की नौकरी: लोडिंग, अनलोडिंग, पिकिंग, पैकिंग, स्टैकिंग और डिस्पैच। ऑनलाइन अप्लाई करें और फ़ॉर्म में अपना इलाका चुनें। कोई फ़ीस नहीं।",
       heading: "वेयरहाउस की नौकरी।",
-      lede: "लोडिंग, अनलोडिंग, पिकिंग और डिस्पैच, मेहनत का काम कर सकने वाले फ़्रेशर और स्टोर का अनुभव रखने वालों के लिए।",
+      lede: "लोडिंग, अनलोडिंग, पिकिंग और डिस्पैच का काम। मेहनत का काम कर सकने वाले फ़्रेशर, और स्टोर में काम कर चुके लोग, दोनों अप्लाई करें।",
       work: [
         "ट्रक में माल चढ़ाना और उतारना",
         "ऑर्डर का माल निकालना और पैक करना",
@@ -496,7 +496,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       faqs: [
         {
           question: "क्या वेयरहाउस में रात की शिफ्ट होती है?",
-          answer: "कुछ वेयरहाउस रात में या भीड़ वाले दिनों में काम करते हैं। शिफ्ट हम जॉइन करने से पहले बताते हैं, इसलिए बताइए कि आप रात में काम कर सकते हैं या नहीं।",
+          answer: "कुछ वेयरहाउस रात में भी चलते हैं, या ज़्यादा काम वाले दिनों में रात को काम होता है। शिफ्ट हम जॉइन करने से पहले बताते हैं, इसलिए बताइए कि आप रात में काम कर सकते हैं या नहीं।",
           category: "operations",
         },
         {
@@ -510,7 +510,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "forklift-operator",
       name: "फ़ोर्कलिफ़्ट ऑपरेटर",
       metaTitle: "फ़ोर्कलिफ़्ट ऑपरेटर की नौकरी",
-      description: "फ़ोर्कलिफ़्ट ऑपरेटर की नौकरी: वेयरहाउस और प्लांट में माल की लोडिंग, स्टैकिंग और ढुलाई। अनुभवी ऑपरेटरों के लिए। आवेदन में अपना इलाका चुनें। कोई फ़ीस नहीं।",
+      description: "फ़ोर्कलिफ़्ट ऑपरेटर की नौकरी: वेयरहाउस और प्लांट में माल की लोडिंग, स्टैकिंग और ढुलाई। अनुभवी ऑपरेटरों के लिए। फ़ॉर्म में अपना इलाका चुनें। कोई फ़ीस नहीं।",
       heading: "फ़ोर्कलिफ़्ट ऑपरेटर की नौकरी।",
       lede: "वेयरहाउस और प्लांट में फ़ोर्कलिफ़्ट से लोडिंग और स्टैकिंग, अनुभव और ड्राइविंग लाइसेंस वाले ऑपरेटरों के लिए।",
       work: [
@@ -523,7 +523,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       faqs: [
         {
           question: "फ़ोर्कलिफ़्ट ऑपरेटर की नौकरी के लिए क्या चाहिए?",
-          answer: "फ़ोर्कलिफ़्ट चलाने का अनुभव, और वे कागज़ जो साइटें आम तौर पर माँगती हैं: ड्राइविंग लाइसेंस और, अगर हो, फ़ोर्कलिफ़्ट ट्रेनिंग सर्टिफ़िकेट। बताइए आपने कौन-सी फ़ोर्कलिफ़्ट चलाई हैं।",
+          answer: "फ़ोर्कलिफ़्ट चलाने का अनुभव और ड्राइविंग लाइसेंस, जो साइटें आम तौर पर माँगती हैं। फ़ोर्कलिफ़्ट ट्रेनिंग का सर्टिफ़िकेट हो, तो वह भी। बताइए आपने कौन-सी फ़ोर्कलिफ़्ट चलाई हैं।",
           category: "operations",
         },
         {
@@ -537,7 +537,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "data-entry-operator",
       name: "डेटा एंट्री ऑपरेटर",
       metaTitle: "डेटा एंट्री ऑपरेटर की नौकरी (ERP, SAP)",
-      description: "डेटा एंट्री ऑपरेटर (DEO) की नौकरी: स्टोर, डिस्पैच और प्रोडक्शन के लिए SAP जैसे ERP में कंप्यूटर एंट्री। आवेदन में अपना इलाका चुनें। कोई फ़ीस नहीं।",
+      description: "डेटा एंट्री ऑपरेटर (DEO) की नौकरी: स्टोर, डिस्पैच और प्रोडक्शन के लिए SAP जैसे ERP में कंप्यूटर एंट्री। फ़ॉर्म में अपना इलाका चुनें। कोई फ़ीस नहीं।",
       heading: "डेटा एंट्री ऑपरेटर की नौकरी।",
       lede: "फ़ैक्टरी और वेयरहाउस में SAP जैसे ERP पर कंप्यूटर एंट्री, टाइपिंग और Excel जानने वाले 12वीं पास या ग्रेजुएट के लिए।",
       work: [
@@ -568,7 +568,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "housekeeping",
       name: "हाउसकीपिंग",
       metaTitle: "हाउसकीपिंग की नौकरी",
-      description: "हाउसकीपिंग की नौकरी: फ़ैक्टरी, ऑफ़िस, कैंटीन और कैंपस। पुरुष और महिलाएँ दोनों। आवेदन में अपना इलाका चुनें। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
+      description: "हाउसकीपिंग की नौकरी: फ़ैक्टरी, ऑफ़िस, कैंटीन और कैंपस। पुरुष और महिलाएँ दोनों। ऑनलाइन अप्लाई करें और फ़ॉर्म में अपना इलाका चुनें। कोई फ़ीस नहीं।",
       heading: "हाउसकीपिंग की नौकरी।",
       lede: "फ़ैक्टरी, ऑफ़िस, कैंटीन और कैंपस में हाउसकीपिंग, पुरुषों और महिलाओं के लिए, फ़्रेशर हों या अनुभवी।",
       work: [
@@ -594,9 +594,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "iti-trades",
       name: "आईटीआई ट्रेड",
       metaTitle: "आईटीआई (ITI) की नौकरी: वेल्डर, फ़िटर, इलेक्ट्रीशियन",
-      description: "आईटीआई वेल्डर, फ़िटर और इलेक्ट्रीशियन की नौकरी: फ़ैब्रिकेशन, इंस्टॉलेशन और मेंटेनेंस। आवेदन में अपना इलाका चुनें। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
+      description: "आईटीआई वेल्डर, फ़िटर और इलेक्ट्रीशियन की नौकरी: फ़ैब्रिकेशन, इंस्टॉलेशन और मेंटेनेंस। ऑनलाइन अप्लाई करें और फ़ॉर्म में अपना इलाका चुनें। कोई फ़ीस नहीं।",
       heading: "आईटीआई की नौकरी: वेल्डर, फ़िटर, इलेक्ट्रीशियन।",
-      lede: "प्लांट में फ़ैब्रिकेशन, इंस्टॉलेशन और मेंटेनेंस का काम, वेल्डर, फ़िटर, इलेक्ट्रीशियन या मिलते-जुलते ट्रेड में आईटीआई पास के लिए।",
+      lede: "प्लांट में फ़ैब्रिकेशन, इंस्टॉलेशन और मेंटेनेंस का काम। वेल्डर, फ़िटर, इलेक्ट्रीशियन या ऐसे ही किसी ट्रेड में आईटीआई पास लोगों के लिए।",
       work: [
         "फ़ैब्रिकेशन के लिए वेल्डिंग और गैस कटिंग (MS और SS)",
         "स्ट्रक्चर और मशीनों की फ़िटिंग और इंस्टॉलेशन",
@@ -606,7 +606,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       faqs: [
         {
           question: "आप किन ट्रेड के लोग रखते हैं?",
-          answer: "मुख्य रूप से वेल्डर, फ़िटर, गैस कटर और इलेक्ट्रीशियन, और मेंटेनेंस हेल्पर। अपना ट्रेड और जिन मशीनों या काम पर हाथ चलाया है, वह बताइए।",
+          answer: "ज़्यादातर वेल्डर, फ़िटर, गैस कटर और इलेक्ट्रीशियन, और मेंटेनेंस हेल्पर। अपना ट्रेड बताइए, और यह भी कि किन मशीनों पर या किस तरह का काम किया है।",
           category: "operations",
         },
         {
@@ -615,7 +615,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
           category: "operations",
         },
         {
-          question: "क्या काम पक्का है?",
+          question: "क्या यह पक्की नौकरी है?",
           answer: "कुछ काम लगातार चलता है और कुछ किसी प्रोजेक्ट या शटडाउन के लिए होता है। जॉइन करने से पहले हम बताते हैं कि काम क्या है और कितने समय चलने की उम्मीद है।",
           category: "operations",
         },
@@ -625,9 +625,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "electrician",
       name: "इलेक्ट्रीशियन",
       metaTitle: "इलेक्ट्रीशियन की नौकरी: आईटीआई इलेक्ट्रीशियन वैकेंसी",
-      description: "इलेक्ट्रीशियन की नौकरी: आईटीआई इलेक्ट्रीशियन के लिए प्लांट मेंटेनेंस, वायरिंग, मोटर और पैनल का काम। आवेदन में अपना इलाका चुनें। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
+      description: "इलेक्ट्रीशियन की नौकरी: आईटीआई इलेक्ट्रीशियन के लिए प्लांट मेंटेनेंस, वायरिंग, मोटर और पैनल का काम। ऑनलाइन अप्लाई करें और फ़ॉर्म में अपना इलाका चुनें। कोई फ़ीस नहीं।",
       heading: "इलेक्ट्रीशियन की नौकरी।",
-      lede: "प्लांट में मेंटेनेंस और वायरिंग का काम, आईटीआई इलेक्ट्रीशियन और वायरमैन के लिए, प्लांट के अनुभव के साथ या बिना।",
+      lede: "प्लांट में मेंटेनेंस और वायरिंग का काम। आईटीआई इलेक्ट्रीशियन और वायरमैन के लिए, प्लांट का अनुभव हो या न हो।",
       work: [
         "प्लांट की मशीनों का रूटीन और ब्रेकडाउन मेंटेनेंस",
         "वायरिंग, केबलिंग और लाइटिंग का काम",
@@ -638,7 +638,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       faqs: [
         {
           question: "क्या अप्लाई करने के लिए आईटीआई ज़रूरी है?",
-          answer: "प्लांट में इलेक्ट्रीशियन के ज़्यादातर कामों के लिए इलेक्ट्रीशियन या वायरमैन में आईटीआई माँगा जाता है। हेल्पर के कुछ कामों में हाथ का अनुभव भी चलता है; बताइए आपने क्या काम किया है।",
+          answer: "प्लांट में इलेक्ट्रीशियन के ज़्यादातर कामों के लिए इलेक्ट्रीशियन या वायरमैन में आईटीआई माँगा जाता है। हेल्पर के कुछ कामों में काम का अनुभव भी चल जाता है। बताइए आपने क्या काम किया है।",
           category: "operations",
         },
         {
@@ -647,7 +647,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
           category: "operations",
         },
         {
-          question: "क्या काम पक्का है?",
+          question: "क्या यह पक्की नौकरी है?",
           answer: "कुछ काम लगातार चलने वाला मेंटेनेंस है और कुछ किसी प्रोजेक्ट या शटडाउन के लिए। जॉइन करने से पहले हम बताते हैं कि काम क्या है और कितने समय चलने की उम्मीद है।",
           category: "operations",
         },
@@ -657,9 +657,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "welder",
       name: "वेल्डर",
       metaTitle: "वेल्डर की नौकरी: आर्क, MIG, TIG और गैस कटिंग",
-      description: "वेल्डर की नौकरी: फ़ैब्रिकेशन और मेंटेनेंस के लिए आर्क, MIG और TIG वेल्डिंग और गैस कटिंग। आवेदन में अपना इलाका चुनें। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
+      description: "वेल्डर की नौकरी: फ़ैब्रिकेशन और मेंटेनेंस के लिए आर्क, MIG और TIG वेल्डिंग और गैस कटिंग। ऑनलाइन अप्लाई करें और फ़ॉर्म में अपना इलाका चुनें। कोई फ़ीस नहीं।",
       heading: "वेल्डर की नौकरी।",
-      lede: "फ़ैब्रिकेशन और मेंटेनेंस की वेल्डिंग, आईटीआई वेल्डर और अपना काम दिखा सकने वाले अनुभवी वेल्डरों के लिए।",
+      lede: "फ़ैब्रिकेशन और मेंटेनेंस की वेल्डिंग। आईटीआई वेल्डर, और ऐसे अनुभवी वेल्डर जो अपना काम करके दिखा सकें।",
       work: [
         "MS और SS पर आर्क, MIG और TIG वेल्डिंग",
         "गैस कटिंग और ग्राइंडिंग",
@@ -684,9 +684,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "fitter",
       name: "फ़िटर",
       metaTitle: "फ़िटर की नौकरी: मेंटेनेंस और मैकेनिकल फ़िटर",
-      description: "फ़िटर की नौकरी: आईटीआई फ़िटर के लिए मैकेनिकल मेंटेनेंस, मशीन फ़िटिंग और इंस्टॉलेशन। आवेदन में अपना इलाका चुनें। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
+      description: "फ़िटर की नौकरी: आईटीआई फ़िटर के लिए मैकेनिकल मेंटेनेंस, मशीन फ़िटिंग और इंस्टॉलेशन। ऑनलाइन अप्लाई करें और फ़ॉर्म में अपना इलाका चुनें। कोई फ़ीस नहीं।",
       heading: "फ़िटर की नौकरी।",
-      lede: "प्लांट में मैकेनिकल मेंटेनेंस और फ़िटिंग, आईटीआई फ़िटर और आगे बढ़ना चाहने वाले मेंटेनेंस हेल्पर के लिए।",
+      lede: "प्लांट में मैकेनिकल मेंटेनेंस और फ़िटिंग का काम। आईटीआई फ़िटर के लिए, और उन मेंटेनेंस हेल्परों के लिए जो फ़िटर बनना चाहते हैं।",
       work: [
         "मशीनों और कन्वेयर का मैकेनिकल मेंटेनेंस",
         "मशीनों की फ़िटिंग, अलाइनमेंट और इंस्टॉलेशन",
@@ -706,7 +706,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
           category: "operations",
         },
         {
-          question: "क्या काम पक्का है?",
+          question: "क्या यह पक्की नौकरी है?",
           answer: "कुछ काम लगातार चलने वाला मेंटेनेंस है और कुछ किसी प्रोजेक्ट या शटडाउन के लिए। जॉइन करने से पहले हम बताते हैं कि काम क्या है और कितने समय चलने की उम्मीद है।",
           category: "operations",
         },
@@ -717,7 +717,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "factory-helper",
       name: "Factory helper",
-      metaTitle: "Factory Helper Job",
+      metaTitle: "Helper Job: Factory Line aur Production",
       description: "Factory helper aur production helper ki naukri: line ka kaam, maal uthana-rakhna aur packing. Apply karte waqt apna area chunein. Koi fee nahi.",
       heading: "Factory helper ki naukri.",
       lede: "Factory ki line par production helper ka kaam, fresher aur line par kaam kar chuke logon ke liye.",
@@ -744,7 +744,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "packing",
       name: "Packing job",
       metaTitle: "Packing Job: Pharma aur FMCG",
-      description: "Packing job, apna area chunkar apply karein. EPF aur ESIC jahan lagu ho. Koi fee nahi. Pharma, FMCG factories mein line packing, carton, labelling, checking.",
+      description: "Pharma aur FMCG factories mein packing ki naukri: line packing, carton, labelling, checking. Area chunkar apply karein. EPF, ESIC jahan laagu ho. Koi fee nahi.",
       heading: "Packing ki naukri.",
       lede: "Factory ki line par packing, labelling aur checking, fresher aur packing ka experience rakhne walon ke liye.",
       work: [
@@ -752,7 +752,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
         "Label lagana, batch coding aur print check karna",
         "Ginti, taul aur sealing",
         "Pack check karna aur kharab pack alag rakhna",
-        "Taiyaar case dispatch ke liye lagana",
+        "Tayyar case dispatch ke liye stack karna",
       ],
       faqs: [
         {
@@ -762,7 +762,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
         },
         {
           question: "Kya ladies packing job ke liye apply kar sakti hain?",
-          answer: "Haan. Packing ka kaam mahilaon aur purushon dono ke liye hai. Bataiye aap kin shifts mein kaam kar sakti hain, aur join karne se pehle hum site ki shift timing batate hain.",
+          answer: "Haan. Packing ka kaam ladies aur gents dono ke liye hai. Bataiye aap kin shifts mein kaam kar sakti hain, aur join karne se pehle hum site ki shift timing batate hain.",
           category: "operations",
         },
         {
@@ -789,7 +789,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       faqs: [
         {
           question: "Aap kin machines ke liye operator rakhte hain?",
-          answer: "Site par depend karta hai: pharma aur FMCG plants mein packing machines, component plants mein moulding aur press machines, aur dusri production machines. Bataiye aap kaun-si machines jaante hain aur kitne time se.",
+          answer: "Site par depend karta hai: pharma aur FMCG plants mein packing machines, component plants mein moulding aur press machines, aur dusri production machines. Bataiye aap kaunsi machines jaante hain aur kitne time se.",
           category: "operations",
         },
         {
@@ -799,7 +799,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
         },
         {
           question: "Kya aap CNC ya VMC operator rakhte hain?",
-          answer: "Jab kisi site ko zaroorat ho. Bataiye aapne kaun-si machines chalayi hain, kaun-se parts banaye hain, aur aap job set kar sakte hain ya sirf chalate hain.",
+          answer: "Jab kisi site ko zaroorat ho. Bataiye aapne kaunsi machines chalayi hain, kaunse parts banaye hain, aur aap job set kar sakte hain ya sirf chalate hain.",
           category: "operations",
         },
       ],
@@ -810,7 +810,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       metaTitle: "Warehouse Job: Loading, Picking",
       description: "Warehouse ki naukri: loading, unloading, picking, packing, stacking aur dispatch. Apply karte waqt apna area chunein. EPF aur ESIC jahan lagu ho. Koi fee nahi.",
       heading: "Warehouse ki naukri.",
-      lede: "Loading, unloading, picking aur dispatch, mehnat ka kaam kar sakne wale fresher aur store ka experience rakhne walon ke liye.",
+      lede: "Loading, unloading, picking aur dispatch. Fresher jo mehnat ka kaam kar sakein, aur jinhe store ka experience hai, dono ke liye.",
       work: [
         "Truck mein maal chadhana aur utaarna",
         "Order ka maal nikaalna aur pack karna",
@@ -835,7 +835,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "forklift-operator",
       name: "Forklift operator",
       metaTitle: "Forklift Operator Job",
-      description: "Forklift operator job, apna area chunkar apply karein. Koi fee nahi. Warehouse aur plant mein loading, stacking. Experienced operators ke liye.",
+      description: "Forklift operator ki naukri: warehouse aur plant mein loading aur stacking, experienced operators ke liye. Apply karte waqt apna area chunein. Koi fee nahi.",
       heading: "Forklift operator ki naukri.",
       lede: "Warehouse aur plant mein forklift se loading aur stacking, experience aur driving licence wale operators ke liye.",
       work: [
@@ -848,7 +848,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       faqs: [
         {
           question: "Forklift operator job ke liye kya chahiye?",
-          answer: "Forklift chalane ka experience, aur woh kaagaz jo sites aam taur par maangti hain: driving licence aur, agar ho, forklift training certificate. Bataiye aapne kaun-si forklift chalayi hain.",
+          answer: "Forklift chalane ka experience, aur woh kaagaz jo sites aam taur par maangti hain: driving licence aur, agar ho, forklift training certificate. Bataiye aapne kaunsi forklift chalayi hain.",
           category: "operations",
         },
         {
@@ -861,10 +861,10 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
     {
       slug: "data-entry-operator",
       name: "Data entry operator",
-      metaTitle: "Data Entry Operator Job (ERP, SAP)",
+      metaTitle: "Data Entry Job: Operator Vacancy (ERP, SAP)",
       description: "Data entry operator (DEO) ki naukri: stores, dispatch, production ke liye ERP, SAP entry. Apply karte waqt apna area chunein. Koi fee nahi lagti.",
       heading: "Data entry operator ki naukri.",
-      lede: "Factory aur warehouse mein SAP jaise ERP par computer entry, typing aur Excel jaanne wale 12th pass ya graduate ke liye.",
+      lede: "Factory aur warehouse mein computer par entry (SAP jaisa ERP), 12th pass ya graduate ke liye jo typing aur Excel jaante hon.",
       work: [
         "Stores aur inventory ki entry: maal aana, jaana, stock",
         "Dispatch, gate entry aur delivery ke documents",
@@ -874,17 +874,17 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       faqs: [
         {
           question: "Kya SAP ka experience zaroori hai?",
-          answer: "Ho to achha hai, par kai sites par zaroori nahi. Bataiye aapne kaun-se system chalaye hain (SAP, Tally, koi aur ERP ya sirf Excel) aur kin modules ya screens par kaam kiya.",
+          answer: "Ho to achha hai, par kai sites par zaroori nahi. Bataiye aapne kaunse system chalaye hain (SAP, Tally, koi aur ERP ya sirf Excel) aur kin modules ya screens par kaam kiya.",
           category: "operations",
         },
         {
           question: "Kya data entry ke liye computer aana zaroori hai?",
-          answer: "Basic typing aur computer chalana, aur Excel aata ho to achha. Apni typing speed pata ho to bataiye; site chhota test le sakti hai.",
+          answer: "Haan, basic typing aur computer chalana aana chahiye; Excel aata ho to aur achha. Apni typing speed pata ho to bataiye; site chhota test le sakti hai.",
           category: "operations",
         },
         {
           question: "Kya ye office ka kaam hai?",
-          answer: "Zyadatar. Aap plant ke office, store ya dispatch area mein computer par kaam karte hain, kabhi-kabhi floor par maal ya documents milaate hain.",
+          answer: "Zyadatar haan. Kaam plant ke office, store ya dispatch mein computer par hota hai; kabhi-kabhi floor par jaakar maal ya documents milaane padte hain.",
           category: "operations",
         },
       ],
@@ -893,9 +893,9 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "housekeeping",
       name: "Housekeeping",
       metaTitle: "Housekeeping Job",
-      description: "Housekeeping ki naukri: factory, office, canteen aur campus. Purush aur mahilaayein dono. Apply karte waqt apna area chunein. Koi fee nahi lagti.",
+      description: "Housekeeping ki naukri: factory, office, canteen aur campus. Ladies aur gents dono. Fresher ho ya experienced. Apply karte waqt apna area chunein. Koi fee nahi.",
       heading: "Housekeeping ki naukri.",
-      lede: "Factory, office, canteen aur campus mein housekeeping, purushon aur mahilaon ke liye, fresher hon ya experienced.",
+      lede: "Factory, office, canteen aur campus mein housekeeping, ladies aur gents dono ke liye, fresher ho ya experienced.",
       work: [
         "Shopfloor, office aur common area ki safai",
         "Washroom ki dekhbhaal",
@@ -904,8 +904,8 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       ],
       faqs: [
         {
-          question: "Kya mahilaon ke liye housekeeping ki naukri hai?",
-          answer: "Haan. Kai sites par mahilaon ke liye housekeeping ka kaam hai. Apni pasand ki shift aur apna ilaaka bataiye.",
+          question: "Kya ladies ke liye housekeeping ki naukri hai?",
+          answer: "Haan. Kai sites par ladies ke liye housekeeping ka kaam hai. Apni pasand ki shift aur apna area bataiye.",
           category: "operations",
         },
         {
@@ -931,7 +931,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       faqs: [
         {
           question: "Aap kin trades ke log rakhte hain?",
-          answer: "Mainly welder, fitter, gas cutter aur electrician, aur maintenance helper. Apna trade aur jin machines ya kaam par haath chalaya hai, woh bataiye.",
+          answer: "Zyadatar welder, fitter, gas cutter aur electrician, aur maintenance helper. Apna trade bataiye, aur kin machines ya kaam ka experience hai.",
           category: "operations",
         },
         {
@@ -950,7 +950,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "electrician",
       name: "Electrician",
       metaTitle: "Electrician Job: ITI Electrician",
-      description: "ITI electrician job, apna area chunkar apply karein. Koi fee nahi. Poori 8 ghante ki shift. Plant maintenance, wiring, motor aur panel ka kaam.",
+      description: "ITI electrician ki naukri: plant maintenance, wiring, motor aur panel ka kaam. Apply karte waqt apna area chunein. Poori 8 ghante ki shift. Koi fee nahi.",
       heading: "Electrician ki naukri.",
       lede: "Plants mein maintenance aur wiring ka kaam, ITI electrician aur wireman ke liye, plant ke experience ke saath ya bina.",
       work: [
@@ -963,7 +963,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       faqs: [
         {
           question: "Kya apply karne ke liye ITI zaroori hai?",
-          answer: "Plant mein electrician ke zyada kaamon ke liye electrician ya wireman mein ITI maanga jaata hai. Helper ke kuch kaamon mein haath ka experience bhi chalta hai; bataiye aapne kya kaam kiya hai.",
+          answer: "Plant mein electrician ke zyadatar kaam ke liye electrician ya wireman ka ITI maanga jaata hai. Helper ke kuch kaam mein bina ITI ke, sirf kaam ka experience bhi chalta hai; bataiye aapne kya kaam kiya hai.",
           category: "operations",
         },
         {
@@ -982,7 +982,7 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
       slug: "welder",
       name: "Welder",
       metaTitle: "Welder Job: Arc, MIG, TIG Welding",
-      description: "Welder job, apna area chunkar apply karein. EPF aur ESIC jahan lagu ho. Koi fee nahi. Fabrication aur maintenance: arc, MIG, TIG welding aur gas cutting.",
+      description: "Welder ki naukri: fabrication aur maintenance mein arc, MIG, TIG welding, gas cutting. Apna area chunkar apply karein. EPF, ESIC jahan laagu ho. Koi fee nahi.",
       heading: "Welder ki naukri.",
       lede: "Fabrication aur maintenance ki welding, ITI welder aur apna kaam dikha sakne wale experienced welders ke liye.",
       work: [
@@ -990,12 +990,12 @@ export const jobRoles: CopyIn<JobRoleCopy[]> = {
         "Gas cutting aur grinding",
         "Structure, frame aur support banana",
         "Breakdown aur shutdown mein repair welding",
-        "Drawing ke hisaab se kaam, aur hot work permit samet site ke safety rules",
+        "Drawing dekhkar kaam, aur site ke safety rules maanna (hot work permit bhi)",
       ],
       faqs: [
         {
-          question: "Sites par kaun-si welding chahiye?",
-          answer: "Zyadatar fabrication ke liye arc aur MIG, stainless steel aur baareek kaam ke liye TIG, aur gas cutting. Bataiye aap kaun-si jaante hain aur kis metal par.",
+          question: "Sites par kaunsi welding chahiye?",
+          answer: "Zyadatar fabrication ke liye arc aur MIG, stainless steel aur baareek kaam ke liye TIG, aur gas cutting. Bataiye aap kaunsi jaante hain aur kis metal par.",
           category: "operations",
         },
         {

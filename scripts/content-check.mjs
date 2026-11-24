@@ -173,6 +173,7 @@ const DYNAMIC_ROUTE_KINDS = {
   "/labour-welfare-fund/[state]": ["lwf-state"],
   "/locations/[cluster]": ["cluster-hub"],
   "/locations/[cluster]/[estate]": ["estate"],
+  "/services/housekeeping/[market]": ["service"],
 };
 for (const entry of pageEntries) {
   const exact = routes.find((r) => r.path === entry.path);
@@ -225,7 +226,9 @@ const areaIds = Object.keys(QUICK_ANSWERS.area);
 const AREA_IDS = [...HARIDWAR_AREA_IDS, ...BENGALURU_AREA_IDS, ...JALANDHAR_AREA_IDS, ...UTTARAKHAND_AREA_IDS, ...PUNJAB_AREA_IDS, ...DEHRADUN_AREA_IDS, ...KAPURTHALA_AREA_IDS, ...VISAKHAPATNAM_AREA_IDS, ...ANDHRA_PRADESH_AREA_IDS, ...HYDERABAD_AREA_IDS, ...TELANGANA_AREA_IDS, ...MARKET_AREA_IDS, ...REST_OF_STATE_AREA_IDS];
 if (areaIds.join() !== AREA_IDS.join()) fail(`C2 QUICK_ANSWERS.area (${areaIds.join(", ")}) differs from the *_AREA_IDS lists in identifiers.ts; stored ids are append-only`);
 // rules.ts must stay import-free (the Windmill build inlines it), so it repeats these lists.
-if (INTAKE_LOCALES.join() !== LOCALE_TAGS.join()) fail(`C2 INTAKE_LOCALES in rules.ts (${INTAKE_LOCALES.join(", ")}) differs from LOCALE_TAGS`);
+// te-IN is a location-pages language with no jobs funnel or intake (jobsLocale in src/lib/i18n.ts).
+const JOBS_LOCALE_TAGS = LOCALE_TAGS.filter((l) => l !== "te-IN");
+if (INTAKE_LOCALES.join() !== JOBS_LOCALE_TAGS.join()) fail(`C2 INTAKE_LOCALES in rules.ts (${INTAKE_LOCALES.join(", ")}) differs from LOCALE_TAGS without te-IN`);
 if (INTAKE_CLUSTERS.join() !== CLUSTER_IDS.join()) fail(`C2 INTAKE_CLUSTERS in rules.ts (${INTAKE_CLUSTERS.join(", ")}) differs from CLUSTER_IDS`);
 if (Object.keys(AREA_CLUSTERS).join() !== areaIds.join()) fail("C2 AREA_CLUSTERS in rules.ts must give a cluster (or null) for every area answer");
 

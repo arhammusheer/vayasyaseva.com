@@ -28,8 +28,8 @@ export const brandMono = localFont({
 
 /*
  * Every script in its own cut of the two brand families (scripts/build-web-fonts.py):
- *   headings  Anek Latin · Anek Devanagari · Anek Kannada · Anek Gurmukhi
- *   body      Hind · Hind (Devanagari) · Hind Mysuru · Hind Jalandhar
+ *   headings  Anek Latin · Anek Devanagari · Anek Kannada · Anek Gurmukhi · Anek Telugu
+ *   body      Hind · Hind (Devanagari) · Hind Mysuru · Hind Jalandhar · Hind Guntur
  * Each file holds one script and declares its unicode-range, so browsers
  * download it only when that script renders: English pages fetch none of
  * them. Anek's Indic cuts are variable (500–600, every heading weight the CSS
@@ -139,6 +139,38 @@ export const brandSerifGurmukhi = localFont({
   ],
 });
 
+export const brandDisplayTelugu = localFont({
+  src: "../assets/fonts/optimized/AnekTelugu-Telugu.woff2",
+  variable: "--font-anek-telu",
+  weight: "500 600",
+  display: "swap",
+  preload: false,
+  adjustFontFallback: false,
+  declarations: [
+    {
+      prop: "unicode-range",
+      value: "U+0951-0952, U+0964-0965, U+0C00-0C7F, U+1CDA, U+1CF2, U+200C-200D, U+20B9, U+25CC",
+    },
+  ],
+});
+export const brandSerifTelugu = localFont({
+  src: [
+    { path: "../assets/fonts/optimized/HindGuntur-Regular-Telugu.woff2", weight: "400" },
+    { path: "../assets/fonts/optimized/HindGuntur-SemiBold-Telugu.woff2", weight: "500 600" },
+    { path: "../assets/fonts/optimized/HindGuntur-Bold-Telugu.woff2", weight: "700" },
+  ],
+  variable: "--font-hind-telu",
+  display: "swap",
+  preload: false,
+  adjustFontFallback: false,
+  declarations: [
+    {
+      prop: "unicode-range",
+      value: "U+0951-0952, U+0964-0965, U+0C00-0C7F, U+1CDA, U+1CF2, U+200C-200D, U+20B9, U+25CC",
+    },
+  ],
+});
+
 /** Every brand font's CSS variable, for the root element. */
 export const brandFontVariables = [
   brandDisplay,
@@ -150,6 +182,8 @@ export const brandFontVariables = [
   brandSerifKannada,
   brandDisplayGurmukhi,
   brandSerifGurmukhi,
+  brandDisplayTelugu,
+  brandSerifTelugu,
 ]
   .map((f) => f.variable)
   .join(" ");

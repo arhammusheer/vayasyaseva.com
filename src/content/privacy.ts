@@ -93,7 +93,7 @@ We may update this notice when our services or practices change. The date at the
 
 ## 10. Job seekers
 
-This section applies when you send us your details through the jobs pages of the Site (www.vayasyaseva.com/jobs, /jobs/apply and the other pages under /jobs, in English, Hindi and Hinglish) or when an AI agent applies for you. The jobs pages are for people aged 18 or older. The English version of this notice governs.
+This section applies when you send us your details through the jobs pages of the Site (www.vayasyaseva.com/jobs, /jobs/apply and the other pages under /jobs, in English and in Hindi, in Devanagari and in Latin script) or when an AI agent applies for you. The jobs pages are for people aged 18 or older. The English version of this notice governs.
 
 [[insert:jobs-privacy]]
 

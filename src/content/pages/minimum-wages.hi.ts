@@ -31,10 +31,10 @@ export const formatDateHi = (iso: string) => longDate.format(parse(iso));
 const formatMonthHi = (iso: string) => monthYear.format(parse(iso));
 
 export const SKILLS_HI: Partial<Record<Skill, string>> = {
-  unskilled: "अकुशल",
-  "semi-skilled": "अर्ध-कुशल",
-  skilled: "कुशल",
-  "highly-skilled": "अति कुशल",
+  unskilled: "अकुशल (अनस्किल्ड)",
+  "semi-skilled": "अर्ध-कुशल (सेमी-स्किल्ड)",
+  skilled: "कुशल (स्किल्ड)",
+  "highly-skilled": "अति-कुशल (हाईली स्किल्ड)",
 };
 
 export type WageHubStateHi = {
@@ -64,12 +64,12 @@ export const WAGE_HUB_HI: Partial<Record<WageStateSlug, WageHubStateHi>> = {
     name: "उत्तर प्रदेश",
     table: "scheduled-employments",
     zones: [
-      { id: "category-1", name: "श्रेणी I" },
-      { id: "category-2", name: "श्रेणी II" },
-      { id: "category-3", name: "श्रेणी III" },
+      { id: "category-1", name: "कैटेगरी I" },
+      { id: "category-2", name: "कैटेगरी II" },
+      { id: "category-3", name: "कैटेगरी III" },
     ],
     skills: ["unskilled", "semi-skilled", "skilled"],
-    key: () => "महीने की दर। श्रेणी I: नोएडा, ग्रेटर नोएडा और गाज़ियाबाद। श्रेणी II: नगर निगम वाले ज़िले, जैसे लखनऊ, कानपुर, आगरा, मेरठ। श्रेणी III: बाकी ज़िले।",
+    key: () => "महीने की दर। कैटेगरी I: नोएडा, ग्रेटर नोएडा और गाज़ियाबाद। कैटेगरी II: नगर निगम वाले ज़िले, जैसे लखनऊ, कानपुर, आगरा, मेरठ। कैटेगरी III: बाकी ज़िले।",
     department: { href: "https://uplabour.gov.in/", label: "श्रम विभाग, उत्तर प्रदेश" },
   },
   delhi: {
@@ -102,7 +102,7 @@ export const WAGE_HUB_HI: Partial<Record<WageStateSlug, WageHubStateHi>> = {
     zones: [{ id: "andhra-pradesh", name: "पूरा आंध्र प्रदेश" }],
     skills: ["unskilled", "semi-skilled", "skilled", "highly-skilled"],
     key: (s) =>
-      `फ़ैक्टरियों की दर, पूरे राज्य में एक जैसी: विशाखापत्तनम, अनकापल्ली, विजयवाड़ा सब जगह। जिस उद्योग की अपनी अलग दर है, जैसे दुकान, होटल, सुरक्षा या निर्माण, उसमें वही दर लागू है। ठेका मज़दूरों के लिए श्रम आयुक्त की अपनी दर भी है: अकुशल को कम से कम ${formatRupees(rate(s, "contract-labour", "andhra-pradesh", "unskilled").monthly)} महीना।`,
+      `फ़ैक्टरियों की दर, पूरे राज्य में एक जैसी: विशाखापत्तनम, अनकापल्ली, विजयवाड़ा सब जगह। जिस काम की अपनी अलग दर है, जैसे दुकान, होटल, सिक्योरिटी या कंस्ट्रक्शन, उसमें वही दर लागू है। कॉन्ट्रैक्ट पर काम करने वालों के लिए लेबर कमिश्नर की अपनी दर भी है: अकुशल को कम से कम ${formatRupees(rate(s, "contract-labour", "andhra-pradesh", "unskilled").monthly)} महीना।`,
     department: { href: "https://labour.ap.gov.in/", label: "श्रम विभाग, आंध्र प्रदेश" },
   },
   karnataka: {
@@ -115,7 +115,7 @@ export const WAGE_HUB_HI: Partial<Record<WageStateSlug, WageHubStateHi>> = {
     ],
     skills: ["unskilled", "semi-skilled", "skilled", "highly-skilled"],
     key: () =>
-      "22 मई 2026 की अधिसूचना के 79 कामों की दर: इंजीनियरिंग, निर्माण, दुकानें, होटल, सुरक्षा और दूसरे। महीने की दर, मूल मज़दूरी और VDA मिलाकर। ज़ोन 1: बेंगलुरु शहर। ज़ोन 2: दूसरे नगर निगम और ज़िला मुख्यालय। ज़ोन 3: बाकी इलाके। फ़ाउंड्री, बिजलीघर और सफ़ाई के काम की दर ज़्यादा है। कपड़ा सिलाई (गारमेंट), खेती, बागान, बीड़ी, काजू और लोडिंग जैसे 19 कामों की अपनी अलग दरें हैं।",
+      "22 मई 2026 के नोटिफ़िकेशन में 79 कामों की दर: इंजीनियरिंग, कंस्ट्रक्शन, दुकानें, होटल, सिक्योरिटी और दूसरे। महीने की दर, बेसिक और VDA मिलाकर। ज़ोन 1: बेंगलुरु शहर। ज़ोन 2: दूसरे नगर निगम और ज़िला मुख्यालय। ज़ोन 3: बाकी इलाके। फ़ाउंड्री, बिजलीघर और सफ़ाई के काम की दर ज़्यादा है। गारमेंट (सिलाई), खेती, बागान, बीड़ी, काजू और लोडिंग जैसे 19 कामों की अपनी अलग दरें हैं।",
     department: { href: "https://karmikaspandana.karnataka.gov.in/en", label: "श्रम विभाग, कर्नाटक" },
   },
 };
@@ -138,24 +138,24 @@ export const HUB_HI_SOURCE_HASH: Partial<Record<WageStateSlug, string>> = {
 export const wageHubHi = {
   title: (year: string | null) => `न्यूनतम मजदूरी${year ? ` ${year}` : ""}: उत्तराखंड, UP, दिल्ली, हरियाणा, पंजाब, आंध्र प्रदेश`,
   description: () =>
-    `उत्तराखंड, UP, दिल्ली, हरियाणा, पंजाब और आंध्र प्रदेश में आपके काम की सबसे कम मजदूरी, महीने और रोज़ की, और हर राज्य के श्रम विभाग की आधिकारिक साइट। जाँच: ${formatMonthHi(wageStates.map((s) => s.checked.on).sort()[0])}।`,
+    `उत्तराखंड, UP, दिल्ली, हरियाणा, पंजाब और आंध्र प्रदेश में आपके काम की सबसे कम मज़दूरी, महीने की और रोज़ की, और हर राज्य के श्रम विभाग की सरकारी साइट। आख़िरी जाँच: ${formatMonthHi(wageStates.map((s) => s.checked.on).sort()[0])}।`,
   heading: (year: string | null) => `न्यूनतम मजदूरी${year ? ` ${year}` : ""}`,
   lede: "आपको कम से कम कितना मिलना चाहिए: अपना राज्य और अपना काम देखिए। इससे कम देने की इजाज़त नहीं है।",
   /** The page's one jobs door: a quiet line under the lede. */
   jobsLine: { before: "नौकरी चाहिए?", label: "नौकरियाँ देखें", href: "/jobs" },
-  table: { skill: "काम", month: "महीना", day: "रोज़", notSet: "तय नहीं" },
+  table: { skill: "स्किल", month: "महीना", day: "रोज़", notSet: "तय नहीं" },
   inForce: (date: string) => `${date} से लागू।`,
   /** Said once, under the lede, when any state's revision is overdue. */
-  overdue: "कुछ राज्यों में नई दर आनी थी, जो अभी नहीं आई। नीचे सबसे नई प्रकाशित दरें हैं।",
-  stale: "ये दरें बदल चुकी हो सकती हैं। राज्य के श्रम विभाग की साइट देखिए।",
+  overdue: "कुछ राज्यों में नई दर आनी थी, जो अभी नहीं आई। नीचे अभी तक की सबसे नई सरकारी दरें हैं।",
+  stale: "हो सकता है ये दरें बदल गई हों। राज्य के श्रम विभाग की साइट देखिए।",
   paidLess: {
-    heading: "मजदूरी पर सवाल है?",
+    heading: "मज़दूरी पर सवाल है?",
     rows: [
-      { title: "पर्ची संभालिए", text: "अपनी वेतन पर्ची और हाज़िरी का रिकॉर्ड रखिए। इनसे पता चलता है कि आपको कितना मिला।" },
-      { title: "श्रम विभाग से पूछिए", text: "आप जिस राज्य में काम करते हैं, उसका श्रम विभाग दरों और नियमों की आधिकारिक जानकारी देता है। कॉन्ट्रैक्ट पर काम करने वालों पर भी यही दरें लागू हैं।" },
+      { title: "सैलरी स्लिप संभालकर रखिए", text: "अपनी सैलरी स्लिप और हाज़िरी का रिकॉर्ड रखिए। इनसे पता चलता है कि आपको कितना मिला।" },
+      { title: "श्रम विभाग से पूछिए", text: "आप जिस राज्य में काम करते हैं, उसके श्रम विभाग से दरों और नियमों की पक्की जानकारी मिलती है। कॉन्ट्रैक्ट पर काम करने वालों पर भी यही दरें लागू हैं।" },
     ],
   },
 
-  checked: (date: string) => `${date} को राज्य के अपने दस्तावेज़ों से भरा गया।`,
+  checked: (date: string) => `${date} को हर राज्य के अपने नोटिफ़िकेशन से अपडेट किया गया।`,
   howWeCheck: "हमने कैसे जाँचा (अंग्रेज़ी में)",
 };

@@ -48,7 +48,7 @@ export const bengaluruPages: LocationCopy[] = [
     cluster: "bengaluru",
     name: "Bengaluru",
     placeId: "bengaluru",
-    metaTitle: "Labour Contractor and Manpower Supplier in Bangalore",
+    metaTitle: "Manpower Company and Labour Contractor in Bangalore",
     description:
       "Labour supplier for factories, warehouses and campuses in Bangalore: supervised contract workers in Peenya, Bommasandra, Jigani, Electronic City and Hoskote.",
     heading: "Labour contractor and manpower supplier in Bengaluru.",

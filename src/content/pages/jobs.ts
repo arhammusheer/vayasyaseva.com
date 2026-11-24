@@ -1,5 +1,5 @@
 import type { JobRole } from "@/lib/talent-intake/rules";
-import type { Locale } from "@/lib/i18n";
+import type { JobsLocale } from "@/lib/i18n";
 
 /** Strings the jobs form shows while it works (client component). */
 export interface JobsFormCopy {
@@ -69,21 +69,21 @@ export const JOB_GROUP_ROLES: Record<JobGroupId, JobRole[]> = {
  * no-fee mention on a jobs page. Plain text, no link: the "Spot a fake
  * offer" link drew applicants off the form (owner, 19 Oct 2026).
  */
-export const NO_FEE: Record<Locale, string> = {
+export const NO_FEE: Record<JobsLocale, string> = {
   "en-IN": "No fee to apply.",
-  "hi-IN": "आवेदन की कोई फ़ीस नहीं।",
-  "hi-Latn-IN": "Apply ki koi fee nahi.",
+  "hi-IN": "अप्लाई करने की कोई फ़ीस नहीं।",
+  "hi-Latn-IN": "Apply karne ki koi fee nahi.",
   "pa-IN": "ਅਪਲਾਈ ਕਰਨ ਦੀ ਕੋਈ ਫ਼ੀਸ ਨਹੀਂ।",
-  "kn-IN": "ಅರ್ಜಿ ಸಲ್ಲಿಸಲು ಯಾವುದೇ ಶುಲ್ಕವಿಲ್ಲ.",
+  "kn-IN": "ಅರ್ಜಿ ಹಾಕಲು ಯಾವುದೇ ಫೀಸ್ ಇಲ್ಲ.",
 };
 
 /** Work is shift-wise only: say so plainly (owner, 16 October 2026). The form's header line. */
-export const SHIFTS_LINE: Record<Locale, string> = {
+export const SHIFTS_LINE: Record<JobsLocale, string> = {
   "en-IN": "Work is in full 8-hour shifts. There is no part-time work.",
   "hi-IN": "काम पूरी 8 घंटे की शिफ्ट में होता है। पार्ट-टाइम काम नहीं है।",
   "hi-Latn-IN": "Kaam poori 8 ghante ki shift mein hota hai. Part-time kaam nahi hai.",
   "pa-IN": "ਕੰਮ ਪੂਰੀ 8 ਘੰਟੇ ਦੀ ਸ਼ਿਫ਼ਟ ਵਿੱਚ ਹੁੰਦਾ ਹੈ। ਪਾਰਟ-ਟਾਈਮ ਕੰਮ ਨਹੀਂ ਹੈ।",
-  "kn-IN": "ಕೆಲಸ ಪೂರ್ಣ 8 ಗಂಟೆಗಳ ಶಿಫ್ಟ್‌ನಲ್ಲಿ ಇರುತ್ತದೆ. ಪಾರ್ಟ್-ಟೈಮ್ ಕೆಲಸ ಇಲ್ಲ.",
+  "kn-IN": "ಕೆಲಸ ಪೂರ್ತಿ 8 ಗಂಟೆಯ ಶಿಫ್ಟ್‌ನಲ್ಲಿ ಇರುತ್ತದೆ. ಪಾರ್ಟ್-ಟೈಮ್ ಕೆಲಸ ಇಲ್ಲ.",
 };
 
 /**
@@ -97,7 +97,7 @@ export const SHIFTS_LINE: Record<Locale, string> = {
  * Punjabi jobs pages.
  * Claims discipline: no promised call-back times, no guarantees of work.
  */
-export const jobsCopy: Record<Locale, JobsCopy> = {
+export const jobsCopy: Record<JobsLocale, JobsCopy> = {
   "en-IN": {
     title: "Factory, Packing and Warehouse Jobs: No Fee to Apply",
     description:
@@ -170,14 +170,14 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     who: "Who can apply",
   },
   "hi-IN": {
-    title: "फ़ैक्टरी, पैकिंग और वेयरहाउस की नौकरी: आवेदन की कोई फ़ीस नहीं",
+    title: "फ़ैक्टरी, पैकिंग और वेयरहाउस की नौकरी: अप्लाई करने की कोई फ़ीस नहीं",
     description:
-      "जिन शहरों और राज्यों में हम भर्ती करते हैं, वहाँ फ़ैक्टरी, पैकिंग, वेयरहाउस और हाउसकीपिंग का काम, पूरी 8 घंटे की शिफ्ट। आवेदन करते समय अपना इलाका चुनें। कोई फ़ीस नहीं।",
+      "फ़ैक्टरी, पैकिंग, वेयरहाउस और हाउसकीपिंग का काम, उन शहरों और राज्यों में जहाँ हम भर्ती करते हैं। पूरी 8 घंटे की शिफ्ट। अप्लाई करते समय अपना इलाका चुनें। कोई फ़ीस नहीं।",
     breadcrumb: "नौकरी",
     eyebrow: "नौकरी",
     heading: "फ़ैक्टरी और वेयरहाउस का काम ढूँढें।",
     lede: "फ़ैक्टरी, पैकिंग, वेयरहाउस, हाउसकीपिंग और आईटीआई का काम।",
-    apply: "आवेदन करें",
+    apply: "अप्लाई करें",
     markets: "आप कहाँ काम करना चाहते हैं?",
     form: {
       steps: {
@@ -204,7 +204,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       },
       next: "आगे",
       retry: "फिर से भेजें",
-      retryNotice: "इस आवेदन की पुष्टि के लिए फिर से भेजें। आपका रेफ़रेंस नंबर:",
+      retryNotice: "फ़ॉर्म हम तक पहुँचा, यह पक्का करने के लिए फिर से भेजें। आपका रेफ़रेंस नंबर:",
       submit: "भेजें",
       sending: "भेज रहे हैं…",
       sendingFile: (n, total, percent) => `फ़ाइल ${n} / ${total} भेज रहे हैं… ${percent}%`,
@@ -212,14 +212,14 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         phone: "10 अंकों का मोबाइल नंबर लिखें।",
         agree: "कृपया बॉक्स पर टिक करें: आपकी उम्र 18 साल या उससे ज़्यादा है और आप संपर्क के लिए सहमत हैं।",
         verification: "कुछ सेकंड रुकिए, फिर भेजें दबाइए।",
-        network: "नेटवर्क टूट गया। सिग्नल देखकर फिर से भेजें दबाएँ।",
+        network: "नेटवर्क चला गया। सिग्नल आने पर फिर से “भेजें” दबाएँ।",
         server: "हमारी तरफ़ से कुछ गड़बड़ हुई। कुछ मिनट बाद फिर से कोशिश करें।",
-        expired: "फ़ॉर्म का समय ख़त्म हो गया। कृपया फिर से आवेदन करें। हम आवेदन मोबाइल नंबर से मिलाते हैं, इसलिए दोबारा भेजना ठीक है।",
+        expired: "फ़ॉर्म का समय ख़त्म हो गया। फिर से भरकर भेजें। एक ही मोबाइल नंबर से दो बार भेजने में कोई दिक्कत नहीं।",
       },
       done: {
         title: "मिल गया, धन्यवाद।",
         refLabel: "आपका रेफ़रेंस नंबर",
-        body: "हम यह रेफ़रेंस WhatsApp पर, या VAYSPL से SMS से भेजेंगे। काम आपके लायक हुआ, तो हम कॉल करेंगे।",
+        body: "यह रेफ़रेंस नंबर हम WhatsApp पर, या VAYSPL नाम से SMS में भेजेंगे। आपके लायक काम हुआ, तो हम कॉल करेंगे।",
         again: "एक और भेजें",
       },
       labels: { photo: "फ़ोटो", document: "कागज़" },
@@ -238,12 +238,12 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       { title: "दूसरे आईटीआई ट्रेड", role: "iti-trades" },
       { title: "डेटा एंट्री ऑपरेटर", role: "data-entry-operator" },
     ],
-    who: "कौन आवेदन कर सकता है",
+    who: "कौन अप्लाई कर सकता है",
   },
   "hi-Latn-IN": {
-    title: "Factory, Packing, Warehouse Job: Apply ki Koi Fee Nahi",
+    title: "Factory, Packing, Warehouse Job: Koi Fee Nahi",
     description:
-      "Factory, packing, warehouse aur housekeeping ka kaam, jahan hum bharti karte hain. Poori 8 ghante ki shift. Apply karte waqt area chunein. Koi fee nahi.",
+      "Jahan hum bharti karte hain, wahan factory, packing, warehouse aur housekeeping ka kaam. Poori 8 ghante ki shift. Apna area chunkar apply karein. Koi fee nahi.",
     breadcrumb: "Jobs",
     eyebrow: "Jobs",
     heading: "Factory aur warehouse ka kaam dhoondhein.",
@@ -253,7 +253,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
     form: {
       steps: {
         files: {
-          title: "Photo ya documents jodein",
+          title: "Photo ya documents daalein",
           hint: "Certificate, ITI, licence, salary slip ya resume.",
           warning: "Aadhaar ya bank ke documents na bhejein.",
         },
@@ -275,7 +275,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       },
       next: "Aage",
       retry: "Phir se bhejein",
-      retryNotice: "Isi application ki pushti ke liye phir se bhejein. Aapka reference number:",
+      retryNotice: "Application pahunchi ya nahi, ye pakka karne ke liye ise phir se bhejein. Aapka reference number:",
       submit: "Bhejein",
       sending: "Bhej rahe hain…",
       sendingFile: (n, total, percent) => `File ${n} / ${total} bhej rahe hain… ${percent}%`,
@@ -285,16 +285,16 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         verification: "Kuch second rukiye, phir Bhejein dabaiye.",
         network: "Network toot gaya. Signal dekhkar phir se Bhejein dabaiye.",
         server: "Hamari taraf se kuch gadbad hui. Kuch minute baad phir se try karein.",
-        expired: "Form ka samay khatam ho gaya. Please phir se apply karein. Hum application mobile number se milaate hain, isliye dobara bhejna theek hai.",
+        expired: "Form ka time khatam ho gaya. Please phir se apply karein. Hum application mobile number se milaate hain, isliye do baar bhejne mein koi dikkat nahi.",
       },
       done: {
-        title: "Mil gaya, dhanyavaad.",
+        title: "Mil gaya. Thank you.",
         refLabel: "Aapka reference number",
-        body: "Hum yeh reference WhatsApp par, ya VAYSPL se SMS se bhejenge. Kaam aapke laayak hua, to hum call karenge.",
+        body: "Ye reference number hum WhatsApp par bhejenge, ya VAYSPL naam se SMS aayega. Kaam aapke hisaab ka hua to hum call karenge.",
         again: "Ek aur bhejein",
       },
       labels: { photo: "Photo", document: "Document" },
-      prefill: { name: "Naam", work: "Kaunsa kaam chahiye", experience: "Anubhav", location: "Ilaaka", start: "Kab se shuru kar sakte hain" },
+      prefill: { name: "Naam", work: "Kaunsa kaam chahiye", experience: "Experience", location: "Area", start: "Kab se shuru kar sakte hain" },
     },
     work: [
       { title: "Production helper", role: "factory-helper" },
@@ -325,7 +325,7 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       steps: {
         files: {
           title: "ਫ਼ੋਟੋ ਜਾਂ ਕਾਗਜ਼ ਜੋੜੋ",
-          hint: "ਸਰਟੀਫ਼ਿਕੇਟ, ਆਈਟੀਆਈ, ਲਾਇਸੈਂਸ, ਸੈਲਰੀ ਸਲਿੱਪ ਜਾਂ ਰਿਜ਼ਿਊਮ।",
+          hint: "ਸਰਟੀਫ਼ਿਕੇਟ, ਆਈਟੀਆਈ, ਲਾਇਸੈਂਸ, ਸੈਲਰੀ ਸਲਿੱਪ ਜਾਂ ਬਾਇਓਡਾਟਾ।",
           warning: "ਆਧਾਰ ਜਾਂ ਬੈਂਕ ਦੇ ਕਾਗਜ਼ ਨਾ ਭੇਜੋ।",
         },
         phone: {
@@ -346,20 +346,20 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       },
       next: "ਅੱਗੇ",
       retry: "ਦੁਬਾਰਾ ਭੇਜੋ",
-      retryNotice: "ਇਸ ਅਰਜ਼ੀ ਦੀ ਪੁਸ਼ਟੀ ਲਈ ਦੁਬਾਰਾ ਭੇਜੋ। ਤੁਹਾਡਾ ਰੈਫ਼ਰੈਂਸ ਨੰਬਰ:",
+      retryNotice: "ਪੱਕਾ ਕਰਨ ਲਈ ਕਿ ਅਰਜ਼ੀ ਸਾਨੂੰ ਮਿਲ ਗਈ ਹੈ, ਇਸ ਨੂੰ ਦੁਬਾਰਾ ਭੇਜੋ। ਤੁਹਾਡਾ ਰੈਫ਼ਰੈਂਸ ਨੰਬਰ:",
       submit: "ਭੇਜੋ",
       sending: "ਭੇਜ ਰਹੇ ਹਾਂ…",
       sendingFile: (n, total, percent) => `ਫ਼ਾਈਲ ${n} / ${total} ਭੇਜ ਰਹੇ ਹਾਂ… ${percent}%`,
       errors: {
         phone: "10 ਅੰਕਾਂ ਦਾ ਮੋਬਾਈਲ ਨੰਬਰ ਲਿਖੋ।",
-        agree: "ਕਿਰਪਾ ਕਰਕੇ ਬਾਕਸ 'ਤੇ ਟਿੱਕ ਕਰੋ: ਤੁਹਾਡੀ ਉਮਰ 18 ਸਾਲ ਜਾਂ ਵੱਧ ਹੈ ਅਤੇ ਤੁਸੀਂ ਸੰਪਰਕ ਲਈ ਸਹਿਮਤ ਹੋ।",
-        verification: "ਕੁਝ ਸਕਿੰਟ ਰੁਕੋ, ਫਿਰ ਦੁਬਾਰਾ ਭੇਜੋ ਦਬਾਓ।",
-        network: "ਨੈੱਟਵਰਕ ਟੁੱਟ ਗਿਆ। ਸਿਗਨਲ ਵੇਖ ਕੇ ਦੁਬਾਰਾ ਭੇਜੋ ਦਬਾਓ।",
+        agree: "ਬਾਕਸ 'ਤੇ ਟਿੱਕ ਕਰੋ: ਤੁਹਾਡੀ ਉਮਰ 18 ਸਾਲ ਜਾਂ ਵੱਧ ਹੈ ਅਤੇ ਤੁਸੀਂ ਸੰਪਰਕ ਲਈ ਸਹਿਮਤ ਹੋ।",
+        verification: "ਕੁਝ ਸਕਿੰਟ ਰੁਕੋ, ਫਿਰ “ਭੇਜੋ” ਦੁਬਾਰਾ ਦਬਾਓ।",
+        network: "ਨੈੱਟ ਚਲਾ ਗਿਆ। ਸਿਗਨਲ ਵੇਖ ਕੇ “ਭੇਜੋ” ਦੁਬਾਰਾ ਦਬਾਓ।",
         server: "ਸਾਡੇ ਵੱਲੋਂ ਕੁਝ ਗੜਬੜ ਹੋ ਗਈ। ਕੁਝ ਮਿੰਟਾਂ ਬਾਅਦ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
-        expired: "ਫ਼ਾਰਮ ਦਾ ਸਮਾਂ ਖ਼ਤਮ ਹੋ ਗਿਆ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਅਪਲਾਈ ਕਰੋ। ਅਸੀਂ ਅਰਜ਼ੀਆਂ ਮੋਬਾਈਲ ਨੰਬਰ ਨਾਲ ਮਿਲਾਉਂਦੇ ਹਾਂ, ਇਸ ਲਈ ਦੋ ਵਾਰ ਭੇਜਣਾ ਠੀਕ ਹੈ।",
+        expired: "ਫ਼ਾਰਮ ਦਾ ਟਾਈਮ ਮੁੱਕ ਗਿਆ। ਦੁਬਾਰਾ ਅਪਲਾਈ ਕਰੋ। ਦੋ ਵਾਰ ਭੇਜਣ ਨਾਲ ਕੋਈ ਫ਼ਰਕ ਨਹੀਂ ਪੈਂਦਾ: ਅਸੀਂ ਅਰਜ਼ੀਆਂ ਮੋਬਾਈਲ ਨੰਬਰ ਤੋਂ ਪਛਾਣ ਲੈਂਦੇ ਹਾਂ।",
       },
       done: {
-        title: "ਮਿਲ ਗਿਆ, ਧੰਨਵਾਦ।",
+        title: "ਅਰਜ਼ੀ ਮਿਲ ਗਈ, ਧੰਨਵਾਦ।",
         refLabel: "ਤੁਹਾਡਾ ਰੈਫ਼ਰੈਂਸ ਨੰਬਰ",
         body: "ਅਸੀਂ ਇਹ ਰੈਫ਼ਰੈਂਸ WhatsApp 'ਤੇ, ਜਾਂ VAYSPL ਤੋਂ SMS ਰਾਹੀਂ ਭੇਜਾਂਗੇ। ਕੰਮ ਤੁਹਾਡੇ ਲਾਇਕ ਹੋਇਆ ਤਾਂ ਅਸੀਂ ਕਾਲ ਕਰਾਂਗੇ।",
         again: "ਇੱਕ ਹੋਰ ਭੇਜੋ",
@@ -385,22 +385,22 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
   "kn-IN": {
     title: "ಫ್ಯಾಕ್ಟರಿ ಮತ್ತು ವೇರ್‌ಹೌಸ್ ಉದ್ಯೋಗಗಳು: ಶುಲ್ಕವಿಲ್ಲ",
     description:
-      "ನಾವು ನೇಮಕ ಮಾಡುವಲ್ಲಿ ಫ್ಯಾಕ್ಟರಿ, ಪ್ಯಾಕಿಂಗ್, ವೇರ್‌ಹೌಸ್ ಮತ್ತು ಹೌಸ್‌ಕೀಪಿಂಗ್ ಕೆಲಸ. ಪೂರ್ಣ 8 ಗಂಟೆಗಳ ಶಿಫ್ಟ್. ಅರ್ಜಿ ಹಾಕುವಾಗ ನಿಮ್ಮ ಪ್ರದೇಶವನ್ನು ಆರಿಸಿ. ಯಾವುದೇ ಶುಲ್ಕವಿಲ್ಲ.",
+      "ನಾವು ಕೆಲಸ ಕೊಡುವ ಊರುಗಳಲ್ಲಿ ಫ್ಯಾಕ್ಟರಿ, ಪ್ಯಾಕಿಂಗ್, ವೇರ್‌ಹೌಸ್ ಮತ್ತು ಹೌಸ್‌ಕೀಪಿಂಗ್ ಕೆಲಸ. ಪೂರ್ತಿ 8 ಗಂಟೆಯ ಶಿಫ್ಟ್. ಅರ್ಜಿ ಹಾಕುವಾಗ ನಿಮ್ಮ ಊರು ಆರಿಸಿ. ಯಾವುದೇ ಫೀಸ್ ಇಲ್ಲ.",
     breadcrumb: "ಉದ್ಯೋಗಗಳು",
     eyebrow: "ಉದ್ಯೋಗಗಳು",
     heading: "ಫ್ಯಾಕ್ಟರಿ ಮತ್ತು ವೇರ್‌ಹೌಸ್ ಕೆಲಸ ಹುಡುಕಿ.",
     lede: "ಫ್ಯಾಕ್ಟರಿ, ಪ್ಯಾಕಿಂಗ್, ವೇರ್‌ಹೌಸ್, ಹೌಸ್‌ಕೀಪಿಂಗ್ ಮತ್ತು ITI ಕೆಲಸ.",
-    apply: "ಅರ್ಜಿ ಸಲ್ಲಿಸಿ",
-    markets: "ನೀವು ಎಲ್ಲಿ ಕೆಲಸ ಮಾಡಲು ಬಯಸುತ್ತೀರಿ?",
+    apply: "ಅರ್ಜಿ ಹಾಕಿ",
+    markets: "ನಿಮಗೆ ಎಲ್ಲಿ ಕೆಲಸ ಬೇಕು?",
     form: {
       steps: {
         files: {
           title: "ಫೋಟೋ ಅಥವಾ ದಾಖಲೆಗಳನ್ನು ಸೇರಿಸಿ",
-          hint: "ಪ್ರಮಾಣಪತ್ರಗಳು, ITI, ಲೈಸೆನ್ಸ್, ಸಂಬಳದ ಚೀಟಿ ಅಥವಾ ರೆಸ್ಯೂಮೆ.",
+          hint: "ಸರ್ಟಿಫಿಕೇಟ್, ITI, ಲೈಸೆನ್ಸ್, ಸ್ಯಾಲರಿ ಸ್ಲಿಪ್ ಅಥವಾ ಬಯೋಡೇಟಾ.",
           warning: "ಆಧಾರ್ ಅಥವಾ ಬ್ಯಾಂಕ್ ದಾಖಲೆಗಳನ್ನು ಕಳುಹಿಸಬೇಡಿ.",
         },
         phone: {
-          title: "ನಿಮ್ಮ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ",
+          title: "ನಿಮ್ಮ ಮೊಬೈಲ್ ನಂಬರ್",
           placeholder: "98765 43210",
           agree: "ನನಗೆ 18 ವರ್ಷ ಅಥವಾ ಅದಕ್ಕಿಂತ ಹೆಚ್ಚು. Vayasya Seva ನನ್ನ ಮಾಹಿತಿಯನ್ನು ಇಟ್ಟುಕೊಂಡು ಕೆಲಸದ ಬಗ್ಗೆ ನನ್ನನ್ನು ಸಂಪರ್ಕಿಸಬಹುದು, WhatsApp ನಲ್ಲಿಯೂ.",
           keep: "ನಿಮ್ಮ ಮಾಹಿತಿಯನ್ನು ನಾವು 12 ತಿಂಗಳು ಇಟ್ಟುಕೊಳ್ಳುತ್ತೇವೆ.",
@@ -413,26 +413,26 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
         remove: "ತೆಗೆದುಹಾಕಿ",
         tooLarge: "ತುಂಬಾ ದೊಡ್ಡದಾಗಿದೆ",
         wrongType: "ಕಳುಹಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ (ಫೋಟೋ, PDF ಅಥವಾ Word ಫೈಲ್ ಕಳುಹಿಸಿ)",
-        tooMany: "ಗರಿಷ್ಠ 7 ಫೈಲ್‌ಗಳನ್ನು ಕಳುಹಿಸಬಹುದು.",
+        tooMany: "7 ಫೈಲ್‌ಗಳವರೆಗೆ ಕಳುಹಿಸಬಹುದು.",
       },
       next: "ಮುಂದೆ",
       retry: "ಮತ್ತೆ ಕಳುಹಿಸಿ",
-      retryNotice: "ಈ ಅರ್ಜಿಯನ್ನು ಖಚಿತಪಡಿಸಲು ಮತ್ತೆ ಕಳುಹಿಸಿ. ನಿಮ್ಮ ರೆಫರೆನ್ಸ್ ಸಂಖ್ಯೆ:",
+      retryNotice: "ಅರ್ಜಿ ನಮಗೆ ತಲುಪಿದೆ ಎಂದು ಖಚಿತವಾಗಲು ಮತ್ತೆ ಕಳುಹಿಸಿ. ನಿಮ್ಮ ರೆಫರೆನ್ಸ್ ನಂಬರ್:",
       submit: "ಕಳುಹಿಸಿ",
       sending: "ಕಳುಹಿಸಲಾಗುತ್ತಿದೆ…",
       sendingFile: (n, total, percent) => `ಫೈಲ್ ${n} / ${total} ಕಳುಹಿಸಲಾಗುತ್ತಿದೆ… ${percent}%`,
       errors: {
-        phone: "10 ಅಂಕಿಗಳ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ಬರೆಯಿರಿ.",
-        agree: "ದಯವಿಟ್ಟು ಬಾಕ್ಸ್ ಟಿಕ್ ಮಾಡಿ: ನಿಮಗೆ 18 ವರ್ಷ ಅಥವಾ ಹೆಚ್ಚು, ಮತ್ತು ನಾವು ನಿಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಲು ನೀವು ಒಪ್ಪುತ್ತೀರಿ.",
-        verification: "ಕೆಲವು ಸೆಕೆಂಡುಗಳು ಕಾಯಿರಿ, ನಂತರ ಮತ್ತೆ ಕಳುಹಿಸಿ ಒತ್ತಿರಿ.",
-        network: "ಸಂಪರ್ಕ ಕಡಿತವಾಯಿತು. ಸಿಗ್ನಲ್ ನೋಡಿ, ಮತ್ತೆ ಕಳುಹಿಸಿ ಒತ್ತಿರಿ.",
+        phone: "10 ಅಂಕಿಯ ಮೊಬೈಲ್ ನಂಬರ್ ಹಾಕಿ.",
+        agree: "ದಯವಿಟ್ಟು ಬಾಕ್ಸ್ ಟಿಕ್ ಮಾಡಿ: ನಿಮಗೆ 18 ವರ್ಷ ಅಥವಾ ಹೆಚ್ಚು ವಯಸ್ಸಾಗಿದೆ, ಮತ್ತು ನಾವು ನಿಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಲು ನೀವು ಒಪ್ಪಿದ್ದೀರಿ.",
+        verification: "ಕೆಲವು ಸೆಕೆಂಡ್ ಕಾಯಿರಿ, ನಂತರ ಮತ್ತೆ “ಕಳುಹಿಸಿ” ಒತ್ತಿ.",
+        network: "ನೆಟ್‌ವರ್ಕ್ ಕಟ್ ಆಯಿತು. ಸಿಗ್ನಲ್ ನೋಡಿ, ಮತ್ತೆ “ಕಳುಹಿಸಿ” ಒತ್ತಿ.",
         server: "ನಮ್ಮ ಕಡೆ ಏನೋ ತಪ್ಪಾಗಿದೆ. ಕೆಲವು ನಿಮಿಷಗಳ ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
-        expired: "ಫಾರ್ಮ್‌ನ ಸಮಯ ಮುಗಿದಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ. ನಾವು ಅರ್ಜಿಗಳನ್ನು ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯಿಂದ ಹೊಂದಿಸುತ್ತೇವೆ, ಹಾಗಾಗಿ ಎರಡು ಬಾರಿ ಕಳುಹಿಸಿದರೂ ಪರವಾಗಿಲ್ಲ.",
+        expired: "ಫಾರ್ಮ್‌ನ ಸಮಯ ಮುಗಿದಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಅರ್ಜಿ ಹಾಕಿ. ಒಂದೇ ಮೊಬೈಲ್ ನಂಬರ್‌ನಿಂದ ಬಂದ ಅರ್ಜಿಗಳನ್ನು ನಾವು ಒಂದಾಗಿ ನೋಡುತ್ತೇವೆ, ಹಾಗಾಗಿ ಎರಡು ಬಾರಿ ಕಳುಹಿಸಿದರೂ ಪರವಾಗಿಲ್ಲ.",
       },
       done: {
-        title: "ಸ್ವೀಕರಿಸಲಾಗಿದೆ, ಧನ್ಯವಾದಗಳು.",
-        refLabel: "ನಿಮ್ಮ ರೆಫರೆನ್ಸ್ ಸಂಖ್ಯೆ",
-        body: "ಈ ರೆಫರೆನ್ಸ್ ಅನ್ನು ನಾವು WhatsApp ನಲ್ಲಿ, ಅಥವಾ VAYSPL ಇಂದ SMS ಮೂಲಕ ಕಳುಹಿಸುತ್ತೇವೆ. ಕೆಲಸ ಸರಿಹೊಂದಿದರೆ, ನಾವು ಕರೆ ಮಾಡುತ್ತೇವೆ.",
+        title: "ಅರ್ಜಿ ನಮಗೆ ಸಿಕ್ಕಿದೆ. ಧನ್ಯವಾದಗಳು.",
+        refLabel: "ನಿಮ್ಮ ರೆಫರೆನ್ಸ್ ನಂಬರ್",
+        body: "ಈ ರೆಫರೆನ್ಸ್ ನಂಬರ್ ಅನ್ನು ನಾವು WhatsApp ನಲ್ಲಿ, ಅಥವಾ VAYSPL ನಿಂದ SMS ಮೂಲಕ ಕಳುಹಿಸುತ್ತೇವೆ. ನಿಮಗೆ ಸರಿಹೊಂದುವ ಕೆಲಸ ಇದ್ದರೆ, ನಾವು ಕರೆ ಮಾಡುತ್ತೇವೆ.",
         again: "ಇನ್ನೊಂದು ಕಳುಹಿಸಿ",
       },
       labels: { photo: "ಫೋಟೋ", document: "ದಾಖಲೆ" },
@@ -451,6 +451,6 @@ export const jobsCopy: Record<Locale, JobsCopy> = {
       { title: "ಇತರ ITI ಟ್ರೇಡ್‌ಗಳು", role: "iti-trades" },
       { title: "ಡೇಟಾ ಎಂಟ್ರಿ ಆಪರೇಟರ್", role: "data-entry-operator" },
     ],
-    who: "ಯಾರು ಅರ್ಜಿ ಸಲ್ಲಿಸಬಹುದು",
+    who: "ಯಾರು ಅರ್ಜಿ ಹಾಕಬಹುದು",
   },
 };

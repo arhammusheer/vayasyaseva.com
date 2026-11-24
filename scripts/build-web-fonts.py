@@ -4,8 +4,8 @@ Builds the site's script-specific web fonts (src/assets/fonts/optimized/)
 from the original TTFs in src/assets/fonts/<Family>/, so every script on the
 site renders in its own cut of the two brand families:
 
-  headings  Anek Latin · Anek Devanagari · Anek Kannada · Anek Gurmukhi
-  body      Hind (Latin, Devanagari) · Hind Mysuru (Kannada) · Hind Jalandhar (Gurmukhi)
+  headings  Anek Latin · Anek Devanagari · Anek Kannada · Anek Gurmukhi · Anek Telugu
+  body      Hind (Latin, Devanagari) · Hind Mysuru (Kannada) · Hind Jalandhar (Gurmukhi) · Hind Guntur (Telugu)
 
 Each file holds one script only (its RANGES entry, the same range
 src/lib/fonts.ts declares as unicode-range), so a page downloads only the
@@ -35,16 +35,19 @@ RANGES = {
     "Devanagari": "U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF",
     "Kannada": "U+0C80-0CF3, U+1CD0, U+1CD2-1CD3, U+1CDA, U+1CF2, U+1CF4, U+200C-200D, U+20B9, U+25CC, U+A830-A835",
     "Gurmukhi": "U+0951-0952, U+0964-0965, U+0A01-0A76, U+200C-200D, U+20B9, U+25CC, U+262C, U+A830-A839",
+    "Telugu": "U+0951-0952, U+0964-0965, U+0C00-0C7F, U+1CDA, U+1CF2, U+200C-200D, U+20B9, U+25CC",
 }
 
 ANEK = [
     ("Anek Devanagari/AnekDevanagari-Variable.ttf", "AnekDevanagari-Devanagari.woff2", "Devanagari"),
     ("Anek Kannada/AnekKannada-Variable.ttf", "AnekKannada-Kannada.woff2", "Kannada"),
     ("Anek Gurmukhi/AnekGurmukhi-Variable.ttf", "AnekGurmukhi-Gurmukhi.woff2", "Gurmukhi"),
+    ("Anek Telugu/AnekTelugu-Variable.ttf", "AnekTelugu-Telugu.woff2", "Telugu"),
 ]
 HIND = [
     ("Hind Mysuru/HindMysuru-{w}.ttf", "HindMysuru-{w}-Kannada.woff2", "Kannada"),
     ("Hind Jalandhar/HindJalandhar-{w}.ttf", "HindJalandhar-{w}-Gurmukhi.woff2", "Gurmukhi"),
+    ("Hind Guntur/HindGuntur-{w}.ttf", "HindGuntur-{w}-Telugu.woff2", "Telugu"),
 ]
 HIND_WEIGHTS = ["Regular", "SemiBold", "Bold"]
 

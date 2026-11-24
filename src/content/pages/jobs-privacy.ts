@@ -1,4 +1,4 @@
-import type { Locale } from "@/lib/i18n";
+import type { JobsLocale } from "@/lib/i18n";
 
 /**
  * /jobs/privacy: the applicant notice in plain words, in each jobs
@@ -25,7 +25,7 @@ export interface JobsPrivacyCopy {
 /** The inbox job seekers already use: siteConfig.email and the privacy notice §10. */
 const EMAIL = "help@vayasyaseva.com";
 
-export const jobsPrivacyCopy: Record<Locale, JobsPrivacyCopy> = {
+export const jobsPrivacyCopy: Record<JobsLocale, JobsPrivacyCopy> = {
   "en-IN": {
     title: "What Happens to Your Details: Job Applications",
     description: "What we keep when you apply for work with Vayasya Seva, who sees it, how long we keep it and how to have it removed. In plain words, in your language.",

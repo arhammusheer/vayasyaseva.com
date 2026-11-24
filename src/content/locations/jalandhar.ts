@@ -24,6 +24,32 @@ const wagesFaq: FaqItem = {
   category: "compliance",
 };
 
+/** The wages answer in each translation, linking to the English wage page. */
+const translatedWagesFaq = (question: string, answer: string, label: string): FaqItem => ({
+  question,
+  answer,
+  link: { href: WAGES_LINK.href, label },
+  category: "compliance",
+});
+
+const WAGES_FAQ = {
+  "pa-IN": translatedWagesFaq(
+    "ਕਿਹੜੀ ਘੱਟੋ-ਘੱਟ ਤਨਖ਼ਾਹ ਅਤੇ ਕਿਹੜੇ ਨਿਯਮ ਲਾਗੂ ਹੁੰਦੇ ਹਨ?",
+    "ਪੰਜਾਬ ਵਾਲੇ। ਪੂਰੇ ਸੂਬੇ ਵਿੱਚ ਇੱਕੋ ਰੇਟ ਹੈ: 1 ਮਈ 2026 ਤੋਂ ਅਨਸਕਿੱਲਡ ਲਈ ₹13,486 ਮਹੀਨਾ। ₹200 ਦਾ ਡਿਵੈਲਪਮੈਂਟ ਟੈਕਸ ਸਿਰਫ਼ ਇਨਕਮ ਟੈਕਸ ਭਰਨ ਵਾਲਿਆਂ 'ਤੇ ਲੱਗਦਾ ਹੈ, ਇਸ ਲਈ ਕਾਮਿਆਂ ਦੀ ਤਨਖ਼ਾਹ 'ਤੇ ਇਸਦਾ ਅਸਰ ਘੱਟ ਹੀ ਪੈਂਦਾ ਹੈ। ਲੇਬਰ ਵੈਲਫ਼ੇਅਰ ਫ਼ੰਡ ਛਿਮਾਹੀ ਭਰਿਆ ਜਾਂਦਾ ਹੈ।",
+    "ਪੰਜਾਬ ਦੀ ਘੱਟੋ-ਘੱਟ ਤਨਖ਼ਾਹ (English)",
+  ),
+  "hi-IN": translatedWagesFaq(
+    "कौन-सी न्यूनतम मज़दूरी और नियम लागू होते हैं?",
+    "पंजाब के। पूरे राज्य में एक ही दर है: 1 मई 2026 से अकुशल के लिए ₹13,486 महीना। ₹200 का डेवलपमेंट टैक्स सिर्फ़ इनकम टैक्स भरने वालों पर लागू होता है, इसलिए कामगारों के वेतन पर इसका असर कम ही पड़ता है, और लेबर वेलफ़ेयर फ़ंड हर छह महीने में भरा जाता है।",
+    "पंजाब न्यूनतम मज़दूरी (अंग्रेज़ी में)",
+  ),
+  "hi-Latn-IN": translatedWagesFaq(
+    "Kaunsi minimum wage aur rules laagu hote hain?",
+    "Punjab ke. Poore state mein ek hi rate hai: 1 May 2026 se unskilled ke liye ₹13,486 mahina. ₹200 ka development tax sirf income tax bharne walon par laagu hota hai, isliye workers ki wages par iska asar kam hi padta hai, aur Labour Welfare Fund har chhe mahine bhara jaata hai.",
+    "Punjab minimum wages (English)",
+  ),
+};
+
 const SRC = {
   psiec: { label: "PSIEC: industrial estates, Zone 6 (Jalandhar)", url: "https://psiec.punjab.gov.in/?p=94" },
   msmeJalandhar: { label: "MSME-DI: Jalandhar district industrial profile (2010–11 data)", url: "https://www.dcmsme.gov.in/old/dips/Jalandhar.pdf" },
@@ -77,6 +103,108 @@ export const jalandharPages: LocationCopy[] = [
       },
     ],
     sources: [SRC.psiec, SRC.msmeJalandhar, SRC.msmeKapurthala, SRC.mcPhagwara, SRC.goraya, SRC.pbWages, SRC.psdt, SRC.lwf2025],
+    // Drafts pending native review (docs/punjabi-glossary.md, docs/hindi-glossary.md).
+    translations: {
+      "pa-IN": {
+        name: "ਜਲੰਧਰ ਅਤੇ ਕਪੂਰਥਲਾ",
+        metaTitle: "ਜਲੰਧਰ ਅਤੇ ਕਪੂਰਥਲਾ ਵਿੱਚ ਲੇਬਰ ਠੇਕੇਦਾਰ (Labour Contractor)",
+        description:
+          "ਜਲੰਧਰ ਇਲਾਕੇ ਦੀਆਂ ਫ਼ੈਕਟਰੀਆਂ, ਫ਼ੂਡ ਪਲਾਂਟਾਂ ਅਤੇ ਵੇਅਰਹਾਊਸਾਂ ਲਈ ਸੁਪਰਵਾਈਜ਼ਰ ਨਾਲ ਕੰਟਰੈਕਟ ਲੇਬਰ ਦੀਆਂ ਟੀਮਾਂ: ਕਪੂਰਥਲਾ, ਜਲੰਧਰ ਦੇ ਫ਼ੋਕਲ ਪੁਆਇੰਟ, ਫਗਵਾੜਾ ਅਤੇ ਗੁਰਾਇਆ।",
+        heading: "ਜਲੰਧਰ ਅਤੇ ਕਪੂਰਥਲਾ ਵਿੱਚ ਲੇਬਰ ਠੇਕੇਦਾਰ।",
+        lede: "ਜਲੰਧਰ ਇਲਾਕੇ ਦੇ ਇੰਡਸਟਰੀਅਲ ਕਲੱਸਟਰਾਂ ਵਿੱਚ ਸੁਪਰਵਾਈਜ਼ਰ ਨਾਲ ਪੈਕਿੰਗ, ਫ਼ੈਕਟਰੀ ਅਤੇ ਲੋਡਿੰਗ ਦੀਆਂ ਟੀਮਾਂ।",
+        paragraph:
+          "ਜਲੰਧਰ ਇਲਾਕੇ ਦੀ ਇੰਡਸਟਰੀ ਕੁਝ ਖ਼ਾਸ ਥਾਵਾਂ 'ਤੇ ਇਕੱਠੀ ਹੈ। ਸ਼ਹਿਰ ਵਿੱਚ PSIEC ਦੇ ਫ਼ੋਕਲ ਪੁਆਇੰਟਾਂ ਅਤੇ ਕੰਪਲੈਕਸਾਂ ਵਿੱਚ ਹੈਂਡ ਟੂਲ, ਵਾਲਵ, ਆਟੋ ਪਾਰਟਸ ਅਤੇ ਖੇਡਾਂ ਦਾ ਸਮਾਨ ਬਣਦਾ ਹੈ। ਕਪੂਰਥਲਾ ਇਸ ਜ਼ੋਨ ਵਿੱਚ PSIEC ਦੀ ਦੂਜੀ ਅਸਟੇਟ ਹੈ, ਜਿੱਥੇ ਫ਼ੂਡ, ਸਟਾਰਚ, ਖੰਡ ਅਤੇ ਇੰਜੀਨੀਅਰਿੰਗ ਦੀਆਂ ਯੂਨਿਟਾਂ ਹਨ। ਫਗਵਾੜਾ ਅਤੇ ਗੁਰਾਇਆ ਜਲੰਧਰ ਤੋਂ ਲੁਧਿਆਣੇ ਵੱਲ NH-44 ਦੇ ਨਾਲ ਹਨ। {areas} ਦੀਆਂ ਯੂਨਿਟਾਂ ਸਾਡੇ ਤੋਂ ਕਾਮੇ ਮੰਗ ਸਕਦੀਆਂ ਹਨ।",
+        areas: [
+          { href: "/locations/jalandhar/kapurthala", name: "ਕਪੂਰਥਲਾ" },
+          { href: "/locations/jalandhar/jalandhar-focal-point", name: "ਫ਼ੋਕਲ ਪੁਆਇੰਟ ਜਲੰਧਰ" },
+          { href: "/locations/jalandhar/phagwara-goraya", name: "ਫਗਵਾੜਾ ਅਤੇ ਗੁਰਾਇਆ" },
+        ],
+        faqs: [
+          {
+            question: "ਕੀ ਤੁਸੀਂ ਜਲੰਧਰ ਅਤੇ ਕਪੂਰਥਲਾ ਵਿੱਚ ਕੰਟਰੈਕਟ ਲੇਬਰ ਦਿੰਦੇ ਹੋ?",
+            answer: "ਹਾਂ। ਪੈਕਿੰਗ, ਫ਼ੈਕਟਰੀ, ਲੋਡਿੰਗ-ਅਨਲੋਡਿੰਗ ਅਤੇ ਹਾਊਸਕੀਪਿੰਗ ਦੀਆਂ ਟੀਮਾਂ। ਕਾਮੇ ਸਾਡੇ ਪੇਰੋਲ 'ਤੇ ਹੁੰਦੇ ਹਨ ਅਤੇ ਤੁਹਾਡੀ ਸਾਈਟ 'ਤੇ ਸਾਡਾ ਸੁਪਰਵਾਈਜ਼ਰ ਉਨ੍ਹਾਂ ਤੋਂ ਕੰਮ ਕਰਵਾਉਂਦਾ ਹੈ।",
+            category: "commercial",
+          },
+          {
+            question: "ਤੁਹਾਡੇ ਕਾਮੇ ਕਿੱਥੋਂ ਆਉਂਦੇ ਹਨ?",
+            answer: "ਜਲੰਧਰ, ਕਪੂਰਥਲਾ ਅਤੇ ਫਗਵਾੜਾ ਵਿੱਚ ਕੰਮ ਲੱਭਣ ਵਾਲੇ ਸਾਡੇ ਨੌਕਰੀਆਂ ਵਾਲੇ ਪੰਨਿਆਂ 'ਤੇ ਅਪਲਾਈ ਕਰਦੇ ਹਨ। ਇਨ੍ਹਾਂ ਵਿੱਚੋਂ ਹੀ ਅਸੀਂ ਤੁਹਾਡੀ ਸਾਈਟ ਦੇ ਨੇੜੇ ਦੇ ਲੋਕਾਂ ਨੂੰ ਲੈ ਕੇ ਹਰ ਟੀਮ ਬਣਾਉਂਦੇ ਹਾਂ।",
+            category: "operations",
+          },
+          WAGES_FAQ["pa-IN"],
+          {
+            question: "ਕੀ ਤੁਸੀਂ ਸਕਿਓਰਿਟੀ ਗਾਰਡ ਦੇ ਸਕਦੇ ਹੋ?",
+            answer: "ਨਹੀਂ। ਸਕਿਓਰਿਟੀ ਦੇ ਕੰਮ ਲਈ ਪ੍ਰਾਈਵੇਟ ਸਕਿਓਰਿਟੀ ਏਜੰਸੀ ਦਾ ਲਾਇਸੈਂਸ ਚਾਹੀਦਾ ਹੈ, ਜੋ ਸਾਡੇ ਕੋਲ ਨਹੀਂ ਹੈ।",
+            category: "commercial",
+          },
+        ],
+      },
+      "hi-IN": {
+        name: "जालंधर और कपूरथला",
+        metaTitle: "जालंधर और कपूरथला में लेबर ठेकेदार (Labour Contractor)",
+        description:
+          "जालंधर इलाके की फ़ैक्टरियों, फ़ूड प्लांट और वेयरहाउस के लिए सुपरवाइज़र के साथ कॉन्ट्रैक्ट लेबर की टीमें: कपूरथला, जालंधर के फ़ोकल पॉइंट, फगवाड़ा और गुराया।",
+        heading: "जालंधर और कपूरथला में लेबर ठेकेदार।",
+        lede: "जालंधर इलाके के इंडस्ट्रियल क्लस्टरों में सुपरवाइज़र के साथ पैकिंग, फ़ैक्टरी और लोडिंग की टीमें।",
+        paragraph:
+          "जालंधर इलाके में इंडस्ट्री कुछ क्लस्टरों में है। शहर में PSIEC के फ़ोकल पॉइंट और कॉम्प्लेक्स में हैंड टूल, वाल्व, ऑटो पार्ट्स और खेल का सामान बनता है। कपूरथला में, जो इस ज़ोन में PSIEC का दूसरा एस्टेट है, फ़ूड, स्टार्च, चीनी और इंजीनियरिंग की यूनिटें भी हैं। फगवाड़ा और गुराया दक्षिण-पूर्व में NH-44 के किनारे हैं। हम {areas} की यूनिटों से रिक्वायरमेंट लेते हैं।",
+        areas: [
+          { href: "/locations/jalandhar/kapurthala", name: "कपूरथला" },
+          { href: "/locations/jalandhar/jalandhar-focal-point", name: "जालंधर का फ़ोकल पॉइंट" },
+          { href: "/locations/jalandhar/phagwara-goraya", name: "फगवाड़ा और गुराया" },
+        ],
+        faqs: [
+          {
+            question: "क्या आप जालंधर और कपूरथला में कॉन्ट्रैक्ट लेबर देते हैं?",
+            answer: "हाँ। पैकिंग, फ़ैक्टरी, लोडिंग और अनलोडिंग, और हाउसकीपिंग की टीमें, हमारे पेरोल पर, और आपकी साइट पर हमारे सुपरवाइज़र की देखरेख में।",
+            category: "commercial",
+          },
+          {
+            question: "आपके कामगार कहाँ से आते हैं?",
+            answer: "जालंधर, कपूरथला और फगवाड़ा में काम ढूँढने वाले लोग हर शहर के हमारे जॉब्स पेज पर अप्लाई करते हैं। हर टीम हम उन्हीं में से बनाते हैं, आपकी साइट के आस-पास के लोगों से।",
+            category: "operations",
+          },
+          WAGES_FAQ["hi-IN"],
+          {
+            question: "क्या आप सिक्योरिटी गार्ड दे सकते हैं?",
+            answer: "नहीं। सिक्योरिटी के काम के लिए प्राइवेट सिक्योरिटी एजेंसी का लाइसेंस चाहिए, जो हमारे पास नहीं है।",
+            category: "commercial",
+          },
+        ],
+      },
+      "hi-Latn-IN": {
+        name: "Jalandhar aur Kapurthala",
+        metaTitle: "Jalandhar aur Kapurthala mein Labour Thekedar",
+        description:
+          "Jalandhar ilaake ki factories, food plants aur warehouses ke liye supervised contract labour teams: Kapurthala, Jalandhar ke focal points, Phagwara aur Goraya.",
+        heading: "Jalandhar aur Kapurthala mein labour contractor.",
+        lede: "Jalandhar ilaake ke industrial clusters mein supervisor ke saath packing, factory aur loading ki teams.",
+        paragraph:
+          "Jalandhar ilaake mein kaam clusters mein hota hai. Shehar mein PSIEC ke focal points aur complexes mein hand tools, valves, auto parts aur sports goods bante hain. Kapurthala mein, jo is zone mein PSIEC ka doosra estate hai, food, starch, sugar aur engineering units bhi hain. Phagwara aur Goraya south-east mein NH-44 ke kinaare hain. Hum {areas} ki units se requirements lete hain.",
+        areas: [
+          { href: "/locations/jalandhar/kapurthala", name: "Kapurthala" },
+          { href: "/locations/jalandhar/jalandhar-focal-point", name: "Jalandhar ka Focal Point" },
+          { href: "/locations/jalandhar/phagwara-goraya", name: "Phagwara aur Goraya" },
+        ],
+        faqs: [
+          {
+            question: "Kya aap Jalandhar aur Kapurthala mein contract labour dete hain?",
+            answer: "Haan. Packing, factory, loading-unloading aur housekeeping ki teams. Workers hamare payroll par rehte hain, aur aapki site par kaam hamara supervisor chalata hai.",
+            category: "commercial",
+          },
+          {
+            question: "Aapke workers kahan se aate hain?",
+            answer: "Jalandhar, Kapurthala aur Phagwara mein kaam dhoondhne wale har jagah ke liye hamare jobs pages par apply karte hain. Har team hum unmein se, aapki site ke paas, banate hain.",
+            category: "operations",
+          },
+          WAGES_FAQ["hi-Latn-IN"],
+          {
+            question: "Kya aap security guards de sakte hain?",
+            answer: "Nahi. Security ke kaam ke liye private security agency ka licence chahiye, jo hamare paas nahi hai.",
+            category: "commercial",
+          },
+        ],
+      },
+    },
   },
   {
     cluster: "jalandhar",
@@ -110,6 +238,93 @@ export const jalandharPages: LocationCopy[] = [
       },
     ],
     sources: [SRC.psiec, SRC.kapurthalaProfile, SRC.msmeKapurthala, SRC.kapurthalaReach, SRC.pbWages],
+    // Drafts pending native review (docs/punjabi-glossary.md, docs/hindi-glossary.md).
+    translations: {
+      "pa-IN": {
+        name: "ਕਪੂਰਥਲਾ",
+        metaTitle: "ਕਪੂਰਥਲਾ ਲੇਬਰ ਠੇਕੇਦਾਰ ਅਤੇ ਮੈਨਪਾਵਰ (Labour Contractor)",
+        description:
+          "ਕਪੂਰਥਲਾ ਦੇ ਇੰਡਸਟਰੀਅਲ ਫ਼ੋਕਲ ਪੁਆਇੰਟ ਅਤੇ ਆਲੇ-ਦੁਆਲੇ ਦੀਆਂ ਫ਼ੂਡ, ਸਟਾਰਚ ਅਤੇ ਇੰਜੀਨੀਅਰਿੰਗ ਯੂਨਿਟਾਂ ਲਈ ਸੁਪਰਵਾਈਜ਼ਰ ਨਾਲ ਪੈਕਿੰਗ, ਫ਼ੈਕਟਰੀ, ਲੋਡਿੰਗ ਅਤੇ ਹਾਊਸਕੀਪਿੰਗ ਦੀਆਂ ਟੀਮਾਂ।",
+        heading: "ਕਪੂਰਥਲਾ ਵਿੱਚ ਲੇਬਰ ਠੇਕੇਦਾਰ।",
+        lede: "ਕਪੂਰਥਲਾ ਦੇ ਫ਼ੋਕਲ ਪੁਆਇੰਟ ਅਤੇ ਆਲੇ-ਦੁਆਲੇ ਦੀਆਂ ਯੂਨਿਟਾਂ ਲਈ ਸੁਪਰਵਾਈਜ਼ਰ ਨਾਲ ਪੈਕਿੰਗ ਅਤੇ ਫ਼ੈਕਟਰੀ ਦੀਆਂ ਟੀਮਾਂ।",
+        paragraph:
+          "ਜਲੰਧਰ-ਫ਼ਿਰੋਜ਼ਪੁਰ ਸੜਕ ਅਤੇ ਰੇਲ ਲਾਈਨ 'ਤੇ ਪੈਂਦਾ ਕਪੂਰਥਲਾ ਜਲੰਧਰ ਇਲਾਕੇ ਦਾ ਦੂਜਾ ਇੰਡਸਟਰੀਅਲ ਕਲੱਸਟਰ ਹੈ। ਇਸਦਾ ਇੰਡਸਟਰੀਅਲ ਫ਼ੋਕਲ ਪੁਆਇੰਟ PSIEC ਚਲਾਉਂਦੀ ਹੈ। ਜ਼ਿਲ੍ਹੇ ਵਿੱਚ ਖਾਣ-ਪੀਣ ਦੇ ਸਮਾਨ, ਸਟਾਰਚ, ਖੰਡ, ਡਿਸਟਿਲਰੀ ਅਤੇ ਟੈਕਸਟਾਈਲ ਦੀ ਇੰਡਸਟਰੀ ਹੈ। ਨਾਲ ਹੀ ਫ਼ਾਊਂਡਰੀ ਅਤੇ ਇੰਜੀਨੀਅਰਿੰਗ ਦਾ ਇੱਕ ਕਲੱਸਟਰ ਹੈ, ਜਿੱਥੇ ਕਾਸਟਿੰਗ, ਇੰਜਣ ਪਾਰਟਸ ਅਤੇ ਆਟੋ ਕੰਪੋਨੈਂਟ ਬਣਦੇ ਹਨ।",
+        faqs: [
+          {
+            question: "ਕੀ ਤੁਸੀਂ ਕਪੂਰਥਲਾ ਵਿੱਚ ਕੰਟਰੈਕਟ ਲੇਬਰ ਦਿੰਦੇ ਹੋ?",
+            answer: "ਹਾਂ। ਪੈਕਿੰਗ ਟੀਮਾਂ, ਲਾਈਨ ਅਤੇ ਪ੍ਰੋਡਕਸ਼ਨ ਹੈਲਪਰ, ਲੋਡਿੰਗ ਅਤੇ ਅਨਲੋਡਿੰਗ, ਅਤੇ ਹਾਊਸਕੀਪਿੰਗ, ਫ਼ੋਕਲ ਪੁਆਇੰਟ ਅਤੇ ਪੂਰੇ ਜ਼ਿਲ੍ਹੇ ਦੀਆਂ ਯੂਨਿਟਾਂ ਲਈ।",
+            category: "commercial",
+          },
+          {
+            question: "ਕੀ ਤੁਸੀਂ ਫ਼ੂਡ ਪਲਾਂਟਾਂ ਦੀਆਂ ਪੈਕਿੰਗ ਲਾਈਨਾਂ ਲਈ ਕਾਮੇ ਦੇ ਸਕਦੇ ਹੋ?",
+            answer: "ਹਾਂ। ਲਾਈਨ ਪੈਕਿੰਗ, ਕਾਰਟਨਿੰਗ, ਲੇਬਲਿੰਗ ਅਤੇ ਡਿਸਪੈਚ ਦੀਆਂ ਟੀਮਾਂ। ਕੰਮ ਸ਼ੁਰੂ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਉਨ੍ਹਾਂ ਨੂੰ ਤੁਹਾਡੀ ਸਾਈਟ ਦੇ ਸਫ਼ਾਈ ਅਤੇ ਸੇਫ਼ਟੀ ਨਿਯਮ ਸਿਖਾਏ ਜਾਂਦੇ ਹਨ।",
+            category: "operations",
+          },
+          WAGES_FAQ["pa-IN"],
+          {
+            question: "ਕਾਮੇ ਕਪੂਰਥਲਾ ਕਿਵੇਂ ਪਹੁੰਚਦੇ ਹਨ?",
+            answer: "ਸਰਕਾਰੀ ਅਤੇ ਪ੍ਰਾਈਵੇਟ ਬੱਸਾਂ ਕਪੂਰਥਲਾ ਨੂੰ ਜਲੰਧਰ ਨਾਲ ਜੋੜਦੀਆਂ ਹਨ, ਅਤੇ ਸ਼ਹਿਰ ਦੇ ਅੰਦਰ ਆਟੋ ਚੱਲਦੇ ਹਨ। ਬੱਸਾਂ ਦੇ ਸਮੇਂ ਤੋਂ ਬਾਹਰ ਦੀਆਂ ਸ਼ਿਫ਼ਟਾਂ ਲਈ ਅਸੀਂ ਤੁਹਾਡੇ ਨਾਲ ਮਿਲ ਕੇ ਟਰਾਂਸਪੋਰਟ ਦੀ ਪਲਾਨਿੰਗ ਕਰਦੇ ਹਾਂ।",
+            category: "operations",
+          },
+        ],
+      },
+      "hi-IN": {
+        name: "कपूरथला",
+        metaTitle: "कपूरथला, पंजाब में लेबर ठेकेदार (Labour Contractor)",
+        description:
+          "कपूरथला के इंडस्ट्रियल फ़ोकल पॉइंट और आसपास की फ़ूड, स्टार्च और इंजीनियरिंग यूनिटों के लिए सुपरवाइज़र के साथ पैकिंग, फ़ैक्टरी, लोडिंग और हाउसकीपिंग की टीमें।",
+        heading: "कपूरथला में लेबर ठेकेदार।",
+        lede: "कपूरथला के फ़ोकल पॉइंट और आसपास की यूनिटों के लिए सुपरवाइज़र के साथ पैकिंग और फ़ैक्टरी की टीमें।",
+        paragraph:
+          "कपूरथला जालंधर इलाके का दूसरा इंडस्ट्रियल क्लस्टर है, जालंधर-फ़िरोज़पुर सड़क और रेल लाइन पर। इसका इंडस्ट्रियल फ़ोकल पॉइंट PSIEC चलाती है। ज़िले के उद्योग में खाने-पीने का सामान, स्टार्च, चीनी, डिस्टिलरी और टेक्सटाइल हैं, और साथ में फ़ाउंड्री और इंजीनियरिंग का एक क्लस्टर है जो कास्टिंग, इंजन पार्ट्स और ऑटो कंपोनेंट बनाता है।",
+        faqs: [
+          {
+            question: "क्या आप कपूरथला में कॉन्ट्रैक्ट लेबर देते हैं?",
+            answer: "हाँ। पैकिंग टीमें, लाइन और प्रोडक्शन हेल्पर, लोडिंग और अनलोडिंग, और हाउसकीपिंग, फ़ोकल पॉइंट और पूरे ज़िले की यूनिटों के लिए।",
+            category: "commercial",
+          },
+          {
+            question: "क्या आप फ़ूड प्लांट की पैकिंग लाइनों के लिए कामगार दे सकते हैं?",
+            answer: "हाँ। लाइन पैकिंग, कार्टनिंग, लेबलिंग और डिस्पैच की टीमें। काम शुरू करने से पहले उन्हें आपकी साइट के हाइजीन और सेफ़्टी नियम सिखाए जाते हैं।",
+            category: "operations",
+          },
+          WAGES_FAQ["hi-IN"],
+          {
+            question: "कामगार कपूरथला कैसे पहुँचते हैं?",
+            answer: "सरकारी और प्राइवेट बसें कपूरथला को जालंधर से जोड़ती हैं, और शहर के अंदर ऑटो चलते हैं। जिन शिफ्टों के समय बसें नहीं चलतीं, उनके लिए हम आपके साथ मिलकर ट्रांसपोर्ट प्लान करते हैं।",
+            category: "operations",
+          },
+        ],
+      },
+      "hi-Latn-IN": {
+        name: "Kapurthala",
+        metaTitle: "Kapurthala, Punjab mein Labour Thekedar (Contractor)",
+        description:
+          "Kapurthala ke Industrial Focal Point aur aaspaas ki food, starch aur engineering units ke liye supervised packing, factory, loading aur housekeeping teams.",
+        heading: "Kapurthala mein labour contractor.",
+        lede: "Kapurthala ke focal point aur aaspaas ki units ke liye supervisor ke saath packing aur factory ki teams.",
+        paragraph:
+          "Kapurthala, Jalandhar ilaake ka doosra industrial cluster hai, Jalandhar-Ferozepur road aur railway line par. Iska Industrial Focal Point PSIEC chalati hai. District ki industry mein food aur beverages, starch, sugar, distilling aur textiles hain, aur saath mein ek foundry aur engineering cluster hai jo castings, engine parts aur auto components banata hai.",
+        faqs: [
+          {
+            question: "Kya aap Kapurthala mein contract labour dete hain?",
+            answer: "Haan. Packing teams, line aur production helpers, loading aur unloading, aur housekeeping, focal point aur poore district ki units ke liye.",
+            category: "commercial",
+          },
+          {
+            question: "Kya aap food plants ki packing lines ke liye workers de sakte hain?",
+            answer: "Haan. Line packing, cartoning, labelling aur dispatch ki teams. Kaam shuru karne se pehle unhe aapki site ke hygiene aur safety rules sikhaye jaate hain.",
+            category: "operations",
+          },
+          WAGES_FAQ["hi-Latn-IN"],
+          {
+            question: "Workers Kapurthala kaise pahunchte hain?",
+            answer: "Sarkari aur private buses Kapurthala ko Jalandhar se jodti hain, aur shehar ke andar autos chalte hain. Jo shifts bus ke time se match nahi karti, unke liye hum aapke saath milkar transport plan karte hain.",
+            category: "operations",
+          },
+        ],
+      },
+    },
   },
   {
     cluster: "jalandhar",
@@ -142,6 +357,93 @@ export const jalandharPages: LocationCopy[] = [
       },
     ],
     sources: [SRC.psiec, SRC.msmeJalandhar, SRC.clri, SRC.tribune2025, SRC.jalandharReach, SRC.pbWages],
+    // Drafts pending native review (docs/punjabi-glossary.md, docs/hindi-glossary.md).
+    translations: {
+      "pa-IN": {
+        name: "ਫ਼ੋਕਲ ਪੁਆਇੰਟ, ਜਲੰਧਰ",
+        metaTitle: "ਫ਼ੋਕਲ ਪੁਆਇੰਟ, ਜਲੰਧਰ: ਲੇਬਰ ਠੇਕੇਦਾਰ (Labour Contractor)",
+        description:
+          "ਜਲੰਧਰ ਦੇ ਇੰਡਸਟਰੀਅਲ ਫ਼ੋਕਲ ਪੁਆਇੰਟ, ਲੈਦਰ ਕੰਪਲੈਕਸ ਅਤੇ ਸਪੋਰਟਸ ਅਤੇ ਸਰਜੀਕਲ ਗੁੱਡਜ਼ ਕੰਪਲੈਕਸ ਲਈ ਸੁਪਰਵਾਈਜ਼ਰ ਨਾਲ ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ, ਲੋਡਿੰਗ ਅਤੇ ਹਾਊਸਕੀਪਿੰਗ ਦੀਆਂ ਟੀਮਾਂ।",
+        heading: "ਫ਼ੋਕਲ ਪੁਆਇੰਟ ਜਲੰਧਰ ਵਿੱਚ ਲੇਬਰ ਠੇਕੇਦਾਰ।",
+        lede: "ਜਲੰਧਰ ਦੀਆਂ ਹੈਂਡ ਟੂਲ, ਵਾਲਵ, ਆਟੋ ਪਾਰਟਸ, ਖੇਡਾਂ ਦੇ ਸਮਾਨ ਅਤੇ ਚਮੜੇ ਦੀਆਂ ਯੂਨਿਟਾਂ ਲਈ ਸੁਪਰਵਾਈਜ਼ਰ ਨਾਲ ਟੀਮਾਂ।",
+        paragraph:
+          "ਜਲੰਧਰ ਦੀ ਇੰਡਸਟਰੀ PSIEC ਦੀਆਂ ਅਸਟੇਟਾਂ ਵਿੱਚ ਹੈ: ਇੰਡਸਟਰੀਅਲ ਫ਼ੋਕਲ ਪੁਆਇੰਟ ਅਤੇ ਉਸਦਾ ਐਕਸਟੈਂਸ਼ਨ, MSME-DI ਦੀ ਜ਼ਿਲ੍ਹਾ ਪ੍ਰੋਫ਼ਾਈਲ ਮੁਤਾਬਕ ਲਗਭਗ 305 ਏਕੜ, ਪੁਰਾਣਾ ਇੰਡਸਟਰੀਅਲ ਏਰੀਆ, ਸਪੋਰਟਸ ਅਤੇ ਸਰਜੀਕਲ ਗੁੱਡਜ਼ ਕੰਪਲੈਕਸ, ਅਤੇ ਕਪੂਰਥਲਾ ਰੋਡ 'ਤੇ ਲੈਦਰ ਕੰਪਲੈਕਸ। ਇੱਥੋਂ ਦੀਆਂ ਯੂਨਿਟਾਂ ਹੈਂਡ ਟੂਲ, ਵਾਲਵ, ਆਟੋ ਪਾਰਟਸ, ਖੇਡਾਂ ਦਾ ਸਮਾਨ, ਸਰਜੀਕਲ ਸਮਾਨ, ਅਤੇ ਚਮੜਾ ਬਣਾਉਂਦੀਆਂ ਹਨ।",
+        faqs: [
+          {
+            question: "ਕੀ ਤੁਸੀਂ ਫ਼ੋਕਲ ਪੁਆਇੰਟ ਜਲੰਧਰ ਵਿੱਚ ਕੰਟਰੈਕਟ ਲੇਬਰ ਦਿੰਦੇ ਹੋ?",
+            answer: "ਹਾਂ। ਫ਼ੋਕਲ ਪੁਆਇੰਟ ਅਤੇ ਉਸਦੇ ਐਕਸਟੈਂਸ਼ਨ ਦੀਆਂ ਯੂਨਿਟਾਂ ਲਈ ਸ਼ਾਪ-ਫ਼ਲੋਰ ਹੈਲਪਰ, ਪੈਕਰ, ਲੋਡਰ ਅਤੇ ਹਾਊਸਕੀਪਿੰਗ ਸਟਾਫ਼।",
+            category: "commercial",
+          },
+          {
+            question: "ਕੀ ਤੁਸੀਂ ਲੈਦਰ ਅਤੇ ਸਪੋਰਟਸ ਕੰਪਲੈਕਸਾਂ ਵਿੱਚ ਵੀ ਕੰਮ ਕਰਦੇ ਹੋ?",
+            answer: "ਹਾਂ। ਲੈਦਰ ਕੰਪਲੈਕਸ, ਸਪੋਰਟਸ ਅਤੇ ਸਰਜੀਕਲ ਗੁੱਡਜ਼ ਕੰਪਲੈਕਸ ਅਤੇ ਇੰਡਸਟਰੀਅਲ ਏਰੀਆ ਦੀਆਂ ਯੂਨਿਟਾਂ ਲਈ ਵੀ ਇਸੇ ਤਰ੍ਹਾਂ ਸੁਪਰਵਾਈਜ਼ਰ ਨਾਲ ਟੀਮਾਂ।",
+            category: "operations",
+          },
+          WAGES_FAQ["pa-IN"],
+          {
+            question: "ਕਾਮੇ ਇੰਡਸਟਰੀਅਲ ਇਲਾਕਿਆਂ ਤੱਕ ਕਿਵੇਂ ਪਹੁੰਚਦੇ ਹਨ?",
+            answer: "ਜ਼ਿਆਦਾਤਰ ਸ਼ਹਿਰ ਵਿੱਚ ਰਹਿੰਦੇ ਹਨ, ਜਿੱਥੇ ਸਰਕਾਰੀ ਅਤੇ ਪ੍ਰਾਈਵੇਟ ਬੱਸਾਂ ਦਾ ਵੱਡਾ ਨੈੱਟਵਰਕ ਹੈ। ਜਲੰਧਰ ਸਿਟੀ ਸਟੇਸ਼ਨ ਅੰਮ੍ਰਿਤਸਰ-ਦਿੱਲੀ ਲਾਈਨ ਦਾ ਇੱਕ ਵੱਡਾ ਸਟਾਪ ਹੈ।",
+            category: "operations",
+          },
+        ],
+      },
+      "hi-IN": {
+        name: "फ़ोकल पॉइंट, जालंधर",
+        metaTitle: "फ़ोकल पॉइंट, जालंधर: लेबर ठेकेदार (Labour Contractor)",
+        description:
+          "जालंधर के फ़ोकल पॉइंट, लेदर कॉम्प्लेक्स और स्पोर्ट्स और सर्जिकल गुड्स कॉम्प्लेक्स के लिए सुपरवाइज़र के साथ फ़ैक्टरी, पैकिंग, लोडिंग और हाउसकीपिंग की टीमें।",
+        heading: "फ़ोकल पॉइंट, जालंधर में लेबर ठेकेदार।",
+        lede: "जालंधर की हैंड टूल, वाल्व, ऑटो पार्ट्स, खेल के सामान और लेदर की यूनिटों के लिए सुपरवाइज़र के साथ टीमें।",
+        paragraph:
+          "जालंधर का उद्योग PSIEC के एस्टेट में है: इंडस्ट्रियल फ़ोकल पॉइंट और उसका एक्सटेंशन, MSME-DI की ज़िला प्रोफ़ाइल के मुताबिक़ लगभग 305 एकड़, पुराना इंडस्ट्रियल एरिया, स्पोर्ट्स और सर्जिकल गुड्स कॉम्प्लेक्स, और कपूरथला रोड पर लेदर कॉम्प्लेक्स। यहाँ की यूनिटें हैंड टूल, वाल्व, ऑटो पार्ट्स, खेल और सर्जिकल सामान, और चमड़ा बनाती हैं।",
+        faqs: [
+          {
+            question: "क्या आप फ़ोकल पॉइंट, जालंधर में कॉन्ट्रैक्ट लेबर देते हैं?",
+            answer: "हाँ। फ़ोकल पॉइंट और उसके एक्सटेंशन की यूनिटों के लिए शॉप-फ़्लोर हेल्पर, पैकर, लोडर और हाउसकीपिंग स्टाफ़।",
+            category: "commercial",
+          },
+          {
+            question: "क्या आप लेदर और स्पोर्ट्स कॉम्प्लेक्स में भी काम करते हैं?",
+            answer: "हाँ। लेदर कॉम्प्लेक्स, स्पोर्ट्स और सर्जिकल गुड्स कॉम्प्लेक्स और इंडस्ट्रियल एरिया की यूनिटों के लिए भी इसी तरह सुपरवाइज़र के साथ टीमें।",
+            category: "operations",
+          },
+          WAGES_FAQ["hi-IN"],
+          {
+            question: "कामगार इंडस्ट्रियल इलाकों तक कैसे पहुँचते हैं?",
+            answer: "ज़्यादातर शहर में रहते हैं, जहाँ सरकारी और प्राइवेट बसों का बड़ा नेटवर्क है। जालंधर सिटी स्टेशन अमृतसर-दिल्ली लाइन का एक बड़ा स्टॉप है।",
+            category: "operations",
+          },
+        ],
+      },
+      "hi-Latn-IN": {
+        name: "Focal Point, Jalandhar",
+        metaTitle: "Focal Point, Jalandhar mein Labour Thekedar",
+        description:
+          "Jalandhar ke Industrial Focal Point, Leather Complex aur Sports and Surgical Goods Complex ke liye supervised factory, packing, loading aur housekeeping teams.",
+        heading: "Focal Point, Jalandhar mein labour contractor.",
+        lede: "Jalandhar ki hand tool, valve, auto parts, sports goods aur leather units ke liye supervisor ke saath teams.",
+        paragraph:
+          "Jalandhar ki industry PSIEC ke estates mein hai: Industrial Focal Point aur uska extension, MSME-DI ki district profile ke hisaab se lagbhag 305 acre, purana Industrial Area, Sports and Surgical Goods Complex, aur Kapurthala Road par Leather Complex. Yahan ki units hand tools, valves, auto parts, sports aur surgical goods, aur leather banati hain.",
+        faqs: [
+          {
+            question: "Kya aap Focal Point, Jalandhar mein contract labour dete hain?",
+            answer: "Haan. Focal Point aur uske extension ki units ke liye shop-floor helpers, packers, loaders aur housekeeping staff.",
+            category: "commercial",
+          },
+          {
+            question: "Kya aap Leather aur Sports Complex mein bhi kaam karte hain?",
+            answer: "Haan. Leather Complex, Sports and Surgical Goods Complex aur Industrial Area ki units ke liye bhi isi tarah supervisor ke saath teams.",
+            category: "operations",
+          },
+          WAGES_FAQ["hi-Latn-IN"],
+          {
+            question: "Workers industrial areas tak kaise pahunchte hain?",
+            answer: "Zyaadatar shehar mein rehte hain, jahan sarkari aur private buses ka bada network hai. Jalandhar City station Amritsar-Delhi line ka ek bada stop hai.",
+            category: "operations",
+          },
+        ],
+      },
+    },
   },
   {
     cluster: "jalandhar",
@@ -176,5 +478,92 @@ export const jalandharPages: LocationCopy[] = [
       },
     ],
     sources: [SRC.kapurthalaProfile, SRC.mcPhagwara, SRC.msmeKapurthala, SRC.goraya, SRC.jalandharDistrict, SRC.pbWages],
+    // Drafts pending native review (docs/punjabi-glossary.md, docs/hindi-glossary.md).
+    translations: {
+      "pa-IN": {
+        name: "ਫਗਵਾੜਾ ਅਤੇ ਗੁਰਾਇਆ",
+        metaTitle: "ਫਗਵਾੜਾ ਅਤੇ ਗੁਰਾਇਆ ਵਿੱਚ ਲੇਬਰ ਠੇਕੇਦਾਰ (Labour Contractor)",
+        description:
+          "ਫਗਵਾੜਾ ਦੀਆਂ ਮਿੱਲਾਂ ਅਤੇ ਇੰਡਸਟਰੀਅਲ ਏਰੀਆ, ਅਤੇ ਪੰਜਾਬ ਵਿੱਚ NH-44 'ਤੇ ਗੁਰਾਇਆ ਦੀ ਇੰਜੀਨੀਅਰਿੰਗ ਬੈਲਟ ਲਈ ਸੁਪਰਵਾਈਜ਼ਰ ਨਾਲ ਫ਼ੈਕਟਰੀ, ਪੈਕਿੰਗ, ਲੋਡਿੰਗ ਅਤੇ ਹਾਊਸਕੀਪਿੰਗ ਦੀਆਂ ਟੀਮਾਂ।",
+        heading: "ਫਗਵਾੜਾ ਅਤੇ ਗੁਰਾਇਆ ਵਿੱਚ ਲੇਬਰ ਠੇਕੇਦਾਰ।",
+        lede: "ਜਲੰਧਰ ਤੋਂ ਲੁਧਿਆਣੇ ਵੱਲ NH-44 ਦੇ ਨਾਲ ਮਿੱਲਾਂ ਅਤੇ ਇੰਜੀਨੀਅਰਿੰਗ ਯੂਨਿਟਾਂ ਲਈ ਸੁਪਰਵਾਈਜ਼ਰ ਨਾਲ ਟੀਮਾਂ।",
+        paragraph:
+          "ਫਗਵਾੜਾ ਕਪੂਰਥਲਾ ਜ਼ਿਲ੍ਹੇ ਦੀ ਸਬ-ਡਿਵੀਜ਼ਨ ਹੈ ਅਤੇ NH-44 'ਤੇ ਜਲੰਧਰ ਤੋਂ ਕੋਈ 20 ਕਿਲੋਮੀਟਰ ਪੈਂਦਾ ਹੈ। ਇਹ ਖੰਡ, ਗਲੂਕੋਜ਼, ਸਟਾਰਚ, ਬਰੀਕ ਕੱਪੜੇ ਅਤੇ ਇੰਜਣ ਪਾਰਟਸ ਲਈ ਜਾਣਿਆ ਜਾਂਦਾ ਹੈ। MSME-DI ਪ੍ਰੋਫ਼ਾਈਲ ਮੁਤਾਬਕ ਇਸਦਾ ਲਗਭਗ 35 ਏਕੜ ਦਾ ਇੰਡਸਟਰੀਅਲ ਏਰੀਆ ਪੂਰਾ ਅਲਾਟ ਹੋ ਚੁੱਕਾ ਹੈ। ਗੁਰਾਇਆ ਜਲੰਧਰ ਜ਼ਿਲ੍ਹੇ ਵਿੱਚ ਪੁਰਾਣੀ GT ਰੋਡ 'ਤੇ ਹੋਰ ਅੱਗੇ ਪੈਂਦਾ ਹੈ। ਫ਼ਾਊਂਡਰੀਆਂ ਅਤੇ ਬੇਅਰਿੰਗਾਂ ਕਰਕੇ ਇਸ ਨੂੰ ਕਦੇ ਪੰਜਾਬ ਦਾ ਮੈਨਚੈਸਟਰ ਕਿਹਾ ਜਾਂਦਾ ਸੀ, ਅਤੇ ਅੱਜ ਵੀ ਇੱਥੇ ਟੋਕਾ ਮਸ਼ੀਨਾਂ ਅਤੇ ਬਾਲ ਬੇਅਰਿੰਗ ਬਣਦੇ ਹਨ।",
+        faqs: [
+          {
+            question: "ਕੀ ਤੁਸੀਂ ਫਗਵਾੜਾ ਅਤੇ ਗੁਰਾਇਆ ਵਿੱਚ ਕੰਟਰੈਕਟ ਲੇਬਰ ਦਿੰਦੇ ਹੋ?",
+            answer: "ਹਾਂ। NH-44 ਦੇ ਨਾਲ ਮਿੱਲਾਂ, ਮਸ਼ੀਨ ਸ਼ਾਪਾਂ ਅਤੇ ਫ਼ਾਊਂਡਰੀਆਂ ਲਈ ਪ੍ਰੋਡਕਸ਼ਨ ਹੈਲਪਰ, ਪੈਕਰ, ਲੋਡਰ ਅਤੇ ਹਾਊਸਕੀਪਿੰਗ ਸਟਾਫ਼।",
+            category: "commercial",
+          },
+          {
+            question: "ਕੀ ਇੱਕੋ ਕੰਟਰੈਕਟ ਵਿੱਚ ਫਗਵਾੜਾ ਅਤੇ ਜਲੰਧਰ ਦੀਆਂ ਸਾਈਟਾਂ ਆ ਸਕਦੀਆਂ ਹਨ?",
+            answer: "ਹਾਂ। ਦੋਵੇਂ ਪੰਜਾਬ ਵਿੱਚ ਹਨ ਅਤੇ ਦੋਵਾਂ 'ਤੇ ਇੱਕੋ ਨਿਯਮ ਲਾਗੂ ਹੁੰਦੇ ਹਨ, ਇਸ ਲਈ ਹਰ ਸਾਈਟ ਨੂੰ ਆਪਣੀ ਟੀਮ ਮਿਲਦੀ ਹੈ ਅਤੇ ਤੁਹਾਨੂੰ ਹਰ ਮਹੀਨੇ ਇੱਕੋ ਬਿੱਲ ਮਿਲਦਾ ਹੈ।",
+            category: "commercial",
+          },
+          WAGES_FAQ["pa-IN"],
+          {
+            question: "ਕੀ ਤੁਸੀਂ ਫ਼ਾਊਂਡਰੀ ਅਤੇ ਮਸ਼ੀਨ ਸ਼ਾਪ ਲਈ ਹੈਲਪਰ ਦੇ ਸਕਦੇ ਹੋ?",
+            answer: "ਹਾਂ। ਸ਼ਾਪ ਫ਼ਲੋਰ ਲਈ ਹੈਲਪਰ, ਮਟੀਰੀਅਲ ਹੈਂਡਲਰ ਅਤੇ ਲੋਡਰ। ਮੰਗਣ 'ਤੇ ਵੈਲਡਰ ਅਤੇ ਫ਼ਿਟਰ ਵੀ।",
+            category: "operations",
+          },
+        ],
+      },
+      "hi-IN": {
+        name: "फगवाड़ा और गुराया",
+        metaTitle: "फगवाड़ा और गुराया में लेबर ठेकेदार (Labour Contractor)",
+        description:
+          "फगवाड़ा की मिलों और इंडस्ट्रियल एरिया, पंजाब में NH-44 पर गुराया की इंजीनियरिंग बेल्ट के लिए सुपरवाइज़र के साथ फ़ैक्टरी, पैकिंग, लोडिंग और हाउसकीपिंग की टीमें।",
+        heading: "फगवाड़ा और गुराया में लेबर ठेकेदार।",
+        lede: "जालंधर से दक्षिण-पूर्व में NH-44 के किनारे मिलों और इंजीनियरिंग यूनिटों के लिए सुपरवाइज़र के साथ टीमें।",
+        paragraph:
+          "फगवाड़ा कपूरथला ज़िले का एक सब-डिवीज़न है, NH-44 पर, जालंधर से लगभग 20 किलोमीटर। यह चीनी, ग्लूकोज़, स्टार्च, बारीक कपड़े और इंजन पार्ट्स के लिए जाना जाता है। MSME-DI प्रोफ़ाइल के मुताबिक़ इसका लगभग 35 एकड़ का इंडस्ट्रियल एरिया पूरी तरह अलॉट हो चुका है। गुराया, जालंधर ज़िले में पुराने GT रोड पर आगे, कभी अपनी फ़ाउंड्री और बेयरिंग की वजह से पंजाब का मैनचेस्टर कहलाता था, और आज भी चारा काटने की मशीनें और बॉल बेयरिंग बनाता है।",
+        faqs: [
+          {
+            question: "क्या आप फगवाड़ा और गुराया में कॉन्ट्रैक्ट लेबर देते हैं?",
+            answer: "हाँ। NH-44 के किनारे मिलों, मशीन शॉप और फ़ाउंड्री के लिए प्रोडक्शन हेल्पर, पैकर, लोडर और हाउसकीपिंग स्टाफ़।",
+            category: "commercial",
+          },
+          {
+            question: "क्या एक ही कॉन्ट्रैक्ट में फगवाड़ा और जालंधर की साइटें आ सकती हैं?",
+            answer: "हाँ। दोनों पंजाब में हैं, तो नियम एक ही हैं। हर साइट को अपनी टीम मिलती है, और आपको महीने में एक ही इनवॉइस मिलता है।",
+            category: "commercial",
+          },
+          WAGES_FAQ["hi-IN"],
+          {
+            question: "क्या आप फ़ाउंड्री और मशीन शॉप के लिए हेल्पर दे सकते हैं?",
+            answer: "हाँ। शॉप फ़्लोर के लिए हेल्पर, मटीरियल हैंडलर और लोडर। माँगने पर वेल्डर और फ़िटर भी।",
+            category: "operations",
+          },
+        ],
+      },
+      "hi-Latn-IN": {
+        name: "Phagwara aur Goraya",
+        metaTitle: "Phagwara aur Goraya mein Labour Thekedar (Contractor)",
+        description:
+          "Phagwara ki mills aur industrial area, aur Punjab mein NH-44 par Goraya ki engineering belt ke liye supervised factory, packing, loading aur housekeeping teams.",
+        heading: "Phagwara aur Goraya mein labour contractor.",
+        lede: "Jalandhar se south-east mein NH-44 ke kinaare mills aur engineering units ke liye supervisor ke saath teams.",
+        paragraph:
+          "Phagwara, Kapurthala district ka ek sub-division hai, NH-44 par, Jalandhar se lagbhag 20 km. Ye sugar, glucose, starch, fine textiles aur engine parts ke liye jaana jaata hai. MSME-DI profile ke hisaab se iska lagbhag 35 acre ka industrial area poora allot ho chuka hai. Goraya, Jalandhar district mein purane GT Road par aage, kabhi apni foundries aur bearings ki wajah se Punjab ka Manchester kehlata tha, aur aaj bhi chara cutter machines aur ball bearings banata hai.",
+        faqs: [
+          {
+            question: "Kya aap Phagwara aur Goraya mein contract labour dete hain?",
+            answer: "Haan. NH-44 ke kinaare mills, machine shops aur foundries ke liye production helpers, packers, loaders aur housekeeping staff.",
+            category: "commercial",
+          },
+          {
+            question: "Kya ek hi contract mein Phagwara aur Jalandhar ki sites aa sakti hain?",
+            answer: "Haan. Dono Punjab mein hain, ek hi rules ke tahat, isliye har site ko apni team milti hai aur aapko mahine ka ek invoice milta hai.",
+            category: "commercial",
+          },
+          WAGES_FAQ["hi-Latn-IN"],
+          {
+            question: "Kya aap foundry aur machine-shop helpers de sakte hain?",
+            answer: "Haan. Shop floor ke liye helpers, material handlers aur loaders. Maangne par welders aur fitters bhi.",
+            category: "operations",
+          },
+        ],
+      },
+    },
   },
 ];

@@ -22,6 +22,35 @@ const wagesFaq = (place: string): FaqItem => ({
   category: "compliance",
 });
 
+// The shared questions in hi-IN and hi-Latn-IN, same facts as wagesFaq and the site-visit question.
+const wagesFaqHi = (place: string): FaqItem => ({
+  question: `क्या ${place} में न्यूनतम मज़दूरी बाकी राज्य से अलग है?`,
+  answer:
+    "नहीं। उत्तराखंड में पूरे राज्य के लिए एक ही दर है, स्किल और काम के प्रकार के हिसाब से। यहाँ प्रोफ़ेशनल टैक्स नहीं है, और राज्य के OSH कोड नियम अभी ड्राफ़्ट में हैं।",
+  link: { href: WAGES_LINK.href, label: "उत्तराखंड न्यूनतम मज़दूरी (अंग्रेज़ी में)" },
+  category: "compliance",
+});
+
+const wagesFaqLatn = (place: string): FaqItem => ({
+  question: `Kya ${place} mein minimum wage baaki state se alag hai?`,
+  answer:
+    "Nahi. Uttarakhand mein poore state ke liye ek hi rate hai, skill aur kaam ke type ke hisaab se. Yahan Professional Tax nahi hai, aur state ke OSH Code rules abhi draft mein hain.",
+  link: { href: WAGES_LINK.href, label: "Uttarakhand minimum wages (English)" },
+  category: "compliance",
+});
+
+const VISIT_HI: FaqItem = {
+  question: "क्या आप पहले हमारी साइट देखने आएँगे?",
+  answer: "हाँ। टीम शुरू होने से पहले हम साइट पर आकर काम, शिफ्ट और आपके हाइजीन और सेफ़्टी नियम देखते हैं।",
+  category: "operations",
+};
+
+const VISIT_LATN: FaqItem = {
+  question: "Kya aap pehle hamari site dekhne aayenge?",
+  answer: "Haan. Team shuru hone se pehle hum site par aakar kaam, shifts aur aapke hygiene aur safety rules dekhte hain.",
+  category: "operations",
+};
+
 const SRC = {
   pharmaCity: { label: "SIIDCUL: Integrated Industrial Estate Pharma City, Selaqui", url: "https://siidcul.com/integrated-industrial-estate-pharma-city-selaqui" },
   sidcSelaqui: { label: "SIIDCUL: SIDC Selaqui allottee list (21 July 2023)", url: "https://siidcul.com/UserFiles/files/SIDC_Selaqui21072023.pdf" },
@@ -36,7 +65,7 @@ export const dehradunPages: LocationCopy[] = [
     cluster: "dehradun",
     name: "Dehradun",
     placeId: "dehradun",
-    metaTitle: "Labour Contractor in Dehradun and SIDCUL Selaqui",
+    metaTitle: "Labour Contractor and Manpower Supply in Dehradun",
     description:
       "Supervised contract labour crews for factories in Dehradun: SIDCUL Selaqui's pharma and industrial estates, Langha Road, Mohabbewala, Laltappar and Rishikesh.",
     heading: "Labour contractor in Dehradun and Selaqui.",
@@ -68,6 +97,73 @@ export const dehradunPages: LocationCopy[] = [
       },
     ],
     sources: [SRC.pharmaCity, SRC.sidcSelaqui, SRC.msme, SRC.osh],
+    // Drafts pending native review (docs/hindi-glossary.md).
+    translations: {
+      "hi-IN": {
+        name: "देहरादून",
+        metaTitle: "देहरादून, सेलाकुई में लेबर ठेकेदार (Labour Contractor)",
+        description:
+          "देहरादून की फ़ैक्टरियों में सुपरवाइज़र के साथ कॉन्ट्रैक्ट लेबर टीम: सिडकुल सेलाकुई के फ़ार्मा और इंडस्ट्रियल एरिया, लांघा रोड, मोहब्बेवाला, लालतप्पड़ और ऋषिकेश।",
+        heading: "देहरादून और सेलाकुई में लेबर ठेकेदार।",
+        lede: "पूरे देहरादून ज़िले में दवा, फ़ूड, पैकेजिंग और इंजीनियरिंग यूनिटों के लिए सुपरवाइज़र के साथ कामगारों की टीम।",
+        paragraph:
+          "देहरादून की फ़ैक्टरियाँ कुछ इंडस्ट्रियल एरिया में हैं। शहर से करीब 25 किलोमीटर दूर सेलाकुई सबसे बड़ा है: पुराने सेलाकुई इंडस्ट्रियल एरिया के बगल में SIIDCUL की फ़ार्मा सिटी, जहाँ दवा, इलेक्ट्रॉनिक्स, फ़ुटवियर और पैकेजिंग की यूनिटें हैं। शहर के पास लांघा रोड, मोहब्बेवाला और लालतप्पड़ इंडस्ट्रियल एरिया और पटेल नगर एस्टेट हैं, और ऋषिकेश और डोईवाला के पास की यूनिटें दवा, काँच और चीनी बनाती हैं। हम {areas} की यूनिटों से रिक्वायरमेंट लेते हैं।",
+        areas: [
+          { href: "/locations/dehradun/selaqui", name: "सेलाकुई" },
+          { name: "लांघा रोड" },
+          { name: "मोहब्बेवाला" },
+          { name: "लालतप्पड़" },
+        ],
+        faqs: [
+          {
+            question: "क्या आप देहरादून में कॉन्ट्रैक्ट लेबर देते हैं?",
+            answer:
+              "हाँ। पैकिंग, फ़ैक्टरी, लोडिंग-अनलोडिंग और हाउसकीपिंग के लिए टीमें। कामगार हमारे पेरोल पर रहते हैं, और आपकी साइट पर हमारा सुपरवाइज़र उन्हें देखता है।",
+            category: "commercial",
+          },
+          {
+            question: "आपके कामगार कहाँ से आते हैं?",
+            answer:
+              "देहरादून, सेलाकुई, विकासनगर और ऋषिकेश में काम ढूँढने वाले लोग ज़िले के हमारे जॉब्स पेज पर अप्लाई करते हैं। हर टीम हम उन्हीं में से, आपकी साइट के पास, बनाते हैं।",
+            category: "operations",
+          },
+          wagesFaqHi("देहरादून"),
+          VISIT_HI,
+        ],
+      },
+      "hi-Latn-IN": {
+        name: "Dehradun",
+        metaTitle: "Dehradun aur SIDCUL Selaqui mein Labour Thekedar",
+        description:
+          "Dehradun ki factories mein supervised contract labour teams: SIDCUL Selaqui ke pharma aur industrial estates, Langha Road, Mohabbewala, Laltappar aur Rishikesh.",
+        heading: "Dehradun aur Selaqui mein labour contractor.",
+        lede: "Poore Dehradun district mein pharma, food, packaging aur engineering units ke liye supervisor ke saath workers ki team.",
+        paragraph:
+          "Dehradun ki factories kuch industrial areas mein hain. Shehar se kareeb 25 km door Selaqui sabse bada hai: purane Selaqui industrial area ke bagal mein SIIDCUL ki Pharma City, jahan pharma, electronics, footwear aur packaging ki units hain. Shehar ke paas Langha Road, Mohabbewala aur Laltappar industrial areas aur Patel Nagar estate hain, aur Rishikesh aur Doiwala ke paas ki units dawaiyan, kaanch aur cheeni banati hain. Hum {areas} ki units se requirements lete hain.",
+        areas: [
+          { href: "/locations/dehradun/selaqui", name: "Selaqui" },
+          { name: "Langha Road" },
+          { name: "Mohabbewala" },
+          { name: "Laltappar" },
+        ],
+        faqs: [
+          {
+            question: "Kya aap Dehradun mein contract labour dete hain?",
+            answer:
+              "Haan. Packing, factory, loading-unloading aur housekeeping ke liye teams. Workers hamare payroll par rehte hain, aur aapki site par kaam hamara supervisor chalata hai.",
+            category: "commercial",
+          },
+          {
+            question: "Aapke workers kahan se aate hain?",
+            answer:
+              "Dehradun, Selaqui, Vikasnagar aur Rishikesh ke job seekers district ke liye hamare jobs page par apply karte hain. Har team hum unhi mein se, aapki site ke paas, banate hain.",
+            category: "operations",
+          },
+          wagesFaqLatn("Dehradun"),
+          VISIT_LATN,
+        ],
+      },
+    },
   },
   {
     cluster: "dehradun",
@@ -102,5 +198,60 @@ export const dehradunPages: LocationCopy[] = [
       },
     ],
     sources: [SRC.pharmaCity, SRC.sidcSelaqui, SRC.scheduleM, SRC.osh, SRC.msme],
+    // Drafts pending native review (docs/hindi-glossary.md).
+    translations: {
+      "hi-IN": {
+        name: "सेलाकुई",
+        metaTitle: "सिडकुल सेलाकुई में कॉन्ट्रैक्ट लेबर (Contract Labour)",
+        description:
+          "देहरादून के सेलाकुई इंडस्ट्रियल एरिया के लिए कॉन्ट्रैक्ट लेबर टीम: SIIDCUL की फ़ार्मा सिटी और SIDC सेलाकुई। GMP ट्रेनिंग वाले हेल्पर, पैकर और हाउसकीपिंग स्टाफ़।",
+        heading: "सिडकुल सेलाकुई में कॉन्ट्रैक्ट लेबर।",
+        lede: "सेलाकुई, देहरादून की दवा, FMCG और पैकेजिंग यूनिटों के लिए सुपरवाइज़र के साथ कामगारों की टीम, आपके प्लांट के हाइजीन नियमों की ट्रेनिंग के साथ।",
+        paragraph:
+          "सेलाकुई में SIIDCUL के दो इंडस्ट्रियल एरिया अगल-बगल हैं, देहरादून से करीब 25 किलोमीटर दूर। फ़ार्मा सिटी 50 एकड़ में है, दवाओं, कैप्सूल और मेडिकल डिवाइस के लिए। पुराने SIDC सेलाकुई में इलेक्ट्रॉनिक्स, अप्लायंस, फ़ुटवियर, कपड़े, प्रिंटिंग, पैकेजिंग और फ़ूड की यूनिटें मिली-जुली हैं।",
+        faqs: [
+          {
+            question: "क्या आप सेलाकुई की यूनिटों को कॉन्ट्रैक्ट लेबर देते हैं?",
+            answer:
+              "हाँ। प्रोडक्शन सपोर्ट, पैकिंग, स्टोर और डिस्पैच, और हाउसकीपिंग के लिए टीमें, आपकी साइट टीम के साथ प्लान की हुई और हमारे सुपरवाइज़र की देखरेख में।",
+            category: "operations",
+          },
+          {
+            question: "क्या आपकी टीमें GMP ट्रेनिंग के नियम पूरे कर सकती हैं?",
+            answer:
+              "हाँ। रिवाइज़्ड Schedule M में कॉन्ट्रैक्ट स्टाफ़ का साफ़ ज़िक्र है, सफ़ाई स्टाफ़ भी। हम हर टीम आपके प्लांट की ट्रेनिंग, गाउनिंग और हेल्थ चेक के हिसाब से प्लान करते हैं, और ट्रेनिंग रिकॉर्ड रखते हैं।",
+            category: "operations",
+          },
+          wagesFaqHi("सेलाकुई"),
+          VISIT_HI,
+        ],
+      },
+      "hi-Latn-IN": {
+        name: "Selaqui",
+        metaTitle: "SIDCUL Selaqui, Dehradun mein Contract Labour",
+        description:
+          "Dehradun ke Selaqui industrial area ke liye contract labour teams: SIIDCUL ki Pharma City aur SIDC Selaqui. GMP-trained helpers, packers aur housekeeping staff.",
+        heading: "SIDCUL Selaqui mein contract labour.",
+        lede: "Selaqui, Dehradun ki pharma, FMCG aur packaging units ke liye supervisor ke saath workers ki team, aapke plant ke hygiene rules ki training ke saath.",
+        paragraph:
+          "Selaqui mein SIIDCUL ke do estates agal-bagal hain, Dehradun se kareeb 25 km door. Pharma City 50 acre ka estate hai, dawaiyon, capsules aur medical devices ke liye. Purane SIDC Selaqui mein electronics, appliances, footwear, apparel, printing, packaging aur food ki units mili-juli hain.",
+        faqs: [
+          {
+            question: "Kya aap Selaqui ki units ko contract labour dete hain?",
+            answer:
+              "Haan. Production support, packing, stores aur dispatch, aur housekeeping ke liye teams. Plan aapki site team ke saath banta hai, aur kaam hamara supervisor chalata hai.",
+            category: "operations",
+          },
+          {
+            question: "Kya aapki teams GMP training ke rules poore kar sakti hain?",
+            answer:
+              "Haan. Revised Schedule M mein contract staff ka zikr hai, cleaners bhi. Hum har team aapke plant ki training, gowning aur health checks ke hisaab se plan karte hain, aur training records rakhte hain.",
+            category: "operations",
+          },
+          wagesFaqLatn("Selaqui"),
+          VISIT_LATN,
+        ],
+      },
+    },
   },
 ];

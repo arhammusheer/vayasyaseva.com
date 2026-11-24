@@ -41,7 +41,7 @@ export const WORK_DOOR: Record<Locale, { lead: string; label: string }> = {
   "hi-Latn-IN": { lead: "Kaam chahiye?", label: "Jobs" },
   "pa-IN": { lead: "ਕੰਮ ਚਾਹੀਦਾ ਹੈ?", label: "ਨੌਕਰੀਆਂ" },
   "kn-IN": { lead: "ಕೆಲಸ ಬೇಕೇ?", label: "ಉದ್ಯೋಗಗಳು" },
-  "te-IN": { lead: "పని కావాలా?", label: "ఉద్యోగాలు" },
+  "te-IN": { lead: "పని కావాలా?", label: "జాబ్స్" },
 };
 
 /**
@@ -84,9 +84,9 @@ export const JOBS_NAV: Record<
     haridwar: "Jobs in Haridwar", details: "Your details", privacy: "Privacy", terms: "Terms", english: "",
   },
   "hi-IN": {
-    business: "कंपनियों के लिए", enquiries: "पूछताछ", apply: "आवेदन करें", menu: "नौकरी", sections: "साइट के हिस्से", more: "और",
+    business: "कंपनियों के लिए", enquiries: "पूछताछ", apply: "अप्लाई करें", menu: "नौकरी", sections: "साइट के हिस्से", more: "और",
     openMenu: "मेन्यू खोलें", language: "भाषा", logo: "Vayasya Seva नौकरी",
-    haridwar: "हरिद्वार में नौकरी", details: "आपकी जानकारी", privacy: "गोपनीयता", terms: "नियम", english: " (English)",
+    haridwar: "हरिद्वार में नौकरी", details: "आपकी जानकारी", privacy: "गोपनीयता", terms: "नियम", english: " (अंग्रेज़ी में)",
   },
   "hi-Latn-IN": {
     business: "Companies ke liye", enquiries: "Enquiry", apply: "Apply karein", menu: "Jobs", sections: "Site ke hisse", more: "Aur",
@@ -96,15 +96,15 @@ export const JOBS_NAV: Record<
   "pa-IN": {
     business: "ਕੰਪਨੀਆਂ ਲਈ", enquiries: "ਪੁੱਛਗਿੱਛ", apply: "ਅਪਲਾਈ ਕਰੋ", menu: "ਨੌਕਰੀਆਂ", sections: "ਸਾਈਟ ਦੇ ਹਿੱਸੇ", more: "ਹੋਰ",
     openMenu: "ਮੀਨੂ ਖੋਲ੍ਹੋ", language: "ਭਾਸ਼ਾ", logo: "Vayasya Seva ਨੌਕਰੀਆਂ",
-    haridwar: "ਹਰਿਦੁਆਰ ਵਿੱਚ ਨੌਕਰੀ", details: "ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ", privacy: "ਨਿੱਜਤਾ", terms: "ਨਿਯਮ", english: " (English)",
+    haridwar: "ਹਰਿਦੁਆਰ ਵਿੱਚ ਨੌਕਰੀ", details: "ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ", privacy: "ਪ੍ਰਾਈਵੇਸੀ", terms: "ਨਿਯਮ", english: " (English)",
   },
   "kn-IN": {
-    business: "ಕಂಪನಿಗಳಿಗೆ", enquiries: "ವಿಚಾರಣೆಗಳು", apply: "ಅರ್ಜಿ ಸಲ್ಲಿಸಿ", menu: "ಉದ್ಯೋಗಗಳು", sections: "ಸೈಟ್‌ನ ವಿಭಾಗಗಳು", more: "ಇನ್ನಷ್ಟು",
+    business: "ಕಂಪನಿಗಳಿಗೆ", enquiries: "ಬಿಸಿನೆಸ್ ಎನ್‌ಕ್ವೈರಿ", apply: "ಅರ್ಜಿ ಹಾಕಿ", menu: "ಉದ್ಯೋಗಗಳು", sections: "ಸೈಟ್‌ನ ವಿಭಾಗಗಳು", more: "ಇನ್ನಷ್ಟು",
     openMenu: "ಮೆನು ತೆರೆಯಿರಿ", language: "ಭಾಷೆ", logo: "Vayasya Seva ಉದ್ಯೋಗಗಳು",
     haridwar: "ಹರಿದ್ವಾರದಲ್ಲಿ ಉದ್ಯೋಗ", details: "ನಿಮ್ಮ ಮಾಹಿತಿ", privacy: "ಗೌಪ್ಯತೆ", terms: "ನಿಯಮಗಳು", english: " (English)",
   },
   "te-IN": {
-    business: "కంపెనీల కోసం", enquiries: "విచారణలు", apply: "దరఖాస్తు చేయండి", menu: "ఉద్యోగాలు", sections: "సైట్ విభాగాలు", more: "మరిన్ని",
+    business: "కంపెనీల కోసం", enquiries: "ఎంక్వైరీలు", apply: "దరఖాస్తు చేయండి", menu: "ఉద్యోగాలు", sections: "సైట్ విభాగాలు", more: "మరిన్ని",
     openMenu: "మెనూ తెరవండి", language: "భాష", logo: "Vayasya Seva ఉద్యోగాలు",
     haridwar: "హరిద్వార్‌లో ఉద్యోగాలు", details: "మీ వివరాలు", privacy: "గోప్యత", terms: "నిబంధనలు", english: " (English)",
   },
@@ -180,8 +180,8 @@ export const JOB_HUB_LINKS: Record<Locale, { slug: string; label: string }[]> = 
   ],
   "kn-IN": [
     { slug: "freshers", label: "ಫ್ರೆಷರ್ಸ್" },
-    { slug: "10th-pass", label: "10ನೇ ತರಗತಿ ಪಾಸ್" },
-    { slug: "12th-pass", label: "12ನೇ ತರಗತಿ / PUC ಪಾಸ್" },
+    { slug: "10th-pass", label: "SSLC (10ನೇ) ಪಾಸ್" },
+    { slug: "12th-pass", label: "PUC (12ನೇ) ಪಾಸ್" },
   ],
   "te-IN": [
     { slug: "freshers", label: "ఫ్రెషర్స్" },

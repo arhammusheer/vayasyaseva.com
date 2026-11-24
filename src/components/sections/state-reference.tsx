@@ -18,10 +18,10 @@ import { MARKETS, type MarketId } from "@/markets/data";
 type Copy = { label: string; wages: string; lwf: string; pt: string; bonus: string; gratuity: string; codes: string };
 const COPY: Partial<Record<Locale, Copy>> = {
   "en-IN": { label: "Rules and rates here", wages: "Minimum wages", lwf: "Labour welfare fund", pt: "Professional tax", bonus: "Bonus", gratuity: "Gratuity", codes: "New labour codes" },
-  "hi-IN": { label: "यहाँ के नियम और दरें (अंग्रेज़ी में)", wages: "न्यूनतम वेतन", lwf: "लेबर वेलफ़ेयर फ़ंड", pt: "प्रोफ़ेशनल टैक्स", bonus: "बोनस", gratuity: "ग्रेच्युटी", codes: "नए लेबर कोड" },
-  "hi-Latn-IN": { label: "Yahan ke niyam aur rate (English mein)", wages: "Minimum wages", lwf: "Labour welfare fund", pt: "Professional tax", bonus: "Bonus", gratuity: "Gratuity", codes: "Naye labour codes" },
+  "hi-IN": { label: "यहाँ के नियम और दरें (अंग्रेज़ी में)", wages: "न्यूनतम मज़दूरी", lwf: "लेबर वेलफ़ेयर फ़ंड", pt: "प्रोफ़ेशनल टैक्स", bonus: "बोनस", gratuity: "ग्रेच्युटी", codes: "नए लेबर कोड" },
+  "hi-Latn-IN": { label: "Yahan ke rules aur rates (English mein)", wages: "Minimum wages", lwf: "Labour welfare fund", pt: "Professional tax", bonus: "Bonus", gratuity: "Gratuity", codes: "Naye labour codes" },
   "pa-IN": { label: "ਇੱਥੋਂ ਦੇ ਨਿਯਮ ਅਤੇ ਦਰਾਂ (ਅੰਗਰੇਜ਼ੀ ਵਿੱਚ)", wages: "ਘੱਟੋ-ਘੱਟ ਤਨਖ਼ਾਹ", lwf: "ਲੇਬਰ ਵੈਲਫ਼ੇਅਰ ਫ਼ੰਡ", pt: "ਪ੍ਰੋਫ਼ੈਸ਼ਨਲ ਟੈਕਸ", bonus: "ਬੋਨਸ", gratuity: "ਗ੍ਰੈਚੁਟੀ", codes: "ਨਵੇਂ ਲੇਬਰ ਕੋਡ" },
-  "te-IN": { label: "ఇక్కడి నియమాలు మరియు రేట్లు (ఇంగ్లీష్‌లో)", wages: "కనీస వేతనాలు", lwf: "లేబర్ వెల్ఫేర్ ఫండ్", pt: "ప్రొఫెషనల్ ట్యాక్స్", bonus: "బోనస్", gratuity: "గ్రాట్యుటీ", codes: "కొత్త లేబర్ కోడ్‌లు" },
+  "te-IN": { label: "ఇక్కడి రూల్స్, రేట్లు (English)", wages: "కనీస వేతనాలు", lwf: "లేబర్ వెల్ఫేర్ ఫండ్", pt: "ప్రొఫెషనల్ ట్యాక్స్", bonus: "బోనస్", gratuity: "గ్రాట్యుటీ", codes: "కొత్త లేబర్ కోడ్‌లు" },
 };
 
 /** State names in each page language, for the per-state links. */

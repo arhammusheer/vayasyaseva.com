@@ -6,6 +6,8 @@ No web font: Anek and Hind have no Gurmukhi, so the phone's own font draws it (N
 
 Review questions for the native reviewer: is the register right for factory workers (plain, short sentences, class-10 reader)? Should common English loanwords (ਪੈਕਿੰਗ, ਫ਼ੈਕਟਰੀ, ਵੇਅਰਹਾਊਸ, ਸ਼ਿਫ਼ਟ) stay as loanwords? They match how people say them.
 
+The November 2026 language audit answered the loanword question: keep them (ਪੈਕਿੰਗ, ਫ਼ੈਕਟਰੀ, ਵੇਅਰਹਾਊਸ, ਸ਼ਿਫ਼ਟ, ਸੁਪਰਵਾਈਜ਼ਰ, ਮੈਨਪਾਵਰ, ਕੰਟਰੈਕਟ ਲੇਬਰ). The register problems came from Hindi-style function words and English sentence order, not from loanwords. Write as people speak in Jalandhar, not formal Punjabi.
+
 | English | Punjabi | Notes |
 |---|---|---|
 | Jobs | ਨੌਕਰੀਆਂ | ਨੌਕਰੀ in the singular |
@@ -17,6 +19,13 @@ Review questions for the native reviewer: is the register right for factory work
 | Workers (for a company) | ਕਾਮੇ | "Request a crew" is ਕਾਮੇ ਮੰਗੋ |
 | Your details | ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ | |
 | Reference number | ਰੈਫ਼ਰੈਂਸ ਨੰਬਰ | |
+| Join our list | ਲਿਸਟ ਵਿੱਚ ਨਾਮ ਲਿਖਵਾਓ | Not ਲਿਸਟ ਵਿੱਚ ਜੁੜੋ (Hindi जुड़ें) |
+| List | ਲਿਸਟ | Not ਸੂਚੀ |
+| Vacancy / openings | ਵੈਕੈਂਸੀ | Not ਜਗ੍ਹਾ ਖ਼ਾਲੀ; "a job comes up" is ਕੰਮ ਨਿਕਲਣਾ |
+| Resume | ਬਾਇਓਡਾਟਾ | Not ਰਿਜ਼ਿਊਮ |
+| Experience | ਤਜਰਬਾ | ਤੁਹਾਨੂੰ ... ਤਜਰਬਾ ਹੈ, not ਤੁਹਾਡੇ ਕੋਲ ਤਜਰਬਾ |
+| Privacy | ਪ੍ਰਾਈਵੇਸੀ | Not ਨਿੱਜਤਾ on worker-facing UI. The cookie banner (`src/lib/measurement/copy.ts`) still says ਨਿੱਜਤਾ until its next consent-version bump |
+| Invoice | ਬਿੱਲ | Not ਇਨਵੌਇਸ in running text |
 | Jalandhar | ਜਲੰਧਰ | Hindi pages write जालंधर |
 | Kapurthala | ਕਪੂਰਥਲਾ | |
 | Phagwara | ਫਗਵਾੜਾ | |
@@ -26,17 +35,20 @@ Review questions for the native reviewer: is the register right for factory work
 | Contract labour | ਕੰਟਰੈਕਟ ਲੇਬਰ | As in Hindi (कॉन्ट्रैक्ट लेबर) |
 | Manpower | ਮੈਨਪਾਵਰ | Search term, used in a title |
 | Crew / team | ਟੀਮ, plural ਟੀਮਾਂ | "Supervised crews" is ਸੁਪਰਵਾਈਜ਼ਰ ਨਾਲ ... ਟੀਮਾਂ |
-| Supervisor | ਸੁਪਰਵਾਈਜ਼ਰ | ਸੁਪਰਵਾਈਜ਼ਰ ਦੀ ਨਿਗਰਾਨੀ ਹੇਠ for "run by our supervisor" |
-| Minimum wage | ਘੱਟੋ-ਘੱਟ ਤਨਖ਼ਾਹ | Spelt with the nukta; unskilled is ਅਕੁਸ਼ਲ |
+| Supervisor | ਸੁਪਰਵਾਈਜ਼ਰ | "Run by our supervisor": in a sentence, ਸਾਡਾ ਸੁਪਰਵਾਈਜ਼ਰ (ਉਨ੍ਹਾਂ ਤੋਂ) ਕੰਮ ਕਰਵਾਉਂਦਾ ਹੈ; keep ਸੁਪਰਵਾਈਜ਼ਰ ਦੀ ਨਿਗਰਾਨੀ ਹੇਠ only for short descriptive phrases |
+| Minimum wage | ਘੱਟੋ-ਘੱਟ ਤਨਖ਼ਾਹ | Always with the nukta (ਤਨਖ਼ਾਹ, never ਤਨਖਾਹ); check with `grep -rn 'ਤਨਖਾਹ' src` |
+| Unskilled | ਅਨਸਕਿੱਲਡ | Not ਅਕੁਸ਼ਲ, which is Hindi and not used in Punjab; HR and contractors say ਅਨਸਕਿੱਲਡ |
+| State | ਸੂਬਾ | Not ਰਾਜ: "ਪੂਰੇ ਸੂਬੇ ਵਿੱਚ", "ਆਪਣੇ ਸੂਬੇ ਦਾ ਨਾਮ" |
+| Where applicable (EPF/ESIC) | ਜਿੱਥੇ ਬਣਦਾ ਹੈ | Not ਲਾਗੂ ਹੋਣ 'ਤੇ |
 | Unit (factory) | ਯੂਨਿਟ, plural ਯੂਨਿਟਾਂ | Feminine, as spoken |
 | Region (Jalandhar region) | ਇਲਾਕਾ (ਜਲੰਧਰ ਇਲਾਕੇ) | Matches the page's ਇਲਾਕੇ ਜਿੱਥੇ ਅਸੀਂ ਕੰਮ ਕਰਦੇ ਹਾਂ |
 | Industrial area / estate | ਇੰਡਸਟਰੀਅਲ ਏਰੀਆ / ਅਸਟੇਟ | Loanwords, as on the signboards |
-| Focal Point | ਫ਼ੋਕਲ ਪੁਆਇੰਟ | Hindi pages write फ़ोकल पॉइंट |
+| Focal Point | ਫ਼ੋਕਲ ਪੁਆਇੰਟ | Hindi pages write फ़ोकल पॉइंट. Focal Point, Jalandhar in running text: ਫ਼ੋਕਲ ਪੁਆਇੰਟ ਜਲੰਧਰ, no comma, and not ਜਲੰਧਰ ਦਾ ਫ਼ੋਕਲ ਪੁਆਇੰਟ where a postposition follows |
 | Leather Complex / Sports and Surgical Goods Complex | ਲੈਦਰ ਕੰਪਲੈਕਸ / ਸਪੋਰਟਸ ਅਤੇ ਸਰਜੀਕਲ ਗੁੱਡਜ਼ ਕੰਪਲੈਕਸ | Estate names, transliterated |
-| Housekeeping / Loading and unloading | ਹਾਊਸਕੀਪਿੰਗ / ਲੋਡਿੰਗ ਅਤੇ ਅਨਲੋਡਿੰਗ | |
+| Housekeeping / Loading and unloading | ਹਾਊਸਕੀਪਿੰਗ / ਲੋਡਿੰਗ ਅਤੇ ਅਨਲੋਡਿੰਗ | ਲੋਡਿੰਗ-ਅਨਲੋਡਿੰਗ is fine too, as said |
 | Helper / Production helper | ਹੈਲਪਰ / ਪ੍ਰੋਡਕਸ਼ਨ ਹੈਲਪਰ | |
 | Security guard | ਸਕਿਓਰਿਟੀ ਗਾਰਡ | |
-| Fodder cutter | ਟੋਕਾ ਮਸ਼ੀਨ | Goraya's product; Hindi pages write चारा काटने की मशीनें |
+| Fodder cutter | ਟੋਕਾ ਮਸ਼ੀਨ | Goraya's product, no gloss needed (every Punjabi reader knows ਟੋਕਾ); Hindi pages write चारा काटने की मशीनें |
 | Half-yearly | ਛਿਮਾਹੀ | Labour Welfare Fund: ਲੇਬਰ ਵੈਲਫ਼ੇਅਰ ਫ਼ੰਡ |
 | Ferozepur | ਫ਼ਿਰੋਜ਼ਪੁਰ | |
 | Amritsar / Delhi | ਅੰਮ੍ਰਿਤਸਰ / ਦਿੱਲੀ | |

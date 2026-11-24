@@ -995,7 +995,7 @@ function WageHubPageHi({ all }: { all: readonly WageState[] }) {
   return (
     <>
       <JsonLd data={webPageSchema({ name: h.title(year), description: h.description(), url: localePath(WAGE_HUB_PATH, "hi-IN"), inLanguage: "hi-IN" })} />
-      <Breadcrumbs path={WAGE_HUB_PATH} locale="hi-IN" name="न्यूनतम मजदूरी" />
+      <Breadcrumbs path={WAGE_HUB_PATH} locale="hi-IN" name="न्यूनतम मज़दूरी" />
       <PageHero
         title={h.heading(year)}
         lede={h.lede}
@@ -1032,7 +1032,7 @@ function WageHubPageHi({ all }: { all: readonly WageState[] }) {
                 </p>
                 <div className="wage-table-scroll">
                   <table className="wage-table">
-                    <caption className="sr-only">{`${hi.name}: न्यूनतम मजदूरी, रुपये में`}</caption>
+                    <caption className="sr-only">{`${hi.name}: न्यूनतम मज़दूरी, रुपये में`}</caption>
                     <thead>
                       <tr>
                         <th scope="col">{h.table.skill}</th>

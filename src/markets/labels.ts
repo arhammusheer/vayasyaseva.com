@@ -42,7 +42,7 @@ export const JOBS_LINK_LABELS = {
     "hi-IN": "पूरे आंध्र प्रदेश में नौकरी",
     "hi-Latn-IN": "Poore Andhra Pradesh mein job",
     "kn-IN": "ಆಂಧ್ರ ಪ್ರದೇಶದಾದ್ಯಂತ ಉದ್ಯೋಗ",
-    "te-IN": "ఆంధ్రప్రదేశ్ అంతటా ఉద్యోగాలు",
+    "te-IN": "ఆంధ్రప్రదేశ్ అంతటా జాబ్స్",
     "pa-IN": "ਪੂਰੇ ਆਂਧਰਾ ਪ੍ਰਦੇਸ਼ ਵਿੱਚ ਨੌਕਰੀ",
   },
   bengaluru: {
@@ -74,7 +74,7 @@ export const JOBS_LINK_LABELS = {
     "hi-IN": "हैदराबाद में नौकरी",
     "hi-Latn-IN": "Hyderabad mein job",
     "kn-IN": "ಹೈದರಾಬಾದ್‌ನಲ್ಲಿ ಉದ್ಯೋಗ",
-    "te-IN": "హైదరాబాద్‌లో ఉద్యోగాలు",
+    "te-IN": "హైదరాబాద్‌లో జాబ్స్",
     "pa-IN": "ਹੈਦਰਾਬਾਦ ਵਿੱਚ ਨੌਕਰੀ",
   },
   jalandhar: {
@@ -106,7 +106,7 @@ export const JOBS_LINK_LABELS = {
     "hi-IN": "पूरे तेलंगाना में नौकरी",
     "hi-Latn-IN": "Poore Telangana mein job",
     "kn-IN": "ತೆಲಂಗಾಣದಾದ್ಯಂತ ಉದ್ಯೋಗ",
-    "te-IN": "తెలంగాణ అంతటా ఉద్యోగాలు",
+    "te-IN": "తెలంగాణ అంతటా జాబ్స్",
     "pa-IN": "ਪੂਰੇ ਤੇਲੰਗਾਨਾ ਵਿੱਚ ਨੌਕਰੀ",
   },
   uttarakhand: {
@@ -122,7 +122,7 @@ export const JOBS_LINK_LABELS = {
     "hi-IN": "विशाखापत्तनम में नौकरी",
     "hi-Latn-IN": "Visakhapatnam mein job",
     "kn-IN": "ವಿಶಾಖಪಟ್ಟಣದಲ್ಲಿ ಉದ್ಯೋಗ",
-    "te-IN": "విశాఖపట్నంలో ఉద్యోగాలు",
+    "te-IN": "విశాఖపట్నంలో జాబ్స్",
     "pa-IN": "ਵਿਸ਼ਾਖਾਪਟਨਮ ਵਿੱਚ ਨੌਕਰੀ",
   },
 } as const satisfies Record<JobsMarketId, Record<LocaleTag, string>>;

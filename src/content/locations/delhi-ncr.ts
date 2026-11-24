@@ -78,7 +78,7 @@ export const delhiNcrPages: LocationCopy[] = [
         heading: "दिल्ली NCR में लेबर ठेकेदार।",
         lede: "दिल्ली, हरियाणा और उत्तर प्रदेश की फ़ैक्टरियों, वेयरहाउस और फ़ैसिलिटी के लिए सुपरवाइज़र के साथ कामगारों की टीम।",
         paragraph:
-          "दिल्ली NCR में तीन राज्य हैं, पर लेबर मार्केट एक है: कोई कामगार दिल्ली में रहकर कुंडली में हरियाणा की दर पर काम कर सकता है, या गाज़ियाबाद में रहकर फ़रीदाबाद काम करने जा सकता है। हर टीम को हम उसी राज्य के नियमों से वेतन देते हैं जिसमें उसकी साइट है। हम {areas} की यूनिटों से ज़रूरतें लेते हैं।",
+          "दिल्ली NCR में तीन राज्य हैं, पर लेबर मार्केट एक है: कोई कामगार दिल्ली में रहकर कुंडली में हरियाणा की दर पर काम कर सकता है, या गाज़ियाबाद में रहकर फ़रीदाबाद काम करने जा सकता है। हर टीम को हम उसी राज्य के नियमों से वेतन देते हैं जिसमें उसकी साइट है। हम {areas} की यूनिटों से रिक्वायरमेंट लेते हैं।",
         areas: [
           { href: "/locations/delhi-ncr/gurugram-manesar", name: "गुरुग्राम और मानेसर" },
           { href: "/locations/delhi-ncr/noida-greater-noida", name: "नोएडा और ग्रेटर नोएडा" },
@@ -98,9 +98,9 @@ export const delhiNcrPages: LocationCopy[] = [
             category: "operations",
           },
           {
-            question: "दिल्ली NCR में कौन-सी न्यूनतम मजदूरी और नियम लागू होते हैं?",
+            question: "दिल्ली NCR में कौन-सी न्यूनतम मज़दूरी और नियम लागू होते हैं?",
             answer: "यह साइट वाला राज्य तय करता है: अकुशल कामगार के लिए हर महीने दिल्ली में ₹18,456, हरियाणा में ₹15,220.71 और UP कैटेगरी I में ₹13,883.59। तीनों में से कोई भी राज्य प्रोफ़ेशनल टैक्स नहीं लेता।",
-            link: { href: RULE_LINKS.compliance.href, label: "हम कंप्लायंस कैसे संभालते हैं (English)" },
+            link: { href: RULE_LINKS.compliance.href, label: "हम कंप्लायंस कैसे संभालते हैं (अंग्रेज़ी में)" },
             category: "compliance",
           },
           {
@@ -134,12 +134,12 @@ export const delhiNcrPages: LocationCopy[] = [
           {
             question: "Kya sardiyon ki pollution pabandiyon ka asar teams par padta hai?",
             answer:
-              "Pad sakta hai: Graded Response Action Plan ke upar ke stages par purane diesel trucks Delhi mein nahi aa sakte aur diesel generators par pabandi lagti hai. Bataiye aapki site kin cheezon par nirbhar hai, hum usi hisaab se plan karte hain.",
+              "Pad sakta hai: Graded Response Action Plan (GRAP) ke upper stages mein purane diesel trucks Delhi mein nahi aa sakte aur diesel generators par pabandi lagti hai. Bataiye aapki site kin cheezon par depend karti hai, hum usi hisaab se plan karte hain.",
             category: "operations",
           },
           {
             question: "Delhi NCR mein kaun si minimum wage aur rules lagu hote hain?",
-            answer: "Yeh site wala state tay karta hai: unskilled ke liye har mahine Delhi mein ₹18,456, Haryana mein ₹15,220.71 aur UP Category I mein ₹13,883.59. Teenon mein se koi bhi state Professional Tax nahi leta.",
+            answer: "Ye us state se tay hota hai jahan site hai: unskilled ke liye har mahine Delhi mein ₹18,456, Haryana mein ₹15,220.71 aur UP Category I mein ₹13,883.59. Teenon mein se koi bhi state Professional Tax nahi leta.",
             link: { href: RULE_LINKS.compliance.href, label: "Hum compliance kaise sambhalte hain (English)" },
             category: "compliance",
           },
@@ -216,15 +216,15 @@ export const delhiNcrPages: LocationCopy[] = [
             category: "operations",
           },
           {
-            question: "क्या मानेसर और गुरुग्राम में न्यूनतम मजदूरी अलग है?",
+            question: "क्या मानेसर और गुरुग्राम में न्यूनतम मज़दूरी अलग है?",
             answer: "नहीं। हरियाणा का 2026 का नोटिफ़िकेशन पूरे राज्य के लिए एक ही दर तय करता है, इसमें कोई ज़ोन नहीं है।",
             category: "compliance",
           },
           {
-            question: "हरियाणा में कौन-सी मजदूरी और नियम लागू होते हैं?",
+            question: "हरियाणा में कौन-सी मज़दूरी और नियम लागू होते हैं?",
             answer:
               "1 अप्रैल 2026 से अकुशल के लिए ₹15,220.71 महीना, और अगर ठेकेदार कम वेतन दे तो नोटिफ़िकेशन प्रिंसिपल एम्प्लॉयर को ज़िम्मेदार बनाता है। प्रोफ़ेशनल टैक्स नहीं है। लेबर वेलफ़ेयर फ़ंड हर महीने वेतन का 0.2% है, कामगार से ज़्यादा से ज़्यादा ₹35 और एम्प्लॉयर से ₹70।",
-            link: { href: RULE_LINKS.haryana.href, label: "हरियाणा न्यूनतम मजदूरी (English)" },
+            link: { href: RULE_LINKS.haryana.href, label: "हरियाणा न्यूनतम मज़दूरी (अंग्रेज़ी में)" },
             category: "compliance",
           },
           {
@@ -339,10 +339,10 @@ export const delhiNcrPages: LocationCopy[] = [
             category: "compliance",
           },
           {
-            question: "नोएडा में कौन-सी न्यूनतम मजदूरी और नियम लागू होते हैं?",
+            question: "नोएडा में कौन-सी न्यूनतम मज़दूरी और नियम लागू होते हैं?",
             answer:
               "गौतम बुद्ध नगर UP की कैटेगरी I में है: 1 अक्टूबर 2026 से अकुशल के लिए ₹13,883.59 महीना, और पूरे ग्रेटर नोएडा और यमुना एक्सप्रेसवे इलाके में भी यही दर है। UP प्रोफ़ेशनल टैक्स नहीं लेता।",
-            link: { href: RULE_LINKS.up.href, label: "UP न्यूनतम मजदूरी (English)" },
+            link: { href: RULE_LINKS.up.href, label: "UP न्यूनतम मज़दूरी (अंग्रेज़ी में)" },
             category: "compliance",
           },
           {
@@ -454,15 +454,15 @@ export const delhiNcrPages: LocationCopy[] = [
             category: "operations",
           },
           {
-            question: "गाज़ियाबाद में मजदूरी फ़रीदाबाद से कम क्यों है?",
+            question: "गाज़ियाबाद में मज़दूरी फ़रीदाबाद से कम क्यों है?",
             answer: "दोनों कुछ किलोमीटर की दूरी पर हैं, पर अलग-अलग राज्यों में। जिस कामगार को एक साइट से दूसरी पर भेजा जाए, उसे उस साइट की दर मिलती है जहाँ वह काम करता है।",
             category: "compliance",
           },
           {
-            question: "कौन-सी न्यूनतम मजदूरी और नियम लागू होते हैं?",
+            question: "कौन-सी न्यूनतम मज़दूरी और नियम लागू होते हैं?",
             answer:
               "फ़रीदाबाद में हरियाणा की दर, अकुशल के लिए ₹15,220.71 महीना, और साथ में लेबर वेलफ़ेयर फ़ंड। गाज़ियाबाद में UP कैटेगरी I की दर, ₹13,883.59। दोनों में से कोई भी राज्य प्रोफ़ेशनल टैक्स नहीं लेता।",
-            link: { href: RULE_LINKS.up.href, label: "UP न्यूनतम मजदूरी (English)" },
+            link: { href: RULE_LINKS.up.href, label: "UP न्यूनतम मज़दूरी (अंग्रेज़ी में)" },
             category: "compliance",
           },
           {
@@ -579,10 +579,10 @@ export const delhiNcrPages: LocationCopy[] = [
             category: "compliance",
           },
           {
-            question: "दिल्ली में कौन-सी न्यूनतम मजदूरी और नियम लागू होते हैं?",
+            question: "दिल्ली में कौन-सी न्यूनतम मज़दूरी और नियम लागू होते हैं?",
             answer:
               "पूरी दिल्ली में एक ही दर: 15 अप्रैल 2025 के आदेश से अकुशल के लिए ₹18,456 महीना। दिल्ली में प्रोफ़ेशनल टैक्स नहीं है। यहाँ का लेबर वेलफ़ेयर फ़ंड हर छह महीने में कामगार से ₹0.75 और एम्प्लॉयर से ₹2.25 है।",
-            link: { href: RULE_LINKS.delhi.href, label: "दिल्ली न्यूनतम मजदूरी (English)" },
+            link: { href: RULE_LINKS.delhi.href, label: "दिल्ली न्यूनतम मज़दूरी (अंग्रेज़ी में)" },
             category: "compliance",
           },
           {
@@ -621,7 +621,7 @@ export const delhiNcrPages: LocationCopy[] = [
           },
           {
             question: "Kya sardiyon ki pollution pabandiyon ka asar teams par padta hai?",
-            answer: "Dispatch aur power backup par asar pad sakta hai: upar ke stages par purane trucks Delhi mein nahi aa sakte aur diesel generators par pabandi lagti hai. Aapki site jin cheezon par nirbhar hai, hum unke hisaab se plan karte hain.",
+            answer: "Dispatch aur power backup par asar pad sakta hai: GRAP ke upper stages mein purane trucks Delhi mein nahi aa sakte aur diesel generators par pabandi lagti hai. Aapki site jin cheezon par depend karti hai, hum unke hisaab se plan karte hain.",
             category: "operations",
           },
         ],

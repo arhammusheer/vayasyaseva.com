@@ -65,7 +65,7 @@ export const haridwarPages: LocationCopy[] = [
         heading: "सिडकुल हरिद्वार: फ़ैक्टरी का काम और लेबर ठेकेदार।",
         lede: "सिडकुल और पूरे हरिद्वार की फ़ैक्टरियों, वेयरहाउस और फ़ैसिलिटी के लिए सुपरवाइज़र के साथ कामगारों की टीम।",
         paragraph:
-          "सिडकुल का पूरा नाम State Infrastructure and Industrial Development Corporation of Uttarakhand है। सिडकुल हरिद्वार, शहर के रानीपुर और BHEL इलाके में राज्य का एकीकृत औद्योगिक क्षेत्र है, जहाँ FMCG, दवा और इंजीनियरिंग की फ़ैक्टरियाँ और उनके वेयरहाउस हैं। हम {areas} की यूनिटों से भी ज़रूरतें लेते हैं।",
+          "सिडकुल का पूरा नाम State Infrastructure and Industrial Development Corporation of Uttarakhand है। सिडकुल हरिद्वार, शहर के रानीपुर और BHEL इलाके में राज्य का इंडस्ट्रियल एस्टेट है, जहाँ FMCG, दवा और इंजीनियरिंग की फ़ैक्टरियाँ और उनके वेयरहाउस हैं। हम {areas} की यूनिटों से भी रिक्वायरमेंट लेते हैं।",
         areas: [{ name: "भगवानपुर" }, { name: "बहादराबाद" }, { name: "रुड़की" }],
         faqs: [
           {
@@ -76,13 +76,13 @@ export const haridwarPages: LocationCopy[] = [
           },
           {
             question: "क्या आप भगवानपुर, बहादराबाद और रुड़की में भी काम करते हैं?",
-            answer: "हाँ। सिडकुल के साथ-साथ वहाँ की यूनिटों से भी ज़रूरतें लेते हैं।",
+            answer: "हाँ। सिडकुल के साथ-साथ वहाँ की यूनिटों से भी रिक्वायरमेंट लेते हैं।",
             category: "operations",
           },
-          wagesFaq("क्या आप उत्तराखंड की न्यूनतम मजदूरी देते हैं?", "हाँ। काम और स्किल के लिए तय की गई दर से कम नहीं।", "उत्तराखंड न्यूनतम मजदूरी (English)"),
+          wagesFaq("क्या आप उत्तराखंड की न्यूनतम मज़दूरी देते हैं?", "हाँ। काम और स्किल के लिए तय की गई दर से कम नहीं।", "उत्तराखंड न्यूनतम मज़दूरी (अंग्रेज़ी में)"),
           {
             question: "क्या आप पहले हमारी साइट देखने आएँगे?",
-            answer: "हाँ। टीम शुरू होने से पहले हम साइट पर आकर काम, शिफ़्ट और आपके सेफ़्टी नियम देखते हैं।",
+            answer: "हाँ। टीम शुरू होने से पहले हम साइट पर आकर काम, शिफ्ट और आपके सेफ़्टी नियम देखते हैं।",
             category: "operations",
           },
         ],
@@ -95,13 +95,13 @@ export const haridwarPages: LocationCopy[] = [
         heading: "SIDCUL Haridwar mein labour contractor.",
         lede: "SIDCUL aur poore Haridwar ki factories, warehouses aur facilities ke liye supervisor ke saath workers ki team.",
         paragraph:
-          "SIDCUL Haridwar, shehar ke Ranipur aur BHEL area mein State ka Integrated Industrial Estate hai, jahan FMCG, pharma aur engineering ki factories aur unke warehouses hain. Hum {areas} ki units se bhi requirements lete hain.",
+          "SIDCUL Haridwar, shehar ke Ranipur aur BHEL area mein Uttarakhand ka Integrated Industrial Estate hai, jahan FMCG, pharma aur engineering ki factories aur unke warehouses hain. Hum {areas} ki units se bhi requirements lete hain.",
         areas: [{ name: "Bhagwanpur" }, { name: "Bahadrabad" }, { name: "Roorkee" }],
         faqs: [
           {
             question: "Kya aap SIDCUL ki units ko contract labour dete hain?",
             answer:
-              "Haan. Production, packing, material handling, loading aur dispatch, aur housekeeping ke liye teams, aapki site team ke saath plan ki hui aur hamare supervisor ki dekhrekh mein.",
+              "Haan. Production, packing, material handling, loading aur dispatch, aur housekeeping ke liye teams. Plan aapki site team ke saath banta hai, aur kaam hamara supervisor chalata hai.",
             category: "operations",
           },
           {
@@ -109,7 +109,7 @@ export const haridwarPages: LocationCopy[] = [
             answer: "Haan. SIDCUL ke saath-saath wahan ki units se bhi requirements lete hain.",
             category: "operations",
           },
-          wagesFaq("Kya aap Uttarakhand ki minimum wage dete hain?", "Haan. Kaam aur skill ke liye notified rate se kam nahi.", "Uttarakhand minimum wages (English)"),
+          wagesFaq("Kya aap Uttarakhand ki minimum wage dete hain?", "Haan. Kaam aur skill ke hisaab se jo rate notified hai, usse kam nahi dete.", "Uttarakhand minimum wages (English)"),
           {
             question: "Kya aap pehle hamari site dekhne aayenge?",
             answer: "Haan. Team shuru hone se pehle hum site par aakar kaam, shifts aur aapke safety rules dekhte hain.",

@@ -26,8 +26,8 @@ export interface JobHubCopy {
 /** Heading of the role rows. */
 export const jobHubLabels: Record<JobsLocale, { rolesHeading: string }> = {
   "en-IN": { rolesHeading: "Where you can start." },
-  "hi-IN": { rolesHeading: "आप कहाँ से शुरू कर सकते हैं।" },
-  "hi-Latn-IN": { rolesHeading: "Aap kahan se shuru kar sakte hain." },
+  "hi-IN": { rolesHeading: "आप इनमें से किसी काम से शुरू कर सकते हैं।" },
+  "hi-Latn-IN": { rolesHeading: "In kaamon se shuru kar sakte hain." },
   "pa-IN": { rolesHeading: "ਤੁਸੀਂ ਕਿੱਥੋਂ ਸ਼ੁਰੂ ਕਰ ਸਕਦੇ ਹੋ।" },
   "kn-IN": { rolesHeading: "ನೀವು ಎಲ್ಲಿಂದ ಪ್ರಾರಂಭಿಸಬಹುದು." },
 };
@@ -47,19 +47,19 @@ export const AGE_FAQ: Record<JobsLocale, FaqItem> = {
     category: "operations",
   },
   "hi-Latn-IN": {
-    question: "Kya umar ki koi seema hai?",
+    question: "Kya koi age limit hai?",
     answer:
-      "Apply karne ke liye aapki umar 18 saal ya zyada honi chahiye. Mehnat wale kaam ke liye kuch sites apni upar ki seema rakhti hain.",
+      "Apply karne ke liye aapki umar kam se kam 18 saal honi chahiye. Mehnat wale kaam ke liye kuch sites apni upper age limit rakhti hain.",
     category: "operations",
   },
   "pa-IN": {
     question: "ਕੀ ਉਮਰ ਦੀ ਕੋਈ ਹੱਦ ਹੈ?",
-    answer: "ਅਪਲਾਈ ਕਰਨ ਲਈ ਤੁਹਾਡੀ ਉਮਰ 18 ਸਾਲ ਜਾਂ ਵੱਧ ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ। ਸਰੀਰਕ ਕੰਮ ਲਈ ਕੁਝ ਸਾਈਟਾਂ ਆਪਣੀ ਵੱਧ ਤੋਂ ਵੱਧ ਉਮਰ ਤੈਅ ਕਰਦੀਆਂ ਹਨ।",
+    answer: "ਅਪਲਾਈ ਕਰਨ ਲਈ ਤੁਹਾਡੀ ਉਮਰ 18 ਸਾਲ ਜਾਂ ਵੱਧ ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ। ਮਿਹਨਤ ਵਾਲੇ ਕੰਮ ਲਈ ਕੁਝ ਸਾਈਟਾਂ ਵੱਧ ਤੋਂ ਵੱਧ ਉਮਰ ਦੀ ਆਪਣੀ ਹੱਦ ਰੱਖਦੀਆਂ ਹਨ।",
     category: "operations",
   },
   "kn-IN": {
     question: "ವಯಸ್ಸಿನ ಮಿತಿ ಇದೆಯೇ?",
-    answer: "ಅರ್ಜಿ ಸಲ್ಲಿಸಲು ನಿಮಗೆ 18 ವರ್ಷ ಅಥವಾ ಹೆಚ್ಚು ಆಗಿರಬೇಕು. ದೈಹಿಕ ಕೆಲಸಕ್ಕೆ ಕೆಲವು ಸೈಟ್‌ಗಳು ತಮ್ಮದೇ ಆದ ಗರಿಷ್ಠ ವಯಸ್ಸನ್ನು ನಿಗದಿಪಡಿಸುತ್ತವೆ.",
+    answer: "ಅರ್ಜಿ ಹಾಕಲು ನಿಮಗೆ 18 ವರ್ಷ ಅಥವಾ ಹೆಚ್ಚು ವಯಸ್ಸಾಗಿರಬೇಕು. ಶ್ರಮದ ಕೆಲಸಕ್ಕೆ ಕೆಲವು ಕಂಪನಿಗಳು ವಯಸ್ಸಿಗೆ ತಮ್ಮದೇ ಮೇಲಿನ ಮಿತಿ ಇಡುತ್ತವೆ.",
     category: "operations",
   },
 };
@@ -119,7 +119,7 @@ export const jobHubs: CopyIn<JobHubCopy[]> = {
       slug: "freshers",
       name: "फ़्रेशर की नौकरी",
       metaTitle: "फ़्रेशर के लिए नौकरी: फ़ैक्टरी, पैकिंग, वेयरहाउस",
-      description: "फ़्रेशर के लिए नौकरी: फ़ैक्टरी हेल्पर, पैकिंग, वेयरहाउस और हाउसकीपिंग का काम, बिना अनुभव के। आवेदन में अपना इलाका चुनें। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
+      description: "फ़्रेशर के लिए नौकरी: फ़ैक्टरी हेल्पर, पैकिंग, वेयरहाउस और हाउसकीपिंग का काम, बिना अनुभव के। ऑनलाइन अप्लाई करें और फ़ॉर्म में अपना इलाका चुनें। कोई फ़ीस नहीं।",
       heading: "फ़्रेशर के लिए नौकरी।",
       lede: "अभी अनुभव नहीं है? फ़ैक्टरी और वेयरहाउस की कई नौकरियाँ फ़्रेशर के लिए हैं।",
       roles: [
@@ -135,7 +135,7 @@ export const jobHubs: CopyIn<JobHubCopy[]> = {
       slug: "10th-pass",
       name: "10वीं पास नौकरी",
       metaTitle: "10वीं पास नौकरी: हेल्पर, पैकिंग, वेयरहाउस",
-      description: "10वीं पास के लिए नौकरी: फ़ैक्टरी हेल्पर, पैकिंग, वेयरहाउस और हाउसकीपिंग का काम। आवेदन में अपना इलाका चुनें। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
+      description: "10वीं पास के लिए नौकरी: फ़ैक्टरी हेल्पर, पैकिंग, वेयरहाउस और हाउसकीपिंग का काम। ऑनलाइन अप्लाई करें और फ़ॉर्म में अपना इलाका चुनें। कोई फ़ीस नहीं।",
       heading: "10वीं पास नौकरी।",
       lede: "10वीं पास लोगों के लिए फ़ैक्टरी और वेयरहाउस का काम।",
       roles: [
@@ -151,7 +151,7 @@ export const jobHubs: CopyIn<JobHubCopy[]> = {
       slug: "12th-pass",
       name: "12वीं पास नौकरी",
       metaTitle: "12वीं पास नौकरी: डेटा एंट्री, ऑपरेटर, पैकिंग",
-      description: "12वीं पास के लिए नौकरी: डेटा एंट्री, ट्रेनी मशीन ऑपरेटर, पैकिंग और वेयरहाउस का काम। आवेदन में अपना इलाका चुनें। ऑनलाइन आवेदन करें। कोई फ़ीस नहीं।",
+      description: "12वीं पास के लिए नौकरी: डेटा एंट्री, ट्रेनी मशीन ऑपरेटर, पैकिंग और वेयरहाउस का काम। ऑनलाइन अप्लाई करें और फ़ॉर्म में अपना इलाका चुनें। कोई फ़ीस नहीं।",
       heading: "12वीं पास नौकरी।",
       lede: "12वीं पास लोगों के लिए फ़ैक्टरी, वेयरहाउस और कंप्यूटर का काम।",
       roles: [
@@ -168,12 +168,12 @@ export const jobHubs: CopyIn<JobHubCopy[]> = {
       slug: "freshers",
       name: "Fresher job",
       metaTitle: "Fresher Job: Factory, Packing, Warehouse",
-      description: "Fresher job, apna area chunkar apply karein. EPF aur ESIC jahan lagu ho. Koi fee nahi. Factory helper, packing, warehouse, housekeeping, bina experience.",
+      description: "Fresher ke liye naukri: helper, packing, warehouse, housekeeping, bina experience ke. Area chunkar apply karein. EPF, ESIC jahan laagu ho. Koi fee nahi.",
       heading: "Fresher ke liye naukri.",
       lede: "Abhi experience nahi hai? Factory aur warehouse ki kai naukriyan fresher ke liye hain.",
       roles: [
         { role: "factory-helper", note: "Line ka kaam aur maal uthana-rakhna. Factory mein sabse aam pehli naukri." },
-        { role: "packing", note: "Packing, labelling aur checking, line par sikhayi jaati hai." },
+        { role: "packing", note: "Packing, labelling aur checking. Kaam line par hi sikhaya jaata hai." },
         { role: "warehouse", note: "Loading, picking aur packing, mehnat ka kaam kar sakne walon ke liye." },
         { role: "housekeeping", note: "Factory, office, canteen aur campus." },
         { role: "data-entry-operator", note: "Un fresher ke liye jo computer chala sakein aur type kar sakein." },
@@ -184,7 +184,7 @@ export const jobHubs: CopyIn<JobHubCopy[]> = {
       slug: "10th-pass",
       name: "10th pass job",
       metaTitle: "10th Pass Job: Helper, Packing, Warehouse",
-      description: "10th pass job, apna area chunkar apply karein. Poori 8 ghante ki shift. Koi fee nahi. Factory helper, packing, warehouse aur housekeeping ka kaam. Apply karein.",
+      description: "10th pass ke liye naukri: factory helper, packing, warehouse aur housekeeping. Apply karte waqt apna area chunein. Poori 8 ghante ki shift. Koi fee nahi.",
       heading: "10th pass naukri.",
       lede: "10th pass logon ke liye factory aur warehouse ka kaam.",
       roles: [
@@ -200,7 +200,7 @@ export const jobHubs: CopyIn<JobHubCopy[]> = {
       slug: "12th-pass",
       name: "12th pass job",
       metaTitle: "12th Pass Job: Data Entry, Operator, Packing",
-      description: "12th pass job, apna area chunkar apply karein. Koi fee nahi. Poori 8 ghante ki shift. Data entry, trainee machine operator, packing, warehouse.",
+      description: "12th pass ke liye naukri: data entry, trainee machine operator, packing, warehouse. Apna area chunkar apply karein. Poori 8 ghante ki shift. Koi fee nahi.",
       heading: "12th pass naukri.",
       lede: "12th pass logon ke liye factory, warehouse aur computer ka kaam.",
       roles: [

@@ -24,10 +24,10 @@ const wagesFaq = (place: string): FaqItem => ({
 
 // The shared questions in hi-IN and hi-Latn-IN, same facts as wagesFaq and the site-visit question.
 const wagesFaqHi = (place: string): FaqItem => ({
-  question: `क्या ${place} में न्यूनतम मजदूरी बाकी राज्य से अलग है?`,
+  question: `क्या ${place} में न्यूनतम मज़दूरी बाकी राज्य से अलग है?`,
   answer:
     "नहीं। उत्तराखंड में पूरे राज्य के लिए एक ही दर है, स्किल और काम के प्रकार के हिसाब से। यहाँ प्रोफ़ेशनल टैक्स नहीं है, और राज्य के OSH कोड नियम अभी ड्राफ़्ट में हैं।",
-  link: { href: WAGES_LINK.href, label: "उत्तराखंड न्यूनतम मजदूरी (English)" },
+  link: { href: WAGES_LINK.href, label: "उत्तराखंड न्यूनतम मज़दूरी (अंग्रेज़ी में)" },
   category: "compliance",
 });
 
@@ -41,7 +41,7 @@ const wagesFaqLatn = (place: string): FaqItem => ({
 
 const VISIT_HI: FaqItem = {
   question: "क्या आप पहले हमारी साइट देखने आएँगे?",
-  answer: "हाँ। टीम शुरू होने से पहले हम साइट पर आकर काम, शिफ़्ट और आपके हाइजीन और सेफ़्टी नियम देखते हैं।",
+  answer: "हाँ। टीम शुरू होने से पहले हम साइट पर आकर काम, शिफ्ट और आपके हाइजीन और सेफ़्टी नियम देखते हैं।",
   category: "operations",
 };
 
@@ -103,11 +103,11 @@ export const dehradunPages: LocationCopy[] = [
         name: "देहरादून",
         metaTitle: "देहरादून, सेलाकुई में लेबर ठेकेदार (Labour Contractor)",
         description:
-          "देहरादून की फ़ैक्टरियों में सुपरवाइज़र के साथ कॉन्ट्रैक्ट लेबर टीम: सिडकुल सेलाकुई के फ़ार्मा और औद्योगिक क्षेत्र, लांघा रोड, मोहब्बेवाला, लालतप्पड़ और ऋषिकेश।",
+          "देहरादून की फ़ैक्टरियों में सुपरवाइज़र के साथ कॉन्ट्रैक्ट लेबर टीम: सिडकुल सेलाकुई के फ़ार्मा और इंडस्ट्रियल एरिया, लांघा रोड, मोहब्बेवाला, लालतप्पड़ और ऋषिकेश।",
         heading: "देहरादून और सेलाकुई में लेबर ठेकेदार।",
         lede: "पूरे देहरादून ज़िले में दवा, फ़ूड, पैकेजिंग और इंजीनियरिंग यूनिटों के लिए सुपरवाइज़र के साथ कामगारों की टीम।",
         paragraph:
-          "देहरादून की फ़ैक्टरियाँ कुछ औद्योगिक क्षेत्रों में हैं। शहर से करीब 25 किलोमीटर दूर सेलाकुई सबसे बड़ा है: पुराने सेलाकुई औद्योगिक क्षेत्र के बगल में SIIDCUL की फ़ार्मा सिटी, जहाँ दवा, इलेक्ट्रॉनिक्स, फ़ुटवियर और पैकेजिंग की यूनिटें हैं। शहर के पास लांघा रोड, मोहब्बेवाला और लालतप्पड़ औद्योगिक क्षेत्र और पटेल नगर एस्टेट हैं, और ऋषिकेश और डोईवाला के पास की यूनिटें दवा, काँच और चीनी बनाती हैं। हम {areas} की यूनिटों से ज़रूरतें लेते हैं।",
+          "देहरादून की फ़ैक्टरियाँ कुछ इंडस्ट्रियल एरिया में हैं। शहर से करीब 25 किलोमीटर दूर सेलाकुई सबसे बड़ा है: पुराने सेलाकुई इंडस्ट्रियल एरिया के बगल में SIIDCUL की फ़ार्मा सिटी, जहाँ दवा, इलेक्ट्रॉनिक्स, फ़ुटवियर और पैकेजिंग की यूनिटें हैं। शहर के पास लांघा रोड, मोहब्बेवाला और लालतप्पड़ इंडस्ट्रियल एरिया और पटेल नगर एस्टेट हैं, और ऋषिकेश और डोईवाला के पास की यूनिटें दवा, काँच और चीनी बनाती हैं। हम {areas} की यूनिटों से रिक्वायरमेंट लेते हैं।",
         areas: [
           { href: "/locations/dehradun/selaqui", name: "सेलाकुई" },
           { name: "लांघा रोड" },
@@ -118,7 +118,7 @@ export const dehradunPages: LocationCopy[] = [
           {
             question: "क्या आप देहरादून में कॉन्ट्रैक्ट लेबर देते हैं?",
             answer:
-              "हाँ। पैकिंग, फ़ैक्टरी, लोडिंग और अनलोडिंग, और हाउसकीपिंग के लिए सुपरवाइज़र के साथ टीमें, हमारे पेरोल पर, और आपकी साइट पर हमारे सुपरवाइज़र की देखरेख में।",
+              "हाँ। पैकिंग, फ़ैक्टरी, लोडिंग-अनलोडिंग और हाउसकीपिंग के लिए टीमें। कामगार हमारे पेरोल पर रहते हैं, और आपकी साइट पर हमारा सुपरवाइज़र उन्हें देखता है।",
             category: "commercial",
           },
           {
@@ -150,7 +150,7 @@ export const dehradunPages: LocationCopy[] = [
           {
             question: "Kya aap Dehradun mein contract labour dete hain?",
             answer:
-              "Haan. Packing, factory, loading aur unloading, aur housekeeping ke liye supervisor ke saath teams, hamare payroll par, aur aapki site par hamare supervisor ki dekhrekh mein.",
+              "Haan. Packing, factory, loading-unloading aur housekeeping ke liye teams. Workers hamare payroll par rehte hain, aur aapki site par kaam hamara supervisor chalata hai.",
             category: "commercial",
           },
           {
@@ -204,11 +204,11 @@ export const dehradunPages: LocationCopy[] = [
         name: "सेलाकुई",
         metaTitle: "सिडकुल सेलाकुई में कॉन्ट्रैक्ट लेबर (Contract Labour)",
         description:
-          "देहरादून के सेलाकुई औद्योगिक क्षेत्र के लिए कॉन्ट्रैक्ट लेबर टीम: SIIDCUL की फ़ार्मा सिटी और SIDC सेलाकुई। GMP ट्रेनिंग वाले हेल्पर, पैकर और हाउसकीपिंग स्टाफ़।",
+          "देहरादून के सेलाकुई इंडस्ट्रियल एरिया के लिए कॉन्ट्रैक्ट लेबर टीम: SIIDCUL की फ़ार्मा सिटी और SIDC सेलाकुई। GMP ट्रेनिंग वाले हेल्पर, पैकर और हाउसकीपिंग स्टाफ़।",
         heading: "सिडकुल सेलाकुई में कॉन्ट्रैक्ट लेबर।",
         lede: "सेलाकुई, देहरादून की दवा, FMCG और पैकेजिंग यूनिटों के लिए सुपरवाइज़र के साथ कामगारों की टीम, आपके प्लांट के हाइजीन नियमों की ट्रेनिंग के साथ।",
         paragraph:
-          "सेलाकुई में SIIDCUL के दो औद्योगिक क्षेत्र अगल-बगल हैं, देहरादून से करीब 25 किलोमीटर दूर। फ़ार्मा सिटी 50 एकड़ का क्षेत्र है, दवाओं, कैप्सूल और मेडिकल डिवाइस के लिए। पुराने SIDC सेलाकुई में इलेक्ट्रॉनिक्स, अप्लायंस, फ़ुटवियर, कपड़े, प्रिंटिंग, पैकेजिंग और फ़ूड की यूनिटें मिली-जुली हैं।",
+          "सेलाकुई में SIIDCUL के दो इंडस्ट्रियल एरिया अगल-बगल हैं, देहरादून से करीब 25 किलोमीटर दूर। फ़ार्मा सिटी 50 एकड़ में है, दवाओं, कैप्सूल और मेडिकल डिवाइस के लिए। पुराने SIDC सेलाकुई में इलेक्ट्रॉनिक्स, अप्लायंस, फ़ुटवियर, कपड़े, प्रिंटिंग, पैकेजिंग और फ़ूड की यूनिटें मिली-जुली हैं।",
         faqs: [
           {
             question: "क्या आप सेलाकुई की यूनिटों को कॉन्ट्रैक्ट लेबर देते हैं?",
@@ -219,7 +219,7 @@ export const dehradunPages: LocationCopy[] = [
           {
             question: "क्या आपकी टीमें GMP ट्रेनिंग के नियम पूरे कर सकती हैं?",
             answer:
-              "हाँ। संशोधित Schedule M में कॉन्ट्रैक्ट स्टाफ़ का नाम है, सफ़ाई कर्मचारी भी शामिल हैं। हम हर टीम आपके प्लांट की ट्रेनिंग, गाउनिंग और हेल्थ चेक के हिसाब से प्लान करते हैं, और ट्रेनिंग रिकॉर्ड रखते हैं।",
+              "हाँ। रिवाइज़्ड Schedule M में कॉन्ट्रैक्ट स्टाफ़ का साफ़ ज़िक्र है, सफ़ाई स्टाफ़ भी। हम हर टीम आपके प्लांट की ट्रेनिंग, गाउनिंग और हेल्थ चेक के हिसाब से प्लान करते हैं, और ट्रेनिंग रिकॉर्ड रखते हैं।",
             category: "operations",
           },
           wagesFaqHi("सेलाकुई"),
@@ -239,13 +239,13 @@ export const dehradunPages: LocationCopy[] = [
           {
             question: "Kya aap Selaqui ki units ko contract labour dete hain?",
             answer:
-              "Haan. Production support, packing, stores aur dispatch, aur housekeeping ke liye teams, aapki site team ke saath plan ki hui aur hamare supervisor ki dekhrekh mein.",
+              "Haan. Production support, packing, stores aur dispatch, aur housekeeping ke liye teams. Plan aapki site team ke saath banta hai, aur kaam hamara supervisor chalata hai.",
             category: "operations",
           },
           {
             question: "Kya aapki teams GMP training ke rules poore kar sakti hain?",
             answer:
-              "Haan. Revised Schedule M mein contract staff ka naam hai, cleaners bhi shamil hain. Hum har team aapke plant ki training, gowning aur health checks ke hisaab se plan karte hain, aur training records rakhte hain.",
+              "Haan. Revised Schedule M mein contract staff ka zikr hai, cleaners bhi. Hum har team aapke plant ki training, gowning aur health checks ke hisaab se plan karte hain, aur training records rakhte hain.",
             category: "operations",
           },
           wagesFaqLatn("Selaqui"),

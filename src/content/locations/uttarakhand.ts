@@ -70,9 +70,9 @@ export const uttarakhandPages: LocationCopy[] = [
         description:
           "उत्तराखंड के सिडकुल क्षेत्रों की फ़ैक्टरियों और वेयरहाउस के लिए सुपरवाइज़र के साथ कॉन्ट्रैक्ट लेबर टीमें: हरिद्वार, देहरादून का सेलाकुई, पंतनगर और काशीपुर।",
         heading: "उत्तराखंड में लेबर ठेकेदार।",
-        lede: "सिडकुल हरिद्वार और सेलाकुई से लेकर ऊधम सिंह नगर के औद्योगिक क्षेत्रों तक, फ़ैक्टरियों, वेयरहाउस और फ़ैसिलिटी के लिए सुपरवाइज़र के साथ कामगारों की टीम।",
+        lede: "सिडकुल हरिद्वार और सेलाकुई से लेकर ऊधम सिंह नगर के इंडस्ट्रियल एरिया तक, फ़ैक्टरियों, वेयरहाउस और फ़ैसिलिटी के लिए सुपरवाइज़र के साथ कामगारों की टीम।",
         paragraph:
-          "उत्तराखंड की ज़्यादातर फ़ैक्टरियाँ SIIDCUL, यानी राज्य के औद्योगिक विकास निगम, के एकीकृत औद्योगिक क्षेत्रों में हैं: हरिद्वार, पंतनगर, सितारगंज, काशीपुर, कोटद्वार और सेलाकुई। इनमें दवा, ऑटो कंपोनेंट, इलेक्ट्रॉनिक्स, प्लास्टिक और पैकेजिंग की यूनिटें सबसे आगे हैं। हम {areas} की यूनिटों से ज़रूरतें लेते हैं।",
+          "उत्तराखंड की ज़्यादातर फ़ैक्टरियाँ SIIDCUL (राज्य का इंडस्ट्रियल डेवलपमेंट कॉरपोरेशन) के इंडस्ट्रियल एस्टेट में हैं: हरिद्वार, पंतनगर, सितारगंज, काशीपुर, कोटद्वार और सेलाकुई। इनमें दवा, ऑटो कंपोनेंट, इलेक्ट्रॉनिक्स, प्लास्टिक और पैकेजिंग की यूनिटें सबसे आगे हैं। हम {areas} की यूनिटों से रिक्वायरमेंट लेते हैं।",
         areas: [
           { href: "/locations/haridwar", name: "सिडकुल हरिद्वार" },
           { href: "/locations/dehradun", name: "देहरादून और सेलाकुई" },
@@ -87,14 +87,14 @@ export const uttarakhandPages: LocationCopy[] = [
           {
             question: "क्या 70% स्थानीय रोज़गार का नियम कॉन्ट्रैक्ट कामगारों पर भी लागू होता है?",
             answer:
-              "यह Mega Industrial and Investment Policy 2025 में इंसेंटिव की एक शर्त है, जो पक्की नौकरियों पर लागू होती है। अस्थायी काम के लिए गाइडलाइंस रजिस्टर्ड ठेकेदार के साथ कॉन्ट्रैक्ट को मानती हैं।",
+              "यह Mega Industrial and Investment Policy 2025 में इंसेंटिव की एक शर्त है, जो पक्की नौकरियों पर लागू होती है। अस्थायी काम के लिए गाइडलाइंस में रजिस्टर्ड ठेकेदार के साथ कॉन्ट्रैक्ट मान्य है।",
             category: "compliance",
           },
           {
-            question: "क्या न्यूनतम मजदूरी हर शहर में अलग होती है?",
+            question: "क्या न्यूनतम मज़दूरी हर शहर में अलग होती है?",
             answer:
               "नहीं। उत्तराखंड में पूरे राज्य के लिए एक ही दर है, स्किल और काम के प्रकार के हिसाब से। यहाँ प्रोफ़ेशनल टैक्स नहीं है, और राज्य के OSH कोड नियम अभी ड्राफ़्ट में हैं।",
-            link: { href: "/minimum-wages/uttarakhand", label: "उत्तराखंड न्यूनतम मजदूरी (English)" },
+            link: { href: "/minimum-wages/uttarakhand", label: "उत्तराखंड न्यूनतम मज़दूरी (अंग्रेज़ी में)" },
             category: "compliance",
           },
           {
@@ -112,7 +112,7 @@ export const uttarakhandPages: LocationCopy[] = [
         heading: "Uttarakhand mein labour contractor.",
         lede: "SIDCUL Haridwar aur Selaqui se lekar Udham Singh Nagar ke estates tak, factories, warehouses aur facilities ke liye supervisor ke saath workers ki team.",
         paragraph:
-          "Uttarakhand ki zyadatar factories SIIDCUL, yaani state ke industrial development corporation, ke integrated industrial estates mein hain: Haridwar, Pantnagar, Sitarganj, Kashipur, Kotdwar aur Selaqui. Inmein pharma, auto components, electronics, plastics aur packaging ki units sabse aage hain. Hum {areas} ki units se requirements lete hain.",
+          "Uttarakhand ki zyadatar factories SIIDCUL (state ki industrial development corporation) ke integrated industrial estates mein hain: Haridwar, Pantnagar, Sitarganj, Kashipur, Kotdwar aur Selaqui. Sabse zyada units pharma, auto components, electronics, plastics aur packaging ki hain. Hum {areas} ki units se requirements lete hain.",
         areas: [
           { href: "/locations/haridwar", name: "SIDCUL Haridwar" },
           { href: "/locations/dehradun", name: "Dehradun aur Selaqui" },
@@ -121,13 +121,13 @@ export const uttarakhandPages: LocationCopy[] = [
           {
             question: "Kya aap poore Uttarakhand mein contract labour dete hain?",
             answer:
-              "Haan, SIDCUL Haridwar, Dehradun aur Selaqui mein, aur unke aaspaas ke ilaakon mein. Production, packing, loading aur dispatch, aur housekeeping ke liye teams, hamare supervisor ki dekhrekh mein.",
+              "Haan, SIDCUL Haridwar, Dehradun aur Selaqui mein, aur unke aas-paas ke areas mein. Production, packing, loading aur dispatch, aur housekeeping ke liye teams, jinhe hamara supervisor chalata hai.",
             category: "operations",
           },
           {
-            question: "Kya 70% local employment ka niyam contract workers par bhi lagta hai?",
+            question: "Kya 70% local employment wala rule contract workers par bhi lagta hai?",
             answer:
-              "Yeh Mega Industrial and Investment Policy 2025 mein incentive ki ek shart hai, jo permanent jobs par lagti hai. Temporary kaam ke liye guidelines registered contractor ke saath contract ko maanti hain.",
+              "Ye Mega Industrial and Investment Policy 2025 mein incentive ki ek shart hai, aur permanent jobs par lagti hai. Temporary kaam ke liye guidelines registered contractor ke saath contract ko sahi maanti hain.",
             category: "compliance",
           },
           {

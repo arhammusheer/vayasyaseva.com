@@ -74,67 +74,6 @@ const gmpFaqTe = (where: string): FaqItem => ({
   category: "operations",
 });
 
-/** The hi-IN and hi-Latn-IN answers used on several pages (docs/hindi-glossary.md); the pages they link to are English. */
-const WAGES_LINK_HI = linkable(TG_WAGES, "en-IN")
-  ? { href: TG_WAGES, label: "तेलंगाना न्यूनतम मज़दूरी (अंग्रेज़ी में)" }
-  : { href: "/compliance", label: "हम कंप्लायंस कैसे संभालते हैं (अंग्रेज़ी में)" };
-
-const WAGES_LINK_LATN = linkable(TG_WAGES, "en-IN")
-  ? { href: TG_WAGES, label: "Telangana minimum wages (English)" }
-  : { href: "/compliance", label: "Hum compliance kaise sambhalte hain (English)" };
-
-const wagesFaqHi = (zone: string): FaqItem => ({
-  question: "कौन-सी न्यूनतम मज़दूरी और कौन-से नियम लागू होते हैं?",
-  answer: `तेलंगाना के। 1 जून 2026 से एक ही आदेश लिस्ट में शामिल हर काम के लिए ज़ोन और स्किल के हिसाब से बेसिक रेट तय करता है, और महँगाई भत्ता हर अप्रैल और अक्टूबर में घोषित होना है। प्रोफ़ेशनल टैक्स और लेबर वेलफ़ेयर फ़ंड भी लागू होते हैं। ${zone}`,
-  link: WAGES_LINK_HI,
-  category: "compliance",
-});
-const ZONE_HI = "रेट बताने से पहले हम कन्फ़र्म करते हैं कि आपका पता किस ज़ोन में आता है।";
-
-const wagesFaqLatn = (zone: string): FaqItem => ({
-  question: "Kaunsi minimum wage aur kaunse rules laagu hote hain?",
-  answer: `Telangana ke. 1 June 2026 se ek hi order list mein shaamil har kaam ke liye zone aur skill ke hisaab se basic rates tay karta hai, aur cost of living allowance har April aur October mein declare hona hai. Professional Tax aur Labour Welfare Fund bhi laagu hote hain. ${zone}`,
-  link: WAGES_LINK_LATN,
-  category: "compliance",
-});
-const ZONE_LATN = "Rate batane se pehle hum confirm karte hain ki aapka address kis zone mein aata hai.";
-
-const VISIT_FAQ_HI: FaqItem = {
-  question: "क्या आप पहले हमारी साइट देखने आएँगे?",
-  answer: "हाँ। टीम शुरू होने से पहले हम साइट पर आकर काम, शिफ्ट और आपके हाइजीन और सेफ़्टी नियम देखते हैं।",
-  category: "operations",
-};
-
-const VISIT_FAQ_LATN: FaqItem = {
-  question: "Kya aap pehle hamari site dekhne aayenge?",
-  answer: "Haan. Team ke kaam shuru karne se pehle hum site par aakar kaam, shifts aur aapke hygiene aur safety rules dekhte hain.",
-  category: "operations",
-};
-
-const START_FAQ_HI: FaqItem = {
-  question: "शुरुआत कैसे करें?",
-  answer: "साइट का पता और कौन-से रोल चाहिए, ये बताकर टीम के लिए रिक्वेस्ट भेजें। हम साफ़ बताएँगे कि टीम दे पाएँगे या नहीं, और फिर वहीं से टीम प्लान करेंगे।",
-  category: "commercial",
-};
-
-const START_FAQ_LATN: FaqItem = {
-  question: "Shuru kaise karein?",
-  answer: "Site ka address aur kaunse roles chahiye, ye batakar team ke liye request bhejiye. Hum saaf bataenge ki team de payenge ya nahi, aur phir wahin se team plan karenge.",
-  category: "commercial",
-};
-
-const gmpFaqHi = (where: string): FaqItem => ({
-  question: "क्या आपकी टीमें GMP ट्रेनिंग के नियम पूरे कर सकती हैं?",
-  answer: `हाँ। रिवाइज़्ड Schedule M में कॉन्ट्रैक्ट स्टाफ़ का ज़िक्र है, सफ़ाई स्टाफ़ भी। हम हर टीम आपके ${where} की ट्रेनिंग, गाउनिंग और हेल्थ चेक के हिसाब से प्लान करते हैं, और ट्रेनिंग रिकॉर्ड रखते हैं।`,
-  category: "operations",
-});
-
-const gmpFaqLatn = (where: string): FaqItem => ({
-  question: "Kya aapki teams GMP training ke rules poore kar sakti hain?",
-  answer: `Haan. Revised Schedule M mein contract staff ka zikr hai, cleaners bhi. Hum har team aapke ${where} ki training, gowning aur health checks ke hisaab se plan karte hain, aur training records rakhte hain.`,
-  category: "operations",
-});
-
 const SRC = {
   hyderabad: { label: "Hyderabad", url: "https://en.wikipedia.org/wiki/Hyderabad" },
   sangareddy: { label: "Sangareddy district", url: "https://en.wikipedia.org/wiki/Sangareddy_district" },
@@ -215,7 +154,7 @@ export const hyderabadPages: LocationCopy[] = [
       },
     ],
     sources: [SRC.hyderabad, SRC.pib, SRC.parks, SRC.sangareddy, SRC.medchal, SRC.rangareddy, SRC.genome, ...WAGE_SOURCES],
-    // Drafts pending native review (docs/telugu-glossary.md, docs/hindi-glossary.md).
+    // Draft pending native review (docs/telugu-glossary.md).
     translations: {
       "te-IN": {
         name: "హైదరాబాద్",
@@ -249,82 +188,6 @@ export const hyderabadPages: LocationCopy[] = [
           {
             question: "సెక్యూరిటీ గార్డులను సప్లై చేస్తారా?",
             answer: "లేదు. సెక్యూరిటీ పనికి ప్రైవేట్ సెక్యూరిటీ ఏజెన్సీ లైసెన్స్ కావాలి, అది మా దగ్గర లేదు.",
-            category: "commercial",
-          },
-        ],
-      },
-      "hi-IN": {
-        name: "हैदराबाद",
-        metaTitle: "हैदराबाद में लेबर ठेकेदार (Labour Contractor)",
-        description:
-          "हैदराबाद की फ़ार्मा, इंजीनियरिंग और लॉजिस्टिक्स यूनिटों के लिए लेबर सप्लायर: पटनचेरु, जीडीमेटला, चर्लापल्ली और शमशाबाद में सुपरवाइज़र के साथ कॉन्ट्रैक्ट कामगार।",
-        heading: "हैदराबाद में लेबर ठेकेदार और मैनपावर सप्लायर।",
-        lede: "हैदराबाद के सभी इंडस्ट्रियल बेल्ट में फ़ार्मा, इंजीनियरिंग और लॉजिस्टिक्स यूनिटों के लिए सुपरवाइज़र के साथ कॉन्ट्रैक्ट कामगार।",
-        paragraph:
-          "हैदराबाद भारत का बल्क ड्रग सेंटर है: देश का करीब एक-तिहाई फ़ार्मा प्रोडक्शन और आधा बल्क ड्रग एक्सपोर्ट तेलंगाना से होता है। शहर की इंडस्ट्री उसके चारों तरफ़ के TGIIC पार्कों में है। उत्तर-पश्चिम में, संगारेड्डी ज़िले में, पटनचेरु और पाशमैलारम हैं। मेडचल-मलकाजगिरी ज़िले में उत्तर की तरफ़ जीडीमेटला और मेडचल हैं, और पूर्व में चर्लापल्ली। शामीरपेट में जीनोम वैली है, और दक्षिण में, रंगारेड्डी ज़िले में, शमशाबाद, कोथुर और आदिबटला। हम {areas} की यूनिटों से रिक्वायरमेंट लेते हैं।",
-        areas: [
-          { href: "/locations/hyderabad/patancheru-pashamylaram", name: "पटनचेरु और पाशमैलारम" },
-          { href: "/locations/hyderabad/jeedimetla-medchal", name: "जीडीमेटला और मेडचल" },
-          { href: "/locations/hyderabad/cherlapally-nacharam", name: "चर्लापल्ली और नाचारम" },
-          { href: "/locations/hyderabad/genome-valley", name: "जीनोम वैली" },
-          { href: "/locations/hyderabad/shamshabad-kothur", name: "शमशाबाद और कोथुर" },
-        ],
-        faqs: [
-          {
-            question: "क्या आप हैदराबाद में मैनपावर सप्लायर हैं?",
-            answer:
-              "हाँ। हम कॉन्ट्रैक्ट लेबर देते हैं: फ़ैक्टरी, लोडिंग-अनलोडिंग और हाउसकीपिंग की टीमें, सुपरवाइज़र के साथ। कामगार हमारे पेरोल पर रहते हैं, और आपकी साइट पर काम हमारा सुपरवाइज़र चलाता है।",
-            category: "commercial",
-          },
-          {
-            question: "क्या हैदराबाद में आपके पास कामगार हैं?",
-            answer:
-              "हम हैदराबाद के लिए कामगारों की एक लिस्ट रखते हैं। कूकटपल्ली, उप्पल, पटनचेरु और पूरे शहर से काम ढूँढने वाले लोग हमारे हैदराबाद जॉब्स पेज पर इस लिस्ट में नाम लिखवाते हैं। आपकी साइट के लिए हर टीम हम इसी लिस्ट से बनाते हैं।",
-            category: "operations",
-          },
-          wagesFaqHi(ZONE_HI),
-          {
-            question: "क्या आप सिक्योरिटी गार्ड देते हैं?",
-            answer:
-              "नहीं। सिक्योरिटी के काम के लिए प्राइवेट सिक्योरिटी एजेंसी का लाइसेंस चाहिए, जो हमारे पास नहीं है।",
-            category: "commercial",
-          },
-        ],
-      },
-      "hi-Latn-IN": {
-        name: "Hyderabad",
-        metaTitle: "Hyderabad mein Labour Thekedar (Contractor)",
-        description:
-          "Hyderabad ki pharma, engineering aur logistics units ke liye labour supplier: Patancheru, Jeedimetla, Cherlapally, Shamshabad mein supervised contract labour.",
-        heading: "Hyderabad mein labour contractor aur manpower supplier.",
-        lede: "Hyderabad ke saare industrial belts mein pharma, engineering aur logistics units ke liye supervisor ke saath contract workers.",
-        paragraph:
-          "Hyderabad India ka bulk drug centre hai: desh ka kareeb ek-tihai pharma production aur aadha bulk drug export Telangana se hota hai. Shehar ki industry uske chaaron taraf ke TGIIC parks mein hai. North-west mein, Sangareddy district mein, Patancheru aur Pashamylaram hain. Medchal-Malkajgiri district mein north ki taraf Jeedimetla aur Medchal hain, aur east mein Cherlapally. Shamirpet mein Genome Valley hai, aur south mein, Rangareddy district mein, Shamshabad, Kothur aur Adibatla. Hum {areas} ki units se requirements lete hain.",
-        areas: [
-          { href: "/locations/hyderabad/patancheru-pashamylaram", name: "Patancheru aur Pashamylaram" },
-          { href: "/locations/hyderabad/jeedimetla-medchal", name: "Jeedimetla aur Medchal" },
-          { href: "/locations/hyderabad/cherlapally-nacharam", name: "Cherlapally aur Nacharam" },
-          { href: "/locations/hyderabad/genome-valley", name: "Genome Valley" },
-          { href: "/locations/hyderabad/shamshabad-kothur", name: "Shamshabad aur Kothur" },
-        ],
-        faqs: [
-          {
-            question: "Kya aap Hyderabad mein manpower supplier hain?",
-            answer:
-              "Haan. Hum contract labour dete hain: factory, loading-unloading aur housekeeping ki teams, supervisor ke saath. Workers hamare payroll par rehte hain, aur aapki site par kaam hamara supervisor chalata hai.",
-            category: "commercial",
-          },
-          {
-            question: "Kya Hyderabad mein aapke paas workers hain?",
-            answer:
-              "Hum Hyderabad ke liye workers ki ek list rakhte hain. Kukatpally, Uppal, Patancheru aur poore shehar se job seekers hamare Hyderabad jobs page par is list mein naam likhwate hain. Aapki site ke liye har team hum isi list se banate hain.",
-            category: "operations",
-          },
-          wagesFaqLatn(ZONE_LATN),
-          {
-            question: "Kya aap security guards dete hain?",
-            answer:
-              "Nahi. Security ke kaam ke liye private security agency ka licence chahiye, jo hamare paas nahi hai.",
             category: "commercial",
           },
         ],
@@ -364,7 +227,7 @@ export const hyderabadPages: LocationCopy[] = [
       wagesFaq("We confirm the zone for your address before pricing."),
     ],
     sources: [SRC.parks, SRC.patancheru, SRC.bollaram, SRC.medicalDevices, SRC.sangareddy, SRC.scheduleM, ...WAGE_SOURCES],
-    // Drafts pending native review (docs/telugu-glossary.md, docs/hindi-glossary.md).
+    // Draft pending native review (docs/telugu-glossary.md).
     translations: {
       "te-IN": {
         name: "పటాన్‌చెరు-పాశమైలారం",
@@ -389,58 +252,6 @@ export const hyderabadPages: LocationCopy[] = [
           },
           gmpFaqTe("ప్లాంట్"),
           wagesFaqTe(ZONE_TE),
-        ],
-      },
-      "hi-IN": {
-        name: "पटनचेरु और पाशमैलारम",
-        metaTitle: "पटनचेरु, पाशमैलारम में लेबर ठेकेदार (Contractor)",
-        description:
-          "पटनचेरु, पाशमैलारम और बोल्लारम की बल्क ड्रग, केमिकल और इंजीनियरिंग यूनिटों के लिए सुपरवाइज़र के साथ प्रोडक्शन सपोर्ट, पैकिंग, स्टोर और हाउसकीपिंग टीमें।",
-        heading: "पटनचेरु और पाशमैलारम में कॉन्ट्रैक्ट लेबर।",
-        lede: "बल्क ड्रग, केमिकल और इंजीनियरिंग यूनिटों के लिए सुपरवाइज़र के साथ टीमें, आपके प्लांट के हाइजीन और सेफ़्टी नियमों की ट्रेनिंग के साथ।",
-        paragraph:
-          "हैदराबाद के उत्तर-पश्चिम में सोलापुर हाईवे पर बसा पटनचेरु शहर का सबसे पुराना बल्क ड्रग और केमिकल बेल्ट है। पटनचेरु में TGIIC के पाँच फ़ेज़ के इंडस्ट्रियल पार्क हैं और पाशमैलारम में चार फ़ेज़ के। साथ में एक एक्सपोर्ट प्रमोशन पार्क, एक टेक्सटाइल पार्क और सुल्तानपुर में 2017 में खुला 302 एकड़ का मेडिकल डिवाइस पार्क भी है, ये सब संगारेड्डी ज़िले में। IDA बोल्लारम और गड्डापोतारम, गुम्मडिदला और जिन्नारम की इंडस्ट्रियल ज़मीन पास में ही है।",
-        faqs: [
-          {
-            question: "क्या आप पटनचेरु और पाशमैलारम में कॉन्ट्रैक्ट लेबर देते हैं?",
-            answer:
-              "हाँ। प्रोडक्शन सपोर्ट, पैकिंग, स्टोर और डिस्पैच, और हाउसकीपिंग के लिए टीमें। प्लान आपकी साइट टीम के साथ बनता है, और काम हमारा सुपरवाइज़र चलाता है।",
-            category: "operations",
-          },
-          {
-            question: "केमिकल और बल्क ड्रग प्लांट में आपकी टीमें सुरक्षित तरीके से कैसे काम करती हैं?",
-            answer:
-              "काम शुरू करने से पहले हर कामगार आपकी साइट का इंडक्शन पूरा करता है। फ़्लोर पर हमारा सुपरवाइज़र देखता है कि टीम आपके परमिट-टू-वर्क, PPE और रिस्ट्रिक्टेड एरिया के नियम माने। कौन कहाँ काम करेगा, ये हम आपकी सेफ़्टी टीम के साथ मिलकर तय करते हैं।",
-            category: "operations",
-          },
-          gmpFaqHi("प्लांट"),
-          wagesFaqHi(ZONE_HI),
-        ],
-      },
-      "hi-Latn-IN": {
-        name: "Patancheru aur Pashamylaram",
-        metaTitle: "Patancheru, Pashamylaram mein Labour Thekedar",
-        description:
-          "Patancheru, Pashamylaram, Bollaram ki bulk drug, chemical aur engineering units ke liye supervised production support, packing, stores aur housekeeping teams.",
-        heading: "Patancheru aur Pashamylaram mein contract labour.",
-        lede: "Bulk drug, chemical aur engineering units ke liye supervisor ke saath teams, aapke plant ke hygiene aur safety rules ki training ke saath.",
-        paragraph:
-          "Hyderabad ke north-west mein Solapur highway par Patancheru shehar ka sabse purana bulk drug aur chemical belt hai. Patancheru mein TGIIC ke paanch phases ke industrial parks hain aur Pashamylaram mein chaar phases ke. Saath mein ek export promotion park, ek textile park aur Sultanpur mein 2017 mein khula 302 acre ka medical devices park bhi hai, ye sab Sangareddy district mein. IDA Bollaram aur Gaddapotharam, Gummadidala aur Jinnaram ki industrial zameen paas mein hi hai.",
-        faqs: [
-          {
-            question: "Kya aap Patancheru aur Pashamylaram mein contract labour dete hain?",
-            answer:
-              "Haan. Production support, packing, stores aur dispatch, aur housekeeping ke liye teams. Plan aapki site team ke saath banta hai, aur kaam hamara supervisor chalata hai.",
-            category: "operations",
-          },
-          {
-            question: "Chemical aur bulk drug plants mein aapki teams safely kaise kaam karti hain?",
-            answer:
-              "Kaam shuru karne se pehle har worker aapki site ka induction poora karta hai. Floor par hamara supervisor dekhta hai ki team aapke permit-to-work, PPE aur restricted area rules maane. Kaun kahan kaam karega, ye hum aapki safety team ke saath milkar tay karte hain.",
-            category: "operations",
-          },
-          gmpFaqLatn("plant"),
-          wagesFaqLatn(ZONE_LATN),
         ],
       },
     },
@@ -472,7 +283,7 @@ export const hyderabadPages: LocationCopy[] = [
       VISIT_FAQ,
     ],
     sources: [SRC.parks, SRC.jeedimetla, SRC.medchalTown, SRC.medchal, ...WAGE_SOURCES],
-    // Drafts pending native review (docs/telugu-glossary.md, docs/hindi-glossary.md).
+    // Draft pending native review (docs/telugu-glossary.md).
     translations: {
       "te-IN": {
         name: "జీడిమెట్ల-మేడ్చల్",
@@ -496,58 +307,6 @@ export const hyderabadPages: LocationCopy[] = [
           },
           wagesFaqTe(ZONE_TE),
           VISIT_FAQ_TE,
-        ],
-      },
-      "hi-IN": {
-        name: "जीडीमेटला और मेडचल",
-        metaTitle: "जीडीमेटला, मेडचल में लेबर ठेकेदार (Contractor)",
-        description:
-          "हैदराबाद के उत्तर में जीडीमेटला, गंडीमैसम्मा, दुंडीगल और मेडचल की यूनिटों के लिए सुपरवाइज़र के साथ फ़ैक्टरी, पैकिंग, लोडिंग और हाउसकीपिंग की टीमें।",
-        heading: "जीडीमेटला और मेडचल में कॉन्ट्रैक्ट लेबर।",
-        lede: "हैदराबाद के उत्तरी बेल्ट में फ़ार्मा, इंजीनियरिंग और केमिकल यूनिटों के लिए सुपरवाइज़र के साथ टीमें।",
-        paragraph:
-          "जीडीमेटला मेडचल-मलकाजगिरी ज़िले में TGIIC का छह फ़ेज़ वाला इंडस्ट्रियल पार्क है, जहाँ फ़ार्मा, मशीन टूल, इलेक्ट्रिकल, टेक्सटाइल और केमिकल यूनिटें हैं। यह बेल्ट उत्तर की तरफ़ गंडीमैसम्मा और दुंडीगल से होते हुए मेडचल के इंडस्ट्रियल एस्टेट तक जाता है। शहर के और पास कूकटपल्ली और सनतनगर के पुराने एस्टेट हैं।",
-        faqs: [
-          {
-            question: "क्या आप जीडीमेटला में कॉन्ट्रैक्ट लेबर देते हैं?",
-            answer:
-              "हाँ। जीडीमेटला, गंडीमैसम्मा और मेडचल की यूनिटों के लिए फ़ैक्टरी, पैकिंग और हाउसकीपिंग टीमें, सुपरवाइज़र के साथ। कामगार हमारे पेरोल पर रहते हैं, और काम हमारा सुपरवाइज़र चलाता है।",
-            category: "commercial",
-          },
-          {
-            question: "क्या आप लोडिंग और अनलोडिंग टीमें देते हैं?",
-            answer:
-              "हाँ। इस बेल्ट के डिस्पैच बे और वेयरहाउस के लिए सुपरवाइज़र के साथ लोडिंग, अनलोडिंग और स्टोर टीमें, जो आपके गेट और सेफ़्टी नियमों के हिसाब से काम करती हैं।",
-            category: "operations",
-          },
-          wagesFaqHi(ZONE_HI),
-          VISIT_FAQ_HI,
-        ],
-      },
-      "hi-Latn-IN": {
-        name: "Jeedimetla aur Medchal",
-        metaTitle: "Jeedimetla, Medchal mein Labour Thekedar (Contractor)",
-        description:
-          "Hyderabad ke north mein Jeedimetla, Gandimaisamma, Dundigal aur Medchal ki units ke liye supervisor ke saath factory, packing, loading aur housekeeping teams.",
-        heading: "Jeedimetla aur Medchal mein contract labour.",
-        lede: "Hyderabad ke northern belt mein pharma, engineering aur chemical units ke liye supervisor ke saath teams.",
-        paragraph:
-          "Jeedimetla Medchal-Malkajgiri district mein TGIIC ka 6 phases wala industrial park hai, jahan pharma, machine tool, electrical, textile aur chemical units hain. Ye belt north ki taraf Gandimaisamma aur Dundigal se hote hue Medchal ke industrial estate tak jaata hai. Shehar ke aur paas Kukatpally aur Sanathnagar ke purane estates hain.",
-        faqs: [
-          {
-            question: "Kya aap Jeedimetla mein contract labour dete hain?",
-            answer:
-              "Haan. Jeedimetla, Gandimaisamma aur Medchal ki units ke liye factory, packing aur housekeeping teams, supervisor ke saath. Workers hamare payroll par rehte hain, aur kaam hamara supervisor chalata hai.",
-            category: "commercial",
-          },
-          {
-            question: "Kya aap loading aur unloading teams dete hain?",
-            answer:
-              "Haan. Is belt ke dispatch bays aur warehouses ke liye supervisor ke saath loading, unloading aur stores teams, jo aapke gate aur safety rules ke hisaab se kaam karti hain.",
-            category: "operations",
-          },
-          wagesFaqLatn(ZONE_LATN),
-          VISIT_FAQ_LATN,
         ],
       },
     },
@@ -579,7 +338,7 @@ export const hyderabadPages: LocationCopy[] = [
       },
     ],
     sources: [SRC.parks, SRC.industriesReport, SRC.cherlapally, SRC.medchal, ...WAGE_SOURCES],
-    // Drafts pending native review (docs/telugu-glossary.md, docs/hindi-glossary.md).
+    // Draft pending native review (docs/telugu-glossary.md).
     translations: {
       "te-IN": {
         name: "చర్లపల్లి-నాచారం",
@@ -599,48 +358,6 @@ export const hyderabadPages: LocationCopy[] = [
           VISIT_FAQ_TE,
           wagesFaqTe(ZONE_TE),
           START_FAQ_TE,
-        ],
-      },
-      "hi-IN": {
-        name: "चर्लापल्ली और नाचारम",
-        metaTitle: "चर्लापल्ली, नाचारम में लेबर ठेकेदार (Contractor)",
-        description:
-          "हैदराबाद के पूर्व में चर्लापल्ली, नाचारम, उप्पल, मल्लापुर और मौला अली की यूनिटों के लिए सुपरवाइज़र के साथ फ़ैक्टरी, पैकिंग, लोडिंग और हाउसकीपिंग टीमें।",
-        heading: "चर्लापल्ली और नाचारम में कॉन्ट्रैक्ट लेबर।",
-        lede: "पूर्वी हैदराबाद की छोटी और मझोली फ़ैक्टरियों के लिए सुपरवाइज़र के साथ टीमें।",
-        paragraph:
-          "पूर्वी हैदराबाद की इंडस्ट्री मेडचल-मलकाजगिरी ज़िले के TGIIC पार्कों का एक क्लस्टर है: दो फ़ेज़ वाला चर्लापल्ली, फिर नाचारम, उप्पल, मल्लापुर, मौला अली और कुशाईगुड़ा का इलेक्ट्रॉनिक्स कॉम्प्लेक्स। ज़्यादातर यूनिटें छोटी हैं: 2022-23 में राज्य की एक स्टडी ने अकेले चर्लापल्ली के पार्क में 380 माइक्रो और छोटी यूनिटों को देखा।",
-        faqs: [
-          {
-            question: "क्या आप चर्लापल्ली में कॉन्ट्रैक्ट लेबर देते हैं?",
-            answer:
-              "हाँ। चर्लापल्ली, नाचारम, उप्पल और मल्लापुर की यूनिटों के लिए सुपरवाइज़र के साथ फ़ैक्टरी, पैकिंग, लोडिंग और हाउसकीपिंग टीमें।",
-            category: "commercial",
-          },
-          VISIT_FAQ_HI,
-          wagesFaqHi(ZONE_HI),
-          START_FAQ_HI,
-        ],
-      },
-      "hi-Latn-IN": {
-        name: "Cherlapally aur Nacharam",
-        metaTitle: "Cherlapally, Nacharam mein Labour Thekedar (Contractor)",
-        description:
-          "Hyderabad ke east mein Cherlapally, Nacharam, Uppal, Mallapur aur Moula Ali ki units ke liye supervised factory, packing, loading aur housekeeping teams.",
-        heading: "Cherlapally aur Nacharam mein contract labour.",
-        lede: "East Hyderabad ki chhoti aur medium size factories ke liye supervisor ke saath teams.",
-        paragraph:
-          "East Hyderabad ki industry Medchal-Malkajgiri district ke TGIIC parks ka ek cluster hai: do phases wala Cherlapally, phir Nacharam, Uppal, Mallapur, Moula Ali aur Kushaiguda ka electronics complex. Zyadatar units chhoti hain: 2022-23 mein state ki ek study ne akele Cherlapally ke park mein 380 micro aur small units ko dekha.",
-        faqs: [
-          {
-            question: "Kya aap Cherlapally mein contract labour dete hain?",
-            answer:
-              "Haan. Cherlapally, Nacharam, Uppal aur Mallapur ki units ke liye supervisor ke saath factory, packing, loading aur housekeeping teams.",
-            category: "commercial",
-          },
-          VISIT_FAQ_LATN,
-          wagesFaqLatn(ZONE_LATN),
-          START_FAQ_LATN,
         ],
       },
     },
@@ -677,7 +394,7 @@ export const hyderabadPages: LocationCopy[] = [
       },
     ],
     sources: [SRC.genome, SRC.lifeSciencesPolicy, SRC.genomeValley, SRC.parks, SRC.medchal, SRC.scheduleM, ...WAGE_SOURCES],
-    // Drafts pending native review (docs/telugu-glossary.md, docs/hindi-glossary.md).
+    // Draft pending native review (docs/telugu-glossary.md).
     translations: {
       "te-IN": {
         name: "జీనోమ్ వ్యాలీ",
@@ -699,58 +416,6 @@ export const hyderabadPages: LocationCopy[] = [
           {
             question: "ఇక్కడి సైట్లకు టీమ్‌లు ఎలా వస్తాయి?",
             answer: "టీమ్ పని మొదలుపెట్టే ముందే కంపెనీ ట్రాన్స్‌పోర్ట్ గానీ, పికప్ రూట్ గానీ మీతో కలిసి ప్లాన్ చేస్తాం.",
-            category: "operations",
-          },
-        ],
-      },
-      "hi-IN": {
-        name: "जीनोम वैली",
-        metaTitle: "जीनोम वैली, हैदराबाद में लेबर ठेकेदार (Contractor)",
-        description:
-          "हैदराबाद के उत्तर में जीनोम वैली, शामीरपेट और तुर्कपल्ली की लाइफ़ साइंसेज़ यूनिटों के लिए सुपरवाइज़र के साथ हाउसकीपिंग, स्टोर, पैकिंग और प्रोडक्शन सपोर्ट टीमें।",
-        heading: "जीनोम वैली में कॉन्ट्रैक्ट लेबर।",
-        lede: "वैक्सीन, बायोटेक और फ़ार्मा रिसर्च यूनिटों के लिए सुपरवाइज़र के साथ टीमें, आपकी साइट के हाइजीन नियमों की ट्रेनिंग के साथ।",
-        paragraph:
-          "जीनोम वैली तेलंगाना का लाइफ़ साइंसेज़ क्लस्टर है: चार फ़ेज़ में करीब 1,500 एकड़, तुर्कपल्ली और कोल्थुर के बायोटेक पार्क से Lalgadi Malakpet तक। शामीरपेट और तुर्कपल्ली में TGIIC के पार्क भी हैं। यहाँ वैक्सीन बनाने वाली कंपनियाँ, बायोटेक और फ़ार्मा कंपनियाँ और रिसर्च लैब हैं। यह आउटर रिंग रोड के पास, सिकंदराबाद स्टेशन से करीब 23 किलोमीटर दूर है।",
-        faqs: [
-          {
-            question: "क्या आप जीनोम वैली में कॉन्ट्रैक्ट लेबर देते हैं?",
-            answer:
-              "हाँ। हाउसकीपिंग, स्टोर, पैकिंग और प्रोडक्शन सपोर्ट के लिए टीमें। प्लान आपकी साइट टीम के साथ बनता है, और काम हमारा सुपरवाइज़र चलाता है।",
-            category: "commercial",
-          },
-          gmpFaqHi("साइट"),
-          wagesFaqHi(ZONE_HI),
-          {
-            question: "यहाँ की साइटों तक टीमें कैसे पहुँचती हैं?",
-            answer:
-              "टीम शुरू होने से पहले हम आपके साथ मिलकर कंपनी ट्रांसपोर्ट या टीम के लिए पिक-अप रूट प्लान करते हैं।",
-            category: "operations",
-          },
-        ],
-      },
-      "hi-Latn-IN": {
-        name: "Genome Valley",
-        metaTitle: "Genome Valley, Hyderabad mein Labour Thekedar",
-        description:
-          "North Hyderabad mein Genome Valley, Shamirpet, Turkapally ki life sciences units ke liye supervised housekeeping, stores, packing aur production support teams.",
-        heading: "Genome Valley mein contract labour.",
-        lede: "Vaccine, biotech aur pharma research units ke liye supervisor ke saath teams, aapki site ke hygiene rules ki training ke saath.",
-        paragraph:
-          "Genome Valley Telangana ka life sciences cluster hai: chaar phases mein kareeb 1,500 acre, Turkapally aur Kolthur ke biotech park se Lalgadi Malakpet tak. Shameerpet aur Turkapally mein TGIIC ke parks bhi hain. Yahan vaccine banane wali companies, biotech aur pharma companies aur research labs hain. Ye Outer Ring Road ke paas, Secunderabad station se kareeb 23 km door hai.",
-        faqs: [
-          {
-            question: "Kya aap Genome Valley mein contract labour dete hain?",
-            answer:
-              "Haan. Housekeeping, stores, packing aur production support ke liye teams. Plan aapki site team ke saath banta hai, aur kaam hamara supervisor chalata hai.",
-            category: "commercial",
-          },
-          gmpFaqLatn("site"),
-          wagesFaqLatn(ZONE_LATN),
-          {
-            question: "Yahan ki sites tak teams kaise pahunchti hain?",
-            answer:
-              "Team ke kaam shuru karne se pehle hum aapke saath milkar company transport ya team ke liye pick-up route plan karte hain.",
             category: "operations",
           },
         ],
@@ -784,7 +449,7 @@ export const hyderabadPages: LocationCopy[] = [
       VISIT_FAQ,
     ],
     sources: [SRC.parks, SRC.sez, SRC.shadnagar, SRC.rangareddy, ...WAGE_SOURCES],
-    // Drafts pending native review (docs/telugu-glossary.md, docs/hindi-glossary.md).
+    // Draft pending native review (docs/telugu-glossary.md).
     translations: {
       "te-IN": {
         name: "శంషాబాద్-కొత్తూరు",
@@ -808,58 +473,6 @@ export const hyderabadPages: LocationCopy[] = [
           },
           wagesFaqTe(ZONE_TE),
           VISIT_FAQ_TE,
-        ],
-      },
-      "hi-IN": {
-        name: "शमशाबाद और कोथुर",
-        metaTitle: "शमशाबाद, कोथुर, आदिबटला में लेबर ठेकेदार",
-        description:
-          "हैदराबाद के दक्षिण में शमशाबाद, कोथुर, शादनगर, आदिबटला और महेश्वरम की यूनिटों के लिए सुपरवाइज़र के साथ लोडिंग, वेयरहाउस, फ़ैक्टरी और हाउसकीपिंग टीमें।",
-        heading: "शमशाबाद और कोथुर में कॉन्ट्रैक्ट लेबर।",
-        lede: "हैदराबाद के दक्षिणी बेल्ट में वेयरहाउस, फ़ार्मा और इंजीनियरिंग यूनिटों के लिए सुपरवाइज़र के साथ टीमें।",
-        paragraph:
-          "शहर के दक्षिण में, रंगारेड्डी ज़िले में, कोथुर और मनखाल में TGIIC के इंडस्ट्रियल पार्क हैं, साथ में एक प्लास्टिक पार्क भी। पूर्व की तरफ़ आदिबटला में एयरोस्पेस और प्रिसिज़न इंजीनियरिंग SEZ (करीब 338 एकड़) और महेश्वरम में इलेक्ट्रॉनिक्स क्लस्टर है। एयरपोर्ट SEZ शमशाबाद में है, और थोड़ा और दक्षिण में शादनगर है, जहाँ फ़ार्मा और बैटरी यूनिटें हैं।",
-        faqs: [
-          {
-            question: "क्या आप शमशाबाद और कोथुर में कॉन्ट्रैक्ट लेबर देते हैं?",
-            answer:
-              "हाँ। शमशाबाद से शादनगर तक, और आदिबटला और महेश्वरम की यूनिटों के लिए सुपरवाइज़र के साथ फ़ैक्टरी, लोडिंग-अनलोडिंग और हाउसकीपिंग टीमें।",
-            category: "commercial",
-          },
-          {
-            question: "क्या आप एयरपोर्ट के पास के वेयरहाउस के लिए कामगार दे सकते हैं?",
-            answer:
-              "हाँ। वेयरहाउस और लॉजिस्टिक्स पार्कों के लिए लोडिंग, अनलोडिंग, पिकिंग और पैकिंग टीमें, जिनका काम हमारा सुपरवाइज़र चलाता है।",
-            category: "operations",
-          },
-          wagesFaqHi(ZONE_HI),
-          VISIT_FAQ_HI,
-        ],
-      },
-      "hi-Latn-IN": {
-        name: "Shamshabad aur Kothur",
-        metaTitle: "Shamshabad, Kothur, Adibatla mein Labour Thekedar",
-        description:
-          "Hyderabad ke south mein Shamshabad, Kothur, Shadnagar, Adibatla aur Maheshwaram ki units ke liye supervised loading, warehouse, factory aur housekeeping teams.",
-        heading: "Shamshabad aur Kothur mein contract labour.",
-        lede: "Hyderabad ke southern belt mein warehouses, pharma aur engineering units ke liye supervisor ke saath teams.",
-        paragraph:
-          "Shehar ke south mein, Rangareddy district mein, Kothur aur Mankhal mein TGIIC ke industrial parks hain, saath mein ek plastics park bhi. East ki taraf Adibatla mein aerospace aur precision engineering SEZ (kareeb 338 acre) aur Maheshwaram mein electronics cluster hai. Airport SEZ Shamshabad mein hai, aur thoda aur south mein Shadnagar hai, jahan pharma aur battery units hain.",
-        faqs: [
-          {
-            question: "Kya aap Shamshabad aur Kothur mein contract labour dete hain?",
-            answer:
-              "Haan. Shamshabad se Shadnagar tak, aur Adibatla aur Maheshwaram ki units ke liye supervisor ke saath factory, loading-unloading aur housekeeping teams.",
-            category: "commercial",
-          },
-          {
-            question: "Kya aap airport ke paas ke warehouses ke liye workers de sakte hain?",
-            answer:
-              "Haan. Warehouses aur logistics parks ke liye loading, unloading, picking aur packing teams, jinka kaam hamara supervisor chalata hai.",
-            category: "operations",
-          },
-          wagesFaqLatn(ZONE_LATN),
-          VISIT_FAQ_LATN,
         ],
       },
     },

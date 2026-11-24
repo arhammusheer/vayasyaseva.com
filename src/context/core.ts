@@ -331,8 +331,8 @@ export function resolveContext(s: ContextSignals, t: ContextTables): VisitorCont
   if (s.page.market) (L.market[s.page.market] ?? []).forEach(addL);
   L.default.forEach(addL);
   s.page.locales.forEach(addL);
-  // A page in its market's own language (ਪੰਜਾਬੀ in Jalandhar, ಕನ್ನಡ in
-  // Bengaluru, తెలుగు in Visakhapatnam and Hyderabad) ranks that language
+  // A page in its market's own language (ਪੰਜਾਬੀ on the Jalandhar region's
+  // jobs pages, ಕನ್ನಡ on Bengaluru's) ranks that language
   // above Hindi, whatever the region or phone says (owner direction, 24 Nov
   // 2026: Hindi is supported like English but deranked where the page has
   // the local language). A Hindi pick on the picker still comes first.

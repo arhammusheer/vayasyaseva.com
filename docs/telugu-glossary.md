@@ -1,5 +1,7 @@
 # Telugu (te-IN) glossary
 
+**Status, 24 November 2026: retired.** The Telugu location pages are business pages, and business pages stay English unless search data supports another language. Keyword Planner found no Telugu buyer searches that name a place, so `/te-in/locations/...` 308s to the English page (`LOCATION_LOCALES` in `src/content/registry/pages.ts`). The copy stays in `src/content/locations` and this glossary stays for a return if the data changes.
+
 Telugu went live on 24 November 2026 for the Visakhapatnam and Hyderabad location pages only: the two hubs and their nine area pages, `/te-in/locations/visakhapatnam/...` and `/te-in/locations/hyderabad/...` (`WITH_TELUGU` / `LOCATION_LOCALES` in `src/content/registry/pages.ts`). The copy is in `translations["te-IN"]` in `src/content/locations/visakhapatnam.ts` and `src/content/locations/hyderabad.ts`. The copy is a draft. A native-language audit (24 November 2026) was applied the same day: all its must-fix and should-fix rows; its nits and the items below marked *open* are not applied yet. The jobs pages, form and intake have no Telugu yet, so a Telugu reader's jobs copy is the English (`jobsLocale` in `src/lib/i18n.ts`); the wages and compliance links say "(English)". Fonts: Anek Telugu for headings, Hind Guntur for body (`src/assets/fonts/README.txt`).
 
 ## Review answers (te-IN audit, 24 November 2026)

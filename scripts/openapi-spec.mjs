@@ -37,7 +37,7 @@ function buildAgentPaths() {
         tags: ["Agents"],
         summary: "Send a business enquiry for a person (AI agents)",
         description:
-          "Open route for AI agents and assistants: no CAPTCHA, no key. A Request a crew enquiry: send the requirement (roles, headcountBand, siteState, siteCity, startWindow, durationBand) or, from older integrations, a free-text details. Send only details the person gave you and confirm with them first. The enquiry goes to our team marked as sent by an agent; no email is sent to the address given. We aim to reply within two working days (Monday to Saturday, IST). Rate limited per source.",
+          "Open route for AI agents and assistants: no CAPTCHA, no key. A Request a crew enquiry: send the requirement (roles, headcountBand, siteState, siteCity, startWindow, durationBand) or, from older integrations, a free-text details. Send only details the person gave you and confirm with them first. The enquiry goes to our team marked as sent by an agent; no email is sent to the address given. We aim to reply within one working day (Monday to Saturday, IST). Rate limited per source.",
         operationId: "agentSubmitContactInquiry",
         security: [],
         requestBody: { required: true, content: json("AgentContactRequest") },

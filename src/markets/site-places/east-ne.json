@@ -1,0 +1,8252 @@
+[
+ {
+  "id": "br:patna",
+  "name": "Patna",
+  "state": "BR",
+  "kind": "city",
+  "district": "Patna",
+  "scale": 3,
+  "sectors": [
+   "fmcg",
+   "food",
+   "logistics",
+   "mixed"
+  ],
+  "aka": [
+   "patliputra",
+   "pataliputra"
+  ],
+  "lat": 25.59,
+  "lon": 85.14
+ },
+ {
+  "id": "br:bihar-sharif",
+  "name": "Bihar Sharif",
+  "state": "BR",
+  "kind": "city",
+  "district": "Nalanda",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "biharsharif",
+   "nalanda"
+  ],
+  "lat": 25.2,
+  "lon": 85.52
+ },
+ {
+  "id": "br:arrah",
+  "name": "Arrah",
+  "state": "BR",
+  "kind": "city",
+  "district": "Bhojpur",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "ara",
+   "bhojpur"
+  ],
+  "lat": 25.56,
+  "lon": 84.66
+ },
+ {
+  "id": "br:buxar",
+  "name": "Buxar",
+  "state": "BR",
+  "kind": "city",
+  "district": "Buxar",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 25.56,
+  "lon": 83.98
+ },
+ {
+  "id": "br:sasaram",
+  "name": "Sasaram",
+  "state": "BR",
+  "kind": "city",
+  "district": "Rohtas",
+  "scale": 1,
+  "sectors": [
+   "cement",
+   "mixed"
+  ],
+  "aka": [
+   "rohtas"
+  ],
+  "lat": 24.95,
+  "lon": 84.03
+ },
+ {
+  "id": "br:bhabua",
+  "name": "Bhabua",
+  "state": "BR",
+  "kind": "city",
+  "district": "Kaimur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kaimur"
+  ],
+  "lat": 25.04,
+  "lon": 83.61
+ },
+ {
+  "id": "br:gaya",
+  "name": "Gaya",
+  "state": "BR",
+  "kind": "city",
+  "district": "Gaya",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "textile",
+   "mixed"
+  ],
+  "aka": [
+   "gaya ji"
+  ],
+  "lat": 24.79,
+  "lon": 85.0
+ },
+ {
+  "id": "br:jehanabad",
+  "name": "Jehanabad",
+  "state": "BR",
+  "kind": "city",
+  "district": "Jehanabad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 25.21,
+  "lon": 84.99
+ },
+ {
+  "id": "br:arwal",
+  "name": "Arwal",
+  "state": "BR",
+  "kind": "city",
+  "district": "Arwal",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 25.25,
+  "lon": 84.68
+ },
+ {
+  "id": "br:nawada",
+  "name": "Nawada",
+  "state": "BR",
+  "kind": "city",
+  "district": "Nawada",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 24.89,
+  "lon": 85.54
+ },
+ {
+  "id": "br:aurangabad",
+  "name": "Aurangabad",
+  "state": "BR",
+  "kind": "city",
+  "district": "Aurangabad",
+  "scale": 1,
+  "sectors": [
+   "cement",
+   "mixed"
+  ],
+  "aka": [
+   "aurangabad bihar"
+  ],
+  "lat": 24.75,
+  "lon": 84.37
+ },
+ {
+  "id": "br:chhapra",
+  "name": "Chhapra",
+  "state": "BR",
+  "kind": "city",
+  "district": "Saran",
+  "scale": 1,
+  "sectors": [
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "chapra",
+   "saran"
+  ],
+  "lat": 25.78,
+  "lon": 84.73
+ },
+ {
+  "id": "br:siwan",
+  "name": "Siwan",
+  "state": "BR",
+  "kind": "city",
+  "district": "Siwan",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.22,
+  "lon": 84.36
+ },
+ {
+  "id": "br:gopalganj",
+  "name": "Gopalganj",
+  "state": "BR",
+  "kind": "city",
+  "district": "Gopalganj",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.47,
+  "lon": 84.44
+ },
+ {
+  "id": "br:bettiah",
+  "name": "Bettiah",
+  "state": "BR",
+  "kind": "city",
+  "district": "West Champaran",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "west champaran",
+   "pashchim champaran"
+  ],
+  "lat": 26.8,
+  "lon": 84.5
+ },
+ {
+  "id": "br:motihari",
+  "name": "Motihari",
+  "state": "BR",
+  "kind": "city",
+  "district": "East Champaran",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "east champaran",
+   "purvi champaran"
+  ],
+  "lat": 26.65,
+  "lon": 84.92
+ },
+ {
+  "id": "br:muzaffarpur",
+  "name": "Muzaffarpur",
+  "state": "BR",
+  "kind": "city",
+  "district": "Muzaffarpur",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "leather",
+   "mixed"
+  ],
+  "aka": [
+   "mzp"
+  ],
+  "lat": 26.12,
+  "lon": 85.39
+ },
+ {
+  "id": "br:sitamarhi",
+  "name": "Sitamarhi",
+  "state": "BR",
+  "kind": "city",
+  "district": "Sitamarhi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.6,
+  "lon": 85.48
+ },
+ {
+  "id": "br:sheohar",
+  "name": "Sheohar",
+  "state": "BR",
+  "kind": "city",
+  "district": "Sheohar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.51,
+  "lon": 85.29
+ },
+ {
+  "id": "br:hajipur",
+  "name": "Hajipur",
+  "state": "BR",
+  "kind": "city",
+  "district": "Vaishali",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "fmcg",
+   "mixed"
+  ],
+  "aka": [
+   "vaishali"
+  ],
+  "lat": 25.69,
+  "lon": 85.21
+ },
+ {
+  "id": "br:darbhanga",
+  "name": "Darbhanga",
+  "state": "BR",
+  "kind": "city",
+  "district": "Darbhanga",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.15,
+  "lon": 85.9
+ },
+ {
+  "id": "br:madhubani",
+  "name": "Madhubani",
+  "state": "BR",
+  "kind": "city",
+  "district": "Madhubani",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.35,
+  "lon": 86.07
+ },
+ {
+  "id": "br:samastipur",
+  "name": "Samastipur",
+  "state": "BR",
+  "kind": "city",
+  "district": "Samastipur",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 25.86,
+  "lon": 85.78
+ },
+ {
+  "id": "br:begusarai",
+  "name": "Begusarai",
+  "state": "BR",
+  "kind": "city",
+  "district": "Begusarai",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 25.42,
+  "lon": 86.13
+ },
+ {
+  "id": "br:munger",
+  "name": "Munger",
+  "state": "BR",
+  "kind": "city",
+  "district": "Munger",
+  "scale": 1,
+  "sectors": [
+   "fmcg",
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "monghyr"
+  ],
+  "lat": 25.38,
+  "lon": 86.47
+ },
+ {
+  "id": "br:lakhisarai",
+  "name": "Lakhisarai",
+  "state": "BR",
+  "kind": "city",
+  "district": "Lakhisarai",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 25.17,
+  "lon": 86.09
+ },
+ {
+  "id": "br:sheikhpura",
+  "name": "Sheikhpura",
+  "state": "BR",
+  "kind": "city",
+  "district": "Sheikhpura",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 25.14,
+  "lon": 85.85
+ },
+ {
+  "id": "br:jamui",
+  "name": "Jamui",
+  "state": "BR",
+  "kind": "city",
+  "district": "Jamui",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 24.92,
+  "lon": 86.22
+ },
+ {
+  "id": "br:khagaria",
+  "name": "Khagaria",
+  "state": "BR",
+  "kind": "city",
+  "district": "Khagaria",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 25.5,
+  "lon": 86.48
+ },
+ {
+  "id": "br:bhagalpur",
+  "name": "Bhagalpur",
+  "state": "BR",
+  "kind": "city",
+  "district": "Bhagalpur",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "mixed"
+  ],
+  "aka": [
+   "silk city"
+  ],
+  "lat": 25.24,
+  "lon": 86.97
+ },
+ {
+  "id": "br:banka",
+  "name": "Banka",
+  "state": "BR",
+  "kind": "city",
+  "district": "Banka",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 24.89,
+  "lon": 86.92
+ },
+ {
+  "id": "br:saharsa",
+  "name": "Saharsa",
+  "state": "BR",
+  "kind": "city",
+  "district": "Saharsa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 25.88,
+  "lon": 86.6
+ },
+ {
+  "id": "br:supaul",
+  "name": "Supaul",
+  "state": "BR",
+  "kind": "city",
+  "district": "Supaul",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.12,
+  "lon": 86.6
+ },
+ {
+  "id": "br:madhepura",
+  "name": "Madhepura",
+  "state": "BR",
+  "kind": "city",
+  "district": "Madhepura",
+  "scale": 1,
+  "sectors": [
+   "engineering",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 25.92,
+  "lon": 86.79
+ },
+ {
+  "id": "br:purnia",
+  "name": "Purnia",
+  "state": "BR",
+  "kind": "city",
+  "district": "Purnia",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "purnea"
+  ],
+  "lat": 25.78,
+  "lon": 87.47
+ },
+ {
+  "id": "br:kishanganj",
+  "name": "Kishanganj",
+  "state": "BR",
+  "kind": "city",
+  "district": "Kishanganj",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.1,
+  "lon": 87.95
+ },
+ {
+  "id": "br:araria",
+  "name": "Araria",
+  "state": "BR",
+  "kind": "city",
+  "district": "Araria",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.15,
+  "lon": 87.52
+ },
+ {
+  "id": "br:katihar",
+  "name": "Katihar",
+  "state": "BR",
+  "kind": "city",
+  "district": "Katihar",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 25.54,
+  "lon": 87.58
+ },
+ {
+  "id": "br:barauni",
+  "name": "Barauni",
+  "state": "BR",
+  "kind": "city",
+  "district": "Begusarai",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "mixed"
+  ],
+  "aka": [
+   "barauni refinery"
+  ],
+  "lat": 25.47,
+  "lon": 85.98
+ },
+ {
+  "id": "br:dehri",
+  "name": "Dehri-on-Sone",
+  "state": "BR",
+  "kind": "city",
+  "district": "Rohtas",
+  "scale": 1,
+  "sectors": [
+   "cement",
+   "mixed"
+  ],
+  "aka": [
+   "dehri",
+   "dehri on sone",
+   "dalmianagar"
+  ],
+  "lat": 24.91,
+  "lon": 84.18
+ },
+ {
+  "id": "br:bihta",
+  "name": "Bihta",
+  "state": "BR",
+  "kind": "city",
+  "district": "Patna",
+  "scale": 2,
+  "sectors": [
+   "logistics",
+   "food",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 25.56,
+  "lon": 84.87
+ },
+ {
+  "id": "br:fatuha",
+  "name": "Fatuha",
+  "state": "BR",
+  "kind": "city",
+  "district": "Patna",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "fatwah"
+  ],
+  "lat": 25.51,
+  "lon": 85.3
+ },
+ {
+  "id": "br:forbesganj",
+  "name": "Forbesganj",
+  "state": "BR",
+  "kind": "city",
+  "district": "Araria",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "farbisganj"
+  ],
+  "lat": 26.3,
+  "lon": 87.26
+ },
+ {
+  "id": "br:raxaul",
+  "name": "Raxaul",
+  "state": "BR",
+  "kind": "city",
+  "district": "East Champaran",
+  "scale": 1,
+  "sectors": [
+   "logistics",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.98,
+  "lon": 84.85
+ },
+ {
+  "id": "br:kahalgaon",
+  "name": "Kahalgaon",
+  "state": "BR",
+  "kind": "city",
+  "district": "Bhagalpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "colgong"
+  ],
+  "lat": 25.26,
+  "lon": 87.23
+ },
+ {
+  "id": "br:biada-patliputra",
+  "name": "Patliputra Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Patna",
+  "near": "br:patna",
+  "scale": 2,
+  "sectors": [
+   "fmcg",
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "biada patliputra",
+   "patliputra ia"
+  ]
+ },
+ {
+  "id": "br:biada-fatuha",
+  "name": "Fatuha Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Patna",
+  "near": "br:fatuha",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "biada fatuha",
+   "fatwah industrial area"
+  ]
+ },
+ {
+  "id": "br:biada-bihta",
+  "name": "Bihta Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Patna",
+  "near": "br:bihta",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "fmcg",
+   "logistics",
+   "mixed"
+  ],
+  "aka": [
+   "biada bihta",
+   "new bihta industrial area"
+  ]
+ },
+ {
+  "id": "br:biada-bihta-mega-park",
+  "name": "Bihta Mega Industrial Park",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Patna",
+  "near": "br:bihta",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "mega industrial park bihta",
+   "bihta mip"
+  ]
+ },
+ {
+  "id": "br:biada-kopakala",
+  "name": "Kopakala Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Patna",
+  "near": "br:patna",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kopa kala"
+  ]
+ },
+ {
+  "id": "br:biada-sikandarpur",
+  "name": "Sikandarpur Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Patna",
+  "near": "br:patna",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-biharsharif",
+  "name": "Bihar Sharif Industrial Estate",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Nalanda",
+  "near": "br:bihar-sharif",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "biharsharif industrial estate",
+   "nalanda industrial estate"
+  ]
+ },
+ {
+  "id": "br:biada-buxar",
+  "name": "Buxar Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Buxar",
+  "near": "br:buxar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-nawanagar",
+  "name": "Nawanagar Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Buxar",
+  "near": "br:buxar",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "navanagar"
+  ]
+ },
+ {
+  "id": "br:biada-bihiya",
+  "name": "Bihiya Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Bhojpur",
+  "near": "br:arrah",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-gidha",
+  "name": "Gidha Industrial Growth Centre",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Bhojpur",
+  "near": "br:arrah",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "gidha growth centre",
+   "gidha igc"
+  ]
+ },
+ {
+  "id": "br:biada-hajipur",
+  "name": "Hajipur Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Vaishali",
+  "near": "br:hajipur",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "fmcg",
+   "pharma",
+   "mixed"
+  ],
+  "aka": [
+   "biada hajipur",
+   "hajipur ia"
+  ]
+ },
+ {
+  "id": "br:biada-epip-hajipur",
+  "name": "EPIP Hajipur",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Vaishali",
+  "near": "br:hajipur",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "export promotion industrial park hajipur",
+   "hajipur epip"
+  ]
+ },
+ {
+  "id": "br:biada-goraul",
+  "name": "Goraul Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Vaishali",
+  "near": "br:hajipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-siwan",
+  "name": "Siwan Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Siwan",
+  "near": "br:siwan",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "new siwan industrial area"
+  ]
+ },
+ {
+  "id": "br:biada-hathua",
+  "name": "Hathua Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Gopalganj",
+  "near": "br:gopalganj",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-muzaffarpur",
+  "name": "Muzaffarpur Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Muzaffarpur",
+  "near": "br:muzaffarpur",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "leather",
+   "mixed"
+  ],
+  "aka": [
+   "bela industrial area",
+   "muzaffarpur industrial estate",
+   "biada muzaffarpur"
+  ]
+ },
+ {
+  "id": "br:biada-motipur",
+  "name": "Motipur Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Muzaffarpur",
+  "near": "br:muzaffarpur",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-mahbal",
+  "name": "Mahbal Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Muzaffarpur",
+  "near": "br:muzaffarpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-bariyarpur",
+  "name": "Bariyarpur Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Muzaffarpur",
+  "near": "br:muzaffarpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-damodarpur",
+  "name": "Damodarpur Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Muzaffarpur",
+  "near": "br:muzaffarpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-korra",
+  "name": "Korra Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Muzaffarpur",
+  "near": "br:muzaffarpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-panapur",
+  "name": "Panapur Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Muzaffarpur",
+  "near": "br:muzaffarpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-dumaria",
+  "name": "Dumaria Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Muzaffarpur",
+  "near": "br:muzaffarpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-bishunpur-dhram",
+  "name": "Bishunpur Dhram Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Muzaffarpur",
+  "near": "br:muzaffarpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-kumarbagh",
+  "name": "Kumarbagh Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "West Champaran",
+  "near": "br:bettiah",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-ramnagar",
+  "name": "Ramnagar Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "West Champaran",
+  "near": "br:bettiah",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-bettiah",
+  "name": "Bettiah Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "West Champaran",
+  "near": "br:bettiah",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-raxaul",
+  "name": "Raxaul Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "East Champaran",
+  "near": "br:raxaul",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-sugauli",
+  "name": "Sugauli Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "East Champaran",
+  "near": "br:motihari",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-sitamarhi",
+  "name": "Sitamarhi Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Sitamarhi",
+  "near": "br:sitamarhi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-bela-darbhanga",
+  "name": "Bela Industrial Estate, Darbhanga",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Darbhanga",
+  "near": "br:darbhanga",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "bela darbhanga"
+  ]
+ },
+ {
+  "id": "br:biada-dharampur",
+  "name": "Dharampur Industrial Estate",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Darbhanga",
+  "near": "br:darbhanga",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-donar",
+  "name": "Donar Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Darbhanga",
+  "near": "br:darbhanga",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-pandaul",
+  "name": "Pandaul Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Madhubani",
+  "near": "br:madhubani",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-jhanjharpur",
+  "name": "Jhanjharpur Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Madhubani",
+  "near": "br:madhubani",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-lohat",
+  "name": "Lohat Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Madhubani",
+  "near": "br:madhubani",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-sakri",
+  "name": "Sakri Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Madhubani",
+  "near": "br:madhubani",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-samastipur",
+  "name": "Samastipur Industrial Estate",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Samastipur",
+  "near": "br:samastipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-begusarai-igc",
+  "name": "Begusarai Industrial Growth Centre",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Begusarai",
+  "near": "br:begusarai",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "begusarai igc",
+   "begusarai growth centre"
+  ]
+ },
+ {
+  "id": "br:biada-barauni",
+  "name": "Barauni Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Begusarai",
+  "near": "br:barauni",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "chemical",
+   "mixed"
+  ],
+  "aka": [
+   "biada barauni",
+   "barauni ia"
+  ]
+ },
+ {
+  "id": "br:biada-jamalpur",
+  "name": "Jamalpur Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Munger",
+  "near": "br:munger",
+  "scale": 1,
+  "sectors": [
+   "engineering",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-munger",
+  "name": "Munger Industrial Estate",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Munger",
+  "near": "br:munger",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-sitakund",
+  "name": "Sitakund Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Munger",
+  "near": "br:munger",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-khagaria-igc",
+  "name": "Khagaria Industrial Growth Centre",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Khagaria",
+  "near": "br:khagaria",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "khagaria igc"
+  ]
+ },
+ {
+  "id": "br:biada-barari",
+  "name": "Barari Industrial Estate",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Bhagalpur",
+  "near": "br:bhagalpur",
+  "scale": 1,
+  "sectors": [
+   "textile",
+   "mixed"
+  ],
+  "aka": [
+   "large industrial estate barari",
+   "bhagalpur industrial estate"
+  ]
+ },
+ {
+  "id": "br:biada-lakhisarai",
+  "name": "Lakhisarai Industrial Estate",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Lakhisarai",
+  "near": "br:lakhisarai",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-kahalgaon-igc",
+  "name": "Kahalgaon Industrial Growth Centre",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Bhagalpur",
+  "near": "br:kahalgaon",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kahalgaon igc"
+  ]
+ },
+ {
+  "id": "br:biada-gaya",
+  "name": "Gaya Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Gaya",
+  "near": "br:gaya",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-guraru",
+  "name": "Guraru Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Gaya",
+  "near": "br:gaya",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-nawada",
+  "name": "Nawada Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Nawada",
+  "near": "br:nawada",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-warisaliganj",
+  "name": "Warisaliganj Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Nawada",
+  "near": "br:nawada",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "warisaligunj"
+  ]
+ },
+ {
+  "id": "br:biada-jehanabad",
+  "name": "Jehanabad Industrial Estate",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Jehanabad",
+  "near": "br:jehanabad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-bikramganj",
+  "name": "Bikramganj Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Rohtas",
+  "near": "br:sasaram",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-dehri",
+  "name": "Dehri Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Rohtas",
+  "near": "br:dehri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-aurangabad",
+  "name": "Aurangabad Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Aurangabad",
+  "near": "br:aurangabad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "aurangabad industrial growth centre",
+   "aurangabad igc"
+  ]
+ },
+ {
+  "id": "br:biada-barun",
+  "name": "Barun Industrial Estate",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Aurangabad",
+  "near": "br:aurangabad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-purnea",
+  "name": "Purnea City Industrial Estate",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Purnia",
+  "near": "br:purnia",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "purnia industrial estate"
+  ]
+ },
+ {
+  "id": "br:biada-maranga",
+  "name": "Maranga Industrial Growth Centre",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Purnia",
+  "near": "br:purnia",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "maranga igc",
+   "maranga growth centre"
+  ]
+ },
+ {
+  "id": "br:biada-banmankhi",
+  "name": "Banmankhi Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Purnia",
+  "near": "br:purnia",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-katihar",
+  "name": "Katihar Industrial Estate",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Katihar",
+  "near": "br:katihar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-khagra",
+  "name": "Khagra Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Kishanganj",
+  "near": "br:kishanganj",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-bhediadangi",
+  "name": "Bhediadangi Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Kishanganj",
+  "near": "br:kishanganj",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-forbesganj",
+  "name": "Forbesganj Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Araria",
+  "near": "br:forbesganj",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-murliganj",
+  "name": "Murliganj Industrial Estate",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Madhepura",
+  "near": "br:madhepura",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-udakishanganj",
+  "name": "Udakishanganj Mini Growth Centre",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Madhepura",
+  "near": "br:madhepura",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-supaul",
+  "name": "Supaul Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Supaul",
+  "near": "br:supaul",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "br:biada-saharsa",
+  "name": "Saharsa Industrial Area",
+  "state": "BR",
+  "kind": "estate",
+  "district": "Saharsa",
+  "near": "br:saharsa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "jh:ranchi",
+  "name": "Ranchi",
+  "state": "JH",
+  "kind": "city",
+  "district": "Ranchi",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "fmcg",
+   "logistics",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 23.34,
+  "lon": 85.31
+ },
+ {
+  "id": "jh:khunti",
+  "name": "Khunti",
+  "state": "JH",
+  "kind": "city",
+  "district": "Khunti",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 23.07,
+  "lon": 85.28
+ },
+ {
+  "id": "jh:gumla",
+  "name": "Gumla",
+  "state": "JH",
+  "kind": "city",
+  "district": "Gumla",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 23.04,
+  "lon": 84.54
+ },
+ {
+  "id": "jh:simdega",
+  "name": "Simdega",
+  "state": "JH",
+  "kind": "city",
+  "district": "Simdega",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 22.62,
+  "lon": 84.5
+ },
+ {
+  "id": "jh:lohardaga",
+  "name": "Lohardaga",
+  "state": "JH",
+  "kind": "city",
+  "district": "Lohardaga",
+  "scale": 1,
+  "sectors": [
+   "metal",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 23.43,
+  "lon": 84.68
+ },
+ {
+  "id": "jh:latehar",
+  "name": "Latehar",
+  "state": "JH",
+  "kind": "city",
+  "district": "Latehar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 23.74,
+  "lon": 84.5
+ },
+ {
+  "id": "jh:medininagar",
+  "name": "Medininagar",
+  "state": "JH",
+  "kind": "city",
+  "district": "Palamu",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "daltonganj",
+   "palamu",
+   "palamau"
+  ],
+  "lat": 24.03,
+  "lon": 84.07
+ },
+ {
+  "id": "jh:garhwa",
+  "name": "Garhwa",
+  "state": "JH",
+  "kind": "city",
+  "district": "Garhwa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 24.16,
+  "lon": 83.81
+ },
+ {
+  "id": "jh:chatra",
+  "name": "Chatra",
+  "state": "JH",
+  "kind": "city",
+  "district": "Chatra",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 24.21,
+  "lon": 84.87
+ },
+ {
+  "id": "jh:hazaribagh",
+  "name": "Hazaribagh",
+  "state": "JH",
+  "kind": "city",
+  "district": "Hazaribagh",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "mixed"
+  ],
+  "aka": [
+   "hazaribag"
+  ],
+  "lat": 23.99,
+  "lon": 85.36
+ },
+ {
+  "id": "jh:koderma",
+  "name": "Koderma",
+  "state": "JH",
+  "kind": "city",
+  "district": "Koderma",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "jhumri telaiya"
+  ],
+  "lat": 24.47,
+  "lon": 85.6
+ },
+ {
+  "id": "jh:giridih",
+  "name": "Giridih",
+  "state": "JH",
+  "kind": "city",
+  "district": "Giridih",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 24.19,
+  "lon": 86.3
+ },
+ {
+  "id": "jh:ramgarh",
+  "name": "Ramgarh",
+  "state": "JH",
+  "kind": "city",
+  "district": "Ramgarh",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "mixed"
+  ],
+  "aka": [
+   "ramgarh cantt"
+  ],
+  "lat": 23.63,
+  "lon": 85.52
+ },
+ {
+  "id": "jh:bokaro",
+  "name": "Bokaro Steel City",
+  "state": "JH",
+  "kind": "city",
+  "district": "Bokaro",
+  "scale": 3,
+  "sectors": [
+   "steel",
+   "mixed"
+  ],
+  "aka": [
+   "bokaro",
+   "chas"
+  ],
+  "lat": 23.67,
+  "lon": 86.15
+ },
+ {
+  "id": "jh:dhanbad",
+  "name": "Dhanbad",
+  "state": "JH",
+  "kind": "city",
+  "district": "Dhanbad",
+  "scale": 3,
+  "sectors": [
+   "steel",
+   "mixed"
+  ],
+  "aka": [
+   "coal capital"
+  ],
+  "lat": 23.8,
+  "lon": 86.43
+ },
+ {
+  "id": "jh:deoghar",
+  "name": "Deoghar",
+  "state": "JH",
+  "kind": "city",
+  "district": "Deoghar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "baidyanath dham"
+  ],
+  "lat": 24.48,
+  "lon": 86.7
+ },
+ {
+  "id": "jh:dumka",
+  "name": "Dumka",
+  "state": "JH",
+  "kind": "city",
+  "district": "Dumka",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 24.27,
+  "lon": 87.25
+ },
+ {
+  "id": "jh:jamtara",
+  "name": "Jamtara",
+  "state": "JH",
+  "kind": "city",
+  "district": "Jamtara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 23.96,
+  "lon": 86.8
+ },
+ {
+  "id": "jh:godda",
+  "name": "Godda",
+  "state": "JH",
+  "kind": "city",
+  "district": "Godda",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 24.83,
+  "lon": 87.21
+ },
+ {
+  "id": "jh:sahibganj",
+  "name": "Sahibganj",
+  "state": "JH",
+  "kind": "city",
+  "district": "Sahibganj",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sahebganj"
+  ],
+  "lat": 25.25,
+  "lon": 87.64
+ },
+ {
+  "id": "jh:pakur",
+  "name": "Pakur",
+  "state": "JH",
+  "kind": "city",
+  "district": "Pakur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 24.64,
+  "lon": 87.85
+ },
+ {
+  "id": "jh:jamshedpur",
+  "name": "Jamshedpur",
+  "state": "JH",
+  "kind": "city",
+  "district": "East Singhbhum",
+  "scale": 3,
+  "sectors": [
+   "steel",
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "tatanagar",
+   "tata",
+   "purbi singhbhum",
+   "east singhbhum"
+  ],
+  "lat": 22.8,
+  "lon": 86.18
+ },
+ {
+  "id": "jh:chaibasa",
+  "name": "Chaibasa",
+  "state": "JH",
+  "kind": "city",
+  "district": "West Singhbhum",
+  "scale": 1,
+  "sectors": [
+   "steel",
+   "mixed"
+  ],
+  "aka": [
+   "west singhbhum",
+   "pashchimi singhbhum"
+  ],
+  "lat": 22.55,
+  "lon": 85.81
+ },
+ {
+  "id": "jh:seraikela",
+  "name": "Seraikela",
+  "state": "JH",
+  "kind": "city",
+  "district": "Seraikela Kharsawan",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "saraikela",
+   "seraikela kharsawan",
+   "saraikela kharsawan"
+  ],
+  "lat": 22.7,
+  "lon": 85.93
+ },
+ {
+  "id": "jh:adityapur",
+  "name": "Adityapur",
+  "state": "JH",
+  "kind": "city",
+  "district": "Seraikela Kharsawan",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering",
+   "steel"
+  ],
+  "aka": [],
+  "lat": 22.79,
+  "lon": 86.15
+ },
+ {
+  "id": "jh:sindri",
+  "name": "Sindri",
+  "state": "JH",
+  "kind": "city",
+  "district": "Dhanbad",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "cement",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 23.65,
+  "lon": 86.48
+ },
+ {
+  "id": "jh:jharia",
+  "name": "Jharia",
+  "state": "JH",
+  "kind": "city",
+  "district": "Dhanbad",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "jharia coalfield"
+  ],
+  "lat": 23.75,
+  "lon": 86.42
+ },
+ {
+  "id": "jh:patratu",
+  "name": "Patratu",
+  "state": "JH",
+  "kind": "city",
+  "district": "Ramgarh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "pataratu"
+  ],
+  "lat": 23.67,
+  "lon": 85.29
+ },
+ {
+  "id": "jh:ghatshila",
+  "name": "Ghatshila",
+  "state": "JH",
+  "kind": "city",
+  "district": "East Singhbhum",
+  "scale": 1,
+  "sectors": [
+   "metal"
+  ],
+  "aka": [
+   "moubhandar",
+   "mosabani"
+  ],
+  "lat": 22.59,
+  "lon": 86.48
+ },
+ {
+  "id": "jh:jamshedpur-steel-belt",
+  "name": "Jamshedpur Industrial Belt",
+  "state": "JH",
+  "kind": "cluster",
+  "district": "East Singhbhum",
+  "near": "jh:jamshedpur",
+  "scale": 3,
+  "sectors": [
+   "steel",
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "tata steel jamshedpur",
+   "jamshedpur adityapur belt",
+   "golmuri",
+   "burmamines",
+   "bistupur"
+  ]
+ },
+ {
+  "id": "jh:jiada-adityapur",
+  "name": "Adityapur Industrial Area",
+  "state": "JH",
+  "kind": "estate",
+  "district": "Seraikela Kharsawan",
+  "near": "jh:adityapur",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering",
+   "steel"
+  ],
+  "aka": [
+   "aiada",
+   "jiada adityapur",
+   "adityapur ia",
+   "adityapur phase 6",
+   "adityapur phase 7"
+  ]
+ },
+ {
+  "id": "jh:jiada-gamharia",
+  "name": "Gamharia Industrial Area",
+  "state": "JH",
+  "kind": "estate",
+  "district": "Seraikela Kharsawan",
+  "near": "jh:adityapur",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "gamhariya"
+  ]
+ },
+ {
+  "id": "jh:jiada-tupudana",
+  "name": "Tupudana Industrial Area",
+  "state": "JH",
+  "kind": "estate",
+  "district": "Ranchi",
+  "near": "jh:ranchi",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "tupudana",
+   "jiada tupudana"
+  ]
+ },
+ {
+  "id": "jh:jiada-tatisilwai",
+  "name": "Tatisilwai Industrial Area",
+  "state": "JH",
+  "kind": "estate",
+  "district": "Ranchi",
+  "near": "jh:ranchi",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "tatisilway",
+   "tatisilwai phase 1",
+   "tatisilwai phase 2"
+  ]
+ },
+ {
+  "id": "jh:jiada-namkum",
+  "name": "Namkum Industrial Area",
+  "state": "JH",
+  "kind": "estate",
+  "district": "Ranchi",
+  "near": "jh:ranchi",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "namkum"
+  ]
+ },
+ {
+  "id": "jh:jiada-kokar",
+  "name": "Kokar Industrial Area",
+  "state": "JH",
+  "kind": "estate",
+  "district": "Ranchi",
+  "near": "jh:ranchi",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kokar"
+  ]
+ },
+ {
+  "id": "jh:jiada-getalsud",
+  "name": "Getalsud Industrial Area",
+  "state": "JH",
+  "kind": "estate",
+  "district": "Ranchi",
+  "near": "jh:ranchi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "getalsud"
+  ]
+ },
+ {
+  "id": "jh:jiada-hotwar",
+  "name": "Hotwar Industrial Area",
+  "state": "JH",
+  "kind": "estate",
+  "district": "Ranchi",
+  "near": "jh:ranchi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "jh:jiada-irba",
+  "name": "Irba Industrial Area",
+  "state": "JH",
+  "kind": "estate",
+  "district": "Ranchi",
+  "near": "jh:ranchi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "jh:jiada-ramgarh",
+  "name": "Ramgarh Industrial Area",
+  "state": "JH",
+  "kind": "estate",
+  "district": "Ramgarh",
+  "near": "jh:ramgarh",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "mixed"
+  ],
+  "aka": [
+   "jiada ramgarh"
+  ]
+ },
+ {
+  "id": "jh:jiada-patratu",
+  "name": "Patratu Industrial Area",
+  "state": "JH",
+  "kind": "estate",
+  "district": "Ramgarh",
+  "near": "jh:patratu",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "jh:jiada-hazaribagh",
+  "name": "Hazaribagh Industrial Area",
+  "state": "JH",
+  "kind": "estate",
+  "district": "Hazaribagh",
+  "near": "jh:hazaribagh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "jh:jiada-barhi",
+  "name": "Barhi Industrial Area",
+  "state": "JH",
+  "kind": "estate",
+  "district": "Hazaribagh",
+  "near": "jh:hazaribagh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "jh:jiada-lohardaga",
+  "name": "Lohardaga Industrial Area",
+  "state": "JH",
+  "kind": "estate",
+  "district": "Lohardaga",
+  "near": "jh:lohardaga",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "lohardagga industrial area"
+  ]
+ },
+ {
+  "id": "jh:jiada-gumla",
+  "name": "Gumla Industrial Area",
+  "state": "JH",
+  "kind": "estate",
+  "district": "Gumla",
+  "near": "jh:gumla",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "jh:jiada-daltonganj",
+  "name": "Daltonganj Industrial Area",
+  "state": "JH",
+  "kind": "estate",
+  "district": "Palamu",
+  "near": "jh:medininagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "medininagar industrial area"
+  ]
+ },
+ {
+  "id": "jh:jiada-bokaro",
+  "name": "Bokaro Industrial Area",
+  "state": "JH",
+  "kind": "estate",
+  "district": "Bokaro",
+  "near": "jh:bokaro",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "balidih industrial area",
+   "balidih",
+   "jiada bokaro"
+  ]
+ },
+ {
+  "id": "jh:jiada-chandankiyari",
+  "name": "Chandankiyari Industrial Area",
+  "state": "JH",
+  "kind": "estate",
+  "district": "Bokaro",
+  "near": "jh:bokaro",
+  "scale": 1,
+  "sectors": [
+   "steel",
+   "mixed"
+  ],
+  "aka": [
+   "chandankiyari"
+  ]
+ },
+ {
+  "id": "jh:jiada-kandra",
+  "name": "Kandra Industrial Area",
+  "state": "JH",
+  "kind": "estate",
+  "district": "Dhanbad",
+  "near": "jh:dhanbad",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "mixed"
+  ],
+  "aka": [
+   "kandra govindpur",
+   "bhitia"
+  ]
+ },
+ {
+  "id": "jh:jiada-sindri",
+  "name": "Sindri Industrial Area",
+  "state": "JH",
+  "kind": "estate",
+  "district": "Dhanbad",
+  "near": "jh:sindri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "jh:jiada-giridih",
+  "name": "Giridih Industrial Area",
+  "state": "JH",
+  "kind": "estate",
+  "district": "Giridih",
+  "near": "jh:giridih",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "jh:jiada-devipur",
+  "name": "Devipur Industrial Area",
+  "state": "JH",
+  "kind": "estate",
+  "district": "Deoghar",
+  "near": "jh:deoghar",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "devipur industrial estate"
+  ]
+ },
+ {
+  "id": "jh:jiada-jasidih",
+  "name": "Jasidih Industrial Area",
+  "state": "JH",
+  "kind": "estate",
+  "district": "Deoghar",
+  "near": "jh:deoghar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "jasidih"
+  ]
+ },
+ {
+  "id": "wb:kolkata",
+  "name": "Kolkata",
+  "state": "WB",
+  "kind": "city",
+  "district": "Kolkata",
+  "scale": 3,
+  "sectors": [
+   "fmcg",
+   "engineering",
+   "logistics",
+   "leather",
+   "it-campus",
+   "mixed"
+  ],
+  "aka": [
+   "calcutta",
+   "kol",
+   "ccu"
+  ],
+  "lat": 22.57,
+  "lon": 88.36
+ },
+ {
+  "id": "wb:howrah",
+  "name": "Howrah",
+  "state": "WB",
+  "kind": "city",
+  "district": "Howrah",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "metal",
+   "textile",
+   "logistics"
+  ],
+  "aka": [
+   "haora"
+  ],
+  "lat": 22.59,
+  "lon": 88.31
+ },
+ {
+  "id": "wb:chinsurah",
+  "name": "Chinsurah",
+  "state": "WB",
+  "kind": "city",
+  "district": "Hooghly",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "chuchura",
+   "hooghly",
+   "hugli",
+   "hooghly chinsurah"
+  ],
+  "lat": 22.9,
+  "lon": 88.39
+ },
+ {
+  "id": "wb:barasat",
+  "name": "Barasat",
+  "state": "WB",
+  "kind": "city",
+  "district": "North 24 Parganas",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "north 24 parganas"
+  ],
+  "lat": 22.72,
+  "lon": 88.48
+ },
+ {
+  "id": "wb:alipore",
+  "name": "Alipore",
+  "state": "WB",
+  "kind": "city",
+  "district": "South 24 Parganas",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "south 24 parganas",
+   "alipur"
+  ],
+  "lat": 22.53,
+  "lon": 88.33
+ },
+ {
+  "id": "wb:krishnanagar",
+  "name": "Krishnanagar",
+  "state": "WB",
+  "kind": "city",
+  "district": "Nadia",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "krishnagar",
+   "nadia"
+  ],
+  "lat": 23.4,
+  "lon": 88.5
+ },
+ {
+  "id": "wb:baharampur",
+  "name": "Baharampur",
+  "state": "WB",
+  "kind": "city",
+  "district": "Murshidabad",
+  "scale": 1,
+  "sectors": [
+   "textile",
+   "mixed"
+  ],
+  "aka": [
+   "berhampore",
+   "murshidabad"
+  ],
+  "lat": 24.1,
+  "lon": 88.25
+ },
+ {
+  "id": "wb:bardhaman",
+  "name": "Bardhaman",
+  "state": "WB",
+  "kind": "city",
+  "district": "Purba Bardhaman",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "burdwan",
+   "purba bardhaman"
+  ],
+  "lat": 23.23,
+  "lon": 87.86
+ },
+ {
+  "id": "wb:asansol",
+  "name": "Asansol",
+  "state": "WB",
+  "kind": "city",
+  "district": "Paschim Bardhaman",
+  "scale": 3,
+  "sectors": [
+   "steel",
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "paschim bardhaman"
+  ],
+  "lat": 23.68,
+  "lon": 86.98
+ },
+ {
+  "id": "wb:suri",
+  "name": "Suri",
+  "state": "WB",
+  "kind": "city",
+  "district": "Birbhum",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "siuri",
+   "birbhum"
+  ],
+  "lat": 23.91,
+  "lon": 87.53
+ },
+ {
+  "id": "wb:bankura",
+  "name": "Bankura",
+  "state": "WB",
+  "kind": "city",
+  "district": "Bankura",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 23.23,
+  "lon": 87.07
+ },
+ {
+  "id": "wb:purulia",
+  "name": "Purulia",
+  "state": "WB",
+  "kind": "city",
+  "district": "Purulia",
+  "scale": 1,
+  "sectors": [
+   "steel",
+   "cement",
+   "mixed"
+  ],
+  "aka": [
+   "puruliya"
+  ],
+  "lat": 23.33,
+  "lon": 86.36
+ },
+ {
+  "id": "wb:jhargram",
+  "name": "Jhargram",
+  "state": "WB",
+  "kind": "city",
+  "district": "Jhargram",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 22.45,
+  "lon": 86.99
+ },
+ {
+  "id": "wb:medinipur",
+  "name": "Medinipur",
+  "state": "WB",
+  "kind": "city",
+  "district": "Paschim Medinipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "midnapore",
+   "paschim medinipur",
+   "west midnapore"
+  ],
+  "lat": 22.42,
+  "lon": 87.32
+ },
+ {
+  "id": "wb:tamluk",
+  "name": "Tamluk",
+  "state": "WB",
+  "kind": "city",
+  "district": "Purba Medinipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "purba medinipur",
+   "east midnapore"
+  ],
+  "lat": 22.3,
+  "lon": 87.92
+ },
+ {
+  "id": "wb:english-bazar",
+  "name": "English Bazar",
+  "state": "WB",
+  "kind": "city",
+  "district": "Malda",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "malda",
+   "maldah",
+   "ingraj bazar"
+  ],
+  "lat": 25.0,
+  "lon": 88.14
+ },
+ {
+  "id": "wb:raiganj",
+  "name": "Raiganj",
+  "state": "WB",
+  "kind": "city",
+  "district": "Uttar Dinajpur",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "uttar dinajpur"
+  ],
+  "lat": 25.62,
+  "lon": 88.12
+ },
+ {
+  "id": "wb:balurghat",
+  "name": "Balurghat",
+  "state": "WB",
+  "kind": "city",
+  "district": "Dakshin Dinajpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "dakshin dinajpur"
+  ],
+  "lat": 25.22,
+  "lon": 88.77
+ },
+ {
+  "id": "wb:jalpaiguri",
+  "name": "Jalpaiguri",
+  "state": "WB",
+  "kind": "city",
+  "district": "Jalpaiguri",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.52,
+  "lon": 88.72
+ },
+ {
+  "id": "wb:alipurduar",
+  "name": "Alipurduar",
+  "state": "WB",
+  "kind": "city",
+  "district": "Alipurduar",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.49,
+  "lon": 89.53
+ },
+ {
+  "id": "wb:cooch-behar",
+  "name": "Cooch Behar",
+  "state": "WB",
+  "kind": "city",
+  "district": "Cooch Behar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "coochbehar",
+   "koch bihar",
+   "kochbihar"
+  ],
+  "lat": 26.32,
+  "lon": 89.45
+ },
+ {
+  "id": "wb:darjeeling",
+  "name": "Darjeeling",
+  "state": "WB",
+  "kind": "city",
+  "district": "Darjeeling",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "darjiling"
+  ],
+  "lat": 27.04,
+  "lon": 88.26
+ },
+ {
+  "id": "wb:kalimpong",
+  "name": "Kalimpong",
+  "state": "WB",
+  "kind": "city",
+  "district": "Kalimpong",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 27.06,
+  "lon": 88.47
+ },
+ {
+  "id": "wb:siliguri",
+  "name": "Siliguri",
+  "state": "WB",
+  "kind": "city",
+  "district": "Darjeeling",
+  "scale": 2,
+  "sectors": [
+   "logistics",
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "shiliguri"
+  ],
+  "lat": 26.73,
+  "lon": 88.4
+ },
+ {
+  "id": "wb:durgapur",
+  "name": "Durgapur",
+  "state": "WB",
+  "kind": "city",
+  "district": "Paschim Bardhaman",
+  "scale": 3,
+  "sectors": [
+   "steel",
+   "engineering",
+   "chemical"
+  ],
+  "aka": [],
+  "lat": 23.55,
+  "lon": 87.32
+ },
+ {
+  "id": "wb:haldia",
+  "name": "Haldia",
+  "state": "WB",
+  "kind": "city",
+  "district": "Purba Medinipur",
+  "scale": 3,
+  "sectors": [
+   "chemical",
+   "logistics",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 22.06,
+  "lon": 88.07
+ },
+ {
+  "id": "wb:kharagpur",
+  "name": "Kharagpur",
+  "state": "WB",
+  "kind": "city",
+  "district": "Paschim Medinipur",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "steel",
+   "mixed"
+  ],
+  "aka": [
+   "kgp"
+  ],
+  "lat": 22.33,
+  "lon": 87.32
+ },
+ {
+  "id": "wb:kalyani",
+  "name": "Kalyani",
+  "state": "WB",
+  "kind": "city",
+  "district": "Nadia",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "pharma",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 22.98,
+  "lon": 88.43
+ },
+ {
+  "id": "wb:uluberia",
+  "name": "Uluberia",
+  "state": "WB",
+  "kind": "city",
+  "district": "Howrah",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 22.47,
+  "lon": 88.11
+ },
+ {
+  "id": "wb:dankuni",
+  "name": "Dankuni",
+  "state": "WB",
+  "kind": "city",
+  "district": "Hooghly",
+  "scale": 2,
+  "sectors": [
+   "logistics",
+   "food",
+   "fmcg"
+  ],
+  "aka": [],
+  "lat": 22.68,
+  "lon": 88.29
+ },
+ {
+  "id": "wb:salt-lake",
+  "name": "Bidhannagar (Salt Lake)",
+  "state": "WB",
+  "kind": "city",
+  "district": "North 24 Parganas",
+  "scale": 3,
+  "sectors": [
+   "it-campus",
+   "mixed"
+  ],
+  "aka": [
+   "salt lake",
+   "saltlake",
+   "bidhannagar",
+   "salt lake city"
+  ],
+  "lat": 22.58,
+  "lon": 88.42
+ },
+ {
+  "id": "wb:new-town",
+  "name": "New Town",
+  "state": "WB",
+  "kind": "city",
+  "district": "North 24 Parganas",
+  "scale": 3,
+  "sectors": [
+   "it-campus",
+   "mixed"
+  ],
+  "aka": [
+   "rajarhat",
+   "newtown",
+   "new town rajarhat"
+  ],
+  "lat": 22.58,
+  "lon": 88.47
+ },
+ {
+  "id": "wb:barrackpore",
+  "name": "Barrackpore",
+  "state": "WB",
+  "kind": "city",
+  "district": "North 24 Parganas",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "engineering"
+  ],
+  "aka": [
+   "barackpur",
+   "barrackpur"
+  ],
+  "lat": 22.76,
+  "lon": 88.38
+ },
+ {
+  "id": "wb:titagarh",
+  "name": "Titagarh",
+  "state": "WB",
+  "kind": "city",
+  "district": "North 24 Parganas",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "textile",
+   "paper"
+  ],
+  "aka": [],
+  "lat": 22.74,
+  "lon": 88.37
+ },
+ {
+  "id": "wb:budge-budge",
+  "name": "Budge Budge",
+  "state": "WB",
+  "kind": "city",
+  "district": "South 24 Parganas",
+  "scale": 1,
+  "sectors": [
+   "textile",
+   "logistics"
+  ],
+  "aka": [
+   "bajbaj"
+  ],
+  "lat": 22.48,
+  "lon": 88.18
+ },
+ {
+  "id": "wb:chittaranjan",
+  "name": "Chittaranjan",
+  "state": "WB",
+  "kind": "city",
+  "district": "Paschim Bardhaman",
+  "scale": 2,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "clw",
+   "chittaranjan locomotive works"
+  ],
+  "lat": 23.87,
+  "lon": 86.87
+ },
+ {
+  "id": "wb:burnpur",
+  "name": "Burnpur",
+  "state": "WB",
+  "kind": "city",
+  "district": "Paschim Bardhaman",
+  "scale": 2,
+  "sectors": [
+   "steel"
+  ],
+  "aka": [
+   "iisco",
+   "iisco steel plant"
+  ],
+  "lat": 23.66,
+  "lon": 86.94
+ },
+ {
+  "id": "wb:raniganj",
+  "name": "Raniganj",
+  "state": "WB",
+  "kind": "city",
+  "district": "Paschim Bardhaman",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 23.62,
+  "lon": 87.12
+ },
+ {
+  "id": "wb:panagarh",
+  "name": "Panagarh",
+  "state": "WB",
+  "kind": "city",
+  "district": "Paschim Bardhaman",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 23.45,
+  "lon": 87.43
+ },
+ {
+  "id": "wb:bolpur",
+  "name": "Bolpur",
+  "state": "WB",
+  "kind": "city",
+  "district": "Birbhum",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "shantiniketan",
+   "santiniketan"
+  ],
+  "lat": 23.67,
+  "lon": 87.7
+ },
+ {
+  "id": "wb:bishnupur",
+  "name": "Bishnupur",
+  "state": "WB",
+  "kind": "city",
+  "district": "Bankura",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 23.08,
+  "lon": 87.32
+ },
+ {
+  "id": "wb:hooghly-industrial-belt",
+  "name": "Hooghly Industrial Belt",
+  "state": "WB",
+  "kind": "cluster",
+  "district": "North 24 Parganas",
+  "near": "wb:kolkata",
+  "scale": 3,
+  "sectors": [
+   "textile",
+   "engineering",
+   "paper",
+   "chemical"
+  ],
+  "aka": [
+   "hooghly jute belt",
+   "jute belt",
+   "hugli industrial belt"
+  ]
+ },
+ {
+  "id": "wb:asansol-durgapur-belt",
+  "name": "Asansol-Durgapur Industrial Belt",
+  "state": "WB",
+  "kind": "cluster",
+  "district": "Paschim Bardhaman",
+  "near": "wb:durgapur",
+  "scale": 3,
+  "sectors": [
+   "steel",
+   "engineering",
+   "cement",
+   "chemical"
+  ],
+  "aka": [
+   "durgapur asansol belt",
+   "adda",
+   "asansol durgapur",
+   "durgapur raniganj asansol"
+  ]
+ },
+ {
+  "id": "wb:howrah-engineering-belt",
+  "name": "Howrah Engineering Cluster",
+  "state": "WB",
+  "kind": "cluster",
+  "district": "Howrah",
+  "near": "wb:howrah",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "metal"
+  ],
+  "aka": [
+   "howrah foundry",
+   "liluah",
+   "belur",
+   "bally"
+  ]
+ },
+ {
+  "id": "wb:haldia-industrial-belt",
+  "name": "Haldia Industrial Belt",
+  "state": "WB",
+  "kind": "cluster",
+  "district": "Purba Medinipur",
+  "near": "wb:haldia",
+  "scale": 3,
+  "sectors": [
+   "chemical",
+   "logistics"
+  ],
+  "aka": [
+   "haldia petrochemical",
+   "haldia dock complex",
+   "haldia refinery"
+  ]
+ },
+ {
+  "id": "wb:wbiidc-kalyani",
+  "name": "Kalyani Industrial Park",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Nadia",
+  "near": "wb:kalyani",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "pharma",
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "kalyani growth centre",
+   "kalyani phase 1",
+   "kalyani phase 2",
+   "kalyani phase 3",
+   "wbiidc kalyani"
+  ]
+ },
+ {
+  "id": "wb:wbiidc-uluberia",
+  "name": "Uluberia Industrial Park",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Howrah",
+  "near": "wb:uluberia",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "uluberia growth centre",
+   "birshibpur",
+   "wbiidc uluberia"
+  ]
+ },
+ {
+  "id": "wb:wbiidc-falta",
+  "name": "Falta Industrial Park",
+  "state": "WB",
+  "kind": "estate",
+  "district": "South 24 Parganas",
+  "near": "wb:alipore",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "falta growth centre",
+   "falta sector 3",
+   "falta sector 4",
+   "falta sector 5"
+  ]
+ },
+ {
+  "id": "wb:wbiidc-haldia",
+  "name": "Haldia Industrial Park",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Purba Medinipur",
+  "near": "wb:haldia",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "mixed"
+  ],
+  "aka": [
+   "durga chawk",
+   "haldia growth centre"
+  ]
+ },
+ {
+  "id": "wb:wbiidc-kharagpur",
+  "name": "Kharagpur Industrial Park",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Paschim Medinipur",
+  "near": "wb:kharagpur",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "nimpura industrial park",
+   "nimpura",
+   "kharagpur growth centre"
+  ]
+ },
+ {
+  "id": "wb:wbiidc-bishnupur",
+  "name": "Bishnupur Industrial Park",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Bankura",
+  "near": "wb:bishnupur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "dwarika",
+   "bishnupur growth centre"
+  ]
+ },
+ {
+  "id": "wb:wbiidc-bolpur",
+  "name": "Bolpur Shilpa Niketan",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Birbhum",
+  "near": "wb:bolpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "bolpur industrial park",
+   "bolpur growth centre"
+  ]
+ },
+ {
+  "id": "wb:wbiidc-coochbehar",
+  "name": "Coochbehar Industrial Park",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Cooch Behar",
+  "near": "wb:cooch-behar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "chakchara",
+   "cooch behar growth centre"
+  ]
+ },
+ {
+  "id": "wb:wbiidc-dabgram",
+  "name": "Dabgram Industrial Park",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Jalpaiguri",
+  "near": "wb:siliguri",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "dabgram",
+   "dabgram growth centre"
+  ]
+ },
+ {
+  "id": "wb:wbiidc-raninagar",
+  "name": "Raninagar Industrial Park",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Jalpaiguri",
+  "near": "wb:jalpaiguri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "raninagar growth centre"
+  ]
+ },
+ {
+  "id": "wb:wbiidc-malda",
+  "name": "Malda Industrial Park",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Malda",
+  "near": "wb:english-bazar",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "malda growth centre",
+   "malda phase 1",
+   "malda phase 2"
+  ]
+ },
+ {
+  "id": "wb:wbidc-vidyasagar",
+  "name": "Vidyasagar Industrial Park",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Paschim Medinipur",
+  "near": "wb:kharagpur",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "vidyasagar industrial park kharagpur",
+   "vip kharagpur"
+  ]
+ },
+ {
+  "id": "wb:wbidc-kharagpur-general",
+  "name": "Kharagpur General Industrial Park",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Paschim Medinipur",
+  "near": "wb:kharagpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "wb:wbidc-sahachawk",
+  "name": "Sahachawk Industrial Park",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Paschim Medinipur",
+  "near": "wb:kharagpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sahachak"
+  ]
+ },
+ {
+  "id": "wb:wbidc-garbeta",
+  "name": "Garbeta Industrial Park",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Paschim Medinipur",
+  "near": "wb:medinipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "wb:wbidc-panagarh",
+  "name": "Panagarh Industrial Park",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Paschim Bardhaman",
+  "near": "wb:panagarh",
+  "scale": 2,
+  "sectors": [
+   "cement",
+   "chemical",
+   "mixed"
+  ],
+  "aka": [
+   "panagarh industrial park northern side",
+   "panagarh industrial park southern side"
+  ]
+ },
+ {
+  "id": "wb:wbidc-raghunathpur",
+  "name": "Raghunathpur Steel and Allied Industrial Park",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Purulia",
+  "near": "wb:purulia",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "cement"
+  ],
+  "aka": [
+   "raghunathpur industrial park",
+   "raghunathpur"
+  ]
+ },
+ {
+  "id": "wb:wbidc-jangal-sundari",
+  "name": "Jangal Sundari Karmanagari",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Purulia",
+  "near": "wb:purulia",
+  "scale": 1,
+  "sectors": [
+   "steel",
+   "mixed"
+  ],
+  "aka": [
+   "jangalsundari karmanagari",
+   "jangal sundari"
+  ]
+ },
+ {
+  "id": "wb:wbidc-barjora",
+  "name": "Plasto Steel Park, Barjora",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Bankura",
+  "near": "wb:bankura",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "plastics"
+  ],
+  "aka": [
+   "barjora industrial park",
+   "barzora",
+   "plasto steel park"
+  ]
+ },
+ {
+  "id": "wb:wbidc-haringhata",
+  "name": "Haringhata Industrial Park",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Nadia",
+  "near": "wb:kalyani",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "wb:wbidc-rishi-bankim",
+  "name": "Rishi Bankim Shilpaudyan",
+  "state": "WB",
+  "kind": "estate",
+  "district": "North 24 Parganas",
+  "near": "wb:barrackpore",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "rishi bankim silpaudyan",
+   "naihati industrial park"
+  ]
+ },
+ {
+  "id": "wb:wbidc-sankrail-food-park",
+  "name": "Sankrail Food Park",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Howrah",
+  "near": "wb:howrah",
+  "scale": 2,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "sudha ras food park",
+   "kandua food park",
+   "food park 3 sankrail",
+   "sankrail"
+  ]
+ },
+ {
+  "id": "wb:wbidc-sankrail-poly-park",
+  "name": "Sankrail Poly Park",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Howrah",
+  "near": "wb:howrah",
+  "scale": 1,
+  "sectors": [
+   "plastics"
+  ],
+  "aka": [
+   "poly park sankrail"
+  ]
+ },
+ {
+  "id": "wb:wbidc-paridhan",
+  "name": "Paridhan Garment Park",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Kolkata",
+  "near": "wb:kolkata",
+  "scale": 2,
+  "sectors": [
+   "garments"
+  ],
+  "aka": [
+   "paridhan",
+   "beliaghata garment park"
+  ]
+ },
+ {
+  "id": "wb:wbidc-shalboni",
+  "name": "Shalboni Industrial Park",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Paschim Medinipur",
+  "near": "wb:medinipur",
+  "scale": 1,
+  "sectors": [
+   "steel",
+   "cement"
+  ],
+  "aka": [
+   "salboni",
+   "jsw salboni"
+  ]
+ },
+ {
+  "id": "wb:wbidc-goaltore",
+  "name": "Goaltore Industrial Park",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Paschim Medinipur",
+  "near": "wb:medinipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "goaltor"
+  ]
+ },
+ {
+  "id": "wb:wbidc-ankurhati-gems",
+  "name": "Gems and Jewellery Park, Ankurhati",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Howrah",
+  "near": "wb:howrah",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "ankurhati",
+   "gems jewellery park howrah"
+  ]
+ },
+ {
+  "id": "wb:falta-sez",
+  "name": "Falta SEZ",
+  "state": "WB",
+  "kind": "estate",
+  "district": "South 24 Parganas",
+  "near": "wb:alipore",
+  "scale": 2,
+  "sectors": [
+   "sez",
+   "mixed"
+  ],
+  "aka": [
+   "falta special economic zone",
+   "falta epz",
+   "falta"
+  ]
+ },
+ {
+  "id": "wb:manikanchan-sez",
+  "name": "Manikanchan SEZ",
+  "state": "WB",
+  "kind": "estate",
+  "district": "North 24 Parganas",
+  "near": "wb:salt-lake",
+  "scale": 1,
+  "sectors": [
+   "sez"
+  ],
+  "aka": [
+   "manikanchan gems and jewellery sez"
+  ]
+ },
+ {
+  "id": "wb:salt-lake-sector-v",
+  "name": "Salt Lake Sector V",
+  "state": "WB",
+  "kind": "estate",
+  "district": "North 24 Parganas",
+  "near": "wb:salt-lake",
+  "scale": 3,
+  "sectors": [
+   "it-campus"
+  ],
+  "aka": [
+   "sector 5",
+   "sector v",
+   "saltlake sector v",
+   "nabadiganta"
+  ]
+ },
+ {
+  "id": "wb:kolkata-leather-complex",
+  "name": "Kolkata Leather Complex, Bantala",
+  "state": "WB",
+  "kind": "estate",
+  "district": "South 24 Parganas",
+  "near": "wb:kolkata",
+  "scale": 2,
+  "sectors": [
+   "leather"
+  ],
+  "aka": [
+   "calcutta leather complex",
+   "bantala",
+   "bantala leather complex",
+   "clc"
+  ]
+ },
+ {
+  "id": "wb:kasba-industrial-estate",
+  "name": "Kasba Industrial Estate",
+  "state": "WB",
+  "kind": "estate",
+  "district": "Kolkata",
+  "near": "wb:kolkata",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kasba"
+  ]
+ },
+ {
+  "id": "wb:dankuni-logistics",
+  "name": "Dankuni Logistics Cluster",
+  "state": "WB",
+  "kind": "cluster",
+  "district": "Hooghly",
+  "near": "wb:dankuni",
+  "scale": 2,
+  "sectors": [
+   "logistics",
+   "fmcg"
+  ],
+  "aka": [
+   "dankuni warehouse",
+   "dankuni industrial area"
+  ]
+ },
+ {
+  "id": "as:guwahati",
+  "name": "Guwahati",
+  "state": "AS",
+  "kind": "city",
+  "district": "Kamrup Metropolitan",
+  "scale": 3,
+  "sectors": [
+   "logistics",
+   "fmcg",
+   "pharma",
+   "mixed"
+  ],
+  "aka": [
+   "gauhati",
+   "dispur",
+   "ghy",
+   "kamrup metro"
+  ],
+  "lat": 26.14,
+  "lon": 91.74
+ },
+ {
+  "id": "as:amingaon",
+  "name": "Amingaon",
+  "state": "AS",
+  "kind": "city",
+  "district": "Kamrup",
+  "scale": 2,
+  "sectors": [
+   "logistics",
+   "mixed"
+  ],
+  "aka": [
+   "kamrup rural",
+   "north guwahati"
+  ],
+  "lat": 26.19,
+  "lon": 91.68
+ },
+ {
+  "id": "as:mushalpur",
+  "name": "Mushalpur",
+  "state": "AS",
+  "kind": "city",
+  "district": "Baksa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "baksa"
+  ]
+ },
+ {
+  "id": "as:pathsala",
+  "name": "Pathsala",
+  "state": "AS",
+  "kind": "city",
+  "district": "Bajali",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "bajali"
+  ],
+  "lat": 26.5,
+  "lon": 91.18
+ },
+ {
+  "id": "as:barpeta",
+  "name": "Barpeta",
+  "state": "AS",
+  "kind": "city",
+  "district": "Barpeta",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "barpeta road"
+  ],
+  "lat": 26.32,
+  "lon": 91.0
+ },
+ {
+  "id": "as:biswanath-chariali",
+  "name": "Biswanath Chariali",
+  "state": "AS",
+  "kind": "city",
+  "district": "Biswanath",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "biswanath"
+  ],
+  "lat": 26.73,
+  "lon": 93.15
+ },
+ {
+  "id": "as:bongaigaon",
+  "name": "Bongaigaon",
+  "state": "AS",
+  "kind": "city",
+  "district": "Bongaigaon",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "mixed"
+  ],
+  "aka": [
+   "new bongaigaon"
+  ],
+  "lat": 26.48,
+  "lon": 90.56
+ },
+ {
+  "id": "as:silchar",
+  "name": "Silchar",
+  "state": "AS",
+  "kind": "city",
+  "district": "Cachar",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "paper",
+   "mixed"
+  ],
+  "aka": [
+   "cachar"
+  ],
+  "lat": 24.83,
+  "lon": 92.78
+ },
+ {
+  "id": "as:sonari",
+  "name": "Sonari",
+  "state": "AS",
+  "kind": "city",
+  "district": "Charaideo",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "charaideo"
+  ],
+  "lat": 27.03,
+  "lon": 95.02
+ },
+ {
+  "id": "as:kajalgaon",
+  "name": "Kajalgaon",
+  "state": "AS",
+  "kind": "city",
+  "district": "Chirang",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "chirang"
+  ]
+ },
+ {
+  "id": "as:mangaldoi",
+  "name": "Mangaldoi",
+  "state": "AS",
+  "kind": "city",
+  "district": "Darrang",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "mangaldai",
+   "darrang"
+  ],
+  "lat": 26.44,
+  "lon": 92.03
+ },
+ {
+  "id": "as:dhemaji",
+  "name": "Dhemaji",
+  "state": "AS",
+  "kind": "city",
+  "district": "Dhemaji",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 27.48,
+  "lon": 94.58
+ },
+ {
+  "id": "as:dhubri",
+  "name": "Dhubri",
+  "state": "AS",
+  "kind": "city",
+  "district": "Dhubri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.02,
+  "lon": 89.98
+ },
+ {
+  "id": "as:dibrugarh",
+  "name": "Dibrugarh",
+  "state": "AS",
+  "kind": "city",
+  "district": "Dibrugarh",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "chemical",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 27.47,
+  "lon": 94.91
+ },
+ {
+  "id": "as:haflong",
+  "name": "Haflong",
+  "state": "AS",
+  "kind": "city",
+  "district": "Dima Hasao",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "dima hasao",
+   "north cachar hills"
+  ],
+  "lat": 25.17,
+  "lon": 93.02
+ },
+ {
+  "id": "as:goalpara",
+  "name": "Goalpara",
+  "state": "AS",
+  "kind": "city",
+  "district": "Goalpara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.17,
+  "lon": 90.62
+ },
+ {
+  "id": "as:golaghat",
+  "name": "Golaghat",
+  "state": "AS",
+  "kind": "city",
+  "district": "Golaghat",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.52,
+  "lon": 93.96
+ },
+ {
+  "id": "as:hailakandi",
+  "name": "Hailakandi",
+  "state": "AS",
+  "kind": "city",
+  "district": "Hailakandi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 24.68,
+  "lon": 92.56
+ },
+ {
+  "id": "as:hojai",
+  "name": "Hojai",
+  "state": "AS",
+  "kind": "city",
+  "district": "Hojai",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sankardev nagar",
+   "shankardev nagar"
+  ],
+  "lat": 26.0,
+  "lon": 92.86
+ },
+ {
+  "id": "as:jorhat",
+  "name": "Jorhat",
+  "state": "AS",
+  "kind": "city",
+  "district": "Jorhat",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.75,
+  "lon": 94.2
+ },
+ {
+  "id": "as:diphu",
+  "name": "Diphu",
+  "state": "AS",
+  "kind": "city",
+  "district": "Karbi Anglong",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "karbi anglong"
+  ],
+  "lat": 25.84,
+  "lon": 93.43
+ },
+ {
+  "id": "as:karimganj",
+  "name": "Karimganj",
+  "state": "AS",
+  "kind": "city",
+  "district": "Sribhumi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sribhumi"
+  ],
+  "lat": 24.87,
+  "lon": 92.35
+ },
+ {
+  "id": "as:kokrajhar",
+  "name": "Kokrajhar",
+  "state": "AS",
+  "kind": "city",
+  "district": "Kokrajhar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.4,
+  "lon": 90.27
+ },
+ {
+  "id": "as:north-lakhimpur",
+  "name": "North Lakhimpur",
+  "state": "AS",
+  "kind": "city",
+  "district": "Lakhimpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "lakhimpur"
+  ],
+  "lat": 27.24,
+  "lon": 94.1
+ },
+ {
+  "id": "as:garamur",
+  "name": "Garamur",
+  "state": "AS",
+  "kind": "city",
+  "district": "Majuli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "majuli"
+  ]
+ },
+ {
+  "id": "as:morigaon",
+  "name": "Morigaon",
+  "state": "AS",
+  "kind": "city",
+  "district": "Morigaon",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "marigaon"
+  ],
+  "lat": 26.25,
+  "lon": 92.34
+ },
+ {
+  "id": "as:nagaon",
+  "name": "Nagaon",
+  "state": "AS",
+  "kind": "city",
+  "district": "Nagaon",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "nowgong"
+  ],
+  "lat": 26.35,
+  "lon": 92.68
+ },
+ {
+  "id": "as:nalbari",
+  "name": "Nalbari",
+  "state": "AS",
+  "kind": "city",
+  "district": "Nalbari",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.44,
+  "lon": 91.44
+ },
+ {
+  "id": "as:sivasagar",
+  "name": "Sivasagar",
+  "state": "AS",
+  "kind": "city",
+  "district": "Sivasagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sibsagar"
+  ],
+  "lat": 26.98,
+  "lon": 94.64
+ },
+ {
+  "id": "as:tezpur",
+  "name": "Tezpur",
+  "state": "AS",
+  "kind": "city",
+  "district": "Sonitpur",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "sonitpur"
+  ],
+  "lat": 26.63,
+  "lon": 92.8
+ },
+ {
+  "id": "as:hatsingimari",
+  "name": "Hatsingimari",
+  "state": "AS",
+  "kind": "city",
+  "district": "South Salmara-Mankachar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "south salmara mankachar"
+  ]
+ },
+ {
+  "id": "as:tamulpur",
+  "name": "Tamulpur",
+  "state": "AS",
+  "kind": "city",
+  "district": "Tamulpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:tinsukia",
+  "name": "Tinsukia",
+  "state": "AS",
+  "kind": "city",
+  "district": "Tinsukia",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "chemical",
+   "plastics",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 27.49,
+  "lon": 95.36
+ },
+ {
+  "id": "as:udalguri",
+  "name": "Udalguri",
+  "state": "AS",
+  "kind": "city",
+  "district": "Udalguri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.75,
+  "lon": 92.1
+ },
+ {
+  "id": "as:hamren",
+  "name": "Hamren",
+  "state": "AS",
+  "kind": "city",
+  "district": "West Karbi Anglong",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "west karbi anglong"
+  ]
+ },
+ {
+  "id": "as:digboi",
+  "name": "Digboi",
+  "state": "AS",
+  "kind": "city",
+  "district": "Tinsukia",
+  "scale": 1,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": [
+   "digboi refinery"
+  ],
+  "lat": 27.39,
+  "lon": 95.62
+ },
+ {
+  "id": "as:duliajan",
+  "name": "Duliajan",
+  "state": "AS",
+  "kind": "city",
+  "district": "Dibrugarh",
+  "scale": 1,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": [
+   "oil india duliajan"
+  ],
+  "lat": 27.36,
+  "lon": 95.32
+ },
+ {
+  "id": "as:namrup",
+  "name": "Namrup",
+  "state": "AS",
+  "kind": "city",
+  "district": "Dibrugarh",
+  "scale": 1,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": [
+   "bvfcl namrup"
+  ],
+  "lat": 27.19,
+  "lon": 95.33
+ },
+ {
+  "id": "as:numaligarh",
+  "name": "Numaligarh",
+  "state": "AS",
+  "kind": "city",
+  "district": "Golaghat",
+  "scale": 2,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": [
+   "numaligarh refinery",
+   "nrl"
+  ],
+  "lat": 26.62,
+  "lon": 93.72
+ },
+ {
+  "id": "as:jagiroad",
+  "name": "Jagiroad",
+  "state": "AS",
+  "kind": "city",
+  "district": "Morigaon",
+  "scale": 1,
+  "sectors": [
+   "paper",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.12,
+  "lon": 92.2
+ },
+ {
+  "id": "as:margherita",
+  "name": "Margherita",
+  "state": "AS",
+  "kind": "city",
+  "district": "Tinsukia",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 27.28,
+  "lon": 95.68
+ },
+ {
+  "id": "as:epip-amingaon",
+  "name": "EPIP Amingaon",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Kamrup",
+  "near": "as:amingaon",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "pharma",
+   "plastics",
+   "mixed"
+  ],
+  "aka": [
+   "export promotion industrial park amingaon",
+   "amingaon epip"
+  ]
+ },
+ {
+  "id": "as:ie-amingaon",
+  "name": "Amingaon Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Kamrup",
+  "near": "as:amingaon",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "amingaon industrial area"
+  ]
+ },
+ {
+  "id": "as:ie-bamunimaidan",
+  "name": "Bamunimaidan Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Kamrup Metropolitan",
+  "near": "as:guwahati",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "bamunimaidam",
+   "bamuni maidan",
+   "bamunimaidan industrial area"
+  ]
+ },
+ {
+  "id": "as:ie-bonda",
+  "name": "Bonda Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Kamrup Metropolitan",
+  "near": "as:guwahati",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "bonda"
+  ]
+ },
+ {
+  "id": "as:ie-sonapur",
+  "name": "Sonapur Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Kamrup Metropolitan",
+  "near": "as:guwahati",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sonapur"
+  ]
+ },
+ {
+  "id": "as:ie-amerigog",
+  "name": "Amerigog Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Kamrup Metropolitan",
+  "near": "as:guwahati",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "amerigog"
+  ]
+ },
+ {
+  "id": "as:ia-kalapahar",
+  "name": "Kalapahar Industrial Area",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Kamrup Metropolitan",
+  "near": "as:guwahati",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kalapahar"
+  ]
+ },
+ {
+  "id": "as:igc-chaygaon",
+  "name": "Chaygaon Industrial Growth Centre",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Kamrup",
+  "near": "as:guwahati",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "chaygaon igc",
+   "chaygaon patgaon jambari",
+   "chaygaon tea park",
+   "chaygaon food park"
+  ]
+ },
+ {
+  "id": "as:igc-patgaon",
+  "name": "Patgaon Industrial Growth Centre, Rani",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Kamrup",
+  "near": "as:guwahati",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "patgaon",
+   "rani industrial area"
+  ]
+ },
+ {
+  "id": "as:ie-nagarbera",
+  "name": "Nagarbera Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Kamrup",
+  "near": "as:amingaon",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:iidc-rangia",
+  "name": "Rangia IIDC",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Kamrup",
+  "near": "as:amingaon",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "rangia"
+  ]
+ },
+ {
+  "id": "as:ie-jagiroad",
+  "name": "Jagiroad Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Morigaon",
+  "near": "as:jagiroad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "jagiroad micro industrial park"
+  ]
+ },
+ {
+  "id": "as:ie-dhing",
+  "name": "Dhing Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Nagaon",
+  "near": "as:nagaon",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:iidc-bhomoraguri",
+  "name": "Bhomoraguri IIDC",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Nagaon",
+  "near": "as:nagaon",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "naltoli",
+   "naltali",
+   "naltali bhomoraguri"
+  ]
+ },
+ {
+  "id": "as:ie-katimari",
+  "name": "Katimari Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Nagaon",
+  "near": "as:nagaon",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-kampur",
+  "name": "Kampur Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Nagaon",
+  "near": "as:nagaon",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "baruntoli"
+  ]
+ },
+ {
+  "id": "as:ie-senchowa",
+  "name": "Senchowa Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Nagaon",
+  "near": "as:nagaon",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ip-raha",
+  "name": "Raha Industrial Park",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Nagaon",
+  "near": "as:nagaon",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:igc-balipara",
+  "name": "Balipara Industrial Growth Centre",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Sonitpur",
+  "near": "as:tezpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "ghoramari",
+   "balipara igc"
+  ]
+ },
+ {
+  "id": "as:ie-dighalichapari",
+  "name": "Dighalichapari Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Sonitpur",
+  "near": "as:tezpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ia-dolabari",
+  "name": "Dolabari Industrial Area",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Sonitpur",
+  "near": "as:tezpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "dolabari"
+  ]
+ },
+ {
+  "id": "as:ia-gotlong",
+  "name": "Gotlong Industrial Area",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Sonitpur",
+  "near": "as:tezpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ia-kunderbari",
+  "name": "Kunderbari Industrial Area",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Sonitpur",
+  "near": "as:tezpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-dhekiajuli",
+  "name": "Dhekiajuli Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Sonitpur",
+  "near": "as:tezpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-silapathar",
+  "name": "Silapathar Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Dhemaji",
+  "near": "as:dhemaji",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "silapathar iidc"
+  ]
+ },
+ {
+  "id": "as:plastic-park-gelapukhuri",
+  "name": "Assam Plastic Park, Gelapukhuri",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Tinsukia",
+  "near": "as:tinsukia",
+  "scale": 1,
+  "sectors": [
+   "plastics"
+  ],
+  "aka": [
+   "gelapukhuri",
+   "tinsukia plastic park",
+   "gelapukhuri industrial estate"
+  ]
+ },
+ {
+  "id": "as:ie-tinsukia",
+  "name": "Tinsukia Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Tinsukia",
+  "near": "as:tinsukia",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ia-doomdooma",
+  "name": "Doomdooma Industrial Area",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Tinsukia",
+  "near": "as:tinsukia",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "doom dooma"
+  ]
+ },
+ {
+  "id": "as:ia-sadiya",
+  "name": "Sadiya Industrial Area",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Tinsukia",
+  "near": "as:tinsukia",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:iidc-parbatipur",
+  "name": "Parbatipur IIDC",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Tinsukia",
+  "near": "as:tinsukia",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-tingkhong",
+  "name": "Tingkhong Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Dibrugarh",
+  "near": "as:dibrugarh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-moran",
+  "name": "Moran Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Dibrugarh",
+  "near": "as:dibrugarh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "moran iidc"
+  ]
+ },
+ {
+  "id": "as:ie-bogibeel",
+  "name": "Bogibeel Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Dibrugarh",
+  "near": "as:dibrugarh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-lengeri",
+  "name": "Lengeri Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Dibrugarh",
+  "near": "as:dibrugarh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:gc-duliajan",
+  "name": "Duliajan Growth Centre",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Dibrugarh",
+  "near": "as:duliajan",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ia-beheating",
+  "name": "Beheating Industrial Area",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Dibrugarh",
+  "near": "as:dibrugarh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-lahowal",
+  "name": "Lahowal Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Dibrugarh",
+  "near": "as:dibrugarh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "lahoal"
+  ]
+ },
+ {
+  "id": "as:ie-demow",
+  "name": "Demow Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Sivasagar",
+  "near": "as:sivasagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "dimow",
+   "demow iidc"
+  ]
+ },
+ {
+  "id": "as:ie-bokota",
+  "name": "Bokota Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Sivasagar",
+  "near": "as:sivasagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-sivasagar",
+  "name": "Sivasagar Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Sivasagar",
+  "near": "as:sivasagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sibsagar industrial estate"
+  ]
+ },
+ {
+  "id": "as:iidc-banderdewa",
+  "name": "Banderdewa IIDC",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Lakhimpur",
+  "near": "as:north-lakhimpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "bandardewa"
+  ]
+ },
+ {
+  "id": "as:ia-bochagaon",
+  "name": "Bochagaon Industrial Area",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Lakhimpur",
+  "near": "as:north-lakhimpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-rajbari",
+  "name": "Rajbari Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Lakhimpur",
+  "near": "as:north-lakhimpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:gc-lilabari",
+  "name": "Lilabari Growth Centre",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Lakhimpur",
+  "near": "as:north-lakhimpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-sonari",
+  "name": "Sonari Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Charaideo",
+  "near": "as:sonari",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-titabar",
+  "name": "Titabar Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Jorhat",
+  "near": "as:jorhat",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "titabor",
+   "titabar iidc"
+  ]
+ },
+ {
+  "id": "as:ie-jorhat",
+  "name": "Jorhat Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Jorhat",
+  "near": "as:jorhat",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ia-junakinagar",
+  "name": "Junakinagar Industrial Area",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Golaghat",
+  "near": "as:golaghat",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-bokakhat",
+  "name": "Bokakhat Mini Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Golaghat",
+  "near": "as:golaghat",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:igc-matia",
+  "name": "Matia Industrial Growth Centre",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Goalpara",
+  "near": "as:goalpara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "matia igc",
+   "matia industrial estate"
+  ]
+ },
+ {
+  "id": "as:ie-gerua",
+  "name": "Gerua Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Goalpara",
+  "near": "as:goalpara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-maladhara",
+  "name": "Maladhara Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Goalpara",
+  "near": "as:goalpara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ia-kothakuthi",
+  "name": "Kothakuthi Industrial Area",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Goalpara",
+  "near": "as:goalpara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:gc-baladmari",
+  "name": "Baladmari Growth Centre",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Goalpara",
+  "near": "as:goalpara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:iidc-dalgaon",
+  "name": "Dalgaon IIDC",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Darrang",
+  "near": "as:mangaldoi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "dalgaon industrial estate",
+   "dalgaon industrial area"
+  ]
+ },
+ {
+  "id": "as:ie-sipajhar",
+  "name": "Sipajhar Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Darrang",
+  "near": "as:mangaldoi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-bezpara",
+  "name": "Bezpara Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Darrang",
+  "near": "as:mangaldoi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-rangamati",
+  "name": "Rangamati Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Darrang",
+  "near": "as:mangaldoi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ia-mangaldai",
+  "name": "Mangaldai Industrial Area",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Darrang",
+  "near": "as:mangaldoi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "mangaldoi industrial area"
+  ]
+ },
+ {
+  "id": "as:mega-food-park-tihu",
+  "name": "North East Mega Food Park, Tihu",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Nalbari",
+  "near": "as:nalbari",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "tihu food park",
+   "tihu",
+   "nalbari mega food park"
+  ]
+ },
+ {
+  "id": "as:ie-nathkuchi",
+  "name": "Nathkuchi Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Nalbari",
+  "near": "as:nalbari",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ip-jabjabkuchi",
+  "name": "Jabjabkuchi Industrial Park",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Nalbari",
+  "near": "as:nalbari",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "jabjabkuchi industrial estate"
+  ]
+ },
+ {
+  "id": "as:ie-banbhag",
+  "name": "Banbhag Solmari Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Nalbari",
+  "near": "as:nalbari",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "bonbhag solmari",
+   "banbhag"
+  ]
+ },
+ {
+  "id": "as:ie-nalbari",
+  "name": "Nalbari Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Nalbari",
+  "near": "as:nalbari",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "nalbari iidc"
+  ]
+ },
+ {
+  "id": "as:ie-chenga",
+  "name": "Chenga Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Barpeta",
+  "near": "as:barpeta",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:gc-sonkuchi",
+  "name": "Sonkuchi Growth Centre",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Barpeta",
+  "near": "as:barpeta",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:iidc-malinibeel",
+  "name": "Malinibeel IIDC",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Cachar",
+  "near": "as:silchar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "malinibeel industrial estate",
+   "malini beel"
+  ]
+ },
+ {
+  "id": "as:ie-panchgram",
+  "name": "Panchgram Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Cachar",
+  "near": "as:silchar",
+  "scale": 1,
+  "sectors": [
+   "paper",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-udharbond",
+  "name": "Udharbond Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Cachar",
+  "near": "as:silchar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-maizgram",
+  "name": "Maizgram Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Sribhumi",
+  "near": "as:karimganj",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-ratabari",
+  "name": "Ratabari Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Sribhumi",
+  "near": "as:karimganj",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-sephinjuri",
+  "name": "Sephinjuri Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Sribhumi",
+  "near": "as:karimganj",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-badarpurghat",
+  "name": "Badarpurghat Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Sribhumi",
+  "near": "as:karimganj",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "badarpur"
+  ]
+ },
+ {
+  "id": "as:ie-katlicherra",
+  "name": "Katlicherra Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Hailakandi",
+  "near": "as:hailakandi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "katlichara"
+  ]
+ },
+ {
+  "id": "as:iidc-serfanguri",
+  "name": "Serfanguri IIDC",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Kokrajhar",
+  "near": "as:kokrajhar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "serfunguri"
+  ]
+ },
+ {
+  "id": "as:ie-tamulpur",
+  "name": "Tamulpur Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Tamulpur",
+  "near": "as:tamulpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-pathsala",
+  "name": "Pathsala Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Bajali",
+  "near": "as:pathsala",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "pathsala industrial area",
+   "pathsala idp"
+  ]
+ },
+ {
+  "id": "as:ie-manikpur",
+  "name": "Manikpur Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Bongaigaon",
+  "near": "as:bongaigaon",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-new-bongaigaon",
+  "name": "New Bongaigaon Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Bongaigaon",
+  "near": "as:bongaigaon",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-gauripur",
+  "name": "Gauripur Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Dhubri",
+  "near": "as:dhubri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ip-chapor",
+  "name": "Chapor Industrial Park",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Dhubri",
+  "near": "as:dhubri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "chapar"
+  ]
+ },
+ {
+  "id": "as:ie-dhemajibari",
+  "name": "Dhemajibari Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Biswanath",
+  "near": "as:biswanath-chariali",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ia-sadharu",
+  "name": "Sadharu Industrial Area",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Biswanath",
+  "near": "as:biswanath-chariali",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-belkuthi",
+  "name": "Belkuthi Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Baksa",
+  "near": "as:mushalpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-maibong",
+  "name": "Maibong Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Dima Hasao",
+  "near": "as:haflong",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "as:ie-majuli",
+  "name": "Majuli Industrial Estate",
+  "state": "AS",
+  "kind": "estate",
+  "district": "Majuli",
+  "near": "as:garamur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ar:itanagar",
+  "name": "Itanagar",
+  "state": "AR",
+  "kind": "city",
+  "district": "Itanagar Capital Complex",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "itanagar capital complex"
+  ],
+  "lat": 27.08,
+  "lon": 93.61
+ },
+ {
+  "id": "ar:naharlagun",
+  "name": "Naharlagun",
+  "state": "AR",
+  "kind": "city",
+  "district": "Itanagar Capital Complex",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 27.1,
+  "lon": 93.7
+ },
+ {
+  "id": "ar:yupia",
+  "name": "Yupia",
+  "state": "AR",
+  "kind": "city",
+  "district": "Papum Pare",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "papum pare"
+  ]
+ },
+ {
+  "id": "ar:tawang",
+  "name": "Tawang",
+  "state": "AR",
+  "kind": "city",
+  "district": "Tawang",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 27.59,
+  "lon": 91.86
+ },
+ {
+  "id": "ar:bomdila",
+  "name": "Bomdila",
+  "state": "AR",
+  "kind": "city",
+  "district": "West Kameng",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "west kameng"
+  ],
+  "lat": 27.26,
+  "lon": 92.42
+ },
+ {
+  "id": "ar:seppa",
+  "name": "Seppa",
+  "state": "AR",
+  "kind": "city",
+  "district": "East Kameng",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "east kameng"
+  ]
+ },
+ {
+  "id": "ar:lemmi",
+  "name": "Lemmi",
+  "state": "AR",
+  "kind": "city",
+  "district": "Pakke-Kessang",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "pakke kessang"
+  ]
+ },
+ {
+  "id": "ar:koloriang",
+  "name": "Koloriang",
+  "state": "AR",
+  "kind": "city",
+  "district": "Kurung Kumey",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kurung kumey"
+  ]
+ },
+ {
+  "id": "ar:jamin",
+  "name": "Jamin",
+  "state": "AR",
+  "kind": "city",
+  "district": "Kra Daadi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kra daadi"
+  ]
+ },
+ {
+  "id": "ar:ziro",
+  "name": "Ziro",
+  "state": "AR",
+  "kind": "city",
+  "district": "Lower Subansiri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "lower subansiri",
+   "hapoli"
+  ],
+  "lat": 27.55,
+  "lon": 93.83
+ },
+ {
+  "id": "ar:raga",
+  "name": "Raga",
+  "state": "AR",
+  "kind": "city",
+  "district": "Kamle",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kamle"
+  ]
+ },
+ {
+  "id": "ar:daporijo",
+  "name": "Daporijo",
+  "state": "AR",
+  "kind": "city",
+  "district": "Upper Subansiri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "upper subansiri"
+  ],
+  "lat": 27.98,
+  "lon": 94.22
+ },
+ {
+  "id": "ar:aalo",
+  "name": "Aalo",
+  "state": "AR",
+  "kind": "city",
+  "district": "West Siang",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "along",
+   "west siang"
+  ],
+  "lat": 28.17,
+  "lon": 94.8
+ },
+ {
+  "id": "ar:likabali",
+  "name": "Likabali",
+  "state": "AR",
+  "kind": "city",
+  "district": "Lower Siang",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "lower siang"
+  ]
+ },
+ {
+  "id": "ar:boleng",
+  "name": "Boleng",
+  "state": "AR",
+  "kind": "city",
+  "district": "Siang",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "siang"
+  ]
+ },
+ {
+  "id": "ar:yingkiong",
+  "name": "Yingkiong",
+  "state": "AR",
+  "kind": "city",
+  "district": "Upper Siang",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "upper siang"
+  ]
+ },
+ {
+  "id": "ar:pasighat",
+  "name": "Pasighat",
+  "state": "AR",
+  "kind": "city",
+  "district": "East Siang",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "east siang"
+  ],
+  "lat": 28.07,
+  "lon": 95.33
+ },
+ {
+  "id": "ar:tato",
+  "name": "Tato",
+  "state": "AR",
+  "kind": "city",
+  "district": "Shi Yomi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "shi yomi"
+  ]
+ },
+ {
+  "id": "ar:basar",
+  "name": "Basar",
+  "state": "AR",
+  "kind": "city",
+  "district": "Leparada",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "leparada",
+   "lepa rada"
+  ]
+ },
+ {
+  "id": "ar:roing",
+  "name": "Roing",
+  "state": "AR",
+  "kind": "city",
+  "district": "Lower Dibang Valley",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "lower dibang valley"
+  ],
+  "lat": 28.14,
+  "lon": 95.84
+ },
+ {
+  "id": "ar:anini",
+  "name": "Anini",
+  "state": "AR",
+  "kind": "city",
+  "district": "Dibang Valley",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "dibang valley"
+  ]
+ },
+ {
+  "id": "ar:tezu",
+  "name": "Tezu",
+  "state": "AR",
+  "kind": "city",
+  "district": "Lohit",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "lohit"
+  ],
+  "lat": 27.92,
+  "lon": 96.17
+ },
+ {
+  "id": "ar:hawai",
+  "name": "Hawai",
+  "state": "AR",
+  "kind": "city",
+  "district": "Anjaw",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "anjaw"
+  ]
+ },
+ {
+  "id": "ar:namsai",
+  "name": "Namsai",
+  "state": "AR",
+  "kind": "city",
+  "district": "Namsai",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 27.67,
+  "lon": 95.86
+ },
+ {
+  "id": "ar:changlang",
+  "name": "Changlang",
+  "state": "AR",
+  "kind": "city",
+  "district": "Changlang",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 27.13,
+  "lon": 95.73
+ },
+ {
+  "id": "ar:khonsa",
+  "name": "Khonsa",
+  "state": "AR",
+  "kind": "city",
+  "district": "Tirap",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "tirap"
+  ],
+  "lat": 26.99,
+  "lon": 95.5
+ },
+ {
+  "id": "ar:longding",
+  "name": "Longding",
+  "state": "AR",
+  "kind": "city",
+  "district": "Longding",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ar:yachuli",
+  "name": "Yachuli",
+  "state": "AR",
+  "kind": "city",
+  "district": "Keyi Panyor",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "keyi panyor"
+  ]
+ },
+ {
+  "id": "ar:napangphung",
+  "name": "Napangphung",
+  "state": "AR",
+  "kind": "city",
+  "district": "Bichom",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "bichom"
+  ]
+ },
+ {
+  "id": "ar:ie-tawang",
+  "name": "Tawang Industrial Estate",
+  "state": "AR",
+  "kind": "estate",
+  "district": "Tawang",
+  "near": "ar:tawang",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ar:ie-bhalukpong",
+  "name": "Tippi-Bhalukpong Industrial Estate",
+  "state": "AR",
+  "kind": "estate",
+  "district": "West Kameng",
+  "near": "ar:bomdila",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "bhalukpong",
+   "tippi",
+   "balukpong iidc"
+  ]
+ },
+ {
+  "id": "ar:ia-dirang",
+  "name": "Dirang Industrial Area",
+  "state": "AR",
+  "kind": "estate",
+  "district": "West Kameng",
+  "near": "ar:bomdila",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "dirang iidc"
+  ]
+ },
+ {
+  "id": "ar:ia-wanghoo",
+  "name": "Wanghoo Industrial Area",
+  "state": "AR",
+  "kind": "estate",
+  "district": "West Kameng",
+  "near": "ar:bomdila",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ar:ie-pasighat",
+  "name": "Pasighat Industrial Estate",
+  "state": "AR",
+  "kind": "estate",
+  "district": "East Siang",
+  "near": "ar:pasighat",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ar:igc-niglok",
+  "name": "Niglok-Ngorlung Industrial Growth Centre",
+  "state": "AR",
+  "kind": "estate",
+  "district": "East Siang",
+  "near": "ar:pasighat",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "niklok ngorlung",
+   "niglok",
+   "ngorlung",
+   "pasighat growth centre"
+  ]
+ },
+ {
+  "id": "ar:ie-monipoliyang",
+  "name": "Monipoliyang Industrial Estate",
+  "state": "AR",
+  "kind": "estate",
+  "district": "Lower Subansiri",
+  "near": "ar:ziro",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ar:ie-chandranagar",
+  "name": "Chandranagar Industrial Estate",
+  "state": "AR",
+  "kind": "estate",
+  "district": "Itanagar Capital Complex",
+  "near": "ar:itanagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ar:ie-naharlagun",
+  "name": "Naharlagun Industrial Estate",
+  "state": "AR",
+  "kind": "estate",
+  "district": "Itanagar Capital Complex",
+  "near": "ar:naharlagun",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ar:ie-changlang",
+  "name": "Changlang Industrial Estate",
+  "state": "AR",
+  "kind": "estate",
+  "district": "Changlang",
+  "near": "ar:changlang",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ar:ie-khachang",
+  "name": "Khachang (Miao) Industrial Estate",
+  "state": "AR",
+  "kind": "estate",
+  "district": "Changlang",
+  "near": "ar:changlang",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "miao",
+   "khachang",
+   "miao iidc"
+  ]
+ },
+ {
+  "id": "ar:ie-balinong",
+  "name": "Balinong Industrial Estate",
+  "state": "AR",
+  "kind": "estate",
+  "district": "Changlang",
+  "near": "ar:changlang",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ar:ie-namsai",
+  "name": "Namsai Industrial Estate",
+  "state": "AR",
+  "kind": "estate",
+  "district": "Namsai",
+  "near": "ar:namsai",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ar:ie-ploing",
+  "name": "Ploing Industrial Estate",
+  "state": "AR",
+  "kind": "estate",
+  "district": "Lower Dibang Valley",
+  "near": "ar:roing",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ar:ie-tezu",
+  "name": "Tezu Industrial Estate",
+  "state": "AR",
+  "kind": "estate",
+  "district": "Lohit",
+  "near": "ar:tezu",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ar:ie-deomali",
+  "name": "Deomali Industrial Estate",
+  "state": "AR",
+  "kind": "estate",
+  "district": "Tirap",
+  "near": "ar:khonsa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ar:ie-charju",
+  "name": "Charju Industrial Estate",
+  "state": "AR",
+  "kind": "estate",
+  "district": "Tirap",
+  "near": "ar:khonsa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ar:iidc-bame",
+  "name": "Bame IIDC",
+  "state": "AR",
+  "kind": "estate",
+  "district": "West Siang",
+  "near": "ar:aalo",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "bame"
+  ]
+ },
+ {
+  "id": "mn:imphal",
+  "name": "Imphal",
+  "state": "MN",
+  "kind": "city",
+  "district": "Imphal West",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "lamphelpat",
+   "imphal west"
+  ],
+  "lat": 24.81,
+  "lon": 93.94
+ },
+ {
+  "id": "mn:porompat",
+  "name": "Porompat",
+  "state": "MN",
+  "kind": "city",
+  "district": "Imphal East",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "imphal east"
+  ]
+ },
+ {
+  "id": "mn:thoubal",
+  "name": "Thoubal",
+  "state": "MN",
+  "kind": "city",
+  "district": "Thoubal",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 24.64,
+  "lon": 94.01
+ },
+ {
+  "id": "mn:bishnupur",
+  "name": "Bishnupur",
+  "state": "MN",
+  "kind": "city",
+  "district": "Bishnupur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 24.63,
+  "lon": 93.77
+ },
+ {
+  "id": "mn:kakching",
+  "name": "Kakching",
+  "state": "MN",
+  "kind": "city",
+  "district": "Kakching",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 24.5,
+  "lon": 93.98
+ },
+ {
+  "id": "mn:churachandpur",
+  "name": "Churachandpur",
+  "state": "MN",
+  "kind": "city",
+  "district": "Churachandpur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "lamka"
+  ],
+  "lat": 24.33,
+  "lon": 93.68
+ },
+ {
+  "id": "mn:chandel",
+  "name": "Chandel",
+  "state": "MN",
+  "kind": "city",
+  "district": "Chandel",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mn:tengnoupal",
+  "name": "Tengnoupal",
+  "state": "MN",
+  "kind": "city",
+  "district": "Tengnoupal",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mn:kangpokpi",
+  "name": "Kangpokpi",
+  "state": "MN",
+  "kind": "city",
+  "district": "Kangpokpi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mn:senapati",
+  "name": "Senapati",
+  "state": "MN",
+  "kind": "city",
+  "district": "Senapati",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mn:ukhrul",
+  "name": "Ukhrul",
+  "state": "MN",
+  "kind": "city",
+  "district": "Ukhrul",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 25.1,
+  "lon": 94.36
+ },
+ {
+  "id": "mn:kamjong",
+  "name": "Kamjong",
+  "state": "MN",
+  "kind": "city",
+  "district": "Kamjong",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mn:tamenglong",
+  "name": "Tamenglong",
+  "state": "MN",
+  "kind": "city",
+  "district": "Tamenglong",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mn:noney",
+  "name": "Noney",
+  "state": "MN",
+  "kind": "city",
+  "district": "Noney",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "longmai"
+  ]
+ },
+ {
+  "id": "mn:jiribam",
+  "name": "Jiribam",
+  "state": "MN",
+  "kind": "city",
+  "district": "Jiribam",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 24.8,
+  "lon": 93.12
+ },
+ {
+  "id": "mn:pherzawl",
+  "name": "Pherzawl",
+  "state": "MN",
+  "kind": "city",
+  "district": "Pherzawl",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mn:moreh",
+  "name": "Moreh",
+  "state": "MN",
+  "kind": "city",
+  "district": "Tengnoupal",
+  "scale": 1,
+  "sectors": [
+   "logistics"
+  ],
+  "aka": [],
+  "lat": 24.25,
+  "lon": 94.3
+ },
+ {
+  "id": "mn:ie-takyelpat",
+  "name": "Takyelpat Industrial Estate",
+  "state": "MN",
+  "kind": "estate",
+  "district": "Imphal West",
+  "near": "mn:imphal",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "takyel industrial estate",
+   "takyel"
+  ]
+ },
+ {
+  "id": "mn:ie-tera-urak",
+  "name": "Tera Urak Industrial Estate",
+  "state": "MN",
+  "kind": "estate",
+  "district": "Bishnupur",
+  "near": "mn:bishnupur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "tera urok"
+  ]
+ },
+ {
+  "id": "mn:ie-kuraopokpi",
+  "name": "Kuraopokpi Industrial Estate",
+  "state": "MN",
+  "kind": "estate",
+  "district": "Thoubal",
+  "near": "mn:thoubal",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mn:food-park-nilakuthi",
+  "name": "Nilakuthi Food Park",
+  "state": "MN",
+  "kind": "estate",
+  "district": "Imphal East",
+  "near": "mn:porompat",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "nilakuthi"
+  ]
+ },
+ {
+  "id": "mn:igc-lamlai-napet",
+  "name": "Lamlai-Napet Industrial Growth Centre",
+  "state": "MN",
+  "kind": "estate",
+  "district": "Imphal East",
+  "near": "mn:porompat",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "napet growth centre",
+   "lamlai napet"
+  ]
+ },
+ {
+  "id": "mn:epip-khunuta-chingjin",
+  "name": "EPIP Khunuta Chingjin",
+  "state": "MN",
+  "kind": "estate",
+  "district": "Kakching",
+  "near": "mn:kakching",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "khunuta chingjin"
+  ]
+ },
+ {
+  "id": "mn:iid-moreh",
+  "name": "Moreh IID Centre",
+  "state": "MN",
+  "kind": "estate",
+  "district": "Tengnoupal",
+  "near": "mn:moreh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "moreh iidc"
+  ]
+ },
+ {
+  "id": "ml:shillong",
+  "name": "Shillong",
+  "state": "ML",
+  "kind": "city",
+  "district": "East Khasi Hills",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "east khasi hills"
+  ],
+  "lat": 25.57,
+  "lon": 91.88
+ },
+ {
+  "id": "ml:nongstoin",
+  "name": "Nongstoin",
+  "state": "ML",
+  "kind": "city",
+  "district": "West Khasi Hills",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "west khasi hills"
+  ],
+  "lat": 25.52,
+  "lon": 91.27
+ },
+ {
+  "id": "ml:mawkyrwat",
+  "name": "Mawkyrwat",
+  "state": "ML",
+  "kind": "city",
+  "district": "South West Khasi Hills",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "south west khasi hills"
+  ]
+ },
+ {
+  "id": "ml:mairang",
+  "name": "Mairang",
+  "state": "ML",
+  "kind": "city",
+  "district": "Eastern West Khasi Hills",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "eastern west khasi hills"
+  ]
+ },
+ {
+  "id": "ml:nongpoh",
+  "name": "Nongpoh",
+  "state": "ML",
+  "kind": "city",
+  "district": "Ri Bhoi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "ri bhoi"
+  ],
+  "lat": 25.9,
+  "lon": 91.88
+ },
+ {
+  "id": "ml:jowai",
+  "name": "Jowai",
+  "state": "ML",
+  "kind": "city",
+  "district": "West Jaintia Hills",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "west jaintia hills"
+  ],
+  "lat": 25.45,
+  "lon": 92.2
+ },
+ {
+  "id": "ml:khliehriat",
+  "name": "Khliehriat",
+  "state": "ML",
+  "kind": "city",
+  "district": "East Jaintia Hills",
+  "scale": 1,
+  "sectors": [
+   "cement"
+  ],
+  "aka": [
+   "east jaintia hills"
+  ]
+ },
+ {
+  "id": "ml:tura",
+  "name": "Tura",
+  "state": "ML",
+  "kind": "city",
+  "district": "West Garo Hills",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "west garo hills"
+  ],
+  "lat": 25.51,
+  "lon": 90.22
+ },
+ {
+  "id": "ml:williamnagar",
+  "name": "Williamnagar",
+  "state": "ML",
+  "kind": "city",
+  "district": "East Garo Hills",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "william nagar",
+   "east garo hills"
+  ],
+  "lat": 25.5,
+  "lon": 90.62
+ },
+ {
+  "id": "ml:resubelpara",
+  "name": "Resubelpara",
+  "state": "ML",
+  "kind": "city",
+  "district": "North Garo Hills",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "north garo hills"
+  ]
+ },
+ {
+  "id": "ml:baghmara",
+  "name": "Baghmara",
+  "state": "ML",
+  "kind": "city",
+  "district": "South Garo Hills",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "south garo hills"
+  ]
+ },
+ {
+  "id": "ml:ampati",
+  "name": "Ampati",
+  "state": "ML",
+  "kind": "city",
+  "district": "South West Garo Hills",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "south west garo hills"
+  ]
+ },
+ {
+  "id": "ml:byrnihat",
+  "name": "Byrnihat",
+  "state": "ML",
+  "kind": "city",
+  "district": "Ri Bhoi",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "cement",
+   "chemical",
+   "pharma"
+  ],
+  "aka": [
+   "burnihat"
+  ],
+  "lat": 26.05,
+  "lon": 91.86
+ },
+ {
+  "id": "ml:epip-byrnihat",
+  "name": "EPIP Byrnihat",
+  "state": "ML",
+  "kind": "estate",
+  "district": "Ri Bhoi",
+  "near": "ml:byrnihat",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "cement",
+   "mixed"
+  ],
+  "aka": [
+   "export promotion industrial park byrnihat",
+   "byrnihat industrial area"
+  ]
+ },
+ {
+  "id": "ml:ia-umiam",
+  "name": "Umiam Industrial Area",
+  "state": "ML",
+  "kind": "estate",
+  "district": "Ri Bhoi",
+  "near": "ml:nongpoh",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "barapani industrial area",
+   "barapani",
+   "umiam"
+  ]
+ },
+ {
+  "id": "ml:ie-shillong",
+  "name": "Shillong Industrial Estate",
+  "state": "ML",
+  "kind": "estate",
+  "district": "East Khasi Hills",
+  "near": "ml:shillong",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ml:ie-tura",
+  "name": "Tura Industrial Estate",
+  "state": "ML",
+  "kind": "estate",
+  "district": "West Garo Hills",
+  "near": "ml:tura",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ml:ie-jowai",
+  "name": "Jowai Industrial Estate",
+  "state": "ML",
+  "kind": "estate",
+  "district": "West Jaintia Hills",
+  "near": "ml:jowai",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ml:ie-williamnagar",
+  "name": "Williamnagar Industrial Estate",
+  "state": "ML",
+  "kind": "estate",
+  "district": "East Garo Hills",
+  "near": "ml:williamnagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "williamnagar growth centre"
+  ]
+ },
+ {
+  "id": "ml:ie-nongstoin",
+  "name": "Nongstoin Industrial Estate",
+  "state": "ML",
+  "kind": "estate",
+  "district": "West Khasi Hills",
+  "near": "ml:nongstoin",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ml:gc-mendipathar",
+  "name": "Mendipathar Industrial Growth Centre",
+  "state": "ML",
+  "kind": "estate",
+  "district": "North Garo Hills",
+  "near": "ml:resubelpara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "mendipathar",
+   "mendi pathar",
+   "mendipathar industrial estate"
+  ]
+ },
+ {
+  "id": "mz:aizawl",
+  "name": "Aizawl",
+  "state": "MZ",
+  "kind": "city",
+  "district": "Aizawl",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 23.73,
+  "lon": 92.72
+ },
+ {
+  "id": "mz:lunglei",
+  "name": "Lunglei",
+  "state": "MZ",
+  "kind": "city",
+  "district": "Lunglei",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 22.88,
+  "lon": 92.73
+ },
+ {
+  "id": "mz:champhai",
+  "name": "Champhai",
+  "state": "MZ",
+  "kind": "city",
+  "district": "Champhai",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 23.47,
+  "lon": 93.33
+ },
+ {
+  "id": "mz:kolasib",
+  "name": "Kolasib",
+  "state": "MZ",
+  "kind": "city",
+  "district": "Kolasib",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 24.22,
+  "lon": 92.68
+ },
+ {
+  "id": "mz:mamit",
+  "name": "Mamit",
+  "state": "MZ",
+  "kind": "city",
+  "district": "Mamit",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 23.93,
+  "lon": 92.48
+ },
+ {
+  "id": "mz:lawngtlai",
+  "name": "Lawngtlai",
+  "state": "MZ",
+  "kind": "city",
+  "district": "Lawngtlai",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 22.53,
+  "lon": 92.9
+ },
+ {
+  "id": "mz:siaha",
+  "name": "Siaha",
+  "state": "MZ",
+  "kind": "city",
+  "district": "Siaha",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "saiha"
+  ],
+  "lat": 22.49,
+  "lon": 92.98
+ },
+ {
+  "id": "mz:serchhip",
+  "name": "Serchhip",
+  "state": "MZ",
+  "kind": "city",
+  "district": "Serchhip",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 23.3,
+  "lon": 92.85
+ },
+ {
+  "id": "mz:hnahthial",
+  "name": "Hnahthial",
+  "state": "MZ",
+  "kind": "city",
+  "district": "Hnahthial",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mz:khawzawl",
+  "name": "Khawzawl",
+  "state": "MZ",
+  "kind": "city",
+  "district": "Khawzawl",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mz:saitual",
+  "name": "Saitual",
+  "state": "MZ",
+  "kind": "city",
+  "district": "Saitual",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mz:ie-zuangtui",
+  "name": "Zuangtui Industrial Estate",
+  "state": "MZ",
+  "kind": "estate",
+  "district": "Aizawl",
+  "near": "mz:aizawl",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "zuangtui"
+  ]
+ },
+ {
+  "id": "mz:igc-luangmual",
+  "name": "Luangmual Industrial Growth Centre",
+  "state": "MZ",
+  "kind": "estate",
+  "district": "Aizawl",
+  "near": "mz:aizawl",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "luangmual"
+  ]
+ },
+ {
+  "id": "mz:btp-sairang",
+  "name": "Sairang Bamboo Technology Park",
+  "state": "MZ",
+  "kind": "estate",
+  "district": "Aizawl",
+  "near": "mz:aizawl",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sairang"
+  ]
+ },
+ {
+  "id": "mz:ie-bairabi",
+  "name": "Bairabi Industrial Estate",
+  "state": "MZ",
+  "kind": "estate",
+  "district": "Kolasib",
+  "near": "mz:kolasib",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "bairabi"
+  ]
+ },
+ {
+  "id": "mz:ie-kolasib",
+  "name": "Kolasib Industrial Estate",
+  "state": "MZ",
+  "kind": "estate",
+  "district": "Kolasib",
+  "near": "mz:kolasib",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mz:iidc-pukpui",
+  "name": "Pukpui IIDC",
+  "state": "MZ",
+  "kind": "estate",
+  "district": "Lunglei",
+  "near": "mz:lunglei",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "pukpui"
+  ]
+ },
+ {
+  "id": "mz:ie-hmunhmeltha",
+  "name": "Hmunhmeltha Industrial Estate",
+  "state": "MZ",
+  "kind": "estate",
+  "district": "Champhai",
+  "near": "mz:champhai",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "mz:iidc-zote",
+  "name": "Zote IIDC",
+  "state": "MZ",
+  "kind": "estate",
+  "district": "Champhai",
+  "near": "mz:champhai",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "zote"
+  ]
+ },
+ {
+  "id": "mz:epip-lengte",
+  "name": "EPIP Lengte",
+  "state": "MZ",
+  "kind": "estate",
+  "district": "Mamit",
+  "near": "mz:mamit",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "lengte"
+  ]
+ },
+ {
+  "id": "nl:kohima",
+  "name": "Kohima",
+  "state": "NL",
+  "kind": "city",
+  "district": "Kohima",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 25.67,
+  "lon": 94.11
+ },
+ {
+  "id": "nl:dimapur",
+  "name": "Dimapur",
+  "state": "NL",
+  "kind": "city",
+  "district": "Dimapur",
+  "scale": 2,
+  "sectors": [
+   "logistics",
+   "food",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 25.91,
+  "lon": 93.73
+ },
+ {
+  "id": "nl:chumoukedima",
+  "name": "Chumoukedima",
+  "state": "NL",
+  "kind": "city",
+  "district": "Chumoukedima",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "chumukedima"
+  ],
+  "lat": 25.79,
+  "lon": 93.78
+ },
+ {
+  "id": "nl:mokokchung",
+  "name": "Mokokchung",
+  "state": "NL",
+  "kind": "city",
+  "district": "Mokokchung",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.33,
+  "lon": 94.52
+ },
+ {
+  "id": "nl:mon",
+  "name": "Mon",
+  "state": "NL",
+  "kind": "city",
+  "district": "Mon",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.73,
+  "lon": 95.03
+ },
+ {
+  "id": "nl:tuensang",
+  "name": "Tuensang",
+  "state": "NL",
+  "kind": "city",
+  "district": "Tuensang",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.27,
+  "lon": 94.83
+ },
+ {
+  "id": "nl:wokha",
+  "name": "Wokha",
+  "state": "NL",
+  "kind": "city",
+  "district": "Wokha",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.1,
+  "lon": 94.26
+ },
+ {
+  "id": "nl:zunheboto",
+  "name": "Zunheboto",
+  "state": "NL",
+  "kind": "city",
+  "district": "Zunheboto",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 26.01,
+  "lon": 94.52
+ },
+ {
+  "id": "nl:phek",
+  "name": "Phek",
+  "state": "NL",
+  "kind": "city",
+  "district": "Phek",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 25.67,
+  "lon": 94.47
+ },
+ {
+  "id": "nl:kiphire",
+  "name": "Kiphire",
+  "state": "NL",
+  "kind": "city",
+  "district": "Kiphire",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "nl:longleng",
+  "name": "Longleng",
+  "state": "NL",
+  "kind": "city",
+  "district": "Longleng",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "nl:peren",
+  "name": "Peren",
+  "state": "NL",
+  "kind": "city",
+  "district": "Peren",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "nl:noklak",
+  "name": "Noklak",
+  "state": "NL",
+  "kind": "city",
+  "district": "Noklak",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "nl:niuland",
+  "name": "Niuland",
+  "state": "NL",
+  "kind": "city",
+  "district": "Niuland",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "nl:tseminyu",
+  "name": "Tseminyu",
+  "state": "NL",
+  "kind": "city",
+  "district": "Tseminyu",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "nl:shamator",
+  "name": "Shamator",
+  "state": "NL",
+  "kind": "city",
+  "district": "Shamator",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "nl:meluri",
+  "name": "Meluri",
+  "state": "NL",
+  "kind": "city",
+  "district": "Meluri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "nl:igc-ganeshnagar",
+  "name": "Ganeshnagar Industrial Growth Centre",
+  "state": "NL",
+  "kind": "estate",
+  "district": "Dimapur",
+  "near": "nl:dimapur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "ganesh nagar",
+   "igc ganeshnagar"
+  ]
+ },
+ {
+  "id": "nl:sez-dimapur",
+  "name": "Dimapur Agro and Food Processing SEZ",
+  "state": "NL",
+  "kind": "estate",
+  "district": "Dimapur",
+  "near": "nl:dimapur",
+  "scale": 1,
+  "sectors": [
+   "sez",
+   "food"
+  ],
+  "aka": [
+   "epip dimapur",
+   "ganeshnagar sez",
+   "nagaland sez"
+  ]
+ },
+ {
+  "id": "nl:ie-dimapur",
+  "name": "Dimapur Industrial Estate",
+  "state": "NL",
+  "kind": "estate",
+  "district": "Dimapur",
+  "near": "nl:dimapur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "old industrial estate dimapur",
+   "new industrial estate dimapur",
+   "nidc dimapur"
+  ]
+ },
+ {
+  "id": "nl:iidc-kiruphema",
+  "name": "Kiruphema IIDC",
+  "state": "NL",
+  "kind": "estate",
+  "district": "Kohima",
+  "near": "nl:kohima",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kiruphema"
+  ]
+ },
+ {
+  "id": "sk:gangtok",
+  "name": "Gangtok",
+  "state": "SK",
+  "kind": "city",
+  "district": "Gangtok",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "east sikkim"
+  ],
+  "lat": 27.33,
+  "lon": 88.61
+ },
+ {
+  "id": "sk:namchi",
+  "name": "Namchi",
+  "state": "SK",
+  "kind": "city",
+  "district": "Namchi",
+  "scale": 1,
+  "sectors": [
+   "pharma",
+   "mixed"
+  ],
+  "aka": [
+   "south sikkim"
+  ],
+  "lat": 27.17,
+  "lon": 88.36
+ },
+ {
+  "id": "sk:gyalshing",
+  "name": "Gyalshing",
+  "state": "SK",
+  "kind": "city",
+  "district": "Gyalshing",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "geyzing",
+   "west sikkim"
+  ],
+  "lat": 27.29,
+  "lon": 88.26
+ },
+ {
+  "id": "sk:mangan",
+  "name": "Mangan",
+  "state": "SK",
+  "kind": "city",
+  "district": "Mangan",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "north sikkim"
+  ],
+  "lat": 27.51,
+  "lon": 88.53
+ },
+ {
+  "id": "sk:pakyong",
+  "name": "Pakyong",
+  "state": "SK",
+  "kind": "city",
+  "district": "Pakyong",
+  "scale": 1,
+  "sectors": [
+   "pharma",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 27.24,
+  "lon": 88.59
+ },
+ {
+  "id": "sk:soreng",
+  "name": "Soreng",
+  "state": "SK",
+  "kind": "city",
+  "district": "Soreng",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 27.17,
+  "lon": 88.2
+ },
+ {
+  "id": "sk:rangpo",
+  "name": "Rangpo",
+  "state": "SK",
+  "kind": "city",
+  "district": "Pakyong",
+  "scale": 2,
+  "sectors": [
+   "pharma"
+  ],
+  "aka": [],
+  "lat": 27.18,
+  "lon": 88.53
+ },
+ {
+  "id": "sk:jorethang",
+  "name": "Jorethang",
+  "state": "SK",
+  "kind": "city",
+  "district": "Namchi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "jorthang"
+  ],
+  "lat": 27.11,
+  "lon": 88.32
+ },
+ {
+  "id": "sk:singtam",
+  "name": "Singtam",
+  "state": "SK",
+  "kind": "city",
+  "district": "Gangtok",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 27.23,
+  "lon": 88.5
+ },
+ {
+  "id": "sk:rangpo-pharma-belt",
+  "name": "Rangpo-Majitar Pharma Belt",
+  "state": "SK",
+  "kind": "cluster",
+  "district": "Pakyong",
+  "near": "sk:rangpo",
+  "scale": 2,
+  "sectors": [
+   "pharma"
+  ],
+  "aka": [
+   "majitar",
+   "mazitar",
+   "kumrek",
+   "rorathang",
+   "bagheykhola",
+   "sikkim pharma belt"
+  ]
+ },
+ {
+  "id": "sk:mamring-pharma",
+  "name": "Mamring Pharma Cluster",
+  "state": "SK",
+  "kind": "cluster",
+  "district": "Namchi",
+  "near": "sk:namchi",
+  "scale": 1,
+  "sectors": [
+   "pharma"
+  ],
+  "aka": [
+   "mamring",
+   "namthang road"
+  ]
+ },
+ {
+  "id": "sk:igc-samlik-marchak",
+  "name": "Samlik-Marchak Industrial Growth Centre",
+  "state": "SK",
+  "kind": "estate",
+  "district": "Gangtok",
+  "near": "sk:gangtok",
+  "scale": 1,
+  "sectors": [
+   "pharma",
+   "mixed"
+  ],
+  "aka": [
+   "samlik marchak",
+   "ranipool growth centre",
+   "ranipool"
+  ]
+ },
+ {
+  "id": "sk:igc-namli",
+  "name": "Namli Industrial Growth Centre",
+  "state": "SK",
+  "kind": "estate",
+  "district": "Gangtok",
+  "near": "sk:singtam",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "west namli",
+   "radong"
+  ]
+ },
+ {
+  "id": "tr:agartala",
+  "name": "Agartala",
+  "state": "TR",
+  "kind": "city",
+  "district": "West Tripura",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "west tripura"
+  ],
+  "lat": 23.83,
+  "lon": 91.28
+ },
+ {
+  "id": "tr:bishramganj",
+  "name": "Bishramganj",
+  "state": "TR",
+  "kind": "city",
+  "district": "Sepahijala",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sepahijala"
+  ]
+ },
+ {
+  "id": "tr:khowai",
+  "name": "Khowai",
+  "state": "TR",
+  "kind": "city",
+  "district": "Khowai",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 24.07,
+  "lon": 91.6
+ },
+ {
+  "id": "tr:udaipur",
+  "name": "Udaipur",
+  "state": "TR",
+  "kind": "city",
+  "district": "Gomati",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "gomati",
+   "udaipur tripura"
+  ],
+  "lat": 23.53,
+  "lon": 91.49
+ },
+ {
+  "id": "tr:belonia",
+  "name": "Belonia",
+  "state": "TR",
+  "kind": "city",
+  "district": "South Tripura",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "south tripura"
+  ],
+  "lat": 23.25,
+  "lon": 91.45
+ },
+ {
+  "id": "tr:ambassa",
+  "name": "Ambassa",
+  "state": "TR",
+  "kind": "city",
+  "district": "Dhalai",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "dhalai"
+  ],
+  "lat": 23.93,
+  "lon": 91.85
+ },
+ {
+  "id": "tr:kailashahar",
+  "name": "Kailashahar",
+  "state": "TR",
+  "kind": "city",
+  "district": "Unakoti",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "unakoti",
+   "kailasahar"
+  ],
+  "lat": 24.33,
+  "lon": 92.0
+ },
+ {
+  "id": "tr:dharmanagar",
+  "name": "Dharmanagar",
+  "state": "TR",
+  "kind": "city",
+  "district": "North Tripura",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "north tripura"
+  ],
+  "lat": 24.37,
+  "lon": 92.17
+ },
+ {
+  "id": "tr:sabroom",
+  "name": "Sabroom",
+  "state": "TR",
+  "kind": "city",
+  "district": "South Tripura",
+  "scale": 1,
+  "sectors": [
+   "logistics",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 23.0,
+  "lon": 91.72
+ },
+ {
+  "id": "tr:igc-bodhjungnagar",
+  "name": "Bodhjungnagar Industrial Growth Centre",
+  "state": "TR",
+  "kind": "estate",
+  "district": "West Tripura",
+  "near": "tr:agartala",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "bodhjungnagar",
+   "bodhjung nagar",
+   "bodhjungnagar industrial estate",
+   "bodhjungnagar rubber park",
+   "bodhjungnagar food park",
+   "tripura epip"
+  ]
+ },
+ {
+  "id": "tr:ia-rk-nagar",
+  "name": "R.K. Nagar Industrial Area",
+  "state": "TR",
+  "kind": "estate",
+  "district": "West Tripura",
+  "near": "tr:agartala",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "rk nagar",
+   "r k nagar",
+   "rk nagar bamboo park"
+  ]
+ },
+ {
+  "id": "tr:sez-sabroom",
+  "name": "Sabroom SEZ",
+  "state": "TR",
+  "kind": "estate",
+  "district": "South Tripura",
+  "near": "tr:sabroom",
+  "scale": 1,
+  "sectors": [
+   "sez",
+   "food",
+   "textile"
+  ],
+  "aka": [
+   "paschim jalefa sez",
+   "sabroom special economic zone",
+   "tripura sez"
+  ]
+ },
+ {
+  "id": "tr:ie-dukli",
+  "name": "Dukli Industrial Estate",
+  "state": "TR",
+  "kind": "estate",
+  "district": "West Tripura",
+  "near": "tr:agartala",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tr:ie-nagichera",
+  "name": "Nagichera Industrial Estate",
+  "state": "TR",
+  "kind": "estate",
+  "district": "West Tripura",
+  "near": "tr:agartala",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "nagicherra"
+  ]
+ },
+ {
+  "id": "tr:ie-ad-nagar",
+  "name": "A.D. Nagar Industrial Estate",
+  "state": "TR",
+  "kind": "estate",
+  "district": "West Tripura",
+  "near": "tr:agartala",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "ad nagar",
+   "arundhutinagar"
+  ]
+ },
+ {
+  "id": "tr:ie-badharghat",
+  "name": "Badharghat Industrial Estate",
+  "state": "TR",
+  "kind": "estate",
+  "district": "West Tripura",
+  "near": "tr:agartala",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tr:ie-tulakona",
+  "name": "Tulakona Industrial Estate",
+  "state": "TR",
+  "kind": "estate",
+  "district": "West Tripura",
+  "near": "tr:agartala",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tr:ie-lalchhari",
+  "name": "Lalchhari Industrial Estate",
+  "state": "TR",
+  "kind": "estate",
+  "district": "Dhalai",
+  "near": "tr:ambassa",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "lalcherri"
+  ]
+ },
+ {
+  "id": "tr:ie-kumarghat",
+  "name": "Kumarghat Industrial Estate",
+  "state": "TR",
+  "kind": "estate",
+  "district": "Unakoti",
+  "near": "tr:kailashahar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kumarghat"
+  ]
+ },
+ {
+  "id": "tr:ie-dewanpassa",
+  "name": "Dewanpassa Industrial Estate",
+  "state": "TR",
+  "kind": "estate",
+  "district": "North Tripura",
+  "near": "tr:dharmanagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tr:ie-dharmanagar",
+  "name": "Dharmanagar Industrial Estate",
+  "state": "TR",
+  "kind": "estate",
+  "district": "North Tripura",
+  "near": "tr:dharmanagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tr:ie-dhajanagar",
+  "name": "Dhajanagar Industrial Estate",
+  "state": "TR",
+  "kind": "estate",
+  "district": "Gomati",
+  "near": "tr:udaipur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tr:ie-santirbazar",
+  "name": "Santirbazar Industrial Estate",
+  "state": "TR",
+  "kind": "estate",
+  "district": "South Tripura",
+  "near": "tr:belonia",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "shantirbazar"
+  ]
+ },
+ {
+  "id": "tr:ie-sarasima",
+  "name": "Sarasima Industrial Estate",
+  "state": "TR",
+  "kind": "estate",
+  "district": "South Tripura",
+  "near": "tr:belonia",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tr:ie-jalefa",
+  "name": "Jalefa Industrial Estate",
+  "state": "TR",
+  "kind": "estate",
+  "district": "South Tripura",
+  "near": "tr:sabroom",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tr:ie-bijoypur",
+  "name": "Bijoypur Industrial Estate",
+  "state": "TR",
+  "kind": "estate",
+  "district": "South Tripura",
+  "near": "tr:sabroom",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tr:ie-east-ludha",
+  "name": "East Ludha Industrial Estate",
+  "state": "TR",
+  "kind": "estate",
+  "district": "South Tripura",
+  "near": "tr:sabroom",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tr:ie-sunamukhi",
+  "name": "Sunamukhi Industrial Estate",
+  "state": "TR",
+  "kind": "estate",
+  "district": "Unakoti",
+  "near": "tr:kailashahar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tr:ie-kathalia",
+  "name": "Kathalia Industrial Estate",
+  "state": "TR",
+  "kind": "estate",
+  "district": "Sepahijala",
+  "near": "tr:bishramganj",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tr:ie-jagannathpur",
+  "name": "Jagannathpur Industrial Estate",
+  "state": "TR",
+  "kind": "estate",
+  "district": "Unakoti",
+  "near": "tr:kailashahar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "jaganathpur"
+  ]
+ }
+]

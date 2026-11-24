@@ -1,0 +1,7492 @@
+[
+ {
+  "id": "ka:bengaluru",
+  "name": "Bengaluru",
+  "state": "KA",
+  "kind": "city",
+  "district": "Bengaluru Urban",
+  "scale": 3,
+  "sectors": [
+   "electronics",
+   "engineering",
+   "auto",
+   "garments",
+   "it-campus",
+   "logistics",
+   "pharma"
+  ],
+  "aka": [
+   "bangalore",
+   "bengaluru urban",
+   "blr",
+   "bengalooru"
+  ],
+  "lat": 12.97,
+  "lon": 77.59
+ },
+ {
+  "id": "ka:devanahalli",
+  "name": "Devanahalli",
+  "state": "KA",
+  "kind": "city",
+  "district": "Bengaluru Rural",
+  "scale": 2,
+  "sectors": [
+   "logistics",
+   "engineering",
+   "electronics"
+  ],
+  "aka": [
+   "devanhalli",
+   "bengaluru rural",
+   "bangalore rural"
+  ],
+  "lat": 13.25,
+  "lon": 77.71
+ },
+ {
+  "id": "ka:ramanagara",
+  "name": "Ramanagara",
+  "state": "KA",
+  "kind": "city",
+  "district": "Bengaluru South",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering",
+   "textile"
+  ],
+  "aka": [
+   "ramanagaram",
+   "bengaluru south",
+   "ramanagar"
+  ],
+  "lat": 12.72,
+  "lon": 77.28
+ },
+ {
+  "id": "ka:bagalkot",
+  "name": "Bagalkot",
+  "state": "KA",
+  "kind": "city",
+  "district": "Bagalkot",
+  "scale": 1,
+  "sectors": [
+   "cement",
+   "textile",
+   "food"
+  ],
+  "aka": [
+   "bagalkote"
+  ],
+  "lat": 16.18,
+  "lon": 75.7
+ },
+ {
+  "id": "ka:ballari",
+  "name": "Ballari",
+  "state": "KA",
+  "kind": "city",
+  "district": "Ballari",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "garments",
+   "metal"
+  ],
+  "aka": [
+   "bellary"
+  ],
+  "lat": 15.14,
+  "lon": 76.92
+ },
+ {
+  "id": "ka:belagavi",
+  "name": "Belagavi",
+  "state": "KA",
+  "kind": "city",
+  "district": "Belagavi",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "metal",
+   "auto",
+   "food"
+  ],
+  "aka": [
+   "belgaum",
+   "belgaon"
+  ],
+  "lat": 15.85,
+  "lon": 74.5
+ },
+ {
+  "id": "ka:bidar",
+  "name": "Bidar",
+  "state": "KA",
+  "kind": "city",
+  "district": "Bidar",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "chemical",
+   "pharma"
+  ],
+  "aka": [],
+  "lat": 17.91,
+  "lon": 77.52
+ },
+ {
+  "id": "ka:chamarajanagar",
+  "name": "Chamarajanagar",
+  "state": "KA",
+  "kind": "city",
+  "district": "Chamarajanagar",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "chamrajnagar",
+   "chamarajanagara"
+  ],
+  "lat": 11.93,
+  "lon": 76.94
+ },
+ {
+  "id": "ka:chikkaballapur",
+  "name": "Chikkaballapur",
+  "state": "KA",
+  "kind": "city",
+  "district": "Chikkaballapur",
+  "scale": 1,
+  "sectors": [
+   "engineering",
+   "food"
+  ],
+  "aka": [
+   "chikballapur",
+   "chickballapur",
+   "chikkaballapura"
+  ],
+  "lat": 13.43,
+  "lon": 77.73
+ },
+ {
+  "id": "ka:chikkamagaluru",
+  "name": "Chikkamagaluru",
+  "state": "KA",
+  "kind": "city",
+  "district": "Chikkamagaluru",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "chikmagalur",
+   "chickmagalur"
+  ],
+  "lat": 13.32,
+  "lon": 75.77
+ },
+ {
+  "id": "ka:chitradurga",
+  "name": "Chitradurga",
+  "state": "KA",
+  "kind": "city",
+  "district": "Chitradurga",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "textile"
+  ],
+  "aka": [],
+  "lat": 14.23,
+  "lon": 76.4
+ },
+ {
+  "id": "ka:mangaluru",
+  "name": "Mangaluru",
+  "state": "KA",
+  "kind": "city",
+  "district": "Dakshina Kannada",
+  "scale": 3,
+  "sectors": [
+   "chemical",
+   "food",
+   "logistics",
+   "it-campus",
+   "sez"
+  ],
+  "aka": [
+   "mangalore",
+   "mangalooru",
+   "kudla",
+   "dakshina kannada"
+  ],
+  "lat": 12.91,
+  "lon": 74.86
+ },
+ {
+  "id": "ka:davanagere",
+  "name": "Davanagere",
+  "state": "KA",
+  "kind": "city",
+  "district": "Davanagere",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "food",
+   "engineering"
+  ],
+  "aka": [
+   "davangere",
+   "davanagere city"
+  ],
+  "lat": 14.46,
+  "lon": 75.92
+ },
+ {
+  "id": "ka:dharwad",
+  "name": "Dharwad",
+  "state": "KA",
+  "kind": "city",
+  "district": "Dharwad",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering",
+   "fmcg"
+  ],
+  "aka": [
+   "dharwar"
+  ],
+  "lat": 15.46,
+  "lon": 75.01
+ },
+ {
+  "id": "ka:hubballi",
+  "name": "Hubballi",
+  "state": "KA",
+  "kind": "city",
+  "district": "Dharwad",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "food",
+   "logistics"
+  ],
+  "aka": [
+   "hubli",
+   "hubli-dharwad",
+   "hubballi-dharwad"
+  ],
+  "lat": 15.36,
+  "lon": 75.12
+ },
+ {
+  "id": "ka:gadag",
+  "name": "Gadag",
+  "state": "KA",
+  "kind": "city",
+  "district": "Gadag",
+  "scale": 1,
+  "sectors": [
+   "textile",
+   "food"
+  ],
+  "aka": [
+   "gadag-betageri",
+   "gadag betgeri"
+  ],
+  "lat": 15.43,
+  "lon": 75.63
+ },
+ {
+  "id": "ka:hassan",
+  "name": "Hassan",
+  "state": "KA",
+  "kind": "city",
+  "district": "Hassan",
+  "scale": 2,
+  "sectors": [
+   "pharma",
+   "food",
+   "textile"
+  ],
+  "aka": [],
+  "lat": 13.0,
+  "lon": 76.1
+ },
+ {
+  "id": "ka:haveri",
+  "name": "Haveri",
+  "state": "KA",
+  "kind": "city",
+  "district": "Haveri",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "textile"
+  ],
+  "aka": [],
+  "lat": 14.79,
+  "lon": 75.4
+ },
+ {
+  "id": "ka:kalaburagi",
+  "name": "Kalaburagi",
+  "state": "KA",
+  "kind": "city",
+  "district": "Kalaburagi",
+  "scale": 2,
+  "sectors": [
+   "cement",
+   "food",
+   "engineering"
+  ],
+  "aka": [
+   "gulbarga"
+  ],
+  "lat": 17.33,
+  "lon": 76.83
+ },
+ {
+  "id": "ka:madikeri",
+  "name": "Madikeri",
+  "state": "KA",
+  "kind": "city",
+  "district": "Kodagu",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "mercara",
+   "kodagu",
+   "coorg"
+  ],
+  "lat": 12.42,
+  "lon": 75.74
+ },
+ {
+  "id": "ka:kolar",
+  "name": "Kolar",
+  "state": "KA",
+  "kind": "city",
+  "district": "Kolar",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering",
+   "electronics"
+  ],
+  "aka": [],
+  "lat": 13.14,
+  "lon": 78.13
+ },
+ {
+  "id": "ka:koppal",
+  "name": "Koppal",
+  "state": "KA",
+  "kind": "city",
+  "district": "Koppal",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "metal"
+  ],
+  "aka": [],
+  "lat": 15.35,
+  "lon": 76.15
+ },
+ {
+  "id": "ka:mandya",
+  "name": "Mandya",
+  "state": "KA",
+  "kind": "city",
+  "district": "Mandya",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [],
+  "lat": 12.52,
+  "lon": 76.9
+ },
+ {
+  "id": "ka:mysuru",
+  "name": "Mysuru",
+  "state": "KA",
+  "kind": "city",
+  "district": "Mysuru",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering",
+   "electronics",
+   "fmcg",
+   "food"
+  ],
+  "aka": [
+   "mysore",
+   "mysooru"
+  ],
+  "lat": 12.3,
+  "lon": 76.64
+ },
+ {
+  "id": "ka:raichur",
+  "name": "Raichur",
+  "state": "KA",
+  "kind": "city",
+  "district": "Raichur",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "chemical"
+  ],
+  "aka": [],
+  "lat": 16.21,
+  "lon": 77.36
+ },
+ {
+  "id": "ka:shivamogga",
+  "name": "Shivamogga",
+  "state": "KA",
+  "kind": "city",
+  "district": "Shivamogga",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "auto",
+   "food"
+  ],
+  "aka": [
+   "shimoga",
+   "shivamoga"
+  ],
+  "lat": 13.93,
+  "lon": 75.57
+ },
+ {
+  "id": "ka:tumakuru",
+  "name": "Tumakuru",
+  "state": "KA",
+  "kind": "city",
+  "district": "Tumakuru",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "food",
+   "auto"
+  ],
+  "aka": [
+   "tumkur",
+   "tumakur"
+  ],
+  "lat": 13.34,
+  "lon": 77.1
+ },
+ {
+  "id": "ka:udupi",
+  "name": "Udupi",
+  "state": "KA",
+  "kind": "city",
+  "district": "Udupi",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 13.34,
+  "lon": 74.75
+ },
+ {
+  "id": "ka:karwar",
+  "name": "Karwar",
+  "state": "KA",
+  "kind": "city",
+  "district": "Uttara Kannada",
+  "scale": 1,
+  "sectors": [
+   "logistics",
+   "chemical"
+  ],
+  "aka": [
+   "uttara kannada",
+   "north kanara"
+  ],
+  "lat": 14.81,
+  "lon": 74.13
+ },
+ {
+  "id": "ka:vijayapura",
+  "name": "Vijayapura",
+  "state": "KA",
+  "kind": "city",
+  "district": "Vijayapura",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "engineering"
+  ],
+  "aka": [
+   "bijapur"
+  ],
+  "lat": 16.83,
+  "lon": 75.71
+ },
+ {
+  "id": "ka:yadgir",
+  "name": "Yadgir",
+  "state": "KA",
+  "kind": "city",
+  "district": "Yadgir",
+  "scale": 1,
+  "sectors": [
+   "chemical",
+   "pharma"
+  ],
+  "aka": [
+   "yadagiri"
+  ],
+  "lat": 16.77,
+  "lon": 77.14
+ },
+ {
+  "id": "ka:hosapete",
+  "name": "Hosapete",
+  "state": "KA",
+  "kind": "city",
+  "district": "Vijayanagara",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "metal"
+  ],
+  "aka": [
+   "hospet",
+   "vijayanagara"
+  ],
+  "lat": 15.27,
+  "lon": 76.39
+ },
+ {
+  "id": "ka:electronic-city",
+  "name": "Electronic City",
+  "state": "KA",
+  "kind": "cluster",
+  "district": "Bengaluru Urban",
+  "near": "ka:bengaluru",
+  "scale": 3,
+  "sectors": [
+   "it-campus",
+   "electronics",
+   "engineering"
+  ],
+  "aka": [
+   "e-city",
+   "ecity",
+   "electronics city",
+   "electronic city phase 1",
+   "electronic city phase 2",
+   "electronic city phase 3"
+  ]
+ },
+ {
+  "id": "ka:whitefield",
+  "name": "Whitefield",
+  "state": "KA",
+  "kind": "cluster",
+  "district": "Bengaluru Urban",
+  "near": "ka:bengaluru",
+  "scale": 3,
+  "sectors": [
+   "it-campus",
+   "electronics",
+   "engineering"
+  ],
+  "aka": [
+   "itpl",
+   "whitefield bangalore"
+  ]
+ },
+ {
+  "id": "ka:hosakote",
+  "name": "Hosakote",
+  "state": "KA",
+  "kind": "cluster",
+  "district": "Bengaluru Rural",
+  "near": "ka:bengaluru",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "logistics",
+   "fmcg",
+   "engineering"
+  ],
+  "aka": [
+   "hoskote",
+   "hosakote industrial area"
+  ]
+ },
+ {
+  "id": "ka:nelamangala",
+  "name": "Nelamangala",
+  "state": "KA",
+  "kind": "cluster",
+  "district": "Bengaluru Rural",
+  "near": "ka:bengaluru",
+  "scale": 3,
+  "sectors": [
+   "logistics",
+   "fmcg",
+   "engineering"
+  ],
+  "aka": [
+   "nelamangla"
+  ]
+ },
+ {
+  "id": "ka:doddaballapur",
+  "name": "Doddaballapur",
+  "state": "KA",
+  "kind": "cluster",
+  "district": "Bengaluru Rural",
+  "near": "ka:bengaluru",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "garments",
+   "engineering"
+  ],
+  "aka": [
+   "doddaballapura",
+   "dodballapur",
+   "d b pura",
+   "db pura"
+  ]
+ },
+ {
+  "id": "ka:anekal",
+  "name": "Anekal",
+  "state": "KA",
+  "kind": "cluster",
+  "district": "Bengaluru Urban",
+  "near": "ka:bengaluru",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "electronics",
+   "auto"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:bidadi",
+  "name": "Bidadi",
+  "state": "KA",
+  "kind": "cluster",
+  "district": "Bengaluru South",
+  "near": "ka:ramanagara",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering",
+   "food"
+  ],
+  "aka": [
+   "bidadi industrial area"
+  ]
+ },
+ {
+  "id": "ka:toranagallu",
+  "name": "Toranagallu",
+  "state": "KA",
+  "kind": "cluster",
+  "district": "Ballari",
+  "near": "ka:ballari",
+  "scale": 3,
+  "sectors": [
+   "steel"
+  ],
+  "aka": [
+   "torangallu",
+   "jsw vijayanagar",
+   "vidyanagar"
+  ]
+ },
+ {
+  "id": "ka:bhadravati",
+  "name": "Bhadravati",
+  "state": "KA",
+  "kind": "cluster",
+  "district": "Shivamogga",
+  "near": "ka:shivamogga",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "paper"
+  ],
+  "aka": [
+   "bhadravathi"
+  ]
+ },
+ {
+  "id": "ka:harihar",
+  "name": "Harihar",
+  "state": "KA",
+  "kind": "cluster",
+  "district": "Davanagere",
+  "near": "ka:davanagere",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "paper",
+   "textile"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:dandeli",
+  "name": "Dandeli",
+  "state": "KA",
+  "kind": "cluster",
+  "district": "Uttara Kannada",
+  "near": "ka:karwar",
+  "scale": 2,
+  "sectors": [
+   "paper"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:gokak",
+  "name": "Gokak",
+  "state": "KA",
+  "kind": "cluster",
+  "district": "Belagavi",
+  "near": "ka:belagavi",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "food"
+  ],
+  "aka": [
+   "gokak falls"
+  ]
+ },
+ {
+  "id": "ka:nippani",
+  "name": "Nippani",
+  "state": "KA",
+  "kind": "cluster",
+  "district": "Belagavi",
+  "near": "ka:belagavi",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "nipani"
+  ]
+ },
+ {
+  "id": "ka:wadi",
+  "name": "Wadi",
+  "state": "KA",
+  "kind": "cluster",
+  "district": "Kalaburagi",
+  "near": "ka:kalaburagi",
+  "scale": 2,
+  "sectors": [
+   "cement"
+  ],
+  "aka": [
+   "wadi junction"
+  ]
+ },
+ {
+  "id": "ka:sedam",
+  "name": "Sedam",
+  "state": "KA",
+  "kind": "cluster",
+  "district": "Kalaburagi",
+  "near": "ka:kalaburagi",
+  "scale": 2,
+  "sectors": [
+   "cement"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:nanjangud",
+  "name": "Nanjangud",
+  "state": "KA",
+  "kind": "cluster",
+  "district": "Mysuru",
+  "near": "ka:mysuru",
+  "scale": 2,
+  "sectors": [
+   "fmcg",
+   "pharma",
+   "electronics",
+   "engineering"
+  ],
+  "aka": [
+   "nanjangudu"
+  ]
+ },
+ {
+  "id": "ka:channapatna",
+  "name": "Channapatna",
+  "state": "KA",
+  "kind": "cluster",
+  "district": "Bengaluru South",
+  "near": "ka:ramanagara",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "channapattana"
+  ]
+ },
+ {
+  "id": "ka:kgf",
+  "name": "Kolar Gold Fields",
+  "state": "KA",
+  "kind": "cluster",
+  "district": "Kolar",
+  "near": "ka:kolar",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "kgf",
+   "robertsonpet"
+  ]
+ },
+ {
+  "id": "ka:peenya",
+  "name": "Peenya Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru Urban",
+  "near": "ka:bengaluru",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "garments",
+   "electronics",
+   "auto"
+  ],
+  "aka": [
+   "peenya",
+   "peenya industrial estate",
+   "peenya 1st stage",
+   "peenya 2nd stage",
+   "peenya 3rd phase"
+  ]
+ },
+ {
+  "id": "ka:bommasandra",
+  "name": "Bommasandra Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru Urban",
+  "near": "ka:bengaluru",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "pharma",
+   "electronics",
+   "auto"
+  ],
+  "aka": [
+   "bommasandra",
+   "bommasandra 4th phase",
+   "bommasandra iv phase"
+  ]
+ },
+ {
+  "id": "ka:bommasandra-jigani-link-road",
+  "name": "Bommasandra-Jigani Link Road Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru Urban",
+  "near": "ka:bengaluru",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "pharma"
+  ],
+  "aka": [
+   "bjlr",
+   "jigani link road"
+  ]
+ },
+ {
+  "id": "ka:jigani",
+  "name": "Jigani Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru Urban",
+  "near": "ka:bengaluru",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "pharma",
+   "garments",
+   "electronics"
+  ],
+  "aka": [
+   "jigani",
+   "jigani 1st phase",
+   "jigani 2nd phase"
+  ]
+ },
+ {
+  "id": "ka:attibele",
+  "name": "Attibele Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru Urban",
+  "near": "ka:bengaluru",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "auto",
+   "garments"
+  ],
+  "aka": [
+   "attibele",
+   "athibele"
+  ]
+ },
+ {
+  "id": "ka:doddanekkundi",
+  "name": "Doddanekkundi Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru Urban",
+  "near": "ka:bengaluru",
+  "scale": 2,
+  "sectors": [
+   "electronics",
+   "it-campus",
+   "engineering"
+  ],
+  "aka": [
+   "doddanekundi",
+   "doddanakundi"
+  ]
+ },
+ {
+  "id": "ka:dyavasandra",
+  "name": "Dyavasandra Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru Urban",
+  "near": "ka:bengaluru",
+  "scale": 1,
+  "sectors": [
+   "engineering",
+   "electronics"
+  ],
+  "aka": [
+   "dyavasandra",
+   "mahadevapura industrial area"
+  ]
+ },
+ {
+  "id": "ka:ecity-kiadb",
+  "name": "Electronic City Phase II and III (KIADB)",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru Urban",
+  "near": "ka:electronic-city",
+  "scale": 3,
+  "sectors": [
+   "electronics",
+   "it-campus"
+  ],
+  "aka": [
+   "electronic city phase ii",
+   "electronic city phase iii",
+   "ecity phase 2"
+  ]
+ },
+ {
+  "id": "ka:eoiz-whitefield",
+  "name": "Export Oriented Industrial Zone, Whitefield",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru Urban",
+  "near": "ka:whitefield",
+  "scale": 2,
+  "sectors": [
+   "electronics",
+   "it-campus",
+   "sez"
+  ],
+  "aka": [
+   "eoiz",
+   "eoiz whitefield"
+  ]
+ },
+ {
+  "id": "ka:epip-whitefield",
+  "name": "EPIP Whitefield",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru Urban",
+  "near": "ka:whitefield",
+  "scale": 3,
+  "sectors": [
+   "it-campus",
+   "electronics",
+   "engineering"
+  ],
+  "aka": [
+   "epip",
+   "export promotion industrial park whitefield",
+   "epip zone"
+  ]
+ },
+ {
+  "id": "ka:kadugodi-sadaramangala",
+  "name": "Kadugodi-Sadaramangala Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru Urban",
+  "near": "ka:whitefield",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "electronics"
+  ],
+  "aka": [
+   "sadaramangala",
+   "kadugodi"
+  ]
+ },
+ {
+  "id": "ka:kumbalagodu",
+  "name": "Kumbalagodu Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru Urban",
+  "near": "ka:bengaluru",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "garments",
+   "logistics"
+  ],
+  "aka": [
+   "kumbalagudu",
+   "kumbalgodu"
+  ]
+ },
+ {
+  "id": "ka:veerasandra",
+  "name": "Veerasandra Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru Urban",
+  "near": "ka:electronic-city",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "electronics"
+  ],
+  "aka": [
+   "veerasandra"
+  ]
+ },
+ {
+  "id": "ka:kachanayakanahalli",
+  "name": "Kachanayakanahalli Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru Urban",
+  "near": "ka:bengaluru",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "kachanayakanahally"
+  ]
+ },
+ {
+  "id": "ka:yarandahalli",
+  "name": "Yarandahalli Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru Urban",
+  "near": "ka:bengaluru",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "yarandahally"
+  ]
+ },
+ {
+  "id": "ka:aerospace-park-devanahalli",
+  "name": "Hi-Tech, Defence and Aerospace Park, Devanahalli",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru Rural",
+  "near": "ka:devanahalli",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "electronics",
+   "sez"
+  ],
+  "aka": [
+   "aerospace park",
+   "aerospace sez",
+   "bengaluru aerospace sez",
+   "kiadb aerospace park"
+  ]
+ },
+ {
+  "id": "ka:db-pura-apparel-park",
+  "name": "Doddaballapur Apparel Park",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru Rural",
+  "near": "ka:doddaballapur",
+  "scale": 2,
+  "sectors": [
+   "garments",
+   "textile"
+  ],
+  "aka": [
+   "db pura apparel park",
+   "doddaballapura apparel park"
+  ]
+ },
+ {
+  "id": "ka:doddaballapur-ia",
+  "name": "Doddaballapur Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru Rural",
+  "near": "ka:doddaballapur",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "textile",
+   "fmcg"
+  ],
+  "aka": [
+   "doddaballapura industrial area",
+   "kiadb doddaballapur"
+  ]
+ },
+ {
+  "id": "ka:dobaspet",
+  "name": "Dobaspet Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru Rural",
+  "near": "ka:nelamangala",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "fmcg",
+   "logistics"
+  ],
+  "aka": [
+   "dobbaspet",
+   "dabaspet",
+   "avverahalli",
+   "dobaspet 4th phase"
+  ]
+ },
+ {
+  "id": "ka:obadenahalli",
+  "name": "Obadenahalli Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru Rural",
+  "near": "ka:doddaballapur",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "obhadenahally",
+   "obadenahally"
+  ]
+ },
+ {
+  "id": "ka:hoskote-ia",
+  "name": "Hoskote Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru Rural",
+  "near": "ka:hosakote",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "auto"
+  ],
+  "aka": [
+   "kiadb hoskote"
+  ]
+ },
+ {
+  "id": "ka:sompura",
+  "name": "Sompura Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru Rural",
+  "near": "ka:nelamangala",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "logistics",
+   "fmcg"
+  ],
+  "aka": [
+   "sompura 1st stage",
+   "sompura 2nd stage"
+  ]
+ },
+ {
+  "id": "ka:bidadi-ia",
+  "name": "Bidadi Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru South",
+  "near": "ka:bidadi",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering",
+   "food"
+  ],
+  "aka": [
+   "kiadb bidadi",
+   "bidadi phase 2"
+  ]
+ },
+ {
+  "id": "ka:harohalli",
+  "name": "Harohalli Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru South",
+  "near": "ka:ramanagara",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "pharma",
+   "food",
+   "garments"
+  ],
+  "aka": [
+   "harohally",
+   "harohalli 1st phase",
+   "harohalli 2nd phase"
+  ]
+ },
+ {
+  "id": "ka:gokak-ia",
+  "name": "Gokak Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Belagavi",
+  "near": "ka:gokak",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:honaga",
+  "name": "Honaga Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Belagavi",
+  "near": "ka:belagavi",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "metal"
+  ],
+  "aka": [
+   "honga"
+  ]
+ },
+ {
+  "id": "ka:kakati",
+  "name": "Kakati Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Belagavi",
+  "near": "ka:belagavi",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:kanabargi",
+  "name": "Kanabargi Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Belagavi",
+  "near": "ka:belagavi",
+  "scale": 1,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "kanabargi auto complex"
+  ]
+ },
+ {
+  "id": "ka:kangrali",
+  "name": "B.K. Kangrali Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Belagavi",
+  "near": "ka:belagavi",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "kangrali",
+   "bk kangrali"
+  ]
+ },
+ {
+  "id": "ka:kittur",
+  "name": "Kittur Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Belagavi",
+  "near": "ka:belagavi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kittur"
+  ]
+ },
+ {
+  "id": "ka:udyambag",
+  "name": "Udyambag Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Belagavi",
+  "near": "ka:belagavi",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "metal",
+   "auto"
+  ],
+  "aka": [
+   "udyambag",
+   "udyambagh"
+  ]
+ },
+ {
+  "id": "ka:ananthpur-road",
+  "name": "Ananthpur Road Industrial Area, Ballari",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Ballari",
+  "near": "ka:ballari",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "anantapur road ballari"
+  ]
+ },
+ {
+  "id": "ka:mundaragi",
+  "name": "Mundaragi Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Ballari",
+  "near": "ka:ballari",
+  "scale": 2,
+  "sectors": [
+   "garments",
+   "steel",
+   "mixed"
+  ],
+  "aka": [
+   "mundargi",
+   "mundaragi apparel park"
+  ]
+ },
+ {
+  "id": "ka:kudathini",
+  "name": "Kudathini Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Ballari",
+  "near": "ka:ballari",
+  "scale": 1,
+  "sectors": [
+   "steel",
+   "metal"
+  ],
+  "aka": [
+   "kuduthini",
+   "kudithini"
+  ]
+ },
+ {
+  "id": "ka:sanklapura",
+  "name": "Sanklapura Industrial Area, Hosapete",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Vijayanagara",
+  "near": "ka:hosapete",
+  "scale": 1,
+  "sectors": [
+   "metal",
+   "mixed"
+  ],
+  "aka": [
+   "hospet industrial area",
+   "sankalapura"
+  ]
+ },
+ {
+  "id": "ka:kolhar",
+  "name": "Kolhar Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bidar",
+  "near": "ka:bidar",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "pharma",
+   "engineering"
+  ],
+  "aka": [
+   "kolhar",
+   "kolar bidar"
+  ]
+ },
+ {
+  "id": "ka:naubad",
+  "name": "Naubad Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bidar",
+  "near": "ka:bidar",
+  "scale": 1,
+  "sectors": [
+   "engineering",
+   "auto"
+  ],
+  "aka": [
+   "naubad auto nagar"
+  ]
+ },
+ {
+  "id": "ka:humnabad",
+  "name": "Humnabad Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bidar",
+  "near": "ka:bidar",
+  "scale": 1,
+  "sectors": [
+   "chemical",
+   "mixed"
+  ],
+  "aka": [
+   "humnabad"
+  ]
+ },
+ {
+  "id": "ka:basavakalyan",
+  "name": "Basavakalyan Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bidar",
+  "near": "ka:bidar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "basavakalyan auto nagar"
+  ]
+ },
+ {
+  "id": "ka:aliabad",
+  "name": "Aliabad Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Vijayapura",
+  "near": "ka:vijayapura",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "aliyabad"
+  ]
+ },
+ {
+  "id": "ka:mahalbagayat",
+  "name": "Mahalbagayat Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Vijayapura",
+  "near": "ka:vijayapura",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:assangi",
+  "name": "Assangi Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bagalkot",
+  "near": "ka:bagalkot",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:navanagar-bagalkot",
+  "name": "Navanagar Industrial Area, Bagalkot",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bagalkot",
+  "near": "ka:bagalkot",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "bagalkot navanagar"
+  ]
+ },
+ {
+  "id": "ka:badanaguppe",
+  "name": "Badanaguppe-Kellamballi Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Chamarajanagar",
+  "near": "ka:chamarajanagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "badanekuppe",
+   "kellamballi"
+  ]
+ },
+ {
+  "id": "ka:amble",
+  "name": "Amble Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Chikkamagaluru",
+  "near": "ka:chikkamagaluru",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:chikkaballapur-ia",
+  "name": "Chikkaballapur Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Chikkaballapur",
+  "near": "ka:chikkaballapur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:gauribidanur",
+  "name": "Gauribidanur Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Chikkaballapur",
+  "near": "ka:chikkaballapur",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "steel"
+  ],
+  "aka": [
+   "gowribidanur",
+   "gauribidanur"
+  ]
+ },
+ {
+  "id": "ka:kelkote",
+  "name": "Kelkote Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Chitradurga",
+  "near": "ka:chitradurga",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:baikampady",
+  "name": "Baikampady Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Dakshina Kannada",
+  "near": "ka:mangaluru",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "engineering",
+   "chemical"
+  ],
+  "aka": [
+   "baikampadi"
+  ]
+ },
+ {
+  "id": "ka:ganjimutt",
+  "name": "Ganjimutt Industrial Area (EPIP)",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Dakshina Kannada",
+  "near": "ka:mangaluru",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "ganjimutt epip",
+   "ganjimath"
+  ]
+ },
+ {
+  "id": "ka:mangaluru-it-sez",
+  "name": "Mangaluru IT SEZ",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Dakshina Kannada",
+  "near": "ka:mangaluru",
+  "scale": 1,
+  "sectors": [
+   "it-campus",
+   "sez"
+  ],
+  "aka": [
+   "mangalore it sez"
+  ]
+ },
+ {
+  "id": "ka:karnad",
+  "name": "Karnad Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Dakshina Kannada",
+  "near": "ka:mangaluru",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "mulki karnad"
+  ]
+ },
+ {
+  "id": "ka:puttur-ia",
+  "name": "Puttur Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Dakshina Kannada",
+  "near": "ka:mangaluru",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:thannirbhavi",
+  "name": "Thannirbhavi Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Dakshina Kannada",
+  "near": "ka:mangaluru",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "tannirbhavi"
+  ]
+ },
+ {
+  "id": "ka:mangaluru-sez",
+  "name": "Mangaluru SEZ",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Dakshina Kannada",
+  "near": "ka:mangaluru",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "sez",
+   "food"
+  ],
+  "aka": [
+   "msez",
+   "mangalore sez"
+  ]
+ },
+ {
+  "id": "ka:davanagere-ia",
+  "name": "Davanagere Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Davanagere",
+  "near": "ka:davanagere",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:hangavadi",
+  "name": "Hangavadi Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Davanagere",
+  "near": "ka:harihar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:harlapur",
+  "name": "Harlapur Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Davanagere",
+  "near": "ka:harihar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "haralapura"
+  ]
+ },
+ {
+  "id": "ka:karur-davanagere",
+  "name": "Karur Industrial Area, Davanagere",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Davanagere",
+  "near": "ka:davanagere",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:belur-dharwad",
+  "name": "Belur Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Dharwad",
+  "near": "ka:dharwad",
+  "scale": 2,
+  "sectors": [
+   "fmcg",
+   "engineering",
+   "auto"
+  ],
+  "aka": [
+   "belur dharwad",
+   "dharwad growth centre"
+  ]
+ },
+ {
+  "id": "ka:gokul-hubballi",
+  "name": "Gokul Industrial Area, Hubballi",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Dharwad",
+  "near": "ka:hubballi",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "gokul road",
+   "gokul road industrial estate"
+  ]
+ },
+ {
+  "id": "ka:lakkammanahalli",
+  "name": "Lakkammanahalli Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Dharwad",
+  "near": "ka:dharwad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "lakkamanahalli"
+  ]
+ },
+ {
+  "id": "ka:rayapur",
+  "name": "Rayapur Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Dharwad",
+  "near": "ka:hubballi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "rayapura"
+  ]
+ },
+ {
+  "id": "ka:sattur-dharwad",
+  "name": "Sattur Industrial Area, Dharwad",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Dharwad",
+  "near": "ka:dharwad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:tarihal",
+  "name": "Tarihal Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Dharwad",
+  "near": "ka:hubballi",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "metal"
+  ],
+  "aka": [
+   "tarihal hubli"
+  ]
+ },
+ {
+  "id": "ka:mummigatti",
+  "name": "Mummigatti Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Dharwad",
+  "near": "ka:dharwad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "mummigatti narendra"
+  ]
+ },
+ {
+  "id": "ka:gamanagatti",
+  "name": "Gamanagatti Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Dharwad",
+  "near": "ka:hubballi",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "gamanghatti"
+  ]
+ },
+ {
+  "id": "ka:narasapura-gadag",
+  "name": "Narasapura Industrial Area, Gadag",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Gadag",
+  "near": "ka:gadag",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:kapnoor",
+  "name": "Kapnoor Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Kalaburagi",
+  "near": "ka:kalaburagi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kapanoor",
+   "kapnur"
+  ]
+ },
+ {
+  "id": "ka:nandur-kesaratagi",
+  "name": "Nandur Kesaratagi Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Kalaburagi",
+  "near": "ka:kalaburagi",
+  "scale": 1,
+  "sectors": [
+   "mixed",
+   "textile"
+  ],
+  "aka": [
+   "nandur kesartagi",
+   "nandur"
+  ]
+ },
+ {
+  "id": "ka:hassan-growth-centre",
+  "name": "Hassan Industrial Growth Centre",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Hassan",
+  "near": "ka:hassan",
+  "scale": 2,
+  "sectors": [
+   "pharma",
+   "textile",
+   "sez"
+  ],
+  "aka": [
+   "hassan sez",
+   "hassan pharma sez",
+   "hassan growth centre"
+  ]
+ },
+ {
+  "id": "ka:b-kattihalli",
+  "name": "B. Kattihalli Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Hassan",
+  "near": "ka:hassan",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kattihalli"
+  ]
+ },
+ {
+  "id": "ka:thimmenahalli",
+  "name": "Thimmenahalli Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Hassan",
+  "near": "ka:hassan",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:holenarasipur",
+  "name": "Holenarasipur Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Hassan",
+  "near": "ka:hassan",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "holenarasipura"
+  ]
+ },
+ {
+  "id": "ka:kushalnagar",
+  "name": "Kushalnagar Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Kodagu",
+  "near": "ka:madikeri",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "kushalanagar"
+  ]
+ },
+ {
+  "id": "ka:kushtagi",
+  "name": "Kushtagi Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Koppal",
+  "near": "ka:koppal",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kustagi"
+  ]
+ },
+ {
+  "id": "ka:narasapura-kolar",
+  "name": "Narasapura Industrial Area, Kolar",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Kolar",
+  "near": "ka:kolar",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering",
+   "electronics"
+  ],
+  "aka": [
+   "narsapura",
+   "narasapura"
+  ]
+ },
+ {
+  "id": "ka:vemagal",
+  "name": "Vemagal Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Kolar",
+  "near": "ka:kolar",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "auto"
+  ],
+  "aka": [
+   "vemgal"
+  ]
+ },
+ {
+  "id": "ka:malur",
+  "name": "Malur Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Kolar",
+  "near": "ka:kolar",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "plastics",
+   "electronics"
+  ],
+  "aka": [
+   "malur"
+  ]
+ },
+ {
+  "id": "ka:bangarpet",
+  "name": "Bangarpet Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Kolar",
+  "near": "ka:kolar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "bangarapet"
+  ]
+ },
+ {
+  "id": "ka:tamaka",
+  "name": "Tamaka Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Kolar",
+  "near": "ka:kolar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:jakkasandra",
+  "name": "Jakkasandra Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Kolar",
+  "near": "ka:kolar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:somanahalli",
+  "name": "Somanahalli Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Mandya",
+  "near": "ka:mandya",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:tubinakere",
+  "name": "Tubinakere Industrial Area, Mandya",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Mandya",
+  "near": "ka:mandya",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "mandya industrial area"
+  ]
+ },
+ {
+  "id": "ka:gejjalagere",
+  "name": "Gejjalagere Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Mandya",
+  "near": "ka:mandya",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:hebbal-mysuru",
+  "name": "Hebbal Industrial Area, Mysuru",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Mysuru",
+  "near": "ka:mysuru",
+  "scale": 2,
+  "sectors": [
+   "electronics",
+   "engineering",
+   "it-campus"
+  ],
+  "aka": [
+   "hebbal mysore",
+   "mysore electronic city"
+  ]
+ },
+ {
+  "id": "ka:metagalli",
+  "name": "Metagalli Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Mysuru",
+  "near": "ka:mysuru",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "auto"
+  ],
+  "aka": [
+   "belagola",
+   "belagola metagalli"
+  ]
+ },
+ {
+  "id": "ka:belawadi",
+  "name": "Belawadi Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Mysuru",
+  "near": "ka:mysuru",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "belavadi"
+  ]
+ },
+ {
+  "id": "ka:hootagalli",
+  "name": "Hootagalli Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Mysuru",
+  "near": "ka:mysuru",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "auto"
+  ],
+  "aka": [
+   "hootagally"
+  ]
+ },
+ {
+  "id": "ka:kadakola",
+  "name": "Kadakola Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Mysuru",
+  "near": "ka:mysuru",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:koorgalli",
+  "name": "Koorgalli Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Mysuru",
+  "near": "ka:mysuru",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "koorgally"
+  ]
+ },
+ {
+  "id": "ka:nanjangud-ia",
+  "name": "Nanjangud Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Mysuru",
+  "near": "ka:nanjangud",
+  "scale": 2,
+  "sectors": [
+   "fmcg",
+   "pharma",
+   "engineering"
+  ],
+  "aka": [
+   "kiadb nanjangud"
+  ]
+ },
+ {
+  "id": "ka:thandya",
+  "name": "Thandya Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Mysuru",
+  "near": "ka:nanjangud",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "food"
+  ],
+  "aka": [
+   "tandya"
+  ]
+ },
+ {
+  "id": "ka:adakanahalli",
+  "name": "Adakanahalli Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Mysuru",
+  "near": "ka:nanjangud",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:raichur-growth-centre",
+  "name": "Raichur Industrial Growth Centre",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Raichur",
+  "near": "ka:raichur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "raichur industrial area"
+  ]
+ },
+ {
+  "id": "ka:deosugur",
+  "name": "Deosugur Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Raichur",
+  "near": "ka:raichur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "devasugur"
+  ]
+ },
+ {
+  "id": "ka:manvi",
+  "name": "Manvi Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Raichur",
+  "near": "ka:raichur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:machenahalli",
+  "name": "Machenahalli Industrial Area (Shivamogga-Bhadravati)",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Shivamogga",
+  "near": "ka:shivamogga",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "shivamogga bhadravathi industrial area",
+   "machenahally"
+  ]
+ },
+ {
+  "id": "ka:mandli-kallur",
+  "name": "Mandli-Kallur Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Shivamogga",
+  "near": "ka:shivamogga",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "mandli"
+  ]
+ },
+ {
+  "id": "ka:nidige",
+  "name": "Nidige Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Shivamogga",
+  "near": "ka:shivamogga",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:devakathikoppa",
+  "name": "Devakathikoppa Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Shivamogga",
+  "near": "ka:shivamogga",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:sanda",
+  "name": "Sanda Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Shivamogga",
+  "near": "ka:shivamogga",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:kallahalli-shivamogga",
+  "name": "Kallahalli Auto Complex",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Shivamogga",
+  "near": "ka:shivamogga",
+  "scale": 1,
+  "sectors": [
+   "auto"
+  ],
+  "aka": [
+   "kallahalli"
+  ]
+ },
+ {
+  "id": "ka:antharasanahalli",
+  "name": "Antharasanahalli Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Tumakuru",
+  "near": "ka:tumakuru",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "food"
+  ],
+  "aka": [
+   "antarasanahalli"
+  ]
+ },
+ {
+  "id": "ka:hirehalli",
+  "name": "Hirehalli Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Tumakuru",
+  "near": "ka:tumakuru",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "food"
+  ],
+  "aka": [
+   "hirehally"
+  ]
+ },
+ {
+  "id": "ka:kunigal",
+  "name": "Kunigal Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Tumakuru",
+  "near": "ka:tumakuru",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:sathyamangala",
+  "name": "Sathyamangala Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Tumakuru",
+  "near": "ka:tumakuru",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "satyamangala"
+  ]
+ },
+ {
+  "id": "ka:vasantha-narasapura",
+  "name": "Vasantha Narasapura Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Tumakuru",
+  "near": "ka:tumakuru",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "auto",
+   "food"
+  ],
+  "aka": [
+   "vasanthanarasapura",
+   "tumakuru machine tool park",
+   "tumkur nimz",
+   "japanese industrial township"
+  ]
+ },
+ {
+  "id": "ka:shivally",
+  "name": "Shivally Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Udupi",
+  "near": "ka:udupi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "shivalli"
+  ]
+ },
+ {
+  "id": "ka:nandikur",
+  "name": "Nandikur Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Udupi",
+  "near": "ka:udupi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "nandikoor"
+  ]
+ },
+ {
+  "id": "ka:belapu",
+  "name": "Belapu Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Udupi",
+  "near": "ka:udupi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "belupu"
+  ]
+ },
+ {
+  "id": "ka:miyar",
+  "name": "Miyar Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Udupi",
+  "near": "ka:udupi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "miyaru"
+  ]
+ },
+ {
+  "id": "ka:shirwad",
+  "name": "Shirwad Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Uttara Kannada",
+  "near": "ka:karwar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:kadechur",
+  "name": "Kadechur-Badiyal Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Yadgir",
+  "near": "ka:yadgir",
+  "scale": 2,
+  "sectors": [
+   "pharma",
+   "chemical"
+  ],
+  "aka": [
+   "kadechur",
+   "kadechuru",
+   "badiyal"
+  ]
+ },
+ {
+  "id": "ka:yadgir-ia",
+  "name": "Yadgir Industrial Area",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Yadgir",
+  "near": "ka:yadgir",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "ka:rajajinagar-ie",
+  "name": "Rajajinagar Industrial Estate",
+  "state": "KA",
+  "kind": "estate",
+  "district": "Bengaluru Urban",
+  "near": "ka:bengaluru",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "garments",
+   "electronics"
+  ],
+  "aka": [
+   "rajajinagar industrial area",
+   "kssidc rajajinagar"
+  ]
+ },
+ {
+  "id": "tn:chennai",
+  "name": "Chennai",
+  "state": "TN",
+  "kind": "city",
+  "district": "Chennai",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "electronics",
+   "engineering",
+   "it-campus",
+   "logistics",
+   "leather",
+   "chemical"
+  ],
+  "aka": [
+   "madras",
+   "chennai city"
+  ],
+  "lat": 13.08,
+  "lon": 80.27
+ },
+ {
+  "id": "tn:ariyalur",
+  "name": "Ariyalur",
+  "state": "TN",
+  "kind": "city",
+  "district": "Ariyalur",
+  "scale": 2,
+  "sectors": [
+   "cement"
+  ],
+  "aka": [],
+  "lat": 11.14,
+  "lon": 79.08
+ },
+ {
+  "id": "tn:chengalpattu",
+  "name": "Chengalpattu",
+  "state": "TN",
+  "kind": "city",
+  "district": "Chengalpattu",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering",
+   "it-campus"
+  ],
+  "aka": [
+   "chengalpet",
+   "chingleput"
+  ],
+  "lat": 12.69,
+  "lon": 79.98
+ },
+ {
+  "id": "tn:coimbatore",
+  "name": "Coimbatore",
+  "state": "TN",
+  "kind": "city",
+  "district": "Coimbatore",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "textile",
+   "auto",
+   "it-campus",
+   "food"
+  ],
+  "aka": [
+   "kovai",
+   "cbe",
+   "koyamuthur"
+  ],
+  "lat": 11.02,
+  "lon": 76.96
+ },
+ {
+  "id": "tn:cuddalore",
+  "name": "Cuddalore",
+  "state": "TN",
+  "kind": "city",
+  "district": "Cuddalore",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "pharma"
+  ],
+  "aka": [
+   "kadalur"
+  ],
+  "lat": 11.75,
+  "lon": 79.75
+ },
+ {
+  "id": "tn:dharmapuri",
+  "name": "Dharmapuri",
+  "state": "TN",
+  "kind": "city",
+  "district": "Dharmapuri",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 12.13,
+  "lon": 78.16
+ },
+ {
+  "id": "tn:dindigul",
+  "name": "Dindigul",
+  "state": "TN",
+  "kind": "city",
+  "district": "Dindigul",
+  "scale": 2,
+  "sectors": [
+   "leather",
+   "textile",
+   "engineering"
+  ],
+  "aka": [
+   "dindukal"
+  ],
+  "lat": 10.36,
+  "lon": 77.98
+ },
+ {
+  "id": "tn:erode",
+  "name": "Erode",
+  "state": "TN",
+  "kind": "city",
+  "district": "Erode",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "food"
+  ],
+  "aka": [
+   "eerode"
+  ],
+  "lat": 11.34,
+  "lon": 77.72
+ },
+ {
+  "id": "tn:kallakurichi",
+  "name": "Kallakurichi",
+  "state": "TN",
+  "kind": "city",
+  "district": "Kallakurichi",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "kallakkurichi"
+  ],
+  "lat": 11.74,
+  "lon": 78.96
+ },
+ {
+  "id": "tn:kancheepuram",
+  "name": "Kancheepuram",
+  "state": "TN",
+  "kind": "city",
+  "district": "Kancheepuram",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "auto",
+   "electronics"
+  ],
+  "aka": [
+   "kanchipuram",
+   "kanchi",
+   "conjeevaram"
+  ],
+  "lat": 12.83,
+  "lon": 79.7
+ },
+ {
+  "id": "tn:nagercoil",
+  "name": "Nagercoil",
+  "state": "TN",
+  "kind": "city",
+  "district": "Kanyakumari",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "kanyakumari",
+   "kanniyakumari"
+  ],
+  "lat": 8.18,
+  "lon": 77.41
+ },
+ {
+  "id": "tn:karur",
+  "name": "Karur",
+  "state": "TN",
+  "kind": "city",
+  "district": "Karur",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "engineering"
+  ],
+  "aka": [
+   "karuvur"
+  ],
+  "lat": 10.96,
+  "lon": 78.08
+ },
+ {
+  "id": "tn:krishnagiri",
+  "name": "Krishnagiri",
+  "state": "TN",
+  "kind": "city",
+  "district": "Krishnagiri",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 12.52,
+  "lon": 78.21
+ },
+ {
+  "id": "tn:madurai",
+  "name": "Madurai",
+  "state": "TN",
+  "kind": "city",
+  "district": "Madurai",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "textile",
+   "auto",
+   "food"
+  ],
+  "aka": [
+   "madura"
+  ],
+  "lat": 9.93,
+  "lon": 78.12
+ },
+ {
+  "id": "tn:mayiladuthurai",
+  "name": "Mayiladuthurai",
+  "state": "TN",
+  "kind": "city",
+  "district": "Mayiladuthurai",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "mayavaram"
+  ],
+  "lat": 11.1,
+  "lon": 79.65
+ },
+ {
+  "id": "tn:nagapattinam",
+  "name": "Nagapattinam",
+  "state": "TN",
+  "kind": "city",
+  "district": "Nagapattinam",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "chemical"
+  ],
+  "aka": [
+   "nagai"
+  ],
+  "lat": 10.77,
+  "lon": 79.84
+ },
+ {
+  "id": "tn:namakkal",
+  "name": "Namakkal",
+  "state": "TN",
+  "kind": "city",
+  "district": "Namakkal",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "food",
+   "logistics"
+  ],
+  "aka": [],
+  "lat": 11.22,
+  "lon": 78.17
+ },
+ {
+  "id": "tn:ooty",
+  "name": "Udhagamandalam",
+  "state": "TN",
+  "kind": "city",
+  "district": "Nilgiris",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "ooty",
+   "nilgiris",
+   "the nilgiris",
+   "ootacamund"
+  ],
+  "lat": 11.41,
+  "lon": 76.7
+ },
+ {
+  "id": "tn:perambalur",
+  "name": "Perambalur",
+  "state": "TN",
+  "kind": "city",
+  "district": "Perambalur",
+  "scale": 1,
+  "sectors": [
+   "leather",
+   "cement"
+  ],
+  "aka": [],
+  "lat": 11.23,
+  "lon": 78.88
+ },
+ {
+  "id": "tn:pudukkottai",
+  "name": "Pudukkottai",
+  "state": "TN",
+  "kind": "city",
+  "district": "Pudukkottai",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "pudukottai"
+  ],
+  "lat": 10.38,
+  "lon": 78.82
+ },
+ {
+  "id": "tn:ramanathapuram",
+  "name": "Ramanathapuram",
+  "state": "TN",
+  "kind": "city",
+  "district": "Ramanathapuram",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "ramnad"
+  ],
+  "lat": 9.37,
+  "lon": 78.83
+ },
+ {
+  "id": "tn:ranipet",
+  "name": "Ranipet",
+  "state": "TN",
+  "kind": "city",
+  "district": "Ranipet",
+  "scale": 3,
+  "sectors": [
+   "leather",
+   "chemical",
+   "engineering"
+  ],
+  "aka": [
+   "ranipettai"
+  ],
+  "lat": 12.93,
+  "lon": 79.33
+ },
+ {
+  "id": "tn:salem",
+  "name": "Salem",
+  "state": "TN",
+  "kind": "city",
+  "district": "Salem",
+  "scale": 2,
+  "sectors": [
+   "steel",
+   "textile",
+   "food"
+  ],
+  "aka": [],
+  "lat": 11.66,
+  "lon": 78.15
+ },
+ {
+  "id": "tn:sivaganga",
+  "name": "Sivaganga",
+  "state": "TN",
+  "kind": "city",
+  "district": "Sivaganga",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sivagangai"
+  ],
+  "lat": 9.85,
+  "lon": 78.48
+ },
+ {
+  "id": "tn:tenkasi",
+  "name": "Tenkasi",
+  "state": "TN",
+  "kind": "city",
+  "district": "Tenkasi",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "textile"
+  ],
+  "aka": [],
+  "lat": 8.96,
+  "lon": 77.3
+ },
+ {
+  "id": "tn:thanjavur",
+  "name": "Thanjavur",
+  "state": "TN",
+  "kind": "city",
+  "district": "Thanjavur",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "tanjore"
+  ],
+  "lat": 10.79,
+  "lon": 79.14
+ },
+ {
+  "id": "tn:theni",
+  "name": "Theni",
+  "state": "TN",
+  "kind": "city",
+  "district": "Theni",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "textile"
+  ],
+  "aka": [],
+  "lat": 10.01,
+  "lon": 77.48
+ },
+ {
+  "id": "tn:thoothukudi",
+  "name": "Thoothukudi",
+  "state": "TN",
+  "kind": "city",
+  "district": "Thoothukudi",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "logistics",
+   "food"
+  ],
+  "aka": [
+   "tuticorin",
+   "tuty"
+  ],
+  "lat": 8.76,
+  "lon": 78.13
+ },
+ {
+  "id": "tn:tiruchirappalli",
+  "name": "Tiruchirappalli",
+  "state": "TN",
+  "kind": "city",
+  "district": "Tiruchirappalli",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "metal"
+  ],
+  "aka": [
+   "trichy",
+   "tiruchi",
+   "tiruchy",
+   "trichinopoly"
+  ],
+  "lat": 10.81,
+  "lon": 78.69
+ },
+ {
+  "id": "tn:tirunelveli",
+  "name": "Tirunelveli",
+  "state": "TN",
+  "kind": "city",
+  "district": "Tirunelveli",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "nellai",
+   "tinnevelly"
+  ],
+  "lat": 8.71,
+  "lon": 77.76
+ },
+ {
+  "id": "tn:tirupathur",
+  "name": "Tirupathur",
+  "state": "TN",
+  "kind": "city",
+  "district": "Tirupathur",
+  "scale": 1,
+  "sectors": [
+   "leather"
+  ],
+  "aka": [
+   "tirupattur"
+  ],
+  "lat": 12.5,
+  "lon": 78.57
+ },
+ {
+  "id": "tn:tiruppur",
+  "name": "Tiruppur",
+  "state": "TN",
+  "kind": "city",
+  "district": "Tiruppur",
+  "scale": 3,
+  "sectors": [
+   "garments",
+   "textile"
+  ],
+  "aka": [
+   "tirupur",
+   "tirupper"
+  ],
+  "lat": 11.11,
+  "lon": 77.34
+ },
+ {
+  "id": "tn:tiruvallur",
+  "name": "Tiruvallur",
+  "state": "TN",
+  "kind": "city",
+  "district": "Tiruvallur",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "auto",
+   "logistics"
+  ],
+  "aka": [
+   "thiruvallur"
+  ],
+  "lat": 13.14,
+  "lon": 79.91
+ },
+ {
+  "id": "tn:tiruvannamalai",
+  "name": "Tiruvannamalai",
+  "state": "TN",
+  "kind": "city",
+  "district": "Tiruvannamalai",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "thiruvannamalai"
+  ],
+  "lat": 12.23,
+  "lon": 79.07
+ },
+ {
+  "id": "tn:tiruvarur",
+  "name": "Tiruvarur",
+  "state": "TN",
+  "kind": "city",
+  "district": "Tiruvarur",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "thiruvarur"
+  ],
+  "lat": 10.77,
+  "lon": 79.64
+ },
+ {
+  "id": "tn:vellore",
+  "name": "Vellore",
+  "state": "TN",
+  "kind": "city",
+  "district": "Vellore",
+  "scale": 2,
+  "sectors": [
+   "leather",
+   "engineering"
+  ],
+  "aka": [],
+  "lat": 12.92,
+  "lon": 79.13
+ },
+ {
+  "id": "tn:viluppuram",
+  "name": "Viluppuram",
+  "state": "TN",
+  "kind": "city",
+  "district": "Viluppuram",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "villupuram"
+  ],
+  "lat": 11.94,
+  "lon": 79.49
+ },
+ {
+  "id": "tn:virudhunagar",
+  "name": "Virudhunagar",
+  "state": "TN",
+  "kind": "city",
+  "district": "Virudhunagar",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "textile",
+   "chemical"
+  ],
+  "aka": [
+   "virudunagar"
+  ],
+  "lat": 9.58,
+  "lon": 77.96
+ },
+ {
+  "id": "tn:hosur",
+  "name": "Hosur",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Krishnagiri",
+  "near": "tn:krishnagiri",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "electronics",
+   "engineering"
+  ],
+  "aka": [
+   "hosur industrial area"
+  ],
+  "lat": 12.74,
+  "lon": 77.83
+ },
+ {
+  "id": "tn:sriperumbudur",
+  "name": "Sriperumbudur",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Kancheepuram",
+  "near": "tn:kancheepuram",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "electronics",
+   "engineering",
+   "logistics"
+  ],
+  "aka": [
+   "sriperambudur",
+   "perumbudur"
+  ],
+  "lat": 12.97,
+  "lon": 79.95
+ },
+ {
+  "id": "tn:oragadam",
+  "name": "Oragadam",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Kancheepuram",
+  "near": "tn:sriperumbudur",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering",
+   "logistics"
+  ],
+  "aka": [
+   "oragadam industrial corridor"
+  ]
+ },
+ {
+  "id": "tn:ambattur",
+  "name": "Ambattur",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Chennai",
+  "near": "tn:chennai",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "auto",
+   "garments",
+   "it-campus"
+  ],
+  "aka": [
+   "ambathur"
+  ]
+ },
+ {
+  "id": "tn:guindy",
+  "name": "Guindy",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Chennai",
+  "near": "tn:chennai",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "electronics",
+   "it-campus"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tn:manali-ennore",
+  "name": "Manali and Ennore",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Chennai",
+  "near": "tn:chennai",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "logistics"
+  ],
+  "aka": [
+   "manali",
+   "ennore",
+   "ennore port",
+   "manali petrochemical"
+  ]
+ },
+ {
+  "id": "tn:maraimalai-nagar",
+  "name": "Maraimalai Nagar",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Chengalpattu",
+  "near": "tn:chengalpattu",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "maraimalainagar",
+   "mm nagar"
+  ]
+ },
+ {
+  "id": "tn:mahindra-world-city",
+  "name": "Mahindra World City, Chennai",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Chengalpattu",
+  "near": "tn:chengalpattu",
+  "scale": 3,
+  "sectors": [
+   "sez",
+   "auto",
+   "it-campus",
+   "engineering"
+  ],
+  "aka": [
+   "mwc",
+   "mwc chennai",
+   "mahindra world city sez"
+  ]
+ },
+ {
+  "id": "tn:avadi",
+  "name": "Avadi",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Tiruvallur",
+  "near": "tn:chennai",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "auto"
+  ],
+  "aka": [
+   "hvf avadi"
+  ]
+ },
+ {
+  "id": "tn:omr-it-corridor",
+  "name": "OMR IT Corridor",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Chennai",
+  "near": "tn:chennai",
+  "scale": 3,
+  "sectors": [
+   "it-campus"
+  ],
+  "aka": [
+   "old mahabalipuram road",
+   "rajiv gandhi salai",
+   "it expressway"
+  ]
+ },
+ {
+  "id": "tn:sivakasi",
+  "name": "Sivakasi",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Virudhunagar",
+  "near": "tn:virudhunagar",
+  "scale": 3,
+  "sectors": [
+   "chemical",
+   "paper"
+  ],
+  "aka": [
+   "sivakashi",
+   "kutti japan"
+  ]
+ },
+ {
+  "id": "tn:sattur",
+  "name": "Sattur",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Virudhunagar",
+  "near": "tn:virudhunagar",
+  "scale": 1,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tn:rajapalayam",
+  "name": "Rajapalayam",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Virudhunagar",
+  "near": "tn:virudhunagar",
+  "scale": 2,
+  "sectors": [
+   "textile"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tn:ambur",
+  "name": "Ambur",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Tirupathur",
+  "near": "tn:tirupathur",
+  "scale": 3,
+  "sectors": [
+   "leather",
+   "garments"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tn:vaniyambadi",
+  "name": "Vaniyambadi",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Tirupathur",
+  "near": "tn:tirupathur",
+  "scale": 2,
+  "sectors": [
+   "leather"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tn:pernambut",
+  "name": "Pernambut",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Vellore",
+  "near": "tn:vellore",
+  "scale": 1,
+  "sectors": [
+   "leather"
+  ],
+  "aka": [
+   "pernambattu"
+  ]
+ },
+ {
+  "id": "tn:gudiyatham",
+  "name": "Gudiyatham",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Vellore",
+  "near": "tn:vellore",
+  "scale": 1,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": [
+   "gudiyattam"
+  ]
+ },
+ {
+  "id": "tn:kovilpatti",
+  "name": "Kovilpatti",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Thoothukudi",
+  "near": "tn:thoothukudi",
+  "scale": 1,
+  "sectors": [
+   "chemical",
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tn:palladam",
+  "name": "Palladam",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Tiruppur",
+  "near": "tn:tiruppur",
+  "scale": 2,
+  "sectors": [
+   "textile"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tn:somanur",
+  "name": "Somanur",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Coimbatore",
+  "near": "tn:coimbatore",
+  "scale": 2,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [
+   "somanur powerloom"
+  ]
+ },
+ {
+  "id": "tn:pollachi",
+  "name": "Pollachi",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Coimbatore",
+  "near": "tn:coimbatore",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tn:tiruchengode",
+  "name": "Tiruchengode",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Namakkal",
+  "near": "tn:namakkal",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "textile"
+  ],
+  "aka": [
+   "thiruchengode",
+   "tiruchengodu"
+  ]
+ },
+ {
+  "id": "tn:komarapalayam",
+  "name": "Komarapalayam",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Namakkal",
+  "near": "tn:erode",
+  "scale": 2,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [
+   "kumarapalayam",
+   "pallipalayam"
+  ]
+ },
+ {
+  "id": "tn:bhavani",
+  "name": "Bhavani",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Erode",
+  "near": "tn:erode",
+  "scale": 1,
+  "sectors": [
+   "textile"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tn:neyveli",
+  "name": "Neyveli",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Cuddalore",
+  "near": "tn:cuddalore",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "nlc",
+   "neyveli township"
+  ]
+ },
+ {
+  "id": "tn:mettur",
+  "name": "Mettur",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Salem",
+  "near": "tn:salem",
+  "scale": 2,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": [
+   "mettur dam"
+  ]
+ },
+ {
+  "id": "tn:karaikudi",
+  "name": "Karaikudi",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Sivaganga",
+  "near": "tn:sivaganga",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tn:kumbakonam",
+  "name": "Kumbakonam",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Thanjavur",
+  "near": "tn:thanjavur",
+  "scale": 1,
+  "sectors": [
+   "metal"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tn:gummidipoondi",
+  "name": "Gummidipoondi",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Tiruvallur",
+  "near": "tn:tiruvallur",
+  "scale": 3,
+  "sectors": [
+   "steel",
+   "chemical",
+   "engineering"
+  ],
+  "aka": [
+   "gummudipoondi"
+  ]
+ },
+ {
+  "id": "tn:irungattukottai",
+  "name": "Irungattukottai",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Kancheepuram",
+  "near": "tn:sriperumbudur",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "ik"
+  ]
+ },
+ {
+  "id": "tn:padappai",
+  "name": "Padappai",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Kancheepuram",
+  "near": "tn:sriperumbudur",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "logistics"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tn:kattupalli",
+  "name": "Kattupalli",
+  "state": "TN",
+  "kind": "cluster",
+  "district": "Tiruvallur",
+  "near": "tn:chennai",
+  "scale": 1,
+  "sectors": [
+   "logistics"
+  ],
+  "aka": [
+   "kattupalli port"
+  ]
+ },
+ {
+  "id": "tn:sipcot-sriperumbudur",
+  "name": "SIPCOT Sriperumbudur",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Kancheepuram",
+  "near": "tn:sriperumbudur",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "electronics",
+   "sez"
+  ],
+  "aka": [
+   "sriperumbudur sez",
+   "mambakkam",
+   "sipcot sriperumbudur phase 2"
+  ]
+ },
+ {
+  "id": "tn:sipcot-oragadam",
+  "name": "SIPCOT Oragadam",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Kancheepuram",
+  "near": "tn:oragadam",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering",
+   "sez"
+  ],
+  "aka": [
+   "oragadam sez",
+   "sipcot oragadam medical devices park",
+   "vaipur mathur"
+  ]
+ },
+ {
+  "id": "tn:sipcot-irungattukottai",
+  "name": "SIPCOT Irungattukottai",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Kancheepuram",
+  "near": "tn:irungattukottai",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "ikt sipcot"
+  ]
+ },
+ {
+  "id": "tn:sipcot-pillaipakkam",
+  "name": "SIPCOT Pillaipakkam",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Kancheepuram",
+  "near": "tn:sriperumbudur",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "pillaipakam"
+  ]
+ },
+ {
+  "id": "tn:sipcot-vallam-vadagal",
+  "name": "SIPCOT Vallam Vadagal",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Kancheepuram",
+  "near": "tn:sriperumbudur",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "vallam vadagal aerospace park",
+   "vallam-vadagal",
+   "sipcot aerospace park"
+  ]
+ },
+ {
+  "id": "tn:sipcot-nemili",
+  "name": "SIPCOT Nemili",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Kancheepuram",
+  "near": "tn:sriperumbudur",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tn:sipcot-thirumudivakkam",
+  "name": "SIPCOT Thirumudivakkam",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Kancheepuram",
+  "near": "tn:chennai",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tn:sipcot-siruseri",
+  "name": "SIPCOT IT Park Siruseri",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Chengalpattu",
+  "near": "tn:omr-it-corridor",
+  "scale": 3,
+  "sectors": [
+   "it-campus"
+  ],
+  "aka": [
+   "siruseri",
+   "siruseri it park",
+   "padur"
+  ]
+ },
+ {
+  "id": "tn:sipcot-gummidipoondi",
+  "name": "SIPCOT Gummidipoondi",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tiruvallur",
+  "near": "tn:gummidipoondi",
+  "scale": 3,
+  "sectors": [
+   "steel",
+   "chemical",
+   "engineering"
+  ],
+  "aka": [
+   "gummidipoondi epip"
+  ]
+ },
+ {
+  "id": "tn:sipcot-manallur",
+  "name": "SIPCOT Manallur",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tiruvallur",
+  "near": "tn:gummidipoondi",
+  "scale": 1,
+  "sectors": [
+   "electronics"
+  ],
+  "aka": [
+   "manallur emc"
+  ]
+ },
+ {
+  "id": "tn:sipcot-mappedu",
+  "name": "SIPCOT Mappedu",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tiruvallur",
+  "near": "tn:tiruvallur",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tn:sipcot-thervoy-kandigai",
+  "name": "SIPCOT Thervoy Kandigai",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tiruvallur",
+  "near": "tn:gummidipoondi",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "thervoykandigai",
+   "thervoy kandigai"
+  ]
+ },
+ {
+  "id": "tn:sipcot-hosur",
+  "name": "SIPCOT Hosur",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Krishnagiri",
+  "near": "tn:hosur",
+  "scale": 3,
+  "sectors": [
+   "auto",
+   "electronics",
+   "engineering"
+  ],
+  "aka": [
+   "sipcot hosur phase 1",
+   "sipcot hosur phase 2"
+  ]
+ },
+ {
+  "id": "tn:sipcot-shoolagiri",
+  "name": "SIPCOT Shoolagiri",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Krishnagiri",
+  "near": "tn:hosur",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "hosur phase 4",
+   "shoolagiri"
+  ]
+ },
+ {
+  "id": "tn:sipcot-bargur",
+  "name": "SIPCOT Bargur",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Krishnagiri",
+  "near": "tn:krishnagiri",
+  "scale": 1,
+  "sectors": [
+   "sez",
+   "mixed"
+  ],
+  "aka": [
+   "bargur sez"
+  ]
+ },
+ {
+  "id": "tn:sipcot-ranipet",
+  "name": "SIPCOT Ranipet",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Ranipet",
+  "near": "tn:ranipet",
+  "scale": 3,
+  "sectors": [
+   "leather",
+   "chemical",
+   "engineering"
+  ],
+  "aka": [
+   "ranipet sez"
+  ]
+ },
+ {
+  "id": "tn:sipcot-panapakkam",
+  "name": "SIPCOT Panapakkam",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Ranipet",
+  "near": "tn:ranipet",
+  "scale": 2,
+  "sectors": [
+   "auto"
+  ],
+  "aka": [
+   "panapakkam"
+  ]
+ },
+ {
+  "id": "tn:sipcot-cheyyar",
+  "name": "SIPCOT Cheyyar",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tiruvannamalai",
+  "near": "tn:tiruvannamalai",
+  "scale": 2,
+  "sectors": [
+   "leather",
+   "auto"
+  ],
+  "aka": [
+   "cheyyar"
+  ]
+ },
+ {
+  "id": "tn:sipcot-perundurai",
+  "name": "SIPCOT Perundurai",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Erode",
+  "near": "tn:erode",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "engineering",
+   "sez"
+  ],
+  "aka": [
+   "perundurai",
+   "perundurai sez"
+  ]
+ },
+ {
+  "id": "tn:sipcot-cuddalore",
+  "name": "SIPCOT Cuddalore",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Cuddalore",
+  "near": "tn:cuddalore",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "pharma"
+  ],
+  "aka": [
+   "cuddalore chemical complex"
+  ]
+ },
+ {
+  "id": "tn:sipcot-nilakkottai",
+  "name": "SIPCOT Nilakkottai",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Dindigul",
+  "near": "tn:dindigul",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "nilakottai"
+  ]
+ },
+ {
+  "id": "tn:sipcot-eraiyur",
+  "name": "SIPCOT Eraiyur",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Perambalur",
+  "near": "tn:perambalur",
+  "scale": 1,
+  "sectors": [
+   "leather"
+  ],
+  "aka": [
+   "perambalur footwear park"
+  ]
+ },
+ {
+  "id": "tn:sipcot-pudukkottai",
+  "name": "SIPCOT Pudukkottai",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Pudukkottai",
+  "near": "tn:pudukkottai",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tn:sipcot-manamadurai",
+  "name": "SIPCOT Manamadurai",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Sivaganga",
+  "near": "tn:sivaganga",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tn:sipcot-manapparai",
+  "name": "SIPCOT Manapparai",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tiruchirappalli",
+  "near": "tn:tiruchirappalli",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "manapparai food park"
+  ]
+ },
+ {
+  "id": "tn:sipcot-trichy",
+  "name": "SIPCOT Tiruchirappalli (Sooriyur)",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tiruchirappalli",
+  "near": "tn:tiruchirappalli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "elanthapatti",
+   "sooriyur",
+   "sipcot trichy"
+  ]
+ },
+ {
+  "id": "tn:sipcot-gangaikondan",
+  "name": "SIPCOT Gangaikondan",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tirunelveli",
+  "near": "tn:tirunelveli",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "sez",
+   "electronics"
+  ],
+  "aka": [
+   "gangaikondan sez"
+  ]
+ },
+ {
+  "id": "tn:sipcot-thoothukudi",
+  "name": "SIPCOT Thoothukudi",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Thoothukudi",
+  "near": "tn:thoothukudi",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "engineering"
+  ],
+  "aka": [
+   "sipcot tuticorin"
+  ]
+ },
+ {
+  "id": "tn:sipcot-sillanatham",
+  "name": "SIPCOT Sillanatham (Ottapidaram)",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Thoothukudi",
+  "near": "tn:thoothukudi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "ottapidaram",
+   "sillanatham"
+  ]
+ },
+ {
+  "id": "tn:sipcot-tindivanam",
+  "name": "SIPCOT Tindivanam",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Viluppuram",
+  "near": "tn:viluppuram",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "leather"
+  ],
+  "aka": [
+   "tindivanam food park"
+  ]
+ },
+ {
+  "id": "tn:sipcot-theni",
+  "name": "SIPCOT Theni",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Theni",
+  "near": "tn:theni",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tn:sipcot-jayamkondam",
+  "name": "SIPCOT Jayamkondam",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Ariyalur",
+  "near": "tn:ariyalur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "jayankondam"
+  ]
+ },
+ {
+  "id": "tn:sipcot-kadaladi",
+  "name": "SIPCOT Kadaladi",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Ramanathapuram",
+  "near": "tn:ramanathapuram",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tn:sipcot-melur",
+  "name": "SIPCOT Melur",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Madurai",
+  "near": "tn:madurai",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "tn:pm-mitra-virudhunagar",
+  "name": "PM MITRA Park Virudhunagar",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Virudhunagar",
+  "near": "tn:virudhunagar",
+  "scale": 1,
+  "sectors": [
+   "textile",
+   "garments"
+  ],
+  "aka": [
+   "pm mitra",
+   "mega textile park virudhunagar"
+  ]
+ },
+ {
+  "id": "tn:sidco-guindy",
+  "name": "Guindy Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Chennai",
+  "near": "tn:guindy",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "electronics",
+   "garments"
+  ],
+  "aka": [
+   "sidco guindy",
+   "thiru vi ka industrial estate",
+   "tvk industrial estate",
+   "guindy ie"
+  ]
+ },
+ {
+  "id": "tn:sidco-arumbakkam",
+  "name": "Arumbakkam SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Chennai",
+  "near": "tn:chennai",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco arumbakkam"
+  ]
+ },
+ {
+  "id": "tn:sidco-villivakkam",
+  "name": "Villivakkam SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Chennai",
+  "near": "tn:chennai",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco villivakkam"
+  ]
+ },
+ {
+  "id": "tn:sidco-kodungaiyur",
+  "name": "Kodungaiyur SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Chennai",
+  "near": "tn:chennai",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco kodungaiyur"
+  ]
+ },
+ {
+  "id": "tn:sidco-ambattur",
+  "name": "Ambattur Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tiruvallur",
+  "near": "tn:ambattur",
+  "scale": 3,
+  "sectors": [
+   "engineering",
+   "auto",
+   "garments"
+  ],
+  "aka": [
+   "sidco ambattur",
+   "ambattur ie",
+   "aie"
+  ]
+ },
+ {
+  "id": "tn:sidco-kakkalur",
+  "name": "Kakkalur Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tiruvallur",
+  "near": "tn:tiruvallur",
+  "scale": 2,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "sidco kakkalur"
+  ]
+ },
+ {
+  "id": "tn:sidco-thirumazhisai",
+  "name": "Thirumazhisai SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tiruvallur",
+  "near": "tn:chennai",
+  "scale": 2,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "sidco thirumazhisai",
+   "thirumazhisai"
+  ]
+ },
+ {
+  "id": "tn:sidco-gummidipoondi",
+  "name": "Gummidipoondi SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tiruvallur",
+  "near": "tn:gummidipoondi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco gummidipoondi"
+  ]
+ },
+ {
+  "id": "tn:sidco-rk-pet",
+  "name": "R.K. Pet SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tiruvallur",
+  "near": "tn:tiruvallur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco rk pet",
+   "rk pet",
+   "rkpet"
+  ]
+ },
+ {
+  "id": "tn:sidco-vichoor",
+  "name": "Vichoor SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tiruvallur",
+  "near": "tn:chennai",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco vichoor"
+  ]
+ },
+ {
+  "id": "tn:sidco-thirumullaivoyal",
+  "name": "Thirumullaivoyal Women Industrial Park",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tiruvallur",
+  "near": "tn:chennai",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "sidco thirumullaivoyal",
+   "thirumullaivoil"
+  ]
+ },
+ {
+  "id": "tn:sidco-kancheepuram",
+  "name": "Kancheepuram Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Kancheepuram",
+  "near": "tn:kancheepuram",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco kancheepuram"
+  ]
+ },
+ {
+  "id": "tn:sidco-maraimalai-nagar",
+  "name": "Maraimalai Nagar SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Chengalpattu",
+  "near": "tn:maraimalai-nagar",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "sidco maraimalai nagar"
+  ]
+ },
+ {
+  "id": "tn:sidco-alathur",
+  "name": "Alathur SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Chengalpattu",
+  "near": "tn:chengalpattu",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco alathur"
+  ]
+ },
+ {
+  "id": "tn:sidco-thirumudivakkam",
+  "name": "Thirumudivakkam SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Kancheepuram",
+  "near": "tn:chennai",
+  "scale": 2,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "sidco thirumudivakkam",
+   "thirumudivakkam"
+  ]
+ },
+ {
+  "id": "tn:sidco-katpadi",
+  "name": "Katpadi Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Vellore",
+  "near": "tn:vellore",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco katpadi"
+  ]
+ },
+ {
+  "id": "tn:sidco-arakkonam",
+  "name": "Arakkonam Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Ranipet",
+  "near": "tn:ranipet",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco arakkonam",
+   "arakonam"
+  ]
+ },
+ {
+  "id": "tn:sidco-ranipet",
+  "name": "Ranipet SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Ranipet",
+  "near": "tn:ranipet",
+  "scale": 2,
+  "sectors": [
+   "leather",
+   "chemical"
+  ],
+  "aka": [
+   "sidco ranipet"
+  ]
+ },
+ {
+  "id": "tn:sidco-mukuntharayapuram",
+  "name": "Mukuntharayapuram SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Ranipet",
+  "near": "tn:ranipet",
+  "scale": 1,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": [
+   "sidco mukuntharayapuram",
+   "mukundarayapuram"
+  ]
+ },
+ {
+  "id": "tn:sidco-vannivedu",
+  "name": "Vannivedu SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Ranipet",
+  "near": "tn:ranipet",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco vannivedu"
+  ]
+ },
+ {
+  "id": "tn:sidco-vinnamangalam",
+  "name": "Vinnamangalam SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tirupathur",
+  "near": "tn:ambur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco vinnamangalam"
+  ]
+ },
+ {
+  "id": "tn:sidco-vaniyambadi",
+  "name": "Vaniyambadi SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tirupathur",
+  "near": "tn:vaniyambadi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco vaniyambadi"
+  ]
+ },
+ {
+  "id": "tn:sidco-tiruvannamalai",
+  "name": "Tiruvannamalai Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tiruvannamalai",
+  "near": "tn:tiruvannamalai",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco tiruvannamalai"
+  ]
+ },
+ {
+  "id": "tn:sidco-krishnagiri",
+  "name": "Krishnagiri Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Krishnagiri",
+  "near": "tn:krishnagiri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco krishnagiri"
+  ]
+ },
+ {
+  "id": "tn:sidco-uthangarai",
+  "name": "Uthangarai SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Krishnagiri",
+  "near": "tn:krishnagiri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco uthangarai"
+  ]
+ },
+ {
+  "id": "tn:sidco-hosur",
+  "name": "Hosur SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Krishnagiri",
+  "near": "tn:hosur",
+  "scale": 2,
+  "sectors": [
+   "auto",
+   "engineering"
+  ],
+  "aka": [
+   "sidco hosur",
+   "hosur sidco",
+   "hosur new sidco"
+  ]
+ },
+ {
+  "id": "tn:sidco-bargur",
+  "name": "Bargur SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Krishnagiri",
+  "near": "tn:krishnagiri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco bargur"
+  ]
+ },
+ {
+  "id": "tn:sidco-pollupalli",
+  "name": "Pollupalli SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Krishnagiri",
+  "near": "tn:krishnagiri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco pollupalli"
+  ]
+ },
+ {
+  "id": "tn:sidco-dharmapuri",
+  "name": "Dharmapuri Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Dharmapuri",
+  "near": "tn:dharmapuri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco dharmapuri"
+  ]
+ },
+ {
+  "id": "tn:sidco-kadagathur",
+  "name": "Kadagathur SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Dharmapuri",
+  "near": "tn:dharmapuri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco kadagathur"
+  ]
+ },
+ {
+  "id": "tn:sidco-parvathanahalli",
+  "name": "Parvathanahalli SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Dharmapuri",
+  "near": "tn:dharmapuri",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco parvathanahalli"
+  ]
+ },
+ {
+  "id": "tn:sidco-salem",
+  "name": "Salem Industrial Estate (Five Roads)",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Salem",
+  "near": "tn:salem",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco salem",
+   "five roads salem"
+  ]
+ },
+ {
+  "id": "tn:sidco-mettur",
+  "name": "Mettur Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Salem",
+  "near": "tn:mettur",
+  "scale": 1,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": [
+   "sidco mettur"
+  ]
+ },
+ {
+  "id": "tn:sidco-karuppur",
+  "name": "Karuppur Women Industrial Park",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Salem",
+  "near": "tn:salem",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco karuppur"
+  ]
+ },
+ {
+  "id": "tn:sidco-veerapandi",
+  "name": "Veerapandi SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Salem",
+  "near": "tn:salem",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco veerapandi"
+  ]
+ },
+ {
+  "id": "tn:sidco-namakkal",
+  "name": "Namakkal SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Namakkal",
+  "near": "tn:namakkal",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco namakkal"
+  ]
+ },
+ {
+  "id": "tn:sidco-tiruchengode",
+  "name": "Tiruchengode SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Namakkal",
+  "near": "tn:tiruchengode",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco tiruchengode"
+  ]
+ },
+ {
+  "id": "tn:sidco-vettambadi",
+  "name": "Vettambadi SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Namakkal",
+  "near": "tn:namakkal",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco vettambadi"
+  ]
+ },
+ {
+  "id": "tn:sidco-erode",
+  "name": "Erode Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Erode",
+  "near": "tn:erode",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco erode"
+  ]
+ },
+ {
+  "id": "tn:sidco-nanjaiuthukuli",
+  "name": "Nanjaiuthukuli SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Erode",
+  "near": "tn:erode",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco nanjaiuthukuli"
+  ]
+ },
+ {
+  "id": "tn:sidco-kurichi",
+  "name": "Kurichi Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Coimbatore",
+  "near": "tn:coimbatore",
+  "scale": 2,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "sidco kurichi",
+   "kurichi",
+   "sidco kurichi coimbatore"
+  ]
+ },
+ {
+  "id": "tn:sidco-malumichampatti",
+  "name": "Malumichampatti SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Coimbatore",
+  "near": "tn:coimbatore",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "sidco malumichampatti"
+  ]
+ },
+ {
+  "id": "tn:sidco-ganapathipalayam",
+  "name": "Ganapathipalayam SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tiruppur",
+  "near": "tn:tiruppur",
+  "scale": 1,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [
+   "sidco ganapathipalayam"
+  ]
+ },
+ {
+  "id": "tn:sidco-tiruppur",
+  "name": "Tiruppur SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tiruppur",
+  "near": "tn:tiruppur",
+  "scale": 1,
+  "sectors": [
+   "garments"
+  ],
+  "aka": [
+   "sidco tiruppur"
+  ]
+ },
+ {
+  "id": "tn:sidco-gudimangalam",
+  "name": "Gudimangalam SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tiruppur",
+  "near": "tn:tiruppur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco gudimangalam"
+  ]
+ },
+ {
+  "id": "tn:sidco-rasathavalasu",
+  "name": "Rasathavalasu SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tiruppur",
+  "near": "tn:tiruppur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco rasathavalasu"
+  ]
+ },
+ {
+  "id": "tn:sidco-ooty",
+  "name": "Ooty SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Nilgiris",
+  "near": "tn:ooty",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco ooty"
+  ]
+ },
+ {
+  "id": "tn:sidco-cuddalore",
+  "name": "Cuddalore Industrial Estate (Semmandalam)",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Cuddalore",
+  "near": "tn:cuddalore",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco cuddalore",
+   "semmandalam"
+  ]
+ },
+ {
+  "id": "tn:sidco-vadalur",
+  "name": "Vadalur Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Cuddalore",
+  "near": "tn:cuddalore",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco vadalur"
+  ]
+ },
+ {
+  "id": "tn:sidco-periyanesalur",
+  "name": "Periyanesalur SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Cuddalore",
+  "near": "tn:cuddalore",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco periyanesalur"
+  ]
+ },
+ {
+  "id": "tn:sidco-pattanam",
+  "name": "Pattanam SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Viluppuram",
+  "near": "tn:viluppuram",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco pattanam",
+   "patanam"
+  ]
+ },
+ {
+  "id": "tn:sidco-asanur",
+  "name": "Asanur SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Kallakurichi",
+  "near": "tn:kallakurichi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco asanur"
+  ]
+ },
+ {
+  "id": "tn:sidco-kattuvannanjur",
+  "name": "Kattuvannanjur SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Viluppuram",
+  "near": "tn:viluppuram",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco kattuvannanjur"
+  ]
+ },
+ {
+  "id": "tn:sidco-venmaniathur",
+  "name": "Venmaniathur SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Viluppuram",
+  "near": "tn:viluppuram",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco venmaniathur"
+  ]
+ },
+ {
+  "id": "tn:sidco-elambalur",
+  "name": "Elambalur SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Perambalur",
+  "near": "tn:perambalur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco elambalur"
+  ]
+ },
+ {
+  "id": "tn:sidco-thanjavur",
+  "name": "Thanjavur Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Thanjavur",
+  "near": "tn:thanjavur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco thanjavur",
+   "nanjikottai road"
+  ]
+ },
+ {
+  "id": "tn:sidco-kumbakonam",
+  "name": "Kumbakonam Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Thanjavur",
+  "near": "tn:kumbakonam",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco kumbakonam"
+  ]
+ },
+ {
+  "id": "tn:sidco-pillaiyarpatti",
+  "name": "Pillaiyarpatti SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Thanjavur",
+  "near": "tn:thanjavur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco pillaiyarpatti"
+  ]
+ },
+ {
+  "id": "tn:sidco-nanjikkottai",
+  "name": "Nanjikkottai SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Thanjavur",
+  "near": "tn:thanjavur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco nanjikkottai"
+  ]
+ },
+ {
+  "id": "tn:sidco-palayapatti",
+  "name": "Palayapatti SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Thanjavur",
+  "near": "tn:thanjavur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco palayapatti"
+  ]
+ },
+ {
+  "id": "tn:sidco-nagapattinam",
+  "name": "Nagapattinam Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Nagapattinam",
+  "near": "tn:nagapattinam",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco nagapattinam"
+  ]
+ },
+ {
+  "id": "tn:sidco-mayiladuthurai",
+  "name": "Mayiladuthurai SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Mayiladuthurai",
+  "near": "tn:mayiladuthurai",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco mayiladuthurai"
+  ]
+ },
+ {
+  "id": "tn:sidco-thuvakudi",
+  "name": "Thuvakudi Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tiruchirappalli",
+  "near": "tn:tiruchirappalli",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "metal"
+  ],
+  "aka": [
+   "sidco thuvakudi",
+   "thuvakudy"
+  ]
+ },
+ {
+  "id": "tn:sidco-thiruverumbur",
+  "name": "Thiruverumbur Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tiruchirappalli",
+  "near": "tn:tiruchirappalli",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "sidco thiruverumbur",
+   "thiruverambur",
+   "tiruverumbur"
+  ]
+ },
+ {
+  "id": "tn:sidco-ariyamangalam",
+  "name": "Ariyamangalam Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tiruchirappalli",
+  "near": "tn:tiruchirappalli",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "sidco ariyamangalam"
+  ]
+ },
+ {
+  "id": "tn:sidco-kumbakudy",
+  "name": "Kumbakudy SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tiruchirappalli",
+  "near": "tn:tiruchirappalli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco kumbakudy"
+  ]
+ },
+ {
+  "id": "tn:sidco-valavanthankottai",
+  "name": "Valavanthankottai SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tiruchirappalli",
+  "near": "tn:tiruchirappalli",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "sidco valavanthankottai",
+   "valavanthankottai women industrial park"
+  ]
+ },
+ {
+  "id": "tn:sidco-karur",
+  "name": "Karur Industrial Estate (Vellalapatti)",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Karur",
+  "near": "tn:karur",
+  "scale": 1,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [
+   "sidco karur",
+   "vellalapatti"
+  ]
+ },
+ {
+  "id": "tn:sidco-karur-athur",
+  "name": "Karur SIDCO Industrial Estate (Athur)",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Karur",
+  "near": "tn:karur",
+  "scale": 1,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [
+   "sidco karur athur",
+   "athur karur"
+  ]
+ },
+ {
+  "id": "tn:sidco-punjaikalakurichi",
+  "name": "Punjaikalakurichi SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Karur",
+  "near": "tn:karur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco punjaikalakurichi"
+  ]
+ },
+ {
+  "id": "tn:sidco-pudukkottai",
+  "name": "Pudukkottai Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Pudukkottai",
+  "near": "tn:pudukkottai",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco pudukkottai"
+  ]
+ },
+ {
+  "id": "tn:sidco-mathur",
+  "name": "Mathur SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Pudukkottai",
+  "near": "tn:tiruchirappalli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco mathur",
+   "mathur new"
+  ]
+ },
+ {
+  "id": "tn:sidco-theni",
+  "name": "Theni Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Theni",
+  "near": "tn:theni",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco theni"
+  ]
+ },
+ {
+  "id": "tn:sidco-andipatti",
+  "name": "Andipatti SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Theni",
+  "near": "tn:theni",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco andipatti"
+  ]
+ },
+ {
+  "id": "tn:sidco-dindigul",
+  "name": "Dindigul Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Dindigul",
+  "near": "tn:dindigul",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco dindigul"
+  ]
+ },
+ {
+  "id": "tn:sidco-batlagundu",
+  "name": "Batlagundu Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Dindigul",
+  "near": "tn:dindigul",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco batlagundu",
+   "vathalagundu"
+  ]
+ },
+ {
+  "id": "tn:sidco-k-pudur",
+  "name": "K. Pudur Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Madurai",
+  "near": "tn:madurai",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "sidco k pudur",
+   "k pudur",
+   "kpudur"
+  ]
+ },
+ {
+  "id": "tn:sidco-kappalur",
+  "name": "Kappalur Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Madurai",
+  "near": "tn:madurai",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "textile"
+  ],
+  "aka": [
+   "sidco kappalur",
+   "kappalur",
+   "kappalur women industrial park"
+  ]
+ },
+ {
+  "id": "tn:sidco-paramakudi",
+  "name": "Paramakudi SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Ramanathapuram",
+  "near": "tn:ramanathapuram",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "sidco paramakudi"
+  ]
+ },
+ {
+  "id": "tn:sidco-keelanagachi",
+  "name": "Keelanagachi SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Ramanathapuram",
+  "near": "tn:ramanathapuram",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco keelanagachi"
+  ]
+ },
+ {
+  "id": "tn:sidco-urapuli",
+  "name": "Urapuli SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Ramanathapuram",
+  "near": "tn:ramanathapuram",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco urapuli"
+  ]
+ },
+ {
+  "id": "tn:sidco-karaikudi",
+  "name": "Karaikudi Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Sivaganga",
+  "near": "tn:karaikudi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco karaikudi"
+  ]
+ },
+ {
+  "id": "tn:sidco-sivaganga",
+  "name": "Sivaganga Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Sivaganga",
+  "near": "tn:sivaganga",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco sivaganga"
+  ]
+ },
+ {
+  "id": "tn:sidco-krungakottai",
+  "name": "Krungakottai SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Sivaganga",
+  "near": "tn:sivaganga",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco krungakottai"
+  ]
+ },
+ {
+  "id": "tn:sidco-virudhunagar",
+  "name": "Virudhunagar Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Virudhunagar",
+  "near": "tn:virudhunagar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco virudhunagar",
+   "virudhunagar urban"
+  ]
+ },
+ {
+  "id": "tn:sidco-rajapalayam",
+  "name": "Rajapalayam SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Virudhunagar",
+  "near": "tn:rajapalayam",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco rajapalayam"
+  ]
+ },
+ {
+  "id": "tn:sidco-pettai",
+  "name": "Pettai Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tirunelveli",
+  "near": "tn:tirunelveli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco pettai",
+   "pettai tirunelveli"
+  ]
+ },
+ {
+  "id": "tn:sidco-kadayanallur",
+  "name": "Kadayanallur SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tenkasi",
+  "near": "tn:tenkasi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco kadayanallur"
+  ]
+ },
+ {
+  "id": "tn:sidco-valliyur",
+  "name": "Valliyur SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tirunelveli",
+  "near": "tn:tirunelveli",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco valliyur"
+  ]
+ },
+ {
+  "id": "tn:sidco-kurukkalpatti",
+  "name": "Kurukkalpatti SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Tenkasi",
+  "near": "tn:tenkasi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco kurukkalpatti"
+  ]
+ },
+ {
+  "id": "tn:sidco-kovilpatti",
+  "name": "Kovilpatti Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Thoothukudi",
+  "near": "tn:kovilpatti",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco kovilpatti"
+  ]
+ },
+ {
+  "id": "tn:sidco-thoothukudi",
+  "name": "Thoothukudi SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Thoothukudi",
+  "near": "tn:thoothukudi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco thoothukudi",
+   "tuticorin sidco"
+  ]
+ },
+ {
+  "id": "tn:sidco-pidaneri",
+  "name": "Pidaneri SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Thoothukudi",
+  "near": "tn:thoothukudi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco pidaneri"
+  ]
+ },
+ {
+  "id": "tn:sidco-konam",
+  "name": "Konam Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Kanyakumari",
+  "near": "tn:nagercoil",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco konam"
+  ]
+ },
+ {
+  "id": "tn:sidco-marthandam",
+  "name": "Marthandam Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Kanyakumari",
+  "near": "tn:nagercoil",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco marthandam"
+  ]
+ },
+ {
+  "id": "tn:sidco-mallur",
+  "name": "Mallur SIDCO Industrial Estate",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Ariyalur",
+  "near": "tn:ariyalur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "sidco mallur"
+  ]
+ },
+ {
+  "id": "tn:tidel-park-chennai",
+  "name": "TIDEL Park Chennai",
+  "state": "TN",
+  "kind": "estate",
+  "district": "Chennai",
+  "near": "tn:omr-it-corridor",
+  "scale": 2,
+  "sectors": [
+   "it-campus"
+  ],
+  "aka": [
+   "tidel park",
+   "taramani"
+  ]
+ },
+ {
+  "id": "kl:thiruvananthapuram",
+  "name": "Thiruvananthapuram",
+  "state": "KL",
+  "kind": "city",
+  "district": "Thiruvananthapuram",
+  "scale": 2,
+  "sectors": [
+   "it-campus",
+   "engineering"
+  ],
+  "aka": [
+   "trivandrum",
+   "tvm"
+  ],
+  "lat": 8.52,
+  "lon": 76.94
+ },
+ {
+  "id": "kl:kollam",
+  "name": "Kollam",
+  "state": "KL",
+  "kind": "city",
+  "district": "Kollam",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "chemical"
+  ],
+  "aka": [
+   "quilon"
+  ],
+  "lat": 8.89,
+  "lon": 76.61
+ },
+ {
+  "id": "kl:pathanamthitta",
+  "name": "Pathanamthitta",
+  "state": "KL",
+  "kind": "city",
+  "district": "Pathanamthitta",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 9.26,
+  "lon": 76.79
+ },
+ {
+  "id": "kl:alappuzha",
+  "name": "Alappuzha",
+  "state": "KL",
+  "kind": "city",
+  "district": "Alappuzha",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "textile"
+  ],
+  "aka": [
+   "alleppey"
+  ],
+  "lat": 9.5,
+  "lon": 76.34
+ },
+ {
+  "id": "kl:kottayam",
+  "name": "Kottayam",
+  "state": "KL",
+  "kind": "city",
+  "district": "Kottayam",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "plastics"
+  ],
+  "aka": [],
+  "lat": 9.59,
+  "lon": 76.52
+ },
+ {
+  "id": "kl:painavu",
+  "name": "Painavu",
+  "state": "KL",
+  "kind": "city",
+  "district": "Idukki",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "idukki"
+  ],
+  "lat": 9.85,
+  "lon": 76.94
+ },
+ {
+  "id": "kl:kochi",
+  "name": "Kochi",
+  "state": "KL",
+  "kind": "city",
+  "district": "Ernakulam",
+  "scale": 3,
+  "sectors": [
+   "chemical",
+   "logistics",
+   "it-campus",
+   "food",
+   "engineering"
+  ],
+  "aka": [
+   "cochin",
+   "ernakulam",
+   "kakkanad"
+  ],
+  "lat": 9.98,
+  "lon": 76.28
+ },
+ {
+  "id": "kl:thrissur",
+  "name": "Thrissur",
+  "state": "KL",
+  "kind": "city",
+  "district": "Thrissur",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "metal"
+  ],
+  "aka": [
+   "trichur"
+  ],
+  "lat": 10.52,
+  "lon": 76.21
+ },
+ {
+  "id": "kl:palakkad",
+  "name": "Palakkad",
+  "state": "KL",
+  "kind": "city",
+  "district": "Palakkad",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "food",
+   "textile"
+  ],
+  "aka": [
+   "palghat"
+  ],
+  "lat": 10.78,
+  "lon": 76.65
+ },
+ {
+  "id": "kl:malappuram",
+  "name": "Malappuram",
+  "state": "KL",
+  "kind": "city",
+  "district": "Malappuram",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [],
+  "lat": 11.05,
+  "lon": 76.07
+ },
+ {
+  "id": "kl:kozhikode",
+  "name": "Kozhikode",
+  "state": "KL",
+  "kind": "city",
+  "district": "Kozhikode",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "it-campus"
+  ],
+  "aka": [
+   "calicut"
+  ],
+  "lat": 11.26,
+  "lon": 75.78
+ },
+ {
+  "id": "kl:kalpetta",
+  "name": "Kalpetta",
+  "state": "KL",
+  "kind": "city",
+  "district": "Wayanad",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "wayanad"
+  ],
+  "lat": 11.61,
+  "lon": 76.08
+ },
+ {
+  "id": "kl:kannur",
+  "name": "Kannur",
+  "state": "KL",
+  "kind": "city",
+  "district": "Kannur",
+  "scale": 1,
+  "sectors": [
+   "textile",
+   "mixed"
+  ],
+  "aka": [
+   "cannanore"
+  ],
+  "lat": 11.87,
+  "lon": 75.37
+ },
+ {
+  "id": "kl:kasaragod",
+  "name": "Kasaragod",
+  "state": "KL",
+  "kind": "city",
+  "district": "Kasaragod",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kasargod",
+   "kasaragode"
+  ],
+  "lat": 12.5,
+  "lon": 74.99
+ },
+ {
+  "id": "kl:kalamassery",
+  "name": "Kalamassery",
+  "state": "KL",
+  "kind": "cluster",
+  "district": "Ernakulam",
+  "near": "kl:kochi",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "engineering",
+   "electronics"
+  ],
+  "aka": []
+ },
+ {
+  "id": "kl:eloor-edayar",
+  "name": "Eloor and Edayar",
+  "state": "KL",
+  "kind": "cluster",
+  "district": "Ernakulam",
+  "near": "kl:kochi",
+  "scale": 2,
+  "sectors": [
+   "chemical",
+   "food"
+  ],
+  "aka": [
+   "eloor",
+   "edayar",
+   "udyogamandal"
+  ]
+ },
+ {
+  "id": "kl:ambalamugal",
+  "name": "Ambalamugal",
+  "state": "KL",
+  "kind": "cluster",
+  "district": "Ernakulam",
+  "near": "kl:kochi",
+  "scale": 2,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": [
+   "kochi refinery"
+  ]
+ },
+ {
+  "id": "kl:perumbavoor",
+  "name": "Perumbavoor",
+  "state": "KL",
+  "kind": "cluster",
+  "district": "Ernakulam",
+  "near": "kl:kochi",
+  "scale": 2,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "perumbavur"
+  ]
+ },
+ {
+  "id": "kl:kizhakkambalam",
+  "name": "Kizhakkambalam",
+  "state": "KL",
+  "kind": "cluster",
+  "district": "Ernakulam",
+  "near": "kl:kochi",
+  "scale": 2,
+  "sectors": [
+   "garments"
+  ],
+  "aka": []
+ },
+ {
+  "id": "kl:angamaly",
+  "name": "Angamaly",
+  "state": "KL",
+  "kind": "cluster",
+  "district": "Ernakulam",
+  "near": "kl:kochi",
+  "scale": 1,
+  "sectors": [
+   "mixed",
+   "logistics"
+  ],
+  "aka": [
+   "angamali"
+  ]
+ },
+ {
+  "id": "kl:kanjikode",
+  "name": "Kanjikode",
+  "state": "KL",
+  "kind": "cluster",
+  "district": "Palakkad",
+  "near": "kl:palakkad",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "food",
+   "textile"
+  ],
+  "aka": [
+   "kanjikkode"
+  ]
+ },
+ {
+  "id": "kl:chavara",
+  "name": "Chavara",
+  "state": "KL",
+  "kind": "cluster",
+  "district": "Kollam",
+  "near": "kl:kollam",
+  "scale": 1,
+  "sectors": [
+   "chemical"
+  ],
+  "aka": [
+   "kmml chavara"
+  ]
+ },
+ {
+  "id": "kl:kundara",
+  "name": "Kundara",
+  "state": "KL",
+  "kind": "cluster",
+  "district": "Kollam",
+  "near": "kl:kollam",
+  "scale": 1,
+  "sectors": [
+   "ceramics",
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "kl:aroor",
+  "name": "Aroor",
+  "state": "KL",
+  "kind": "cluster",
+  "district": "Alappuzha",
+  "near": "kl:alappuzha",
+  "scale": 2,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "arookutty"
+  ]
+ },
+ {
+  "id": "kl:vallarpadam",
+  "name": "Vallarpadam",
+  "state": "KL",
+  "kind": "cluster",
+  "district": "Ernakulam",
+  "near": "kl:kochi",
+  "scale": 2,
+  "sectors": [
+   "logistics"
+  ],
+  "aka": [
+   "ictt vallarpadam"
+  ]
+ },
+ {
+  "id": "kl:kinfra-film-video-park",
+  "name": "KINFRA Film and Video Park, Kazhakkoottam",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Thiruvananthapuram",
+  "near": "kl:thiruvananthapuram",
+  "scale": 1,
+  "sectors": [
+   "it-campus",
+   "sez"
+  ],
+  "aka": [
+   "kazhakkoottam kinfra"
+  ]
+ },
+ {
+  "id": "kl:kinfra-apparel-park",
+  "name": "KINFRA International Apparel Park, Menamkulam",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Thiruvananthapuram",
+  "near": "kl:thiruvananthapuram",
+  "scale": 1,
+  "sectors": [
+   "garments",
+   "sez"
+  ],
+  "aka": [
+   "menamkulam"
+  ]
+ },
+ {
+  "id": "kl:global-ayurveda-village",
+  "name": "KINFRA Global Ayurveda Village, Thonnakkal",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Thiruvananthapuram",
+  "near": "kl:thiruvananthapuram",
+  "scale": 1,
+  "sectors": [
+   "pharma"
+  ],
+  "aka": [
+   "thonnakkal"
+  ]
+ },
+ {
+  "id": "kl:bio360-life-sciences-park",
+  "name": "Bio360 Life Sciences Park, Thonnakkal",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Thiruvananthapuram",
+  "near": "kl:thiruvananthapuram",
+  "scale": 1,
+  "sectors": [
+   "pharma"
+  ],
+  "aka": [
+   "life science park thonnakkal",
+   "ksidc life science park"
+  ]
+ },
+ {
+  "id": "kl:kinfra-piravanthoor",
+  "name": "KINFRA Small Industries Park, Piravanthoor",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Kollam",
+  "near": "kl:kollam",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "piravanthur"
+  ]
+ },
+ {
+  "id": "kl:kinfra-mundakal",
+  "name": "KINFRA Mini Industrial Park, Mundakal",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Kollam",
+  "near": "kl:kollam",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "mundakkal"
+  ]
+ },
+ {
+  "id": "kl:kinfra-adoor",
+  "name": "KINFRA Food Processing Park, Adoor",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Pathanamthitta",
+  "near": "kl:pathanamthitta",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "adoor"
+  ]
+ },
+ {
+  "id": "kl:kinfra-kunnamthanam",
+  "name": "KINFRA Small Industries Park, Kunnamthanam",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Pathanamthitta",
+  "near": "kl:pathanamthitta",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "kl:seafood-park-aroor",
+  "name": "Seafood Park, Aroor",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Alappuzha",
+  "near": "kl:aroor",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "kinfra seafood park"
+  ]
+ },
+ {
+  "id": "kl:kinfra-epip-kakkanad",
+  "name": "KINFRA Export Promotion Industrial Park, Kakkanad",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Ernakulam",
+  "near": "kl:kochi",
+  "scale": 2,
+  "sectors": [
+   "food",
+   "engineering",
+   "garments"
+  ],
+  "aka": [
+   "kinfra kakkanad",
+   "epip kakkanad"
+  ]
+ },
+ {
+  "id": "kl:kinfra-hitech-kalamassery",
+  "name": "KINFRA Hi-Tech Park, Kalamassery",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Ernakulam",
+  "near": "kl:kalamassery",
+  "scale": 2,
+  "sectors": [
+   "electronics",
+   "food",
+   "engineering"
+  ],
+  "aka": [
+   "kinfra kalamassery"
+  ]
+ },
+ {
+  "id": "kl:kinfra-petrochemical-park",
+  "name": "KINFRA Petrochemical Park, Ambalamugal",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Ernakulam",
+  "near": "kl:ambalamugal",
+  "scale": 1,
+  "sectors": [
+   "chemical",
+   "plastics"
+  ],
+  "aka": [
+   "petrochemical park kochi"
+  ]
+ },
+ {
+  "id": "kl:kinfra-mazhuvannur",
+  "name": "KINFRA Industrial Park, Mazhuvannur",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Ernakulam",
+  "near": "kl:kochi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "kl:rubber-park-irapuram",
+  "name": "Rubber Park, Irapuram",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Ernakulam",
+  "near": "kl:perumbavoor",
+  "scale": 1,
+  "sectors": [
+   "plastics"
+  ],
+  "aka": [
+   "irapuram"
+  ]
+ },
+ {
+  "id": "kl:kinfra-koratty",
+  "name": "KINFRA Small Industries Park, Koratty",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Thrissur",
+  "near": "kl:thrissur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "koratty"
+  ]
+ },
+ {
+  "id": "kl:kinfra-defence-park",
+  "name": "KINFRA Defence Park, Ottapalam",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Palakkad",
+  "near": "kl:palakkad",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "ottapalam defence park"
+  ]
+ },
+ {
+  "id": "kl:kinfra-mega-food-park",
+  "name": "KINFRA Mega Food Park, Kanjikode",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Palakkad",
+  "near": "kl:kanjikode",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": []
+ },
+ {
+  "id": "kl:kinfra-kiitp",
+  "name": "KINFRA Integrated Industrial and Textile Park, Kanjikode",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Palakkad",
+  "near": "kl:kanjikode",
+  "scale": 2,
+  "sectors": [
+   "textile",
+   "engineering"
+  ],
+  "aka": [
+   "kiitp"
+  ]
+ },
+ {
+  "id": "kl:kinfra-kakkancherry",
+  "name": "KINFRA Food Processing Park, Kakkancherry",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Malappuram",
+  "near": "kl:malappuram",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "sez"
+  ],
+  "aka": [
+   "kakkancherry",
+   "kinfra techno industrial park"
+  ]
+ },
+ {
+  "id": "kl:kinfra-ramanattukara",
+  "name": "KINFRA Advanced Technology Park, Ramanattukara",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Kozhikode",
+  "near": "kl:kozhikode",
+  "scale": 1,
+  "sectors": [
+   "electronics",
+   "food"
+  ],
+  "aka": [
+   "ramanattukara"
+  ]
+ },
+ {
+  "id": "kl:kinfra-beypore",
+  "name": "KINFRA Marine Park, Beypore",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Kozhikode",
+  "near": "kl:kozhikode",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "beypore"
+  ]
+ },
+ {
+  "id": "kl:kinfra-wayanad",
+  "name": "KINFRA Small Industries Park, Kalpetta",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Wayanad",
+  "near": "kl:kalpetta",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "kl:kinfra-thalassery",
+  "name": "KINFRA Small Industries Park, Thalassery",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Kannur",
+  "near": "kl:kannur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "thalassery"
+  ]
+ },
+ {
+  "id": "kl:kinfra-mattannur",
+  "name": "KINFRA Industrial Park, Mattannur",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Kannur",
+  "near": "kl:kannur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "mattanur",
+   "valiyavelicham"
+  ]
+ },
+ {
+  "id": "kl:kinfra-nadukani",
+  "name": "KINFRA Textile Centre, Nadukani",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Kannur",
+  "near": "kl:kannur",
+  "scale": 1,
+  "sectors": [
+   "textile"
+  ],
+  "aka": [
+   "taliparamba textile centre"
+  ]
+ },
+ {
+  "id": "kl:kinfra-seethangoli",
+  "name": "KINFRA Small Industries Park, Seethangoli",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Kasaragod",
+  "near": "kl:kasaragod",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "seethangoli"
+  ]
+ },
+ {
+  "id": "kl:kinfra-spices-park",
+  "name": "KINFRA Spices Park, Muttom",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Idukki",
+  "near": "kl:painavu",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "muttom"
+  ]
+ },
+ {
+  "id": "kl:kinfra-rajakumari",
+  "name": "KINFRA Rural Apparel Park, Rajakumari",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Idukki",
+  "near": "kl:painavu",
+  "scale": 1,
+  "sectors": [
+   "garments"
+  ],
+  "aka": [
+   "rajakumari"
+  ]
+ },
+ {
+  "id": "kl:kinfra-kuttipuram",
+  "name": "KINFRA Small Industries Park, Kuttipuram",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Malappuram",
+  "near": "kl:malappuram",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "kl:igc-kinalur",
+  "name": "KSIDC Industrial Growth Centre, Kinalur",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Kozhikode",
+  "near": "kl:kozhikode",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kinalur"
+  ]
+ },
+ {
+  "id": "kl:igc-kuthuparamba",
+  "name": "KSIDC Industrial Growth Centre, Kuthuparamba",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Kannur",
+  "near": "kl:kannur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kuthuparamba"
+  ]
+ },
+ {
+  "id": "kl:igc-cherthala",
+  "name": "KSIDC Industrial Growth Centre and Mega Food Park, Cherthala",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Alappuzha",
+  "near": "kl:alappuzha",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "pallippuram",
+   "cherthala mega food park",
+   "cherthala"
+  ]
+ },
+ {
+  "id": "kl:ksidc-kuttiyadi",
+  "name": "KSIDC Industrial Park, Kuttiyadi",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Kozhikode",
+  "near": "kl:kozhikode",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kuttiadi"
+  ]
+ },
+ {
+  "id": "kl:ksidc-business-park-angamaly",
+  "name": "KSIDC Business Park, Angamaly",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Ernakulam",
+  "near": "kl:angamaly",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "kl:ksidc-palakkad-investment-zone",
+  "name": "KSIDC Investment Zone, Palakkad",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Palakkad",
+  "near": "kl:palakkad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "kl:technopark",
+  "name": "Technopark Thiruvananthapuram",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Thiruvananthapuram",
+  "near": "kl:thiruvananthapuram",
+  "scale": 3,
+  "sectors": [
+   "it-campus",
+   "sez"
+  ],
+  "aka": [
+   "technopark",
+   "kazhakkoottam"
+  ]
+ },
+ {
+  "id": "kl:infopark-kochi",
+  "name": "Infopark Kochi",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Ernakulam",
+  "near": "kl:kochi",
+  "scale": 3,
+  "sectors": [
+   "it-campus",
+   "sez"
+  ],
+  "aka": [
+   "infopark",
+   "infopark kakkanad"
+  ]
+ },
+ {
+  "id": "kl:cochin-sez",
+  "name": "Cochin Special Economic Zone",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Ernakulam",
+  "near": "kl:kochi",
+  "scale": 2,
+  "sectors": [
+   "sez",
+   "electronics",
+   "food"
+  ],
+  "aka": [
+   "csez",
+   "cochin sez",
+   "kakkanad sez"
+  ]
+ },
+ {
+  "id": "kl:infopark-cherthala",
+  "name": "Infopark Cherthala",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Alappuzha",
+  "near": "kl:alappuzha",
+  "scale": 1,
+  "sectors": [
+   "it-campus"
+  ],
+  "aka": []
+ },
+ {
+  "id": "kl:technopark-kollam",
+  "name": "Technopark Kollam",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Kollam",
+  "near": "kl:kollam",
+  "scale": 1,
+  "sectors": [
+   "it-campus"
+  ],
+  "aka": [
+   "kundara technopark"
+  ]
+ },
+ {
+  "id": "kl:sidco-pappanamcode",
+  "name": "Pappanamcode Industrial Estate",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Thiruvananthapuram",
+  "near": "kl:thiruvananthapuram",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "pappanamcode"
+  ]
+ },
+ {
+  "id": "kl:sidco-umayanalloor",
+  "name": "Umayanalloor Industrial Estate",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Kollam",
+  "near": "kl:kollam",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "umayanallur"
+  ]
+ },
+ {
+  "id": "kl:sidco-karunagappally",
+  "name": "Karunagappally Industrial Estate",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Kollam",
+  "near": "kl:kollam",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "karunagapally"
+  ]
+ },
+ {
+  "id": "kl:sidco-ettumanoor",
+  "name": "Ettumanoor Industrial Estate",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Kottayam",
+  "near": "kl:kottayam",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "kl:sidco-changanacherry",
+  "name": "Changanacherry Industrial Estate",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Kottayam",
+  "near": "kl:kottayam",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "changanassery"
+  ]
+ },
+ {
+  "id": "kl:sidco-cherthala",
+  "name": "Cherthala SIDCO Industrial Estate",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Alappuzha",
+  "near": "kl:alappuzha",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "kl:sidco-palluruthy",
+  "name": "Palluruthy Industrial Estate",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Ernakulam",
+  "near": "kl:kochi",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "kl:sidco-kollakadavu",
+  "name": "Kollakadavu Industrial Estate",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Alappuzha",
+  "near": "kl:alappuzha",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "kl:sidco-mudickal",
+  "name": "Mudickal Industrial Estate",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Ernakulam",
+  "near": "kl:perumbavoor",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "mudikkal"
+  ]
+ },
+ {
+  "id": "kl:sidco-kalletumkara",
+  "name": "Kalletumkara Industrial Estate",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Thrissur",
+  "near": "kl:thrissur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kallettumkara"
+  ]
+ },
+ {
+  "id": "kl:sidco-shornur",
+  "name": "Shoranur Industrial Estate (Karakkad)",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Palakkad",
+  "near": "kl:palakkad",
+  "scale": 1,
+  "sectors": [
+   "metal"
+  ],
+  "aka": [
+   "karakkad",
+   "shornur"
+  ]
+ },
+ {
+  "id": "kl:sidco-olavakkode",
+  "name": "Olavakkode Industrial Estate",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Palakkad",
+  "near": "kl:palakkad",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "kl:sidco-manjeri",
+  "name": "Manjeri Industrial Estate",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Malappuram",
+  "near": "kl:malappuram",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "kl:sidco-west-hill",
+  "name": "West Hill Industrial Estate",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Kozhikode",
+  "near": "kl:kozhikode",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "kl:sidco-palayad",
+  "name": "Palayad Industrial Estate, Thalassery",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Kannur",
+  "near": "kl:kannur",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "palayad"
+  ]
+ },
+ {
+  "id": "kl:sidco-kasaragod",
+  "name": "Kasaragod SIDCO Industrial Estate",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Kasaragod",
+  "near": "kl:kasaragod",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "kl:sidco-thiruvarpu",
+  "name": "SIDCO Industrial Park, Thiruvarpu",
+  "state": "KL",
+  "kind": "estate",
+  "district": "Kottayam",
+  "near": "kl:kottayam",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "py:puducherry",
+  "name": "Puducherry",
+  "state": "PY",
+  "kind": "city",
+  "district": "Puducherry",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "pharma",
+   "electronics",
+   "textile",
+   "plastics"
+  ],
+  "aka": [
+   "pondicherry",
+   "pondy",
+   "pudhuchery"
+  ],
+  "lat": 11.93,
+  "lon": 79.83
+ },
+ {
+  "id": "py:karaikal",
+  "name": "Karaikal",
+  "state": "PY",
+  "kind": "city",
+  "district": "Karaikal",
+  "scale": 1,
+  "sectors": [
+   "chemical",
+   "logistics"
+  ],
+  "aka": [
+   "karikal"
+  ],
+  "lat": 10.93,
+  "lon": 79.84
+ },
+ {
+  "id": "py:mahe",
+  "name": "Mahe",
+  "state": "PY",
+  "kind": "city",
+  "district": "Mahe",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "mayyazhi"
+  ],
+  "lat": 11.7,
+  "lon": 75.54
+ },
+ {
+  "id": "py:yanam",
+  "name": "Yanam",
+  "state": "PY",
+  "kind": "city",
+  "district": "Yanam",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 16.73,
+  "lon": 82.21
+ },
+ {
+  "id": "py:mettupalayam-ie",
+  "name": "Mettupalayam Industrial Estate",
+  "state": "PY",
+  "kind": "estate",
+  "district": "Puducherry",
+  "near": "py:puducherry",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "mixed"
+  ],
+  "aka": [
+   "mettupalayam pondicherry",
+   "pipdic mettupalayam"
+  ]
+ },
+ {
+  "id": "py:thattanchavady-ie",
+  "name": "Thattanchavady Industrial Estate",
+  "state": "PY",
+  "kind": "estate",
+  "district": "Puducherry",
+  "near": "py:puducherry",
+  "scale": 1,
+  "sectors": [
+   "engineering"
+  ],
+  "aka": [
+   "thattanchavadi"
+  ]
+ },
+ {
+  "id": "py:sedarapet-ie",
+  "name": "Sedarapet Industrial Estate",
+  "state": "PY",
+  "kind": "estate",
+  "district": "Puducherry",
+  "near": "py:puducherry",
+  "scale": 2,
+  "sectors": [
+   "engineering",
+   "chemical"
+  ],
+  "aka": [
+   "sedarapet phase 1"
+  ]
+ },
+ {
+  "id": "py:kirumampakkam-ie",
+  "name": "Kirumampakkam Industrial Estate",
+  "state": "PY",
+  "kind": "estate",
+  "district": "Puducherry",
+  "near": "py:puducherry",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "kirumambakkam"
+  ]
+ },
+ {
+  "id": "py:thirubuvanai-ie",
+  "name": "Thirubuvanai Industrial Estate",
+  "state": "PY",
+  "kind": "estate",
+  "district": "Puducherry",
+  "near": "py:puducherry",
+  "scale": 2,
+  "sectors": [
+   "electronics"
+  ],
+  "aka": [
+   "thirubhuvanai"
+  ]
+ },
+ {
+  "id": "py:kattukuppam-ie",
+  "name": "Kattukuppam Industrial Estate",
+  "state": "PY",
+  "kind": "estate",
+  "district": "Puducherry",
+  "near": "py:puducherry",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "py:polagam-igc",
+  "name": "Industrial Growth Centre, Polagam",
+  "state": "PY",
+  "kind": "estate",
+  "district": "Karaikal",
+  "near": "py:karaikal",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "polagam",
+   "karaikal growth centre"
+  ]
+ },
+ {
+  "id": "py:pillaichavady-it-park",
+  "name": "IT Park, Pillaichavady",
+  "state": "PY",
+  "kind": "estate",
+  "district": "Puducherry",
+  "near": "py:puducherry",
+  "scale": 1,
+  "sectors": [
+   "it-campus"
+  ],
+  "aka": [
+   "pillaichavadi"
+  ]
+ },
+ {
+  "id": "an:sri-vijaya-puram",
+  "name": "Sri Vijaya Puram",
+  "state": "AN",
+  "kind": "city",
+  "district": "South Andaman",
+  "scale": 1,
+  "sectors": [
+   "food",
+   "mixed"
+  ],
+  "aka": [
+   "port blair",
+   "portblair"
+  ],
+  "lat": 11.62,
+  "lon": 92.73
+ },
+ {
+  "id": "an:mayabunder",
+  "name": "Mayabunder",
+  "state": "AN",
+  "kind": "city",
+  "district": "North and Middle Andaman",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 12.92,
+  "lon": 92.9
+ },
+ {
+  "id": "an:car-nicobar",
+  "name": "Car Nicobar",
+  "state": "AN",
+  "kind": "city",
+  "district": "Nicobar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [],
+  "lat": 9.15,
+  "lon": 92.82
+ },
+ {
+  "id": "an:dollygunj-ie",
+  "name": "Dollygunj Industrial Estate",
+  "state": "AN",
+  "kind": "estate",
+  "district": "South Andaman",
+  "near": "an:sri-vijaya-puram",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "dollyganj"
+  ]
+ },
+ {
+  "id": "an:garacharama-ie",
+  "name": "Garacharama Industrial Estate",
+  "state": "AN",
+  "kind": "estate",
+  "district": "South Andaman",
+  "near": "an:sri-vijaya-puram",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "garacharma"
+  ]
+ },
+ {
+  "id": "an:mithakhari-ie",
+  "name": "Mithakhari Industrial Estate",
+  "state": "AN",
+  "kind": "estate",
+  "district": "South Andaman",
+  "near": "an:sri-vijaya-puram",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "an:hut-bay-ie",
+  "name": "Hut Bay Industrial Estate, Little Andaman",
+  "state": "AN",
+  "kind": "estate",
+  "district": "South Andaman",
+  "near": "an:sri-vijaya-puram",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "hutbay",
+   "little andaman"
+  ]
+ },
+ {
+  "id": "an:bakultala-ie",
+  "name": "Bakultala Industrial Estate, Middle Andaman",
+  "state": "AN",
+  "kind": "estate",
+  "district": "North and Middle Andaman",
+  "near": "an:mayabunder",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": []
+ },
+ {
+  "id": "an:campbell-bay-ie",
+  "name": "Campbell Bay Industrial Estate, Great Nicobar",
+  "state": "AN",
+  "kind": "estate",
+  "district": "Nicobar",
+  "near": "an:car-nicobar",
+  "scale": 1,
+  "sectors": [
+   "mixed"
+  ],
+  "aka": [
+   "campbell bay",
+   "great nicobar"
+  ]
+ },
+ {
+  "id": "ld:kavaratti",
+  "name": "Kavaratti",
+  "state": "LD",
+  "kind": "city",
+  "district": "Lakshadweep",
+  "scale": 1,
+  "sectors": [
+   "food"
+  ],
+  "aka": [
+   "lakshadweep"
+  ],
+  "lat": 10.57,
+  "lon": 72.64
+ }
+]

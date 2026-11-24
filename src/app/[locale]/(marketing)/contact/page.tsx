@@ -7,8 +7,7 @@ import { JsonLd, webPageSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { HEADINGS } from "./contact-headings";
 import { ContactFormForMode, ContactHeading } from "./contact-mode";
 import { CallbackForm } from "./callback-form";
-import { AgentGuidance } from "@/components/agent-guidance";
-import { JobsLink } from "@/components/i18n/jobs-link";
+import { ClipboardList, Mail, MessageCircle, Phone } from "lucide-react";
 import { localeParams } from "@/lib/i18n";
 
 export const dynamicParams = false;
@@ -23,7 +22,7 @@ export const generateStaticParams = localeParams("/contact");
 export const metadata = pageMetadata({
   title: "Request a Crew: Contract Labour Enquiry",
   description:
-    "Need contract labour? Tell Vayasya Seva the work, how many workers, the site and the start date. We aim to reply within two working days, Monday to Saturday.",
+    "Need contract labour? Tell Vayasya Seva the work, how many workers, the site and the start date. We aim to reply within one working day, Monday to Saturday.",
   alternates: { canonical: "/contact" },
 });
 
@@ -46,22 +45,13 @@ function ContactFormFallback() {
   );
 }
 
-/** The response-time wording (PLAN §8.1): here and in the sent message only. */
-const RESPONSE_LINE = "We aim to reply within two working days (Monday to Saturday, IST).";
+/** WhatsApp on the business line (owner, 24 Nov 2026), opening with the three questions. */
+const WHATSAPP_HREF = `https://wa.me/${businessPhoneHref.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
+  "Hi Vayasya Seva, we’re looking for a crew.\nWork: \nHow many workers: \nSite (town or industrial area): ",
+)}`;
 
-const lines = [
-  {
-    label: "Email",
-    value: siteConfig.email,
-    href: `mailto:${siteConfig.email}`,
-  },
-  {
-    label: "Phone",
-    value: businessPhone.display,
-    href: businessPhoneHref,
-    data: true,
-  },
-];
+/** The response-time wording (PLAN §8.1): here and in the sent message only. */
+const RESPONSE_LINE = "We aim to reply within one working day (Monday to Saturday, IST).";
 
 export default function ContactPage() {
   return (
@@ -82,60 +72,72 @@ export default function ContactPage() {
         ])}
       />
       <Section className="pt-8 sm:pt-14 lg:pt-16">
-        {/* Phone order: intro, the call-back button (its fields open in a
-            dialog), the form, contact lines. Desktop: intro, call back and
-            lines on the left, the form on the right. */}
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] lg:grid-rows-[auto_auto_1fr] lg:gap-x-20 lg:gap-y-0">
-          <div className="lg:col-start-1 lg:row-start-1">
-            {/* One quiet line for job seekers, a full thumb target (48px), to
-                /jobs, every market, in their saved language (JobsLink). */}
-            <JobsLink
-              path="/jobs"
-              locale="en-IN"
-              className="mb-4 inline-flex min-h-12 items-center text-sm leading-relaxed text-muted-foreground hover:text-gold-700"
-            >
-              Looking for work?&nbsp;<span className="text-gold-700 underline underline-offset-4">Jobs →</span>
-            </JobsLink>
-            <p className="eyebrow text-gold-700">FOR BUSINESSES</p>
-            <Suspense fallback={<h1 className="crew-intro-title">{HEADINGS.crew}</h1>}>
-              <ContactHeading />
-            </Suspense>
-            <p className="crew-reply max-w-sm">{RESPONSE_LINE}</p>
+        {/* Two doors (owner direction, 24 Nov 2026): the three things we need, then the form or a
+            conversation that asks the same three. Phone: the talk card first
+            (one tap), then the form. Desktop: form left, talk card right. */}
+        <div className="max-w-3xl">
+          <p className="eyebrow text-gold-700">FOR BUSINESSES</p>
+          <Suspense fallback={<h1 className="crew-intro-title">{HEADINGS.crew}</h1>}>
+            <ContactHeading />
+          </Suspense>
+          <p className="talk-lede">
+            Three answers get us started. Fill them in here, or tell us on WhatsApp or a call: we ask the same three.
+          </p>
+          <ol className="talk-three" aria-label="What we need to know">
+            {["The work", "How many workers", "Where the site is"].map((q, i) => (
+              <li key={q}>
+                <span className="talk-three-n">{i + 1}</span>
+                {q}
+              </li>
+            ))}
+          </ol>
+          {/* Phone: both doors on the first screen. */}
+          <div className="talk-doors lg:hidden">
+            <a href="#crew-form" className="talk-door-btn">
+              <ClipboardList aria-hidden="true" />
+              Fill in the form
+            </a>
+            <a href={WHATSAPP_HREF} target="_blank" rel="noopener" className="talk-door-btn talk-door-btn-wa">
+              <MessageCircle aria-hidden="true" />
+              WhatsApp us
+            </a>
           </div>
-          {/* The crew request only (callback-form.tsx): empty in the other modes. */}
-          <div className="-mt-6 empty:hidden lg:col-start-1 lg:row-start-2 lg:mt-0 lg:pt-8">
-            <Suspense fallback={null}>
-              <CallbackForm />
-            </Suspense>
-          </div>
-          <div className="lg:col-start-2 lg:row-start-1 lg:row-span-3">
+        </div>
+        <div className="mt-12 grid grid-cols-1 gap-12 lg:mt-16 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:gap-16">
+          <div id="crew-form" className="scroll-mt-24">
+            <p className="talk-door-note">2 minutes. We tell you whether we can staff it.</p>
             <Suspense fallback={<ContactFormFallback />}>
               <ContactFormForMode />
             </Suspense>
           </div>
-          <div className="lg:col-start-1 lg:row-start-3 lg:pt-12">
-            <p className="text-sm text-muted-foreground">Prefer to write or call?</p>
-            <dl className="mt-3">
-              {lines.map((l, i) => (
-                <div
-                  key={l.label}
-                  className={i === 0 ? "flex items-baseline justify-between gap-6 py-4" : "flex items-baseline justify-between gap-6 border-t py-4"}
-                >
-                  <dt className="text-sm text-muted-foreground">{l.label}</dt>
-                  <dd className={l.data ? "font-data text-right" : "text-right"}>
-                    {l.href ? (
-                      <a href={l.href} className="inline-flex min-h-12 items-center hover:text-gold-700">
-                        {l.value}
-                      </a>
-                    ) : (
-                      l.value
-                    )}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-            <AgentGuidance />
-          </div>
+          <aside aria-labelledby="talk-title">
+            <div className="talk-card lg:sticky lg:top-28">
+              <h2 id="talk-title" className="talk-title">Or talk to us</h2>
+              <p className="talk-sub">{RESPONSE_LINE}</p>
+              <a className="talk-row talk-row-primary" href={WHATSAPP_HREF} target="_blank" rel="noopener">
+                <MessageCircle className="talk-row-icon" aria-hidden="true" />
+                <span className="talk-row-label">WhatsApp</span>
+                <span className="talk-row-note">Say hello, we’ll take it from there</span>
+              </a>
+              {/* Call-back before the number (owner direction, 24 Nov 2026). */}
+              <Suspense fallback={null}>
+                <CallbackForm variant="row" />
+              </Suspense>
+              <div className="talk-row talk-call">
+                <Phone className="talk-row-icon" aria-hidden="true" />
+                <span className="talk-row-label">
+                  <a href={businessPhoneHref} className="font-data hover:text-gold-700">
+                    {businessPhone.display}
+                  </a>
+                </span>
+                <span className="talk-row-note">Monday to Saturday</span>
+              </div>
+              <a className="talk-row" href={`mailto:${siteConfig.email}`}>
+                <Mail className="talk-row-icon" aria-hidden="true" />
+                <span className="talk-row-label">{siteConfig.email}</span>
+              </a>
+            </div>
+          </aside>
         </div>
       </Section>
     </>

@@ -247,7 +247,7 @@ test('lead flags reach the staff email only, never the buyer copy', async () => 
   const { staff, buyer } = leadMail(data, { caseId: 'REQ-UNIT' });
   assert.equal(staff.subject, 'Crew request: Asha Rawat, Acme · 50 to 99 workers');
   const text = staff.text;
-  assert.match(text, /^Crew request\n\nReply within two working days\.\nQualified: 20\+ workers, 3\+ months\.\nStarts within 4 weeks\.\nCheck: Security guards: they mention security staff\n/);
+  assert.match(text, /^Crew request\n\nReply within one working day\.\nQualified: 20\+ workers, 3\+ months\.\nStarts within 4 weeks\.\nCheck: Security guards: they mention security staff\n/);
   assert.doesNotMatch(text, /cannot supply/);
   assert.match(text, /Email: buyer@example\.test/);
   assert.match(text, /Work: Packing, Loading and unloading\nWorkers: 50 to 99\nSite: SIDCUL Haridwar, Uttarakhand/);
@@ -271,7 +271,7 @@ test('lead flags reach the staff email only, never the buyer copy', async () => 
   assert.equal(buyer.html, undefined);
   assert.equal(buyer.subject, 'We have your crew request (REQ-UNIT)');
   assert.doesNotMatch(buyer.text, /Qualified|Check:|Starts within|Came from|Privacy notice/i);
-  assert.match(buyer.text, /^Hello Asha,\n\nThank you\. We aim to reply within two working days \(Monday to Saturday, IST\)\./);
+  assert.match(buyer.text, /^Hello Asha,\n\nThank you\. We aim to reply within one working day \(Monday to Saturday, IST\)\./);
   assert.match(buyer.text, /What you sent:\nWork: Packing, Loading and unloading/);
   // An agent's enquiry: said in the staff email, replies go to the inbox, and no copy to the address it gave.
   const agent = leadMail(data, { caseId: 'AGT-UNIT', agentName: 'Helper' });

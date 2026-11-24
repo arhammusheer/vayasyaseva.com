@@ -142,6 +142,14 @@ export function Footer({
                 <span className="font-data">PDF</span>
               </a>
             )}
+            {door === "business" && (
+              // For enquiries sent through an AI assistant or an app: the open
+              // route and its spec (llms.txt). A visible link, not an
+              // off-screen note (19 Oct 2026); moved here from /contact, 24 Nov 2026.
+              <a href="/llms.txt" data-agent-guidance="footer">
+                For AI assistants
+              </a>
+            )}
             <Link href="/privacy" lang={isJobs ? locale : "en-IN"}>
               {isJobs ? `${t.privacy}${t.english}` : "Privacy"}
             </Link>

@@ -219,7 +219,9 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
   const view: HeaderDoor = door === "reference" && LEGAL.has(path) ? "business" : door;
   const isJobs = view === "jobs";
   // The number is the business line, and only the business layout passes it.
-  const showPhone = view === "business" && phone;
+  // The contact page has its own phone and form: no phone and no Request a crew in its header.
+  const onContact = path === "/contact";
+  const showPhone = view === "business" && phone && !onContact;
   const pageLang = pageLocale === "en-IN" ? undefined : pageLocale;
   const t = JOBS_NAV[pageLocale];
   // Doors to the other sections. A jobs door opens the decided market's
@@ -507,7 +509,7 @@ export function Header({ door = "business", phone }: { door?: HeaderDoor; phone?
               ))}
             </span>
           )}
-          {nav.cta && !isJobs && (
+          {nav.cta && !isJobs && !onContact && (
             <Link
               href={nav.cta.href}
               className="header-contact"

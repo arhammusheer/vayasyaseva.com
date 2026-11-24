@@ -42,7 +42,7 @@ Last compiled: 16 October 2026, for the national phase 1 pull request; business 
 
 | Claim | Pages | Tier | Evidence or approval | Signed off | Review by |
 |---|---|---|---|---|---|
-| We aim to reply within two working days (Monday to Saturday, IST) | /contact (page and sent message) only; cut from the CTA bands and the Setu band, 16 Oct 2026 | A | PLAN §8.1; becomes B after 90 days of first-reply data | | 16 Jan 2027 |
+| We aim to reply within one working day (Monday to Saturday, IST) | /contact (page and sent message) only; cut from the CTA bands and the Setu band, 16 Oct 2026 | A | PLAN §8.1; owner decision, 24 Nov 2026: one working day, matching the call-back (was two working days); becomes B after 90 days of first-reply data | | 16 Jan 2027 |
 | We aim to call you within one working day (Monday to Saturday, IST) | /contact: the short call-back form and its sent message; the API's answer to a call back; the staff email tells the team to phone within it. Nowhere else | A | Owner decision, 10 Nov 2026 (chosen over two working days and no time); becomes B after 90 days of first-call data | Owner, 10 Nov 2026 | 10 Feb 2027 |
 | We'll tell you whether we can staff it (a site elsewhere in India) | /contact form hint, llms.txt; cut from home, wage pages and with /industries | A | Owner decision 3 | | 16 Oct 2027 |
 | A site visit before a crew starts (site assessment request; engagement step 1) | /contact, /services | A | Owner to confirm | | 16 Oct 2027 |

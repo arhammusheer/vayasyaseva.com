@@ -282,7 +282,7 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
     const from = s.tables[0].effectiveFrom;
     return {
       title: (year) => `Telangana Minimum Wages${year ? ` ${year}` : ""}: Rates by Zone`,
-      description: `Telangana minimum wage from ${formatShortDate(from)}, unskilled: ${formatRupees(u1.monthly)} a month in municipal corporations, ${formatRupees(u3.monthly)} in rural areas. Basic rates, every skill level. ${stamp([s])}.`,
+      description: `Telangana minimum wage from ${formatShortDate(from)}, unskilled: ${formatRupees(u1.monthly)} a month in municipal corporations, ${formatRupees(u3.monthly)} in rural areas. Basic rates by skill. ${stamp([s])}.`,
       answer: `From ${formatDate(from)}, unskilled work in a Telangana municipal corporation (Zone I) pays at least ${formatRupees(u1.monthly)} a month, or ${formatRupees(u1.daily ?? 0)} a day. Municipalities and rural areas pay less.`,
       faqs: [
         {

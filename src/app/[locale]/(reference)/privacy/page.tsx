@@ -12,7 +12,7 @@ export const generateStaticParams = localeParams("/privacy");
 export const metadata = pageMetadata({
   title: "Privacy Policy",
   description:
-    "Privacy Policy of Vayasya Seva Private Limited: the information collected through vayasyaseva.com and its subdomains, how it is used and shared, retention, your rights and the Grievance Officer.",
+    "How Vayasya Seva Private Limited collects, uses, shares and keeps information from vayasyaseva.com and its subdomains, your rights and the Grievance Officer.",
   alternates: { canonical: "/privacy" },
 });
 
@@ -50,7 +50,7 @@ export default function PrivacyPage() {
         data={webPageSchema({
           name: "Privacy Policy",
           description:
-            "Privacy Policy of Vayasya Seva Private Limited: the information collected through vayasyaseva.com and its subdomains, how it is used and shared, retention, your rights and the Grievance Officer.",
+            "How Vayasya Seva Private Limited collects, uses, shares and keeps information from vayasyaseva.com and its subdomains, your rights and the Grievance Officer.",
           url: "/privacy",
         })}
       />

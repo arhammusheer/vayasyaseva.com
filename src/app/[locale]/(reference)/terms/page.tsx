@@ -10,7 +10,7 @@ export const generateStaticParams = localeParams("/terms");
 export const metadata = pageMetadata({
   title: "Terms of Use",
   description:
-    "Terms of Use for vayasyaseva.com and its subdomains: licence and permitted automated access, prohibited conduct, intellectual property, disclaimers, limitation of liability and governing law.",
+    "Terms of Use for vayasyaseva.com and its subdomains: licence and automated access, prohibited conduct, intellectual property, liability and governing law.",
   alternates: { canonical: "/terms" },
 });
 
@@ -21,7 +21,7 @@ export default function TermsPage() {
         data={webPageSchema({
           name: "Terms of Use",
           description:
-            "Terms of Use for vayasyaseva.com and its subdomains: licence and permitted automated access, prohibited conduct, intellectual property, disclaimers, limitation of liability and governing law.",
+            "Terms of Use for vayasyaseva.com and its subdomains: licence and automated access, prohibited conduct, intellectual property, liability and governing law.",
           url: "/terms",
         })}
       />

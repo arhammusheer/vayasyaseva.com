@@ -14,7 +14,7 @@ import { jobMarkets, marketSurfaces } from "@/context/surfaces";
 import { WAGE_STATE_REGIONS, type WageStateSlug } from "@/content/registry/identifiers";
 import { isStateWide, marketForRegion, marketsForState, standInFor } from "@/markets/index";
 import { businessLabel, jobsLinkLabel, marketName } from "@/markets/labels";
-import { employmentFigure, formatDate, formatMonth, formatRupees, formatShortDate, formatShortMonth, getWageState, wageStates, type Skill, type WageState } from "@/content/wages";
+import { employmentFigure, formatDate, formatMonth, formatRupees, formatShortDate, formatShortMonth, getWageState, type Skill, type WageState } from "@/content/wages";
 
 /** A rate from the dataset, by table, zone and skill. Throws if it is missing, so a typo fails the build. */
 export function rate(state: WageState, table: string, zone: string, skill: Skill) {
@@ -305,6 +305,10 @@ export function getWageStateCopy(slug: WageStateSlug): WageStateCopy | undefined
   return state && build ? build(state) : undefined;
 }
 
+/** "AP" and "UP" in tight lines (hub description); every other state by its name. */
+const SHORT_STATE_NAMES: Partial<Record<WageStateSlug, string>> = { "andhra-pradesh": "AP", "uttar-pradesh": "UP" };
+export const shortStateName = (s: WageState) => SHORT_STATE_NAMES[s.state] ?? s.name;
+
 /** "a, b and c". */
 const andList = (parts: readonly string[]) => (parts.length > 1 ? `${parts.slice(0, -1).join(", ")} and ${parts.at(-1)}` : parts[0]);
 
@@ -313,9 +317,14 @@ export const listDates = (dates: string[]) => andList(dates.map(formatDate));
 
 export const wageHubCopy = {
   title: (year: string | null) => `Minimum Wages${year ? ` ${year}` : ""} by State: Rates by Skill Level`,
-  /** The oldest date across the states, so the line is true for every one of them. */
-  description: () =>
-    `Minimum wages in Andhra Pradesh, Delhi, Haryana, Punjab, UP and Uttarakhand by skill level, each with its notification and effective date. ${stamp(wageStates)}.`,
+  /**
+   * Every published state, by the short name searchers use (AP, UP), so the
+   * snippet never falls behind a newly published page (Karnataka and Telangana
+   * were missing from a hand-typed list). The oldest check across them, so the
+   * stamp is true for every one.
+   */
+  description: (states: readonly WageState[]) =>
+    `Minimum wages in ${andList(states.map(shortStateName))} by skill level, from each state's notification. ${stamp(states)}.`,
   heading: (year: string | null) => (year ? `Minimum wages in ${year}, by state.` : "Minimum wages by state."),
   /**
    * The answer, first: the hero lede carries what the old one-question FAQ

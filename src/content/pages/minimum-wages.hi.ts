@@ -19,7 +19,7 @@
  * acronyms in Latin, Western digits, no agency words, no phone.
  */
 import type { WageStateSlug } from "@/content/registry/identifiers";
-import { formatRupees, wageStates, type Skill, type WageState } from "@/content/wages";
+import { formatRupees, type Skill, type WageState } from "@/content/wages";
 import { rate } from "./minimum-wages";
 
 const parse = (iso: string) => new Date(`${iso}T00:00:00Z`);
@@ -149,10 +149,15 @@ export const HUB_HI_SOURCE_HASH: Partial<Record<WageStateSlug, string>> = {
   telangana: "a87140c72edd",
 };
 
+/** "a, b और c". */
+const andListHi = (parts: readonly string[]) => (parts.length > 1 ? `${parts.slice(0, -1).join(", ")} और ${parts.at(-1)}` : parts[0]);
+
 export const wageHubHi = {
-  title: (year: string | null) => `न्यूनतम मजदूरी${year ? ` ${year}` : ""}: उत्तराखंड, UP, दिल्ली, हरियाणा, पंजाब, आंध्र प्रदेश`,
-  description: () =>
-    `उत्तराखंड, UP, दिल्ली, हरियाणा, पंजाब और आंध्र प्रदेश में आपके काम की सबसे कम मज़दूरी, महीने की और रोज़ की, और हर राज्य के श्रम विभाग की सरकारी साइट। आख़िरी जाँच: ${formatMonthHi(wageStates.map((s) => s.checked.on).sort()[0])}।`,
+  /** "राज्यवार" (state-wise), the searched word: a list of eight states runs past a result's width. */
+  title: (year: string | null) => `राज्यवार न्यूनतम मजदूरी${year ? ` ${year}` : ""}: आपके काम की दर`,
+  /** Every published state, so the line never falls behind a new state page. */
+  description: (states: readonly WageState[]) =>
+    `${andListHi(states.map((s) => (s.state === "uttar-pradesh" ? "UP" : (WAGE_HUB_HI[s.state]?.name ?? s.name))))} में आपके काम की सबसे कम मज़दूरी, महीने की और रोज़ की, और श्रम विभाग की सरकारी साइट। आख़िरी जाँच: ${formatMonthHi(states.map((s) => s.checked.on).sort()[0])}।`,
   heading: (year: string | null) => `न्यूनतम मजदूरी${year ? ` ${year}` : ""}`,
   lede: "आपको कम से कम कितना मिलना चाहिए: अपना राज्य और अपना काम देखिए। इससे कम देने की इजाज़त नहीं है।",
   /** The page's one jobs door: a quiet line under the lede. */

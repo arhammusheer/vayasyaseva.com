@@ -1,4 +1,4 @@
-import { allLocales, localePath, localesOf, type Locale } from "./i18n";
+import { localePath, localesOf, type Locale } from "./i18n";
 import { jobsLocale } from "@/lib/i18n";
 import { quickApplyCopy } from "@/content/pages/quick-apply";
 import { jobsCopy } from "@/content/pages/jobs";
@@ -84,7 +84,8 @@ export function getShareContent(path: string, locale: Locale = "en-IN", variant 
 export function allShareContent(): ShareContent[] {
   const paths = [...Object.keys(COMMON), "/jobs", "/jobs/apply", ...[...JOB_ROLE_SLUGS, ...JOB_HUB_SLUGS, ...jobClusters["en-IN"].map((c) => c.slug)].map((slug) => `/jobs/${slug}`), ...servicePages.map((s) => `/services/${s.slug}`), ...locationPages.keys()];
   const entries = [...new Set(paths)].flatMap((path) => localesOf(path).map((locale) => getShareContent(path, locale)));
-  for (const locale of allLocales) {
+  // Only the languages /jobs/apply is built in (local languages only, owner direction 24 Nov 2026).
+  for (const locale of localesOf("/jobs/apply")) {
     for (const role of JOB_ROLE_SLUGS) entries.push(getShareContent("/jobs/apply", locale, `role-${role}`));
     for (const hub of JOB_HUB_SLUGS) entries.push(getShareContent("/jobs/apply", locale, `hub-${hub}`));
   }

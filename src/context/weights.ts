@@ -21,10 +21,12 @@
  * session, not once per tab; weights unchanged. Compare lift from 9 only.
  * 10 (24 Nov 2026): Telugu (te-IN) is a locale and leads the Andhra set
  * (Visakhapatnam, Hyderabad); weights unchanged. Compare lift from 10 only.
+ * 11 (24 Nov 2026): a page's own regional language ranks above Hindi in the
+ * picker; weights unchanged. Compare lift from 11 only.
  */
 import type { AudienceWeights, ContextTables, RegionWeights } from "./core";
 
-export const CONTEXT_VERSION = 10;
+export const CONTEXT_VERSION = 11;
 
 /**
  * Job seekers: where they live decides, so the IP (roughly where the phone

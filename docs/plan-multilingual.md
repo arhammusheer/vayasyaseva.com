@@ -11,9 +11,16 @@ Status: live. हिंदी (hi-IN) and Hindi in Latin script (hi-Latn-IN) are
 | `hi-Latn-IN` | Hindi | `/hi-latn-in` | Hindi in Latin script |
 | `pa-IN` | ਪੰਜਾਬੀ | `/pa-in` | Gurmukhi |
 | `kn-IN` | ಕನ್ನಡ | `/kn-in` | Kannada |
-| `te-IN` | తెలుగు | `/te-in` | Telugu (24 Nov 2026: the Visakhapatnam and Hyderabad location pages; jobs pages fall back to English through `jobsLocale`) |
+| `te-IN` | తెలుగు | `/te-in` | Telugu. No published pages: the Visakhapatnam and Hyderabad location pages went up on 24 Nov 2026 and were retired the same day (business pages: no Telugu buyer searches), 308 to English. Jobs pages fall back to English through `jobsLocale` |
 
 The locale code is the BCP 47 tag, used as is in `<html lang>`, hreflang and JSON-LD `inLanguage`. `hi-Latn-IN` reads as language Hindi, script Latin, region India. URL segments are the lowercase tag. Other casings (`/hi-IN/jobs`) redirect permanently to the lowercase URL.
+
+Languages per page (owner direction, 24 Nov 2026):
+
+- **Jobs and reference pages:** Hindi (हिंदी and Hindi in Latin script) has the same standing as English. Regional languages go only where they are local (ਪੰਜਾਬੀ on the Jalandhar region's jobs pages, ಕನ್ನಡ on Bengaluru's), so the site does not sprawl into every language everywhere.
+- **Business pages** (home, services, about, location pages): English by default. Another language only where search data supports it. Keyword Planner, 24 Nov 2026: buyer searches that name a place are English in every market; the non-English buyer words are "thekedar" (9,900 a month) and "ठेकेदार" (4,400), searched in Delhi NCR, Punjab and Uttarakhand. So the Hindi-belt and Jalandhar location pages keep हिंदी and Hindi; ਪੰਜਾਬੀ and తెలుగు location pages are retired (308 to the page's neutral URL, copy kept in `src/content/locations`).
+- **Picker:** a page in its market's own language ranks it above हिंदी and Hindi for every visitor (`src/context/core.ts`); only a Hindi pick on the picker comes first.
+- Anything built per language (share images, sitemaps, pickers) follows the page's own languages (`localesOf`), never every site locale.
 
 Labels: readers see "English", "हिंदी" and "Hindi". Don't call hi-Latn-IN anything else on the site. In code and docs, use the locale code or "Hindi in Latin script".
 
@@ -55,7 +62,7 @@ The homepage and every business-facing page stay English. Translate a page only 
 | Page | Languages | Neutral URL | Reason |
 |------|-----------|-------------|--------|
 | `/`, `/services`, `/services/factory-labour`, `/services/loading-unloading-labour`, `/services/housekeeping`, `/about`, `/vayasya-setu`, `/compliance`, `/contact`, `/brand`, `/privacy`, `/terms` | en-IN | English | Business buyers; legal text in one reviewed version. Business pages are English only since 16 Oct 2026: the Hinglish service landings 308 to English |
-| `/locations/<region>` and its estates | Per region (`LOCATION_LOCALES`, 24 Nov 2026): Haridwar, Uttarakhand, Dehradun and Delhi NCR in en-IN, hi-IN, hi-Latn-IN; the Jalandhar region also in pa-IN; Visakhapatnam and Hyderabad in en-IN and te-IN; Bengaluru English only | English | Core local search terms in each region's scripts. Each page also lists the state's reference pages (`StateReference`): links only, never their figures |
+| `/locations/<region>` and its estates | Per region (`LOCATION_LOCALES`, 24 Nov 2026): Haridwar, Uttarakhand, Dehradun and Delhi NCR in en-IN, hi-IN, hi-Latn-IN; the Jalandhar region in the same three (pa-IN retired 24 Nov 2026: no Punjabi buyer searches); Visakhapatnam, Hyderabad and Bengaluru English only (te-IN retired the same day) | English | Core local search terms in each region's scripts. Each page also lists the state's reference pages (`StateReference`): links only, never their figures |
 | `/jobs`, `/jobs/<role>` | en-IN, hi-IN, hi-Latn-IN; hi-IN first | Language picker | Workers read हिंदी and type in Latin script; skilled roles use English. The link is often shared on a call |
 
 Later: `/privacy` in hi-IN, so worker applicants can read the data notice (DPDP). Latin-script Hindi is too loose for legal text.

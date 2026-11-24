@@ -225,22 +225,31 @@ const RETIRED_EN = { "en-IN": "retired" } as const;
 const RETIRED_REGIONAL = { "en-IN": "retired", "hi-IN": "retired", "hi-Latn-IN": "retired", "pa-IN": "retired", "kn-IN": "retired" } as const;
 const RETIRED_EN_HINGLISH = { "en-IN": "retired", "hi-Latn-IN": "retired" } as const;
 
-const WITH_TELUGU = { "en-IN": "published", "te-IN": "published" } as const satisfies Partial<Record<LocaleTag, PageStatus>>;
 /**
- * Location pages in the region's languages (owner direction, 24 Nov 2026):
- * hub and estates alike, from the market's language set. Hindi and Hinglish
- * in the Hindi belt, Punjabi plus both Hindi forms in the Jalandhar region,
- * Telugu in Visakhapatnam and Hyderabad. Drafts pending native review, like
- * the other translations; LocationPage throws if a listed language has no copy.
+ * Location pages are business pages: English by default, another language
+ * only where search data supports it (owner direction, 24 Nov 2026).
+ * Keyword Planner and Search Console, 24 Nov 2026: buyer searches naming a
+ * place are English in every market; the non-English buyer words are
+ * "thekedar" / "ठेकेदार" (Delhi NCR 1,300 / 320, Punjab 590 / 90,
+ * Uttarakhand 320 / 110), so Hindi and Hinglish stay in the Hindi belt and
+ * the Jalandhar region. Punjabi (0 buyer searches) and Telugu (0 naming a
+ * place) are retired: each 308s to the page's neutral URL. Their copy stays
+ * in src/content/locations for a return if the data changes. Drafts pending
+ * native review; LocationPage throws if a listed language has no copy.
  */
 const LOCATION_LOCALES: Partial<Record<LocationCluster, Partial<Record<LocaleTag, PageStatus>>>> = {
   haridwar: ALL,
   uttarakhand: ALL,
   dehradun: ALL,
   "delhi-ncr": ALL,
-  jalandhar: WITH_PUNJABI,
-  visakhapatnam: WITH_TELUGU,
-  hyderabad: WITH_TELUGU,
+  jalandhar: { ...ALL, "pa-IN": "retired" },
+  visakhapatnam: { "en-IN": "published", "te-IN": "retired" },
+  hyderabad: { "en-IN": "published", "te-IN": "retired" },
+};
+/** Where a retired language of a location page goes: the same page, in its default language. */
+const locationRetiredTo = (cluster: LocationCluster, path: string): PageEntry["retiredTo"] => {
+  const retired = Object.entries(LOCATION_LOCALES[cluster] ?? {}).filter(([, s]) => s === "retired");
+  return retired.length ? Object.fromEntries(retired.map(([l]) => [l, path])) : undefined;
 };
 /** The day each region's translations went up (its sitemap lastmod). */
 const LOCATION_TRANSLATED: Partial<Record<LocationCluster, string>> = { uttarakhand: "2026-11-24", dehradun: "2026-11-24", "delhi-ncr": "2026-11-24", jalandhar: "2026-11-24", visakhapatnam: "2026-11-24", hyderabad: "2026-11-24" };
@@ -326,13 +335,13 @@ export const pageEntries: readonly PageEntry[] = [
   // (locations) layout has no phone.
   { path: LOCATIONS_PATH, kind: "static", audience: "mixed", locales: { "en-IN": LOCATIONS_STATUS }, parent: "/", updated: LOCATIONS_UPDATED, changeFrequency: "monthly", priority: 0.6 },
   ...LOCATION_CLUSTERS.flatMap((cluster) => [
-    { path: locationPath(cluster), kind: "cluster-hub", audience: "mixed", locales: LOCATION_LOCALES[cluster] ?? { "en-IN": LOCATIONS_STATUS }, parent: LOCATIONS_PATH, cluster, updated: LOCATION_TRANSLATED[cluster] ?? LOCATION_ADDED[cluster] ?? LOCATIONS_UPDATED, changeFrequency: "monthly", priority: 0.8 } satisfies PageEntry,
+    { path: locationPath(cluster), kind: "cluster-hub", audience: "mixed", locales: LOCATION_LOCALES[cluster] ?? { "en-IN": LOCATIONS_STATUS }, retiredTo: locationRetiredTo(cluster, locationPath(cluster)), parent: LOCATIONS_PATH, cluster, updated: LOCATION_TRANSLATED[cluster] ?? LOCATION_ADDED[cluster] ?? LOCATIONS_UPDATED, changeFrequency: "monthly", priority: 0.8 } satisfies PageEntry,
     ...LOCATION_ESTATES[cluster].map((estate): PageEntry => {
       const path = estatePath(cluster, estate);
       // Moved to another region's hub: retired here, one 308 to the new page.
       const movedTo = MOVED_ESTATES[path];
       if (movedTo) return { path, kind: "estate", audience: "mixed", locales: RETIRED_EN, parent: locationPath(cluster), retiredTo: movedTo, updated: "2026-10-18", changeFrequency: "monthly", priority: 0.7 };
-      return { path, kind: "estate", audience: "mixed", locales: LOCATION_LOCALES[cluster] ?? { "en-IN": LOCATIONS_STATUS }, parent: locationPath(cluster), cluster, updated: LOCATION_TRANSLATED[cluster] ?? LOCATION_ADDED[cluster] ?? LOCATIONS_UPDATED, changeFrequency: "monthly", priority: 0.7 };
+      return { path, kind: "estate", audience: "mixed", locales: LOCATION_LOCALES[cluster] ?? { "en-IN": LOCATIONS_STATUS }, retiredTo: locationRetiredTo(cluster, path), parent: locationPath(cluster), cluster, updated: LOCATION_TRANSLATED[cluster] ?? LOCATION_ADDED[cluster] ?? LOCATIONS_UPDATED, changeFrequency: "monthly", priority: 0.7 };
     }),
   ]),
   // Sectors and engagement steps now live on /services.

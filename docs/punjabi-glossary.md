@@ -1,5 +1,7 @@
 # Punjabi (pa-IN) glossary
 
+**Location pages, 24 November 2026: retired.** The Jalandhar region's Punjabi location pages are business pages, and Keyword Planner found no Punjabi buyer searches, so `/pa-in/locations/jalandhar/...` 308s to the page's default language. The copy stays in `src/content/locations/jalandhar.ts`. The Punjabi jobs pages are unchanged.
+
 Punjabi in Gurmukhi went live on 17 October 2026, for the Jalandhar region's jobs funnel only: `/pa-in/jobs/jalandhar`, `/pa-in/jobs/apply`, `/pa-in/jobs/privacy` and `/pa-in/jobs/fees-and-fraud` (`WITH_PUNJABI` in `src/content/registry/pages.ts`). All of it is a draft pending native review, like the Hindi copy. Other jobs pages send Punjabi readers to Hinglish (`nearestLocalePath` in `src/lib/i18n.ts`). The Jalandhar region's location pages (the hub, Kapurthala, Focal Point Jalandhar, and Phagwara and Goraya) now have Punjabi too, beside Hindi and Hinglish, in `src/content/locations/jalandhar.ts`; also drafts pending native review.
 
 No web font: Anek and Hind have no Gurmukhi, so the phone's own font draws it (Noto Sans Gurmukhi on Android). Share images embed Anek Gurmukhi (`src/assets/fonts/og/AnekGurmukhi-Variable.ttf`, OFL).

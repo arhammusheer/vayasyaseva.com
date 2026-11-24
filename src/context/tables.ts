@@ -52,6 +52,7 @@ export function contextTables(): ContextTables {
       default: LANGUAGE_SETS.default,
       hint: LANGUAGE_MARKET_HINTS,
       always: FALLBACK_LOCALE,
+      hindi: ["hi-IN", "hi-Latn-IN"],
       top: PICKER_TOP,
     },
   };

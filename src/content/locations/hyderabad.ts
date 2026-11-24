@@ -20,11 +20,9 @@ import { wageStatePath } from "@/content/registry/identifiers";
 
 const TG_WAGES = wageStatePath("telangana");
 /**
- * The Telangana wage page is in review (owner, 27 Oct 2026: G.O.Ms. No. 6 is
- * before the High Court, no VDA has been declared under it, and it was not
- * in the state eGazette on 1 Nov 2026), so the wages answer links to
- * /compliance, as Bengaluru's did while Karnataka's was in review. Switches
- * by itself once the page is published.
+ * The wages answer links the Telangana wage page, published 24 Nov 2026
+ * (it was in review from 27 Oct 2026, when the answer linked /compliance).
+ * If the page ever goes back to review, the answer falls back by itself.
  */
 const WAGES_LINK = linkable(TG_WAGES, "en-IN")
   ? { href: TG_WAGES, label: "Telangana minimum wages" }
@@ -32,7 +30,7 @@ const WAGES_LINK = linkable(TG_WAGES, "en-IN")
 
 const wagesFaq = (zone: string): FaqItem => ({
   question: "Which minimum wage and rules apply?",
-  answer: `Telangana's: since 1 June 2026, one order sets basic rates by zone and skill for every listed employment, with a cost of living allowance to be declared each April and October. Professional Tax and the Labour Welfare Fund apply too. ${zone}`,
+  answer: `Telangana's: since 1 June 2026, one order sets basic rates by zone and skill for most listed employments (garments, spinning, powerlooms and a few others wait for a committee), with a cost of living allowance to be declared each April and October. Professional Tax and the Labour Welfare Fund apply too. ${zone}`,
   link: WAGES_LINK,
   category: "compliance",
 });
@@ -88,12 +86,13 @@ const SRC = {
     label: "PIB factsheet, 14 October 2025: Telangana's share of India's bulk drug exports and pharma output",
     url: "https://static.pib.gov.in/WriteReadData/specificdocs/documents/2025/oct/doc20251014666001.pdf",
   },
-  medicalDevices: { label: "Telangana Life Sciences: Medical Devices Park (302 acres, 2017)", url: "https://lifesciences.telangana.gov.in/life-sciences-grid/clusters/medical-device-park/" },
+  medicalDevices: { label: "Telangana Life Sciences: Medical Devices Park (302 acres, 2017)", url: "https://lifesciences.telangana.gov.in/medical-device-park/" },
   genome: { label: "Telangana Life Sciences: Genome Valley (23 km from Secunderabad station)", url: "https://lifesciences.telangana.gov.in/genome-valley/" },
   lifeSciencesPolicy: { label: "Telangana Life Sciences Policy: Genome Valley, about 1,500 acres in four phases", url: "https://rich.telangana.gov.in/assets/pdfs/Resources/Life-Sciences-Policy.pdf" },
   industriesReport: {
-    label: "Industries Department, Telangana: annual report 2022–23 (study of 380 micro and small units in Cherlapally Industrial Park)",
-    url: "https://tgtpc.telangana.gov.in/wp-content/uploads/2024/04/Telangana-Industries-Dept-Annual-Report-2022-23.pdf",
+    label: "Industries Department, Telangana: annual report 2022–23 (study of 380 micro and small units in Cherlapally Industrial Park) (Internet Archive copy)",
+    // tgtpc.telangana.gov.in does not answer from outside India (24 Nov 2026), so this is the Internet Archive capture.
+    url: "https://web.archive.org/web/20250712223502id_/https://tgtpc.telangana.gov.in/wp-content/uploads/2024/04/Telangana-Industries-Dept-Annual-Report-2022-23.pdf",
   },
   patancheru: { label: "Patancheru", url: "https://en.wikipedia.org/wiki/Patancheru" },
   bollaram: { label: "IDA Bollaram", url: "https://en.wikipedia.org/wiki/IDA_Bollaram" },
@@ -102,7 +101,7 @@ const SRC = {
   cherlapally: { label: "Cherlapally", url: "https://en.wikipedia.org/wiki/Cherlapally" },
   genomeValley: { label: "Genome Valley", url: "https://en.wikipedia.org/wiki/Genome_Valley" },
   shadnagar: { label: "Shadnagar", url: "https://en.wikipedia.org/wiki/Shadnagar" },
-  // CDSCO's own copy (paras 3.4 and 11.4.6: cleaning and contract staff).
+  // CDSCO's own copy (paras 11.4.1 and 11.4.6: training of cleaning and contract staff).
   scheduleM: {
     label: "Revised Schedule M, Drugs Rules, G.S.R. 922(E), 28 December 2023 (CDSCO copy)",
     url: "https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadGazette_NotificationsFiles/2023.12.28_DR_Final%20G.S.R.%20922(E)_Notification%20of%20Schedule%20M%20of.pdf",
@@ -127,7 +126,7 @@ export const hyderabadPages: LocationCopy[] = [
     heading: "Labour contractor and manpower supplier in Hyderabad.",
     lede: "Supervised contract workers for pharma, engineering and logistics units across Hyderabad's industrial belts.",
     paragraph:
-      "Hyderabad is India's bulk drug centre: Telangana makes about a third of the country's pharma output and half its bulk drug exports. The city's industry sits in TGIIC parks around it: Patancheru and Pashamylaram to the north-west, in Sangareddy district; Jeedimetla and Medchal to the north and Cherlapally to the east, in Medchal-Malkajgiri; Genome Valley at Shamirpet; and Shamshabad, Kothur and Adibatla to the south, in Rangareddy. We take requirements from units in {areas}.",
+      "Hyderabad is at the centre of India's bulk drug industry: Telangana makes about a third of the country's pharma output and half its bulk drug exports. The city's industry sits in TGIIC parks around it: Patancheru and Pashamylaram to the north-west, in Sangareddy district; Jeedimetla and Medchal to the north and Cherlapally to the east, in Medchal-Malkajgiri; Genome Valley at Shamirpet; and Shamshabad, Kothur and Adibatla to the south, in Rangareddy. We take requirements from units in {areas}.",
     areas: [
       { href: "/locations/hyderabad/patancheru-pashamylaram", name: "Patancheru and Pashamylaram" },
       { href: "/locations/hyderabad/jeedimetla-medchal", name: "Jeedimetla and Medchal" },
@@ -205,7 +204,7 @@ export const hyderabadPages: LocationCopy[] = [
     heading: "Contract labour in Patancheru and Pashamylaram.",
     lede: "Supervised crews for bulk drug, chemical and engineering units, trained to your plant's hygiene and safety rules.",
     paragraph:
-      "Patancheru, on the Solapur highway north-west of Hyderabad, is the city's oldest bulk drug and chemical belt. TGIIC runs five phases of industrial park at Patancheru and four at Pashamylaram, with an export promotion park, a textile park and, at Sultanpur, a 302-acre medical devices park opened in 2017, all in Sangareddy district. IDA Bollaram and industrial land at Gaddapotharam, Gummadidala and Jinnaram lie close by.",
+      "Patancheru, on the Solapur highway north-west of Hyderabad, is one of the city's main bulk drug and chemical belts. TGIIC runs five phases of industrial park at Patancheru and four at Pashamylaram, with an export promotion park, a textile park and, at Sultanpur, a 302-acre medical devices park set up in 2017, all in Sangareddy district. IDA Bollaram and industrial land at Gaddapotharam, Gummadidala and Jinnaram lie close by.",
     faqs: [
       {
         question: "Do you supply contract labour in Patancheru and Pashamylaram?",
@@ -322,7 +321,7 @@ export const hyderabadPages: LocationCopy[] = [
     heading: "Contract labour in Cherlapally and Nacharam.",
     lede: "Supervised crews for the small and mid-sized factories of east Hyderabad.",
     paragraph:
-      "East Hyderabad's industry is a cluster of TGIIC parks in Medchal-Malkajgiri district: Cherlapally, in two phases, then Nacharam, Uppal, Mallapur, Moula Ali and the electronics complex at Kushaiguda. Most units are small: a 2022–23 state study looked at 380 micro and small units in Cherlapally's park alone.",
+      "East Hyderabad's industry is a cluster of TGIIC parks in Medchal-Malkajgiri district: Cherlapally, in five phases, then Nacharam, Uppal, Mallapur, Moula Ali and the electronics complex at Kushaiguda. Most units are small: a 2022–23 state study looked at 380 micro and small units in Cherlapally's park alone.",
     faqs: [
       {
         question: "Do you supply contract labour in Cherlapally?",
@@ -373,7 +372,7 @@ export const hyderabadPages: LocationCopy[] = [
     heading: "Contract labour in Genome Valley.",
     lede: "Supervised crews for vaccine, biotech and pharma research units, trained to your site's hygiene rules.",
     paragraph:
-      "Genome Valley is Telangana's life sciences cluster: about 1,500 acres in four phases, from the biotech park at Turkapally and Kolthur to Lalgadi Malakpet, with TGIIC parks at Shameerpet and Turkapally. Its units include vaccine makers, biotech and pharma companies, and research labs. It lies about 23 km from Secunderabad station, off the Outer Ring Road.",
+      "Genome Valley is Telangana's life sciences cluster: about 1,500 acres in four phases, with biotech parks at Turkapally and Lalgadi Malakpet and a third phase being built at Karakapatla, and TGIIC parks at Shameerpet, Turkapally and Kolthur. Its units include vaccine makers, biotech and pharma companies, and research labs. It lies about 23 km from Secunderabad station, off the Outer Ring Road.",
     faqs: [
       {
         question: "Do you supply contract labour in Genome Valley?",

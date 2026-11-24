@@ -29,7 +29,8 @@ export function htmlText(html) {
   return normaliseLines(decodeEntities(body.replace(/<[^>]+>/g, " ")));
 }
 
-const DOCUMENT = /\.(pdf|docx?|xlsx?|odt|ods|zip)(?:$|[?#])/i;
+// Telangana's eGazette (tggazette.cgg.gov.in) serves each gazette at /viewDocument/<number>, with no extension.
+const DOCUMENT = /\.(pdf|docx?|xlsx?|odt|ods|zip)(?:$|[?#])|\/viewDocument\/\d+$/i;
 // Link text that says nothing about the document: use its row instead.
 const GENERIC = /^(view|download|click here|here|open|pdf|link|read more|new|देखें|डाउनलोड)?\s*(\(.*\))?$/i;
 const NEW_BADGE = /\s*\b(new)\s*$/i;

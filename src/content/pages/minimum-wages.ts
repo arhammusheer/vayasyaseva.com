@@ -282,12 +282,12 @@ const copy: Record<WageStateSlug, ((s: WageState) => WageStateCopy) | undefined>
     const from = s.tables[0].effectiveFrom;
     return {
       title: (year) => `Telangana Minimum Wages${year ? ` ${year}` : ""}: Rates by Zone`,
-      description: `Telangana minimum wage from ${formatShortDate(from)}, unskilled: ${formatRupees(u1.monthly)} a month in municipal corporations, ${formatRupees(u3.monthly)} in rural areas. Basic rates, every skill level. ${stamp([s])}.`,
+      description: `Telangana minimum wage from ${formatShortDate(from)}, unskilled: ${formatRupees(u1.monthly)} a month in municipal corporations, ${formatRupees(u3.monthly)} in rural areas. Basic rates by skill. ${stamp([s])}.`,
       answer: `From ${formatDate(from)}, unskilled work in a Telangana municipal corporation (Zone I) pays at least ${formatRupees(u1.monthly)} a month, or ${formatRupees(u1.daily ?? 0)} a day. Municipalities and rural areas pay less.`,
       faqs: [
         {
           question: "Is the new Telangana minimum wage in force while cases are pending?",
-          answer: `The order of 30 May 2026 applies from ${formatDate(from)}, but it says so "subject to outcome" of writ petitions and contempt cases before the Telangana High Court. It replaces every earlier notification, so the old rates by employment no longer apply. This page will change if the court rules otherwise.`,
+          answer: `Yes. The order of 30 May 2026 applies from ${formatDate(from)}, "subject to outcome" of cases before the Telangana High Court, and it replaces every earlier notification, so the old rates by employment no longer apply. A trade union's public interest case asks the court to suspend it; when we checked on ${formatDate(s.checked.on)} the court had not done so. This page will change if it does.`,
         },
         {
           question: "Is a VDA added on top of these rates?",

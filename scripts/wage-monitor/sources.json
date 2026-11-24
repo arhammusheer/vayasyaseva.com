@@ -537,6 +537,29 @@
           "name": "Labour Department, Telangana: minimum wages (wage sheets, price index notifications and notes)"
         },
         {
+          "url": "https://tggazette.cgg.gov.in/homeAllGazetteSearch?type=1",
+          "name": "Telangana eGazette, every extraordinary gazette (about 8,000 rows, 11 MB): minimum wage revisions, cost of living index notifications and anything under the Code on Wages. G.O.Ms. No. 6 of 2026 directs its own gazette; a new row here is the sign it was published, or that a VDA or revision followed",
+          "match": "minimum (rates of )?wages|cost of living|code on wages|variable dearness"
+        },
+        {
+          "url": "https://tggazette.cgg.gov.in/homeAllGazetteSearch?type=1",
+          "name": "Telangana eGazette, every extraordinary gazette: final rules under the labour codes, contract labour",
+          "topic": "licence",
+          "match": "occupational safety|contract labour|industrial relations code|social security code|code on social security|labour codes?\\b"
+        },
+        {
+          "url": "https://tggazette.cgg.gov.in/homeAllGazetteSearch?type=1",
+          "name": "Telangana eGazette, every extraordinary gazette: Labour Welfare Fund amendments",
+          "topic": "lwf",
+          "match": "labour welfare fund"
+        },
+        {
+          "url": "https://tggazette.cgg.gov.in/homeAllGazetteSearch?type=1",
+          "name": "Telangana eGazette, every extraordinary gazette: Professional Tax amendments",
+          "topic": "pt",
+          "match": "tax on professions|professions,? trades"
+        },
+        {
           "url": "https://labour.telangana.gov.in/ActServices.do",
           "name": "Labour Department, Telangana: acts and rules (Labour Welfare Fund)",
           "topic": "lwf",
@@ -573,6 +596,39 @@
           "name": "Telangana Labour Welfare Fund Act, 1987 (Labour Department copy): who it covers and the contributions",
           "topic": "lwf",
           "match": "contribut|rupees|twenty or more"
+        },
+        {
+          "url": "https://tgct.gov.in/tgportal/AllActs/APPT/Gos_Notifications.aspx",
+          "name": "Commercial Taxes Department, Telangana: Professional Tax G.O.s and notifications (G.O.Ms. No. 1629 of 2011 sets the 10th-of-the-month due date; its files download through the page). A new date is a new order",
+          "topic": "pt",
+          "match": "^\\d{2}-\\d{2}-\\d{4}$"
+        },
+        {
+          "url": "https://www.legitquest.com/act/telangana-labour-welfare-fund-rules-1988/D55A",
+          "name": "Telangana Labour Welfare Fund Rules, 1988 (LegitQuest copy): rule 6, contributions by 31 January with Form F",
+          "topic": "lwf",
+          "match": "31st january|form-?f\\b"
+        },
+        {
+          "url": "https://labour.telangana.gov.in/ProcedureChecklist.do",
+          "name": "Labour Department, Telangana: procedures and fees, the contractor's licence under the Contract Labour Act, 1970 (a change of forms here is the sign the OSH Code rules took over)",
+          "topic": "licence",
+          "match": "contract labou?r|for each contract"
+        },
+        {
+          "url": "https://causelist.tshc.gov.in/causelist/proxy-fetch-data?casedet=WP%28PIL%29%2F14%2F2023",
+          "name": "Telangana High Court, W.P.(PIL) No. 14 of 2023 (Telangana Regional Trade Union Council v. State): the case against G.O.Ms. No. 6, with applications to suspend it (IA 2 and 3 of 2026). Its orders, applications, filings and status, from the cause list site's case lookup",
+          "format": "tshc-case"
+        },
+        {
+          "url": "https://causelist.tshc.gov.in/causelist/proxy-fetch-data?casedet=WA%2F717%2F2026",
+          "name": "Telangana High Court, W.A. No. 717 of 2026 (contractors' labour union appeal, heard with the PIL): its orders, applications, filings and status",
+          "format": "tshc-case"
+        },
+        {
+          "url": "https://causelist.tshc.gov.in/causelist/proxy-fetch-data?casedet=CC%2F2624%2F2023",
+          "name": "Telangana High Court, C.C. No. 2624 of 2023 (contempt case heard with the PIL): its orders, applications, filings and status",
+          "format": "tshc-case"
         },
         {
           "url": "https://www.sgcms.com/regulatory-updates/category/minimum-wages/",

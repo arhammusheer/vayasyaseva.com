@@ -188,7 +188,11 @@ for (const entry of pageEntries) {
     fail(`C1 page ${entry.path} has audience "${entry.audience}" but its route is in (${route.group ?? "no group"}); move it to (${GROUP_OF_AUDIENCE[entry.audience].join(") or (")}) or change the audience`);
   }
 }
+// Routes that only ever answer 404: the proxy rewrites unknown URLs to them
+// so the 404 keeps its section's layout and language (src/proxy.ts).
+const NOT_FOUND_ROUTES = new Set(["/jobs/%5Fgone"]);
 for (const route of routes) {
+  if (NOT_FOUND_ROUTES.has(route.path)) continue;
   if (!route.dynamic && !byPath.has(route.path)) fail(`C1 route ${route.path} (src/app/[locale]) has no entry in src/content/registry/pages.ts`);
 }
 

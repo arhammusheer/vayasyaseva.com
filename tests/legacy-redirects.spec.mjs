@@ -101,6 +101,34 @@ test("a retired language with no target, or a page not built, 404s with no hop",
   assert.equal(request(`${WWW}/en-in/minimum-wages/uttarakhand`).headers.get("x-middleware-next"), "1");
 });
 
+test("an unknown path under /jobs 404s in its own language, inside the jobs section", () => {
+  const rewrite = (url) => {
+    const res = request(url);
+    assert.equal(res.headers.get("location"), null, url);
+    // The jobs 404 is a plain page: the rewrite carries the status.
+    assert.equal(res.status, 404, url);
+    return new URL(res.headers.get("x-middleware-rewrite") ?? "", WWW).pathname;
+  };
+  for (const [from, to] of [
+    ["/hi-in/jobs/not-a-role", "/hi-in/jobs/_gone"],
+    ["/pa-in/jobs/x", "/pa-in/jobs/_gone"],
+    ["/kn-in/jobs/x", "/kn-in/jobs/_gone"],
+    ["/hi-latn-in/jobs/x", "/hi-latn-in/jobs/_gone"],
+    ["/en-in/jobs/x", "/en-in/jobs/_gone"],
+    ["/hi-in/jobs/x/y", "/hi-in/jobs/_gone"],
+    ["/hinglish/jobs/x", "/hi-latn-in/jobs/_gone"],
+  ]) {
+    assert.equal(rewrite(`${WWW}${from}`), to, from);
+  }
+  // Real jobs pages answer as before; a retired one still 308s to its target.
+  assert.equal(request(`${WWW}/hi-in/jobs/apply`).headers.get("x-middleware-next"), "1");
+  assert.deepEqual(hop(`${WWW}/hi-in/jobs/fees-and-fraud`), { status: 308, location: "/hi-in/jobs" });
+  // A registered page not built in this language still goes to its nearest version,
+  // and pages that exist only in English keep their 307.
+  assert.equal(hop(`${WWW}/pa-in/jobs/haridwar`).status, 307);
+  assert.deepEqual(hop(`${WWW}/hi-in/about`), { status: 307, location: "/en-in/about" });
+});
+
 test("the registry carries the landed retirements", () => {
   assert.deepEqual(landedMisses, []);
 });

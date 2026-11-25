@@ -300,6 +300,18 @@ export function isGone(path: string, locale?: Locale): boolean {
 }
 
 /**
+ * Whether a URL under /jobs that is no page (a mistyped role, an old link)
+ * should 404 in its own language with the jobs header and footer, rather
+ * than fall back to the English page of the same path: the path is not in
+ * the registry and the jobs section is built in this language. Registered
+ * jobs pages missing a language still go to their nearest version.
+ */
+export function isUnknownJobsPath(path: string, locale: Locale): boolean {
+  const clean = path.replace(/\/+$/, "");
+  return clean.startsWith("/jobs/") && !pageEntry(clean) && localesOf("/jobs").includes(locale);
+}
+
+/**
  * hreflang alternates for a page, given its neutral path. x-default is the
  * default language's page, never the neutral URL: on "prompt" pages that URL
  * is the language picker, which is noindex (Google indexed the pickers in

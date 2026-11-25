@@ -1,7 +1,7 @@
 import { NextResponse, type NextFetchEvent, type NextRequest } from "next/server";
 import { AI_READ_FILES, aiFetchOf } from "@/lib/ai-fetch";
 import { reportAiFetch } from "@/lib/measurement/server";
-import { FALLBACK_LOCALE, fromLegacyPrefix, isGone, localePath, localesOf, movedPathname, neutralTarget, splitLocalePath } from "@/lib/i18n";
+import { FALLBACK_LOCALE, type Locale, fromLegacyPrefix, isGone, isUnknownJobsPath, localePath, localesOf, movedPathname, neutralTarget, splitLocalePath } from "@/lib/i18n";
 import { LANGUAGE_COOKIE, isRankSegment, rankSegmentFor, visitorCity, visitorRegion } from "@/lib/language-rank";
 import { parsePicksCookie } from "@/context/collect";
 import { geoCookieValue, requestGeo } from "@/context/geo";
@@ -52,8 +52,21 @@ function umami(request: NextRequest) {
 const PICKER_ROUTE = "/select-language";
 /** A path under a locale that no route serves, so it renders the 404 page. */
 const GONE_PATH = "/_gone";
-const isGoneRewrite = (response: NextResponse) =>
-  new URL(response.headers.get("x-middleware-rewrite") ?? "/", "http://x").pathname.endsWith(GONE_PATH);
+/**
+ * The jobs section's 404 (src/app/[locale]/(jobs)/jobs/%5Fgone): a page in
+ * the jobs layout (jobs header and footer, no business phone) in the
+ * language asked for. It is a plain page, so the rewrite carries the 404.
+ */
+const JOBS_GONE_PATH = "/jobs/_gone";
+/**
+ * A 404 at the URL asked for: the jobs one under /jobs where that language
+ * has the jobs pages, else a path no route has (the global 404).
+ */
+function gone(url: URL, path: string, locale: Locale) {
+  url.pathname = localePath(path.startsWith("/jobs/") && localesOf("/jobs").includes(locale) ? JOBS_GONE_PATH : GONE_PATH, locale);
+  return NextResponse.rewrite(url, { status: 404 });
+}
+const isGoneRewrite = (response: NextResponse) => response.status === 404 && response.headers.has("x-middleware-rewrite");
 const PER_VISITOR_CACHE_HEADERS = ["CDN-Cache-Control", "Cloudflare-CDN-Cache-Control"];
 
 /**
@@ -101,11 +114,9 @@ function routeLocale(request: NextRequest, pathname = request.nextUrl.pathname):
   // Retired with no target, or never built: a 404 at the URL asked for,
   // with no hop to another language. Rewritten to a path no route has, so it
   // is a 404 even where the page's route folder still exists. The 404 page
-  // is the shared English one, with no phone (src/app/[locale]/not-found.tsx).
-  if (isGone(path, locale)) {
-    url.pathname = localePath(GONE_PATH, locale ?? FALLBACK_LOCALE);
-    return NextResponse.rewrite(url);
-  }
+  // is the shared English one, with no phone (src/app/[locale]/not-found.tsx),
+  // or under /jobs the jobs one in the language asked for (gone above).
+  if (isGone(path, locale)) return gone(url, path, locale ?? FALLBACK_LOCALE);
 
   if (locale) {
     // /hi-IN/jobs -> /hi-in/jobs: one spelling per page.
@@ -114,6 +125,11 @@ function routeLocale(request: NextRequest, pathname = request.nextUrl.pathname):
       url.pathname = canonical;
       return NextResponse.redirect(url, 308);
     }
+    // No page under /jobs (/hi-in/jobs/not-a-role): a 404 here, in this
+    // language with the jobs header and footer, not a hop to the English
+    // business 404. Checked before localesOf, which counts unknown paths as
+    // English pages, so /en-in/jobs/x/y gets the jobs 404 too.
+    if (isUnknownJobsPath(path, locale)) return gone(url, path, locale);
     if (localesOf(path).includes(locale)) return NextResponse.next();
     // Not in this language (e.g. /hi-in/about): resolve it as a neutral URL.
     url.pathname = path;

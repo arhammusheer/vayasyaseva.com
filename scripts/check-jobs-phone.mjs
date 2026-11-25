@@ -8,8 +8,9 @@
 // Fails when
 // - a jobs or reference page (/jobs/** in every locale, the language picker
 //   at its neutral URL, the privacy notice and terms that every jobs form and
-//   footer links, and later /minimum-wages, /guides, /locations) has a tel:
-//   link, the phone digits in any spacing, or a JSON-LD "telephone";
+//   footer links, and later /minimum-wages, /guides, /locations), or the
+//   jobs 404 (an unknown URL under /jobs, in each jobs language), has a
+//   tel: link, the phone digits in any spacing, or a JSON-LD "telephone";
 // - a script those pages load carries the phone digits;
 // - llms.txt or llms-full.txt carries the phone (agents were handing it to
 //   job seekers);
@@ -31,6 +32,8 @@ const PHONE_FREE = [
   /^\/guides(\/|$)/,
   /^\/locations(\/|$)/,
 ];
+/** A URL under /jobs that is no page, in every jobs language: each answers the jobs 404. */
+const JOBS_404_PROBES = ["en-in", "hi-in", "hi-latn-in", "pa-in", "kn-in"].map((segment) => `/${segment}/jobs/c7-no-such-role`);
 /** Neutral paths served by the language picker (their neutral URL is a page, not a redirect). */
 const PICKER = /^\/jobs(\/|$)/;
 
@@ -106,6 +109,17 @@ export async function checkJobsPhone(base, urls) {
   if (!paths.some(isPhoneFree)) fail("/sitemap.xml", "no jobs pages found to check");
 
   const scripts = new Set();
+  // The jobs 404 in each jobs language (src/proxy.ts): a job seeker who
+  // mistypes a jobs URL lands there, so it must answer 404 phone-free too.
+  await Promise.all(
+    JOBS_404_PROBES.map(async (path) => {
+      const { status, body } = await get(path);
+      if (status !== 404) return fail(path, `status ${status}, expected the jobs 404`);
+      for (const where of phoneIn(body)) fail(path, `${where} on the jobs 404`);
+      if (jsonLdBlocks(body).some((block) => hasKey(block, "telephone"))) fail(path, 'JSON-LD "telephone" on the jobs 404');
+      for (const [, src] of body.matchAll(/<script[^>]+src="(\/_next\/static\/[^"]+)"/g)) scripts.add(src);
+    }),
+  );
   await Promise.all(
     phoneFreePages.map(async (path) => {
       const { status, body } = await get(path);
@@ -181,5 +195,5 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     console.error(`Jobs phone check (C7) failed (${errors.length}):\n- ${errors.sort().join("\n- ")}`);
     process.exit(1);
   }
-  console.log(`Jobs phone check (C7) passed: ${urls.filter((u) => isPhoneFree(u.slice(SITE.length))).length} jobs/reference URLs, llms.txt, llms-full.txt and the OpenAPI jobs routes on ${base}`);
+  console.log(`Jobs phone check (C7) passed: ${urls.filter((u) => isPhoneFree(u.slice(SITE.length))).length} jobs/reference URLs, the jobs 404s, llms.txt, llms-full.txt and the OpenAPI jobs routes on ${base}`);
 }
